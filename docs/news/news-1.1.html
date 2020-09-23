@@ -89,7 +89,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.2</span>
       </span>
     </div>
 
@@ -223,21 +223,21 @@
 <ul>
 <li>Added <code><a href="../reference/as.dfm.html">as.dfm()</a></code> methods for <strong>tm</strong> <code>DocumentTermMatrix</code> and <code>TermDocumentMatrix</code> objects. (<a href='https://github.com/quanteda/quanteda/issues/1222'>#1222</a>)</li>
 <li>
-<code>predict.textmodel_wordscores()</code> now includes an <code>include_reftexts</code> argument to exclude training texts from the predicted model object (<a href='https://github.com/quanteda/quanteda/issues/1229'>#1229</a>). The default behaviour is <code>include_reftexts = TRUE</code>, producing the same behaviour as existed before the introduction of this argument. This allows rescaling based on the reference documents (since rescaling requires prediction on the reference documents) but provides an easy way to exclude the reference documents from the predicted quantities.</li>
+<code><a href="https://rdrr.io/pkg/quanteda.textmodels/man/predict.textmodel_wordscores.html">predict.textmodel_wordscores()</a></code> now includes an <code>include_reftexts</code> argument to exclude training texts from the predicted model object (<a href='https://github.com/quanteda/quanteda/issues/1229'>#1229</a>). The default behaviour is <code>include_reftexts = TRUE</code>, producing the same behaviour as existed before the introduction of this argument. This allows rescaling based on the reference documents (since rescaling requires prediction on the reference documents) but provides an easy way to exclude the reference documents from the predicted quantities.</li>
 <li>
 <code><a href="../reference/textplot_wordcloud.html">textplot_wordcloud()</a></code> now uses code entirely internal to <strong>quanteda</strong>, instead of using the <strong>wordcloud</strong> package.</li>
 </ul>
 </div>
-<div id="bug-fixes-and-stability-enhancements-12" class="section level2">
+<div id="bug-fixes-and-stability-enhancements-13" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-and-stability-enhancements-12" class="anchor"></a>Bug fixes and stability enhancements</h2>
+<a href="#bug-fixes-and-stability-enhancements-13" class="anchor"></a>Bug fixes and stability enhancements</h2>
 <ul>
-<li>Fixed a problem in the examples for <code>textplot_scale1d()</code> by adjusting the refscores for <code>data_corpus_irishbudget2010</code>.</li>
+<li>Fixed a problem in the examples for <code><a href="https://rdrr.io/pkg/quanteda.textmodels/man/textplot_scale1d.html">textplot_scale1d()</a></code> by adjusting the refscores for <code>data_corpus_irishbudget2010</code>.</li>
 <li>Eliminated unnecessary dependency on the <strong>digest</strong> package.</li>
 <li>Updated the vignette title to be less generic.</li>
 <li>Improved the robustness of <code><a href="../reference/dfm_trim.html">dfm_trim()</a></code> and <code><a href="../reference/dfm_weight.html">dfm_weight()</a></code> for previously weighted dfm objects and when supplied thresholds are proportions instead of counts. (<a href='https://github.com/quanteda/quanteda/issues/1237'>#1237</a>)</li>
 <li>Fixed a problem in <code><a href="../reference/summary.corpus.html">summary.corpus(x, n = 101)</a></code> when <code>ndoc(x) &gt; 100</code> (<a href='https://github.com/quanteda/quanteda/issues/1242'>#1242</a>).</li>
-<li>Fixed a problem in <code>predict.textmodel_wordscores(x, rescaling = "mv")</code> that always reset the reference values for rescaling to the first and second documents (<a href='https://github.com/quanteda/quanteda/issues/1251'>#1251</a>).</li>
+<li>Fixed a problem in <code><a href="https://rdrr.io/pkg/quanteda.textmodels/man/predict.textmodel_wordscores.html">predict.textmodel_wordscores(x, rescaling = "mv")</a></code> that always reset the reference values for rescaling to the first and second documents (<a href='https://github.com/quanteda/quanteda/issues/1251'>#1251</a>).</li>
 <li>Issues in the color generation and labels for <code><a href="../reference/textplot_keyness.html">textplot_keyness()</a></code> are now resolved (<a href='https://github.com/quanteda/quanteda/issues/1233'>#1233</a>, <a href='https://github.com/quanteda/quanteda/issues/1233'>#1233</a>).</li>
 </ul>
 </div>
@@ -252,7 +252,7 @@
 <h2 class="hasAnchor">
 <a href="#behaviour-changes-6" class="anchor"></a>Behaviour changes</h2>
 <ul>
-<li>Changed the default in <code>textmodel_wordfish()</code> to <code>sparse = FALSE</code>, in response to <a href='https://github.com/quanteda/quanteda/issues/1216'>#1216</a>.</li>
+<li>Changed the default in <code><a href="https://rdrr.io/pkg/quanteda.textmodels/man/textmodel_wordfish.html">textmodel_wordfish()</a></code> to <code>sparse = FALSE</code>, in response to <a href='https://github.com/quanteda/quanteda/issues/1216'>#1216</a>.</li>
 <li>
 <code><a href="../reference/dfm_group.html">dfm_group()</a></code> now preserves docvars that are constant for the group aggregation (<a href='https://github.com/quanteda/quanteda/issues/1228'>#1228</a>).</li>
 <li>The default threads is now 2, to comply with CRAN policies. (The user can increase this via <code><a href="../reference/quanteda_options.html">quanteda_options(threads = ...)</a></code>.</li>
@@ -276,7 +276,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

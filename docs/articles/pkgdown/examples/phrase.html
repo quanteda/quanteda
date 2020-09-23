@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.2</span>
       </span>
     </div>
 
@@ -172,11 +172,15 @@
     
     
 <p><strong>quanteda</strong> has the functionality to select, remove or compound multi-word expressions, such as phrasal verbs (“try on”, “wake up” etc.) and place names (“New York”, “South Korea” etc.).</p>
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">quanteda</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://quanteda.io">quanteda</a></span>)
+</pre></div>
 <div id="tokenize" class="section level1">
 <h1 class="hasAnchor">
 <a href="#tokenize" class="anchor"></a>Tokenize</h1>
-<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="no">toks</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../../../reference/tokens.html">tokens</a></span>(<span class="no">data_corpus_inaugural</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb2"><pre class="downlit">
+<span class="kw">toks</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/tokens.html">tokens</a></span>(<span class="kw">data_corpus_inaugural</span>)
+</pre></div>
 </div>
 <div id="define-multi-word-expressions" class="section level1">
 <h1 class="hasAnchor">
@@ -186,12 +190,16 @@
 <h2 class="hasAnchor">
 <a href="#character-vector" class="anchor"></a>Character vector</h2>
 <p>The most basic way to define multi-word expressions is separating words by whitespaces and wrap the character vector by <code><a href="../../../reference/phrase.html">phrase()</a></code>.</p>
-<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="no">multiword</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"United States"</span>, <span class="st">"New York"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb3"><pre class="downlit">
+<span class="kw">multiword</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"United States"</span>, <span class="st">"New York"</span>)
+</pre></div>
 <div id="keyword-in-context" class="section level3">
 <h3 class="hasAnchor">
 <a href="#keyword-in-context" class="anchor"></a>Keyword-in-context</h3>
 <p><code><a href="../../../reference/kwic.html">kwic()</a></code> is useful to find multi-word expressions in tokens. If you are not sure if “United” and “States” are separated, check their positions (e.g. “434:435”).</p>
-<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="fu"><a href="../../../reference/kwic.html">kwic</a></span>(<span class="no">toks</span>, <span class="kw">pattern</span> <span class="kw">=</span> <span class="fu"><a href="../../../reference/phrase.html">phrase</a></span>(<span class="no">multiword</span>)))</pre></body></html></div>
+<div class="sourceCode" id="cb4"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="fu"><a href="../../../reference/kwic.html">kwic</a></span>(<span class="kw">toks</span>, pattern = <span class="fu"><a href="../../../reference/phrase.html">phrase</a></span>(<span class="kw">multiword</span>)))
+</pre></div>
 <pre><code>##                                                                              
 ##  [1789-Washington, 433:434]            of the people of the | United States |
 ##  [1789-Washington, 529:530]          more than those of the | United States |
@@ -211,7 +219,9 @@
 <h3 class="hasAnchor">
 <a href="#select-tokens" class="anchor"></a>Select tokens</h3>
 <p>Similarly, you can select or remove multi-word expression using <code><a href="../../../reference/tokens_select.html">tokens_select()</a></code>.</p>
-<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="fu"><a href="../../../reference/tokens_select.html">tokens_select</a></span>(<span class="no">toks</span>, <span class="kw">pattern</span> <span class="kw">=</span> <span class="fu"><a href="../../../reference/phrase.html">phrase</a></span>(<span class="no">multiword</span>)))</pre></body></html></div>
+<div class="sourceCode" id="cb6"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="fu"><a href="../../../reference/tokens_select.html">tokens_select</a></span>(<span class="kw">toks</span>, pattern = <span class="fu"><a href="../../../reference/phrase.html">phrase</a></span>(<span class="kw">multiword</span>)))
+</pre></div>
 <pre><code>## Tokens consisting of 6 documents and 4 docvars.
 ## 1789-Washington :
 ## [1] "United" "States" "United" "States"
@@ -235,8 +245,10 @@
 <h3 class="hasAnchor">
 <a href="#compound-tokens" class="anchor"></a>Compound tokens</h3>
 <p><code><a href="../../../reference/tokens_compound.html">tokens_compound()</a></code> joins elements of multi-word expressions by underscore, so they become “United_States” and “New_York”.</p>
-<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="no">comp_toks</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../../../reference/tokens_compound.html">tokens_compound</a></span>(<span class="no">toks</span>, <span class="kw">pattern</span> <span class="kw">=</span> <span class="fu"><a href="../../../reference/phrase.html">phrase</a></span>(<span class="no">multiword</span>))
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="fu"><a href="../../../reference/tokens_select.html">tokens_select</a></span>(<span class="no">comp_toks</span>, <span class="kw">pattern</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"United_States"</span>, <span class="st">"New_York"</span>)))</pre></body></html></div>
+<div class="sourceCode" id="cb8"><pre class="downlit">
+<span class="kw">comp_toks</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/tokens_compound.html">tokens_compound</a></span>(<span class="kw">toks</span>, pattern = <span class="fu"><a href="../../../reference/phrase.html">phrase</a></span>(<span class="kw">multiword</span>))
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="fu"><a href="../../../reference/tokens_select.html">tokens_select</a></span>(<span class="kw">comp_toks</span>, pattern = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"United_States"</span>, <span class="st">"New_York"</span>)))
+</pre></div>
 <pre><code>## Tokens consisting of 6 documents and 4 docvars.
 ## 1789-Washington :
 ## [1] "United_States" "United_States"
@@ -261,12 +273,16 @@
 <h2 class="hasAnchor">
 <a href="#dictionary" class="anchor"></a>Dictionary</h2>
 <p>Elements of multi-word expressions should be separately by whitespaces in a dictionary, but you do not use <code><a href="../../../reference/phrase.html">phrase()</a></code> here.</p>
-<div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="no">multiword_dict</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../../../reference/dictionary.html">dictionary</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">country</span> <span class="kw">=</span> <span class="st">"United States"</span>,
-                                  <span class="kw">city</span> <span class="kw">=</span> <span class="st">"New York"</span>))</pre></body></html></div>
+<div class="sourceCode" id="cb10"><pre class="downlit">
+<span class="kw">multiword_dict</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/dictionary.html">dictionary</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(country = <span class="st">"United States"</span>, 
+                                  city = <span class="st">"New York"</span>))
+</pre></div>
 <div id="lookup-dictionary" class="section level3">
 <h3 class="hasAnchor">
 <a href="#lookup-dictionary" class="anchor"></a>Lookup dictionary</h3>
-<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="fu"><a href="../../../reference/tokens_lookup.html">tokens_lookup</a></span>(<span class="no">toks</span>, <span class="kw">dictionary</span> <span class="kw">=</span> <span class="no">multiword_dict</span>))</pre></body></html></div>
+<div class="sourceCode" id="cb11"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="fu"><a href="../../../reference/tokens_lookup.html">tokens_lookup</a></span>(<span class="kw">toks</span>, dictionary = <span class="kw">multiword_dict</span>))
+</pre></div>
 <pre><code>## Tokens consisting of 6 documents and 4 docvars.
 ## 1789-Washington :
 ## [1] "country" "country"
@@ -295,12 +311,14 @@
 <h3 class="hasAnchor">
 <a href="#discover-collocations" class="anchor"></a>Discover collocations</h3>
 <p>If <code><a href="../../../reference/textstat_collocations.html">textstat_collocations()</a></code> is applied to a tokens object comprised only of capitalize words, it usually returns multi-word proper names.</p>
-<div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="no">col</span> <span class="kw">&lt;-</span> <span class="no">toks</span> <span class="kw">%&gt;%</span>
-       <span class="fu"><a href="../../../reference/tokens_select.html">tokens_remove</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html">stopwords</a></span>(<span class="st">"en"</span>)) <span class="kw">%&gt;%</span>
-       <span class="fu"><a href="../../../reference/tokens_select.html">tokens_select</a></span>(<span class="kw">pattern</span> <span class="kw">=</span> <span class="st">"^[A-Z]"</span>, <span class="kw">valuetype</span> <span class="kw">=</span> <span class="st">"regex"</span>,
-                     <span class="kw">case_insensitive</span> <span class="kw">=</span> <span class="fl">FALSE</span>, <span class="kw">padding</span> <span class="kw">=</span> <span class="fl">TRUE</span>) <span class="kw">%&gt;%</span>
-       <span class="fu"><a href="../../../reference/textstat_collocations.html">textstat_collocations</a></span>(<span class="kw">min_count</span> <span class="kw">=</span> <span class="fl">5</span>, <span class="kw">tolower</span> <span class="kw">=</span> <span class="fl">FALSE</span>)
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="no">col</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb13"><pre class="downlit">
+<span class="kw">col</span> <span class="op">&lt;-</span> <span class="kw">toks</span> <span class="op">%&gt;%</span> 
+       <span class="fu"><a href="../../../reference/tokens_select.html">tokens_remove</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html">stopwords</a></span>(<span class="st">"en"</span>)) <span class="op">%&gt;%</span> 
+       <span class="fu"><a href="../../../reference/tokens_select.html">tokens_select</a></span>(pattern = <span class="st">"^[A-Z]"</span>, valuetype = <span class="st">"regex"</span>, 
+                     case_insensitive = <span class="fl">FALSE</span>, padding = <span class="fl">TRUE</span>) <span class="op">%&gt;%</span> 
+       <span class="fu"><a href="../../../reference/textstat_collocations.html">textstat_collocations</a></span>(min_count = <span class="fl">5</span>, tolower = <span class="fl">FALSE</span>)
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="kw">col</span>)
+</pre></div>
 <pre><code>##           collocation count count_nested length   lambda        z
 ## 1       United States   157            0      2 8.643955 28.47365
 ## 2  Federal Government    32            0      2 5.575158 21.87650
@@ -313,8 +331,10 @@
 <h3 class="hasAnchor">
 <a href="#compound-collocations" class="anchor"></a>Compound collocations</h3>
 <p>Collocations are automatically recognized as multi-word expressions by <code><a href="../../../reference/tokens_compound.html">tokens_compound()</a></code> in <em>case-sensitive fixed pattern matching</em>. This is the fastest way to compound large numbers of multi-word expressions, but make sure that <code>tolower = FALSE</code> in <code><a href="../../../reference/textstat_collocations.html">textstat_collocations()</a></code> to do this.</p>
-<div class="sourceCode" id="cb15"><html><body><pre class="r"><span class="no">comp_toks2</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../../../reference/tokens_compound.html">tokens_compound</a></span>(<span class="no">toks</span>, <span class="kw">pattern</span> <span class="kw">=</span> <span class="no">col</span>)
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="fu"><a href="../../../reference/kwic.html">kwic</a></span>(<span class="no">comp_toks2</span>, <span class="kw">pattern</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"United_States"</span>, <span class="st">"New_York"</span>)))</pre></body></html></div>
+<div class="sourceCode" id="cb15"><pre class="downlit">
+<span class="kw">comp_toks2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/tokens_compound.html">tokens_compound</a></span>(<span class="kw">toks</span>, pattern = <span class="kw">col</span>)
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="fu"><a href="../../../reference/kwic.html">kwic</a></span>(<span class="kw">comp_toks2</span>, pattern = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"United_States"</span>, <span class="st">"New_York"</span>)))
+</pre></div>
 <pre><code>##                                                                          
 ##  [1789-Washington, 433]            of the people of the | United_States |
 ##  [1789-Washington, 528]          more than those of the | United_States |
@@ -330,8 +350,10 @@
 ##  , I entertain no doubt               
 ##  ? These contributions enable us</code></pre>
 <p>You can use <code><a href="../../../reference/phrase.html">phrase()</a></code> on collocations if more flexibility is needed. This is usually the case if you compound tokens from different corpus.</p>
-<div class="sourceCode" id="cb17"><html><body><pre class="r"><span class="no">comp_toks3</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../../../reference/tokens_compound.html">tokens_compound</a></span>(<span class="no">toks</span>, <span class="kw">pattern</span> <span class="kw">=</span> <span class="fu"><a href="../../../reference/phrase.html">phrase</a></span>(<span class="no">col</span>$<span class="no">collocation</span>))
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="fu"><a href="../../../reference/kwic.html">kwic</a></span>(<span class="no">comp_toks3</span>, <span class="kw">pattern</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"United_States"</span>, <span class="st">"New_York"</span>)))</pre></body></html></div>
+<div class="sourceCode" id="cb17"><pre class="downlit">
+<span class="kw">comp_toks3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/tokens_compound.html">tokens_compound</a></span>(<span class="kw">toks</span>, pattern = <span class="fu"><a href="../../../reference/phrase.html">phrase</a></span>(<span class="kw">col</span><span class="op">$</span><span class="kw">collocation</span>))
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="fu"><a href="../../../reference/kwic.html">kwic</a></span>(<span class="kw">comp_toks3</span>, pattern = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"United_States"</span>, <span class="st">"New_York"</span>)))
+</pre></div>
 <pre><code>##                                                                          
 ##  [1789-Washington, 433]            of the people of the | United_States |
 ##  [1789-Washington, 528]          more than those of the | United_States |
@@ -366,7 +388,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

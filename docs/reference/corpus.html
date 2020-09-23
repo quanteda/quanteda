@@ -107,7 +107,7 @@ a corpus object.
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.2</span>
       </span>
     </div>
 
@@ -253,42 +253,42 @@ as <a href='meta.html'>metacorpus</a> information.</p></li>
 
     </div>
 
-    <pre class="usage"><span class='fu'>corpus</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>corpus</span>(<span class='kw'>x</span>, <span class='kw'>...</span>)
 
 <span class='co'># S3 method for corpus</span>
 <span class='fu'>corpus</span>(
-  <span class='no'>x</span>,
-  <span class='kw'>docnames</span> <span class='kw'>=</span> <span class='kw pkg'>quanteda</span><span class='kw ns'>::</span><span class='fu'><a href='docnames.html'>docnames</a></span>(<span class='no'>x</span>),
-  <span class='kw'>docvars</span> <span class='kw'>=</span> <span class='kw pkg'>quanteda</span><span class='kw ns'>::</span><span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='no'>x</span>),
-  <span class='kw'>meta</span> <span class='kw'>=</span> <span class='kw pkg'>quanteda</span><span class='kw ns'>::</span><span class='fu'><a href='meta.html'>meta</a></span>(<span class='no'>x</span>),
-  <span class='no'>...</span>
+  <span class='kw'>x</span>,
+  docnames = <span class='kw'>quanteda</span>::<span class='fu'><a href='docnames.html'>docnames</a></span>(<span class='kw'>x</span>),
+  docvars = <span class='kw'>quanteda</span>::<span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='kw'>x</span>),
+  meta = <span class='kw'>quanteda</span>::<span class='fu'><a href='meta.html'>meta</a></span>(<span class='kw'>x</span>),
+  <span class='kw'>...</span>
 )
 
 <span class='co'># S3 method for character</span>
 <span class='fu'>corpus</span>(
-  <span class='no'>x</span>,
-  <span class='kw'>docnames</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>docvars</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>meta</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
-  <span class='kw'>unique_docnames</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='no'>...</span>
+  <span class='kw'>x</span>,
+  docnames = <span class='kw'>NULL</span>,
+  docvars = <span class='kw'>NULL</span>,
+  meta = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
+  unique_docnames = <span class='fl'>TRUE</span>,
+  <span class='kw'>...</span>
 )
 
 <span class='co'># S3 method for data.frame</span>
 <span class='fu'>corpus</span>(
-  <span class='no'>x</span>,
-  <span class='kw'>docid_field</span> <span class='kw'>=</span> <span class='st'>"doc_id"</span>,
-  <span class='kw'>text_field</span> <span class='kw'>=</span> <span class='st'>"text"</span>,
-  <span class='kw'>meta</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
-  <span class='kw'>unique_docnames</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='no'>...</span>
+  <span class='kw'>x</span>,
+  docid_field = <span class='st'>"doc_id"</span>,
+  text_field = <span class='st'>"text"</span>,
+  meta = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
+  unique_docnames = <span class='fl'>TRUE</span>,
+  <span class='kw'>...</span>
 )
 
 <span class='co'># S3 method for kwic</span>
-<span class='fu'>corpus</span>(<span class='no'>x</span>, <span class='kw'>split_context</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>extract_keyword</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>meta</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(), <span class='no'>...</span>)
+<span class='fu'>corpus</span>(<span class='kw'>x</span>, split_context = <span class='fl'>TRUE</span>, extract_keyword = <span class='fl'>TRUE</span>, meta = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(), <span class='kw'>...</span>)
 
 <span class='co'># S3 method for Corpus</span>
-<span class='fu'>corpus</span>(<span class='no'>x</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>corpus</span>(<span class='kw'>x</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -370,7 +370,7 @@ ensures that future code to manipulate corpus objects will continue to work.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>The texts and document variables of corpus objects can also be
-accessed using index notation and the <code>$</code> operator for accessing or assigning
+accessed using index notation and the <code><a href='https://rdrr.io/r/base/Extract.html'>$</a></code> operator for accessing or assigning
 docvars.  For details, see <code><a href='corpus-class.html'>[.corpus()</a></code>.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -380,7 +380,8 @@ docvars.  For details, see <code><a href='corpus-class.html'>[.corpus()</a></cod
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># create a corpus from texts</span>
-<span class='fu'>corpus</span>(<span class='no'>data_char_ukimmig2010</span>)</div><div class='output co'>#&gt; Corpus consisting of 9 documents.
+<span class='fu'>corpus</span>(<span class='kw'>data_char_ukimmig2010</span>)
+</div><div class='output co'>#&gt; Corpus consisting of 9 documents.
 #&gt; BNP :
 #&gt; "IMMIGRATION: AN UNPARALLELED CRISIS WHICH ONLY THE BNP CAN S..."
 #&gt; 
@@ -401,8 +402,9 @@ docvars.  For details, see <code><a href='corpus-class.html'>[.corpus()</a></cod
 #&gt; 
 #&gt; [ reached max_ndoc ... 3 more documents ]</div><div class='input'>
 <span class='co'># create a corpus from texts and assign meta-data and document variables</span>
-<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='fu'>corpus</span>(<span class='no'>data_char_ukimmig2010</span>,
-               <span class='kw'>docvars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>party</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='no'>data_char_ukimmig2010</span>))), <span class='fl'>5</span>)</div><div class='output co'>#&gt; Corpus consisting of 9 documents, showing 5 documents:
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='fu'>corpus</span>(<span class='kw'>data_char_ukimmig2010</span>,
+               docvars = <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(party = <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='kw'>data_char_ukimmig2010</span>))), <span class='fl'>5</span>)
+</div><div class='output co'>#&gt; Corpus consisting of 9 documents, showing 5 documents:
 #&gt; 
 #&gt;          Text Types Tokens Sentences        party
 #&gt;           BNP  1125   3280        88          BNP
@@ -412,29 +414,30 @@ docvars.  For details, see <code><a href='corpus-class.html'>[.corpus()</a></cod
 #&gt;        Labour   298    680        29       Labour
 #&gt; </div><div class='input'>
 <span class='co'># import a tm VCorpus</span>
-<span class='kw'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span>(<span class='st'>"tm"</span>, <span class='kw'>quietly</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)) {
-    <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>crude</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"tm"</span>)    <span class='co'># load in a tm example VCorpus</span>
-    <span class='no'>vcorp</span> <span class='kw'>&lt;-</span> <span class='fu'>corpus</span>(<span class='no'>crude</span>)
-    <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='no'>vcorp</span>)
+<span class='co'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span>(<span class='st'>"tm"</span>, quietly = <span class='fl'>TRUE</span>)) {
+    <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='kw'>crude</span>, package = <span class='st'>"tm"</span>)    <span class='co'># load in a tm example VCorpus</span>
+    <span class='kw'>vcorp</span> <span class='op'>&lt;-</span> <span class='fu'>corpus</span>(<span class='kw'>crude</span>)
+    <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='kw'>vcorp</span>)
 
-    <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>acq</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"tm"</span>)
-    <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='fu'>corpus</span>(<span class='no'>acq</span>), <span class='fl'>5</span>)
+    <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='kw'>acq</span>, package = <span class='st'>"tm"</span>)
+    <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='fu'>corpus</span>(<span class='kw'>acq</span>), <span class='fl'>5</span>)
 
-    <span class='no'>vcorp2</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>tm</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/tm/man/VCorpus.html'>VCorpus</a></span>(<span class='kw pkg'>tm</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/tm/man/VectorSource.html'>VectorSource</a></span>(<span class='no'>data_char_ukimmig2010</span>))
-    <span class='no'>corp</span> <span class='kw'>&lt;-</span> <span class='fu'>corpus</span>(<span class='no'>vcorp2</span>)
-    <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='no'>corp</span>)
-}</div><div class='output co'>#&gt; Corpus consisting of 9 documents, showing 9 documents:
+    <span class='kw'>vcorp2</span> <span class='op'>&lt;-</span> <span class='kw'>tm</span>::<span class='fu'><a href='https://rdrr.io/pkg/tm/man/VCorpus.html'>VCorpus</a></span>(<span class='kw'>tm</span>::<span class='fu'><a href='https://rdrr.io/pkg/tm/man/VectorSource.html'>VectorSource</a></span>(<span class='kw'>data_char_ukimmig2010</span>))
+    <span class='kw'>corp</span> <span class='op'>&lt;-</span> <span class='fu'>corpus</span>(<span class='kw'>vcorp2</span>)
+    <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='kw'>corp</span>)
+}
+</div><div class='output co'>#&gt; Corpus consisting of 9 documents, showing 9 documents:
 #&gt; 
 #&gt;          Text Types Tokens Sentences author       datetimestamp description
-#&gt;           BNP  1125   3280        88     NA 2020-07-27 12:28:04          NA
-#&gt;     Coalition   142    260         4     NA 2020-07-27 12:28:04          NA
-#&gt;  Conservative   251    499        15     NA 2020-07-27 12:28:04          NA
-#&gt;        Greens   322    677        21     NA 2020-07-27 12:28:04          NA
-#&gt;        Labour   298    680        29     NA 2020-07-27 12:28:04          NA
-#&gt;        LibDem   251    483        14     NA 2020-07-27 12:28:04          NA
-#&gt;            PC    77    114         5     NA 2020-07-27 12:28:04          NA
-#&gt;           SNP    88    134         4     NA 2020-07-27 12:28:04          NA
-#&gt;          UKIP   346    722        26     NA 2020-07-27 12:28:04          NA
+#&gt;           BNP  1125   3280        88     NA 2020-09-23 17:30:18          NA
+#&gt;     Coalition   142    260         4     NA 2020-09-23 17:30:18          NA
+#&gt;  Conservative   251    499        15     NA 2020-09-23 17:30:18          NA
+#&gt;        Greens   322    677        21     NA 2020-09-23 17:30:18          NA
+#&gt;        Labour   298    680        29     NA 2020-09-23 17:30:18          NA
+#&gt;        LibDem   251    483        14     NA 2020-09-23 17:30:18          NA
+#&gt;            PC    77    114         5     NA 2020-09-23 17:30:18          NA
+#&gt;           SNP    88    134         4     NA 2020-09-23 17:30:18          NA
+#&gt;          UKIP   346    722        26     NA 2020-09-23 17:30:18          NA
 #&gt;  heading id language origin
 #&gt;       NA  1       en     NA
 #&gt;       NA  2       en     NA
@@ -447,19 +450,21 @@ docvars.  For details, see <code><a href='corpus-class.html'>[.corpus()</a></cod
 #&gt;       NA  9       en     NA
 #&gt; </div><div class='input'>
 <span class='co'># construct a corpus from a data.frame</span>
-<span class='no'>dat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>letter_factor</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='no'>letters</span>[<span class='fl'>1</span>:<span class='fl'>3</span>], <span class='kw'>each</span> <span class='kw'>=</span> <span class='fl'>2</span>)),
-                  <span class='kw'>some_ints</span> <span class='kw'>=</span> <span class='fl'>1L</span>:<span class='fl'>6L</span>,
-                  <span class='kw'>some_text</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"This is text number "</span>, <span class='fl'>1</span>:<span class='fl'>6</span>, <span class='st'>"."</span>),
-                  <span class='kw'>stringsAsFactors</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-                  <span class='kw'>row.names</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"fromDf_"</span>, <span class='fl'>1</span>:<span class='fl'>6</span>))
-<span class='no'>dat</span></div><div class='output co'>#&gt;          letter_factor some_ints              some_text
+<span class='kw'>dat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(letter_factor = <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='kw'>letters</span>[<span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>], each = <span class='fl'>2</span>)),
+                  some_ints = <span class='fl'>1L</span><span class='op'>:</span><span class='fl'>6L</span>,
+                  some_text = <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"This is text number "</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span>, <span class='st'>"."</span>),
+                  stringsAsFactors = <span class='fl'>FALSE</span>,
+                  row.names = <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"fromDf_"</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span>))
+<span class='kw'>dat</span>
+</div><div class='output co'>#&gt;          letter_factor some_ints              some_text
 #&gt; fromDf_1             a         1 This is text number 1.
 #&gt; fromDf_2             a         2 This is text number 2.
 #&gt; fromDf_3             b         3 This is text number 3.
 #&gt; fromDf_4             b         4 This is text number 4.
 #&gt; fromDf_5             c         5 This is text number 5.
-#&gt; fromDf_6             c         6 This is text number 6.</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='fu'>corpus</span>(<span class='no'>dat</span>, <span class='kw'>text_field</span> <span class='kw'>=</span> <span class='st'>"some_text"</span>,
-               <span class='kw'>meta</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>source</span> <span class='kw'>=</span> <span class='st'>"From a data.frame called mydf."</span>)))</div><div class='output co'>#&gt; Corpus consisting of 6 documents, showing 6 documents:
+#&gt; fromDf_6             c         6 This is text number 6.</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='fu'>corpus</span>(<span class='kw'>dat</span>, text_field = <span class='st'>"some_text"</span>,
+               meta = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(source = <span class='st'>"From a data.frame called mydf."</span>)))
+</div><div class='output co'>#&gt; Corpus consisting of 6 documents, showing 6 documents:
 #&gt; 
 #&gt;      Text Types Tokens Sentences letter_factor some_ints
 #&gt;  fromDf_1     6      6         1             a         1
@@ -470,8 +475,9 @@ docvars.  For details, see <code><a href='corpus-class.html'>[.corpus()</a></cod
 #&gt;  fromDf_6     6      6         1             c         6
 #&gt; </div><div class='input'>
 <span class='co'># construct a corpus from a kwic object</span>
-<span class='no'>kw</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='kwic.html'>kwic</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='st'>"southern"</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='fu'>corpus</span>(<span class='no'>kw</span>))</div><div class='output co'>#&gt; Corpus consisting of 28 documents, showing 28 documents:
+<span class='kw'>kw</span> <span class='op'>&lt;-</span> <span class='fu'><a href='kwic.html'>kwic</a></span>(<span class='kw'>data_corpus_inaugural</span>, <span class='st'>"southern"</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='fu'>corpus</span>(<span class='kw'>kw</span>))
+</div><div class='output co'>#&gt; Corpus consisting of 28 documents, showing 28 documents:
 #&gt; 
 #&gt;                    Text Types Tokens Sentences from   to  keyword context
 #&gt;        1797-Adams.1.pre     5      5         1 1802 1802 southern     pre
@@ -503,9 +509,10 @@ docvars.  For details, see <code><a href='corpus-class.html'>[.corpus()</a></cod
 #&gt;        1909-Taft.5.post     5      5         1 4592 4592 Southern    post
 #&gt;  1953-Eisenhower.1.post     5      5         1 1221 1221 southern    post
 #&gt; </div><div class='input'><span class='co'># from a kwic</span>
-<span class='no'>kw</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='kwic.html'>kwic</a></span>(<span class='no'>data_char_sampletext</span>, <span class='st'>"econom*"</span>, <span class='kw'>separator</span> <span class='kw'>=</span> <span class='st'>""</span>,
-           <span class='kw'>remove_separators</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>) <span class='co'># keep original separators</span>
-<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='fu'>corpus</span>(<span class='no'>kw</span>))</div><div class='output co'>#&gt; Corpus consisting of 10 documents, showing 10 documents:
+<span class='kw'>kw</span> <span class='op'>&lt;-</span> <span class='fu'><a href='kwic.html'>kwic</a></span>(<span class='kw'>data_char_sampletext</span>, <span class='st'>"econom*"</span>, separator = <span class='st'>""</span>,
+           remove_separators = <span class='fl'>FALSE</span>) <span class='co'># keep original separators</span>
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='fu'>corpus</span>(<span class='kw'>kw</span>))
+</div><div class='output co'>#&gt; Corpus consisting of 10 documents, showing 10 documents:
 #&gt; 
 #&gt;          Text Types Tokens Sentences from  to keyword context
 #&gt;   text1.1.pre     2      2         1  313 313 economy     pre
@@ -518,7 +525,8 @@ docvars.  For details, see <code><a href='corpus-class.html'>[.corpus()</a></cod
 #&gt;  text1.3.post     2      2         1  516 516 economy    post
 #&gt;  text1.4.post     3      3         2  941 941 economy    post
 #&gt;  text1.5.post     3      3         1  976 976 economy    post
-#&gt; </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='fu'>corpus</span>(<span class='no'>kw</span>, <span class='kw'>split_context</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>))</div><div class='output co'>#&gt; Corpus consisting of 5 documents, showing 5 documents:
+#&gt; </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='fu'>corpus</span>(<span class='kw'>kw</span>, split_context = <span class='fl'>FALSE</span>))
+</div><div class='output co'>#&gt; Corpus consisting of 5 documents, showing 5 documents:
 #&gt; 
 #&gt;        Text Types Tokens Sentences keyword
 #&gt;  text1.L313     5      5         1 economy
@@ -526,7 +534,8 @@ docvars.  For details, see <code><a href='corpus-class.html'>[.corpus()</a></cod
 #&gt;  text1.L516     4      5         1 economy
 #&gt;  text1.L941     6      6         2 economy
 #&gt;  text1.L976     6      6         1 economy
-#&gt; </div><div class='input'><span class='fu'><a href='texts.html'>texts</a></span>(<span class='fu'>corpus</span>(<span class='no'>kw</span>, <span class='kw'>split_context</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>))</div><div class='output co'>#&gt;                                  text1.L313 
+#&gt; </div><div class='input'><span class='fu'><a href='texts.html'>texts</a></span>(<span class='fu'>corpus</span>(<span class='kw'>kw</span>, split_context = <span class='fl'>FALSE</span>))
+</div><div class='output co'>#&gt;                                  text1.L313 
 #&gt;            " the Irish economy in pursuit " 
 #&gt;                                  text1.L390 
 #&gt;              " the domestic economy? As we" 
@@ -552,7 +561,7 @@ docvars.  For details, see <code><a href='corpus-class.html'>[.corpus()</a></cod
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.2</span>
       </span>
     </div>
 
@@ -171,17 +171,21 @@
 
     
     
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">quanteda</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">stringr</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">dplyr</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">lubridate</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">topicmodels</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://quanteda.io">quanteda</a></span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="http://stringr.tidyverse.org">stringr</a></span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://dplyr.tidyverse.org">dplyr</a></span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="http://lubridate.tidyverse.org">lubridate</a></span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw">topicmodels</span>)
+</pre></div>
 <div id="download" class="section level2">
 <h2 class="hasAnchor">
 <a href="#download" class="anchor"></a>コーパスのダウンロード</h2>
 <p>本例で用いる衆議院外務委員会の議事録は，1947年から2017年の間のすべての発言を含んでいる．このコーパスは<strong>quanteda.corpora</strong>を用いてダウンロードできる．</p>
-<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="kw pkg">devtools</span><span class="kw ns">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span>(<span class="st">"quanteda/quanteda.corpora"</span>)
-<span class="no">full_corp</span> <span class="kw">&lt;-</span> <span class="kw pkg">quanteda.corpora</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/quanteda.corpora/man/download.html">download</a></span>(<span class="st">"data_corpus_foreignaffairscommittee"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb2"><pre class="downlit">
+<span class="kw">devtools</span>::<span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span>(<span class="st">"quanteda/quanteda.corpora"</span>)
+<span class="kw">full_corp</span> <span class="op">&lt;-</span> <span class="kw">quanteda.corpora</span>::<span class="fu"><a href="https://rdrr.io/pkg/quanteda.corpora/man/download.html">download</a></span>(<span class="st">"data_corpus_foreignaffairscommittee"</span>)
+</pre></div>
 <div id="how-to-make-corpus" class="section level3">
 <h3 class="hasAnchor">
 <a href="#how-to-make-corpus" class="anchor"></a>コーパスの作成手順</h3>
@@ -190,56 +194,66 @@
 <h4 class="hasAnchor">
 <a href="#download-speeches" class="anchor"></a>議事録をダウンロード</h4>
 <p>国会会議録のダウンロードには<strong>kaigiroku</strong>パッケージを使う．APIが応答しない場合に途中からダウンロードをやり直す必要がないように，年ごとにファイルに保存し，それらを最後に連結すると良い．</p>
-<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="kw pkg">devtools</span><span class="kw ns">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span>(<span class="st">"amatsuo/kaigiroku"</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">kaigiroku</span>)
+<div class="sourceCode" id="cb3"><pre class="downlit">
+<span class="kw">devtools</span>::<span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span>(<span class="st">"amatsuo/kaigiroku"</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw">kaigiroku</span>)
 
 <span class="co"># 年ごとに議事録をダウンロード</span>
-<span class="no">folder_download</span> <span class="kw">&lt;-</span> <span class="st">"~/temp/download"</span>
-<span class="no">committee</span> <span class="kw">&lt;-</span> <span class="st">"外務"</span>
+<span class="kw">folder_download</span> <span class="op">&lt;-</span> <span class="st">"~/temp/download"</span>
+<span class="kw">committee</span> <span class="op">&lt;-</span> <span class="st">"外務"</span>
 
-<span class="kw">for</span> (<span class="no">year</span> <span class="kw">in</span> <span class="fl">1947</span>:<span class="fl">2017</span>) {
-  <span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/character.html">as.character</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.time</a></span>()), <span class="no">year</span>, <span class="no">committee</span>, <span class="st">"\n"</span>)
-  <span class="no">temp</span> <span class="kw">&lt;-</span> <span class="fu">get_meeting</span>(<span class="kw">meetingName</span> <span class="kw">=</span> <span class="no">committee</span>, <span class="kw">year</span> <span class="kw">=</span> <span class="no">year</span>)
-  <span class="kw">if</span> (<span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span>(<span class="no">temp</span>)) <span class="kw">next</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">saveRDS</a></span>(<span class="no">temp</span>, <span class="kw">file</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span>(<span class="st">"%s/%s_%s.rds"</span>, <span class="no">folder_download</span>, <span class="no">year</span>, <span class="no">committee</span>))
+<span class="co">for</span> (<span class="kw">year</span> <span class="co">in</span> <span class="fl">1947</span><span class="op">:</span><span class="fl">2017</span>) {
+  <span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/character.html">as.character</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.time</a></span>()), <span class="kw">year</span>, <span class="kw">committee</span>, <span class="st">"\n"</span>)
+  <span class="kw">temp</span> <span class="op">&lt;-</span> <span class="fu">get_meeting</span>(meetingName = <span class="kw">committee</span>, year = <span class="kw">year</span>)
+  <span class="co">if</span> (<span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span>(<span class="kw">temp</span>)) <span class="co">next</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">saveRDS</a></span>(<span class="kw">temp</span>, file = <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span>(<span class="st">"%s/%s_%s.rds"</span>, <span class="kw">folder_download</span>, <span class="kw">year</span>, <span class="kw">committee</span>))
   <span class="fu"><a href="https://rdrr.io/r/base/Sys.sleep.html">Sys.sleep</a></span>(<span class="fl">10</span>)
 }
 
 <span class="co"># ファイルを結合して保存</span>
-<span class="no">file_all</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span>(<span class="no">folder_download</span>, <span class="kw">full</span> <span class="kw">=</span> <span class="fl">TRUE</span>, <span class="kw">pattern</span> <span class="kw">=</span> <span class="st">".rds"</span>)
-<span class="no">speech</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/list.html">as.list</a></span>(<span class="no">file_all</span>), <span class="no">readRDS</span>) <span class="kw">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind.html">bind_rows</a></span>()
-<span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">saveRDS</a></span>(<span class="no">speech</span>, <span class="kw">file</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span>(<span class="no">folder_download</span>, <span class="st">"committee_speeches.rds"</span>))</pre></body></html></div>
+<span class="kw">file_all</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span>(<span class="kw">folder_download</span>, full = <span class="fl">TRUE</span>, pattern = <span class="st">".rds"</span>)
+<span class="kw">speech</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/list.html">as.list</a></span>(<span class="kw">file_all</span>), <span class="kw">readRDS</span>) <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind.html">bind_rows</a></span>()
+<span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">saveRDS</a></span>(<span class="kw">speech</span>, file = <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span>(<span class="kw">folder_download</span>, <span class="st">"committee_speeches.rds"</span>))
+</pre></div>
 </div>
 <div id="create-corpus" class="section level4">
 <h4 class="hasAnchor">
 <a href="#create-corpus" class="anchor"></a>コーパスの作成</h4>
-<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/load.html">load</a></span>(<span class="st">"temp/committee_speeches.rda"</span>)
-<span class="no">full_corp</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../../../reference/corpus.html">corpus</a></span>(<span class="no">foreign_affairs_committee_speeches</span>, <span class="kw">text_field</span> <span class="kw">=</span> <span class="st">"speech"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb4"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/load.html">load</a></span>(<span class="st">"temp/committee_speeches.rda"</span>)
+<span class="kw">full_corp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/corpus.html">corpus</a></span>(<span class="kw">foreign_affairs_committee_speeches</span>, text_field = <span class="st">"speech"</span>)
+</pre></div>
 </div>
 </div>
 </div>
 <div id="number-of-speeches" class="section level2">
 <h2 class="hasAnchor">
 <a href="#number-of-speeches" class="anchor"></a>議事録の数と期間を取得</h2>
-<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="fu"><a href="../../../reference/ndoc.html">ndoc</a></span>(<span class="no">full_corp</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb5"><pre class="downlit">
+<span class="fu"><a href="../../../reference/ndoc.html">ndoc</a></span>(<span class="kw">full_corp</span>)
+</pre></div>
 <pre><code>## [1] 287298</code></pre>
-<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/range.html">range</a></span>(<span class="fu"><a href="../../../reference/docvars.html">docvars</a></span>(<span class="no">full_corp</span>, <span class="st">"date"</span>))</pre></body></html></div>
+<div class="sourceCode" id="cb7"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/range.html">range</a></span>(<span class="fu"><a href="../../../reference/docvars.html">docvars</a></span>(<span class="kw">full_corp</span>, <span class="st">"date"</span>))
+</pre></div>
 <pre><code>## [1] "1947-06-30" "2017-11-29"</code></pre>
 </div>
 <div id="pre-processing" class="section level1">
 <h1 class="hasAnchor">
 <a href="#pre-processing" class="anchor"></a>前処理</h1>
 <p>発言者のいないレコード（典型的には各議事録の0番目の出席者，議題等の部分）を取り除く，また，各発言の冒頭は発言者の氏名と役職名なので，その部分から役職名を取り出して新しい<code>docvar</code>を作る．</p>
-<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="no">full_corp</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../../../reference/corpus_subset.html">corpus_subset</a></span>(<span class="no">full_corp</span>, <span class="no">speaker</span> <span class="kw">!=</span> <span class="st">""</span>)
+<div class="sourceCode" id="cb9"><pre class="downlit">
+<span class="kw">full_corp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/corpus_subset.html">corpus_subset</a></span>(<span class="kw">full_corp</span>, <span class="kw">speaker</span> != <span class="st">""</span>)
 
 <span class="co">## capacity変数の作成</span>
-<span class="no">capacity</span> <span class="kw">&lt;-</span> <span class="no">full_corp</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_sub.html">str_sub</a></span>(<span class="fl">1</span>, <span class="fl">20</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_replace.html">str_replace_all</a></span>(<span class="st">"\\s+.+|\n"</span>, <span class="st">""</span>) <span class="kw">%&gt;%</span> <span class="co"># 冒頭の名前部分の取り出し</span>
-  <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_replace.html">str_replace</a></span>( <span class="st">"^.+?(参事|政府特別補佐人|内閣官房|会計検査院|最高裁判所長官代理者|主査|議員|副?大臣|副?議長|委員|参考人|分科員|公述人|君(（.+）)?$)"</span>, <span class="st">"\\1"</span>) <span class="kw">%&gt;%</span> <span class="co"># 冒頭の○から，名前部分までを消去</span>
+<span class="kw">capacity</span> <span class="op">&lt;-</span> <span class="kw">full_corp</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_sub.html">str_sub</a></span>(<span class="fl">1</span>, <span class="fl">20</span>) <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_replace.html">str_replace_all</a></span>(<span class="st">"\\s+.+|\n"</span>, <span class="st">""</span>) <span class="op">%&gt;%</span> <span class="co"># 冒頭の名前部分の取り出し</span>
+  <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_replace.html">str_replace</a></span>( <span class="st">"^.+?(参事|政府特別補佐人|内閣官房|会計検査院|最高裁判所長官代理者|主査|議員|副?大臣|副?議長|委員|参考人|分科員|公述人|君(（.+）)?$)"</span>, <span class="st">"\\1"</span>) <span class="op">%&gt;%</span> <span class="co"># 冒頭の○から，名前部分までを消去</span>
   <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_replace.html">str_replace</a></span>(<span class="st">"（.+）"</span>, <span class="st">""</span>)
-<span class="no">capacity</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_replace.html">str_replace</a></span>(<span class="no">capacity</span>, <span class="st">"^○.+"</span>, <span class="st">"Other"</span>) <span class="co"># マイナーな役職名は一括して"Other"に</span>
-<span class="kw pkg">knitr</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span>(<span class="no">capacity</span>)))</pre></body></html></div>
+<span class="kw">capacity</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_replace.html">str_replace</a></span>(<span class="kw">capacity</span>, <span class="st">"^○.+"</span>, <span class="st">"Other"</span>) <span class="co"># マイナーな役職名は一括して"Other"に</span>
+<span class="kw">knitr</span>::<span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span>(<span class="kw">capacity</span>)))
+</pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left">capacity</th>
@@ -332,55 +346,65 @@
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="fu"><a href="../../../reference/docvars.html">docvars</a></span>(<span class="no">full_corp</span>, <span class="st">"capacity"</span>) <span class="kw">&lt;-</span> <span class="no">capacity</span></pre></body></html></div>
+<div class="sourceCode" id="cb10"><pre class="downlit">
+<span class="fu"><a href="../../../reference/docvars.html">docvars</a></span>(<span class="kw">full_corp</span>, <span class="st">"capacity"</span>) <span class="op">&lt;-</span> <span class="kw">capacity</span>
+</pre></div>
 <div id="select-speeches-1991-2010" class="section level2">
 <h2 class="hasAnchor">
 <a href="#select-speeches-1991-2010" class="anchor"></a>1991から2010年までの期間の議事録を選択</h2>
-<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="fu"><a href="../../../reference/docvars.html">docvars</a></span>(<span class="no">full_corp</span>, <span class="st">"year"</span>) <span class="kw">&lt;-</span> <span class="fu"><a href="../../../reference/docvars.html">docvars</a></span>(<span class="no">full_corp</span>, <span class="st">"date"</span>) <span class="kw">%&gt;%</span> <span class="fu"><a href="http://lubridate.tidyverse.org/reference/year.html">year</a></span>() <span class="kw">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span>()
-<span class="no">corp</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../../../reference/corpus_subset.html">corpus_subset</a></span>(<span class="no">full_corp</span>, <span class="fl">1991</span> <span class="kw">&lt;=</span> <span class="no">year</span> <span class="kw">&amp;</span> <span class="no">year</span> <span class="kw">&lt;=</span> <span class="fl">2010</span>)
+<div class="sourceCode" id="cb11"><pre class="downlit">
+<span class="fu"><a href="../../../reference/docvars.html">docvars</a></span>(<span class="kw">full_corp</span>, <span class="st">"year"</span>) <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/docvars.html">docvars</a></span>(<span class="kw">full_corp</span>, <span class="st">"date"</span>) <span class="op">%&gt;%</span> <span class="fu"><a href="http://lubridate.tidyverse.org/reference/year.html">year</a></span>() <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span>()
+<span class="kw">corp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/corpus_subset.html">corpus_subset</a></span>(<span class="kw">full_corp</span>, <span class="fl">1991</span> <span class="op">&lt;=</span> <span class="kw">year</span> <span class="op">&amp;</span> <span class="kw">year</span> <span class="op">&lt;=</span> <span class="fl">2010</span>)
 
-<span class="fu"><a href="../../../reference/ndoc.html">ndoc</a></span>(<span class="no">corp</span>)</pre></body></html></div>
+<span class="fu"><a href="../../../reference/ndoc.html">ndoc</a></span>(<span class="kw">corp</span>)
+</pre></div>
 <pre><code>## [1] 62670</code></pre>
 </div>
 <div id="select-speeches-ministers" class="section level2">
 <h2 class="hasAnchor">
 <a href="#select-speeches-ministers" class="anchor"></a>委員，大臣，副大臣の発言を選択</h2>
-<div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="no">corp</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../../../reference/corpus_subset.html">corpus_subset</a></span>(<span class="no">corp</span>, <span class="no">capacity</span> <span class="kw">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"委員"</span>, <span class="st">"大臣"</span>, <span class="st">"副大臣"</span>))
-<span class="fu"><a href="../../../reference/ndoc.html">ndoc</a></span>(<span class="no">corp</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb13"><pre class="downlit">
+<span class="kw">corp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/corpus_subset.html">corpus_subset</a></span>(<span class="kw">corp</span>, <span class="kw">capacity</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"委員"</span>, <span class="st">"大臣"</span>, <span class="st">"副大臣"</span>))
+<span class="fu"><a href="../../../reference/ndoc.html">ndoc</a></span>(<span class="kw">corp</span>)
+</pre></div>
 <pre><code>## [1] 46890</code></pre>
 </div>
 <div id="tokenization" class="section level2">
 <h2 class="hasAnchor">
 <a href="#tokenization" class="anchor"></a>トークン化</h2>
 <p>日本語の分析では，形態素解析ツールを用いて分かち書きを行うことが多いが，<strong>quanteda</strong>の<code><a href="../../../reference/tokens.html">tokens()</a></code>は，<a href="http://site.icu-project.org/">ICU</a>で定義された規則に従って文を語に分割することができる．さらに，漢字やカタカナの連続的共起を<code><a href="../../../reference/textstat_collocations.html">textstat_collocations()</a></code>を用いて抽出し，<code><a href="../../../reference/tokens_compound.html">tokens_compound()</a></code>によって統計的に優位な組み合わせを結合すると，より質の高いトークン化を実現できる．<code><a href="../../../reference/textstat_collocations.html">textstat_collocations()</a></code>を用いる場合は，事前に<code><a href="../../../reference/tokens_select.html">tokens_select()</a></code>と正規表現で，対象とする語だけを選択する．この際，<code>padding = TRUE</code>とし，語の間の距離が維持されるように注意する</p>
-<div class="sourceCode" id="cb15"><html><body><pre class="r"><span class="no">toks</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../../../reference/tokens.html">tokens</a></span>(<span class="no">corp</span>)
-<span class="no">toks</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../../../reference/tokens_select.html">tokens_select</a></span>(<span class="no">toks</span>, <span class="st">"^[０-９ぁ-んァ-ヶー一-龠]+$"</span>, <span class="kw">valuetype</span> <span class="kw">=</span> <span class="st">"regex"</span>, <span class="kw">padding</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
-<span class="no">toks</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../../../reference/tokens_select.html">tokens_remove</a></span>(<span class="no">toks</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"御"</span>, <span class="st">"君"</span>), <span class="kw">padding</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
+<div class="sourceCode" id="cb15"><pre class="downlit">
+<span class="kw">toks</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/tokens.html">tokens</a></span>(<span class="kw">corp</span>)
+<span class="kw">toks</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/tokens_select.html">tokens_select</a></span>(<span class="kw">toks</span>, <span class="st">"^[０-９ぁ-んァ-ヶー一-龠]+$"</span>, valuetype = <span class="st">"regex"</span>, padding = <span class="fl">TRUE</span>)
+<span class="kw">toks</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/tokens_select.html">tokens_remove</a></span>(<span class="kw">toks</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"御"</span>, <span class="st">"君"</span>), padding = <span class="fl">TRUE</span>)
 
-<span class="no">min_count</span> <span class="kw">&lt;-</span> <span class="fl">10</span>
+<span class="kw">min_count</span> <span class="op">&lt;-</span> <span class="fl">10</span>
 
 <span class="co"># 漢字</span>
-<span class="no">kanji_col</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../../../reference/tokens_select.html">tokens_select</a></span>(<span class="no">toks</span>, <span class="st">"^[一-龠]+$"</span>, <span class="kw">valuetype</span> <span class="kw">=</span> <span class="st">"regex"</span>, <span class="kw">padding</span> <span class="kw">=</span> <span class="fl">TRUE</span>) <span class="kw">%&gt;%</span>
-             <span class="fu"><a href="../../../reference/textstat_collocations.html">textstat_collocations</a></span>(<span class="kw">min_count</span> <span class="kw">=</span> <span class="no">min_count</span>)
-<span class="no">toks</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../../../reference/tokens_compound.html">tokens_compound</a></span>(<span class="no">toks</span>, <span class="no">kanji_col</span>[<span class="no">kanji_col</span>$<span class="no">z</span> <span class="kw">&gt;</span> <span class="fl">3</span>,], <span class="kw">concatenator</span> <span class="kw">=</span> <span class="st">""</span>)
+<span class="kw">kanji_col</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/tokens_select.html">tokens_select</a></span>(<span class="kw">toks</span>, <span class="st">"^[一-龠]+$"</span>, valuetype = <span class="st">"regex"</span>, padding = <span class="fl">TRUE</span>) <span class="op">%&gt;%</span> 
+             <span class="fu"><a href="../../../reference/textstat_collocations.html">textstat_collocations</a></span>(min_count = <span class="kw">min_count</span>)
+<span class="kw">toks</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/tokens_compound.html">tokens_compound</a></span>(<span class="kw">toks</span>, <span class="kw">kanji_col</span>[<span class="kw">kanji_col</span><span class="op">$</span><span class="kw">z</span> <span class="op">&gt;</span> <span class="fl">3</span>,], concatenator = <span class="st">""</span>)
 
 <span class="co"># カタカナ</span>
-<span class="no">kana_col</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../../../reference/tokens_select.html">tokens_select</a></span>(<span class="no">toks</span>, <span class="st">"^[ァ-ヶー]+$"</span>, <span class="kw">valuetype</span> <span class="kw">=</span> <span class="st">"regex"</span>, <span class="kw">padding</span> <span class="kw">=</span> <span class="fl">TRUE</span>) <span class="kw">%&gt;%</span>
-            <span class="fu"><a href="../../../reference/textstat_collocations.html">textstat_collocations</a></span>(<span class="kw">min_count</span> <span class="kw">=</span> <span class="no">min_count</span>)
-<span class="no">toks</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../../../reference/tokens_compound.html">tokens_compound</a></span>(<span class="no">toks</span>, <span class="no">kana_col</span>[<span class="no">kana_col</span>$<span class="no">z</span> <span class="kw">&gt;</span> <span class="fl">3</span>,], <span class="kw">concatenator</span> <span class="kw">=</span> <span class="st">""</span>)
+<span class="kw">kana_col</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/tokens_select.html">tokens_select</a></span>(<span class="kw">toks</span>, <span class="st">"^[ァ-ヶー]+$"</span>, valuetype = <span class="st">"regex"</span>, padding = <span class="fl">TRUE</span>) <span class="op">%&gt;%</span> 
+            <span class="fu"><a href="../../../reference/textstat_collocations.html">textstat_collocations</a></span>(min_count = <span class="kw">min_count</span>)
+<span class="kw">toks</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/tokens_compound.html">tokens_compound</a></span>(<span class="kw">toks</span>, <span class="kw">kana_col</span>[<span class="kw">kana_col</span><span class="op">$</span><span class="kw">z</span> <span class="op">&gt;</span> <span class="fl">3</span>,], concatenator = <span class="st">""</span>)
 
 <span class="co"># 漢字，カタカナおよび数字</span>
-<span class="no">any_col</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../../../reference/tokens_select.html">tokens_select</a></span>(<span class="no">toks</span>, <span class="st">"^[０-９ァ-ヶー一-龠]+$"</span>, <span class="kw">valuetype</span> <span class="kw">=</span> <span class="st">"regex"</span>, <span class="kw">padding</span> <span class="kw">=</span> <span class="fl">TRUE</span>) <span class="kw">%&gt;%</span>
-           <span class="fu"><a href="../../../reference/textstat_collocations.html">textstat_collocations</a></span>(<span class="kw">min_count</span> <span class="kw">=</span> <span class="no">min_count</span>)
-<span class="no">toks</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../../../reference/tokens_compound.html">tokens_compound</a></span>(<span class="no">toks</span>, <span class="no">any_col</span>[<span class="no">any_col</span>$<span class="no">z</span> <span class="kw">&gt;</span> <span class="fl">3</span>,], <span class="kw">concatenator</span> <span class="kw">=</span> <span class="st">""</span>)</pre></body></html></div>
+<span class="kw">any_col</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/tokens_select.html">tokens_select</a></span>(<span class="kw">toks</span>, <span class="st">"^[０-９ァ-ヶー一-龠]+$"</span>, valuetype = <span class="st">"regex"</span>, padding = <span class="fl">TRUE</span>) <span class="op">%&gt;%</span> 
+           <span class="fu"><a href="../../../reference/textstat_collocations.html">textstat_collocations</a></span>(min_count = <span class="kw">min_count</span>)
+<span class="kw">toks</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/tokens_compound.html">tokens_compound</a></span>(<span class="kw">toks</span>, <span class="kw">any_col</span>[<span class="kw">any_col</span><span class="op">$</span><span class="kw">z</span> <span class="op">&gt;</span> <span class="fl">3</span>,], concatenator = <span class="st">""</span>)
+</pre></div>
 </div>
 <div id="create-dfm" class="section level2">
 <h2 class="hasAnchor">
 <a href="#create-dfm" class="anchor"></a>文書行列の作成</h2>
 <p><code><a href="../../../reference/dfm.html">dfm()</a></code>によって文書行列を作成した後でも，<code>dfm_*()</code>と命名された関数を用いると分析に必要な文書の特徴を自由に選択できる．ここでは，平仮名のみもしくは一語のみから構成されたトークンを<code><a href="../../../reference/dfm_select.html">dfm_remove()</a></code>によって，頻度が極端に低い語もしくは高い語を<code><a href="../../../reference/dfm_trim.html">dfm_trim()</a></code>によって削除している．</p>
-<div class="sourceCode" id="cb16"><html><body><pre class="r"><span class="no">speech_dfm</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../../../reference/dfm.html">dfm</a></span>(<span class="no">toks</span>, <span class="kw">remove</span> <span class="kw">=</span> <span class="st">""</span>) <span class="kw">%&gt;%</span>
-    <span class="fu"><a href="../../../reference/dfm_select.html">dfm_remove</a></span>(<span class="st">"^[ぁ-ん]+$"</span>, <span class="kw">valuetype</span> <span class="kw">=</span> <span class="st">"regex"</span>, <span class="kw">min_nchar</span> <span class="kw">=</span> <span class="fl">2</span>) <span class="kw">%&gt;%</span>
-    <span class="fu"><a href="../../../reference/dfm_trim.html">dfm_trim</a></span>(<span class="kw">min_termfreq</span> <span class="kw">=</span> <span class="fl">0.50</span>, <span class="kw">termfreq_type</span> <span class="kw">=</span> <span class="st">"quantile"</span>, <span class="kw">max_termfreq</span> <span class="kw">=</span> <span class="fl">0.99</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb16"><pre class="downlit">
+<span class="kw">speech_dfm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/dfm.html">dfm</a></span>(<span class="kw">toks</span>, remove = <span class="st">""</span>) <span class="op">%&gt;%</span> 
+    <span class="fu"><a href="../../../reference/dfm_select.html">dfm_remove</a></span>(<span class="st">"^[ぁ-ん]+$"</span>, valuetype = <span class="st">"regex"</span>, min_nchar = <span class="fl">2</span>) <span class="op">%&gt;%</span> 
+    <span class="fu"><a href="../../../reference/dfm_trim.html">dfm_trim</a></span>(min_termfreq = <span class="fl">0.50</span>, termfreq_type = <span class="st">"quantile"</span>, max_termfreq = <span class="fl">0.99</span>)
+</pre></div>
 </div>
 </div>
 <div id="analysis" class="section level1">
@@ -390,8 +414,10 @@
 <h2 class="hasAnchor">
 <a href="#keyness" class="anchor"></a>相対頻度分析</h2>
 <p><code><a href="../../../reference/textstat_keyness.html">textstat_keyness()</a></code>は語の頻度を文書のグループ間で比較し，統計的に有意に頻度が高いものを選択する．ここでは，同時多発テロが発生した2001年以降に頻度が高くなった30語を示してある．</p>
-<div class="sourceCode" id="cb17"><html><body><pre class="r"><span class="no">key</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../../../reference/textstat_keyness.html">textstat_keyness</a></span>(<span class="no">speech_dfm</span>, <span class="fu"><a href="../../../reference/docvars.html">docvars</a></span>(<span class="no">speech_dfm</span>, <span class="st">"year"</span>) <span class="kw">&gt;=</span> <span class="fl">2001</span>)
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="no">key</span>, <span class="fl">20</span>) <span class="kw">%&gt;%</span> <span class="kw pkg">knitr</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span>()</pre></body></html></div>
+<div class="sourceCode" id="cb17"><pre class="downlit">
+<span class="kw">key</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/textstat_keyness.html">textstat_keyness</a></span>(<span class="kw">speech_dfm</span>, <span class="fu"><a href="../../../reference/docvars.html">docvars</a></span>(<span class="kw">speech_dfm</span>, <span class="st">"year"</span>) <span class="op">&gt;=</span> <span class="fl">2001</span>)
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="kw">key</span>, <span class="fl">20</span>) <span class="op">%&gt;%</span> <span class="kw">knitr</span>::<span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span>()
+</pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left">feature</th>
@@ -544,8 +570,10 @@
 </tbody>
 </table>
 <p>上の表では，委員会出席者の名前が多く含まれるので，それらを取り除くと議論の主題が明確になる．</p>
-<div class="sourceCode" id="cb18"><html><body><pre class="r"><span class="no">key</span> <span class="kw">&lt;-</span> <span class="no">key</span>[!<span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span>(<span class="no">key</span>$<span class="no">feature</span>, <span class="fu"><a href="https://stringr.tidyverse.org/reference/modifiers.html">regex</a></span>(<span class="st">"委員|大臣"</span>)),]
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="no">key</span>, <span class="fl">20</span>) <span class="kw">%&gt;%</span> <span class="kw pkg">knitr</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span>()</pre></body></html></div>
+<div class="sourceCode" id="cb18"><pre class="downlit">
+<span class="kw">key</span> <span class="op">&lt;-</span> <span class="kw">key</span>[<span class="op">!</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span>(<span class="kw">key</span><span class="op">$</span><span class="kw">feature</span>, <span class="fu"><a href="https://stringr.tidyverse.org/reference/modifiers.html">regex</a></span>(<span class="st">"委員|大臣"</span>)),]
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="kw">key</span>, <span class="fl">20</span>) <span class="op">%&gt;%</span> <span class="kw">knitr</span>::<span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span>()
+</pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left"></th>
@@ -723,21 +751,25 @@
 <h2 class="hasAnchor">
 <a href="#network" class="anchor"></a>共起ネットワーク分析</h2>
 <p><code><a href="../../../reference/fcm.html">fcm()</a></code>によって作成した共起行列に対して，<code><a href="../../../reference/textplot_network.html">textplot_network()</a></code>を用いると語の関係が視覚化でき，文書の内容の全体像を容易に把握できる．</p>
-<div class="sourceCode" id="cb19"><html><body><pre class="r"><span class="no">feat</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="no">key</span>$<span class="no">feature</span>, <span class="fl">50</span>)
-<span class="no">speech_fcm</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../../../reference/dfm_select.html">dfm_select</a></span>(<span class="no">speech_dfm</span>, <span class="no">feat</span>) <span class="kw">%&gt;%</span> <span class="fu"><a href="../../../reference/fcm.html">fcm</a></span>()
-<span class="no">size</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/colSums.html">rowSums</a></span>(<span class="no">speech_fcm</span>))
-<span class="fu"><a href="../../../reference/textplot_network.html">textplot_network</a></span>(<span class="no">speech_fcm</span>, <span class="kw">min_freq</span> <span class="kw">=</span> <span class="fl">0.85</span>, <span class="kw">edge_alpha</span> <span class="kw">=</span> <span class="fl">0.9</span>,
-                 <span class="kw">vertex_size</span> <span class="kw">=</span> <span class="no">size</span> / <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span>(<span class="no">size</span>) * <span class="fl">3</span>,
-                 <span class="kw">vertex_labelfont</span> <span class="kw">=</span> <span class="kw">if</span> (<span class="fu"><a href="https://rdrr.io/r/base/Sys.info.html">Sys.info</a></span>()[<span class="st">"sysname"</span>] <span class="kw">==</span> <span class="st">"Darwin"</span>) <span class="st">"SimHei"</span> <span class="kw">else</span> <span class="kw">NULL</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb19"><pre class="downlit">
+<span class="kw">feat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="kw">key</span><span class="op">$</span><span class="kw">feature</span>, <span class="fl">50</span>)
+<span class="kw">speech_fcm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/dfm_select.html">dfm_select</a></span>(<span class="kw">speech_dfm</span>, <span class="kw">feat</span>) <span class="op">%&gt;%</span> <span class="fu"><a href="../../../reference/fcm.html">fcm</a></span>()
+<span class="kw">size</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/colSums.html">rowSums</a></span>(<span class="kw">speech_fcm</span>))
+<span class="fu"><a href="../../../reference/textplot_network.html">textplot_network</a></span>(<span class="kw">speech_fcm</span>, min_freq = <span class="fl">0.85</span>, edge_alpha = <span class="fl">0.9</span>, 
+                 vertex_size = <span class="kw">size</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span>(<span class="kw">size</span>) <span class="op">*</span> <span class="fl">3</span>,
+                 vertex_labelfont = <span class="co">if</span> (<span class="fu"><a href="https://rdrr.io/r/base/Sys.info.html">Sys.info</a></span>()[<span class="st">"sysname"</span>] <span class="op">==</span> <span class="st">"Darwin"</span>) <span class="st">"SimHei"</span> <span class="co">else</span> <span class="kw">NULL</span>)
+</pre></div>
 <p><img src="japanese_speech_ja_files/figure-html/unnamed-chunk-14-1.png" width="700"></p>
 </div>
 <div id="topicmodel" class="section level2">
 <h2 class="hasAnchor">
 <a href="#topicmodel" class="anchor"></a>トピックモデル</h2>
 <p><strong>quanteda</strong>のdfmを<code><a href="../../../reference/convert.html">convert()</a></code>で変換し，<strong>topicmodels</strong>をパッケージを用いて潜在的な話題を推定する．</p>
-<div class="sourceCode" id="cb20"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">100</span>)
-<span class="no">lda</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/topicmodels/man/lda.html">LDA</a></span>(<span class="fu"><a href="../../../reference/convert.html">convert</a></span>(<span class="no">speech_dfm</span>, <span class="kw">to</span> <span class="kw">=</span> <span class="st">"topicmodels"</span>), <span class="kw">k</span> <span class="kw">=</span> <span class="fl">10</span>)
-<span class="fu"><a href="https://rdrr.io/pkg/topicmodels/man/get.html">get_terms</a></span>(<span class="no">lda</span>, <span class="fl">10</span>) <span class="kw">%&gt;%</span> <span class="kw pkg">knitr</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span>()</pre></body></html></div>
+<div class="sourceCode" id="cb20"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">100</span>)
+<span class="kw">lda</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/topicmodels/man/lda.html">LDA</a></span>(<span class="fu"><a href="../../../reference/convert.html">convert</a></span>(<span class="kw">speech_dfm</span>, to = <span class="st">"topicmodels"</span>), k = <span class="fl">10</span>)
+<span class="fu"><a href="https://rdrr.io/pkg/topicmodels/man/get.html">get_terms</a></span>(<span class="kw">lda</span>, <span class="fl">10</span>) <span class="op">%&gt;%</span> <span class="kw">knitr</span>::<span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span>()
+</pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left">Topic 1</th>
@@ -753,128 +785,130 @@
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="left">租税条約</td>
-<td align="left">過程</td>
-<td align="left">危険</td>
-<td align="left">イスラエル</td>
-<td align="left">イギリス</td>
-<td align="left">研究</td>
-<td align="left">ドル</td>
-<td align="left">攻撃</td>
 <td align="left">漁業</td>
-<td align="left">前回</td>
-</tr>
-<tr class="even">
-<td align="left">防止</td>
-<td align="left">人権</td>
-<td align="left">旅券</td>
-<td align="left">捜査</td>
-<td align="left">部隊</td>
-<td align="left">否定</td>
-<td align="left">計上</td>
-<td align="left">戦略</td>
-<td align="left">資源</td>
-<td align="left">査察</td>
-</tr>
-<tr class="odd">
-<td align="left">フィリピン</td>
-<td align="left">センター</td>
-<td align="left">警察</td>
-<td align="left">ヨーロッパ</td>
-<td align="left">質疑</td>
-<td align="left">首脳会談</td>
-<td align="left">図る</td>
-<td align="left">在日米軍</td>
-<td align="left">参考人</td>
-<td align="left">危険</td>
-</tr>
-<tr class="even">
-<td align="left">イラン</td>
-<td align="left">手段</td>
-<td align="left">業務</td>
-<td align="left">経過</td>
-<td align="left">武力行使</td>
-<td align="left">今申</td>
 <td align="left">促進</td>
-<td align="left">国内法</td>
-<td align="left">二国間</td>
-<td align="left">現時点</td>
-</tr>
-<tr class="odd">
-<td align="left">人権</td>
-<td align="left">成果</td>
-<td align="left">行使</td>
-<td align="left">アフガニスタン</td>
-<td align="left">常任理事国</td>
-<td align="left">真剣</td>
-<td align="left">進める</td>
-<td align="left">大きい</td>
-<td align="left">ミャンマー</td>
-<td align="left">二国間</td>
-</tr>
-<tr class="even">
-<td align="left">所得</td>
-<td align="left">進める</td>
-<td align="left">パキスタン</td>
-<td align="left">竹島</td>
-<td align="left">引き渡し</td>
-<td align="left">変更</td>
-<td align="left">国際協力</td>
-<td align="left">パキスタン</td>
-<td align="left">出る</td>
-<td align="left">詰め</td>
-</tr>
-<tr class="odd">
-<td align="left">課税</td>
-<td align="left">独立</td>
-<td align="left">一層</td>
-<td align="left">拒否</td>
-<td align="left">完全</td>
-<td align="left">自身</td>
-<td align="left">香港</td>
-<td align="left">禁止</td>
-<td align="left">輸入</td>
-<td align="left">会合</td>
-</tr>
-<tr class="even">
-<td align="left">回避</td>
-<td align="left">経験</td>
-<td align="left">能力</td>
-<td align="left">意識</td>
-<td align="left">在日米軍</td>
-<td align="left">お互いに</td>
-<td align="left">利用</td>
-<td align="left">抗議</td>
-<td align="left">経費</td>
-<td align="left">発揮</td>
-</tr>
-<tr class="odd">
-<td align="left">意義</td>
-<td align="left">難民</td>
-<td align="left">資する</td>
-<td align="left">ドル</td>
-<td align="left">フランス</td>
-<td align="left">被害</td>
-<td align="left">提案理由</td>
-<td align="left">記憶</td>
-<td align="left">国内法</td>
-<td align="left">批判</td>
-</tr>
-<tr class="even">
-<td align="left">租税</td>
-<td align="left">生活</td>
 <td align="left">児童</td>
+<td align="left">租税条約</td>
+<td align="left">入る</td>
+<td align="left">攻撃</td>
+<td align="left">手段</td>
+<td align="left">自身</td>
+<td align="left">英語</td>
+<td align="left">イギリス</td>
+</tr>
+<tr class="even">
+<td align="left">彼ら</td>
+<td align="left">計上</td>
+<td align="left">人権</td>
+<td align="left">業務</td>
+<td align="left">ドル</td>
+<td align="left">会合</td>
+<td align="left">抗議</td>
+<td align="left">一年</td>
+<td align="left">日本語</td>
+<td align="left">軽減</td>
+</tr>
+<tr class="odd">
+<td align="left">やり方</td>
+<td align="left">採択</td>
+<td align="left">早期</td>
+<td align="left">防止</td>
+<td align="left">被害</td>
+<td align="left">ガイドライン</td>
+<td align="left">配備</td>
+<td align="left">違反</td>
+<td align="left">基準</td>
+<td align="left">イラン</td>
+</tr>
+<tr class="even">
+<td align="left">個人</td>
+<td align="left">経費</td>
+<td align="left">意義</td>
+<td align="left">相手国</td>
+<td align="left">何度</td>
+<td align="left">利用</td>
+<td align="left">関与</td>
+<td align="left">相談</td>
+<td align="left">ある程度</td>
+<td align="left">人権</td>
+</tr>
+<tr class="odd">
+<td align="left">四島</td>
+<td align="left">貿易</td>
+<td align="left">生活</td>
+<td align="left">同様</td>
+<td align="left">正確</td>
+<td align="left">皆様</td>
+<td align="left">核実験</td>
+<td align="left">沖縄県民</td>
+<td align="left">捜査</td>
+<td align="left">利益</td>
+</tr>
+<tr class="even">
+<td align="left">法務省</td>
+<td align="left">図る</td>
 <td align="left">幾ら</td>
-<td align="left">場所</td>
-<td align="left">配慮</td>
-<td align="left">経済協力</td>
-<td align="left">長い</td>
-<td align="left">マグロ</td>
+<td align="left">竹島</td>
+<td align="left">困難</td>
+<td align="left">常任理事国</td>
+<td align="left">願い</td>
+<td align="left">背景</td>
+<td align="left">利用</td>
+<td align="left">イスラエル</td>
+</tr>
+<tr class="odd">
+<td align="left">何度</td>
+<td align="left">果たす</td>
+<td align="left">御所見</td>
+<td align="left">軽減</td>
+<td align="left">希望</td>
+<td align="left">プロセス</td>
+<td align="left">基本</td>
+<td align="left">頑張</td>
+<td align="left">特定</td>
+<td align="left">否定</td>
+</tr>
+<tr class="even">
+<td align="left">信頼</td>
+<td align="left">有意義</td>
+<td align="left">トン</td>
+<td align="left">日本国</td>
+<td align="left">メッセージ</td>
+<td align="left">成立</td>
+<td align="left">密約</td>
+<td align="left">教科書</td>
+<td align="left">総合的</td>
+<td align="left">幾ら</td>
+</tr>
+<tr class="odd">
+<td align="left">出る</td>
+<td align="left">議題</td>
+<td align="left">進める</td>
+<td align="left">課税</td>
+<td align="left">首脳会談</td>
+<td align="left">極東</td>
+<td align="left">効果</td>
+<td align="left">記憶</td>
+<td align="left">グアム</td>
+<td align="left">インドネシア</td>
+</tr>
+<tr class="even">
+<td align="left">仕組み</td>
+<td align="left">速やか</td>
+<td align="left">インドネシア</td>
+<td align="left">資する</td>
+<td align="left">障害者</td>
+<td align="left">一連</td>
+<td align="left">必ず</td>
+<td align="left">意義</td>
+<td align="left">ポル</td>
 <td align="left">活用</td>
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb21"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/topicmodels/man/get.html">get_topics</a></span>(<span class="no">lda</span>) <span class="kw">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span>() <span class="kw">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/graphics/barplot.html">barplot</a></span>(<span class="kw">xlab</span> <span class="kw">=</span> <span class="st">"Topic"</span>, <span class="kw">ylab</span> <span class="kw">=</span> <span class="st">"Frequency"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb21"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/pkg/topicmodels/man/get.html">get_topics</a></span>(<span class="kw">lda</span>) <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span>() <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/graphics/barplot.html">barplot</a></span>(xlab = <span class="st">"Topic"</span>, ylab = <span class="st">"Frequency"</span>) 
+</pre></div>
 <p><img src="japanese_speech_ja_files/figure-html/unnamed-chunk-15-1.png" width="700"></p>
 </div>
 </div>
@@ -895,7 +929,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

@@ -93,7 +93,7 @@ evaluation to evaluate conditions based on the docvars in the corpus." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.2</span>
       </span>
     </div>
 
@@ -225,7 +225,7 @@ functions identically to <code><a href='https://rdrr.io/r/base/subset.html'>subs
 evaluation to evaluate conditions based on the <a href='docvars.html'>docvars</a> in the corpus.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>corpus_subset</span>(<span class='no'>x</span>, <span class='no'>subset</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>corpus_subset</span>(<span class='kw'>x</span>, <span class='kw'>subset</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -253,7 +253,8 @@ values are taken as false</p></td>
     <div class='dont-index'><p><code><a href='https://rdrr.io/r/base/subset.html'>subset.data.frame()</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='fu'>corpus_subset</span>(<span class='no'>data_corpus_inaugural</span>, <span class='no'>Year</span> <span class='kw'>&gt;</span> <span class='fl'>1980</span>))</div><div class='output co'>#&gt; Corpus consisting of 10 documents, showing 10 documents:
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='fu'>corpus_subset</span>(<span class='kw'>data_corpus_inaugural</span>, <span class='kw'>Year</span> <span class='op'>&gt;</span> <span class='fl'>1980</span>))
+</div><div class='output co'>#&gt; Corpus consisting of 10 documents, showing 10 documents:
 #&gt; 
 #&gt;          Text Types Tokens Sentences Year President FirstName      Party
 #&gt;   1981-Reagan   902   2780       129 1981    Reagan    Ronald Republican
@@ -266,7 +267,8 @@ values are taken as false</p></td>
 #&gt;    2009-Obama   938   2689       110 2009     Obama    Barack Democratic
 #&gt;    2013-Obama   814   2317        88 2013     Obama    Barack Democratic
 #&gt;    2017-Trump   582   1660        88 2017     Trump Donald J. Republican
-#&gt; </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='fu'>corpus_subset</span>(<span class='no'>data_corpus_inaugural</span>, <span class='no'>Year</span> <span class='kw'>&gt;</span> <span class='fl'>1930</span> <span class='kw'>&amp;</span> <span class='no'>President</span> <span class='kw'>==</span> <span class='st'>"Roosevelt"</span>))</div><div class='output co'>#&gt; Corpus consisting of 4 documents, showing 4 documents:
+#&gt; </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='fu'>corpus_subset</span>(<span class='kw'>data_corpus_inaugural</span>, <span class='kw'>Year</span> <span class='op'>&gt;</span> <span class='fl'>1930</span> <span class='op'>&amp;</span> <span class='kw'>President</span> <span class='op'>==</span> <span class='st'>"Roosevelt"</span>))
+</div><div class='output co'>#&gt; Corpus consisting of 4 documents, showing 4 documents:
 #&gt; 
 #&gt;            Text Types Tokens Sentences Year President   FirstName      Party
 #&gt;  1933-Roosevelt   743   2057        85 1933 Roosevelt Franklin D. Democratic
@@ -289,7 +291,7 @@ values are taken as false</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

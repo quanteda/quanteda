@@ -91,7 +91,7 @@ returning a dfm with the combined documents or features, respectively." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.2</span>
       </span>
     </div>
 
@@ -222,10 +222,10 @@ returning a dfm with the combined documents or features, respectively.</p>
     </div>
 
     <pre class="usage"><span class='co'># S3 method for dfm</span>
-<span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span>(<span class='no'>...</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span>(<span class='kw'>...</span>)
 
 <span class='co'># S3 method for dfm</span>
-<span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>rbind</a></span>(<span class='no'>...</span>)</pre>
+<span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>rbind</a></span>(<span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -256,52 +256,64 @@ currently preserved.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># cbind() for dfm objects</span>
-(<span class='no'>dfmat1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"a b c d"</span>, <span class='st'>"c d e f"</span>)))</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (33.3% sparse).
+(<span class='kw'>dfmat1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"a b c d"</span>, <span class='st'>"c d e f"</span>)))
+</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (33.3% sparse).
 #&gt;        features
 #&gt; docs    a b c d e f
 #&gt;   text1 1 1 1 1 0 0
-#&gt;   text2 0 0 1 1 1 1</div><div class='input'>(<span class='no'>dfmat2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"a b"</span>, <span class='st'>"x y z"</span>)))</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 5 features (50.0% sparse).
+#&gt;   text2 0 0 1 1 1 1</div><div class='input'>(<span class='kw'>dfmat2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"a b"</span>, <span class='st'>"x y z"</span>)))
+</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 5 features (50.0% sparse).
 #&gt;        features
 #&gt; docs    a b x y z
 #&gt;   text1 1 1 0 0 0
-#&gt;   text2 0 0 1 1 1</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span>(<span class='no'>dfmat1</span>, <span class='no'>dfmat2</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: cbinding dfms with overlapping features</span></div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 11 features (40.9% sparse).
+#&gt;   text2 0 0 1 1 1</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span>(<span class='kw'>dfmat1</span>, <span class='kw'>dfmat2</span>)
+</div><div class='output co'>#&gt; <span class='warning'>Warning: cbinding dfms with overlapping features</span></div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 11 features (40.9% sparse).
 #&gt;        features
 #&gt; docs    a b c d e f a b x y
 #&gt;   text1 1 1 1 1 0 0 1 1 0 0
 #&gt;   text2 0 0 1 1 1 1 0 0 1 1
-#&gt; [ reached max_nfeat ... 1 more feature ]</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span>(<span class='no'>dfmat1</span>, <span class='fl'>100</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 7 features (28.6% sparse).
+#&gt; [ reached max_nfeat ... 1 more feature ]</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span>(<span class='kw'>dfmat1</span>, <span class='fl'>100</span>)
+</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 7 features (28.6% sparse).
 #&gt;        features
 #&gt; docs    a b c d e f feat1
 #&gt;   text1 1 1 1 1 0 0   100
-#&gt;   text2 0 0 1 1 1 1   100</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span>(<span class='fl'>100</span>, <span class='no'>dfmat1</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 7 features (28.6% sparse).
+#&gt;   text2 0 0 1 1 1 1   100</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span>(<span class='fl'>100</span>, <span class='kw'>dfmat1</span>)
+</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 7 features (28.6% sparse).
 #&gt;        features
 #&gt; docs    feat1 a b c d e f
 #&gt;   text1   100 1 1 1 1 0 0
-#&gt;   text2   100 0 0 1 1 1 1</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span>(<span class='no'>dfmat1</span>, <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>101</span>, <span class='fl'>102</span>), <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>1</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 7 features (28.6% sparse).
+#&gt;   text2   100 0 0 1 1 1 1</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span>(<span class='kw'>dfmat1</span>, <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>101</span>, <span class='fl'>102</span>), ncol = <span class='fl'>1</span>))
+</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 7 features (28.6% sparse).
 #&gt;        features
 #&gt; docs    a b c d e f feat1
 #&gt;   text1 1 1 1 1 0 0   101
-#&gt;   text2 0 0 1 1 1 1   102</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>101</span>, <span class='fl'>102</span>), <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>1</span>), <span class='no'>dfmat1</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 7 features (28.6% sparse).
+#&gt;   text2 0 0 1 1 1 1   102</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>101</span>, <span class='fl'>102</span>), ncol = <span class='fl'>1</span>), <span class='kw'>dfmat1</span>)
+</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 7 features (28.6% sparse).
 #&gt;        features
 #&gt; docs    feat1 a b c d e f
 #&gt;   text1   101 1 1 1 1 0 0
 #&gt;   text2   102 0 0 1 1 1 1</div><div class='input'>
 
 <span class='co'># rbind() for dfm objects</span>
-(<span class='no'>dfmat1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>doc1</span> <span class='kw'>=</span> <span class='st'>"This is one sample text sample."</span>)))</div><div class='output co'>#&gt; Document-feature matrix of: 1 document, 6 features (0.0% sparse).
+(<span class='kw'>dfmat1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(doc1 = <span class='st'>"This is one sample text sample."</span>)))
+</div><div class='output co'>#&gt; Document-feature matrix of: 1 document, 6 features (0.0% sparse).
 #&gt;       features
 #&gt; docs   this is one sample text .
-#&gt;   doc1    1  1   1      2    1 1</div><div class='input'>(<span class='no'>dfmat2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>doc2</span> <span class='kw'>=</span> <span class='st'>"One two three text text."</span>)))</div><div class='output co'>#&gt; Document-feature matrix of: 1 document, 5 features (0.0% sparse).
+#&gt;   doc1    1  1   1      2    1 1</div><div class='input'>(<span class='kw'>dfmat2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(doc2 = <span class='st'>"One two three text text."</span>)))
+</div><div class='output co'>#&gt; Document-feature matrix of: 1 document, 5 features (0.0% sparse).
 #&gt;       features
 #&gt; docs   one two three text .
-#&gt;   doc2   1   1     1    2 1</div><div class='input'>(<span class='no'>dfmat3</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>doc3</span> <span class='kw'>=</span> <span class='st'>"This is the fourth sample text."</span>)))</div><div class='output co'>#&gt; Document-feature matrix of: 1 document, 7 features (0.0% sparse).
+#&gt;   doc2   1   1     1    2 1</div><div class='input'>(<span class='kw'>dfmat3</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(doc3 = <span class='st'>"This is the fourth sample text."</span>)))
+</div><div class='output co'>#&gt; Document-feature matrix of: 1 document, 7 features (0.0% sparse).
 #&gt;       features
 #&gt; docs   this is the fourth sample text .
-#&gt;   doc3    1  1   1      1      1    1 1</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>rbind</a></span>(<span class='no'>dfmat1</span>, <span class='no'>dfmat2</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 8 features (31.2% sparse).
+#&gt;   doc3    1  1   1      1      1    1 1</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>rbind</a></span>(<span class='kw'>dfmat1</span>, <span class='kw'>dfmat2</span>)
+</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 8 features (31.2% sparse).
 #&gt;       features
 #&gt; docs   this is one sample text . two three
 #&gt;   doc1    1  1   1      2    1 1   0     0
-#&gt;   doc2    0  0   1      0    2 1   1     1</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>rbind</a></span>(<span class='no'>dfmat1</span>, <span class='no'>dfmat2</span>, <span class='no'>dfmat3</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 3 documents, 10 features (40.0% sparse).
+#&gt;   doc2    0  0   1      0    2 1   1     1</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>rbind</a></span>(<span class='kw'>dfmat1</span>, <span class='kw'>dfmat2</span>, <span class='kw'>dfmat3</span>)
+</div><div class='output co'>#&gt; Document-feature matrix of: 3 documents, 10 features (40.0% sparse).
 #&gt;       features
 #&gt; docs   this is one sample text . two three the fourth
 #&gt;   doc1    1  1   1      2    1 1   0     0   0      0
@@ -322,7 +334,7 @@ currently preserved.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

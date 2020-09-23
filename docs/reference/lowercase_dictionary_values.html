@@ -90,7 +90,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.2</span>
       </span>
     </div>
 
@@ -219,7 +219,7 @@
     <p>Internal function to lowercase dictionary values</p>
     </div>
 
-    <pre class="usage"><span class='fu'>lowercase_dictionary_values</span>(<span class='no'>dict</span>)</pre>
+    <pre class="usage"><span class='fu'>lowercase_dictionary_values</span>(<span class='kw'>dict</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -232,13 +232,14 @@
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>dict</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>KEY1</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>SUBKEY1</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"A"</span>, <span class='st'>"B"</span>),
-                          <span class='kw'>SUBKEY2</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"C"</span>, <span class='st'>"D"</span>)),
-              <span class='kw'>KEY2</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>SUBKEY3</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"E"</span>, <span class='st'>"F"</span>),
-                          <span class='kw'>SUBKEY4</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"G"</span>, <span class='st'>"F"</span>, <span class='st'>"I"</span>)),
-              <span class='kw'>KEY3</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>SUBKEY5</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>SUBKEY7</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"J"</span>, <span class='st'>"K"</span>)),
-                          <span class='kw'>SUBKEY6</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>SUBKEY8</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"L"</span>))))
-<span class='kw pkg'>quanteda</span><span class='kw ns'>:::</span><span class='fu'>lowercase_dictionary_values</span>(<span class='no'>dict</span>)</div><div class='output co'>#&gt; $KEY1
+    <pre class="examples"><div class='input'><span class='kw'>dict</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(KEY1 = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(SUBKEY1 = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"A"</span>, <span class='st'>"B"</span>),
+                          SUBKEY2 = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"C"</span>, <span class='st'>"D"</span>)),
+              KEY2 = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(SUBKEY3 = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"E"</span>, <span class='st'>"F"</span>),
+                          SUBKEY4 = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"G"</span>, <span class='st'>"F"</span>, <span class='st'>"I"</span>)),
+              KEY3 = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(SUBKEY5 = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(SUBKEY7 = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"J"</span>, <span class='st'>"K"</span>)),
+                          SUBKEY6 = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(SUBKEY8 = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"L"</span>))))
+<span class='kw'>quanteda</span>:::<span class='fu'>lowercase_dictionary_values</span>(<span class='kw'>dict</span>)
+</div><div class='output co'>#&gt; $KEY1
 #&gt; $KEY1$SUBKEY1
 #&gt; [1] "a" "b"
 #&gt; 
@@ -281,7 +282,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

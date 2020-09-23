@@ -92,7 +92,7 @@ in the same was as tokens(x, remove_hyphens = TRUE) would have done." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.2</span>
       </span>
     </div>
 
@@ -223,7 +223,7 @@ in the same was as tokens(x, remove_hyphens = TRUE) would have done." />
 in the same was as <code><a href='tokens.html'>tokens(x, remove_hyphens = TRUE)</a></code> would have done.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>dfm_split_hyphenated_features</span>(<span class='no'>x</span>)</pre>
+    <pre class="usage"><span class='fu'>dfm_split_hyphenated_features</span>(<span class='kw'>x</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -236,10 +236,12 @@ in the same was as <code><a href='tokens.html'>tokens(x, remove_hyphens = TRUE)<
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>(<span class='no'>dfmat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='st'>"One-two one two three."</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 1 document, 5 features (0.0% sparse).
+    <pre class="examples"><div class='input'>(<span class='kw'>dfmat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='st'>"One-two one two three."</span>))
+</div><div class='output co'>#&gt; Document-feature matrix of: 1 document, 5 features (0.0% sparse).
 #&gt;        features
 #&gt; docs    one-two one two three .
-#&gt;   text1       1   1   1     1 1</div><div class='input'><span class='kw pkg'>quanteda</span><span class='kw ns'>:::</span><span class='fu'>dfm_split_hyphenated_features</span>(<span class='no'>dfmat</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 1 document, 5 features (0.0% sparse).
+#&gt;   text1       1   1   1     1 1</div><div class='input'><span class='kw'>quanteda</span>:::<span class='fu'>dfm_split_hyphenated_features</span>(<span class='kw'>dfmat</span>)
+</div><div class='output co'>#&gt; Document-feature matrix of: 1 document, 5 features (0.0% sparse).
 #&gt;        features
 #&gt; docs    one two three . -
 #&gt;   text1   2   2     1 1 1</div></pre>
@@ -258,7 +260,7 @@ in the same was as <code><a href='tokens.html'>tokens(x, remove_hyphens = TRUE)<
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

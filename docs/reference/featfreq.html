@@ -91,7 +91,7 @@ across all documents in the dfm. This is equivalent to colSums(x)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.2</span>
       </span>
     </div>
 
@@ -221,7 +221,7 @@ across all documents in the dfm. This is equivalent to colSums(x)." />
 across all documents in the dfm. This is equivalent to <code><a href='https://rdrr.io/r/base/colSums.html'>colSums(x)</a></code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>featfreq</span>(<span class='no'>x</span>)</pre>
+    <pre class="usage"><span class='fu'>featfreq</span>(<span class='kw'>x</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -240,8 +240,9 @@ across all documents in the dfm. This is equivalent to <code><a href='https://rd
     <div class='dont-index'><p><code><a href='dfm_tfidf.html'>dfm_tfidf()</a></code>, <code><a href='dfm_weight.html'>dfm_weight()</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>dfmat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_char_sampletext</span>)
-<span class='fu'>featfreq</span>(<span class='no'>dfmat</span>)</div><div class='output co'>#&gt;       instead            we          have             a          fine 
+    <pre class="examples"><div class='input'><span class='kw'>dfmat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='kw'>data_char_sampletext</span>)
+<span class='fu'>featfreq</span>(<span class='kw'>dfmat</span>)
+</div><div class='output co'>#&gt;       instead            we          have             a          fine 
 #&gt;             1             5             1             4             1 
 #&gt;   gael-labour         party    government             ,        coming 
 #&gt;             1             1             4            16             1 
@@ -352,7 +353,7 @@ across all documents in the dfm. This is equivalent to <code><a href='https://rd
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

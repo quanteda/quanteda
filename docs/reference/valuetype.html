@@ -90,7 +90,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.2</span>
       </span>
     </div>
 
@@ -242,11 +242,11 @@ exact matching. See valuetype for details.</p></td>
 matching as the default, because this is simpler than regular expression
 matching while addressing most users' needs.  It is also has the advantage
 of being identical to fixed pattern matching when the wildcard characters
-(<code>*</code> and <code>?</code>) are not used. Finally, most <a href='dictionary.html'>dictionary</a> formats use glob
+(<code><a href='https://rdrr.io/r/base/Arithmetic.html'>*</a></code> and <code>?</code>) are not used. Finally, most <a href='dictionary.html'>dictionary</a> formats use glob
 matching.</p>
-<dl'>
+<dl>
 <dt><code>"glob"</code></dt><dd><p>"glob"-style wildcard expressions, the quanteda
-default. The implementation used in <span class="pkg">quanteda</span> uses <code>*</code> to match any
+default. The implementation used in <span class="pkg">quanteda</span> uses <code><a href='https://rdrr.io/r/base/Arithmetic.html'>*</a></code> to match any
 number of any characters including none, and <code>?</code> to match any single
 character.  See also <code><a href='https://rdrr.io/r/utils/glob2rx.html'>utils::glob2rx()</a></code> and References below.</p></dd>
 <dt><code>"regex"</code></dt><dd><p>Regular expression matching.</p></dd> <dt><code>"fixed"</code></dt><dd><p>Fixed
@@ -263,7 +263,7 @@ do not.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='https://rdrr.io/r/utils/glob2rx.html'>utils::glob2rx()</a></code>, <a href='https://en.wikipedia.org/wiki/Glob_(programming)'>glob pattern matching (Wikipedia)</a>,
-<code><a href='https://rdrr.io/pkg/stringi/man/stringi-search-regex.html'>stringi::stringi-search-regex()</a></code>, <code><a href='https://rdrr.io/pkg/stringi/man/stringi-search-fixed.html'>stringi::stringi-search-fixed()</a></code></p></div>
+<code><a href='https://rdrr.io/pkg/stringi/man/about_search_regex.html'>stringi::stringi-search-regex()</a></code>, <code><a href='https://rdrr.io/pkg/stringi/man/about_search_fixed.html'>stringi::stringi-search-fixed()</a></code></p></div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -280,7 +280,7 @@ do not.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

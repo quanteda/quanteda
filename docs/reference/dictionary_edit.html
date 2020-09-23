@@ -93,7 +93,7 @@ for instance in editing stopword lists." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.2</span>
       </span>
     </div>
 
@@ -225,11 +225,11 @@ for interactive editing of (lists of) character objects.  These can be useful
 for instance in editing stopword lists.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>dictionary_edit</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>dictionary_edit</span>(<span class='kw'>x</span>, <span class='kw'>...</span>)
 
-<span class='fu'>list_edit</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+<span class='fu'>list_edit</span>(<span class='kw'>x</span>, <span class='kw'>...</span>)
 
-<span class='fu'>char_edit</span>(<span class='no'>x</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>char_edit</span>(<span class='kw'>x</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -251,13 +251,14 @@ of editor)</p></td>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># edit the positive and negative entries from the LSD2015</span>
-<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='no'>my_posneg_dict</span> <span class='kw'>&lt;-</span> <span class='fu'>dictionary_edit</span>(<span class='no'>data_dictionary_LSD2015</span>[<span class='fl'>1</span>:<span class='fl'>2</span>])}
+<span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='kw'>my_posneg_dict</span> <span class='op'>&lt;-</span> <span class='fu'>dictionary_edit</span>(<span class='kw'>data_dictionary_LSD2015</span>[<span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span>])}
 
 <span class='co'># edit the system stopwords</span>
-<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='no'>my_stopwords</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/stopwords/man/stopwords.html'>stopwords</a></span>(<span class='st'>"en"</span>, <span class='kw'>source</span> <span class='kw'>=</span> <span class='st'>"snowball"</span>) <span class='kw'>%&gt;%</span>
-    <span class='fu'>char_edit</span>()}</div></pre>
+<span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='kw'>my_stopwords</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/stopwords/man/stopwords.html'>stopwords</a></span>(<span class='st'>"en"</span>, source = <span class='st'>"snowball"</span>) <span class='op'>%&gt;%</span>
+    <span class='fu'>char_edit</span>()}
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -273,7 +274,7 @@ of editor)</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

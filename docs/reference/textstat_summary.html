@@ -90,7 +90,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.2</span>
       </span>
     </div>
 
@@ -219,7 +219,7 @@
     <p>Count the total number of number tokens and sentences.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>textstat_summary</span>(<span class='no'>x</span>, <span class='kw'>cache</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>textstat_summary</span>(<span class='kw'>x</span>, cache = <span class='fl'>TRUE</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -230,8 +230,7 @@
     </tr>
     <tr>
       <th>cache</th>
-      <td><p>if <code>TRUE</code>, use internal cache from the second time. Not
-available on Solaris.</p></td>
+      <td><p>if <code>TRUE</code>, use internal cache from the second time.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -247,24 +246,21 @@ tokens such as numbers, punctuation marks, symbols, tags and emojis.</p><ul>
 <li><p>sents
 = number of sentences; equal <code><a href='ntoken.html'>ntoken(tokens(x), what = "sentence")</a></code></p></li>
 <li><p>tokens = number of tokens; equal to <code><a href='ntoken.html'>ntoken()</a></code></p></li>
-<li><p>types = number of unique
-tokens; equal to <code><a href='ntoken.html'>ntype()</a></code></p></li>
-<li><p>puncts = number of punctuation marks
-(<code>^\p{P}+$</code>)</p></li>
+<li><p>types = number of unique tokens; equal to <code><a href='ntoken.html'>ntype()</a></code></p></li>
+<li><p>puncts = number of punctuation marks (<code>^\p{P}+$</code>)</p></li>
 <li><p>numbers = number of numeric tokens
 (<code>^\p{Sc}{0,1}\p{N}+([.,]*\p{N})*\p{Sc}{0,1}$</code>)</p></li>
-<li><p>symbols = number of
-symbols (<code>^\p{S}$</code>)</p></li>
-<li><p>tags = number of tags; sum of <code>pattern_username</code>
-and <code>pattern_hashtag</code> in <code><a href='quanteda_options.html'>quanteda_options()</a></code></p></li>
-<li><p>emojis = number of emojis
-(<code>^\p{Emoji_Presentation}+$</code>)</p></li>
+<li><p>symbols = number of symbols (<code>^\p{S}$</code>)</p></li>
+<li><p>tags = number of tags; sum of <code>pattern_username</code> and <code>pattern_hashtag</code>
+in <code><a href='quanteda_options.html'>quanteda_options()</a></code></p></li>
+<li><p>emojis = number of emojis (<code>^\p{Emoji_Presentation}+$</code>)</p></li>
 </ul>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>corp</span> <span class='kw'>&lt;-</span> <span class='no'>data_corpus_inaugural</span>
-<span class='fu'>textstat_summary</span>(<span class='no'>corp</span>, <span class='kw'>cache</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt;           document chars sents tokens types puncts numbers symbols urls tags
+    <pre class="examples"><div class='input'><span class='kw'>corp</span> <span class='op'>&lt;-</span> <span class='kw'>data_corpus_inaugural</span>
+<span class='fu'>textstat_summary</span>(<span class='kw'>corp</span>, cache = <span class='fl'>TRUE</span>)
+</div><div class='output co'>#&gt;           document chars sents tokens types puncts numbers symbols urls tags
 #&gt; 1  1789-Washington  8619    23   1537   603    107       0       0    0    0
 #&gt; 2  1793-Washington   790     4    147    95     12       0       0    0    0
 #&gt; 3       1797-Adams 13877    37   2577   801    259       0       0    0    0
@@ -381,8 +377,9 @@ and <code>pattern_hashtag</code> in <code><a href='quanteda_options.html'>quante
 #&gt; 55      0
 #&gt; 56      0
 #&gt; 57      0
-#&gt; 58      0</div><div class='input'><span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='no'>corp</span>)
-<span class='fu'>textstat_summary</span>(<span class='no'>toks</span>, <span class='kw'>cache</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt;           document chars sents tokens types puncts numbers symbols urls tags
+#&gt; 58      0</div><div class='input'><span class='kw'>toks</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='kw'>corp</span>)
+<span class='fu'>textstat_summary</span>(<span class='kw'>toks</span>, cache = <span class='fl'>TRUE</span>)
+</div><div class='output co'>#&gt;           document chars sents tokens types puncts numbers symbols urls tags
 #&gt; 1  1789-Washington    NA    NA   1537   603    107       0       0    0    0
 #&gt; 2  1793-Washington    NA    NA    147    95     12       0       0    0    0
 #&gt; 3       1797-Adams    NA    NA   2577   801    259       0       0    0    0
@@ -499,8 +496,9 @@ and <code>pattern_hashtag</code> in <code><a href='quanteda_options.html'>quante
 #&gt; 55      0
 #&gt; 56      0
 #&gt; 57      0
-#&gt; 58      0</div><div class='input'><span class='no'>dfmat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>toks</span>)
-<span class='fu'>textstat_summary</span>(<span class='no'>dfmat</span>, <span class='kw'>cache</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt;           document chars sents tokens types puncts numbers symbols urls tags
+#&gt; 58      0</div><div class='input'><span class='kw'>dfmat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='kw'>toks</span>)
+<span class='fu'>textstat_summary</span>(<span class='kw'>dfmat</span>, cache = <span class='fl'>TRUE</span>)
+</div><div class='output co'>#&gt;           document chars sents tokens types puncts numbers symbols urls tags
 #&gt; 1  1789-Washington    NA    NA   1537   603    107       0       0    0    0
 #&gt; 2  1793-Washington    NA    NA    147    95     12       0       0    0    0
 #&gt; 3       1797-Adams    NA    NA   2577   801    259       0       0    0    0
@@ -633,7 +631,7 @@ and <code>pattern_hashtag</code> in <code><a href='quanteda_options.html'>quante
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

@@ -91,7 +91,7 @@ format." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.2</span>
       </span>
     </div>
 
@@ -221,12 +221,12 @@ format." />
 format.</p>
     </div>
 
-    <pre class="usage"><span class='no'>data_dictionary_LSD2015</span></pre>
+    <pre class="usage"><span class='kw'>data_dictionary_LSD2015</span></pre>
 
 
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
-    <p>A <a href='dictionary.html'>dictionary</a> of four keys containing glob-style <a href='valuetype.html'>pattern matches</a>.</p><dl'>
+    <p>A <a href='dictionary.html'>dictionary</a> of four keys containing glob-style <a href='valuetype.html'>pattern matches</a>.</p><dl>
 <dt><code>negative</code></dt><dd><p>2,858 word patterns indicating negative sentiment</p></dd>
 <dt><code>positive</code></dt><dd><p>1,709 word patterns indicating positive sentiment</p></dd>
 <dt><code>neg_positive</code></dt><dd><p>1,721 word patterns indicating a positive word preceded by a negation (used to convey negative sentiment)</p></dd>
@@ -248,7 +248,7 @@ words from the negative count.</p>
 <p>Young and Soroka (2012) also suggest the use of a pre-processing script to
 remove specific cases of some words (i.e., "good bye", or "nobody better",
 which should not be counted as positive). Pre-processing scripts are
-available at <a href='http://lexicoder.com'>http://lexicoder.com</a>.</p>
+available at <a href='http://www.snsoroka.com/data-lexicoder/'>http://www.snsoroka.com/data-lexicoder/</a>.</p>
     <h2 class="hasAnchor" id="license-and-conditions"><a class="anchor" href="#license-and-conditions"></a>License and Conditions</h2>
 
     
@@ -262,16 +262,17 @@ available at <a href='http://lexicoder.com'>http://lexicoder.com</a>.</p>
 in detail in Young and Soroka (2012). Please cite this article when using the
 Lexicoder Sentiment Dictionary and related resources.
 Young, L. &amp; Soroka, S. (2012). <em>Lexicoder Sentiment
-Dictionary</em>. Available at <a href='http://lexicoder.com'>http://lexicoder.com</a>.</p>
+Dictionary</em>. Available at <a href='http://www.snsoroka.com/data-lexicoder/'>http://www.snsoroka.com/data-lexicoder/</a>.</p>
 <p>Young, L. &amp; Soroka, S. (2012).
 <a href='https://doi.org/10.1080/10584609.2012.671234'>Affective News: The Automated Coding of Sentiment in Political Texts</a>.
 <em>Political Communication</em>, 29(2), 205--231.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># simple example</span>
-<span class='no'>txt</span> <span class='kw'>&lt;-</span> <span class='st'>"This aggressive policy will not win friends."</span>
+<span class='kw'>txt</span> <span class='op'>&lt;-</span> <span class='st'>"This aggressive policy will not win friends."</span>
 
-<span class='fu'><a href='tokens_lookup.html'>tokens_lookup</a></span>(<span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='no'>txt</span>), <span class='kw'>dictionary</span> <span class='kw'>=</span> <span class='no'>data_dictionary_LSD2015</span>, <span class='kw'>exclusive</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; Tokens consisting of 1 document.
+<span class='fu'><a href='tokens_lookup.html'>tokens_lookup</a></span>(<span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='kw'>txt</span>), dictionary = <span class='kw'>data_dictionary_LSD2015</span>, exclusive = <span class='fl'>FALSE</span>)
+</div><div class='output co'>#&gt; Tokens consisting of 1 document.
 #&gt; text1 :
 #&gt; [1] "This"         "NEGATIVE"     "policy"       "will"         "NEG_POSITIVE"
 #&gt; [6] "POSITIVE"     "POSITIVE"     "."           
@@ -281,8 +282,9 @@ Dictionary</em>. Available at <a href='http://lexicoder.com'>http://lexicoder.co
 
 <span class='co'># notice that double-counting of negated and non-negated terms is avoided </span>
 <span class='co'># when using nested_scope = "dictionary"</span>
-<span class='fu'><a href='tokens_lookup.html'>tokens_lookup</a></span>(<span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='no'>txt</span>), <span class='kw'>dictionary</span> <span class='kw'>=</span> <span class='no'>data_dictionary_LSD2015</span>,
-              <span class='kw'>exclusive</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>nested_scope</span> <span class='kw'>=</span> <span class='st'>"dictionary"</span>)</div><div class='output co'>#&gt; Tokens consisting of 1 document.
+<span class='fu'><a href='tokens_lookup.html'>tokens_lookup</a></span>(<span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='kw'>txt</span>), dictionary = <span class='kw'>data_dictionary_LSD2015</span>, 
+              exclusive = <span class='fl'>FALSE</span>, nested_scope = <span class='st'>"dictionary"</span>)
+</div><div class='output co'>#&gt; Tokens consisting of 1 document.
 #&gt; text1 :
 #&gt; [1] "This"         "NEGATIVE"     "policy"       "will"         "NEG_POSITIVE"
 #&gt; [6] "POSITIVE"     "."           
@@ -291,7 +293,8 @@ Dictionary</em>. Available at <a href='http://lexicoder.com'>http://lexicoder.co
 <span class='co'>## [1] "This"   "NEGATIVE"   "policy"   "will"   "NEG_POSITIVE" "POSITIVE."   </span>
 
 <span class='co'># on larger examples - notice that few negations are used</span>
-<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_char_ukimmig2010</span>[<span class='fl'>1</span>:<span class='fl'>5</span>], <span class='kw'>dictionary</span> <span class='kw'>=</span> <span class='no'>data_dictionary_LSD2015</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 4 features (45.0% sparse).
+<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='kw'>data_char_ukimmig2010</span>[<span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>], dictionary = <span class='kw'>data_dictionary_LSD2015</span>)
+</div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 4 features (45.0% sparse).
 #&gt;               features
 #&gt; docs           negative positive neg_positive neg_negative
 #&gt;   BNP               146      107            0            0
@@ -300,9 +303,10 @@ Dictionary</em>. Available at <a href='http://lexicoder.com'>http://lexicoder.co
 #&gt;   Greens             23       37            2            0
 #&gt;   Labour             14       31            0            0</div><div class='input'>
 <span class='co'># compound neg_negative and neg_positive tokens before creating a dfm object</span>
-<span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens_compound.html'>tokens_compound</a></span>(<span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='no'>txt</span>), <span class='no'>data_dictionary_LSD2015</span>)
+<span class='kw'>toks</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tokens_compound.html'>tokens_compound</a></span>(<span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='kw'>txt</span>), <span class='kw'>data_dictionary_LSD2015</span>)
 
-<span class='fu'><a href='dfm_lookup.html'>dfm_lookup</a></span>(<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>toks</span>), <span class='no'>data_dictionary_LSD2015</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 1 document, 4 features (25.0% sparse).
+<span class='fu'><a href='dfm_lookup.html'>dfm_lookup</a></span>(<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='kw'>toks</span>), <span class='kw'>data_dictionary_LSD2015</span>)
+</div><div class='output co'>#&gt; Document-feature matrix of: 1 document, 4 features (25.0% sparse).
 #&gt;        features
 #&gt; docs    negative positive neg_positive neg_negative
 #&gt;   text1        2        1            1            0</div></pre>
@@ -321,7 +325,7 @@ Dictionary</em>. Available at <a href='http://lexicoder.com'>http://lexicoder.co
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

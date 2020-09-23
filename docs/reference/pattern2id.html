@@ -99,7 +99,7 @@ sequential search. For example, a type &quot;cars&quot; is index by keys &quot;c
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.2</span>
       </span>
     </div>
 
@@ -238,22 +238,22 @@ sequential search. For example, a type "cars" is index by keys "cars",
     </div>
 
     <pre class="usage"><span class='fu'>pattern2id</span>(
-  <span class='no'>pattern</span>,
-  <span class='no'>types</span>,
-  <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"glob"</span>, <span class='st'>"fixed"</span>, <span class='st'>"regex"</span>),
-  <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>keep_nomatch</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+  <span class='kw'>pattern</span>,
+  <span class='kw'>types</span>,
+  valuetype = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"glob"</span>, <span class='st'>"fixed"</span>, <span class='st'>"regex"</span>),
+  case_insensitive = <span class='fl'>TRUE</span>,
+  keep_nomatch = <span class='fl'>FALSE</span>
 )
 
 <span class='fu'>pattern2fixed</span>(
-  <span class='no'>pattern</span>,
-  <span class='no'>types</span>,
-  <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"glob"</span>, <span class='st'>"fixed"</span>, <span class='st'>"regex"</span>),
-  <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>keep_nomatch</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+  <span class='kw'>pattern</span>,
+  <span class='kw'>types</span>,
+  valuetype = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"glob"</span>, <span class='st'>"fixed"</span>, <span class='st'>"regex"</span>),
+  case_insensitive = <span class='fl'>TRUE</span>,
+  keep_nomatch = <span class='fl'>FALSE</span>
 )
 
-<span class='fu'>index_types</span>(<span class='no'>types</span>, <span class='no'>valuetype</span>, <span class='no'>case_insensitive</span>, <span class='kw'>max_len</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+<span class='fu'>index_types</span>(<span class='kw'>types</span>, <span class='kw'>valuetype</span>, <span class='kw'>case_insensitive</span>, max_len = <span class='kw'>NULL</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -299,10 +299,11 @@ types</p>
 IDs with index keys as an attribute</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>types</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"A"</span>, <span class='st'>"AA"</span>, <span class='st'>"B"</span>, <span class='st'>"BB"</span>, <span class='st'>"BBB"</span>, <span class='st'>"C"</span>, <span class='st'>"CC"</span>)
+    <pre class="examples"><div class='input'><span class='kw'>types</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"A"</span>, <span class='st'>"AA"</span>, <span class='st'>"B"</span>, <span class='st'>"BB"</span>, <span class='st'>"BBB"</span>, <span class='st'>"C"</span>, <span class='st'>"CC"</span>)
 
-<span class='no'>pats_regex</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"^a$"</span>, <span class='st'>"^b"</span>), <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"c"</span>), <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"d"</span>))
-<span class='fu'>pattern2id</span>(<span class='no'>pats_regex</span>, <span class='no'>types</span>, <span class='st'>"regex"</span>, <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; [[1]]
+<span class='kw'>pats_regex</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"^a$"</span>, <span class='st'>"^b"</span>), <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"c"</span>), <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"d"</span>))
+<span class='fu'>pattern2id</span>(<span class='kw'>pats_regex</span>, <span class='kw'>types</span>, <span class='st'>"regex"</span>, case_insensitive = <span class='fl'>TRUE</span>)
+</div><div class='output co'>#&gt; [[1]]
 #&gt; [1] 1 3
 #&gt; 
 #&gt; [[2]]
@@ -317,8 +318,9 @@ IDs with index keys as an attribute</p>
 #&gt; [[5]]
 #&gt; [1] 7
 #&gt; </div><div class='input'>
-<span class='no'>pats_glob</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"a*"</span>, <span class='st'>"b*"</span>), <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"c"</span>), <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"d"</span>))
-<span class='fu'>pattern2id</span>(<span class='no'>pats_glob</span>, <span class='no'>types</span>, <span class='st'>"glob"</span>, <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; [[1]]
+<span class='kw'>pats_glob</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"a*"</span>, <span class='st'>"b*"</span>), <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"c"</span>), <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"d"</span>))
+<span class='fu'>pattern2id</span>(<span class='kw'>pats_glob</span>, <span class='kw'>types</span>, <span class='st'>"glob"</span>, case_insensitive = <span class='fl'>TRUE</span>)
+</div><div class='output co'>#&gt; [[1]]
 #&gt; [1] 1 3
 #&gt; 
 #&gt; [[2]]
@@ -339,9 +341,10 @@ IDs with index keys as an attribute</p>
 #&gt; [[7]]
 #&gt; [1] 6
 #&gt; </div><div class='input'>
-<span class='no'>pattern</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"^a$"</span>, <span class='st'>"^b"</span>), <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"c"</span>), <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"d"</span>))
-<span class='no'>types</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"A"</span>, <span class='st'>"AA"</span>, <span class='st'>"B"</span>, <span class='st'>"BB"</span>, <span class='st'>"BBB"</span>, <span class='st'>"C"</span>, <span class='st'>"CC"</span>)
-<span class='fu'>pattern2fixed</span>(<span class='no'>pattern</span>, <span class='no'>types</span>, <span class='st'>"regex"</span>, <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; [[1]]
+<span class='kw'>pattern</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"^a$"</span>, <span class='st'>"^b"</span>), <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"c"</span>), <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"d"</span>))
+<span class='kw'>types</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"A"</span>, <span class='st'>"AA"</span>, <span class='st'>"B"</span>, <span class='st'>"BB"</span>, <span class='st'>"BBB"</span>, <span class='st'>"C"</span>, <span class='st'>"CC"</span>)
+<span class='fu'>pattern2fixed</span>(<span class='kw'>pattern</span>, <span class='kw'>types</span>, <span class='st'>"regex"</span>, case_insensitive = <span class='fl'>TRUE</span>)
+</div><div class='output co'>#&gt; [[1]]
 #&gt; [1] "A" "B"
 #&gt; 
 #&gt; [[2]]
@@ -355,8 +358,9 @@ IDs with index keys as an attribute</p>
 #&gt; 
 #&gt; [[5]]
 #&gt; [1] "CC"
-#&gt; </div><div class='input'><span class='no'>index</span> <span class='kw'>&lt;-</span> <span class='fu'>index_types</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"xxx"</span>, <span class='st'>"yyyy"</span>, <span class='st'>"ZZZ"</span>), <span class='st'>"glob"</span>, <span class='fl'>FALSE</span>, <span class='fl'>3</span>)
-<span class='kw pkg'>quanteda</span><span class='kw ns'>:::</span><span class='fu'><a href='search_glob.html'>search_glob</a></span>(<span class='st'>"yy*"</span>, <span class='fu'><a href='https://rdrr.io/r/base/attr.html'>attr</a></span>(<span class='no'>index</span>, <span class='st'>"type_search"</span>), <span class='no'>index</span>)</div><div class='output co'>#&gt; [1] 2</div></pre>
+#&gt; </div><div class='input'><span class='kw'>index</span> <span class='op'>&lt;-</span> <span class='fu'>index_types</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"xxx"</span>, <span class='st'>"yyyy"</span>, <span class='st'>"ZZZ"</span>), <span class='st'>"glob"</span>, <span class='fl'>FALSE</span>, <span class='fl'>3</span>)
+<span class='kw'>quanteda</span>:::<span class='fu'><a href='search_glob.html'>search_glob</a></span>(<span class='st'>"yy*"</span>, <span class='fu'><a href='https://rdrr.io/r/base/attr.html'>attr</a></span>(<span class='kw'>index</span>, <span class='st'>"type_search"</span>), <span class='kw'>index</span>)
+</div><div class='output co'>#&gt; [1] 2</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -372,7 +376,7 @@ IDs with index keys as an attribute</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

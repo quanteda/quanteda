@@ -90,7 +90,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.2</span>
       </span>
     </div>
 
@@ -219,7 +219,7 @@
     <p>Get or set global options affecting functions across <span class="pkg">quanteda</span>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>quanteda_options</span>(<span class='no'>...</span>, <span class='kw'>reset</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>initialize</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>quanteda_options</span>(<span class='kw'>...</span>, reset = <span class='fl'>FALSE</span>, initialize = <span class='fl'>FALSE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -255,7 +255,7 @@ options are reset to their default values, and <code>TRUE</code> is returned
 invisibly.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Currently available options are:</p><dl'>
+    <p>Currently available options are:</p><dl>
 <dt><code>verbose</code></dt><dd><p>logical; if <code>TRUE</code> then use this as the default
 for all functions with a <code>verbose</code> argument</p></dd>
 <dt><code>threads</code></dt><dd><p>integer; specifies the number of threads to use in
@@ -285,7 +285,8 @@ tokenization and corpus reshaping. See <code><a href='https://rdrr.io/pkg/string
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>(<span class='no'>opt</span> <span class='kw'>&lt;-</span> <span class='fu'>quanteda_options</span>())</div><div class='output co'>#&gt; $threads
+    <pre class="examples"><div class='input'>(<span class='kw'>opt</span> <span class='op'>&lt;-</span> <span class='fu'>quanteda_options</span>())
+</div><div class='output co'>#&gt; $threads
 #&gt; [1] 2
 #&gt; 
 #&gt; $verbose
@@ -351,14 +352,16 @@ tokenization and corpus reshaping. See <code><a href='https://rdrr.io/pkg/string
 #&gt; $tokens_locale
 #&gt; [1] "en_US@ss=standard"
 #&gt; </div><div class='input'><span class='co'># \donttest{</span>
-<span class='fu'>quanteda_options</span>(<span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='fu'>quanteda_options</span>(<span class='st'>"verbose"</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-<span class='fu'>quanteda_options</span>(<span class='st'>"threads"</span>)</div><div class='output co'>#&gt; [1] 2</div><div class='input'><span class='fu'>quanteda_options</span>(<span class='kw'>print_dfm_max_ndoc</span> <span class='kw'>=</span> <span class='fl'>50L</span>)
+<span class='fu'>quanteda_options</span>(verbose = <span class='fl'>TRUE</span>)
+<span class='fu'>quanteda_options</span>(<span class='st'>"verbose"</span> = <span class='fl'>FALSE</span>)
+<span class='fu'>quanteda_options</span>(<span class='st'>"threads"</span>)
+</div><div class='output co'>#&gt; [1] 2</div><div class='input'><span class='fu'>quanteda_options</span>(print_dfm_max_ndoc = <span class='fl'>50L</span>)
 <span class='co'># reset to defaults</span>
-<span class='fu'>quanteda_options</span>(<span class='kw'>reset</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='fu'>quanteda_options</span>(reset = <span class='fl'>TRUE</span>)
 <span class='co'># reset to saved options</span>
-<span class='fu'>quanteda_options</span>(<span class='no'>opt</span>)
-<span class='co'># }</span></div></pre>
+<span class='fu'>quanteda_options</span>(<span class='kw'>opt</span>)
+<span class='co'># }</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -374,7 +377,7 @@ tokenization and corpus reshaping. See <code><a href='https://rdrr.io/pkg/string
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

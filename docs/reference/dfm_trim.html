@@ -99,7 +99,7 @@ frequencies, or as a quantile of all frequencies." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.2</span>
       </span>
     </div>
 
@@ -238,16 +238,16 @@ frequencies, or as a quantile of all frequencies.</p>
     </div>
 
     <pre class="usage"><span class='fu'>dfm_trim</span>(
-  <span class='no'>x</span>,
-  <span class='kw'>min_termfreq</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>max_termfreq</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>termfreq_type</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"count"</span>, <span class='st'>"prop"</span>, <span class='st'>"rank"</span>, <span class='st'>"quantile"</span>),
-  <span class='kw'>min_docfreq</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>max_docfreq</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>docfreq_type</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"count"</span>, <span class='st'>"prop"</span>, <span class='st'>"rank"</span>, <span class='st'>"quantile"</span>),
-  <span class='kw'>sparsity</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fu'><a href='quanteda_options.html'>quanteda_options</a></span>(<span class='st'>"verbose"</span>),
-  <span class='no'>...</span>
+  <span class='kw'>x</span>,
+  min_termfreq = <span class='kw'>NULL</span>,
+  max_termfreq = <span class='kw'>NULL</span>,
+  termfreq_type = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"count"</span>, <span class='st'>"prop"</span>, <span class='st'>"rank"</span>, <span class='st'>"quantile"</span>),
+  min_docfreq = <span class='kw'>NULL</span>,
+  max_docfreq = <span class='kw'>NULL</span>,
+  docfreq_type = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"count"</span>, <span class='st'>"prop"</span>, <span class='st'>"rank"</span>, <span class='st'>"quantile"</span>),
+  sparsity = <span class='kw'>NULL</span>,
+  verbose = <span class='fu'><a href='quanteda_options.html'>quanteda_options</a></span>(<span class='st'>"verbose"</span>),
+  <span class='kw'>...</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -318,7 +318,8 @@ removing features matching a stopword list, use <code><a href='dfm_select.html'>
     <div class='dont-index'><p><code><a href='dfm_select.html'>dfm_select()</a></code>, <code><a href='dfm_sample.html'>dfm_sample()</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>(<span class='no'>dfmat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_inaugural</span>[<span class='fl'>1</span>:<span class='fl'>5</span>]))</div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 1,948 features (69.5% sparse) and 4 docvars.
+    <pre class="examples"><div class='input'>(<span class='kw'>dfmat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='kw'>data_corpus_inaugural</span>[<span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>]))
+</div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 1,948 features (69.5% sparse) and 4 docvars.
 #&gt;                  features
 #&gt; docs              fellow-citizens  of the senate and house representatives :
 #&gt;   1789-Washington               1  71 116      1  48     2               2 1
@@ -335,7 +336,8 @@ removing features matching a stopword list, use <code><a href='dfm_select.html'>
 #&gt;   1805-Jefferson      7            0
 #&gt; [ reached max_nfeat ... 1,938 more features ]</div><div class='input'>
 <span class='co'># keep only words occurring &gt;= 10 times and in &gt;= 2 documents</span>
-<span class='fu'>dfm_trim</span>(<span class='no'>dfmat</span>, <span class='kw'>min_termfreq</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>min_docfreq</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 106 features (16.2% sparse) and 4 docvars.
+<span class='fu'>dfm_trim</span>(<span class='kw'>dfmat</span>, min_termfreq = <span class='fl'>10</span>, min_docfreq = <span class='fl'>2</span>)
+</div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 106 features (16.2% sparse) and 4 docvars.
 #&gt;                  features
 #&gt; docs               of the and among to no have me with than
 #&gt;   1789-Washington  71 116  48     1 48  8   12  8   17    6
@@ -345,7 +347,8 @@ removing features matching a stopword list, use <code><a href='dfm_select.html'>
 #&gt;   1805-Jefferson  101 143  93     7 83  7   24  8   28    2
 #&gt; [ reached max_nfeat ... 96 more features ]</div><div class='input'>
 <span class='co'># keep only words occurring &gt;= 10 times and in at least 0.4 of the documents</span>
-<span class='fu'>dfm_trim</span>(<span class='no'>dfmat</span>, <span class='kw'>min_termfreq</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>min_docfreq</span> <span class='kw'>=</span> <span class='fl'>0.4</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 106 features (16.2% sparse) and 4 docvars.
+<span class='fu'>dfm_trim</span>(<span class='kw'>dfmat</span>, min_termfreq = <span class='fl'>10</span>, min_docfreq = <span class='fl'>0.4</span>)
+</div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 106 features (16.2% sparse) and 4 docvars.
 #&gt;                  features
 #&gt; docs               of the and among to no have me with than
 #&gt;   1789-Washington  71 116  48     1 48  8   12  8   17    6
@@ -355,7 +358,8 @@ removing features matching a stopword list, use <code><a href='dfm_select.html'>
 #&gt;   1805-Jefferson  101 143  93     7 83  7   24  8   28    2
 #&gt; [ reached max_nfeat ... 96 more features ]</div><div class='input'>
 <span class='co'># keep only words occurring &lt;= 10 times and in &lt;=2 documents</span>
-<span class='fu'>dfm_trim</span>(<span class='no'>dfmat</span>, <span class='kw'>max_termfreq</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>max_docfreq</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 1,675 features (76.5% sparse) and 4 docvars.
+<span class='fu'>dfm_trim</span>(<span class='kw'>dfmat</span>, max_termfreq = <span class='fl'>10</span>, max_docfreq = <span class='fl'>2</span>)
+</div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 1,675 features (76.5% sparse) and 4 docvars.
 #&gt;                  features
 #&gt; docs              senate house representatives vicissitudes incident event
 #&gt;   1789-Washington      1     2               2            1        1     2
@@ -372,9 +376,11 @@ removing features matching a stopword list, use <code><a href='dfm_select.html'>
 #&gt;   1805-Jefferson       0       0         0            0
 #&gt; [ reached max_nfeat ... 1,665 more features ]</div><div class='input'>
 <span class='co'># keep only words occurring &lt;= 10 times and in at most 3/4 of the documents</span>
-<span class='fu'>dfm_trim</span>(<span class='no'>dfmat</span>, <span class='kw'>max_termfreq</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>max_docfreq</span> <span class='kw'>=</span> <span class='fl'>0.75</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 0 features and 4 docvars.</div><div class='input'>
+<span class='fu'>dfm_trim</span>(<span class='kw'>dfmat</span>, max_termfreq = <span class='fl'>10</span>, max_docfreq = <span class='fl'>0.75</span>)
+</div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 0 features and 4 docvars.</div><div class='input'>
 <span class='co'># keep only words occurring 5 times in 1000, and in 2 of 5 of documents</span>
-<span class='fu'>dfm_trim</span>(<span class='no'>dfmat</span>, <span class='kw'>min_docfreq</span> <span class='kw'>=</span> <span class='fl'>0.4</span>, <span class='kw'>min_termfreq</span> <span class='kw'>=</span> <span class='fl'>0.005</span>, <span class='kw'>termfreq_type</span> <span class='kw'>=</span> <span class='st'>"prop"</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 30 features (7.33% sparse) and 4 docvars.
+<span class='fu'>dfm_trim</span>(<span class='kw'>dfmat</span>, min_docfreq = <span class='fl'>0.4</span>, min_termfreq = <span class='fl'>0.005</span>, termfreq_type = <span class='st'>"prop"</span>)
+</div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 30 features (7.33% sparse) and 4 docvars.
 #&gt;                  features
 #&gt; docs               of the and to have with that which by   ,
 #&gt;   1789-Washington  71 116  48 48   12   17   18    36 20  70
@@ -384,7 +390,8 @@ removing features matching a stopword list, use <code><a href='dfm_select.html'>
 #&gt;   1805-Jefferson  101 143  93 83   24   28   37    23 22 142
 #&gt; [ reached max_nfeat ... 20 more features ]</div><div class='input'>
 <span class='co'># keep only words occurring frequently (top 20%) and in &lt;=2 documents</span>
-<span class='fu'>dfm_trim</span>(<span class='no'>dfmat</span>, <span class='kw'>min_termfreq</span> <span class='kw'>=</span> <span class='fl'>0.2</span>, <span class='kw'>max_docfreq</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>termfreq_type</span> <span class='kw'>=</span> <span class='st'>"quantile"</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 1,676 features (76.5% sparse) and 4 docvars.
+<span class='fu'>dfm_trim</span>(<span class='kw'>dfmat</span>, min_termfreq = <span class='fl'>0.2</span>, max_docfreq = <span class='fl'>2</span>, termfreq_type = <span class='st'>"quantile"</span>)
+</div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 1,676 features (76.5% sparse) and 4 docvars.
 #&gt;                  features
 #&gt; docs              senate house representatives vicissitudes incident event
 #&gt;   1789-Washington      1     2               2            1        1     2
@@ -400,13 +407,15 @@ removing features matching a stopword list, use <code><a href='dfm_select.html'>
 #&gt;   1801-Jefferson       0       1         0            0
 #&gt;   1805-Jefferson       0       0         0            0
 #&gt; [ reached max_nfeat ... 1,666 more features ]</div><div class='input'>
-<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='co'>if</span> (<span class='fl'>FALSE</span>) {
 <span class='co'># compare to removeSparseTerms from the tm package</span>
-(<span class='no'>dfmattm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='convert.html'>convert</a></span>(<span class='no'>dfmat</span>, <span class='st'>"tm"</span>))
-<span class='kw pkg'>tm</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/tm/man/removeSparseTerms.html'>removeSparseTerms</a></span>(<span class='no'>dfmattm</span>, <span class='fl'>0.7</span>)
-<span class='fu'>dfm_trim</span>(<span class='no'>dfmat</span>, <span class='kw'>min_docfreq</span> <span class='kw'>=</span> <span class='fl'>0.3</span>)
-<span class='fu'>dfm_trim</span>(<span class='no'>dfmat</span>, <span class='kw'>sparsity</span> <span class='kw'>=</span> <span class='fl'>0.7</span>)
-}</div></pre>
+(<span class='kw'>dfmattm</span> <span class='op'>&lt;-</span> <span class='fu'><a href='convert.html'>convert</a></span>(<span class='kw'>dfmat</span>, <span class='st'>"tm"</span>))
+<span class='kw'>tm</span>::<span class='fu'><a href='https://rdrr.io/pkg/tm/man/removeSparseTerms.html'>removeSparseTerms</a></span>(<span class='kw'>dfmattm</span>, <span class='fl'>0.7</span>)
+<span class='fu'>dfm_trim</span>(<span class='kw'>dfmat</span>, min_docfreq = <span class='fl'>0.3</span>)
+<span class='fu'>dfm_trim</span>(<span class='kw'>dfmat</span>, sparsity = <span class='fl'>0.7</span>)
+}
+
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -422,7 +431,7 @@ removing features matching a stopword list, use <code><a href='dfm_select.html'>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

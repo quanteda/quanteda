@@ -91,7 +91,7 @@ printing in print.dfm()." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.2</span>
       </span>
     </div>
 
@@ -221,7 +221,7 @@ printing in print.dfm()." />
 printing in <code>print.dfm()</code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>format_sparsity</span>(<span class='no'>x</span>, <span class='kw'>threshold</span> <span class='kw'>=</span> <span class='fl'>0.01</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>nsmall</span> <span class='kw'>=</span> <span class='fl'>1</span>)</pre>
+    <pre class="usage"><span class='fu'>format_sparsity</span>(<span class='kw'>x</span>, threshold = <span class='fl'>0.01</span>, digits = <span class='fl'>3</span>, nsmall = <span class='fl'>1</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -250,12 +250,13 @@ printed with an inequality</p></td>
     <p><code>character</code> value for inserting into the dfm print output</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>s</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>.9</span>, <span class='fl'>.99</span>, <span class='fl'>.999</span>, <span class='fl'>.9999</span>, <span class='fl'>.99999</span>,
-       <span class='fl'>.1</span>, <span class='fl'>.01</span>, <span class='fl'>.001</span>, <span class='fl'>.0001</span>, <span class='fl'>.000001</span>, <span class='fl'>.0000001</span>, <span class='fl'>.00000001</span>, <span class='fl'>.000000000001</span>,
-       <span class='fu'><a href='sparsity.html'>sparsity</a></span>(<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_inaugural</span>)),
+    <pre class="examples"><div class='input'><span class='kw'>s</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>.9</span>, <span class='fl'>.99</span>, <span class='fl'>.999</span>, <span class='fl'>.9999</span>, <span class='fl'>.99999</span>, 
+       <span class='fl'>.1</span>, <span class='fl'>.01</span>, <span class='fl'>.001</span>, <span class='fl'>.0001</span>, <span class='fl'>.000001</span>, <span class='fl'>.0000001</span>, <span class='fl'>.00000001</span>, <span class='fl'>.000000000001</span>, 
+       <span class='fu'><a href='sparsity.html'>sparsity</a></span>(<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='kw'>data_corpus_inaugural</span>)),
        <span class='fl'>.12312431242134</span>)
-<span class='kw'>for</span> (<span class='no'>i</span> <span class='kw'>in</span> <span class='no'>s</span>)
-    <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/format.html'>format</a></span>(<span class='no'>i</span>, <span class='kw'>width</span> <span class='kw'>=</span> <span class='fl'>10</span>),  <span class='st'>":  "</span>, <span class='kw pkg'>quanteda</span><span class='kw ns'>:::</span><span class='fu'>format_sparsity</span>(<span class='no'>i</span>)))</div><div class='output co'>#&gt; [1] "       0.9:   (90.0% sparse)"
+<span class='co'>for</span> (<span class='kw'>i</span> <span class='co'>in</span> <span class='kw'>s</span>) 
+    <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/format.html'>format</a></span>(<span class='kw'>i</span>, width = <span class='fl'>10</span>),  <span class='st'>":  "</span>, <span class='kw'>quanteda</span>:::<span class='fu'>format_sparsity</span>(<span class='kw'>i</span>)))
+</div><div class='output co'>#&gt; [1] "       0.9:   (90.0% sparse)"
 #&gt; [1] "      0.99:   (99.0% sparse)"
 #&gt; [1] "     0.999:   (99.9% sparse)"
 #&gt; [1] "    0.9999:   (99.99% sparse)"
@@ -269,7 +270,8 @@ printed with an inequality</p></td>
 #&gt; [1] "     1e-08:   (&lt;0.01% sparse)"
 #&gt; [1] "     1e-12:   (&lt;0.01% sparse)"
 #&gt; [1] " 0.9176429:   (91.8% sparse)"
-#&gt; [1] " 0.1231243:   (12.3% sparse)"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='fu'><a href='as.dfm.html'>as.dfm</a></span>(<span class='kw pkg'>Matrix</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/Matrix/man/rsparsematrix.html'>rsparsematrix</a></span>(<span class='fl'>1000</span>, <span class='fl'>1000</span>, <span class='kw'>density</span> <span class='kw'>=</span> <span class='fl'>0.9999</span>)))</div><div class='output co'>#&gt; Document-feature matrix of: 1,000 documents, 1,000 features (&lt;0.01% sparse).
+#&gt; [1] " 0.1231243:   (12.3% sparse)"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='fu'><a href='as.dfm.html'>as.dfm</a></span>(<span class='kw'>Matrix</span>::<span class='fu'><a href='https://rdrr.io/pkg/Matrix/man/rsparsematrix.html'>rsparsematrix</a></span>(<span class='fl'>1000</span>, <span class='fl'>1000</span>, density = <span class='fl'>0.9999</span>)))
+</div><div class='output co'>#&gt; Document-feature matrix of: 1,000 documents, 1,000 features (&lt;0.01% sparse).
 #&gt;        features
 #&gt; docs     feat1 feat2  feat3 feat4 feat5  feat6 feat7  feat8 feat9 feat10
 #&gt;   text1  0.093  1.30  0.031 -0.62  0.25 -1.800  0.18 -1.100  0.35   0.47
@@ -278,7 +280,8 @@ printed with an inequality</p></td>
 #&gt;   text4 -0.770  0.62  2.300  0.19 -1.10  0.630  0.29  0.570 -0.87   0.15
 #&gt;   text5 -2.800  1.00  0.470  0.19 -0.45 -0.650  1.80  0.033 -1.80   0.66
 #&gt;   text6 -0.920  0.36  0.930  0.48 -0.24  1.600  1.90  0.130 -0.86  -0.49
-#&gt; [ reached max_ndoc ... 994 more documents, reached max_nfeat ... 990 more features ]</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='fu'><a href='as.dfm.html'>as.dfm</a></span>(<span class='kw pkg'>Matrix</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/Matrix/man/rsparsematrix.html'>rsparsematrix</a></span>(<span class='fl'>10000</span>, <span class='fl'>10000</span>, <span class='kw'>density</span> <span class='kw'>=</span> <span class='fl'>0.00001</span>)))</div><div class='output co'>#&gt; Document-feature matrix of: 10,000 documents, 10,000 features (&gt;99.99% sparse).
+#&gt; [ reached max_ndoc ... 994 more documents, reached max_nfeat ... 990 more features ]</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='fu'><a href='as.dfm.html'>as.dfm</a></span>(<span class='kw'>Matrix</span>::<span class='fu'><a href='https://rdrr.io/pkg/Matrix/man/rsparsematrix.html'>rsparsematrix</a></span>(<span class='fl'>10000</span>, <span class='fl'>10000</span>, density = <span class='fl'>0.00001</span>)))
+</div><div class='output co'>#&gt; Document-feature matrix of: 10,000 documents, 10,000 features (&gt;99.99% sparse).
 #&gt;        features
 #&gt; docs    feat1 feat2 feat3 feat4 feat5 feat6 feat7 feat8 feat9 feat10
 #&gt;   text1     0     0     0     0     0     0     0     0     0      0
@@ -303,7 +306,7 @@ printed with an inequality</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

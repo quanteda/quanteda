@@ -92,7 +92,7 @@ using textstat_keyness()." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.2</span>
       </span>
     </div>
 
@@ -224,16 +224,16 @@ using <code><a href='textstat_keyness.html'>textstat_keyness()</a></code>.</p>
     </div>
 
     <pre class="usage"><span class='fu'>textplot_keyness</span>(
-  <span class='no'>x</span>,
-  <span class='kw'>show_reference</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>show_legend</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>20L</span>,
-  <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>2L</span>,
-  <span class='kw'>margin</span> <span class='kw'>=</span> <span class='fl'>0.05</span>,
-  <span class='kw'>color</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"darkblue"</span>, <span class='st'>"gray"</span>),
-  <span class='kw'>labelcolor</span> <span class='kw'>=</span> <span class='st'>"gray30"</span>,
-  <span class='kw'>labelsize</span> <span class='kw'>=</span> <span class='fl'>4</span>,
-  <span class='kw'>font</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
+  <span class='kw'>x</span>,
+  show_reference = <span class='fl'>TRUE</span>,
+  show_legend = <span class='fl'>TRUE</span>,
+  n = <span class='fl'>20L</span>,
+  min_count = <span class='fl'>2L</span>,
+  margin = <span class='fl'>0.05</span>,
+  color = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"darkblue"</span>, <span class='st'>"gray"</span>),
+  labelcolor = <span class='st'>"gray30"</span>,
+  labelsize = <span class='fl'>4</span>,
+  font = <span class='kw'>NULL</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -292,24 +292,29 @@ and reference categories, for a feature to be included in the plot</p></td>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='textstat_keyness.html'>textstat_keyness()</a></code></p></div>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Haiyan Wang and Kohei Watanabe</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># compare Trump speeches to other Presidents by chi^2</span>
-<span class='no'>dfmat1</span> <span class='kw'>&lt;-</span> <span class='no'>data_corpus_inaugural</span> <span class='kw'>%&gt;%</span>
-     <span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='no'>Year</span> <span class='kw'>&gt;</span> <span class='fl'>1980</span>) <span class='kw'>%&gt;%</span>
-     <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='kw'>groups</span> <span class='kw'>=</span> <span class='st'>"President"</span>, <span class='kw'>remove</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/stopwords/man/stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>), <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='no'>tstat1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='textstat_keyness.html'>textstat_keyness</a></span>(<span class='no'>dfmat1</span>, <span class='kw'>target</span> <span class='kw'>=</span> <span class='st'>"Trump"</span>)
-<span class='fu'>textplot_keyness</span>(<span class='no'>tstat1</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='fl'>0.2</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>10</span>)</div><div class='img'><img src='textplot_keyness-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='kw'>dfmat1</span> <span class='op'>&lt;-</span> <span class='kw'>data_corpus_inaugural</span> <span class='op'>%&gt;%</span>
+     <span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='kw'>Year</span> <span class='op'>&gt;</span> <span class='fl'>1980</span>) <span class='op'>%&gt;%</span>
+     <span class='fu'><a href='dfm.html'>dfm</a></span>(groups = <span class='st'>"President"</span>, remove = <span class='fu'><a href='https://rdrr.io/pkg/stopwords/man/stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>), remove_punct = <span class='fl'>TRUE</span>)
+<span class='kw'>tstat1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='textstat_keyness.html'>textstat_keyness</a></span>(<span class='kw'>dfmat1</span>, target = <span class='st'>"Trump"</span>)
+<span class='fu'>textplot_keyness</span>(<span class='kw'>tstat1</span>, margin = <span class='fl'>0.2</span>, n = <span class='fl'>10</span>)
+</div><div class='img'><img src='textplot_keyness-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># compare contemporary Democrats v. Republicans</span>
-<span class='no'>corp</span> <span class='kw'>&lt;-</span> <span class='no'>data_corpus_inaugural</span> <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='no'>Year</span> <span class='kw'>&gt;</span> <span class='fl'>1960</span>)
-<span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='no'>corp</span>, <span class='st'>"party"</span>) <span class='kw'>&lt;-</span>
-    <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span>(<span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='no'>corp</span>, <span class='st'>"President"</span>) <span class='kw'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Nixon"</span>, <span class='st'>"Reagan"</span>, <span class='st'>"Bush"</span>, <span class='st'>"Trump"</span>),
+<span class='kw'>corp</span> <span class='op'>&lt;-</span> <span class='kw'>data_corpus_inaugural</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='kw'>Year</span> <span class='op'>&gt;</span> <span class='fl'>1960</span>)
+<span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='kw'>corp</span>, <span class='st'>"party"</span>) <span class='op'>&lt;-</span>
+    <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span>(<span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='kw'>corp</span>, <span class='st'>"President"</span>) <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Nixon"</span>, <span class='st'>"Reagan"</span>, <span class='st'>"Bush"</span>, <span class='st'>"Trump"</span>),
            <span class='st'>"Republican"</span>, <span class='st'>"Democrat"</span>)
-<span class='no'>dfmat2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>corp</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='st'>"party"</span>, <span class='kw'>remove</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/stopwords/man/stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>),
-                <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='no'>tstat2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='textstat_keyness.html'>textstat_keyness</a></span>(<span class='no'>dfmat2</span>, <span class='kw'>target</span> <span class='kw'>=</span> <span class='st'>"Democrat"</span>, <span class='kw'>measure</span> <span class='kw'>=</span> <span class='st'>"lr"</span>)
-<span class='fu'>textplot_keyness</span>(<span class='no'>tstat2</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"blue"</span>, <span class='st'>"red"</span>), <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>10</span>)</div><div class='img'><img src='textplot_keyness-2.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='kw'>dfmat2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='kw'>corp</span>, groups = <span class='st'>"party"</span>, remove = <span class='fu'><a href='https://rdrr.io/pkg/stopwords/man/stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>),
+                remove_punct = <span class='fl'>TRUE</span>)
+<span class='kw'>tstat2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='textstat_keyness.html'>textstat_keyness</a></span>(<span class='kw'>dfmat2</span>, target = <span class='st'>"Democrat"</span>, measure = <span class='st'>"lr"</span>)
+<span class='fu'>textplot_keyness</span>(<span class='kw'>tstat2</span>, color = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"blue"</span>, <span class='st'>"red"</span>), n = <span class='fl'>10</span>)
+</div><div class='img'><img src='textplot_keyness-2.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -326,7 +331,7 @@ and reference categories, for a feature to be included in the plot</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

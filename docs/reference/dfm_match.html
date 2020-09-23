@@ -94,7 +94,7 @@ features but not found in x will be added with all zero counts." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.2</span>
       </span>
     </div>
 
@@ -227,7 +227,7 @@ not <code>features</code> will be discarded, and any feature names specified in
 <code>features</code> but not found in <code>x</code> will be added with all zero counts.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>dfm_match</span>(<span class='no'>x</span>, <span class='no'>features</span>)</pre>
+    <pre class="usage"><span class='fu'>dfm_match</span>(<span class='kw'>x</span>, <span class='kw'>features</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -264,10 +264,12 @@ case-sensitive matches.  For more flexible feature selection, see
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># matching a dfm to a feature vector</span>
-<span class='fu'>dfm_match</span>(<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='st'>""</span>), <span class='no'>letters</span>[<span class='fl'>1</span>:<span class='fl'>5</span>])</div><div class='output co'>#&gt; Document-feature matrix of: 1 document, 5 features (100.0% sparse).
+<span class='fu'>dfm_match</span>(<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='st'>""</span>), <span class='kw'>letters</span>[<span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>])
+</div><div class='output co'>#&gt; Document-feature matrix of: 1 document, 5 features (100.0% sparse).
 #&gt;        features
 #&gt; docs    a b c d e
-#&gt;   text1 0 0 0 0 0</div><div class='input'><span class='fu'>dfm_match</span>(<span class='no'>data_dfm_lbgexample</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"A"</span>, <span class='st'>"B"</span>, <span class='st'>"Z"</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 6 documents, 3 features (72.2% sparse).
+#&gt;   text1 0 0 0 0 0</div><div class='input'><span class='fu'>dfm_match</span>(<span class='kw'>data_dfm_lbgexample</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"A"</span>, <span class='st'>"B"</span>, <span class='st'>"Z"</span>))
+</div><div class='output co'>#&gt; Document-feature matrix of: 6 documents, 3 features (72.2% sparse).
 #&gt;     features
 #&gt; docs A B   Z
 #&gt;   R1 2 3   0
@@ -275,7 +277,8 @@ case-sensitive matches.  For more flexible feature selection, see
 #&gt;   R3 0 0   3
 #&gt;   R4 0 0 115
 #&gt;   R5 0 0  78
-#&gt;   V1 0 0   0</div><div class='input'><span class='fu'>dfm_match</span>(<span class='no'>data_dfm_lbgexample</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"B"</span>, <span class='st'>"newfeat1"</span>, <span class='st'>"A"</span>, <span class='st'>"newfeat2"</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 6 documents, 4 features (91.7% sparse).
+#&gt;   V1 0 0   0</div><div class='input'><span class='fu'>dfm_match</span>(<span class='kw'>data_dfm_lbgexample</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"B"</span>, <span class='st'>"newfeat1"</span>, <span class='st'>"A"</span>, <span class='st'>"newfeat2"</span>))
+</div><div class='output co'>#&gt; Document-feature matrix of: 6 documents, 4 features (91.7% sparse).
 #&gt;     features
 #&gt; docs B newfeat1 A newfeat2
 #&gt;   R1 3        0 2        0
@@ -285,20 +288,24 @@ case-sensitive matches.  For more flexible feature selection, see
 #&gt;   R5 0        0 0        0
 #&gt;   V1 0        0 0        0</div><div class='input'>
 <span class='co'># matching one dfm to another</span>
-<span class='no'>txt</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"This is text one"</span>, <span class='st'>"The second text"</span>, <span class='st'>"This is text three"</span>)
-(<span class='no'>dfmat1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>txt</span>[<span class='fl'>1</span>:<span class='fl'>2</span>]))</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (41.7% sparse).
+<span class='kw'>txt</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"This is text one"</span>, <span class='st'>"The second text"</span>, <span class='st'>"This is text three"</span>)
+(<span class='kw'>dfmat1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='kw'>txt</span>[<span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span>]))
+</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (41.7% sparse).
 #&gt;        features
 #&gt; docs    this is text one the second
 #&gt;   text1    1  1    1   1   0      0
-#&gt;   text2    0  0    1   0   1      1</div><div class='input'>(<span class='no'>dfmat2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>txt</span>[<span class='fl'>2</span>:<span class='fl'>3</span>]))</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (41.7% sparse).
+#&gt;   text2    0  0    1   0   1      1</div><div class='input'>(<span class='kw'>dfmat2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='kw'>txt</span>[<span class='fl'>2</span><span class='op'>:</span><span class='fl'>3</span>]))
+</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (41.7% sparse).
 #&gt;        features
 #&gt; docs    the second text this is three
 #&gt;   text1   1      1    1    0  0     0
-#&gt;   text2   0      0    1    1  1     1</div><div class='input'>(<span class='no'>dfmat3</span> <span class='kw'>&lt;-</span> <span class='fu'>dfm_match</span>(<span class='no'>dfmat1</span>, <span class='fu'><a href='featnames.html'>featnames</a></span>(<span class='no'>dfmat2</span>)))</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (50.0% sparse).
+#&gt;   text2   0      0    1    1  1     1</div><div class='input'>(<span class='kw'>dfmat3</span> <span class='op'>&lt;-</span> <span class='fu'>dfm_match</span>(<span class='kw'>dfmat1</span>, <span class='fu'><a href='featnames.html'>featnames</a></span>(<span class='kw'>dfmat2</span>)))
+</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (50.0% sparse).
 #&gt;        features
 #&gt; docs    the second text this is three
 #&gt;   text1   0      0    1    1  1     0
-#&gt;   text2   1      1    1    0  0     0</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/sets.html'>setequal</a></span>(<span class='fu'><a href='featnames.html'>featnames</a></span>(<span class='no'>dfmat2</span>), <span class='fu'><a href='featnames.html'>featnames</a></span>(<span class='no'>dfmat3</span>))</div><div class='output co'>#&gt; [1] TRUE</div></pre>
+#&gt;   text2   1      1    1    0  0     0</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/sets.html'>setequal</a></span>(<span class='fu'><a href='featnames.html'>featnames</a></span>(<span class='kw'>dfmat2</span>), <span class='fu'><a href='featnames.html'>featnames</a></span>(<span class='kw'>dfmat3</span>))
+</div><div class='output co'>#&gt; [1] TRUE</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -314,7 +321,7 @@ case-sensitive matches.  For more flexible feature selection, see
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

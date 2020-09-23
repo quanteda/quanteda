@@ -90,7 +90,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.2</span>
       </span>
     </div>
 
@@ -219,21 +219,21 @@
     <p>Sets or initializes system metadata for new objects.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>meta_system</span>(<span class='no'>x</span>, <span class='kw'>field</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+    <pre class="usage"><span class='fu'>meta_system</span>(<span class='kw'>x</span>, field = <span class='kw'>NULL</span>)
 
-<span class='fu'>meta_system</span>(<span class='no'>x</span>, <span class='kw'>field</span> <span class='kw'>=</span> <span class='kw'>NULL</span>) <span class='kw'>&lt;-</span> <span class='no'>value</span>
+<span class='fu'>meta_system</span>(<span class='kw'>x</span>, field = <span class='kw'>NULL</span>) <span class='op'>&lt;-</span> <span class='kw'>value</span>
 
 <span class='co'># S3 method for corpus</span>
-<span class='fu'>meta_system</span>(<span class='no'>x</span>, <span class='kw'>field</span> <span class='kw'>=</span> <span class='kw'>NULL</span>) <span class='kw'>&lt;-</span> <span class='no'>value</span>
+<span class='fu'>meta_system</span>(<span class='kw'>x</span>, field = <span class='kw'>NULL</span>) <span class='op'>&lt;-</span> <span class='kw'>value</span>
 
 <span class='co'># S3 method for tokens</span>
-<span class='fu'>meta_system</span>(<span class='no'>x</span>, <span class='kw'>field</span> <span class='kw'>=</span> <span class='kw'>NULL</span>) <span class='kw'>&lt;-</span> <span class='no'>value</span>
+<span class='fu'>meta_system</span>(<span class='kw'>x</span>, field = <span class='kw'>NULL</span>) <span class='op'>&lt;-</span> <span class='kw'>value</span>
 
 <span class='co'># S3 method for dfm</span>
-<span class='fu'>meta_system</span>(<span class='no'>x</span>, <span class='kw'>field</span> <span class='kw'>=</span> <span class='kw'>NULL</span>) <span class='kw'>&lt;-</span> <span class='no'>value</span>
+<span class='fu'>meta_system</span>(<span class='kw'>x</span>, field = <span class='kw'>NULL</span>) <span class='op'>&lt;-</span> <span class='kw'>value</span>
 
 <span class='co'># S3 method for dictionary</span>
-<span class='fu'>meta_system</span>(<span class='no'>x</span>, <span class='kw'>field</span> <span class='kw'>=</span> <span class='kw'>NULL</span>) <span class='kw'>&lt;-</span> <span class='no'>value</span>
+<span class='fu'>meta_system</span>(<span class='kw'>x</span>, field = <span class='kw'>NULL</span>) <span class='op'>&lt;-</span> <span class='kw'>value</span>
 
 <span class='fu'>meta_system_defaults</span>()</pre>
 
@@ -270,10 +270,11 @@ values, with the user setting the "source" value.  This should be used
 to set initial system meta information.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>corp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='corpus.html'>corpus</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>d1</span> <span class='kw'>=</span> <span class='st'>"one two three"</span>, <span class='kw'>d2</span> <span class='kw'>=</span> <span class='st'>"two three four"</span>))
+    <pre class="examples"><div class='input'><span class='kw'>corp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='corpus.html'>corpus</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(d1 = <span class='st'>"one two three"</span>, d2 = <span class='st'>"two three four"</span>))
 <span class='co'># quanteda:::`meta_system&lt;-`(corp, value = quanteda:::meta_system_defaults("example"))</span>
-<span class='kw pkg'>quanteda</span><span class='kw ns'>:::</span><span class='fu'>meta_system</span>(<span class='no'>corp</span>)</div><div class='output co'>#&gt; $`package-version`
-#&gt; [1] ‘2.1.1’
+<span class='kw'>quanteda</span>:::<span class='fu'>meta_system</span>(<span class='kw'>corp</span>)
+</div><div class='output co'>#&gt; $`package-version`
+#&gt; [1] ‘2.1.2’
 #&gt; 
 #&gt; $`r-version`
 #&gt; [1] ‘4.0.2’
@@ -286,7 +287,7 @@ to set initial system meta information.</p>
 #&gt; [1] "/Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/quanteda/docs/reference"
 #&gt; 
 #&gt; $created
-#&gt; [1] "2020-07-27"
+#&gt; [1] "2020-09-23"
 #&gt; </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -303,7 +304,7 @@ to set initial system meta information.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

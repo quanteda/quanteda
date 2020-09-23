@@ -89,7 +89,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.2</span>
       </span>
     </div>
 
@@ -325,7 +325,7 @@ rbind.dfm() also knits together dfms with different features, which can be usefu
 <li><p>added a corpus method for data.frame objects, so that a corpus can be constructed directly from a data.frame. Requires the addition of a <code>textField</code> argument (similar to textfile).</p></li>
 <li><p>added <code>compress.dfm()</code> to combine identically named columns or rows. <a href='https://github.com/quanteda/quanteda/issues/123'>#123</a></p></li>
 <li><p>Much better <code>phrasetotoken()</code>, with additional methods for all combinations of corpus/character v. dictionary/character/collocations.</p></li>
-<li><p>Added a<code>weight(x, type, ...</code>) signature where the second argument can be a named numeric vector of weights, not just a label for a type of weight. Thanks <a href="http://stackoverflow.com/questions/36815926/assigning-weights-to-different-features-in-r/36823475<a href='https://github.com/quanteda/quanteda/issues/36823475'>#36823475</a>" class="uri">http://stackoverflow.com/questions/36815926/assigning-weights-to-different-features-in-r/36823475<a href='https://github.com/quanteda/quanteda/issues/36823475'>#36823475</a></a>.</p></li>
+<li><p>Added a<code>weight(x, type, ...</code>) signature where the second argument can be a named numeric vector of weights, not just a label for a type of weight. Thanks <a href="https://stackoverflow.com/questions/36815926/assigning-weights-to-different-features-in-r/36823475<a href='https://github.com/quanteda/quanteda/issues/36823475'>#36823475</a>" class="uri">https://stackoverflow.com/questions/36815926/assigning-weights-to-different-features-in-r/36823475<a href='https://github.com/quanteda/quanteda/issues/36823475'>#36823475</a></a>.</p></li>
 <li><p><code>as.data.frame</code> for dfms now passes <code>...</code> to <code>as.data.frame.matrix</code>.</p></li>
 <li><p>Fixed bug in <code>predict.fitted_textmodel_NB()</code> that caused a failure with k &gt; 2 classes (<a href='https://github.com/quanteda/quanteda/issues/129'>#129</a>)</p></li>
 <li><p>Improved <code>dfm.tokenizedTexts()</code> performance by taking care of zero-token documents more efficiently.</p></li>
@@ -427,9 +427,9 @@ rbind.dfm() also knits together dfms with different features, which can be usefu
 <li>Fixed bug in textmodel_NB() for non-“uniform” priors (<a href='https://github.com/quanteda/quanteda/issues/241'>#241</a>)</li>
 </ul>
 </div>
-<div id="changes-4" class="section level2">
+<div id="changes-5" class="section level2">
 <h2 class="hasAnchor">
-<a href="#changes-4" class="anchor"></a>Changes</h2>
+<a href="#changes-5" class="anchor"></a>Changes</h2>
 <ul>
 <li>Added <code>warn = FALSE</code> to the <code><a href="https://rdrr.io/r/base/readLines.html">readLines()</a></code> calls in <code>textfile()</code>, so that no warnings are issued when files are read that are missing a final EOL or that contain embedded nuls.</li>
 <li>
@@ -455,7 +455,7 @@ rbind.dfm() also knits together dfms with different features, which can be usefu
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

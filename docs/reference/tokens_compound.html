@@ -94,7 +94,7 @@ subsequently as single tokens, for instance in constructing a dfm." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.2</span>
       </span>
     </div>
 
@@ -228,13 +228,13 @@ subsequently as single tokens, for instance in constructing a <a href='dfm.html'
     </div>
 
     <pre class="usage"><span class='fu'>tokens_compound</span>(
-  <span class='no'>x</span>,
-  <span class='no'>pattern</span>,
-  <span class='kw'>concatenator</span> <span class='kw'>=</span> <span class='st'>"_"</span>,
-  <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"glob"</span>, <span class='st'>"regex"</span>, <span class='st'>"fixed"</span>),
-  <span class='kw'>window</span> <span class='kw'>=</span> <span class='fl'>0</span>,
-  <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>join</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+  <span class='kw'>x</span>,
+  <span class='kw'>pattern</span>,
+  concatenator = <span class='st'>"_"</span>,
+  valuetype = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"glob"</span>, <span class='st'>"regex"</span>, <span class='st'>"fixed"</span>),
+  window = <span class='fl'>0</span>,
+  case_insensitive = <span class='fl'>TRUE</span>,
+  join = <span class='fl'>TRUE</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -300,68 +300,78 @@ list element is the sequence of character elements.</p>
 <p>See the examples below.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>txt</span> <span class='kw'>&lt;-</span> <span class='st'>"The United Kingdom is leaving the European Union."</span>
-<span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='no'>txt</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+    <pre class="examples"><div class='input'><span class='kw'>txt</span> <span class='op'>&lt;-</span> <span class='st'>"The United Kingdom is leaving the European Union."</span>
+<span class='kw'>toks</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='kw'>txt</span>, remove_punct = <span class='fl'>TRUE</span>)
 
 <span class='co'># character vector - not compounded</span>
-<span class='fu'>tokens_compound</span>(<span class='no'>toks</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"United"</span>, <span class='st'>"Kingdom"</span>, <span class='st'>"European"</span>, <span class='st'>"Union"</span>))</div><div class='output co'>#&gt; Tokens consisting of 1 document.
+<span class='fu'>tokens_compound</span>(<span class='kw'>toks</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"United"</span>, <span class='st'>"Kingdom"</span>, <span class='st'>"European"</span>, <span class='st'>"Union"</span>))
+</div><div class='output co'>#&gt; Tokens consisting of 1 document.
 #&gt; text1 :
 #&gt; [1] "The"      "United"   "Kingdom"  "is"       "leaving"  "the"      "European"
 #&gt; [8] "Union"   
 #&gt; </div><div class='input'>
 <span class='co'># elements separated by spaces - not compounded</span>
-<span class='fu'>tokens_compound</span>(<span class='no'>toks</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"United Kingdom"</span>, <span class='st'>"European Union"</span>))</div><div class='output co'>#&gt; Tokens consisting of 1 document.
+<span class='fu'>tokens_compound</span>(<span class='kw'>toks</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"United Kingdom"</span>, <span class='st'>"European Union"</span>))
+</div><div class='output co'>#&gt; Tokens consisting of 1 document.
 #&gt; text1 :
 #&gt; [1] "The"      "United"   "Kingdom"  "is"       "leaving"  "the"      "European"
 #&gt; [8] "Union"   
 #&gt; </div><div class='input'>
 <span class='co'># list of characters - is compounded</span>
-<span class='fu'>tokens_compound</span>(<span class='no'>toks</span>, <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"United"</span>, <span class='st'>"Kingdom"</span>), <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"European"</span>, <span class='st'>"Union"</span>)))</div><div class='output co'>#&gt; Tokens consisting of 1 document.
+<span class='fu'>tokens_compound</span>(<span class='kw'>toks</span>, <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"United"</span>, <span class='st'>"Kingdom"</span>), <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"European"</span>, <span class='st'>"Union"</span>)))
+</div><div class='output co'>#&gt; Tokens consisting of 1 document.
 #&gt; text1 :
 #&gt; [1] "The"            "United_Kingdom" "is"             "leaving"       
 #&gt; [5] "the"            "European_Union"
 #&gt; </div><div class='input'>
 <span class='co'># elements separated by spaces, wrapped in phrase)() - is compounded</span>
-<span class='fu'>tokens_compound</span>(<span class='no'>toks</span>, <span class='fu'><a href='phrase.html'>phrase</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"United Kingdom"</span>, <span class='st'>"European Union"</span>)))</div><div class='output co'>#&gt; Tokens consisting of 1 document.
+<span class='fu'>tokens_compound</span>(<span class='kw'>toks</span>, <span class='fu'><a href='phrase.html'>phrase</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"United Kingdom"</span>, <span class='st'>"European Union"</span>)))
+</div><div class='output co'>#&gt; Tokens consisting of 1 document.
 #&gt; text1 :
 #&gt; [1] "The"            "United_Kingdom" "is"             "leaving"       
 #&gt; [5] "the"            "European_Union"
 #&gt; </div><div class='input'>
 <span class='co'># supplied as values in a dictionary (same as list) - is compounded</span>
 <span class='co'># (keys do not matter)</span>
-<span class='fu'>tokens_compound</span>(<span class='no'>toks</span>, <span class='fu'><a href='dictionary.html'>dictionary</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>key1</span> <span class='kw'>=</span> <span class='st'>"United Kingdom"</span>,
-                                      <span class='kw'>key2</span> <span class='kw'>=</span> <span class='st'>"European Union"</span>)))</div><div class='output co'>#&gt; Tokens consisting of 1 document.
+<span class='fu'>tokens_compound</span>(<span class='kw'>toks</span>, <span class='fu'><a href='dictionary.html'>dictionary</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(key1 = <span class='st'>"United Kingdom"</span>,
+                                      key2 = <span class='st'>"European Union"</span>)))
+</div><div class='output co'>#&gt; Tokens consisting of 1 document.
 #&gt; text1 :
 #&gt; [1] "The"            "United_Kingdom" "is"             "leaving"       
 #&gt; [5] "the"            "European_Union"
 #&gt; </div><div class='input'><span class='co'># pattern as dictionaries with glob matches</span>
-<span class='fu'>tokens_compound</span>(<span class='no'>toks</span>, <span class='fu'><a href='dictionary.html'>dictionary</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>key1</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"U* K*"</span>))), <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"glob"</span>)</div><div class='output co'>#&gt; Tokens consisting of 1 document.
+<span class='fu'>tokens_compound</span>(<span class='kw'>toks</span>, <span class='fu'><a href='dictionary.html'>dictionary</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(key1 = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"U* K*"</span>))), valuetype = <span class='st'>"glob"</span>)
+</div><div class='output co'>#&gt; Tokens consisting of 1 document.
 #&gt; text1 :
 #&gt; [1] "The"            "United_Kingdom" "is"             "leaving"       
 #&gt; [5] "the"            "European"       "Union"         
 #&gt; </div><div class='input'>
 <span class='co'># supplied as collocations - is compounded</span>
-<span class='no'>colls</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='st'>"The new European Union is not the old European Union."</span>) <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='textstat_collocations.html'>textstat_collocations</a></span>(<span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>min_count</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>tolower</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-<span class='fu'>tokens_compound</span>(<span class='no'>toks</span>, <span class='no'>colls</span>, <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; Tokens consisting of 1 document.
+<span class='kw'>colls</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='st'>"The new European Union is not the old European Union."</span>) <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='textstat_collocations.html'>textstat_collocations</a></span>(size = <span class='fl'>2</span>, min_count = <span class='fl'>1</span>, tolower = <span class='fl'>FALSE</span>)
+<span class='fu'>tokens_compound</span>(<span class='kw'>toks</span>, <span class='kw'>colls</span>, case_insensitive = <span class='fl'>FALSE</span>)
+</div><div class='output co'>#&gt; Tokens consisting of 1 document.
 #&gt; text1 :
 #&gt; [1] "The"            "United"         "Kingdom"        "is"            
 #&gt; [5] "leaving"        "the"            "European_Union"
 #&gt; </div><div class='input'>
 <span class='co'># note the differences caused by join = FALSE</span>
-<span class='no'>compounds</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"the"</span>, <span class='st'>"European"</span>), <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"European"</span>, <span class='st'>"Union"</span>))
-<span class='fu'>tokens_compound</span>(<span class='no'>toks</span>, <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='no'>compounds</span>, <span class='kw'>join</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; Tokens consisting of 1 document.
+<span class='kw'>compounds</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"the"</span>, <span class='st'>"European"</span>), <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"European"</span>, <span class='st'>"Union"</span>))
+<span class='fu'>tokens_compound</span>(<span class='kw'>toks</span>, pattern = <span class='kw'>compounds</span>, join = <span class='fl'>TRUE</span>)
+</div><div class='output co'>#&gt; Tokens consisting of 1 document.
 #&gt; text1 :
 #&gt; [1] "The"                "United"             "Kingdom"           
 #&gt; [4] "is"                 "leaving"            "the_European_Union"
-#&gt; </div><div class='input'><span class='fu'>tokens_compound</span>(<span class='no'>toks</span>, <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='no'>compounds</span>, <span class='kw'>join</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; Tokens consisting of 1 document.
+#&gt; </div><div class='input'><span class='fu'>tokens_compound</span>(<span class='kw'>toks</span>, pattern = <span class='kw'>compounds</span>, join = <span class='fl'>FALSE</span>)
+</div><div class='output co'>#&gt; Tokens consisting of 1 document.
 #&gt; text1 :
 #&gt; [1] "The"            "United"         "Kingdom"        "is"            
 #&gt; [5] "leaving"        "the_European"   "European_Union"
 #&gt; </div><div class='input'>
 <span class='co'># use window to form ngrams</span>
-<span class='fu'><a href='tokens_select.html'>tokens_remove</a></span>(<span class='no'>toks</span>, <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/stopwords/man/stopwords.html'>stopwords</a></span>(<span class='st'>"en"</span>)) <span class='kw'>%&gt;%</span>
-    <span class='fu'>tokens_compound</span>(<span class='kw'>pattern</span> <span class='kw'>=</span> <span class='st'>"leav*"</span>, <span class='kw'>join</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>window</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>3</span>))</div><div class='output co'>#&gt; Tokens consisting of 1 document.
+<span class='fu'><a href='tokens_select.html'>tokens_remove</a></span>(<span class='kw'>toks</span>, pattern = <span class='fu'><a href='https://rdrr.io/pkg/stopwords/man/stopwords.html'>stopwords</a></span>(<span class='st'>"en"</span>)) <span class='op'>%&gt;%</span>
+    <span class='fu'>tokens_compound</span>(pattern = <span class='st'>"leav*"</span>, join = <span class='fl'>FALSE</span>, window = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>3</span>))
+</div><div class='output co'>#&gt; Tokens consisting of 1 document.
 #&gt; text1 :
 #&gt; [1] "United"                 "Kingdom"                "leaving_European_Union"
 #&gt; </div><div class='input'>
@@ -381,7 +391,7 @@ list element is the sequence of character elements.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

@@ -90,7 +90,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.2</span>
       </span>
     </div>
 
@@ -219,7 +219,7 @@
     <p>Create an array of resampled dfms.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>bootstrap_dfm</span>(<span class='no'>x</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='no'>...</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fu'><a href='quanteda_options.html'>quanteda_options</a></span>(<span class='st'>"verbose"</span>))</pre>
+    <pre class="usage"><span class='fu'>bootstrap_dfm</span>(<span class='kw'>x</span>, n = <span class='fl'>10</span>, <span class='kw'>...</span>, verbose = <span class='fu'><a href='quanteda_options.html'>quanteda_options</a></span>(<span class='st'>"verbose"</span>))</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -254,13 +254,17 @@ resampling sentences (with replacement) from each document, recombining
 these into new "documents" and computing a dfm for each. Resampling of
 sentences is done strictly within document, so that every resampled
 document will contain at least some of its original tokens.</p>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Kenneth Benoit</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># bootstrapping from the original text</span>
 <span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span>(<span class='fl'>10</span>)
-<span class='no'>txt</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>textone</span> <span class='kw'>=</span> <span class='st'>"This is a sentence.  Another sentence.  Yet another."</span>,
-         <span class='kw'>texttwo</span> <span class='kw'>=</span> <span class='st'>"Premiere phrase.  Deuxieme phrase."</span>)
-<span class='fu'>bootstrap_dfm</span>(<span class='no'>txt</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>Segmenting the tryCatchList into sentences...</span></div><div class='output co'>#&gt; <span class='message'>done.</span></div><div class='output co'>#&gt; <span class='message'>Bootstrapping the sentences to create multiple dfm objects...</span></div><div class='output co'>#&gt; <span class='message'>   ...resampling and forming dfms: 0</span></div><div class='output co'>#&gt; <span class='message'>, 1</span></div><div class='output co'>#&gt; <span class='message'>, 2</span></div><div class='output co'>#&gt; <span class='message'>, 3</span></div><div class='output co'>#&gt; <span class='message'></span>
+<span class='kw'>txt</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(textone = <span class='st'>"This is a sentence.  Another sentence.  Yet another."</span>,
+         texttwo = <span class='st'>"Premiere phrase.  Deuxieme phrase."</span>)
+<span class='fu'>bootstrap_dfm</span>(<span class='kw'>txt</span>, n = <span class='fl'>3</span>, verbose = <span class='fl'>TRUE</span>)
+</div><div class='output co'>#&gt; <span class='message'>Segmenting the tryCatchList into sentences...</span></div><div class='output co'>#&gt; <span class='message'>done.</span></div><div class='output co'>#&gt; <span class='message'>Bootstrapping the sentences to create multiple dfm objects...</span></div><div class='output co'>#&gt; <span class='message'>   ...resampling and forming dfms: 0</span></div><div class='output co'>#&gt; <span class='message'>, 1</span></div><div class='output co'>#&gt; <span class='message'>, 2</span></div><div class='output co'>#&gt; <span class='message'>, 3</span></div><div class='output co'>#&gt; <span class='message'></span>
 #&gt; <span class='message'>   ...complete.</span></div><div class='output co'>#&gt; $dfm_0
 #&gt; Document-feature matrix of: 2 documents, 10 features (45.0% sparse).
 #&gt;          features
@@ -307,7 +311,7 @@ document will contain at least some of its original tokens.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

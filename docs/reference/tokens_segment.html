@@ -94,7 +94,7 @@ provides the option to perform this operation on tokens." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.2</span>
       </span>
     </div>
 
@@ -228,13 +228,13 @@ provides the option to perform this operation on tokens.</p>
     </div>
 
     <pre class="usage"><span class='fu'>tokens_segment</span>(
-  <span class='no'>x</span>,
-  <span class='no'>pattern</span>,
-  <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"glob"</span>, <span class='st'>"regex"</span>, <span class='st'>"fixed"</span>),
-  <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>extract_pattern</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>pattern_position</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"before"</span>, <span class='st'>"after"</span>),
-  <span class='kw'>use_docvars</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+  <span class='kw'>x</span>,
+  <span class='kw'>pattern</span>,
+  valuetype = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"glob"</span>, <span class='st'>"regex"</span>, <span class='st'>"fixed"</span>),
+  case_insensitive = <span class='fl'>TRUE</span>,
+  extract_pattern = <span class='fl'>FALSE</span>,
+  pattern_position = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"before"</span>, <span class='st'>"after"</span>),
+  use_docvars = <span class='fl'>TRUE</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -287,16 +287,17 @@ are not desired for the segmented corpus.</p></td>
 have been split by patterns</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>txts</span> <span class='kw'>&lt;-</span> <span class='st'>"Fellow citizens, I am again called upon by the voice of my country to
+    <pre class="examples"><div class='input'><span class='kw'>txts</span> <span class='op'>&lt;-</span> <span class='st'>"Fellow citizens, I am again called upon by the voice of my country to
 execute the functions of its Chief Magistrate. When the occasion proper for
 it shall arrive, I shall endeavor to express the high sense I entertain of
 this distinguished honor."</span>
-<span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='no'>txts</span>)
+<span class='kw'>toks</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='kw'>txts</span>)
 
 <span class='co'># split by any punctuation</span>
-<span class='fu'>tokens_segment</span>(<span class='no'>toks</span>, <span class='st'>"^\\p{Sterm}$"</span>, <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"regex"</span>,
-               <span class='kw'>extract_pattern</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-               <span class='kw'>pattern_position</span> <span class='kw'>=</span> <span class='st'>"after"</span>)</div><div class='output co'>#&gt; Tokens consisting of 2 documents and 1 docvar.
+<span class='fu'>tokens_segment</span>(<span class='kw'>toks</span>, <span class='st'>"^\\p{Sterm}$"</span>, valuetype = <span class='st'>"regex"</span>,
+               extract_pattern = <span class='fl'>TRUE</span>,
+               pattern_position = <span class='st'>"after"</span>)
+</div><div class='output co'>#&gt; Tokens consisting of 2 documents and 1 docvar.
 #&gt; text1.1 :
 #&gt;  [1] "Fellow"   "citizens" ","        "I"        "am"       "again"   
 #&gt;  [7] "called"   "upon"     "by"       "the"      "voice"    "of"      
@@ -306,9 +307,10 @@ this distinguished honor."</span>
 #&gt;  [1] "When"     "the"      "occasion" "proper"   "for"      "it"      
 #&gt;  [7] "shall"    "arrive"   ","        "I"        "shall"    "endeavor"
 #&gt; [ ... and 11 more ]
-#&gt; </div><div class='input'><span class='fu'>tokens_segment</span>(<span class='no'>toks</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"."</span>, <span class='st'>"?"</span>, <span class='st'>"!"</span>), <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='st'>"fixed"</span>,
-               <span class='kw'>extract_pattern</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-               <span class='kw'>pattern_position</span> <span class='kw'>=</span> <span class='st'>"after"</span>)</div><div class='output co'>#&gt; Tokens consisting of 2 documents and 1 docvar.
+#&gt; </div><div class='input'><span class='fu'>tokens_segment</span>(<span class='kw'>toks</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"."</span>, <span class='st'>"?"</span>, <span class='st'>"!"</span>), valuetype = <span class='st'>"fixed"</span>,
+               extract_pattern = <span class='fl'>TRUE</span>,
+               pattern_position = <span class='st'>"after"</span>)
+</div><div class='output co'>#&gt; Tokens consisting of 2 documents and 1 docvar.
 #&gt; text1.1 :
 #&gt;  [1] "Fellow"   "citizens" ","        "I"        "am"       "again"   
 #&gt;  [7] "called"   "upon"     "by"       "the"      "voice"    "of"      
@@ -334,7 +336,7 @@ this distinguished honor."</span>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

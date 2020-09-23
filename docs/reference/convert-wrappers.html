@@ -93,7 +93,7 @@ are converting." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.2</span>
       </span>
     </div>
 
@@ -225,27 +225,27 @@ similar in syntax to analogous commands in the packages to whose format they
 are converting.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>as.wfm</span>(<span class='no'>x</span>)
+    <pre class="usage"><span class='fu'>as.wfm</span>(<span class='kw'>x</span>)
 
 <span class='co'># S3 method for dfm</span>
-<span class='fu'>as.wfm</span>(<span class='no'>x</span>)
+<span class='fu'>as.wfm</span>(<span class='kw'>x</span>)
 
-<span class='fu'>as.DocumentTermMatrix</span>(<span class='no'>x</span>)
+<span class='fu'>as.DocumentTermMatrix</span>(<span class='kw'>x</span>)
 
 <span class='co'># S3 method for dfm</span>
-<span class='fu'>as.DocumentTermMatrix</span>(<span class='no'>x</span>)
+<span class='fu'>as.DocumentTermMatrix</span>(<span class='kw'>x</span>)
 
-<span class='fu'>dfm2austin</span>(<span class='no'>x</span>)
+<span class='fu'>dfm2austin</span>(<span class='kw'>x</span>)
 
-<span class='fu'>dfm2tm</span>(<span class='no'>x</span>, <span class='kw'>weighting</span> <span class='kw'>=</span> <span class='kw pkg'>tm</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/tm/man/weightTf.html'>weightTf</a></span>)
+<span class='fu'>dfm2tm</span>(<span class='kw'>x</span>, weighting = <span class='kw'>tm</span>::<span class='kw'><a href='https://rdrr.io/pkg/tm/man/weightTf.html'>weightTf</a></span>)
 
-<span class='fu'>dfm2lda</span>(<span class='no'>x</span>, <span class='kw'>omit_empty</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='fu'>dfm2lda</span>(<span class='kw'>x</span>, omit_empty = <span class='fl'>TRUE</span>)
 
-<span class='fu'>dtm2lda</span>(<span class='no'>x</span>, <span class='kw'>omit_empty</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='fu'>dtm2lda</span>(<span class='kw'>x</span>, omit_empty = <span class='fl'>TRUE</span>)
 
-<span class='fu'>dfm2dtm</span>(<span class='no'>x</span>, <span class='kw'>omit_empty</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='fu'>dfm2dtm</span>(<span class='kw'>x</span>, omit_empty = <span class='fl'>TRUE</span>)
 
-<span class='fu'>dfm2stm</span>(<span class='no'>x</span>, <span class='kw'>docvars</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>omit_empty</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+<span class='fu'>dfm2stm</span>(<span class='kw'>x</span>, docvars = <span class='kw'>NULL</span>, omit_empty = <span class='fl'>TRUE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -306,7 +306,7 @@ with components "documents" and "vocab" as needed by
 <code><a href='https://rdrr.io/pkg/lda/man/lda.collapsed.gibbs.sampler.html'>lda::lda.collapsed.gibbs.sampler()</a></code>).</p>
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
-    <p>Additional coercion methods to base R objects are also available:</p><dl'>
+    <p>Additional coercion methods to base R objects are also available:</p><dl>
 <dt><code>[as.data.frame](x)</code></dt><dd><p>converts a <a href='dfm.html'>dfm</a> into
 a <a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></p></dd>
 
@@ -316,25 +316,27 @@ a <a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></p></dd>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>corp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='no'>Year</span> <span class='kw'>&gt;</span> <span class='fl'>1970</span>)
-<span class='no'>dfmat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>corp</span>)
+    <pre class="examples"><div class='input'><span class='kw'>corp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='kw'>data_corpus_inaugural</span>, <span class='kw'>Year</span> <span class='op'>&gt;</span> <span class='fl'>1970</span>)
+<span class='kw'>dfmat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='kw'>corp</span>)
 
 <span class='co'># shortcut conversion to austin package's wfm format</span>
-<span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='fu'>as.wfm</span>(<span class='no'>dfmat</span>), <span class='fu'><a href='convert.html'>convert</a></span>(<span class='no'>dfmat</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"austin"</span>))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
-<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='fu'>as.wfm</span>(<span class='kw'>dfmat</span>), <span class='fu'><a href='convert.html'>convert</a></span>(<span class='kw'>dfmat</span>, to = <span class='st'>"austin"</span>))
+</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+<span class='co'>if</span> (<span class='fl'>FALSE</span>) {
 <span class='co'># shortcut conversion to tm package's DocumentTermMatrix format</span>
-<span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='fu'>as.DocumentTermMatrix</span>(<span class='no'>dfmat</span>), <span class='fu'><a href='convert.html'>convert</a></span>(<span class='no'>dfmat</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"tm"</span>))
+<span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='fu'>as.DocumentTermMatrix</span>(<span class='kw'>dfmat</span>), <span class='fu'><a href='convert.html'>convert</a></span>(<span class='kw'>dfmat</span>, to = <span class='st'>"tm"</span>))
 }
 
-<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='co'>if</span> (<span class='fl'>FALSE</span>) {
 <span class='co'># shortcut conversion to lda package list format</span>
-<span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='kw pkg'>quanteda</span><span class='kw ns'>:::</span><span class='fu'>dfm2lda</span>(<span class='no'>dfmat</span>), <span class='fu'><a href='convert.html'>convert</a></span>(<span class='no'>dfmat</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"lda"</span>))
+<span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='kw'>quanteda</span>:::<span class='fu'>dfm2lda</span>(<span class='kw'>dfmat</span>), <span class='fu'><a href='convert.html'>convert</a></span>(<span class='kw'>dfmat</span>, to = <span class='st'>"lda"</span>))
 }
 
-<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='co'>if</span> (<span class='fl'>FALSE</span>) {
 <span class='co'># shortcut conversion to lda package list format</span>
-<span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='fu'>dfm2ldaformat</span>(<span class='no'>dfmat</span>), <span class='fu'><a href='convert.html'>convert</a></span>(<span class='no'>dfmat</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"lda"</span>))
-}</div></pre>
+<span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='fu'>dfm2ldaformat</span>(<span class='kw'>dfmat</span>), <span class='fu'><a href='convert.html'>convert</a></span>(<span class='kw'>dfmat</span>, to = <span class='st'>"lda"</span>))
+}
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -350,7 +352,7 @@ a <a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></p></dd>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

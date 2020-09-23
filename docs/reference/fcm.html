@@ -93,7 +93,7 @@ vector of weights applied to the co-occurrence counts." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.2</span>
       </span>
     </div>
 
@@ -226,14 +226,14 @@ vector of weights applied to the co-occurrence counts.</p>
     </div>
 
     <pre class="usage"><span class='fu'>fcm</span>(
-  <span class='no'>x</span>,
-  <span class='kw'>context</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"document"</span>, <span class='st'>"window"</span>),
-  <span class='kw'>count</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"frequency"</span>, <span class='st'>"boolean"</span>, <span class='st'>"weighted"</span>),
-  <span class='kw'>window</span> <span class='kw'>=</span> <span class='fl'>5L</span>,
-  <span class='kw'>weights</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>ordered</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>tri</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='no'>...</span>
+  <span class='kw'>x</span>,
+  context = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"document"</span>, <span class='st'>"window"</span>),
+  count = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"frequency"</span>, <span class='st'>"boolean"</span>, <span class='st'>"weighted"</span>),
+  window = <span class='fl'>5L</span>,
+  weights = <span class='kw'>NULL</span>,
+  ordered = <span class='fl'>FALSE</span>,
+  tri = <span class='fl'>TRUE</span>,
+  <span class='kw'>...</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -254,7 +254,7 @@ object, then <code>context</code> can only be <code>"document"</code>.</p></td>
     </tr>
     <tr>
       <th>count</th>
-      <td><p>how to count co-occurrences:</p><dl'>
+      <td><p>how to count co-occurrences:</p><dl>
 <dt><code>"frequency"</code></dt><dd><p>count the number of co-occurrences within the
 context</p></dd>
 <dt><code>"boolean"</code></dt><dd><p>count only the co-occurrence or not within the
@@ -318,20 +318,24 @@ which differs from the counting within "document".</p>
 type fcm.</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p>Momtazi, S., Khudanpur, S., &amp; Klakow, D. (2010). "<a href='https://www.aclweb.org/anthology/N10-1046'>A comparative study of word co-occurrence for term clustering in language model-based sentence retrieval.</a>" <em>Human Language
+    <p>Momtazi, S., Khudanpur, S., &amp; Klakow, D. (2010). "<a href='https://www.aclweb.org/anthology/N10-1046/'>A comparative study of word co-occurrence for term clustering in language model-based sentence retrieval.</a>" <em>Human Language
 Technologies: The 2010 Annual Conference of the North American Chapter of
 the ACL</em>, Los Angeles, California, June 2010, 325-328.</p>
 <p>Jurafsky, D. &amp; Martin, J.H. (2018). From <em>Speech and Language Processing:
 An Introduction to Natural Language Processing, Computational Linguistics,
 and Speech Recognition</em>. Draft of September 23, 2018 (Chapter 6, Vector
 Semantics). Available at <a href='https://web.stanford.edu/~jurafsky/slp3/'>https://web.stanford.edu/~jurafsky/slp3/</a>.</p>
-<p>Church, K. W. &amp; P. Hanks (1990). <a href='http://dl.acm.org/citation.cfm?id=89095'>Word association norms, mutual information, and lexicography</a>.
+<p>Church, K. W. &amp; P. Hanks (1990). <a href='https://dl.acm.org/doi/10.5555/89086.89095'>Word association norms, mutual information, and lexicography</a>.
 <em>Computational Linguistics</em>, 16(1), 22-29.</p>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Kenneth Benoit (R), Haiyan Wang (R, C++), Kohei Watanabe (C++)</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># see http://bit.ly/29b2zOA</span>
-<span class='no'>txt1</span> <span class='kw'>&lt;-</span> <span class='st'>"A D A C E A D F E B A C E D"</span>
-<span class='fu'>fcm</span>(<span class='no'>txt1</span>, <span class='kw'>context</span> <span class='kw'>=</span> <span class='st'>"window"</span>, <span class='kw'>window</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; Feature co-occurrence matrix of: 6 by 6 features.
+<span class='kw'>txt1</span> <span class='op'>&lt;-</span> <span class='st'>"A D A C E A D F E B A C E D"</span>
+<span class='fu'>fcm</span>(<span class='kw'>txt1</span>, context = <span class='st'>"window"</span>, window = <span class='fl'>2</span>)
+</div><div class='output co'>#&gt; Feature co-occurrence matrix of: 6 by 6 features.
 #&gt;         features
 #&gt; features A D C E F B
 #&gt;        A 2 3 3 4 1 1
@@ -339,7 +343,8 @@ Semantics). Available at <a href='https://web.stanford.edu/~jurafsky/slp3/'>http
 #&gt;        C 0 0 0 2 0 1
 #&gt;        E 0 0 0 0 1 1
 #&gt;        F 0 0 0 0 0 1
-#&gt;        B 0 0 0 0 0 0</div><div class='input'><span class='fu'>fcm</span>(<span class='no'>txt1</span>, <span class='kw'>context</span> <span class='kw'>=</span> <span class='st'>"window"</span>, <span class='kw'>count</span> <span class='kw'>=</span> <span class='st'>"weighted"</span>, <span class='kw'>window</span> <span class='kw'>=</span> <span class='fl'>3</span>)</div><div class='output co'>#&gt; Feature co-occurrence matrix of: 6 by 6 features.
+#&gt;        B 0 0 0 0 0 0</div><div class='input'><span class='fu'>fcm</span>(<span class='kw'>txt1</span>, context = <span class='st'>"window"</span>, count = <span class='st'>"weighted"</span>, window = <span class='fl'>3</span>)
+</div><div class='output co'>#&gt; Feature co-occurrence matrix of: 6 by 6 features.
 #&gt;         features
 #&gt; features        A        D        C        E         F         B
 #&gt;        A 1.666667 3.333333 2.833333 2.833333 0.8333333 1.0000000
@@ -347,8 +352,9 @@ Semantics). Available at <a href='https://web.stanford.edu/~jurafsky/slp3/'>http
 #&gt;        C 0        0        0        2.333333 0         0.5000000
 #&gt;        E 0        0        0        0        1.3333333 1.3333333
 #&gt;        F 0        0        0        0        0         0.5000000
-#&gt;        B 0        0        0        0        0         0        </div><div class='input'><span class='fu'>fcm</span>(<span class='no'>txt1</span>, <span class='kw'>context</span> <span class='kw'>=</span> <span class='st'>"window"</span>, <span class='kw'>count</span> <span class='kw'>=</span> <span class='st'>"weighted"</span>, <span class='kw'>window</span> <span class='kw'>=</span> <span class='fl'>3</span>,
-             <span class='kw'>weights</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>3</span>, <span class='fl'>2</span>, <span class='fl'>1</span>), <span class='kw'>ordered</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>tri</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; Feature co-occurrence matrix of: 6 by 6 features.
+#&gt;        B 0        0        0        0        0         0        </div><div class='input'><span class='fu'>fcm</span>(<span class='kw'>txt1</span>, context = <span class='st'>"window"</span>, count = <span class='st'>"weighted"</span>, window = <span class='fl'>3</span>,
+             weights = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>3</span>, <span class='fl'>2</span>, <span class='fl'>1</span>), ordered = <span class='fl'>TRUE</span>, tri = <span class='fl'>FALSE</span>)
+</div><div class='output co'>#&gt; Feature co-occurrence matrix of: 6 by 6 features.
 #&gt;         features
 #&gt; features A D C E F B
 #&gt;        A 3 7 7 5 2 0
@@ -358,8 +364,9 @@ Semantics). Available at <a href='https://web.stanford.edu/~jurafsky/slp3/'>http
 #&gt;        F 1 0 0 3 0 2
 #&gt;        B 3 0 2 1 0 0</div><div class='input'>
 <span class='co'># with multiple documents</span>
-<span class='no'>txt2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"a a a b b c"</span>, <span class='st'>"a a c e"</span>, <span class='st'>"a c e f g"</span>)
-<span class='fu'>fcm</span>(<span class='no'>txt2</span>, <span class='kw'>context</span> <span class='kw'>=</span> <span class='st'>"document"</span>, <span class='kw'>count</span> <span class='kw'>=</span> <span class='st'>"frequency"</span>)</div><div class='output co'>#&gt; Feature co-occurrence matrix of: 6 by 6 features.
+<span class='kw'>txt2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"a a a b b c"</span>, <span class='st'>"a a c e"</span>, <span class='st'>"a c e f g"</span>)
+<span class='fu'>fcm</span>(<span class='kw'>txt2</span>, context = <span class='st'>"document"</span>, count = <span class='st'>"frequency"</span>)
+</div><div class='output co'>#&gt; Feature co-occurrence matrix of: 6 by 6 features.
 #&gt;         features
 #&gt; features a b c e f g
 #&gt;        a 4 6 6 3 1 1
@@ -367,7 +374,8 @@ Semantics). Available at <a href='https://web.stanford.edu/~jurafsky/slp3/'>http
 #&gt;        c 0 0 0 2 1 1
 #&gt;        e 0 0 0 0 1 1
 #&gt;        f 0 0 0 0 0 1
-#&gt;        g 0 0 0 0 0 0</div><div class='input'><span class='fu'>fcm</span>(<span class='no'>txt2</span>, <span class='kw'>context</span> <span class='kw'>=</span> <span class='st'>"document"</span>, <span class='kw'>count</span> <span class='kw'>=</span> <span class='st'>"boolean"</span>)</div><div class='output co'>#&gt; Feature co-occurrence matrix of: 6 by 6 features.
+#&gt;        g 0 0 0 0 0 0</div><div class='input'><span class='fu'>fcm</span>(<span class='kw'>txt2</span>, context = <span class='st'>"document"</span>, count = <span class='st'>"boolean"</span>)
+</div><div class='output co'>#&gt; Feature co-occurrence matrix of: 6 by 6 features.
 #&gt;         features
 #&gt; features a b c e f g
 #&gt;        a 2 1 3 2 1 1
@@ -375,7 +383,8 @@ Semantics). Available at <a href='https://web.stanford.edu/~jurafsky/slp3/'>http
 #&gt;        c 0 0 0 2 1 1
 #&gt;        e 0 0 0 0 1 1
 #&gt;        f 0 0 0 0 0 1
-#&gt;        g 0 0 0 0 0 0</div><div class='input'><span class='fu'>fcm</span>(<span class='no'>txt2</span>, <span class='kw'>context</span> <span class='kw'>=</span> <span class='st'>"window"</span>, <span class='kw'>window</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; Feature co-occurrence matrix of: 6 by 6 features.
+#&gt;        g 0 0 0 0 0 0</div><div class='input'><span class='fu'>fcm</span>(<span class='kw'>txt2</span>, context = <span class='st'>"window"</span>, window = <span class='fl'>2</span>)
+</div><div class='output co'>#&gt; Feature co-occurrence matrix of: 6 by 6 features.
 #&gt;         features
 #&gt; features a b c e f g
 #&gt;        a 8 3 3 2 0 0
@@ -386,10 +395,11 @@ Semantics). Available at <a href='https://web.stanford.edu/~jurafsky/slp3/'>http
 #&gt;        g 0 0 0 0 0 0</div><div class='input'>
 
 <span class='co'># from tokens</span>
-<span class='no'>txt3</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"The quick brown fox jumped over the lazy dog."</span>,
+<span class='kw'>txt3</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"The quick brown fox jumped over the lazy dog."</span>,
          <span class='st'>"The dog jumped and ate the fox."</span>)
-<span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='fu'><a href='char_tolower.html'>char_tolower</a></span>(<span class='no'>txt3</span>), <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='fu'>fcm</span>(<span class='no'>toks</span>, <span class='kw'>context</span> <span class='kw'>=</span> <span class='st'>"document"</span>)</div><div class='output co'>#&gt; Feature co-occurrence matrix of: 10 by 10 features.
+<span class='kw'>toks</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='fu'><a href='char_tolower.html'>char_tolower</a></span>(<span class='kw'>txt3</span>), remove_punct = <span class='fl'>TRUE</span>)
+<span class='fu'>fcm</span>(<span class='kw'>toks</span>, context = <span class='st'>"document"</span>)
+</div><div class='output co'>#&gt; Feature co-occurrence matrix of: 10 by 10 features.
 #&gt;         features
 #&gt; features the quick brown fox jumped over lazy dog and ate
 #&gt;   the      2     2     2   4      4    2    2   4   2   2
@@ -401,7 +411,8 @@ Semantics). Available at <a href='https://web.stanford.edu/~jurafsky/slp3/'>http
 #&gt;   lazy     0     0     0   0      0    0    0   1   0   0
 #&gt;   dog      0     0     0   0      0    0    0   0   1   1
 #&gt;   and      0     0     0   0      0    0    0   0   0   1
-#&gt;   ate      0     0     0   0      0    0    0   0   0   0</div><div class='input'><span class='fu'>fcm</span>(<span class='no'>toks</span>, <span class='kw'>context</span> <span class='kw'>=</span> <span class='st'>"window"</span>, <span class='kw'>window</span> <span class='kw'>=</span> <span class='fl'>3</span>)</div><div class='output co'>#&gt; Feature co-occurrence matrix of: 10 by 10 features.
+#&gt;   ate      0     0     0   0      0    0    0   0   0   0</div><div class='input'><span class='fu'>fcm</span>(<span class='kw'>toks</span>, context = <span class='st'>"window"</span>, window = <span class='fl'>3</span>)
+</div><div class='output co'>#&gt; Feature co-occurrence matrix of: 10 by 10 features.
 #&gt;         features
 #&gt; features the quick brown fox jumped over lazy dog and ate
 #&gt;   the      0     1     1   3      3    1    1   2   2   1
@@ -429,7 +440,7 @@ Semantics). Available at <a href='https://web.stanford.edu/~jurafsky/slp3/'>http
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

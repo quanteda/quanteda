@@ -95,7 +95,7 @@ provide an option for preserving acronyms." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.2</span>
       </span>
     </div>
 
@@ -229,9 +229,9 @@ handle case conversion for Unicode.  In addition, the <code>*_tolower()</code> f
 provide an option for preserving acronyms.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>char_tolower</span>(<span class='no'>x</span>, <span class='kw'>keep_acronyms</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+    <pre class="usage"><span class='fu'>char_tolower</span>(<span class='kw'>x</span>, keep_acronyms = <span class='fl'>FALSE</span>)
 
-<span class='fu'>char_toupper</span>(<span class='no'>x</span>)</pre>
+<span class='fu'>char_toupper</span>(<span class='kw'>x</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -250,20 +250,25 @@ all-uppercase words (applies only to <code>*_tolower()</code> functions)</p></td
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>txt1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>txt1</span> <span class='kw'>=</span> <span class='st'>"b A A"</span>, <span class='kw'>txt2</span> <span class='kw'>=</span> <span class='st'>"C C a b B"</span>)
-<span class='fu'>char_tolower</span>(<span class='no'>txt1</span>)</div><div class='output co'>#&gt;        txt1        txt2 
-#&gt;     "b a a" "c c a b b" </div><div class='input'><span class='fu'>char_toupper</span>(<span class='no'>txt1</span>)</div><div class='output co'>#&gt;        txt1        txt2 
+    <pre class="examples"><div class='input'><span class='kw'>txt1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(txt1 = <span class='st'>"b A A"</span>, txt2 = <span class='st'>"C C a b B"</span>)
+<span class='fu'>char_tolower</span>(<span class='kw'>txt1</span>)
+</div><div class='output co'>#&gt;        txt1        txt2 
+#&gt;     "b a a" "c c a b b" </div><div class='input'><span class='fu'>char_toupper</span>(<span class='kw'>txt1</span>)
+</div><div class='output co'>#&gt;        txt1        txt2 
 #&gt;     "B A A" "C C A B B" </div><div class='input'>
 <span class='co'># with acronym preservation</span>
-<span class='no'>txt2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>text1</span> <span class='kw'>=</span> <span class='st'>"England and France are members of NATO and UNESCO"</span>,
-          <span class='kw'>text2</span> <span class='kw'>=</span> <span class='st'>"NASA sent a rocket into space."</span>)
-<span class='fu'>char_tolower</span>(<span class='no'>txt2</span>)</div><div class='output co'>#&gt;                                               text1 
+<span class='kw'>txt2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(text1 = <span class='st'>"England and France are members of NATO and UNESCO"</span>,
+          text2 = <span class='st'>"NASA sent a rocket into space."</span>)
+<span class='fu'>char_tolower</span>(<span class='kw'>txt2</span>)
+</div><div class='output co'>#&gt;                                               text1 
 #&gt; "england and france are members of nato and unesco" 
 #&gt;                                               text2 
-#&gt;                    "nasa sent a rocket into space." </div><div class='input'><span class='fu'>char_tolower</span>(<span class='no'>txt2</span>, <span class='kw'>keep_acronyms</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt;                                               text1 
+#&gt;                    "nasa sent a rocket into space." </div><div class='input'><span class='fu'>char_tolower</span>(<span class='kw'>txt2</span>, keep_acronyms = <span class='fl'>TRUE</span>)
+</div><div class='output co'>#&gt;                                               text1 
 #&gt; "england and france are members of NATO and UNESCO" 
 #&gt;                                               text2 
-#&gt;                    "NASA sent a rocket into space." </div><div class='input'><span class='fu'>char_toupper</span>(<span class='no'>txt2</span>)</div><div class='output co'>#&gt;                                               text1 
+#&gt;                    "NASA sent a rocket into space." </div><div class='input'><span class='fu'>char_toupper</span>(<span class='kw'>txt2</span>)
+</div><div class='output co'>#&gt;                                               text1 
 #&gt; "ENGLAND AND FRANCE ARE MEMBERS OF NATO AND UNESCO" 
 #&gt;                                               text2 
 #&gt;                    "NASA SENT A ROCKET INTO SPACE." </div></pre>
@@ -282,7 +287,7 @@ all-uppercase words (applies only to <code>*_tolower()</code> functions)</p></td
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
