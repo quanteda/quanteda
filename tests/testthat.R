@@ -5,8 +5,8 @@ library(quanteda)
 
 Sys.setenv("_R_CHECK_LENGTH_1_CONDITION_" = TRUE)
 
-ops <- quanteda_options()
 quanteda_options(reset = TRUE)
+#quanteda_options(threads = 2)
 
 test_check("quanteda")
-quanteda_options(ops)
+
