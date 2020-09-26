@@ -90,7 +90,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.2</span>
       </span>
     </div>
 
@@ -219,9 +219,9 @@
     <p>Get or set the document names of a <a href='corpus.html'>corpus</a>, <a href='tokens.html'>tokens</a>, or <a href='dfm.html'>dfm</a> object.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>docnames</span>(<span class='no'>x</span>)
+    <pre class="usage"><span class='fu'>docnames</span>(<span class='kw'>x</span>)
 
-<span class='fu'>docnames</span>(<span class='no'>x</span>) <span class='kw'>&lt;-</span> <span class='no'>value</span></pre>
+<span class='fu'>docnames</span>(<span class='kw'>x</span>) <span class='op'>&lt;-</span> <span class='kw'>value</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -248,19 +248,21 @@ docname will be coerced to mode <code>character</code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># get and set doument names to a corpus</span>
-<span class='no'>corp</span> <span class='kw'>&lt;-</span> <span class='no'>data_corpus_inaugural</span>
-<span class='fu'>docnames</span>(<span class='no'>corp</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='char_tolower.html'>char_tolower</a></span>(<span class='fu'>docnames</span>(<span class='no'>corp</span>))
+<span class='kw'>corp</span> <span class='op'>&lt;-</span> <span class='kw'>data_corpus_inaugural</span>
+<span class='fu'>docnames</span>(<span class='kw'>corp</span>) <span class='op'>&lt;-</span> <span class='fu'><a href='char_tolower.html'>char_tolower</a></span>(<span class='fu'>docnames</span>(<span class='kw'>corp</span>))
 
 <span class='co'># get and set doument names to a tokens</span>
-<span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='no'>data_corpus_inaugural</span>)
-<span class='fu'>docnames</span>(<span class='no'>toks</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='char_tolower.html'>char_tolower</a></span>(<span class='fu'>docnames</span>(<span class='no'>toks</span>))
+<span class='kw'>toks</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='kw'>data_corpus_inaugural</span>)
+<span class='fu'>docnames</span>(<span class='kw'>toks</span>) <span class='op'>&lt;-</span> <span class='fu'><a href='char_tolower.html'>char_tolower</a></span>(<span class='fu'>docnames</span>(<span class='kw'>toks</span>))
 
 <span class='co'># get and set doument names to a dfm</span>
-<span class='no'>dfmat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_inaugural</span>[<span class='fl'>1</span>:<span class='fl'>5</span>])
-<span class='fu'>docnames</span>(<span class='no'>dfmat</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='char_tolower.html'>char_tolower</a></span>(<span class='fu'>docnames</span>(<span class='no'>dfmat</span>))
+<span class='kw'>dfmat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='kw'>data_corpus_inaugural</span>[<span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>])
+<span class='fu'>docnames</span>(<span class='kw'>dfmat</span>) <span class='op'>&lt;-</span> <span class='fu'><a href='char_tolower.html'>char_tolower</a></span>(<span class='fu'>docnames</span>(<span class='kw'>dfmat</span>))
 
 <span class='co'># reassign the document names of the inaugural speech corpus</span>
-<span class='fu'>docnames</span>(<span class='no'>data_corpus_inaugural</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='st'>"Speech"</span>, <span class='fl'>1</span>:<span class='fu'><a href='ndoc.html'>ndoc</a></span>(<span class='no'>data_corpus_inaugural</span>), <span class='kw'>sep</span><span class='kw'>=</span><span class='st'>""</span>)</div></pre>
+<span class='fu'>docnames</span>(<span class='kw'>data_corpus_inaugural</span>) <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='st'>"Speech"</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fu'><a href='ndoc.html'>ndoc</a></span>(<span class='kw'>data_corpus_inaugural</span>), sep=<span class='st'>""</span>)
+
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -276,7 +278,7 @@ docname will be coerced to mode <code>character</code>.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

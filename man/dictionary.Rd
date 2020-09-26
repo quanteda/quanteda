@@ -10,7 +10,7 @@ dictionary(
   format = NULL,
   separator = " ",
   tolower = TRUE,
-  encoding = "auto"
+  encoding = "utf-8"
 )
 }
 \arguments{
@@ -100,12 +100,12 @@ WordStat dictionaries page, from Provalis Research
 
 Pennebaker, J.W., Chung, C.K., Ireland, M., Gonzales, A., & Booth, R.J.
 (2007). The development and psychometric properties of LIWC2007. [Software
-manual]. Austin, TX (\url{http://www.liwc.net}).
+manual]. Austin, TX (\url{https://liwc.net}).
 
 Yoshikoder page, from Will Lowe
-\url{http://conjugateprior.org/software/yoshikoder/}.
+\url{https://conjugateprior.org/software/yoshikoder/}.
 
-Lexicoder format, \url{http://www.lexicoder.com}
+Lexicoder format, \url{http://www.snsoroka.com/data-lexicoder/}
 }
 \seealso{
 \link{dfm}, \code{\link[=as.dictionary]{as.dictionary()}},

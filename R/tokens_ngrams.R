@@ -129,7 +129,7 @@ tokens_ngrams.tokens <- function(x, n = 2L, skip = 0L, concatenator = "_") {
 #' @references
 #' Guthrie, David, Ben Allison, Wei Liu, Louise Guthrie, and Yorick Wilks. 2006.
 #' "[A Closer
-#' Look at Skip-Gram Modelling](https://aclweb.org/anthology/papers/L/L06/L06-1210/)."
+#' Look at Skip-Gram Modelling](https://www.aclweb.org/anthology/L06-1210/)."
 #' @importFrom utils combn
 #' @examples
 #' # skipgrams

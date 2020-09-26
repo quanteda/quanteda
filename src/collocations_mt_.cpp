@@ -86,8 +86,8 @@ double compute_dice2(const std::vector<double> &counts){
 }
 
 Text mark(Text tokens, 
-                 SetUnigrams &set_ignore,
-                 unsigned int &id_ignore){
+          SetUnigrams &set_ignore,
+          unsigned int &id_ignore){
     
     if (tokens.size() == 0) return {}; // return empty vector for empty text
     
@@ -117,9 +117,9 @@ struct mark_mt : public Worker{
 };
 
 void counts2(Text text,
-            MapNgramsPair &counts_seq,
-            const std::vector<unsigned int> &sizes,
-            const unsigned int &id_ignore){
+             MapNgramsPair &counts_seq,
+             const std::vector<unsigned int> &sizes,
+             const unsigned int &id_ignore){
     
     std::vector<bool> flags_nested(text.size(), false);
     std::vector<bool> flags_temp(text.size(), false);
@@ -172,7 +172,7 @@ struct counts_mt2 : public Worker {
     const unsigned int &id_ignore;
     
     counts_mt2(Texts texts_, MapNgramsPair &counts_seq_, const std::vector<unsigned int> &sizes_, 
-              const unsigned int &id_ignore_):
+               const unsigned int &id_ignore_):
         texts(texts_), counts_seq(counts_seq_), sizes(sizes_), 
         id_ignore(id_ignore_) {}
     
@@ -184,16 +184,16 @@ struct counts_mt2 : public Worker {
 };
 
 void estimates2(std::size_t i,
-               VecNgrams &seqs,  // seqs without padding
-               MapNgramsPair counts_seq,
-               DoubleParams &dice,
-               DoubleParams &pmi,
-               DoubleParams &logratio,
-               DoubleParams &chi2,
-               DoubleParams &gensim,
-               DoubleParams &lfmd,
-               const String &method,
-               const double smoothing) {
+                VecNgrams &seqs,  // seqs without padding
+                MapNgramsPair counts_seq,
+                DoubleParams &dice,
+                DoubleParams &pmi,
+                DoubleParams &logratio,
+                DoubleParams &chi2,
+                DoubleParams &gensim,
+                DoubleParams &lfmd,
+                const String &method,
+                const double smoothing) {
     
     std::size_t n = seqs[i].size(); //n=2:5, seqs
     if (n == 1) return; // ignore single words
@@ -220,8 +220,8 @@ struct estimates_mt2 : public Worker{
     const double smoothing;
     
     estimates_mt2(VecNgrams &seqs_, MapNgramsPair &counts_seq_, DoubleParams &dice_,
-                 DoubleParams &pmi_, DoubleParams &logratio_, DoubleParams &chi2_, DoubleParams &gensim_, DoubleParams &lfmd_, const String &method,
-                 const double smoothing_):
+                  DoubleParams &pmi_, DoubleParams &logratio_, DoubleParams &chi2_, DoubleParams &gensim_, DoubleParams &lfmd_, const String &method,
+                  const double smoothing_):
         seqs(seqs_), counts_seq(counts_seq_), dice(dice_), pmi(pmi_), logratio(logratio_), chi2(chi2_),
         gensim(gensim_), lfmd(lfmd_), method(method), smoothing(smoothing_){}
     
@@ -233,12 +233,12 @@ struct estimates_mt2 : public Worker{
 };
 
 void estimates_lambda2(std::size_t i,
-                      const VecNgrams &seqs,
-                      const VecPair &seqs_all,
-                      DoubleParams &sgma, 
-                      DoubleParams &lmda,
-                      const String &method,
-                      const double smoothing) {
+                       const VecNgrams &seqs,
+                       const VecPair &seqs_all,
+                       DoubleParams &sgma, 
+                       DoubleParams &lmda,
+                       const String &method,
+                       const double smoothing) {
     
     std::size_t n = seqs[i].size();
     if (n == 1) return; // ignore single words
@@ -269,7 +269,7 @@ struct estimates_lambda_mt2 : public Worker{
     const double smoothing;
     
     estimates_lambda_mt2(const VecNgrams &seqs_, const VecPair &seq_all_, DoubleParams &sgma_, DoubleParams &lmda_, 
-                        const String &method, const double smoothing_) :
+                         const String &method, const double smoothing_) :
         seqs(seqs_), seq_all(seq_all_), sgma(sgma_), lmda(lmda_), 
         method(method), smoothing(smoothing_) {}
     
@@ -282,15 +282,15 @@ struct estimates_lambda_mt2 : public Worker{
 
 
 /* 
-* This function estimates the strength of association between specified words 
-* that appear in sequences. 
-* @used sequences()
-* @param texts_ tokens object
-* @param count_min sequences appear less than this are ignored
-* @param method method to estimate collocation association
-* @param smoothing this number is added to collocation counts
-* @param nested estimate parameters for nested collocations
-*/
+ * This function estimates the strength of association between specified words 
+ * that appear in sequences. 
+ * @used sequences()
+ * @param texts_ tokens object
+ * @param count_min sequences appear less than this are ignored
+ * @param method method to estimate collocation association
+ * @param smoothing this number is added to collocation counts
+ * @param nested estimate parameters for nested collocations
+ */
 // [[Rcpp::export]]
 DataFrame qatd_cpp_collocations(const List &texts_,
                                 const CharacterVector &types_,

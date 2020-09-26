@@ -92,7 +92,7 @@ objects." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.2</span>
       </span>
     </div>
 
@@ -318,7 +318,7 @@ token</p></td>
 tokens, <code>FALSE</code> otherwise.</p>
 <p><code>unlist</code> returns a simple vector of characters from a
 <a href='tokens.html'>tokens</a> object.</p>
-<p><code><a href='https://rdrr.io/r/base/c.html'>c(...)</a></code> and <code>+</code> return a tokens object whose documents
+<p><code><a href='https://rdrr.io/r/base/c.html'>c(...)</a></code> and <code><a href='https://rdrr.io/r/base/Arithmetic.html'>+</a></code> return a tokens object whose documents
 have been added as a single sequence of documents.</p>
 <p><code>as.tokens</code> returns a quanteda <a href='tokens.html'>tokens</a> object.</p>
 <p><code>is.tokens</code> returns <code>TRUE</code> if the object is of class
@@ -337,9 +337,10 @@ tokens.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># combining tokens</span>
-<span class='no'>toks1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>doc1</span> <span class='kw'>=</span> <span class='st'>"a b c d e"</span>, <span class='kw'>doc2</span> <span class='kw'>=</span> <span class='st'>"f g h"</span>))
-<span class='no'>toks2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>doc3</span> <span class='kw'>=</span> <span class='st'>"1 2 3"</span>))
-<span class='no'>toks1</span> + <span class='no'>toks2</span></div><div class='output co'>#&gt; Tokens consisting of 3 documents.
+<span class='kw'>toks1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(doc1 = <span class='st'>"a b c d e"</span>, doc2 = <span class='st'>"f g h"</span>))
+<span class='kw'>toks2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(doc3 = <span class='st'>"1 2 3"</span>))
+<span class='kw'>toks1</span> <span class='op'>+</span> <span class='kw'>toks2</span>
+</div><div class='output co'>#&gt; Tokens consisting of 3 documents.
 #&gt; doc1 :
 #&gt; [1] "a" "b" "c" "d" "e"
 #&gt; 
@@ -348,7 +349,8 @@ tokens.</p>
 #&gt; 
 #&gt; doc3 :
 #&gt; [1] "1" "2" "3"
-#&gt; </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='no'>toks1</span>, <span class='no'>toks2</span>)</div><div class='output co'>#&gt; Tokens consisting of 3 documents.
+#&gt; </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>toks1</span>, <span class='kw'>toks2</span>)
+</div><div class='output co'>#&gt; Tokens consisting of 3 documents.
 #&gt; doc1 :
 #&gt; [1] "a" "b" "c" "d" "e"
 #&gt; 
@@ -360,12 +362,13 @@ tokens.</p>
 #&gt; </div><div class='input'>
 
 <span class='co'># create tokens object from list of characters with custom concatenator</span>
-<span class='no'>dict</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dictionary.html'>dictionary</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>country</span> <span class='kw'>=</span> <span class='st'>"United States"</span>,
-                   <span class='kw'>sea</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Atlantic Ocean"</span>, <span class='st'>"Pacific Ocean"</span>)))
-<span class='no'>lis</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"The"</span>, <span class='st'>"United-States"</span>, <span class='st'>"has"</span>, <span class='st'>"the"</span>, <span class='st'>"Atlantic-Ocean"</span>,
+<span class='kw'>dict</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dictionary.html'>dictionary</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(country = <span class='st'>"United States"</span>,
+                   sea = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Atlantic Ocean"</span>, <span class='st'>"Pacific Ocean"</span>)))
+<span class='kw'>lis</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"The"</span>, <span class='st'>"United-States"</span>, <span class='st'>"has"</span>, <span class='st'>"the"</span>, <span class='st'>"Atlantic-Ocean"</span>,
               <span class='st'>"and"</span>, <span class='st'>"the"</span>, <span class='st'>"Pacific-Ocean"</span>, <span class='st'>"."</span>))
-<span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'>as.tokens</span>(<span class='no'>lis</span>, <span class='kw'>concatenator</span> <span class='kw'>=</span> <span class='st'>"-"</span>)
-<span class='fu'><a href='tokens_lookup.html'>tokens_lookup</a></span>(<span class='no'>toks</span>, <span class='no'>dict</span>)</div><div class='output co'>#&gt; Tokens consisting of 1 document.
+<span class='kw'>toks</span> <span class='op'>&lt;-</span> <span class='fu'>as.tokens</span>(<span class='kw'>lis</span>, concatenator = <span class='st'>"-"</span>)
+<span class='fu'><a href='tokens_lookup.html'>tokens_lookup</a></span>(<span class='kw'>toks</span>, <span class='kw'>dict</span>)
+</div><div class='output co'>#&gt; Tokens consisting of 1 document.
 #&gt; text1 :
 #&gt; [1] "country" "sea"     "sea"    
 #&gt; </div><div class='input'>
@@ -385,7 +388,7 @@ tokens.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

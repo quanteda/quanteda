@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.2</span>
       </span>
     </div>
 
@@ -174,7 +174,9 @@
 <h1 class="hasAnchor">
 <a href="#%E0%A4%AA%E0%A4%95%E0%A4%9C-%E0%A4%87%E0%A4%B8%E0%A4%9F%E0%A4%B2-%E0%A4%95%E0%A4%B0%E0%A4%A8-%E0%A4%95-%E0%A4%A8%E0%A4%B0%E0%A4%A6%E0%A4%B6" class="anchor"></a>पैकेज इंस्टॉल करने के निर्देश</h1>
 <p>क्यूँकि <strong>quanteda</strong> <a href="https://CRAN.R-project.org/package=quanteda">CRAN</a> पर उपलब्ध है, आप अपने GUI के R package installer से सीधा इंस्टॉल कर सकते हैं, या इसे इस तरह से भी इंस्टॉल कर सकते है:</p>
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"quanteda"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"quanteda"</span>)
+</pre></div>
 <p>GitHub का वर्ज़न इंस्टॉल करने के लिए <a href="https://github.com/quanteda/quanteda" class="uri">https://github.com/quanteda/quanteda</a> पर निर्देश देखें,</p>
 <div id="और-आवशयक-पकजज" class="section level2">
 <h2 class="hasAnchor">
@@ -184,23 +186,29 @@
 <li>
 <a href="https://github.com/quanteda/readtext"><strong>readtext</strong></a>: लगभग किसी भी इनपुट टाइप में , आर के अन्दर टेक्स्ट डेटा को पढ़ने के लिए एक आसान तरीका।</li>
 <li>
-<a href="https://github.com/quanteda/spacyr"><strong>spacyr</strong></a>:<a href="http://spacy.io">spaCy</a> लाइब्रेरी का उपयोग करते हुए NLP, जिसमें पार्ट-ऑफ-स्पीच टैगिंग, इकाई पहचान और निर्भरता पार्सिंग शामिल है।</li>
+<a href="https://github.com/quanteda/spacyr"><strong>spacyr</strong></a>:<a href="https://spacy.io">spaCy</a> लाइब्रेरी का उपयोग करते हुए NLP, जिसमें पार्ट-ऑफ-स्पीच टैगिंग, इकाई पहचान और निर्भरता पार्सिंग शामिल है।</li>
 <li>
 <a href="https://github.com/quanteda/quanteda.corpora"><strong>quanteda.corpora</strong></a>: <strong>quanteda</strong> के साथ उपयोग करने के लिए अतिरिक्त टेक्स्ट डेटा।</li>
 </ul>
-<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="kw pkg">devtools</span><span class="kw ns">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span>(<span class="st">"quanteda/quanteda.corpora"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb2"><pre class="downlit">
+<span class="kw">devtools</span>::<span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span>(<span class="st">"quanteda/quanteda.corpora"</span>)
+</pre></div>
 <ul>
 <li>
-<a href="https://github.com/kbenoit/quanteda.dictionaries"><strong>quanteda.dictionaries</strong></a>: <strong>quanteda</strong> के साथ उपयोग करने के लिए विभिन्न शब्दकोश, <code>liwcalike()</code>- पाठ विश्लेषण के लिए <a href="http://liwc.wpengine.com">Linguistic Inquiry and Word Count</a> दृष्टिकोण के एक कार्यान्वयन - के सहित।</li>
+<a href="https://github.com/kbenoit/quanteda.dictionaries"><strong>quanteda.dictionaries</strong></a>: <strong>quanteda</strong> के साथ उपयोग करने के लिए विभिन्न शब्दकोश, <code>liwcalike()</code>- पाठ विश्लेषण के लिए <a href="http://liwc.wpengine.com">Linguistic Inquiry and Word Cosunt</a> दृष्टिकोण के एक कार्यान्वयन - के सहित।</li>
 </ul>
-<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="kw pkg">devtools</span><span class="kw ns">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span>(<span class="st">"kbenoit/quanteda.dictionaries"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb3"><pre class="downlit">
+<span class="kw">devtools</span>::<span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span>(<span class="st">"kbenoit/quanteda.dictionaries"</span>)
+</pre></div>
 </div>
 </div>
 <div id="करपस-बनन-क-नरदश" class="section level1">
 <h1 class="hasAnchor">
 <a href="#%E0%A4%95%E0%A4%B0%E0%A4%AA%E0%A4%B8-%E0%A4%AC%E0%A4%A8%E0%A4%A8-%E0%A4%95-%E0%A4%A8%E0%A4%B0%E0%A4%A6%E0%A4%B6" class="anchor"></a>कॉर्पस बनाने के निर्देश</h1>
 <p>आप पैकेज को लोड करने के बाद, फ़ंक्शन और डेटा पैकेज का उपयोग कर सकते हैं।</p>
-<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">quanteda</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb4"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://quanteda.io">quanteda</a></span>)
+</pre></div>
 <div id="वरतमन-म-उपलबध-करपस-सरत" class="section level2">
 <h2 class="hasAnchor">
 <a href="#%E0%A4%B5%E0%A4%B0%E0%A4%A4%E0%A4%AE%E0%A4%A8-%E0%A4%AE-%E0%A4%89%E0%A4%AA%E0%A4%B2%E0%A4%AC%E0%A4%A7-%E0%A4%95%E0%A4%B0%E0%A4%AA%E0%A4%B8-%E0%A4%B8%E0%A4%B0%E0%A4%A4" class="anchor"></a>वर्तमान में उपलब्ध कॉर्पस स्रोतें</h2>
@@ -226,8 +234,10 @@
 <a href="#%E0%A4%8F%E0%A4%95-%E0%A4%95%E0%A4%B0%E0%A4%95%E0%A4%9F%E0%A4%B0-%E0%A4%B5%E0%A4%95%E0%A4%9F%E0%A4%B0-%E0%A4%B8-%E0%A4%8F%E0%A4%95-%E0%A4%95%E0%A4%B0%E0%A4%AA%E0%A4%B8-%E0%A4%95-%E0%A4%A8%E0%A4%B0%E0%A4%AE%E0%A4%A3-%E0%A4%95%E0%A4%B0%E0%A4%A8-%E0%A4%95-%E0%A4%A8%E0%A4%B0%E0%A4%A6%E0%A4%B6" class="anchor"></a>एक करैक्टर वेक्टर से एक कार्पस का निर्माण करने के निर्देश</h3>
 <p>सबसे सरल है आर की मेमरी में रखे हुए टेक्स्ट के वेक्टर से कॉर्पस बनाना। यह R के उन्नत उपयोगकर्ता को टेक्स्ट इनपुट्स चुनाव करने की पूरी आज़ादी देता है, क्योंकि इसमें टेक्स्ट के वेक्टर को प्राप्त करने के लगभग अंतहीन तरीके हैं।</p>
 <p>यदि हमारे पास पहले से ही इस रूप में टेक्स्ट हैं, तो हम सीधे कॉरपस कंस्ट्रक्टर फ़ंक्शन को कॉल कर सकते हैं। हम ब्रिटेन के राजनीतिक दलों के 2010 के चुनाव के घोषणापत्रं (<code>data_char_ukimmig2010</code>) से निकाला किया गया आव्रजन नीति के बारे में टेक्स्ट के बिल्ट इन करैक्टर ऑब्जेक्ट पर इसका प्रदर्शन कर सकते है।</p>
-<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="no">corp_uk</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../../reference/corpus.html">corpus</a></span>(<span class="no">data_char_ukimmig2010</span>)  <span class="co"># build a new corpus from the texts</span>
-<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="no">corp_uk</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb5"><pre class="downlit">
+<span class="kw">corp_uk</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/corpus.html">corpus</a></span>(<span class="kw">data_char_ukimmig2010</span>)  <span class="co"># build a new corpus from the texts</span>
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw">corp_uk</span>)
+</pre></div>
 <pre><code>## Corpus consisting of 9 documents, showing 9 documents:
 ## 
 ##          Text Types Tokens Sentences
@@ -242,9 +252,11 @@
 ##          UKIP   346    722        26</code></pre>
 <p>हम कुछ डॉक्युमेंट लेवल वेरीअबल्ज़ - जिसे क्वांटेडा में <em>docvars</em> कहा गया है - इस कार्पस के साथ जोड़ सकते हैं</p>
 <p>हम इसे ऐसे कर सकते हैं: R के <code><a href="https://rdrr.io/r/base/names.html">names()</a></code> फ़ंक्शन का उपयोग करके, हम <code>data_char_ukimmig2010</code> के कैरक्टर वेक्टर के नामों को पा सकते हैं और उन नामों को डॉक्युमेंट वेरीअबल (<em>docvar</em>) में रख सकते हैं।</p>
-<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="fu"><a href="../../reference/docvars.html">docvars</a></span>(<span class="no">corp_uk</span>, <span class="st">"Party"</span>) <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span>(<span class="no">data_char_ukimmig2010</span>)
-<span class="fu"><a href="../../reference/docvars.html">docvars</a></span>(<span class="no">corp_uk</span>, <span class="st">"Year"</span>) <span class="kw">&lt;-</span> <span class="fl">2010</span>
-<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="no">corp_uk</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb7"><pre class="downlit">
+<span class="fu"><a href="../../reference/docvars.html">docvars</a></span>(<span class="kw">corp_uk</span>, <span class="st">"Party"</span>) <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span>(<span class="kw">data_char_ukimmig2010</span>)
+<span class="fu"><a href="../../reference/docvars.html">docvars</a></span>(<span class="kw">corp_uk</span>, <span class="st">"Year"</span>) <span class="op">&lt;-</span> <span class="fl">2010</span>
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw">corp_uk</span>)
+</pre></div>
 <pre><code>## Corpus consisting of 9 documents, showing 9 documents:
 ## 
 ##          Text Types Tokens Sentences        Party Year
@@ -258,11 +270,17 @@
 ##           SNP    88    134         4          SNP 2010
 ##          UKIP   346    722        26         UKIP 2010</code></pre>
 <p>यदि हम प्रत्येक डॉक्युमेंट को अतिरिक्त मेटा-डेटा के साथ टैग करना चाहते हैं जो विश्लेषण के लिए ज़रूरी नहीं है, बल्कि कुछ ऐसा है जिसे हमें डॉक्युमेंट की विशेषता के रूप में जानने की आवश्यकता है, हम उन्हें भी अपने कार्पस में जोड़ सकते हैं।</p>
-<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="fu"><a href="../../reference/metadoc.html">metadoc</a></span>(<span class="no">corp_uk</span>, <span class="st">"language"</span>) <span class="kw">&lt;-</span> <span class="st">"english"</span></pre></body></html></div>
+<div class="sourceCode" id="cb9"><pre class="downlit">
+<span class="fu"><a href="../../reference/metadoc.html">metadoc</a></span>(<span class="kw">corp_uk</span>, <span class="st">"language"</span>) <span class="op">&lt;-</span> <span class="st">"english"</span>
+</pre></div>
 <pre><code>## Warning: metadoc is deprecated</code></pre>
-<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="fu"><a href="../../reference/metadoc.html">metadoc</a></span>(<span class="no">corp_uk</span>, <span class="st">"docsource"</span>)  <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span>(<span class="st">"data_char_ukimmig2010"</span>, <span class="fl">1</span>:<span class="fu"><a href="../../reference/ndoc.html">ndoc</a></span>(<span class="no">corp_uk</span>), <span class="kw">sep</span> <span class="kw">=</span> <span class="st">"_"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb11"><pre class="downlit">
+<span class="fu"><a href="../../reference/metadoc.html">metadoc</a></span>(<span class="kw">corp_uk</span>, <span class="st">"docsource"</span>)  <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span>(<span class="st">"data_char_ukimmig2010"</span>, <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="../../reference/ndoc.html">ndoc</a></span>(<span class="kw">corp_uk</span>), sep = <span class="st">"_"</span>)
+</pre></div>
 <pre><code>## Warning: metadoc is deprecated</code></pre>
-<div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="no">corp_uk</span>, <span class="kw">showmeta</span> <span class="kw">=</span> <span class="fl">TRUE</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb13"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw">corp_uk</span>, showmeta = <span class="fl">TRUE</span>)
+</pre></div>
 <pre><code>## Corpus consisting of 9 documents, showing 9 documents:
 ## 
 ##          Text Types Tokens Sentences        Party Year _language
@@ -290,37 +308,39 @@
 <div id="रडटकसट-पकज-क-उपयग-करक-फइल-क-लड-करन-क-लए-नरदश" class="section level3">
 <h3 class="hasAnchor">
 <a href="#%E0%A4%B0%E0%A4%A1%E0%A4%9F%E0%A4%95%E0%A4%B8%E0%A4%9F-%E0%A4%AA%E0%A4%95%E0%A4%9C-%E0%A4%95-%E0%A4%89%E0%A4%AA%E0%A4%AF%E0%A4%97-%E0%A4%95%E0%A4%B0%E0%A4%95-%E0%A4%AB%E0%A4%87%E0%A4%B2-%E0%A4%95-%E0%A4%B2%E0%A4%A1-%E0%A4%95%E0%A4%B0%E0%A4%A8-%E0%A4%95-%E0%A4%B2%E0%A4%8F-%E0%A4%A8%E0%A4%B0%E0%A4%A6%E0%A4%B6" class="anchor"></a>रीडटेक्सट पैकेज का उपयोग करके फ़ाइलों को लोड करने के लिए निर्देश</h3>
-<div class="sourceCode" id="cb15"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">require</a></span>(<span class="no">readtext</span>)
+<div class="sourceCode" id="cb15"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">require</a></span>(<span class="kw"><a href="https://github.com/quanteda/readtext">readtext</a></span>)
 
 <span class="co"># Twitter json</span>
-<span class="no">dat_json</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/readtext/man/readtext.html">readtext</a></span>(<span class="st">"~/Dropbox/QUANTESS/social media/zombies/tweets.json"</span>)
-<span class="no">corp_twitter</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../../reference/corpus.html">corpus</a></span>(<span class="no">dat_json</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="no">corp_twitter</span>, <span class="fl">5</span>)
+<span class="kw">dat_json</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/readtext/man/readtext.html">readtext</a></span>(<span class="st">"~/Dropbox/QUANTESS/social media/zombies/tweets.json"</span>)
+<span class="kw">corp_twitter</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/corpus.html">corpus</a></span>(<span class="kw">dat_json</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw">corp_twitter</span>, <span class="fl">5</span>)
 <span class="co"># generic json - needs a textfield specifier</span>
-<span class="no">dat_sotu</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/readtext/man/readtext.html">readtext</a></span>(<span class="st">"~/Dropbox/QUANTESS/Manuscripts/collocations/Corpora/sotu/sotu.json"</span>,
-                     <span class="kw">textfield</span> <span class="kw">=</span> <span class="st">"text"</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="fu"><a href="../../reference/corpus.html">corpus</a></span>(<span class="no">dat_sotu</span>), <span class="fl">5</span>)
+<span class="kw">dat_sotu</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/readtext/man/readtext.html">readtext</a></span>(<span class="st">"~/Dropbox/QUANTESS/Manuscripts/collocations/Corpora/sotu/sotu.json"</span>,
+                     textfield = <span class="st">"text"</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="fu"><a href="../../reference/corpus.html">corpus</a></span>(<span class="kw">dat_sotu</span>), <span class="fl">5</span>)
 <span class="co"># text file</span>
-<span class="no">dat_txtone</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/readtext/man/readtext.html">readtext</a></span>(<span class="st">"~/Dropbox/QUANTESS/corpora/project_gutenberg/pg2701.txt"</span>, <span class="kw">cache</span> <span class="kw">=</span> <span class="fl">FALSE</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="fu"><a href="../../reference/corpus.html">corpus</a></span>(<span class="no">dat_txtone</span>), <span class="fl">5</span>)
+<span class="kw">dat_txtone</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/readtext/man/readtext.html">readtext</a></span>(<span class="st">"~/Dropbox/QUANTESS/corpora/project_gutenberg/pg2701.txt"</span>, cache = <span class="fl">FALSE</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="fu"><a href="../../reference/corpus.html">corpus</a></span>(<span class="kw">dat_txtone</span>), <span class="fl">5</span>)
 <span class="co"># multiple text files</span>
-<span class="no">dat_txtmultiple1</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/readtext/man/readtext.html">readtext</a></span>(<span class="st">"~/Dropbox/QUANTESS/corpora/inaugural/*.txt"</span>, <span class="kw">cache</span> <span class="kw">=</span> <span class="fl">FALSE</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="fu"><a href="../../reference/corpus.html">corpus</a></span>(<span class="no">dat_txtmultiple1</span>), <span class="fl">5</span>)
+<span class="kw">dat_txtmultiple1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/readtext/man/readtext.html">readtext</a></span>(<span class="st">"~/Dropbox/QUANTESS/corpora/inaugural/*.txt"</span>, cache = <span class="fl">FALSE</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="fu"><a href="../../reference/corpus.html">corpus</a></span>(<span class="kw">dat_txtmultiple1</span>), <span class="fl">5</span>)
 <span class="co"># multiple text files with docvars from filenames</span>
-<span class="no">dat_txtmultiple2</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/readtext/man/readtext.html">readtext</a></span>(<span class="st">"~/Dropbox/QUANTESS/corpora/inaugural/*.txt"</span>,
-                             <span class="kw">docvarsfrom</span> <span class="kw">=</span> <span class="st">"filenames"</span>, <span class="kw">sep</span> <span class="kw">=</span> <span class="st">"-"</span>,
-                             <span class="kw">docvarnames</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Year"</span>, <span class="st">"President"</span>))
-<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="fu"><a href="../../reference/corpus.html">corpus</a></span>(<span class="no">dat_txtmultiple2</span>), <span class="fl">5</span>)
+<span class="kw">dat_txtmultiple2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/readtext/man/readtext.html">readtext</a></span>(<span class="st">"~/Dropbox/QUANTESS/corpora/inaugural/*.txt"</span>,
+                             docvarsfrom = <span class="st">"filenames"</span>, sep = <span class="st">"-"</span>,
+                             docvarnames = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Year"</span>, <span class="st">"President"</span>))
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="fu"><a href="../../reference/corpus.html">corpus</a></span>(<span class="kw">dat_txtmultiple2</span>), <span class="fl">5</span>)
 <span class="co"># XML data</span>
-<span class="no">dat_xml</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/readtext/man/readtext.html">readtext</a></span>(<span class="st">"~/Dropbox/QUANTESS/quanteda_working_files/xmlData/plant_catalog.xml"</span>,
-                    <span class="kw">textfield</span> <span class="kw">=</span> <span class="st">"COMMON"</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="fu"><a href="../../reference/corpus.html">corpus</a></span>(<span class="no">dat_xml</span>), <span class="fl">5</span>)
+<span class="kw">dat_xml</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/readtext/man/readtext.html">readtext</a></span>(<span class="st">"~/Dropbox/QUANTESS/quanteda_working_files/xmlData/plant_catalog.xml"</span>,
+                    textfield = <span class="st">"COMMON"</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="fu"><a href="../../reference/corpus.html">corpus</a></span>(<span class="kw">dat_xml</span>), <span class="fl">5</span>)
 <span class="co"># csv file</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/write.table.html">write.csv</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="kw">inaug_speech</span> <span class="kw">=</span> <span class="fu"><a href="../../reference/texts.html">texts</a></span>(<span class="no">data_corpus_inaugural</span>),
-                     <span class="fu"><a href="../../reference/docvars.html">docvars</a></span>(<span class="no">data_corpus_inaugural</span>)),
-          <span class="kw">file</span> <span class="kw">=</span> <span class="st">"/tmp/inaug_texts.csv"</span>, <span class="kw">row.names</span> <span class="kw">=</span> <span class="fl">FALSE</span>)
-<span class="no">dat_csv</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/readtext/man/readtext.html">readtext</a></span>(<span class="st">"/tmp/inaug_texts.csv"</span>, <span class="kw">textfield</span> <span class="kw">=</span> <span class="st">"inaug_speech"</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="fu"><a href="../../reference/corpus.html">corpus</a></span>(<span class="no">dat_csv</span>), <span class="fl">5</span>)</pre></body></html></div>
+<span class="fu"><a href="https://rdrr.io/r/utils/write.table.html">write.csv</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(inaug_speech = <span class="fu"><a href="../../reference/texts.html">texts</a></span>(<span class="kw">data_corpus_inaugural</span>),
+                     <span class="fu"><a href="../../reference/docvars.html">docvars</a></span>(<span class="kw">data_corpus_inaugural</span>)),
+          file = <span class="st">"/tmp/inaug_texts.csv"</span>, row.names = <span class="fl">FALSE</span>)
+<span class="kw">dat_csv</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/readtext/man/readtext.html">readtext</a></span>(<span class="st">"/tmp/inaug_texts.csv"</span>, textfield = <span class="st">"inaug_speech"</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="fu"><a href="../../reference/corpus.html">corpus</a></span>(<span class="kw">dat_csv</span>), <span class="fl">5</span>)
+</pre></div>
 </div>
 </div>
 <div id="कवटड-करपस-कस-कम-करत-ह" class="section level2">
@@ -332,11 +352,15 @@
 <p>एक कॉर्पस को ओरिज़िनल डॉक्युमेंट्स का “पुस्तकालय” बनाया गया है जिसे सादे, UTF-8 एन्कोडेड पाठ में बदल दिया गया है, और इसे कॉर्पस स्तर पर और डॉक्युमेंट लेवल पर मेटा-डेटा के साथ संग्रहीत किया गया है। हमारे पास डॉक्युमेंट लेवल मेटा-डेटा के लिए एक विशेष नाम है: <em>docvars</em>। ये वेरीअबल या फ़ीचर्ज़ हैं जो प्रत्येक डॉक्युमेंट की विशेषताओं का वर्णन करते हैं।</p>
 <p>कॉर्पस टेक्स्ट का लगभग स्थिर कंटेनर है, प्रॉसेसिंग और विश्लेषण के संबंध में। इस कंटेनर में टेक्स्ट को आंतरिक रूप से बदला नहीं जा सकता किसी पूर्व प्रॉसेसिंग के लिए जैसे की <code>,</code> जैसे चिन्हों को हटाने के लिए। बल्कि, टेक्स्ट को कॉर्पस से निकाला जा सकता है प्रॉसेसिंग के लिए और नए ऑब्जेक्ट में रखा जा सकता है। कॉर्पस के टेक्स्ट पे , बिना बदलाव किए, विश्लेषण किए सकते हैं - जैसे की वो पढ़ने में कितना आसान है।</p>
 <p>एक कार्पस से टेक्स्ट को निकालने के लिए, हम <code><a href="../../reference/texts.html">texts()</a></code> का उपयोग करते हैं।</p>
-<div class="sourceCode" id="cb16"><html><body><pre class="r"><span class="fu"><a href="../../reference/texts.html">texts</a></span>(<span class="no">data_corpus_inaugural</span>)[<span class="fl">2</span>]</pre></body></html></div>
+<div class="sourceCode" id="cb16"><pre class="downlit">
+<span class="fu"><a href="../../reference/texts.html">texts</a></span>(<span class="kw">data_corpus_inaugural</span>)[<span class="fl">2</span>]
+</pre></div>
 <pre><code>##                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              1793-Washington 
 ## "Fellow citizens, I am again called upon by the voice of my country to execute the functions of its Chief Magistrate. When the occasion proper for it shall arrive, I shall endeavor to express the high sense I entertain of this distinguished honor, and of the confidence which has been reposed in me by the people of united America.\n\nPrevious to the execution of any official act of the President the Constitution requires an oath of office. This oath I am now about to take, and in your presence: That if it shall be found during my administration of the Government I have in any instance violated willingly or knowingly the injunctions thereof, I may (besides incurring constitutional punishment) be subject to the upbraidings of all who are now witnesses of the present solemn ceremony.\n\n "</code></pre>
 <p>एक कार्पस से टेक्स्ट को संक्षेप में प्रस्तुत करने के लिए, हम एक कार्पस के लिए परिभाषित <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code> मेथड का प्रयोग कर सकते हैं।</p>
-<div class="sourceCode" id="cb18"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="no">data_corpus_inaugural</span>, <span class="kw">n</span> <span class="kw">=</span> <span class="fl">5</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb18"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw">data_corpus_inaugural</span>, n = <span class="fl">5</span>)
+</pre></div>
 <pre><code>## Corpus consisting of 58 documents, showing 5 documents:
 ## 
 ##             Text Types Tokens Sentences Year  President FirstName
@@ -352,17 +376,21 @@
 ##  Democratic-Republican
 ##  Democratic-Republican</code></pre>
 <p>हम समरी कमांड से डेटा फ्रेम के रूप में आउटपुट को सेव कर सकते हैं, और इस सूचना के साथ कुछ बुनियादी वर्णनात्मक आँकड़े प्लॉट कर सकते हैं:</p>
-<div class="sourceCode" id="cb20"><html><body><pre class="r"><span class="no">tokeninfo</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="no">data_corpus_inaugural</span>)
-<span class="kw">if</span> (<span class="fu"><a href="https://rdrr.io/r/base/library.html">require</a></span>(<span class="no">ggplot2</span>))
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="kw">data</span> <span class="kw">=</span> <span class="no">tokeninfo</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="kw">x</span> <span class="kw">=</span> <span class="no">Year</span>, <span class="kw">y</span> <span class="kw">=</span> <span class="no">Tokens</span>, <span class="kw">group</span> <span class="kw">=</span> <span class="fl">1</span>)) +
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span>() +
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span>() +
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_continuous</a></span>(<span class="kw">labels</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="fl">1789</span>, <span class="fl">2017</span>, <span class="fl">12</span>)), <span class="kw">breaks</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="fl">1789</span>, <span class="fl">2017</span>, <span class="fl">12</span>)) +
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span>()</pre></body></html></div>
+<div class="sourceCode" id="cb20"><pre class="downlit">
+<span class="kw">tokeninfo</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw">data_corpus_inaugural</span>)
+<span class="co">if</span> (<span class="fu"><a href="https://rdrr.io/r/base/library.html">require</a></span>(<span class="kw"><a href="http://ggplot2.tidyverse.org">ggplot2</a></span>))
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(data = <span class="kw">tokeninfo</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(x = <span class="kw">Year</span>, y = <span class="kw">Tokens</span>, group = <span class="fl">1</span>)) <span class="op">+</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span>() <span class="op">+</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span>() <span class="op">+</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_continuous</a></span>(labels = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="fl">1789</span>, <span class="fl">2017</span>, <span class="fl">12</span>)), breaks = <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="fl">1789</span>, <span class="fl">2017</span>, <span class="fl">12</span>)) <span class="op">+</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span>()
+</pre></div>
 <pre><code>## Loading required package: ggplot2</code></pre>
 <p><img src="quickstart_hi_files/figure-html/unnamed-chunk-12-1.png" width="768"></p>
-<div class="sourceCode" id="cb22"><html><body><pre class="r"><span class="co"># Longest inaugural address: William Henry Harrison</span>
-<span class="no">tokeninfo</span>[<span class="fu"><a href="https://rdrr.io/r/base/which.min.html">which.max</a></span>(<span class="no">tokeninfo</span>$<span class="no">Tokens</span>), ]</pre></body></html></div>
+<div class="sourceCode" id="cb22"><pre class="downlit">
+<span class="co"># Longest inaugural address: William Henry Harrison</span>
+<span class="kw">tokeninfo</span>[<span class="fu"><a href="https://rdrr.io/r/base/which.min.html">which.max</a></span>(<span class="kw">tokeninfo</span><span class="op">$</span><span class="kw">Tokens</span>), ]
+</pre></div>
 <pre><code>##             Text Types Tokens Sentences Year President     FirstName Party
 ## 14 1841-Harrison  1898   9123       210 1841  Harrison William Henry  Whig</code></pre>
 </div>
@@ -374,10 +402,12 @@
 <h3 class="hasAnchor">
 <a href="#%E0%A4%A6-%E0%A4%95%E0%A4%B0%E0%A4%AA%E0%A4%B8-%E0%A4%91%E0%A4%AC%E0%A4%9C%E0%A4%95%E0%A4%9F%E0%A4%B8-%E0%A4%95-%E0%A4%AF%E0%A4%97-%E0%A4%95%E0%A4%B0%E0%A4%A8-%E0%A4%95-%E0%A4%B2%E0%A4%8F-%E0%A4%A8%E0%A4%B0%E0%A4%A6%E0%A4%B6" class="anchor"></a>दो कॉर्पस ऑब्जेक्ट्स को योग करने के लिए निर्देश</h3>
 <p><code><a href="https://rdrr.io/r/base/Arithmetic.html">+</a></code> ऑपरेटर दो कॉर्पस ऑब्जेक्ट्स को सरलता से जोड़ सकता है। यदि उन कॉर्पस आब्जेक्ट के पास डॉक्युमेंट-लेवल वेरिएबल के अलग-अलग सेट हैं, तो उन्हें एक साथ इस तरह से जोड़ जाएगा कि कोई भी जानकारी ना खो जाए। कॉर्पस-स्तर मेटा-डेटा भी जोड़ा जाता है।</p>
-<div class="sourceCode" id="cb24"><html><body><pre class="r"><span class="no">corp1</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../../reference/corpus.html">corpus</a></span>(<span class="no">data_corpus_inaugural</span>[<span class="fl">1</span>:<span class="fl">5</span>])
-<span class="no">corp2</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../../reference/corpus.html">corpus</a></span>(<span class="no">data_corpus_inaugural</span>[<span class="fl">53</span>:<span class="fl">58</span>])
-<span class="no">corp3</span> <span class="kw">&lt;-</span> <span class="no">corp1</span> + <span class="no">corp2</span>
-<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="no">corp3</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb24"><pre class="downlit">
+<span class="kw">corp1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/corpus.html">corpus</a></span>(<span class="kw">data_corpus_inaugural</span>[<span class="fl">1</span><span class="op">:</span><span class="fl">5</span>])
+<span class="kw">corp2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/corpus.html">corpus</a></span>(<span class="kw">data_corpus_inaugural</span>[<span class="fl">53</span><span class="op">:</span><span class="fl">58</span>])
+<span class="kw">corp3</span> <span class="op">&lt;-</span> <span class="kw">corp1</span> <span class="op">+</span> <span class="kw">corp2</span>
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw">corp3</span>)
+</pre></div>
 <pre><code>## Corpus consisting of 11 documents, showing 11 documents:
 ## 
 ##             Text Types Tokens Sentences Year  President FirstName
@@ -446,7 +476,9 @@ summary(corpus_subset(data_corpus_inaugural, President == "Adams"))
 <h2 class="hasAnchor">
 <a href="#%E0%A4%95%E0%A4%B0%E0%A4%AA%E0%A4%B8-%E0%A4%9F%E0%A4%95%E0%A4%B8%E0%A4%9F-%E0%A4%95-%E0%A4%85%E0%A4%A8%E0%A4%B5%E0%A4%B7%E0%A4%A3-%E0%A4%95%E0%A4%B0%E0%A4%A8" class="anchor"></a>कॉर्पस टेक्स्ट का अन्वेषण करना</h2>
 <p><code>kwic</code> फ़ंक्शन (कीवर्ड-इन-कॉन्टेक्स्ट) शब्दों को ढूँडता है और उन्हें उनके उचित संदर्भों में दिखाता है।</p>
-<div class="sourceCode" id="cb27"><html><body><pre class="r"><span class="fu"><a href="../../reference/kwic.html">kwic</a></span>(<span class="no">data_corpus_inaugural</span>, <span class="kw">pattern</span> <span class="kw">=</span> <span class="st">"terror"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb27"><pre class="downlit">
+<span class="fu"><a href="../../reference/kwic.html">kwic</a></span>(<span class="kw">data_corpus_inaugural</span>, pattern = <span class="st">"terror"</span>)
+</pre></div>
 <pre><code>##                                                                     
 ##     [1797-Adams, 1324]              fraud or violence, by | terror |
 ##  [1933-Roosevelt, 111] nameless, unreasoning, unjustified | terror |
@@ -465,7 +497,9 @@ summary(corpus_subset(data_corpus_inaugural, President == "Adams"))
 ##  . And they torment the           
 ##  and destruction. Our children    
 ##  and slaughtering innocents, we</code></pre>
-<div class="sourceCode" id="cb29"><html><body><pre class="r"><span class="fu"><a href="../../reference/kwic.html">kwic</a></span>(<span class="no">data_corpus_inaugural</span>, <span class="kw">pattern</span> <span class="kw">=</span> <span class="st">"terror"</span>, <span class="kw">valuetype</span> <span class="kw">=</span> <span class="st">"regex"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb29"><pre class="downlit">
+<span class="fu"><a href="../../reference/kwic.html">kwic</a></span>(<span class="kw">data_corpus_inaugural</span>, pattern = <span class="st">"terror"</span>, valuetype = <span class="st">"regex"</span>)
+</pre></div>
 <pre><code>##                                                                             
 ##     [1797-Adams, 1324]                   fraud or violence, by |  terror   |
 ##  [1933-Roosevelt, 111]      nameless, unreasoning, unjustified |  terror   |
@@ -490,7 +524,9 @@ summary(corpus_subset(data_corpus_inaugural, President == "Adams"))
 ##  and destruction. Our children    
 ##  and slaughtering innocents, we   
 ##  , which we will eradicate</code></pre>
-<div class="sourceCode" id="cb31"><html><body><pre class="r"><span class="fu"><a href="../../reference/kwic.html">kwic</a></span>(<span class="no">data_corpus_inaugural</span>, <span class="kw">pattern</span> <span class="kw">=</span> <span class="st">"communist*"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb31"><pre class="downlit">
+<span class="fu"><a href="../../reference/kwic.html">kwic</a></span>(<span class="kw">data_corpus_inaugural</span>, pattern = <span class="st">"communist*"</span>)
+</pre></div>
 <pre><code>##                                                                   
 ##   [1949-Truman, 832] the actions resulting from the | Communist  |
 ##  [1961-Kennedy, 510]      required- not because the | Communists |
@@ -498,8 +534,10 @@ summary(corpus_subset(data_corpus_inaugural, President == "Adams"))
 ##  philosophy are a threat to
 ##  may be doing it,</code></pre>
 <p><code><a href="../../reference/phrase.html">phrase()</a></code> का उपयोग करके हम बहु-शब्द इक्स्प्रेशन भी देख सकते हैं।</p>
-<div class="sourceCode" id="cb33"><html><body><pre class="r"><span class="fu"><a href="../../reference/kwic.html">kwic</a></span>(<span class="no">data_corpus_inaugural</span>, <span class="kw">pattern</span> <span class="kw">=</span> <span class="fu"><a href="../../reference/phrase.html">phrase</a></span>(<span class="st">"United States"</span>)) <span class="kw">%&gt;%</span>
-    <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>() <span class="co"># show context of the first six occurrences of "United States"</span></pre></body></html></div>
+<div class="sourceCode" id="cb33"><pre class="downlit">
+<span class="fu"><a href="../../reference/kwic.html">kwic</a></span>(<span class="kw">data_corpus_inaugural</span>, pattern = <span class="fu"><a href="../../reference/phrase.html">phrase</a></span>(<span class="st">"United States"</span>)) <span class="op">%&gt;%</span>
+    <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>() <span class="co"># show context of the first six occurrences of "United States"</span>
+</pre></div>
 <pre><code>##                                                                              
 ##  [1789-Washington, 433:434]            of the people of the | United States |
 ##  [1789-Washington, 529:530]          more than those of the | United States |
@@ -515,8 +553,10 @@ summary(corpus_subset(data_corpus_inaugural, President == "Adams"))
 ##  , I entertain no doubt               
 ##  ? These contributions enable us</code></pre>
 <p>उपरोक्त सारांश में,<code>Year</code> और <code>President</code> प्रत्येक डॉक्युमेंट में हैं। हम <code><a href="../../reference/docvars.html">docvars()</a></code> फंक्शन के साथ ऐसे वेरिएबल को एक्सेस कर सकते हैं।</p>
-<div class="sourceCode" id="cb35"><html><body><pre class="r"><span class="co"># inspect the document-level variables</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="fu"><a href="../../reference/docvars.html">docvars</a></span>(<span class="no">data_corpus_inaugural</span>))</pre></body></html></div>
+<div class="sourceCode" id="cb35"><pre class="downlit">
+<span class="co"># inspect the document-level variables</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="fu"><a href="../../reference/docvars.html">docvars</a></span>(<span class="kw">data_corpus_inaugural</span>))
+</pre></div>
 <pre><code>##   Year  President FirstName                 Party
 ## 1 1789 Washington    George                  none
 ## 2 1793 Washington    George                  none
@@ -524,8 +564,10 @@ summary(corpus_subset(data_corpus_inaugural, President == "Adams"))
 ## 4 1801  Jefferson    Thomas Democratic-Republican
 ## 5 1805  Jefferson    Thomas Democratic-Republican
 ## 6 1809    Madison     James Democratic-Republican</code></pre>
-<div class="sourceCode" id="cb37"><html><body><pre class="r"><span class="co"># inspect the corpus-level metadata</span>
-<span class="fu"><a href="../../reference/meta.html">metacorpus</a></span>(<span class="no">data_corpus_inaugural</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb37"><pre class="downlit">
+<span class="co"># inspect the corpus-level metadata</span>
+<span class="fu"><a href="../../reference/meta.html">metacorpus</a></span>(<span class="kw">data_corpus_inaugural</span>)
+</pre></div>
 <pre><code>## $description
 ## [1] "Transcripts of all inaugural addresses delivered by United States Presidents, from Washington 1789 onward.  Data compiled by Gerhard Peters."
 ## 
@@ -544,7 +586,7 @@ summary(corpus_subset(data_corpus_inaugural, President == "Adams"))
 ## 
 ## $title
 ## [1] "US presidential inaugural address speeches"</code></pre>
-<p>अधिक कॉर्पोरा <a href="http://github.com/quanteda/quanteda.corpora">quanteda.corpora</a> पैकेज से उपलब्ध हैं।</p>
+<p>अधिक कॉर्पोरा <a href="https://github.com/quanteda/quanteda.corpora">quanteda.corpora</a> पैकेज से उपलब्ध हैं।</p>
 </div>
 </div>
 <div id="करपस-स-फचरज-नकलन" class="section level1">
@@ -556,9 +598,11 @@ summary(corpus_subset(data_corpus_inaugural, President == "Adams"))
 <a href="#%E0%A4%9F%E0%A4%95%E0%A4%B8%E0%A4%9F-%E0%A4%95-%E0%A4%9F%E0%A4%95%E0%A4%A8%E0%A4%B8%E0%A4%B6%E0%A4%A8" class="anchor"></a>टेक्स्ट का टोकनैसेशन</h2>
 <p>केवल एक टेक्स्ट को टोकनैस करने के लिए, क्वांटेडा एक शक्तिशाली कमांड प्रदान करता है जिसे <code><a href="../../reference/tokens.html">tokens()</a></code> कहा जाता है। यह एक मध्यवर्ती वस्तु का उत्पादन करता है, जिसमें करैक्टर वैक्टर के रूप में टोकन की एक सूची शामिल है, जहां सूची का प्रत्येक तत्व एक इनपुट दस्तावेज़ से मेल खाता है।</p>
 <p><code><a href="../../reference/tokens.html">tokens()</a></code> टेक्स्ट से कुछ भी नहीं हटाता है जब तक ऐसा करने के लिए कहा नहीं जाता है।</p>
-<div class="sourceCode" id="cb39"><html><body><pre class="r"><span class="no">txt</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw">text1</span> <span class="kw">=</span> <span class="st">"This is $10 in 999 different ways,\n up and down; left and right!"</span>,
-         <span class="kw">text2</span> <span class="kw">=</span> <span class="st">"@kenbenoit working: on #quanteda 2day\t4ever, http://textasdata.com?page=123."</span>)
-<span class="fu"><a href="../../reference/tokens.html">tokens</a></span>(<span class="no">txt</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb39"><pre class="downlit">
+<span class="kw">txt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(text1 = <span class="st">"This is $10 in 999 different ways,\n up and down; left and right!"</span>,
+         text2 = <span class="st">"@kenbenoit working: on #quanteda 2day\t4ever, http://textasdata.com?page=123."</span>)
+<span class="fu"><a href="../../reference/tokens.html">tokens</a></span>(<span class="kw">txt</span>)
+</pre></div>
 <pre><code>## Tokens consisting of 2 documents.
 ## text1 :
 ##  [1] "This"      "is"        "$"         "10"        "in"        "999"      
@@ -571,7 +615,9 @@ summary(corpus_subset(data_corpus_inaugural, President == "Adams"))
 ## [5] "#quanteda"                       "2day"                           
 ## [7] "4ever"                           ","                              
 ## [9] "http://textasdata.com?page=123."</code></pre>
-<div class="sourceCode" id="cb41"><html><body><pre class="r"><span class="fu"><a href="../../reference/tokens.html">tokens</a></span>(<span class="no">txt</span>, <span class="kw">remove_numbers</span> <span class="kw">=</span> <span class="fl">TRUE</span>,  <span class="kw">remove_punct</span> <span class="kw">=</span> <span class="fl">TRUE</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb41"><pre class="downlit">
+<span class="fu"><a href="../../reference/tokens.html">tokens</a></span>(<span class="kw">txt</span>, remove_numbers = <span class="fl">TRUE</span>,  remove_punct = <span class="fl">TRUE</span>)
+</pre></div>
 <pre><code>## Tokens consisting of 2 documents.
 ## text1 :
 ##  [1] "This"      "is"        "$"         "in"        "different" "ways"     
@@ -582,7 +628,9 @@ summary(corpus_subset(data_corpus_inaugural, President == "Adams"))
 ## [3] "on"                              "#quanteda"                      
 ## [5] "2day"                            "4ever"                          
 ## [7] "http://textasdata.com?page=123."</code></pre>
-<div class="sourceCode" id="cb43"><html><body><pre class="r"><span class="fu"><a href="../../reference/tokens.html">tokens</a></span>(<span class="no">txt</span>, <span class="kw">remove_numbers</span> <span class="kw">=</span> <span class="fl">FALSE</span>, <span class="kw">remove_punct</span> <span class="kw">=</span> <span class="fl">TRUE</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb43"><pre class="downlit">
+<span class="fu"><a href="../../reference/tokens.html">tokens</a></span>(<span class="kw">txt</span>, remove_numbers = <span class="fl">FALSE</span>, remove_punct = <span class="fl">TRUE</span>)
+</pre></div>
 <pre><code>## Tokens consisting of 2 documents.
 ## text1 :
 ##  [1] "This"      "is"        "$"         "10"        "in"        "999"      
@@ -594,7 +642,9 @@ summary(corpus_subset(data_corpus_inaugural, President == "Adams"))
 ## [3] "on"                              "#quanteda"                      
 ## [5] "2day"                            "4ever"                          
 ## [7] "http://textasdata.com?page=123."</code></pre>
-<div class="sourceCode" id="cb45"><html><body><pre class="r"><span class="fu"><a href="../../reference/tokens.html">tokens</a></span>(<span class="no">txt</span>, <span class="kw">remove_numbers</span> <span class="kw">=</span> <span class="fl">TRUE</span>,  <span class="kw">remove_punct</span> <span class="kw">=</span> <span class="fl">FALSE</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb45"><pre class="downlit">
+<span class="fu"><a href="../../reference/tokens.html">tokens</a></span>(<span class="kw">txt</span>, remove_numbers = <span class="fl">TRUE</span>,  remove_punct = <span class="fl">FALSE</span>)
+</pre></div>
 <pre><code>## Tokens consisting of 2 documents.
 ## text1 :
 ##  [1] "This"      "is"        "$"         "in"        "different" "ways"     
@@ -607,7 +657,9 @@ summary(corpus_subset(data_corpus_inaugural, President == "Adams"))
 ## [5] "#quanteda"                       "2day"                           
 ## [7] "4ever"                           ","                              
 ## [9] "http://textasdata.com?page=123."</code></pre>
-<div class="sourceCode" id="cb47"><html><body><pre class="r"><span class="fu"><a href="../../reference/tokens.html">tokens</a></span>(<span class="no">txt</span>, <span class="kw">remove_numbers</span> <span class="kw">=</span> <span class="fl">FALSE</span>, <span class="kw">remove_punct</span> <span class="kw">=</span> <span class="fl">FALSE</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb47"><pre class="downlit">
+<span class="fu"><a href="../../reference/tokens.html">tokens</a></span>(<span class="kw">txt</span>, remove_numbers = <span class="fl">FALSE</span>, remove_punct = <span class="fl">FALSE</span>)
+</pre></div>
 <pre><code>## Tokens consisting of 2 documents.
 ## text1 :
 ##  [1] "This"      "is"        "$"         "10"        "in"        "999"      
@@ -620,7 +672,9 @@ summary(corpus_subset(data_corpus_inaugural, President == "Adams"))
 ## [5] "#quanteda"                       "2day"                           
 ## [7] "4ever"                           ","                              
 ## [9] "http://textasdata.com?page=123."</code></pre>
-<div class="sourceCode" id="cb49"><html><body><pre class="r"><span class="fu"><a href="../../reference/tokens.html">tokens</a></span>(<span class="no">txt</span>, <span class="kw">remove_numbers</span> <span class="kw">=</span> <span class="fl">FALSE</span>, <span class="kw">remove_punct</span> <span class="kw">=</span> <span class="fl">FALSE</span>, <span class="kw">remove_separators</span> <span class="kw">=</span> <span class="fl">FALSE</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb49"><pre class="downlit">
+<span class="fu"><a href="../../reference/tokens.html">tokens</a></span>(<span class="kw">txt</span>, remove_numbers = <span class="fl">FALSE</span>, remove_punct = <span class="fl">FALSE</span>, remove_separators = <span class="fl">FALSE</span>)
+</pre></div>
 <pre><code>## Tokens consisting of 2 documents.
 ## text1 :
 ##  [1] "This"      " "         "is"        " "         "$"         "10"       
@@ -676,8 +730,10 @@ tokens(c("Kurt Vongeut said; only assholes use semi-colons.",
 ## [1] "En el caso de que no puedas ir con ellos, ¿quieres ir con nosotros?"
 ```</code></pre>
 <p><code><a href="../../reference/tokens_compound.html">tokens_compound()</a></code> के साथ, हम कई शब्दों से बने हुए इक्स्प्रेशन या वाक्य को सिंगल फ़ीचर के रूप में रख सकते हैं बाद के विश्लेषण के लिए।</p>
-<div class="sourceCode" id="cb53"><html><body><pre class="r"><span class="fu"><a href="../../reference/tokens.html">tokens</a></span>(<span class="st">"New York City is located in the United States."</span>) <span class="kw">%&gt;%</span>
-    <span class="fu"><a href="../../reference/tokens_compound.html">tokens_compound</a></span>(<span class="kw">pattern</span> <span class="kw">=</span> <span class="fu"><a href="../../reference/phrase.html">phrase</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"New York City"</span>, <span class="st">"United States"</span>)))</pre></body></html></div>
+<div class="sourceCode" id="cb53"><pre class="downlit">
+<span class="fu"><a href="../../reference/tokens.html">tokens</a></span>(<span class="st">"New York City is located in the United States."</span>) <span class="op">%&gt;%</span>
+    <span class="fu"><a href="../../reference/tokens_compound.html">tokens_compound</a></span>(pattern = <span class="fu"><a href="../../reference/phrase.html">phrase</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"New York City"</span>, <span class="st">"United States"</span>)))
+</pre></div>
 <pre><code>## Tokens consisting of 1 document.
 ## text1 :
 ## [1] "New_York_City" "is"            "located"       "in"           
@@ -687,11 +743,13 @@ tokens(c("Kurt Vongeut said; only assholes use semi-colons.",
 <h2 class="hasAnchor">
 <a href="#%E0%A4%A1%E0%A4%95%E0%A4%AF%E0%A4%AE%E0%A4%9F-%E0%A4%AB%E0%A4%9A%E0%A4%B0-%E0%A4%AE%E0%A4%9F%E0%A4%B0%E0%A4%95%E0%A4%B8-%E0%A4%95-%E0%A4%A8%E0%A4%B0%E0%A4%AE%E0%A4%A3-%E0%A4%95%E0%A4%B0%E0%A4%A8" class="anchor"></a>डॉक्युमेंट-फ़ीचर मेट्रिक्स का निर्माण करना :</h2>
 <p>टेक्स्ट को tokenize करना एक मध्यवर्ती स्टेप है , और ज़्यादातर users सीधे एक डॉक्युमेंट-फ़ीचर मेट्रिक्स का निर्माण करना चाहेंगे। इसके लिए हमारे पास एक फ़ंक्शन है - <code><a href="../../reference/dfm.html">dfm()</a></code>। यह फ़ंक्शन टेक्स्ट का tokenization करता है और उसमें से मिले हुए फ़ीचर्ज़ को डॉक्युमेंट्स के मेट्रिक्स में पंक्तियों और कॉलम में डाल देता है । <code><a href="../../reference/tokens.html">tokens()</a></code> फ़ंक्शन के तुलना में <code><a href="../../reference/dfm.html">dfm()</a></code> फ़ंक्शन कुछ विकल्प पहले से ही लागू कर देता है, जैसे की <code><a href="https://rdrr.io/r/base/chartr.html">tolower()</a></code> फ़ंक्शन, जो बड़े अंग्रेज़ी अक्षरों को छोटे अक्षरों में परिवर्तित कर देता है। <code><a href="../../reference/tokens.html">tokens()</a></code> फ़ंक्शन के सभी विकल्पों को <code><a href="../../reference/dfm.html">dfm()</a></code> फ़ंक्शन में पारित किया जा सकता है।</p>
-<div class="sourceCode" id="cb55"><html><body><pre class="r"><span class="no">corp_inaug_post1990</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../../reference/corpus_subset.html">corpus_subset</a></span>(<span class="no">data_corpus_inaugural</span>, <span class="no">Year</span> <span class="kw">&gt;</span> <span class="fl">1990</span>)
+<div class="sourceCode" id="cb55"><pre class="downlit">
+<span class="kw">corp_inaug_post1990</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/corpus_subset.html">corpus_subset</a></span>(<span class="kw">data_corpus_inaugural</span>, <span class="kw">Year</span> <span class="op">&gt;</span> <span class="fl">1990</span>)
 
 <span class="co"># make a dfm</span>
-<span class="no">dfmat_inaug_post1990</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../../reference/dfm.html">dfm</a></span>(<span class="no">corp_inaug_post1990</span>)
-<span class="no">dfmat_inaug_post1990</span>[, <span class="fl">1</span>:<span class="fl">5</span>]</pre></body></html></div>
+<span class="kw">dfmat_inaug_post1990</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/dfm.html">dfm</a></span>(<span class="kw">corp_inaug_post1990</span>)
+<span class="kw">dfmat_inaug_post1990</span>[, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span>]
+</pre></div>
 <pre><code>## Document-feature matrix of: 7 documents, 5 features (0.0% sparse) and 4 docvars.
 ##               features
 ## docs           my fellow citizens   , today
@@ -703,12 +761,16 @@ tokens(c("Kurt Vongeut said; only assholes use semi-colons.",
 ##   2013-Obama    3      3        6  99     4
 ## [ reached max_ndoc ... 1 more document ]</code></pre>
 <p><code><a href="../../reference/dfm.html">dfm()</a></code> के अन्य विकल्पों में स्टॉपवर्ड्स को हटाना और टोकन को स्टेम करना शामिल है।</p>
-<div class="sourceCode" id="cb57"><html><body><pre class="r"><span class="co"># make a dfm, removing stopwords and applying stemming</span>
-<span class="no">dfmat_inaug_post1990</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../../reference/dfm.html">dfm</a></span>(<span class="no">dfmat_inaug_post1990</span>,
-                            <span class="kw">remove</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>),
-                            <span class="kw">stem</span> <span class="kw">=</span> <span class="fl">TRUE</span>, <span class="kw">remove_punct</span> <span class="kw">=</span> <span class="fl">TRUE</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb57"><pre class="downlit">
+<span class="co"># make a dfm, removing stopwords and applying stemming</span>
+<span class="kw">dfmat_inaug_post1990</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/dfm.html">dfm</a></span>(<span class="kw">dfmat_inaug_post1990</span>,
+                            remove = <span class="fu"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>),
+                            stem = <span class="fl">TRUE</span>, remove_punct = <span class="fl">TRUE</span>)
+</pre></div>
 <pre><code>## Warning: remove_punct argument is not used.</code></pre>
-<div class="sourceCode" id="cb59"><html><body><pre class="r"><span class="no">dfmat_inaug_post1990</span>[, <span class="fl">1</span>:<span class="fl">5</span>]</pre></body></html></div>
+<div class="sourceCode" id="cb59"><pre class="downlit">
+<span class="kw">dfmat_inaug_post1990</span>[, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span>]
+</pre></div>
 <pre><code>## Document-feature matrix of: 7 documents, 5 features (2.86% sparse) and 4 docvars.
 ##               features
 ## docs           fellow citizen   , today celebr
@@ -750,8 +812,10 @@ head(stopwords("ar", source = "misc"), 10)
 <h3 class="hasAnchor">
 <a href="#%E0%A4%A1%E0%A4%95%E0%A4%AF%E0%A4%AE%E0%A4%9F-%E0%A4%AB%E0%A4%9A%E0%A4%B0-%E0%A4%AE%E0%A4%9F%E0%A4%B0%E0%A4%95%E0%A4%B8-dfm-%E0%A4%95-%E0%A4%A6%E0%A4%96%E0%A4%A8-%E0%A4%95-%E0%A4%B2%E0%A4%8F" class="anchor"></a>डॉक्युमेंट-फ़ीचर मेट्रिक्स (dfm) को देखने के लिए:</h3>
 <p>Dfm को RStudio के एनवायरनमेंट पेन में या R के <code><a href="../../reference/View.html">View()</a></code> फ़ंक्शन को कॉल करके निरीक्षण किया जा सकता है। Dfm पर <code><a href="../../reference/textplot_wordcloud.html">textplot_wordcloud()</a></code> को कॉल करने से वर्डक्लाउड प्रदर्शित होगा।</p>
-<div class="sourceCode" id="cb62"><html><body><pre class="r"><span class="no">dfmat_uk</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../../reference/dfm.html">dfm</a></span>(<span class="no">data_char_ukimmig2010</span>, <span class="kw">remove</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>), <span class="kw">remove_punct</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
-<span class="no">dfmat_uk</span></pre></body></html></div>
+<div class="sourceCode" id="cb62"><pre class="downlit">
+<span class="kw">dfmat_uk</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/dfm.html">dfm</a></span>(<span class="kw">data_char_ukimmig2010</span>, remove = <span class="fu"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>), remove_punct = <span class="fl">TRUE</span>)
+<span class="kw">dfmat_uk</span>
+</pre></div>
 <pre><code>## Document-feature matrix of: 9 documents, 1,551 features (83.8% sparse).
 ##               features
 ## docs           immigration unparalleled crisis bnp can solve current birth
@@ -786,20 +850,26 @@ topfeatures(dfmat_uk, 20) # 20 most frequent words
 ##          13          12
 ```</code></pre>
 <p><code>dfm</code> क्लास ऑब्जेक्ट के लिए <code><a href="../../reference/textplot_wordcloud.html">textplot_wordcloud()</a></code> का उपयोग करके एक शब्द क्लाउड को प्लॉट किया जा सकता है। यह फ़ंक्शन <strong>wordcloud </strong> पैकेज से <code><a href="../../reference/wordcloud.html">wordcloud()</a></code> में अरग्यूमेंट्स पास करता है और उन्ही अरग्यूमेंट्स का उपयोग करके प्लॉट को सँवारता भी है।</p>
-<div class="sourceCode" id="cb65"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">100</span>)
-<span class="fu"><a href="../../reference/textplot_wordcloud.html">textplot_wordcloud</a></span>(<span class="no">dfmat_uk</span>, <span class="kw">min_count</span> <span class="kw">=</span> <span class="fl">6</span>, <span class="kw">random_order</span> <span class="kw">=</span> <span class="fl">FALSE</span>,
-                   <span class="kw">rotation</span> <span class="kw">=</span> <span class="fl">.25</span>,
-                   <span class="kw">color</span> <span class="kw">=</span> <span class="kw pkg">RColorBrewer</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/RColorBrewer/man/ColorBrewer.html">brewer.pal</a></span>(<span class="fl">8</span>, <span class="st">"Dark2"</span>))</pre></body></html></div>
+<div class="sourceCode" id="cb65"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">100</span>)
+<span class="fu"><a href="../../reference/textplot_wordcloud.html">textplot_wordcloud</a></span>(<span class="kw">dfmat_uk</span>, min_count = <span class="fl">6</span>, random_order = <span class="fl">FALSE</span>,
+                   rotation = <span class="fl">.25</span>,
+                   color = <span class="kw">RColorBrewer</span>::<span class="fu"><a href="https://rdrr.io/pkg/RColorBrewer/man/ColorBrewer.html">brewer.pal</a></span>(<span class="fl">8</span>, <span class="st">"Dark2"</span>))
+</pre></div>
 <p><img src="quickstart_hi_files/figure-html/unnamed-chunk-29-1.png" width="672"></p>
 </div>
 <div id="डकयमटस-क-गरप-करन-डकयमट-वरअबल-दवर" class="section level3">
 <h3 class="hasAnchor">
 <a href="#%E0%A4%A1%E0%A4%95%E0%A4%AF%E0%A4%AE%E0%A4%9F%E0%A4%B8-%E0%A4%95-%E0%A4%97%E0%A4%B0%E0%A4%AA-%E0%A4%95%E0%A4%B0%E0%A4%A8-%E0%A4%A1%E0%A4%95%E0%A4%AF%E0%A4%AE%E0%A4%9F-%E0%A4%B5%E0%A4%B0%E0%A4%85%E0%A4%AC%E0%A4%B2-%E0%A4%A6%E0%A4%B5%E0%A4%B0" class="anchor"></a>डॉक्युमेंट्स को ग्रूप करना डॉक्युमेंट वेरीअबल द्वारा</h3>
 <p>अक्सर, हम सिर्फ दस्तावेज़ फ़ाइलों की बौंडरीस के बजाय यह विश्लेषण करने में रुचि रखते हैं कि टेक्स्ट्स सब्सटांटिव कारकों - जो दस्तावेज़ चर में एन्कोड किया हुआ सकता है - के अनुसार कैसे अलग हो सकता है। dfm बनाते समय हम जिन दस्तावेज़ को समूह कर सकते है जो दस्तावेज़ चर के लिए समान मूल्य साझा करते हैं:</p>
-<div class="sourceCode" id="cb66"><html><body><pre class="r"><span class="no">dfmat_pres</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../../reference/dfm.html">dfm</a></span>(<span class="fu"><a href="https://rdrr.io/r/utils/head.html">tail</a></span>(<span class="no">data_corpus_inaugural</span>, <span class="fl">20</span>), <span class="kw">groups</span> <span class="kw">=</span> <span class="st">"Party"</span>,
-                  <span class="kw">remove</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>), <span class="kw">remove_punct</span> <span class="kw">=</span> <span class="fl">TRUE</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb66"><pre class="downlit">
+<span class="kw">dfmat_pres</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/dfm.html">dfm</a></span>(<span class="fu"><a href="https://rdrr.io/r/utils/head.html">tail</a></span>(<span class="kw">data_corpus_inaugural</span>, <span class="fl">20</span>), groups = <span class="st">"Party"</span>,
+                  remove = <span class="fu"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>), remove_punct = <span class="fl">TRUE</span>)
+</pre></div>
 <p>हम इस dfm को सॉर्ट कर सकते हैं, और इसका निरीक्षण कर सकते हैं:</p>
-<div class="sourceCode" id="cb67"><html><body><pre class="r"><span class="fu"><a href="../../reference/dfm_sort.html">dfm_sort</a></span>(<span class="no">dfmat_pres</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb67"><pre class="downlit">
+<span class="fu"><a href="../../reference/dfm_sort.html">dfm_sort</a></span>(<span class="kw">dfmat_pres</span>)
+</pre></div>
 <pre><code>## Document-feature matrix of: 2 documents, 4,357 features (32.6% sparse) and 1 docvar.
 ##             features
 ## docs          us world people can must new america nation freedom time
@@ -812,13 +882,19 @@ topfeatures(dfmat_uk, 20) # 20 most frequent words
 <a href="#%E0%A4%B6%E0%A4%AC%E0%A4%A6-%E0%A4%95-%E0%A4%B8%E0%A4%AE%E0%A4%B9%E0%A4%A8-%E0%A4%B6%E0%A4%AC%E0%A4%A6%E0%A4%95%E0%A4%B6-%E0%A4%AF-%E0%A4%B8%E0%A4%AE%E0%A4%A4%E0%A4%B2%E0%A4%AF-%E0%A4%95%E0%A4%B2%E0%A4%B8-%E0%A4%A6%E0%A4%B5%E0%A4%B0" class="anchor"></a>शब्दों का समूहन शब्दकोश या समतुल्य क्लास द्वारा</h3>
 <p>कुछ ऐप्लिकेशनों के लिए हमारे पास उन शब्दों के सेट का पूर्व ज्ञान होता है जो हमें ऐसी विशेषताएँ को जानने में मदद करते हैं जिनको हम मापना चाहते हैं अपने टेक्स्ट में। उदाहरण के लिए, सकारात्मक शब्दों की एक सामान्य सूची एक फिल्म समीक्षा में सकारात्मक भावना का संकेत दे सकती है, या हमारे पास राजनीतिक शब्दों का एक शब्दकोष हो सकता है जो एक विशेष वैचारिक रुख से जुड़े हों। इन मामलों में, कभी-कभी विश्लेषण के लिए शब्दों के इन समूहो कोे समान समझना उपयोगी होता है, और इसलिए यहाँ क्लासेस में ऐसे शब्दों की गिनती को जोड़ दें।</p>
 <p>उदाहरण के लिए आइए देखें कि उद्घाटन भाषण कॉर्पस में, आतंकवाद से जुड़े शब्द और अर्थव्यवस्था से जुड़े शब्द, अलग अलग राष्ट्रपति द्वारा भाषणों में कैसे भिन्न हैं। मूल कॉर्पस से, हमने क्लिंटन और उनके बाद हुए राष्ट्रपतियों का ही चयन किया है।</p>
-<div class="sourceCode" id="cb69"><html><body><pre class="r"><span class="no">corp_inaug_post1991</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../../reference/corpus_subset.html">corpus_subset</a></span>(<span class="no">data_corpus_inaugural</span>, <span class="no">Year</span> <span class="kw">&gt;</span> <span class="fl">1991</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb69"><pre class="downlit">
+<span class="kw">corp_inaug_post1991</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/corpus_subset.html">corpus_subset</a></span>(<span class="kw">data_corpus_inaugural</span>, <span class="kw">Year</span> <span class="op">&gt;</span> <span class="fl">1991</span>)
+</pre></div>
 <p>अब हम एक डेमोंस्ट्रेशन शब्दकोश को बनाते हैं :</p>
-<div class="sourceCode" id="cb70"><html><body><pre class="r"><span class="no">dict</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../../reference/dictionary.html">dictionary</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">terror</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"terrorism"</span>, <span class="st">"terrorists"</span>, <span class="st">"threat"</span>),
-                        <span class="kw">economy</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"jobs"</span>, <span class="st">"business"</span>, <span class="st">"grow"</span>, <span class="st">"work"</span>)))</pre></body></html></div>
+<div class="sourceCode" id="cb70"><pre class="downlit">
+<span class="kw">dict</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/dictionary.html">dictionary</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(terror = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"terrorism"</span>, <span class="st">"terrorists"</span>, <span class="st">"threat"</span>),
+                        economy = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"jobs"</span>, <span class="st">"business"</span>, <span class="st">"grow"</span>, <span class="st">"work"</span>)))
+</pre></div>
 <p>हम dfm बनाते समय शब्दकोश का उपयोग कर सकते हैं:</p>
-<div class="sourceCode" id="cb71"><html><body><pre class="r"><span class="no">dfmat_inaug_post1991_dict</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../../reference/dfm.html">dfm</a></span>(<span class="no">corp_inaug_post1991</span>, <span class="kw">dictionary</span> <span class="kw">=</span> <span class="no">dict</span>)
-<span class="no">dfmat_inaug_post1991_dict</span></pre></body></html></div>
+<div class="sourceCode" id="cb71"><pre class="downlit">
+<span class="kw">dfmat_inaug_post1991_dict</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/dfm.html">dfm</a></span>(<span class="kw">corp_inaug_post1991</span>, dictionary = <span class="kw">dict</span>)
+<span class="kw">dfmat_inaug_post1991_dict</span>
+</pre></div>
 <pre><code>## Document-feature matrix of: 7 documents, 2 features (14.3% sparse) and 4 docvars.
 ##               features
 ## docs           terror economy
@@ -830,10 +906,12 @@ topfeatures(dfmat_uk, 20) # 20 most frequent words
 ##   2013-Obama        1       6
 ## [ reached max_ndoc ... 1 more document ]</code></pre>
 <p>कंस्ट्रक्टर फ़ंक्शन <code><a href="../../reference/dictionary.html">dictionary()</a></code> भी दो सामान्य “विदेशी” शब्दकोश प्रारूपों के साथ काम करता है: LIWC और प्रोवलिस रिसर्च वर्डस्टेट फॉर्मेट। उदाहरण के लिए, हम LIWC को लोड कर सकते हैं और इसे राष्ट्रपति के उद्घाटन भाषण पर लागू कर सकते हैं:</p>
-<div class="sourceCode" id="cb73"><html><body><pre class="r"><span class="no">dictliwc</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../../reference/dictionary.html">dictionary</a></span>(<span class="kw">file</span> <span class="kw">=</span> <span class="st">"~/Dropbox/QUANTESS/dictionaries/LIWC/LIWC2001_English.dic"</span>,
-                       <span class="kw">format</span> <span class="kw">=</span> <span class="st">"LIWC"</span>)
-<span class="no">dfmat_inaug_subset</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../../reference/dfm.html">dfm</a></span>(<span class="no">data_corpus_inaugural</span>[<span class="fl">52</span>:<span class="fl">58</span>], <span class="kw">dictionary</span> <span class="kw">=</span> <span class="no">dictliwc</span>)
-<span class="no">dfmat_inaug_subset</span>[, <span class="fl">1</span>:<span class="fl">10</span>]</pre></body></html></div>
+<div class="sourceCode" id="cb73"><pre class="downlit">
+<span class="kw">dictliwc</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/dictionary.html">dictionary</a></span>(file = <span class="st">"~/Dropbox/QUANTESS/dictionaries/LIWC/LIWC2001_English.dic"</span>,
+                       format = <span class="st">"LIWC"</span>)
+<span class="kw">dfmat_inaug_subset</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/dfm.html">dfm</a></span>(<span class="kw">data_corpus_inaugural</span>[<span class="fl">52</span><span class="op">:</span><span class="fl">58</span>], dictionary = <span class="kw">dictliwc</span>)
+<span class="kw">dfmat_inaug_subset</span>[, <span class="fl">1</span><span class="op">:</span><span class="fl">10</span>]
+</pre></div>
 </div>
 </div>
 </div>
@@ -843,12 +921,14 @@ topfeatures(dfmat_uk, 20) # 20 most frequent words
 <div id="टकसट-क-बच-समनतए" class="section level2">
 <h2 class="hasAnchor">
 <a href="#%E0%A4%9F%E0%A4%95%E0%A4%B8%E0%A4%9F-%E0%A4%95-%E0%A4%AC%E0%A4%9A-%E0%A4%B8%E0%A4%AE%E0%A4%A8%E0%A4%A4%E0%A4%8F" class="anchor"></a>टेक्स्ट के बीच समानताएं</h2>
-<div class="sourceCode" id="cb74"><html><body><pre class="r"><span class="no">dfmat_inaug_post1980</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../../reference/dfm.html">dfm</a></span>(<span class="fu"><a href="../../reference/corpus_subset.html">corpus_subset</a></span>(<span class="no">data_corpus_inaugural</span>, <span class="no">Year</span> <span class="kw">&gt;</span> <span class="fl">1980</span>),
-                            <span class="kw">remove</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>), <span class="kw">stem</span> <span class="kw">=</span> <span class="fl">TRUE</span>, <span class="kw">remove_punct</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
-<span class="no">tstat_obama</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../../reference/textstat_simil.html">textstat_simil</a></span>(<span class="no">dfmat_inaug_post1980</span>,
-                              <span class="no">dfmat_inaug_post1980</span>[<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"2009-Obama"</span>, <span class="st">"2013-Obama"</span>), ],
-                              <span class="kw">margin</span> <span class="kw">=</span> <span class="st">"documents"</span>, <span class="kw">method</span> <span class="kw">=</span> <span class="st">"cosine"</span>)
-<span class="no">tstat_obama</span></pre></body></html></div>
+<div class="sourceCode" id="cb74"><pre class="downlit">
+<span class="kw">dfmat_inaug_post1980</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/dfm.html">dfm</a></span>(<span class="fu"><a href="../../reference/corpus_subset.html">corpus_subset</a></span>(<span class="kw">data_corpus_inaugural</span>, <span class="kw">Year</span> <span class="op">&gt;</span> <span class="fl">1980</span>),
+                            remove = <span class="fu"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>), stem = <span class="fl">TRUE</span>, remove_punct = <span class="fl">TRUE</span>)
+<span class="kw">tstat_obama</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/textstat_simil.html">textstat_simil</a></span>(<span class="kw">dfmat_inaug_post1980</span>, 
+                              <span class="kw">dfmat_inaug_post1980</span>[<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"2009-Obama"</span>, <span class="st">"2013-Obama"</span>), ], 
+                              margin = <span class="st">"documents"</span>, method = <span class="st">"cosine"</span>)
+<span class="kw">tstat_obama</span>
+</pre></div>
 <pre><code>## textstat_simil object; method = "cosine"
 ##              2009-Obama 2013-Obama
 ## 1981-Reagan       0.623      0.638
@@ -861,28 +941,34 @@ topfeatures(dfmat_uk, 20) # 20 most frequent words
 ## 2009-Obama        1.000      0.682
 ## 2013-Obama        0.682      1.000
 ## 2017-Trump        0.519      0.516</code></pre>
-<div class="sourceCode" id="cb76"><html><body><pre class="r"># dotchart(as.list(tstat_obama)$"2009-Obama", xlab = "Cosine similarity")</pre></body></html></div>
+<div class="sourceCode" id="cb76"><pre class="downlit">
+<span class="co"># dotchart(as.list(tstat_obama)$"2009-Obama", xlab = "Cosine similarity")</span>
+</pre></div>
 <p>हम इन दूरियों का उपयोग करके एक डेंड्रोग्राम की प्लाटिंग कर सकते हैं, और राष्ट्रपतियों का क्लस्टर बना सकते हैं:</p>
-<div class="sourceCode" id="cb77"><html><body><pre class="r"><span class="no">data_corpus_sotu</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/connections.html">url</a></span>(<span class="st">"https://quanteda.org/data/data_corpus_sotu.rds"</span>))
-<span class="no">dfmat_sotu</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../../reference/dfm.html">dfm</a></span>(<span class="fu"><a href="../../reference/corpus_subset.html">corpus_subset</a></span>(<span class="no">data_corpus_sotu</span>, <span class="no">Date</span> <span class="kw">&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html">as.Date</a></span>(<span class="st">"1980-01-01"</span>)),
-                  <span class="kw">stem</span> <span class="kw">=</span> <span class="fl">TRUE</span>, <span class="kw">remove_punct</span> <span class="kw">=</span> <span class="fl">TRUE</span>,
-                  <span class="kw">remove</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>))
-<span class="no">dfmat_sotu</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../../reference/dfm_trim.html">dfm_trim</a></span>(<span class="no">dfmat_sotu</span>, <span class="kw">min_termfreq</span> <span class="kw">=</span> <span class="fl">5</span>, <span class="kw">min_docfreq</span> <span class="kw">=</span> <span class="fl">3</span>)
+<div class="sourceCode" id="cb77"><pre class="downlit">
+<span class="kw">data_corpus_sotu</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/connections.html">url</a></span>(<span class="st">"https://quanteda.org/data/data_corpus_sotu.rds"</span>))
+<span class="kw">dfmat_sotu</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/dfm.html">dfm</a></span>(<span class="fu"><a href="../../reference/corpus_subset.html">corpus_subset</a></span>(<span class="kw">data_corpus_sotu</span>, <span class="kw">Date</span> <span class="op">&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html">as.Date</a></span>(<span class="st">"1980-01-01"</span>)),
+                  stem = <span class="fl">TRUE</span>, remove_punct = <span class="fl">TRUE</span>,
+                  remove = <span class="fu"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>))
+<span class="kw">dfmat_sotu</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/dfm_trim.html">dfm_trim</a></span>(<span class="kw">dfmat_sotu</span>, min_termfreq = <span class="fl">5</span>, min_docfreq = <span class="fl">3</span>)
 
 <span class="co"># hierarchical clustering - get distances on normalized dfm</span>
-<span class="no">tstat_dist</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../../reference/textstat_simil.html">textstat_dist</a></span>(<span class="fu"><a href="../../reference/dfm_weight.html">dfm_weight</a></span>(<span class="no">dfmat_sotu</span>, <span class="kw">scheme</span> <span class="kw">=</span> <span class="st">"prop"</span>))
+<span class="kw">tstat_dist</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/textstat_simil.html">textstat_dist</a></span>(<span class="fu"><a href="../../reference/dfm_weight.html">dfm_weight</a></span>(<span class="kw">dfmat_sotu</span>, scheme = <span class="st">"prop"</span>))
 <span class="co"># hiarchical clustering the distance object</span>
-<span class="no">pres_cluster</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/hclust.html">hclust</a></span>(<span class="fu"><a href="https://rdrr.io/r/stats/dist.html">as.dist</a></span>(<span class="no">tstat_dist</span>))
+<span class="kw">pres_cluster</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/hclust.html">hclust</a></span>(<span class="fu"><a href="https://rdrr.io/r/stats/dist.html">as.dist</a></span>(<span class="kw">tstat_dist</span>))
 <span class="co"># label with document names</span>
-<span class="no">pres_cluster</span>$<span class="no">labels</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../../reference/docnames.html">docnames</a></span>(<span class="no">dfmat_sotu</span>)
+<span class="kw">pres_cluster</span><span class="op">$</span><span class="kw">labels</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/docnames.html">docnames</a></span>(<span class="kw">dfmat_sotu</span>)
 <span class="co"># plot as a dendrogram</span>
-<span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">pres_cluster</span>, <span class="kw">xlab</span> <span class="kw">=</span> <span class="st">""</span>, <span class="kw">sub</span> <span class="kw">=</span> <span class="st">""</span>,
-     <span class="kw">main</span> <span class="kw">=</span> <span class="st">"Euclidean Distance on Normalized Token Frequency"</span>)</pre></body></html></div>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(<span class="kw">pres_cluster</span>, xlab = <span class="st">""</span>, sub = <span class="st">""</span>,
+     main = <span class="st">"Euclidean Distance on Normalized Token Frequency"</span>)
+</pre></div>
 <p><img src="quickstart_hi_files/figure-html/unnamed-chunk-37-1.png" width="960"></p>
 <p>हम टर्म समानताओं को भी देख सकते हैं:</p>
-<div class="sourceCode" id="cb78"><html><body><pre class="r"><span class="no">tstat_sim</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../../reference/textstat_simil.html">textstat_simil</a></span>(<span class="no">dfmat_sotu</span>, <span class="no">dfmat_sotu</span>[, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"fair"</span>, <span class="st">"health"</span>, <span class="st">"terror"</span>)],
-                            <span class="kw">method</span> <span class="kw">=</span> <span class="st">"cosine"</span>, <span class="kw">margin</span> <span class="kw">=</span> <span class="st">"features"</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/list.html">as.list</a></span>(<span class="no">tstat_sim</span>), <span class="no">head</span>, <span class="fl">10</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb78"><pre class="downlit">
+<span class="kw">tstat_sim</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/textstat_simil.html">textstat_simil</a></span>(<span class="kw">dfmat_sotu</span>, <span class="kw">dfmat_sotu</span>[, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"fair"</span>, <span class="st">"health"</span>, <span class="st">"terror"</span>)],
+                            method = <span class="st">"cosine"</span>, margin = <span class="st">"features"</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/list.html">as.list</a></span>(<span class="kw">tstat_sim</span>), <span class="kw">head</span>, <span class="fl">10</span>)
+</pre></div>
 <pre><code>## $fair
 ##      time    better       far  strategi        us     lower      long       one 
 ## 0.8266617 0.8135324 0.8036487 0.8002557 0.8000581 0.7995066 0.7977770 0.7949795 
@@ -902,13 +988,15 @@ topfeatures(dfmat_uk, 20) # 20 most frequent words
 ## 0.7502925 0.7383253</code></pre>
 <p>##डॉक्युमेंट पोज़िशन को स्केल करना</p>
 <p>यहाँ ‘अन्सूपर्वायज़्ड डॉक्युमेंट स्केलिंग’ की तुलना की गयी है “वोर्डफ़िश” मॉडल से:</p>
-<div class="sourceCode" id="cb80"><html><body><pre class="r"><span class="kw">if</span> (<span class="fu"><a href="https://rdrr.io/r/base/library.html">require</a></span>(<span class="st">"quanteda.textmodels"</span>)) {
-    <span class="no">dfmat_ire</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../../reference/dfm.html">dfm</a></span>(<span class="no">data_corpus_irishbudget2010</span>)
-    <span class="no">tmod_wf</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/quanteda.textmodels/man/textmodel_wordfish.html">textmodel_wordfish</a></span>(<span class="no">dfmat_ire</span>, <span class="kw">dir</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">2</span>, <span class="fl">1</span>))
-
+<div class="sourceCode" id="cb80"><pre class="downlit">
+<span class="co">if</span> (<span class="fu"><a href="https://rdrr.io/r/base/library.html">require</a></span>(<span class="st"><a href="https://github.com/quanteda/quanteda.textmodels">"quanteda.textmodels"</a></span>)) {
+    <span class="kw">dfmat_ire</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/dfm.html">dfm</a></span>(<span class="kw">data_corpus_irishbudget2010</span>)
+    <span class="kw">tmod_wf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/quanteda.textmodels/man/textmodel_wordfish.html">textmodel_wordfish</a></span>(<span class="kw">dfmat_ire</span>, dir = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">2</span>, <span class="fl">1</span>))
+    
     <span class="co"># plot the Wordfish estimates by party</span>
-    <span class="fu"><a href="https://rdrr.io/pkg/quanteda.textmodels/man/textplot_scale1d.html">textplot_scale1d</a></span>(<span class="no">tmod_wf</span>, <span class="kw">groups</span> <span class="kw">=</span> <span class="fu"><a href="../../reference/docvars.html">docvars</a></span>(<span class="no">dfmat_ire</span>, <span class="st">"party"</span>))
-}</pre></body></html></div>
+    <span class="fu"><a href="https://rdrr.io/pkg/quanteda.textmodels/man/textplot_scale1d.html">textplot_scale1d</a></span>(<span class="kw">tmod_wf</span>, groups = <span class="fu"><a href="../../reference/docvars.html">docvars</a></span>(<span class="kw">dfmat_ire</span>, <span class="st">"party"</span>))
+}
+</pre></div>
 <pre><code>## Loading required package: quanteda.textmodels</code></pre>
 <pre><code>## 
 ## Attaching package: 'quanteda.textmodels'</code></pre>
@@ -921,11 +1009,13 @@ topfeatures(dfmat_uk, 20) # 20 most frequent words
 <h2 class="hasAnchor">
 <a href="#%E0%A4%9F%E0%A4%AA%E0%A4%95-%E0%A4%AE%E0%A4%A1%E0%A4%B2%E0%A4%B8" class="anchor"></a>टॉपिक मॉडल्स</h2>
 <p><strong>quanteda</strong> विषय मॉडल को भी फिट करना बहुत आसान बनाता है, e.g.:</p>
-<div class="sourceCode" id="cb84"><html><body><pre class="r"><span class="no">quant_dfm</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../../reference/dfm.html">dfm</a></span>(<span class="no">data_corpus_irishbudget2010</span>,
-                 <span class="kw">remove_punct</span> <span class="kw">=</span> <span class="fl">TRUE</span>, <span class="kw">remove_numbers</span> <span class="kw">=</span> <span class="fl">TRUE</span>,
-                 <span class="kw">remove</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>))
-<span class="no">quant_dfm</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../../reference/dfm_trim.html">dfm_trim</a></span>(<span class="no">quant_dfm</span>, <span class="kw">min_termfreq</span> <span class="kw">=</span> <span class="fl">4</span>, <span class="kw">max_docfreq</span> <span class="kw">=</span> <span class="fl">10</span>)
-<span class="no">quant_dfm</span></pre></body></html></div>
+<div class="sourceCode" id="cb84"><pre class="downlit">
+<span class="kw">quant_dfm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/dfm.html">dfm</a></span>(<span class="kw">data_corpus_irishbudget2010</span>, 
+                 remove_punct = <span class="fl">TRUE</span>, remove_numbers = <span class="fl">TRUE</span>, 
+                 remove = <span class="fu"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html">stopwords</a></span>(<span class="st">"english"</span>))
+<span class="kw">quant_dfm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/dfm_trim.html">dfm_trim</a></span>(<span class="kw">quant_dfm</span>, min_termfreq = <span class="fl">4</span>, max_docfreq = <span class="fl">10</span>)
+<span class="kw">quant_dfm</span>
+</pre></div>
 <pre><code>## Document-feature matrix of: 14 documents, 1,263 features (64.5% sparse) and 6 docvars.
 ##                       features
 ## docs                   supplementary april said period severe today report
@@ -944,11 +1034,13 @@ topfeatures(dfmat_uk, 20) # 20 most frequent words
 ##   Cowen, Brian (FF)               1      3    2
 ##   Kenny, Enda (FG)                0      2    5
 ## [ reached max_ndoc ... 8 more documents, reached max_nfeat ... 1,253 more features ]</code></pre>
-<div class="sourceCode" id="cb86"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">100</span>)
-<span class="kw">if</span> (<span class="fu"><a href="https://rdrr.io/r/base/library.html">require</a></span>(<span class="st">"stm"</span>)) {
-    <span class="no">my_lda_fit20</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/stm/man/stm.html">stm</a></span>(<span class="no">quant_dfm</span>, <span class="kw">K</span> <span class="kw">=</span> <span class="fl">20</span>, <span class="kw">verbose</span> <span class="kw">=</span> <span class="fl">FALSE</span>)
-    <span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">my_lda_fit20</span>)
-}</pre></body></html></div>
+<div class="sourceCode" id="cb86"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">100</span>)
+<span class="co">if</span> (<span class="fu"><a href="https://rdrr.io/r/base/library.html">require</a></span>(<span class="st"><a href="http://structuraltopicmodel.com">"stm"</a></span>)) {
+    <span class="kw">my_lda_fit20</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/stm/man/stm.html">stm</a></span>(<span class="kw">quant_dfm</span>, K = <span class="fl">20</span>, verbose = <span class="fl">FALSE</span>)
+    <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(<span class="kw">my_lda_fit20</span>)    
+}
+</pre></div>
 <pre><code>## Loading required package: stm</code></pre>
 <pre><code>## stm v1.3.5 successfully loaded. See ?stm for help. 
 ##  Papers, resources, and other materials at structuraltopicmodel.com</code></pre>
@@ -972,7 +1064,7 @@ topfeatures(dfmat_uk, 20) # 20 most frequent words
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

@@ -91,7 +91,7 @@ additional slots, described below." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.2</span>
       </span>
     </div>
 
@@ -291,7 +291,7 @@ Arith(e1, e2)
 
     
 
-<dl'>
+<dl>
 <dt><code>context</code></dt><dd><p>the context definition</p></dd>
 
 <dt><code>window</code></dt><dd><p>the size of the window, if <code>context = "window"</code></p></dd>
@@ -314,16 +314,18 @@ are counted separately</p></dd>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># fcm subsetting</span>
-<span class='no'>fcmat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fcm.html'>fcm</a></span>(<span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"this contains lots of stopwords"</span>,
+<span class='kw'>fcmat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='fcm.html'>fcm</a></span>(<span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"this contains lots of stopwords"</span>,
                   <span class='st'>"no if, and, or but about it: lots"</span>),
-                <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))
-<span class='no'>fcmat</span>[<span class='fl'>1</span>:<span class='fl'>3</span>, ]</div><div class='output co'>#&gt; Feature co-occurrence matrix of: 3 by 12 features.
+                remove_punct = <span class='fl'>TRUE</span>))
+<span class='kw'>fcmat</span>[<span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>, ]
+</div><div class='output co'>#&gt; Feature co-occurrence matrix of: 3 by 12 features.
 #&gt;           features
 #&gt; features   this contains lots of stopwords no if and or but
 #&gt;   this        0        1    1  1         1  0  0   0  0   0
 #&gt;   contains    0        0    1  1         1  0  0   0  0   0
 #&gt;   lots        0        0    0  1         1  1  1   1  1   1
-#&gt; [ reached max_nfeat ... 2 more features ]</div><div class='input'><span class='no'>fcmat</span>[<span class='fl'>4</span>:<span class='fl'>5</span>, <span class='fl'>1</span>:<span class='fl'>5</span>]</div><div class='output co'>#&gt; Feature co-occurrence matrix of: 2 by 5 features.
+#&gt; [ reached max_nfeat ... 2 more features ]</div><div class='input'><span class='kw'>fcmat</span>[<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>]
+</div><div class='output co'>#&gt; Feature co-occurrence matrix of: 2 by 5 features.
 #&gt;            features
 #&gt; features    this contains lots of stopwords
 #&gt;   of           0        0    0  0         1
@@ -345,7 +347,7 @@ are counted separately</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

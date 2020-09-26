@@ -29,8 +29,8 @@ GitHubから最新の開発バージョンをインストールする方法に�
 
 **quanteda**には連携して機能を拡張する一連のパッケージがあり，それらをインストールすることが推奨される．
 
-* [**readtext**](https://github.com/kbenoit/readtext)：多くの入力形式からテキストデータをRに簡単に読み込むパッケージ
-* [**spacyr**](https://github.com/kbenoit/spacyr)：Pythonの[spaCy](http://spacy.io)ライブラリを使用した自然言語解析のためのパッケージで，品詞タグ付け，固有表現抽出，および係り受け関係の解析などができる
+* [**readtext**](https://github.com/quanteda/readtext)：多くの入力形式からテキストデータをRに簡単に読み込むパッケージ
+* [**spacyr**](https://github.com/quanteda/spacyr)：Pythonの[spaCy](http://spacy.io)ライブラリを使用した自然言語解析のためのパッケージで，品詞タグ付け，固有表現抽出，および係り受け関係の解析などができる
 * [**quanteda.corpora**](https://github.com/quanteda/quanteda.corpora)：**quanteda**の本記事内の説明で使用する追加のテキストデータ
 
     ```{r eval = FALSE}
@@ -215,7 +215,7 @@ kwic(data_corpus_inaugural, "communist*")
 head(docvars(data_corpus_inaugural))
 ```
 
-[**quanteda.corpora**](http://github.com/quanteda/quanteda.corpora)をインストールすることで，より多くのコーパスを試すことができる．
+[**quanteda.corpora**](https://github.com/quanteda/quanteda.corpora)をインストールすることで，より多くのコーパスを試すことができる．
 
 
 # コーパスから特長を抽出 {#extracting-features-from-a-corpus}

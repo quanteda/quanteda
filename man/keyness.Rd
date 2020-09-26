@@ -69,7 +69,7 @@ quanteda:::keyness_pmi(dfmat)
 \references{
 \url{https://en.wikipedia.org/wiki/Yates's_correction_for_continuity}
 
-\url{http://influentialpoints.com/Training/g-likelihood_ratio_test.htm}
+\url{https://influentialpoints.com/Training/g-likelihood_ratio_test.htm}
 }
 \keyword{internal}
 \keyword{textstat}

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Weight a dfm by <em>tf-idf</em> — dfm_tfidf • quanteda</title>
+<title>Weight a dfm by tf-idf — dfm_tfidf • quanteda</title>
 
 
 <!-- jquery -->
@@ -47,7 +47,7 @@
   <link href="../extra.css" rel="stylesheet">
   <script src="../extra.js"></script>
 
-<meta property="og:title" content="Weight a dfm by <em>tf-idf</em> — dfm_tfidf" />
+<meta property="og:title" content="Weight a dfm by tf-idf — dfm_tfidf" />
 <meta property="og:description" content="Weight a dfm by term frequency-inverse document frequency (tf-idf),
 with full control over options.  Uses fully sparse methods for efficiency." />
 
@@ -91,7 +91,7 @@ with full control over options.  Uses fully sparse methods for efficiency." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.2</span>
       </span>
     </div>
 
@@ -222,12 +222,12 @@ with full control over options.  Uses fully sparse methods for efficiency.</p>
     </div>
 
     <pre class="usage"><span class='fu'>dfm_tfidf</span>(
-  <span class='no'>x</span>,
-  <span class='kw'>scheme_tf</span> <span class='kw'>=</span> <span class='st'>"count"</span>,
-  <span class='kw'>scheme_df</span> <span class='kw'>=</span> <span class='st'>"inverse"</span>,
-  <span class='kw'>base</span> <span class='kw'>=</span> <span class='fl'>10</span>,
-  <span class='kw'>force</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='no'>...</span>
+  <span class='kw'>x</span>,
+  scheme_tf = <span class='st'>"count"</span>,
+  scheme_df = <span class='st'>"inverse"</span>,
+  base = <span class='fl'>10</span>,
+  force = <span class='fl'>FALSE</span>,
+  <span class='kw'>...</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -278,8 +278,9 @@ can be overridden using <code>scheme_tf = "prop"</code>.</p>
 <a href='https://nlp.stanford.edu/IR-book/pdf/irbookonlinereading.pdf'>https://nlp.stanford.edu/IR-book/pdf/irbookonlinereading.pdf</a></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>dfmat1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='as.dfm.html'>as.dfm</a></span>(<span class='no'>data_dfm_lbgexample</span>)
-<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>dfmat1</span>[, <span class='fl'>5</span>:<span class='fl'>10</span>])</div><div class='output co'>#&gt; Document-feature matrix of: 6 documents, 6 features (61.1% sparse).
+    <pre class="examples"><div class='input'><span class='kw'>dfmat1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='as.dfm.html'>as.dfm</a></span>(<span class='kw'>data_dfm_lbgexample</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='kw'>dfmat1</span>[, <span class='fl'>5</span><span class='op'>:</span><span class='fl'>10</span>])
+</div><div class='output co'>#&gt; Document-feature matrix of: 6 documents, 6 features (61.1% sparse).
 #&gt;     features
 #&gt; docs  E  F   G   H   I   J
 #&gt;   R1 45 78 115 146 158 146
@@ -287,7 +288,8 @@ can be overridden using <code>scheme_tf = "prop"</code>.</p>
 #&gt;   R3  0  0   0   0   0   0
 #&gt;   R4  0  0   0   0   0   0
 #&gt;   R5  0  0   0   0   0   0
-#&gt;   V1  0  0   0   2   3  10</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='fu'>dfm_tfidf</span>(<span class='no'>dfmat1</span>)[, <span class='fl'>5</span>:<span class='fl'>10</span>])</div><div class='output co'>#&gt; Document-feature matrix of: 6 documents, 6 features (61.1% sparse).
+#&gt;   V1  0  0   0   2   3  10</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='fu'>dfm_tfidf</span>(<span class='kw'>dfmat1</span>)[, <span class='fl'>5</span><span class='op'>:</span><span class='fl'>10</span>])
+</div><div class='output co'>#&gt; Document-feature matrix of: 6 documents, 6 features (61.1% sparse).
 #&gt;     features
 #&gt; docs        E          F         G        H        I        J
 #&gt;   R1 35.01681 37.2154579 54.868944 43.95038 47.56274 43.95038
@@ -295,8 +297,10 @@ can be overridden using <code>scheme_tf = "prop"</code>.</p>
 #&gt;   R3  0        0          0         0        0        0      
 #&gt;   R4  0        0          0         0        0        0      
 #&gt;   R5  0        0          0         0        0        0      
-#&gt;   V1  0        0          0         0.60206  0.90309  3.01030</div><div class='input'><span class='fu'><a href='docfreq.html'>docfreq</a></span>(<span class='no'>dfmat1</span>)[<span class='fl'>5</span>:<span class='fl'>15</span>]</div><div class='output co'>#&gt; E F G H I J K L M N O 
-#&gt; 1 2 2 3 3 3 4 4 4 4 4 </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='fu'><a href='dfm_weight.html'>dfm_weight</a></span>(<span class='no'>dfmat1</span>)[, <span class='fl'>5</span>:<span class='fl'>10</span>])</div><div class='output co'>#&gt; Document-feature matrix of: 6 documents, 6 features (61.1% sparse).
+#&gt;   V1  0        0          0         0.60206  0.90309  3.01030</div><div class='input'><span class='fu'><a href='docfreq.html'>docfreq</a></span>(<span class='kw'>dfmat1</span>)[<span class='fl'>5</span><span class='op'>:</span><span class='fl'>15</span>]
+</div><div class='output co'>#&gt; E F G H I J K L M N O 
+#&gt; 1 2 2 3 3 3 4 4 4 4 4 </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='fu'><a href='dfm_weight.html'>dfm_weight</a></span>(<span class='kw'>dfmat1</span>)[, <span class='fl'>5</span><span class='op'>:</span><span class='fl'>10</span>])
+</div><div class='output co'>#&gt; Document-feature matrix of: 6 documents, 6 features (61.1% sparse).
 #&gt;     features
 #&gt; docs  E  F   G   H   I   J
 #&gt;   R1 45 78 115 146 158 146
@@ -307,31 +311,35 @@ can be overridden using <code>scheme_tf = "prop"</code>.</p>
 #&gt;   V1  0  0   0   2   3  10</div><div class='input'>
 <span class='co'># replication of worked example from</span>
 <span class='co'># https://en.wikipedia.org/wiki/Tf-idf#Example_of_tf.E2.80.93idf</span>
-<span class='no'>dfmat2</span> <span class='kw'>&lt;-</span>
+<span class='kw'>dfmat2</span> <span class='op'>&lt;-</span>
     <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>0</span>, <span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>2</span>,<span class='fl'>3</span>),
-           <span class='kw'>byrow</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-           <span class='kw'>dimnames</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>docs</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"document1"</span>, <span class='st'>"document2"</span>),
-                           <span class='kw'>features</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"this"</span>, <span class='st'>"is"</span>, <span class='st'>"a"</span>, <span class='st'>"sample"</span>,
-                                        <span class='st'>"another"</span>, <span class='st'>"example"</span>))) <span class='kw'>%&gt;%</span>
+           byrow = <span class='fl'>TRUE</span>, nrow = <span class='fl'>2</span>,
+           dimnames = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(docs = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"document1"</span>, <span class='st'>"document2"</span>),
+                           features = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"this"</span>, <span class='st'>"is"</span>, <span class='st'>"a"</span>, <span class='st'>"sample"</span>,
+                                        <span class='st'>"another"</span>, <span class='st'>"example"</span>))) <span class='op'>%&gt;%</span>
     <span class='fu'><a href='as.dfm.html'>as.dfm</a></span>()
-<span class='no'>dfmat2</span></div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (33.3% sparse).
+<span class='kw'>dfmat2</span>
+</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (33.3% sparse).
 #&gt;            features
 #&gt; docs        this is a sample another example
 #&gt;   document1    1  1 2      1       0       0
-#&gt;   document2    1  1 0      0       2       3</div><div class='input'><span class='fu'><a href='docfreq.html'>docfreq</a></span>(<span class='no'>dfmat2</span>)</div><div class='output co'>#&gt;    this      is       a  sample another example 
-#&gt;       2       2       1       1       1       1 </div><div class='input'><span class='fu'>dfm_tfidf</span>(<span class='no'>dfmat2</span>, <span class='kw'>scheme_tf</span> <span class='kw'>=</span> <span class='st'>"prop"</span>) <span class='kw'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span>(<span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (33.3% sparse).
+#&gt;   document2    1  1 0      0       2       3</div><div class='input'><span class='fu'><a href='docfreq.html'>docfreq</a></span>(<span class='kw'>dfmat2</span>)
+</div><div class='output co'>#&gt;    this      is       a  sample another example 
+#&gt;       2       2       1       1       1       1 </div><div class='input'><span class='fu'>dfm_tfidf</span>(<span class='kw'>dfmat2</span>, scheme_tf = <span class='st'>"prop"</span>) <span class='op'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span>(digits = <span class='fl'>2</span>)
+</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (33.3% sparse).
 #&gt;            features
 #&gt; docs        this is    a sample another example
 #&gt;   document1    0  0 0.12   0.06    0       0   
 #&gt;   document2    0  0 0      0       0.09    0.13</div><div class='input'>
-<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='co'>if</span> (<span class='fl'>FALSE</span>) {
 <span class='co'># comparison with tm</span>
-<span class='kw'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span>(<span class='st'>"tm"</span>)) {
-    <span class='fu'><a href='convert.html'>convert</a></span>(<span class='no'>dfmat2</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"tm"</span>) <span class='kw'>%&gt;%</span> <span class='kw pkg'>tm</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/tm/man/weightTfIdf.html'>weightTfIdf</a></span>() <span class='kw'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>as.matrix</a></span>()
+<span class='co'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span>(<span class='st'>"tm"</span>)) {
+    <span class='fu'><a href='convert.html'>convert</a></span>(<span class='kw'>dfmat2</span>, to = <span class='st'>"tm"</span>) <span class='op'>%&gt;%</span> <span class='kw'>tm</span>::<span class='fu'><a href='https://rdrr.io/pkg/tm/man/weightTfIdf.html'>weightTfIdf</a></span>() <span class='op'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>as.matrix</a></span>()
     <span class='co'># same as:</span>
-    <span class='fu'>dfm_tfidf</span>(<span class='no'>dfmat2</span>, <span class='kw'>base</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>scheme_tf</span> <span class='kw'>=</span> <span class='st'>"prop"</span>)
+    <span class='fu'>dfm_tfidf</span>(<span class='kw'>dfmat2</span>, base = <span class='fl'>2</span>, scheme_tf = <span class='st'>"prop"</span>)
 }
-}</div></pre>
+}
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -347,7 +355,7 @@ can be overridden using <code>scheme_tf = "prop"</code>.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

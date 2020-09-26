@@ -27,7 +27,7 @@ See an instructions at https://github.com/quanteda/quanteda to install the GitHu
 The following packages work well with or extend **quanteda** and we recommend that you also install them:
 
 *  [**readtext**](https://github.com/quanteda/readtext):  An easy way to read text data into R, from almost any input format.
-*  [**spacyr**](https://github.com/quanteda/spacyr): NLP using the [spaCy](http://spacy.io) library, including part-of-speech tagging, entity recognition, and dependency parsing.
+*  [**spacyr**](https://github.com/quanteda/spacyr): NLP using the [spaCy](https://spacy.io) library, including part-of-speech tagging, entity recognition, and dependency parsing.
 *  [**quanteda.corpora**](https://github.com/quanteda/quanteda.corpora): Additional textual data for use with **quanteda**.
     ```{r eval = FALSE}
     devtools::install_github("quanteda/quanteda.corpora")
@@ -211,7 +211,7 @@ In the above summary, `Year` and `President` are variables associated with each 
 head(docvars(data_corpus_inaugural))
 ```
 
-More corpora are available from the [quanteda.corpora](http://github.com/quanteda/quanteda.corpora) package.
+More corpora are available from the [quanteda.corpora](https://github.com/quanteda/quanteda.corpora) package.
 
 # Extracting Features from a Corpus
 

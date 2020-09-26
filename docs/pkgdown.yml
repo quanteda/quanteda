@@ -1,25 +1,25 @@
 pandoc: 2.9.2.1
-pkgdown: 1.5.1
+pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
-  comparison: pkgdown/comparison.html
-  design: pkgdown/design.html
-  chinese: pkgdown/examples/chinese.html
-  japanese_speech_ja: pkgdown/examples/japanese_speech_ja.html
-  japanese_twitter_ja: pkgdown/examples/japanese_twitter_ja.html
-  lsa: pkgdown/examples/lsa.html
-  phrase: pkgdown/examples/phrase.html
-  plotting: pkgdown/examples/plotting.html
-  twitter: pkgdown/examples/twitter.html
-  quickstart_cn: pkgdown/quickstart_cn.html
-  quickstart_es: pkgdown/quickstart_es.html
-  quickstart_hi: pkgdown/quickstart_hi.html
-  quickstart_ja: pkgdown/quickstart_ja.html
-  digital-humanities: pkgdown/replication/digital-humanities.html
-  qss: pkgdown/replication/qss.html
-  text2vec: pkgdown/replication/text2vec.html
+  pkgdown/comparison: comparison.html
+  pkgdown/design: design.html
+  pkgdown/examples/chinese: chinese.html
+  pkgdown/examples/japanese_speech_ja: japanese_speech_ja.html
+  pkgdown/examples/japanese_twitter_ja: japanese_twitter_ja.html
+  pkgdown/examples/lsa: lsa.html
+  pkgdown/examples/phrase: phrase.html
+  pkgdown/examples/plotting: plotting.html
+  pkgdown/examples/twitter: twitter.html
+  pkgdown/quickstart_cn: quickstart_cn.html
+  pkgdown/quickstart_es: quickstart_es.html
+  pkgdown/quickstart_hi: quickstart_hi.html
+  pkgdown/quickstart_ja: quickstart_ja.html
+  pkgdown/replication/digital-humanities: digital-humanities.html
+  pkgdown/replication/qss: qss.html
+  pkgdown/replication/text2vec: text2vec.html
   quickstart: quickstart.html
-last_built: 2020-07-27T12:27Z
+last_built: 2020-09-23T17:30Z
 urls:
   reference: https://quanteda.io/reference
   article: https://quanteda.io/articles

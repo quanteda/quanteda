@@ -92,7 +92,7 @@ grouping variable." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.2</span>
       </span>
     </div>
 
@@ -224,11 +224,11 @@ grouping variable.</p>
     </div>
 
     <pre class="usage"><span class='fu'>textstat_frequency</span>(
-  <span class='no'>x</span>,
-  <span class='kw'>n</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>groups</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>ties_method</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"min"</span>, <span class='st'>"average"</span>, <span class='st'>"first"</span>, <span class='st'>"random"</span>, <span class='st'>"max"</span>, <span class='st'>"dense"</span>),
-  <span class='no'>...</span>
+  <span class='kw'>x</span>,
+  n = <span class='kw'>NULL</span>,
+  groups = <span class='kw'>NULL</span>,
+  ties_method = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"min"</span>, <span class='st'>"average"</span>, <span class='st'>"first"</span>, <span class='st'>"random"</span>, <span class='st'>"max"</span>, <span class='st'>"dense"</span>),
+  <span class='kw'>...</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -268,7 +268,7 @@ dfm that has been weighted.</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a data.frame containing the following variables:</p><dl'>
+    <p>a data.frame containing the following variables:</p><dl>
 <dt><code>feature</code></dt><dd><p>(character) the feature</p></dd>
 <dt><code>frequency</code></dt><dd><p>count of the feature</p></dd>
 <dt><code>rank</code></dt><dd><p>rank of the feature, where 1 indicates the greatest
@@ -288,28 +288,32 @@ their term and document frequencies within groups.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span>(<span class='fl'>20</span>)
-<span class='no'>dfmat1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"a a b b c d"</span>, <span class='st'>"a d d d"</span>, <span class='st'>"a a a"</span>))
-<span class='fu'>textstat_frequency</span>(<span class='no'>dfmat1</span>)</div><div class='output co'>#&gt;   feature frequency rank docfreq group
+<span class='kw'>dfmat1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"a a b b c d"</span>, <span class='st'>"a d d d"</span>, <span class='st'>"a a a"</span>))
+<span class='fu'>textstat_frequency</span>(<span class='kw'>dfmat1</span>)
+</div><div class='output co'>#&gt;   feature frequency rank docfreq group
 #&gt; 1       a         6    1       3   all
 #&gt; 2       d         4    2       2   all
 #&gt; 3       b         2    3       1   all
-#&gt; 4       c         1    4       1   all</div><div class='input'><span class='fu'>textstat_frequency</span>(<span class='no'>dfmat1</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"one"</span>, <span class='st'>"two"</span>, <span class='st'>"one"</span>), <span class='kw'>ties_method</span> <span class='kw'>=</span> <span class='st'>"first"</span>)</div><div class='output co'>#&gt;   feature frequency rank docfreq group
+#&gt; 4       c         1    4       1   all</div><div class='input'><span class='fu'>textstat_frequency</span>(<span class='kw'>dfmat1</span>, groups = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"one"</span>, <span class='st'>"two"</span>, <span class='st'>"one"</span>), ties_method = <span class='st'>"first"</span>)
+</div><div class='output co'>#&gt;   feature frequency rank docfreq group
 #&gt; 1       a         5    1       2   one
 #&gt; 2       b         2    2       1   one
 #&gt; 3       c         1    3       1   one
 #&gt; 4       d         1    4       1   one
 #&gt; 5       d         3    1       1   two
-#&gt; 6       a         1    2       1   two</div><div class='input'><span class='fu'>textstat_frequency</span>(<span class='no'>dfmat1</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"one"</span>, <span class='st'>"two"</span>, <span class='st'>"one"</span>), <span class='kw'>ties_method</span> <span class='kw'>=</span> <span class='st'>"dense"</span>)</div><div class='output co'>#&gt;   feature frequency rank docfreq group
+#&gt; 6       a         1    2       1   two</div><div class='input'><span class='fu'>textstat_frequency</span>(<span class='kw'>dfmat1</span>, groups = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"one"</span>, <span class='st'>"two"</span>, <span class='st'>"one"</span>), ties_method = <span class='st'>"dense"</span>)
+</div><div class='output co'>#&gt;   feature frequency rank docfreq group
 #&gt; 1       a         5    1       2   one
 #&gt; 2       b         2    2       1   one
 #&gt; 3       c         1    3       1   one
 #&gt; 4       d         1    3       1   one
 #&gt; 5       d         3    1       1   two
 #&gt; 6       a         1    2       1   two</div><div class='input'>
-<span class='no'>dfmat2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='no'>President</span> <span class='kw'>==</span> <span class='st'>"Obama"</span>) <span class='kw'>%&gt;%</span>
-   <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>remove</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/stopwords/man/stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>))
-<span class='no'>tstat1</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_frequency</span>(<span class='no'>dfmat2</span>)
-<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>tstat1</span>, <span class='fl'>10</span>)</div><div class='output co'>#&gt;    feature frequency rank docfreq group
+<span class='kw'>dfmat2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='kw'>data_corpus_inaugural</span>, <span class='kw'>President</span> <span class='op'>==</span> <span class='st'>"Obama"</span>) <span class='op'>%&gt;%</span>
+   <span class='fu'><a href='dfm.html'>dfm</a></span>(remove_punct = <span class='fl'>TRUE</span>, remove = <span class='fu'><a href='https://rdrr.io/pkg/stopwords/man/stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>))
+<span class='kw'>tstat1</span> <span class='op'>&lt;-</span> <span class='fu'>textstat_frequency</span>(<span class='kw'>dfmat2</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='kw'>tstat1</span>, <span class='fl'>10</span>)
+</div><div class='output co'>#&gt;    feature frequency rank docfreq group
 #&gt; 1       us        44    1       2   all
 #&gt; 2     must        25    2       2   all
 #&gt; 3      can        20    3       2   all
@@ -322,29 +326,31 @@ their term and document frequencies within groups.</p>
 #&gt; 10     now        11   10       2   all</div><div class='input'>
 <span class='co'># \donttest{</span>
 <span class='co'># plot 20 most frequent words</span>
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='st'>"ggplot2"</span>)
-<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span>(<span class='no'>tstat1</span>[<span class='fl'>1</span>:<span class='fl'>20</span>, ], <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/reorder.factor.html'>reorder</a></span>(<span class='no'>feature</span>, <span class='no'>frequency</span>), <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>frequency</span>)) +
-    <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_point.html'>geom_point</a></span>() +
-    <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/coord_flip.html'>coord_flip</a></span>() +
-    <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"Frequency"</span>)</div><div class='img'><img src='textstat_frequency-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='st'><a href='http://ggplot2.tidyverse.org'>"ggplot2"</a></span>)
+<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span>(<span class='kw'>tstat1</span>[<span class='fl'>1</span><span class='op'>:</span><span class='fl'>20</span>, ], <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span>(x = <span class='fu'><a href='https://rdrr.io/r/stats/reorder.factor.html'>reorder</a></span>(<span class='kw'>feature</span>, <span class='kw'>frequency</span>), y = <span class='kw'>frequency</span>)) <span class='op'>+</span>
+    <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_point.html'>geom_point</a></span>() <span class='op'>+</span>
+    <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/coord_flip.html'>coord_flip</a></span>() <span class='op'>+</span>
+    <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span>(x = <span class='kw'>NULL</span>, y = <span class='st'>"Frequency"</span>)
+</div><div class='img'><img src='textstat_frequency-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># plot relative frequencies by group</span>
-<span class='no'>dfmat3</span> <span class='kw'>&lt;-</span> <span class='no'>data_corpus_inaugural</span> <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='no'>Year</span> <span class='kw'>&gt;</span> <span class='fl'>2000</span>) <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='kw'>remove</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/stopwords/man/stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>), <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>) <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='dfm_group.html'>dfm_group</a></span>(<span class='kw'>groups</span> <span class='kw'>=</span> <span class='st'>"President"</span>) <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='dfm_weight.html'>dfm_weight</a></span>(<span class='kw'>scheme</span> <span class='kw'>=</span> <span class='st'>"prop"</span>)
+<span class='kw'>dfmat3</span> <span class='op'>&lt;-</span> <span class='kw'>data_corpus_inaugural</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='kw'>Year</span> <span class='op'>&gt;</span> <span class='fl'>2000</span>) <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='dfm.html'>dfm</a></span>(remove = <span class='fu'><a href='https://rdrr.io/pkg/stopwords/man/stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>), remove_punct = <span class='fl'>TRUE</span>) <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='dfm_group.html'>dfm_group</a></span>(groups = <span class='st'>"President"</span>) <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='dfm_weight.html'>dfm_weight</a></span>(scheme = <span class='st'>"prop"</span>)
 
 <span class='co'># calculate relative frequency by president</span>
-<span class='no'>tstat2</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_frequency</span>(<span class='no'>dfmat3</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='st'>"President"</span>)
+<span class='kw'>tstat2</span> <span class='op'>&lt;-</span> <span class='fu'>textstat_frequency</span>(<span class='kw'>dfmat3</span>, n = <span class='fl'>10</span>, groups = <span class='st'>"President"</span>)
 
 <span class='co'># plot frequencies</span>
-<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>tstat2</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span>(<span class='no'>tstat2</span>):<span class='fl'>1</span>), <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>frequency</span>)) +
-    <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_point.html'>geom_point</a></span>() +
-    <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/facet_wrap.html'>facet_wrap</a></span>(~ <span class='no'>group</span>, <span class='kw'>scales</span> <span class='kw'>=</span> <span class='st'>"free"</span>) +
-    <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/coord_flip.html'>coord_flip</a></span>() +
-    <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_discrete.html'>scale_x_discrete</a></span>(<span class='kw'>breaks</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span>(<span class='no'>tstat2</span>):<span class='fl'>1</span>,
-                       <span class='kw'>labels</span> <span class='kw'>=</span> <span class='no'>tstat2</span>$<span class='no'>feature</span>) +
-    <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"Relative frequency"</span>)</div><div class='img'><img src='textstat_frequency-2.png' alt='' width='700' height='433' /></div><div class='input'># }
+<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span>(data = <span class='kw'>tstat2</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span>(x = <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span>(<span class='kw'>tstat2</span>)<span class='op'>:</span><span class='fl'>1</span>), y = <span class='kw'>frequency</span>)) <span class='op'>+</span>
+    <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_point.html'>geom_point</a></span>() <span class='op'>+</span>
+    <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/facet_wrap.html'>facet_wrap</a></span>(<span class='op'>~</span> <span class='kw'>group</span>, scales = <span class='st'>"free"</span>) <span class='op'>+</span>
+    <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/coord_flip.html'>coord_flip</a></span>() <span class='op'>+</span>
+    <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_discrete.html'>scale_x_discrete</a></span>(breaks = <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span>(<span class='kw'>tstat2</span>)<span class='op'>:</span><span class='fl'>1</span>,
+                       labels = <span class='kw'>tstat2</span><span class='op'>$</span><span class='kw'>feature</span>) <span class='op'>+</span>
+    <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span>(x = <span class='kw'>NULL</span>, y = <span class='st'>"Relative frequency"</span>)
+</div><div class='img'><img src='textstat_frequency-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># }</span>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -361,7 +367,7 @@ their term and document frequencies within groups.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

@@ -91,7 +91,7 @@ in documents, or both." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.2</span>
       </span>
     </div>
 
@@ -221,7 +221,7 @@ in documents, or both." />
 in documents, or both.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>dfm_sort</span>(<span class='no'>x</span>, <span class='kw'>decreasing</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>margin</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"features"</span>, <span class='st'>"documents"</span>, <span class='st'>"both"</span>))</pre>
+    <pre class="usage"><span class='fu'>dfm_sort</span>(<span class='kw'>x</span>, decreasing = <span class='fl'>TRUE</span>, margin = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"features"</span>, <span class='st'>"documents"</span>, <span class='st'>"both"</span>))</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -246,10 +246,14 @@ and <code>both</code> to sort by both</p></td>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A sorted <a href='dfm.html'>dfm</a> matrix object</p>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Ken Benoit</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>dfmat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_inaugural</span>)
-<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>dfmat</span>)</div><div class='output co'>#&gt; Document-feature matrix of: 6 documents, 9,360 features (93.8% sparse) and 4 docvars.
+    <pre class="examples"><div class='input'><span class='kw'>dfmat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='kw'>data_corpus_inaugural</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='kw'>dfmat</span>)
+</div><div class='output co'>#&gt; Document-feature matrix of: 6 documents, 9,360 features (93.8% sparse) and 4 docvars.
 #&gt;                  features
 #&gt; docs              fellow-citizens  of the senate and house representatives :
 #&gt;   1789-Washington               1  71 116      1  48     2               2 1
@@ -266,7 +270,8 @@ and <code>both</code> to sort by both</p></td>
 #&gt;   1801-Jefferson      1            0
 #&gt;   1805-Jefferson      7            0
 #&gt;   1809-Madison        0            0
-#&gt; [ reached max_nfeat ... 9,350 more features ]</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='fu'>dfm_sort</span>(<span class='no'>dfmat</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 6 documents, 9,360 features (93.8% sparse) and 4 docvars.
+#&gt; [ reached max_nfeat ... 9,350 more features ]</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='fu'>dfm_sort</span>(<span class='kw'>dfmat</span>))
+</div><div class='output co'>#&gt; Document-feature matrix of: 6 documents, 9,360 features (93.8% sparse) and 4 docvars.
 #&gt;                  features
 #&gt; docs              the  of   , and  . to in  a our that
 #&gt;   1789-Washington 116  71  70  48 23 48 31 14   1   18
@@ -275,7 +280,8 @@ and <code>both</code> to sort by both</p></td>
 #&gt;   1801-Jefferson  130 104 128  81 37 61 24 21  24   24
 #&gt;   1805-Jefferson  143 101 142  93 41 83 35 20  24   37
 #&gt;   1809-Madison    104  69  47  43 21 61 34 19   9    9
-#&gt; [ reached max_nfeat ... 9,350 more features ]</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='fu'>dfm_sort</span>(<span class='no'>dfmat</span>, <span class='kw'>decreasing</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='st'>"both"</span>))</div><div class='output co'>#&gt; Document-feature matrix of: 6 documents, 9,360 features (96.3% sparse) and 4 docvars.
+#&gt; [ reached max_nfeat ... 9,350 more features ]</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='fu'>dfm_sort</span>(<span class='kw'>dfmat</span>, decreasing = <span class='fl'>FALSE</span>, <span class='st'>"both"</span>))
+</div><div class='output co'>#&gt; Document-feature matrix of: 6 documents, 9,360 features (96.3% sparse) and 4 docvars.
 #&gt;                  features
 #&gt; docs              notification 14th fondest predilection flattering asylum
 #&gt;   1793-Washington            0    0       0            0          0      0
@@ -308,7 +314,7 @@ and <code>both</code> to sort by both</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

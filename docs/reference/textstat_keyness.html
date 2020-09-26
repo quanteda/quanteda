@@ -93,7 +93,7 @@ consisting of all other documents." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.2</span>
       </span>
     </div>
 
@@ -226,11 +226,12 @@ consisting of all other documents.</p>
     </div>
 
     <pre class="usage"><span class='fu'>textstat_keyness</span>(
-  <span class='no'>x</span>,
-  <span class='kw'>target</span> <span class='kw'>=</span> <span class='fl'>1L</span>,
-  <span class='kw'>measure</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"chi2"</span>, <span class='st'>"exact"</span>, <span class='st'>"lr"</span>, <span class='st'>"pmi"</span>),
-  <span class='kw'>sort</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>correction</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"default"</span>, <span class='st'>"yates"</span>, <span class='st'>"williams"</span>, <span class='st'>"none"</span>)
+  <span class='kw'>x</span>,
+  target = <span class='fl'>1L</span>,
+  measure = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"chi2"</span>, <span class='st'>"exact"</span>, <span class='st'>"lr"</span>, <span class='st'>"pmi"</span>),
+  sort = <span class='fl'>TRUE</span>,
+  correction = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"default"</span>, <span class='st'>"yates"</span>, <span class='st'>"williams"</span>, <span class='st'>"none"</span>),
+  <span class='kw'>...</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -249,9 +250,10 @@ documents' feature frequencies will be combined for use as a reference</p></td>
     <tr>
       <th>measure</th>
       <td><p>(signed) association measure to be used for computing keyness.
-Currently available: <code>"chi2"</code>; <code>"exact"</code> (Fisher's exact test);
-<code>"lr"</code> for the likelihood ratio; <code>"pmi"</code> for pointwise mutual
-information.</p></td>
+Currently available: <code>"chi2"</code>; <code>"exact"</code> (Fisher's exact test); <code>"lr"</code> for
+the likelihood ratio; <code>"pmi"</code> for pointwise mutual information.  Note that
+the "exact" test is very computationally intensive and therefore much
+slower than the other methods.</p></td>
     </tr>
     <tr>
       <th>sort</th>
@@ -267,6 +269,10 @@ Specifying a value other than the default can be used to override the
 defaults, for instance to apply the Williams correction to the chi2
 measure.  Specifying a correction for the <code>"exact"</code> and <code>"pmi"</code>
 measures has no effect and produces a warning.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>not used</p></td>
     </tr>
     </table>
 
@@ -291,14 +297,15 @@ Texts</em>, Bondi, M. &amp; Scott, M. (eds): 1--42. Amsterdam, Philadelphia:
 John Benjamins.</p>
 <p>Scott, M. &amp; Tribble, C. (2006). <em>Textual Patterns: Keyword and Corpus
 Analysis in Language Education</em>. Amsterdam: Benjamins: 55.</p>
-<p>Dunning, T. (1993). <a href='https://dl.acm.org/citation.cfm?id=972454'>Accurate Methods for the Statistics of Surprise and Coincidence</a>. <em>Computational
+<p>Dunning, T. (1993). <a href='https://dl.acm.org/doi/10.5555/972450.972454'>Accurate Methods for the Statistics of Surprise and Coincidence</a>. <em>Computational
 Linguistics</em>, 19(1): 61--74.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># compare pre- v. post-war terms using grouping</span>
-<span class='no'>period</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span>(<span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='st'>"Year"</span>) <span class='kw'>&lt;</span> <span class='fl'>1945</span>, <span class='st'>"pre-war"</span>, <span class='st'>"post-war"</span>)
-<span class='no'>dfmat1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='kw'>groups</span> <span class='kw'>=</span> <span class='no'>period</span>)
-<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>dfmat1</span>) <span class='co'># make sure 'post-war' is in the first row</span></div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 9,360 features (34.9% sparse).
+<span class='kw'>period</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span>(<span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='kw'>data_corpus_inaugural</span>, <span class='st'>"Year"</span>) <span class='op'>&lt;</span> <span class='fl'>1945</span>, <span class='st'>"pre-war"</span>, <span class='st'>"post-war"</span>)
+<span class='kw'>dfmat1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='kw'>data_corpus_inaugural</span>, groups = <span class='kw'>period</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='kw'>dfmat1</span>) <span class='co'># make sure 'post-war' is in the first row</span>
+</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 9,360 features (34.9% sparse).
 #&gt;           features
 #&gt; docs       fellow-citizens   of  the senate  and house representatives   :
 #&gt;   post-war               0 1437 1988      2 1456     3               0 105
@@ -307,7 +314,8 @@ Linguistics</em>, 19(1): 61--74.</p>
 #&gt; docs       among vicissitudes
 #&gt;   post-war    22            0
 #&gt;   pre-war     86            5
-#&gt; [ reached max_nfeat ... 9,350 more features ]</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>tstat1</span> <span class='kw'>&lt;-</span> <span class='fu'>textstat_keyness</span>(<span class='no'>dfmat1</span>), <span class='fl'>10</span>)</div><div class='output co'>#&gt;      feature     chi2 p n_target n_reference
+#&gt; [ reached max_nfeat ... 9,350 more features ]</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='kw'>tstat1</span> <span class='op'>&lt;-</span> <span class='fu'>textstat_keyness</span>(<span class='kw'>dfmat1</span>), <span class='fl'>10</span>)
+</div><div class='output co'>#&gt;      feature     chi2 p n_target n_reference
 #&gt; 1         we 707.2185 0      960         779
 #&gt; 2          . 230.9059 0     1804        3141
 #&gt; 3          - 226.2633 0      239         155
@@ -317,7 +325,8 @@ Linguistics</em>, 19(1): 61--74.</p>
 #&gt; 7    america 177.5687 0      130          54
 #&gt; 8      world 176.2784 0      188         123
 #&gt; 9  americans 151.2940 0       67           7
-#&gt; 10       new 142.2859 0      150          97</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>tail</a></span>(<span class='no'>tstat1</span>, <span class='fl'>10</span>)</div><div class='output co'>#&gt;           feature       chi2            p n_target n_reference
+#&gt; 10       new 142.2859 0      150          97</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>tail</a></span>(<span class='kw'>tstat1</span>, <span class='fl'>10</span>)
+</div><div class='output co'>#&gt;           feature       chi2            p n_target n_reference
 #&gt; 9351         upon  -51.51813 7.094325e-13       39         332
 #&gt; 9352           it  -51.84279 6.012968e-13      257        1132
 #&gt; 9353       public  -55.70000 8.437695e-14       11         213
@@ -329,8 +338,9 @@ Linguistics</em>, 19(1): 61--74.</p>
 #&gt; 9359           of -175.47661 0.000000e+00     1437        5666
 #&gt; 9360          the -294.14547 0.000000e+00     1988        8094</div><div class='input'>
 <span class='co'># compare pre- v. post-war terms using logical vector</span>
-<span class='no'>dfmat2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>data_corpus_inaugural</span>)
-<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='fu'>textstat_keyness</span>(<span class='no'>dfmat2</span>, <span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='st'>"Year"</span>) <span class='kw'>&gt;=</span> <span class='fl'>1945</span>), <span class='fl'>10</span>)</div><div class='output co'>#&gt;      feature     chi2 p n_target n_reference
+<span class='kw'>dfmat2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='kw'>data_corpus_inaugural</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='fu'>textstat_keyness</span>(<span class='kw'>dfmat2</span>, <span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='kw'>data_corpus_inaugural</span>, <span class='st'>"Year"</span>) <span class='op'>&gt;=</span> <span class='fl'>1945</span>), <span class='fl'>10</span>)
+</div><div class='output co'>#&gt;      feature     chi2 p n_target n_reference
 #&gt; 1         we 707.2185 0      960         779
 #&gt; 2          . 230.9059 0     1804        3141
 #&gt; 3          - 226.2633 0      239         155
@@ -342,20 +352,22 @@ Linguistics</em>, 19(1): 61--74.</p>
 #&gt; 9  americans 151.2940 0       67           7
 #&gt; 10       new 142.2859 0      150          97</div><div class='input'>
 <span class='co'># compare Trump 2017 to other post-war preseidents</span>
-<span class='no'>dfmat3</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='no'>period</span> <span class='kw'>==</span> <span class='st'>"post-war"</span>))
-<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='fu'>textstat_keyness</span>(<span class='no'>dfmat3</span>, <span class='kw'>target</span> <span class='kw'>=</span> <span class='st'>"2017-Trump"</span>), <span class='fl'>10</span>)</div><div class='output co'>#&gt;         feature     chi2            p n_target n_reference
-#&gt; 1     protected 76.20152 0.000000e+00        5           1
-#&gt; 2          will 50.88954 9.771073e-13       40         299
-#&gt; 3         while 47.92566 4.426903e-12        6           7
-#&gt; 4         obama 47.58369 5.270562e-12        3           0
-#&gt; 5         we've 47.58369 5.270562e-12        3           0
-#&gt; 6       america 31.15097 2.387204e-08       18         112
-#&gt; 7         again 27.59193 1.498024e-07        9          33
-#&gt; 8      everyone 27.50081 1.570283e-07        4           5
-#&gt; 9          your 26.45161 2.702225e-07       11          50
-#&gt; 10 transferring 25.39798 4.664057e-07        2           0</div><div class='input'>
+<span class='kw'>dfmat3</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='kw'>data_corpus_inaugural</span>, <span class='kw'>period</span> <span class='op'>==</span> <span class='st'>"post-war"</span>))
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='fu'>textstat_keyness</span>(<span class='kw'>dfmat3</span>, target = <span class='st'>"2017-Trump"</span>), <span class='fl'>10</span>)
+</div><div class='output co'>#&gt;      feature     chi2            p n_target n_reference
+#&gt; 1  protected 76.20152 0.000000e+00        5           1
+#&gt; 2       will 50.88954 9.771073e-13       40         299
+#&gt; 3      while 47.92566 4.426903e-12        6           7
+#&gt; 4      obama 47.58369 5.270562e-12        3           0
+#&gt; 5      we've 47.58369 5.270562e-12        3           0
+#&gt; 6    america 31.15097 2.387204e-08       18         112
+#&gt; 7      again 27.59193 1.498024e-07        9          33
+#&gt; 8   everyone 27.50081 1.570283e-07        4           5
+#&gt; 9       your 26.45161 2.702225e-07       11          50
+#&gt; 10    breath 25.39798 4.664057e-07        2           0</div><div class='input'>
 <span class='co'># using the likelihood ratio method</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='fu'>textstat_keyness</span>(<span class='fu'><a href='dfm_weight.html'>dfm_smooth</a></span>(<span class='no'>dfmat3</span>), <span class='kw'>measure</span> <span class='kw'>=</span> <span class='st'>"lr"</span>, <span class='kw'>target</span> <span class='kw'>=</span> <span class='st'>"2017-Trump"</span>), <span class='fl'>10</span>)</div><div class='output co'>#&gt;      feature        G2            p n_target n_reference
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='fu'>textstat_keyness</span>(<span class='fu'><a href='dfm_weight.html'>dfm_smooth</a></span>(<span class='kw'>dfmat3</span>), measure = <span class='st'>"lr"</span>, target = <span class='st'>"2017-Trump"</span>), <span class='fl'>10</span>)
+</div><div class='output co'>#&gt;      feature        G2            p n_target n_reference
 #&gt; 1       will 24.516313 7.368333e-07       41         317
 #&gt; 2    america 13.996558 1.831456e-04       19         130
 #&gt; 3       your 10.406851 1.255487e-03       12          68
@@ -381,7 +393,7 @@ Linguistics</em>, 19(1): 61--74.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

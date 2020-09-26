@@ -46,7 +46,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.2</span>
       </span>
     </div>
 
@@ -167,21 +167,26 @@
   <div class="contents col-md-9">
 
 
-<p><a href="https://CRAN.R-project.org/package=quanteda"><img src="https://www.r-pkg.org/badges/version/quanteda" alt="CRAN Version"></a> <a href="https://github.com/quanteda/quanteda"><img src="https://img.shields.io/badge/devel%20version-2.1.0-royalblue.svg"></a> <a href="https://CRAN.R-project.org/package=quanteda"><img src="https://cranlogs.r-pkg.org/badges/quanteda" alt="Downloads"></a> <a href="https://CRAN.R-project.org/package=quanteda"><img src="https://cranlogs.r-pkg.org/badges/grand-total/quanteda?color=orange" alt="Total Downloads"></a> <a href="https://travis-ci.org/quanteda/quanteda"><img src="https://travis-ci.org/quanteda/quanteda.svg?branch=master" alt="Travis-CI Build Status"></a> <a href="https://ci.appveyor.com/project/kbenoit/quanteda/branch/master"><img src="https://ci.appveyor.com/api/projects/status/e3tf2h1ff0nlv249/branch/master?svg=true" alt="Appveyor Build status"></a> <a href="https://codecov.io/gh/quanteda/quanteda"><img src="https://codecov.io/gh/quanteda/quanteda/branch/master/graph/badge.svg" alt="codecov"></a> <a href="https://zenodo.org/badge/latestdoi/5424649"><img src="https://zenodo.org/badge/5424649.svg" alt="DOI"></a> <a href="https://doi.org/10.21105/joss.00774"><img src="http://joss.theoj.org/papers/10.21105/joss.00774/status.svg" alt="DOI"></a></p>
+<!-- badges: start -->
+<p><a href="https://CRAN.R-project.org/package=quanteda"><img src="https://www.r-pkg.org/badges/version/quanteda" alt="CRAN Version"></a> <a href="https://github.com/quanteda/quanteda"><img src="https://img.shields.io/badge/devel%20version-2.1.2-royalblue.svg"></a> <a href="https://CRAN.R-project.org/package=quanteda"><img src="https://cranlogs.r-pkg.org/badges/quanteda" alt="Downloads"></a> <a href="https://CRAN.R-project.org/package=quanteda"><img src="https://cranlogs.r-pkg.org/badges/grand-total/quanteda?color=orange" alt="Total Downloads"></a> <a href="https://github.com/quanteda/quanteda/actions"><img src="https://github.com/quanteda/quanteda/workflows/R-CMD-check/badge.svg" alt="R build status"></a> <a href="https://codecov.io/gh/quanteda/quanteda"><img src="https://codecov.io/gh/quanteda/quanteda/branch/master/graph/badge.svg" alt="codecov"></a> <a href="https://zenodo.org/badge/latestdoi/5424649"><img src="https://zenodo.org/badge/5424649.svg" alt="DOI"></a> <a href="https://doi.org/10.21105/joss.00774"><img src="http://joss.theoj.org/papers/10.21105/joss.00774/status.svg" alt="DOI"></a> <!-- badges: end --></p>
 <div id="about" class="section level2">
 <h2 class="hasAnchor">
 <a href="#about" class="anchor"></a>About</h2>
-<p>An R package for managing and analyzing text, created by <a href="http://kenbenoit.net">Kenneth Benoit</a>. Supported by the European Research Council grant ERC-2011-StG 283794-QUANTESS.</p>
+<p>An R package for managing and analyzing text, created by <a href="https://kenbenoit.net">Kenneth Benoit</a>. Supported by the European Research Council grant ERC-2011-StG 283794-QUANTESS.</p>
 <p>For more details, see <a href="https://quanteda.io" class="uri">https://quanteda.io</a>.</p>
 </div>
 <div id="how-to-install" class="section level2">
 <h2 class="hasAnchor">
 <a href="#how-to-install" class="anchor"></a>How to Install</h2>
 <p>The normal way from CRAN, using your R GUI or</p>
-<div class="sourceCode" id="cb1"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"quanteda"</span>)</pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"quanteda"</span>) 
+</pre></div>
 <p>Or for the latest development version:</p>
-<div class="sourceCode" id="cb2"><pre class="r"><span class="co"># devtools package required to install quanteda from Github </span>
-<span class="kw pkg">devtools</span><span class="kw ns">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span>(<span class="st">"quanteda/quanteda"</span>)</pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit">
+<span class="co"># devtools package required to install quanteda from Github </span>
+<span class="kw">devtools</span>::<span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span>(<span class="st">"quanteda/quanteda"</span>) 
+</pre></div>
 <p>Because this compiles some C++ and Fortran source code, you will need to have installed the appropriate compilers.</p>
 <p><strong>If you are using a Windows platform</strong>, this means you will need also to install the <a href="https://CRAN.R-project.org/bin/windows/Rtools/">Rtools</a> software available from CRAN.</p>
 <p><strong>If you are using macOS</strong>, you should install the <a href="https://cran.r-project.org/bin/macosx/tools/">macOS tools</a>, namely the Clang 6.x compiler and the GNU Fortran compiler (as <strong>quanteda</strong> requires gfortran to build). If you are still getting errors related to gfortran, follow the fixes <a href="https://thecoatlessprofessor.com/programming/rcpp-rcpparmadillo-and-os-x-mavericks--lgfortran-and--lquadmath-error/">here</a>.</p>
@@ -274,7 +279,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

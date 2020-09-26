@@ -1,3 +1,13 @@
+# quanteda 2.1.2
+
+## Changes
+
+* `textstat_keyness()` performance is now improved through implementation in (multi-threaded) C++.
+
+## Bug fixes and stability enhancements
+
+* Fixes breaking tests and examples on Solaris platform as well as other changes introduced by changes to the stringi package.
+
 # quanteda 2.1.1
 
 ## Changes
@@ -681,10 +691,10 @@ new function | description | output class
 
 new name | reason
 :--------|:-------------
-`encodedTextFiles.zip` | moved to the [**readtext**](https://github.com/kbenoit/readtext) package
+`encodedTextFiles.zip` | moved to the [**readtext**](https://github.com/quanteda/readtext) package
 `describeTexts` | deprecated several versions ago for `summary.character`
-`textfile` | moved to package [**readtext**](http://github.com/kbenoit/readtext)
-`encodedTexts` | moved to package [**readtext**](http://github.com/kbenoit/readtext), as `data_char_encodedtexts`
+`textfile` | moved to package [**readtext**](https://github.com/quanteda/readtext)
+`encodedTexts` | moved to package [**readtext**](https://github.com/quanteda/readtext), as `data_char_encodedtexts`
 `findSequences` | replaced by `sequences`
 
 
@@ -816,7 +826,7 @@ quanteda 0.9.6
 
 *  Much better `phrasetotoken()`, with additional methods for all combinations of corpus/character v. dictionary/character/collocations.
 
-*  Added a` weight(x, type, ...`) signature where the second argument can be a named numeric vector of weights, not just a label for a type of weight.  Thanks http://stackoverflow.com/questions/36815926/assigning-weights-to-different-features-in-r/36823475#36823475.
+*  Added a` weight(x, type, ...`) signature where the second argument can be a named numeric vector of weights, not just a label for a type of weight.  Thanks https://stackoverflow.com/questions/36815926/assigning-weights-to-different-features-in-r/36823475#36823475.
 
 *  `as.data.frame` for dfms now passes `...` to `as.data.frame.matrix`.
 

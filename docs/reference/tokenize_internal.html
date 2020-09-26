@@ -91,7 +91,7 @@ text segmentation." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.2</span>
       </span>
     </div>
 
@@ -221,17 +221,17 @@ text segmentation." />
 text segmentation.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>tokenize_word</span>(<span class='no'>x</span>, <span class='kw'>split_hyphens</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fu'><a href='quanteda_options.html'>quanteda_options</a></span>(<span class='st'>"verbose"</span>))
+    <pre class="usage"><span class='fu'>tokenize_word</span>(<span class='kw'>x</span>, split_hyphens = <span class='fl'>FALSE</span>, verbose = <span class='fu'><a href='quanteda_options.html'>quanteda_options</a></span>(<span class='st'>"verbose"</span>))
 
-<span class='fu'>tokenize_word1</span>(<span class='no'>x</span>, <span class='kw'>split_hyphens</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fu'><a href='quanteda_options.html'>quanteda_options</a></span>(<span class='st'>"verbose"</span>))
+<span class='fu'>tokenize_word1</span>(<span class='kw'>x</span>, split_hyphens = <span class='fl'>FALSE</span>, verbose = <span class='fu'><a href='quanteda_options.html'>quanteda_options</a></span>(<span class='st'>"verbose"</span>))
 
-<span class='fu'>tokenize_character</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+<span class='fu'>tokenize_character</span>(<span class='kw'>x</span>, <span class='kw'>...</span>)
 
-<span class='fu'>tokenize_sentence</span>(<span class='no'>x</span>, <span class='no'>...</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'>tokenize_sentence</span>(<span class='kw'>x</span>, <span class='kw'>...</span>, verbose = <span class='fl'>FALSE</span>)
 
-<span class='fu'>tokenize_fasterword</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+<span class='fu'>tokenize_fasterword</span>(<span class='kw'>x</span>, <span class='kw'>...</span>)
 
-<span class='fu'>tokenize_fastestword</span>(<span class='no'>x</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>tokenize_fastestword</span>(<span class='kw'>x</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -264,21 +264,22 @@ tokenization, including whitespace where applicable; except for
 includes URLs, #hashtags, @usernames, and email addresses.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='no'>txt</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>doc1</span> <span class='kw'>=</span> <span class='st'>"Tweet https://quanteda.io using @quantedainit and #rstats."</span>,
-         <span class='kw'>doc2</span> <span class='kw'>=</span> <span class='st'>"The £1,000,000 question."</span>,
-         <span class='kw'>doc4</span> <span class='kw'>=</span> <span class='st'>"Line 1.\nLine2\n\nLine3."</span>,
-         <span class='kw'>doc5</span> <span class='kw'>=</span> <span class='st'>"?"</span>,
-         <span class='kw'>doc6</span> <span class='kw'>=</span> <span class='st'>"Self-aware machines! \U0001f600"</span>)
-<span class='fu'>tokenize_word</span>(<span class='no'>txt</span>)
-<span class='fu'>tokenize_word</span>(<span class='no'>txt</span>, <span class='kw'>split_hyphens</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='fu'>tokenize_word2</span>(<span class='no'>txt</span>, <span class='kw'>split_hyphens</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-<span class='fu'>tokenize_word2</span>(<span class='no'>txt</span>, <span class='kw'>split_hyphens</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='fu'>tokenize_fasterword</span>(<span class='no'>txt</span>)
-<span class='fu'>tokenize_fastestword</span>(<span class='no'>txt</span>)
-<span class='fu'>tokenize_sentence</span>(<span class='no'>txt</span>)
-<span class='fu'>tokenize_character</span>(<span class='no'>txt</span>[<span class='fl'>2</span>])
-}</div></pre>
+    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='kw'>txt</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(doc1 = <span class='st'>"Tweet https://quanteda.io using @quantedainit and #rstats."</span>,
+         doc2 = <span class='st'>"The £1,000,000 question."</span>,
+         doc4 = <span class='st'>"Line 1.\nLine2\n\nLine3."</span>,
+         doc5 = <span class='st'>"?"</span>,
+         doc6 = <span class='st'>"Self-aware machines! \U0001f600"</span>)
+<span class='fu'>tokenize_word</span>(<span class='kw'>txt</span>)
+<span class='fu'>tokenize_word</span>(<span class='kw'>txt</span>, split_hyphens = <span class='fl'>TRUE</span>)
+<span class='fu'>tokenize_word2</span>(<span class='kw'>txt</span>, split_hyphens = <span class='fl'>FALSE</span>)
+<span class='fu'>tokenize_word2</span>(<span class='kw'>txt</span>, split_hyphens = <span class='fl'>TRUE</span>)
+<span class='fu'>tokenize_fasterword</span>(<span class='kw'>txt</span>)
+<span class='fu'>tokenize_fastestword</span>(<span class='kw'>txt</span>)
+<span class='fu'>tokenize_sentence</span>(<span class='kw'>txt</span>)
+<span class='fu'>tokenize_character</span>(<span class='kw'>txt</span>[<span class='fl'>2</span>])
+}
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -294,7 +295,7 @@ includes URLs, #hashtags, @usernames, and email addresses.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

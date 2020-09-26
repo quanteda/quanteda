@@ -109,7 +109,7 @@ fcm(toks, context = "document")
 fcm(toks, context = "window", window = 3)
 }
 \references{
-Momtazi, S., Khudanpur, S., & Klakow, D. (2010). "\href{https://www.aclweb.org/anthology/N10-1046}{A comparative study of word co-occurrence for term clustering in language model-based sentence retrieval.}" \emph{Human Language
+Momtazi, S., Khudanpur, S., & Klakow, D. (2010). "\href{https://www.aclweb.org/anthology/N10-1046/}{A comparative study of word co-occurrence for term clustering in language model-based sentence retrieval.}" \emph{Human Language
 Technologies: The 2010 Annual Conference of the North American Chapter of
 the ACL}, Los Angeles, California, June 2010, 325-328.
 
@@ -118,7 +118,7 @@ An Introduction to Natural Language Processing, Computational Linguistics,
 and Speech Recognition}. Draft of September 23, 2018 (Chapter 6, Vector
 Semantics). Available at \url{https://web.stanford.edu/~jurafsky/slp3/}.
 
-Church, K. W. & P. Hanks (1990). \href{http://dl.acm.org/citation.cfm?id=89095}{Word association norms, mutual information, and lexicography}.
+Church, K. W. & P. Hanks (1990). \href{https://dl.acm.org/doi/10.5555/89086.89095}{Word association norms, mutual information, and lexicography}.
 \emph{Computational Linguistics}, 16(1), 22-29.
 }
 \author{

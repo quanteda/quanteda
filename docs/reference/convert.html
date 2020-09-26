@@ -94,7 +94,7 @@ an easy way to make a corpus and its document variables into a data.frame." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.2</span>
       </span>
     </div>
 
@@ -227,21 +227,21 @@ for which conversions are defined.  For <a href='corpus.html'>corpus</a> objects
 an easy way to make a corpus and its document variables into a data.frame.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>convert</span>(<span class='no'>x</span>, <span class='no'>to</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>convert</span>(<span class='kw'>x</span>, <span class='kw'>to</span>, <span class='kw'>...</span>)
 
 <span class='co'># S3 method for dfm</span>
 <span class='fu'>convert</span>(
-  <span class='no'>x</span>,
-  <span class='kw'>to</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"lda"</span>, <span class='st'>"tm"</span>, <span class='st'>"stm"</span>, <span class='st'>"austin"</span>, <span class='st'>"topicmodels"</span>, <span class='st'>"lsa"</span>, <span class='st'>"matrix"</span>, <span class='st'>"data.frame"</span>,
+  <span class='kw'>x</span>,
+  to = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"lda"</span>, <span class='st'>"tm"</span>, <span class='st'>"stm"</span>, <span class='st'>"austin"</span>, <span class='st'>"topicmodels"</span>, <span class='st'>"lsa"</span>, <span class='st'>"matrix"</span>, <span class='st'>"data.frame"</span>,
     <span class='st'>"tripletlist"</span>),
-  <span class='kw'>docvars</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>omit_empty</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>docid_field</span> <span class='kw'>=</span> <span class='st'>"doc_id"</span>,
-  <span class='no'>...</span>
+  docvars = <span class='kw'>NULL</span>,
+  omit_empty = <span class='fl'>TRUE</span>,
+  docid_field = <span class='st'>"doc_id"</span>,
+  <span class='kw'>...</span>
 )
 
 <span class='co'># S3 method for corpus</span>
-<span class='fu'>convert</span>(<span class='no'>x</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"data.frame"</span>, <span class='st'>"json"</span>), <span class='kw'>pretty</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>convert</span>(<span class='kw'>x</span>, to = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"data.frame"</span>, <span class='st'>"json"</span>), pretty = <span class='fl'>FALSE</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -252,7 +252,7 @@ an easy way to make a corpus and its document variables into a data.frame.</p>
     </tr>
     <tr>
       <th>to</th>
-      <td><p>target conversion format, one of:</p><dl'>
+      <td><p>target conversion format, one of:</p><dl>
 <dt><code>"lda"</code></dt><dd><p>a list with components "documents" and "vocab" as
 needed by the function
 <a href='https://rdrr.io/pkg/lda/man/lda.collapsed.gibbs.sampler.html'>lda.collapsed.gibbs.sampler</a> from the
@@ -270,7 +270,7 @@ are rows, and each feature is a variable (for a dfm),
 or each text and its document variables form a row (for a corpus)</p></dd>
 <dt><code>"json"</code></dt><dd><p>(corpus only) convert a corpus and its document variables
 into JSON format, using the format described in
-<a href='https://jeroen.cran.dev/jsonlite/reference/fromJSON.html'>jsonlite::toJSON()</a></p></dd>
+<a href='https://rdrr.io/pkg/jsonlite/man/fromJSON.html'>jsonlite::toJSON()</a></p></dd>
 <dt><code>"tripletlist"</code></dt><dd><p>a named "triplet" format list consisting of
 <code>document</code>, <code>feature</code>, and <code>frequency</code></p></dd>
 
@@ -301,7 +301,7 @@ names used when <code>to = "data.frame"</code>.  Unused for other conversions.</
     </tr>
     <tr>
       <th>pretty</th>
-      <td><p>adds indentation whitespace to JSON output. Can be TRUE/FALSE or a number specifying the number of spaces to indent. See <code><a href='https://jeroen.cran.dev/jsonlite/reference/prettify.html'>prettify</a></code></p></td>
+      <td><p>adds indentation whitespace to JSON output. Can be TRUE/FALSE or a number specifying the number of spaces to indent. See <code><a href='https://rdrr.io/pkg/jsonlite/man/prettify.html'>prettify</a></code></p></td>
     </tr>
     </table>
 
@@ -314,14 +314,16 @@ of the return formats.</p>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>## convert a dfm</span>
 
-<span class='no'>corp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='no'>data_corpus_inaugural</span>, <span class='no'>Year</span> <span class='kw'>&gt;</span> <span class='fl'>1970</span>)
-<span class='no'>dfmat1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='no'>corp</span>)
+<span class='kw'>corp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='kw'>data_corpus_inaugural</span>, <span class='kw'>Year</span> <span class='op'>&gt;</span> <span class='fl'>1970</span>)
+<span class='kw'>dfmat1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='kw'>corp</span>)
 
 <span class='co'># austin's wfm format</span>
-<span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/dim.html'>dim</a></span>(<span class='no'>dfmat1</span>), <span class='fu'><a href='https://rdrr.io/r/base/dim.html'>dim</a></span>(<span class='fu'>convert</span>(<span class='no'>dfmat1</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"austin"</span>)))</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/dim.html'>dim</a></span>(<span class='kw'>dfmat1</span>), <span class='fu'><a href='https://rdrr.io/r/base/dim.html'>dim</a></span>(<span class='fu'>convert</span>(<span class='kw'>dfmat1</span>, to = <span class='st'>"austin"</span>)))
+</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 <span class='co'># stm package format</span>
-<span class='no'>stmmat</span> <span class='kw'>&lt;-</span> <span class='fu'>convert</span>(<span class='no'>dfmat1</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"stm"</span>)
-<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='no'>stmmat</span>)</div><div class='output co'>#&gt; List of 3
+<span class='kw'>stmmat</span> <span class='op'>&lt;-</span> <span class='fu'>convert</span>(<span class='kw'>dfmat1</span>, to = <span class='st'>"stm"</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='kw'>stmmat</span>)
+</div><div class='output co'>#&gt; List of 3
 #&gt;  $ documents:List of 12
 #&gt;   ..$ 1973-Nixon  : int [1:2, 1:515] 1 17 2 96 3 1 4 5 6 3 ...
 #&gt;   ..$ 1977-Carter : int [1:2, 1:501] 1 11 2 65 3 7 4 4 7 52 ...
@@ -342,31 +344,34 @@ of the return formats.</p>
 #&gt;   ..$ FirstName: chr [1:12] "Richard Milhous" "Jimmy" "Ronald" "Ronald" ...
 #&gt;   ..$ Party    : Factor w/ 6 levels "Democratic","Democratic-Republican",..: 5 1 5 5 5 1 1 5 5 1 ...</div><div class='input'>
 <span class='co'># triplet</span>
-<span class='no'>tripletmat</span> <span class='kw'>&lt;-</span> <span class='fu'>convert</span>(<span class='no'>dfmat1</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"tripletlist"</span>)
-<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='no'>tripletmat</span>)</div><div class='output co'>#&gt; List of 3
+<span class='kw'>tripletmat</span> <span class='op'>&lt;-</span> <span class='fu'>convert</span>(<span class='kw'>dfmat1</span>, to = <span class='st'>"tripletlist"</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='kw'>tripletmat</span>)
+</div><div class='output co'>#&gt; List of 3
 #&gt;  $ document : chr [1:8388] "1973-Nixon" "1981-Reagan" "1989-Bush" "2005-Bush" ...
 #&gt;  $ feature  : chr [1:8388] "mr" "mr" "mr" "mr" ...
 #&gt;  $ frequency: num [1:8388] 3 3 6 1 1 69 52 130 124 142 ...</div><div class='input'>
-<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='co'>if</span> (<span class='fl'>FALSE</span>) {
 <span class='co'># tm's DocumentTermMatrix format</span>
-<span class='no'>tmdfm</span> <span class='kw'>&lt;-</span> <span class='fu'>convert</span>(<span class='no'>dfmat1</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"tm"</span>)
-<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='no'>tmdfm</span>)
+<span class='kw'>tmdfm</span> <span class='op'>&lt;-</span> <span class='fu'>convert</span>(<span class='kw'>dfmat1</span>, to = <span class='st'>"tm"</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='kw'>tmdfm</span>)
 
 <span class='co'># topicmodels package format</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='fu'>convert</span>(<span class='no'>dfmat1</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"topicmodels"</span>))
+<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='fu'>convert</span>(<span class='kw'>dfmat1</span>, to = <span class='st'>"topicmodels"</span>))
 
 <span class='co'># lda package format</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='fu'>convert</span>(<span class='no'>dfmat1</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"lda"</span>))
+<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='fu'>convert</span>(<span class='kw'>dfmat1</span>, to = <span class='st'>"lda"</span>))
 }
 
 <span class='co'>## convert a corpus into a data.frame</span>
 
-<span class='no'>corp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='corpus.html'>corpus</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>d1</span> <span class='kw'>=</span> <span class='st'>"Text one."</span>, <span class='kw'>d2</span> <span class='kw'>=</span> <span class='st'>"Text two."</span>),
-               <span class='kw'>docvars</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>dvar1</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>2</span>, <span class='kw'>dvar2</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"one"</span>, <span class='st'>"two"</span>),
-                                    <span class='kw'>stringsAsFactors</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>))
-<span class='fu'>convert</span>(<span class='no'>corp</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"data.frame"</span>)</div><div class='output co'>#&gt;   doc_id      text dvar1 dvar2
+<span class='kw'>corp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='corpus.html'>corpus</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(d1 = <span class='st'>"Text one."</span>, d2 = <span class='st'>"Text two."</span>),
+               docvars = <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(dvar1 = <span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span>, dvar2 = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"one"</span>, <span class='st'>"two"</span>),
+                                    stringsAsFactors = <span class='fl'>FALSE</span>))
+<span class='fu'>convert</span>(<span class='kw'>corp</span>, to = <span class='st'>"data.frame"</span>)
+</div><div class='output co'>#&gt;   doc_id      text dvar1 dvar2
 #&gt; 1     d1 Text one.     1   one
-#&gt; 2     d2 Text two.     2   two</div><div class='input'><span class='fu'>convert</span>(<span class='no'>corp</span>, <span class='kw'>to</span> <span class='kw'>=</span> <span class='st'>"json"</span>)</div><div class='output co'>#&gt; [{"doc_id":"d1","text":"Text one.","dvar1":1,"dvar2":"one"},{"doc_id":"d2","text":"Text two.","dvar1":2,"dvar2":"two"}] </div></pre>
+#&gt; 2     d2 Text two.     2   two</div><div class='input'><span class='fu'>convert</span>(<span class='kw'>corp</span>, to = <span class='st'>"json"</span>)
+</div><div class='output co'>#&gt; [{"doc_id":"d1","text":"Text one.","dvar1":1,"dvar2":"one"},{"doc_id":"d2","text":"Text two.","dvar1":2,"dvar2":"two"}] </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -382,7 +387,7 @@ of the return formats.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

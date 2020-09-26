@@ -9,7 +9,8 @@ textstat_keyness(
   target = 1L,
   measure = c("chi2", "exact", "lr", "pmi"),
   sort = TRUE,
-  correction = c("default", "yates", "williams", "none")
+  correction = c("default", "yates", "williams", "none"),
+  ...
 )
 }
 \arguments{
@@ -20,9 +21,10 @@ the document forming the "target" for computing keyness; all other
 documents' feature frequencies will be combined for use as a reference}
 
 \item{measure}{(signed) association measure to be used for computing keyness.
-Currently available: \code{"chi2"}; \code{"exact"} (Fisher's exact test);
-\code{"lr"} for the likelihood ratio; \code{"pmi"} for pointwise mutual
-information.}
+Currently available: \code{"chi2"}; \code{"exact"} (Fisher's exact test); \code{"lr"} for
+the likelihood ratio; \code{"pmi"} for pointwise mutual information.  Note that
+the "exact" test is very computationally intensive and therefore much
+slower than the other methods.}
 
 \item{sort}{logical; if \code{TRUE} sort features scored in descending order
 of the measure, otherwise leave in original feature order}
@@ -34,6 +36,8 @@ Specifying a value other than the default can be used to override the
 defaults, for instance to apply the Williams correction to the chi2
 measure.  Specifying a correction for the \code{"exact"} and \code{"pmi"}
 measures has no effect and produces a warning.}
+
+\item{...}{not used}
 }
 \value{
 a data.frame of computed statistics and associated p-values, where
@@ -84,7 +88,7 @@ John Benjamins.
 Scott, M. & Tribble, C. (2006). \emph{Textual Patterns: Keyword and Corpus
 Analysis in Language Education}. Amsterdam: Benjamins: 55.
 
-Dunning, T. (1993). \href{https://dl.acm.org/citation.cfm?id=972454}{Accurate Methods for the Statistics of Surprise and Coincidence}. \emph{Computational
+Dunning, T. (1993). \href{https://dl.acm.org/doi/10.5555/972450.972454}{Accurate Methods for the Statistics of Surprise and Coincidence}. \emph{Computational
 Linguistics}, 19(1): 61--74.
 }
 \keyword{textstat}

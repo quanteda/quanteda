@@ -9,8 +9,7 @@ textstat_summary(x, cache = TRUE, ...)
 \arguments{
 \item{x}{corpus to be summarized}
 
-\item{cache}{if \code{TRUE}, use internal cache from the second time. Not
-available on Solaris.}
+\item{cache}{if \code{TRUE}, use internal cache from the second time.}
 
 \item{...}{additional arguments passed through to \code{\link[=dfm]{dfm()}}}
 }
@@ -20,15 +19,21 @@ Count the total number of number tokens and sentences.
 \details{
 Count the total number of characters, tokens and sentences as well as special
 tokens such as numbers, punctuation marks, symbols, tags and emojis.
-\itemize{ \item chars = number of characters; equal to \code{\link[=nchar]{nchar()}} \item sents
-= number of sentences; equal \code{ntoken(tokens(x), what = "sentence")} \item
-tokens = number of tokens; equal to \code{\link[=ntoken]{ntoken()}} \item types = number of unique
-tokens; equal to \code{\link[=ntype]{ntype()}} \item puncts = number of punctuation marks
-(\verb{^\\p\{P\}+$}) \item numbers = number of numeric tokens
-(\verb{^\\p\{Sc\}\{0,1\}\\p\{N\}+([.,]*\\p\{N\})*\\p\{Sc\}\{0,1\}$}) \item symbols = number of
-symbols (\verb{^\\p\{S\}$}) \item tags = number of tags; sum of \code{pattern_username}
-and \code{pattern_hashtag} in \code{\link[=quanteda_options]{quanteda_options()}} \item emojis = number of emojis
-(\verb{^\\p\{Emoji_Presentation\}+$}) }
+\itemize{
+\item chars = number of characters; equal to \code{\link[=nchar]{nchar()}}
+\item sents
+= number of sentences; equal \code{ntoken(tokens(x), what = "sentence")}
+\item
+tokens = number of tokens; equal to \code{\link[=ntoken]{ntoken()}}
+\item types = number of unique tokens; equal to \code{\link[=ntype]{ntype()}}
+\item puncts = number of punctuation marks (\verb{^\\p\{P\}+$})
+\item numbers = number of numeric tokens
+(\verb{^\\p\{Sc\}\{0,1\}\\p\{N\}+([.,]*\\p\{N\})*\\p\{Sc\}\{0,1\}$})
+\item symbols = number of symbols (\verb{^\\p\{S\}$})
+\item tags = number of tags; sum of \code{pattern_username} and \code{pattern_hashtag}
+in \code{\link[=quanteda_options]{quanteda_options()}}
+\item emojis = number of emojis (\verb{^\\p\{Emoji_Presentation\}+$})
+}
 }
 \examples{
 corp <- data_corpus_inaugural

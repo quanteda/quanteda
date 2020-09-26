@@ -92,7 +92,7 @@ effectively reverses the operation of tokens_compound()." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.2</span>
       </span>
     </div>
 
@@ -224,10 +224,10 @@ effectively reverses the operation of <code><a href='tokens_compound.html'>token
     </div>
 
     <pre class="usage"><span class='fu'>tokens_split</span>(
-  <span class='no'>x</span>,
-  <span class='kw'>separator</span> <span class='kw'>=</span> <span class='st'>" "</span>,
-  <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"fixed"</span>, <span class='st'>"regex"</span>),
-  <span class='kw'>remove_separator</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+  <span class='kw'>x</span>,
+  separator = <span class='st'>" "</span>,
+  valuetype = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"fixed"</span>, <span class='st'>"regex"</span>),
+  remove_separator = <span class='fl'>TRUE</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -256,20 +256,23 @@ exact matching. See <a href='valuetype.html'>valuetype</a> for details.</p></td>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># undo tokens_compound()</span>
-<span class='no'>toks1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='st'>"pork barrel is an idiomatic multi-word expression"</span>)
-<span class='fu'><a href='tokens_compound.html'>tokens_compound</a></span>(<span class='no'>toks1</span>, <span class='fu'><a href='phrase.html'>phrase</a></span>(<span class='st'>"pork barrel"</span>))</div><div class='output co'>#&gt; Tokens consisting of 1 document.
+<span class='kw'>toks1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='st'>"pork barrel is an idiomatic multi-word expression"</span>)
+<span class='fu'><a href='tokens_compound.html'>tokens_compound</a></span>(<span class='kw'>toks1</span>, <span class='fu'><a href='phrase.html'>phrase</a></span>(<span class='st'>"pork barrel"</span>))
+</div><div class='output co'>#&gt; Tokens consisting of 1 document.
 #&gt; text1 :
 #&gt; [1] "pork_barrel" "is"          "an"          "idiomatic"   "multi-word" 
 #&gt; [6] "expression" 
-#&gt; </div><div class='input'><span class='fu'><a href='tokens_compound.html'>tokens_compound</a></span>(<span class='no'>toks1</span>, <span class='fu'><a href='phrase.html'>phrase</a></span>(<span class='st'>"pork barrel"</span>)) <span class='kw'>%&gt;%</span>
-    <span class='fu'>tokens_split</span>(<span class='kw'>separator</span> <span class='kw'>=</span> <span class='st'>"_"</span>)</div><div class='output co'>#&gt; Tokens consisting of 1 document.
+#&gt; </div><div class='input'><span class='fu'><a href='tokens_compound.html'>tokens_compound</a></span>(<span class='kw'>toks1</span>, <span class='fu'><a href='phrase.html'>phrase</a></span>(<span class='st'>"pork barrel"</span>)) <span class='op'>%&gt;%</span>
+    <span class='fu'>tokens_split</span>(separator = <span class='st'>"_"</span>)
+</div><div class='output co'>#&gt; Tokens consisting of 1 document.
 #&gt; text1 :
 #&gt; [1] "pork"       "barrel"     "is"         "an"         "idiomatic" 
 #&gt; [6] "multi-word" "expression"
-#&gt; </div><div class='input'>
+#&gt; </div><div class='input'>    
 <span class='co'># similar to tokens(x, remove_hyphen = TRUE) but post-tokenization </span>
-<span class='no'>toks2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='st'>"UK-EU negotiation is not going anywhere as of 2018-12-24."</span>)
-<span class='fu'>tokens_split</span>(<span class='no'>toks2</span>, <span class='kw'>separator</span> <span class='kw'>=</span> <span class='st'>"-"</span>, <span class='kw'>remove_separator</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; Tokens consisting of 1 document.
+<span class='kw'>toks2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='st'>"UK-EU negotiation is not going anywhere as of 2018-12-24."</span>)
+<span class='fu'>tokens_split</span>(<span class='kw'>toks2</span>, separator = <span class='st'>"-"</span>, remove_separator = <span class='fl'>FALSE</span>)
+</div><div class='output co'>#&gt; Tokens consisting of 1 document.
 #&gt; text1 :
 #&gt;  [1] "UK"          "-"           "EU"          "negotiation" "is"         
 #&gt;  [6] "not"         "going"       "anywhere"    "as"          "of"         
@@ -291,7 +294,7 @@ exact matching. See <a href='valuetype.html'>valuetype</a> for details.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

@@ -34,7 +34,7 @@ words from the negative count.
 Young and Soroka (2012) also suggest the use of a pre-processing script to
 remove specific cases of some words (i.e., "good bye", or "nobody better",
 which should not be counted as positive). Pre-processing scripts are
-available at \url{http://lexicoder.com}.
+available at \url{http://www.snsoroka.com/data-lexicoder/}.
 }
 \section{License and Conditions}{
 
@@ -74,7 +74,7 @@ The objectives, development and reliability of the dictionary are discussed
 in detail in Young and Soroka (2012). Please cite this article when using the
 Lexicoder Sentiment Dictionary and related resources.
 Young, L. & Soroka, S. (2012). \emph{Lexicoder Sentiment
-Dictionary}. Available at \url{http://lexicoder.com}.
+Dictionary}. Available at \url{http://www.snsoroka.com/data-lexicoder/}.
 
 Young, L. & Soroka, S. (2012).
 \href{https://doi.org/10.1080/10584609.2012.671234}{Affective News: The Automated Coding of Sentiment in Political Texts}.

@@ -91,7 +91,7 @@ indexes." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.2</span>
       </span>
     </div>
 
@@ -222,13 +222,13 @@ indexes.</p>
     </div>
 
     <pre class="usage"><span class='fu'>textstat_readability</span>(
-  <span class='no'>x</span>,
-  <span class='kw'>measure</span> <span class='kw'>=</span> <span class='st'>"Flesch"</span>,
-  <span class='kw'>remove_hyphens</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>min_sentence_length</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>max_sentence_length</span> <span class='kw'>=</span> <span class='fl'>10000</span>,
-  <span class='kw'>intermediate</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='no'>...</span>
+  <span class='kw'>x</span>,
+  measure = <span class='st'>"Flesch"</span>,
+  remove_hyphens = <span class='fl'>TRUE</span>,
+  min_sentence_length = <span class='fl'>1</span>,
+  max_sentence_length = <span class='fl'>10000</span>,
+  intermediate = <span class='fl'>FALSE</span>,
+  <span class='kw'>...</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -291,7 +291,7 @@ list of 3000 "familiar words" / number of all words</p></li>
 Dale-Chall list of "familiar" words</p></li>
 </ul>
 
-<dl'>
+<dl>
 <dt><code>"ARI"</code>:</dt><dd><p>Automated Readability Index (Senter and Smith 1967)
 $$0.5 ASL  + 4.71 AWL - 21.34$$</p></dd>
 
@@ -504,23 +504,29 @@ $$\frac{n_{sy}}{n_{w}}$$</p></dd>
 
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p>Anderson, J. (1983). <a href='https://www.jstor.org/stable/40031755'>Lix and rix: Variations on a little-known readability index</a>. <em>Journal of Reading</em>, 26(6),
-490--496.</p>
+    <p>Anderson, J. (1983). Lix and rix: Variations on a little-known readability
+index. <em>Journal of Reading</em>, 26(6),
+490--496.  <code>https://www.jstor.org/stable/40031755</code></p>
 <p>Bamberger, R. &amp; Vanecek, E. (1984). <em>Lesen-Verstehen-Lernen-Schreiben</em>.
 Wien: Jugend und Volk.</p>
 <p>Björnsson, C. H. (1968). <em>Läsbarhet</em>. Stockholm: Liber.</p>
 <p>Bormuth, J.R. (1969). <a href='https://files.eric.ed.gov/fulltext/ED029166.pdf'>Development of Readability Analysis</a>.</p>
-<p>Bormuth, J.R. (1968). <a href='https://www.jstor.org/stable/1433978'>Cloze test readability: Criterion reference scores</a>. <em>Journal of educational
-measurement</em>, 5(3), 189--196.</p>
-<p>Caylor, J.S. (1973). <a href='https://eric.ed.gov/?id=ED074343'>Methodologies for Determining Reading Requirements of Military Occupational Specialities</a>.</p>
-<p>Caylor, J.S. &amp; Sticht, T.G. (1973). <a href='https://archive.org/details/ERIC_ED076707'><em>Development of a Simple Readability Index for Job Reading Material</em></a>.</p>
+<p>Bormuth, J.R. (1968). Cloze test readability: Criterion reference
+scores. <em>Journal of educational
+measurement</em>, 5(3), 189--196. <code>https://www.jstor.org/stable/1433978</code></p>
+<p>Caylor, J.S. (1973). Methodologies for Determining Reading Requirements of
+Military Occupational Specialities.  <code>https://eric.ed.gov/?id=ED074343</code></p>
+<p>Caylor, J.S. &amp; Sticht, T.G. (1973). <em>Development of a Simple Readability
+Index for Job Reading Material</em>
+<code>https://archive.org/details/ERIC_ED076707</code></p>
 <p>Coleman, E.B. (1971). Developing a technology of written instruction: Some
 determiners of the complexity of prose. <em>Verbal learning research and the
 technology of written instruction</em>, 155--204.</p>
 <p>Coleman, M. &amp; Liau, T.L. (1975). <a href='https://psycnet.apa.org/record/1975-22007-001'>A Computer Readability Formula Designed for Machine Scoring</a>.
 <em>Journal of Applied Psychology</em>, 60(2), 283.</p>
-<p>Dale, E. and Chall, J.S. (1948). <a href='https://www.jstor.org/stable/1473169'>A Formula for Predicting Readability: Instructions</a>. <em>Educational Research
-Bulletin</em>, 37-54.</p>
+<p>Dale, E. and Chall, J.S. (1948). A Formula for Predicting Readability:
+Instructions.  <em>Educational Research
+Bulletin</em>, 37-54.  <code>https://www.jstor.org/stable/1473169</code></p>
 <p>Chall, J.S. and Dale, E. (1995). <em>Readability Revisited: The New Dale-Chall
 Readability Formula</em>. Brookline Books.</p>
 <p>Dickes, P. &amp; Steiwer, L. (1977). Ausarbeitung von Lesbarkeitsformeln für
@@ -539,8 +545,9 @@ Applied Psychology</em>, 32(3), 221.</p>
 Schriftstellern. <em>Sprachforum</em>, 1, 233-244.</p>
 <p>Gunning, R. (1952). <em>The Technique of Clear Writing</em>.  New York:
 McGraw-Hill.</p>
-<p>Klare, G.R. (1975). <a href='https://www.jstor.org/stable/747086'>Assessing Readability</a>. <em>Reading Research
-Quarterly</em>, 10(1), 62-102.</p>
+<p>Klare, G.R. (1975). Assessing
+Readability.  <em>Reading Research
+Quarterly</em>, 10(1), 62-102.  <code>https://www.jstor.org/stable/747086</code></p>
 <p>Kincaid, J. P., Fishburne Jr, R.P., Rogers, R.L., &amp; Chissom, B.S. (1975).
 <a href='https://stars.library.ucf.edu/istlibrary/56/'>Derivation of New Readability Formulas (Automated Readability Index, FOG count and Flesch Reading Ease Formula) for Navy Enlisted Personnel</a>.</p>
 <p>McLaughlin, G.H. (1969). <a href='https://ogg.osu.edu/media/documents/health_lit/WRRSMOG_Readability_Formula_G._Harry_McLaughlin__1969_.pdf'>SMOG Grading: A New Readability Formula.</a>
@@ -550,26 +557,35 @@ Educational Psychology</em>, 49(2), 99.</p>
 <p>Senter, R. J., &amp; Smith, E. A. (1967). <a href='https://apps.dtic.mil/dtic/tr/fulltext/u2/667273.pdf'>Automated readability index.</a>
 Wright-Patterson Air Force Base. Report No. AMRL-TR-6620.</p>
 <p>*Solomon, N. W. (2006). <em>Qualitative Analysis of Media Language</em>. India.</p>
-<p>Spache, G. (1953). <a href='https://www.jstor.org/stable/998915'>"A new readability formula for primary-grade reading materials."</a> <em>The Elementary School
-Journal</em>, 53, 410--413.</p>
+<p>Spache, G. (1953). "A new readability formula for primary-grade reading
+materials." <em>The Elementary School Journal</em>, 53, 410--413.
+<code>https://www.jstor.org/stable/998915</code></p>
 <p>Tränkle, U. &amp; Bailer, H. (1984). Kreuzvalidierung und Neuberechnung von
 Lesbarkeitsformeln für die deutsche Sprache. <em>Zeitschrift für
 Entwicklungspsychologie und Pädagogische Psychologie</em>, 16(3), 231--244.</p>
-<p>Wheeler, L.R. &amp; Smith, E.H. (1954). <a href='https://www.jstor.org/stable/41384251'>A Practical Readability Formula for the Classroom Teacher in the Primary Grades</a>. <em>Elementary English</em>, 31,
-397--399.</p>
+<p>Wheeler, L.R. &amp; Smith, E.H. (1954). A Practical Readability Formula for the
+Classroom Teacher in the Primary Grades. <em>Elementary English</em>, 31,
+397--399.  <code>https://www.jstor.org/stable/41384251</code></p>
 <p>*Nimaldasan is the pen name of N. Watson Solomon, Assistant Professor of
 Journalism, School of Media Studies, SRM University, India.</p>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Kenneth Benoit, re-engineered from Meik Michalke's <span class="pkg">koRpus</span>
+package.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>txt</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>doc1</span> <span class='kw'>=</span> <span class='st'>"Readability zero one. Ten, Eleven."</span>,
-         <span class='kw'>doc2</span> <span class='kw'>=</span> <span class='st'>"The cat in a dilapidated tophat."</span>)
-<span class='fu'>textstat_readability</span>(<span class='no'>txt</span>, <span class='kw'>measure</span> <span class='kw'>=</span> <span class='st'>"Flesch"</span>)</div><div class='output co'>#&gt;   document  Flesch
+    <pre class="examples"><div class='input'><span class='kw'>txt</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(doc1 = <span class='st'>"Readability zero one. Ten, Eleven."</span>,
+         doc2 = <span class='st'>"The cat in a dilapidated tophat."</span>)
+<span class='fu'>textstat_readability</span>(<span class='kw'>txt</span>, measure = <span class='st'>"Flesch"</span>)
+</div><div class='output co'>#&gt;   document  Flesch
 #&gt; 1     doc1  1.2575
-#&gt; 2     doc2 45.6450</div><div class='input'><span class='fu'>textstat_readability</span>(<span class='no'>txt</span>, <span class='kw'>measure</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"FOG"</span>, <span class='st'>"FOG.PSK"</span>, <span class='st'>"FOG.NRI"</span>))</div><div class='output co'>#&gt;   document       FOG  FOG.PSK FOG.NRI
+#&gt; 2     doc2 45.6450</div><div class='input'><span class='fu'>textstat_readability</span>(<span class='kw'>txt</span>, measure = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"FOG"</span>, <span class='st'>"FOG.PSK"</span>, <span class='st'>"FOG.NRI"</span>))
+</div><div class='output co'>#&gt;   document       FOG  FOG.PSK FOG.NRI
 #&gt; 1     doc1 17.000000 4.608659 -1.3875
 #&gt; 2     doc2  9.066667 3.254382 -1.2600</div><div class='input'>
-<span class='fu'>textstat_readability</span>(<span class='no'>data_corpus_inaugural</span>[<span class='fl'>48</span>:<span class='fl'>58</span>],
-                     <span class='kw'>measure</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Flesch.Kincaid"</span>, <span class='st'>"Dale.Chall.old"</span>))</div><div class='output co'>#&gt;        document Flesch.Kincaid Dale.Chall.old
+<span class='fu'>textstat_readability</span>(<span class='kw'>data_corpus_inaugural</span>[<span class='fl'>48</span><span class='op'>:</span><span class='fl'>58</span>],
+                     measure = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Flesch.Kincaid"</span>, <span class='st'>"Dale.Chall.old"</span>))
+</div><div class='output co'>#&gt;        document Flesch.Kincaid Dale.Chall.old
 #&gt; 1   1977-Carter      11.670742       8.218925
 #&gt; 2   1981-Reagan       9.741072       7.580752
 #&gt; 3   1985-Reagan      10.420294       7.430830
@@ -596,7 +612,7 @@ Journalism, School of Media Studies, SRM University, India.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

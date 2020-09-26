@@ -94,7 +94,7 @@ then a dfmDense object.  See Details." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.2</span>
       </span>
     </div>
 
@@ -322,7 +322,7 @@ the calculations</p></td>
 
     
 
-<dl'>
+<dl>
 <dt><code>weightTf</code></dt><dd><p>the type of term frequency weighting applied to the dfm.  Default is
 <code>"frequency"</code>, indicating that the values in the cells of the dfm are
 simple feature counts. To change this, use the <code><a href='dfm_weight.html'>dfm_weight()</a></code>
@@ -344,16 +344,18 @@ named <code>docs</code> and <code>features</code> respectively.</p></dd>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># dfm subsetting</span>
-<span class='no'>dfmat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"this contains lots of stopwords"</span>,
+<span class='kw'>dfmat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"this contains lots of stopwords"</span>,
                   <span class='st'>"no if, and, or but about it: lots"</span>,
                   <span class='st'>"and a third document is it"</span>),
-                <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))
-<span class='no'>dfmat</span>[<span class='fl'>1</span>:<span class='fl'>2</span>, ]</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 16 features (59.4% sparse).
+                remove_punct = <span class='fl'>TRUE</span>))
+<span class='kw'>dfmat</span>[<span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span>, ]
+</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 16 features (59.4% sparse).
 #&gt;        features
 #&gt; docs    this contains lots of stopwords no if and or but
 #&gt;   text1    1        1    1  1         1  0  0   0  0   0
 #&gt;   text2    0        0    1  0         0  1  1   1  1   1
-#&gt; [ reached max_nfeat ... 6 more features ]</div><div class='input'><span class='no'>dfmat</span>[<span class='fl'>1</span>:<span class='fl'>2</span>, <span class='fl'>1</span>:<span class='fl'>5</span>]</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 5 features (40.0% sparse).
+#&gt; [ reached max_nfeat ... 6 more features ]</div><div class='input'><span class='kw'>dfmat</span>[<span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>]
+</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 5 features (40.0% sparse).
 #&gt;        features
 #&gt; docs    this contains lots of stopwords
 #&gt;   text1    1        1    1  1         1
@@ -373,7 +375,7 @@ named <code>docs</code> and <code>features</code> respectively.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

@@ -65,7 +65,7 @@
 #' @references 
 #'   Momtazi, S., Khudanpur, S., & Klakow, D. (2010). "[A comparative study of
 #'   word co-occurrence for term clustering in language model-based sentence
-#'   retrieval.](https://www.aclweb.org/anthology/N10-1046)" *Human Language
+#'   retrieval.](https://www.aclweb.org/anthology/N10-1046/)" *Human Language
 #'   Technologies: The 2010 Annual Conference of the North American Chapter of
 #'   the ACL*, Los Angeles, California, June 2010, 325-328.
 #'   
@@ -75,7 +75,7 @@
 #'   Semantics). Available at <https://web.stanford.edu/~jurafsky/slp3/>.
 #'   
 #'  Church, K. W. & P. Hanks (1990). [Word association norms, mutual
-#'  information, and lexicography](http://dl.acm.org/citation.cfm?id=89095).
+#'  information, and lexicography](https://dl.acm.org/doi/10.5555/89086.89095).
 #'  *Computational Linguistics*, 16(1), 22-29.
 #' @examples
 #' # see http://bit.ly/29b2zOA

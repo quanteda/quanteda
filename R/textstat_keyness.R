@@ -9,9 +9,10 @@
 #'   the document forming the "target" for computing keyness; all other
 #'   documents' feature frequencies will be combined for use as a reference
 #' @param measure (signed) association measure to be used for computing keyness.
-#'   Currently available: `"chi2"`; `"exact"` (Fisher's exact test);
-#'   `"lr"` for the likelihood ratio; `"pmi"` for pointwise mutual
-#'   information.
+#'   Currently available: `"chi2"`; `"exact"` (Fisher's exact test); `"lr"` for
+#'   the likelihood ratio; `"pmi"` for pointwise mutual information.  Note that
+#'   the "exact" test is very computationally intensive and therefore much
+#'   slower than the other methods.
 #' @param sort logical; if `TRUE` sort features scored in descending order
 #'   of the measure, otherwise leave in original feature order
 #' @param correction if `"default"`, Yates correction is applied to
@@ -21,6 +22,7 @@
 #'   defaults, for instance to apply the Williams correction to the chi2
 #'   measure.  Specifying a correction for the `"exact"` and `"pmi"`
 #'   measures has no effect and produces a warning.
+#' @param ... not used
 #' @references Bondi, M. & Scott, M. (eds) (2010). *Keyness in
 #'   Texts*. Amsterdam, Philadelphia: John Benjamins.
 #'
@@ -32,7 +34,7 @@
 #'   Analysis in Language Education*. Amsterdam: Benjamins: 55.
 #'
 #'   Dunning, T. (1993). [Accurate Methods for the Statistics of Surprise and
-#'   Coincidence](https://dl.acm.org/citation.cfm?id=972454). *Computational
+#'   Coincidence](https://dl.acm.org/doi/10.5555/972450.972454). *Computational
 #'   Linguistics*, 19(1): 61--74.
 #' @return a data.frame of computed statistics and associated p-values, where
 #'   the features scored name each row, and the number of occurrences for both
@@ -68,7 +70,8 @@
 textstat_keyness <- function(x, target = 1L,
                              measure = c("chi2", "exact", "lr", "pmi"),
                              sort = TRUE,
-                             correction = c("default", "yates", "williams", "none")) {
+                             correction = c("default", "yates", "williams", "none"),
+                             ...) {
     UseMethod("textstat_keyness")
 }
 
@@ -76,16 +79,16 @@ textstat_keyness <- function(x, target = 1L,
 textstat_keyness.default <- function(x, target = 1L,
                                      measure = c("chi2", "exact", "lr", "pmi"),
                                      sort = TRUE,
-                                     correction = c("default", "yates", "williams", "none")) {
+                                     correction = c("default", "yates", "williams", "none"),
+                                     ...) {
     stop(friendly_class_undefined_message(class(x), "textstat_keyness"))
 }
 
 #' @export
-textstat_keyness.dfm <- function(x, target = 1L,
-                                 measure = c("chi2", "exact", "lr", "pmi"),
+textstat_keyness.dfm <- function(x, target = 1L, measure = c("chi2", "exact", "lr", "pmi"),
                                  sort = TRUE,
-                                 correction = c("default", "yates", "williams", "none")) {
-
+                                 correction = c("default", "yates", "williams", "none"),
+                                 ..., old = FALSE) {
     x <- as.dfm(x)
     if (!sum(x)) stop(message_error("dfm_empty"))
 
@@ -130,28 +133,46 @@ textstat_keyness.dfm <- function(x, target = 1L,
     grouping <- factor(target, levels = c(TRUE, FALSE), labels = label)
     temp <- dfm_group(x, groups = grouping)
 
-    if (measure == "chi2") {
-        result <- keyness_chi2_dt(temp, correction)
-    } else if (measure == "lr") {
-        result <- keyness_lr(temp, correction)
-    } else if (measure == "exact") {
-        if (!correction %in% c("default", "none"))
-            warning("correction is always none for measure exact")
-        result <- keyness_exact(temp)
-    } else if (measure == "pmi") {
-        if (!correction %in% c("default", "none"))
-            warning("correction is always none for measure pmi")
-        result <- keyness_pmi(temp)
+    if (old) {
+        if (measure == "chi2") {
+            result <- keyness_chi2_dt(temp, correction)
+        } else if (measure == "lr") {
+            result <- keyness_lr(temp, correction)
+        } else if (measure == "exact") {
+            if (!correction %in% c("default", "none"))
+                warning("correction is always none for exact")
+            result <- keyness_exact(temp)
+        } else if (measure == "pmi") {
+            if (!correction %in% c("default", "none"))
+                warning("correction is always none for pmi")
+            result <- keyness_pmi(temp)
+        }
     } else {
-        stop(measure, " not yet implemented for textstat_keyness")
+        if (measure == "exact") {
+            if (measure == "exact" && !correction %in% c("default", "none"))
+                warning("correction is always none for exact")
+            result <- keyness_exact(temp)
+        } else {
+            if (measure == "pmi" && !correction %in% c("default", "none"))
+                warning("correction is always none for pmi")
+            result <- data.frame(
+                feature = featnames(temp),
+                stat = qatd_cpp_keyness(temp, measure, correction),
+                p = NA,
+                n_target = as.vector(temp[1, ]),
+                n_reference = as.vector(temp[2, ]),
+                stringsAsFactors = FALSE
+            )
+            result$p <- 1 - stats::pchisq(abs(result$stat), 1) # abs() for pmi
+        }
     }
-
     if (sort)
-        result <- result[order(result[, 2], decreasing = TRUE), ]
-
+        result <- result[order(result$stat, result$feature,
+                               decreasing = c(TRUE, FALSE), method = "radix"), ]
+    names(result)[2] <- switch(measure, chi2 = "chi2", exact = "exact", lr = "G2", pmi = "pmi")
+    rownames(result) <- NULL
     attr(result, "groups") <- docnames(temp)
     class(result) <- c("keyness", "textstat", "data.frame")
-    rownames(result) <- as.character(seq_len(nrow(result)))
     return(result)
 }
 
@@ -269,7 +290,7 @@ keyness <- function(t, f, sum_t, sum_f) {
 #' quanteda:::keyness_exact(dfmat)
 keyness_exact <- function(x) {
     sums <- rowSums(x)
-    result <- as.data.frame(
+    temp <- as.data.frame(
         do.call(rbind,
                 apply(x, 2, function(y) {
                     et <- stats::fisher.test(matrix(c(as.numeric(y),
@@ -280,8 +301,8 @@ keyness_exact <- function(x) {
     )
 
     data.frame(feature = colnames(x),
-               or = result$or,
-               p = result$p,
+               stat = temp$or,
+               p = temp$p,
                n_target = as.vector(x[1, ]),
                n_reference = as.vector(x[2, ]),
                stringsAsFactors = FALSE)
@@ -294,7 +315,7 @@ keyness_exact <- function(x) {
 #' @examples
 #' quanteda:::keyness_lr(dfmat)
 #' @references
-#' <http://influentialpoints.com/Training/g-likelihood_ratio_test.htm>
+#' <https://influentialpoints.com/Training/g-likelihood_ratio_test.htm>
 keyness_lr <- function(x, correction = c("default", "yates", "williams", "none")) {
 
     correction <- match.arg(correction)
@@ -371,8 +392,8 @@ keyness_pmi <- function(x) {
     epsilon <- .000000001  # to offset zero cell counts
     dt[, pmi :=   log(a / E11 + epsilon)]
 
-    #normalized pmi
-    #dt[, pmi :=   log(a  / E11) * ifelse(a > E11, 1, -1)/(-log(a/N)) ]
+    # normalized pmi
+    # dt[, pmi :=   log(a  / E11) * ifelse(a > E11, 1, -1)/(-log(a/N)) ]
 
     # compute p-values
     dt[, p := 1 - stats::pchisq(abs(pmi), 1)]

@@ -91,7 +91,7 @@ valuetype pattern." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.2</span>
       </span>
     </div>
 
@@ -238,7 +238,7 @@ details.</p></td>
     <p>The <code>pattern</code> argument is a vector of patterns, including
 sequences, to match in a target object, whose match type is specified by
 <code><a href='valuetype.html'>valuetype()</a></code>. Note that an empty pattern (<code>""</code>) will match
-"padding" in a <a href='tokens.html'>tokens</a> object.</p><dl'>
+"padding" in a <a href='tokens.html'>tokens</a> object.</p><dl>
 <dt><code>character</code></dt><dd><p>A character vector of token patterns to be selected
 or removed. Whitespace is not privileged, so that in a character vector,
 white space is interpreted literally. If you wish to consider
@@ -263,9 +263,11 @@ automatically.</p></dd>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># these are interpreted literally</span>
-(<span class='no'>patt1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"president"</span>, <span class='st'>"white house"</span>, <span class='st'>"house of representatives"</span>))</div><div class='output co'>#&gt; [1] "president"                "white house"             
+(<span class='kw'>patt1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"president"</span>, <span class='st'>"white house"</span>, <span class='st'>"house of representatives"</span>))
+</div><div class='output co'>#&gt; [1] "president"                "white house"             
 #&gt; [3] "house of representatives"</div><div class='input'><span class='co'># as multi-word sequences</span>
-<span class='fu'><a href='phrase.html'>phrase</a></span>(<span class='no'>patt1</span>)</div><div class='output co'>#&gt; [[1]]
+<span class='fu'><a href='phrase.html'>phrase</a></span>(<span class='kw'>patt1</span>)
+</div><div class='output co'>#&gt; [[1]]
 #&gt; [1] "president"
 #&gt; 
 #&gt; [[2]]
@@ -275,8 +277,10 @@ automatically.</p></dd>
 #&gt; [1] "house"           "of"              "representatives"
 #&gt; </div><div class='input'>
 <span class='co'># three single-word patterns</span>
-(<span class='no'>patt2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"president"</span>, <span class='st'>"white_house"</span>, <span class='st'>"house_of_representatives"</span>))</div><div class='output co'>#&gt; [1] "president"                "white_house"             
-#&gt; [3] "house_of_representatives"</div><div class='input'><span class='fu'><a href='phrase.html'>phrase</a></span>(<span class='no'>patt2</span>)</div><div class='output co'>#&gt; [[1]]
+(<span class='kw'>patt2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"president"</span>, <span class='st'>"white_house"</span>, <span class='st'>"house_of_representatives"</span>))
+</div><div class='output co'>#&gt; [1] "president"                "white_house"             
+#&gt; [3] "house_of_representatives"</div><div class='input'><span class='fu'><a href='phrase.html'>phrase</a></span>(<span class='kw'>patt2</span>)
+</div><div class='output co'>#&gt; [[1]]
 #&gt; [1] "president"
 #&gt; 
 #&gt; [[2]]
@@ -286,8 +290,9 @@ automatically.</p></dd>
 #&gt; [1] "house_of_representatives"
 #&gt; </div><div class='input'>
 <span class='co'># this is equivalent to phrase(patt1)</span>
-(<span class='no'>patt3</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"president"</span>), <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"white"</span>, <span class='st'>"house"</span>),
-               <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"house"</span>, <span class='st'>"of"</span>, <span class='st'>"representatives"</span>)))</div><div class='output co'>#&gt; [[1]]
+(<span class='kw'>patt3</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"president"</span>), <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"white"</span>, <span class='st'>"house"</span>),
+               <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"house"</span>, <span class='st'>"of"</span>, <span class='st'>"representatives"</span>)))
+</div><div class='output co'>#&gt; [[1]]
 #&gt; [1] "president"
 #&gt; 
 #&gt; [[2]]
@@ -297,7 +302,8 @@ automatically.</p></dd>
 #&gt; [1] "house"           "of"              "representatives"
 #&gt; </div><div class='input'>
 <span class='co'># glob expression can be used</span>
-<span class='fu'><a href='phrase.html'>phrase</a></span>(<span class='no'>patt4</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"president?"</span>, <span class='st'>"white house"</span>, <span class='st'>"house * representatives"</span>))</div><div class='output co'>#&gt; [[1]]
+<span class='fu'><a href='phrase.html'>phrase</a></span>(<span class='kw'>patt4</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"president?"</span>, <span class='st'>"white house"</span>, <span class='st'>"house * representatives"</span>))
+</div><div class='output co'>#&gt; [[1]]
 #&gt; [1] "president?"
 #&gt; 
 #&gt; [[2]]
@@ -307,7 +313,8 @@ automatically.</p></dd>
 #&gt; [1] "house"           "*"               "representatives"
 #&gt; </div><div class='input'>
 <span class='co'># this is equivalent to phrase(patt4)</span>
-(<span class='no'>patt5</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"president?"</span>), <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"white"</span>, <span class='st'>"house"</span>), <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"house"</span>, <span class='st'>"*"</span>, <span class='st'>"representatives"</span>)))</div><div class='output co'>#&gt; [[1]]
+(<span class='kw'>patt5</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"president?"</span>), <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"white"</span>, <span class='st'>"house"</span>), <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"house"</span>, <span class='st'>"*"</span>, <span class='st'>"representatives"</span>)))
+</div><div class='output co'>#&gt; [[1]]
 #&gt; [1] "president?"
 #&gt; 
 #&gt; [[2]]
@@ -317,9 +324,11 @@ automatically.</p></dd>
 #&gt; [1] "house"           "*"               "representatives"
 #&gt; </div><div class='input'>
 <span class='co'># dictionary with multi-word matches</span>
-(<span class='no'>dict1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='dictionary.html'>dictionary</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>us</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"president"</span>, <span class='st'>"white house"</span>, <span class='st'>"house of representatives"</span>))))</div><div class='output co'>#&gt; Dictionary object with 1 key entry.
+(<span class='kw'>dict1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dictionary.html'>dictionary</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(us = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"president"</span>, <span class='st'>"white house"</span>, <span class='st'>"house of representatives"</span>))))
+</div><div class='output co'>#&gt; Dictionary object with 1 key entry.
 #&gt; - [us]:
-#&gt;   - president, white house, house of representatives</div><div class='input'><span class='fu'><a href='phrase.html'>phrase</a></span>(<span class='no'>dict1</span>)</div><div class='output co'>#&gt; [[1]]
+#&gt;   - president, white house, house of representatives</div><div class='input'><span class='fu'><a href='phrase.html'>phrase</a></span>(<span class='kw'>dict1</span>)
+</div><div class='output co'>#&gt; [[1]]
 #&gt; [1] "president"
 #&gt; 
 #&gt; [[2]]
@@ -343,7 +352,7 @@ automatically.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

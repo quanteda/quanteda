@@ -99,7 +99,7 @@ expanded by window." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.2</span>
       </span>
     </div>
 
@@ -238,23 +238,23 @@ expanded by <code>window</code>.</p>
     </div>
 
     <pre class="usage"><span class='fu'>tokens_select</span>(
-  <span class='no'>x</span>,
-  <span class='no'>pattern</span>,
-  <span class='kw'>selection</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"keep"</span>, <span class='st'>"remove"</span>),
-  <span class='kw'>valuetype</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"glob"</span>, <span class='st'>"regex"</span>, <span class='st'>"fixed"</span>),
-  <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>padding</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>window</span> <span class='kw'>=</span> <span class='fl'>0</span>,
-  <span class='kw'>min_nchar</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>max_nchar</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>startpos</span> <span class='kw'>=</span> <span class='fl'>1L</span>,
-  <span class='kw'>endpos</span> <span class='kw'>=</span> -<span class='fl'>1L</span>,
-  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fu'><a href='quanteda_options.html'>quanteda_options</a></span>(<span class='st'>"verbose"</span>)
+  <span class='kw'>x</span>,
+  <span class='kw'>pattern</span>,
+  selection = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"keep"</span>, <span class='st'>"remove"</span>),
+  valuetype = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"glob"</span>, <span class='st'>"regex"</span>, <span class='st'>"fixed"</span>),
+  case_insensitive = <span class='fl'>TRUE</span>,
+  padding = <span class='fl'>FALSE</span>,
+  window = <span class='fl'>0</span>,
+  min_nchar = <span class='kw'>NULL</span>,
+  max_nchar = <span class='kw'>NULL</span>,
+  startpos = <span class='fl'>1L</span>,
+  endpos = <span class='op'>-</span><span class='fl'>1L</span>,
+  verbose = <span class='fu'><a href='quanteda_options.html'>quanteda_options</a></span>(<span class='st'>"verbose"</span>)
 )
 
-<span class='fu'>tokens_remove</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+<span class='fu'>tokens_remove</span>(<span class='kw'>x</span>, <span class='kw'>...</span>)
 
-<span class='fu'>tokens_keep</span>(<span class='no'>x</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>tokens_keep</span>(<span class='kw'>x</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -342,14 +342,16 @@ match to <code>pattern</code></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>## tokens_select with simple examples</span>
-<span class='no'>toks</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='as.tokens.html'>as.tokens</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='no'>letters</span>, <span class='no'>LETTERS</span>))
-<span class='fu'>tokens_select</span>(<span class='no'>toks</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"b"</span>, <span class='st'>"e"</span>, <span class='st'>"f"</span>), <span class='kw'>selection</span> <span class='kw'>=</span> <span class='st'>"keep"</span>, <span class='kw'>padding</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; Tokens consisting of 2 documents.
+<span class='kw'>toks</span> <span class='op'>&lt;-</span> <span class='fu'><a href='as.list.tokens.html'>as.tokens</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>letters</span>, <span class='kw'>LETTERS</span>))
+<span class='fu'>tokens_select</span>(<span class='kw'>toks</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"b"</span>, <span class='st'>"e"</span>, <span class='st'>"f"</span>), selection = <span class='st'>"keep"</span>, padding = <span class='fl'>FALSE</span>)
+</div><div class='output co'>#&gt; Tokens consisting of 2 documents.
 #&gt; text1 :
 #&gt; [1] "b" "e" "f"
 #&gt; 
 #&gt; text2 :
 #&gt; [1] "B" "E" "F"
-#&gt; </div><div class='input'><span class='fu'>tokens_select</span>(<span class='no'>toks</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"b"</span>, <span class='st'>"e"</span>, <span class='st'>"f"</span>), <span class='kw'>selection</span> <span class='kw'>=</span> <span class='st'>"keep"</span>, <span class='kw'>padding</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; Tokens consisting of 2 documents.
+#&gt; </div><div class='input'><span class='fu'>tokens_select</span>(<span class='kw'>toks</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"b"</span>, <span class='st'>"e"</span>, <span class='st'>"f"</span>), selection = <span class='st'>"keep"</span>, padding = <span class='fl'>TRUE</span>)
+</div><div class='output co'>#&gt; Tokens consisting of 2 documents.
 #&gt; text1 :
 #&gt;  [1] ""  "b" ""  ""  "e" "f" ""  ""  ""  ""  ""  "" 
 #&gt; [ ... and 14 more ]
@@ -357,7 +359,8 @@ match to <code>pattern</code></p>
 #&gt; text2 :
 #&gt;  [1] ""  "B" ""  ""  "E" "F" ""  ""  ""  ""  ""  "" 
 #&gt; [ ... and 14 more ]
-#&gt; </div><div class='input'><span class='fu'>tokens_select</span>(<span class='no'>toks</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"b"</span>, <span class='st'>"e"</span>, <span class='st'>"f"</span>), <span class='kw'>selection</span> <span class='kw'>=</span> <span class='st'>"remove"</span>, <span class='kw'>padding</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; Tokens consisting of 2 documents.
+#&gt; </div><div class='input'><span class='fu'>tokens_select</span>(<span class='kw'>toks</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"b"</span>, <span class='st'>"e"</span>, <span class='st'>"f"</span>), selection = <span class='st'>"remove"</span>, padding = <span class='fl'>FALSE</span>)
+</div><div class='output co'>#&gt; Tokens consisting of 2 documents.
 #&gt; text1 :
 #&gt;  [1] "a" "c" "d" "g" "h" "i" "j" "k" "l" "m" "n" "o"
 #&gt; [ ... and 11 more ]
@@ -365,7 +368,8 @@ match to <code>pattern</code></p>
 #&gt; text2 :
 #&gt;  [1] "A" "C" "D" "G" "H" "I" "J" "K" "L" "M" "N" "O"
 #&gt; [ ... and 11 more ]
-#&gt; </div><div class='input'><span class='fu'>tokens_select</span>(<span class='no'>toks</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"b"</span>, <span class='st'>"e"</span>, <span class='st'>"f"</span>), <span class='kw'>selection</span> <span class='kw'>=</span> <span class='st'>"remove"</span>, <span class='kw'>padding</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; Tokens consisting of 2 documents.
+#&gt; </div><div class='input'><span class='fu'>tokens_select</span>(<span class='kw'>toks</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"b"</span>, <span class='st'>"e"</span>, <span class='st'>"f"</span>), selection = <span class='st'>"remove"</span>, padding = <span class='fl'>TRUE</span>)
+</div><div class='output co'>#&gt; Tokens consisting of 2 documents.
 #&gt; text1 :
 #&gt;  [1] "a" ""  "c" "d" ""  ""  "g" "h" "i" "j" "k" "l"
 #&gt; [ ... and 14 more ]
@@ -375,7 +379,8 @@ match to <code>pattern</code></p>
 #&gt; [ ... and 14 more ]
 #&gt; </div><div class='input'>
 <span class='co'># how case_insensitive works</span>
-<span class='fu'>tokens_select</span>(<span class='no'>toks</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"b"</span>, <span class='st'>"e"</span>, <span class='st'>"f"</span>), <span class='kw'>selection</span> <span class='kw'>=</span> <span class='st'>"remove"</span>, <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; Tokens consisting of 2 documents.
+<span class='fu'>tokens_select</span>(<span class='kw'>toks</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"b"</span>, <span class='st'>"e"</span>, <span class='st'>"f"</span>), selection = <span class='st'>"remove"</span>, case_insensitive = <span class='fl'>TRUE</span>)
+</div><div class='output co'>#&gt; Tokens consisting of 2 documents.
 #&gt; text1 :
 #&gt;  [1] "a" "c" "d" "g" "h" "i" "j" "k" "l" "m" "n" "o"
 #&gt; [ ... and 11 more ]
@@ -383,7 +388,8 @@ match to <code>pattern</code></p>
 #&gt; text2 :
 #&gt;  [1] "A" "C" "D" "G" "H" "I" "J" "K" "L" "M" "N" "O"
 #&gt; [ ... and 11 more ]
-#&gt; </div><div class='input'><span class='fu'>tokens_select</span>(<span class='no'>toks</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"b"</span>, <span class='st'>"e"</span>, <span class='st'>"f"</span>), <span class='kw'>selection</span> <span class='kw'>=</span> <span class='st'>"remove"</span>, <span class='kw'>case_insensitive</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; Tokens consisting of 2 documents.
+#&gt; </div><div class='input'><span class='fu'>tokens_select</span>(<span class='kw'>toks</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"b"</span>, <span class='st'>"e"</span>, <span class='st'>"f"</span>), selection = <span class='st'>"remove"</span>, case_insensitive = <span class='fl'>FALSE</span>)
+</div><div class='output co'>#&gt; Tokens consisting of 2 documents.
 #&gt; text1 :
 #&gt;  [1] "a" "c" "d" "g" "h" "i" "j" "k" "l" "m" "n" "o"
 #&gt; [ ... and 11 more ]
@@ -393,13 +399,15 @@ match to <code>pattern</code></p>
 #&gt; [ ... and 14 more ]
 #&gt; </div><div class='input'>
 <span class='co'># use window</span>
-<span class='fu'>tokens_select</span>(<span class='no'>toks</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"b"</span>, <span class='st'>"f"</span>), <span class='kw'>selection</span> <span class='kw'>=</span> <span class='st'>"keep"</span>, <span class='kw'>window</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; Tokens consisting of 2 documents.
+<span class='fu'>tokens_select</span>(<span class='kw'>toks</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"b"</span>, <span class='st'>"f"</span>), selection = <span class='st'>"keep"</span>, window = <span class='fl'>1</span>)
+</div><div class='output co'>#&gt; Tokens consisting of 2 documents.
 #&gt; text1 :
 #&gt; [1] "a" "b" "c" "e" "f" "g"
 #&gt; 
 #&gt; text2 :
 #&gt; [1] "A" "B" "C" "E" "F" "G"
-#&gt; </div><div class='input'><span class='fu'>tokens_select</span>(<span class='no'>toks</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"b"</span>, <span class='st'>"f"</span>), <span class='kw'>selection</span> <span class='kw'>=</span> <span class='st'>"remove"</span>, <span class='kw'>window</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; Tokens consisting of 2 documents.
+#&gt; </div><div class='input'><span class='fu'>tokens_select</span>(<span class='kw'>toks</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"b"</span>, <span class='st'>"f"</span>), selection = <span class='st'>"remove"</span>, window = <span class='fl'>1</span>)
+</div><div class='output co'>#&gt; Tokens consisting of 2 documents.
 #&gt; text1 :
 #&gt;  [1] "d" "h" "i" "j" "k" "l" "m" "n" "o" "p" "q" "r"
 #&gt; [ ... and 8 more ]
@@ -407,7 +415,8 @@ match to <code>pattern</code></p>
 #&gt; text2 :
 #&gt;  [1] "D" "H" "I" "J" "K" "L" "M" "N" "O" "P" "Q" "R"
 #&gt; [ ... and 8 more ]
-#&gt; </div><div class='input'><span class='fu'>tokens_remove</span>(<span class='no'>toks</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"b"</span>, <span class='st'>"f"</span>), <span class='kw'>window</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>1</span>))</div><div class='output co'>#&gt; Tokens consisting of 2 documents.
+#&gt; </div><div class='input'><span class='fu'>tokens_remove</span>(<span class='kw'>toks</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"b"</span>, <span class='st'>"f"</span>), window = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>1</span>))
+</div><div class='output co'>#&gt; Tokens consisting of 2 documents.
 #&gt; text1 :
 #&gt;  [1] "a" "d" "e" "h" "i" "j" "k" "l" "m" "n" "o" "p"
 #&gt; [ ... and 10 more ]
@@ -415,7 +424,8 @@ match to <code>pattern</code></p>
 #&gt; text2 :
 #&gt;  [1] "A" "D" "E" "H" "I" "J" "K" "L" "M" "N" "O" "P"
 #&gt; [ ... and 10 more ]
-#&gt; </div><div class='input'><span class='fu'>tokens_select</span>(<span class='no'>toks</span>, <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"e"</span>, <span class='st'>"g"</span>), <span class='kw'>window</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>))</div><div class='output co'>#&gt; Tokens consisting of 2 documents.
+#&gt; </div><div class='input'><span class='fu'>tokens_select</span>(<span class='kw'>toks</span>, pattern = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"e"</span>, <span class='st'>"g"</span>), window = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>))
+</div><div class='output co'>#&gt; Tokens consisting of 2 documents.
 #&gt; text1 :
 #&gt; [1] "d" "e" "f" "g" "h" "i"
 #&gt; 
@@ -423,12 +433,13 @@ match to <code>pattern</code></p>
 #&gt; [1] "D" "E" "F" "G" "H" "I"
 #&gt; </div><div class='input'>
 <span class='co'># tokens_remove example: remove stopwords</span>
-<span class='no'>txt</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='no'>wash1</span> <span class='kw'>&lt;-</span> <span class='st'>"Fellow citizens, I am again called upon by the voice of my
+<span class='kw'>txt</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>wash1</span> <span class='op'>&lt;-</span> <span class='st'>"Fellow citizens, I am again called upon by the voice of my
                    country to execute the functions of its Chief Magistrate."</span>,
-         <span class='no'>wash2</span> <span class='kw'>&lt;-</span> <span class='st'>"When the occasion proper for it shall arrive, I shall
+         <span class='kw'>wash2</span> <span class='op'>&lt;-</span> <span class='st'>"When the occasion proper for it shall arrive, I shall
                    endeavor to express the high sense I entertain of this
                    distinguished honor."</span>)
-<span class='fu'>tokens_remove</span>(<span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='no'>txt</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>), <span class='fu'><a href='https://rdrr.io/pkg/stopwords/man/stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>))</div><div class='output co'>#&gt; Tokens consisting of 2 documents.
+<span class='fu'>tokens_remove</span>(<span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='kw'>txt</span>, remove_punct = <span class='fl'>TRUE</span>), <span class='fu'><a href='https://rdrr.io/pkg/stopwords/man/stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>))
+</div><div class='output co'>#&gt; Tokens consisting of 2 documents.
 #&gt; text1 :
 #&gt;  [1] "Fellow"     "citizens"   "called"     "upon"       "voice"     
 #&gt;  [6] "country"    "execute"    "functions"  "Chief"      "Magistrate"
@@ -439,7 +450,8 @@ match to <code>pattern</code></p>
 #&gt;  [9] "sense"         "entertain"     "distinguished" "honor"        
 #&gt; </div><div class='input'>
 <span class='co'># token_keep example: keep two-letter words</span>
-<span class='fu'>tokens_keep</span>(<span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='no'>txt</span>, <span class='kw'>remove_punct</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>), <span class='st'>"??"</span>)</div><div class='output co'>#&gt; Tokens consisting of 2 documents.
+<span class='fu'>tokens_keep</span>(<span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='kw'>txt</span>, remove_punct = <span class='fl'>TRUE</span>), <span class='st'>"??"</span>)
+</div><div class='output co'>#&gt; Tokens consisting of 2 documents.
 #&gt; text1 :
 #&gt; [1] "am" "by" "of" "my" "to" "of"
 #&gt; 
@@ -462,7 +474,7 @@ match to <code>pattern</code></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

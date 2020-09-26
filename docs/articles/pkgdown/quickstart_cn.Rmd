@@ -47,7 +47,7 @@ library(quanteda)
 
 ## 目前可用的语料库资源 {#currently-available-corpus-sources}
 
-**quanteda**有一个简单而强大的配套软件包用于加载文本文件: [**readtext**](https://github.com/kbenoit/readtext)。 这个软件包的主函数`readtext()`从磁盘或者URL中读取文件或者文件集，并且返回一个可以直接和`corpus()`构造函数一起使用的data.frame，可用来创建一个**quanteda**语料库。
+**quanteda**有一个简单而强大的配套软件包用于加载文本文件: [**readtext**](https://github.com/quanteda/readtext)。 这个软件包的主函数`readtext()`从磁盘或者URL中读取文件或者文件集，并且返回一个可以直接和`corpus()`构造函数一起使用的data.frame，可用来创建一个**quanteda**语料库。
 
 `readtext()`可读取：
 
@@ -215,7 +215,7 @@ head(docvars(data_corpus_inaugural))
 metacorpus(data_corpus_inaugural)
 ```
 
-[**quanteda.corpora**](http://github.com/quanteda/quanteda.corpora)软件包提供更多语料库资源。
+[**quanteda.corpora**](https://github.com/quanteda/quanteda.corpora)软件包提供更多语料库资源。
 
 # 从语料库中提取特征 {#extracting-features-from-a-corpus}
 
