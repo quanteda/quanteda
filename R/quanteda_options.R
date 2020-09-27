@@ -121,21 +121,27 @@ set_option_value <- function(key, value) {
     # special setting for threads
     if (key == "threads") {
         value <- as.integer(value)
-        value_default <- RcppParallel::defaultNumThreads()
-        value_current <- as.numeric(Sys.getenv('RCPP_PARALLEL_NUM_THREADS'))
+        thread <- as.integer(c(Sys.getenv("OMP_THREAD_LIMIT"),
+                               Sys.getenv('RCPP_PARALLEL_NUM_THREADS'),
+                               RcppParallel::defaultNumThreads()))
+        
+        value_default <- min(thread, na.rm = TRUE)
+        value_current <- thread[2]
+        value_limit <- thread[3]
+        
         if (value < 1)
             stop("Number of threads must be greater or equal to 1", call. = FALSE)
-        if (value > value_default) {
-            warning("Setting threads instead to maximum available ", value_default, call. = FALSE)
-            value <- value_default
+        if (value > value_limit) {
+            warning("Setting threads instead to maximum available ", value_limit, call. = FALSE)
+            value <- value_limit
         }
         if (!is.na(value_current) && value != value_current) {
             warning("Number of threads can be changed only once in a session", call. = FALSE)
             value <- value_current
         }
         if (value != value_default) {
-            RcppParallel::setThreadOptions(value)
             Sys.setenv("OMP_THREAD_LIMIT" = value)
+            Sys.setenv("RCPP_PARALLEL_NUM_THREADS" = value)
         }
     }
     
