@@ -156,7 +156,7 @@ get_threads <- function() {
 # returns default options
 get_options_default <- function() {
     
-    opts <- list(threads = min(get_threads(), na.rm = TRUE),
+    opts <- list(threads = unname(min(get_threads(), na.rm = TRUE)),
                  verbose = FALSE,
                  print_dfm_max_ndoc = 6L,
                  print_dfm_max_nfeat = 10L,
