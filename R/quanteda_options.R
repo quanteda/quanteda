@@ -129,13 +129,14 @@ set_option_value <- function(key, value) {
             warning("Setting threads instead to maximum available ", thread["max"], call. = FALSE)
             value <- thread["max"]
         }
-        if (!is.na(thread["tbb"]) && value != thread["tbb"]) {
-            warning("Number of threads can be changed only once in a session", call. = FALSE)
-            value <- thread["tbb"]
-        }
-        if (value != opts[["threads"]]) {
-            Sys.setenv("OMP_THREAD_LIMIT" = value)
-            Sys.setenv("RCPP_PARALLEL_NUM_THREADS" = value)
+        if (is.na(thread["tbb"])) {
+            if (value != thread["max"]) {
+                Sys.setenv("OMP_THREAD_LIMIT" = value)
+                Sys.setenv("RCPP_PARALLEL_NUM_THREADS" = value)
+            }
+        } else {
+            if (value != thread["tbb"])
+                warning("Number of threads can be changed only once in a session", call. = FALSE)   
         }
     }
     
