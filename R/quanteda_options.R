@@ -130,10 +130,8 @@ set_option_value <- function(key, value) {
             value <- thread["max"]
         }
         if (is.na(thread["tbb"])) {
-            if (value != thread["max"]) {
-                Sys.setenv("OMP_THREAD_LIMIT" = value)
+            if (value != thread["max"])
                 RcppParallel::setThreadOptions(value)
-            }
         } else {
             if (value != thread["tbb"])
                 warning("Number of threads can be changed only once in a session", call. = FALSE)   

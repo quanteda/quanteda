@@ -79,10 +79,6 @@ test_that("quanteda_options works with threads", {
         as.numeric(Sys.getenv('RCPP_PARALLEL_NUM_THREADS')),
         quanteda_options("threads")
     )
-    expect_equal(
-        as.numeric(Sys.getenv('OMP_THREAD_LIMIT')),
-        quanteda_options("threads")
-    )
     expect_warning(
         quanteda_options(threads = 4),
         "Number of threads can be changed only once"
