@@ -142,10 +142,9 @@ set_option_value <- function(key, value) {
     opts <- list(value)
     names(opts) <- paste0("quanteda_", key)
     options(opts)
-    return(TRUE)
 }
 
-# return thread settings
+# returns thread settings
 get_threads <- function() {
     c("omp" = as.integer(Sys.getenv("OMP_THREAD_LIMIT")),
       "tbb" = as.integer(Sys.getenv("RCPP_PARALLEL_NUM_THREADS")),
