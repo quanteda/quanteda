@@ -1,3 +1,11 @@
+# quanteda 2.1.3
+
+## Changes
+
+## Bug fixes and stability enhancements
+
+* Allow use of multi-threading with more than two threads by fixing `quanteda_options()`.
+
 # quanteda 2.1.2
 
 ## Changes
