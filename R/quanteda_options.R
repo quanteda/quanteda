@@ -132,7 +132,7 @@ set_option_value <- function(key, value) {
         if (is.na(thread["tbb"])) {
             if (value != thread["max"]) {
                 Sys.setenv("OMP_THREAD_LIMIT" = value)
-                Sys.setenv("RCPP_PARALLEL_NUM_THREADS" = value)
+                RcppParallel::setThreadOptions(value)
             }
         } else {
             if (value != thread["tbb"])
