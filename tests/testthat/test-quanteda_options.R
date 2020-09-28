@@ -8,12 +8,14 @@ test_that("quanteda_options initialization works", {
 
 test_that("quanteda_options initialize works correctly", {
     
-    threads_temp <- getOption("quanteda_threads")
-    quanteda_options(verbose = TRUE, threads = 1)
+    quanteda_options(verbose = TRUE, 
+                     print_dfm_max_ndoc = 1L, 
+                     print_dfm_max_nfeat = NULL)
     quanteda_options(initialize = TRUE)
-    expect_equal(quanteda_options("threads"), 1)
     expect_equal(quanteda_options("verbose"), TRUE)
-    quanteda_options(threads = threads_temp)
+    expect_equal(quanteda_options("print_dfm_max_ndoc"), 1L)
+    expect_equal(quanteda_options("print_dfm_max_nfeat"), 10L)
+
 })
 
 test_that("quanteda_options returns an error for non-existing options", {
@@ -33,12 +35,6 @@ test_that("quanteda_options works correctly to set options", {
     expect_equal(
         quanteda_options("verbose"),
         getOption("quanteda_verbose")
-    )
-    
-    quanteda_options(threads = 2)
-    expect_equal(
-        quanteda_options("threads"),
-        getOption("quanteda_threads")
     )
     
     quanteda_options(print_dfm_max_ndoc = 13L)
@@ -74,30 +70,18 @@ test_that("quanteda_options reset works correctly", {
 })
 
 test_that("quanteda_options works with threads", {
-    quanteda_options(reset = TRUE)
-    expect_equal(
-        as.numeric(Sys.getenv('RCPP_PARALLEL_NUM_THREADS')),
-        min(2L, RcppParallel::defaultNumThreads())
-    )
-    expect_equal(
-        as.numeric(Sys.getenv('RCPP_PARALLEL_NUM_THREADS')),
-        quanteda_options("threads")
-    )
-    quanteda_options(threads = 2)
+    if (RcppParallel::defaultNumThreads() == 2) {
+        quanteda_options(threads = 1)
+    } else {
+        quanteda_options(threads = 2)
+    }
     expect_equal(
         as.numeric(Sys.getenv('RCPP_PARALLEL_NUM_THREADS')),
         quanteda_options("threads")
     )
-    expect_equal(
-        as.numeric(Sys.getenv('OMP_THREAD_LIMIT')),
-        quanteda_options("threads")
-    )
-    quanteda_options(threads = 1.5)
-    expect_equal(
-        quanteda_options("threads"), 1L
-    )
-    expect_equal(
-        quanteda_options("threads"), 1L
+    expect_warning(
+        quanteda_options(threads = 4),
+        "Number of threads can be changed only once"
     )
     expect_error(quanteda_options(threads = 0),
                  "^Number of threads must be greater or equal to 1")

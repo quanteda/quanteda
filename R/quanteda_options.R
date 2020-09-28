@@ -13,7 +13,9 @@
 #' \item{`verbose`}{logical; if `TRUE` then use this as the default
 #' for all functions with a `verbose` argument}
 #' \item{`threads`}{integer; specifies the number of threads to use in
-#' parallelized functions}
+#' parallelized functions; defaults to `RcppParallel::defaultNumThreads()` 
+#' unless `OMP_THREAD_LIMIT` is set; the number of threads can be changed 
+#' only once in a session}
 #' \item{`print_dfm_max_ndoc`}{integer; specifies the number of documents
 #' to display when using the defaults for printing a dfm}
 #' \item{`print_dfm_max_nfeat`}{integer; specifies the number of
@@ -67,7 +69,7 @@ quanteda_options <- function(..., reset = FALSE, initialize = FALSE) {
         args <- args[[1]]
     
     # initialize automatically it not yet done so
-    if (is.null(getOption('quanteda_initialized')) || !"package:quanteda" %in% search())
+    if (is.null(getOption("quanteda_initialized")) || !"package:quanteda" %in% search())
         quanteda_initialize()
         
     if (initialize) {
@@ -98,15 +100,16 @@ quanteda_initialize <- function() {
         if (is.null(getOption(paste0("quanteda_", key))))
             set_option_value(key, opts[[key]])
     }
-    unlist(options('quanteda_initialized' = TRUE), use.names = FALSE)
+    unlist(options("quanteda_initialized" = TRUE), use.names = FALSE)
 }
 
 quanteda_reset <- function() {
     opts <- get_options_default()
     for (key in names(opts)) {
-        set_option_value(key, opts[[key]])
+        if (key != "threads") 
+            set_option_value(key, opts[[key]])
     }
-    unlist(options('quanteda_initialized' = TRUE), use.names = FALSE)
+    unlist(options("quanteda_initialized" = TRUE), use.names = FALSE)
 }
 
 set_option_value <- function(key, value) {
@@ -114,32 +117,44 @@ set_option_value <- function(key, value) {
     opts <- get_options_default()
     # check for key validity
     if (!key %in% names(opts))
-        stop(key, " is not a valid quanteda option")
+        stop(key, " is not a valid quanteda option", call. = FALSE)
     
     # special setting for threads
     if (key == "threads") {
         value <- as.integer(value)
-        value_default <- RcppParallel::defaultNumThreads()
+        thread <- get_threads()
         if (value < 1)
-            stop("Number of threads must be greater or equal to 1")
-        if (value > value_default) {
-            warning("Setting threads instead to maximum available ", value_default, call. = FALSE)
-            value <- value_default
+            stop("Number of threads must be greater or equal to 1", call. = FALSE)
+        if (value > thread["max"]) {
+            warning("Setting threads instead to maximum available ", thread["max"], call. = FALSE)
+            value <- thread["max"]
         }
-        RcppParallel::setThreadOptions(value)
-        Sys.setenv("OMP_THREAD_LIMIT" = value)
+        if (is.na(thread["tbb"])) {
+            if (value != thread["max"])
+                RcppParallel::setThreadOptions(value)
+        } else {
+            if (value != thread["tbb"])
+                warning("Number of threads can be changed only once in a session", call. = FALSE)   
+        }
     }
     
     # assign the key-value
     opts <- list(value)
     names(opts) <- paste0("quanteda_", key)
     options(opts)
-    
+}
+
+# returns thread settings
+get_threads <- function() {
+    c("omp" = as.integer(Sys.getenv("OMP_THREAD_LIMIT")),
+      "tbb" = as.integer(Sys.getenv("RCPP_PARALLEL_NUM_THREADS")),
+      "max" = RcppParallel::defaultNumThreads())
 }
 
 # returns default options
-get_options_default <- function(){
-    opts <- list(threads = min(RcppParallel::defaultNumThreads(), 2),
+get_options_default <- function() {
+    
+    opts <- list(threads = unname(min(get_threads(), na.rm = TRUE)),
                  verbose = FALSE,
                  print_dfm_max_ndoc = 6L,
                  print_dfm_max_nfeat = 10L,
