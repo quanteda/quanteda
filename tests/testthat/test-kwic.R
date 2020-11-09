@@ -7,7 +7,7 @@ test_that("test attr(kwic, 'ntoken') with un-named texts", {
         "The quick brown dog jumped over the lazy dog",
         NA
     )
-    kw <- kwic(txt, "fox")
+    kw <- suppressWarnings(kwic(txt, "fox"))
 
     expect_equal(
         attr(kw, "ntoken"),
