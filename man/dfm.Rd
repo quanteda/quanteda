@@ -38,8 +38,7 @@ this matching pattern.  The pattern matching type will be set by
 \item{remove}{a \link{pattern} of user-supplied features to ignore, such as "stop
 words".  To access one possible list (from any list you wish), use
 \code{\link[=stopwords]{stopwords()}}.  The pattern matching type will be set by \code{valuetype}.  See
-also \code{\link[=tokens_select]{tokens_select()}}.  For behaviour of \code{remove} with \code{ngrams > 1}, see
-Details.}
+also \code{\link[=tokens_select]{tokens_select()}}.}
 
 \item{dictionary}{a \link{dictionary} object to apply to the tokens when creating
 the dfm}
@@ -74,17 +73,6 @@ a \linkS4class{dfm} object
 \description{
 Construct a sparse document-feature matrix, from a character, \link{corpus},
 \link{tokens}, or even other \link{dfm} object.
-}
-\details{
-The default behaviour for \code{remove}/\code{select} when constructing ngrams
-using \verb{dfm(x, } \emph{ngrams > 1}\verb{)} is to remove/select any ngram constructed
-from a matching feature.  If you wish to remove these before constructing
-ngrams, you will need to first tokenize the texts with ngrams, then remove
-the features to be ignored, and then construct the dfm using this modified
-tokenization object.  See the code examples for an illustration.
-
-To select on and match the features of a another \link{dfm}, \code{x} must also be a
-\link{dfm}.
 }
 \note{
 When \code{x} is a \link{dfm}, \code{groups} provides a convenient and fast method of
@@ -122,13 +110,10 @@ txt <- "The quick brown fox named Seamus jumps over the lazy dog also named Seam
 corp <- corpus(txt)
 # note: "also" is not in the default stopwords("english")
 featnames(dfm(corp, select = stopwords("english")))
-# for ngrams
-featnames(dfm(corp, ngrams = 2, select = stopwords("english"), remove_punct = TRUE))
-featnames(dfm(corp, ngrams = 1:2, select = stopwords("english"), remove_punct = TRUE))
 
 # removing stopwords before constructing ngrams
 toks1 <- tokens(char_tolower(txt), remove_punct = TRUE)
-toks2 <- tokens_remove(toks1, stopwords("english"))
+toks2 <- tokens_remove(toks1, stopwords("english"), padding = TRUE)
 toks3 <- tokens_ngrams(toks2, 2)
 featnames(dfm(toks3))
 
