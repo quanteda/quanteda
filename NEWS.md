@@ -2,9 +2,12 @@
 
 ## Changes
 
+* Mentions of the now-removed `ngrams` option in `dfm(x, ...)` has now been removed from the dfm documentation.  (#1990)
+
 ## Bug fixes and stability enhancements
 
 * Allow use of multi-threading with more than two threads by fixing `quanteda_options()`.
+
 
 # quanteda 2.1.2
 

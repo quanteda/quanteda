@@ -8,8 +8,7 @@
 #' @param remove a [pattern] of user-supplied features to ignore, such as "stop
 #'   words".  To access one possible list (from any list you wish), use
 #'   [stopwords()].  The pattern matching type will be set by `valuetype`.  See
-#'   also [tokens_select()].  For behaviour of `remove` with `ngrams > 1`, see
-#'   Details.
+#'   also [tokens_select()].  
 #' @param select a  [pattern]  of user-supplied features to keep, while
 #'   excluding all others.  This can be used in lieu of a dictionary if there
 #'   are only specific features that a user wishes to keep. To extract only
@@ -33,15 +32,6 @@
 #' @param verbose display messages if `TRUE`
 #' @param ... additional arguments passed to [tokens]; not used when `x` is a
 #'   [dfm]
-#' @details The default behaviour for `remove`/`select` when constructing ngrams
-#'   using `dfm(x, ` *ngrams > 1*`)` is to remove/select any ngram constructed
-#'   from a matching feature.  If you wish to remove these before constructing
-#'   ngrams, you will need to first tokenize the texts with ngrams, then remove
-#'   the features to be ignored, and then construct the dfm using this modified
-#'   tokenization object.  See the code examples for an illustration.
-#'
-#'   To select on and match the features of a another [dfm], `x` must also be a
-#'   [dfm].
 #' @return a [dfm-class] object
 #' @import Matrix
 #' @export
@@ -80,13 +70,10 @@
 #' corp <- corpus(txt)
 #' # note: "also" is not in the default stopwords("english")
 #' featnames(dfm(corp, select = stopwords("english")))
-#' # for ngrams
-#' featnames(dfm(corp, ngrams = 2, select = stopwords("english"), remove_punct = TRUE))
-#' featnames(dfm(corp, ngrams = 1:2, select = stopwords("english"), remove_punct = TRUE))
 #'
 #' # removing stopwords before constructing ngrams
 #' toks1 <- tokens(char_tolower(txt), remove_punct = TRUE)
-#' toks2 <- tokens_remove(toks1, stopwords("english"))
+#' toks2 <- tokens_remove(toks1, stopwords("english"), padding = TRUE)
 #' toks3 <- tokens_ngrams(toks2, 2)
 #' featnames(dfm(toks3))
 #'
@@ -341,13 +328,6 @@ dfm.dfm <- function(x,
         if (!is.null(remove) & !is.null(select))
             stop("only one of select and remove may be supplied at once")
         if (verbose) catm(" ...")
-        # if ngrams > 1 and remove or select is specified, then convert these
-        # into a regex that will remove any ngram containing one of the words
-        # if (!identical(field_object(attrs, "ngram"), 1L)) {
-        #     remove <- make_ngram_pattern(remove, valuetype,
-        #                                  field_object(attrs, "concatenator"))
-        #     valuetype <- "regex"
-        # }
         x <- dfm_select(x,
                         pattern = if (!is.null(remove)) remove else select,
                         selection = if (!is.null(remove)) "remove" else "keep",

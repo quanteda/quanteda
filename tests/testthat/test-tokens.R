@@ -521,11 +521,11 @@ test_that("tokens works as expected with NA, and blanks", {
         list(text1 = "one", text2 = "two", text3 = character())
     )
     expect_equal(
-        as.list(tokens(c("one", NA, ""))),
+        as.list(suppressWarnings(tokens(c("one", NA, "")))),
         list(text1 = "one", text2 = character(), text3 = character())
     )
     expect_equal(
-        as.list(tokens(c(NA, "one", ""))),
+        as.list(suppressWarnings(tokens(c(NA, "one", "")))),
         list(text1 = character(), text2 = "one", text3 = character())
     )
     expect_equal(
@@ -533,11 +533,11 @@ test_that("tokens works as expected with NA, and blanks", {
         list(text1 = character())
     )
     expect_equal(
-        as.list(tokens(c(d1 = "", d2 = NA))),
+        as.list(suppressWarnings(tokens(c(d1 = "", d2 = NA)))),
         list(d1 = character(), d2 = character())
     )
     expect_equal(
-        as.list(tokens(c(d1 = NA, d2 = ""))),
+        as.list(suppressWarnings(tokens(c(d1 = NA, d2 = "")))),
         list(d1 = character(), d2 = character())
     )
     expect_equal(
