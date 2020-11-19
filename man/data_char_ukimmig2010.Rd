@@ -15,8 +15,8 @@ Extracts from the election manifestos of 9 UK political parties from 2010, relat
 to immigration or asylum-seekers.
 }
 \examples{
-data_corpus_ukimmig2010 <- 
-    corpus(data_char_ukimmig2010, 
+data_corpus_ukimmig2010 <-
+    corpus(data_char_ukimmig2010,
            docvars = data.frame(party = names(data_char_ukimmig2010)))
 summary(data_corpus_ukimmig2010, showmeta = TRUE)
 }

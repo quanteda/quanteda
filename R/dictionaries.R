@@ -10,7 +10,7 @@
 #'   dictionary "key" and each element is one or more dictionary entry "values"
 #'   consisting of a pattern match
 #' @slot meta list of object metadata
-setClass("dictionary2", 
+setClass("dictionary2",
          contains = "list",
          slots = c(
              meta = "list"
@@ -705,11 +705,14 @@ read_dict_lexicoder <- function(path) {
 #' @examples
 #'
 #' \dontrun{
-#' dict <- quanteda.core:::read_dict_wordstat(system.file("extdata", "RID.cat", package = "quanteda.core"))
+#' dict <- quanteda.core:::read_dict_wordstat(system.file("extdata",
+#'                                                        "RID.cat",
+#'                                                        package = "quanteda.core"))
 #' # dict <- read_dict_wordstat("/home/kohei/Documents/Dictionary/LaverGarry.txt", "utf-8")
 #' # dict <- read_dict_wordstat("/home/kohei/Documents/Dictionary/Wordstat/ROGET.cat", "utf-8")
-#' # dict <- read_dict_wordstat("/home/kohei/Documents/Dictionary/Wordstat/WordStat Sentiments.cat",
-#' #                            encoding = "iso-8859-1")
+#' # dict <-
+#' #   read_dict_wordstat("/home/kohei/Documents/Dictionary/Wordstat/WordStat Sentiments.cat",
+#' #                      encoding = "iso-8859-1")
 #' }
 read_dict_wordstat <- function(path, encoding = "utf-8") {
     lines <- stri_read_lines(path, encoding = encoding)

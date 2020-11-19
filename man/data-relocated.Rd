@@ -4,15 +4,19 @@
 \alias{data-relocated}
 \alias{data_corpus_dailnoconf1991}
 \alias{data_corpus_irishbudget2010}
+\alias{data_dictionary_LSD2015}
 \title{Formerly included data objects}
 \description{
-The following corpus objects have been relocated to the \pkg{quanteda.textmodels}
+The following corpus objects have been relocated to other (quanteda)
+packages.
 package:
 \itemize{
 \item \code{data_corpus_dailnoconf1991}
 \item \code{data_corpus_irishbudget2010}
+\item \code{data_dictionary_LSD2015}
 }
 }
 \seealso{
-\code{quanteda.textmodels::quanteda.textmodels-package}
+\code{quanteda.textmodels::quanteda.textmodels-package},
+\code{quanteda.sentiment::quanteda.sentiment-package}
 }

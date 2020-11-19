@@ -1035,12 +1035,13 @@ test_that("dfm verbose = TRUE works as expected", {
         tmp <- dfm(data_corpus_inaugural[1:3], verbose = TRUE),
         "Finished constructing a 3 x 1,\\d{3} sparse dfm"
     )
+    dict <- dictionary(list(pos = "good", neg = "bad", neg_pos = "not good", neg_neg = "not bad"))
     expect_message(
-        tmp <- dfm(data_corpus_inaugural[1:3], dictionary = data_dictionary_LSD2015, verbose = TRUE),
+        tmp <- dfm(data_corpus_inaugural[1:3], dictionary = dict, verbose = TRUE),
         "applying a dictionary consisting of 4 keys"
     )
     expect_message(
-        tmp <- dfm(dfm(data_corpus_inaugural[1:3]), dictionary = data_dictionary_LSD2015, verbose = TRUE),
+        tmp <- dfm(dfm(data_corpus_inaugural[1:3]), dictionary = dict, verbose = TRUE),
         "applying a dictionary consisting of 4 keys"
     )
     expect_message(
