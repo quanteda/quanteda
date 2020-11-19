@@ -74,6 +74,7 @@ Collate:
     'meta.R'
     'quanteda-documentation.R'
     'aaa.R'
+    'bootstrap_dfm.R'
     'casechange-functions.R'
     'convert.R'
     'corpus-methods-base.R'
