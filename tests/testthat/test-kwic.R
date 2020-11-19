@@ -358,7 +358,6 @@ test_that("kwic works as expected with and without phrases", {
     expect_equal(nrow(kwic(toks_uni, dict_bi)), 2)
 })
 
-
 test_that("kwic error when dfm is given, #1006", {
     toks <- tokens("a b c")
     expect_error(kwic(toks, dfm("b c d")))

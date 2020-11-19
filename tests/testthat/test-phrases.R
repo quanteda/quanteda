@@ -30,16 +30,6 @@ test_that("test phrase for dictionaries", {
     )
 })
 
-test_that("test phrase for collocations", {
-    toks <- tokens(c("United States", "Congress", "federal government"))
-
-    colls <- textstat_collocations(toks, min_count = 1, tolower = FALSE)
-    expect_equivalent(
-        phrase(colls),
-        list(c("United", "States"), c("federal", "government"))
-    )
-})
-
 test_that("test phrase for tokens", {
     toks <- tokens(c("United States", "Congress", "federal government"))
     expect_equivalent(

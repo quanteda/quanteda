@@ -60,11 +60,12 @@ matrix-like inputs.
 Additional features of \pkg{quanteda} include:
 \itemize{
 \item powerful, flexible tools for working with \link[=dictionary]{dictionaries};
-\item the ability to identify \link[=textstat_keyness]{keywords} associated with
-documents or groups of documents;
+\item the ability to identify \link[quanteda.textstats:textstat_keyness]{keywords}
+associated with documents or groups of documents;
 \item the ability to explore texts using \link[=kwic]{key-words-in-context};
-\item quick computation of word or document \link[=textstat_simil]{similarities}, for
-clustering or to compute distances for other purposes;
+\item quick computation of word or document
+\link[quanteda.textstats:textstat_simil]{similarities}, for clustering or to
+compute distances for other purposes;
 \item a comprehensive suite of \link[=summary.corpus]{descriptive statistics on text}
 such as the number of sentences, words, characters, or syllables per
 document; and
@@ -97,8 +98,6 @@ Authors:
   \item Adam Obeng \email{quanteda@binaryeagle.com} (\href{https://orcid.org/0000-0002-2906-4775}{ORCID})
   \item Stefan Müller \email{mullers@tcd.ie} (\href{https://orcid.org/0000-0002-6315-4125}{ORCID})
   \item Akitaka Matsuo \email{a.matsuo@lse.ac.uk} (\href{https://orcid.org/0000-0002-3323-6330}{ORCID})
-  \item Jiong Wei Lua \email{J.W.Lua@lse.ac.uk}
-  \item Jouni Kuha \email{j.kuha@lse.ac.uk} (\href{https://orcid.org/0000-0002-1156-8465}{ORCID})
   \item William Lowe \email{wlowe@princeton.edu} (\href{https://orcid.org/0000-0002-1549-6163}{ORCID})
 }
 

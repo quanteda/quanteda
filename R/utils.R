@@ -122,7 +122,7 @@ pattern2list <- function(x, types, valuetype, case_insensitive,
     if (is.dfm(x))
         stop("dfm cannot be used as pattern")
 
-    if (is.collocations(x)) {
+    if ("collocations" %in% class(x)) {
         if (nrow(x) == 0) return(list())
         temp <- stri_split_charclass(x$collocation, "\\p{Z}")
         names(temp) <- x$collocation
@@ -323,7 +323,7 @@ rbind_fill <- function(x, y) {
 
 
 get_cache <- function(x, field, ...) {
-    #if (Sys.info()[["sysname"]] == "SunOS") 
+    #if (Sys.info()[["sysname"]] == "SunOS")
     #    return(NULL)
     meta <- meta(x, type = "all")
     hash <- hash_object(x, ...)
@@ -337,7 +337,7 @@ get_cache <- function(x, field, ...) {
 }
 
 set_cache <- function(x, field, object, ...) {
-    #if (Sys.info()[["sysname"]] == "SunOS") 
+    #if (Sys.info()[["sysname"]] == "SunOS")
     #    return()
     meta <- meta(x, type = "all")
     hash <- hash_object(x, ...)
@@ -347,7 +347,7 @@ set_cache <- function(x, field, object, ...) {
 }
 
 clear_cache <- function(x, field) {
-    #if (Sys.info()[["sysname"]] == "SunOS") 
+    #if (Sys.info()[["sysname"]] == "SunOS")
     #    return()
     meta <- meta(x, type = "all")
     if (field %in% names(meta$object)) {

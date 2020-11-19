@@ -6,23 +6,6 @@
 
 using namespace Rcpp;
 
-// qatd_cpp_collocations
-DataFrame qatd_cpp_collocations(const List& texts_, const CharacterVector& types_, const IntegerVector& words_ignore_, const unsigned int count_min, const IntegerVector sizes_, const String& method, const double smoothing);
-RcppExport SEXP _quanteda_core_qatd_cpp_collocations(SEXP texts_SEXP, SEXP types_SEXP, SEXP words_ignore_SEXP, SEXP count_minSEXP, SEXP sizes_SEXP, SEXP methodSEXP, SEXP smoothingSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const List& >::type texts_(texts_SEXP);
-    Rcpp::traits::input_parameter< const CharacterVector& >::type types_(types_SEXP);
-    Rcpp::traits::input_parameter< const IntegerVector& >::type words_ignore_(words_ignore_SEXP);
-    Rcpp::traits::input_parameter< const unsigned int >::type count_min(count_minSEXP);
-    Rcpp::traits::input_parameter< const IntegerVector >::type sizes_(sizes_SEXP);
-    Rcpp::traits::input_parameter< const String& >::type method(methodSEXP);
-    Rcpp::traits::input_parameter< const double >::type smoothing(smoothingSEXP);
-    rcpp_result_gen = Rcpp::wrap(qatd_cpp_collocations(texts_, types_, words_ignore_, count_min, sizes_, method, smoothing));
-    return rcpp_result_gen;
-END_RCPP
-}
 // qatd_cpp_fcm
 S4 qatd_cpp_fcm(const Rcpp::List& texts_, const int n_types, const NumericVector& weights_, const bool boolean, const bool ordered);
 RcppExport SEXP _quanteda_core_qatd_cpp_fcm(SEXP texts_SEXP, SEXP n_typesSEXP, SEXP weights_SEXP, SEXP booleanSEXP, SEXP orderedSEXP) {
@@ -246,7 +229,6 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_quanteda_core_qatd_cpp_collocations", (DL_FUNC) &_quanteda_core_qatd_cpp_collocations, 7},
     {"_quanteda_core_qatd_cpp_fcm", (DL_FUNC) &_quanteda_core_qatd_cpp_fcm, 5},
     {"_quanteda_core_qatd_cpp_kwic", (DL_FUNC) &_quanteda_core_qatd_cpp_kwic, 6},
     {"_quanteda_core_qatd_cpp_tokens_chunk", (DL_FUNC) &_quanteda_core_qatd_cpp_tokens_chunk, 4},

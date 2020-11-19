@@ -45,11 +45,14 @@ dict <- quanteda.core:::read_dict_lexicoder(
 
 
 \dontrun{
-dict <- quanteda.core:::read_dict_wordstat(system.file("extdata", "RID.cat", package = "quanteda.core"))
+dict <- quanteda.core:::read_dict_wordstat(system.file("extdata",
+                                                       "RID.cat",
+                                                       package = "quanteda.core"))
 # dict <- read_dict_wordstat("/home/kohei/Documents/Dictionary/LaverGarry.txt", "utf-8")
 # dict <- read_dict_wordstat("/home/kohei/Documents/Dictionary/Wordstat/ROGET.cat", "utf-8")
-# dict <- read_dict_wordstat("/home/kohei/Documents/Dictionary/Wordstat/WordStat Sentiments.cat",
-#                            encoding = "iso-8859-1")
+# dict <-
+#   read_dict_wordstat("/home/kohei/Documents/Dictionary/Wordstat/WordStat Sentiments.cat",
+#                      encoding = "iso-8859-1")
 }
 
 dict <- quanteda.core:::read_dict_liwc(

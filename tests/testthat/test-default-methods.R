@@ -318,7 +318,7 @@ test_that("test new as.dictionary methods", {
     expect_error(
         as.dictionary(TRUE),
         "as\\.dictionary\\(\\) only works on data\\.frame, dictionary2 objects"
-    )   
+    )
 })
 
 test_that("test new docnames methods", {
@@ -332,29 +332,6 @@ test_that("test new docnames<- methods", {
     expect_error(
         docnames(data_char_sampletext) <- "X",
         "docnames<-\\(\\) only works on.*corpus.*tokens objects"
-    )
-})
-
-test_that("test default textstat methods", {
-    expect_error(
-        textstat_dist(TRUE),
-        "textstat_dist\\(\\) only works on dfm objects"
-    )
-    expect_error(
-        textstat_keyness(TRUE),
-        "textstat_keyness\\(\\) only works on dfm objects"
-    )
-    expect_error(
-        textstat_simil(TRUE),
-        "textstat_simil\\(\\) only works on dfm objects"
-    )
-    expect_error(
-        textstat_collocations(TRUE),
-        "textstat_collocations\\(\\) only works on.*tokens objects"
-    )
-    expect_error(
-        textstat_entropy(tokens(data_char_sampletext)),
-        "textstat_entropy() only works on dfm objects.", fixed = TRUE
     )
 })
 
@@ -378,12 +355,3 @@ test_that("friendly_class_undefined_message for featfreq()", {
         "featfreq\\(\\) only works on dfm objects"
     )
 })
-
-test_that("friendly_class_undefined_message for textstat_summary()", {
-    expect_error(
-        textstat_summary(data_char_sampletext),
-        "textstat_summary() only works on corpus, dfm, tokens objects",
-        fixed = TRUE
-    )
-})
-
