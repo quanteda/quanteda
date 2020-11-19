@@ -10,12 +10,19 @@ Description: A fast, flexible, and comprehensive framework for
     visually representing text and text analyses, and more. 
 Authors@R: c( 
     person("Kohei", "Watanabe", email = "watanabe.kohei@gmail.com", role = c("cre", "aut", "cph"), comment = c(ORCID = "0000-0001-6519-5265")), 
-    person("Kenneth", "Benoit", email = "kbenoit@lse.ac.uk", role = c("aut", "cph"), comment = c(ORCID = "0000-0002-0797-564X")), 
+    person("Kenneth", "Benoit", email = "kbenoit@lse.ac.uk", role = c("aut", "cph"), comment = c(ORCID = "0000-0002-0797-564X")),
+    person("Haiyan", "Wang", email = "whyinsa@yahoo.com", role = "aut", comment = c(ORCID = "0000-0003-4992-4311")),
+    person("Paul", "Nulty", email = "paul.nulty@gmail.com", role = "aut", comment = c(ORCID = "0000-0002-7214-4666")), 
+    person("Adam", "Obeng", email = "quanteda@binaryeagle.com", role = "aut", comment = c(ORCID = "0000-0002-2906-4775")),
+    person("Stefan", "Müller", email = "mullers@tcd.ie", role = "aut", comment = c(ORCID = "0000-0002-6315-4125")),
+    person("Akitaka", "Matsuo", email = "a.matsuo@lse.ac.uk", role = "aut", comment = c(ORCID = "0000-0002-3323-6330")),
+    person("William", "Lowe", email = "wlowe@princeton.edu", role = "aut", comment = c(ORCID = "0000-0002-1549-6163")),
+    person("Christian", "Müller", email = "C.Mueller@lse.ac.uk", role = "ctb"),
     person("European Research Council", role = "fnd", comment = "ERC-2011-StG 283794-QUANTESS")
     )
 License: GPL-3
 Depends:
-    R (>= 3.1.0),
+    R (>= 3.5.0),
     methods
 Imports:
     fastmatch,
@@ -61,7 +68,7 @@ Suggests:
     tidytext
 URL: https://quanteda.io
 Encoding: UTF-8
-BugReports: https://github.com/quanteda/quanteda/issues
+BugReports: https://github.com/quanteda/quanteda.core/issues
 LazyData: TRUE
 VignetteBuilder: knitr
 Language: en-GB
