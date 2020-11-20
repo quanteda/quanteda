@@ -72,6 +72,9 @@ Suggests:
     DT,
     RColorBrewer,
     xtable
+Remotes:
+    quanteda/quanteda.textstats,
+    quanteda/quanteda.textmodels
 URL: https://quanteda.io
 Encoding: UTF-8
 BugReports: https://github.com/quanteda/quanteda/issues
