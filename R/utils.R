@@ -122,7 +122,7 @@ pattern2list <- function(x, types, valuetype, case_insensitive,
     if (is.dfm(x))
         stop("dfm cannot be used as pattern")
 
-    if (is.collocations(x)) {
+    if ("collocations" %in% class(x)) {
         if (nrow(x) == 0) return(list())
         temp <- stri_split_charclass(x$collocation, "\\p{Z}")
         names(temp) <- x$collocation

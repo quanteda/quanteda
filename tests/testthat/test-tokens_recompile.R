@@ -134,14 +134,13 @@ test_that("tokens_recompile: selecting all tokens to produce and empty document"
     
 })
 
-test_that("tokens_recompile: corrupt tokens object does not crash R", {
+test_that("corrupt tokens object does not crash R", {
     skip_on_os("solaris")
     
     toks <- list(1:10)
     attr(toks, 'types') <- c('a', 'b', 'c') # Shorter than 10
     attr(toks, 'class') <- 'tokens'
     expect_error(quanteda:::tokens_recompile(toks, 'C++'))
-    
 })
 
 test_that("tokens_recompile: flag use of padding even when it does not reindex tokens", {

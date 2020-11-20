@@ -53,15 +53,12 @@
 #' @details
 #'  Additional features of \pkg{quanteda} include:
 #' * powerful, flexible tools for working with [dictionaries][dictionary];
-#' * the ability to identify [keywords][textstat_keyness] associated with
-#'   documents or groups of documents;
+#' * the ability to identify [keywords][quanteda.textstats::textstat_keyness]
+#'   associated with documents or groups of documents;
 #' * the ability to explore texts using [key-words-in-context][kwic];
-#' * fast computation of a variety of [readability
-#'   indexes][textstat_readability];
-#' * fast computation of a variety of [lexical diversity
-#'   measures][textstat_lexdiv];
-#' * quick computation of word or document [similarities][textstat_simil], for
-#'   clustering or to compute distances for other purposes;
+#' * quick computation of word or document
+#'   [similarities][quanteda.textstats::textstat_simil], for clustering or to
+#'   compute distances for other purposes;
 #' * a comprehensive suite of [descriptive statistics on text][summary.corpus]
 #'   such as the number of sentences, words, characters, or syllables per
 #'   document; and
@@ -114,9 +111,9 @@ NULL
 #'
 #' Pattern(s) for use in matching features, tokens, and keywords through a
 #' [valuetype] pattern.
-#' @param pattern a character vector, list of character vectors,
-#'   [dictionary], or [collocations] object.  See [pattern] for
-#'   details.
+#' @param pattern a character vector, list of character vectors, [dictionary],
+#'   or [collocations][quanteda.textstats::textstat_collocations] object.  See
+#'   [pattern] for details.
 #' @details The `pattern` argument is a vector of patterns, including
 #'   sequences, to match in a target object, whose match type is specified by
 #'   [valuetype()]. Note that an empty pattern (`""`) will match
@@ -138,7 +135,7 @@ NULL
 #'   phrases, so performing selection or compounding using a dictionary is the
 #'   same as wrapping the dictionary in [phrase()]. }
 #'   \item{`collocations`}{Collocations objects created from
-#'   [textstat_collocations()], which are treated as phrases
+#'   [quanteda.textstats::textstat_collocations()], which are treated as phrases
 #'   automatically.
 #'     }
 #'   }
@@ -175,8 +172,8 @@ NULL
 #' Groups can be the name(s) of document variables (as a character vector), or
 #' variables whose length or number of rows (if a data.frame) equal the number
 #' of documents.
-#' @param groups either: a character vector containing the names of document 
-#'   variables to be used for grouping; or a factor or object that can be 
+#' @param groups either: a character vector containing the names of document
+#'   variables to be used for grouping; or a factor or object that can be
 #'   coerced into a factor equal in length or rows to the number of documents.
 #'   `NA` values of the grouping value are dropped.
 #'   See [groups] for details.
@@ -185,7 +182,7 @@ NULL
 NULL
 
 #' Print methods for quanteda core objects
-#' 
+#'
 #' Print method for \pkg{quanteda} objects.  In each `max_n*` option, 0 shows none, and
 #' -1 shows all.
 #' @name print-quanteda

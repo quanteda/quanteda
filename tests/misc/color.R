@@ -44,9 +44,9 @@ pie(rep(1,5), col = quanteda_palette(5))
 
 # keyness 
 target <- c("Nixon", "Reagan", "Bush", "Trump")
-pres_key <- textstat_keyness(pres_dfm, 
-                             docvars(pres_corp, "President") %in% target,
-                             measure = "lr")
+pres_key <- quanteda.textstats::textstat_keyness(pres_dfm, 
+                                                 docvars(pres_corp, "President") %in% target,
+                                                 measure = "lr")
 
 #textplot_keyness(pres_key, color = diverge_hcl(2))
 #textplot_keyness(pres_key, show_reference = FALSE, color = diverge_hcl(1))

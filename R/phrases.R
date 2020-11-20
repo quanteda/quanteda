@@ -1,25 +1,22 @@
 #' Declare a compound character to be a sequence of separate pattern matches
-#' 
-#' Declares that a whitespace-separated expression consists of multiple 
-#' patterns, separated by whitespace.  This is typically used as a wrapper 
-#' around [pattern()] to make it explicit that the pattern elements 
+#'
+#' Declares that a whitespace-separated expression consists of multiple
+#' patterns, separated by whitespace.  This is typically used as a wrapper
+#' around [pattern()] to make it explicit that the pattern elements
 #' are to be used for matches to multi-word sequences, rather than individual,
 #' unordered matches to single words.
-#' @param x the sequence, as a `character` object containing whitespace 
+#' @param x the sequence, as a `character` object containing whitespace
 #'   separating the patterns
-#' @return `phrase` returns a specially classed list whose white-spaced 
+#' @return `phrase` returns a specially classed list whose white-spaced
 #'   elements have been parsed into separate `character` elements.
 #' @export
-#' @examples 
+#' @examples
 #' # make phrases from characters
 #' phrase(c("a b", "c d e", "f"))
-#' 
+#'
 #' # from a dictionary
 #' phrase(dictionary(list(catone = c("a b"), cattwo = "c d e", catthree = "f")))
-#' 
-#' # from a collocations object
-#' (coll <- textstat_collocations(tokens("a b c a b d e b d a b")))
-#' phrase(coll)
+#'
 phrase <- function(x) {
     UseMethod("phrase")
 }
@@ -65,7 +62,7 @@ phrase.tokens <- function(x) {
 
 
 #' @rdname phrase
-#' @return `is.phrase` returns `TRUE` if the object was created by 
+#' @return `is.phrase` returns `TRUE` if the object was created by
 #'   [phrase()]; `FALSE` otherwise.
 #' @export
 is.phrase <- function(x) {
@@ -73,7 +70,7 @@ is.phrase <- function(x) {
 }
 
 #' Print a phrase object
-#' 
+#'
 #' prints a phrase object in a way that looks like a standard list.
 #' @keywords internal
 #' @method print phrases

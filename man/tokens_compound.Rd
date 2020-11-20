@@ -17,9 +17,9 @@ tokens_compound(
 \arguments{
 \item{x}{an input \link{tokens} object}
 
-\item{pattern}{a character vector, list of character vectors,
-\link{dictionary}, or \link{collocations} object.  See \link{pattern} for
-details.}
+\item{pattern}{a character vector, list of character vectors, \link{dictionary},
+or \link[quanteda.textstats:textstat_collocations]{collocations} object.  See
+\link{pattern} for details.}
 
 \item{concatenator}{the concatenation character that will connect the words
 making up the multi-word sequences.  The default \verb{_} is recommended since
@@ -87,11 +87,6 @@ tokens_compound(toks, dictionary(list(key1 = "United Kingdom",
                                       key2 = "European Union")))
 # pattern as dictionaries with glob matches
 tokens_compound(toks, dictionary(list(key1 = c("U* K*"))), valuetype = "glob")
-
-# supplied as collocations - is compounded
-colls <- tokens("The new European Union is not the old European Union.") \%>\%
-    textstat_collocations(size = 2, min_count = 1, tolower = FALSE)
-tokens_compound(toks, colls, case_insensitive = FALSE)
 
 # note the differences caused by join = FALSE
 compounds <- list(c("the", "European"), c("European", "Union"))

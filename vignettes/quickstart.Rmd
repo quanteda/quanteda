@@ -24,6 +24,10 @@ See an instructions at https://github.com/quanteda/quanteda to install the GitHu
 
 ## Additional recommended packages:
 
+The following packages contain modularised functions that were formerly part of **quanteda**, and we recommend that you always install them along with **quanteda**:
+* [**quanteda.textmodels**](https://github.com/quanteda/quanteda.textmodels): Functions for scaling and classifying textual data.
+* [**quanteda.textstats**](https://github.com/quanteda/quanteda.textstats): Statistics for textual data.
+
 The following packages work well with or extend **quanteda** and we recommend that you also install them:
 
 *  [**readtext**](https://github.com/quanteda/readtext):  An easy way to read text data into R, from almost any input format.
@@ -367,12 +371,13 @@ dfmat_inaug_subset[, 1:10]
 ## Similarities between texts
 
 ```{r fig.width = 6, fig.height = 3}
+library("quanteda.textstats")
 dfmat_inaug_post1980 <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980),
                             remove = stopwords("english"), stem = TRUE, remove_punct = TRUE)
 tstat_obama <- textstat_simil(dfmat_inaug_post1980,
                               dfmat_inaug_post1980[c("2009-Obama", "2013-Obama"), ],
                               margin = "documents", method = "cosine")
-tstat_obama
+as.list(tstat_obama)
 dotchart(as.list(tstat_obama)$"2013-Obama", xlab = "Cosine similarity", pch = 19)
 ```
 

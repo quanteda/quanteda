@@ -2,15 +2,16 @@
 % Please edit documentation in R/corpus-methods-quanteda.R
 \name{as.corpus}
 \alias{as.corpus}
-\title{coerce a compressed corpus to a standard corpus}
+\title{Make sure a corpus is the current format}
 \usage{
 as.corpus(x)
 }
 \arguments{
-\item{x}{a compressed \link{corpus} object}
+\item{x}{a \link{corpus} or compressed \link{corpus} object}
 }
 \description{
-Recast a compressed corpus object into a standard (uncompressed) corpus
+Upgrades a corpus object to the current format.  For backwards compatibility,
+converts a compressed corpus object into a standard (uncompressed) corpus
 object.
 }
 \keyword{internal}

@@ -25,11 +25,11 @@
 #'
 #' @note `pattern` will be a keyword pattern or phrase, possibly multiple
 #'   patterns, that may include punctuation.  If a pattern contains whitespace,
-#'   it is best to wrap it in [phrase()] to make this explicit.
-#'   However if `pattern` is a [collocations][textstat_collocations]
-#'   or [dictionary] object, then the collocations or multi-word dictionary
-#'   keys will automatically be considered phrases where each
-#'   whitespace-separated element matches a token in sequence.
+#'   it is best to wrap it in [phrase()] to make this explicit. However if
+#'   `pattern` is a [collocations][quanteda.textstats::textstat_collocations] or
+#'   [dictionary] object, then the collocations or multi-word dictionary keys
+#'   will automatically be considered phrases where each whitespace-separated
+#'   element matches a token in sequence.
 #' @export
 #' @examples
 #' head(kwic(data_corpus_inaugural, pattern = "secure*", window = 3, valuetype = "glob"))
@@ -97,7 +97,7 @@ kwic.tokens <- function(x, pattern, window = 5,
                         valuetype = c("glob", "regex", "fixed"),
                         separator = " ",
                         case_insensitive = TRUE, ...) {
-    
+
     x <- as.tokens(x)
     if (is.list(pattern) && is.null(names(pattern)))
         names(pattern) <- pattern

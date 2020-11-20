@@ -109,7 +109,7 @@ test_that("test textplot_wordcloud works for dfm objects", {
 test_that("test textplot_wordcloud works for keyness objects", {
     tstat <- head(data_corpus_inaugural, 2) %>%
         dfm(remove_punct = TRUE, remove = stopwords("en")) %>%
-        textstat_keyness(target = 1)
+        quanteda.textstats::textstat_keyness(target = 1)
     expect_silent(textplot_wordcloud(tstat, max_words = 50))
     expect_silent(textplot_wordcloud(tstat, comparison = FALSE, max_words = 50))
 })
@@ -179,7 +179,7 @@ test_that("test textplot_keyness: show_reference works correctly ", {
     prescorpus <- corpus_subset(data_corpus_inaugural, President %in% c("Obama", "Trump"))
     presdfm <- dfm(prescorpus, groups = "President", remove = stopwords("english"),
                    remove_punct = TRUE)
-    result <- textstat_keyness(presdfm, target = "Trump")
+    result <- quanteda.textstats::textstat_keyness(presdfm, target = "Trump")
 
     k <- 10
     p1 <- textplot_keyness(result, show_reference = FALSE, n = k)

@@ -20,9 +20,9 @@ is.kwic(x)
 \arguments{
 \item{x}{a character, \link{corpus}, or \link{tokens} object}
 
-\item{pattern}{a character vector, list of character vectors,
-\link{dictionary}, or \link{collocations} object.  See \link{pattern} for
-details.}
+\item{pattern}{a character vector, list of character vectors, \link{dictionary},
+or \link[quanteda.textstats:textstat_collocations]{collocations} object.  See
+\link{pattern} for details.}
 
 \item{window}{the number of context words to be displayed around the keyword.}
 
@@ -60,11 +60,11 @@ delimiters.)
 \note{
 \code{pattern} will be a keyword pattern or phrase, possibly multiple
 patterns, that may include punctuation.  If a pattern contains whitespace,
-it is best to wrap it in \code{\link[=phrase]{phrase()}} to make this explicit.
-However if \code{pattern} is a \link[=textstat_collocations]{collocations}
-or \link{dictionary} object, then the collocations or multi-word dictionary
-keys will automatically be considered phrases where each
-whitespace-separated element matches a token in sequence.
+it is best to wrap it in \code{\link[=phrase]{phrase()}} to make this explicit. However if
+\code{pattern} is a \link[quanteda.textstats:textstat_collocations]{collocations} or
+\link{dictionary} object, then the collocations or multi-word dictionary keys
+will automatically be considered phrases where each whitespace-separated
+element matches a token in sequence.
 }
 \examples{
 head(kwic(data_corpus_inaugural, pattern = "secure*", window = 3, valuetype = "glob"))

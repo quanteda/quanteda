@@ -26,7 +26,7 @@ textplot_wordcloud(
 )
 }
 \arguments{
-\item{x}{a \link{dfm} or \link{textstat_keyness} object}
+\item{x}{a \link{dfm} or \link[quanteda.textstats:textstat_keyness]{quanteda.textstats::textstat_keyness} object}
 
 \item{min_size}{size of the smallest word}
 
@@ -71,12 +71,12 @@ aspect ratio only supported if rotation = 0.}
 
 \item{comparison}{logical; if \code{TRUE}, plot a wordcloud that compares
 documents in the same way as \code{\link[wordcloud:comparison.cloud]{wordcloud::comparison.cloud()}}.  If \code{x} is a
-\link{textstat_keyness} object, then only the target category's key terms are
+\link[quanteda.textstats:textstat_keyness]{quanteda.textstats::textstat_keyness} object, then only the target category's key terms are
 plotted when \code{comparison = FALSE}, otherwise the top \code{max_words / 2} terms
 are plotted from the target and reference categories.}
 }
 \description{
-Plot a \link{dfm} or \link{textstat_keyness} object as a wordcloud, where the feature
+Plot a \link{dfm} or \link[quanteda.textstats:textstat_keyness]{quanteda.textstats::textstat_keyness} object as a wordcloud, where the feature
 labels are plotted with their sizes proportional to their numerical values in
 the dfm.  When \code{comparison = TRUE}, it plots comparison word clouds by
 document (or by target and reference categories in the case of a keyness
@@ -120,11 +120,13 @@ textplot_wordcloud(dfmat2, comparison = TRUE, max_words = 300,
                    color = c("blue", "red"))
                    
 # for keyness
+\dontrun{
 tstat <- tail(data_corpus_inaugural, 2) \%>\%
     dfm(remove_punct = TRUE, remove = stopwords("en")) \%>\%
-    textstat_keyness(target = 2)
+    quanteda.textstats::textstat_keyness(target = 2)
 textplot_wordcloud(tstat, max_words = 100)
 textplot_wordcloud(tstat, comparison = FALSE, max_words = 100)
+}
 }
 \author{
 Kohei Watanabe, building on code from Ian Fellows's \pkg{wordcloud}

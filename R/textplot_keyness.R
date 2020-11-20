@@ -2,8 +2,8 @@
 #'
 #' Plot the results of a "keyword" of features comparing their differential
 #' associations with a target and a reference group, after calculating keyness
-#' using [textstat_keyness()].
-#' @param x a return object from [textstat_keyness()]
+#' using [quanteda.textstats::textstat_keyness()].
+#' @param x a return object from [quanteda.textstats::textstat_keyness()]
 #' @param show_reference logical; if `TRUE`, show key reference features in
 #'   addition to key target features
 #' @param show_legend logical; if `TRUE`, show legend
@@ -21,9 +21,11 @@
 #' @return a \pkg{ggplot2} object
 #' @export
 #' @author Haiyan Wang and Kohei Watanabe
-#' @seealso [textstat_keyness()]
+#' @seealso [quanteda.textstats::textstat_keyness()]
 #' @keywords textplot
 #' @examples
+#' \dontrun{
+#' library("quanteda.textstats")
 #' # compare Trump speeches to other Presidents by chi^2
 #' dfmat1 <- data_corpus_inaugural %>%
 #'      corpus_subset(Year > 1980) %>%
@@ -41,6 +43,7 @@
 #'                 remove_punct = TRUE)
 #' tstat2 <- textstat_keyness(dfmat2, target = "Democrat", measure = "lr")
 #' textplot_keyness(tstat2, color = c("blue", "red"), n = 10)
+#' }
 #'
 textplot_keyness <-  function(x, show_reference = TRUE, show_legend = TRUE,
                               n = 20L, min_count = 2L, margin = 0.05,
