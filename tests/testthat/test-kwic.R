@@ -471,3 +471,13 @@ test_that("subsetting and printing a subsetted kwic works (#1665)", {
     expect_false("kwic" %in% class(kw[1:3, 1:2]))
     expect_false("kwic" %in% class(kw[, 1:2]))
 })
+
+test_that("ignores values other than first (#2008)", {
+    toks <-tokens( "This is a sample text.")
+    kw1 <- kwic(toks, "sample", window = c(1, 2))
+    expect_equal(kw1$pre , "a")
+    expect_equal(kw1$post , "text")
+    kw2 <- kwic(toks, "sample", window = 2, separator = c("_", " "))
+    expect_equal(kw2$pre , "is_a")
+    expect_equal(kw2$post , "text_.")
+})
