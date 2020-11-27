@@ -13,15 +13,14 @@ __MACOSX
 \.Rproj\.user
 ^images
 ^CONDUCT\.md$
-^benchmarks
 ^codecov\.yml$
 ^appveyor\.yml$
-^docs/
+^docs$
 ^_pkgdown\.yml$
-^tests/benchmarks/
-^tests/misc/
-^css/
-^vignettes/pkgdown/
+^tests/benchmarks$
+^tests/misc$
+^css$
+^vignettes/pkgdown$
 ^revdep$
 ^CNAME$
 ^pkgdown$
@@ -30,5 +29,5 @@ __MACOSX
 LICENSE
 quanteda.pdf
 ^\.lintr$
-^tests/data_creation/
+^tests/data_creation$
 ^\.github$

@@ -102,11 +102,12 @@ as.character.corpus <- function(x, ...) {
     texts(x)
 }
 
-#' coerce a compressed corpus to a standard corpus
+#' Make sure a corpus is the current format
 #'
-#' Recast a compressed corpus object into a standard (uncompressed) corpus
+#' Upgrades a corpus object to the current format.  For backwards compatibility,
+#' converts a compressed corpus object into a standard (uncompressed) corpus
 #' object.
-#' @param x a compressed [corpus] object
+#' @param x a [corpus] or compressed [corpus] object
 #' @export
 #' @keywords internal
 as.corpus <- function(x) {

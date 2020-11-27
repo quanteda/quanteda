@@ -21,9 +21,8 @@ char_keep(x, ...)
 \arguments{
 \item{x}{an input \link{character} vector}
 
-\item{pattern}{a character vector, list of character vectors,
-\link{dictionary}, or \link{collocations} object.  See \link{pattern} for
-details.}
+\item{pattern}{a character vector, list of character vectors, \link{dictionary},
+or collocations object.  See \link{pattern} for details.}
 
 \item{selection}{whether to \code{"keep"} or \code{"remove"} the tokens matching
 \code{pattern}}

@@ -1,6 +1,6 @@
 #' Plot features as a wordcloud
 #'
-#' Plot a [dfm] or [textstat_keyness] object as a wordcloud, where the feature
+#' Plot a [dfm] or [quanteda.textstats::textstat_keyness] object as a wordcloud, where the feature
 #' labels are plotted with their sizes proportional to their numerical values in
 #' the dfm.  When `comparison = TRUE`, it plots comparison word clouds by
 #' document (or by target and reference categories in the case of a keyness
@@ -15,7 +15,7 @@
 #'   dfm, or to create a dfm where the "documents" represent a subset or a
 #'   grouping of documents by some document variable.
 #'   
-#' @param x a [dfm] or [textstat_keyness] object
+#' @param x a [dfm] or [quanteda.textstats::textstat_keyness] object
 #' @param min_size size of the smallest word
 #' @param max_size size of the largest word
 #' @param min_count words with frequency below min_count will not be plotted
@@ -41,7 +41,7 @@
 #'   aspect ratio only supported if rotation = 0.
 #' @param comparison logical; if `TRUE`, plot a wordcloud that compares
 #'   documents in the same way as [wordcloud::comparison.cloud()].  If `x` is a 
-#'   [textstat_keyness] object, then only the target category's key terms are
+#'   [quanteda.textstats::textstat_keyness] object, then only the target category's key terms are
 #'   plotted when `comparison = FALSE`, otherwise the top `max_words / 2` terms
 #'   are plotted from the target and reference categories. 
 #' @param ... additional parameters. Only used to make it compatible with
@@ -74,11 +74,13 @@
 #'                    color = c("blue", "red"))
 #'                    
 #' # for keyness
+#' \dontrun{
 #' tstat <- tail(data_corpus_inaugural, 2) %>%
 #'     dfm(remove_punct = TRUE, remove = stopwords("en")) %>%
-#'     textstat_keyness(target = 2)
+#'     quanteda.textstats::textstat_keyness(target = 2)
 #' textplot_wordcloud(tstat, max_words = 100)
 #' textplot_wordcloud(tstat, comparison = FALSE, max_words = 100)
+#' }
 #' @export
 #' @keywords textplot
 #' @author Kohei Watanabe, building on code from Ian Fellows's \pkg{wordcloud}
