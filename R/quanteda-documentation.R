@@ -112,8 +112,7 @@ NULL
 #' Pattern(s) for use in matching features, tokens, and keywords through a
 #' [valuetype] pattern.
 #' @param pattern a character vector, list of character vectors, [dictionary],
-#'   or [collocations][quanteda.textstats::textstat_collocations] object.  See
-#'   [pattern] for details.
+#'   or collocations object.  See [pattern] for details.
 #' @details The `pattern` argument is a vector of patterns, including
 #'   sequences, to match in a target object, whose match type is specified by
 #'   [valuetype()]. Note that an empty pattern (`""`) will match
@@ -135,7 +134,7 @@ NULL
 #'   phrases, so performing selection or compounding using a dictionary is the
 #'   same as wrapping the dictionary in [phrase()]. }
 #'   \item{`collocations`}{Collocations objects created from
-#'   [quanteda.textstats::textstat_collocations()], which are treated as phrases
+#'   `quanteda.textstats::textstat_collocations()`, which are treated as phrases
 #'   automatically.
 #'     }
 #'   }

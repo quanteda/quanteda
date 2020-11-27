@@ -18,8 +18,7 @@ tokens_compound(
 \item{x}{an input \link{tokens} object}
 
 \item{pattern}{a character vector, list of character vectors, \link{dictionary},
-or \link[quanteda.textstats:textstat_collocations]{collocations} object.  See
-\link{pattern} for details.}
+or collocations object.  See \link{pattern} for details.}
 
 \item{concatenator}{the concatenation character that will connect the words
 making up the multi-word sequences.  The default \verb{_} is recommended since

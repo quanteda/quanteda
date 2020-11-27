@@ -21,8 +21,7 @@ is.kwic(x)
 \item{x}{a character, \link{corpus}, or \link{tokens} object}
 
 \item{pattern}{a character vector, list of character vectors, \link{dictionary},
-or \link[quanteda.textstats:textstat_collocations]{collocations} object.  See
-\link{pattern} for details.}
+or collocations object.  See \link{pattern} for details.}
 
 \item{window}{the number of context words to be displayed around the keyword.}
 

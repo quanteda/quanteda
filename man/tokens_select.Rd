@@ -29,8 +29,7 @@ tokens_keep(x, ...)
 \item{x}{\link{tokens} object whose token elements will be removed or kept}
 
 \item{pattern}{a character vector, list of character vectors, \link{dictionary},
-or \link[quanteda.textstats:textstat_collocations]{collocations} object.  See
-\link{pattern} for details.}
+or collocations object.  See \link{pattern} for details.}
 
 \item{selection}{whether to \code{"keep"} or \code{"remove"} the tokens matching
 \code{pattern}}
