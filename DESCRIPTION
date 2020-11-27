@@ -91,6 +91,7 @@ Collate:
     'quanteda-documentation.R'
     'aaa.R'
     'bootstrap_dfm.R'
+    'cache.R'
     'casechange-functions.R'
     'char_select.R'
     'convert.R'
