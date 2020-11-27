@@ -44,7 +44,7 @@ char_select.character <- function(x, pattern, selection = c("keep", "remove"),
     
     if (is.dictionary(pattern))
         pattern <- unique(unlist(as.list(pattern), use.names = FALSE))
-    if ("collocations" %in% class(pattern))
+    if (is.collocations(pattern))
         pattern <- pattern[["collocation"]]
     
     result <- 

@@ -5,3 +5,13 @@
 #' @name textstats
 #' @seealso `quanteda.textstats::quanteda.textstats-package`
 NULL
+
+#' Check if an object is collocations
+#' 
+#' Function to check if an object is a collocations object, created by
+#' [quanteda.textstats::textstat_collocations()].
+#' @export
+#' @return `TRUE` if the object is of class `collocations`, `FALSE` otherwise
+is.collocations <- function(x) {
+    "collocations" %in% class(x)
+}
