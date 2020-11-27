@@ -10,6 +10,7 @@ NULL
 #' 
 #' Function to check if an object is a collocations object, created by
 #' [quanteda.textstats::textstat_collocations()].
+#' @param x object to be checked
 #' @export
 #' @return `TRUE` if the object is of class `collocations`, `FALSE` otherwise
 is.collocations <- function(x) {

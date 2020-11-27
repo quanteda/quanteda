@@ -231,3 +231,10 @@ test_that("test phrase for collocations", {
         list(c("United", "States"), c("federal", "government"))
     )
 })
+
+test_that("is.collocations works", {
+    load("../data/collocations/col.rda")
+    expect_true(is.collocations(col))
+    expect_false(is.collocations(10))
+    expect_false(is.collocations(data_corpus_inaugural))
+})

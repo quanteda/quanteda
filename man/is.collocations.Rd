@@ -6,6 +6,9 @@
 \usage{
 is.collocations(x)
 }
+\arguments{
+\item{x}{object to be checked}
+}
 \value{
 \code{TRUE} if the object is of class \code{collocations}, \code{FALSE} otherwise
 }
