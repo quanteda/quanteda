@@ -96,13 +96,12 @@ inline Tokens recompile(Texts texts,
     bool all_used = false;
     if (check_gap) {
         // dev::start_timer("Check gaps", timer);
+        unsigned int id_limit = ids_new.size();
         for (std::size_t h = 0; h < texts.size(); h++) {
             for (std::size_t i = 0; i < texts[h].size(); i++) {
-                try {
-                    flags_used[texts[h][i]] = true;
-                } catch (const std::out_of_range& e) {
+                if (texts[h][i] > id_limit)
                     throw std::range_error("Invalid tokens object");
-                }
+                flags_used[texts[h][i]] = true;
             }
         }
         // Check all but padding
