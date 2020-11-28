@@ -16,7 +16,8 @@ validate_min_simil(object)
 }
 \description{
 Sparse classes for similarity and distance matrices created by
-\code{\link[=textstat_simil]{textstat_simil()}} and \code{\link[=textstat_dist]{textstat_dist()}}.
+\code{\link[quanteda.textstats:textstat_simil]{quanteda.textstats::textstat_simil()}} and
+\code{\link[quanteda.textstats:textstat_simil]{quanteda.textstats::textstat_dist()}}.
 }
 \section{Slots}{
 
@@ -39,7 +40,7 @@ difference was computed:  \code{"documents"} for documents or
 }}
 
 \seealso{
-\code{\link[=textstat_simil]{textstat_simil()}}
+\code{\link[quanteda.textstats:textstat_simil]{quanteda.textstats::textstat_simil()}}
 }
 \keyword{internal}
 \keyword{textstat}

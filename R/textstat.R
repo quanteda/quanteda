@@ -23,7 +23,8 @@ is.collocations <- function(x) {
 
 #' @title textstat_simil/dist classes
 #' @description Sparse classes for similarity and distance matrices created by
-#'   [textstat_simil()] and [textstat_dist()].
+#'   [quanteda.textstats::textstat_simil()] and
+#'   [quanteda.textstats::textstat_dist()].
 #' @rdname textstat_proxy-class
 #' @export
 #' @keywords internal textstat
@@ -36,7 +37,7 @@ is.collocations <- function(x) {
 #'   difference was computed:  `"documents"` for documents or
 #'   `"features"` for word/term features.
 #' @slot type either `"textstat_simil"` or `"textstat_dist"`
-#' @seealso [textstat_simil()]
+#' @seealso [quanteda.textstats::textstat_simil()]
 setClass("textstat_proxy", contains = "Matrix",
          slots = c(method = "character",
                    margin = "character",
