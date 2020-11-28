@@ -24,7 +24,7 @@ inline bool is_duplicated(Types types){
     if (types.size() <= 1) return false;
     for (std::size_t i = 0; i < types.size() - 1; i++) {
         // Treat null tokens as duplicate because 0 is reserved for them
-        if (types.at(i) == "" || types.at(i) == types.at(i + 1)) { 
+        if (types[i] == "" || types[i] == types[i + 1]) { 
             return true;
         }
     }
@@ -84,11 +84,11 @@ inline Tokens recompile(Texts texts,
                         const bool check_encode = true){
     
     VecIds ids_new(types.size() + 1);
-    ids_new.at(0) = 0; // reserved for padding
+    ids_new[0] = 0; // reserved for padding
     unsigned int id_new = 1;
     std::vector<bool> flags_used(ids_new.size(), false);
     std::vector<bool> flags_unique(ids_new.size(), false);
-    flags_unique.at(0) = true; // padding is always unique
+    flags_unique[0] = true; // padding is always unique
     
     /// dev::Timer timer;
     
@@ -99,7 +99,7 @@ inline Tokens recompile(Texts texts,
         for (std::size_t h = 0; h < texts.size(); h++) {
             for (std::size_t i = 0; i < texts[h].size(); i++) {
                 try {
-                    flags_used.at(texts[h][i]) = true;
+                    flags_used[texts[h][i]] = true;
                 } catch (const std::out_of_range& e) {
                     throw std::range_error("Invalid tokens object");
                 }
@@ -111,7 +111,7 @@ inline Tokens recompile(Texts texts,
     } else {
         
         // Only check for padding
-        flags_used.at(0) = has_padding(texts);
+        flags_used[0] = has_padding(texts);
         // Fill all but padding
         std::fill(flags_used.begin() + 1, flags_used.end(), true); 
         all_used = true;
@@ -127,15 +127,15 @@ inline Tokens recompile(Texts texts,
         // dev::start_timer("Check duplication", timer);
         std::unordered_map<std::string, unsigned int> types_unique;
         for (std::size_t g = 1; g < ids_new.size(); g++) {
-            if (!flags_used.at(g)) continue; // ignore unused
-            if (types.at(g - 1) == "") {
-                flags_used.at(0) = true;
-                ids_new.at(g) = 0;
+            if (!flags_used[g]) continue; // ignore unused
+            if (types[g - 1] == "") {
+                flags_used[0] = true;
+                ids_new[g] = 0;
             } else {
                 auto it = types_unique.insert(std::pair<std::string, unsigned int>(types[g - 1], id_new));
-                ids_new.at(g) = it.first->second;
+                ids_new[g] = it.first->second;
                 if (it.second) {
-                    flags_unique.at(g) = true;
+                    flags_unique[g] = true;
                     id_new++; // increment iff there is no gap
                 }
             }
@@ -146,8 +146,8 @@ inline Tokens recompile(Texts texts,
     } else {
         unsigned int id_new = 1;
         for (std::size_t g = 1; g < ids_new.size(); g++) {
-            if (flags_used.at(g)) {
-                ids_new.at(g) = id_new++;
+            if (flags_used[g]) {
+                ids_new[g] = id_new++;
             }
             //Rcout << types.at(g - 1)<< ": " << g << " -> " << ids_new.at(g)<< "\n";
         }
@@ -169,7 +169,7 @@ inline Tokens recompile(Texts texts,
         Tokens texts_ = Rcpp::wrap(texts);
         texts_.attr("class") = "tokens";
         texts_.attr("types") = types_;
-        texts_.attr("padding") = (bool)flags_used.at(0);
+        texts_.attr("padding") = (bool)flags_used[0];
         return texts_;
     }
     
@@ -213,7 +213,7 @@ inline Tokens recompile(Texts texts,
     }
     texts_.attr("class") = "tokens";
     texts_.attr("types") = types_new_;
-    texts_.attr("padding") = (bool)flags_used.at(0);
+    texts_.attr("padding") = (bool)flags_used[0];
     return texts_;
     
 }
