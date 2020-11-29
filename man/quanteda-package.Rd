@@ -104,7 +104,6 @@ Authors:
 Other contributors:
 \itemize{
   \item Christian Müller \email{C.Mueller@lse.ac.uk} [contributor]
-  \item Ian Fellows \email{ian@fellstat.com} (authored wordcloud C source code (modified)) [copyright holder]
   \item European Research Council (ERC-2011-StG 283794-QUANTESS) [funder]
 }
 

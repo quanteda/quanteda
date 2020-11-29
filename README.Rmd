@@ -55,6 +55,22 @@ from CRAN.
 [macOS tools](https://cran.r-project.org/bin/macosx/tools/), 
 namely the Clang 6.x compiler and the GNU Fortran compiler (as **quanteda** requires gfortran to build).  If you are still getting errors related to gfortran, follow the fixes [here](https://thecoatlessprofessor.com/programming/rcpp-rcpparmadillo-and-os-x-mavericks--lgfortran-and--lquadmath-error/).  
     
+## The **quanteda** family of packages
+
+As of v3.0, we have continued our trend of splitting **quanteda** into modular packages.  These are now the following:
+
+- **quanteda**: contains all of the core natural language processing and textual data management functions
+- **quanteda.textmodels**: contains all of the text models and supporting functions, namely the `textmodel_*()` functions.  This was split from the main package with the v2 release
+- **quanteda.textstats**: statistics for textual data, namely the `textstat_*()` functions, split with the v3 release
+- **quanteda.textplots**: plots for textual data, namely the `textplot_*()` functions, split with the v3 release
+
+We are working on additional package releases, available in the meantime from our GitHub pages:
+
+- **quanteda.sentiment**: Functions and lexicons for sentiment analysis using dictionaries
+- **quanteda.tidy**: Extensions for manipulating document variables in core **quanteda** objects using your favourite **tidyverse** functions
+
+and more to come.
+
 
 ## How to Use 
 
