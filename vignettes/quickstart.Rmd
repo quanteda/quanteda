@@ -27,6 +27,7 @@ See an instructions at https://github.com/quanteda/quanteda to install the GitHu
 The following packages contain modularised functions that were formerly part of **quanteda**, and we recommend that you always install them along with **quanteda**:
 * [**quanteda.textmodels**](https://github.com/quanteda/quanteda.textmodels): Functions for scaling and classifying textual data.
 * [**quanteda.textstats**](https://github.com/quanteda/quanteda.textstats): Statistics for textual data.
+* [**quanteda.textplot**](https://github.com/quanteda/quanteda.textplots): Statistics for textual data.
 
 The following packages work well with or extend **quanteda** and we recommend that you also install them:
 
@@ -315,6 +316,7 @@ Plotting a word cloud is done using `textplot_wordcloud()`, for a `dfm` class ob
 
 ```{r warning=FALSE, fig.width = 7, fig.height = 7}
 set.seed(100)
+library("quanteda.textplots")
 textplot_wordcloud(dfmat_uk, min_count = 6, random_order = FALSE,
                    rotation = .25,
                    color = RColorBrewer::brewer.pal(8, "Dark2"))

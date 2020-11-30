@@ -224,18 +224,6 @@ test_that("is.kwic works as expected", {
     expect_true(is.kwic(kwic2))
 })
 
-test_that("textplot_xray works with new kwic, one token phrase", {
-    data_corpus_inauguralpost70 <- corpus_subset(data_corpus_inaugural, Year > 1970)
-    knew <- kwic(data_corpus_inauguralpost70, "american")
-    expect_silent(textplot_xray(knew))
-})
-
-test_that("textplot_xray works with new kwic, two token phrase", {
-    data_corpus_inauguralpost70 <- corpus_subset(data_corpus_inaugural, Year > 1970)
-    knew <- kwic(data_corpus_inauguralpost70, phrase("american people"))
-    expect_silent(textplot_xray(knew))
-})
-
 test_that("print method works as expected", {
     testkwic <- kwic("what does the fox say fox", "fox")
     expect_output(print(testkwic), "*\\| fox \\|*")
@@ -244,7 +232,6 @@ test_that("print method works as expected", {
     testkwic <- kwic("what does the fox say fox", "foox")
     expect_output(print(testkwic), "kwic object with 0 rows")
 })
-
 
 test_that("kwic works with padding", {
     testtoks <- tokens("what does the fox say cat")

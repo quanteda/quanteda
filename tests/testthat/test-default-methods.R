@@ -342,21 +342,6 @@ test_that("test new docnames<- methods", {
     )
 })
 
-test_that("test default textplot methods", {
-    expect_error(
-        textplot_keyness(TRUE),
-        "textplot_keyness\\(\\) only works on keyness objects"
-    )
-    expect_error(
-        textplot_wordcloud(TRUE),
-        "textplot_wordcloud\\(\\) only works on dfm, keyness objects"
-    )
-    expect_error(
-        textplot_xray(TRUE),
-        "textplot_xray\\(\\) only works on kwic objects"
-    )
-})
-
 test_that("friendly_class_undefined_message for tokens_tortl()", {
     expect_error(
         tokens_tortl(data_dfm_lbgexample),

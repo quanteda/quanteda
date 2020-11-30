@@ -18,7 +18,6 @@ Authors@R: c(
     person("Akitaka", "Matsuo", email = "a.matsuo@lse.ac.uk", role = "aut", comment = c(ORCID = "0000-0002-3323-6330")),
     person("William", "Lowe", email = "wlowe@princeton.edu", role = "aut", comment = c(ORCID = "0000-0002-1549-6163")),
     person("Christian", "Müller", email = "C.Mueller@lse.ac.uk", role = "ctb"),
-    person("Ian", "Fellows", email = "ian@fellstat.com", role = "cph", comment = "authored wordcloud C source code (modified)"),
     person("European Research Council", role = "fnd", comment = "ERC-2011-StG 283794-QUANTESS")
     )
 License: GPL-3
@@ -29,6 +28,8 @@ Imports:
     data.table,
     digest,
     fastmatch,
+    igraph,
+    network,
     magrittr,
     Matrix (>= 1.2),
     Rcpp (>= 0.12.12),
@@ -37,12 +38,7 @@ Imports:
     stopwords,
     stringi,
     xml2,
-    yaml,
-    extrafont,
-    ggplot2,
-    ggrepel,
-    sna,
-    network
+    yaml
 LinkingTo: Rcpp, RcppParallel, RcppArmadillo (>= 0.7.600.1.0)
 Suggests:
     rmarkdown,
@@ -54,11 +50,12 @@ Suggests:
     knitr,
     lda,
     lsa,
-    igraph,
     dplyr,
     purrr,
     quanteda.textmodels,
     quanteda.textstats,
+    quanteda.textplots,
+    RColorBrewer,
     slam,
     spacyr,
     stm,
@@ -68,13 +65,12 @@ Suggests:
     quanteda,
     tibble,
     tidytext,
-    wordcloud,
     DT,
-    RColorBrewer,
-    xtable
+    xtable,
+    ggplot2
 Remotes:
     quanteda/quanteda.textstats,
-    quanteda/quanteda.textmodels
+    quanteda/quanteda.textplots
 URL: https://quanteda.io
 Encoding: UTF-8
 BugReports: https://github.com/quanteda/quanteda/issues
@@ -145,10 +141,7 @@ Collate:
     'stopwords.R'
     'summary.R'
     'textmodel.R'
-    'textplot_keyness.R'
-    'textplot_network.R'
-    'textplot_wordcloud.R'
-    'textplot_xray.R'
+    'textplot.R'
     'textstat.R'
     'tokenizers.R'
     'tokens-methods-base.R'

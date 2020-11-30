@@ -227,21 +227,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// qatd_cpp_is_overlap
-bool qatd_cpp_is_overlap(SEXP x1_, SEXP y1_, SEXP w1_, SEXP h1_, SEXP boxe_);
-RcppExport SEXP _quanteda_qatd_cpp_is_overlap(SEXP x1_SEXP, SEXP y1_SEXP, SEXP w1_SEXP, SEXP h1_SEXP, SEXP boxe_SEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< SEXP >::type x1_(x1_SEXP);
-    Rcpp::traits::input_parameter< SEXP >::type y1_(y1_SEXP);
-    Rcpp::traits::input_parameter< SEXP >::type w1_(w1_SEXP);
-    Rcpp::traits::input_parameter< SEXP >::type h1_(h1_SEXP);
-    Rcpp::traits::input_parameter< SEXP >::type boxe_(boxe_SEXP);
-    rcpp_result_gen = Rcpp::wrap(qatd_cpp_is_overlap(x1_, y1_, w1_, h1_, boxe_));
-    return rcpp_result_gen;
-END_RCPP
-}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_quanteda_qatd_cpp_fcm", (DL_FUNC) &_quanteda_qatd_cpp_fcm, 5},
@@ -260,7 +245,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_quanteda_qatd_cpp_get_load_factor", (DL_FUNC) &_quanteda_qatd_cpp_get_load_factor, 0},
     {"_quanteda_qatd_cpp_set_meta", (DL_FUNC) &_quanteda_qatd_cpp_set_meta, 2},
     {"_quanteda_qatd_cpp_tbb_enabled", (DL_FUNC) &_quanteda_qatd_cpp_tbb_enabled, 0},
-    {"_quanteda_qatd_cpp_is_overlap", (DL_FUNC) &_quanteda_qatd_cpp_is_overlap, 5},
     {NULL, NULL, 0}
 };
 

@@ -4,9 +4,11 @@ on:
   push:
     branches:
       - master
+      - modularise
   pull_request:
     branches:
       - master
+      - modularise
 
 name: R-CMD-check
 
@@ -52,6 +54,11 @@ jobs:
           path: ${{ env.R_LIBS_USER }}
           key: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-${{ hashFiles('.github/depends.Rds') }}
           restore-keys: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-
+
+      - name: Install remotes
+        run: >
+          Rscript
+          -e "if (system.file(package = 'remotes') == '') install.packages('remotes')"
 
       - name: Install system dependencies
         if: runner.os == 'Linux'
