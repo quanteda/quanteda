@@ -90,7 +90,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.9.9000</span>
       </span>
     </div>
 
@@ -219,7 +219,7 @@
     <p>Utility function to generate a nested list</p>
     </div>
 
-    <pre class="usage"><span class='fu'>nest_dictionary</span>(<span class='kw'>dict</span>, <span class='kw'>depth</span>)</pre>
+    <pre class="usage"><span class='fu'>nest_dictionary</span><span class='op'>(</span><span class='va'>dict</span>, <span class='va'>depth</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -236,9 +236,9 @@
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>lis</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='st'>"A"</span> = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"a"</span>, <span class='st'>"aa"</span>, <span class='st'>"aaa"</span>), <span class='st'>"B"</span> = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"b"</span>, <span class='st'>"bb"</span>), <span class='st'>"C"</span> = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"c"</span>, <span class='st'>"cc"</span>), <span class='st'>"D"</span> = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"ddd"</span>))
-<span class='kw'>dict</span> <span class='op'>&lt;-</span> <span class='kw'>quanteda</span>:::<span class='fu'><a href='list2dictionary.html'>list2dictionary</a></span>(<span class='kw'>lis</span>)
-<span class='kw'>quanteda</span>:::<span class='fu'>nest_dictionary</span>(<span class='kw'>dict</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>2</span>))
+    <pre class="examples"><div class='input'><span class='va'>lis</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='st'>"A"</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"a"</span>, <span class='st'>"aa"</span>, <span class='st'>"aaa"</span><span class='op'>)</span>, <span class='st'>"B"</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"b"</span>, <span class='st'>"bb"</span><span class='op'>)</span>, <span class='st'>"C"</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"c"</span>, <span class='st'>"cc"</span><span class='op'>)</span>, <span class='st'>"D"</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"ddd"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>dict</span> <span class='op'>&lt;-</span> <span class='fu'>quanteda</span><span class='fu'>:::</span><span class='fu'><a href='list2dictionary.html'>list2dictionary</a></span><span class='op'>(</span><span class='va'>lis</span><span class='op'>)</span>
+<span class='fu'>quanteda</span><span class='fu'>:::</span><span class='fu'>nest_dictionary</span><span class='op'>(</span><span class='va'>dict</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; $A
 #&gt; $A[[1]]
 #&gt; [1] "a"   "aa"  "aaa"
@@ -258,7 +258,7 @@
 #&gt; [1] "ddd"
 #&gt; 
 #&gt; 
-#&gt; </div><div class='input'><span class='kw'>quanteda</span>:::<span class='fu'>nest_dictionary</span>(<span class='kw'>dict</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>1</span>, <span class='fl'>2</span>))
+#&gt; </div><div class='input'><span class='fu'>quanteda</span><span class='fu'>:::</span><span class='fu'>nest_dictionary</span><span class='op'>(</span><span class='va'>dict</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; $A
 #&gt; $A[[1]]
 #&gt; [1] "a"   "aa"  "aaa"
@@ -291,7 +291,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

@@ -91,7 +91,7 @@ to immigration or asylum-seekers." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.9.9000</span>
       </span>
     </div>
 
@@ -221,7 +221,7 @@ to immigration or asylum-seekers." />
 to immigration or asylum-seekers.</p>
     </div>
 
-    <pre class="usage"><span class='kw'>data_char_ukimmig2010</span></pre>
+    <pre class="usage"><span class='va'>data_char_ukimmig2010</span></pre>
 
 
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
@@ -229,10 +229,10 @@ to immigration or asylum-seekers.</p>
     <p>A named character vector of plain ASCII texts</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>data_corpus_ukimmig2010</span> <span class='op'>&lt;-</span> 
-    <span class='fu'><a href='corpus.html'>corpus</a></span>(<span class='kw'>data_char_ukimmig2010</span>, 
-           docvars = <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(party = <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='kw'>data_char_ukimmig2010</span>)))
-<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='kw'>data_corpus_ukimmig2010</span>, showmeta = <span class='fl'>TRUE</span>)
+    <pre class="examples"><div class='input'><span class='va'>data_corpus_ukimmig2010</span> <span class='op'>&lt;-</span> 
+    <span class='fu'><a href='corpus.html'>corpus</a></span><span class='op'>(</span><span class='va'>data_char_ukimmig2010</span>, 
+           docvars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>party <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>data_char_ukimmig2010</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>data_corpus_ukimmig2010</span>, showmeta <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Corpus consisting of 9 documents, showing 9 documents:
 #&gt; 
 #&gt;          Text Types Tokens Sentences        party
@@ -257,7 +257,7 @@ to immigration or asylum-seekers.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

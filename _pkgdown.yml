@@ -67,11 +67,10 @@ reference:
   contents:
     - data_char_sampletext
     - data_char_ukimmig2010
-    - data_corpus_dailnoconf1991
     - data_corpus_inaugural
-    - data_corpus_irishbudget2010
     - data_dfm_LBGexample
     - data_dictionary_LSD2015
+    - data-relocated
 - title: Corpus functions
   desc: Functions for constructing and manipulating corpus class objects.
   contents:
@@ -159,15 +158,7 @@ reference:
 - title: Text statistics
   desc: Functions for computing statistics from texts and dfm objects.
   contents:
-    - textstat_collocations
-    - textstat_dist
-    - textstat_entropy
-    - textstat_lexdiv
-    - textstat_simil
-    - textstat_frequency
-    - textstat_keyness
-    - textstat_readability
-    - textstat_summary
+    - textstats
     - sparsity
     - topfeatures
 - title: Text models
@@ -184,22 +175,19 @@ reference:
 - title: Phrase discovery functions
   desc: Functions for exploring and detecting keywords and phrases.
   contents:
-    - collocations
     - is.collocations
     - is.kwic
     - kwic
 - title: Text plot functions
   desc: Plot functions for representing text and the analysis of texts.
   contents:
-    - starts_with("textplot_")
+    - textplots
 - title: Utility functions
   desc: R-like functions to return counts and object information.
   contents:
     - ndoc
     - nfeat
-    - nscrabble
     - nsentence
-    - nsyllable
     - ntoken
     - ntype
     - print-quanteda
@@ -210,4 +198,5 @@ reference:
     - phrase
     - convert
     - bootstrap_dfm
+    - readtext-methods
     - spacyr-methods

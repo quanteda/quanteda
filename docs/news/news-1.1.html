@@ -89,7 +89,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.9.9000</span>
       </span>
     </div>
 
@@ -225,12 +225,12 @@
 <li>
 <code><a href="https://rdrr.io/pkg/quanteda.textmodels/man/predict.textmodel_wordscores.html">predict.textmodel_wordscores()</a></code> now includes an <code>include_reftexts</code> argument to exclude training texts from the predicted model object (<a href='https://github.com/quanteda/quanteda/issues/1229'>#1229</a>). The default behaviour is <code>include_reftexts = TRUE</code>, producing the same behaviour as existed before the introduction of this argument. This allows rescaling based on the reference documents (since rescaling requires prediction on the reference documents) but provides an easy way to exclude the reference documents from the predicted quantities.</li>
 <li>
-<code><a href="../reference/textplot_wordcloud.html">textplot_wordcloud()</a></code> now uses code entirely internal to <strong>quanteda</strong>, instead of using the <strong>wordcloud</strong> package.</li>
+<code><a href="https://rdrr.io/pkg/quanteda.textplots/man/textplot_wordcloud.html">textplot_wordcloud()</a></code> now uses code entirely internal to <strong>quanteda</strong>, instead of using the <strong>wordcloud</strong> package.</li>
 </ul>
 </div>
-<div id="bug-fixes-and-stability-enhancements-13" class="section level2">
+<div id="bug-fixes-and-stability-enhancements-14" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-and-stability-enhancements-13" class="anchor"></a>Bug fixes and stability enhancements</h2>
+<a href="#bug-fixes-and-stability-enhancements-14" class="anchor"></a>Bug fixes and stability enhancements</h2>
 <ul>
 <li>Fixed a problem in the examples for <code><a href="https://rdrr.io/pkg/quanteda.textmodels/man/textplot_scale1d.html">textplot_scale1d()</a></code> by adjusting the refscores for <code>data_corpus_irishbudget2010</code>.</li>
 <li>Eliminated unnecessary dependency on the <strong>digest</strong> package.</li>
@@ -238,7 +238,7 @@
 <li>Improved the robustness of <code><a href="../reference/dfm_trim.html">dfm_trim()</a></code> and <code><a href="../reference/dfm_weight.html">dfm_weight()</a></code> for previously weighted dfm objects and when supplied thresholds are proportions instead of counts. (<a href='https://github.com/quanteda/quanteda/issues/1237'>#1237</a>)</li>
 <li>Fixed a problem in <code><a href="../reference/summary.corpus.html">summary.corpus(x, n = 101)</a></code> when <code>ndoc(x) &gt; 100</code> (<a href='https://github.com/quanteda/quanteda/issues/1242'>#1242</a>).</li>
 <li>Fixed a problem in <code><a href="https://rdrr.io/pkg/quanteda.textmodels/man/predict.textmodel_wordscores.html">predict.textmodel_wordscores(x, rescaling = "mv")</a></code> that always reset the reference values for rescaling to the first and second documents (<a href='https://github.com/quanteda/quanteda/issues/1251'>#1251</a>).</li>
-<li>Issues in the color generation and labels for <code><a href="../reference/textplot_keyness.html">textplot_keyness()</a></code> are now resolved (<a href='https://github.com/quanteda/quanteda/issues/1233'>#1233</a>, <a href='https://github.com/quanteda/quanteda/issues/1233'>#1233</a>).</li>
+<li>Issues in the color generation and labels for <code><a href="https://rdrr.io/pkg/quanteda.textplots/man/textplot_keyness.html">textplot_keyness()</a></code> are now resolved (<a href='https://github.com/quanteda/quanteda/issues/1233'>#1233</a>, <a href='https://github.com/quanteda/quanteda/issues/1233'>#1233</a>).</li>
 </ul>
 </div>
 <div id="performance-improvements" class="section level2">
@@ -272,7 +272,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

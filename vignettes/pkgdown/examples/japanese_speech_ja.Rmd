@@ -123,6 +123,7 @@ toks <- tokens_remove(toks, c("御", "君"), padding = TRUE)
 min_count <- 10
 
 # 漢字
+library("quanteda.textstats")
 kanji_col <- tokens_select(toks, "^[一-龠]+$", valuetype = "regex", padding = TRUE) %>% 
              textstat_collocations(min_count = min_count)
 toks <- tokens_compound(toks, kanji_col[kanji_col$z > 3,], concatenator = "")
@@ -172,6 +173,7 @@ head(key, 20) %>% knitr::kable()
 `fcm()`によって作成した共起行列に対して，`textplot_network()`を用いると語の関係が視覚化でき，文書の内容の全体像を容易に把握できる．
 
 ```{r}
+library("quanteda.textplots")
 feat <- head(key$feature, 50)
 speech_fcm <- dfm_select(speech_dfm, feat) %>% fcm()
 size <- sqrt(rowSums(speech_fcm))

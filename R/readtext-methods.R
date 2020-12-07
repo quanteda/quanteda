@@ -3,8 +3,24 @@
 ### readtext objects
 ###
 
+#' Extensions for readtext objects
+#' 
+#' These functions provide \pkg{quanteda} methods for \pkg{readtext} objects.
+#' @name readtext-methods
+#' @param x an object returned by `spacy_parse`, or (for
+#'   `spacy_parse`) a [corpus] object
+#' @param ... not used for these functions
+#' @details 
+#' `texts(x)` returns the texts from a readtext object
+#'
+#' `docnames(x)` returns the document names from a readtext object
+#'   
+#' `docvars(x, field = NULL)` returns a data.frame of the document variables
+#' from a readtext object
+#' 
+#' `ndoc(x)` returns the number of documents from a readtext object
+NULL
 
-#' @noRd
 #' @export
 texts.readtext <- function(x, groups = NULL, ...) {
     if (!is.null(groups))
@@ -14,7 +30,6 @@ texts.readtext <- function(x, groups = NULL, ...) {
     result
 }
 
-#' @noRd
 #' @export
 docvars.readtext <- function(x, field = NULL) {
     if (!is.null(field))
@@ -22,13 +37,11 @@ docvars.readtext <- function(x, field = NULL) {
     as.data.frame(x[, -which(names(x) %in% c("doc_id", "text")), drop = FALSE])
 }
 
-#' @noRd
 #' @export
 docnames.readtext <- function(x) {
     x[["doc_id"]]
 }
 
-#' @noRd
 #' @export
 ndoc.readtext <- function(x) {
     nrow(x)

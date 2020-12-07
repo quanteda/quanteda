@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.9.9000</span>
       </span>
     </div>
 
@@ -157,7 +157,8 @@
 
       
 
-      </header><script src="lsa_files/header-attrs-2.3/header-attrs.js"></script><script src="lsa_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><script src="lsa_files/header-attrs-2.5/header-attrs.js"></script><script src="lsa_files/accessible-code-block-0.0.1/empty-anchor.js"></script><link href="lsa_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet">
+<script src="lsa_files/anchor-sections-1.0/anchor-sections.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Example: Latent Semantic Analysis (LSA)</h1>
@@ -174,20 +175,18 @@
 <p>In this vignette, we show how to perform Latent Semantic Analysis using the <strong>quanteda</strong> package based on Grossman and Frieder’s <a href="http://www1.se.cuhk.edu.hk/%7Eseem5680/lecture/LSI-Eg.pdf"><em>Information Retrieval, Algorithms and Heuristics</em></a>.</p>
 <p>LSA decomposes document-feature matrix into a reduced vector space that is assumed to reflect semantic structure.</p>
 <p>New documents or queries can be ‘folded-in’ to this constructed latent semantic space for downstream tasks.</p>
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://quanteda.io">quanteda</a></span>)
-</pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://quanteda.io">quanteda</a></span><span class="op">)</span></code></pre></div>
 <div id="create-a-document-feature-matrix" class="section level1">
 <h1 class="hasAnchor">
 <a href="#create-a-document-feature-matrix" class="anchor"></a>Create a document-feature matrix</h1>
-<div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="kw">txt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(d1 = <span class="st">"Shipment of gold damaged in a fire"</span>,
-         d2 = <span class="st">"Delivery of silver arrived in a silver truck"</span>,
-         d3 = <span class="st">"Shipment of gold arrived in a truck"</span> )
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">txt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>d1 <span class="op">=</span> <span class="st">"Shipment of gold damaged in a fire"</span>,
+         d2 <span class="op">=</span> <span class="st">"Delivery of silver arrived in a silver truck"</span>,
+         d3 <span class="op">=</span> <span class="st">"Shipment of gold arrived in a truck"</span> <span class="op">)</span>
 
-<span class="kw">mydfm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/dfm.html">dfm</a></span>(<span class="kw">txt</span>)
-<span class="kw">mydfm</span>
-</pre></div>
+<span class="va">mydfm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/dfm.html">dfm</a></span><span class="op">(</span><span class="va">txt</span><span class="op">)</span>
+<span class="va">mydfm</span></code></pre></div>
 <pre><code>## Document-feature matrix of: 3 documents, 11 features (36.4% sparse).
 ##     features
 ## docs shipment of gold damaged in a fire delivery silver arrived
@@ -199,23 +198,20 @@
 <div id="construct-the-lsa-model" class="section level1">
 <h1 class="hasAnchor">
 <a href="#construct-the-lsa-model" class="anchor"></a>Construct the LSA model</h1>
-<div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st"><a href="https://github.com/quanteda/quanteda.textmodels">"quanteda.textmodels"</a></span>)
-</pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/quanteda/quanteda.textmodels">"quanteda.textmodels"</a></span><span class="op">)</span></code></pre></div>
 <pre><code>## 
 ## Attaching package: 'quanteda.textmodels'</code></pre>
 <pre><code>## The following object is masked from 'package:quanteda':
 ## 
 ##     data_dfm_lbgexample</code></pre>
-<div class="sourceCode" id="cb7"><pre class="downlit">
-<span class="kw">mylsa</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/quanteda.textmodels/man/textmodel_lsa.html">textmodel_lsa</a></span>(<span class="kw">mydfm</span>)
-</pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">mylsa</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/quanteda.textmodels/man/textmodel_lsa.html">textmodel_lsa</a></span><span class="op">(</span><span class="va">mydfm</span><span class="op">)</span></code></pre></div>
 <pre><code>## Warning in fun(A, k, nu, nv, opts, mattype = "dgCMatrix"): all singular values
 ## are requested, svd() is used instead</code></pre>
 <p>the new document vector coordinates in the reduced 2-dimensional space is:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit">
-<span class="kw">mylsa</span><span class="op">$</span><span class="kw">docs</span>[, <span class="fl">1</span><span class="op">:</span><span class="fl">2</span>]
-</pre></div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">mylsa</span><span class="op">$</span><span class="va">docs</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span></code></pre></div>
 <pre><code>##          [,1]       [,2]
 ## d1 -0.4944666  0.6491758
 ## d2 -0.6458224 -0.7194469
@@ -225,23 +221,20 @@
 <h1 class="hasAnchor">
 <a href="#apply-the-constructed-lsa-model-to-new-data" class="anchor"></a>Apply the constructed LSA model to new data</h1>
 <p>Now the new unseen document can be represented in the reduced 2-dimensional space. The unseen query document:</p>
-<div class="sourceCode" id="cb11"><pre class="downlit">
-<span class="kw">querydfm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/dfm.html">dfm</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"gold silver truck"</span>)) <span class="op">%&gt;%</span>
-    <span class="fu"><a href="../../../reference/dfm_select.html">dfm_select</a></span>(pattern = <span class="kw">mydfm</span>)
-</pre></div>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">querydfm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/dfm.html">dfm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"gold silver truck"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+    <span class="fu"><a href="../../../reference/dfm_select.html">dfm_select</a></span><span class="op">(</span>pattern <span class="op">=</span> <span class="va">mydfm</span><span class="op">)</span></code></pre></div>
 <pre><code>## Warning: pattern = dfm is deprecated; use dfm_match() instead</code></pre>
-<div class="sourceCode" id="cb13"><pre class="downlit">
-<span class="kw">querydfm</span>
-</pre></div>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">querydfm</span></code></pre></div>
 <pre><code>## Document-feature matrix of: 1 document, 11 features (72.7% sparse).
 ##        features
 ## docs    shipment of gold damaged in a fire delivery silver arrived
 ##   text1        0  0    1       0  0 0    0        0      1       0
 ## [ reached max_nfeat ... 1 more feature ]</code></pre>
-<div class="sourceCode" id="cb15"><pre class="downlit">
-<span class="kw">newq</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span>(<span class="kw">mylsa</span>, newdata = <span class="kw">querydfm</span>)
-<span class="kw">newq</span><span class="op">$</span><span class="kw">docs_newspace</span>[, <span class="fl">1</span><span class="op">:</span><span class="fl">2</span>]
-</pre></div>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">newq</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">mylsa</span>, newdata <span class="op">=</span> <span class="va">querydfm</span><span class="op">)</span>
+<span class="va">newq</span><span class="op">$</span><span class="va">docs_newspace</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span></code></pre></div>
 <pre><code>## [1] -0.2140026 -0.1820571</code></pre>
 </div>
   </div>
@@ -257,7 +250,7 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

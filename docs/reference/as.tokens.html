@@ -92,7 +92,7 @@ objects." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.9.9000</span>
       </span>
     </div>
 
@@ -337,9 +337,9 @@ tokens.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># combining tokens</span>
-<span class='kw'>toks1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(doc1 = <span class='st'>"a b c d e"</span>, doc2 = <span class='st'>"f g h"</span>))
-<span class='kw'>toks2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(doc3 = <span class='st'>"1 2 3"</span>))
-<span class='kw'>toks1</span> <span class='op'>+</span> <span class='kw'>toks2</span>
+<span class='va'>toks1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>doc1 <span class='op'>=</span> <span class='st'>"a b c d e"</span>, doc2 <span class='op'>=</span> <span class='st'>"f g h"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>toks2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>doc3 <span class='op'>=</span> <span class='st'>"1 2 3"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>toks1</span> <span class='op'>+</span> <span class='va'>toks2</span>
 </div><div class='output co'>#&gt; Tokens consisting of 3 documents.
 #&gt; doc1 :
 #&gt; [1] "a" "b" "c" "d" "e"
@@ -349,7 +349,7 @@ tokens.</p>
 #&gt; 
 #&gt; doc3 :
 #&gt; [1] "1" "2" "3"
-#&gt; </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>toks1</span>, <span class='kw'>toks2</span>)
+#&gt; </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='va'>toks1</span>, <span class='va'>toks2</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Tokens consisting of 3 documents.
 #&gt; doc1 :
 #&gt; [1] "a" "b" "c" "d" "e"
@@ -362,12 +362,12 @@ tokens.</p>
 #&gt; </div><div class='input'>
 
 <span class='co'># create tokens object from list of characters with custom concatenator</span>
-<span class='kw'>dict</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dictionary.html'>dictionary</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(country = <span class='st'>"United States"</span>,
-                   sea = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Atlantic Ocean"</span>, <span class='st'>"Pacific Ocean"</span>)))
-<span class='kw'>lis</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"The"</span>, <span class='st'>"United-States"</span>, <span class='st'>"has"</span>, <span class='st'>"the"</span>, <span class='st'>"Atlantic-Ocean"</span>,
-              <span class='st'>"and"</span>, <span class='st'>"the"</span>, <span class='st'>"Pacific-Ocean"</span>, <span class='st'>"."</span>))
-<span class='kw'>toks</span> <span class='op'>&lt;-</span> <span class='fu'>as.tokens</span>(<span class='kw'>lis</span>, concatenator = <span class='st'>"-"</span>)
-<span class='fu'><a href='tokens_lookup.html'>tokens_lookup</a></span>(<span class='kw'>toks</span>, <span class='kw'>dict</span>)
+<span class='va'>dict</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dictionary.html'>dictionary</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>country <span class='op'>=</span> <span class='st'>"United States"</span>,
+                   sea <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Atlantic Ocean"</span>, <span class='st'>"Pacific Ocean"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>lis</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"The"</span>, <span class='st'>"United-States"</span>, <span class='st'>"has"</span>, <span class='st'>"the"</span>, <span class='st'>"Atlantic-Ocean"</span>,
+              <span class='st'>"and"</span>, <span class='st'>"the"</span>, <span class='st'>"Pacific-Ocean"</span>, <span class='st'>"."</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>toks</span> <span class='op'>&lt;-</span> <span class='fu'>as.tokens</span><span class='op'>(</span><span class='va'>lis</span>, concatenator <span class='op'>=</span> <span class='st'>"-"</span><span class='op'>)</span>
+<span class='fu'><a href='tokens_lookup.html'>tokens_lookup</a></span><span class='op'>(</span><span class='va'>toks</span>, <span class='va'>dict</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Tokens consisting of 1 document.
 #&gt; text1 :
 #&gt; [1] "country" "sea"     "sea"    
@@ -384,7 +384,7 @@ tokens.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

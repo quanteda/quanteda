@@ -46,7 +46,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.9.9000</span>
       </span>
     </div>
 
@@ -168,7 +168,7 @@
 
 
 <!-- badges: start -->
-<p><a href="https://CRAN.R-project.org/package=quanteda"><img src="https://www.r-pkg.org/badges/version/quanteda" alt="CRAN Version"></a> <a href="https://github.com/quanteda/quanteda"><img src="https://img.shields.io/badge/devel%20version-2.1.2-royalblue.svg"></a> <a href="https://CRAN.R-project.org/package=quanteda"><img src="https://cranlogs.r-pkg.org/badges/quanteda" alt="Downloads"></a> <a href="https://CRAN.R-project.org/package=quanteda"><img src="https://cranlogs.r-pkg.org/badges/grand-total/quanteda?color=orange" alt="Total Downloads"></a> <a href="https://github.com/quanteda/quanteda/actions"><img src="https://github.com/quanteda/quanteda/workflows/R-CMD-check/badge.svg" alt="R build status"></a> <a href="https://codecov.io/gh/quanteda/quanteda"><img src="https://codecov.io/gh/quanteda/quanteda/branch/master/graph/badge.svg" alt="codecov"></a> <a href="https://zenodo.org/badge/latestdoi/5424649"><img src="https://zenodo.org/badge/5424649.svg" alt="DOI"></a> <a href="https://doi.org/10.21105/joss.00774"><img src="http://joss.theoj.org/papers/10.21105/joss.00774/status.svg" alt="DOI"></a> <!-- badges: end --></p>
+<p><a href="https://CRAN.R-project.org/package=quanteda"><img src="https://www.r-pkg.org/badges/version/quanteda" alt="CRAN Version"></a> <a href="https://github.com/quanteda/quanteda"><img src="https://img.shields.io/badge/devel%20version-2.1.2.9000-royalblue.svg"></a> <a href="https://CRAN.R-project.org/package=quanteda"><img src="https://cranlogs.r-pkg.org/badges/quanteda" alt="Downloads"></a> <a href="https://CRAN.R-project.org/package=quanteda"><img src="https://cranlogs.r-pkg.org/badges/grand-total/quanteda?color=orange" alt="Total Downloads"></a> <a href="https://github.com/quanteda/quanteda/actions"><img src="https://github.com/quanteda/quanteda/workflows/R-CMD-check/badge.svg" alt="R build status"></a> <a href="https://codecov.io/gh/quanteda/quanteda"><img src="https://codecov.io/gh/quanteda/quanteda/branch/master/graph/badge.svg" alt="codecov"></a> <a href="https://zenodo.org/badge/latestdoi/5424649"><img src="https://zenodo.org/badge/5424649.svg" alt="DOI"></a> <a href="https://doi.org/10.21105/joss.00774"><img src="http://joss.theoj.org/papers/10.21105/joss.00774/status.svg" alt="DOI"></a> <!-- badges: end --></p>
 <div id="about" class="section level2">
 <h2 class="hasAnchor">
 <a href="#about" class="anchor"></a>About</h2>
@@ -179,14 +179,12 @@
 <h2 class="hasAnchor">
 <a href="#how-to-install" class="anchor"></a>How to Install</h2>
 <p>The normal way from CRAN, using your R GUI or</p>
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"quanteda"</span>) 
-</pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"quanteda"</span><span class="op">)</span> </code></pre></div>
 <p>Or for the latest development version:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="co"># devtools package required to install quanteda from Github </span>
-<span class="kw">devtools</span>::<span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span>(<span class="st">"quanteda/quanteda"</span>) 
-</pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># devtools package required to install quanteda from Github </span>
+<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"quanteda/quanteda"</span><span class="op">)</span> </code></pre></div>
 <p>Because this compiles some C++ and Fortran source code, you will need to have installed the appropriate compilers.</p>
 <p><strong>If you are using a Windows platform</strong>, this means you will need also to install the <a href="https://CRAN.R-project.org/bin/windows/Rtools/">Rtools</a> software available from CRAN.</p>
 <p><strong>If you are using macOS</strong>, you should install the <a href="https://cran.r-project.org/bin/macosx/tools/">macOS tools</a>, namely the Clang 6.x compiler and the GNU Fortran compiler (as <strong>quanteda</strong> requires gfortran to build). If you are still getting errors related to gfortran, follow the fixes <a href="https://thecoatlessprofessor.com/programming/rcpp-rcpparmadillo-and-os-x-mavericks--lgfortran-and--lquadmath-error/">here</a>.</p>
@@ -255,8 +253,6 @@
 <li>Adam Obeng <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-2906-4775" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 <li>Stefan Müller <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-6315-4125" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 <li>Akitaka Matsuo <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-3323-6330" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
-<li>Jiong Wei Lua <br><small class="roles"> Author </small>  </li>
-<li>Jouni Kuha <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-1156-8465" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 <li>William Lowe <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-1549-6163" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 <li>European Research Council <br><small class="roles"> Funder </small>  <br><small>(ERC-2011-StG 283794-QUANTESS)</small>
 </li>
@@ -275,7 +271,7 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

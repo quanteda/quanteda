@@ -91,7 +91,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.9.9000</span>
       </span>
     </div>
 
@@ -221,7 +221,7 @@
 1789 to present.</p>
     </div>
 
-    <pre class="usage"><span class='kw'>data_corpus_inaugural</span></pre>
+    <pre class="usage"><span class='va'>data_corpus_inaugural</span></pre>
 
 
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
@@ -244,7 +244,7 @@ contain the year of the address and the last name of the president.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># some operations on the inaugural corpus</span>
-<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='kw'>data_corpus_inaugural</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>data_corpus_inaugural</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Corpus consisting of 58 documents, showing 58 documents:
 #&gt; 
 #&gt;             Text Types Tokens Sentences Year  President       FirstName
@@ -365,7 +365,7 @@ contain the year of the address and the last name of the president.</p>
 #&gt;             Democratic
 #&gt;             Democratic
 #&gt;             Republican
-#&gt; </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='kw'>data_corpus_inaugural</span>), <span class='fl'>10</span>)
+#&gt; </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fu'><a href='docvars.html'>docvars</a></span><span class='op'>(</span><span class='va'>data_corpus_inaugural</span><span class='op'>)</span>, <span class='fl'>10</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;    Year  President   FirstName                 Party
 #&gt; 1  1789 Washington      George                  none
 #&gt; 2  1793 Washington      George                  none
@@ -388,7 +388,7 @@ contain the year of the address and the last name of the president.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

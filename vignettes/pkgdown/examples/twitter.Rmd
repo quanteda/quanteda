@@ -41,6 +41,7 @@ head(toptag)
 
 ## Construct feature-occurrence matrix of hashtags
 ```{r}
+library("quanteda.textplots")
 tag_fcm <- fcm(tag_dfm)
 head(tag_fcm)
 topgat_fcm <- fcm_select(tag_fcm, pattern = toptag)

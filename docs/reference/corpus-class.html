@@ -90,7 +90,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.9.9000</span>
       </span>
     </div>
 
@@ -301,10 +301,10 @@ character vectors and never as factors.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># concatenate corpus objects</span>
-<span class='kw'>corp1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='corpus.html'>corpus</a></span>(<span class='kw'>data_char_ukimmig2010</span>[<span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span>])
-<span class='kw'>corp2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='corpus.html'>corpus</a></span>(<span class='kw'>data_char_ukimmig2010</span>[<span class='fl'>3</span><span class='op'>:</span><span class='fl'>4</span>])
-<span class='kw'>corp3</span> <span class='op'>&lt;-</span> <span class='fu'><a href='corpus.html'>corpus</a></span>(<span class='kw'>data_char_ukimmig2010</span>[<span class='fl'>5</span><span class='op'>:</span><span class='fl'>6</span>])
-<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>corp1</span>, <span class='kw'>corp2</span>, <span class='kw'>corp3</span>))
+<span class='va'>corp1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='corpus.html'>corpus</a></span><span class='op'>(</span><span class='va'>data_char_ukimmig2010</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span><span class='op'>]</span><span class='op'>)</span>
+<span class='va'>corp2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='corpus.html'>corpus</a></span><span class='op'>(</span><span class='va'>data_char_ukimmig2010</span><span class='op'>[</span><span class='fl'>3</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>]</span><span class='op'>)</span>
+<span class='va'>corp3</span> <span class='op'>&lt;-</span> <span class='fu'><a href='corpus.html'>corpus</a></span><span class='op'>(</span><span class='va'>data_char_ukimmig2010</span><span class='op'>[</span><span class='fl'>5</span><span class='op'>:</span><span class='fl'>6</span><span class='op'>]</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='va'>corp1</span>, <span class='va'>corp2</span>, <span class='va'>corp3</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Corpus consisting of 6 documents, showing 6 documents:
 #&gt; 
 #&gt;          Text Types Tokens Sentences
@@ -316,17 +316,17 @@ character vectors and never as factors.</p>
 #&gt;        LibDem   251    483        14
 #&gt; </div><div class='input'>
 <span class='co'># two ways to index corpus elements</span>
-<span class='kw'>data_corpus_inaugural</span>[<span class='st'>"1793-Washington"</span>]
+<span class='va'>data_corpus_inaugural</span><span class='op'>[</span><span class='st'>"1793-Washington"</span><span class='op'>]</span>
 </div><div class='output co'>#&gt; Corpus consisting of 1 document and 4 docvars.
 #&gt; 1793-Washington :
 #&gt; "Fellow citizens, I am again called upon by the voice of my c..."
-#&gt; </div><div class='input'><span class='kw'>data_corpus_inaugural</span>[<span class='fl'>2</span>]
+#&gt; </div><div class='input'><span class='va'>data_corpus_inaugural</span><span class='op'>[</span><span class='fl'>2</span><span class='op'>]</span>
 </div><div class='output co'>#&gt; Corpus consisting of 1 document and 4 docvars.
 #&gt; 1793-Washington :
 #&gt; "Fellow citizens, I am again called upon by the voice of my c..."
 #&gt; </div><div class='input'>
 <span class='co'># return the text itself</span>
-<span class='kw'>data_corpus_inaugural</span>[[<span class='st'>"1793-Washington"</span>]]
+<span class='va'>data_corpus_inaugural</span><span class='op'>[[</span><span class='st'>"1793-Washington"</span><span class='op'>]</span><span class='op'>]</span>
 </div><div class='output co'>#&gt; [1] "Fellow citizens, I am again called upon by the voice of my country to execute the functions of its Chief Magistrate. When the occasion proper for it shall arrive, I shall endeavor to express the high sense I entertain of this distinguished honor, and of the confidence which has been reposed in me by the people of united America.\n\nPrevious to the execution of any official act of the President the Constitution requires an oath of office. This oath I am now about to take, and in your presence: That if it shall be found during my administration of the Government I have in any instance violated willingly or knowingly the injunctions thereof, I may (besides incurring constitutional punishment) be subject to the upbraidings of all who are now witnesses of the present solemn ceremony.\n\n "</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -339,7 +339,7 @@ character vectors and never as factors.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

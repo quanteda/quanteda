@@ -89,7 +89,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.9.9000</span>
       </span>
     </div>
 
@@ -217,9 +217,9 @@
 <h1 class="page-header" data-toc-text="2.0">
 <a href="#quanteda-20" class="anchor"></a>quanteda 2.0<small> Unreleased </small>
 </h1>
-<div id="changes-4" class="section level2">
+<div id="changes-5" class="section level2">
 <h2 class="hasAnchor">
-<a href="#changes-4" class="anchor"></a>Changes</h2>
+<a href="#changes-5" class="anchor"></a>Changes</h2>
 <p><strong>quanteda</strong> 2.0 introduces some major changes, detailed here.</p>
 <ol>
 <li>
@@ -241,7 +241,7 @@
 <p>The <code>subset</code> argument now must be logical, and the <code>select</code> argument has been removed. (This is part of <code><a href="https://rdrr.io/r/base/subset.html">base::subset()</a></code> but has never made sense, either in <strong>quanteda</strong> or <strong>base</strong>.)</p>
 </li>
 <li>
-<p>Return format from <code><a href="../reference/textstat_simil.html">textstat_simil()</a></code> and <code><a href="../reference/textstat_simil.html">textstat_dist()</a></code>.</p>
+<p>Return format from <code><a href="https://quanteda.io/reference/textstat_simil.html">textstat_simil()</a></code> and <code><a href="https://quanteda.io/reference/textstat_simil.html">textstat_dist()</a></code>.</p>
 <p>Now defaults to a sparse matrix from the <strong>Matrix</strong> package, but coercion methods are provided for <code><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame()</a></code>, to make these functions return a data.frame just like the other textstat functions. Additional coercion methods are provided for <code><a href="https://rdrr.io/r/stats/dist.html">as.dist()</a></code>, <code>as.simil()</code>, and <code><a href="https://rdrr.io/r/base/matrix.html">as.matrix()</a></code>.</p>
 </li>
 <li><p>settings functions (and related slots and object attributes) are gone. These are now replaced by a new <code><a href="../reference/meta.html">meta(x, type = "object")</a></code> that records object-specific meta-data, including settings such as the <code>n</code> for tokens (to record the <code>ngrams</code>).</p></li>
@@ -277,17 +277,17 @@
 <h2 class="hasAnchor">
 <a href="#behaviour-changes" class="anchor"></a>Behaviour changes</h2>
 <ul>
-<li>Added a <code>force = TRUE</code> option and error checking for the situations of applying <code><a href="../reference/dfm_weight.html">dfm_weight()</a></code> or <code><a href="../reference/dfm_group.html">dfm_group()</a></code> to a dfm that has already been weighted. (<a href='https://github.com/quanteda/quanteda/issues/1545'>#1545</a>) The function <code><a href="../reference/textstat_frequency.html">textstat_frequency()</a></code> now allows passing this argument to <code><a href="../reference/dfm_group.html">dfm_group()</a></code> via <code>...</code>. (<a href='https://github.com/quanteda/quanteda/issues/1646'>#1646</a>)</li>
+<li>Added a <code>force = TRUE</code> option and error checking for the situations of applying <code><a href="../reference/dfm_weight.html">dfm_weight()</a></code> or <code><a href="../reference/dfm_group.html">dfm_group()</a></code> to a dfm that has already been weighted. (<a href='https://github.com/quanteda/quanteda/issues/1545'>#1545</a>) The function <code><a href="https://quanteda.io/reference/textstat_frequency.html">textstat_frequency()</a></code> now allows passing this argument to <code><a href="../reference/dfm_group.html">dfm_group()</a></code> via <code>...</code>. (<a href='https://github.com/quanteda/quanteda/issues/1646'>#1646</a>)</li>
 <li>
-<code><a href="../reference/textstat_frequency.html">textstat_frequency()</a></code> now has a new argument for resolving ties when ranking term frequencies, defaulting to the “min” method. (<a href='https://github.com/quanteda/quanteda/issues/1634'>#1634</a>)</li>
+<code><a href="https://quanteda.io/reference/textstat_frequency.html">textstat_frequency()</a></code> now has a new argument for resolving ties when ranking term frequencies, defaulting to the “min” method. (<a href='https://github.com/quanteda/quanteda/issues/1634'>#1634</a>)</li>
 <li>New docvars accessor and replacement functions are available for corpus, tokens, and dfm objects via <code><a href="https://rdrr.io/r/base/Extract.html">$</a></code>. (See Index Operators for Core Objects above.)</li>
 <li>
-<code><a href="../reference/textstat_entropy.html">textstat_entropy()</a></code> now produces a data.frame that is more consistent with other <code>textstat</code> methods. (<a href='https://github.com/quanteda/quanteda/issues/1690'>#1690</a>)</li>
+<code><a href="https://quanteda.io/reference/textstat_entropy.html">textstat_entropy()</a></code> now produces a data.frame that is more consistent with other <code>textstat</code> methods. (<a href='https://github.com/quanteda/quanteda/issues/1690'>#1690</a>)</li>
 </ul>
 </div>
-<div id="bug-fixes-and-stability-enhancements-4" class="section level2">
+<div id="bug-fixes-and-stability-enhancements-5" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-and-stability-enhancements-4" class="anchor"></a>Bug fixes and stability enhancements</h2>
+<a href="#bug-fixes-and-stability-enhancements-5" class="anchor"></a>Bug fixes and stability enhancements</h2>
 <ul>
 <li>docnames now enforced to be character (formerly, could be numeric for some objects).</li>
 <li>docnames are now enforced to be strictly unique for all object classes.</li>
@@ -307,18 +307,18 @@
 <h1 class="page-header" data-toc-text="2.0.1">
 <a href="#quanteda-201" class="anchor"></a>quanteda 2.0.1<small> 2020-03-18 </small>
 </h1>
-<div id="changes-3" class="section level2">
+<div id="changes-4" class="section level2">
 <h2 class="hasAnchor">
-<a href="#changes-3" class="anchor"></a>Changes</h2>
+<a href="#changes-4" class="anchor"></a>Changes</h2>
 <ul>
 <li>Moved <code>data_corpus_irishbudget2010</code> and <code>data_corpus_dailnoconf1991</code> to the <strong>quanteda.textmodels</strong> package.</li>
 <li>Em dashes and double dashes between words, whether surrounded by a space or not, are now converted to " - " to distinguish them from infix hyphens. (<a href='https://github.com/quanteda/quanteda/issues/1889'>#1889</a>)</li>
 <li>Verbose output for dfm and tokens creation is now corrected and more consistent. (<a href='https://github.com/quanteda/quanteda/issues/1894'>#1894</a>)</li>
 </ul>
 </div>
-<div id="bug-fixes-and-stability-enhancements-3" class="section level2">
+<div id="bug-fixes-and-stability-enhancements-4" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-and-stability-enhancements-3" class="anchor"></a>Bug fixes and stability enhancements</h2>
+<a href="#bug-fixes-and-stability-enhancements-4" class="anchor"></a>Bug fixes and stability enhancements</h2>
 <ul>
 <li>Number removal is now both improved and fixed (<a href='https://github.com/quanteda/quanteda/issues/1909'>#1909</a>).</li>
 <li>Fixed an issue causing CRAN errors in pre-v4, related to the new default of <code>stringsAsFactors = FALSE</code> for data.frame objects.</li>
@@ -341,7 +341,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

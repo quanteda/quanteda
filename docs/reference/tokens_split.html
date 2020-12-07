@@ -92,7 +92,7 @@ effectively reverses the operation of tokens_compound()." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.9.9000</span>
       </span>
     </div>
 
@@ -223,12 +223,12 @@ separator pattern, with the option of retaining the separator.  This function
 effectively reverses the operation of <code><a href='tokens_compound.html'>tokens_compound()</a></code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>tokens_split</span>(
-  <span class='kw'>x</span>,
-  separator = <span class='st'>" "</span>,
-  valuetype = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"fixed"</span>, <span class='st'>"regex"</span>),
-  remove_separator = <span class='fl'>TRUE</span>
-)</pre>
+    <pre class="usage"><span class='fu'>tokens_split</span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  separator <span class='op'>=</span> <span class='st'>" "</span>,
+  valuetype <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"fixed"</span>, <span class='st'>"regex"</span><span class='op'>)</span>,
+  remove_separator <span class='op'>=</span> <span class='cn'>TRUE</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -256,22 +256,22 @@ exact matching. See <a href='valuetype.html'>valuetype</a> for details.</p></td>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># undo tokens_compound()</span>
-<span class='kw'>toks1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='st'>"pork barrel is an idiomatic multi-word expression"</span>)
-<span class='fu'><a href='tokens_compound.html'>tokens_compound</a></span>(<span class='kw'>toks1</span>, <span class='fu'><a href='phrase.html'>phrase</a></span>(<span class='st'>"pork barrel"</span>))
+<span class='va'>toks1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span><span class='op'>(</span><span class='st'>"pork barrel is an idiomatic multi-word expression"</span><span class='op'>)</span>
+<span class='fu'><a href='tokens_compound.html'>tokens_compound</a></span><span class='op'>(</span><span class='va'>toks1</span>, <span class='fu'><a href='phrase.html'>phrase</a></span><span class='op'>(</span><span class='st'>"pork barrel"</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Tokens consisting of 1 document.
 #&gt; text1 :
 #&gt; [1] "pork_barrel" "is"          "an"          "idiomatic"   "multi-word" 
 #&gt; [6] "expression" 
-#&gt; </div><div class='input'><span class='fu'><a href='tokens_compound.html'>tokens_compound</a></span>(<span class='kw'>toks1</span>, <span class='fu'><a href='phrase.html'>phrase</a></span>(<span class='st'>"pork barrel"</span>)) <span class='op'>%&gt;%</span>
-    <span class='fu'>tokens_split</span>(separator = <span class='st'>"_"</span>)
+#&gt; </div><div class='input'><span class='fu'><a href='tokens_compound.html'>tokens_compound</a></span><span class='op'>(</span><span class='va'>toks1</span>, <span class='fu'><a href='phrase.html'>phrase</a></span><span class='op'>(</span><span class='st'>"pork barrel"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'>tokens_split</span><span class='op'>(</span>separator <span class='op'>=</span> <span class='st'>"_"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Tokens consisting of 1 document.
 #&gt; text1 :
 #&gt; [1] "pork"       "barrel"     "is"         "an"         "idiomatic" 
 #&gt; [6] "multi-word" "expression"
 #&gt; </div><div class='input'>    
 <span class='co'># similar to tokens(x, remove_hyphen = TRUE) but post-tokenization </span>
-<span class='kw'>toks2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='st'>"UK-EU negotiation is not going anywhere as of 2018-12-24."</span>)
-<span class='fu'>tokens_split</span>(<span class='kw'>toks2</span>, separator = <span class='st'>"-"</span>, remove_separator = <span class='fl'>FALSE</span>)
+<span class='va'>toks2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span><span class='op'>(</span><span class='st'>"UK-EU negotiation is not going anywhere as of 2018-12-24."</span><span class='op'>)</span>
+<span class='fu'>tokens_split</span><span class='op'>(</span><span class='va'>toks2</span>, separator <span class='op'>=</span> <span class='st'>"-"</span>, remove_separator <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Tokens consisting of 1 document.
 #&gt; text1 :
 #&gt;  [1] "UK"          "-"           "EU"          "negotiation" "is"         
@@ -290,7 +290,7 @@ exact matching. See <a href='valuetype.html'>valuetype</a> for details.</p></td>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

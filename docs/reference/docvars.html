@@ -91,7 +91,7 @@ tokens or dfm object." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.9.9000</span>
       </span>
     </div>
 
@@ -289,51 +289,51 @@ the <code><a href='https://rdrr.io/r/base/Extract.html'>$</a></code> operator.  
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># retrieving docvars from a corpus</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='fu'>docvars</span>(<span class='kw'>data_corpus_inaugural</span>))
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fu'>docvars</span><span class='op'>(</span><span class='va'>data_corpus_inaugural</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;   Year  President FirstName                 Party
 #&gt; 1 1789 Washington    George                  none
 #&gt; 2 1793 Washington    George                  none
 #&gt; 3 1797      Adams      John            Federalist
 #&gt; 4 1801  Jefferson    Thomas Democratic-Republican
 #&gt; 5 1805  Jefferson    Thomas Democratic-Republican
-#&gt; 6 1809    Madison     James Democratic-Republican</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>tail</a></span>(<span class='fu'>docvars</span>(<span class='kw'>data_corpus_inaugural</span>, <span class='st'>"President"</span>), <span class='fl'>10</span>)
+#&gt; 6 1809    Madison     James Democratic-Republican</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>tail</a></span><span class='op'>(</span><span class='fu'>docvars</span><span class='op'>(</span><span class='va'>data_corpus_inaugural</span>, <span class='st'>"President"</span><span class='op'>)</span>, <span class='fl'>10</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;  [1] "Reagan"  "Reagan"  "Bush"    "Clinton" "Clinton" "Bush"    "Bush"   
-#&gt;  [8] "Obama"   "Obama"   "Trump"  </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='kw'>data_corpus_inaugural</span><span class='op'>$</span><span class='kw'>President</span>)
+#&gt;  [8] "Obama"   "Obama"   "Trump"  </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>data_corpus_inaugural</span><span class='op'>$</span><span class='va'>President</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "Washington" "Washington" "Adams"      "Jefferson"  "Jefferson" 
 #&gt; [6] "Madison"   </div><div class='input'>
 <span class='co'># assigning document variables to a corpus</span>
-<span class='kw'>corp</span> <span class='op'>&lt;-</span> <span class='kw'>data_corpus_inaugural</span>
-<span class='fu'>docvars</span>(<span class='kw'>corp</span>, <span class='st'>"President"</span>) <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='st'>"prez"</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fu'><a href='ndoc.html'>ndoc</a></span>(<span class='kw'>corp</span>), sep = <span class='st'>""</span>)
-<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='fu'>docvars</span>(<span class='kw'>corp</span>))
+<span class='va'>corp</span> <span class='op'>&lt;-</span> <span class='va'>data_corpus_inaugural</span>
+<span class='fu'>docvars</span><span class='op'>(</span><span class='va'>corp</span>, <span class='st'>"President"</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span><span class='op'>(</span><span class='st'>"prez"</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fu'><a href='ndoc.html'>ndoc</a></span><span class='op'>(</span><span class='va'>corp</span><span class='op'>)</span>, sep <span class='op'>=</span> <span class='st'>""</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fu'>docvars</span><span class='op'>(</span><span class='va'>corp</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;   Year President FirstName                 Party
 #&gt; 1 1789     prez1    George                  none
 #&gt; 2 1793     prez2    George                  none
 #&gt; 3 1797     prez3      John            Federalist
 #&gt; 4 1801     prez4    Thomas Democratic-Republican
 #&gt; 5 1805     prez5    Thomas Democratic-Republican
-#&gt; 6 1809     prez6     James Democratic-Republican</div><div class='input'><span class='kw'>corp</span><span class='op'>$</span><span class='kw'>fullname</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='kw'>data_corpus_inaugural</span><span class='op'>$</span><span class='kw'>FirstName</span>,
-                       <span class='kw'>data_corpus_inaugural</span><span class='op'>$</span><span class='kw'>President</span>)
-<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>tail</a></span>(<span class='kw'>corp</span><span class='op'>$</span><span class='kw'>fullname</span>)
+#&gt; 6 1809     prez6     James Democratic-Republican</div><div class='input'><span class='va'>corp</span><span class='op'>$</span><span class='va'>fullname</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span><span class='op'>(</span><span class='va'>data_corpus_inaugural</span><span class='op'>$</span><span class='va'>FirstName</span>,
+                       <span class='va'>data_corpus_inaugural</span><span class='op'>$</span><span class='va'>President</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>tail</a></span><span class='op'>(</span><span class='va'>corp</span><span class='op'>$</span><span class='va'>fullname</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "Bill Clinton"    "George W. Bush"  "George W. Bush"  "Barack Obama"   
 #&gt; [5] "Barack Obama"    "Donald J. Trump"</div><div class='input'>
 
 <span class='co'># accessing or assigning docvars for a corpus using "$"</span>
-<span class='kw'>data_corpus_inaugural</span><span class='op'>$</span><span class='kw'>Year</span>
+<span class='va'>data_corpus_inaugural</span><span class='op'>$</span><span class='va'>Year</span>
 </div><div class='output co'>#&gt;  [1] 1789 1793 1797 1801 1805 1809 1813 1817 1821 1825 1829 1833 1837 1841 1845
 #&gt; [16] 1849 1853 1857 1861 1865 1869 1873 1877 1881 1885 1889 1893 1897 1901 1905
 #&gt; [31] 1909 1913 1917 1921 1925 1929 1933 1937 1941 1945 1949 1953 1957 1961 1965
-#&gt; [46] 1969 1973 1977 1981 1985 1989 1993 1997 2001 2005 2009 2013 2017</div><div class='input'><span class='kw'>data_corpus_inaugural</span><span class='op'>$</span><span class='kw'>century</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/Round.html'>floor</a></span>(<span class='kw'>data_corpus_inaugural</span><span class='op'>$</span><span class='kw'>Year</span> <span class='op'>/</span> <span class='fl'>100</span>)
-<span class='kw'>data_corpus_inaugural</span><span class='op'>$</span><span class='kw'>century</span>
+#&gt; [46] 1969 1973 1977 1981 1985 1989 1993 1997 2001 2005 2009 2013 2017</div><div class='input'><span class='va'>data_corpus_inaugural</span><span class='op'>$</span><span class='va'>century</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/Round.html'>floor</a></span><span class='op'>(</span><span class='va'>data_corpus_inaugural</span><span class='op'>$</span><span class='va'>Year</span> <span class='op'>/</span> <span class='fl'>100</span><span class='op'>)</span>
+<span class='va'>data_corpus_inaugural</span><span class='op'>$</span><span class='va'>century</span>
 </div><div class='output co'>#&gt;  [1] 17 17 17 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18
 #&gt; [26] 18 18 18 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19
 #&gt; [51] 19 19 19 20 20 20 20 20</div><div class='input'>
 <span class='co'># accessing or assigning docvars for tokens using "$"</span>
-<span class='kw'>toks</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='kw'>data_corpus_inaugural</span>, <span class='kw'>Year</span> <span class='op'>&lt;=</span> <span class='fl'>1805</span>))
-<span class='kw'>toks</span><span class='op'>$</span><span class='kw'>Year</span>
-</div><div class='output co'>#&gt; [1] 1789 1793 1797 1801 1805</div><div class='input'><span class='kw'>toks</span><span class='op'>$</span><span class='kw'>Year</span> <span class='op'>&lt;-</span> <span class='fl'>1991</span><span class='op'>:</span><span class='fl'>1995</span>
-<span class='kw'>toks</span><span class='op'>$</span><span class='kw'>Year</span>
-</div><div class='output co'>#&gt; [1] 1991 1992 1993 1994 1995</div><div class='input'><span class='kw'>toks</span><span class='op'>$</span><span class='kw'>nonexistent</span> <span class='op'>&lt;-</span> <span class='fl'>TRUE</span>
-<span class='fu'>docvars</span>(<span class='kw'>toks</span>)
+<span class='va'>toks</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span><span class='op'>(</span><span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span><span class='op'>(</span><span class='va'>data_corpus_inaugural</span>, <span class='va'>Year</span> <span class='op'>&lt;=</span> <span class='fl'>1805</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>toks</span><span class='op'>$</span><span class='va'>Year</span>
+</div><div class='output co'>#&gt; [1] 1789 1793 1797 1801 1805</div><div class='input'><span class='va'>toks</span><span class='op'>$</span><span class='va'>Year</span> <span class='op'>&lt;-</span> <span class='fl'>1991</span><span class='op'>:</span><span class='fl'>1995</span>
+<span class='va'>toks</span><span class='op'>$</span><span class='va'>Year</span>
+</div><div class='output co'>#&gt; [1] 1991 1992 1993 1994 1995</div><div class='input'><span class='va'>toks</span><span class='op'>$</span><span class='va'>nonexistent</span> <span class='op'>&lt;-</span> <span class='cn'>TRUE</span>
+<span class='fu'>docvars</span><span class='op'>(</span><span class='va'>toks</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;   Year  President FirstName                 Party century nonexistent
 #&gt; 1 1991 Washington    George                  none      17        TRUE
 #&gt; 2 1992 Washington    George                  none      17        TRUE
@@ -341,12 +341,12 @@ the <code><a href='https://rdrr.io/r/base/Extract.html'>$</a></code> operator.  
 #&gt; 4 1994  Jefferson    Thomas Democratic-Republican      18        TRUE
 #&gt; 5 1995  Jefferson    Thomas Democratic-Republican      18        TRUE</div><div class='input'>
 <span class='co'># accessing or assigning docvars for a dfm using "$"</span>
-<span class='kw'>dfmat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='kw'>toks</span>)
-<span class='kw'>dfmat</span><span class='op'>$</span><span class='kw'>Year</span>
-</div><div class='output co'>#&gt; [1] 1991 1992 1993 1994 1995</div><div class='input'><span class='kw'>dfmat</span><span class='op'>$</span><span class='kw'>Year</span> <span class='op'>&lt;-</span> <span class='fl'>1991</span><span class='op'>:</span><span class='fl'>1995</span>
-<span class='kw'>dfmat</span><span class='op'>$</span><span class='kw'>Year</span>
-</div><div class='output co'>#&gt; [1] 1991 1992 1993 1994 1995</div><div class='input'><span class='kw'>dfmat</span><span class='op'>$</span><span class='kw'>nonexistent</span> <span class='op'>&lt;-</span> <span class='fl'>TRUE</span>
-<span class='fu'>docvars</span>(<span class='kw'>dfmat</span>)
+<span class='va'>dfmat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span><span class='op'>(</span><span class='va'>toks</span><span class='op'>)</span>
+<span class='va'>dfmat</span><span class='op'>$</span><span class='va'>Year</span>
+</div><div class='output co'>#&gt; [1] 1991 1992 1993 1994 1995</div><div class='input'><span class='va'>dfmat</span><span class='op'>$</span><span class='va'>Year</span> <span class='op'>&lt;-</span> <span class='fl'>1991</span><span class='op'>:</span><span class='fl'>1995</span>
+<span class='va'>dfmat</span><span class='op'>$</span><span class='va'>Year</span>
+</div><div class='output co'>#&gt; [1] 1991 1992 1993 1994 1995</div><div class='input'><span class='va'>dfmat</span><span class='op'>$</span><span class='va'>nonexistent</span> <span class='op'>&lt;-</span> <span class='cn'>TRUE</span>
+<span class='fu'>docvars</span><span class='op'>(</span><span class='va'>dfmat</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;   Year  President FirstName                 Party century nonexistent
 #&gt; 1 1991 Washington    George                  none      17        TRUE
 #&gt; 2 1992 Washington    George                  none      17        TRUE
@@ -364,7 +364,7 @@ the <code><a href='https://rdrr.io/r/base/Extract.html'>$</a></code> operator.  
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

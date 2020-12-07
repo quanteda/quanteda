@@ -94,7 +94,7 @@ supplied as part of the LIWC 2001, 2007, and 2015 software (see References)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.9.9000</span>
       </span>
     </div>
 
@@ -227,14 +227,14 @@ using the LIWC format works with all currently available dictionary files
 supplied as part of the LIWC 2001, 2007, and 2015 software (see References).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>dictionary</span>(
-  <span class='kw'>x</span>,
-  file = <span class='kw'>NULL</span>,
-  format = <span class='kw'>NULL</span>,
-  separator = <span class='st'>" "</span>,
-  tolower = <span class='fl'>TRUE</span>,
-  encoding = <span class='st'>"utf-8"</span>
-)</pre>
+    <pre class="usage"><span class='fu'>dictionary</span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  file <span class='op'>=</span> <span class='cn'>NULL</span>,
+  format <span class='op'>=</span> <span class='cn'>NULL</span>,
+  separator <span class='op'>=</span> <span class='st'>" "</span>,
+  tolower <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  encoding <span class='op'>=</span> <span class='st'>"utf-8"</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -309,14 +309,14 @@ manual]. Austin, TX (<a href='https://liwc.net'>https://liwc.net</a>).</p>
 <code><a href='dictionary2-class.html'>as.list()</a></code>, <code><a href='as.dictionary.html'>is.dictionary()</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>corp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='kw'>data_corpus_inaugural</span>, <span class='kw'>Year</span><span class='op'>&gt;</span><span class='fl'>1900</span>)
-<span class='kw'>dict</span> <span class='op'>&lt;-</span> <span class='fu'>dictionary</span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(christmas = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Christmas"</span>, <span class='st'>"Santa"</span>, <span class='st'>"holiday"</span>),
-                          opposition = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Opposition"</span>, <span class='st'>"reject"</span>, <span class='st'>"notincorpus"</span>),
-                          taxing = <span class='st'>"taxing"</span>,
-                          taxation = <span class='st'>"taxation"</span>,
-                          taxregex = <span class='st'>"tax*"</span>,
-                          country = <span class='st'>"america"</span>))
-<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='kw'>corp</span>, dictionary = <span class='kw'>dict</span>))
+    <pre class="examples"><div class='input'><span class='va'>corp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span><span class='op'>(</span><span class='va'>data_corpus_inaugural</span>, <span class='va'>Year</span><span class='op'>&gt;</span><span class='fl'>1900</span><span class='op'>)</span>
+<span class='va'>dict</span> <span class='op'>&lt;-</span> <span class='fu'>dictionary</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>christmas <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Christmas"</span>, <span class='st'>"Santa"</span>, <span class='st'>"holiday"</span><span class='op'>)</span>,
+                          opposition <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Opposition"</span>, <span class='st'>"reject"</span>, <span class='st'>"notincorpus"</span><span class='op'>)</span>,
+                          taxing <span class='op'>=</span> <span class='st'>"taxing"</span>,
+                          taxation <span class='op'>=</span> <span class='st'>"taxation"</span>,
+                          taxregex <span class='op'>=</span> <span class='st'>"tax*"</span>,
+                          country <span class='op'>=</span> <span class='st'>"america"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fu'><a href='dfm.html'>dfm</a></span><span class='op'>(</span><span class='va'>corp</span>, dictionary <span class='op'>=</span> <span class='va'>dict</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Document-feature matrix of: 6 documents, 6 features (63.9% sparse) and 4 docvars.
 #&gt;                 features
 #&gt; docs             christmas opposition taxing taxation taxregex country
@@ -327,39 +327,39 @@ manual]. Austin, TX (<a href='https://liwc.net'>https://liwc.net</a>).</p>
 #&gt;   1917-Wilson            0          0      0        0        0       2
 #&gt;   1921-Harding           0          0      0        1        2      15</div><div class='input'>
 <span class='co'># subset a dictionary</span>
-<span class='kw'>dict</span>[<span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span>]
+<span class='va'>dict</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span><span class='op'>]</span>
 </div><div class='output co'>#&gt; Dictionary object with 2 key entries.
 #&gt; - [christmas]:
 #&gt;   - christmas, santa, holiday
 #&gt; - [opposition]:
-#&gt;   - opposition, reject, notincorpus</div><div class='input'><span class='kw'>dict</span>[<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"christmas"</span>, <span class='st'>"opposition"</span>)]
+#&gt;   - opposition, reject, notincorpus</div><div class='input'><span class='va'>dict</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"christmas"</span>, <span class='st'>"opposition"</span><span class='op'>)</span><span class='op'>]</span>
 </div><div class='output co'>#&gt; Dictionary object with 2 key entries.
 #&gt; - [christmas]:
 #&gt;   - christmas, santa, holiday
 #&gt; - [opposition]:
-#&gt;   - opposition, reject, notincorpus</div><div class='input'><span class='kw'>dict</span>[[<span class='st'>"opposition"</span>]]
+#&gt;   - opposition, reject, notincorpus</div><div class='input'><span class='va'>dict</span><span class='op'>[[</span><span class='st'>"opposition"</span><span class='op'>]</span><span class='op'>]</span>
 </div><div class='output co'>#&gt; [1] "opposition"  "reject"      "notincorpus"</div><div class='input'>
 <span class='co'># combine dictionaries</span>
-<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>dict</span>[<span class='st'>"christmas"</span>], <span class='kw'>dict</span>[<span class='st'>"country"</span>])
+<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='va'>dict</span><span class='op'>[</span><span class='st'>"christmas"</span><span class='op'>]</span>, <span class='va'>dict</span><span class='op'>[</span><span class='st'>"country"</span><span class='op'>]</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Dictionary object with 2 key entries.
 #&gt; - [christmas]:
 #&gt;   - christmas, santa, holiday
 #&gt; - [country]:
 #&gt;   - america</div><div class='input'>
-<span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 <span class='co'># import the Laver-Garry dictionary from Provalis Research</span>
-<span class='kw'>dictfile</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>()
-<span class='fu'><a href='https://rdrr.io/r/utils/download.file.html'>download.file</a></span>(<span class='st'>"https://provalisresearch.com/Download/LaverGarry.zip"</span>,
-              <span class='kw'>dictfile</span>, mode = <span class='st'>"wb"</span>)
-<span class='fu'><a href='https://rdrr.io/r/utils/unzip.html'>unzip</a></span>(<span class='kw'>dictfile</span>, exdir = (<span class='kw'>td</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span>()))
-<span class='kw'>dictlg</span> <span class='op'>&lt;-</span> <span class='fu'>dictionary</span>(file = <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='kw'>td</span>, <span class='st'>"LaverGarry.cat"</span>, sep = <span class='st'>"/"</span>))
-<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='kw'>data_corpus_inaugural</span>, dictionary = <span class='kw'>dictlg</span>))
+<span class='va'>dictfile</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/download.file.html'>download.file</a></span><span class='op'>(</span><span class='st'>"https://provalisresearch.com/Download/LaverGarry.zip"</span>,
+              <span class='va'>dictfile</span>, mode <span class='op'>=</span> <span class='st'>"wb"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/unzip.html'>unzip</a></span><span class='op'>(</span><span class='va'>dictfile</span>, exdir <span class='op'>=</span> <span class='op'>(</span><span class='va'>td</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>dictlg</span> <span class='op'>&lt;-</span> <span class='fu'>dictionary</span><span class='op'>(</span>file <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span><span class='op'>(</span><span class='va'>td</span>, <span class='st'>"LaverGarry.cat"</span>, sep <span class='op'>=</span> <span class='st'>"/"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fu'><a href='dfm.html'>dfm</a></span><span class='op'>(</span><span class='va'>data_corpus_inaugural</span>, dictionary <span class='op'>=</span> <span class='va'>dictlg</span><span class='op'>)</span><span class='op'>)</span>
 
 <span class='co'># import a LIWC formatted dictionary from http://www.moralfoundations.org</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/download.file.html'>download.file</a></span>(<span class='st'>"http://bit.ly/37cV95h"</span>, <span class='kw'>tf</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>())
-<span class='kw'>dictliwc</span> <span class='op'>&lt;-</span> <span class='fu'>dictionary</span>(file = <span class='kw'>tf</span>, format = <span class='st'>"LIWC"</span>)
-<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='kw'>data_corpus_inaugural</span>, dictionary = <span class='kw'>dictliwc</span>))
-}
+<span class='fu'><a href='https://rdrr.io/r/utils/download.file.html'>download.file</a></span><span class='op'>(</span><span class='st'>"http://bit.ly/37cV95h"</span>, <span class='va'>tf</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>dictliwc</span> <span class='op'>&lt;-</span> <span class='fu'>dictionary</span><span class='op'>(</span>file <span class='op'>=</span> <span class='va'>tf</span>, format <span class='op'>=</span> <span class='st'>"LIWC"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fu'><a href='dfm.html'>dfm</a></span><span class='op'>(</span><span class='va'>data_corpus_inaugural</span>, dictionary <span class='op'>=</span> <span class='va'>dictliwc</span><span class='op'>)</span><span class='op'>)</span>
+<span class='op'>}</span>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -372,7 +372,7 @@ manual]. Austin, TX (<a href='https://liwc.net'>https://liwc.net</a>).</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

@@ -2,23 +2,7 @@
 % Please edit documentation in R/spacyr-methods.R
 \name{spacyr-methods}
 \alias{spacyr-methods}
-\alias{docnames.spacyr_parsed}
-\alias{ndoc.spacyr_parsed}
-\alias{ntoken.spacyr_parsed}
-\alias{ntype.spacyr_parsed}
-\alias{nsentence.spacyr_parsed}
 \title{Extensions for and from spacy_parse objects}
-\usage{
-\method{docnames}{spacyr_parsed}(x)
-
-\method{ndoc}{spacyr_parsed}(x)
-
-\method{ntoken}{spacyr_parsed}(x, ...)
-
-\method{ntype}{spacyr_parsed}(x, ...)
-
-\method{nsentence}{spacyr_parsed}(x, ...)
-}
 \arguments{
 \item{x}{an object returned by \code{spacy_parse}, or (for
 \code{spacy_parse}) a \link{corpus} object}
@@ -35,15 +19,15 @@ objects.
 \code{spacy_parse(x, ...)} and \code{spacy_tokenize(x, ...)} work directly on
 \pkg{quanteda} \link{corpus} objects.
 
-\code{docnames()} returns the document names
+\code{docnames(x)} returns the document names
 
-\code{ndoc()} returns the number of documents
+\code{ndoc(x)} returns the number of documents
 
-\code{ntoken()} returns the number of tokens by document
+\code{ntoken(x, ...)} returns the number of tokens by document
 
-\code{ntype()} returns the number of types (unique tokens) by document
+\code{ntype(x, ...)} returns the number of types (unique tokens) by document
 
-\code{nsentence()} returns the number of sentences by document
+\code{nsentence(x)} returns the number of sentences by document
 }
 \examples{
 \dontrun{
