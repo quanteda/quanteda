@@ -6,7 +6,7 @@ data](https://cdn.rawgit.com/quanteda/quanteda/master/images/quanteda_logo.svg)]
 
 [![CRAN
 Version](https://www.r-pkg.org/badges/version/quanteda)](https://CRAN.R-project.org/package=quanteda)
-[![](https://img.shields.io/badge/devel%20version-2.1.2.9000-royalblue.svg)](https://github.com/quanteda/quanteda)
+[![](https://img.shields.io/badge/devel%20version-2.9.9000-royalblue.svg)](https://github.com/quanteda/quanteda)
 [![Downloads](https://cranlogs.r-pkg.org/badges/quanteda)](https://CRAN.R-project.org/package=quanteda)
 [![Total
 Downloads](https://cranlogs.r-pkg.org/badges/grand-total/quanteda?color=orange)](https://CRAN.R-project.org/package=quanteda)
@@ -53,6 +53,32 @@ tools](https://cran.r-project.org/bin/macosx/tools/), namely the Clang
 gfortran to build). If you are still getting errors related to gfortran,
 follow the fixes
 [here](https://thecoatlessprofessor.com/programming/rcpp-rcpparmadillo-and-os-x-mavericks--lgfortran-and--lquadmath-error/).
+
+## The **quanteda** family of packages
+
+As of v3.0, we have continued our trend of splitting **quanteda** into
+modular packages. These are now the following:
+
+  - **quanteda**: contains all of the core natural language processing
+    and textual data management functions
+  - **quanteda.textmodels**: contains all of the text models and
+    supporting functions, namely the `textmodel_*()` functions. This was
+    split from the main package with the v2 release
+  - **quanteda.textstats**: statistics for textual data, namely the
+    `textstat_*()` functions, split with the v3 release
+  - **quanteda.textplots**: plots for textual data, namely the
+    `textplot_*()` functions, split with the v3 release
+
+We are working on additional package releases, available in the meantime
+from our GitHub pages:
+
+  - **quanteda.sentiment**: Functions and lexicons for sentiment
+    analysis using dictionaries
+  - **quanteda.tidy**: Extensions for manipulating document variables in
+    core **quanteda** objects using your favourite **tidyverse**
+    functions
+
+and more to come.
 
 ## How to Use
 
