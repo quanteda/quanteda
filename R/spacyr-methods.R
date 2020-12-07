@@ -16,6 +16,16 @@
 #' @param x an object returned by `spacy_parse`, or (for
 #'   `spacy_parse`) a [corpus] object
 #' @param ... not used for these functions
+#' @details 
+#' `docnames(x)` returns the document names
+#' 
+#' `ndoc(x)` returns the number of documents
+#' 
+#' `ntoken(x, ...)` returns the number of tokens by document
+#' 
+#' `ntype(x, ...)` returns the number of types (unique tokens) by document
+#' 
+#' `nsentence(x)` returns the number of sentences by document
 #' @examples 
 #' \dontrun{
 #' library("spacyr")
@@ -33,44 +43,26 @@
 #' }
 NULL
 
-#' @rdname spacyr-methods
-#' @details
-#' `docnames()` returns the document names
-#' 
 #' @export
 docnames.spacyr_parsed <- function(x) {
     unique(x$doc_id)
 }
 
-#' @rdname spacyr-methods
-#' @details
-#' `ndoc()` returns the number of documents
-#' 
 #' @export
 ndoc.spacyr_parsed <- function(x) {
     length(docnames(x))
 }
 
-#' @rdname spacyr-methods
-#' @details
-#' `ntoken()` returns the number of tokens by document
-#' 
 #' @export
 ntoken.spacyr_parsed <- function(x, ...) {
     lengths(split(x$token, x$doc_id))
 }
 
-#' @rdname spacyr-methods
-#' @details
-#' `ntype()` returns the number of types (unique tokens) by document
 #' @export
 ntype.spacyr_parsed <- function(x, ...) {
     vapply(split(x$token, x$doc_id), function(y) length(unique(y)), integer(1))
 }
 
-#' @rdname spacyr-methods
-#' @details
-#' `nsentence()` returns the number of sentences by document
 #' @export
 nsentence.spacyr_parsed <- function(x, ...) {
     sapply(split(x, x$doc_id), function(y) length(unique(y$sentence_id)))

@@ -90,7 +90,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.9.9000</span>
       </span>
     </div>
 
@@ -219,7 +219,7 @@
     <p>Get or set global options affecting functions across <span class="pkg">quanteda</span>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>quanteda_options</span>(<span class='kw'>...</span>, reset = <span class='fl'>FALSE</span>, initialize = <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>quanteda_options</span><span class='op'>(</span><span class='va'>...</span>, reset <span class='op'>=</span> <span class='cn'>FALSE</span>, initialize <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -259,7 +259,9 @@ invisibly.</p>
 <dt><code>verbose</code></dt><dd><p>logical; if <code>TRUE</code> then use this as the default
 for all functions with a <code>verbose</code> argument</p></dd>
 <dt><code>threads</code></dt><dd><p>integer; specifies the number of threads to use in
-parallelized functions</p></dd>
+parallelized functions; defaults to <code><a href='https://rdrr.io/pkg/RcppParallel/man/setThreadOptions.html'>RcppParallel::defaultNumThreads()</a></code>
+unless <code>OMP_THREAD_LIMIT</code> is set; the number of threads can be changed
+only once in a session</p></dd>
 <dt><code>print_dfm_max_ndoc</code></dt><dd><p>integer; specifies the number of documents
 to display when using the defaults for printing a dfm</p></dd>
 <dt><code>print_dfm_max_nfeat</code></dt><dd><p>integer; specifies the number of
@@ -285,9 +287,9 @@ tokenization and corpus reshaping. See <code><a href='https://rdrr.io/pkg/string
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>(<span class='kw'>opt</span> <span class='op'>&lt;-</span> <span class='fu'>quanteda_options</span>())
+    <pre class="examples"><div class='input'><span class='op'>(</span><span class='va'>opt</span> <span class='op'>&lt;-</span> <span class='fu'>quanteda_options</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; $threads
-#&gt; [1] 2
+#&gt; [1] 8
 #&gt; 
 #&gt; $verbose
 #&gt; [1] FALSE
@@ -352,14 +354,14 @@ tokenization and corpus reshaping. See <code><a href='https://rdrr.io/pkg/string
 #&gt; $tokens_locale
 #&gt; [1] "en_US@ss=standard"
 #&gt; </div><div class='input'><span class='co'># \donttest{</span>
-<span class='fu'>quanteda_options</span>(verbose = <span class='fl'>TRUE</span>)
-<span class='fu'>quanteda_options</span>(<span class='st'>"verbose"</span> = <span class='fl'>FALSE</span>)
-<span class='fu'>quanteda_options</span>(<span class='st'>"threads"</span>)
-</div><div class='output co'>#&gt; [1] 2</div><div class='input'><span class='fu'>quanteda_options</span>(print_dfm_max_ndoc = <span class='fl'>50L</span>)
+<span class='fu'>quanteda_options</span><span class='op'>(</span>verbose <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+<span class='fu'>quanteda_options</span><span class='op'>(</span><span class='st'>"verbose"</span> <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+<span class='fu'>quanteda_options</span><span class='op'>(</span><span class='st'>"threads"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 8</div><div class='input'><span class='fu'>quanteda_options</span><span class='op'>(</span>print_dfm_max_ndoc <span class='op'>=</span> <span class='fl'>50L</span><span class='op'>)</span>
 <span class='co'># reset to defaults</span>
-<span class='fu'>quanteda_options</span>(reset = <span class='fl'>TRUE</span>)
+<span class='fu'>quanteda_options</span><span class='op'>(</span>reset <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 <span class='co'># reset to saved options</span>
-<span class='fu'>quanteda_options</span>(<span class='kw'>opt</span>)
+<span class='fu'>quanteda_options</span><span class='op'>(</span><span class='va'>opt</span><span class='op'>)</span>
 <span class='co'># }</span>
 </div></pre>
   </div>
@@ -373,7 +375,7 @@ tokenization and corpus reshaping. See <code><a href='https://rdrr.io/pkg/string
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

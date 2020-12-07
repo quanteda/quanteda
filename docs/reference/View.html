@@ -91,7 +91,7 @@ kwic to produce a nice viewer." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.9.9000</span>
       </span>
     </div>
 
@@ -221,16 +221,16 @@ kwic to produce a nice viewer." />
 kwic to produce a nice viewer.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>View</span>(<span class='kw'>x</span>, <span class='kw'>title</span>)
+    <pre class="usage"><span class='fu'>View</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>title</span><span class='op'>)</span>
 
 <span class='co'># S3 method for default</span>
-<span class='fu'>View</span>(<span class='kw'>x</span>, <span class='kw'>title</span>)
+<span class='fu'>View</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>title</span><span class='op'>)</span>
 
 <span class='co'># S3 method for kwic</span>
-<span class='fu'>View</span>(<span class='kw'>x</span>, <span class='kw'>title</span>)
+<span class='fu'>View</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>title</span><span class='op'>)</span>
 
 <span class='co'># S3 method for dfm</span>
-<span class='fu'>View</span>(<span class='kw'>x</span>, <span class='kw'>title</span>)</pre>
+<span class='fu'>View</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>title</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -250,13 +250,13 @@ kwic to produce a nice viewer.</p>
     <div class='dont-index'><p><a href='https://rdrr.io/r/utils/View.html'>View</a></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 <span class='co'>## for kwic</span>
-<span class='fu'>View</span>(<span class='fu'><a href='kwic.html'>kwic</a></span>(<span class='kw'>data_char_ukimmig2010</span>, <span class='st'>"illeg*"</span>))
+<span class='fu'>View</span><span class='op'>(</span><span class='fu'><a href='kwic.html'>kwic</a></span><span class='op'>(</span><span class='va'>data_char_ukimmig2010</span>, <span class='st'>"illeg*"</span><span class='op'>)</span><span class='op'>)</span>
 
 <span class='co'>## for data.frame</span>
-<span class='fu'>View</span>(<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='kw'>data_char_ukimmig2010</span>))
-}
+<span class='fu'>View</span><span class='op'>(</span><span class='fu'><a href='dfm.html'>dfm</a></span><span class='op'>(</span><span class='va'>data_char_ukimmig2010</span><span class='op'>)</span><span class='op'>)</span>
+<span class='op'>}</span>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -269,7 +269,7 @@ kwic to produce a nice viewer.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

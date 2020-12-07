@@ -82,6 +82,7 @@ Now we can find the closest word vectors for `paris - france + germany`
 berlin <- word_vectors["paris", , drop = FALSE] -
   word_vectors["france", , drop = FALSE] +
   word_vectors["germany", , drop = FALSE]
+library("quanteda.textstats")
 cos_sim <- textstat_simil(x = as.dfm(word_vectors), y = as.dfm(berlin),
                           method = "cosine")
 head(sort(cos_sim[, 1], decreasing = TRUE), 5)

@@ -91,7 +91,7 @@ fcm to lower and upper case, respectively, and then recombine the counts." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.9.9000</span>
       </span>
     </div>
 
@@ -221,13 +221,13 @@ fcm to lower and upper case, respectively, and then recombine the counts." />
 fcm to lower and upper case, respectively, and then recombine the counts.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>dfm_tolower</span>(<span class='kw'>x</span>, keep_acronyms = <span class='fl'>FALSE</span>)
+    <pre class="usage"><span class='fu'>dfm_tolower</span><span class='op'>(</span><span class='va'>x</span>, keep_acronyms <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
 
-<span class='fu'>dfm_toupper</span>(<span class='kw'>x</span>)
+<span class='fu'>dfm_toupper</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
 
-<span class='fu'>fcm_tolower</span>(<span class='kw'>x</span>, keep_acronyms = <span class='fl'>FALSE</span>)
+<span class='fu'>fcm_tolower</span><span class='op'>(</span><span class='va'>x</span>, keep_acronyms <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
 
-<span class='fu'>fcm_toupper</span>(<span class='kw'>x</span>)</pre>
+<span class='fu'>fcm_toupper</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -252,27 +252,27 @@ the counts. This works only on fcm objects created with <code>context = "documen
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># for a document-feature matrix</span>
-<span class='kw'>dfmat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"b A A"</span>, <span class='st'>"C C a b B"</span>), tolower = <span class='fl'>FALSE</span>)
-<span class='kw'>dfmat</span>
+<span class='va'>dfmat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"b A A"</span>, <span class='st'>"C C a b B"</span><span class='op'>)</span>, tolower <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+<span class='va'>dfmat</span>
 </div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 5 features (40.0% sparse).
 #&gt;        features
 #&gt; docs    b A C a B
 #&gt;   text1 1 2 0 0 0
-#&gt;   text2 1 0 2 1 1</div><div class='input'><span class='fu'>dfm_tolower</span>(<span class='kw'>dfmat</span>)
+#&gt;   text2 1 0 2 1 1</div><div class='input'><span class='fu'>dfm_tolower</span><span class='op'>(</span><span class='va'>dfmat</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 3 features (16.7% sparse).
 #&gt;        features
 #&gt; docs    b a c
 #&gt;   text1 1 2 0
-#&gt;   text2 2 1 2</div><div class='input'><span class='fu'>dfm_toupper</span>(<span class='kw'>dfmat</span>)
+#&gt;   text2 2 1 2</div><div class='input'><span class='fu'>dfm_toupper</span><span class='op'>(</span><span class='va'>dfmat</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 3 features (16.7% sparse).
 #&gt;        features
 #&gt; docs    B A C
 #&gt;   text1 1 2 0
 #&gt;   text2 2 1 2</div><div class='input'>
 <span class='co'># for a feature co-occurrence matrix</span>
-<span class='kw'>fcmat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='fcm.html'>fcm</a></span>(<span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"b A A d"</span>, <span class='st'>"C C a b B e"</span>)),
-             context = <span class='st'>"document"</span>)
-<span class='kw'>fcmat</span>
+<span class='va'>fcmat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='fcm.html'>fcm</a></span><span class='op'>(</span><span class='fu'><a href='tokens.html'>tokens</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"b A A d"</span>, <span class='st'>"C C a b B e"</span><span class='op'>)</span><span class='op'>)</span>,
+             context <span class='op'>=</span> <span class='st'>"document"</span><span class='op'>)</span>
+<span class='va'>fcmat</span>
 </div><div class='output co'>#&gt; Feature co-occurrence matrix of: 7 by 7 features.
 #&gt;         features
 #&gt; features b A d C a B e
@@ -282,7 +282,7 @@ the counts. This works only on fcm objects created with <code>context = "documen
 #&gt;        C 0 0 0 1 2 2 2
 #&gt;        a 0 0 0 0 0 1 1
 #&gt;        B 0 0 0 0 0 0 1
-#&gt;        e 0 0 0 0 0 0 0</div><div class='input'><span class='fu'>fcm_tolower</span>(<span class='kw'>fcmat</span>)
+#&gt;        e 0 0 0 0 0 0 0</div><div class='input'><span class='fu'>fcm_tolower</span><span class='op'>(</span><span class='va'>fcmat</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Feature co-occurrence matrix of: 5 by 5 features.
 #&gt;         features
 #&gt; features b a d c e
@@ -290,7 +290,7 @@ the counts. This works only on fcm objects created with <code>context = "documen
 #&gt;        a 1 1 2 0 1
 #&gt;        d 0 0 0 0 0
 #&gt;        c 2 2 0 1 2
-#&gt;        e 0 0 0 0 0</div><div class='input'><span class='fu'>fcm_toupper</span>(<span class='kw'>fcmat</span>)
+#&gt;        e 0 0 0 0 0</div><div class='input'><span class='fu'>fcm_toupper</span><span class='op'>(</span><span class='va'>fcmat</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Feature co-occurrence matrix of: 5 by 5 features.
 #&gt;         features
 #&gt; features B A D C E
@@ -310,7 +310,7 @@ the counts. This works only on fcm objects created with <code>context = "documen
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

@@ -138,6 +138,7 @@ head(moby_dfm, nf = 10)
 ```
 Getting the list of the most frequent 10 terms is easy, using `textstat_frequency()`.  
 ```{r}
+library("quanteda.textstats")
 textstat_frequency(moby_dfm, n = 10) 
 ```
 
@@ -218,6 +219,7 @@ textstat_frequency(moby_dfm_pct, n = 10) %>%
 A dispersion plot allows us to visualize the occurrences of particular terms throughout the text. The object returned by the `kwic` function can be plotted to display a dispersion plot. The **quanteda** `textplot_` objects are based on **ggplot2**, so you can easily change the plot, for example by adding custom title.
 ```{r eval=TRUE, fig.width=8, fig.height=1.5}
 # using words from tokenized corpus for dispersion
+library("quanteda.textplots")
 textplot_xray(kwic(novel_v, pattern = "whale")) + 
     ggtitle("Lexical dispersion")
 ```

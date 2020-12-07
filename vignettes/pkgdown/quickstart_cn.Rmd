@@ -294,6 +294,7 @@ topfeatures(dfmat_uk, 20)  # 20 词频最高的词
 
 ```{r warning=FALSE, fig.width = 7, fig.height = 7}
 set.seed(100)
+library("quanteda.textplots")
 textplot_wordcloud(dfmat_uk, min.freq = 6, random.order = FALSE,
                    rotation = .25,
                    colors = RColorBrewer::brewer.pal(8, "Dark2"))
@@ -352,7 +353,10 @@ dfmat_inaug_subset[, 1:10]
 
 ```{r fig.width = 6}
 dfmat_inaug_post1980 <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980),
-               remove = stopwords("english"), stem = TRUE, remove_punct = TRUE)
+                            remove = stopwords("english"), stem = TRUE, 
+                            remove_punct = TRUE)
+library("quanteda.textstats")
+
 tstat_obama <- textstat_simil(dfmat_inaug_post1980,
                               dfmat_inaug_post1980[c("2009-Obama", "2013-Obama"), ],
                               margin = "documents", method = "cosine")

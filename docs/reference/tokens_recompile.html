@@ -96,7 +96,7 @@ addition of new tokens through compounding." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.9.9000</span>
       </span>
     </div>
 
@@ -231,7 +231,7 @@ duplicates, through a procedure such as stemming or lowercasing; or the
 addition of new tokens through compounding.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>tokens_recompile</span>(<span class='kw'>x</span>, method = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"C++"</span>, <span class='st'>"R"</span>), gap = <span class='fl'>TRUE</span>, dup = <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>tokens_recompile</span><span class='op'>(</span><span class='va'>x</span>, method <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"C++"</span>, <span class='st'>"R"</span><span class='op'>)</span>, gap <span class='op'>=</span> <span class='cn'>TRUE</span>, dup <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -258,10 +258,10 @@ R-based method</p></td>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># lowercasing</span>
-<span class='kw'>toks1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(one = <span class='st'>"a b c d A B C D"</span>,
-                 two = <span class='st'>"A B C d"</span>))
-<span class='fu'><a href='https://rdrr.io/r/base/attr.html'>attr</a></span>(<span class='kw'>toks1</span>, <span class='st'>"types"</span>) <span class='op'>&lt;-</span> <span class='fu'><a href='char_tolower.html'>char_tolower</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/attr.html'>attr</a></span>(<span class='kw'>toks1</span>, <span class='st'>"types"</span>))
-<span class='fu'><a href='https://rdrr.io/r/base/class.html'>unclass</a></span>(<span class='kw'>toks1</span>)
+<span class='va'>toks1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>one <span class='op'>=</span> <span class='st'>"a b c d A B C D"</span>,
+                 two <span class='op'>=</span> <span class='st'>"A B C d"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/attr.html'>attr</a></span><span class='op'>(</span><span class='va'>toks1</span>, <span class='st'>"types"</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='fu'><a href='char_tolower.html'>char_tolower</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/attr.html'>attr</a></span><span class='op'>(</span><span class='va'>toks1</span>, <span class='st'>"types"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/class.html'>unclass</a></span><span class='op'>(</span><span class='va'>toks1</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; $one
 #&gt; [1] 1 2 3 4 5 6 7 8
 #&gt; 
@@ -279,10 +279,10 @@ R-based method</p></td>
 #&gt; attr(,"meta")
 #&gt; attr(,"meta")$system
 #&gt; attr(,"meta")$system$`package-version`
-#&gt; [1] ‘2.1.2’
+#&gt; [1] ‘2.9.9000’
 #&gt; 
 #&gt; attr(,"meta")$system$`r-version`
-#&gt; [1] ‘4.0.2’
+#&gt; [1] ‘4.0.3’
 #&gt; 
 #&gt; attr(,"meta")$system$system
 #&gt;   sysname   machine      user 
@@ -292,7 +292,7 @@ R-based method</p></td>
 #&gt; [1] "/Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/quanteda/docs/reference"
 #&gt; 
 #&gt; attr(,"meta")$system$created
-#&gt; [1] "2020-09-23"
+#&gt; [1] "2020-12-07"
 #&gt; 
 #&gt; 
 #&gt; attr(,"meta")$object
@@ -322,7 +322,7 @@ R-based method</p></td>
 #&gt; 
 #&gt; attr(,"meta")$user
 #&gt; list()
-#&gt; </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/class.html'>unclass</a></span>(<span class='kw'>quanteda</span>:::<span class='fu'>tokens_recompile</span>(<span class='kw'>toks1</span>))
+#&gt; </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/class.html'>unclass</a></span><span class='op'>(</span><span class='fu'>quanteda</span><span class='fu'>:::</span><span class='fu'>tokens_recompile</span><span class='op'>(</span><span class='va'>toks1</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; $one
 #&gt; [1] 1 2 3 4 1 2 3 4
 #&gt; 
@@ -340,10 +340,10 @@ R-based method</p></td>
 #&gt; attr(,"meta")
 #&gt; attr(,"meta")$system
 #&gt; attr(,"meta")$system$`package-version`
-#&gt; [1] ‘2.1.2’
+#&gt; [1] ‘2.9.9000’
 #&gt; 
 #&gt; attr(,"meta")$system$`r-version`
-#&gt; [1] ‘4.0.2’
+#&gt; [1] ‘4.0.3’
 #&gt; 
 #&gt; attr(,"meta")$system$system
 #&gt;   sysname   machine      user 
@@ -353,7 +353,7 @@ R-based method</p></td>
 #&gt; [1] "/Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/quanteda/docs/reference"
 #&gt; 
 #&gt; attr(,"meta")$system$created
-#&gt; [1] "2020-09-23"
+#&gt; [1] "2020-12-07"
 #&gt; 
 #&gt; 
 #&gt; attr(,"meta")$object
@@ -385,8 +385,8 @@ R-based method</p></td>
 #&gt; list()
 #&gt; </div><div class='input'>
 <span class='co'># stemming</span>
-<span class='kw'>toks2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='st'>"Stemming stemmed many word stems."</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/class.html'>unclass</a></span>(<span class='kw'>toks2</span>)
+<span class='va'>toks2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span><span class='op'>(</span><span class='st'>"Stemming stemmed many word stems."</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/class.html'>unclass</a></span><span class='op'>(</span><span class='va'>toks2</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; $text1
 #&gt; [1] 1 2 3 4 5 6
 #&gt; 
@@ -400,10 +400,10 @@ R-based method</p></td>
 #&gt; attr(,"meta")
 #&gt; attr(,"meta")$system
 #&gt; attr(,"meta")$system$`package-version`
-#&gt; [1] ‘2.1.2’
+#&gt; [1] ‘2.9.9000’
 #&gt; 
 #&gt; attr(,"meta")$system$`r-version`
-#&gt; [1] ‘4.0.2’
+#&gt; [1] ‘4.0.3’
 #&gt; 
 #&gt; attr(,"meta")$system$system
 #&gt;   sysname   machine      user 
@@ -413,7 +413,7 @@ R-based method</p></td>
 #&gt; [1] "/Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/quanteda/docs/reference"
 #&gt; 
 #&gt; attr(,"meta")$system$created
-#&gt; [1] "2020-09-23"
+#&gt; [1] "2020-12-07"
 #&gt; 
 #&gt; 
 #&gt; attr(,"meta")$object
@@ -443,7 +443,7 @@ R-based method</p></td>
 #&gt; 
 #&gt; attr(,"meta")$user
 #&gt; list()
-#&gt; </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/class.html'>unclass</a></span>(<span class='kw'>quanteda</span>:::<span class='fu'>tokens_recompile</span>(<span class='fu'><a href='tokens_wordstem.html'>tokens_wordstem</a></span>(<span class='kw'>toks2</span>)))
+#&gt; </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/class.html'>unclass</a></span><span class='op'>(</span><span class='fu'>quanteda</span><span class='fu'>:::</span><span class='fu'>tokens_recompile</span><span class='op'>(</span><span class='fu'><a href='tokens_wordstem.html'>tokens_wordstem</a></span><span class='op'>(</span><span class='va'>toks2</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; $text1
 #&gt; [1] 1 2 3 4 2 5
 #&gt; 
@@ -457,10 +457,10 @@ R-based method</p></td>
 #&gt; attr(,"meta")
 #&gt; attr(,"meta")$system
 #&gt; attr(,"meta")$system$`package-version`
-#&gt; [1] ‘2.1.2’
+#&gt; [1] ‘2.9.9000’
 #&gt; 
 #&gt; attr(,"meta")$system$`r-version`
-#&gt; [1] ‘4.0.2’
+#&gt; [1] ‘4.0.3’
 #&gt; 
 #&gt; attr(,"meta")$system$system
 #&gt;   sysname   machine      user 
@@ -470,7 +470,7 @@ R-based method</p></td>
 #&gt; [1] "/Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/quanteda/docs/reference"
 #&gt; 
 #&gt; attr(,"meta")$system$created
-#&gt; [1] "2020-09-23"
+#&gt; [1] "2020-12-07"
 #&gt; 
 #&gt; 
 #&gt; attr(,"meta")$object
@@ -502,8 +502,8 @@ R-based method</p></td>
 #&gt; list()
 #&gt; </div><div class='input'>
 <span class='co'># compounding</span>
-<span class='kw'>toks3</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='st'>"One two three four."</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/class.html'>unclass</a></span>(<span class='kw'>toks3</span>)
+<span class='va'>toks3</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span><span class='op'>(</span><span class='st'>"One two three four."</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/class.html'>unclass</a></span><span class='op'>(</span><span class='va'>toks3</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; $text1
 #&gt; [1] 1 2 3 4 5
 #&gt; 
@@ -517,10 +517,10 @@ R-based method</p></td>
 #&gt; attr(,"meta")
 #&gt; attr(,"meta")$system
 #&gt; attr(,"meta")$system$`package-version`
-#&gt; [1] ‘2.1.2’
+#&gt; [1] ‘2.9.9000’
 #&gt; 
 #&gt; attr(,"meta")$system$`r-version`
-#&gt; [1] ‘4.0.2’
+#&gt; [1] ‘4.0.3’
 #&gt; 
 #&gt; attr(,"meta")$system$system
 #&gt;   sysname   machine      user 
@@ -530,7 +530,7 @@ R-based method</p></td>
 #&gt; [1] "/Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/quanteda/docs/reference"
 #&gt; 
 #&gt; attr(,"meta")$system$created
-#&gt; [1] "2020-09-23"
+#&gt; [1] "2020-12-07"
 #&gt; 
 #&gt; 
 #&gt; attr(,"meta")$object
@@ -560,7 +560,7 @@ R-based method</p></td>
 #&gt; 
 #&gt; attr(,"meta")$user
 #&gt; list()
-#&gt; </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/class.html'>unclass</a></span>(<span class='fu'><a href='tokens_compound.html'>tokens_compound</a></span>(<span class='kw'>toks3</span>, <span class='st'>"two three"</span>))
+#&gt; </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/class.html'>unclass</a></span><span class='op'>(</span><span class='fu'><a href='tokens_compound.html'>tokens_compound</a></span><span class='op'>(</span><span class='va'>toks3</span>, <span class='st'>"two three"</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; $text1
 #&gt; [1] 1 2 3 4 5
 #&gt; 
@@ -574,10 +574,10 @@ R-based method</p></td>
 #&gt; attr(,"meta")
 #&gt; attr(,"meta")$system
 #&gt; attr(,"meta")$system$`package-version`
-#&gt; [1] ‘2.1.2’
+#&gt; [1] ‘2.9.9000’
 #&gt; 
 #&gt; attr(,"meta")$system$`r-version`
-#&gt; [1] ‘4.0.2’
+#&gt; [1] ‘4.0.3’
 #&gt; 
 #&gt; attr(,"meta")$system$system
 #&gt;   sysname   machine      user 
@@ -587,7 +587,7 @@ R-based method</p></td>
 #&gt; [1] "/Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/quanteda/docs/reference"
 #&gt; 
 #&gt; attr(,"meta")$system$created
-#&gt; [1] "2020-09-23"
+#&gt; [1] "2020-12-07"
 #&gt; 
 #&gt; 
 #&gt; attr(,"meta")$object
@@ -619,8 +619,8 @@ R-based method</p></td>
 #&gt; list()
 #&gt; </div><div class='input'>
 <span class='co'># lookup</span>
-<span class='kw'>dict</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dictionary.html'>dictionary</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(test = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"one"</span>, <span class='st'>"three"</span>)))
-<span class='fu'><a href='https://rdrr.io/r/base/class.html'>unclass</a></span>(<span class='fu'><a href='tokens_lookup.html'>tokens_lookup</a></span>(<span class='kw'>toks3</span>, <span class='kw'>dict</span>))
+<span class='va'>dict</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dictionary.html'>dictionary</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>test <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"one"</span>, <span class='st'>"three"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/class.html'>unclass</a></span><span class='op'>(</span><span class='fu'><a href='tokens_lookup.html'>tokens_lookup</a></span><span class='op'>(</span><span class='va'>toks3</span>, <span class='va'>dict</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; $text1
 #&gt; [1] 1 1
 #&gt; 
@@ -634,10 +634,10 @@ R-based method</p></td>
 #&gt; attr(,"meta")
 #&gt; attr(,"meta")$system
 #&gt; attr(,"meta")$system$`package-version`
-#&gt; [1] ‘2.1.2’
+#&gt; [1] ‘2.9.9000’
 #&gt; 
 #&gt; attr(,"meta")$system$`r-version`
-#&gt; [1] ‘4.0.2’
+#&gt; [1] ‘4.0.3’
 #&gt; 
 #&gt; attr(,"meta")$system$system
 #&gt;   sysname   machine      user 
@@ -647,7 +647,7 @@ R-based method</p></td>
 #&gt; [1] "/Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/quanteda/docs/reference"
 #&gt; 
 #&gt; attr(,"meta")$system$created
-#&gt; [1] "2020-09-23"
+#&gt; [1] "2020-12-07"
 #&gt; 
 #&gt; 
 #&gt; attr(,"meta")$object
@@ -679,7 +679,7 @@ R-based method</p></td>
 #&gt; list()
 #&gt; </div><div class='input'>
 <span class='co'># empty pads</span>
-<span class='fu'><a href='https://rdrr.io/r/base/class.html'>unclass</a></span>(<span class='fu'><a href='tokens_select.html'>tokens_select</a></span>(<span class='kw'>toks3</span>, <span class='kw'>dict</span>))
+<span class='fu'><a href='https://rdrr.io/r/base/class.html'>unclass</a></span><span class='op'>(</span><span class='fu'><a href='tokens_select.html'>tokens_select</a></span><span class='op'>(</span><span class='va'>toks3</span>, <span class='va'>dict</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; $text1
 #&gt; [1] 1 2
 #&gt; 
@@ -693,10 +693,10 @@ R-based method</p></td>
 #&gt; attr(,"meta")
 #&gt; attr(,"meta")$system
 #&gt; attr(,"meta")$system$`package-version`
-#&gt; [1] ‘2.1.2’
+#&gt; [1] ‘2.9.9000’
 #&gt; 
 #&gt; attr(,"meta")$system$`r-version`
-#&gt; [1] ‘4.0.2’
+#&gt; [1] ‘4.0.3’
 #&gt; 
 #&gt; attr(,"meta")$system$system
 #&gt;   sysname   machine      user 
@@ -706,7 +706,7 @@ R-based method</p></td>
 #&gt; [1] "/Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/quanteda/docs/reference"
 #&gt; 
 #&gt; attr(,"meta")$system$created
-#&gt; [1] "2020-09-23"
+#&gt; [1] "2020-12-07"
 #&gt; 
 #&gt; 
 #&gt; attr(,"meta")$object
@@ -736,7 +736,7 @@ R-based method</p></td>
 #&gt; 
 #&gt; attr(,"meta")$user
 #&gt; list()
-#&gt; </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/class.html'>unclass</a></span>(<span class='fu'><a href='tokens_select.html'>tokens_select</a></span>(<span class='kw'>toks3</span>, <span class='kw'>dict</span>, pad = <span class='fl'>TRUE</span>))
+#&gt; </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/class.html'>unclass</a></span><span class='op'>(</span><span class='fu'><a href='tokens_select.html'>tokens_select</a></span><span class='op'>(</span><span class='va'>toks3</span>, <span class='va'>dict</span>, pad <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; $text1
 #&gt; [1] 1 0 2 0 0
 #&gt; 
@@ -750,10 +750,10 @@ R-based method</p></td>
 #&gt; attr(,"meta")
 #&gt; attr(,"meta")$system
 #&gt; attr(,"meta")$system$`package-version`
-#&gt; [1] ‘2.1.2’
+#&gt; [1] ‘2.9.9000’
 #&gt; 
 #&gt; attr(,"meta")$system$`r-version`
-#&gt; [1] ‘4.0.2’
+#&gt; [1] ‘4.0.3’
 #&gt; 
 #&gt; attr(,"meta")$system$system
 #&gt;   sysname   machine      user 
@@ -763,7 +763,7 @@ R-based method</p></td>
 #&gt; [1] "/Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/quanteda/docs/reference"
 #&gt; 
 #&gt; attr(,"meta")$system$created
-#&gt; [1] "2020-09-23"
+#&gt; [1] "2020-12-07"
 #&gt; 
 #&gt; 
 #&gt; attr(,"meta")$object
@@ -795,7 +795,7 @@ R-based method</p></td>
 #&gt; list()
 #&gt; </div><div class='input'>
 <span class='co'># ngrams</span>
-<span class='fu'><a href='https://rdrr.io/r/base/class.html'>unclass</a></span>(<span class='fu'><a href='tokens_ngrams.html'>tokens_ngrams</a></span>(<span class='kw'>toks3</span>, n = <span class='fl'>2</span><span class='op'>:</span><span class='fl'>3</span>))
+<span class='fu'><a href='https://rdrr.io/r/base/class.html'>unclass</a></span><span class='op'>(</span><span class='fu'><a href='tokens_ngrams.html'>tokens_ngrams</a></span><span class='op'>(</span><span class='va'>toks3</span>, n <span class='op'>=</span> <span class='fl'>2</span><span class='op'>:</span><span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; $text1
 #&gt; [1] 1 2 3 4 5 6 7
 #&gt; 
@@ -810,10 +810,10 @@ R-based method</p></td>
 #&gt; attr(,"meta")
 #&gt; attr(,"meta")$system
 #&gt; attr(,"meta")$system$`package-version`
-#&gt; [1] ‘2.1.2’
+#&gt; [1] ‘2.9.9000’
 #&gt; 
 #&gt; attr(,"meta")$system$`r-version`
-#&gt; [1] ‘4.0.2’
+#&gt; [1] ‘4.0.3’
 #&gt; 
 #&gt; attr(,"meta")$system$system
 #&gt;   sysname   machine      user 
@@ -823,7 +823,7 @@ R-based method</p></td>
 #&gt; [1] "/Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/quanteda/docs/reference"
 #&gt; 
 #&gt; attr(,"meta")$system$created
-#&gt; [1] "2020-09-23"
+#&gt; [1] "2020-12-07"
 #&gt; 
 #&gt; 
 #&gt; attr(,"meta")$object
@@ -866,7 +866,7 @@ R-based method</p></td>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

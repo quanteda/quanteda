@@ -89,7 +89,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.9.9000</span>
       </span>
     </div>
 
@@ -223,7 +223,7 @@
 <ul>
 <li>Add <code>flatten</code> and <code>levels</code> arguments to <code>as.list.dictionary2()</code> to enable more flexible conversion of dictionary objects. (<a href='https://github.com/quanteda/quanteda/issues/1661'>#1661</a>)</li>
 <li>In <code><a href="../reference/corpus_sample.html">corpus_sample()</a></code>, the <code>size</code> now works with the <code>by</code> argument, to control the size of units sampled from each group.</li>
-<li>Improvements to <code><a href="../reference/textstat_simil.html">textstat_dist()</a></code> and <code><a href="../reference/textstat_simil.html">textstat_simil()</a></code>, see below.</li>
+<li>Improvements to <code><a href="https://quanteda.io/reference/textstat_simil.html">textstat_dist()</a></code> and <code><a href="https://quanteda.io/reference/textstat_simil.html">textstat_simil()</a></code>, see below.</li>
 <li>Long tokens are not discarded automatically in the call to <code><a href="../reference/tokens.html">tokens()</a></code>. (<a href='https://github.com/quanteda/quanteda/issues/1713'>#1713</a>)</li>
 </ul>
 </div>
@@ -232,23 +232,23 @@
 <a href="#behaviour-changes-1" class="anchor"></a>Behaviour changes</h2>
 <ul>
 <li>
-<code><a href="../reference/textstat_simil.html">textstat_dist()</a></code> and <code><a href="../reference/textstat_simil.html">textstat_simil()</a></code> now return sparse symmetric matrix objects using classes from the <strong>Matrix</strong> package. This replaces the former structure based on the <code>dist</code> class. Computation of these classes is now also based on the fast implementation in the <strong>proxyC</strong> package. When computing similarities, the new <code>min_simil</code> argument allows a user to ignore certain values below a specified similarity threshold. A new coercion method <code>as.data.frame.textstat_simildist()</code> now exists for converting these returns into a data.frame of pairwise comparisons. Existing methods such as <code><a href="https://rdrr.io/r/base/matrix.html">as.matrix()</a></code>, <code><a href="https://rdrr.io/r/stats/dist.html">as.dist()</a></code>, and <code><a href="https://rdrr.io/r/base/list.html">as.list()</a></code> work as they did before.</li>
-<li>We have removed the “faith”, “chi-squared”, and “kullback” methods from <code><a href="../reference/textstat_simil.html">textstat_dist()</a></code> and <code><a href="../reference/textstat_simil.html">textstat_simil()</a></code> because these were either not symmetric or not invariant to document or feature ordering. Finally, the <code>selection</code> argument has been deprecated in favour of a new <code>y</code> argument.<br>
+<code><a href="https://quanteda.io/reference/textstat_simil.html">textstat_dist()</a></code> and <code><a href="https://quanteda.io/reference/textstat_simil.html">textstat_simil()</a></code> now return sparse symmetric matrix objects using classes from the <strong>Matrix</strong> package. This replaces the former structure based on the <code>dist</code> class. Computation of these classes is now also based on the fast implementation in the <strong>proxyC</strong> package. When computing similarities, the new <code>min_simil</code> argument allows a user to ignore certain values below a specified similarity threshold. A new coercion method <code>as.data.frame.textstat_simildist()</code> now exists for converting these returns into a data.frame of pairwise comparisons. Existing methods such as <code><a href="https://rdrr.io/r/base/matrix.html">as.matrix()</a></code>, <code><a href="https://rdrr.io/r/stats/dist.html">as.dist()</a></code>, and <code><a href="https://rdrr.io/r/base/list.html">as.list()</a></code> work as they did before.</li>
+<li>We have removed the “faith”, “chi-squared”, and “kullback” methods from <code><a href="https://quanteda.io/reference/textstat_simil.html">textstat_dist()</a></code> and <code><a href="https://quanteda.io/reference/textstat_simil.html">textstat_simil()</a></code> because these were either not symmetric or not invariant to document or feature ordering. Finally, the <code>selection</code> argument has been deprecated in favour of a new <code>y</code> argument.<br>
 </li>
 <li>
-<code><a href="../reference/textstat_readability.html">textstat_readability()</a></code> now defaults to <code>measure = "Flesch"</code> if no measure is supplied. This makes it consistent with <code><a href="../reference/textstat_lexdiv.html">textstat_lexdiv()</a></code> that also takes a default measure (“TTR”) if none is supplied. (<a href='https://github.com/quanteda/quanteda/issues/1715'>#1715</a>)</li>
+<code><a href="https://quanteda.io/reference/textstat_readability.html">textstat_readability()</a></code> now defaults to <code>measure = "Flesch"</code> if no measure is supplied. This makes it consistent with <code><a href="https://quanteda.io/reference/textstat_lexdiv.html">textstat_lexdiv()</a></code> that also takes a default measure (“TTR”) if none is supplied. (<a href='https://github.com/quanteda/quanteda/issues/1715'>#1715</a>)</li>
 <li>The default values for <code>max_nchar</code> and <code>min_nchar</code> in <code><a href="../reference/tokens_select.html">tokens_select()</a></code> are now NULL, meaning they are not applied if the user does not supply values. Fixes <a href='https://github.com/quanteda/quanteda/issues/1713'>#1713</a>.</li>
 </ul>
 </div>
-<div id="bug-fixes-and-stability-enhancements-6" class="section level2">
+<div id="bug-fixes-and-stability-enhancements-7" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-and-stability-enhancements-6" class="anchor"></a>Bug fixes and stability enhancements</h2>
+<a href="#bug-fixes-and-stability-enhancements-7" class="anchor"></a>Bug fixes and stability enhancements</h2>
 <ul>
 <li>
 <code>kwic.corpus()</code> and <code>kwic.tokens()</code> behaviour now aligned, meaning that dictionaries are correctly faceted by key instead of by value. (<a href='https://github.com/quanteda/quanteda/issues/1684'>#1684</a>)</li>
 <li>Improved formatting of <code><a href="../reference/tokens.html">tokens()</a></code> verbose output. (<a href='https://github.com/quanteda/quanteda/issues/1683'>#1683</a>)</li>
 <li>Subsetting and printing of subsetted kwic objects is more robust. (<a href='https://github.com/quanteda/quanteda/issues/1665'>#1665</a>)</li>
-<li>The “Bormuth” and “DRP” measures are now fixed for <code><a href="../reference/textstat_readability.html">textstat_readability()</a></code>. (<a href='https://github.com/quanteda/quanteda/issues/1701'>#1701</a>)</li>
+<li>The “Bormuth” and “DRP” measures are now fixed for <code><a href="https://quanteda.io/reference/textstat_readability.html">textstat_readability()</a></code>. (<a href='https://github.com/quanteda/quanteda/issues/1701'>#1701</a>)</li>
 </ul>
 </div>
 </div>
@@ -263,12 +263,12 @@
 <li>Added <code>omit_empty</code> as an argument to <code><a href="../reference/convert.html">convert()</a></code>, to allow the user to control whether empty documents are excluded from converted dfm objects for certain formats. (<a href='https://github.com/quanteda/quanteda/issues/1660'>#1660</a>)</li>
 </ul>
 </div>
-<div id="bug-fixes-and-stability-enhancements-5" class="section level2">
+<div id="bug-fixes-and-stability-enhancements-6" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-and-stability-enhancements-5" class="anchor"></a>Bug fixes and stability enhancements</h2>
+<a href="#bug-fixes-and-stability-enhancements-6" class="anchor"></a>Bug fixes and stability enhancements</h2>
 <ul>
-<li>Fixed a bug that affects the new <code><a href="../reference/textstat_simil.html">textstat_dist()</a></code> and <code><a href="../reference/textstat_simil.html">textstat_simil()</a></code>. (<a href='https://github.com/quanteda/quanteda/issues/1730'>#1730</a>)</li>
-<li>Fixed a bug in how <code><a href="../reference/textstat_simil.html">textstat_dist()</a></code> and <code><a href="../reference/textstat_simil.html">textstat_simil()</a></code> class symmetric matrices.</li>
+<li>Fixed a bug that affects the new <code><a href="https://quanteda.io/reference/textstat_simil.html">textstat_dist()</a></code> and <code><a href="https://quanteda.io/reference/textstat_simil.html">textstat_simil()</a></code>. (<a href='https://github.com/quanteda/quanteda/issues/1730'>#1730</a>)</li>
+<li>Fixed a bug in how <code><a href="https://quanteda.io/reference/textstat_simil.html">textstat_dist()</a></code> and <code><a href="https://quanteda.io/reference/textstat_simil.html">textstat_simil()</a></code> class symmetric matrices.</li>
 </ul>
 </div>
 </div>
@@ -280,7 +280,7 @@
 <h2 class="hasAnchor">
 <a href="#new-features-1" class="anchor"></a>New features</h2>
 <ul>
-<li>Added Yule’s I to <code><a href="../reference/textstat_lexdiv.html">textstat_lexdiv()</a></code>.</li>
+<li>Added Yule’s I to <code><a href="https://quanteda.io/reference/textstat_lexdiv.html">textstat_lexdiv()</a></code>.</li>
 <li>Added forward compatibility for newer (v2) corpus class objects.</li>
 <li>Added a new function <code><a href="../reference/featfreq.html">featfreq()</a></code> to compute the overall feature frequencies from a dfm.</li>
 </ul>
@@ -307,7 +307,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

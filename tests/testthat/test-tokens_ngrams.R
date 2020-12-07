@@ -1,6 +1,3 @@
-library(quanteda)
-library(testthat)
-
 context('test tokens_ngrams')
 
 test_that("test that ngrams produces the results from Guthrie 2006", {

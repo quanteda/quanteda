@@ -4,9 +4,8 @@
 \alias{pattern}
 \title{Pattern for feature, token and keyword matching}
 \arguments{
-\item{pattern}{a character vector, list of character vectors,
-\link{dictionary}, or \link{collocations} object.  See \link{pattern} for
-details.}
+\item{pattern}{a character vector, list of character vectors, \link{dictionary},
+or collocations object.  See \link{pattern} for details.}
 }
 \description{
 Pattern(s) for use in matching features, tokens, and keywords through a
@@ -34,7 +33,7 @@ for literal matches. Multi-word values are automatically converted into
 phrases, so performing selection or compounding using a dictionary is the
 same as wrapping the dictionary in \code{\link[=phrase]{phrase()}}. }
 \item{\code{collocations}}{Collocations objects created from
-\code{\link[=textstat_collocations]{textstat_collocations()}}, which are treated as phrases
+\code{quanteda.textstats::textstat_collocations()}, which are treated as phrases
 automatically.
 }
 }

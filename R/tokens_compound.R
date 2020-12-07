@@ -55,11 +55,6 @@
 #' # pattern as dictionaries with glob matches
 #' tokens_compound(toks, dictionary(list(key1 = c("U* K*"))), valuetype = "glob")
 #'
-#' # supplied as collocations - is compounded
-#' colls <- tokens("The new European Union is not the old European Union.") %>%
-#'     textstat_collocations(size = 2, min_count = 1, tolower = FALSE)
-#' tokens_compound(toks, colls, case_insensitive = FALSE)
-#'
 #' # note the differences caused by join = FALSE
 #' compounds <- list(c("the", "European"), c("European", "Union"))
 #' tokens_compound(toks, pattern = compounds, join = TRUE)

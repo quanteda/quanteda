@@ -61,19 +61,6 @@ test_that("pipes work", {
     )
 })
 
-test_that("pattern2list is working with collocations", {
-    txt <- c(". . . . a b c . . a b c . . . c d e",
-             "a b . . a b . . a b . . a b . a b",
-             "b c d . . b c . b c . . . b c")
-    toks <- tokens(txt)
-    type <- types(toks)
-    col <- textstat_collocations(toks, size = 2:3)
-    ids <- quanteda:::pattern2list(col, type, 'fixed', TRUE)
-    expect_equivalent(col$collocation, 
-                      vapply(ids, function(x, y) paste0(y[x], collapse = " "), character(1), type))
-    expect_equal(names(ids), col$collocation)
-})
-
 test_that("pattern2list is working with a list", {
     type <- letters
     pat <- c('a', 'a b', 'c d', 'e f g')
@@ -95,18 +82,6 @@ test_that("pattern2list is working with empty patterns", {
     expect_silent(quanteda:::pattern2list(col, types(toks), "fixed", TRUE))
     expect_silent(quanteda:::pattern2list(pat, types(toks), "fixed", TRUE))
 })
-
-test_that("check_font is working", {
-    # skip_on_os("windows")
-    # skip_on_os("mac")
-    skip_on_cran()
-    expect_error(quanteda:::check_font("XXXXX"), "XXXXX is not found on your system") 
-    # expect_equal(quanteda:::check_font("Ubuntu"), "Ubuntu")
-    expect_equal(quanteda:::check_font("sans"), "sans")
-    expect_equal(quanteda:::check_font("serif"), "serif")
-    expect_equal(quanteda:::check_font("mono"), "mono")
-})
-
 
 test_that("get_package_version works", {
     load("../data/pre_v2_objects/data_corpus_pre2.rda")

@@ -86,6 +86,7 @@ With `textstat_collocations()`, it is possible to discover multi-word expression
 If `textstat_collocations()` is applied to a tokens object comprised only of capitalize words, it usually returns multi-word proper names.
 
 ```{r}
+library("quanteda.textstats")
 col <- toks %>% 
        tokens_remove(stopwords("en")) %>% 
        tokens_select(pattern = "^[A-Z]", valuetype = "regex", 

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>coerce a compressed corpus to a standard corpus — as.corpus • quanteda</title>
+<title>Make sure a corpus is the current format — as.corpus • quanteda</title>
 
 
 <!-- jquery -->
@@ -47,8 +47,9 @@
   <link href="../extra.css" rel="stylesheet">
   <script src="../extra.js"></script>
 
-<meta property="og:title" content="coerce a compressed corpus to a standard corpus — as.corpus" />
-<meta property="og:description" content="Recast a compressed corpus object into a standard (uncompressed) corpus
+<meta property="og:title" content="Make sure a corpus is the current format — as.corpus" />
+<meta property="og:description" content="Upgrades a corpus object to the current format.  For backwards compatibility,
+converts a compressed corpus object into a standard (uncompressed) corpus
 object." />
 
 
@@ -91,7 +92,7 @@ object." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.9.9000</span>
       </span>
     </div>
 
@@ -211,24 +212,25 @@ object." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>coerce a compressed corpus to a standard corpus</h1>
+    <h1>Make sure a corpus is the current format</h1>
     <small class="dont-index">Source: <a href='https://github.com/quanteda/quanteda/blob/master/R/corpus-methods-quanteda.R'><code>R/corpus-methods-quanteda.R</code></a></small>
     <div class="hidden name"><code>as.corpus.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Recast a compressed corpus object into a standard (uncompressed) corpus
+    <p>Upgrades a corpus object to the current format.  For backwards compatibility,
+converts a compressed corpus object into a standard (uncompressed) corpus
 object.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>as.corpus</span>(<span class='kw'>x</span>)</pre>
+    <pre class="usage"><span class='fu'>as.corpus</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>a compressed <a href='corpus.html'>corpus</a> object</p></td>
+      <td><p>a <a href='corpus.html'>corpus</a> or compressed <a href='corpus.html'>corpus</a> object</p></td>
     </tr>
     </table>
 
@@ -244,7 +246,7 @@ object.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

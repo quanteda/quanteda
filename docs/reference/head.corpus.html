@@ -90,7 +90,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.9.9000</span>
       </span>
     </div>
 
@@ -220,10 +220,10 @@
     </div>
 
     <pre class="usage"><span class='co'># S3 method for corpus</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='kw'>x</span>, n = <span class='fl'>6L</span>, <span class='kw'>...</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>x</span>, n <span class='op'>=</span> <span class='fl'>6L</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S3 method for corpus</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>tail</a></span>(<span class='kw'>x</span>, n = <span class='fl'>6L</span>, <span class='kw'>...</span>)</pre>
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>tail</a></span><span class='op'>(</span><span class='va'>x</span>, n <span class='op'>=</span> <span class='fl'>6L</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -250,8 +250,8 @@ all but the n last/first number of documents of x.</p></td>
 by <code>n</code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='kw'>data_corpus_inaugural</span>, <span class='fl'>3</span>) <span class='op'>%&gt;%</span> 
-   <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>()
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>data_corpus_inaugural</span>, <span class='fl'>3</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+   <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Corpus consisting of 3 documents, showing 3 documents:
 #&gt; 
 #&gt;             Text Types Tokens Sentences Year  President FirstName      Party
@@ -259,8 +259,8 @@ by <code>n</code>.</p>
 #&gt;  1793-Washington    96    147         4 1793 Washington    George       none
 #&gt;       1797-Adams   826   2577        37 1797      Adams      John Federalist
 #&gt; </div><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>tail</a></span>(<span class='kw'>data_corpus_inaugural</span>, <span class='fl'>3</span>) <span class='op'>%&gt;%</span> 
-    <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>()
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>tail</a></span><span class='op'>(</span><span class='va'>data_corpus_inaugural</span>, <span class='fl'>3</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+    <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Corpus consisting of 3 documents, showing 3 documents:
 #&gt; 
 #&gt;        Text Types Tokens Sentences Year President FirstName      Party
@@ -279,7 +279,7 @@ by <code>n</code>.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

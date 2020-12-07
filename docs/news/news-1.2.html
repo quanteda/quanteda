@@ -89,7 +89,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.9.9000</span>
       </span>
     </div>
 
@@ -224,11 +224,11 @@
 <li>Added an <code><a href="../reference/nsentence.html">nsentence()</a></code> method for <strong>spacyr</strong> parsed objects. (<a href='https://github.com/quanteda/quanteda/issues/1289'>#1289</a>)</li>
 </ul>
 </div>
-<div id="bug-fixes-and-stability-enhancements-12" class="section level2">
+<div id="bug-fixes-and-stability-enhancements-13" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-and-stability-enhancements-12" class="anchor"></a>Bug fixes and stability enhancements</h2>
+<a href="#bug-fixes-and-stability-enhancements-13" class="anchor"></a>Bug fixes and stability enhancements</h2>
 <ul>
-<li>Fix bug in <code><a href="../reference/nsyllable.html">nsyllable()</a></code> that incorrectly handled cased words, and returned wrong names with <code>use.names = TRUE</code>. (<a href='https://github.com/quanteda/quanteda/issues/1282'>#1282</a>)</li>
+<li>Fix bug in <code>nsyllable()</code> that incorrectly handled cased words, and returned wrong names with <code>use.names = TRUE</code>. (<a href='https://github.com/quanteda/quanteda/issues/1282'>#1282</a>)</li>
 <li>Fix the overwriting of <code>summary.character()</code> caused by previous import of the <strong>network</strong> package namespace. (<a href='https://github.com/quanteda/quanteda/issues/1285'>#1285</a>)</li>
 <li>
 <code><a href="../reference/dfm_weight.html">dfm_smooth()</a></code> now correctly sets the smooth value in the dfm (<a href='https://github.com/quanteda/quanteda/issues/1274'>#1274</a>). Arithmetic operations on dfm objects are now much more consistent and do not drop attributes of the dfm, as sometimes happened with earlier versions.</li>
@@ -243,7 +243,7 @@
 <li>
 <code><a href="../reference/dfm_trim.html">dfm_trim()</a></code> now takes more options, and these are implemented more consistently. <code>min_termfreq</code> and <code>max_termfreq</code> have replaced <code>min_count</code> and <code>max_count</code>, and these can be modified using a <code>termfreq_type</code> argument. (Similar options are implemented for <code>docfreq_type</code>.) Solves <a href='https://github.com/quanteda/quanteda/issues/1253'>#1253</a>, <a href='https://github.com/quanteda/quanteda/issues/1254'>#1254</a>.</li>
 <li>
-<code><a href="../reference/textstat_simil.html">textstat_simil()</a></code> and <code><a href="../reference/textstat_simil.html">textstat_dist()</a></code> now take valid dfm indexes for the relevant margin for the <code>selection</code> argument. Previously, this could also be a direct vector or matrix for comparison, but this is no longer allowed. Solves <a href='https://github.com/quanteda/quanteda/issues/1266'>#1266</a>.</li>
+<code><a href="https://quanteda.io/reference/textstat_simil.html">textstat_simil()</a></code> and <code><a href="https://quanteda.io/reference/textstat_simil.html">textstat_dist()</a></code> now take valid dfm indexes for the relevant margin for the <code>selection</code> argument. Previously, this could also be a direct vector or matrix for comparison, but this is no longer allowed. Solves <a href='https://github.com/quanteda/quanteda/issues/1266'>#1266</a>.</li>
 <li>Improved performance for <code><a href="../reference/dfm_group.html">dfm_group()</a></code> (<a href='https://github.com/quanteda/quanteda/issues/1295'>#1295</a>).</li>
 </ul>
 </div>
@@ -261,7 +261,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

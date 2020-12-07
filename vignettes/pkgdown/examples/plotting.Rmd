@@ -7,10 +7,11 @@ output:
 ---
 
 ```{r, message=FALSE}
-library(quanteda)
+library("quanteda")
+library("quanteda.textplots")
 ```
 
-This vignette walks through various plot options available in **quanteda** through the `textplot_*` functions.
+This vignette walks through various plot options available in **quanteda.textplots** through the `textplot_*` functions.
 
 # Wordcloud 
 
@@ -111,6 +112,7 @@ g + aes(color = keyword) +
 You can plot the frequency of the top features in a text using `topfeatures`.
 
 ```{r eval=TRUE, fig.width=8, fig.height=4}
+library("quanteda.textstats")
 features_dfm_inaug <- textstat_frequency(dfm_inaug, n = 100)
 
 # Sort by reverse frequency order

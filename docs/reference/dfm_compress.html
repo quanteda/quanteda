@@ -95,7 +95,7 @@ dimensions of the dfm, e.g. dfm_tolower()." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.9.9000</span>
       </span>
     </div>
 
@@ -229,9 +229,9 @@ need to call <code>dfm_compress</code>, since it is called automatically by func
 dimensions of the dfm, e.g. <code><a href='dfm_tolower.html'>dfm_tolower()</a></code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>dfm_compress</span>(<span class='kw'>x</span>, margin = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"both"</span>, <span class='st'>"documents"</span>, <span class='st'>"features"</span>))
+    <pre class="usage"><span class='fu'>dfm_compress</span><span class='op'>(</span><span class='va'>x</span>, margin <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"both"</span>, <span class='st'>"documents"</span>, <span class='st'>"features"</span><span class='op'>)</span><span class='op'>)</span>
 
-<span class='fu'>fcm_compress</span>(<span class='kw'>x</span>)</pre>
+<span class='fu'>fcm_compress</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -263,50 +263,50 @@ document context.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># dfm_compress examples</span>
-<span class='kw'>dfmat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>rbind</a></span>(<span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"b A A"</span>, <span class='st'>"C C a b B"</span>), tolower = <span class='fl'>FALSE</span>),
-             <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='st'>"A C C C C C"</span>, tolower = <span class='fl'>FALSE</span>))
-<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span>(<span class='kw'>dfmat</span>) <span class='op'>&lt;-</span> <span class='fu'><a href='char_tolower.html'>char_tolower</a></span>(<span class='fu'><a href='featnames.html'>featnames</a></span>(<span class='kw'>dfmat</span>))
-<span class='kw'>dfmat</span>
+<span class='va'>dfmat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>rbind</a></span><span class='op'>(</span><span class='fu'><a href='dfm.html'>dfm</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"b A A"</span>, <span class='st'>"C C a b B"</span><span class='op'>)</span>, tolower <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>,
+             <span class='fu'><a href='dfm.html'>dfm</a></span><span class='op'>(</span><span class='st'>"A C C C C C"</span>, tolower <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span><span class='op'>(</span><span class='va'>dfmat</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='fu'><a href='char_tolower.html'>char_tolower</a></span><span class='op'>(</span><span class='fu'><a href='featnames.html'>featnames</a></span><span class='op'>(</span><span class='va'>dfmat</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>dfmat</span>
 </div><div class='output co'>#&gt; Document-feature matrix of: 3 documents, 5 features (46.7% sparse).
 #&gt;          features
 #&gt; docs      b a c a b
 #&gt;   text1.1 1 2 0 0 0
 #&gt;   text2.1 1 0 2 1 1
-#&gt;   text1.2 0 1 5 0 0</div><div class='input'><span class='fu'>dfm_compress</span>(<span class='kw'>dfmat</span>, margin = <span class='st'>"documents"</span>)
+#&gt;   text1.2 0 1 5 0 0</div><div class='input'><span class='fu'>dfm_compress</span><span class='op'>(</span><span class='va'>dfmat</span>, margin <span class='op'>=</span> <span class='st'>"documents"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 5 features (30.0% sparse).
 #&gt;        features
 #&gt; docs    b a c a b
 #&gt;   text1 1 3 5 0 0
-#&gt;   text2 1 0 2 1 1</div><div class='input'><span class='fu'>dfm_compress</span>(<span class='kw'>dfmat</span>, margin = <span class='st'>"features"</span>)
+#&gt;   text2 1 0 2 1 1</div><div class='input'><span class='fu'>dfm_compress</span><span class='op'>(</span><span class='va'>dfmat</span>, margin <span class='op'>=</span> <span class='st'>"features"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Document-feature matrix of: 3 documents, 3 features (22.2% sparse).
 #&gt;          features
 #&gt; docs      b a c
 #&gt;   text1.1 1 2 0
 #&gt;   text2.1 2 1 2
-#&gt;   text1.2 0 1 5</div><div class='input'><span class='fu'>dfm_compress</span>(<span class='kw'>dfmat</span>)
+#&gt;   text1.2 0 1 5</div><div class='input'><span class='fu'>dfm_compress</span><span class='op'>(</span><span class='va'>dfmat</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 3 features (0.0% sparse).
 #&gt;        features
 #&gt; docs    b a c
 #&gt;   text1 1 3 5
 #&gt;   text2 2 1 2</div><div class='input'>
 <span class='co'># no effect if no compression needed</span>
-<span class='kw'>dfmatsubset</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='kw'>data_corpus_inaugural</span>[<span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>])
-<span class='fu'><a href='https://rdrr.io/r/base/dim.html'>dim</a></span>(<span class='kw'>dfmatsubset</span>)
-</div><div class='output co'>#&gt; [1]    5 1948</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/dim.html'>dim</a></span>(<span class='fu'>dfm_compress</span>(<span class='kw'>dfmatsubset</span>))
+<span class='va'>dfmatsubset</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span><span class='op'>(</span><span class='va'>data_corpus_inaugural</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>]</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/dim.html'>dim</a></span><span class='op'>(</span><span class='va'>dfmatsubset</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1]    5 1948</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/dim.html'>dim</a></span><span class='op'>(</span><span class='fu'>dfm_compress</span><span class='op'>(</span><span class='va'>dfmatsubset</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1]    5 1948</div><div class='input'>
 <span class='co'># compress an fcm</span>
-<span class='kw'>fcmat1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='fcm.html'>fcm</a></span>(<span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='st'>"A D a C E a d F e B A C E D"</span>), 
-             context = <span class='st'>"window"</span>, window = <span class='fl'>3</span>)
+<span class='va'>fcmat1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='fcm.html'>fcm</a></span><span class='op'>(</span><span class='fu'><a href='tokens.html'>tokens</a></span><span class='op'>(</span><span class='st'>"A D a C E a d F e B A C E D"</span><span class='op'>)</span>, 
+             context <span class='op'>=</span> <span class='st'>"window"</span>, window <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span>
 <span class='co'>## this will produce an error:</span>
 <span class='co'># fcm_compress(fcmat1)</span>
 
-<span class='kw'>txt</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"The fox JUMPED over the dog."</span>,
-         <span class='st'>"The dog jumped over the fox."</span>)
-<span class='kw'>toks</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='kw'>txt</span>, remove_punct = <span class='fl'>TRUE</span>)
-<span class='kw'>fcmat2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='fcm.html'>fcm</a></span>(<span class='kw'>toks</span>, context = <span class='st'>"document"</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span>(<span class='kw'>fcmat2</span>) <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span>(<span class='kw'>fcmat2</span>) <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/chartr.html'>tolower</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span>(<span class='kw'>fcmat2</span>))
-<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span>(<span class='kw'>fcmat2</span>)[<span class='fl'>5</span>] <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span>(<span class='kw'>fcmat2</span>)[<span class='fl'>5</span>] <span class='op'>&lt;-</span> <span class='st'>"fox"</span>
-<span class='kw'>fcmat2</span>
+<span class='va'>txt</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"The fox JUMPED over the dog."</span>,
+         <span class='st'>"The dog jumped over the fox."</span><span class='op'>)</span>
+<span class='va'>toks</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span><span class='op'>(</span><span class='va'>txt</span>, remove_punct <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+<span class='va'>fcmat2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='fcm.html'>fcm</a></span><span class='op'>(</span><span class='va'>toks</span>, context <span class='op'>=</span> <span class='st'>"document"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span><span class='op'>(</span><span class='va'>fcmat2</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span><span class='op'>(</span><span class='va'>fcmat2</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/chartr.html'>tolower</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span><span class='op'>(</span><span class='va'>fcmat2</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span><span class='op'>(</span><span class='va'>fcmat2</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>5</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span><span class='op'>(</span><span class='va'>fcmat2</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>5</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='st'>"fox"</span>
+<span class='va'>fcmat2</span>
 </div><div class='output co'>#&gt; Feature co-occurrence matrix of: 7 by 7 features.
 #&gt;         features
 #&gt; features the fox jumped over fox dog jumped
@@ -316,7 +316,7 @@ document context.</p>
 #&gt;   over     0   0      0    0   2   2      1
 #&gt;   fox      0   0      0    0   0   2      1
 #&gt;   dog      0   0      0    0   0   0      1
-#&gt;   jumped   0   0      0    0   0   0      0</div><div class='input'><span class='fu'>fcm_compress</span>(<span class='kw'>fcmat2</span>)
+#&gt;   jumped   0   0      0    0   0   0      0</div><div class='input'><span class='fu'>fcm_compress</span><span class='op'>(</span><span class='va'>fcmat2</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Feature co-occurrence matrix of: 5 by 5 features.
 #&gt;         features
 #&gt; features the fox jumped over dog
@@ -336,7 +336,7 @@ document context.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

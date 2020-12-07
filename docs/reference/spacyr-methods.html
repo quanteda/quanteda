@@ -93,7 +93,7 @@ objects." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.9.9000</span>
       </span>
     </div>
 
@@ -225,20 +225,6 @@ also extend <a href='http://spacyr.quanteda.io/reference/spacy_parse.html'>spacy
 objects.</p>
     </div>
 
-    <pre class="usage"><span class='co'># S3 method for spacyr_parsed</span>
-<span class='fu'><a href='docnames.html'>docnames</a></span>(<span class='kw'>x</span>)
-
-<span class='co'># S3 method for spacyr_parsed</span>
-<span class='fu'><a href='ndoc.html'>ndoc</a></span>(<span class='kw'>x</span>)
-
-<span class='co'># S3 method for spacyr_parsed</span>
-<span class='fu'><a href='ntoken.html'>ntoken</a></span>(<span class='kw'>x</span>, <span class='kw'>...</span>)
-
-<span class='co'># S3 method for spacyr_parsed</span>
-<span class='fu'><a href='ntoken.html'>ntype</a></span>(<span class='kw'>x</span>, <span class='kw'>...</span>)
-
-<span class='co'># S3 method for spacyr_parsed</span>
-<span class='fu'><a href='nsentence.html'>nsentence</a></span>(<span class='kw'>x</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -258,27 +244,27 @@ objects.</p>
 
     <p><code><a href='http://spacyr.quanteda.io/reference/spacy_parse.html'>spacy_parse(x, ...)</a></code> and <code><a href='http://spacyr.quanteda.io/reference/spacy_tokenize.html'>spacy_tokenize(x, ...)</a></code> work directly on
 <span class="pkg">quanteda</span> <a href='corpus.html'>corpus</a> objects.</p>
-<p><code><a href='docnames.html'>docnames()</a></code> returns the document names</p>
-<p><code><a href='ndoc.html'>ndoc()</a></code> returns the number of documents</p>
-<p><code><a href='ntoken.html'>ntoken()</a></code> returns the number of tokens by document</p>
-<p><code><a href='ntoken.html'>ntype()</a></code> returns the number of types (unique tokens) by document</p>
-<p><code><a href='nsentence.html'>nsentence()</a></code> returns the number of sentences by document</p>
+<p><code><a href='docnames.html'>docnames(x)</a></code> returns the document names</p>
+<p><code><a href='ndoc.html'>ndoc(x)</a></code> returns the number of documents</p>
+<p><code><a href='ntoken.html'>ntoken(x, ...)</a></code> returns the number of tokens by document</p>
+<p><code><a href='ntoken.html'>ntype(x, ...)</a></code> returns the number of types (unique tokens) by document</p>
+<p><code><a href='nsentence.html'>nsentence(x)</a></code> returns the number of sentences by document</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='st'><a href='https://spacyr.quanteda.io'>"spacyr"</a></span>)
-<span class='fu'><a href='http://spacyr.quanteda.io/reference/spacy_initialize.html'>spacy_initialize</a></span>()
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='st'><a href='https://spacyr.quanteda.io'>"spacyr"</a></span><span class='op'>)</span>
+<span class='fu'><a href='http://spacyr.quanteda.io/reference/spacy_initialize.html'>spacy_initialize</a></span><span class='op'>(</span><span class='op'>)</span>
 
-<span class='kw'>corp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='corpus.html'>corpus</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(doc1 = <span class='st'>"And now, now, now for something completely different."</span>,
-                 doc2 = <span class='st'>"Jack and Jill are children."</span>))
-<span class='fu'><a href='http://spacyr.quanteda.io/reference/spacy_tokenize.html'>spacy_tokenize</a></span>(<span class='kw'>corp</span>)
-(<span class='kw'>parsed</span> <span class='op'>&lt;-</span> <span class='fu'><a href='http://spacyr.quanteda.io/reference/spacy_parse.html'>spacy_parse</a></span>(<span class='kw'>corp</span>))
+<span class='va'>corp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='corpus.html'>corpus</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>doc1 <span class='op'>=</span> <span class='st'>"And now, now, now for something completely different."</span>,
+                 doc2 <span class='op'>=</span> <span class='st'>"Jack and Jill are children."</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='http://spacyr.quanteda.io/reference/spacy_tokenize.html'>spacy_tokenize</a></span><span class='op'>(</span><span class='va'>corp</span><span class='op'>)</span>
+<span class='op'>(</span><span class='va'>parsed</span> <span class='op'>&lt;-</span> <span class='fu'><a href='http://spacyr.quanteda.io/reference/spacy_parse.html'>spacy_parse</a></span><span class='op'>(</span><span class='va'>corp</span><span class='op'>)</span><span class='op'>)</span>
 
-<span class='fu'><a href='ntoken.html'>ntype</a></span>(<span class='kw'>parsed</span>)
-<span class='fu'><a href='ntoken.html'>ntoken</a></span>(<span class='kw'>parsed</span>)
-<span class='fu'><a href='ndoc.html'>ndoc</a></span>(<span class='kw'>parsed</span>)
-<span class='fu'><a href='docnames.html'>docnames</a></span>(<span class='kw'>parsed</span>)
-}
+<span class='fu'><a href='ntoken.html'>ntype</a></span><span class='op'>(</span><span class='va'>parsed</span><span class='op'>)</span>
+<span class='fu'><a href='ntoken.html'>ntoken</a></span><span class='op'>(</span><span class='va'>parsed</span><span class='op'>)</span>
+<span class='fu'><a href='ndoc.html'>ndoc</a></span><span class='op'>(</span><span class='va'>parsed</span><span class='op'>)</span>
+<span class='fu'><a href='docnames.html'>docnames</a></span><span class='op'>(</span><span class='va'>parsed</span><span class='op'>)</span>
+<span class='op'>}</span>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -291,7 +277,7 @@ objects.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

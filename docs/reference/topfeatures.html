@@ -91,7 +91,7 @@ as a whole or separated by document." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.9.9000</span>
       </span>
     </div>
 
@@ -221,13 +221,13 @@ as a whole or separated by document." />
 as a whole or separated by document.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>topfeatures</span>(
-  <span class='kw'>x</span>,
-  n = <span class='fl'>10</span>,
-  decreasing = <span class='fl'>TRUE</span>,
-  scheme = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"count"</span>, <span class='st'>"docfreq"</span>),
-  groups = <span class='kw'>NULL</span>
-)</pre>
+    <pre class="usage"><span class='fu'>topfeatures</span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  n <span class='op'>=</span> <span class='fl'>10</span>,
+  decreasing <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  scheme <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"count"</span>, <span class='st'>"docfreq"</span><span class='op'>)</span>,
+  groups <span class='op'>=</span> <span class='cn'>NULL</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -267,24 +267,24 @@ See <a href='groups.html'>groups</a> for details.</p></td>
 feature labels, or a list of these if <code>groups</code> is given.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>dfmat1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span>(<span class='kw'>data_corpus_inaugural</span>, <span class='kw'>Year</span> <span class='op'>&gt;</span> <span class='fl'>1980</span>) <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='dfm.html'>dfm</a></span>(remove_punct = <span class='fl'>TRUE</span>)
-<span class='kw'>dfmat2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dfm_select.html'>dfm_remove</a></span>(<span class='kw'>dfmat1</span>, <span class='fu'><a href='https://rdrr.io/pkg/stopwords/man/stopwords.html'>stopwords</a></span>(<span class='st'>"english"</span>))
+    <pre class="examples"><div class='input'><span class='va'>dfmat1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span><span class='op'>(</span><span class='va'>data_corpus_inaugural</span>, <span class='va'>Year</span> <span class='op'>&gt;</span> <span class='fl'>1980</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='dfm.html'>dfm</a></span><span class='op'>(</span>remove_punct <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+<span class='va'>dfmat2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dfm_select.html'>dfm_remove</a></span><span class='op'>(</span><span class='va'>dfmat1</span>, <span class='fu'><a href='https://rdrr.io/pkg/stopwords/man/stopwords.html'>stopwords</a></span><span class='op'>(</span><span class='st'>"english"</span><span class='op'>)</span><span class='op'>)</span>
 
 <span class='co'># most frequent features</span>
-<span class='fu'>topfeatures</span>(<span class='kw'>dfmat1</span>)
+<span class='fu'>topfeatures</span><span class='op'>(</span><span class='va'>dfmat1</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;  the  and   of   to  our   we    a   in   is that 
-#&gt; 1100  927  761  584  565  539  426  337  300  293 </div><div class='input'><span class='fu'>topfeatures</span>(<span class='kw'>dfmat2</span>)
+#&gt; 1100  927  761  584  565  539  426  337  300  293 </div><div class='input'><span class='fu'>topfeatures</span><span class='op'>(</span><span class='va'>dfmat2</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;      us    must america     new  people   world  nation    time     can freedom 
 #&gt;     165      99      98      93      90      87      79      73      72      71 </div><div class='input'>
 <span class='co'># least frequent features</span>
-<span class='fu'>topfeatures</span>(<span class='kw'>dfmat2</span>, decreasing = <span class='fl'>FALSE</span>)
+<span class='fu'>topfeatures</span><span class='op'>(</span><span class='va'>dfmat2</span>, decreasing <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;     hatfield      mondale        baker       moomaw    momentous   occurrence 
 #&gt;            1            1            1            1            1            1 
 #&gt;    routinely       unique       really every-4-year 
 #&gt;            1            1            1            1 </div><div class='input'>
 <span class='co'># top features of individual documents</span>
-<span class='fu'>topfeatures</span>(<span class='kw'>dfmat2</span>, n = <span class='fl'>5</span>, groups = <span class='fu'><a href='docnames.html'>docnames</a></span>(<span class='kw'>dfmat2</span>))
+<span class='fu'>topfeatures</span><span class='op'>(</span><span class='va'>dfmat2</span>, n <span class='op'>=</span> <span class='fl'>5</span>, groups <span class='op'>=</span> <span class='fu'><a href='docnames.html'>docnames</a></span><span class='op'>(</span><span class='va'>dfmat2</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; $`1981-Reagan`
 #&gt;         us government       must    believe     people 
 #&gt;         25         16         10         10          9 
@@ -326,7 +326,7 @@ feature labels, or a list of these if <code>groups</code> is given.</p>
 #&gt;       18       11       10        9        8 
 #&gt; </div><div class='input'>
 <span class='co'># grouping by president last name</span>
-<span class='fu'>topfeatures</span>(<span class='kw'>dfmat2</span>, n = <span class='fl'>5</span>, groups = <span class='st'>"President"</span>)
+<span class='fu'>topfeatures</span><span class='op'>(</span><span class='va'>dfmat2</span>, n <span class='op'>=</span> <span class='fl'>5</span>, groups <span class='op'>=</span> <span class='st'>"President"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; $Bush
 #&gt; freedom      us  nation america     can 
 #&gt;      36      27      27      27      24 
@@ -348,7 +348,7 @@ feature labels, or a list of these if <code>groups</code> is given.</p>
 #&gt;       18       11       10        9        8 
 #&gt; </div><div class='input'>
 <span class='co'># features by document frequencies</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>tail</a></span>(<span class='fu'>topfeatures</span>(<span class='kw'>dfmat1</span>, scheme = <span class='st'>"docfreq"</span>, n = <span class='fl'>200</span>))
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>tail</a></span><span class='op'>(</span><span class='fu'>topfeatures</span><span class='op'>(</span><span class='va'>dfmat1</span>, scheme <span class='op'>=</span> <span class='st'>"docfreq"</span>, n <span class='op'>=</span> <span class='fl'>200</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;   congress       said throughout       came      heart       find 
 #&gt;          7          7          7          7          7          7 </div></pre>
   </div>
@@ -362,7 +362,7 @@ feature labels, or a list of these if <code>groups</code> is given.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

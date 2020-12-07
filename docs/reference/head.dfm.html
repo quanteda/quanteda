@@ -91,7 +91,7 @@ and first nfeat features." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.9.9000</span>
       </span>
     </div>
 
@@ -222,10 +222,10 @@ and first <code>nfeat</code> features.</p>
     </div>
 
     <pre class="usage"><span class='co'># S3 method for dfm</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='kw'>x</span>, n = <span class='fl'>6L</span>, nf = <span class='fu'><a href='ndoc.html'>nfeat</a></span>(<span class='kw'>x</span>), <span class='kw'>...</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>x</span>, n <span class='op'>=</span> <span class='fl'>6L</span>, nf <span class='op'>=</span> <span class='fu'><a href='ndoc.html'>nfeat</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S3 method for dfm</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>tail</a></span>(<span class='kw'>x</span>, n = <span class='fl'>6L</span>, nf = <span class='fu'><a href='ndoc.html'>nfeat</a></span>(<span class='kw'>x</span>), <span class='kw'>...</span>)</pre>
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>tail</a></span><span class='op'>(</span><span class='va'>x</span>, n <span class='op'>=</span> <span class='fl'>6L</span>, nf <span class='op'>=</span> <span class='fu'><a href='ndoc.html'>nfeat</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -257,20 +257,20 @@ will contain the first <code>ncol</code> features; default is all features</p></
 by <code>n</code> and <code>nfeat</code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='kw'>data_dfm_lbgexample</span>, <span class='fl'>3</span>, nf = <span class='fl'>5</span>)
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>data_dfm_lbgexample</span>, <span class='fl'>3</span>, nf <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Document-feature matrix of: 3 documents, 5 features (66.7% sparse).
 #&gt;     features
 #&gt; docs A B  C  D  E
 #&gt;   R1 2 3 10 22 45
 #&gt;   R2 0 0  0  0  0
-#&gt;   R3 0 0  0  0  0</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='kw'>data_dfm_lbgexample</span>, <span class='op'>-</span><span class='fl'>4</span>)
+#&gt;   R3 0 0  0  0  0</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>data_dfm_lbgexample</span>, <span class='op'>-</span><span class='fl'>4</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 37 features (54.1% sparse).
 #&gt;     features
 #&gt; docs A B  C  D  E  F   G   H   I   J
 #&gt;   R1 2 3 10 22 45 78 115 146 158 146
 #&gt;   R2 0 0  0  0  0  2   3  10  22  45
 #&gt; [ reached max_nfeat ... 27 more features ]</div><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>tail</a></span>(<span class='kw'>data_dfm_lbgexample</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>tail</a></span><span class='op'>(</span><span class='va'>data_dfm_lbgexample</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Document-feature matrix of: 6 documents, 37 features (54.1% sparse).
 #&gt;     features
 #&gt; docs A B  C  D  E  F   G   H   I   J
@@ -280,7 +280,7 @@ by <code>n</code> and <code>nfeat</code>.</p>
 #&gt;   R4 0 0  0  0  0  0   0   0   0   0
 #&gt;   R5 0 0  0  0  0  0   0   0   0   0
 #&gt;   V1 0 0  0  0  0  0   0   2   3  10
-#&gt; [ reached max_nfeat ... 27 more features ]</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>tail</a></span>(<span class='kw'>data_dfm_lbgexample</span>, n = <span class='fl'>3</span>, nf = <span class='fl'>4</span>)
+#&gt; [ reached max_nfeat ... 27 more features ]</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>tail</a></span><span class='op'>(</span><span class='va'>data_dfm_lbgexample</span>, n <span class='op'>=</span> <span class='fl'>3</span>, nf <span class='op'>=</span> <span class='fl'>4</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Document-feature matrix of: 3 documents, 4 features (66.7% sparse).
 #&gt;     features
 #&gt; docs ZH ZI ZJ ZK
@@ -298,7 +298,7 @@ by <code>n</code> and <code>nfeat</code>.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

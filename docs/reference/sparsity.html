@@ -91,7 +91,7 @@ to the proportion of cells that have zero counts." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.9.9000</span>
       </span>
     </div>
 
@@ -221,7 +221,7 @@ to the proportion of cells that have zero counts." />
 to the proportion of cells that have zero counts.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>sparsity</span>(<span class='kw'>x</span>)</pre>
+    <pre class="usage"><span class='fu'>sparsity</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -234,9 +234,9 @@ to the proportion of cells that have zero counts.</p>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>dfmat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span>(<span class='kw'>data_corpus_inaugural</span>)
-<span class='fu'>sparsity</span>(<span class='kw'>dfmat</span>)
-</div><div class='output co'>#&gt; [1] 0.9176429</div><div class='input'><span class='fu'>sparsity</span>(<span class='fu'><a href='dfm_trim.html'>dfm_trim</a></span>(<span class='kw'>dfmat</span>, min_termfreq = <span class='fl'>5</span>))
+    <pre class="examples"><div class='input'><span class='va'>dfmat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span><span class='op'>(</span><span class='va'>data_corpus_inaugural</span><span class='op'>)</span>
+<span class='fu'>sparsity</span><span class='op'>(</span><span class='va'>dfmat</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 0.9176429</div><div class='input'><span class='fu'>sparsity</span><span class='op'>(</span><span class='fu'><a href='dfm_trim.html'>dfm_trim</a></span><span class='op'>(</span><span class='va'>dfmat</span>, min_termfreq <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] 0.7829237</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -249,7 +249,7 @@ to the proportion of cells that have zero counts.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

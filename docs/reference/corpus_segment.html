@@ -93,7 +93,7 @@ transcript) or a user-supplied annotation." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.9.9000</span>
       </span>
     </div>
 
@@ -225,24 +225,24 @@ documents based on a regular pattern (such as a speaker identifier in a
 transcript) or a user-supplied annotation.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>corpus_segment</span>(
-  <span class='kw'>x</span>,
-  pattern = <span class='st'>"##*"</span>,
-  valuetype = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"glob"</span>, <span class='st'>"regex"</span>, <span class='st'>"fixed"</span>),
-  case_insensitive = <span class='fl'>TRUE</span>,
-  extract_pattern = <span class='fl'>TRUE</span>,
-  pattern_position = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"before"</span>, <span class='st'>"after"</span>),
-  use_docvars = <span class='fl'>TRUE</span>
-)
+    <pre class="usage"><span class='fu'>corpus_segment</span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  pattern <span class='op'>=</span> <span class='st'>"##*"</span>,
+  valuetype <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"glob"</span>, <span class='st'>"regex"</span>, <span class='st'>"fixed"</span><span class='op'>)</span>,
+  case_insensitive <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  extract_pattern <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  pattern_position <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"before"</span>, <span class='st'>"after"</span><span class='op'>)</span>,
+  use_docvars <span class='op'>=</span> <span class='cn'>TRUE</span>
+<span class='op'>)</span>
 
-<span class='fu'>char_segment</span>(
-  <span class='kw'>x</span>,
-  pattern = <span class='st'>"##*"</span>,
-  valuetype = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"glob"</span>, <span class='st'>"regex"</span>, <span class='st'>"fixed"</span>),
-  case_insensitive = <span class='fl'>TRUE</span>,
-  remove_pattern = <span class='fl'>TRUE</span>,
-  pattern_position = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"before"</span>, <span class='st'>"after"</span>)
-)</pre>
+<span class='fu'>char_segment</span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  pattern <span class='op'>=</span> <span class='st'>"##*"</span>,
+  valuetype <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"glob"</span>, <span class='st'>"regex"</span>, <span class='st'>"fixed"</span><span class='op'>)</span>,
+  case_insensitive <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  remove_pattern <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  pattern_position <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"before"</span>, <span class='st'>"after"</span><span class='op'>)</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -253,9 +253,8 @@ transcript) or a user-supplied annotation.</p>
     </tr>
     <tr>
       <th>pattern</th>
-      <td><p>a character vector, list of character vectors,
-<a href='dictionary.html'>dictionary</a>, or <a href='textstat_collocations.html'>collocations</a> object.  See <a href='pattern.html'>pattern</a> for
-details.</p></td>
+      <td><p>a character vector, list of character vectors, <a href='dictionary.html'>dictionary</a>,
+or collocations object.  See <a href='pattern.html'>pattern</a> for details.</p></td>
     </tr>
     <tr>
       <th>valuetype</th>
@@ -353,12 +352,12 @@ syntactic units such as sentences, paragraphs, or fixed-length chunks</p></div>
     <pre class="examples"><div class='input'><span class='co'>## segmenting a corpus</span>
 
 <span class='co'># segmenting a corpus using tags</span>
-<span class='kw'>corp1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='corpus.html'>corpus</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"##INTRO This is the introduction.
+<span class='va'>corp1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='corpus.html'>corpus</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"##INTRO This is the introduction.
                   ##DOC1 This is the first document.  Second sentence in Doc 1.
                   ##DOC3 Third document starts here.  End of third document."</span>,
-                 <span class='st'>"##INTRO Document ##NUMBER Two starts before ##NUMBER Three."</span>))
-<span class='kw'>corpseg1</span> <span class='op'>&lt;-</span> <span class='fu'>corpus_segment</span>(<span class='kw'>corp1</span>, pattern = <span class='st'>"##*"</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span>(<span class='fu'><a href='texts.html'>texts</a></span>(<span class='kw'>corpseg1</span>), <span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='kw'>corpseg1</span>))
+                 <span class='st'>"##INTRO Document ##NUMBER Two starts before ##NUMBER Three."</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>corpseg1</span> <span class='op'>&lt;-</span> <span class='fu'>corpus_segment</span><span class='op'>(</span><span class='va'>corp1</span>, pattern <span class='op'>=</span> <span class='st'>"##*"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span><span class='op'>(</span><span class='fu'><a href='texts.html'>texts</a></span><span class='op'>(</span><span class='va'>corpseg1</span><span class='op'>)</span>, <span class='fu'><a href='docvars.html'>docvars</a></span><span class='op'>(</span><span class='va'>corpseg1</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;                                                texts(corpseg1)  pattern
 #&gt; text1.1                              This is the introduction.  ##INTRO
 #&gt; text1.2 This is the first document.  Second sentence in Doc 1.   ##DOC1
@@ -367,18 +366,18 @@ syntactic units such as sentences, paragraphs, or fixed-length chunks</p></div>
 #&gt; text2.2                                      Two starts before ##NUMBER
 #&gt; text2.3                                                 Three. ##NUMBER</div><div class='input'>
 <span class='co'># segmenting a transcript based on speaker identifiers</span>
-<span class='kw'>corp2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='corpus.html'>corpus</a></span>(<span class='st'>"Mr. Smith: Text.\nMrs. Jones: More text.\nMr. Smith: I'm speaking, again."</span>)
-<span class='kw'>corpseg2</span> <span class='op'>&lt;-</span> <span class='fu'>corpus_segment</span>(<span class='kw'>corp2</span>, pattern = <span class='st'>"\\b[A-Z].+\\s[A-Z][a-z]+:"</span>,
-                           valuetype = <span class='st'>"regex"</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span>(<span class='fu'><a href='texts.html'>texts</a></span>(<span class='kw'>corpseg2</span>), <span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='kw'>corpseg2</span>))
+<span class='va'>corp2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='corpus.html'>corpus</a></span><span class='op'>(</span><span class='st'>"Mr. Smith: Text.\nMrs. Jones: More text.\nMr. Smith: I'm speaking, again."</span><span class='op'>)</span>
+<span class='va'>corpseg2</span> <span class='op'>&lt;-</span> <span class='fu'>corpus_segment</span><span class='op'>(</span><span class='va'>corp2</span>, pattern <span class='op'>=</span> <span class='st'>"\\b[A-Z].+\\s[A-Z][a-z]+:"</span>,
+                           valuetype <span class='op'>=</span> <span class='st'>"regex"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span><span class='op'>(</span><span class='fu'><a href='texts.html'>texts</a></span><span class='op'>(</span><span class='va'>corpseg2</span><span class='op'>)</span>, <span class='fu'><a href='docvars.html'>docvars</a></span><span class='op'>(</span><span class='va'>corpseg2</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;              texts(corpseg2)     pattern
 #&gt; text1.1                Text.  Mr. Smith:
 #&gt; text1.2           More text. Mrs. Jones:
 #&gt; text1.3 I'm speaking, again.  Mr. Smith:</div><div class='input'>
 <span class='co'># segmenting a corpus using crude end-of-sentence segmentation</span>
-<span class='kw'>corpseg3</span> <span class='op'>&lt;-</span> <span class='fu'>corpus_segment</span>(<span class='kw'>corp1</span>, pattern = <span class='st'>"."</span>, valuetype = <span class='st'>"fixed"</span>,
-                           pattern_position = <span class='st'>"after"</span>, extract_pattern = <span class='fl'>FALSE</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span>(<span class='fu'><a href='texts.html'>texts</a></span>(<span class='kw'>corpseg3</span>), <span class='fu'><a href='docvars.html'>docvars</a></span>(<span class='kw'>corpseg3</span>))
+<span class='va'>corpseg3</span> <span class='op'>&lt;-</span> <span class='fu'>corpus_segment</span><span class='op'>(</span><span class='va'>corp1</span>, pattern <span class='op'>=</span> <span class='st'>"."</span>, valuetype <span class='op'>=</span> <span class='st'>"fixed"</span>,
+                           pattern_position <span class='op'>=</span> <span class='st'>"after"</span>, extract_pattern <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span><span class='op'>(</span><span class='fu'><a href='texts.html'>texts</a></span><span class='op'>(</span><span class='va'>corpseg3</span><span class='op'>)</span>, <span class='fu'><a href='docvars.html'>docvars</a></span><span class='op'>(</span><span class='va'>corpseg3</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;                                                     texts(corpseg3)
 #&gt; text1.1                           ##INTRO This is the introduction.
 #&gt; text1.2                          ##DOC1 This is the first document.
@@ -389,7 +388,7 @@ syntactic units such as sentences, paragraphs, or fixed-length chunks</p></div>
 <span class='co'>## segmenting a character vector</span>
 
 <span class='co'># segment into paragraphs and removing the "- " bullet points</span>
-<span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span>(<span class='kw'>data_char_ukimmig2010</span>[<span class='fl'>4</span>])
+<span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span><span class='op'>(</span><span class='va'>data_char_ukimmig2010</span><span class='op'>[</span><span class='fl'>4</span><span class='op'>]</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Immigration.
 #&gt; 
 #&gt; Migration is a fact of life.  People have always moved from one country to another, and as a practical matter the ability to control borders without oppressive measures is more limited than most politicians like to pretend. Much of our language, culture and way of life have been enriched by successive new arrivals over two thousand years. It is not just a matter of immigration: over 5 million British Citizens benefit from other countries' liberal immigration policies by living abroad.
@@ -414,9 +413,9 @@ syntactic units such as sentences, paragraphs, or fixed-length chunks</p></div>
 #&gt; 
 #&gt; - Those who have been trafficked should not be subject to summary deportation. They should receive a temporary right to stay and have the same right to apply to remain as others seeking to migrate.
 #&gt; 
-#&gt; - Those seeking sanctuary should not be detained, and in particular the administrative detention of children is unacceptable and should cease immediately.</div><div class='input'><span class='fu'>char_segment</span>(<span class='kw'>data_char_ukimmig2010</span>[<span class='fl'>4</span>],
-             pattern = <span class='st'>"\\n\\n(-\\s){0,1}"</span>, valuetype = <span class='st'>"regex"</span>,
-             remove_pattern = <span class='fl'>TRUE</span>)
+#&gt; - Those seeking sanctuary should not be detained, and in particular the administrative detention of children is unacceptable and should cease immediately.</div><div class='input'><span class='fu'>char_segment</span><span class='op'>(</span><span class='va'>data_char_ukimmig2010</span><span class='op'>[</span><span class='fl'>4</span><span class='op'>]</span>,
+             pattern <span class='op'>=</span> <span class='st'>"\\n\\n(-\\s){0,1}"</span>, valuetype <span class='op'>=</span> <span class='st'>"regex"</span>,
+             remove_pattern <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         Greens.1 
 #&gt;                                                                                                                                                                                                                                                                                                      "Migration is a fact of life.  People have always moved from one country to another, and as a practical matter the ability to control borders without oppressive measures is more limited than most politicians like to pretend. Much of our language, culture and way of life have been enriched by successive new arrivals over two thousand years. It is not just a matter of immigration: over 5 million British Citizens benefit from other countries' liberal immigration policies by living abroad." 
 #&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         Greens.2 
@@ -442,9 +441,9 @@ syntactic units such as sentences, paragraphs, or fixed-length chunks</p></div>
 #&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        Greens.12 
 #&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       "Those seeking sanctuary should not be detained, and in particular the administrative detention of children is unacceptable and should cease immediately." </div><div class='input'>
 <span class='co'># segment a text into clauses</span>
-<span class='kw'>txt</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(d1 = <span class='st'>"This, is a sentence?  You: come here."</span>, d2 = <span class='st'>"Yes, yes okay."</span>)
-<span class='fu'>char_segment</span>(<span class='kw'>txt</span>, pattern = <span class='st'>"\\p{P}"</span>, valuetype = <span class='st'>"regex"</span>,
-             pattern_position = <span class='st'>"after"</span>, remove_pattern = <span class='fl'>FALSE</span>)
+<span class='va'>txt</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>d1 <span class='op'>=</span> <span class='st'>"This, is a sentence?  You: come here."</span>, d2 <span class='op'>=</span> <span class='st'>"Yes, yes okay."</span><span class='op'>)</span>
+<span class='fu'>char_segment</span><span class='op'>(</span><span class='va'>txt</span>, pattern <span class='op'>=</span> <span class='st'>"\\p{P}"</span>, valuetype <span class='op'>=</span> <span class='st'>"regex"</span>,
+             pattern_position <span class='op'>=</span> <span class='st'>"after"</span>, remove_pattern <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;             d1.1             d1.2             d1.3             d1.4 
 #&gt;          "This," "is a sentence?"           "You:"     "come here." 
 #&gt;             d2.1             d2.2 
@@ -460,7 +459,7 @@ syntactic units such as sentences, paragraphs, or fixed-length chunks</p></div>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

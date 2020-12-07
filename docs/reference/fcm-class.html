@@ -91,7 +91,7 @@ additional slots, described below." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.9.9000</span>
       </span>
     </div>
 
@@ -314,17 +314,17 @@ are counted separately</p></dd>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># fcm subsetting</span>
-<span class='kw'>fcmat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='fcm.html'>fcm</a></span>(<span class='fu'><a href='tokens.html'>tokens</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"this contains lots of stopwords"</span>,
-                  <span class='st'>"no if, and, or but about it: lots"</span>),
-                remove_punct = <span class='fl'>TRUE</span>))
-<span class='kw'>fcmat</span>[<span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>, ]
+<span class='va'>fcmat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='fcm.html'>fcm</a></span><span class='op'>(</span><span class='fu'><a href='tokens.html'>tokens</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"this contains lots of stopwords"</span>,
+                  <span class='st'>"no if, and, or but about it: lots"</span><span class='op'>)</span>,
+                remove_punct <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>fcmat</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>, <span class='op'>]</span>
 </div><div class='output co'>#&gt; Feature co-occurrence matrix of: 3 by 12 features.
 #&gt;           features
 #&gt; features   this contains lots of stopwords no if and or but
 #&gt;   this        0        1    1  1         1  0  0   0  0   0
 #&gt;   contains    0        0    1  1         1  0  0   0  0   0
 #&gt;   lots        0        0    0  1         1  1  1   1  1   1
-#&gt; [ reached max_nfeat ... 2 more features ]</div><div class='input'><span class='kw'>fcmat</span>[<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>]
+#&gt; [ reached max_nfeat ... 2 more features ]</div><div class='input'><span class='va'>fcmat</span><span class='op'>[</span><span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>]</span>
 </div><div class='output co'>#&gt; Feature co-occurrence matrix of: 2 by 5 features.
 #&gt;            features
 #&gt; features    this contains lots of stopwords
@@ -343,7 +343,7 @@ are counted separately</p></dd>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

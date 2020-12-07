@@ -90,7 +90,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.9.9000</span>
       </span>
     </div>
 
@@ -219,7 +219,7 @@
     <p>Internal function to replace dictionary values</p>
     </div>
 
-    <pre class="usage"><span class='fu'>replace_dictionary_values</span>(<span class='kw'>dict</span>, <span class='kw'>from</span>, <span class='kw'>to</span>)</pre>
+    <pre class="usage"><span class='fu'>replace_dictionary_values</span><span class='op'>(</span><span class='va'>dict</span>, <span class='va'>from</span>, <span class='va'>to</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -232,13 +232,13 @@
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>dict</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(KEY1 = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(SUBKEY1 = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='st'>"A_B"</span>),
-                          SUBKEY2 = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='st'>"C_D"</span>)),
-              KEY2 = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(SUBKEY3 = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='st'>"E_F"</span>),
-                          SUBKEY4 = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='st'>"G_F_I"</span>)),
-              KEY3 = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(SUBKEY5 = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(SUBKEY7 = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='st'>"J_K"</span>)),
-                          SUBKEY6 = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(SUBKEY8 = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='st'>"L"</span>))))
-<span class='kw'>quanteda</span>:::<span class='fu'>replace_dictionary_values</span>(<span class='kw'>dict</span>, <span class='st'>"_"</span>, <span class='st'>" "</span>)
+    <pre class="examples"><div class='input'><span class='va'>dict</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>KEY1 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>SUBKEY1 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='st'>"A_B"</span><span class='op'>)</span>,
+                          SUBKEY2 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='st'>"C_D"</span><span class='op'>)</span><span class='op'>)</span>,
+              KEY2 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>SUBKEY3 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='st'>"E_F"</span><span class='op'>)</span>,
+                          SUBKEY4 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='st'>"G_F_I"</span><span class='op'>)</span><span class='op'>)</span>,
+              KEY3 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>SUBKEY5 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>SUBKEY7 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='st'>"J_K"</span><span class='op'>)</span><span class='op'>)</span>,
+                          SUBKEY6 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>SUBKEY8 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='st'>"L"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'>quanteda</span><span class='fu'>:::</span><span class='fu'>replace_dictionary_values</span><span class='op'>(</span><span class='va'>dict</span>, <span class='st'>"_"</span>, <span class='st'>" "</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; $KEY1
 #&gt; $KEY1$SUBKEY1
 #&gt; $KEY1$SUBKEY1[[1]]
@@ -290,7 +290,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, Jiong Wei Lua, Jouni Kuha, William Lowe, European Research Council.</p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">

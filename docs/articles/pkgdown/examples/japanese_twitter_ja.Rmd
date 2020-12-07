@@ -78,6 +78,7 @@ tweet_dfm <- dfm(toks)
 ここでは，`dfm_select()`によってハッシュタグを選択しているが，そこに多くに含まれる'#選挙'や'#衆院選'などのハッシュタグは，クラスターを明確にするために削除している．
 
 ```{r}
+library("quanteda.textplots")
 tag_fcm <- 
     tweet_dfm %>% 
     dfm_select("#*") %>% 
