@@ -69,7 +69,6 @@ Suggests:
     xtable,
     ggplot2
 Remotes:
-    quanteda/quanteda.textstats,
     quanteda/quanteda.textplots
 URL: https://quanteda.io
 Encoding: UTF-8
