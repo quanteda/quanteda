@@ -1,7 +1,9 @@
 .onAttach <- function(...) {
     # startup message
     #packageStartupMessage("Initializing package: ", sQuote('quanteda'))
-    packageStartupMessage("Package version: ", as.character(utils::packageVersion("quanteda")))
+    packageStartupMessage("Package version: ", as.character(utils::packageVersion("quanteda")), "\n",
+                          "Unicode version: ", stringi::stri_info()[["Unicode.version"]], "\n",
+                          "ICU version: ", stringi::stri_info()[["ICU.version"]])
     
     # initialize options
     quanteda_options(initialize = TRUE)
