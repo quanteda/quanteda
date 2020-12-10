@@ -2,8 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{pattern2list}
 \alias{pattern2list}
-\title{Convert various input as pattern to a vector used in tokens_select,
-tokens_compound and kwic.}
+\title{Function to assign multiple slots to a S4 object}
 \usage{
 pattern2list(
   x,
@@ -17,6 +16,8 @@ pattern2list(
 )
 }
 \arguments{
+\item{x}{an S4 object}
+
 \item{valuetype}{the type of pattern matching: \code{"glob"} for "glob"-style
 wildcard expressions; \code{"regex"} for regular expressions; or \code{"fixed"} for
 exact matching. See \link{valuetype} for details.}
@@ -29,12 +30,29 @@ exact matching. See \link{valuetype} for details.}
 \item{levels}{only used when pattern is a dictionary}
 
 \item{remove_unigram}{ignore single-word patterns if \code{TRUE}}
+
+\item{exceptions}{slots to ignore}
+
+\item{value}{a list of attributes extracted by attributes()}
 }
 \description{
-Convert various input as pattern to a vector used in tokens_select,
-tokens_compound and kwic.
+Function to assign multiple slots to a S4 object
 }
 \seealso{
 \code{\link[=pattern2id]{pattern2id()}}
 }
+\keyword{Convert}
+\keyword{a}
+\keyword{and}
+\keyword{as}
+\keyword{in}
+\keyword{input}
 \keyword{internal}
+\keyword{kwic.}
+\keyword{pattern}
+\keyword{to}
+\keyword{tokens_compound}
+\keyword{tokens_select,}
+\keyword{used}
+\keyword{various}
+\keyword{vector}
