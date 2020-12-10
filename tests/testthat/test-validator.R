@@ -15,6 +15,8 @@ l2 <- FALSE
 l3 <- c(TRUE, FALSE, TRUE)
 l4 <- c(TRUE, NA)
 
+fun <- function(x){}
+
 test_that("check_integer works", {
 
     expect_identical(quanteda:::check_integer(n1), 3L)
@@ -37,6 +39,8 @@ test_that("check_integer works", {
                  "The length of n3 must be between 1 and 2")
     expect_error(quanteda:::check_integer(n4, len_max = 2), 
                  "The value of n4 cannot be NA")
+    expect_error(quanteda:::check_integer(fun), 
+                 "fun must be coercible to integer")
 })
 
 test_that("check_double works", {
@@ -61,6 +65,8 @@ test_that("check_double works", {
                  "The length of n3 must be between 1 and 2")
     expect_error(quanteda:::check_double(n4, len_max = 2), 
                  "The value of n4 cannot be NA")
+    expect_error(quanteda:::check_double(fun), 
+                 "fun must be coercible to double")
 })
 
 
@@ -82,6 +88,8 @@ test_that("check_character works", {
                  "The value of c3 must be 2 character")
     expect_error(quanteda:::check_character(c4, len_max = 2), 
                  "The value of c4 cannot be NA")
+    expect_error(quanteda:::check_character(fun), 
+                 "fun must be coercible to character")
 })
 
 test_that("check_logical works", {
@@ -102,4 +110,6 @@ test_that("check_logical works", {
                  "The length of l3 must be between 1 and 2")
     expect_error(quanteda:::check_logical(l4, len_max = 2), 
                  "The value of l4 cannot be NA")
+    expect_error(quanteda:::check_character(fun), 
+                 "fun must be coercible to character")
 })

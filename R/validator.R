@@ -1,10 +1,9 @@
 check_integer <- function(x, len_min = 1, len_max = 1, min = -Inf, max = Inf) {
     arg <- deparse(substitute(x))
+    fun <- function(e) stop(arg, " must be coercible to integer", call. = FALSE)
     tryCatch({
         x <- as.integer(x)
-    }, warning = function(e) {
-        stop(arg, " must be coercible to integer", call. = FALSE)
-    })
+    }, warning = fun, error = fun)
     x <- check_length(x, len_min, len_max, arg)
     x <- check_na(x, arg)
     x <- check_range(x, min, max, arg)
@@ -13,11 +12,10 @@ check_integer <- function(x, len_min = 1, len_max = 1, min = -Inf, max = Inf) {
 
 check_double <- function(x, len_min = 1, len_max = 1, min = -Inf, max = Inf) {
     arg <- deparse(substitute(x))
+    fun <- function(e) stop(arg, " must be coercible to double", call. = FALSE)
     tryCatch({
         x <- as.double(x)
-    }, warning = function(e) {
-        stop(arg, " must be coercible to double", call. = FALSE)
-    })
+    }, warning = fun, error = fun)
     x <- check_length(x, len_min, len_max, arg)
     x <- check_na(x, arg)
     x <- check_range(x, min, max, arg)
@@ -26,11 +24,10 @@ check_double <- function(x, len_min = 1, len_max = 1, min = -Inf, max = Inf) {
 
 check_logical <- function(x, len_min = 1, len_max = 1, min = -Inf, max = Inf) {
     arg <- deparse(substitute(x))
+    fun <- function(e) stop(arg, " must be coercible to logical", call. = FALSE)
     tryCatch({
         x <- as.logical(x)
-    }, warning = function(e) {
-        stop(arg, " must be coercible to logical", call. = FALSE)
-    })
+    }, warning = fun, error = fun)
     x <- check_length(x, len_min, len_max, arg)
     x <- check_na(x, arg)
     x <- check_range(x, min, max, arg)
@@ -39,11 +36,10 @@ check_logical <- function(x, len_min = 1, len_max = 1, min = -Inf, max = Inf) {
 
 check_character <- function(x, len_min = 1, len_max = 1, nchar_min = 0, nchar_max = Inf) {
     arg <- deparse(substitute(x))
+    fun <- function(e) stop(arg, " must be coercible to character", call. = FALSE)
     tryCatch({
         x <- as.character(x)
-    }, warning = function(e) {
-        stop(arg, " must be coercible to character", call. = FALSE)
-    })
+    }, warning = fun, error = fun)
     x <- check_length(x, len_min, len_max, arg)
     x <- check_na(x, arg)
     n <- stringi::stri_length(x)
