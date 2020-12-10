@@ -61,6 +61,7 @@ bootstrap_dfm.character <- function(x, n = 10, ..., verbose = quanteda_options("
 #' bootstrap_dfm(dfmat, n = 3)
 bootstrap_dfm.dfm <- function(x, n = 10, ..., verbose = quanteda_options("verbose")) {
     x <- as.dfm(x)
+    n <- check_integer(n, min = 1)
     group <- get_docvars(x, "docid_", system = TRUE, drop = TRUE)
     if (length(levels(group)) == ndoc(x))
         stop("x must contain more than one row per document")
