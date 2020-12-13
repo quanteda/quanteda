@@ -21,6 +21,7 @@ tokens_tolower.default <- function(x, keep_acronyms = FALSE) {
 
 #' @export
 tokens_tolower.tokens <- function(x, keep_acronyms = FALSE) {
+    keep_acronyms <- check_logical(keep_acronyms)
     types(x) <- lowercase_types(types(x), keep_acronyms)
     tokens_recompile(x, gap = FALSE, dup = TRUE)
 }
@@ -91,6 +92,7 @@ char_tolower.default <- function(x, keep_acronyms = FALSE) {
 #' @importFrom stringi stri_extract_all_regex stri_replace_all_regex stri_trans_tolower
 #' @export
 char_tolower.character <- function(x, keep_acronyms = FALSE) {
+    keep_acronyms <- check_logical(keep_acronyms)
     name <- names(x)
     if (keep_acronyms) {
         match <- stri_extract_all_regex(x, "\\b(\\p{Uppercase_Letter}(\\p{Uppercase_Letter}|\\d)+)\\b")
@@ -156,6 +158,7 @@ dfm_tolower.default <- function(x, keep_acronyms = FALSE) {
 #' @export
 dfm_tolower.dfm <- function(x, keep_acronyms = FALSE) {
     x <- as.dfm(x)
+    keep_acronyms <- check_logical(keep_acronyms)
     if (!nfeat(x) || !ndoc(x)) return(x)
     set_dfm_featnames(x) <- lowercase_types(featnames(x), keep_acronyms)
     dfm_compress(x, margin = "features")
@@ -205,6 +208,7 @@ fcm_tolower.default <- function(x, keep_acronyms = FALSE) {
 
 #' @export
 fcm_tolower.fcm <- function(x, keep_acronyms = FALSE) {
+    keep_acronyms <- check_logical(keep_acronyms)
     set_fcm_featnames(x) <- lowercase_types(featnames(x), keep_acronyms)
     fcm_compress(x)
 }
