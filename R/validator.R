@@ -22,7 +22,7 @@ check_double <- function(x, len_min = 1, len_max = 1, min = -Inf, max = Inf) {
     return(x)
 }
 
-check_logical <- function(x, len_min = 1, len_max = 1, min = -Inf, max = Inf) {
+check_logical <- function(x, len_min = 1, len_max = 1) {
     arg <- deparse(substitute(x))
     fun <- function(e) stop(arg, " must be coercible to logical", call. = FALSE)
     tryCatch({
@@ -30,7 +30,6 @@ check_logical <- function(x, len_min = 1, len_max = 1, min = -Inf, max = Inf) {
     }, warning = fun, error = fun)
     x <- check_length(x, len_min, len_max, arg)
     x <- check_na(x, arg)
-    x <- check_range(x, min, max, arg)
     return(x)
 }
 
