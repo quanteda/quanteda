@@ -102,10 +102,16 @@ message_select <- function(selection, nfeats, ndocs, nfeatspad = 0, ndocspad = 0
 pattern2list <- function(x, types, valuetype, case_insensitive,
                          concatenator = "_", levels = 1, remove_unigram = FALSE,
                          keep_nomatch = FALSE) {
-
+    
     if (is.dfm(x))
         stop("dfm cannot be used as pattern")
-
+    
+    case_insensitive <- check_logical(case_insensitive)
+    concatenator <- check_character(concatenator)
+    levels <- check_integer(levels, min = 1)
+    remove_unigram <- check_logical(remove_unigram)
+    keep_nomatch <- check_logical(keep_nomatch)
+    
     if (is.collocations(x)) {
         if (nrow(x) == 0) return(list())
         temp <- stri_split_charclass(x$collocation, "\\p{Z}")

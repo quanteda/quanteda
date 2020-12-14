@@ -84,9 +84,11 @@ tokens_replace.tokens <- function(x, pattern, replacement, valuetype = "glob",
 #' @noRd
 #' @keywords internal
 replace_type <- function(type, pattern, replacement, case_insensitive) {
+    
+    pattern <- check_character(pattern)
+    replacement <- check_character(replacement)
+    case_insensitive <- check_logical(case_insensitive)
 
-    if (!is.character(pattern) || !is.character(replacement))
-        stop("'pattern' and 'replacement' must be characters")
     if (!length(type)) return(character())
 
     # normalize unicode

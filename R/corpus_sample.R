@@ -47,15 +47,14 @@ corpus_sample.corpus <- function(x, size = ndoc(x), replace = FALSE, prob = NULL
     x <- as.corpus(x)
     size <- check_integer(size)
     
+    i <- seq_len(ndoc(x))
     if (!is.null(by)) {
         if (!is.null(prob)) stop("prob not implemented with by")
         if (by == "document") by <- "docid_"
-        i <- sample_bygroup(seq_len(ndoc(x)), 
-                            group = get_docvars(x, by, system = TRUE, drop = TRUE), 
+        i <- sample_bygroup(i, group = get_docvars(x, by, system = TRUE, drop = TRUE), 
                             size = size, replace = replace)
     } else {
-        if (is.null(size)) size <- ndoc(x)
-        i <- base::sample(ndoc(x), size, replace, prob) 
+        i <- base::sample(i, size, replace, prob) 
     }
     return(x[i])
 }

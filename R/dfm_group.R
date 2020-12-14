@@ -51,8 +51,10 @@ dfm_group.default <- function(x, groups = NULL, fill = FALSE, force = FALSE) {
 dfm_group.dfm <- function(x, groups = NULL, fill = FALSE, force = FALSE) {
 
     x <- as.dfm(x)
+    fill <- check_logical(fill)
+    force <- check_logical(force)
+    
     attrs <- attributes(x)
-
     if (is.null(groups))
         groups <- docid(x)
 

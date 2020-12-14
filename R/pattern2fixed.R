@@ -27,10 +27,13 @@ pattern2id <- function(pattern, types, valuetype = c("glob", "fixed", "regex"),
                        case_insensitive = TRUE, keep_nomatch = FALSE) {
     
     if (!length(pattern)) return(list())
-    
-    pattern <- lapply(pattern, stri_trans_nfc) # normalize unicode
-    stopifnot(is.character(types))
+    types <- check_character(types, len_max = Inf)
     valuetype <- match.arg(valuetype)
+    case_insensitive <- check_logical(case_insensitive)
+    keep_nomatch <- check_logical(keep_nomatch)
+    
+    # normalize unicode
+    pattern <- lapply(pattern, stri_trans_nfc) 
     
     # glob is treated as fixed if neither * or ? is found
     if (valuetype == "glob" && !is_glob(pattern))
