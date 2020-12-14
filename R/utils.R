@@ -216,6 +216,7 @@ message_error <- function(key = NULL) {
              "fcm_context" = "fcm must be created with a document context",
              "matrix_mismatch" = "matrix must have the same rownames and colnames",
              "docnames_mismatch" = "docnames must the the same length as x",
+             "ndoc_mismatch" = "documents must the the same length as x",
              "docvars_mismatch" = "data.frame must have the same number of rows as documents",
              "docvars_invalid" = "document variables cannot begin with the underscore",
              "docvar_nofield" = "you must supply field name(s)",

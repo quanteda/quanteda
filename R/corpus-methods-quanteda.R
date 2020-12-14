@@ -86,7 +86,10 @@ texts.character <- function(x, groups = NULL, spacer = " ") {
 "texts<-.corpus" <- function(x, value) {
     x <- as.corpus(x)
     attrs <- attributes(x)
-    x <- as.character(value)
+    value <- as.character(value)
+    if (length(x) != length(value))
+        stop(message_error("ndoc_mismatch"), call. = FALSE)
+    x <- value
     attributes(x) <- attrs
     return(x)
 }
