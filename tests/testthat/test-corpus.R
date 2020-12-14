@@ -36,10 +36,11 @@ test_that("print works", {
         print(corpus(c("The", "quick", "brown", "fox")), show_summary = logical()),
         "The length of show_summary must be 1"
     )
+    
 })                
 
 
-test_that("test corpus constructors works for kwic", {
+test_that("corpus constructors works for kwic", {
     kw <- kwic(data_char_sampletext, "econom*")
 
     # split_context = TRUE, extract_keyword = TRUE
@@ -117,7 +118,10 @@ test_that("test corpus constructors works for kwic", {
                          texts()),
       txt
     )
-    corp <- corpus(kw, split_context = TRUE, extract_keyword = FALSE)
+    expect_error(corpus(kw, split_context = logical(), extract_keyword = FALSE))
+      
+    expect_error(corpus(kw, extract_keyword = logical()))
+    
 })
 
 test_that("test corpus constructors works for character", {
@@ -228,7 +232,10 @@ test_that("corpus works for texts with duplicate filenames", {
     txt <- c(one = "Text one.", two = "text two", one = "second first text")
     corp <- corpus(txt, unique_docnames = FALSE)
     expect_equal(docnames(corp), c("one.1", "two.1", "one.2"))
-    expect_error(corpus(txt, unique_docnames = TRUE), "docnames must be unique")
+    expect_error(corpus(txt, unique_docnames = TRUE), 
+                 "docnames must be unique")
+    expect_error(corpus(txt, unique_docnames = logical()), 
+                 "The length of unique_docnames must be 1")
 })
 
 test_that("create a corpus on a corpus", {
@@ -338,27 +345,27 @@ test_that("corpus.data.frame sets docnames correctly", {
 
     df <- data.frame(other = txt,
                      row.names = NULL, stringsAsFactors = FALSE)
-    dfdocid_ <- data.frame(other = txt, doc_id = dnames,
+    df_docid <- data.frame(other = txt, doc_id = dnames,
                            row.names = NULL, stringsAsFactors = FALSE)
     df_text <- data.frame(text = txt,
                           row.names = NULL, stringsAsFactors = FALSE)
     df_rownames <- data.frame(other = txt,
                               row.names = rnames, stringsAsFactors = FALSE)
-    dfdocid__rownames <- data.frame(other = txt, doc_id = dnames,
+    df_docid_rownames <- data.frame(other = txt, doc_id = dnames,
                                     row.names = rnames, stringsAsFactors = FALSE)
-    df_textdocid_ <- data.frame(text = txt,  doc_id = dnames,
+    df_text_docid <- data.frame(text = txt,  doc_id = dnames,
                                 row.names = NULL, stringsAsFactors = FALSE)
     df_text_rownames <- data.frame(text = txt,
                                    row.names = rnames, stringsAsFactors = FALSE)
-    df_textdocid_rownames <- data.frame(text = txt, doc_id = dnames,
+    df_text_docid_rownames <- data.frame(text = txt, doc_id = dnames,
                                          row.names = rnames, stringsAsFactors = FALSE)
 
     expect_identical(
-        docnames(corpus(df_textdocid_rownames)),
+        docnames(corpus(df_text_docid_rownames)),
         c("A-dn", "B-dn", "C-dn")
     )
     expect_error(
-        corpus(df_textdocid_rownames, docid_field = "notfound"),
+        corpus(df_text_docid_rownames, docid_field = "notfound"),
         "docid_field column not found or invalid"
     )
     expect_identical(
