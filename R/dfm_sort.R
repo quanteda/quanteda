@@ -32,9 +32,11 @@ dfm_sort.dfm <- function(x, decreasing = TRUE,
                          margin = c("features", "documents", "both")) {
 
   x <- as.dfm(x)
-  if (!nfeat(x) || !ndoc(x)) return(x)
+  decreasing <- check_logical(decreasing)
   margin <- match.arg(margin)
-
+  
+  if (!nfeat(x) || !ndoc(x)) return(x)
+  
   if (margin == "features") {
     x <- x[, order(colSums(x), decreasing = decreasing)]
   } else if (margin == "documents") {

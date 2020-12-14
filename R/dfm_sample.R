@@ -41,6 +41,7 @@ dfm_sample.dfm <- function(x, size = ifelse(margin == "documents", ndoc(x), nfea
                        replace = FALSE, prob = NULL,
                        margin = c("documents", "features")) {
     x <- as.dfm(x)
+    size <- check_integer(size, min = 0)
     margin <- match.arg(margin)
     if (margin == "documents") {
         if (size > ndoc(x) && !replace)

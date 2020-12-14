@@ -40,17 +40,23 @@ corpus_trim.corpus <- function(x, what = c("sentences", "paragraphs", "documents
                                exclude_pattern = NULL) {
     x <- as.corpus(x)
     what <- match.arg(what)
-    if (is.null(max_ntoken)) max_ntoken <- 1e10
+    min_ntoken <- check_integer(min_ntoken, min = 0)
 
     # segment corpus
     temp <- corpus_reshape(x, to = what)
 
     # exclude based on lengths
     length <- ntoken(temp, remove_punct = TRUE)
+    if (!is.null(max_ntoken)) {
+        max_ntoken <- check_integer(max_ntoken)
+    } else {
+        max_ntoken <- max(length)
+    }
     result <- corpus_subset(temp, length >= min_ntoken & length <= max_ntoken)
 
     # exclude based on regular expression match
     if (!is.null(exclude_pattern)) {
+        exclude_pattern <- check_logical(exclude_pattern)
         is_pattern <- stri_detect_regex(texts(result), exclude_pattern)
         result <- corpus_subset(result, !is_pattern)
     }
@@ -126,7 +132,10 @@ corpus_trimsentences <- function(x, min_length = 1, max_length = 10000,
 corpus_trimsentences.corpus <- function(x, min_length = 1, max_length = 10000,
                                         exclude_pattern = NULL,
                                         return_tokens = FALSE) {
-
+    
+    min_length <- check_integer(min_length)
+    max_length <- check_integer(max_length)
+    
     temp <- corpus_reshape(x, to = "sentences")
 
     # exclude based on lengths
@@ -135,6 +144,7 @@ corpus_trimsentences.corpus <- function(x, min_length = 1, max_length = 10000,
 
     # exclude based on regular expression match
     if (!is.null(exclude_pattern)) {
+        exclude_pattern <- check_logical(exclude_pattern)
         is_pattern <- stri_detect_regex(texts(temp), exclude_pattern)
         temp <- corpus_subset(temp, !is_pattern)
     }

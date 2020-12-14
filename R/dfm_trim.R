@@ -106,6 +106,10 @@ dfm_trim.dfm <- function(x,
                          ...) {
 
     x <- as.dfm(x)
+    termfreq_type <- match.arg(termfreq_type)
+    docfreq_type <- match.arg(docfreq_type)
+    verbose <- check_logical(verbose)
+    
     if (!nfeat(x) || !ndoc(x)) return(x)
 
     dots <- list(...)
@@ -117,11 +121,7 @@ dfm_trim.dfm <- function(x,
         warning("max_count is deprecated, use max_termfreq")
         max_termfreq <- dots[["max_count"]]
     }
-
-    termfreq_type <- match.arg(termfreq_type)
-    docfreq_type <- match.arg(docfreq_type)
-    attrs <- attributes(x)
-
+    
     # warning if already fractional
     if ((!is.null(min_termfreq) || !is.null(max_termfreq)) &&
         field_object(attrs, "weight_tf")$scheme != "count" || field_object(attrs, "weight_df")$scheme != "unary") {
@@ -134,7 +134,8 @@ dfm_trim.dfm <- function(x,
         if (!is.null(min_termfreq) && min_termfreq < 1)
             warning("use termfreq_type = 'prop' for fractional term frequency")
     }
-
+    
+    attrs <- attributes(x)
     freq <- unname(colSums(x))
     freq_doc <- unname(docfreq(x))
 
