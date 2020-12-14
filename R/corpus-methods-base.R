@@ -18,6 +18,9 @@ print.corpus <- function(x, max_ndoc = quanteda_options("print_corpus_max_ndoc")
                          ...) {
     unused_dots(...)
     x <- as.corpus(x)
+    max_ndoc <- check_integer(max_ndoc, min = -1)
+    max_nchar <- check_integer(max_nchar, min = -1)
+    show_summary <- check_logical(show_summary)
 
     docvars <- docvars(x)
     ndoc <- ndoc(x)
@@ -84,9 +87,9 @@ is.corpus <- function(x) {
 #'
 head.corpus <- function(x, n = 6L, ...) {
     x <- as.corpus(x)
-    stopifnot(length(n) == 1L)
-    n <- if (n < 0L) max(ndoc(x) + n, 0L) else min(n, ndoc(x))
-    corpus_subset(x, seq_len(ndoc(x)) %in% seq_len(n))
+    n <- check_integer(n)
+    i <- seq_len(ndoc(x))
+    corpus_subset(x, i %in% head(i, n))
 }
 
 #' @rdname head.corpus
@@ -97,11 +100,9 @@ head.corpus <- function(x, n = 6L, ...) {
 #'     summary()
 tail.corpus <- function(x, n = 6L, ...) {
     x <- as.corpus(x)
-    stopifnot(length(n) == 1L)
-    nrx <- ndoc(x)
-    n <- if (n < 0L) max(nrx + n, 0L) else min(n, nrx)
-    sel <- as.integer(seq.int(to = nrx, length.out = n))
-    corpus_subset(x, seq_len(ndoc(x)) %in% sel)
+    n <- check_integer(n)
+    i <- seq_len(ndoc(x))
+    corpus_subset(x, i %in% tail(i, n))
 }
 
 #' @rdname corpus-class
@@ -159,6 +160,7 @@ tail.corpus <- function(x, n = 6L, ...) {
 #' @export
 c.corpus <- function(..., recursive = FALSE) {
     x <- list(...)
+    recursive <- check_logical(recursive)
     if (length(x) == 1) return(x[[1]])
     result <- x[[1]] + x[[2]]
     if (length(x) == 2) return(result)

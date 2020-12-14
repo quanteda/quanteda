@@ -1,6 +1,6 @@
 context("test corpus")
 
-test_that("test show.corpus", {
+test_that("print works", {
     expect_output(
         print(corpus(c("The"))),
         "Corpus consisting of 1 document."
@@ -24,7 +24,19 @@ test_that("test show.corpus", {
                     docvars = data.frame(list(test = 1:4, test2 = 1:4)))),
         "Corpus consisting of 4 documents and 2 docvars."
     )
-})
+    expect_error(
+        print(corpus(c("The", "quick", "brown", "fox")), max_ndoc = "xyz"),
+        "max_ndoc must be coercible to integer"
+    )
+    expect_error(
+        print(corpus(c("The", "quick", "brown", "fox")), max_nchar = "xyz"),
+        "max_nchar must be coercible to integer"
+    )
+    expect_error(
+        print(corpus(c("The", "quick", "brown", "fox")), show_summary = logical()),
+        "The length of show_summary must be 1"
+    )
+})                
 
 
 test_that("test corpus constructors works for kwic", {
