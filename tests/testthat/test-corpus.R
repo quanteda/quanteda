@@ -76,52 +76,40 @@ test_that("corpus constructors works for kwic", {
     )
 
     # ; and !
-    txt <- c("This is; a test!")
+    txt1 <- c("This is; a test!")
+    toks1 <- tokens(txt1, what = "word", remove_separators = FALSE)
+    kw1 <- kwic(toks1, "a", window = 10, separator = "")
     expect_equivalent(
-        suppressWarnings(tokens(txt, what = "word", remove_separators = FALSE) %>%
-          kwic("a", window = 10, separator = "") %>%
-          corpus(remove_separators = FALSE, split_context = FALSE) %>%
-          texts()),
-        txt
+        texts(corpus(kw1, split_context = FALSE)), txt1
     )
 
     # quotes
-    txt <- "This 'is' only a test!"
+    txt2 <- "This 'is' only a test!"
+    toks2 <- tokens(txt2, what = "word", remove_separators = FALSE)
+    kw2 <- kwic(toks2, "a", window = 10, separator = "")
     expect_equivalent(
-      suppressWarnings(tokens(txt, what = "word", remove_separators = FALSE) %>%
-                         kwic("a", window = 10, separator = "") %>%
-                         corpus(remove_separators = FALSE, split_context = FALSE) %>%
-                         texts()),
-      txt
+        texts(corpus(kw2, split_context = FALSE)), txt2
     )
-    txt <- "This \"is\" only a test!"
+    txt3 <- "This \"is\" only a test!"
+    toks3 <- tokens(txt3, what = "word", remove_separators = FALSE)
+    kw3 <- kwic(toks3, "a", window = 10, separator = "")
     expect_equivalent(
-      suppressWarnings(tokens(txt, what = "word", remove_separators = FALSE) %>%
-                         kwic("a", window = 10, separator = "") %>%
-                         corpus(remove_separators = FALSE, split_context = FALSE) %>%
-                         texts()),
-      txt
+        texts(corpus(kw3, split_context = FALSE)), txt3
     )
-    txt <- 'This "is" only (a) test!'
+    txt4 <- 'This "is" only (a) test!'
+    toks4 <- tokens(txt4, what = "word", remove_separators = FALSE)
+    kw4 <- kwic(toks4, "a", window = 10, separator = "")
     expect_equivalent(
-      suppressWarnings(tokens(txt, what = "word", remove_separators = FALSE) %>%
-                         kwic("a", window = 10, separator = "") %>%
-                         corpus(remove_separators = FALSE, split_context = FALSE) %>%
-                         texts()),
-      txt
+        texts(corpus(kw4, split_context = FALSE)), txt4
     )
-    txt <- "This is only (a) test!"
+    txt5 <- "This is only (a) test!"
+    toks5 <- tokens(txt5, what = "word", remove_separators = FALSE)
+    kw5 <- kwic(toks5, "a", window = 10, separator = "")
     expect_equivalent(
-      suppressWarnings(tokens(txt, what = "word", remove_separators = FALSE) %>%
-                         kwic("a", window = 10, separator = "") %>%
-                         corpus(remove_separators = FALSE, split_context = FALSE) %>%
-                         texts()),
-      txt
+        texts(corpus(kw5, split_context = FALSE)), txt5
     )
     expect_error(corpus(kw, split_context = logical(), extract_keyword = FALSE))
-      
     expect_error(corpus(kw, extract_keyword = logical()))
-    
 })
 
 test_that("test corpus constructors works for character", {
