@@ -30,9 +30,9 @@ test_that("bootstrap_dfm works with character and corpus objects", {
     )
     
     expect_error(bootstrap_dfm(txt, n = -1), 
-                 "The value of n must be between 1 and Inf")
+                 "The value of n must be between 0 and Inf")
     expect_error(bootstrap_dfm(corp, n = -1), 
-                 "The value of n must be between 1 and Inf")
+                 "The value of n must be between 0 and Inf")
 })
 
 test_that("bootstrap_dfm works as planned with dfm", {
