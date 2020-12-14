@@ -96,9 +96,6 @@ char_trim.character <- function(x, what = c("sentences", "paragraphs", "document
 #'   (excluding punctuation)
 #' @param exclude_pattern a \pkg{stringi} regular expression whose match (at the
 #'   sentence level) will be used to exclude sentences
-#' @param return_tokens if `TRUE`, return tokens object of sentences after
-#'   trimming, otherwise return the input object type with the trimmed sentences
-#'   removed.
 #' @return a [corpus] or character vector equal in length to the input, or
 #'   a tokenized set of sentences if .  If the input was a corpus, then the all
 #'   docvars and metadata are preserved.  For documents whose sentences have
@@ -122,16 +119,14 @@ char_trim.character <- function(x, what = c("sentences", "paragraphs", "document
 #' # on a character
 #' char_trimsentences(txt, min_length = 3)
 corpus_trimsentences <- function(x, min_length = 1, max_length = 10000,
-                                 exclude_pattern = NULL,
-                                 return_tokens = FALSE) {
+                                 exclude_pattern = NULL) {
     UseMethod("corpus_trimsentences")
 }
 
 #' @noRd
 #' @export
 corpus_trimsentences.corpus <- function(x, min_length = 1, max_length = 10000,
-                                        exclude_pattern = NULL,
-                                        return_tokens = FALSE) {
+                                        exclude_pattern = NULL) {
     
     min_length <- check_integer(min_length)
     max_length <- check_integer(max_length)
