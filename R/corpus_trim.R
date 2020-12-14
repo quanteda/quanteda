@@ -56,7 +56,7 @@ corpus_trim.corpus <- function(x, what = c("sentences", "paragraphs", "documents
 
     # exclude based on regular expression match
     if (!is.null(exclude_pattern)) {
-        exclude_pattern <- check_logical(exclude_pattern)
+        exclude_pattern <- check_character(exclude_pattern)
         is_pattern <- stri_detect_regex(texts(result), exclude_pattern)
         result <- corpus_subset(result, !is_pattern)
     }
@@ -128,8 +128,8 @@ corpus_trimsentences <- function(x, min_length = 1, max_length = 10000,
 corpus_trimsentences.corpus <- function(x, min_length = 1, max_length = 10000,
                                         exclude_pattern = NULL) {
     
-    min_length <- check_integer(min_length)
-    max_length <- check_integer(max_length)
+    min_length <- check_integer(min_length, min = 0)
+    max_length <- check_integer(max_length, min = 0)
     
     temp <- corpus_reshape(x, to = "sentences")
 
@@ -139,7 +139,7 @@ corpus_trimsentences.corpus <- function(x, min_length = 1, max_length = 10000,
 
     # exclude based on regular expression match
     if (!is.null(exclude_pattern)) {
-        exclude_pattern <- check_logical(exclude_pattern)
+        exclude_pattern <- check_character(exclude_pattern)
         is_pattern <- stri_detect_regex(texts(temp), exclude_pattern)
         temp <- corpus_subset(temp, !is_pattern)
     }
