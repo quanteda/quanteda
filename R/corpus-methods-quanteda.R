@@ -34,6 +34,7 @@ texts <- function(x, groups = NULL, spacer = " ") {
 #' @export
 texts.corpus <- function(x, groups = NULL, spacer = " ") {
     x <- as.corpus(x)
+    spacer <- check_character(spacer)
     attrs <- attributes(x)
     if (!is.null(groups)) {
         if (!is.factor(groups))
@@ -85,7 +86,7 @@ texts.character <- function(x, groups = NULL, spacer = " ") {
 "texts<-.corpus" <- function(x, value) {
     x <- as.corpus(x)
     attrs <- attributes(x)
-    x <- value
+    x <- as.character(value)
     attributes(x) <- attrs
     return(x)
 }

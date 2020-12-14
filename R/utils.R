@@ -169,7 +169,7 @@ escape_regex <- function(x) {
 #' # as.tokens.default <- function(x, concatenator = "", ...) {
 #' #     stop(quanteda:::friendly_class_undefined_message(class(x), "as.tokens"))
 #' # }
-friendly_class_undefined_message <- function(object_class, function_name) {
+check_class <- function(object_class, function_name) {
     valid_object_types <-
         utils::methods(function_name) %>%
         as.character() %>%
@@ -179,6 +179,7 @@ friendly_class_undefined_message <- function(object_class, function_name) {
          paste(valid_object_types, collapse = ", "),
          " objects.")
 }
+friendly_class_undefined_message <- check_class
 
 #' Raise warning of unused dots
 #' @param ... dots to check
