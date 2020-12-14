@@ -33,19 +33,19 @@
 #' corpsent <- corpus_reshape(corp, to = "sentences")
 #' texts(corpsent)
 #' texts(corpus_sample(corpsent, replace = TRUE, by = "document"))
-corpus_sample <- function(x, size = NULL, replace = FALSE, prob = NULL, by = NULL) {
+corpus_sample <- function(x, size = ndoc(x), replace = FALSE, prob = NULL, by = NULL) {
     UseMethod("corpus_sample")
 }
 
 #' @export
-corpus_sample.default <- function(x, size = NULL, replace = FALSE, prob = NULL, by = NULL) {
+corpus_sample.default <- function(x, size = ndoc(x), replace = FALSE, prob = NULL, by = NULL) {
     stop(friendly_class_undefined_message(class(x), "corpus_sample"))
 }
 
 #' @export
-corpus_sample.corpus <- function(x, size = NULL, replace = FALSE, prob = NULL, by = NULL) {
+corpus_sample.corpus <- function(x, size = ndoc(x), replace = FALSE, prob = NULL, by = NULL) {
     x <- as.corpus(x)
-    replace <- check_logical(replace)
+    size <- check_integer(size)
     
     if (!is.null(by)) {
         if (!is.null(prob)) stop("prob not implemented with by")
@@ -57,6 +57,5 @@ corpus_sample.corpus <- function(x, size = NULL, replace = FALSE, prob = NULL, b
         if (is.null(size)) size <- ndoc(x)
         i <- base::sample(ndoc(x), size, replace, prob) 
     }
-    
     return(x[i])
 }
