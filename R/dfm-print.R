@@ -11,6 +11,11 @@ setMethod("print", signature(x = "dfm"),
                    max_nfeat = quanteda_options("print_dfm_max_nfeat"), 
                    show_summary = quanteda_options("print_dfm_summary"), 
                    ...) {
+              
+              max_ndoc <- check_integer(max_ndoc, min = -1)
+              max_nfeat <- check_integer(max_nfeat, min = -1)
+              show_summary <- check_logical(show_summary)
+              
               if (show_summary) {
                   docvars <- docvars(x)
                   cat("Document-feature matrix of: ",
@@ -27,7 +32,7 @@ setMethod("print", signature(x = "dfm"),
               if (max_ndoc < 0) 
                   max_ndoc <- ndoc(x)
               if (max_ndoc > 0) 
-                  print_dfm(x, max_ndoc, max_nfeat, ...)
+                  print_dfm(x, max_ndoc, max_nfeat, show_summary, ...)
           })
 
 #' @rdname print-quanteda
@@ -36,8 +41,9 @@ setMethod("show", signature(object = "dfm"), function(object) print(object))
 # internal function for print.dfm
 print_dfm <- function(x, max_ndoc, max_nfeat, show_summary, ...) {
     
-    unused_dots(...)
     x <- as.dfm(x)
+    unused_dots(...)
+    
     ndoc <- ndoc(x)
     nfeat <- nfeat(x)
     if (max_ndoc < 0 || max_ndoc > ndoc) 
@@ -88,9 +94,8 @@ print_dfm <- function(x, max_ndoc, max_nfeat, show_summary, ...) {
 #' print(as.dfm(Matrix::rsparsematrix(10000, 10000, density = 0.00001)))
 #' @keywords internal
 format_sparsity <- function(x, threshold = .01, digits = 3, nsmall = 1) {
-    if (x < 0 || x > 1.0)
-        stop("illegal sparsity value; must be 0 <= x <= 1.0")
-    sep = ""
+    
+    x <- check_double(x, min = 0, max = 1.0)
     threshold_char <- as.character(threshold)
     sparsity100 <- x * 100
     
@@ -99,9 +104,9 @@ format_sparsity <- function(x, threshold = .01, digits = 3, nsmall = 1) {
         digits <- 4
         
     sparsity_output <- if (sparsity100 < threshold && sparsity100 > 0.00) {
-        paste("<", stringi::stri_trim_left(as.character(format(threshold, digits = 4, nsmall = 2))), sep = sep)
+        paste("<", stringi::stri_trim_left(as.character(format(threshold, digits = 4, nsmall = 2))), sep = "")
     } else if (sparsity100 > (100 - threshold) && sparsity100 < 100.00) {
-        paste(">", stringi::stri_trim_left(as.character(format(100 - threshold, digits = 4, nsmall = 2))), sep = sep)
+        paste(">", stringi::stri_trim_left(as.character(format(100 - threshold, digits = 4, nsmall = 2))), sep = "")
     } else {
         stringi::stri_trim_left(format(sparsity100, digits = digits, nsmall = nsmall))
     }
@@ -109,60 +114,3 @@ format_sparsity <- function(x, threshold = .01, digits = 3, nsmall = 1) {
     paste(" (", sparsity_output, "% sparse)", sep = "")
 }
 
-
-#' Return the first or last part of a dfm
-#' 
-#' For a [dfm] object, returns the first or last `n` documents 
-#' and first `nfeat` features.
-#' @param x a dfm object
-#' @param n a single, positive integer.  If positive, size for the resulting
-#'   object: number of first/last documents for the dfm. If negative, all but
-#'   the n last/first number of documents of x.
-#' @param nf the number of features to return, where the resulting object 
-#'   will contain the first `ncol` features; default is all features
-#' @param ... additional arguments passed to other functions
-#' @return A [dfm] class object corresponding to the subset defined 
-#'   by `n` and `nfeat`.
-#' @export
-#' @name head.dfm
-#' @method head dfm
-#' @keywords dfm
-#' @examples
-#' head(data_dfm_lbgexample, 3, nf = 5)
-#' head(data_dfm_lbgexample, -4)
-#' 
-head.dfm <- function(x, n = 6L, nf = nfeat(x), ...) { 
-    x <- as.dfm(x)
-    unused_dots(...)
-    stopifnot(length(n) == 1L && length(nf) == 1L)
-    n <- if (n < 0L)  max(ndoc(x) + n, 0L) else min(n, ndoc(x))
-    nf <- if (nf < 0L)  max(nfeat(x) + nf, 0L) else min(nf, nfeat(x))
-    x[seq_len(n), seq_len(nf)]
-}
-
-
-#' @rdname head.dfm
-#' @method tail dfm
-#' @export
-#' @examples 
-#' tail(data_dfm_lbgexample)
-#' tail(data_dfm_lbgexample, n = 3, nf = 4)
-tail.dfm <- function(x, n = 6L, nf = nfeat(x), ...) { 
-    x <- as.dfm(x)
-    unused_dots(...)
-    stopifnot(length(n) == 1L && length(nf) == 1L)
-    nrx <- ndoc(x)
-    ncl <- nfeat(x)
-    n <- if (n < 0L) max(nrx + n, 0L) else min(n, nrx)
-    nf <- if (nf < 0L) max(ncl + nf, 0L) else min(nf, ncl)
-    sel_doc <- as.integer(seq.int(to = nrx, length.out = n))
-    sel_feat <- as.integer(seq.int(to = ncl, length.out = nf))
-    x[sel_doc, sel_feat]
-}
-
-setMethod("head", signature(x = "dfm"), function(x, n = 6L, nf = nfeat(x), ...) { 
-    UseMethod("head")
-})
-setMethod("tail", signature(x = "dfm"), function(x, n = 6L, nf = nfeat(x), ...) { 
-    UseMethod("tail")
-})

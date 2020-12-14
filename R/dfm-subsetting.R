@@ -89,3 +89,59 @@ setMethod("[", signature = c("dfm", i = "missing", j = "index", drop = "logical"
 "[[.dfm" <- function(x, i) {
     stop("[[ not defined for a dfm/fcm object", call. = FALSE)
 }
+
+
+#' Return the first or last part of a dfm
+#' 
+#' For a [dfm] object, returns the first or last `n` documents 
+#' and first `nfeat` features.
+#' @param x a dfm object
+#' @param n a single, positive integer.  If positive, size for the resulting
+#'   object: number of first/last documents for the dfm. If negative, all but
+#'   the n last/first number of documents of x.
+#' @param nf the number of features to return, where the resulting object 
+#'   will contain the first `ncol` features; default is all features
+#' @param ... additional arguments passed to other functions
+#' @return A [dfm] class object corresponding to the subset defined 
+#'   by `n` and `nfeat`.
+#' @export
+#' @name head.dfm
+#' @method head dfm
+#' @keywords dfm
+#' @examples
+#' head(data_dfm_lbgexample, 3, nf = 5)
+#' head(data_dfm_lbgexample, -4)
+#' 
+head.dfm <- function(x, n = 6L, nf = nfeat(x), ...) { 
+    x <- as.dfm(x)
+    unused_dots(...)
+    n <- check_integer(n)
+    nf <- check_integer(nf)
+    i <- seq_len(ndoc(x))
+    j <- seq_len(nfeat(x))
+    x[i %in% head(i, n), j %in% head(j, nf)]
+}
+
+
+#' @rdname head.dfm
+#' @method tail dfm
+#' @export
+#' @examples 
+#' tail(data_dfm_lbgexample)
+#' tail(data_dfm_lbgexample, n = 3, nf = 4)
+tail.dfm <- function(x, n = 6L, nf = nfeat(x), ...) { 
+    x <- as.dfm(x)
+    unused_dots(...)
+    n <- check_integer(n)
+    nf <- check_integer(nf)
+    i <- seq_len(ndoc(x))
+    j <- seq_len(nfeat(x))
+    x[i %in% tail(i, n), j %in% tail(j, nf)]
+}
+
+setMethod("head", signature(x = "dfm"), function(x, n = 6L, nf = nfeat(x), ...) { 
+    UseMethod("head")
+})
+setMethod("tail", signature(x = "dfm"), function(x, n = 6L, nf = nfeat(x), ...) { 
+    UseMethod("tail")
+})
