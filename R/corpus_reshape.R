@@ -46,6 +46,8 @@ corpus_reshape.corpus <- function(x, to = c("sentences", "paragraphs", "document
 
     x <- as.corpus(x)
     to <- match.arg(to)
+    use_docvars <- check_logical(use_docvars)
+    
     attrs <- attributes(x)
     if (field_object(attrs, "unit") == to)
         return(x)

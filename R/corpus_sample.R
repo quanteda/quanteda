@@ -45,6 +45,8 @@ corpus_sample.default <- function(x, size = NULL, replace = FALSE, prob = NULL, 
 #' @export
 corpus_sample.corpus <- function(x, size = NULL, replace = FALSE, prob = NULL, by = NULL) {
     x <- as.corpus(x)
+    replace <- check_logical(replace)
+    
     if (!is.null(by)) {
         if (!is.null(prob)) stop("prob not implemented with by")
         if (by == "document") by <- "docid_"
