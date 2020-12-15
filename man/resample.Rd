@@ -4,7 +4,7 @@
 \alias{resample}
 \title{Sample a vector}
 \usage{
-resample(x, size = NULL, replace = FALSE, prob = NULL, group = NULL)
+resample(x, size = NULL, replace = FALSE, prob = NULL, by = NULL)
 }
 \arguments{
 \item{x}{numeric vector}
@@ -18,7 +18,7 @@ sizes.}
 
 \item{prob}{a vector of probability weights for values in \code{x}}
 
-\item{group}{a grouping vector equal in length to \code{length(x)}}
+\item{by}{a grouping vector equal in length to \code{length(x)}}
 }
 \value{
 \code{x} resampled within groups
@@ -29,9 +29,9 @@ Return a sample from a vector within a grouping variable if specified.
 \examples{
 set.seed(100)
 grvec <- c(rep("a", 3), rep("b", 4), rep("c", 3))
-quanteda:::resample(1:10, replace = FALSE, group = grvec)
-quanteda:::resample(1:10, replace = TRUE, group = grvec)
-quanteda:::resample(1:10, size = 2, replace = TRUE, group = grvec)
-quanteda:::resample(1:10, size = c(1, 1, 3), replace = TRUE, group = grvec)
+quanteda:::resample(1:10, replace = FALSE, by = grvec)
+quanteda:::resample(1:10, replace = TRUE, by = grvec)
+quanteda:::resample(1:10, size = 2, replace = TRUE, by = grvec)
+quanteda:::resample(1:10, size = c(1, 1, 3), replace = TRUE, by = grvec)
 }
 \keyword{internal}
