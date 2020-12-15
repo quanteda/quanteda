@@ -157,5 +157,6 @@ Collate:
     'tokens_split.R'
     'tokens_subset.R'
     'utils.R'
+    'validator.R'
     'wordstem.R'
     'zzz.R'

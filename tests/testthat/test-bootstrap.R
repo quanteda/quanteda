@@ -28,6 +28,11 @@ test_that("bootstrap_dfm works with character and corpus objects", {
         docnames(bs2[[1]]),
         docnames(bs2[[2]])
     )
+    
+    expect_error(bootstrap_dfm(txt, n = -1), 
+                 "The value of n must be between 1 and Inf")
+    expect_error(bootstrap_dfm(corp, n = -1), 
+                 "The value of n must be between 1 and Inf")
 })
 
 test_that("bootstrap_dfm works as planned with dfm", {

@@ -90,22 +90,6 @@ message_select <- function(selection, nfeats, ndocs, nfeatspad = 0, ndocspad = 0
 #     return(x)
 # }
 
-#' Utility function to create a object with new set of attributes
-#' @param x an underlying R object of a new object
-#' @param attrs attributes of a new object
-#' @param overwrite_attributes overwrite attributes of the input object, if `TRUE`
-#' @keywords internal
-create <- function(x, what, attrs = NULL, overwrite_attributes = FALSE, ...) {
-    if (what == "tokens") {
-        class <- c("tokens", "list")
-    }
-    x <- structure(x, class = class, ...)
-    if (!is.null(attrs)) {
-        attributes(x, overwrite_attributes) <- attrs
-    }
-    return(x)
-}
-
 #' Convert various input as pattern to a vector used in tokens_select,
 #' tokens_compound and kwic.
 #' @inheritParams pattern
