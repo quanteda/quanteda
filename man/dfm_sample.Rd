@@ -20,13 +20,13 @@ dfm_sample(
 The default is the number of documents or the number of features, for
 \code{margin = "documents"} and \code{margin = "features"} respectively.}
 
-\item{replace}{if \code{TRUE}, sample be with replacement.}
+\item{replace}{if \code{TRUE}, sample  with replacement}
 
 \item{prob}{a vector of probability weights for obtaining the elements of the
 vector being sampled.  May not be applied when \code{by} is used.}
 
 \item{by}{a grouping variable for sampling.  Useful for resampling
-sub-document units such as sentences, for instance by specifying \code{by = "document"}}
+sub-document units such as sentences, for instance by specifying \code{by = "document"}.}
 
 \item{margin}{dimension (of a \link{dfm}) to sample: can be \code{documents} or
 \code{features}}

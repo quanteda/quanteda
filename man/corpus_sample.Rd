@@ -15,13 +15,13 @@ length to the number of groups defining the samples to be chosen in each
 group category.  By defining a size larger than the number of documents, it
 is possible to \emph{over}sample groups.}
 
-\item{replace}{if \code{TRUE}, sample be with replacement.}
+\item{replace}{if \code{TRUE}, sample  with replacement}
 
 \item{prob}{a vector of probability weights for obtaining the elements of the
 vector being sampled.  May not be applied when \code{by} is used.}
 
 \item{by}{a grouping variable for sampling.  Useful for resampling
-sub-document units such as sentences, for instance by specifying \code{by = "document"}}
+sub-document units such as sentences, for instance by specifying \code{by = "document"}.}
 }
 \value{
 a corpus object with number of documents equal to \code{size}, drawn

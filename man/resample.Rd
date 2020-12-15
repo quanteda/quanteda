@@ -14,7 +14,7 @@ number or a vector of numbers equal in length to the number of groups. If
 \code{NULL}, the sampling is stratified by group in the original group
 sizes.}
 
-\item{replace}{if \code{TRUE}, sample be with replacement.}
+\item{replace}{if \code{TRUE}, sample with replacement}
 
 \item{prob}{a vector of probability weights for values in \code{x}}
 

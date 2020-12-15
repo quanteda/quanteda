@@ -9,12 +9,12 @@
 #'   length to the number of groups defining the samples to be chosen in each
 #'   group category.  By defining a size larger than the number of documents, it
 #'   is possible to *over*sample groups.
-#' @param replace if `TRUE`, sample be with replacement.
+#' @param replace if `TRUE`, sample  with replacement
 #' @param prob a vector of probability weights for obtaining the elements of the
 #'   vector being sampled.  May not be applied when `by` is used.
 #' @param by a grouping variable for sampling.  Useful for resampling
 #'   sub-document units such as sentences, for instance by specifying `by =
-#'   "document"`
+#'   "document"`.
 #' @return a corpus object with number of documents equal to `size`, drawn 
 #'   from the corpus `x`.  The returned corpus object will contain all of 
 #'   the meta-data of the original corpus, and the same document variables for 
