@@ -225,38 +225,49 @@ message_error <- function(key = NULL) {
     return(unname(msg[key]))
 }
 
-#' Sample a vector by a group
+#' Sample a vector
 #'
-#' Return a sample from a vector within a grouping variable.
-#' @param x any vector
+#' Return a sample from a vector within a grouping variable if specified.
+#' @param x numeric vector
 #' @param size the number of items to sample within each group, as a positive
 #'   number or a vector of numbers equal in length to the number of groups. If
 #'   `NULL`, the sampling is stratified by group in the original group
 #'   sizes.
+#' @param replace logical; if `TRUE` sample be with replacement.
 #' @param group a grouping vector equal in length to `length(x)`
-#' @param replace logical; should sampling be with replacement?
 #' @return `x` resampled within groups
 #' @keywords internal
 #' @examples
 #' set.seed(100)
 #' grvec <- c(rep("a", 3), rep("b", 4), rep("c", 3))
-#' quanteda:::sample_bygroup(1:10, group = grvec, replace = FALSE)
-#' quanteda:::sample_bygroup(1:10, group = grvec, replace = TRUE)
-#' quanteda:::sample_bygroup(1:10, group = grvec, size = 2, replace = TRUE)
-#' quanteda:::sample_bygroup(1:10, group = grvec, size = c(1, 1, 3), replace = TRUE)
-sample_bygroup <- function(x, group, size = NULL, replace = FALSE) {
-    if (length(x) != length(group))
-        stop("group not equal in length of x")
-    x <- split(x, group)
-    if (is.null(size))
-        size <- lengths(x)
-    if (length(size) > 1 && length(size) != length(x))
-        stop("size not equal in length to the number of groups")
-    result <- mapply(function(x, size, replace) {
-                 x[sample.int(length(x), size = size, replace = replace)]
-              }, x, size, replace, SIMPLIFY = FALSE)
-    unlist(result, use.names = FALSE)
-
+#' quanteda:::resample(1:10, replace = FALSE, group = grvec)
+#' quanteda:::resample(1:10, replace = TRUE, group = grvec)
+#' quanteda:::resample(1:10, size = 2, replace = TRUE, group = grvec)
+#' quanteda:::resample(1:10, size = c(1, 1, 3), replace = TRUE, group = grvec)
+resample <- function(x, size = NULL, replace = FALSE, group = NULL) {
+    stopifnot(is.numeric(x))
+    if (is.null(group)) {
+        if (is.null(size))
+            size <- length(x)
+        if (size > length(x) && !replace)
+            stop("size cannot exceed the number of items when replace = FALSE", call. = FALSE)
+        result <- x[sample.int(length(x), size = size, replace = replace)]
+    } else {
+        if (length(x) != length(group))
+            stop("group not equal in length of x")
+        x <- split(x, group)
+        if (is.null(size))
+            size <- lengths(x)
+        if (length(size) > 1 && length(size) != length(x))
+            stop("size not equal in length to the number of groups")
+        temp <- mapply(function(x, size, replace) {
+                     if (size > length(x) && !replace)
+                        stop("size cannot exceed the number of items within group when replace = FALSE", call. = FALSE)
+                     x[sample.int(length(x), size = size, replace = replace)]
+                }, x, size, replace, SIMPLIFY = FALSE)
+        result <- unlist(temp, use.names = FALSE)
+    }
+    return(result)
 }
 
 #' Get the package version that created an object
