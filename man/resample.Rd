@@ -4,7 +4,7 @@
 \alias{resample}
 \title{Sample a vector}
 \usage{
-resample(x, size = NULL, replace = FALSE, group = NULL)
+resample(x, size = NULL, replace = FALSE, prob = NULL, group = NULL)
 }
 \arguments{
 \item{x}{numeric vector}
@@ -15,6 +15,8 @@ number or a vector of numbers equal in length to the number of groups. If
 sizes.}
 
 \item{replace}{if \code{TRUE}, sample be with replacement.}
+
+\item{prob}{a vector of probability weights for values in \code{x}}
 
 \item{group}{a grouping vector equal in length to \code{length(x)}}
 }

@@ -234,6 +234,7 @@ message_error <- function(key = NULL) {
 #'   `NULL`, the sampling is stratified by group in the original group
 #'   sizes.
 #' @param replace if `TRUE`, sample be with replacement.
+#' @param prob a vector of probability weights for values in `x`
 #' @param group a grouping vector equal in length to `length(x)`
 #' @return `x` resampled within groups
 #' @keywords internal
