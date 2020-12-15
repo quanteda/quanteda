@@ -41,7 +41,7 @@ dfm_sample.dfm <- function(x, size = NULL, replace = FALSE, prob = NULL, by = NU
         if (!is.null(by)) {
             if (by == "document") by <- "docid_"
             i <- resample(seq_len(ndoc(x)), size = size, replace = replace, prob = prob,
-                          group = get_docvars(x, by, system = TRUE, drop = TRUE))
+                          by = get_docvars(x, by, system = TRUE, drop = TRUE))
         } else {
             i <- resample(seq_len(ndoc(x)), size = size, replace = replace, prob = prob) 
         }

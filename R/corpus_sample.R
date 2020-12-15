@@ -48,7 +48,7 @@ corpus_sample.corpus <- function(x, size = NULL, replace = FALSE, prob = NULL, b
     if (!is.null(by)) {
         if (by == "document") by <- "docid_"
         i <- resample(seq_len(ndoc(x)), size = size, replace = replace, prob = prob,
-                     group = get_docvars(x, by, system = TRUE, drop = TRUE))
+                     by = get_docvars(x, by, system = TRUE, drop = TRUE))
     } else {
         i <- resample(seq_len(ndoc(x)), size = size, replace = replace, prob = prob) 
     }

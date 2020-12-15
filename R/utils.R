@@ -235,19 +235,19 @@ message_error <- function(key = NULL) {
 #'   sizes.
 #' @param replace if `TRUE`, sample be with replacement.
 #' @param prob a vector of probability weights for values in `x`
-#' @param group a grouping vector equal in length to `length(x)`
+#' @param by a grouping vector equal in length to `length(x)`
 #' @return `x` resampled within groups
 #' @keywords internal
 #' @examples
 #' set.seed(100)
 #' grvec <- c(rep("a", 3), rep("b", 4), rep("c", 3))
-#' quanteda:::resample(1:10, replace = FALSE, group = grvec)
-#' quanteda:::resample(1:10, replace = TRUE, group = grvec)
-#' quanteda:::resample(1:10, size = 2, replace = TRUE, group = grvec)
-#' quanteda:::resample(1:10, size = c(1, 1, 3), replace = TRUE, group = grvec)
-resample <- function(x, size = NULL, replace = FALSE, prob = NULL, group = NULL) {
+#' quanteda:::resample(1:10, replace = FALSE, by = grvec)
+#' quanteda:::resample(1:10, replace = TRUE, by = grvec)
+#' quanteda:::resample(1:10, size = 2, replace = TRUE, by = grvec)
+#' quanteda:::resample(1:10, size = c(1, 1, 3), replace = TRUE, by = grvec)
+resample <- function(x, size = NULL, replace = FALSE, prob = NULL, by = NULL) {
     stopifnot(is.numeric(x))
-    if (is.null(group)) {
+    if (is.null(by)) {
         if (is.null(size))
             size <- length(x)
         if (size > length(x) && !replace)
@@ -255,14 +255,14 @@ resample <- function(x, size = NULL, replace = FALSE, prob = NULL, group = NULL)
         result <- x[sample.int(length(x), size = size, replace = replace, prob = prob)]
     } else {
         if (!is.null(prob)) 
-            stop("prob cannot be used with group", call. = FALSE)
-        if (length(x) != length(group))
-            stop("group not equal in length of x", call. = FALSE)
-        x <- split(x, group)
+            stop("prob cannot be used with by", call. = FALSE)
+        if (length(x) != length(by))
+            stop("x and by must have the same length", call. = FALSE)
+        x <- split(x, by)
         if (is.null(size))
             size <- lengths(x)
         if (length(size) > 1 && length(size) != length(x))
-            stop("size not equal in length to the number of groups", call. = FALSE)
+            stop("size and by must have the same length", call. = FALSE)
         temp <- mapply(function(x, size, replace) {
                      if (size > length(x) && !replace)
                         stop("size cannot exceed the number of items within group when replace = FALSE", call. = FALSE)
