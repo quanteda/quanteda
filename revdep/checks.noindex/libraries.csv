@@ -1,2 +1,7 @@
 package,old,new,delta
 quanteda,2.1.2,2.9.9000,*
+credentials,NA,1.3.0,*
+data.table,NA,1.13.4,*
+gert,NA,1.0.2,*
+jsonlite,NA,1.7.2,*
+usethis,NA,2.0.0,*
