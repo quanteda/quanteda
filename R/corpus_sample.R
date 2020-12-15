@@ -46,12 +46,11 @@ corpus_sample.default <- function(x, size = NULL, replace = FALSE, prob = NULL, 
 corpus_sample.corpus <- function(x, size = NULL, replace = FALSE, prob = NULL, by = NULL) {
     x <- as.corpus(x)
     if (!is.null(by)) {
-        if (!is.null(prob)) stop("prob not implemented with by")
         if (by == "document") by <- "docid_"
-        i <- resample(seq_len(ndoc(x)), size = size, replace = replace,
+        i <- resample(seq_len(ndoc(x)), size = size, replace = replace, prob = prob,
                      group = get_docvars(x, by, system = TRUE, drop = TRUE))
     } else {
-        i <- resample(seq_len(ndoc(x)), size = size, replace = replace) 
+        i <- resample(seq_len(ndoc(x)), size = size, replace = replace, prob = prob) 
     }
     return(x[i])
 }

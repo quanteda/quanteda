@@ -39,16 +39,15 @@ dfm_sample.dfm <- function(x, size = NULL, replace = FALSE, prob = NULL, by = NU
     margin <- match.arg(margin)
     if (margin == "documents") {
         if (!is.null(by)) {
-            if (!is.null(prob)) stop("prob not implemented with by")
             if (by == "document") by <- "docid_"
-            i <- resample(seq_len(ndoc(x)), size = size, replace = replace,
+            i <- resample(seq_len(ndoc(x)), size = size, replace = replace, prob = prob,
                           group = get_docvars(x, by, system = TRUE, drop = TRUE))
         } else {
-            i <- resample(seq_len(ndoc(x)), size = size, replace = replace) 
+            i <- resample(seq_len(ndoc(x)), size = size, replace = replace, prob = prob) 
         }
         x <- x[i,]
     } else if (margin == "features") {
-        j <- resample(seq_len(nfeat(x)), size = size, replace = replace)
+        j <- resample(seq_len(nfeat(x)), size = size, replace = replace, prob = prob)
         x <- x[,j]
     }
     return(x)

@@ -131,6 +131,10 @@ test_that("resample works with sizes", {
     expect_true(all(tmp[4:7] >= 4 & tmp[4:7] <= 7))
     expect_true(all(tmp[8:10] >= 8 & tmp[8:10] <= 10))
     
+    # sampling with prob
+    tmp <- quanteda:::resample(1:2, 10, prob = c(1, 0), replace = TRUE)
+    expect_equal(tmp, rep(1, 10))
+    
     # oversampling within group
     tmp <- quanteda:::resample(c(1:2, c(101:102)), 
                                      group = rep(letters[1:2], each = 2),
@@ -149,6 +153,10 @@ test_that("resample works with sizes", {
     expect_error(
         quanteda:::resample(1:10, group = grvec, size = 5, replace = FALSE),
         "size cannot exceed the number of items within group when replace = FALSE"
+    )
+    expect_error(
+        quanteda:::resample(1:10, 10, prob = rep(0.1, 10), replace = TRUE, group = grvec),
+        "prob cannot be used with group"
     )
 })
 

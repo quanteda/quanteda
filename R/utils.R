@@ -244,22 +244,24 @@ message_error <- function(key = NULL) {
 #' quanteda:::resample(1:10, replace = TRUE, group = grvec)
 #' quanteda:::resample(1:10, size = 2, replace = TRUE, group = grvec)
 #' quanteda:::resample(1:10, size = c(1, 1, 3), replace = TRUE, group = grvec)
-resample <- function(x, size = NULL, replace = FALSE, group = NULL) {
+resample <- function(x, size = NULL, replace = FALSE, prob = NULL, group = NULL) {
     stopifnot(is.numeric(x))
     if (is.null(group)) {
         if (is.null(size))
             size <- length(x)
         if (size > length(x) && !replace)
             stop("size cannot exceed the number of items when replace = FALSE", call. = FALSE)
-        result <- x[sample.int(length(x), size = size, replace = replace)]
+        result <- x[sample.int(length(x), size = size, replace = replace, prob = prob)]
     } else {
+        if (!is.null(prob)) 
+            stop("prob cannot be used with group", call. = FALSE)
         if (length(x) != length(group))
-            stop("group not equal in length of x")
+            stop("group not equal in length of x", call. = FALSE)
         x <- split(x, group)
         if (is.null(size))
             size <- lengths(x)
         if (length(size) > 1 && length(size) != length(x))
-            stop("size not equal in length to the number of groups")
+            stop("size not equal in length to the number of groups", call. = FALSE)
         temp <- mapply(function(x, size, replace) {
                      if (size > length(x) && !replace)
                         stop("size cannot exceed the number of items within group when replace = FALSE", call. = FALSE)
