@@ -6,7 +6,7 @@
 #'   The default is the number of documents or the number of features, for
 #'   `margin = "documents"` and `margin = "features"` respectively.
 #' @param margin dimension (of a [dfm]) to sample: can be `documents` or
-#'   `features`
+#'   `features`. This argument is deprecated.
 #' @inheritParams corpus_sample
 #' @export
 #' @return A dfm object with number of documents or features equal to `size`, drawn
@@ -35,8 +35,13 @@ dfm_sample.default <- function(x, size = NULL, replace = FALSE, prob = NULL, by 
 #' @export
 dfm_sample.dfm <- function(x, size = NULL, replace = FALSE, prob = NULL, by = NULL,
                            margin = c("documents", "features")) {
+     
     x <- as.dfm(x)
     margin <- match.arg(margin)
+    
+    if (margin == "features")
+        .Deprecated(msg = 'margin is deprecated')
+    
     if (margin == "documents") {
         if (!is.null(by)) {
             if (by == "document") by <- "docid_"
