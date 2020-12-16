@@ -642,16 +642,6 @@ test_that("warn when remove_separators = FALSE fasterword and fastestword", {
                    "remove_separators is always TRUE for this type")
 })
 
-test_that("tokens_sample works as expected", {
-    toks <- tokens(data_corpus_inaugural[1:10])
-    expect_equal(ndoc(tokens_sample(toks, size = 5)), 5)
-    expect_equal(ndoc(tokens_sample(toks, size = 15, replace = TRUE)), 15)
-    expect_error(tokens_sample(toks, size = 20),
-                 "size cannot exceed the number of documents \\(10\\)")
-    expect_error(tokens_sample(data_corpus_inaugural[1:10]),
-                 "only works on tokens objects")
-})
-
 test_that("tokens.tokens(x, split_hyphens = TRUE) behaves same as tokens.character(...)", {
     # issue #1498
     txt <- "Auto-immune system."

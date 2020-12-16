@@ -5,11 +5,9 @@
 #' @param size a positive number, the number of documents or features to select.
 #'   The default is the number of documents or the number of features, for
 #'   `margin = "documents"` and `margin = "features"` respectively.
-#' @param replace logical; should sampling be with replacement?
-#' @param prob a vector of probability weights for obtaining the elements of the
-#'   vector being sampled.
 #' @param margin dimension (of a [dfm]) to sample: can be `documents` or
-#'   `features`
+#'   `features`. This argument is deprecated.
+#' @inheritParams corpus_sample
 #' @export
 #' @return A dfm object with number of documents or features equal to `size`, drawn
 #'   from the dfm `x`.
@@ -23,34 +21,40 @@
 #' head(dfm_sample(dfmat, replace = TRUE))
 #' head(dfm_sample(dfmat, margin = "features"))
 #' head(dfm_sample(dfmat, margin = "features", replace = TRUE))
-dfm_sample <- function(x, size = ifelse(margin == "documents", ndoc(x), nfeat(x)),
-                       replace = FALSE, prob = NULL,
+dfm_sample <- function(x, size = NULL, replace = FALSE, prob = NULL, by = NULL,
                        margin = c("documents", "features")) {
     UseMethod("dfm_sample")
 }
 
 #' @export
-dfm_sample.default <- function(x, size = ifelse(margin == "documents", ndoc(x), nfeat(x)),
-                       replace = FALSE, prob = NULL,
-                       margin = c("documents", "features")) {
+dfm_sample.default <- function(x, size = NULL, replace = FALSE, prob = NULL, by = NULL,
+                               margin = c("documents", "features")) {
     stop(friendly_class_undefined_message(class(x), "dfm_sample"))
 }
     
 #' @export
-dfm_sample.dfm <- function(x, size = ifelse(margin == "documents", ndoc(x), nfeat(x)),
-                       replace = FALSE, prob = NULL,
-                       margin = c("documents", "features")) {
+dfm_sample.dfm <- function(x, size = NULL, replace = FALSE, prob = NULL, by = NULL,
+                           margin = c("documents", "features")) {
+     
     x <- as.dfm(x)
     size <- check_integer(size, min = 0)
     margin <- match.arg(margin)
+    
+    if (margin == "features")
+        .Deprecated(msg = 'margin is deprecated')
+    
     if (margin == "documents") {
-        if (size > ndoc(x) && !replace)
-            stop("size cannot exceed the number of documents (", ndoc(x), ")")
-        x <- x[sample(ndoc(x), size, replace, prob), ]
+        if (!is.null(by)) {
+            if (by == "document") by <- "docid_"
+            i <- resample(seq_len(ndoc(x)), size = size, replace = replace, prob = prob,
+                          by = get_docvars(x, by, system = TRUE, drop = TRUE))
+        } else {
+            i <- resample(seq_len(ndoc(x)), size = size, replace = replace, prob = prob) 
+        }
+        x <- x[i,]
     } else if (margin == "features") {
-        if (size > nfeat(x) && !replace)
-            stop("size cannot exceed the number of features (", nfeat(x), ")")
-        x <- x[, sample(nfeat(x), size, replace, prob)]
+        j <- resample(seq_len(nfeat(x)), size = size, replace = replace, prob = prob)
+        x <- x[,j]
     }
     return(x)
 }

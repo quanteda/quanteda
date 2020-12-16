@@ -61,11 +61,8 @@ bootstrap_dfm.character <- function(x, n = 10, ..., verbose = quanteda_options("
 #' bootstrap_dfm(dfmat, n = 3)
 bootstrap_dfm.dfm <- function(x, n = 10, ..., verbose = quanteda_options("verbose")) {
     x <- as.dfm(x)
-    n <- check_integer(n, min = 0)
-    group <- get_docvars(x, "docid_", system = TRUE, drop = TRUE)
-    if (length(levels(group)) == ndoc(x))
-        stop("x must contain more than one row per document")
-
+    n <- check_integer(n, min = 1)
+    verbose <- chceck_logical(verbose)
     if (verbose) {
         message("Bootstrapping the sentences to create multiple dfm objects...")
         message("   ...resampling and forming dfms: 0", appendLF = FALSE)
@@ -75,8 +72,7 @@ bootstrap_dfm.dfm <- function(x, n = 10, ..., verbose = quanteda_options("verbos
     for (i in seq_len(n)) {
         if (verbose)
             message(", ", i, appendLF = FALSE)
-        temp <- x[sample_bygroup(seq_len(ndoc(x)), get_docvars(x, "docid_", system = TRUE, drop = TRUE),
-                                 replace = TRUE), ]
+        temp <- dfm_sample(x, size = NULL, replace = TRUE, by = "document")
         temp <- dfm_group(temp)
         result[[i + 1]] <- temp
     }
