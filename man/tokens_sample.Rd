@@ -4,17 +4,24 @@
 \alias{tokens_sample}
 \title{Randomly sample documents from a tokens object}
 \usage{
-tokens_sample(x, size = ndoc(x), replace = FALSE, prob = NULL)
+tokens_sample(x, size = NULL, replace = FALSE, prob = NULL, by = NULL)
 }
 \arguments{
 \item{x}{the \link{tokens} object whose documents will be sampled}
 
-\item{size}{a positive number, the number of documents or features to select}
+\item{size}{a positive number, the number of documents to select; when used
+with groups, the number to select from each group or a vector equal in
+length to the number of groups defining the samples to be chosen in each
+group category.  By defining a size larger than the number of documents, it
+is possible to \emph{over}sample groups.}
 
-\item{replace}{logical; should sampling be with replacement?}
+\item{replace}{if \code{TRUE}, sample be with replacement.}
 
 \item{prob}{a vector of probability weights for obtaining the elements of the
-vector being sampled.}
+vector being sampled.  May not be applied when \code{by} is used.}
+
+\item{by}{a grouping variable for sampling.  Useful for resampling
+sub-document units such as sentences, for instance by specifying \code{by = "document"}}
 }
 \value{
 A \link{tokens} object with number of documents or features equal to

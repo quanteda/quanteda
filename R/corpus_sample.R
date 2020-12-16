@@ -3,7 +3,7 @@
 #' Take a random sample of documents of the specified size from a corpus, with
 #' or without replacement.  Works just as [sample()] works for the
 #' documents and their associated document-level variables.
-#' @param x a corpus object whose documents will be sampled
+#' @param x a [corpus] object whose documents will be sampled
 #' @param size a positive number, the number of documents to select; when used
 #'   with groups, the number to select from each group or a vector equal in
 #'   length to the number of groups defining the samples to be chosen in each
@@ -44,6 +44,7 @@ corpus_sample.default <- function(x, size = NULL, replace = FALSE, prob = NULL, 
 
 #' @export
 corpus_sample.corpus <- function(x, size = NULL, replace = FALSE, prob = NULL, by = NULL) {
+    
     x <- as.corpus(x)
     if (!is.null(by)) {
         if (by == "document") by <- "docid_"

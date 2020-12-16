@@ -29,7 +29,7 @@ vector being sampled.  May not be applied when \code{by} is used.}
 sub-document units such as sentences, for instance by specifying \code{by = "document"}}
 
 \item{margin}{dimension (of a \link{dfm}) to sample: can be \code{documents} or
-\code{features}}
+\code{features}. This argument is deprecated.}
 }
 \value{
 A dfm object with number of documents or features equal to \code{size}, drawn
