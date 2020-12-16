@@ -89,6 +89,7 @@ dfm_group.dfm <- function(x, groups = NULL, fill = FALSE, force = FALSE) {
 #' @return a factor
 #' @keywords internal
 generate_groups <- function(x, groups, drop = FALSE) {
+    drop <- check_logical(drop)
     docvar <- get_docvars(x, user = TRUE, system = TRUE)
     if (is.character(groups) && all(groups %in% names(docvar))) {
         groups <- interaction(docvar[groups], drop = FALSE)

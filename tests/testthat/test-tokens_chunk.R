@@ -68,19 +68,19 @@ test_that("tokens_chunk works", {
 test_that("tokens_chunk raises error for invalid size", {
     toks <- tokens(c(d1 = "a b c d", d2 = "e f g"))
     expect_error(tokens_chunk(toks, -1),
-                 "Chunk size must be larger than or equal to 1")
+                 "The value of size must be between 1 and Inf")
     expect_error(tokens_chunk(toks, 0),
-                 "Chunk size must be larger than or equal to 1")
+                 "The value of size must be between 1 and Inf")
     expect_error(tokens_chunk(toks, c(1, 3)),
-                 "Size must be a single integer")
+                 "The length of size must be 1")
 })
 
 test_that("tokens_chunk raises error for invalid overlap", {
     toks <- tokens(c(d1 = "a b c d", d2 = "e f g"))
     expect_error(tokens_chunk(toks, 2, 2),
-                 "Overlap must be smaller than size")
+                 "The value of overlap must be smaller than size")
     expect_error(tokens_chunk(toks, 2, -1),
-                 "Overlap must be a positive value")
+                 "The value of overlap must be between 0 and Inf")
 })
 
 test_that("tokens_chunk works", {

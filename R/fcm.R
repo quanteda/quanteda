@@ -133,13 +133,15 @@ fcm.dfm <- function(x, context = c("document", "window"),
                        weights = NULL,
                        ordered = FALSE,
                        tri = TRUE, ...) {
-
+    
+    x <- as.dfm(x)
     context <- match.arg(context)
     count <- match.arg(count)
-    window <- as.integer(window)
-    x <- as.dfm(x)
+    window <- check_integer(window, min = 1)
+    ordered <- check_logical(ordered)
+    tri <- check_logical(tri)
+    
     margin <- colSums(x)
-
     if (!nfeat(x)) {
         result <- new("fcm", as(make_null_dfm(), "dgCMatrix"), count = count,
                       context = context, margin = margin, weights = 1, tri = tri)
@@ -201,19 +203,22 @@ fcm.tokens <- function(x, context = c("document", "window"),
     x <- as.tokens(x)
     context <- match.arg(context)
     count <- match.arg(count)
-    window <- as.integer(window)
+    window <- check_integer(window, min = 1)
+    ordered <- check_logical(ordered)
+    tri <- check_logical(tri)
+    
     if (ordered)
         tri <- FALSE
     if (context == "document") {
         result <- fcm(dfm(x, tolower = FALSE, verbose = FALSE), count = count, tri = tri)
     } else {
-        if (any(window < 1L))
-            stop("window size must be at least 1")
         if (count == "weighted") {
-            if (is.null(weights))
+            if (!is.null(weights)) {
+                weights <- check_double(weights, max_len = Inf)
+                if (length(weights) != window)
+                    stop("The length of weights must be equal to the window size")
+            } else {
                 weights <- 1 / seq_len(window)
-            if (length(weights) != window) {
-                stop("weights length must be equal to the window size")
             }
         } else {
             weights <- rep(1, window)

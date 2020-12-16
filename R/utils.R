@@ -108,7 +108,7 @@ pattern2list <- function(x, types, valuetype, case_insensitive,
     
     case_insensitive <- check_logical(case_insensitive)
     concatenator <- check_character(concatenator)
-    levels <- check_integer(levels, min = 1)
+    levels <- check_integer(levels, min = 1, max_len = Inf)
     remove_unigram <- check_logical(remove_unigram)
     keep_nomatch <- check_logical(keep_nomatch)
     

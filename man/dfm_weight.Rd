@@ -7,8 +7,7 @@
 \usage{
 dfm_weight(
   x,
-  scheme = c("count", "prop", "propmax", "logcount", "boolean", "augmented", "logave",
-    "logsmooth"),
+  scheme = c("count", "prop", "propmax", "logcount", "boolean", "augmented", "logave"),
   weights = NULL,
   base = 10,
   k = 0.5,

@@ -58,7 +58,10 @@ tokens_segment.tokens <- function(x, pattern,
 
     x <- as.tokens(x)
     valuetype <- match.arg(valuetype)
+    extract_pattern <- check_logical(extract_pattern)
     pattern_position <- match.arg(pattern_position)
+    use_docvars <- check_logical(use_docvars)
+    
     if (!use_docvars)
         docvars(x) <- NULL
     attrs <- attributes(x)

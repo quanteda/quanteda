@@ -99,13 +99,13 @@ kwic.tokens <- function(x, pattern, window = 5,
                         case_insensitive = TRUE, ...) {
 
     x <- as.tokens(x)
+    window <- check_integer(window, min = 0, min_len = 1, max_len = 2)
+    valuetype <- match.arg(valuetype)
+    separator <- check_character(separator)
+    
+    attrs <- attributes(x)
     if (is.list(pattern) && is.null(names(pattern)))
         names(pattern) <- pattern
-
-    valuetype <- match.arg(valuetype)
-    window <- as.integer(window[1])
-    separator <- as.character(separator[1])
-    attrs <- attributes(x)
     ids <- pattern2list(pattern, attrs[["types"]], valuetype,
                         case_insensitive, field_object(attrs, "concatenator"))
 

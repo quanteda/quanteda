@@ -124,7 +124,6 @@ corpus_segment.corpus <- function(x, pattern = "##*",
 
     x <- as.corpus(x)
     valuetype <- match.arg(valuetype)
-    case_insensitive <- check_logical(case_insensitive)
     extract_pattern <- check_logical(extract_pattern)
     pattern_position <- match.arg(pattern_position)
     use_docvars <- check_logical(use_docvars)

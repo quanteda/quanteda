@@ -26,11 +26,12 @@
 pattern2id <- function(pattern, types, valuetype = c("glob", "fixed", "regex"),
                        case_insensitive = TRUE, keep_nomatch = FALSE) {
     
-    if (!length(pattern)) return(list())
-    types <- check_character(types, len_max = Inf)
+    types <- check_character(types, min_len = 0, max_len = Inf)
     valuetype <- match.arg(valuetype)
     case_insensitive <- check_logical(case_insensitive)
     keep_nomatch <- check_logical(keep_nomatch)
+    
+    if (!length(pattern)) return(list())
     
     # normalize unicode
     pattern <- lapply(pattern, stri_trans_nfc) 
