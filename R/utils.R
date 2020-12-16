@@ -225,38 +225,52 @@ message_error <- function(key = NULL) {
     return(unname(msg[key]))
 }
 
-#' Sample a vector by a group
+#' Sample a vector
 #'
-#' Return a sample from a vector within a grouping variable.
-#' @param x any vector
+#' Return a sample from a vector within a grouping variable if specified.
+#' @param x numeric vector
 #' @param size the number of items to sample within each group, as a positive
 #'   number or a vector of numbers equal in length to the number of groups. If
 #'   `NULL`, the sampling is stratified by group in the original group
 #'   sizes.
-#' @param group a grouping vector equal in length to `length(x)`
-#' @param replace logical; should sampling be with replacement?
+#' @param replace if `TRUE`, sample with replacement
+#' @param prob a vector of probability weights for values in `x`
+#' @param by a grouping vector equal in length to `length(x)`
 #' @return `x` resampled within groups
 #' @keywords internal
 #' @examples
 #' set.seed(100)
 #' grvec <- c(rep("a", 3), rep("b", 4), rep("c", 3))
-#' quanteda:::sample_bygroup(1:10, group = grvec, replace = FALSE)
-#' quanteda:::sample_bygroup(1:10, group = grvec, replace = TRUE)
-#' quanteda:::sample_bygroup(1:10, group = grvec, size = 2, replace = TRUE)
-#' quanteda:::sample_bygroup(1:10, group = grvec, size = c(1, 1, 3), replace = TRUE)
-sample_bygroup <- function(x, group, size = NULL, replace = FALSE) {
-    if (length(x) != length(group))
-        stop("group not equal in length of x")
-    x <- split(x, group)
-    if (is.null(size))
-        size <- lengths(x)
-    if (length(size) > 1 && length(size) != length(x))
-        stop("size not equal in length to the number of groups")
-    result <- mapply(function(x, size, replace) {
-                 x[sample.int(length(x), size = size, replace = replace)]
-              }, x, size, replace, SIMPLIFY = FALSE)
-    unlist(result, use.names = FALSE)
-
+#' quanteda:::resample(1:10, replace = FALSE, by = grvec)
+#' quanteda:::resample(1:10, replace = TRUE, by = grvec)
+#' quanteda:::resample(1:10, size = 2, replace = TRUE, by = grvec)
+#' quanteda:::resample(1:10, size = c(1, 1, 3), replace = TRUE, by = grvec)
+resample <- function(x, size = NULL, replace = FALSE, prob = NULL, by = NULL) {
+    stopifnot(is.numeric(x))
+    if (is.null(by)) {
+        if (is.null(size))
+            size <- length(x)
+        if (size > length(x) && !replace)
+            stop("size cannot exceed the number of items when replace = FALSE", call. = FALSE)
+        result <- x[sample.int(length(x), size = size, replace = replace, prob = prob)]
+    } else {
+        if (!is.null(prob)) 
+            stop("prob cannot be used with by", call. = FALSE)
+        if (length(x) != length(by))
+            stop("x and by must have the same length", call. = FALSE)
+        x <- split(x, by)
+        if (is.null(size))
+            size <- lengths(x)
+        if (length(size) > 1 && length(size) != length(x))
+            stop("size and by must have the same length", call. = FALSE)
+        temp <- mapply(function(x, size, replace) {
+                     if (size > length(x) && !replace)
+                        stop("size cannot exceed the number of items within group when replace = FALSE", call. = FALSE)
+                     x[sample.int(length(x), size = size, replace = replace)]
+                }, x, size, replace, SIMPLIFY = FALSE)
+        result <- unlist(temp, use.names = FALSE)
+    }
+    return(result)
 }
 
 #' Get the package version that created an object
@@ -303,45 +317,4 @@ rbind_fill <- function(x, y) {
         }
     }
     return(rbind(x, y))
-}
-
-
-get_cache <- function(x, field, ...) {
-    if (Sys.info()[["sysname"]] == "SunOS") 
-        return(NULL)
-    meta <- meta(x, type = "all")
-    hash <- hash_object(x, ...)
-    #print(hash)
-    if (identical(meta$object[[field]][["hash"]], hash)) {
-        result <- meta$object[[field]][["data"]]
-    } else {
-        result <- NULL
-    }
-    return(result)
-}
-
-set_cache <- function(x, field, object, ...) {
-    if (Sys.info()[["sysname"]] == "SunOS") 
-        return()
-    meta <- meta(x, type = "all")
-    hash <- hash_object(x, ...)
-    #print(hash)
-    meta$object[[field]] <- list("hash" = hash, "data" = object)
-    qatd_cpp_set_meta(x, meta)
-}
-
-clear_cache <- function(x, field) {
-    if (Sys.info()[["sysname"]] == "SunOS") 
-        return()
-    meta <- meta(x, type = "all")
-    if (field %in% names(meta$object)) {
-        meta$object[[field]] <- list()
-        qatd_cpp_set_meta(x, meta)
-    }
-}
-
-hash_object <- function(x, ...) {
-    attr(x, "meta") <- NULL
-    digest::digest(list(x, utils::packageVersion("quanteda"), ...),
-                   algo = "sha256")
 }

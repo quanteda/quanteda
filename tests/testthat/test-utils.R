@@ -100,48 +100,69 @@ test_that("get_package_version works", {
     expect_true(quanteda:::get_object_version(dfm("one")) > "1.4.9")
 })
 
-test_that("sample_bygroup works with sizes", {
+test_that("resample works with sizes", {
     grvec <- c(rep("a", 3), rep("b", 4), rep("c", 3))
     
+    # resample works without group 
+    tmp <- quanteda:::resample(1:10, size = 5, replace = FALSE)
+    expect_equal(length(tmp), 5)
+    
+    tmp <- quanteda:::resample(1:10, size = 20, replace = TRUE)
+    expect_equal(length(tmp), 20)
+
+    expect_error(quanteda:::resample(1:10, size = 20, replace = FALSE),
+                 "size cannot exceed the number of items when replace = FALSE")
+    
     # sampling same size each group
-    tmp <- quanteda:::sample_bygroup(1:10, group = grvec, size = 2, replace = TRUE)
+    tmp <- quanteda:::resample(1:10, size = 2, replace = TRUE, by = grvec)
     expect_true(all(tmp[1:2] >= 0 & tmp[1:2] <= 3))
     expect_true(all(tmp[3:4] >= 4 & tmp[3:4] <= 7))
     expect_true(all(tmp[5:6] >= 8 & tmp[5:6] <= 10))
     
     # sampling from a vector of sizes
-    tmp <- quanteda:::sample_bygroup(1:10, group = grvec, size = c(1, 1, 3), replace = TRUE)
+    tmp <- quanteda:::resample(1:10, size = c(1, 1, 3), replace = TRUE, by = grvec)
     expect_true(all(tmp[1] >= 0 & tmp[1] <= 3))
     expect_true(all(tmp[2] >= 4 & tmp[2] <= 7))
     expect_true(all(tmp[3:5] >= 8 & tmp[3:5] <= 10))
     
     # default group size sampling
-    tmp <- quanteda:::sample_bygroup(1:10, group = grvec, replace = TRUE)
+    tmp <- quanteda:::resample(1:10, replace = TRUE, by = grvec)
     expect_true(all(tmp[1:3] >= 0 & tmp[1:3] <= 3))
     expect_true(all(tmp[4:7] >= 4 & tmp[4:7] <= 7))
     expect_true(all(tmp[8:10] >= 8 & tmp[8:10] <= 10))
     
+    # sampling with prob
+    tmp <- quanteda:::resample(1:2, 10, prob = c(1, 0), replace = TRUE)
+    expect_equal(tmp, rep(1, 10))
+    
     # oversampling within group
-    tmp <- quanteda:::sample_bygroup(c(1:2, c(101:102)), 
-                                     group = rep(letters[1:2], each = 2),
-                                     size = 5, replace = TRUE)
+    tmp <- quanteda:::resample(c(1:2, c(101:102)), size = 5, replace = TRUE, 
+                               by = rep(letters[1:2], each = 2))
     expect_true(all(tmp[1:5] >= 0 & tmp[1:5] <= 2))
     expect_true(all(tmp[6:10] >= 100 & tmp[6:10] <= 102))
     
     expect_error(
-        quanteda:::sample_bygroup(1:10, group = grvec[1:6], size = c(2, 3), replace = TRUE),
-        "group not equal in length of x"
+        quanteda:::resample(1:10, size = c(2, 3), replace = TRUE, by = grvec[1:6]),
+        "x and by must have the same length"
     )
     expect_error(
-        quanteda:::sample_bygroup(1:10, group = grvec, size = c(2, 3), replace = TRUE),
-        "size not equal in length to the number of groups"
+        quanteda:::resample(1:10, size = c(2, 3), replace = TRUE, by = grvec),
+        "size and by must have the same length"
+    )
+    expect_error(
+        quanteda:::resample(1:10, size = 5, replace = FALSE, by = grvec),
+        "size cannot exceed the number of items within group when replace = FALSE"
+    )
+    expect_error(
+        quanteda:::resample(1:10, 10, prob = rep(0.1, 10), replace = TRUE, by = grvec),
+        "prob cannot be used with by"
     )
 })
 
-test_that("sample_bygroup works with groups of size 1", {
+test_that("resample works with groups of size 1", {
     grvec <- c(rep("a", 3), rep("b", 1))
     for (i in seq_len(10)) {
-        tmp <- quanteda:::sample_bygroup(1:4, group = grvec, replace = TRUE)
+        tmp <- quanteda:::resample(1:4, replace = TRUE, by = grvec)
         expect_true(all(tmp[1:3] >= 1 & tmp[1:3] <= 3))
         expect_equal(tmp[4], 4)
     }
