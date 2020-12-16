@@ -7,7 +7,7 @@
 tokens_sample(x, size = NULL, replace = FALSE, prob = NULL, by = NULL)
 }
 \arguments{
-\item{x}{the \link{tokens} object whose documents will be sampled}
+\item{x}{a \link{tokens} object whose documents will be sampled}
 
 \item{size}{a positive number, the number of documents to select; when used
 with groups, the number to select from each group or a vector equal in
