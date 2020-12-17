@@ -254,10 +254,16 @@ message_error <- function(key = NULL) {
 #' quanteda:::resample(1:10, size = 2, replace = TRUE, by = grvec)
 #' quanteda:::resample(1:10, size = c(1, 1, 3), replace = TRUE, by = grvec)
 resample <- function(x, size = NULL, replace = FALSE, prob = NULL, by = NULL) {
-    stopifnot(is.numeric(x))
+    
+    x <- check_integer(x, max_len = Inf)
+    replace <- check_logical(replace)
+    
     if (is.null(by)) {
-        if (is.null(size))
+        if (!is.null(size)) {
+            size <- check_integer(size, max_len = Inf, min = 0)
+        } else {
             size <- length(x)
+        }
         if (size > length(x) && !replace)
             stop("size cannot exceed the number of items when replace = FALSE", call. = FALSE)
         result <- x[sample.int(length(x), size = size, replace = replace, prob = prob)]
@@ -267,8 +273,11 @@ resample <- function(x, size = NULL, replace = FALSE, prob = NULL, by = NULL) {
         if (length(x) != length(by))
             stop("x and by must have the same length", call. = FALSE)
         x <- split(x, by)
-        if (is.null(size))
+        if (!is.null(size)) {
+            size <- check_integer(size, max_len = Inf, min = 0)
+        } else {
             size <- lengths(x)
+        }
         if (length(size) > 1 && length(size) != length(x))
             stop("size and by must have the same length", call. = FALSE)
         temp <- mapply(function(x, size, replace) {
