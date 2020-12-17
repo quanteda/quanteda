@@ -173,7 +173,7 @@ escape_regex <- function(x) {
 #' @keywords internal
 #' @examples
 #' # as.tokens.default <- function(x, concatenator = "", ...) {
-#' #     stop(quanteda:::friendly_class_undefined_message(class(x), "as.tokens"))
+#' #     stop(quanteda:::check_class(class(x), "as.tokens"))
 #' # }
 check_class <- function(object_class, function_name) {
     valid_object_types <-
@@ -205,7 +205,7 @@ unused_dots <- function(...) {
 check_dots <-  function(dots, permissible_args = NULL) {
     if (length(dots) == 0) return()
     args <- names(dots)
-    arg <-  setdiff(args, permissible_args)
+    arg <- setdiff(args, permissible_args)
     if (length(arg) == 1) {
         warning(arg[1], " argument is not used.", call. = FALSE)
     } else if (length(arg) > 1) {

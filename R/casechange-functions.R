@@ -16,7 +16,7 @@ tokens_tolower <- function(x, keep_acronyms = FALSE) {
 
 #' @export
 tokens_tolower.default <- function(x, keep_acronyms = FALSE) {
-    stop(friendly_class_undefined_message(class(x), "tokens_tolower"))
+    stop(check_class(class(x), "tokens_tolower"))
 }
 
 #' @export
@@ -45,7 +45,7 @@ tokens_toupper <- function(x) {
     
 #' @export
 tokens_toupper.default <- function(x) {
-    stop(friendly_class_undefined_message(class(x), "tokens_toupper"))
+    stop(check_class(class(x), "tokens_toupper"))
 }
 
 #' @noRd
@@ -86,7 +86,7 @@ char_tolower <- function(x, keep_acronyms = FALSE) {
 
 #' @export
 char_tolower.default <- function(x, keep_acronyms = FALSE) {
-    stop(friendly_class_undefined_message(class(x), "char_tolower"))
+    stop(check_class(class(x), "char_tolower"))
 }
 
 #' @importFrom stringi stri_extract_all_regex stri_replace_all_regex stri_trans_tolower
@@ -120,7 +120,7 @@ char_toupper <- function(x) {
 
 #' @export
 char_toupper.default <- function(x) {
-    stop(friendly_class_undefined_message(class(x), "char_toupper"))
+    stop(check_class(class(x), "char_toupper"))
 }
 
 #' @importFrom stringi stri_trans_toupper
@@ -152,7 +152,7 @@ dfm_tolower <- function(x, keep_acronyms = FALSE) {
 
 #' @export
 dfm_tolower.default <- function(x, keep_acronyms = FALSE) {
-    stop(friendly_class_undefined_message(class(x), "dfm_tolower"))
+    stop(check_class(class(x), "dfm_tolower"))
 }
 
 #' @export
@@ -173,7 +173,7 @@ dfm_toupper <- function(x) {
 
 #' @export
 dfm_toupper.default <- function(x) {
-    stop(friendly_class_undefined_message(class(x), "dfm_toupper"))
+    stop(check_class(class(x), "dfm_toupper"))
 }
 
 #' @export
@@ -203,7 +203,7 @@ fcm_tolower <- function(x, keep_acronyms = FALSE) {
 
 #' @export
 fcm_tolower.default <- function(x, keep_acronyms = FALSE) {
-    stop(friendly_class_undefined_message(class(x), "fcm_tolower"))
+    stop(check_class(class(x), "fcm_tolower"))
 }
 
 #' @export
@@ -222,7 +222,7 @@ fcm_toupper <- function(x) {
 
 #' @export
 fcm_toupper.default <- function(x) {
-    stop(friendly_class_undefined_message(class(x), "fcm_toupper"))
+    stop(check_class(class(x), "fcm_toupper"))
 }
 
 #' @export

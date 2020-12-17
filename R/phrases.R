@@ -23,7 +23,7 @@ phrase <- function(x) {
 
 #' @export
 phrase.default <- function(x) {
-    stop(friendly_class_undefined_message(class(x), "phrase"))
+    stop(check_class(class(x), "phrase"))
 }
 
 #' @noRd

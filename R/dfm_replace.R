@@ -34,7 +34,7 @@ dfm_replace <- function(x, pattern, replacement, case_insensitive = TRUE,
 #' @export
 dfm_replace.default <- function(x, pattern, replacement, case_insensitive = TRUE,
                                 verbose = quanteda_options("verbose")) {
-    stop(friendly_class_undefined_message(class(x), "dfm_replace"))
+    stop(check_class(class(x), "dfm_replace"))
 }
     
 #' @export

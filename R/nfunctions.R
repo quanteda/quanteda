@@ -23,7 +23,7 @@ ndoc <- function(x) {
 
 #' @export
 ndoc.default <- function(x) {
-    stop(friendly_class_undefined_message(class(x), "ndoc"))
+    stop(check_class(class(x), "ndoc"))
 }
 
 #' @export
@@ -59,7 +59,7 @@ nfeat <- function(x) {
 
 #' @export
 nfeat.default <- function(x) {
-    stop(friendly_class_undefined_message(class(x), "nfeat"))
+    stop(check_class(class(x), "nfeat"))
 }
 
 #' @export
@@ -106,7 +106,7 @@ ntoken <- function(x, ...) {
 
 #' @export
 ntoken.default <- function(x, ...) {
-    stop(friendly_class_undefined_message(class(x), "ntoken"))
+    stop(check_class(class(x), "ntoken"))
 }
 
 #' @rdname ntoken
@@ -120,7 +120,7 @@ ntype <- function(x, ...) {
 
 #' @export
 ntype.default <- function(x, ...) {
-    stop(friendly_class_undefined_message(class(x), "ntype"))
+    stop(check_class(class(x), "ntype"))
 }
 
 #' @export
@@ -206,7 +206,7 @@ nsentence <- function(x) {
 
 #' @export
 nsentence.default <- function(x) {
-    stop(friendly_class_undefined_message(class(x), "nsentence"))
+    stop(check_class(class(x), "nsentence"))
 }
 
 #' @export

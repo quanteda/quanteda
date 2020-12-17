@@ -81,7 +81,7 @@ convert <- function(x, to, ...) {
 #' @noRd
 #' @export
 convert.default <- function(x, to, ...) {
-    stop(friendly_class_undefined_message(class(x), "convert"))
+    stop(check_class(class(x), "convert"))
 }
 
 #' @rdname convert

@@ -118,7 +118,7 @@ dfm <- function(x,
 #' @noRd
 #' @export
 dfm.default <- function(x, ...) {
-    stop(friendly_class_undefined_message(class(x), "dfm"))
+    stop(check_class(class(x), "dfm"))
 }
 
 # GLOBAL FOR dfm THAT FUNCTIONS CAN RESET AS NEEDED TO RECORD TIME ELAPSED

@@ -44,7 +44,7 @@ dfm_group <- function(x, groups = NULL, fill = FALSE, force = FALSE) {
 
 #' @export
 dfm_group.default <- function(x, groups = NULL, fill = FALSE, force = FALSE) {
-    stop(friendly_class_undefined_message(class(x), "dfm_group"))
+    stop(check_class(class(x), "dfm_group"))
 }
     
 #' @export

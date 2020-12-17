@@ -20,7 +20,7 @@ fcm_select.default <- function(x, pattern = NULL,
                                valuetype = c("glob", "regex", "fixed"),
                                case_insensitive = TRUE,
                                verbose = quanteda_options("verbose"), ...) {
-    stop(friendly_class_undefined_message(class(x), "fcm_select"))
+    stop(check_class(class(x), "fcm_select"))
 }
 
 #' @export
@@ -46,7 +46,7 @@ fcm_remove <- function(x, pattern = NULL, ...) {
 
 #' @export
 fcm_remove.default <- function(x, pattern = NULL, ...) {
-    stop(friendly_class_undefined_message(class(x), "fcm_remove"))
+    stop(check_class(class(x), "fcm_remove"))
 }
 
 #' @export
@@ -62,7 +62,7 @@ fcm_keep <- function(x, pattern = NULL, ...) {
 
 #' @export
 fcm_keep.default <- function(x, pattern = NULL, ...) {
-    stop(friendly_class_undefined_message(class(x), "fcm_keep"))
+    stop(check_class(class(x), "fcm_keep"))
 }
 
 #' @noRd

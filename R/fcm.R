@@ -109,7 +109,7 @@ fcm <- function(x, context = c("document", "window"),
 
 #' @export
 fcm.default <- function(x, ...) {
-    stop(friendly_class_undefined_message(class(x), "fcm"))
+    stop(check_class(class(x), "fcm"))
 }
 
 #' @noRd

@@ -29,7 +29,7 @@ tokens_subset <- function(x, subset, ...) {
     
 #' @export
 tokens_subset.default <- function(x, subset, ...) {
-    stop(friendly_class_undefined_message(class(x), "tokens_subset"))
+    stop(check_class(class(x), "tokens_subset"))
 }
     
 #' @export

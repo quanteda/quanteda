@@ -120,7 +120,7 @@ as.corpus <- function(x) {
 
 #' @export
 as.corpus.default <- function(x) {
-    stop(friendly_class_undefined_message(class(x), "as.corpus"))
+    stop(check_class(class(x), "as.corpus"))
 }
 
 #' @export

@@ -73,7 +73,7 @@ dfm_lookup.default <- function(x, dictionary, levels = 1:5,
                            capkeys = !exclusive,
                            nomatch = NULL,
                            verbose = quanteda_options("verbose")) {
-    stop(friendly_class_undefined_message(class(x), "dfm_lookup"))
+    stop(check_class(class(x), "dfm_lookup"))
 }
 
 #' @export

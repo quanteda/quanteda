@@ -71,7 +71,7 @@ dfm_select.default <-  function(x, pattern = NULL,
                             case_insensitive = TRUE,
                             min_nchar = NULL, max_nchar = NULL,
                             verbose = quanteda_options("verbose")) {
-    stop(friendly_class_undefined_message(class(x), "dfm_select"))
+    stop(check_class(class(x), "dfm_select"))
 }
 
 #' @export

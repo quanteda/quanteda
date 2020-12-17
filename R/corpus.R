@@ -100,7 +100,7 @@ corpus <- function(x, ...) {
 #' @noRd
 #' @export
 corpus.default <- function(x, ...) {
-    stop(friendly_class_undefined_message(class(x), "corpus"))
+    stop(check_class(class(x), "corpus"))
 }
 
 #' @rdname corpus

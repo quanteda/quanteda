@@ -23,7 +23,7 @@ corpus_subset <- function(x, subset, ...) {
     
 #' @export
 corpus_subset.default <- function(x, subset, ...) {
-    stop(friendly_class_undefined_message(class(x), "corpus_subset"))
+    stop(check_class(class(x), "corpus_subset"))
 }
 
 #' @export

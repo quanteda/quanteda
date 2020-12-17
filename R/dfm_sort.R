@@ -24,7 +24,7 @@ dfm_sort <- function(x, decreasing = TRUE,
 #' @export
 dfm_sort.default <- function(x, decreasing = TRUE,
                              margin = c("features", "documents", "both")) {
-  stop(friendly_class_undefined_message(class(x), "dfm_sort"))
+  stop(check_class(class(x), "dfm_sort"))
 }
 
 #' @export
