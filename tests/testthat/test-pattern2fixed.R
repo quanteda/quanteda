@@ -1,4 +1,4 @@
-context('test pattern2fixed.R')
+context('test pattern2fixed')
 
 test_that("pattern2fixed converts regex patterns correctly", {
       
