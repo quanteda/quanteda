@@ -55,4 +55,22 @@ check_character(
 Check the range of values and the length of input vectors
 before used in control flow or passed to C++ functions.
 }
+\details{
+Note that value checks are performed after coercion to expected input types.
+}
+\examples{
+\dontrun{
+check_integer(0, min = 1) # error
+check_integer(-0.1, min = 0) # return 0
+check_double(-0.1, min = 0) # error
+check_double(numeric(), min_len = 0) # return numeric()
+check_double("1.1", min = 1) # returns 1.1
+check_double("1.1", min = 1, strict = TRUE) # error
+check_double("xyz", min = 1) # error
+check_logical(c(TRUE, FALSE), min_len = 3) # error
+check_character("_", min_nchar = 1) # return "_"
+check_character("", min_nchar = 1) # error
+}
+}
+\keyword{development}
 \keyword{internal}
