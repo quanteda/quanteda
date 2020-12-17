@@ -7,13 +7,34 @@
 \alias{check_character}
 \title{Validate input vectors}
 \usage{
-check_integer(x, min_len = 1, max_len = 1, min = -Inf, max = Inf)
+check_integer(
+  x,
+  min_len = 1,
+  max_len = 1,
+  min = -Inf,
+  max = Inf,
+  strict = FALSE
+)
 
-check_double(x, min_len = 1, max_len = 1, min = -Inf, max = Inf)
+check_double(
+  x,
+  min_len = 1,
+  max_len = 1,
+  min = -Inf,
+  max = Inf,
+  strict = FALSE
+)
 
-check_logical(x, min_len = 1, max_len = 1)
+check_logical(x, min_len = 1, max_len = 1, strict = FALSE)
 
-check_character(x, min_len = 1, max_len = 1, min_nchar = 0, max_nchar = Inf)
+check_character(
+  x,
+  min_len = 1,
+  max_len = 1,
+  min_nchar = 0,
+  max_nchar = Inf,
+  strict = FALSE
+)
 }
 \arguments{
 \item{min_len}{minimum length of the vector}
@@ -23,6 +44,8 @@ check_character(x, min_len = 1, max_len = 1, min_nchar = 0, max_nchar = Inf)
 \item{min}{minimum value in the vector}
 
 \item{max}{maximum value in the vector}
+
+\item{strict}{raise error when \code{x} is a different type}
 
 \item{min_nchar}{minimum character length of values in the vector}
 
