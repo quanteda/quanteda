@@ -63,6 +63,7 @@ bootstrap_dfm.dfm <- function(x, n = 10, ..., verbose = quanteda_options("verbos
     x <- as.dfm(x)
     n <- check_integer(n, min = 1)
     verbose <- chceck_logical(verbose)
+    
     if (verbose) {
         message("Bootstrapping the sentences to create multiple dfm objects...")
         message("   ...resampling and forming dfms: 0", appendLF = FALSE)

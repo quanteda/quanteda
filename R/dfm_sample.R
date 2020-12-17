@@ -37,7 +37,6 @@ dfm_sample.dfm <- function(x, size = NULL, replace = FALSE, prob = NULL, by = NU
                            margin = c("documents", "features")) {
      
     x <- as.dfm(x)
-    size <- check_integer(size, min = 0)
     margin <- match.arg(margin)
     
     if (margin == "features")

@@ -29,6 +29,7 @@ tokens_sample.default <- function(x, size = NULL, replace = FALSE, prob = NULL, 
 tokens_sample.tokens <- function(x, size = NULL, replace = FALSE, prob = NULL, by = NULL) {
     
     x <- as.tokens(x)
+    
     if (!is.null(by)) {
         if (by == "document") by <- "docid_"
         i <- resample(seq_len(ndoc(x)), size = size, replace = replace, prob = prob,

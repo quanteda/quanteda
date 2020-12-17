@@ -43,29 +43,16 @@ corpus_sample.default <- function(x, size = ndoc(x), replace = FALSE, prob = NUL
 }
 
 #' @export
-<<<<<<< HEAD
-corpus_sample.corpus <- function(x, size = ndoc(x), replace = FALSE, prob = NULL, by = NULL) {
-=======
 corpus_sample.corpus <- function(x, size = NULL, replace = FALSE, prob = NULL, by = NULL) {
     
->>>>>>> master
     x <- as.corpus(x)
-    size <- check_integer(size)
-    
-    i <- seq_len(ndoc(x))
+
     if (!is.null(by)) {
         if (by == "document") by <- "docid_"
-<<<<<<< HEAD
-        i <- sample_bygroup(i, group = get_docvars(x, by, system = TRUE, drop = TRUE), 
-                            size = size, replace = replace)
-    } else {
-        i <- base::sample(i, size, replace, prob) 
-=======
         i <- resample(seq_len(ndoc(x)), size = size, replace = replace, prob = prob,
-                     by = get_docvars(x, by, system = TRUE, drop = TRUE))
+                      by = get_docvars(x, by, system = TRUE, drop = TRUE))
     } else {
         i <- resample(seq_len(ndoc(x)), size = size, replace = replace, prob = prob) 
->>>>>>> master
     }
     return(x[i])
 }
