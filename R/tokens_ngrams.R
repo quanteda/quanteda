@@ -101,11 +101,9 @@ char_ngrams.character <- function(x, n = 2L, skip = 0L, concatenator = "_") {
 tokens_ngrams.tokens <- function(x, n = 2L, skip = 0L, concatenator = "_") {
 
     x <- as.tokens(x)
-    n <- as.integer(n)
-    skip <- as.integer(skip)
-
-    if (any(n <= 0L))
-        stop("ngram length has to be greater than zero")
+    n <- check_integer(n, min = 1, max_len = Inf)
+    skip <- check_integer(skip, min = 0, max_len = Inf)
+    concatenator <- check_character(concatenator)
 
     attrs <- attributes(x)
     if (identical(n, 1L) && identical(skip, 0L))

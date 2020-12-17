@@ -33,12 +33,12 @@
 #' corpsent <- corpus_reshape(corp, to = "sentences")
 #' texts(corpsent)
 #' texts(corpus_sample(corpsent, replace = TRUE, by = "document"))
-corpus_sample <- function(x, size = NULL, replace = FALSE, prob = NULL, by = NULL) {
+corpus_sample <- function(x, size = ndoc(x), replace = FALSE, prob = NULL, by = NULL) {
     UseMethod("corpus_sample")
 }
 
 #' @export
-corpus_sample.default <- function(x, size = NULL, replace = FALSE, prob = NULL, by = NULL) {
+corpus_sample.default <- function(x, size = ndoc(x), replace = FALSE, prob = NULL, by = NULL) {
     stop(friendly_class_undefined_message(class(x), "corpus_sample"))
 }
 
@@ -46,10 +46,11 @@ corpus_sample.default <- function(x, size = NULL, replace = FALSE, prob = NULL, 
 corpus_sample.corpus <- function(x, size = NULL, replace = FALSE, prob = NULL, by = NULL) {
     
     x <- as.corpus(x)
+
     if (!is.null(by)) {
         if (by == "document") by <- "docid_"
         i <- resample(seq_len(ndoc(x)), size = size, replace = replace, prob = prob,
-                     by = get_docvars(x, by, system = TRUE, drop = TRUE))
+                      by = get_docvars(x, by, system = TRUE, drop = TRUE))
     } else {
         i <- resample(seq_len(ndoc(x)), size = size, replace = replace, prob = prob) 
     }

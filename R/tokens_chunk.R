@@ -34,14 +34,12 @@ tokens_chunk <- function(x, size, overlap = 0, use_docvars = TRUE) {
 tokens_chunk.tokens <- function(x, size, overlap = 0, use_docvars = TRUE) {
 
     x <- as.tokens(x)
-    if (length(size) > 1L)
-        stop("Size must be a single integer")
-    if (size < 1L)
-        stop("Chunk size must be larger than or equal to 1")
-    if (overlap < 0L)
-        stop("Overlap must be a positive value")
+    size <- check_integer(size, min = 1)
+    overlap <- check_integer(overlap, min = 0)
+    use_docvars <- check_logical(use_docvars)
+        
     if (overlap >= size)
-        stop("Overlap must be smaller than size")
+        stop("The value of overlap must be smaller than size")
     if (!use_docvars)
         docvars(x) <- NULL
 

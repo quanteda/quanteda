@@ -50,6 +50,12 @@ print.tokens <- function(x, max_ndoc = quanteda_options("print_tokens_max_ndoc")
                          max_ntoken = quanteda_options("print_tokens_max_ntoken"),
                          show_summary = quanteda_options("print_tokens_summary"),
                          ...) {
+    
+    x <- as.tokens(x)
+    max_ndoc <- check_integer(max_ndoc, min = -1)
+    max_ntoken <- check_integer(max_ntoken, min = -1)
+    show_summary <- check_logical(show_summary)
+    
     unused_dots(...)
     docvars <- docvars(x)
     ndoc <- ndoc(x)

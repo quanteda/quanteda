@@ -196,6 +196,7 @@ dfm.tokens <- function(x,
                        verbose = quanteda_options("verbose"),
                        ...) {
     valuetype <- match.arg(valuetype)
+    stem <- check_logical(stem)
 
     # call tokens only if options given
     if (length(intersect(names(list(...)), names(formals("tokens"))))) {
@@ -252,8 +253,8 @@ dfm.tokens <- function(x,
                            verbose = verbose)
     }
 
-    language <- quanteda_options("language_stemmer")
     if (stem) {
+        language <- quanteda_options("language_stemmer")
         if (verbose) catm(" ...stemming types (", stri_trans_totitle(language), ")\n", sep = "")
         x <- tokens_wordstem(x, language = language)
     }

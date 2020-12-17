@@ -35,9 +35,9 @@ tokens_split.tokens <- function(x, separator = " ", valuetype = c("fixed", "rege
                                 remove_separator = TRUE) {
     
     x <- as.tokens(x)
+    separator <- check_character(separator)
     valuetype <- match.arg(valuetype)
-    if (length(separator) != 1)
-        stop("separator must be a character")
+    remove_separator <- check_logical(remove_separator)
 
     type <- types(x)
     if (valuetype == "regex") {

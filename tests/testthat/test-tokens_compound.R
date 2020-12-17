@@ -44,6 +44,7 @@ test_that("tokens_compound join tokens correctly", {
              c("aaa", "bbb", "ccc", "ddd", "eee", "fff", "ggg"),
              c("a_b", "b_c", "c_d", "d_e_e_f", "f_g"))
     )
+  
 })
 
 test_that("tokens_compound join a sequences of sequences", {
@@ -97,6 +98,27 @@ test_that("tokens_compound works with padded tokens", {
     toks <- tokens_compound(toks, phrase("c d"))
     expect_equal(sort(attr(toks, "types")),
                  sort(c("a", "c_d", "f", "g")))
+})
+
+test_that("tokens_compound works with different concatenators", {
+  toks <- tokens(c(doc1 = "a b c d e f g"))
+  toks1 <- tokens_compound(toks, phrase("c d"), concatenator = "+")
+  expect_equal(sort(attr(toks1, "types")),
+               sort(c("a", "b", "c+d", "e", "f", "g")))
+  expect_equal(meta(toks1, field = "concatenator", type = "object"),
+               "+")
+  toks2 <- tokens_compound(toks, phrase("c d"), concatenator = "&&")
+  expect_equal(meta(toks2, field = "concatenator", type = "object"),
+               "&&")
+  expect_equal(sort(attr(toks2, "types")),
+               sort(c("a", "b", "c&&d", "e", "f", "g")))
+  toks3 <- tokens_compound(toks, phrase("c d"), concatenator = "")
+  expect_equal(meta(toks3, field = "concatenator", type = "object"),
+               "")
+  expect_equal(sort(attr(toks3, "types")),
+               sort(c("a", "b", "cd", "e", "f", "g")))
+  expect_error(tokens_compound(toks, phrase("c d"), concatenator = character()),
+               "The length of concatenator must be 1")
 })
 
 test_that("tokens_compound works as expected with nested tokens", {
@@ -206,9 +228,12 @@ test_that("tokens_compound window is working", {
   )
   expect_error(
     tokens_compound(toks, pat, join = FALSE, window = -1),
-    "window sizes cannot be negative"
+    "The value of window must be between 0 and Inf"
   )
-
+  expect_error(
+    tokens_compound(toks, pat, join = FALSE, window = c(1, 1, 2)),
+    "The length of window must be between 1 and 2"
+  )
   expect_equal(
     as.list(tokens_compound(tokens_remove(toks, "a", padding = TRUE), pat, join = TRUE, window = 1)),
     list(text1 = c("", "b_c_d_e", "f_g"))

@@ -7,8 +7,8 @@
 tokens_compound(
   x,
   pattern,
-  concatenator = "_",
   valuetype = c("glob", "regex", "fixed"),
+  concatenator = "_",
   window = 0,
   case_insensitive = TRUE,
   join = TRUE
@@ -20,15 +20,15 @@ tokens_compound(
 \item{pattern}{a character vector, list of character vectors, \link{dictionary},
 or collocations object.  See \link{pattern} for details.}
 
+\item{valuetype}{the type of pattern matching: \code{"glob"} for "glob"-style
+wildcard expressions; \code{"regex"} for regular expressions; or \code{"fixed"} for
+exact matching. See \link{valuetype} for details.}
+
 \item{concatenator}{the concatenation character that will connect the words
 making up the multi-word sequences.  The default \verb{_} is recommended since
 it will not be removed during normal cleaning and tokenization (while
 nearly all other punctuation characters, at least those in the Unicode
 punctuation class \verb{[P]} will be removed).}
-
-\item{valuetype}{the type of pattern matching: \code{"glob"} for "glob"-style
-wildcard expressions; \code{"regex"} for regular expressions; or \code{"fixed"} for
-exact matching. See \link{valuetype} for details.}
 
 \item{window}{integer; a vector of length 1 or 2 that specifies size of the
 window of tokens adjacent to \code{pattern} that will be compounded with matches

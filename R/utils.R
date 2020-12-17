@@ -102,10 +102,16 @@ message_select <- function(selection, nfeats, ndocs, nfeatspad = 0, ndocspad = 0
 pattern2list <- function(x, types, valuetype, case_insensitive,
                          concatenator = "_", levels = 1, remove_unigram = FALSE,
                          keep_nomatch = FALSE) {
-
+    
     if (is.dfm(x))
         stop("dfm cannot be used as pattern")
-
+    
+    case_insensitive <- check_logical(case_insensitive)
+    concatenator <- check_character(concatenator)
+    levels <- check_integer(levels, min = 1, max_len = Inf)
+    remove_unigram <- check_logical(remove_unigram)
+    keep_nomatch <- check_logical(keep_nomatch)
+    
     if (is.collocations(x)) {
         if (nrow(x) == 0) return(list())
         temp <- stri_split_charclass(x$collocation, "\\p{Z}")
@@ -169,7 +175,7 @@ escape_regex <- function(x) {
 #' # as.tokens.default <- function(x, concatenator = "", ...) {
 #' #     stop(quanteda:::friendly_class_undefined_message(class(x), "as.tokens"))
 #' # }
-friendly_class_undefined_message <- function(object_class, function_name) {
+check_class <- function(object_class, function_name) {
     valid_object_types <-
         utils::methods(function_name) %>%
         as.character() %>%
@@ -179,6 +185,7 @@ friendly_class_undefined_message <- function(object_class, function_name) {
          paste(valid_object_types, collapse = ", "),
          " objects.")
 }
+friendly_class_undefined_message <- check_class
 
 #' Raise warning of unused dots
 #' @param ... dots to check
@@ -215,6 +222,7 @@ message_error <- function(key = NULL) {
              "fcm_context" = "fcm must be created with a document context",
              "matrix_mismatch" = "matrix must have the same rownames and colnames",
              "docnames_mismatch" = "docnames must the the same length as x",
+             "ndoc_mismatch" = "documents must the the same length as x",
              "docvars_mismatch" = "data.frame must have the same number of rows as documents",
              "docvars_invalid" = "document variables cannot begin with the underscore",
              "docvar_nofield" = "you must supply field name(s)",
@@ -246,10 +254,16 @@ message_error <- function(key = NULL) {
 #' quanteda:::resample(1:10, size = 2, replace = TRUE, by = grvec)
 #' quanteda:::resample(1:10, size = c(1, 1, 3), replace = TRUE, by = grvec)
 resample <- function(x, size = NULL, replace = FALSE, prob = NULL, by = NULL) {
-    stopifnot(is.numeric(x))
+    
+    x <- check_integer(x, min_len = 0, max_len = Inf)
+    replace <- check_logical(replace)
+    
     if (is.null(by)) {
-        if (is.null(size))
+        if (!is.null(size)) {
+            size <- check_integer(size, max_len = Inf, min = 0)
+        } else {
             size <- length(x)
+        }
         if (size > length(x) && !replace)
             stop("size cannot exceed the number of items when replace = FALSE", call. = FALSE)
         result <- x[sample.int(length(x), size = size, replace = replace, prob = prob)]
@@ -259,8 +273,11 @@ resample <- function(x, size = NULL, replace = FALSE, prob = NULL, by = NULL) {
         if (length(x) != length(by))
             stop("x and by must have the same length", call. = FALSE)
         x <- split(x, by)
-        if (is.null(size))
+        if (!is.null(size)) {
+            size <- check_integer(size, max_len = Inf, min = 0)
+        } else {
             size <- lengths(x)
+        }
         if (length(size) > 1 && length(size) != length(x))
             stop("size and by must have the same length", call. = FALSE)
         temp <- mapply(function(x, size, replace) {

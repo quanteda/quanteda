@@ -1,9 +1,10 @@
 context("test texts")
 
+txt_test <- c(d1 = "This is first document", 
+              d2 = "This makes up a second text.",
+              d3 = "something completely different")
 test_that("test texts: general", {
-    corp <- corpus(c(d1 = "This is first document", 
-                     d2 = "This makes up a second text.",
-                     d3 = "something completely different"),
+    corp <- corpus(txt_test,
                    docvars = data.frame(bool = c(TRUE, FALSE, TRUE),
                                         label_factor = factor(c("A", "B", "A")),
                                         label_txt = c("A", "B", "A")))
@@ -11,19 +12,29 @@ test_that("test texts: general", {
                  c(d1 = "This is first document"))
 })
 
+test_that("assignment works", {
+    corp <- corpus(txt_test)
+    expect_error(
+        texts(corp) <- c("aaaa", "bbbbb"), 
+        "documents must the the same length as x"
+    )
+    texts(corp) <- c(12345, 0, Inf)
+    expect_equal(
+        texts(corp),
+        c(d1 = "12345", d2 = "0", d3 = "Inf")
+    )
+})
+
 test_that("test texts with groups", {
-    txt <- c(d1 = "This is first document", 
-             d2 = "This makes up a second text.",
-             d3 = "something completely different")
-    corp <- corpus(txt, docvars = data.frame(bool = c(TRUE, FALSE, TRUE),
+    corp <- corpus(txt_test, docvars = data.frame(bool = c(TRUE, FALSE, TRUE),
                                              label_factor = factor(c("A", "B", "A")),
                                              label_txt = c("A", "B", "A")))
 
-    expect_identical(texts(txt, groups = c(TRUE, FALSE, TRUE))[2], 
+    expect_identical(texts(txt_test, groups = c(TRUE, FALSE, TRUE))[2], 
                      c("TRUE" = "This is first document something completely different"))
-    expect_identical(texts(txt, groups = factor(c("A", "B", "A")))[1], 
+    expect_identical(texts(txt_test, groups = factor(c("A", "B", "A")))[1], 
                      c(A = "This is first document something completely different"))
-    expect_identical(texts(txt, groups = c("A", "B", "A"))[1], 
+    expect_identical(texts(txt_test, groups = c("A", "B", "A"))[1], 
                      c(A = "This is first document something completely different"))
 
     expect_equal(texts(corp, groups = "bool")[2], 

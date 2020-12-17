@@ -1,5 +1,10 @@
 context("test validator")
 
+i1 <- 3L
+i2 <- -1L
+i3 <- c(-1L, 0L, 1L, 2L)
+i4 <- c(1L, NA)
+
 n1 <- 3.1
 n2 <- -1.2
 n3 <- c(-1.1, 0, 0.9, 1.0)
@@ -31,16 +36,18 @@ test_that("check_integer works", {
                  "The value of n2 must be between -Inf and -2")
     expect_error(quanteda:::check_integer(n2, min = 0), 
                  "The value of n2 must be between 0 and Inf")
-    expect_error(quanteda:::check_integer(n2, len_max = 2, len_min = 2),
+    expect_error(quanteda:::check_integer(n2, max_len = 2, min_len = 2),
                  "The length of n2 must be 2")
     expect_error(quanteda:::check_integer(n3),
                  "The length of n3 must be 1")
-    expect_error(quanteda:::check_integer(n3, len_max = 2),
+    expect_error(quanteda:::check_integer(n3, max_len = 2),
                  "The length of n3 must be between 1 and 2")
-    expect_error(quanteda:::check_integer(n4, len_max = 2), 
+    expect_error(quanteda:::check_integer(n4, max_len = 2), 
                  "The value of n4 cannot be NA")
     expect_error(quanteda:::check_integer(fun), 
                  "fun must be coercible to integer")
+    expect_error(quanteda:::check_integer(n1, strict = TRUE), 
+                 "The type of n1 must be integer")
 })
 
 test_that("check_double works", {
@@ -57,16 +64,19 @@ test_that("check_double works", {
                  "The value of n2 must be between -Inf and -2")
     expect_error(quanteda:::check_double(n2, min = 0), 
                  "The value of n2 must be between 0 and Inf")
-    expect_error(quanteda:::check_double(n2, len_max = 2, len_min = 2),
+    expect_error(quanteda:::check_double(n2, max_len = 2, min_len = 2),
                  "The length of n2 must be 2")
     expect_error(quanteda:::check_double(n3),
                  "The length of n3 must be 1")
-    expect_error(quanteda:::check_double(n3, len_max = 2),
+    expect_error(quanteda:::check_double(n3, max_len = 2),
                  "The length of n3 must be between 1 and 2")
-    expect_error(quanteda:::check_double(n4, len_max = 2), 
+    expect_error(quanteda:::check_double(n4, max_len = 2), 
                  "The value of n4 cannot be NA")
     expect_error(quanteda:::check_double(fun), 
                  "fun must be coercible to double")
+    expect_error(quanteda:::check_double(i1, strict = TRUE), 
+                 "The type of i1 must be double")
+    
 })
 
 
@@ -76,40 +86,44 @@ test_that("check_character works", {
     expect_identical(quanteda:::check_character(c1), "abc")
     expect_identical(quanteda:::check_character(n2), "-1.2")
     expect_identical(quanteda:::check_character(c2), "")
-    expect_error(quanteda:::check_character(c2, len_max = 2, len_min = 2),
+    expect_error(quanteda:::check_character(c2, max_len = 2, min_len = 2),
                  "The length of c2 must be 2")
     expect_error(quanteda:::check_character(c3),
                  "The length of c3 must be 1")
-    expect_error(quanteda:::check_character(c3, len_max = 2),
+    expect_error(quanteda:::check_character(c3, max_len = 2),
                  "The length of c3 must be between 1 and 2")
-    expect_error(quanteda:::check_character(c3, nchar_max = 2, len_max = 3),
+    expect_error(quanteda:::check_character(c3, max_nchar = 2, max_len = 3),
                  "The value of c3 must be between 0 and 2 character")
-    expect_error(quanteda:::check_character(c3, nchar_min = 2, nchar_max = 2, len_max = 3),
+    expect_error(quanteda:::check_character(c3, min_nchar = 2, max_nchar = 2, max_len = 3),
                  "The value of c3 must be 2 character")
-    expect_error(quanteda:::check_character(c4, len_max = 2), 
+    expect_error(quanteda:::check_character(c4, max_len = 2), 
                  "The value of c4 cannot be NA")
     expect_error(quanteda:::check_character(fun), 
                  "fun must be coercible to character")
+    expect_error(quanteda:::check_character(n1, strict = TRUE), 
+                 "The type of n1 must be character")
 })
 
 test_that("check_logical works", {
     
     expect_identical(quanteda:::check_logical(n1), TRUE)
     expect_identical(quanteda:::check_logical(n2), TRUE)
-    expect_identical(quanteda:::check_logical(n3, len_max = 4), 
+    expect_identical(quanteda:::check_logical(n3, max_len = 4), 
                      c(TRUE, FALSE, TRUE, TRUE))
     expect_error(quanteda:::check_logical(c1), 
                      "The value of c1 cannot be NA")
     expect_error(quanteda:::check_logical(c2), 
                      "The value of c2 cannot be NA")
-    expect_error(quanteda:::check_logical(l2, len_max = 2, len_min = 2),
+    expect_error(quanteda:::check_logical(l2, max_len = 2, min_len = 2),
                  "The length of l2 must be 2")
     expect_error(quanteda:::check_logical(l3),
                  "The length of l3 must be 1")
-    expect_error(quanteda:::check_logical(l3, len_max = 2),
+    expect_error(quanteda:::check_logical(l3, max_len = 2),
                  "The length of l3 must be between 1 and 2")
-    expect_error(quanteda:::check_logical(l4, len_max = 2), 
+    expect_error(quanteda:::check_logical(l4, max_len = 2), 
                  "The value of l4 cannot be NA")
-    expect_error(quanteda:::check_character(fun), 
-                 "fun must be coercible to character")
+    expect_error(quanteda:::check_logical(fun), 
+                 "fun must be coercible to logical")
+    expect_error(quanteda:::check_logical(i1, strict = TRUE), 
+                 "The type of i1 must be logical")
 })

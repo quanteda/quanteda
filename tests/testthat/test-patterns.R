@@ -1,4 +1,4 @@
-context("test features.R")
+context("test patterns")
 
 test_that("character vector works consistently on tokens", {
 

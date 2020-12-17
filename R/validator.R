@@ -1,53 +1,93 @@
-check_integer <- function(x, len_min = 1, len_max = 1, min = -Inf, max = Inf) {
+#' Validate input vectors 
+#' 
+#' Check the range of values and the length of input vectors
+#' before used in control flow or passed to C++ functions.
+#' @param min_len minimum length of the vector
+#' @param max_len maximum length of the vector
+#' @param min minimum value in the vector
+#' @param max maximum value in the vector
+#' @param strict raise error when `x` is a different type
+#' @details Note that value checks are performed after coercion to expected input types. 
+#' @keywords internal development
+#' @export
+#' @examples 
+#' \dontrun{
+#' check_integer(0, min = 1) # error
+#' check_integer(-0.1, min = 0) # return 0
+#' check_double(-0.1, min = 0) # error
+#' check_double(numeric(), min_len = 0) # return numeric()
+#' check_double("1.1", min = 1) # returns 1.1
+#' check_double("1.1", min = 1, strict = TRUE) # error
+#' check_double("xyz", min = 1) # error
+#' check_logical(c(TRUE, FALSE), min_len = 3) # error
+#' check_character("_", min_nchar = 1) # return "_"
+#' check_character("", min_nchar = 1) # error
+#' }
+check_integer <- function(x, min_len = 1, max_len = 1, min = -Inf, max = Inf, strict = FALSE) {
     arg <- deparse(substitute(x))
+    if (strict && !is.integer(x))
+        stop("The type of ", arg, " must be integer", call. = FALSE)
     fun <- function(e) stop(arg, " must be coercible to integer", call. = FALSE)
     tryCatch({
         x <- as.integer(x)
     }, warning = fun, error = fun)
-    x <- check_length(x, len_min, len_max, arg)
+    x <- check_length(x, min_len, max_len, arg)
     x <- check_na(x, arg)
     x <- check_range(x, min, max, arg)
     return(x)
 }
 
-check_double <- function(x, len_min = 1, len_max = 1, min = -Inf, max = Inf) {
+#' @rdname check_integer
+#' @export
+check_double <- function(x, min_len = 1, max_len = 1, min = -Inf, max = Inf, strict = FALSE) {
     arg <- deparse(substitute(x))
+    if (strict && !is.double(x))
+        stop("The type of ", arg, " must be double", call. = FALSE)
     fun <- function(e) stop(arg, " must be coercible to double", call. = FALSE)
     tryCatch({
         x <- as.double(x)
     }, warning = fun, error = fun)
-    x <- check_length(x, len_min, len_max, arg)
+    x <- check_length(x, min_len, max_len, arg)
     x <- check_na(x, arg)
     x <- check_range(x, min, max, arg)
     return(x)
 }
 
-check_logical <- function(x, len_min = 1, len_max = 1, min = -Inf, max = Inf) {
+#' @rdname check_integer
+#' @export
+check_logical <- function(x, min_len = 1, max_len = 1, strict = FALSE) {
     arg <- deparse(substitute(x))
+    if (strict && !is.logical(x))
+        stop("The type of ", arg, " must be logical", call. = FALSE)
     fun <- function(e) stop(arg, " must be coercible to logical", call. = FALSE)
     tryCatch({
         x <- as.logical(x)
     }, warning = fun, error = fun)
-    x <- check_length(x, len_min, len_max, arg)
+    x <- check_length(x, min_len, max_len, arg)
     x <- check_na(x, arg)
-    x <- check_range(x, min, max, arg)
     return(x)
 }
 
-check_character <- function(x, len_min = 1, len_max = 1, nchar_min = 0, nchar_max = Inf) {
+#' @param min_nchar minimum character length of values in the vector
+#' @param max_nchar maximum character length of values in the vector
+#' @rdname check_integer
+#' @export
+check_character <- function(x, min_len = 1, max_len = 1, min_nchar = 0, max_nchar = Inf, strict = FALSE) {
     arg <- deparse(substitute(x))
+    if (strict && !is.character(x))
+        stop("The type of ", arg, " must be character", call. = FALSE)
     fun <- function(e) stop(arg, " must be coercible to character", call. = FALSE)
     tryCatch({
         x <- as.character(x)
     }, warning = fun, error = fun)
-    x <- check_length(x, len_min, len_max, arg)
+    x <- check_length(x, min_len, max_len, arg)
     x <- check_na(x, arg)
     n <- stringi::stri_length(x)
-    if (any(n < nchar_min) || any(nchar_max < n)) {
-        if (nchar_min == nchar_max) {
-            stop("The value of ", arg, " must be ", nchar_max, " character\n", call. = FALSE)    
+    if (any(n < min_nchar) || any(max_nchar < n)) {
+        if (min_nchar == max_nchar) {
+            stop("The value of ", arg, " must be ", max_nchar, " character\n", call. = FALSE)    
         } else {
-            stop("The value of ", arg, " must be between " , nchar_min, " and ", nchar_max, " character\n", call. = FALSE)    
+            stop("The value of ", arg, " must be between " , min_nchar, " and ", max_nchar, " character\n", call. = FALSE)    
         }
     }
     return(x)
@@ -65,13 +105,13 @@ check_range <- function(x, min, max, arg) {
     return(x)
 }
 
-check_length <- function(x, len_min, len_max, arg) {
+check_length <- function(x, min_len, max_len, arg) {
     len <- length(x)
-    if (len < len_min || len_max < len) {
-        if (len_min == len_max) {
-            stop("The length of ", arg, " must be ", len_max, "\n", call. = FALSE)
+    if (len < min_len || max_len < len) {
+        if (min_len == max_len) {
+            stop("The length of ", arg, " must be ", max_len, "\n", call. = FALSE)
         } else {
-            stop("The length of ", arg, " must be between " , len_min, " and ", len_max, "\n", call. = FALSE)    
+            stop("The length of ", arg, " must be between " , min_len, " and ", max_len, "\n", call. = FALSE)    
         }
     }
     return(x)

@@ -120,6 +120,8 @@ corpus.character <- function(x, docnames = NULL, docvars = NULL,
                              meta = list(), unique_docnames = TRUE, ...) {
 
     unused_dots(...)
+    unique_docnames <- check_logical(unique_docnames)
+    
     is_na <- is.na(x)
     if (any(is.na(x))) {
         warning("NA is replaced by empty string", call. = FALSE)
@@ -175,8 +177,7 @@ corpus.data.frame <- function(x, docid_field = "doc_id", text_field = "text",
                               meta = list(), unique_docnames = TRUE, ...) {
 
     unused_dots(...)
-    # coerce data.frame variants to data.frame - for #1232
-    x <- as.data.frame(x)
+    x <- as.data.frame(x) # coerce data.frame variants to data.frame
 
     text_index <- 0
     if (length(text_field) != 1)
@@ -252,6 +253,8 @@ corpus.data.frame <- function(x, docid_field = "doc_id", text_field = "text",
 corpus.kwic <- function(x, split_context = TRUE, extract_keyword = TRUE, meta = list(), ...) {
 
     unused_dots(...)
+    split_context <- check_logical(split_context)
+    extract_keyword <- check_logical(extract_keyword)
     class(x) <- "data.frame"
 
     if (split_context) {

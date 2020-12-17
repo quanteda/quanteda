@@ -235,11 +235,20 @@ tokens.corpus <- function(x,
                           verbose = quanteda_options("verbose"),
                           ...)  {
     x <- as.corpus(x)
-    attrs <- attributes(x)
-
-    dots <- list(...)
     what <- match.arg(what, c("word", "word1", "sentence", "character",
                               "fasterword", "fastestword"))
+    remove_punct <- check_logical(remove_punct)
+    remove_symbols <- check_logical(remove_symbols)
+    remove_numbers <- check_logical(remove_numbers)
+    remove_url <- check_logical(remove_url)
+    remove_separators <- check_logical(remove_separators)
+    split_hyphens <- check_logical(split_hyphens)
+    include_docvars <- check_logical(include_docvars)
+    padding <- check_logical(padding)
+    verbose <- check_logical(verbose)
+    dots <- list(...)
+    
+    attrs <- attributes(x)
     # deprecated arguments
     if ("remove_hyphens" %in% names(dots)) {
         split_hyphens <- dots[["remove_hyphens"]]
@@ -337,6 +346,15 @@ tokens.tokens <-  function(x,
                            verbose = quanteda_options("verbose"),
                            ...) {
     x <- as.tokens(x)
+    remove_punct <- check_logical(remove_punct)
+    remove_symbols <- check_logical(remove_symbols)
+    remove_numbers <- check_logical(remove_numbers)
+    remove_url <- check_logical(remove_url)
+    remove_separators <- check_logical(remove_separators)
+    split_hyphens <- check_logical(split_hyphens)
+    include_docvars <- check_logical(include_docvars)
+    padding <- check_logical(padding)
+    verbose <- check_logical(verbose)
     dots <- list(...)
 
     # deprecated arguments

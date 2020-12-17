@@ -1,19 +1,24 @@
 context("test convert function and shortcuts")
 
-mytexts <- c(text1 = "The new law included a capital gains tax, and an inheritance tax.",
-             text2 = "New York City has raised a taxes: an income tax and a sales tax.")
-d <- dfm(mytexts, remove_punct = TRUE)
+txt_test <- c(text1 = "The new law included a capital gains tax, and an inheritance tax.",
+              text2 = "New York City has raised a taxes: an income tax and a sales tax.")
+dfmat_test <- dfm(txt_test, remove_punct = TRUE)
 
 test_that("test STM package converter", {
     skip_if_not_installed("stm")
     skip_if_not_installed("tm")
 
-    dSTM <- convert(d, to = "stm")
-    tP <- stm::textProcessor(mytexts, removestopwords = FALSE, verbose = FALSE,
-                             stem = FALSE, wordLengths = c(1, Inf))
-    expect_equivalent(dSTM$documents[1], tP$documents[1])
-    expect_equivalent(dSTM$documents[2], tP$documents[2])
-    expect_equivalent(dSTM$vocab, tP$vocab)
+    stmdfm <- convert(dfmat_test, to = "stm")
+    stmtp <- stm::textProcessor(txt_test, removestopwords = FALSE, verbose = FALSE,
+                                stem = FALSE, wordLengths = c(1, Inf))
+    expect_equivalent(stmdfm$documents[1], stmtp$documents[1])
+    expect_equivalent(stmdfm$documents[2], stmtp$documents[2])
+    expect_equivalent(stmdfm$vocab, stmtp$vocab)
+    
+    expect_error(convert(dfmat_test, to = "stm", omit_empty = logical()),
+                 "The length of omit_empty must be 1")
+    expect_error(convert(dfmat_test, to = "stm", docid_field = c("field1", "field2")),
+                 "The length of docid_field must be 1")
 })
 
 test_that("docvars error traps work", {
@@ -30,63 +35,63 @@ test_that("docvars error traps work", {
 test_that("test STM package converter with metadata", {
     skip_if_not_installed("stm")
     skip_if_not_installed("tm")
-    dv <- data.frame(myvar = c("A", "B"))
-    mycorpus <- corpus(mytexts, docvars = dv)
-    dm <- dfm(mycorpus, remove_punct = TRUE)
-    dSTM <- convert(dm, to = "stm")
-    tP <- stm::textProcessor(mytexts, removestopwords = FALSE, verbose = FALSE,
-                             stem = FALSE, wordLengths = c(1, Inf))
-    expect_equivalent(dSTM$documents[1], tP$documents[1])
-    expect_equivalent(dSTM$documents[2], tP$documents[2])
-    expect_equivalent(dSTM$vocab, tP$vocab)
-    expect_identical(dSTM$meta, dv)
+    dat <- data.frame(myvar = c("A", "B"))
+    corp <- corpus(txt_test, docvars = dat)
+    dfmat <- dfm(corp, remove_punct = TRUE)
+    stmdfm <- convert(dfmat, to = "stm")
+    stmtp <- stm::textProcessor(txt_test, removestopwords = FALSE, verbose = FALSE,
+                                stem = FALSE, wordLengths = c(1, Inf))
+    expect_equivalent(stmdfm$documents[1], stmtp$documents[1])
+    expect_equivalent(stmdfm$documents[2], stmtp$documents[2])
+    expect_equivalent(stmdfm$vocab, stmtp$vocab)
+    expect_identical(stmdfm$meta, dat)
 })
 
 test_that("test STM package converter with metadata w/zero-count document", {
     skip_if_not_installed("stm")
     skip_if_not_installed("tm")
-    mytexts2 <- c(text1 = "The new law included a capital gains tax, and an inheritance tax.",
+    txt_test2 <- c(text1 = "The new law included a capital gains tax, and an inheritance tax.",
                   text2 = ";",  # this will become empty
                   text3 = "New York City has raised a taxes: an income tax and a sales tax.")
-    dv <- data.frame(myvar = c("A", "B", "C"))
-    mycorpus <- corpus(mytexts2, docvars = dv)
-    dm <- dfm(mycorpus, remove_punct = TRUE)
-    expect_true(ntoken(dm)[2] == 0)
+    dat <- data.frame(myvar = c("A", "B", "C"))
+    corp <- corpus(txt_test2, docvars = dat)
+    dfmat <- dfm(corp, remove_punct = TRUE)
+    expect_true(ntoken(dfmat)[2] == 0)
 
-    dSTM <- suppressWarnings(convert(dm, to = "stm"))
-    tP <- stm::textProcessor(mytexts, removestopwords = FALSE, verbose = FALSE,
+    stmdfm <- suppressWarnings(convert(dfmat, to = "stm"))
+    stmtp <- stm::textProcessor(txt_test, removestopwords = FALSE, verbose = FALSE,
                              stem = FALSE, wordLengths = c(1, Inf))
-    expect_equivalent(dSTM$documents[1], tP$documents[1])
-    expect_equivalent(dSTM$documents[2], tP$documents[2])
-    expect_equivalent(dSTM$vocab, tP$vocab)
-    expect_identical(dSTM$meta, dv[-2, , drop = FALSE])
+    expect_equivalent(stmdfm$documents[1], stmtp$documents[1])
+    expect_equivalent(stmdfm$documents[2], stmtp$documents[2])
+    expect_equivalent(stmdfm$vocab, stmtp$vocab)
+    expect_identical(stmdfm$meta, dat[-2, , drop = FALSE])
 })
 
 test_that("test tm package converter", {
     skip_if_not_installed("tm")
-    dtmq <- convert(d[, order(featnames(d))], to = "tm")
-    dtmtm <- tm::DocumentTermMatrix(tm::VCorpus(tm::VectorSource(char_tolower(mytexts))),
+    dtmq <- convert(dfmat_test[, order(featnames(dfmat_test))], to = "tm")
+    dtmtm <- tm::DocumentTermMatrix(tm::VCorpus(tm::VectorSource(char_tolower(txt_test))),
                                     control = list(removePunctuation = TRUE,
                                                    wordLengths = c(1, Inf)))
     ## FAILS
     # expect_equivalent(dtmq, dfmtm)
     expect_equivalent(as.matrix(dtmq), as.matrix(dtmtm))
 
-    expect_identical(convert(d, to = "tm"), quanteda::as.DocumentTermMatrix(d))
+    expect_identical(convert(dfmat_test, to = "tm"), quanteda::as.DocumentTermMatrix(dfmat_test))
 })
 
 test_that("test lda package converter", {
     skip_if_not_installed("tm")
-    expect_identical(convert(d, to = "topicmodels"), quanteda:::dfm2dtm(d))
+    expect_identical(convert(dfmat_test, to = "topicmodels"), quanteda:::dfm2dtm(dfmat_test))
 })
 
 test_that("test topicmodels package converter", {
     skip_if_not_installed("tm")
-    expect_identical(convert(d, to = "lda"), quanteda:::dfm2lda(d))
+    expect_identical(convert(dfmat_test, to = "lda"), quanteda:::dfm2lda(dfmat_test))
 })
 
 test_that("test austin package converter", {
-    expect_identical(convert(d, to = "austin"), quanteda::as.wfm(d))
+    expect_identical(convert(dfmat_test, to = "austin"), quanteda::as.wfm(dfmat_test))
 })
 
 test_that("test lsa converter", {
@@ -113,18 +118,18 @@ test_that("test lsa converter", {
 
 test_that("test stm converter: under extreme situations ", {
     #zero-count document
-    mydfm <- as.dfm(matrix(c(1, 0, 2, 0,
+    dfmat1 <- as.dfm(matrix(c(1, 0, 2, 0,
                              0, 0, 1, 2,
                              0, 0, 0, 0,
                              1, 2, 3, 4), byrow = TRUE, nrow = 4))
-    expect_warning(convert(mydfm, to = "stm"), "Dropped empty document\\(s\\): text3")
+    expect_warning(convert(dfmat1, to = "stm"), "Dropped empty document\\(s\\): text3")
 
     #zero-count feature
-    mydfm <- as.dfm(matrix(c(1, 0, 2, 0,
+    dfmat2 <- as.dfm(matrix(c(1, 0, 2, 0,
                              0, 0, 1, 2,
                              1, 0, 0, 0,
                              1, 0, 3, 4), byrow = TRUE, nrow = 4))
-    expect_warning(stmdfm <- convert(mydfm, to = "stm"), "zero-count features: feat2")
+    expect_warning(convert(dfmat2, to = "stm"), "zero-count features: feat2")
 
     # FAILING
     # skip_if_not_installed("stm")
@@ -141,21 +146,22 @@ test_that("lsa converter works under extreme situations", {
     skip_if_not_installed("lsa")
     require(lsa)
     #zero-count document
-    mydfm <- as.dfm(matrix(c(1, 0, 2, 0,
+    dfmat1 <- as.dfm(matrix(c(1, 0, 2, 0,
                              0, 0, 1, 2,
                              0, 0, 0, 0,
                              1, 2, 3, 4), byrow = TRUE, nrow = 4))
     # lsa handles empty docs with a warning message
-    expect_warning(lsalsa <- lsa::lsa(convert(mydfm, to = "lsa")), "there are singular values which are zero")
-    expect_equal(class(lsalsa), "LSAspace")
+    expect_warning(lsa1 <- lsa::lsa(convert(dfmat1, to = "lsa")), 
+                   "there are singular values which are zero")
+    expect_equal(class(lsa1), "LSAspace")
 
     #zero-count feature:
-    mydfm <- as.dfm(matrix(c(1, 0, 2, 0,
+    dfmat2 <- as.dfm(matrix(c(1, 0, 2, 0,
                              0, 0, 1, 2,
                              1, 0, 0, 0,
                              1, 0, 3, 4), byrow = TRUE, nrow = 4))
-    expect_warning(lsalsa <- lsa::lsa(convert(mydfm, to = "lsa")), "there are singular values which are zero")
-    expect_equal(class(lsalsa), "LSAspace")
+    expect_warning(lsa2 <- lsa::lsa(convert(dfmat2, to = "lsa")), "there are singular values which are zero")
+    expect_equal(class(lsa2), "LSAspace")
 
     #when dfm is 0% sparse
     lsadfm <- convert(as.dfm(matrix(c(1, 2, 3, 4, 5, 6, 7, 8, 9), ncol = 3)), to = "lsa")
@@ -249,13 +255,13 @@ test_that("tm converter works under extreme situations", {
 test_that("weighted dfm is not convertible to a topic model format (#1091)", {
     err_msg <- "cannot convert a non-count dfm to a topic model format"
 
-    expect_error(convert(dfm_weight(d, "prop"), to = "stm"), err_msg)
-    expect_error(convert(dfm_weight(d, "prop"), to = "topicmodels"), err_msg)
-    expect_error(convert(dfm_weight(d, "prop"), to = "lda"), err_msg)
-    expect_error(convert(dfm_weight(d, "prop"), to = "stm"), err_msg)
-    expect_error(convert(dfm_weight(d, "prop"), to = "stm"), err_msg)
+    expect_error(convert(dfm_weight(dfmat_test, "prop"), to = "stm"), err_msg)
+    expect_error(convert(dfm_weight(dfmat_test, "prop"), to = "topicmodels"), err_msg)
+    expect_error(convert(dfm_weight(dfmat_test, "prop"), to = "lda"), err_msg)
+    expect_error(convert(dfm_weight(dfmat_test, "prop"), to = "stm"), err_msg)
+    expect_error(convert(dfm_weight(dfmat_test, "prop"), to = "stm"), err_msg)
 
-    expect_error(convert(dfm_tfidf(d), to = "stm"), err_msg)
+    expect_error(convert(dfm_tfidf(dfmat_test), to = "stm"), err_msg)
 })
 
 test_that("triplet converter works", {
@@ -340,8 +346,9 @@ test_that("convert.corpus works", {
         convert(corp, to = "json") %>% as.character(),
         '[{"doc_id":"d1","text":"Text one.","dvar1":1,"dvar2":"one"},{"doc_id":"d2","text":"Text two.","dvar1":2,"dvar2":"two"}]'
     )
-
-    })
+    expect_error(convert(corp, to = "json", prett = logical()),
+                 "The length of pretty must be 1")
+})
 
 test_that("convert to = data.frame works", {
     dfmat <- dfm(c(d1 = "this is a fine document",

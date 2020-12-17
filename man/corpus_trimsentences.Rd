@@ -9,8 +9,7 @@ corpus_trimsentences(
   x,
   min_length = 1,
   max_length = 10000,
-  exclude_pattern = NULL,
-  return_tokens = FALSE
+  exclude_pattern = NULL
 )
 
 char_trimsentences(
@@ -28,10 +27,6 @@ char_trimsentences(
 
 \item{exclude_pattern}{a \pkg{stringi} regular expression whose match (at the
 sentence level) will be used to exclude sentences}
-
-\item{return_tokens}{if \code{TRUE}, return tokens object of sentences after
-trimming, otherwise return the input object type with the trimmed sentences
-removed.}
 }
 \value{
 a \link{corpus} or character vector equal in length to the input, or
