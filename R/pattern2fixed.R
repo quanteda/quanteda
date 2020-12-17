@@ -26,7 +26,7 @@
 pattern2id <- function(pattern, types, valuetype = c("glob", "fixed", "regex"),
                        case_insensitive = TRUE, keep_nomatch = FALSE) {
     
-    types <- check_character(types, min_len = 0, max_len = Inf)
+    types <- check_character(types, min_len = 0, max_len = Inf, strict = TRUE)
     valuetype <- match.arg(valuetype)
     case_insensitive <- check_logical(case_insensitive)
     keep_nomatch <- check_logical(keep_nomatch)

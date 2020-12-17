@@ -1,5 +1,10 @@
 context("test validator")
 
+i1 <- 3L
+i2 <- -1L
+i3 <- c(-1L, 0L, 1L, 2L)
+i4 <- c(1L, NA)
+
 n1 <- 3.1
 n2 <- -1.2
 n3 <- c(-1.1, 0, 0.9, 1.0)
@@ -41,6 +46,8 @@ test_that("check_integer works", {
                  "The value of n4 cannot be NA")
     expect_error(quanteda:::check_integer(fun), 
                  "fun must be coercible to integer")
+    expect_error(quanteda:::check_integer(n1, strict = TRUE), 
+                 "The type of n1 must be integer")
 })
 
 test_that("check_double works", {
@@ -67,6 +74,9 @@ test_that("check_double works", {
                  "The value of n4 cannot be NA")
     expect_error(quanteda:::check_double(fun), 
                  "fun must be coercible to double")
+    expect_error(quanteda:::check_double(i1, strict = TRUE), 
+                 "The type of i1 must be double")
+    
 })
 
 
@@ -90,6 +100,8 @@ test_that("check_character works", {
                  "The value of c4 cannot be NA")
     expect_error(quanteda:::check_character(fun), 
                  "fun must be coercible to character")
+    expect_error(quanteda:::check_character(n1, strict = TRUE), 
+                 "The type of n1 must be character")
 })
 
 test_that("check_logical works", {
@@ -112,4 +124,6 @@ test_that("check_logical works", {
                  "The value of l4 cannot be NA")
     expect_error(quanteda:::check_character(fun), 
                  "fun must be coercible to character")
+    expect_error(quanteda:::check_character(i1, strict = TRUE), 
+                 "The type of i1 must be character")
 })

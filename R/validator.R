@@ -6,9 +6,12 @@
 #' @param max_len maximum length of the vector
 #' @param min minimum value in the vector
 #' @param max maximum value in the vector
+#' @param strict raise error when `x` is a different type
 #' @keywords internal
-check_integer <- function(x, min_len = 1, max_len = 1, min = -Inf, max = Inf) {
+check_integer <- function(x, min_len = 1, max_len = 1, min = -Inf, max = Inf, strict = FALSE) {
     arg <- deparse(substitute(x))
+    if (strict && !is.integer(x))
+        stop("The type of ", arg, " must be integer", call. = FALSE)
     fun <- function(e) stop(arg, " must be coercible to integer", call. = FALSE)
     tryCatch({
         x <- as.integer(x)
@@ -20,8 +23,10 @@ check_integer <- function(x, min_len = 1, max_len = 1, min = -Inf, max = Inf) {
 }
 
 #' @rdname check_integer
-check_double <- function(x, min_len = 1, max_len = 1, min = -Inf, max = Inf) {
+check_double <- function(x, min_len = 1, max_len = 1, min = -Inf, max = Inf, strict = FALSE) {
     arg <- deparse(substitute(x))
+    if (strict && !is.double(x))
+        stop("The type of ", arg, " must be double", call. = FALSE)
     fun <- function(e) stop(arg, " must be coercible to double", call. = FALSE)
     tryCatch({
         x <- as.double(x)
@@ -33,8 +38,10 @@ check_double <- function(x, min_len = 1, max_len = 1, min = -Inf, max = Inf) {
 }
 
 #' @rdname check_integer
-check_logical <- function(x, min_len = 1, max_len = 1) {
+check_logical <- function(x, min_len = 1, max_len = 1, strict = FALSE) {
     arg <- deparse(substitute(x))
+    if (strict && !is.logical(x))
+        stop("The type of ", arg, " must be logical", call. = FALSE)
     fun <- function(e) stop(arg, " must be coercible to logical", call. = FALSE)
     tryCatch({
         x <- as.logical(x)
@@ -47,8 +54,10 @@ check_logical <- function(x, min_len = 1, max_len = 1) {
 #' @param min_nchar minimum character length of values in the vector
 #' @param max_nchar maximum character length of values in the vector
 #' @rdname check_integer
-check_character <- function(x, min_len = 1, max_len = 1, min_nchar = 0, max_nchar = Inf) {
+check_character <- function(x, min_len = 1, max_len = 1, min_nchar = 0, max_nchar = Inf, strict = FALSE) {
     arg <- deparse(substitute(x))
+    if (strict && !is.character(x))
+        stop("The type of ", arg, " must be character", call. = FALSE)
     fun <- function(e) stop(arg, " must be coercible to character", call. = FALSE)
     tryCatch({
         x <- as.character(x)
