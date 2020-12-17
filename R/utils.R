@@ -255,7 +255,7 @@ message_error <- function(key = NULL) {
 #' quanteda:::resample(1:10, size = c(1, 1, 3), replace = TRUE, by = grvec)
 resample <- function(x, size = NULL, replace = FALSE, prob = NULL, by = NULL) {
     
-    x <- check_integer(x, max_len = Inf)
+    x <- check_integer(x, min_len = 0, max_len = Inf)
     replace <- check_logical(replace)
     
     if (is.null(by)) {
