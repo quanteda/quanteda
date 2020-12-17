@@ -766,9 +766,9 @@ test_that("test null dfm is handled properly", {
     expect_equal(dfm_compress(mx, "both"), mx)
     expect_equal(dfm_compress(mx, "features"), mx)
     expect_equal(dfm_compress(mx, "documents"), mx)
-    expect_equal(dfm_sort(mx, "both"), mx)
-    expect_equal(dfm_sort(mx, "features"), mx)
-    expect_equal(dfm_sort(mx, "documents"), mx)
+    expect_equal(dfm_sort(mx, margin = "both"), mx)
+    expect_equal(dfm_sort(mx, margin = "features"), mx)
+    expect_equal(dfm_sort(mx, margin = "documents"), mx)
     expect_equal(dfm_lookup(mx, dictionary(list(A = "a"))), mx)
     expect_equal(dfm_group(mx), mx)
     expect_equal(dfm_replace(mx, "A", "a"), mx)
@@ -818,9 +818,9 @@ test_that("test empty dfm is handled properly (#1419)", {
     expect_equal(dfm_compress(mx, "both"), mx)
     expect_equal(dfm_compress(mx, "features"), mx)
     expect_equal(dfm_compress(mx, "documents"), mx)
-    expect_equal(dfm_sort(mx, "both"), mx)
-    expect_equal(dfm_sort(mx, "features"), mx)
-    expect_equal(dfm_sort(mx, "documents"), mx)
+    expect_equal(dfm_sort(mx, margin = "both"), mx)
+    expect_equal(dfm_sort(mx, margin = "features"), mx)
+    expect_equal(dfm_sort(mx, margin = "documents"), mx)
     expect_equal(dfm_lookup(mx, dictionary(list(A = "a"))), mx)
     expect_equal(dfm_group(mx), mx)
     expect_equal(dfm_replace(mx, "A", "a"), mx)
@@ -936,7 +936,7 @@ test_that("rbind and cbind wokrs with empty dfm", {
 test_that("format_sparsity works correctly", {
     expect_error(
         quanteda:::format_sparsity(-1),
-        "illegal sparsity value; must be 0 <= x <= 1.0"
+        "The value of x must be between 0 and 1"
     )
     expect_identical(
         quanteda:::format_sparsity(sparsity(as.dfm(Matrix::rsparsematrix(1000, 1000, density = 0.5)))),
