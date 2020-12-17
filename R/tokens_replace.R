@@ -53,11 +53,16 @@ tokens_replace.tokens <- function(x, pattern, replacement, valuetype = "glob",
 
     x <- as.tokens(x)
     if (length(pattern) != length(replacement))
-        stop("Lengths of 'pattern' and 'replacement' must be the same")
+        stop("The length of pattern and replacement must be the same", call. = FALSE)
     if (!length(pattern)) return(x)
 
     type <- types(x)
     if (valuetype == "fixed" && !is.list(pattern) && !is.list(replacement)) {
+        
+        pattern <- check_character(pattern, min_len = 0, max_len = Inf, strict = TRUE)
+        replacement <- check_character(replacement, min_len = 0, max_len = Inf, strict = TRUE)
+        case_insensitive <- check_logical(case_insensitive)
+        
         type_new <- replace_type(type, pattern, replacement, case_insensitive)
         if (identical(type, type_new)) {
             result <- x
@@ -85,10 +90,6 @@ tokens_replace.tokens <- function(x, pattern, replacement, valuetype = "glob",
 #' @keywords internal
 replace_type <- function(type, pattern, replacement, case_insensitive) {
     
-    pattern <- check_character(pattern)
-    replacement <- check_character(replacement)
-    case_insensitive <- check_logical(case_insensitive)
-
     if (!length(type)) return(character())
 
     # normalize unicode
