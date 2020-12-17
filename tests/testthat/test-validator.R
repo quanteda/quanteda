@@ -122,8 +122,8 @@ test_that("check_logical works", {
                  "The length of l3 must be between 1 and 2")
     expect_error(quanteda:::check_logical(l4, max_len = 2), 
                  "The value of l4 cannot be NA")
-    expect_error(quanteda:::check_character(fun), 
-                 "fun must be coercible to character")
-    expect_error(quanteda:::check_character(i1, strict = TRUE), 
-                 "The type of i1 must be character")
+    expect_error(quanteda:::check_logical(fun), 
+                 "fun must be coercible to logical")
+    expect_error(quanteda:::check_logical(i1, strict = TRUE), 
+                 "The type of i1 must be logical")
 })
