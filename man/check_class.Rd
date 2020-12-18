@@ -15,6 +15,8 @@ check_class(class, method)
 Checks if the method is defined for the class.
 }
 \examples{
+\dontrun{
 quanteda:::check_class("tokens", "dfm_select")
+}
 }
 \keyword{internal}

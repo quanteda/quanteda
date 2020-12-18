@@ -9,7 +9,7 @@ check_dots(..., method = NULL)
 \arguments{
 \item{...}{dots to check}
 
-\item{method}{the ames of functions \code{...} is passed to}
+\item{method}{the names of functions \code{...} is passed to}
 }
 \description{
 Check arguments passed to other functions via ...
