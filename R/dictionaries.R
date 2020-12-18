@@ -310,7 +310,6 @@ as.dictionary.dictionary2 <- function(x, ...) {
 #' @export
 as.dictionary.data.frame <- function(x, format = c("tidytext"), separator = " ", tolower = FALSE) {
     
-    x <- as.dictionary(x)
     format <- match.arg(format)
     separator <- check_character(separator)
     tolower <- check_logical(tolower)
