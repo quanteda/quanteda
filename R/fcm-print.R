@@ -19,8 +19,9 @@ setMethod("show", signature(object = "fcm"), function(object) print(object))
 # internal function for print.fcm
 print_fcm <- function(x, max_nfeat, show_summary, ...) {
   
-    check_dots(...)
     x <- as.fcm(x)
+    check_dots(...)
+    
     nrow <- nrow(x)
     ncol <- ncol(x)
     if (max_nfeat < 0 || max_nfeat > nrow) {

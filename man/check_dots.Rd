@@ -2,16 +2,16 @@
 % Please edit documentation in R/utils.R
 \name{check_dots}
 \alias{check_dots}
-\title{Check arguments passed via ...}
+\title{Check arguments passed to other functions via ...}
 \usage{
-check_dots(dots, permissible_args = NULL)
+check_dots(..., method = NULL)
 }
 \arguments{
 \item{...}{dots to check}
 
-\item{class}{names of functions that the ...}
+\item{method}{the ames of functions \code{...} is passed to}
 }
 \description{
-Check arguments passed via ...
+Check arguments passed to other functions via ...
 }
 \keyword{internal}

@@ -197,13 +197,11 @@ dfm.tokens <- function(x,
                        ...) {
     valuetype <- match.arg(valuetype)
     stem <- check_logical(stem)
-
+    check_dots(..., method = "tokens")
+    
     # call tokens only if options given
-    if (length(intersect(names(list(...)), names(formals("tokens"))))) {
+    if (length(list(...)))
         x <- tokens(x, ...)
-    } else {
-        check_dots(...)
-    }
 
     if (tolower) {
         if (verbose) catm(" ...lowercasing\n", sep = "")
@@ -305,11 +303,10 @@ dfm.dfm <- function(x,
                     verbose = quanteda_options("verbose"),
                     ...) {
 
-    check_dots(...)
-
     x <- as.dfm(x)
     valuetype <- match.arg(valuetype)
-
+    check_dots(...)
+    
     if (!is.null(groups)) {
         if (verbose) catm(" ...grouping texts\n")
         x <- dfm_group(x, groups, fill = FALSE)

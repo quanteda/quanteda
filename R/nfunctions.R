@@ -145,8 +145,10 @@ ntoken.tokens <- function(x, ...) {
 
 #' @export
 ntoken.dfm <- function(x, ...) {
+    
     x <- as.dfm(x)
     check_dots(...)
+    
     result <- as.integer(rowSums(x))
     names(result) <- docnames(x)
     result
@@ -168,8 +170,10 @@ ntype.corpus <- function(x, ...) {
 
 #' @export
 ntype.dfm <- function(x, ...) {
-    check_dots(...)
+    
     x <- as.dfm(x)
+    check_dots(...)
+    
     # only returns total non-zero features
     result <- as.integer(rowSums(x > 0))
     names(result) <- docnames(x)

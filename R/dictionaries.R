@@ -366,6 +366,11 @@ setMethod("show", signature(object = "dictionary2"), function(object) print(obje
 # Internal function to print dictionary
 print_dictionary <- function(entry, level = 1,
                              max_nkey, max_nval, show_summary, ...) {
+    
+    level <- check_integer(level, max_len = Inf, min = 1)
+    max_nkey <- check_integer(max_nkey, min = -1)
+    max_nval <- check_integer(max_nval, min = -1)
+    show_summary <- check_integer(show_summary)
     check_dots(...)
 
     nkey <- length(entry)

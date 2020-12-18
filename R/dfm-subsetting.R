@@ -113,8 +113,10 @@ setMethod("[", signature = c("dfm", i = "missing", j = "index", drop = "logical"
 #' head(data_dfm_lbgexample, -4)
 #' 
 head.dfm <- function(x, n = 6L, nf = nfeat(x), ...) { 
+    
     x <- as.dfm(x)
     check_dots(...)
+    
     n <- check_integer(n)
     nf <- check_integer(nf)
     i <- seq_len(ndoc(x))
@@ -130,8 +132,10 @@ head.dfm <- function(x, n = 6L, nf = nfeat(x), ...) {
 #' tail(data_dfm_lbgexample)
 #' tail(data_dfm_lbgexample, n = 3, nf = 4)
 tail.dfm <- function(x, n = 6L, nf = nfeat(x), ...) { 
+    
     x <- as.dfm(x)
     check_dots(...)
+    
     n <- check_integer(n)
     nf <- check_integer(nf)
     i <- seq_len(ndoc(x))

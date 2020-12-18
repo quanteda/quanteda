@@ -2,20 +2,19 @@
 % Please edit documentation in R/utils.R
 \name{check_class}
 \alias{check_class}
-\title{Print friendly object class not defined message}
+\title{Check object class for functions}
 \usage{
-check_class(function_name)
+check_class(class, method)
 }
 \arguments{
-\item{function_name}{character which is the function name}
+\item{class}{the object class to check}
+
+\item{method}{the name of functions to be called}
 }
 \description{
-Checks valid methods and issues a friendlier error message in case the method is
-undefined for the supplied object type.
+Checks if the method is defined for the class.
 }
 \examples{
-# as.tokens.default <- function(x, concatenator = "", ...) {
-#     stop(quanteda:::check_class("as.tokens"))
-# }
+quanteda:::check_class("tokens", "dfm_select")
 }
 \keyword{internal}

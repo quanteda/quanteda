@@ -246,10 +246,11 @@ tokens.corpus <- function(x,
     include_docvars <- check_logical(include_docvars)
     padding <- check_logical(padding)
     verbose <- check_logical(verbose)
-    dots <- list(...)
+    check_dots(..., method = "tokens")
     
     attrs <- attributes(x)
     # deprecated arguments
+    dots <- list(...)
     if ("remove_hyphens" %in% names(dots)) {
         split_hyphens <- dots[["remove_hyphens"]]
         .Deprecated(msg = "'remove_hyphens' is deprecated, use 'split_hyphens' instead.")
@@ -260,7 +261,6 @@ tokens.corpus <- function(x,
                 call. = FALSE)
         dots$remove_twitter <- NULL
     }
-    check_dots(dots, c(names(formals(tokens))))
 
     # call the appropriate tokenizer function
     if (verbose) catm(" ...starting tokenization\n")
@@ -355,9 +355,10 @@ tokens.tokens <-  function(x,
     include_docvars <- check_logical(include_docvars)
     padding <- check_logical(padding)
     verbose <- check_logical(verbose)
-    dots <- list(...)
-
+    check_dots(..., method = "tokens")
+    
     # deprecated arguments
+    dots <- list(...)
     if ("remove_hyphens" %in% names(dots)) {
         split_hyphens <- dots[["remove_hyphens"]]
         .Deprecated(msg = "'remove_hyphens' is deprecated, use 'split_hyphens' instead.")
@@ -368,8 +369,7 @@ tokens.tokens <-  function(x,
         .Deprecated(msg = "'remove_twitter' is deprecated and inactive for tokens.tokens()")
         dots$remove_twitter <- NULL
     }
-    check_dots(dots, c(names(formals(tokens))))
-
+    
     # splits
     if (split_hyphens) {
         if (verbose) catm(" ...splitting hyphens\n")

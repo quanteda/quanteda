@@ -43,9 +43,9 @@ dfm_subset.default <- function(x, subset, ...) {
 #' @export
 dfm_subset.dfm <- function(x, subset, ...) {
     
+    x <- as.dfm(x)
     check_dots(...)
     
-    x <- as.dfm(x)
     #sys <- select_docvars(x@docvars, system = TRUE)
     docvar <- get_docvars(x, user = TRUE, system = TRUE)
     r <- if (missing(subset)) {
