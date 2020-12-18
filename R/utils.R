@@ -164,54 +164,40 @@ escape_regex <- function(x) {
     stri_replace_all_regex(x, "([.()^\\{\\}+$\\[\\]\\\\])", "\\\\$1") # allow glob
 }
 
-#' Print friendly object class not defined message
+#' Check object class for functions
 #'
-#' Checks valid methods and issues a friendlier error message in case the method is
-#' undefined for the supplied object type.
-#' @param object_class character describing the object class
-#' @param function_name character which is the function name
+#' Checks if the method is defined for the class.
+#' @param class the object class to check
+#' @param method the name of functions to be called
 #' @keywords internal
 #' @examples
-#' # as.tokens.default <- function(x, concatenator = "", ...) {
-#' #     stop(quanteda:::check_class(class(x), "as.tokens"))
-#' # }
-check_class <- function(object_class, function_name) {
-    valid_object_types <-
-        utils::methods(function_name) %>%
-        as.character() %>%
-        stringi::stri_replace_first_fixed(paste0(function_name, "."), "")
-    valid_object_types <- valid_object_types[valid_object_types != "default"]
-    paste0(function_name, "() only works on ",
-         paste(valid_object_types, collapse = ", "),
-         " objects.")
+#' quanteda:::check_class("tokens", "dfm_select")
+check_class <- function(class, method) {
+    class_valid <- rownames(attr(utils::methods(method), "info"))
+    class_valid <- stringi::stri_replace_first_fixed(class_valid, paste0(method, "."), "")
+    class_valid <- class_valid[class_valid != "default"]
+    if (!class %in% class_valid)
+        stop(method, "() only works on ", paste(class_valid, collapse = ", "), " objects.", call. = FALSE)
 }
-friendly_class_undefined_message <- check_class
 
-#' Raise warning of unused dots
+#' Check arguments passed to other functions via ...
 #' @param ... dots to check
+#' @param method the ames of functions `...` is passed to
+#' @param 
 #' @keywords internal
-unused_dots <- function(...) {
-    arg <- names(list(...))
-    if (length(arg) == 1) {
-        warning(arg[1], " argument is not used.", call. = FALSE)
-    } else if (length(arg) > 1) {
+check_dots <- function(..., method = NULL) {
+    arg <- setdiff(names(list(...)), "")
+    if (!is.null(method)) {
+        arg_used <- unlist(lapply(method, function(x) names(formals(x))))
+        arg <- setdiff(arg, arg_used)
+    }
+    if (length(arg) > 1) {
         warning(paste0(arg, collapse = ", "), " arguments are not used.", call. = FALSE)
+    } else if (length(arg) == 1) {
+        warning(arg, " argument is not used.", call. = FALSE)
     }
 }
 
-# function to check dots arguments against a list of permissible arguments
-# needed for tokens.R only
-# because (...) evaluated in parent fn is different from being passed through
-check_dots <-  function(dots, permissible_args = NULL) {
-    if (length(dots) == 0) return()
-    args <- names(dots)
-    arg <- setdiff(args, permissible_args)
-    if (length(arg) == 1) {
-        warning(arg[1], " argument is not used.", call. = FALSE)
-    } else if (length(arg) > 1) {
-        warning(paste0(arg, collapse = ", "), " arguments are not used.", call. = FALSE)
-    }
-}
 
 #' Return an error message
 #' @param key type of error message

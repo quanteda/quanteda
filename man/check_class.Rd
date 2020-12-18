@@ -4,11 +4,9 @@
 \alias{check_class}
 \title{Print friendly object class not defined message}
 \usage{
-check_class(object_class, function_name)
+check_class(function_name)
 }
 \arguments{
-\item{object_class}{character describing the object class}
-
 \item{function_name}{character which is the function name}
 }
 \description{
@@ -17,7 +15,7 @@ undefined for the supplied object type.
 }
 \examples{
 # as.tokens.default <- function(x, concatenator = "", ...) {
-#     stop(quanteda:::check_class(class(x), "as.tokens"))
+#     stop(quanteda:::check_class("as.tokens"))
 # }
 }
 \keyword{internal}
