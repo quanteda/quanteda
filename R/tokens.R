@@ -160,7 +160,7 @@ tokens_env$START_TIME <- NULL
 #' @noRd
 #' @export
 tokens.default <- function(x, ...) {
-    stop(check_class(class(x), "tokens"))
+    check_class(class(x), "tokens")
 }
 
 #' @rdname tokens
@@ -455,7 +455,7 @@ as.tokens <- function(x, concatenator = "_", ...) {
 
 #' @export
 as.tokens.default <- function(x, concatenator = "", ...) {
-    stop(check_class(class(x), "as.tokens"))
+    check_class(class(x), "as.tokens")
 }
 
 #' @rdname as.tokens
@@ -667,7 +667,7 @@ types <- function(x) {
 
 #' @export
 types.default <- function(x) {
-    stop(check_class(class(x), "types"))
+    check_class(class(x), "types")
 }
 
 #' @export

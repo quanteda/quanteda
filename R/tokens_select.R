@@ -81,7 +81,7 @@ tokens_select.default <- function(x, pattern = NULL,
                                   min_nchar = NULL, max_nchar = NULL,
                                   startpos = 1L, endpos = -1L,
                                   verbose = quanteda_options("verbose")) {
-    stop(check_class(class(x), "tokens_select"))
+    check_class(class(x), "tokens_select")
 }
 
 #' @rdname tokens_select

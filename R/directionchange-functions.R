@@ -14,7 +14,7 @@ tokens_tortl <- function(x) {
 
 #' @export
 tokens_tortl.default <- function(x) {
-    stop(check_class(class(x), "tokens_tortl"))
+    check_class(class(x), "tokens_tortl")
 }
 
 #' @export
@@ -31,7 +31,7 @@ char_tortl <- function(x) {
 
 #' @export
 char_tortl.default <- function(x) {
-    stop(check_class(class(x), "char_tortl"))
+    check_class(class(x), "char_tortl")
 }
 
 #' @export

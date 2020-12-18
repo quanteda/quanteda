@@ -25,7 +25,7 @@ docnames <- function(x) {
 
 #' @export
 docnames.default <- function(x) {
-    stop(check_class(class(x), "docnames"))
+    check_class(class(x), "docnames")
 }
 
 #' @noRd
@@ -57,7 +57,7 @@ docnames.tokens <- function(x) {
 
 #' @export
 "docnames<-.default" <- function(x, value) {
-    stop(check_class(class(x), "docnames<-"))
+    check_class(class(x), "docnames<-")
 }
 
 #' @noRd

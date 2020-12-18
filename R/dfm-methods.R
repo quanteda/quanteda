@@ -63,7 +63,7 @@ as.dfm <- function(x) {
 
 #' @export
 as.dfm.default <- function(x) {
-    stop(check_class(class(x), "as.dfm"))
+    check_class(class(x), "as.dfm")
 }
 
 #' @noRd
@@ -226,7 +226,7 @@ topfeatures <- function(x, n = 10, decreasing = TRUE,
 #' @export
 topfeatures.default <- function(x, n = 10, decreasing = TRUE,
                                 scheme = c("count", "docfreq"), groups = NULL) {
-    stop(check_class(class(x), "topfeatures"))
+    check_class(class(x), "topfeatures")
 }
 
 #' @export
@@ -280,7 +280,7 @@ sparsity <- function(x) {
 
 #' @export
 sparsity.default <- function(x) {
-    stop(check_class(class(x), "sparsity"))
+    check_class(class(x), "sparsity")
 }
 
 #' @export

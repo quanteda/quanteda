@@ -44,7 +44,7 @@ tokens_replace <- function(x, pattern, replacement, valuetype = "glob",
 #' @export
 tokens_replace.default <- function(x, pattern, replacement, valuetype = "glob",
                                    case_insensitive = TRUE, verbose = quanteda_options("verbose")) {
-    stop(check_class(class(x), "tokens_replace"))
+    check_class(class(x), "tokens_replace")
 }
 
 #' @export

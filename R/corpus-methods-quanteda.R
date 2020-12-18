@@ -120,7 +120,7 @@ as.corpus <- function(x) {
 
 #' @export
 as.corpus.default <- function(x) {
-    stop(check_class(class(x), "as.corpus"))
+    check_class(class(x), "as.corpus")
 }
 
 #' @export

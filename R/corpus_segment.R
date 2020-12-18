@@ -111,7 +111,7 @@ corpus_segment.default <- function(x, pattern = "##*",
                                   extract_pattern = TRUE,
                                   pattern_position = c("before", "after"),
                                   use_docvars = TRUE) {
-    stop(check_class(class(x), "corpus_segment"))
+    check_class(class(x), "corpus_segment")
 }
 
 #' @export
@@ -183,7 +183,7 @@ char_segment.default <- function(x, pattern = "##*",
                                  case_insensitive = TRUE,
                                  remove_pattern = TRUE,
                                  pattern_position = c("before", "after")) {
-    stop(check_class(class(x), "char_segment"))
+    check_class(class(x), "char_segment")
 }
 
 #' @export

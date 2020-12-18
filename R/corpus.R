@@ -100,7 +100,7 @@ corpus <- function(x, ...) {
 #' @noRd
 #' @export
 corpus.default <- function(x, ...) {
-    stop(check_class(class(x), "corpus"))
+    check_class(class(x), "corpus")
 }
 
 #' @rdname corpus

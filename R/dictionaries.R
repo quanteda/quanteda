@@ -290,7 +290,7 @@ as.dictionary <- function(x, format = c("tidytext"), separator = " ", tolower = 
 #' @export
 as.dictionary.default <- function(x, format = c("tidytext"), separator = " ", tolower = FALSE) {
     format <- match.arg(format)
-    stop(check_class(class(x), "as.dictionary"))
+    check_class(class(x), "as.dictionary")
 }
 
 #' @export

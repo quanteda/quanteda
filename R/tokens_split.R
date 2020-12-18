@@ -27,7 +27,7 @@ tokens_split <- function(x, separator = " ", valuetype = c("fixed", "regex"),
 #' @export
 tokens_split.default <- function(x, separator = " ", valuetype = c("fixed", "regex"),
                                  remove_separator = TRUE) {
-    stop(check_class(class(x), "tokens_split"))
+    check_class(class(x), "tokens_split")
 }
 
 #' @export

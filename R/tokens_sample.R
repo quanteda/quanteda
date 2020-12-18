@@ -22,7 +22,7 @@ tokens_sample <- function(x, size = NULL, replace = FALSE, prob = NULL, by = NUL
 
 #' @export
 tokens_sample.default <- function(x, size = NULL, replace = FALSE, prob = NULL, by = NULL) {
-    stop(check_class(class(x), "tokens_sample"))
+    check_class(class(x), "tokens_sample")
 }
     
 #' @export

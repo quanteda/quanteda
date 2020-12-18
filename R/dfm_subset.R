@@ -37,7 +37,7 @@ dfm_subset <- function(x, subset, ...) {
     
 #' @export
 dfm_subset.default <- function(x, subset, ...) {
-    stop(check_class(class(x), "dfm_subset"))
+    check_class(class(x), "dfm_subset")
 }
     
 #' @export

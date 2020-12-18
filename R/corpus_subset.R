@@ -23,7 +23,7 @@ corpus_subset <- function(x, subset, ...) {
     
 #' @export
 corpus_subset.default <- function(x, subset, ...) {
-    stop(check_class(class(x), "corpus_subset"))
+    check_class(class(x), "corpus_subset")
 }
 
 #' @export

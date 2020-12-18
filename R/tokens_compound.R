@@ -78,7 +78,7 @@ tokens_compound.default <- function(x, pattern,
                                    concatenator = "_", 
                                    window = 0,
                                    case_insensitive = TRUE, join = TRUE) {
-    stop(check_class(class(x), "tokens_compound"))
+    check_class(class(x), "tokens_compound")
 }
 
 #' @importFrom RcppParallel RcppParallelLibs

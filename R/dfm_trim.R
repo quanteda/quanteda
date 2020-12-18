@@ -94,7 +94,7 @@ dfm_trim.default <- function(x,
                              sparsity = NULL,
                              verbose = quanteda_options("verbose"),
                              ...) {
-    stop(check_class(class(x), "dfm_trim"))
+    check_class(class(x), "dfm_trim")
 }
 
 #' @export

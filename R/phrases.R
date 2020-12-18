@@ -23,7 +23,7 @@ phrase <- function(x) {
 
 #' @export
 phrase.default <- function(x) {
-    stop(check_class(class(x), "phrase"))
+    check_class(class(x), "phrase")
 }
 
 #' @noRd

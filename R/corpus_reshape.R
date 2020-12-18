@@ -37,7 +37,7 @@ corpus_reshape <- function(x, to = c("sentences", "paragraphs", "documents"),
 #' @export
 corpus_reshape.default <- function(x, to = c("sentences", "paragraphs", "documents"),
                                    use_docvars = TRUE, ...) {
-    stop(check_class(class(x), "corpus_reshape"))
+    check_class(class(x), "corpus_reshape")
 }
 
 #' @export

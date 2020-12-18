@@ -109,7 +109,7 @@ fcm <- function(x, context = c("document", "window"),
 
 #' @export
 fcm.default <- function(x, ...) {
-    stop(check_class(class(x), "fcm"))
+    check_class(class(x), "fcm")
 }
 
 #' @noRd

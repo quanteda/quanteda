@@ -81,7 +81,7 @@ convert <- function(x, to, ...) {
 #' @noRd
 #' @export
 convert.default <- function(x, to, ...) {
-    stop(check_class(class(x), "convert"))
+    check_class(class(x), "convert")
 }
 
 #' @rdname convert

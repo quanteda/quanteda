@@ -29,7 +29,7 @@ tokens_subset <- function(x, subset, ...) {
     
 #' @export
 tokens_subset.default <- function(x, subset, ...) {
-    stop(check_class(class(x), "tokens_subset"))
+    check_class(class(x), "tokens_subset")
 }
     
 #' @export

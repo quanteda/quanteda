@@ -49,7 +49,7 @@ kwic <- function(x, pattern, window = 5,
 
 #' @export
 kwic.default <- function(x, ...) {
-    stop(check_class(class(x), "kwic"))
+    check_class(class(x), "kwic")
 }
 
 #' @rdname kwic
