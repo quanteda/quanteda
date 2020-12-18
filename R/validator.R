@@ -135,6 +135,7 @@ check_class <- function(class, method) {
     if (!class %in% class_valid)
         stop(method, "() only works on ", paste(class_valid, collapse = ", "), " objects.", call. = FALSE)
 }
+friendly_class_undefined_message <- check_class # for compatibility
 
 #' Check arguments passed to other functions via ...
 #' @param ... dots to check
@@ -152,4 +153,4 @@ check_dots <- function(..., method = NULL) {
         warning(arg, " argument is not used.", call. = FALSE)
     }
 }
-
+unused_dots <- check_dots # for compatibility
