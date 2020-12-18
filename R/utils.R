@@ -164,40 +164,6 @@ escape_regex <- function(x) {
     stri_replace_all_regex(x, "([.()^\\{\\}+$\\[\\]\\\\])", "\\\\$1") # allow glob
 }
 
-#' Check object class for functions
-#'
-#' Checks if the method is defined for the class.
-#' @param class the object class to check
-#' @param method the name of functions to be called
-#' @keywords internal
-#' @examples
-#' quanteda:::check_class("tokens", "dfm_select")
-check_class <- function(class, method) {
-    class_valid <- rownames(attr(utils::methods(method), "info"))
-    class_valid <- stringi::stri_replace_first_fixed(class_valid, paste0(method, "."), "")
-    class_valid <- class_valid[class_valid != "default"]
-    if (!class %in% class_valid)
-        stop(method, "() only works on ", paste(class_valid, collapse = ", "), " objects.", call. = FALSE)
-}
-
-#' Check arguments passed to other functions via ...
-#' @param ... dots to check
-#' @param method the ames of functions `...` is passed to
-#' @param 
-#' @keywords internal
-check_dots <- function(..., method = NULL) {
-    arg <- setdiff(names(list(...)), "")
-    if (!is.null(method)) {
-        arg_used <- unlist(lapply(method, function(x) names(formals(x))))
-        arg <- setdiff(arg, arg_used)
-    }
-    if (length(arg) > 1) {
-        warning(paste0(arg, collapse = ", "), " arguments are not used.", call. = FALSE)
-    } else if (length(arg) == 1) {
-        warning(arg, " argument is not used.", call. = FALSE)
-    }
-}
-
 
 #' Return an error message
 #' @param key type of error message
