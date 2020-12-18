@@ -43,7 +43,7 @@ dfm_subset.default <- function(x, subset, ...) {
 #' @export
 dfm_subset.dfm <- function(x, subset, ...) {
     
-    unused_dots(...)
+    check_dots(...)
     
     x <- as.dfm(x)
     #sys <- select_docvars(x@docvars, system = TRUE)

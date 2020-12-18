@@ -297,7 +297,7 @@ as.dictionary.default <- function(x, format = c("tidytext"), separator = " ", to
 #' @noRd
 #' @method as.dictionary dictionary2
 as.dictionary.dictionary2 <- function(x, ...) {
-    unused_dots(...)
+    check_dots(...)
     upgrade_dictionary2(x)
 }
 
@@ -366,7 +366,7 @@ setMethod("show", signature(object = "dictionary2"), function(object) print(obje
 # Internal function to print dictionary
 print_dictionary <- function(entry, level = 1,
                              max_nkey, max_nval, show_summary, ...) {
-    unused_dots(...)
+    check_dots(...)
 
     nkey <- length(entry)
     entry <- unclass(entry)

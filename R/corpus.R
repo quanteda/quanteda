@@ -119,7 +119,7 @@ corpus.corpus <- function(x, docnames = quanteda::docnames(x),
 corpus.character <- function(x, docnames = NULL, docvars = NULL,
                              meta = list(), unique_docnames = TRUE, ...) {
 
-    unused_dots(...)
+    check_dots(...)
     unique_docnames <- check_logical(unique_docnames)
     
     is_na <- is.na(x)
@@ -176,7 +176,7 @@ corpus.character <- function(x, docnames = NULL, docvars = NULL,
 corpus.data.frame <- function(x, docid_field = "doc_id", text_field = "text",
                               meta = list(), unique_docnames = TRUE, ...) {
 
-    unused_dots(...)
+    check_dots(...)
     x <- as.data.frame(x) # coerce data.frame variants to data.frame
 
     text_index <- 0
@@ -252,7 +252,7 @@ corpus.data.frame <- function(x, docid_field = "doc_id", text_field = "text",
 #' @export
 corpus.kwic <- function(x, split_context = TRUE, extract_keyword = TRUE, meta = list(), ...) {
 
-    unused_dots(...)
+    check_dots(...)
     split_context <- check_logical(split_context)
     extract_keyword <- check_logical(extract_keyword)
     class(x) <- "data.frame"
@@ -284,7 +284,7 @@ corpus.kwic <- function(x, split_context = TRUE, extract_keyword = TRUE, meta = 
 #' @rdname corpus
 #' @export
 corpus.Corpus <- function(x, ...) {
-    unused_dots(...)
+    check_dots(...)
 
     if (inherits(x, what = "VCorpus")) {
         x <- unclass(x)

@@ -36,7 +36,7 @@ tokens_subset.default <- function(x, subset, ...) {
 tokens_subset.tokens <- function(x, subset, ...) {
     
     x <- as.tokens(x)
-    unused_dots(...)
+    check_dots(...)
     
     attrs <- attributes(x)
     docvar <- get_docvars(x, user = TRUE, system = TRUE)

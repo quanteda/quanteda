@@ -90,7 +90,7 @@ convert.dfm <- function(x, to = c("lda", "tm", "stm", "austin", "topicmodels",
                                   "lsa", "matrix", "data.frame", "tripletlist"),
                         docvars = NULL, omit_empty = TRUE, docid_field = "doc_id", 
                         ...) {
-    unused_dots(...)
+    check_dots(...)
     x <- as.dfm(x)
     to <- match.arg(to)
     omit_empty <- check_logical(omit_empty)
@@ -147,7 +147,7 @@ convert.dfm <- function(x, to = c("lda", "tm", "stm", "austin", "topicmodels",
 #' convert(corp, to = "data.frame")
 #' convert(corp, to = "json")
 convert.corpus <- function(x, to = c("data.frame", "json"), pretty = FALSE, ...) {
-    unused_dots(...)
+    check_dots(...)
     to <- match.arg(to)
     pretty <- check_logical(pretty)
 

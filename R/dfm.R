@@ -202,7 +202,7 @@ dfm.tokens <- function(x,
     if (length(intersect(names(list(...)), names(formals("tokens"))))) {
         x <- tokens(x, ...)
     } else {
-        unused_dots(...)
+        check_dots(...)
     }
 
     if (tolower) {
@@ -305,7 +305,7 @@ dfm.dfm <- function(x,
                     verbose = quanteda_options("verbose"),
                     ...) {
 
-    unused_dots(...)
+    check_dots(...)
 
     x <- as.dfm(x)
     valuetype <- match.arg(valuetype)

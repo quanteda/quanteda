@@ -29,7 +29,7 @@ corpus_subset.default <- function(x, subset, ...) {
 #' @export
 corpus_subset.corpus <- function(x, subset, ...) {
     
-    unused_dots(...)
+    check_dots(...)
 
     x <- as.corpus(x)
     attrs <- attributes(x)
