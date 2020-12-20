@@ -29,7 +29,7 @@ bootstrap_dfm <- function(x, n = 10, ..., verbose = quanteda_options("verbose"))
 
 #' @export
 bootstrap_dfm.default <- function(x, n = 10, ..., verbose = quanteda_options("verbose")) {
-    stop(friendly_class_undefined_message(class(x), "bootstrap_dfm"))
+    check_class(class(x), "bootstrap_dfm")
 }
 
 #' @noRd

@@ -32,7 +32,7 @@ tokens_wordstem <- function(x, language = quanteda_options("language_stemmer")) 
 
 #' @export
 tokens_wordstem.default <- function(x, language = quanteda_options("language_stemmer")) {
-    stop(friendly_class_undefined_message(class(x), "tokens_wordstem"))
+    check_class(class(x), "tokens_wordstem")
 }
 
 #' @importFrom stringi stri_split_fixed stri_paste_list
@@ -68,7 +68,7 @@ char_wordstem <- function(x, language = quanteda_options("language_stemmer")) {
 
 #' @export
 char_wordstem.default <- function(x, language = quanteda_options("language_stemmer")) {
-    stop(friendly_class_undefined_message(class(x), "char_wordstem"))
+    check_class(class(x), "char_wordstem")
 }
 
 #' @importFrom stringi stri_detect_regex
@@ -98,7 +98,7 @@ dfm_wordstem <- function(x, language = quanteda_options("language_stemmer")) {
 
 #' @export
 dfm_wordstem.default <- function(x, language = quanteda_options("language_stemmer")) {
-    stop(friendly_class_undefined_message(class(x), "dfm_wordstem"))
+    check_class(class(x), "dfm_wordstem")
 }
 
 #' @noRd

@@ -29,14 +29,14 @@ tokens_subset <- function(x, subset, ...) {
     
 #' @export
 tokens_subset.default <- function(x, subset, ...) {
-    stop(friendly_class_undefined_message(class(x), "tokens_subset"))
+    check_class(class(x), "tokens_subset")
 }
     
 #' @export
 tokens_subset.tokens <- function(x, subset, ...) {
     
     x <- as.tokens(x)
-    unused_dots(...)
+    check_dots(...)
     
     attrs <- attributes(x)
     docvar <- get_docvars(x, user = TRUE, system = TRUE)

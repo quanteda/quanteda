@@ -42,7 +42,7 @@ tokens_ngrams <- function(x, n = 2L, skip = 0L, concatenator = "_") {
 
 #' @export
 tokens_ngrams.default <- function(x, n = 2L, skip = 0L, concatenator = "_") {
-    stop(friendly_class_undefined_message(class(x), "tokens_ngrams"))
+    check_class(class(x), "tokens_ngrams")
 }
 
 ## this function is not exported because it should not exist - it violates
@@ -81,7 +81,7 @@ char_ngrams <- function(x, n = 2L, skip = 0L, concatenator = "_") {
 
 #' @export
 char_ngrams.default <- function(x, n = 2L, skip = 0L, concatenator = "_") {
-    stop(friendly_class_undefined_message(class(x), "char_ngrams"))
+    check_class(class(x), "char_ngrams")
 }
 
 #' @export
@@ -141,7 +141,7 @@ tokens_skipgrams <- function(x, n, skip, concatenator = "_") {
 
 #' @export
 tokens_skipgrams.default <- function(x, n, skip, concatenator = "_") {
-    stop(friendly_class_undefined_message(class(x), "tokens_skipgrams"))
+    check_class(class(x), "tokens_skipgrams")
 }
 
 #' @export

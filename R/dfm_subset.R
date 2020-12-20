@@ -37,15 +37,15 @@ dfm_subset <- function(x, subset, ...) {
     
 #' @export
 dfm_subset.default <- function(x, subset, ...) {
-    stop(friendly_class_undefined_message(class(x), "dfm_subset"))
+    check_class(class(x), "dfm_subset")
 }
     
 #' @export
 dfm_subset.dfm <- function(x, subset, ...) {
     
-    unused_dots(...)
-    
     x <- as.dfm(x)
+    check_dots(...)
+    
     #sys <- select_docvars(x@docvars, system = TRUE)
     docvar <- get_docvars(x, user = TRUE, system = TRUE)
     r <- if (missing(subset)) {

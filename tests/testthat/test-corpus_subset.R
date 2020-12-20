@@ -1,5 +1,25 @@
 context('test corpus_subset')
 
+test_that("corpus_subset works in a basic way", {
+    corp <- corpus(corpus_subset(data_corpus_inaugural, Year > 1980 & Year < 2018))
+    expect_equal(
+        ndoc(corpus_subset(corp, Year > 2000)),
+        5
+    )
+    expect_equal(
+        docnames(corpus_subset(corp, President == "Clinton")),
+        c("1993-Clinton", "1997-Clinton")
+    )
+    expect_equal(
+        docnames(corpus_subset(corp, c(TRUE, TRUE, rep(FALSE, 8)))),
+        c("1981-Reagan", "1985-Reagan")
+    )
+    expect_warning(
+        corpus_subset(corp, Year > 2000, something = 10),
+        "something argument is not used.", fixed = TRUE
+    )
+})
+
 test_that("head, tail.corpus work as expected", {
     corp <- corpus_subset(data_corpus_inaugural, Year < 2018)
     expect_equal(

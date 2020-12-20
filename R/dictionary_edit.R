@@ -17,7 +17,7 @@ dictionary_edit <- function(x, ...) {
 
 #' @export
 dictionary_edit.default <- function(x, ...) {
-    stop(friendly_class_undefined_message(class(x), "dictionary_edit"))
+    check_class(class(x), "dictionary_edit")
 }
 
 #' @export

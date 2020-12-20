@@ -81,7 +81,7 @@ convert <- function(x, to, ...) {
 #' @noRd
 #' @export
 convert.default <- function(x, to, ...) {
-    stop(friendly_class_undefined_message(class(x), "convert"))
+    check_class(class(x), "convert")
 }
 
 #' @rdname convert
@@ -90,13 +90,14 @@ convert.dfm <- function(x, to = c("lda", "tm", "stm", "austin", "topicmodels",
                                   "lsa", "matrix", "data.frame", "tripletlist"),
                         docvars = NULL, omit_empty = TRUE, docid_field = "doc_id", 
                         ...) {
-    unused_dots(...)
+
     x <- as.dfm(x)
     to <- match.arg(to)
     omit_empty <- check_logical(omit_empty)
     docid_field <- check_character(docid_field)
+    check_dots(...)
+    
     attrs <- attributes(x)
-
     if (!is.null(docvars)) {
         if (!is.data.frame(docvars))
             stop("docvars must be a data.frame")
@@ -147,10 +148,11 @@ convert.dfm <- function(x, to = c("lda", "tm", "stm", "austin", "topicmodels",
 #' convert(corp, to = "data.frame")
 #' convert(corp, to = "json")
 convert.corpus <- function(x, to = c("data.frame", "json"), pretty = FALSE, ...) {
-    unused_dots(...)
+    
     to <- match.arg(to)
     pretty <- check_logical(pretty)
-
+    check_dots(...)
+    
     if (to == "data.frame") {
         result <- data.frame(doc_id = docnames(x),
                          text = texts(x),

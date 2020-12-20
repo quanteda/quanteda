@@ -203,7 +203,7 @@ docvars <- function(x, field = NULL) {
 
 #' @export
 docvars.default <- function(x, field = NULL) {
-    stop(friendly_class_undefined_message(class(x), "docvars"))
+    check_class(class(x), "docvars")
 }
 
 #' @noRd
@@ -260,7 +260,7 @@ docvars.kwic <- function(x) {
 
 #' @export
 "docvars<-.default" <- function(x, field = NULL, value) {
-    stop(friendly_class_undefined_message(class(x), "docvars<-"))
+    check_class(class(x), "docvars<-")
 }
 
 #' @export

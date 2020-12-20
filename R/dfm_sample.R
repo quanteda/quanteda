@@ -29,7 +29,7 @@ dfm_sample <- function(x, size = NULL, replace = FALSE, prob = NULL, by = NULL,
 #' @export
 dfm_sample.default <- function(x, size = NULL, replace = FALSE, prob = NULL, by = NULL,
                                margin = c("documents", "features")) {
-    stop(friendly_class_undefined_message(class(x), "dfm_sample"))
+    check_class(class(x), "dfm_sample")
 }
     
 #' @export

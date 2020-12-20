@@ -39,7 +39,7 @@ corpus_sample <- function(x, size = ndoc(x), replace = FALSE, prob = NULL, by = 
 
 #' @export
 corpus_sample.default <- function(x, size = ndoc(x), replace = FALSE, prob = NULL, by = NULL) {
-    stop(friendly_class_undefined_message(class(x), "corpus_sample"))
+    check_class(class(x), "corpus_sample")
 }
 
 #' @export

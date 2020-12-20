@@ -107,7 +107,7 @@ tokens_lookup.default <- function(x, dictionary, levels = 1:5,
                                  nomatch = NULL,
                                  nested_scope = c("key", "dictionary"),
                                  verbose = quanteda_options("verbose")) {
-    stop(friendly_class_undefined_message(class(x), "tokens_lookup"))
+    check_class(class(x), "tokens_lookup")
 }
 
 #' @export

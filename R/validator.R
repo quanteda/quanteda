@@ -117,3 +117,40 @@ check_length <- function(x, min_len, max_len, arg) {
     return(x)
 }
 
+
+#' Check object class for functions
+#'
+#' Checks if the method is defined for the class.
+#' @param class the object class to check
+#' @param method the name of functions to be called
+#' @keywords internal development
+#' @examples
+#' \dontrun{
+#' quanteda:::check_class("tokens", "dfm_select")
+#' }
+check_class <- function(class, method) {
+    class_valid <- rownames(attr(utils::methods(method), "info"))
+    class_valid <- stringi::stri_replace_first_fixed(class_valid, paste0(method, "."), "")
+    class_valid <- class_valid[class_valid != "default"]
+    if (!length(intersect(class, class_valid)))
+        stop(method, "() only works on ", paste(class_valid, collapse = ", "), " objects.", call. = FALSE)
+}
+friendly_class_undefined_message <- check_class # for compatibility
+
+#' Check arguments passed to other functions via ...
+#' @param ... dots to check
+#' @param method the names of functions `...` is passed to
+#' @keywords internal development
+check_dots <- function(..., method = NULL) {
+    arg <- setdiff(names(list(...)), "")
+    if (!is.null(method)) {
+        arg_used <- unlist(lapply(method, function(x) names(formals(x))))
+        arg <- setdiff(arg, arg_used)
+    }
+    if (length(arg) > 1) {
+        warning(paste0(arg, collapse = ", "), " arguments are not used.", call. = FALSE)
+    } else if (length(arg) == 1) {
+        warning(arg, " argument is not used.", call. = FALSE)
+    }
+}
+unused_dots <- check_dots # for compatibility

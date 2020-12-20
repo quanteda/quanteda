@@ -164,54 +164,6 @@ escape_regex <- function(x) {
     stri_replace_all_regex(x, "([.()^\\{\\}+$\\[\\]\\\\])", "\\\\$1") # allow glob
 }
 
-#' Print friendly object class not defined message
-#'
-#' Checks valid methods and issues a friendlier error message in case the method is
-#' undefined for the supplied object type.
-#' @param object_class character describing the object class
-#' @param function_name character which is the function name
-#' @keywords internal
-#' @examples
-#' # as.tokens.default <- function(x, concatenator = "", ...) {
-#' #     stop(quanteda:::friendly_class_undefined_message(class(x), "as.tokens"))
-#' # }
-check_class <- function(object_class, function_name) {
-    valid_object_types <-
-        utils::methods(function_name) %>%
-        as.character() %>%
-        stringi::stri_replace_first_fixed(paste0(function_name, "."), "")
-    valid_object_types <- valid_object_types[valid_object_types != "default"]
-    paste0(function_name, "() only works on ",
-         paste(valid_object_types, collapse = ", "),
-         " objects.")
-}
-friendly_class_undefined_message <- check_class
-
-#' Raise warning of unused dots
-#' @param ... dots to check
-#' @keywords internal
-unused_dots <- function(...) {
-    arg <- names(list(...))
-    if (length(arg) == 1) {
-        warning(arg[1], " argument is not used.", call. = FALSE)
-    } else if (length(arg) > 1) {
-        warning(paste0(arg, collapse = ", "), " arguments are not used.", call. = FALSE)
-    }
-}
-
-# function to check dots arguments against a list of permissible arguments
-# needed for tokens.R only
-# because (...) evaluated in parent fn is different from being passed through
-check_dots <-  function(dots, permissible_args = NULL) {
-    if (length(dots) == 0) return()
-    args <- names(dots)
-    arg <-  setdiff(args, permissible_args)
-    if (length(arg) == 1) {
-        warning(arg[1], " argument is not used.", call. = FALSE)
-    } else if (length(arg) > 1) {
-        warning(paste0(arg, collapse = ", "), " arguments are not used.", call. = FALSE)
-    }
-}
 
 #' Return an error message
 #' @param key type of error message

@@ -42,7 +42,7 @@ setMethod("show", signature(object = "dfm"), function(object) print(object))
 print_dfm <- function(x, max_ndoc, max_nfeat, show_summary, ...) {
     
     x <- as.dfm(x)
-    unused_dots(...)
+    check_dots(...)
     
     ndoc <- ndoc(x)
     nfeat <- nfeat(x)

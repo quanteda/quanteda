@@ -79,7 +79,7 @@ dfm_weight.default <- function(x,
                                scheme = c("count", "prop", "propmax", "logcount", "boolean", "augmented", "logave"),
                                weights = NULL, base = 10, k = 0.5, smoothing = 0.5,
                                force = FALSE) {
-    stop(friendly_class_undefined_message(class(x), "dfm_weight"))
+    check_class(class(x), "dfm_weight")
 }
 
 #' @export
@@ -216,7 +216,7 @@ dfm_smooth <- function(x, smoothing = 1) {
 
 #' @export
 dfm_smooth.default <- function(x, smoothing = 1) {
-    stop(friendly_class_undefined_message(class(x), "dfm_smooth"))
+    check_class(class(x), "dfm_smooth")
 }
 
 #' @export
@@ -298,7 +298,7 @@ docfreq <- function(x, scheme = c("count", "inverse", "inversemax",
 docfreq.default <- function(x, scheme = c("count", "inverse", "inversemax",
                                           "inverseprob", "unary"),
                     base = 10, smoothing = 0, k = 0, threshold = 0) {
-    stop(friendly_class_undefined_message(class(x), "docfreq"))
+    check_class(class(x), "docfreq")
 }
 
 
@@ -357,7 +357,7 @@ featfreq <- function(x) {
 
 #' @export
 featfreq.default <- function(x) {
-    stop(friendly_class_undefined_message(class(x), "featfreq"))
+    check_class(class(x), "featfreq")
 }
 
 #' @export
@@ -426,7 +426,7 @@ dfm_tfidf <- function(x, scheme_tf = "count", scheme_df = "inverse",
 #' @export
 dfm_tfidf.default <- function(x, scheme_tf = "count", scheme_df = "inverse",
                               base = 10, force = FALSE, ...) {
-    stop(friendly_class_undefined_message(class(x), "dfm_tfidf"))
+    check_class(class(x), "dfm_tfidf")
 }
 
 #' @export

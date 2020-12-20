@@ -23,17 +23,16 @@ corpus_subset <- function(x, subset, ...) {
     
 #' @export
 corpus_subset.default <- function(x, subset, ...) {
-    stop(friendly_class_undefined_message(class(x), "corpus_subset"))
+    check_class(class(x), "corpus_subset")
 }
 
 #' @export
 corpus_subset.corpus <- function(x, subset, ...) {
     
-    unused_dots(...)
-
     x <- as.corpus(x)
+    check_dots(...)
+
     attrs <- attributes(x)
-    #sys <- select_docvars(attr(x, "docvars"), system = TRUE)
     docvar <- get_docvars(x, user = TRUE, system = TRUE)
     r <- if (missing(subset)) {
         rep_len(TRUE, ndoc(x))
@@ -42,6 +41,5 @@ corpus_subset.corpus <- function(x, subset, ...) {
         r <- eval(e, docvar, parent.frame())
         r & !is.na(r)
     }
-
     return(x[r])
 }

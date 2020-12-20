@@ -16,12 +16,13 @@ print.corpus <- function(x, max_ndoc = quanteda_options("print_corpus_max_ndoc")
                          max_nchar = quanteda_options("print_corpus_max_nchar"),
                          show_summary = quanteda_options("print_corpus_summary"),
                          ...) {
-    unused_dots(...)
+    
     x <- as.corpus(x)
     max_ndoc <- check_integer(max_ndoc, min = -1)
     max_nchar <- check_integer(max_nchar, min = -1)
     show_summary <- check_logical(show_summary)
-
+    check_dots(...)
+    
     docvars <- docvars(x)
     ndoc <- ndoc(x)
     if (max_ndoc < 0)
