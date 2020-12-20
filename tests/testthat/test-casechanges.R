@@ -2,16 +2,20 @@ context("test case change functions")
 
 txt <- c("According to NATO", "There is G7 meeting")
 
-test_that("toLower works.", {
+test_that("tolower works", {
     expect_equal(char_tolower(txt), c("according to nato", "there is g7 meeting"))
+    expect_error(char_tolower(txt, logical()), 
+                 "The length of keep_acronyms must be 1")
+    expect_error(char_tolower(txt, c(TRUE, FALSE)), 
+                 "The length of keep_acronyms must be 1")
 })
 
-test_that("char_tolower/char_toUpper works.", {
-    expect_equal((char_tolower(txt[1])), "according to nato")
-    expect_equal((char_toupper(txt[1])), "ACCORDING TO NATO")
+test_that("char_tolower/char_toUpper works", {
+    expect_equal(char_tolower(txt[1]), "according to nato")
+    expect_equal(char_toupper(txt[1]), "ACCORDING TO NATO")
 })
 
-test_that("char_tolower keeps acronyms.", {
+test_that("char_tolower keeps acronyms", {
     expect_equal((char_tolower(txt, keep_acronyms = TRUE)), 
                  c("according to NATO", "there is G7 meeting"))
 })
@@ -27,18 +31,25 @@ test_that("tokens_tolower/tokens_toupper works", {
     expect_equal(as.list(tokens_toupper(toks)),
                  list(text1 = c("ACCORDING", "TO", "NATO"),
                       text2 = c("THERE", "IS", "G7", "MEETING")))
+    expect_error(tokens_tolower(toks, logical()), 
+                 "The length of keep_acronyms must be 1")
+    expect_error(tokens_tolower(toks, c(TRUE, FALSE)), 
+                 "The length of keep_acronyms must be 1")
 })
 
 test_that("tokens_tolower/tokens_toupper works", {
-    dfm1 <- dfm(txt, tolower = FALSE)
-    expect_equal(featnames(dfm_tolower(dfm1)),
+    dfmat <- dfm(txt, tolower = FALSE)
+    expect_equal(featnames(dfm_tolower(dfmat)),
                  c("according", "to", "nato", "there", "is", "g7", "meeting"))
-    expect_equal(featnames(dfm_tolower(dfm1, keep_acronyms = TRUE)),
+    expect_equal(featnames(dfm_tolower(dfmat, keep_acronyms = TRUE)),
                  c("according", "to", "NATO", "there", "is", "G7", "meeting"))
-    expect_equal(featnames(dfm_toupper(dfm1)),
+    expect_equal(featnames(dfm_toupper(dfmat)),
                  c("ACCORDING", "TO", "NATO", "THERE", "IS", "G7", "MEETING"))
+    expect_error(dfm_tolower(dfmat, logical()), 
+                 "The length of keep_acronyms must be 1")
+    expect_error(dfm_tolower(dfmat, c(TRUE, FALSE)), 
+                 "The length of keep_acronyms must be 1")
 })
-
 
 test_that("set encoding when no gap or duplication is found, #1387", {
     

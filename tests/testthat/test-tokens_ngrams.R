@@ -74,7 +74,7 @@ test_that("test `tokens_ngrams` on characters", {
                    "skip argument ignored for n = 1")
 })
 
-test_that("test `tokens_ngrams` on skipgrams", {
+test_that("token_skipgrams works", {
     toks <- tokens("insurgents killed in ongoing fighting")
     ngms <- tokens_skipgrams(toks, n = 2, skip = 0:1, concatenator = " ") 
     expect_equivalent(
@@ -84,6 +84,21 @@ test_that("test `tokens_ngrams` on skipgrams", {
     )
 })
 
+test_that("raises error for invalid inputs", {
+    toks <- tokens("insurgents killed in ongoing fighting")
+    expect_error(
+        tokens_ngrams(toks, n = 0),
+        "The value of n must be between 1 and Inf"
+    )
+    expect_error(
+        tokens_ngrams(toks, skip = -1),
+        "The value of skip must be between 0 and Inf"
+    )
+    expect_error(
+        tokens_ngrams(toks, concatenator = character()),
+        "The length of concatenator must be 1"
+    )
+})
 
 test_that("tokens_ngrams does nothing when n = 1 and skip = 0 (#1395)", {
     

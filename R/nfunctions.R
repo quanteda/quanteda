@@ -23,7 +23,7 @@ ndoc <- function(x) {
 
 #' @export
 ndoc.default <- function(x) {
-    stop(friendly_class_undefined_message(class(x), "ndoc"))
+    check_class(class(x), "ndoc")
 }
 
 #' @export
@@ -59,7 +59,7 @@ nfeat <- function(x) {
 
 #' @export
 nfeat.default <- function(x) {
-    stop(friendly_class_undefined_message(class(x), "nfeat"))
+    check_class(class(x), "nfeat")
 }
 
 #' @export
@@ -106,7 +106,7 @@ ntoken <- function(x, ...) {
 
 #' @export
 ntoken.default <- function(x, ...) {
-    stop(friendly_class_undefined_message(class(x), "ntoken"))
+    check_class(class(x), "ntoken")
 }
 
 #' @rdname ntoken
@@ -120,7 +120,7 @@ ntype <- function(x, ...) {
 
 #' @export
 ntype.default <- function(x, ...) {
-    stop(friendly_class_undefined_message(class(x), "ntype"))
+    check_class(class(x), "ntype")
 }
 
 #' @export
@@ -145,8 +145,10 @@ ntoken.tokens <- function(x, ...) {
 
 #' @export
 ntoken.dfm <- function(x, ...) {
+    
     x <- as.dfm(x)
-    unused_dots(...)
+    check_dots(...)
+    
     result <- as.integer(rowSums(x))
     names(result) <- docnames(x)
     result
@@ -168,8 +170,10 @@ ntype.corpus <- function(x, ...) {
 
 #' @export
 ntype.dfm <- function(x, ...) {
-    unused_dots(...)
+    
     x <- as.dfm(x)
+    check_dots(...)
+    
     # only returns total non-zero features
     result <- as.integer(rowSums(x > 0))
     names(result) <- docnames(x)
@@ -206,7 +210,7 @@ nsentence <- function(x) {
 
 #' @export
 nsentence.default <- function(x) {
-    stop(friendly_class_undefined_message(class(x), "nsentence"))
+    check_class(class(x), "nsentence")
 }
 
 #' @export

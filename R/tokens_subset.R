@@ -29,17 +29,16 @@ tokens_subset <- function(x, subset, ...) {
     
 #' @export
 tokens_subset.default <- function(x, subset, ...) {
-    stop(friendly_class_undefined_message(class(x), "tokens_subset"))
+    check_class(class(x), "tokens_subset")
 }
     
 #' @export
 tokens_subset.tokens <- function(x, subset, ...) {
     
-    unused_dots(...)
-    
     x <- as.tokens(x)
+    check_dots(...)
+    
     attrs <- attributes(x)
-    #sys <- select_docvars(attr(x, "docvars"), system = TRUE)
     docvar <- get_docvars(x, user = TRUE, system = TRUE)
     r <- if (missing(subset)) {
         rep_len(TRUE, ndoc(x))
@@ -48,12 +47,5 @@ tokens_subset.tokens <- function(x, subset, ...) {
         r <- eval(e, docvar, parent.frame())
         r & !is.na(r)
     }
-    # vars <- if (missing(select)) 
-    #     rep_len(TRUE, ncol(usr))
-    # else {
-    #     nl <- as.list(seq_along(usr))
-    #     names(nl) <- names(usr)
-    #     eval(substitute(select), nl, parent.frame())
-    # }
     return(x[r])
 }

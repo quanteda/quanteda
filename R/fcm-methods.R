@@ -25,7 +25,7 @@ fcm_compress <- function(x) {
 
 #' @export
 fcm_compress.default <- function(x) {
-    stop(friendly_class_undefined_message(class(x), "fcm_compress"))
+    check_class(class(x), "fcm_compress")
 }
 
 #' @export
@@ -64,7 +64,7 @@ fcm_sort <- function(x) {
 
 #' @export
 fcm_sort.default <- function(x) {
-    stop(friendly_class_undefined_message(class(x), "fcm_sort"))
+    check_class(class(x), "fcm_sort")
 }
 
 #' @export
@@ -95,7 +95,7 @@ as.fcm <- function(x) {
 
 #' @export
 as.fcm.default <- function(x) {
-    stop(friendly_class_undefined_message(class(x), "as.fcm"))
+    check_class(class(x), "as.fcm")
 }
 
 #' @noRd

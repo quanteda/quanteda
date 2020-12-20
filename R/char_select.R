@@ -31,7 +31,7 @@ char_select <- function(x, pattern, selection = c("keep", "remove"),
 #' @noRd
 #' @export
 char_select.default <- function(x, ...) {
-    stop(friendly_class_undefined_message(class(x), "char_select"))
+    check_class(class(x), "char_select")
 }
 
 #' @noRd

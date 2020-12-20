@@ -25,10 +25,10 @@ test_that("test dfm_replace", {
     
     # error when lenfths of from and to are different
     expect_error(dfm_replace(dfmt, c('aa', 'bb'), c('a')),
-                 "Lengths of 'pattern' and 'replacement' must be the same")
+                 "The length of pattern and replacement must be the same")
     
     expect_error(dfm_replace(dfmt, c(1, 2), c(10, 20)),
-                 "'pattern' and 'replacement' must be characters")
+                 "The type of pattern must be character")
 
     # does nothing when input vector is zero length
     expect_equal(dfm_replace(dfmt, character(), character()),

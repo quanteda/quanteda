@@ -81,7 +81,7 @@ tokens_select.default <- function(x, pattern = NULL,
                                   min_nchar = NULL, max_nchar = NULL,
                                   startpos = 1L, endpos = -1L,
                                   verbose = quanteda_options("verbose")) {
-    stop(friendly_class_undefined_message(class(x), "tokens_select"))
+    check_class(class(x), "tokens_select")
 }
 
 #' @rdname tokens_select
@@ -139,6 +139,12 @@ tokens_select.tokens <- function(x, pattern = NULL,
     x <- as.tokens(x)
     selection <- match.arg(selection)
     valuetype <- match.arg(valuetype)
+    padding <- check_logical(padding)
+    window <- check_integer(window, min_len = 1, max_len = 2, min = 0)
+    startpos <- check_integer(startpos, max_len = Inf)
+    endpos <- check_integer(endpos, max_len = Inf)
+    verbose <- check_logical(verbose)
+    
     attrs <- attributes(x)
     type <- types(x)
 
@@ -158,10 +164,14 @@ tokens_select.tokens <- function(x, pattern = NULL,
     if (!is.null(min_nchar) | !is.null(max_nchar)) {
         len <- stri_length(type)
         is_short <- is_long <- rep(FALSE, length(len))
-        if (!is.null(min_nchar))
+        if (!is.null(min_nchar)) {
+            min_nchar <- check_integer(min_nchar, min = 0)
             is_short <- len < min_nchar
-        if (!is.null(max_nchar))
+        }
+        if (!is.null(max_nchar)) {
+            max_nchar <- check_integer(max_nchar, min = 0)
             is_long <- max_nchar < len
+        }
         id_out <- which(is_short | is_long)
         if (length(id_out)) {
             if (selection == "keep") {
@@ -178,8 +188,6 @@ tokens_select.tokens <- function(x, pattern = NULL,
     }
 
     if (verbose) message_select(selection, length(ids), 0)
-    if (any(window < 0)) stop("window sizes cannot be negative")
-    if (length(window) > 2) stop("window must be a integer vector of length 1 or 2")
     if (length(window) == 1) window <- rep(window, 2)
     if (selection == "keep") {
         result <- qatd_cpp_tokens_select(x, type, ids, 1, padding, window[1], window[2], startpos, endpos)

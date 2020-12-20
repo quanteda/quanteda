@@ -102,10 +102,16 @@ message_select <- function(selection, nfeats, ndocs, nfeatspad = 0, ndocspad = 0
 pattern2list <- function(x, types, valuetype, case_insensitive,
                          concatenator = "_", levels = 1, remove_unigram = FALSE,
                          keep_nomatch = FALSE) {
-
+    
     if (is.dfm(x))
         stop("dfm cannot be used as pattern")
-
+    
+    case_insensitive <- check_logical(case_insensitive)
+    concatenator <- check_character(concatenator)
+    levels <- check_integer(levels, min = 1, max_len = Inf)
+    remove_unigram <- check_logical(remove_unigram)
+    keep_nomatch <- check_logical(keep_nomatch)
+    
     if (is.collocations(x)) {
         if (nrow(x) == 0) return(list())
         temp <- stri_split_charclass(x$collocation, "\\p{Z}")
@@ -158,53 +164,6 @@ escape_regex <- function(x) {
     stri_replace_all_regex(x, "([.()^\\{\\}+$\\[\\]\\\\])", "\\\\$1") # allow glob
 }
 
-#' Print friendly object class not defined message
-#'
-#' Checks valid methods and issues a friendlier error message in case the method is
-#' undefined for the supplied object type.
-#' @param object_class character describing the object class
-#' @param function_name character which is the function name
-#' @keywords internal
-#' @examples
-#' # as.tokens.default <- function(x, concatenator = "", ...) {
-#' #     stop(quanteda:::friendly_class_undefined_message(class(x), "as.tokens"))
-#' # }
-friendly_class_undefined_message <- function(object_class, function_name) {
-    valid_object_types <-
-        utils::methods(function_name) %>%
-        as.character() %>%
-        stringi::stri_replace_first_fixed(paste0(function_name, "."), "")
-    valid_object_types <- valid_object_types[valid_object_types != "default"]
-    paste0(function_name, "() only works on ",
-         paste(valid_object_types, collapse = ", "),
-         " objects.")
-}
-
-#' Raise warning of unused dots
-#' @param ... dots to check
-#' @keywords internal
-unused_dots <- function(...) {
-    arg <- names(list(...))
-    if (length(arg) == 1) {
-        warning(arg[1], " argument is not used.", call. = FALSE)
-    } else if (length(arg) > 1) {
-        warning(paste0(arg, collapse = ", "), " arguments are not used.", call. = FALSE)
-    }
-}
-
-# function to check dots arguments against a list of permissible arguments
-# needed for tokens.R only
-# because (...) evaluated in parent fn is different from being passed through
-check_dots <-  function(dots, permissible_args = NULL) {
-    if (length(dots) == 0) return()
-    args <- names(dots)
-    arg <-  setdiff(args, permissible_args)
-    if (length(arg) == 1) {
-        warning(arg[1], " argument is not used.", call. = FALSE)
-    } else if (length(arg) > 1) {
-        warning(paste0(arg, collapse = ", "), " arguments are not used.", call. = FALSE)
-    }
-}
 
 #' Return an error message
 #' @param key type of error message
@@ -215,6 +174,7 @@ message_error <- function(key = NULL) {
              "fcm_context" = "fcm must be created with a document context",
              "matrix_mismatch" = "matrix must have the same rownames and colnames",
              "docnames_mismatch" = "docnames must the the same length as x",
+             "ndoc_mismatch" = "documents must the the same length as x",
              "docvars_mismatch" = "data.frame must have the same number of rows as documents",
              "docvars_invalid" = "document variables cannot begin with the underscore",
              "docvar_nofield" = "you must supply field name(s)",
@@ -225,38 +185,61 @@ message_error <- function(key = NULL) {
     return(unname(msg[key]))
 }
 
-#' Sample a vector by a group
+#' Sample a vector
 #'
-#' Return a sample from a vector within a grouping variable.
-#' @param x any vector
+#' Return a sample from a vector within a grouping variable if specified.
+#' @param x numeric vector
 #' @param size the number of items to sample within each group, as a positive
 #'   number or a vector of numbers equal in length to the number of groups. If
 #'   `NULL`, the sampling is stratified by group in the original group
 #'   sizes.
-#' @param group a grouping vector equal in length to `length(x)`
-#' @param replace logical; should sampling be with replacement?
+#' @param replace if `TRUE`, sample with replacement
+#' @param prob a vector of probability weights for values in `x`
+#' @param by a grouping vector equal in length to `length(x)`
 #' @return `x` resampled within groups
 #' @keywords internal
 #' @examples
 #' set.seed(100)
 #' grvec <- c(rep("a", 3), rep("b", 4), rep("c", 3))
-#' quanteda:::sample_bygroup(1:10, group = grvec, replace = FALSE)
-#' quanteda:::sample_bygroup(1:10, group = grvec, replace = TRUE)
-#' quanteda:::sample_bygroup(1:10, group = grvec, size = 2, replace = TRUE)
-#' quanteda:::sample_bygroup(1:10, group = grvec, size = c(1, 1, 3), replace = TRUE)
-sample_bygroup <- function(x, group, size = NULL, replace = FALSE) {
-    if (length(x) != length(group))
-        stop("group not equal in length of x")
-    x <- split(x, group)
-    if (is.null(size))
-        size <- lengths(x)
-    if (length(size) > 1 && length(size) != length(x))
-        stop("size not equal in length to the number of groups")
-    result <- mapply(function(x, size, replace) {
-                 x[sample.int(length(x), size = size, replace = replace)]
-              }, x, size, replace, SIMPLIFY = FALSE)
-    unlist(result, use.names = FALSE)
-
+#' quanteda:::resample(1:10, replace = FALSE, by = grvec)
+#' quanteda:::resample(1:10, replace = TRUE, by = grvec)
+#' quanteda:::resample(1:10, size = 2, replace = TRUE, by = grvec)
+#' quanteda:::resample(1:10, size = c(1, 1, 3), replace = TRUE, by = grvec)
+resample <- function(x, size = NULL, replace = FALSE, prob = NULL, by = NULL) {
+    
+    x <- check_integer(x, min_len = 0, max_len = Inf)
+    replace <- check_logical(replace)
+    
+    if (is.null(by)) {
+        if (!is.null(size)) {
+            size <- check_integer(size, max_len = Inf, min = 0)
+        } else {
+            size <- length(x)
+        }
+        if (size > length(x) && !replace)
+            stop("size cannot exceed the number of items when replace = FALSE", call. = FALSE)
+        result <- x[sample.int(length(x), size = size, replace = replace, prob = prob)]
+    } else {
+        if (!is.null(prob)) 
+            stop("prob cannot be used with by", call. = FALSE)
+        if (length(x) != length(by))
+            stop("x and by must have the same length", call. = FALSE)
+        x <- split(x, by)
+        if (!is.null(size)) {
+            size <- check_integer(size, max_len = Inf, min = 0)
+        } else {
+            size <- lengths(x)
+        }
+        if (length(size) > 1 && length(size) != length(x))
+            stop("size and by must have the same length", call. = FALSE)
+        temp <- mapply(function(x, size, replace) {
+                     if (size > length(x) && !replace)
+                        stop("size cannot exceed the number of items within group when replace = FALSE", call. = FALSE)
+                     x[sample.int(length(x), size = size, replace = replace)]
+                }, x, size, replace, SIMPLIFY = FALSE)
+        result <- unlist(temp, use.names = FALSE)
+    }
+    return(result)
 }
 
 #' Get the package version that created an object
@@ -303,45 +286,4 @@ rbind_fill <- function(x, y) {
         }
     }
     return(rbind(x, y))
-}
-
-
-get_cache <- function(x, field, ...) {
-    if (Sys.info()[["sysname"]] == "SunOS") 
-        return(NULL)
-    meta <- meta(x, type = "all")
-    hash <- hash_object(x, ...)
-    #print(hash)
-    if (identical(meta$object[[field]][["hash"]], hash)) {
-        result <- meta$object[[field]][["data"]]
-    } else {
-        result <- NULL
-    }
-    return(result)
-}
-
-set_cache <- function(x, field, object, ...) {
-    if (Sys.info()[["sysname"]] == "SunOS") 
-        return()
-    meta <- meta(x, type = "all")
-    hash <- hash_object(x, ...)
-    #print(hash)
-    meta$object[[field]] <- list("hash" = hash, "data" = object)
-    qatd_cpp_set_meta(x, meta)
-}
-
-clear_cache <- function(x, field) {
-    if (Sys.info()[["sysname"]] == "SunOS") 
-        return()
-    meta <- meta(x, type = "all")
-    if (field %in% names(meta$object)) {
-        meta$object[[field]] <- list()
-        qatd_cpp_set_meta(x, meta)
-    }
-}
-
-hash_object <- function(x, ...) {
-    attr(x, "meta") <- NULL
-    digest::digest(list(x, utils::packageVersion("quanteda"), ...),
-                   algo = "sha256")
 }

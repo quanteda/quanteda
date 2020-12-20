@@ -65,7 +65,8 @@
 #'     tokens_compound(pattern = "leav*", join = FALSE, window = c(0, 3))
 #'
 tokens_compound <- function(x, pattern,
-                    concatenator = "_", valuetype = c("glob", "regex", "fixed"),
+                    valuetype = c("glob", "regex", "fixed"),
+                    concatenator = "_", 
                     window = 0,
                     case_insensitive = TRUE, join = TRUE) {
     UseMethod("tokens_compound")
@@ -73,31 +74,34 @@ tokens_compound <- function(x, pattern,
 
 #' @export
 tokens_compound.default <- function(x, pattern,
-                                   concatenator = "_", valuetype = c("glob", "regex", "fixed"),
+                                   valuetype = c("glob", "regex", "fixed"),
+                                   concatenator = "_", 
                                    window = 0,
                                    case_insensitive = TRUE, join = TRUE) {
-    stop(friendly_class_undefined_message(class(x), "tokens_compound"))
+    check_class(class(x), "tokens_compound")
 }
 
 #' @importFrom RcppParallel RcppParallelLibs
 #' @export
 tokens_compound.tokens <- function(x, pattern,
-                   concatenator = "_", valuetype = c("glob", "regex", "fixed"),
+                   valuetype = c("glob", "regex", "fixed"),
+                   concatenator = "_", 
                    window = 0,
                    case_insensitive = TRUE, join = TRUE) {
 
     x <- as.tokens(x)
     valuetype <- match.arg(valuetype)
+    concatenator <- check_character(concatenator)
+    window <- check_integer(window, min_len = 1, max_len = 2, min = 0)
+    join <- check_logical(join)
+    
     attrs <- attributes(x)
-    types <- types(x)
+    type <- types(x)
 
-    seqs_id <- pattern2list(pattern, types, valuetype, case_insensitive, remove_unigram = FALSE)
+    seqs_id <- pattern2list(pattern, type, valuetype, case_insensitive, remove_unigram = FALSE)
     if (length(seqs_id) == 0) return(x) # do nothing
-
-    if (any(window < 0)) stop("window sizes cannot be negative")
-    if (length(window) > 2) stop("window must be a integer vector of length 1 or 2")
     if (length(window) == 1) window <- rep(window, 2)
-    result <- qatd_cpp_tokens_compound(x, seqs_id, types, concatenator, join, window[1], window[2])
+    result <- qatd_cpp_tokens_compound(x, seqs_id, type, concatenator, join, window[1], window[2])
     field_object(attrs, "concatenator") <- concatenator
     rebuild_tokens(result, attrs)
 }

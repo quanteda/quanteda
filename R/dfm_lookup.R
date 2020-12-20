@@ -73,7 +73,7 @@ dfm_lookup.default <- function(x, dictionary, levels = 1:5,
                            capkeys = !exclusive,
                            nomatch = NULL,
                            verbose = quanteda_options("verbose")) {
-    stop(friendly_class_undefined_message(class(x), "dfm_lookup"))
+    check_class(class(x), "dfm_lookup")
 }
 
 #' @export
@@ -84,7 +84,12 @@ dfm_lookup.dfm <- function(x, dictionary, levels = 1:5,
                            capkeys = !exclusive,
                            nomatch = NULL,
                            verbose = quanteda_options("verbose")) {
+    
     x <- as.dfm(x)
+    exclusive <- check_logical(exclusive)
+    capkeys <- check_logical(capkeys)
+    verbose <- check_logical(verbose)
+    
     if (!nfeat(x) || !ndoc(x)) return(x)
 
     if (!is.dictionary(dictionary))

@@ -16,11 +16,12 @@ tokens_tolower <- function(x, keep_acronyms = FALSE) {
 
 #' @export
 tokens_tolower.default <- function(x, keep_acronyms = FALSE) {
-    stop(friendly_class_undefined_message(class(x), "tokens_tolower"))
+    check_class(class(x), "tokens_tolower")
 }
 
 #' @export
 tokens_tolower.tokens <- function(x, keep_acronyms = FALSE) {
+    keep_acronyms <- check_logical(keep_acronyms)
     types(x) <- lowercase_types(types(x), keep_acronyms)
     tokens_recompile(x, gap = FALSE, dup = TRUE)
 }
@@ -44,7 +45,7 @@ tokens_toupper <- function(x) {
     
 #' @export
 tokens_toupper.default <- function(x) {
-    stop(friendly_class_undefined_message(class(x), "tokens_toupper"))
+    check_class(class(x), "tokens_toupper")
 }
 
 #' @noRd
@@ -85,12 +86,13 @@ char_tolower <- function(x, keep_acronyms = FALSE) {
 
 #' @export
 char_tolower.default <- function(x, keep_acronyms = FALSE) {
-    stop(friendly_class_undefined_message(class(x), "char_tolower"))
+    check_class(class(x), "char_tolower")
 }
 
 #' @importFrom stringi stri_extract_all_regex stri_replace_all_regex stri_trans_tolower
 #' @export
 char_tolower.character <- function(x, keep_acronyms = FALSE) {
+    keep_acronyms <- check_logical(keep_acronyms)
     name <- names(x)
     if (keep_acronyms) {
         match <- stri_extract_all_regex(x, "\\b(\\p{Uppercase_Letter}(\\p{Uppercase_Letter}|\\d)+)\\b")
@@ -118,7 +120,7 @@ char_toupper <- function(x) {
 
 #' @export
 char_toupper.default <- function(x) {
-    stop(friendly_class_undefined_message(class(x), "char_toupper"))
+    check_class(class(x), "char_toupper")
 }
 
 #' @importFrom stringi stri_trans_toupper
@@ -150,12 +152,13 @@ dfm_tolower <- function(x, keep_acronyms = FALSE) {
 
 #' @export
 dfm_tolower.default <- function(x, keep_acronyms = FALSE) {
-    stop(friendly_class_undefined_message(class(x), "dfm_tolower"))
+    check_class(class(x), "dfm_tolower")
 }
 
 #' @export
 dfm_tolower.dfm <- function(x, keep_acronyms = FALSE) {
     x <- as.dfm(x)
+    keep_acronyms <- check_logical(keep_acronyms)
     if (!nfeat(x) || !ndoc(x)) return(x)
     set_dfm_featnames(x) <- lowercase_types(featnames(x), keep_acronyms)
     dfm_compress(x, margin = "features")
@@ -170,7 +173,7 @@ dfm_toupper <- function(x) {
 
 #' @export
 dfm_toupper.default <- function(x) {
-    stop(friendly_class_undefined_message(class(x), "dfm_toupper"))
+    check_class(class(x), "dfm_toupper")
 }
 
 #' @export
@@ -200,11 +203,12 @@ fcm_tolower <- function(x, keep_acronyms = FALSE) {
 
 #' @export
 fcm_tolower.default <- function(x, keep_acronyms = FALSE) {
-    stop(friendly_class_undefined_message(class(x), "fcm_tolower"))
+    check_class(class(x), "fcm_tolower")
 }
 
 #' @export
 fcm_tolower.fcm <- function(x, keep_acronyms = FALSE) {
+    keep_acronyms <- check_logical(keep_acronyms)
     set_fcm_featnames(x) <- lowercase_types(featnames(x), keep_acronyms)
     fcm_compress(x)
 }
@@ -218,7 +222,7 @@ fcm_toupper <- function(x) {
 
 #' @export
 fcm_toupper.default <- function(x) {
-    stop(friendly_class_undefined_message(class(x), "fcm_toupper"))
+    check_class(class(x), "fcm_toupper")
 }
 
 #' @export

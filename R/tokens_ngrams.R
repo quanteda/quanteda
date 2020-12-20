@@ -42,7 +42,7 @@ tokens_ngrams <- function(x, n = 2L, skip = 0L, concatenator = "_") {
 
 #' @export
 tokens_ngrams.default <- function(x, n = 2L, skip = 0L, concatenator = "_") {
-    stop(friendly_class_undefined_message(class(x), "tokens_ngrams"))
+    check_class(class(x), "tokens_ngrams")
 }
 
 ## this function is not exported because it should not exist - it violates
@@ -81,7 +81,7 @@ char_ngrams <- function(x, n = 2L, skip = 0L, concatenator = "_") {
 
 #' @export
 char_ngrams.default <- function(x, n = 2L, skip = 0L, concatenator = "_") {
-    stop(friendly_class_undefined_message(class(x), "char_ngrams"))
+    check_class(class(x), "char_ngrams")
 }
 
 #' @export
@@ -101,11 +101,9 @@ char_ngrams.character <- function(x, n = 2L, skip = 0L, concatenator = "_") {
 tokens_ngrams.tokens <- function(x, n = 2L, skip = 0L, concatenator = "_") {
 
     x <- as.tokens(x)
-    n <- as.integer(n)
-    skip <- as.integer(skip)
-
-    if (any(n <= 0L))
-        stop("ngram length has to be greater than zero")
+    n <- check_integer(n, min = 1, max_len = Inf)
+    skip <- check_integer(skip, min = 0, max_len = Inf)
+    concatenator <- check_character(concatenator)
 
     attrs <- attributes(x)
     if (identical(n, 1L) && identical(skip, 0L))
@@ -143,7 +141,7 @@ tokens_skipgrams <- function(x, n, skip, concatenator = "_") {
 
 #' @export
 tokens_skipgrams.default <- function(x, n, skip, concatenator = "_") {
-    stop(friendly_class_undefined_message(class(x), "tokens_skipgrams"))
+    check_class(class(x), "tokens_skipgrams")
 }
 
 #' @export

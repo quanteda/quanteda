@@ -200,6 +200,10 @@ test_that("test new dfm methods", {
         "dfm_sample\\(\\) only works on dfm objects"
     )
     expect_error(
+        dfm_replace(TRUE),
+        "dfm_replace\\(\\) only works on dfm objects"
+    )
+    expect_error(
         dfm_select(TRUE),
         "dfm_select\\(\\) only works on dfm objects"
     )
@@ -255,8 +259,16 @@ test_that("test token default methods", {
         "tokens\\(\\) only works on character, corpus, list, tokens objects"
     )
     expect_error(
+        tokens_subset(TRUE),
+        "tokens_subset\\(\\) only works on tokens objects"
+    )
+    expect_error(
         tokens_compound(TRUE),
         "tokens_compound\\(\\) only works on tokens objects"
+    )
+    expect_error(
+        tokens_split(TRUE),
+        "tokens_split\\(\\) only works on tokens objects"
     )
     expect_error(
         tokens_keep(TRUE),
@@ -265,6 +277,10 @@ test_that("test token default methods", {
     expect_error(
         tokens_lookup(TRUE),
         "tokens_lookup\\(\\) only works on tokens objects"
+    )
+    expect_error(
+        tokens_sample(TRUE),
+        "tokens_sample\\(\\) only works on tokens objects"
     )
     expect_error(
         tokens_ngrams(TRUE),

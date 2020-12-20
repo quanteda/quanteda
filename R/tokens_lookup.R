@@ -107,7 +107,7 @@ tokens_lookup.default <- function(x, dictionary, levels = 1:5,
                                  nomatch = NULL,
                                  nested_scope = c("key", "dictionary"),
                                  verbose = quanteda_options("verbose")) {
-    stop(friendly_class_undefined_message(class(x), "tokens_lookup"))
+    check_class(class(x), "tokens_lookup")
 }
 
 #' @export
@@ -123,9 +123,13 @@ tokens_lookup.tokens <- function(x, dictionary, levels = 1:5,
     x <- as.tokens(x)
     if (!is.dictionary(dictionary))
         stop("dictionary must be a dictionary object")
-
+    levels <- check_integer(levels, min = 1, max_len = Inf)
     valuetype <- match.arg(valuetype)
+    capkeys <- check_logical(capkeys)
+    exclusive <- check_logical(exclusive)
     nested_scope <- match.arg(nested_scope)
+    verbose <- check_logical(verbose)
+        
     attrs <- attributes(x)
     type <- types(x)
     if (verbose)
@@ -140,7 +144,8 @@ tokens_lookup.tokens <- function(x, dictionary, levels = 1:5,
         key <- char_toupper(key)
     if (exclusive) {
         if (!is.null(nomatch)) {
-            result <- qatd_cpp_tokens_lookup(x, c(key, nomatch[1]), ids, id_key, overlap, 1)
+            nomatch <- check_character(nomatch)
+            result <- qatd_cpp_tokens_lookup(x, c(key, nomatch), ids, id_key, overlap, 1)
         } else {
             result <- qatd_cpp_tokens_lookup(x, key, ids, id_key, overlap, 0)
         }

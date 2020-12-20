@@ -40,17 +40,23 @@ corpus_trim.corpus <- function(x, what = c("sentences", "paragraphs", "documents
                                exclude_pattern = NULL) {
     x <- as.corpus(x)
     what <- match.arg(what)
-    if (is.null(max_ntoken)) max_ntoken <- 1e10
+    min_ntoken <- check_integer(min_ntoken, min = 0)
 
     # segment corpus
     temp <- corpus_reshape(x, to = what)
 
     # exclude based on lengths
     length <- ntoken(temp, remove_punct = TRUE)
+    if (!is.null(max_ntoken)) {
+        max_ntoken <- check_integer(max_ntoken)
+    } else {
+        max_ntoken <- max(length)
+    }
     result <- corpus_subset(temp, length >= min_ntoken & length <= max_ntoken)
 
     # exclude based on regular expression match
     if (!is.null(exclude_pattern)) {
+        exclude_pattern <- check_character(exclude_pattern)
         is_pattern <- stri_detect_regex(texts(result), exclude_pattern)
         result <- corpus_subset(result, !is_pattern)
     }
@@ -90,9 +96,6 @@ char_trim.character <- function(x, what = c("sentences", "paragraphs", "document
 #'   (excluding punctuation)
 #' @param exclude_pattern a \pkg{stringi} regular expression whose match (at the
 #'   sentence level) will be used to exclude sentences
-#' @param return_tokens if `TRUE`, return tokens object of sentences after
-#'   trimming, otherwise return the input object type with the trimmed sentences
-#'   removed.
 #' @return a [corpus] or character vector equal in length to the input, or
 #'   a tokenized set of sentences if .  If the input was a corpus, then the all
 #'   docvars and metadata are preserved.  For documents whose sentences have
@@ -116,17 +119,18 @@ char_trim.character <- function(x, what = c("sentences", "paragraphs", "document
 #' # on a character
 #' char_trimsentences(txt, min_length = 3)
 corpus_trimsentences <- function(x, min_length = 1, max_length = 10000,
-                                 exclude_pattern = NULL,
-                                 return_tokens = FALSE) {
+                                 exclude_pattern = NULL) {
     UseMethod("corpus_trimsentences")
 }
 
 #' @noRd
 #' @export
 corpus_trimsentences.corpus <- function(x, min_length = 1, max_length = 10000,
-                                        exclude_pattern = NULL,
-                                        return_tokens = FALSE) {
-
+                                        exclude_pattern = NULL) {
+    
+    min_length <- check_integer(min_length, min = 0)
+    max_length <- check_integer(max_length, min = 0)
+    
     temp <- corpus_reshape(x, to = "sentences")
 
     # exclude based on lengths
@@ -135,6 +139,7 @@ corpus_trimsentences.corpus <- function(x, min_length = 1, max_length = 10000,
 
     # exclude based on regular expression match
     if (!is.null(exclude_pattern)) {
+        exclude_pattern <- check_character(exclude_pattern)
         is_pattern <- stri_detect_regex(texts(temp), exclude_pattern)
         temp <- corpus_subset(temp, !is_pattern)
     }

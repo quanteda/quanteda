@@ -1,4 +1,4 @@
-context("testing fcm")
+context("test fcm")
 
 test_that("compare the output feature co-occurrence matrix to that of the text2vec package", {
     skip_if_not_installed("text2vec")
@@ -254,13 +254,15 @@ test_that("fcm expects error for wrong weight or window", {
     txt <- c("a a a b b c", "a a c e", "a c e f g")
     toks <- tokens(txt)
     expect_error(fcm(toks, context = "window", window = 0),
-                "window size must be at least 1")
+                 "The value of window must be between 1 and Inf")
+    expect_error(fcm(toks, context = "window", window = integer()),
+                 "The length of window must be 1")
     expect_error(fcm(toks, context = "window", window = 2, weight = 0.1,
                      count = "weighted", weights = c(1, 2, 3)),
-                 "weights length must be equal to the window size")
+                 "The length of weights must be equal to the window size")
     expect_error(fcm(toks, context = "window", window = 2, weight = c(0.1, 0.2, 0.3),
                      count = "weighted", weights = c(1, 2, 3)),
-                 "weights length must be equal to the window size")
+                 "The length of weights must be equal to the window size")
 })
 
 

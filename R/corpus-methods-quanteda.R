@@ -34,6 +34,7 @@ texts <- function(x, groups = NULL, spacer = " ") {
 #' @export
 texts.corpus <- function(x, groups = NULL, spacer = " ") {
     x <- as.corpus(x)
+    spacer <- check_character(spacer)
     attrs <- attributes(x)
     if (!is.null(groups)) {
         if (!is.factor(groups))
@@ -85,6 +86,9 @@ texts.character <- function(x, groups = NULL, spacer = " ") {
 "texts<-.corpus" <- function(x, value) {
     x <- as.corpus(x)
     attrs <- attributes(x)
+    value <- as.character(value)
+    if (length(x) != length(value))
+        stop(message_error("ndoc_mismatch"), call. = FALSE)
     x <- value
     attributes(x) <- attrs
     return(x)
@@ -116,7 +120,7 @@ as.corpus <- function(x) {
 
 #' @export
 as.corpus.default <- function(x) {
-    stop(friendly_class_undefined_message(class(x), "as.corpus"))
+    check_class(class(x), "as.corpus")
 }
 
 #' @export

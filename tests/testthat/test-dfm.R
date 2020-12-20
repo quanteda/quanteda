@@ -527,6 +527,10 @@ test_that("dfm print works with options as expected", {
                ".*",
                "\\[ reached max_ndoc \\.\\.\\. 8 more documents, reached max_nfeat \\.\\.\\. 4,442 more features \\]$")
     )
+    expect_error(print(dfmt, max_ndoc = -2),
+                 "The value of max_ndoc must be between -1 and Inf")
+    expect_error(print(dfmt, max_nfeat = -2),
+                 "The value of max_nfeat must be between -1 and Inf")
 })
 
 test_that("cannot supply remove and select in one call (#793)", {
@@ -587,7 +591,11 @@ test_that("dfm works with stem options", {
         featnames(dfm(txt_english, stem = TRUE)),
         c("run", "ran")
     )
-
+    expect_error(
+        dfm(txt_english, stem = c(TRUE, FALSE)),
+        "The length of stem must be 1"
+    )
+    
     quanteda_options(language_stemmer = "french")
     expect_equal(
         as.character(tokens_wordstem(tokens(txt_french))),
@@ -758,9 +766,9 @@ test_that("test null dfm is handled properly", {
     expect_equal(dfm_compress(mx, "both"), mx)
     expect_equal(dfm_compress(mx, "features"), mx)
     expect_equal(dfm_compress(mx, "documents"), mx)
-    expect_equal(dfm_sort(mx, "both"), mx)
-    expect_equal(dfm_sort(mx, "features"), mx)
-    expect_equal(dfm_sort(mx, "documents"), mx)
+    expect_equal(dfm_sort(mx, margin = "both"), mx)
+    expect_equal(dfm_sort(mx, margin = "features"), mx)
+    expect_equal(dfm_sort(mx, margin = "documents"), mx)
     expect_equal(dfm_lookup(mx, dictionary(list(A = "a"))), mx)
     expect_equal(dfm_group(mx), mx)
     expect_equal(dfm_replace(mx, "A", "a"), mx)
@@ -810,9 +818,9 @@ test_that("test empty dfm is handled properly (#1419)", {
     expect_equal(dfm_compress(mx, "both"), mx)
     expect_equal(dfm_compress(mx, "features"), mx)
     expect_equal(dfm_compress(mx, "documents"), mx)
-    expect_equal(dfm_sort(mx, "both"), mx)
-    expect_equal(dfm_sort(mx, "features"), mx)
-    expect_equal(dfm_sort(mx, "documents"), mx)
+    expect_equal(dfm_sort(mx, margin = "both"), mx)
+    expect_equal(dfm_sort(mx, margin = "features"), mx)
+    expect_equal(dfm_sort(mx, margin = "documents"), mx)
     expect_equal(dfm_lookup(mx, dictionary(list(A = "a"))), mx)
     expect_equal(dfm_group(mx), mx)
     expect_equal(dfm_replace(mx, "A", "a"), mx)
@@ -928,7 +936,7 @@ test_that("rbind and cbind wokrs with empty dfm", {
 test_that("format_sparsity works correctly", {
     expect_error(
         quanteda:::format_sparsity(-1),
-        "illegal sparsity value; must be 0 <= x <= 1.0"
+        "The value of x must be between 0 and 1"
     )
     expect_identical(
         quanteda:::format_sparsity(sparsity(as.dfm(Matrix::rsparsematrix(1000, 1000, density = 0.5)))),

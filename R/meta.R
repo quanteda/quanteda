@@ -30,7 +30,7 @@ meta <- function(x, field = NULL, type = c("user", "object", "system", "all"))
 
 #' @export
 meta.default <- function(x, field = NULL, type = c("user", "object", "system", "all")) {
-    stop(friendly_class_undefined_message(class(x), "meta"))
+    check_class(class(x), "meta")
 }
 
 #' @export

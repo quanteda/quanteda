@@ -118,7 +118,7 @@ dfm <- function(x,
 #' @noRd
 #' @export
 dfm.default <- function(x, ...) {
-    stop(friendly_class_undefined_message(class(x), "dfm"))
+    check_class(class(x), "dfm")
 }
 
 # GLOBAL FOR dfm THAT FUNCTIONS CAN RESET AS NEEDED TO RECORD TIME ELAPSED
@@ -196,13 +196,12 @@ dfm.tokens <- function(x,
                        verbose = quanteda_options("verbose"),
                        ...) {
     valuetype <- match.arg(valuetype)
-
+    stem <- check_logical(stem)
+    check_dots(..., method = "tokens")
+    
     # call tokens only if options given
-    if (length(intersect(names(list(...)), names(formals("tokens"))))) {
+    if (length(list(...)))
         x <- tokens(x, ...)
-    } else {
-        unused_dots(...)
-    }
 
     if (tolower) {
         if (verbose) catm(" ...lowercasing\n", sep = "")
@@ -252,8 +251,8 @@ dfm.tokens <- function(x,
                            verbose = verbose)
     }
 
-    language <- quanteda_options("language_stemmer")
     if (stem) {
+        language <- quanteda_options("language_stemmer")
         if (verbose) catm(" ...stemming types (", stri_trans_totitle(language), ")\n", sep = "")
         x <- tokens_wordstem(x, language = language)
     }
@@ -304,11 +303,10 @@ dfm.dfm <- function(x,
                     verbose = quanteda_options("verbose"),
                     ...) {
 
-    unused_dots(...)
-
     x <- as.dfm(x)
     valuetype <- match.arg(valuetype)
-
+    check_dots(...)
+    
     if (!is.null(groups)) {
         if (verbose) catm(" ...grouping texts\n")
         x <- dfm_group(x, groups, fill = FALSE)

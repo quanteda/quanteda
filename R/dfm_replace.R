@@ -34,15 +34,21 @@ dfm_replace <- function(x, pattern, replacement, case_insensitive = TRUE,
 #' @export
 dfm_replace.default <- function(x, pattern, replacement, case_insensitive = TRUE,
                                 verbose = quanteda_options("verbose")) {
-    stop(friendly_class_undefined_message(class(x), "dfm_replace"))
+    check_class(class(x), "dfm_replace")
 }
     
 #' @export
 dfm_replace.dfm <- function(x, pattern, replacement, case_insensitive = TRUE,
                             verbose = quanteda_options("verbose")) {
-
+    
+    x <- as.dfm(x)
+    pattern <- check_character(pattern, min_len = 0, max_len = Inf, strict = TRUE)
+    replacement <- check_character(replacement, min_len = 0, max_len = Inf, strict = TRUE)
+    case_insensitive <- check_logical(case_insensitive)
+    
     if (length(pattern) != length(replacement))
-        stop("Lengths of 'pattern' and 'replacement' must be the same")
+        stop("The length of pattern and replacement must be the same", call. = FALSE)
+    if (!length(pattern)) return(x)
 
     if (!length(pattern)) return(x)
     set_dfm_featnames(x) <- replace_type(featnames(x), pattern, replacement, case_insensitive)

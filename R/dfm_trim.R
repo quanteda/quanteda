@@ -75,8 +75,10 @@
 #'
 #' @export
 dfm_trim <- function(x,
-                     min_termfreq = NULL, max_termfreq = NULL, termfreq_type = c("count", "prop", "rank", "quantile"),
-                     min_docfreq = NULL, max_docfreq = NULL, docfreq_type = c("count", "prop", "rank", "quantile"),
+                     min_termfreq = NULL, max_termfreq = NULL, 
+                     termfreq_type = c("count", "prop", "rank", "quantile"),
+                     min_docfreq = NULL, max_docfreq = NULL, 
+                     docfreq_type = c("count", "prop", "rank", "quantile"),
                      sparsity = NULL,
                      verbose = quanteda_options("verbose"),
                      ...) {
@@ -92,7 +94,7 @@ dfm_trim.default <- function(x,
                              sparsity = NULL,
                              verbose = quanteda_options("verbose"),
                              ...) {
-    stop(friendly_class_undefined_message(class(x), "dfm_trim"))
+    check_class(class(x), "dfm_trim")
 }
 
 #' @export
@@ -106,39 +108,19 @@ dfm_trim.dfm <- function(x,
                          ...) {
 
     x <- as.dfm(x)
-    if (!nfeat(x) || !ndoc(x)) return(x)
-
-    dots <- list(...)
-    if ("min_count" %in% names(dots)) {
-        warning("min_count is deprecated, use min_termfreq")
-        min_termfreq <- dots[["min_count"]]
-    }
-    if ("max_count" %in% names(dots)) {
-        warning("max_count is deprecated, use max_termfreq")
-        max_termfreq <- dots[["max_count"]]
-    }
-
     termfreq_type <- match.arg(termfreq_type)
     docfreq_type <- match.arg(docfreq_type)
+    verbose <- check_logical(verbose)
+    
     attrs <- attributes(x)
-
-    # warning if already fractional
-    if ((!is.null(min_termfreq) || !is.null(max_termfreq)) &&
-        field_object(attrs, "weight_tf")$scheme != "count" || field_object(attrs, "weight_df")$scheme != "unary") {
-        warning("dfm has been previously weighted")
-    }
-    # warning for fractional term frequency
-    if (field_object(attrs, "weight_tf")$scheme == "count" && termfreq_type == "count") {
-        if (!is.null(max_termfreq) && max_termfreq < 1)
-            warning("use termfreq_type = 'prop' for fractional term frequency")
-        if (!is.null(min_termfreq) && min_termfreq < 1)
-            warning("use termfreq_type = 'prop' for fractional term frequency")
-    }
+    
+    if (!nfeat(x) || !ndoc(x)) return(x)
 
     freq <- unname(colSums(x))
     freq_doc <- unname(docfreq(x))
 
     if (!is.null(sparsity)) {
+        sparsity <- check_double(sparsity)
         if (!is.null(max_docfreq) && !is.null(sparsity))
             stop("min/max_docfreq and sparsity both refer to a document ",
                  "threshold, both should not be specified")
@@ -149,31 +131,62 @@ dfm_trim.dfm <- function(x,
         docfreq_type <- "prop"
     }
 
+    # warning if already fractional
+    if ((!is.null(min_termfreq) || !is.null(max_termfreq)) &&
+        field_object(attrs, "weight_tf")$scheme != "count" || 
+        field_object(attrs, "weight_df")$scheme != "unary") {
+        warning("dfm has been previously weighted")
+    }
+    
     s <- sum(freq)
     if (termfreq_type == "count") {
-        if (is.null(min_termfreq))
+        if (!is.null(min_termfreq)) {
+            min_termfreq <- check_integer(min_termfreq, min = 0)
+        } else {
             min_termfreq <- 1
-        if (is.null(max_termfreq))
+        }
+        if (!is.null(max_termfreq)) {
+            max_termfreq <- check_integer(max_termfreq, min = 0)
+        } else {
             max_termfreq <- max(freq)
+        }
     } else if (termfreq_type == "prop") {
-        if (is.null(min_termfreq))
+        if (!is.null(min_termfreq)) {
+            min_termfreq <- check_double(min_termfreq, min = 0, max = 1)
+        } else {
             min_termfreq <- 0
-        if (is.null(max_termfreq))
+        }
+        if (!is.null(max_termfreq)) {
+            max_termfreq <- check_double(max_termfreq, min = 0, max = 1)
+        } else {
             max_termfreq <- 1
+        }
         min_termfreq <- min_termfreq * s
         max_termfreq <- max_termfreq * s
     } else if (termfreq_type ==  "quantile")  {
-        if (is.null(min_termfreq))
+        if (!is.null(min_termfreq)) {
+            min_termfreq <- check_double(min_termfreq, min = 0, max = 1)
+        } else {
             min_termfreq <- 0
-        if (is.null(max_termfreq))
+        }
+        if (!is.null(max_termfreq)) {
+            max_termfreq <- check_double(max_termfreq, min = 0, max = 1)
+        } else {
             max_termfreq <- 1
+        }
         min_termfreq <- quantile(freq, min_termfreq, names = FALSE, type = 1)
         max_termfreq <- quantile(freq, max_termfreq, names = FALSE, type = 1)
     } else if (termfreq_type == "rank") {
-        if (is.null(min_termfreq))
+        if (!is.null(min_termfreq)) {
+            min_termfreq <- check_integer(min_termfreq, min = 1)
+        } else {
             min_termfreq <- nfeat(x)
-        if (is.null(max_termfreq))
+        }
+        if (!is.null(max_termfreq)) {
+            max_termfreq <- check_integer(max_termfreq, min = 1)
+        } else {
             max_termfreq <- 1
+        }
         r <- rank(freq * -1, ties.method = "min")
         min_termfreq <- min(freq[r <= min_termfreq])
         max_termfreq <- max(freq[r >= max_termfreq])
@@ -181,29 +194,53 @@ dfm_trim.dfm <- function(x,
 
     n <- ndoc(x)
     if (docfreq_type == "count") {
-        if (is.null(min_docfreq))
+        if (!is.null(min_docfreq)) {
+            min_docfreq <- check_integer(min_docfreq, min = 0)
+        } else {
             min_docfreq <- 1
-        if (is.null(max_docfreq))
+        }
+        if (!is.null(max_docfreq)) {
+            max_docfreq <- check_integer(max_docfreq, min = 0)
+        } else {
             max_docfreq <- max(freq_doc)
+        }
     } else if (docfreq_type == "prop") {
-        if (is.null(min_docfreq))
+        if (!is.null(min_docfreq)) {
+            min_docfreq <- check_double(min_docfreq, min = 0, max = 1)
+        } else {
             min_docfreq <- 0
-        if (is.null(max_docfreq))
+        }
+        if (!is.null(max_docfreq)) {
+            max_docfreq <- check_double(max_docfreq, min = 0, max = 1)
+        } else {
             max_docfreq <- 1
+        }
         min_docfreq <- min_docfreq * n
         max_docfreq <- max_docfreq * n
     } else if (docfreq_type ==  "quantile")  {
-        if (is.null(min_docfreq))
+        if (!is.null(min_docfreq)) {
+            min_docfreq <- check_double(min_docfreq, min = 0, max = 1)
+        } else {
             min_docfreq <- 0
-        if (is.null(max_docfreq))
+        }
+        if (!is.null(max_docfreq)) {
+            max_docfreq <- check_double(max_docfreq, min = 0, max = 1)
+        } else {
             max_docfreq <- 1
+        }
         min_docfreq <- quantile(freq_doc, min_docfreq, names = FALSE, type = 1)
         max_docfreq <- quantile(freq_doc, max_docfreq, names = FALSE, type = 1)
     } else if (docfreq_type == "rank") {
-        if (is.null(min_docfreq))
+        if (!is.null(min_docfreq)) {
+            min_docfreq <- check_integer(min_docfreq, min = 1)
+        } else {
             min_docfreq <- nfeat(x)
-        if (is.null(max_docfreq))
+        }
+        if (!is.null(max_docfreq)) {
+            max_docfreq <- check_integer(max_docfreq, min = 1)
+        } else {
             max_docfreq <- 1
+        }
         r <- rank(freq_doc * -1, ties.method = "min")
         min_docfreq <- min(freq_doc[r <= min_docfreq])
         max_docfreq <- max(freq_doc[r >= max_docfreq])

@@ -37,7 +37,7 @@ corpus_reshape <- function(x, to = c("sentences", "paragraphs", "documents"),
 #' @export
 corpus_reshape.default <- function(x, to = c("sentences", "paragraphs", "documents"),
                                    use_docvars = TRUE, ...) {
-    stop(friendly_class_undefined_message(class(x), "corpus_reshape"))
+    check_class(class(x), "corpus_reshape")
 }
 
 #' @export
@@ -46,6 +46,8 @@ corpus_reshape.corpus <- function(x, to = c("sentences", "paragraphs", "document
 
     x <- as.corpus(x)
     to <- match.arg(to)
+    use_docvars <- check_logical(use_docvars)
+    
     attrs <- attributes(x)
     if (field_object(attrs, "unit") == to)
         return(x)

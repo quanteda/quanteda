@@ -459,12 +459,20 @@ test_that("subsetting and printing a subsetted kwic works (#1665)", {
     expect_false("kwic" %in% class(kw[, 1:2]))
 })
 
-test_that("ignores values other than first (#2008)", {
+test_that("raise error when inputs are invalid", {
+    
     toks <-tokens( "This is a sample text.")
-    kw1 <- kwic(toks, "sample", window = c(1, 2))
-    expect_equal(kw1$pre , "a")
-    expect_equal(kw1$post , "text")
-    kw2 <- kwic(toks, "sample", window = 2, separator = c("_", " "))
-    expect_equal(kw2$pre , "is_a")
-    expect_equal(kw2$post , "text_.")
+    expect_error(
+        kwic(toks, "sample", window = c(1, 1, 3)),
+        "The length of window must be between 1 and 2"
+    )
+    expect_error(
+        kwic(toks, "sample", window = -1),
+        "The value of window must be between 0 and Inf"
+    )
+    
+    expect_error(
+        kwic(toks, "sample", separator = character()),
+        "The length of separator must be 1"
+    )
 })

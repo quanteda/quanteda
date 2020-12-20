@@ -102,8 +102,8 @@ test_that("dfm_trim works on previously weighted dfms (#1237)", {
     dfm2 <- dfm_tfidf(dfm1)
     expect_equal(
         suppressWarnings(
-            dfm_trim(dfm2, min_termfreq = 0, min_docfreq = .5, termfreq_type = "prop") %>% 
-                as.matrix()
+            as.matrix(dfm_trim(dfm2, min_termfreq = 0, min_docfreq = .5, 
+                               termfreq_type = "prop", docfreq_type = "prop"))
         ),
         matrix(c(.30103, 0, .30103, 0, 0, .30103, 0, .30103, 0, .30103), nrow = 2,
                dimnames = list(docs = c("text1", "text2"), 
@@ -125,22 +125,79 @@ test_that("dfm_trim works on previously weighted dfms (#1237)", {
     )
 })
 
-test_that("dfm_trim warn when termfreq is termfreq_type = 'count' (#1254)", {
-    dfm1 <- dfm(c("the quick brown fox jumps over the lazy dog", 
+test_that("dfm_trim error with invalid input", {
+    dfmat <- dfm(c("the quick brown fox jumps over the lazy dog", 
                   "the quick brown foxy ox jumps over the lazy god"))
-    #dfm2 <- dfm_tfidf(dfm1)
-    expect_warning(
-        dfm_trim(dfm1, min_termfreq = 0.001, termfreq_type = "count"),
-        "use termfreq_type = 'prop' for fractional term frequency"
+    
+    # min_termfreq
+    expect_error(
+        dfm_trim(dfmat, min_termfreq = -1, termfreq_type = "count"),
+        "The value of min_termfreq must be between 0 and Inf"
     )
-    #expect_silent(
-    #    dfm_trim(dfm2, min_termfreq = 0.001, termfreq_type = "count")
-    #)
-    expect_warning(
-        dfm_trim(dfm1, max_termfreq = 0.001, termfreq_type = "count"),
-        "use termfreq_type = 'prop' for fractional term frequency"
+    expect_error(
+        dfm_trim(dfmat, min_termfreq = 1.1, termfreq_type = "prop"),
+        "The value of min_termfreq must be between 0 and 1"
     )
-    #expect_silent(
-    #    dfm_trim(dfm2, max_termfreq = 0.001, termfreq_type = "count")
-    #)
+    expect_error(
+        dfm_trim(dfmat, min_termfreq = 1.1, termfreq_type = "quantile"),
+        "The value of min_termfreq must be between 0 and 1"
+    )
+    expect_error(
+        dfm_trim(dfmat, min_termfreq = 0, termfreq_type = "rank"),
+        "The value of min_termfreq must be between 1 and Inf"
+    )
+    
+    # max_termfreq
+    expect_error(
+        dfm_trim(dfmat, max_termfreq = -1, termfreq_type = "count"),
+        "The value of max_termfreq must be between 0 and Inf"
+    )
+    expect_error(
+        dfm_trim(dfmat, max_termfreq = 1.1, termfreq_type = "prop"),
+        "The value of max_termfreq must be between 0 and 1"
+    )
+    expect_error(
+        dfm_trim(dfmat, max_termfreq = 1.1, termfreq_type = "quantile"),
+        "The value of max_termfreq must be between 0 and 1"
+    )
+    expect_error(
+        dfm_trim(dfmat, max_termfreq = 0, termfreq_type = "rank"),
+        "The value of max_termfreq must be between 1 and Inf"
+    )
+    
+    # min_docfreq
+    expect_error(
+        dfm_trim(dfmat, min_docfreq = -1, docfreq_type = "count"),
+        "The value of min_docfreq must be between 0 and Inf"
+    )
+    expect_error(
+        dfm_trim(dfmat, min_docfreq = 1.1, docfreq_type = "prop"),
+        "The value of min_docfreq must be between 0 and 1"
+    )
+    expect_error(
+        dfm_trim(dfmat, min_docfreq = 1.1, docfreq_type = "quantile"),
+        "The value of min_docfreq must be between 0 and 1"
+    )
+    expect_error(
+        dfm_trim(dfmat, min_docfreq = 0, docfreq_type = "rank"),
+        "The value of min_docfreq must be between 1 and Inf"
+    )
+    
+    # max_docfreq
+    expect_error(
+        dfm_trim(dfmat, max_docfreq = -1, docfreq_type = "count"),
+        "The value of max_docfreq must be between 0 and Inf"
+    )
+    expect_error(
+        dfm_trim(dfmat, max_docfreq = 1.1, docfreq_type = "prop"),
+        "The value of max_docfreq must be between 0 and 1"
+    )
+    expect_error(
+        dfm_trim(dfmat, max_docfreq = 1.1, docfreq_type = "quantile"),
+        "The value of max_docfreq must be between 0 and 1"
+    )
+    expect_error(
+        dfm_trim(dfmat, max_docfreq = 0, docfreq_type = "rank"),
+        "The value of max_docfreq must be between 1 and Inf"
+    )
 })

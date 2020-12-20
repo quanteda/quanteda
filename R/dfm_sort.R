@@ -24,7 +24,7 @@ dfm_sort <- function(x, decreasing = TRUE,
 #' @export
 dfm_sort.default <- function(x, decreasing = TRUE,
                              margin = c("features", "documents", "both")) {
-  stop(friendly_class_undefined_message(class(x), "dfm_sort"))
+  check_class(class(x), "dfm_sort")
 }
 
 #' @export
@@ -32,9 +32,11 @@ dfm_sort.dfm <- function(x, decreasing = TRUE,
                          margin = c("features", "documents", "both")) {
 
   x <- as.dfm(x)
-  if (!nfeat(x) || !ndoc(x)) return(x)
+  decreasing <- check_logical(decreasing)
   margin <- match.arg(margin)
-
+  
+  if (!nfeat(x) || !ndoc(x)) return(x)
+  
   if (margin == "features") {
     x <- x[, order(colSums(x), decreasing = decreasing)]
   } else if (margin == "documents") {

@@ -20,13 +20,6 @@ test_that("test corpus_sample to see if with grouping, documents can be oversamp
     }
 })
 
-test_that("corpus with prob does not work with by", {
-    expect_error(
-        corpus_sample(corp_sent, prob = rep(0.2, 5), by = docnames(corp_sent)),
-        "prob not implemented with by"
-    )
-})
-
 test_that("corpus_sample by group works", {
     corp <- corpus(
         paste("Document number", seq_len(10)),

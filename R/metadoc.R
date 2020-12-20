@@ -10,7 +10,7 @@ metadoc <- function(x, field = NULL)
 
 #' @export
 metadoc.default <- function(x, field = NULL) {
-    stop(friendly_class_undefined_message(class(x), "metadoc"))
+    check_class(class(x), "metadoc")
 }
 
 #' @noRd
@@ -48,7 +48,7 @@ metadoc.dfm <- function(x, field = NULL) {
 
 #' @export
 "metadoc<-.default" <- function(x, field = NULL, value) {
-    stop(friendly_class_undefined_message(class(x), "metadoc<-"))
+    check_class(class(x), "metadoc<-")
 }
 
 #' @noRd

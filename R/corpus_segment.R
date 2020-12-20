@@ -111,7 +111,7 @@ corpus_segment.default <- function(x, pattern = "##*",
                                   extract_pattern = TRUE,
                                   pattern_position = c("before", "after"),
                                   use_docvars = TRUE) {
-    stop(friendly_class_undefined_message(class(x), "corpus_segment"))
+    check_class(class(x), "corpus_segment")
 }
 
 #' @export
@@ -124,7 +124,9 @@ corpus_segment.corpus <- function(x, pattern = "##*",
 
     x <- as.corpus(x)
     valuetype <- match.arg(valuetype)
+    extract_pattern <- check_logical(extract_pattern)
     pattern_position <- match.arg(pattern_position)
+    use_docvars <- check_logical(use_docvars)
     attrs <- attributes(x)
 
     temp <- segment_texts(texts(x), pattern, valuetype, case_insensitive,
@@ -181,7 +183,7 @@ char_segment.default <- function(x, pattern = "##*",
                                  case_insensitive = TRUE,
                                  remove_pattern = TRUE,
                                  pattern_position = c("before", "after")) {
-    stop(friendly_class_undefined_message(class(x), "char_segment"))
+    check_class(class(x), "char_segment")
 }
 
 #' @export

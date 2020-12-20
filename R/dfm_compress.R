@@ -38,7 +38,7 @@ dfm_compress <- function(x, margin = c("both", "documents", "features")) {
 #' @export
 dfm_compress.default <- function(x,
                                  margin = c("both", "documents", "features")) {
-    stop(friendly_class_undefined_message(class(x), "dfm_compress"))
+    check_class(class(x), "dfm_compress")
 }
 
 #' @export
