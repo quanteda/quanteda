@@ -242,7 +242,7 @@ topfeatures.dfm <- function(x, n = 10, decreasing = TRUE,
 
     if (!is.null(groups)) {
         result <- list()
-        x <- dfm_group(x, groups)
+        x <- dfm_group(x, groups, force = TRUE)
         for (i in seq_len(ndoc(x))) {
             result[[i]] <- topfeatures(x[i, ], n = n, scheme = scheme,
                                        decreasing = decreasing, groups = NULL)
