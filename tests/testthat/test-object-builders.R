@@ -69,7 +69,7 @@ test_that("object builder is robust agains different input", {
         class(toks2), c("myclass2", "tokens")
     )
     
-    # docvars has worng number of rows
+    # docvars has wrong number of rows
     expect_error({
         quanteda:::build_corpus("a b c", 
                                 docvars = quanteda:::make_docvars(2L))
