@@ -204,3 +204,31 @@ upgrade_dictionary2 <- function(x) {
                       separator = attrs[["concatenator"]],
                       valuetype = "glob")
 }
+
+# fcm ------
+
+#' @rdname object-builders
+#' @param features character for feature of resulting `fcm`
+#' @param meta list for meta fields
+#' @keywords internal
+build_fcm <- function(x, features,
+                      meta = list(), 
+                      class = "dfm", ...) {
+    result <- new(class,
+                  as(x, "dgCMatrix"),
+                  meta = make_meta("dfm", inherit = meta, ...)
+    )
+    # set names directly to avoid NULL
+    result@Dimnames <- list(
+        features = as.character(features),
+        features = as.character(features)
+    )
+    return(result)
+}
+
+#' @rdname object-builders
+#' @param attrs a list of attributes to be reassigned
+rebuild_fcm <- function(x, attrs) {
+    x@meta <- attrs[["meta"]]
+    return(x)
+}

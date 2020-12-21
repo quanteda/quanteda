@@ -237,6 +237,8 @@ make_meta <- function(class, inherit = NULL, ...) {
         result$object <- make_meta_tokens(inherit$object, ...)
     } else if (class == "dfm") {
         result$object <- make_meta_dfm(inherit$object, ...)
+    } else if (class == "fcm") {
+        result$object <- make_meta_fcm(inherit$object, ...)
     } else if (class == "dictionary2") {
         result$object <- make_meta_dictionary2(inherit, ...)
     }
@@ -304,6 +306,23 @@ make_meta_dfm <- function(inherit = NULL, ...) {
         "smooth" = 0,
         "summary" = list("hash" = character(), 
                          "data" = NULL)
+    )
+    update_meta(default, inherit, ...)
+}
+
+#' @rdname make_meta
+make_meta_fcm <- function(inherit = NULL, ...) {
+    if (is.null(inherit))
+        inherit <- list()
+    default <- list(
+        "concatenator" = "_",
+        "context" = "document", 
+        "window" = 5L,
+        "count" = "frequency",
+        "weights" = NULL,
+        "ordered" = FALSE,
+        "margin" = integer(), 
+        "tri" = FALSE
     )
     update_meta(default, inherit, ...)
 }
