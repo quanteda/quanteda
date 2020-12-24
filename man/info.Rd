@@ -9,7 +9,7 @@ info(x, values, indices = NULL, warn = FALSE, ...)
 \arguments{
 \item{x}{message template to be pasted to \code{\link[=sprintf]{sprintf()}}}
 
-\item{values}{list of values to be printed. Coereced to list if vector is given.}
+\item{values}{list of values to be printed. Coerced to list if vector is given.}
 
 \item{indices}{list of integer to specify which value to be printed}
 
@@ -20,11 +20,13 @@ Conditionally format and print messages
 }
 \examples{
 \dontrun{
-info("you cannot delete \%s", c("document", "documents"), indices = TRUE, warn = TRUE)
-info("tokens has \%s", c("sentences", "paragraphs", "documents"), indices = 2)
+quanteda:::info("you cannot delete \%s", 
+                c("a document", "documents"), indices = TRUE, warn = TRUE)
+quanteda:::info("tokens has \%s", 
+                c("sentences", "paragraphs", "documents"), indices = 2)
 
 dfmt <- data_dfm_lbgexample
-info("dfm has \%d \%s and \%d \%s", 
+quanteda:::info("dfm has \%d \%s and \%d \%s", 
      list(ndoc(dfmt), c("document", "documents"),
           nfeat(dfmt), c("feature", "features")), 
      list(1, ndoc(dfmt) > 1, 
