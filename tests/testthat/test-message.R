@@ -63,5 +63,11 @@ test_that("info works", {
                         indices = list(1, 1), warn = TRUE),
         "there isn't a document"
     )
+    expect_warning(
+        quanteda:::info("there %s %s", 
+                        list(c("isn't", "is", "are"), c("a document", "documents")), 
+                        indices = c(3, 2), warn = TRUE),
+        "there are documents"
+    )
     
 })
