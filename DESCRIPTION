@@ -129,6 +129,7 @@ Collate:
     'fcm.R'
     'fcm_select.R'
     'kwic.R'
+    'message.R'
     'metadoc.R'
     'nfunctions.R'
     'object-builder.R'
