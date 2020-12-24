@@ -23,7 +23,7 @@ info <- function(x, values, indices = NULL, warn = FALSE, ...) {
     if (!is.list(values))
         values <- list(values)
     if (!is.list(indices))
-        indices <- list(indices)
+        indices <- as.list(indices)
     if (length(indices)) {
         stopifnot(all(lengths(indices) == 1))
         values <- mapply(function(x, y) {
