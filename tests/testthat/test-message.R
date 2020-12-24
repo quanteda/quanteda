@@ -8,6 +8,16 @@ test_that("info works", {
         "there are 3 documents"
     )
     
+    # ignore indices
+    expect_message(
+        quanteda:::info("there is %s", "a document", indices = FALSE),
+        "there is a document"
+    )
+    expect_message(
+        quanteda:::info("there is %s", "a document", indices = c(1, 2)),
+        "there is a document"
+    )
+    
     # logical indices
     expect_message(
         quanteda:::info("there is %s", c("a document", "documents"), indices = FALSE),
