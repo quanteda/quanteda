@@ -741,6 +741,11 @@ test_that("test topfeatures", {
         topfeatures(dfmat, scheme = "docfreq"),
         c(b = 3L, c = 2L, a = 1L, d = 1L)
     )
+    expect_identical(
+        topfeatures(dfm_weight(dfmat, scheme = "prop"), groups = "numdv"),
+        list("1" = c(b = 1.00, c = 0.75, a = 0.25, d = 0.00),
+             "2" = c(b = 0.5, d = 0.5, a = 0, c = 0))
+    )
 })
 
 test_that("test sparsity", {

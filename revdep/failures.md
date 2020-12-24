@@ -6,7 +6,7 @@
 * GitHub: https://github.com/davidski/collector
 * Source code: https://github.com/cran/collector
 * Date/Publication: 2020-02-18 00:10:02 UTC
-* Number of recursive dependencies: 163
+* Number of recursive dependencies: 165
 
 Run `revdep_details(, "collector")` for more info
 
@@ -59,63 +59,5 @@ ERROR: lazy loading failed for package ‘collector’
 ** testing if installed package can be loaded from final location
 ** testing if installed package keeps a record of temporary installation path
 * DONE (collector)
-
-```
-# LexisNexisTools
-
-<details>
-
-* Version: 0.3.2
-* GitHub: https://github.com/JBGruber/LexisNexisTools
-* Source code: https://github.com/cran/LexisNexisTools
-* Date/Publication: 2020-10-17 11:50:02 UTC
-* Number of recursive dependencies: 135
-
-Run `revdep_details(, "LexisNexisTools")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking whether package ‘LexisNexisTools’ can be installed ... ERROR
-    ```
-    Installation failed.
-    See ‘/Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/quanteda/revdep/checks.noindex/LexisNexisTools/new/LexisNexisTools.Rcheck/00install.out’ for details.
-    ```
-
-## Installation
-
-### Devel
-
-```
-* installing *source* package ‘LexisNexisTools’ ...
-** package ‘LexisNexisTools’ successfully unpacked and MD5 sums checked
-** using staged installation
-** R
-** inst
-** byte-compile and prepare package for lazy loading
-Error: object ‘textstat_simil’ is not exported by 'namespace:quanteda'
-Execution halted
-ERROR: lazy loading failed for package ‘LexisNexisTools’
-* removing ‘/Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/quanteda/revdep/checks.noindex/LexisNexisTools/new/LexisNexisTools.Rcheck/LexisNexisTools’
-
-```
-### CRAN
-
-```
-* installing *source* package ‘LexisNexisTools’ ...
-** package ‘LexisNexisTools’ successfully unpacked and MD5 sums checked
-** using staged installation
-** R
-** inst
-** byte-compile and prepare package for lazy loading
-** help
-*** installing help indices
-** building package indices
-** installing vignettes
-** testing if installed package can be loaded from temporary location
-** testing if installed package can be loaded from final location
-** testing if installed package keeps a record of temporary installation path
-* DONE (LexisNexisTools)
 
 ```
