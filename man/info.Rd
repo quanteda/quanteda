@@ -13,6 +13,8 @@ info(x, values, indices = NULL, warn = FALSE, ...)
 
 \item{indices}{list of integer to specify which value to be printed}
 
+\item{warn}{if \code{TRUE}, raise warning}
+
 \item{...}{passed to underlying message functions}
 }
 \description{

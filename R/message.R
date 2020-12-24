@@ -4,6 +4,7 @@
 #' @param x message template to be pasted to [`sprintf()`] 
 #' @param values list of values to be printed. Coerced to list if vector is given.
 #' @param indices list of integer to specify which value to be printed
+#' @param warn if `TRUE`, raise warning
 #' @param ... passed to underlying message functions 
 #' @examples 
 #' \dontrun{
