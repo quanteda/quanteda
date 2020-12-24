@@ -2,6 +2,12 @@ context("test messaging functions")
 
 test_that("info works", {
     
+    # no indices
+    expect_message(
+        quanteda:::info("there are %d %s", list(3, "documents")),
+        "there are 3 documents"
+    )
+    
     # logical indices
     expect_message(
         quanteda:::info("there is %s", c("a document", "documents"), indices = FALSE),
