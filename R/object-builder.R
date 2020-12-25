@@ -213,10 +213,10 @@ upgrade_dictionary2 <- function(x) {
 #' @keywords internal
 build_fcm <- function(x, features,
                       meta = list(), 
-                      class = "dfm", ...) {
+                      class = "fcm", ...) {
     result <- new(class,
                   as(x, "dgCMatrix"),
-                  meta = make_meta("dfm", inherit = meta, ...)
+                  meta = make_meta("fcm", inherit = meta, ..., warn = FALSE)
     )
     # set names directly to avoid NULL
     result@Dimnames <- list(
