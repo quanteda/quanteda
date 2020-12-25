@@ -2,28 +2,24 @@
 % Please edit documentation in R/message.R
 \name{info}
 \alias{info}
-\title{Conditionally format and print messages}
+\title{Conditionally format messages}
 \usage{
-info(x, values, indices = NULL, warn = FALSE, ...)
+info(x, values, indices = NULL)
 }
 \arguments{
-\item{x}{message template to be pasted to \code{\link[=sprintf]{sprintf()}}}
+\item{x}{message template to be passed to \code{\link[=sprintf]{sprintf()}}.}
 
-\item{values}{list of values to be printed. Coerced to list if vector is given.}
+\item{values}{list of values to be used in the template. Coerced to list if vector is given.}
 
-\item{indices}{list of integer to specify which value to be printed}
-
-\item{warn}{if \code{TRUE}, raise warning}
-
-\item{...}{passed to underlying message functions}
+\item{indices}{list of integer to specify which value to be used.}
 }
 \description{
-Conditionally format and print messages
+Conditionally format messages
 }
 \examples{
 \dontrun{
 quanteda:::info("you cannot delete \%s", 
-                c("a document", "documents"), indices = TRUE, warn = TRUE)
+                c("a document", "documents"), indices = TRUE)
 quanteda:::info("tokens has \%s", 
                 c("sentences", "paragraphs", "documents"), indices = 2)
 
@@ -32,6 +28,6 @@ quanteda:::info("dfm has \%d \%s and \%d \%s",
      list(ndoc(dfmt), c("document", "documents"),
           nfeat(dfmt), c("feature", "features")), 
      list(1, ndoc(dfmt) > 1, 
-          1, nfeat(dfmt) > 1), warn = FALSE)
+          1, nfeat(dfmt) > 1))
 }      
 }

@@ -7,7 +7,7 @@
 #' @examples 
 #' \dontrun{
 #' quanteda:::info("you cannot delete %s", 
-#'                 c("a document", "documents"), indices = TRUE, warn = TRUE)
+#'                 c("a document", "documents"), indices = TRUE)
 #' quanteda:::info("tokens has %s", 
 #'                 c("sentences", "paragraphs", "documents"), indices = 2)
 #' 
@@ -16,7 +16,7 @@
 #'      list(ndoc(dfmt), c("document", "documents"),
 #'           nfeat(dfmt), c("feature", "features")), 
 #'      list(1, ndoc(dfmt) > 1, 
-#'           1, nfeat(dfmt) > 1), warn = FALSE)
+#'           1, nfeat(dfmt) > 1))
 #' }      
 info <- function(x, values, indices = NULL) {
     if (!is.list(values))
