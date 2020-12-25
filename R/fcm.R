@@ -148,6 +148,7 @@ fcm.dfm <- function(x, context = c("document", "window"),
             count = count, context = context, margin = featfreq(x), 
             weights = 1, tri = tri,
             meta = attrs[["meta"]])
+        
         return(result)
     }
 
@@ -177,13 +178,12 @@ fcm.dfm <- function(x, context = c("document", "window"),
         count = count, context = context, margin = featfreq(x), 
         weights = 1, tri = tri,
         meta = attrs[["meta"]])
+    
     return(result)
 }
 
 
 #' @noRd
-#' @importFrom data.table data.table
-#' @import Matrix
 #' @export
 fcm.tokens <- function(x, context = c("document", "window"),
                        count = c("frequency", "boolean", "weighted"),
@@ -199,6 +199,7 @@ fcm.tokens <- function(x, context = c("document", "window"),
     ordered <- check_logical(ordered)
     tri <- check_logical(tri)
     
+    attrs <- attributes(x)
     if (ordered)
         tri <- FALSE
     if (context == "document") {
@@ -217,21 +218,21 @@ fcm.tokens <- function(x, context = c("document", "window"),
         }
         type <- types(x)
         boolean <- count == "boolean"
-        result <- as(qatd_cpp_fcm(x, length(type), weights, boolean, ordered),
-                     "dgCMatrix")
+        temp <- qatd_cpp_fcm(x, length(type), weights, boolean, ordered)
+        temp <- as(temp, "dgCMatrix")
         if (!ordered) {
             if (tri) {
-                result <- triu(result)
+                temp <- Matrix::triu(temp)
             } else {
-                result <- forceSymmetric(result)
+                temp <- Matrix::forceSymmetric(temp)
             }
         }
-        # create a new feature context matrix
-        result <- new("fcm", as(result, "dgCMatrix"), count = count,
-                      context = context, window = window, margin = colSums(dfm(x)),
-                      weights = weights, tri = tri, ordered = ordered)
-        set_fcm_slots(result) <- attributes(x)
-        set_fcm_dimnames(result) <- list(type, type)
+        result <- build_fcm(
+            as(temp, "dgCMatrix"),
+            features = type,
+            count = count, context = context, margin = featfreq(dfm(x)), 
+            weights = weights, tri = tri,
+            meta = attrs[["meta"]])
     }
     return(result)
 }
