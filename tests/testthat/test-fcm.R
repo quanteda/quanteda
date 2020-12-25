@@ -99,7 +99,7 @@ test_that("ordered setting: window", {
                      1, 1, 0, 0, 1, 0),
                    nrow = 6, ncol = 6, byrow = TRUE)
     expect_true(all(round(fcmat, 2) == round(mat, 2)))
-    expect_true(fcmat@ordered)
+    expect_true(fcmat@meta$object$ordered)
 
     fcmat_nord <- fcm(txt, context = "window", window = 3, ordered = FALSE, tri = FALSE)
     fcmat_nord <- fcm_sort(fcmat_nord)
@@ -111,7 +111,7 @@ test_that("ordered setting: window", {
                      2, 1, 0, 1, 2, 0),
                    nrow = 6, ncol = 6, byrow = TRUE)
     expect_true(all(round(fcmat_nord, 2) == round(mat, 2)))
-    expect_false(fcmat_nord@ordered)
+    expect_false(fcmat_nord@meta$object$ordered)
 })
 
 test_that("ordered setting: boolean", {
