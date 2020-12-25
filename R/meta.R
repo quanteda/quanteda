@@ -319,9 +319,10 @@ make_meta_fcm <- function(inherit = NULL, ...) {
         "context" = "document", 
         "window" = 5L,
         "count" = "frequency",
-        "weights" = NULL,
+        "weights" = 1,
         "ordered" = FALSE,
-        "margin" = integer(), 
+        "feature" = character(),
+        "margin" = numeric(), 
         "tri" = FALSE
     )
     update_meta(default, inherit, ...)
@@ -338,10 +339,11 @@ make_meta_dictionary2 <- function(inherit = NULL, ...) {
 
 #' @rdname make_meta
 #' @param default default values for the meta attribute
-update_meta <- function(default, inherit, ...) {
+update_meta <- function(default, inherit, ..., warn = FALSE) {
     update <- list(...)
     for (m in setdiff(union(names(inherit), names(update)), names(default))) {
-        warning(m, " is ignored.")
+        if (warn)
+            warning(m, " is ignored.")
     }
     for (m in names(default)) {
         if (length(update) && m %in% names(update)) {
