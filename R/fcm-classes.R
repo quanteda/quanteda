@@ -15,10 +15,10 @@
 #' @keywords internal fcm
 #' @seealso [fcm]
 setClass("fcm",
-         slots = c(context = "character", window = "integer", 
-                   count = "character", weights = "numeric", 
-                   ordered = "logical", tri = "logical",
-                   margin = "numeric"),
+         # slots = c(context = "character", window = "integer", 
+         #           count = "character", weights = "numeric", 
+         #           ordered = "logical", tri = "logical",
+         #           margin = "numeric"),
          contains = c("dfm", "dgCMatrix"))
 
 ## S4 method fcm objects
