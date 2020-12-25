@@ -69,16 +69,16 @@ fcm_sort.default <- function(x) {
 
 #' @export
 fcm_sort.fcm <- function(x) {
-    slots <- get_fcm_slots(x)
+    attrs <- attributes(x)
     x <- as(x, "dgTMatrix")
     x <- x[order(rownames(x)), order(colnames(x))]
-    if (slots$tri) {
+    if (field_object(attrs, "tri")) {
         swap <- x@i > x@j
         i <- x@i[swap]
         x@i[swap] <- x@j[swap]
         x@j[swap] <- i
     }
-    matrix2fcm(x, slots)
+    build_fcm(x, colnames(x), meta = attrs$meta)
 }
 
 #' Coercion and checking functions for fcm objects
