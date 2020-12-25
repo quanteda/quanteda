@@ -1,11 +1,9 @@
 
-#' Conditionally format and print messages
+#' Conditionally format messages
 #' 
-#' @param x message template to be pasted to [`sprintf()`] 
-#' @param values list of values to be printed. Coerced to list if vector is given.
-#' @param indices list of integer to specify which value to be printed
-#' @param warn if `TRUE`, raise warning
-#' @param ... passed to underlying message functions 
+#' @param x message template to be passed to [`sprintf()`].
+#' @param values list of values to be used in the template. Coerced to list if vector is given.
+#' @param indices list of integer to specify which value to be used.
 #' @examples 
 #' \dontrun{
 #' quanteda:::info("you cannot delete %s", 
@@ -20,7 +18,7 @@
 #'      list(1, ndoc(dfmt) > 1, 
 #'           1, nfeat(dfmt) > 1), warn = FALSE)
 #' }      
-info <- function(x, values, indices = NULL, warn = FALSE, ...) {
+info <- function(x, values, indices = NULL) {
     if (!is.list(values))
         values <- list(values)
     if (!is.list(indices))
@@ -36,11 +34,7 @@ info <- function(x, values, indices = NULL, warn = FALSE, ...) {
         }, values, indices, SIMPLIFY = FALSE)
     }
     msg <- do.call(sprintf, c(list(x), values))
-    if (warn) {
-        warning(msg, call. = FALSE, ...)
-    } else {
-        message(msg, ...)
-    }
+    return(msg)
 }
 
 # rdname catm
