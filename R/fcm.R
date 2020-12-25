@@ -125,7 +125,6 @@ fcm.corpus <- function(x, ...) {
 }
 
 #' @noRd
-#' @import Matrix
 #' @export
 fcm.dfm <- function(x, context = c("document", "window"),
                        count = c("frequency", "boolean", "weighted"),
@@ -141,63 +140,44 @@ fcm.dfm <- function(x, context = c("document", "window"),
     ordered <- check_logical(ordered)
     tri <- check_logical(tri)
     
-    margin <- colSums(x)
+    attrs <- attributes(x)
     if (!nfeat(x)) {
-        result <- new("fcm", as(make_null_dfm(), "dgCMatrix"), count = count,
-                      context = context, margin = margin, weights = 1, tri = tri)
+        result <- build_fcm(
+            as(make_null_dfm(), "dgCMatrix"),
+            features = featnames(x), 
+            count = count, context = context, margin = featfreq(x), 
+            weights = 1, tri = tri,
+            meta = attrs[["meta"]])
         return(result)
     }
 
     if (context != "document")
         stop("fcm.dfm only works on context = \"document\"")
-
-    if (count == "boolean") {
-        temp <- x > 1
-        x <- dfm_weight(x, "boolean") # to remove
-    } else if (count == "frequency") {
-        temp <- x
-        temp@x <- choose(temp@x, 2) # to remove
-    } else {
+    
+    if (count == "weighted")
         stop("Cannot have weighted counts with context = \"document\"")
+    if (count == "boolean")
+        x <- dfm_weight(x, "boolean")
+    
+    temp <- Matrix::crossprod(x)
+    if (tri) 
+        temp <- Matrix::triu(temp)
+    
+    # correct self-cooccuerace
+    d <- Matrix::diag(temp)
+    if (count == "boolean") {
+        Matrix::diag(temp) <- as.integer(d > 1)
+    } else {
+        Matrix::diag(temp) <- (d - Matrix::colSums(x)) / 2    
     }
 
-    # compute co_occurrence of the diagonal elements
-    sum_col <- colSums(temp) # apply(temp, MARGIN = 2, sum)
-    feature <- sum_col >= 1
-    index_diag <- which(feature)
-    length_feature <- length(feature)
-    temp <- Matrix::sparseMatrix(i = index_diag,
-                                 j = index_diag,
-                                 x = sum_col[feature],
-                                 dims = c(length_feature, length_feature))
-
-    # result <- Matrix::crossprod(x)
-    # diag(result) <- 0
-    # result <- result + temp
-    # result <- result[rownames(result), colnames(result)]
-    # 
-    # # discard the lower diagonal if tri == TRUE
-    # if (tri) result <- triu(result)
-    # 
-    # # create a new feature context matrix
-    # result <- new("fcm", as(result, "dgCMatrix"), count = count,
-    #               context = context, margin = margin, weights = 1,
-    #               tri = tri)
-    # set_fcm_slots(result) <- attributes(x)
-    # set_fcm_dimnames(result) <- list(rownames(result), colnames(result))
-    # return(result)
-    # -------------------
-    feat <- featnames(x)
-    temp <- Matrix::crossprod(x)
-    diag(result) <- 0 # apply alway for boolean dfm
-    if (tri) 
-        temp <- triu(temp)
-    build_fcm(
+    result <- build_fcm(
         as(temp, "dgCMatrix"),
-        features = feat, 
-        count = count, context = context, margin = margin, 
+        features = featnames(x), 
+        count = count, context = context, margin = featfreq(x), 
         weights = 1, tri = tri,
         meta = attrs[["meta"]])
+    return(result)
 }
 
 
