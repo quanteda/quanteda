@@ -32,8 +32,9 @@ fcm_compress.default <- function(x) {
 fcm_compress.fcm <- function(x) {
     if (x@context != "document")
         stop(message_error("fcm_context"))
-    matrix2fcm(group_dfm(x, rownames(x), colnames(x), use_docvars = FALSE), 
-               attributes(x))
+    attrs <- attributes(x)
+    x <- group_dfm(x, rownames(x), colnames(x), use_docvars = FALSE)
+    build_fcm(x, colnames(x), meta = attrs[["meta"]])
 }
 
 #' Sort an fcm in alphabetical order of the features
@@ -78,7 +79,7 @@ fcm_sort.fcm <- function(x) {
         x@i[swap] <- x@j[swap]
         x@j[swap] <- i
     }
-    build_fcm(x, colnames(x), meta = attrs$meta)
+    build_fcm(x, colnames(x), meta = attrs[["meta"]])
 }
 
 #' Coercion and checking functions for fcm objects

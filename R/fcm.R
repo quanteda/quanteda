@@ -231,7 +231,7 @@ fcm.tokens <- function(x, context = c("document", "window"),
             as(temp, "dgCMatrix"),
             features = type,
             count = count, context = context, margin = featfreq(dfm(x)), 
-            weights = weights, tri = tri,
+            weights = weights, ordered = ordered, tri = tri, 
             meta = attrs[["meta"]])
     }
     return(result)
