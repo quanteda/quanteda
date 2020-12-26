@@ -315,6 +315,7 @@ make_meta_fcm <- function(inherit = NULL, ...) {
     if (is.null(inherit))
         inherit <- list()
     default <- list(
+        "unit" = "documents",
         "concatenator" = "_",
         "context" = "document", 
         "window" = 5L,
