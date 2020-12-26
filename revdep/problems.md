@@ -6,7 +6,7 @@
 * GitHub: https://github.com/davidski/collector
 * Source code: https://github.com/cran/collector
 * Date/Publication: 2020-02-18 00:10:02 UTC
-* Number of recursive dependencies: 163
+* Number of recursive dependencies: 165
 
 Run `revdep_details(, "collector")` for more info
 
@@ -59,64 +59,6 @@ ERROR: lazy loading failed for package ‘collector’
 ** testing if installed package can be loaded from final location
 ** testing if installed package keeps a record of temporary installation path
 * DONE (collector)
-
-```
-# LexisNexisTools
-
-<details>
-
-* Version: 0.3.2
-* GitHub: https://github.com/JBGruber/LexisNexisTools
-* Source code: https://github.com/cran/LexisNexisTools
-* Date/Publication: 2020-10-17 11:50:02 UTC
-* Number of recursive dependencies: 135
-
-Run `revdep_details(, "LexisNexisTools")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking whether package ‘LexisNexisTools’ can be installed ... ERROR
-    ```
-    Installation failed.
-    See ‘/Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/quanteda/revdep/checks.noindex/LexisNexisTools/new/LexisNexisTools.Rcheck/00install.out’ for details.
-    ```
-
-## Installation
-
-### Devel
-
-```
-* installing *source* package ‘LexisNexisTools’ ...
-** package ‘LexisNexisTools’ successfully unpacked and MD5 sums checked
-** using staged installation
-** R
-** inst
-** byte-compile and prepare package for lazy loading
-Error: object ‘textstat_simil’ is not exported by 'namespace:quanteda'
-Execution halted
-ERROR: lazy loading failed for package ‘LexisNexisTools’
-* removing ‘/Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/quanteda/revdep/checks.noindex/LexisNexisTools/new/LexisNexisTools.Rcheck/LexisNexisTools’
-
-```
-### CRAN
-
-```
-* installing *source* package ‘LexisNexisTools’ ...
-** package ‘LexisNexisTools’ successfully unpacked and MD5 sums checked
-** using staged installation
-** R
-** inst
-** byte-compile and prepare package for lazy loading
-** help
-*** installing help indices
-** building package indices
-** installing vignettes
-** testing if installed package can be loaded from temporary location
-** testing if installed package can be loaded from final location
-** testing if installed package keeps a record of temporary installation path
-* DONE (LexisNexisTools)
 
 ```
 # LSX
@@ -198,7 +140,7 @@ Run `revdep_details(, "LSX")` for more info
 * GitHub: https://github.com/koheiw/newsmap
 * Source code: https://github.com/cran/newsmap
 * Date/Publication: 2020-08-03 23:00:03 UTC
-* Number of recursive dependencies: 86
+* Number of recursive dependencies: 89
 
 Run `revdep_details(, "newsmap")` for more info
 
@@ -224,5 +166,35 @@ Run `revdep_details(, "newsmap")` for more info
 *   checking data for non-ASCII characters ... NOTE
     ```
       Note: found 4485 marked UTF-8 strings
+    ```
+
+# quanteda.textmodels
+
+<details>
+
+* Version: 0.9.2
+* GitHub: https://github.com/quanteda/quanteda.textmodels
+* Source code: https://github.com/cran/quanteda.textmodels
+* Date/Publication: 2020-12-11 11:10:02 UTC
+* Number of recursive dependencies: 119
+
+Run `revdep_details(, "quanteda.textmodels")` for more info
+
+</details>
+
+## Newly broken
+
+*   checking installed package size ... NOTE
+    ```
+      installed size is  5.1Mb
+      sub-directories of 1Mb or more:
+        data   4.0Mb
+    ```
+
+## In both
+
+*   checking data for non-ASCII characters ... NOTE
+    ```
+      Note: found 35707 marked UTF-8 strings
     ```
 
