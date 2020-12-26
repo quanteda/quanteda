@@ -243,7 +243,7 @@ upgrade_fcm <- function(x) {
     if (!is_pre2(x)) return(x)
     attrs <- attributes(x)
     build_fcm(
-        x, colnames(x),
+        x, rownames(x), colnames(x),
         meta = list(system = list(),
                     object = list(
                         concatenator = "_",
