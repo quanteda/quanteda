@@ -325,7 +325,7 @@ make_meta_fcm <- function(inherit = NULL, ...) {
         "margin" = numeric(), 
         "tri" = FALSE
     )
-    update_meta(default, inherit, ...)
+    update_meta(default, inherit, ..., warn = FALSE)
 }
 
 #' @rdname make_meta
@@ -339,7 +339,7 @@ make_meta_dictionary2 <- function(inherit = NULL, ...) {
 
 #' @rdname make_meta
 #' @param default default values for the meta attribute
-update_meta <- function(default, inherit, ..., warn = FALSE) {
+update_meta <- function(default, inherit, ..., warn = TRUE) {
     update <- list(...)
     for (m in setdiff(union(names(inherit), names(update)), names(default))) {
         if (warn)
