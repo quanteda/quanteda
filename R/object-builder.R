@@ -1,21 +1,27 @@
 # documentation function -------
 
 #' Object compilers
-#' 
+#'
 #' Functions to build or re-build core objects, or to upgrade earlier versions
 #' of these objects to the current format.
 #' @name object-builders
-#' @param x an input [corpus], [dfm], [tokens], or [dictionary] object
-#' @param ... further objects passed to object metadata
+#' @param x an input [corpus], [tokens], [dfm], [fcm] or [dictionary] object.
+#' @param meta a list for the meta fields (system, object, user). Used to
+#'   inherit values in the meta fields from input object. Object meta fields
+#'   that are not defined in [quanteda:::make_meta()] are ignored with warnings.
+#' @param ... values saved in the object meta fields. They overwrite values
+#'   passed via `meta`. If not specified, default values in
+#'   [quanteda:::make_meta()] will be used.
 #' @keywords internal
 NULL
 
 # dfm --------------
 
 #' @rdname object-builders
-#' @param features character for feature of resulting `dfm`
-#' @param docvars data.frame for document level variables
-#' @param meta list for meta fields
+#' @param features character for feature of resulting `dfm`.
+#' @param docvars data.frame for document level variables created by
+#'   [quanteda:::make_docvars()]. Names of documents are extracted from the
+#'   `docname_` column.
 #' @keywords internal
 build_dfm <- function(x, features,
                       docvars = data.frame(), meta = list(), 
@@ -68,8 +74,15 @@ upgrade_dfm <- function(x) {
 # tokens -------
 
 #' @rdname object-builders
-#' @param types character for types of resulting `tokens`` object
-#' @param padding logical indicating if the `tokens` object contains paddings
+#' @param types character for types of resulting the `tokens` object.
+#' @param padding logical indicating if the `tokens` object contains paddings.
+#' @examples 
+#' quanteda:::build_tokens(
+#'     list(c(1, 2, 3), c(4, 5, 6)),
+#'     docvars = quanteda:::make_docvars(n = 2L),
+#'     types = c("a", "b", "c", "d", "e", "f"),
+#'     padding = FALSE
+#' )
 build_tokens <- function(x, types, padding = FALSE,
                          docvars = data.frame(), meta = list(), 
                          class = "tokens", ...) {
@@ -91,7 +104,7 @@ rebuild_tokens <- function(x, attrs) {
     attr(x, "meta") <- attrs[["meta"]]
     attr(x, "class") <- union(attrs[["class"]], "tokens")
 
-    # drop extra attribues for tokens_segment
+    # drop extra attributes from tokens_segment
     try({attr(x, "docnum") <- NULL}, silent = TRUE)
     try({attr(x, "pattern") <- NULL}, silent = TRUE)
 
@@ -124,7 +137,13 @@ upgrade_tokens <- function(x) {
 # corpus --------
 
 #' @rdname object-builders
-#' @param class class to be attached to the built object
+#' @param class class labels to be attached to the object.
+#' @examples 
+#' quanteda:::build_corpus(
+#'     c("a b c", "d e f"),
+#'     docvars = quanteda:::make_docvars(n = 2L),
+#'     unit = "sentence"
+#' )
 build_corpus <- function(x,
                          docvars = data.frame(),
                          meta = list(),
@@ -208,8 +227,8 @@ upgrade_dictionary2 <- function(x) {
 # fcm ------
 
 #' @rdname object-builders
-#' @param features1 character for row feature of resulting `fcm`
-#' @param features2 character for column feature of resulting `fcm` iff
+#' @param features1 character for row feature of resulting `fcm`.
+#' @param features2 character for column feature of resulting `fcm` iff.
 #'   different from `feature1`
 #' @param meta list for meta fields
 #' @keywords internal
