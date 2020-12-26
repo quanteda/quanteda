@@ -30,9 +30,9 @@ fcm_compress.default <- function(x) {
 
 #' @export
 fcm_compress.fcm <- function(x) {
-    if (x@context != "document")
-        stop(message_error("fcm_context"))
     attrs <- attributes(x)
+    if (field_object(attrs, "context") != "document")
+        stop(message_error("fcm_context"))
     x <- group_dfm(x, rownames(x), colnames(x), use_docvars = FALSE)
     build_fcm(x, colnames(x), meta = attrs[["meta"]])
 }
