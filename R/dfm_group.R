@@ -150,10 +150,9 @@ group_dfm <- function(x, documents = NULL, features = NULL, fill = FALSE,
     } else {
         attrs[["docvars"]] <- select_docvars(attrs[["docvars"]], user = FALSE, system = TRUE)
     }
-    build_dfm(
-        sparseMatrix(i = i, j = j, x = x@x,
-                     dims = c(length(docname), length(featname))),
-        features = featname,
+    x <- sparseMatrix(i = i, j = j, x = x@x,
+                      dims = c(length(docname), length(featname)))
+    build_dfm(x, featname,
         unit = "documents",
         docvars = group_docvars(attrs[["docvars"]], documents),
         meta = attrs[["meta"]]
