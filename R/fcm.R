@@ -164,7 +164,7 @@ fcm.dfm <- function(x, context = c("document", "window"),
     }
     temp <- Matrix::crossprod(x)
     
-    # correct self-cooccuerace
+    # correct self-cooccuerrace
     if (count == "boolean") {
         Matrix::diag(temp) <- m
     } else {
