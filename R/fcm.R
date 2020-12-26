@@ -143,8 +143,7 @@ fcm.dfm <- function(x, context = c("document", "window"),
     attrs <- attributes(x)
     if (!nfeat(x)) {
         result <- build_fcm(
-            as(make_null_dfm(), "dgCMatrix"),
-            features = featnames(x), 
+            as(make_null_dfm(), "dgCMatrix"), featnames(x), 
             count = count, context = context, margin = featfreq(x), 
             weights = 1, tri = tri,
             meta = attrs[["meta"]])
@@ -173,8 +172,7 @@ fcm.dfm <- function(x, context = c("document", "window"),
     }
 
     result <- build_fcm(
-        as(temp, "dgCMatrix"),
-        features = featnames(x), 
+        as(temp, "dgCMatrix"), featnames(x), 
         count = count, context = context, margin = featfreq(x), 
         weights = 1, tri = tri,
         meta = attrs[["meta"]])
@@ -228,8 +226,7 @@ fcm.tokens <- function(x, context = c("document", "window"),
             }
         }
         result <- build_fcm(
-            as(temp, "dgCMatrix"),
-            features = type,
+            as(temp, "dgCMatrix"), type,
             count = count, context = context, margin = featfreq(dfm(x)), 
             weights = weights, ordered = ordered, tri = tri, 
             meta = attrs[["meta"]])
