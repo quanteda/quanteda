@@ -317,6 +317,7 @@ make_meta_fcm <- function(inherit = NULL, ...) {
     default <- list(
         "unit" = "documents",
         "concatenator" = "_",
+        "what" = "word",
         "context" = "document", 
         "window" = 5L,
         "count" = "frequency",
