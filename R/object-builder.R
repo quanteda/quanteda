@@ -232,3 +232,26 @@ rebuild_fcm <- function(x, attrs) {
     x@meta <- attrs[["meta"]]
     return(x)
 }
+
+
+#' @rdname object-builders
+upgrade_fcm <- function(x) {
+    if (!is_pre2(x)) return(x)
+    attrs <- attributes(x)
+    build_fcm(
+        x, colnames(x),
+        meta = list(system = list(),
+                    object = list(
+                        concatenator = attrs[["concatenator"]],
+                        context = attrs[["context"]], 
+                        window = attrs[["window"]], 
+                        count = attrs[["count"]], 
+                        weights = attrs[["weights"]], 
+                        ordered = attrs[["ordered"]], 
+                        feature = attrs[["feature"]], 
+                        margin = attrs[["margin"]], 
+                        tri = attrs[["tri"]]
+                    ),
+                    user = list())
+    )
+}

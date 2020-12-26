@@ -30,6 +30,7 @@ fcm_select.fcm <- function(x, pattern = NULL,
                            case_insensitive = TRUE,
                            verbose = quanteda_options("verbose"), ...) {
     
+    x <- as.fcm(x)
     attrs <- attributes(x)
     x <- t(dfm_select(x, pattern, selection, valuetype, 
                       case_insensitive, verbose = verbose, ...))

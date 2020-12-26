@@ -70,6 +70,7 @@ fcm_sort.default <- function(x) {
 
 #' @export
 fcm_sort.fcm <- function(x) {
+    x <- as.fcm(x)
     attrs <- attributes(x)
     x <- as(x, "dgTMatrix")
     x <- x[order(rownames(x)), order(colnames(x))]
@@ -103,7 +104,7 @@ as.fcm.default <- function(x) {
 #' @method as.fcm fcm
 #' @export
 as.fcm.fcm <- function(x) {
-    return(x)
+    upgrade_fcm(x)
 }
 
 #' @noRd

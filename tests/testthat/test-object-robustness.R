@@ -34,3 +34,16 @@ test_that("dfm is/as methods work with old and new formats", {
     expect_false(quanteda:::is_pre2(as.dfm(data_dfm_pre2)))
     expect_false(quanteda:::is_pre2(dfmt))
 })
+
+test_that("fcm is/as methods work with old and new formats", {
+    load("../data/pre_v2_objects/data_fcm_pre2.rda")
+    fcmt <- fcm(dfm(data_corpus_inaugural[1:2]))
+    
+    expect_true(is.dfm(data_fcm_pre2))
+    expect_true(is.dfm(data_fcm_pre2))
+    
+    expect_true(quanteda:::is_pre2(data_fcm_pre2))
+    expect_false(quanteda:::is_pre2(as.dfm(data_fcm_pre2)))
+    expect_false(quanteda:::is_pre2(fcmt))
+})
+
