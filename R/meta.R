@@ -321,7 +321,6 @@ make_meta_fcm <- function(inherit = NULL, ...) {
         "count" = "frequency",
         "weights" = 1,
         "ordered" = FALSE,
-        "feature" = character(),
         "margin" = numeric(), 
         "tri" = FALSE
     )

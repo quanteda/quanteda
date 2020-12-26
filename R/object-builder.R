@@ -242,13 +242,12 @@ upgrade_fcm <- function(x) {
         x, colnames(x),
         meta = list(system = list(),
                     object = list(
-                        concatenator = attrs[["concatenator"]],
+                        concatenator = "_",
                         context = attrs[["context"]], 
                         window = attrs[["window"]], 
                         count = attrs[["count"]], 
                         weights = attrs[["weights"]], 
                         ordered = attrs[["ordered"]], 
-                        feature = attrs[["feature"]], 
                         margin = attrs[["margin"]], 
                         tri = attrs[["tri"]]
                     ),
