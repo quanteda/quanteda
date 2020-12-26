@@ -208,10 +208,12 @@ upgrade_dictionary2 <- function(x) {
 # fcm ------
 
 #' @rdname object-builders
-#' @param features character for feature of resulting `fcm`
+#' @param features1 character for row feature of resulting `fcm`
+#' @param features2 character for column feature of resulting `fcm` iff
+#'   different from `feature1`
 #' @param meta list for meta fields
 #' @keywords internal
-build_fcm <- function(x, features,
+build_fcm <- function(x, features1, features2 = NULL,
                       meta = list(), 
                       class = "fcm", ...) {
     result <- new(class,
@@ -219,9 +221,11 @@ build_fcm <- function(x, features,
                   meta = make_meta("fcm", inherit = meta, ..., warn = FALSE)
     )
     # set names directly to avoid NULL
+    if (is.null(features2))
+        features2 <- features1
     result@Dimnames <- list(
-        features = as.character(features),
-        features = as.character(features)
+        features = as.character(features1),
+        features = as.character(features2)
     )
     return(result)
 }
