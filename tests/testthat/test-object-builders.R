@@ -79,4 +79,22 @@ test_that("object builder is robust agains different input", {
                                 types = c("a", "b", "c"), 
                                 docvars = quanteda:::make_docvars(2L))
     })
+    
+})
+
+test_that("object rebuilder keeps attributes", {
+    mat1 <- matrix(c(1, 2, 0, 0, 1, 1), nrow = 2)
+    dfmat1 <- quanteda:::build_dfm(mat1,
+                                   c("a", "b", "c"),
+                                   docvars = quanteda:::make_docvars(2L))
+    dfmat2 <- quanteda:::rebuild_dfm(dfmat1, attributes(dfmat1))
+    expect_identical(attributes(dfmat1),
+                     attributes(dfmat1))
+    
+    mat2 <- matrix(c(1, 2, 3, 0, 0, 1, 1, 2, 1), nrow = 3)
+    fcmat1 <- quanteda:::build_fcm(mat2,
+                                   c("a", "b", "c"))
+    fcmat2 <- quanteda:::rebuild_fcm(fcmat1, attributes(fcmat1))
+    expect_identical(attributes(fcmat1),
+                     attributes(fcmat2))
 })
