@@ -150,28 +150,6 @@ matrix2dfm <- function(x, docvars = NULL, meta = NULL) {
     )
 }
 
-#' Set values to a dfm's S4 slots
-#' @param x a dfm
-#' @param exceptions names of slots to be ignored
-#' @param value a list of values extracted using `attributes` and to be assigned to slots
-#' @keywords internal
-"set_dfm_slots<-" <- function(x, exceptions = NULL, value) {
-    if (is.null(value)) return(x)
-    sname <- setdiff(slotNames("dfm"), c(slotNames("dgCMatrix"), exceptions))
-    for (s in sname) {
-        try({
-            slot(x, s) <- value[[s]]
-        }, silent = TRUE)
-    }
-    return(x)
-}
-
-#' @rdname set_dfm_slots-set
-get_dfm_slots <- function(x) {
-    sname <- setdiff(slotNames("dfm"), c(slotNames("dgCMatrix")))
-    attributes(x)[sname]
-}
-
 #' @rdname as.dfm
 #' @return
 #' `is.dfm` returns `TRUE` if and only if its argument is a [dfm].
