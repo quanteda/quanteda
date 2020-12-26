@@ -1,3 +1,33 @@
+# quanteda 3.0
+
+## Changes
+
+* Separated the `textplot_*()` functions from the main package into a separate package **quanteda.textplots**.
+
+* Separated the `textstat_*()` functions from the main package into a separate package **quanteda.textstats**.
+
+* `corpus_sample()`, `dfm_sample()`, and `tokens_sample()` now work consistently (#2023).
+
+* Upon startup, we now message the console with the Unicode and ICU version information.
+
+* The documentation for `dfm` now has all references to the defunct `ngrams` argument removed.
+
+## Bug fixes and stability enhancements
+
+* Fixed a bug causing `topfeatures(x, group = something)` to fail with weighted dfms (#2032).
+
+* `kwic()` is more stable and does not crash when a vector is supplied as the `window` argument (#2008).
+
+
+## Deprecated
+
+* `dfm_sample(x, margins = "features")` is deprecated; future versions will not support sampling on features using `dfm_sample()`.
+
+## Removed
+
+* See note above under **Changes** about the `textplot_*()` and `textstat_*()` functions.
+
+
 # quanteda 2.1.3
 
 ## Changes
