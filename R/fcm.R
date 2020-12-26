@@ -115,7 +115,7 @@ fcm.default <- function(x, ...) {
 #' @noRd
 #' @export
 fcm.character <- function(x, ...) {
-    fcm(tokens(x), ...)
+    fcm(corpus(x), ...)
 }
 
 #' @noRd
@@ -156,20 +156,22 @@ fcm.dfm <- function(x, context = c("document", "window"),
     
     if (count == "weighted")
         stop("Cannot have weighted counts with context = \"document\"")
-    if (count == "boolean")
+    if (count == "boolean") {
+        m <- Matrix::colSums(x > 1)
         x <- dfm_weight(x, "boolean")
-    
+    } else {
+        m <- Matrix::colSums(x)
+    }
     temp <- Matrix::crossprod(x)
-    if (tri) 
-        temp <- Matrix::triu(temp)
     
     # correct self-cooccuerace
-    d <- Matrix::diag(temp)
     if (count == "boolean") {
-        Matrix::diag(temp) <- as.integer(d > 1)
+        Matrix::diag(temp) <- m
     } else {
-        Matrix::diag(temp) <- (d - Matrix::colSums(x)) / 2    
+        Matrix::diag(temp) <- (Matrix::diag(temp) - m) / 2    
     }
+    if (tri) 
+        temp <- Matrix::triu(temp)
 
     result <- build_fcm(
         as(temp, "dgCMatrix"), featnames(x), 
