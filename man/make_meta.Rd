@@ -5,6 +5,7 @@
 \alias{make_meta_corpus}
 \alias{make_meta_tokens}
 \alias{make_meta_dfm}
+\alias{make_meta_fcm}
 \alias{make_meta_dictionary2}
 \alias{update_meta}
 \title{Internal functions to create a list for the meta attribute}
@@ -17,9 +18,11 @@ make_meta_tokens(inherit = NULL, ...)
 
 make_meta_dfm(inherit = NULL, ...)
 
+make_meta_fcm(inherit = NULL, ...)
+
 make_meta_dictionary2(inherit = NULL, ...)
 
-update_meta(default, inherit, ...)
+update_meta(default, inherit, ..., warn = TRUE)
 }
 \arguments{
 \item{class}{object class either \code{dfm}, \code{tokens} or \code{corpus}}

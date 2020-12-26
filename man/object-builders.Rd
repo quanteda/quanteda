@@ -14,6 +14,9 @@
 \alias{build_dictionary2}
 \alias{rebuild_dictionary2}
 \alias{upgrade_dictionary2}
+\alias{build_fcm}
+\alias{rebuild_fcm}
+\alias{upgrade_fcm}
 \title{Object compilers}
 \usage{
 build_dfm(
@@ -54,6 +57,12 @@ build_dictionary2(x, meta = list(), class = "dictionary2", ...)
 rebuild_dictionary2(x, attrs)
 
 upgrade_dictionary2(x)
+
+build_fcm(x, features1, features2 = NULL, meta = list(), class = "fcm", ...)
+
+rebuild_fcm(x, attrs)
+
+upgrade_fcm(x)
 }
 \arguments{
 \item{x}{an input \link{corpus}, \link{dfm}, \link{tokens}, or \link{dictionary} object}
@@ -73,6 +82,11 @@ upgrade_dictionary2(x)
 \item{types}{character for types of resulting `tokens`` object}
 
 \item{padding}{logical indicating if the \code{tokens} object contains paddings}
+
+\item{features1}{character for row feature of resulting \code{fcm}}
+
+\item{features2}{character for column feature of resulting \code{fcm} iff
+different from \code{feature1}}
 }
 \description{
 Functions to build or re-build core objects, or to upgrade earlier versions
