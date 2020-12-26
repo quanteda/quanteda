@@ -35,11 +35,19 @@
 #' setequal(featnames(dfmat2), featnames(dfmat3))
 #' @export
 dfm_match <- function(x, features) {
+    UseMethod("dfm_match")
+}
+
+#' @export
+dfm_match.default <- function(x, features) {
+    check_class(class(x), "dfm_match")
+}
+
+#' @export
+dfm_match.dfm <- function(x, features) {
     x <- as.dfm(x)
-    if (!is.character(features))
-        stop("features must be a character vector")
-    slots <- get_dfm_slots(x)
+    features <- check_character(features, max_len = Inf)
+    attrs <- attributes(x)
     x <- pad_dfm(x, features)
-    set_dfm_slots(x) <- slots
-    return(x)
+    rebuild_dfm(x, attrs)
 }

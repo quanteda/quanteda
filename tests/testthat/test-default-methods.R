@@ -188,6 +188,10 @@ test_that("test new dfm methods", {
         "dfm_select\\(\\) only works on dfm objects"
     )
     expect_error(
+        dfm_match(TRUE),
+        "dfm_match\\(\\) only works on dfm objects"
+    )
+    expect_error(
         dfm_lookup(TRUE),
         "dfm_lookup\\(\\) only works on dfm objects"
     )
