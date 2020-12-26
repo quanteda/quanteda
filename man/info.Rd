@@ -23,11 +23,11 @@ quanteda:::info("you cannot delete \%s",
 quanteda:::info("tokens has \%s", 
                 c("sentences", "paragraphs", "documents"), indices = 2)
 
-dfmt <- data_dfm_lbgexample
+dfmat <- data_dfm_lbgexample
 quanteda:::info("dfm has \%d \%s and \%d \%s", 
-     list(ndoc(dfmt), c("document", "documents"),
-          nfeat(dfmt), c("feature", "features")), 
-     list(1, ndoc(dfmt) > 1, 
-          1, nfeat(dfmt) > 1))
+     list(ndoc(dfmat), c("document", "documents"),
+          nfeat(dfmat), c("feature", "features")), 
+     list(1, ndoc(dfmat) > 1, 
+          1, nfeat(dfmat) > 1))
 }      
 }
