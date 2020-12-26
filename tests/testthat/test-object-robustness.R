@@ -43,7 +43,7 @@ test_that("fcm is/as methods work with old and new formats", {
     expect_true(is.fcm(fcmt))
     
     expect_true(quanteda:::is_pre2(data_fcm_pre2))
-    expect_false(quanteda:::is_pre2(as.dfm(data_fcm_pre2)))
+    expect_false(quanteda:::is_pre2(as.fcm(data_fcm_pre2)))
     expect_false(quanteda:::is_pre2(fcmt))
 })
 
