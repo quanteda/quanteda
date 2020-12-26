@@ -218,7 +218,7 @@ build_fcm <- function(x, features1, features2 = NULL,
                       class = "fcm", ...) {
     result <- new(class,
                   as(x, "dgCMatrix"),
-                  meta = make_meta("fcm", inherit = meta, ..., warn = FALSE)
+                  meta = make_meta("fcm", inherit = meta, ...)
     )
     # set names directly to avoid NULL
     if (is.null(features2))
