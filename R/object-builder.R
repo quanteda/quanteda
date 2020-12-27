@@ -1,6 +1,6 @@
 # documentation function -------
 
-#' Object compilers
+#' Object builders
 #'
 #' Functions to build or re-build core objects, or to upgrade earlier versions
 #' of these objects to the current format.
@@ -8,10 +8,10 @@
 #' @param x an input [corpus], [tokens], [dfm], [fcm] or [dictionary] object.
 #' @param meta a list for the meta fields (system, object, user). Used to
 #'   inherit values in the meta fields from input object. Object meta fields
-#'   that are not defined in [quanteda:::make_meta()] are ignored with warnings.
+#'   that are not defined in [quanteda::make_meta()] are ignored with warnings.
 #' @param ... values saved in the object meta fields. They overwrite values
 #'   passed via `meta`. If not specified, default values in
-#'   [quanteda:::make_meta()] will be used.
+#'   [quanteda::make_meta()] will be used.
 #' @keywords internal
 NULL
 
@@ -20,7 +20,7 @@ NULL
 #' @rdname object-builders
 #' @param features character for feature of resulting `dfm`.
 #' @param docvars data.frame for document level variables created by
-#'   [quanteda:::make_docvars()]. Names of documents are extracted from the
+#'   [quanteda::make_docvars()]. Names of documents are extracted from the
 #'   `docname_` column.
 #' @keywords internal
 build_dfm <- function(x, features,

@@ -17,7 +17,7 @@
 \alias{build_fcm}
 \alias{rebuild_fcm}
 \alias{upgrade_fcm}
-\title{Object compilers}
+\title{Object builders}
 \usage{
 build_dfm(
   x,
@@ -70,7 +70,7 @@ upgrade_fcm(x)
 \item{features}{character for feature of resulting \code{dfm}.}
 
 \item{docvars}{data.frame for document level variables created by
-\code{\link[quanteda:::make_docvars]{quanteda::::make_docvars()}}. Names of documents are extracted from the
+\code{\link[=make_docvars]{make_docvars()}}. Names of documents are extracted from the
 \code{docname_} column.}
 
 \item{meta}{list for meta fields}
@@ -79,7 +79,7 @@ upgrade_fcm(x)
 
 \item{...}{values saved in the object meta fields. They overwrite values
 passed via \code{meta}. If not specified, default values in
-\code{\link[quanteda:::make_meta]{quanteda::::make_meta()}} will be used.}
+\code{\link[=make_meta]{make_meta()}} will be used.}
 
 \item{attrs}{a list of attributes to be reassigned}
 

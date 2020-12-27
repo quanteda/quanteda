@@ -8,7 +8,7 @@
 \alias{make_meta_fcm}
 \alias{make_meta_dictionary2}
 \alias{update_meta}
-\title{Internal functions to create a list for the meta attribute}
+\title{Internal functions to create a list of the meta fields}
 \usage{
 make_meta(class, inherit = NULL, ...)
 
@@ -34,6 +34,6 @@ update_meta(default, inherit, ..., warn = TRUE)
 \item{default}{default values for the meta attribute}
 }
 \description{
-Internal functions to create a list for the meta attribute
+Internal functions to create a list of the meta fields
 }
 \keyword{internal}
