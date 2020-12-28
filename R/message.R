@@ -4,36 +4,45 @@
 #' @param x message template to be passed to [`sprintf()`].
 #' @param values list of values to be used in the template. Coerced to list if vector is given.
 #' @param indices list of integer to specify which value to be used.
+#' @param pretty if `TRUE`, message is passed to [`prettyNum()`].
+#' @param ... additional arguments passed to [`prettyNum()`].
+#' @keywords internal development
 #' @examples 
 #' \dontrun{
-#' quanteda:::info("you cannot delete %s", 
-#'                 c("a document", "documents"), indices = TRUE)
-#' quanteda:::info("tokens has %s", 
-#'                 c("sentences", "paragraphs", "documents"), indices = 2)
+#' quanteda:::msg("you cannot delete %s", 
+#'                c("a document", "documents"), indices = TRUE)
+#' quanteda:::msg("tokens has %s", 
+#'                c("sentences", "paragraphs", "documents"), indices = 2)
 #' 
 #' dfmat <- data_dfm_lbgexample
-#' quanteda:::info("dfm has %d %s and %d %s", 
+#' quanteda:::msg("dfm has %d %s and %d %s", 
 #'      list(ndoc(dfmat), c("document", "documents"),
 #'           nfeat(dfmat), c("feature", "features")), 
 #'      list(1, ndoc(dfmat) > 1, 
 #'           1, nfeat(dfmat) > 1))
 #' }      
-info <- function(x, values, indices = NULL) {
-    if (!is.list(values))
-        values <- list(values)
-    if (!is.list(indices))
-        indices <- as.list(indices)
-    if (length(indices)) {
-        stopifnot(all(lengths(indices) == 1))
-        values <- mapply(function(x, y) {
-            if (length(x) == 1)
-                return(x)
-            if (is.logical(y))
-                y <- which(c(FALSE, TRUE) == y)
-            return(x[y])
-        }, values, indices, SIMPLIFY = FALSE)
+msg <- function(x, values = NULL, indices = NULL, pretty = TRUE, ...) {
+    if (!is.null(values)) {
+        if (!is.list(values))
+            values <- list(values)
+        if (!is.list(indices))
+            indices <- as.list(indices)
+        if (length(indices)) {
+            stopifnot(all(lengths(indices) == 1))
+            values <- mapply(function(x, y) {
+                if (length(x) == 1)
+                    return(x)
+                if (is.logical(y))
+                    y <- which(c(FALSE, TRUE) == y)
+                return(x[y])
+            }, values, indices, SIMPLIFY = FALSE)
+        }
+        msg <- do.call(sprintf, c(list(x), values))
+    } else {
+        msg <- x
     }
-    msg <- do.call(sprintf, c(list(x), values))
+    if (pretty)
+        msg <- prettyNum(msg, big.mark = ",", ...)
     return(msg)
 }
 
