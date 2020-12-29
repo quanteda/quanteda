@@ -28,9 +28,8 @@ msg <- function(x, values = NULL, indices = NULL, pretty = TRUE, ...) {
         if (!is.list(indices))
             indices <- as.list(indices)
         if (length(indices)) {
-            stopifnot(all(lengths(indices) == 1))
             values <- mapply(function(x, y) {
-                if (length(x) == 1)
+                if (length(x) == 1 || is.null(y))
                     return(x)
                 if (is.logical(y))
                     y <- which(c(FALSE, TRUE) == y)
