@@ -18,16 +18,15 @@ setMethod("print", signature(x = "dfm"),
               
               if (show_summary) {
                   docvars <- docvars(x)
-                  cat("Document-feature matrix of: ",
-                      format(ndoc(x), big.mark = ","), " document",
-                      if (ndoc(x) > 1L || ndoc(x) == 0L) "s, " else ", ",
-                      format(nfeat(x), big.mark=","), " feature",
-                      if (nfeat(x) > 1L || nfeat(x) == 0L) "s" else "",
-                      if (prod(dim(x))) format_sparsity(sparsity(x)), sep = "")
-                  if (ncol(docvars))
-                      cat(" and ", format(ncol(docvars), big.mark = ","), " docvar",
-                          if (ncol(docvars) == 1L) "" else "s", sep = "")
-                  cat(".\n")
+                  cat(msg("Document-feature matrix of: %d %s, %d %s (%s sparse) and %d %s.\n",
+                          list(ndoc(x), c("document", "documents"),
+                               nfeat(x), c("feature", "features"),
+                               format_sparsity(sparsity(x)),
+                               ncol(docvars), c("docvar", "docvars")
+                               ),
+                          list(NULL, ndoc(x) > 1, NULL, nfeat(x) > 1, NULL, 
+                               NULL, ncol(docvars) > 1)
+                          ))
               }
               if (max_ndoc < 0) 
                   max_ndoc <- ndoc(x)
@@ -78,39 +77,20 @@ print_dfm <- function(x, max_ndoc, max_nfeat, show_summary, ...) {
 #' Inputs a dfm sparsity value from [sparsity()] and formats it for
 #' printing in `print.dfm()`.
 #' @param x input sparsity value, ranging from 0 to 1.0
-#' @param threshold value below which the decimal places will be rounded and
-#'   printed with an inequality
-#' @param digits `digits` input to [format()]
-#' @param nsmall `nsmall` input to [format()]
-#' @return `character` value for inserting into the dfm print output
 #' @examples 
-#' s <- c(.9, .99, .999, .9999, .99999, 
-#'        .1, .01, .001, .0001, .000001, .0000001, .00000001, .000000000001, 
-#'        sparsity(dfm(data_corpus_inaugural)),
-#'        .12312431242134)
-#' for (i in s) 
-#'     print(paste0(format(i, width = 10),  ":  ", quanteda:::format_sparsity(i)))
-#' print(as.dfm(Matrix::rsparsematrix(1000, 1000, density = 0.9999)))
-#' print(as.dfm(Matrix::rsparsematrix(10000, 10000, density = 0.00001)))
+#' ss <- c(1, .99999, .9999, .999, .99, .9,
+#'        .1, .01, .001, .0001, .000001, .0000001, .00000001, .000000000001, 0)
+#' for (s in ss) 
+#'     cat(format(s, width = 10),  ":", quanteda:::format_sparsity(s), "\n")
 #' @keywords internal
-format_sparsity <- function(x, threshold = .01, digits = 3, nsmall = 1) {
-    
+format_sparsity <- function(x) {
+    if (is.na(x))
+        x <- 0
     x <- check_double(x, min = 0, max = 1.0)
-    threshold_char <- as.character(threshold)
-    sparsity100 <- x * 100
-    
-    # for edge cases
-    if ((sparsity100 == threshold || sparsity100 == (100 - threshold)) && digits <= 3) 
-        digits <- 4
-        
-    sparsity_output <- if (sparsity100 < threshold && sparsity100 > 0.00) {
-        paste("<", stringi::stri_trim_left(as.character(format(threshold, digits = 4, nsmall = 2))), sep = "")
-    } else if (sparsity100 > (100 - threshold) && sparsity100 < 100.00) {
-        paste(">", stringi::stri_trim_left(as.character(format(100 - threshold, digits = 4, nsmall = 2))), sep = "")
-    } else {
-        stringi::stri_trim_left(format(sparsity100, digits = digits, nsmall = nsmall))
-    }
-    
-    paste(" (", sparsity_output, "% sparse)", sep = "")
+    level <- c(0, 0.0001, 0.9999, 1)
+    if (any(x == level))
+        return(sprintf("%.2f%%", x * 100))
+    v <- c("<0.01%", sprintf("%.2f%%", x * 100), ">99.99%")
+    return(v[as.integer(cut(x, level))])
 }
 

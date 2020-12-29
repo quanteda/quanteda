@@ -495,29 +495,29 @@ test_that("dfm print works with options as expected", {
                 remove_punct = FALSE, remove_numbers = FALSE, split_hyphens = TRUE)
     expect_output(
         print(dfmt, max_ndoc = 6, max_nfeat = 10, show_summary = TRUE),
-        paste0("^Document-feature matrix of: 14 documents, 4,452 features \\(82\\.0% sparse\\) and 4 docvars",
+        paste0("^Document-feature matrix of: 14 documents, 4,452 features \\(81\\.97% sparse\\) and 4 docvars",
                ".*",
                "\\[ reached max_ndoc \\.\\.\\. 8 more documents, reached max_nfeat \\.\\.\\. 4,442 more features \\]$")
     )
     expect_output(
         print(dfmt[1:5, 1:5], max_ndoc = 6, max_nfeat = 10, show_summary = TRUE),
-        paste0("^Document-feature matrix of: 5 documents, 5 features \\(4\\.0% sparse\\) and 4 docvars\\.",
+        paste0("^Document-feature matrix of: 5 documents, 5 features \\(4\\.00% sparse\\) and 4 docvars\\.",
                ".*",
                "1789-Washington\\s+3\\s+2\\s+5\\s+71\\s+116")
     )
     expect_output(
         print(dfmt[1:5, 1:5], max_ndoc = -1, max_nfeat = -1, show_summary = TRUE),
-        paste0("^Document-feature matrix of: 5 documents, 5 features \\(4\\.0% sparse\\) and 4 docvars\\.",
+        paste0("^Document-feature matrix of: 5 documents, 5 features \\(4\\.00% sparse\\) and 4 docvars\\.",
                ".*",
                "1805-Jefferson\\s+8\\s+1\\s+10\\s+101\\s+143")
     )
     expect_output(
         print(dfmt[1:5, 1:5], max_ndoc = 0, max_nfeat = -1, show_summary = TRUE),
-        "^Document-feature matrix of: 5 documents, 5 features \\(4\\.0% sparse\\) and 4 docvars\\.$"
+        "^Document-feature matrix of: 5 documents, 5 features \\(4\\.00% sparse\\) and 4 docvars\\.$"
     )
     expect_output(
         print(dfmt[1:5, 1:5], max_ndoc = -1, max_nfeat = 0, show_summary = TRUE),
-        paste0("^Document-feature matrix of: 5 documents, 5 features \\(4\\.0% sparse\\) and 4 docvars\\.",
+        paste0("^Document-feature matrix of: 5 documents, 5 features \\(4\\.00% sparse\\) and 4 docvars\\.",
                "\\n",
                "\\[ reached max_nfeat \\.\\.\\. 5 more features ]$")
     )
@@ -803,7 +803,8 @@ test_that("test null dfm is handled properly", {
     expect_equal(rbind(mx, mx), mx)
     expect_equal(cbind(mx, mx), mx)
 
-    expect_output(print(mx), "Document-feature matrix of: 0 documents, 0 features.")
+    expect_output(print(mx), 
+                  "Document-feature matrix of: 0 document, 0 feature (0.00% sparse) and 0 docvar.", fixed = TRUE)
 })
 
 test_that("test empty dfm is handled properly (#1419)", {
@@ -855,7 +856,8 @@ test_that("test empty dfm is handled properly (#1419)", {
     expect_equal(ndoc(rbind(mx, mx)), ndoc(mx) * 2)
     expect_equal(ndoc(cbind(mx, mx)), ndoc(mx))
 
-    expect_output(print(mx), "Document-feature matrix of: 6 documents, 0 features.")
+    expect_output(print(mx), 
+                  "Document-feature matrix of: 6 documents, 0 feature (0.00% sparse) and 1 docvar.", fixed = TRUE)
 })
 
 test_that("dfm raise nicer error message, #1267", {
@@ -945,22 +947,24 @@ test_that("format_sparsity works correctly", {
     )
     expect_identical(
         quanteda:::format_sparsity(sparsity(as.dfm(Matrix::rsparsematrix(1000, 1000, density = 0.5)))),
-        " (50.0% sparse)"
+        "50.00%"
     )
     expect_identical(
         quanteda:::format_sparsity(sparsity(as.dfm(Matrix::rsparsematrix(1000, 1000, density = 0.1)))),
-        " (90.0% sparse)"
+        "90.00%"
     )
     expect_identical(
         quanteda:::format_sparsity(sparsity(as.dfm(Matrix::rsparsematrix(1000, 1000, density = 0.99)))),
-        " (1.0% sparse)"
+        "1.00%"
     )
-    expect_identical(quanteda:::format_sparsity(.9999), " (99.99% sparse)")
-    expect_identical(quanteda:::format_sparsity(.99991), " (>99.99% sparse)")
-    expect_identical(quanteda:::format_sparsity(.0001), " (0.01% sparse)")
-    expect_identical(quanteda:::format_sparsity(.00001), " (<0.01% sparse)")
-    expect_identical(quanteda:::format_sparsity(.00011), " (0.011% sparse)")
-    expect_identical(quanteda:::format_sparsity(.00011, digits = 3), " (0.011% sparse)")
+    expect_identical(quanteda:::format_sparsity(1.0), "100.00%")
+    expect_identical(quanteda:::format_sparsity(0.9999), "99.99%")
+    expect_identical(quanteda:::format_sparsity(0.99991), ">99.99%")
+    expect_identical(quanteda:::format_sparsity(0.0001), "0.01%")
+    expect_identical(quanteda:::format_sparsity(0.00001), "<0.01%")
+    expect_identical(quanteda:::format_sparsity(0.00011), "0.01%")
+    expect_identical(quanteda:::format_sparsity(0.0), "0.00%")
+    expect_identical(quanteda:::format_sparsity(NA), "0.00%")
 })
 
 test_that("unused argument warning only happens only once (#1509)", {
