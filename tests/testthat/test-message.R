@@ -11,7 +11,7 @@ test_that("msg works", {
     # NULL indices
     expect_equal(
         quanteda:::msg("there are %d %s", list(3, "documents"),
-                       indecies = list(NULL, NULL)),
+                       indices = list(NULL, NULL)),
         "there are 3 documents"
     )
     
