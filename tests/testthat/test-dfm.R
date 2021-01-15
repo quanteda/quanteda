@@ -804,7 +804,7 @@ test_that("test null dfm is handled properly", {
     expect_equal(cbind(mx, mx), mx)
 
     expect_output(print(mx), 
-                  "Document-feature matrix of: 0 document, 0 feature (0.00% sparse) and 0 docvar.", fixed = TRUE)
+                  "Document-feature matrix of: 0 documents, 0 features (0.00% sparse) and 0 docvars.", fixed = TRUE)
 })
 
 test_that("test empty dfm is handled properly (#1419)", {
@@ -857,7 +857,7 @@ test_that("test empty dfm is handled properly (#1419)", {
     expect_equal(ndoc(cbind(mx, mx)), ndoc(mx))
 
     expect_output(print(mx), 
-                  "Document-feature matrix of: 6 documents, 0 feature (0.00% sparse) and 1 docvar.", fixed = TRUE)
+                  "Document-feature matrix of: 6 documents, 0 features (0.00% sparse) and 1 docvar.", fixed = TRUE)
 })
 
 test_that("dfm raise nicer error message, #1267", {

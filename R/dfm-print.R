@@ -24,8 +24,8 @@ setMethod("print", signature(x = "dfm"),
                                format_sparsity(sparsity(x)),
                                ncol(docvars), c("docvar", "docvars")
                                ),
-                          list(NULL, ndoc(x) > 1, NULL, nfeat(x) > 1, NULL, 
-                               NULL, ncol(docvars) > 1)
+                          list(NULL, ndoc(x) != 1, NULL, nfeat(x) != 1, NULL, 
+                               NULL, ncol(docvars) != 1)
                           ))
               }
               if (max_ndoc < 0) 
