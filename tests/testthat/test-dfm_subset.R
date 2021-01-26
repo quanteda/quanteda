@@ -23,7 +23,7 @@ test_that("dfm_subset works in a basic way", {
 test_that("dfm_subset works with docvars", {
     dfmat <- dfm(corpus_subset(data_corpus_inaugural, Year > 1900))
     expect_equal(
-        docvars(dfm_subset(dfmat, Year > 2000))$President,
-        c("Bush", "Bush", "Obama", "Obama", "Trump")
+        docvars(head(dfmat, 5))$President,
+        c("McKinley", "Roosevelt", "Taft", "Wilson", "Wilson")
     )
 })

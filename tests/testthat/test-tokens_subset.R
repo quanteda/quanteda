@@ -23,8 +23,7 @@ test_that("tokens_subset works in a basic way", {
 test_that("tokens_subset works with docvars", {
     toks <- tokens(corpus_subset(data_corpus_inaugural, Year > 1900))
     expect_equal(
-        docvars(tokens_subset(toks, Year > 2000))$President,
-        c("Bush", "Bush", "Obama", "Obama", "Trump")
+        docvars(head(toks, 5))$President,
+        c("McKinley", "Roosevelt", "Taft", "Wilson", "Wilson")
     )
 })
-
