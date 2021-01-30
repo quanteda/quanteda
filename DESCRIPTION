@@ -68,8 +68,6 @@ Suggests:
     DT,
     xtable,
     ggplot2
-Remotes:
-    quanteda/quanteda.textplots
 URL: https://quanteda.io
 Encoding: UTF-8
 BugReports: https://github.com/quanteda/quanteda/issues
