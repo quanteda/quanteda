@@ -119,8 +119,8 @@ DataFrame qatd_cpp_kwic(const List &texts_,
     //dev::start_timer("Create strings", timer);
     IntegerVector documents_(match_count), segments_(match_count);
     IntegerVector pat_(match_count), pos_from_(match_count), pos_to_(match_count);
-    CharacterVector coxs_name_(match_count), coxs_pre_(match_count);
-    CharacterVector coxs_target_(match_count), coxs_post_(match_count);
+    CharacterVector coxs_name_(match_count);
+    //CharacterVector coxs_pre_(match_count), coxs_target_(match_count), coxs_post_(match_count);
     
     std::size_t j = 0;
     for (std::size_t h = 0; h < temp.size(); h++) {
@@ -139,17 +139,17 @@ DataFrame qatd_cpp_kwic(const List &texts_,
             segments_[j] = (int)i + 1;
             
             // Save as strings
-            Text cox_pre(tokens.begin() + std::max(0, from), tokens.begin() + std::get<1>(target));
-            Text cox_target(tokens.begin() + std::get<1>(target), tokens.begin() + std::get<2>(target) + 1);
-            Text cox_post(tokens.begin() + std::get<2>(target) + 1, tokens.begin() + std::min(to, last) + 1);
+            // Text cox_pre(tokens.begin() + std::max(0, from), tokens.begin() + std::get<1>(target));
+            // Text cox_target(tokens.begin() + std::get<1>(target), tokens.begin() + std::get<2>(target) + 1);
+            // Text cox_post(tokens.begin() + std::get<2>(target) + 1, tokens.begin() + std::min(to, last) + 1);
             
             pat_[j] = std::get<0>(target);
             pos_from_[j] = std::get<1>(target) + 1;
             pos_to_[j] = std::get<2>(target) + 1;
 
-            coxs_pre_[j] = join_strings(cox_pre, types_, delim_); 
-            coxs_target_[j] = join_strings(cox_target, types_, delim_);
-            coxs_post_[j] = join_strings(cox_post, types_, delim_);
+            // coxs_pre_[j] = join_strings(cox_pre, types_, delim_); 
+            // coxs_target_[j] = join_strings(cox_target, types_, delim_);
+            // coxs_post_[j] = join_strings(cox_post, types_, delim_);
             coxs_name_[j] = names_[h];
             j++;
         }
@@ -159,9 +159,9 @@ DataFrame qatd_cpp_kwic(const List &texts_,
     DataFrame output_ = DataFrame::create(_["docname"] = coxs_name_,
                                           _["from"]    = pos_from_,
                                           _["to"]      = pos_to_,
-                                          _["pre"]     = coxs_pre_,
-                                          _["keyword"] = coxs_target_,
-                                          _["post"]    = coxs_post_,
+                                          // _["pre"]     = coxs_pre_,
+                                          // _["keyword"] = coxs_target_,
+                                          // _["post"]    = coxs_post_,
                                           _["pattern"] = pat_,
                                           _["stringsAsFactors"] = false);
     //dev::stop_timer("Create data.frame", timer);
