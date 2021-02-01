@@ -55,63 +55,6 @@ NULL
 #     return(x)
 # }
 
-#' Convert various input as pattern to a vector used in tokens_select,
-#' tokens_compound and kwic.
-#' @inheritParams pattern
-#' @inheritParams valuetype
-#' @param concatenator concatenator that join multi-word expression in tokens object
-#' @param levels only used when pattern is a dictionary
-#' @param remove_unigram ignore single-word patterns if `TRUE`
-#' @seealso [pattern2id()]
-#' @keywords internal
-pattern2list <- function(x, types, valuetype, case_insensitive,
-                         concatenator = "_", levels = 1, remove_unigram = FALSE,
-                         keep_nomatch = FALSE) {
-    
-    if (is.dfm(x))
-        stop("dfm cannot be used as pattern")
-    
-    case_insensitive <- check_logical(case_insensitive)
-    concatenator <- check_character(concatenator)
-    levels <- check_integer(levels, min = 1, max_len = Inf)
-    remove_unigram <- check_logical(remove_unigram)
-    keep_nomatch <- check_logical(keep_nomatch)
-    
-    if (is.collocations(x)) {
-        if (nrow(x) == 0) return(list())
-        temp <- stri_split_charclass(x$collocation, "\\p{Z}")
-        names(temp) <- x$collocation
-        if (case_insensitive) {
-            result <- pattern2id(temp, types, valuetype = "fixed", TRUE)
-        } else {
-            temp <- lapply(temp, function(x) fastmatch::fmatch(x, types))
-            result <- temp[unlist(lapply(temp, function(x) all(!is.na(x))), use.names = FALSE)]
-        }
-        attr(result, "pattern") <- match(names(result), names(temp))
-    } else {
-        if (length(x) == 0) return(list())
-        if (is.dictionary(x)) {
-            x <- as.dictionary(x)
-            temp <- flatten_dictionary(x, levels)
-            key <- names(temp)
-            temp <- split_values(temp, " ", concatenator)
-        } else if (is.list(x)) {
-            temp <- x
-            names(temp) <- stri_c_list(x, " ")
-        } else {
-            temp <- as.list(x)
-            names(temp) <- x
-        }
-        if (remove_unigram)
-            temp <- temp[lengths(temp) > 1] # drop single-word patterns
-        result <- pattern2id(temp, types, valuetype, case_insensitive, keep_nomatch)
-        attr(result, "pattern") <- match(names(result), names(temp))
-        if (is.dictionary(x))
-            attr(result, "key") <- key
-    }
-    return(result)
-}
-
 #' Internal function for `select_types()` to check if a string is a regular expression
 #' @param x a character string to be tested
 #' @keywords internal
