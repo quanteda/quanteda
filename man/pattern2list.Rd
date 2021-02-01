@@ -25,7 +25,8 @@ exact matching. See \link{valuetype} for details.}
 \item{case_insensitive}{logical; if \code{TRUE}, ignore case when matching a
 \code{pattern} or \link{dictionary} values}
 
-\item{concatenator}{concatenator that join multi-word expression in tokens object}
+\item{concatenator}{concatenator that joins multi-word expressions in a
+tokens object}
 
 \item{levels}{only used when pattern is a dictionary}
 
@@ -42,17 +43,18 @@ Function to assign multiple slots to a S4 object
 \code{\link[=pattern2id]{pattern2id()}}
 }
 \keyword{Convert}
+\keyword{Used}
+\keyword{[kwic].}
+\keyword{[tokens_compound],}
+\keyword{[tokens_select],}
 \keyword{a}
 \keyword{and}
 \keyword{as}
 \keyword{in}
-\keyword{input}
+\keyword{inputs}
 \keyword{internal}
-\keyword{kwic.}
 \keyword{pattern}
 \keyword{to}
-\keyword{tokens_compound}
-\keyword{tokens_select,}
-\keyword{used}
 \keyword{various}
 \keyword{vector}
+\keyword{vector.}
