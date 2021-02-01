@@ -80,4 +80,5 @@ pattern2fixed(pattern, types, "regex", case_insensitive = TRUE)
 index <- index_types(c("xxx", "yyyy", "ZZZ"), "glob", FALSE, 3)
 quanteda:::search_glob("yy*", attr(index, "type_search"), index)
 }
+\keyword{development}
 \keyword{internal}
