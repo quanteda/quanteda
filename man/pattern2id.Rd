@@ -4,7 +4,7 @@
 \alias{pattern2id}
 \alias{pattern2fixed}
 \alias{index_types}
-\title{Convert regex and glob patterns to type IDs or fixed patterns}
+\title{Match patterns against token types}
 \usage{
 pattern2id(
   pattern,
@@ -28,7 +28,7 @@ index_types(types, valuetype, case_insensitive, max_len = NULL)
 \item{pattern}{a character vector, list of character vectors, \link{dictionary},
 or collocations object.  See \link{pattern} for details.}
 
-\item{types}{unique types of tokens obtained by \code{\link[=types]{types()}}}
+\item{types}{token types against which patterns are matched}
 
 \item{valuetype}{the type of pattern matching: \code{"glob"} for "glob"-style
 wildcard expressions; \code{"regex"} for regular expressions; or \code{"fixed"} for
@@ -37,13 +37,12 @@ exact matching. See \link{valuetype} for details.}
 \item{case_insensitive}{logical; if \code{TRUE}, ignore case when matching a
 \code{pattern} or \link{dictionary} values}
 
-\item{keep_nomatch}{keep patterns not found}
+\item{keep_nomatch}{keep patterns that did not match}
 
 \item{max_len}{maximum length of types to be indexed}
 }
 \value{
-\code{pattern2id} returns a list of integer vectors containing type
-IDs
+a list of integer vectors containing indices of matched types
 
 \code{pattern2fixed} returns a list of character vectors containing
 types
@@ -52,11 +51,11 @@ types
 IDs with index keys as an attribute
 }
 \description{
-\code{pattern2id} converts regex or glob to type IDs to allow
-C++ function to perform fast searches in tokens object. C++ functions use a
-list of type IDs to construct a hash table, against which sub-vectors of
-tokens object are matched. This function constructs an index of glob
-patterns for faster matching.
+Developer function to match regex, fixed or glob patterns against token
+types. This allows C++ function to perform fast searches in tokens object.
+C++ functions use a list of type IDs to construct a hash table, against which
+sub-vectors of tokens object are matched. This function constructs an index
+of glob patterns for faster matching.
 
 \code{pattern2fixed} converts regex and glob patterns to fixed patterns.
 

@@ -1,14 +1,15 @@
 
-#' Convert objects to type IDs or fixed patterns
+#' Match quanteda objects against token types
 #'
-#' Convert quanteda's objects (phrase, list, dictionary, collocations) to type
-#' IDs or fixed patterns.
-#' @inheritParams pattern
+#' Developer function to match patterns in quanteda objects against token types.
+#' @param x a list of character vectors, [dictionary] or collocations object
 #' @inheritParams valuetype
-#' @param concatenator concatenator that join multi-word expression in tokens
-#'   object
-#' @param levels only used when pattern is a dictionary
-#' @param remove_unigram ignore single-word patterns if `TRUE`
+#' @inheritParams pattern2id
+#' @param concatenator the concatenation character that join multi-word
+#'   expression in `types`
+#' @inheritParams tokens_lookup
+#' @param remove_unigram  if `TRUE`, ignores single-word patterns
+#' @return a list of integer vectors containing indices of matched types
 #' @seealso [pattern2id()]
 #' @keywords development
 #' @export
@@ -68,13 +69,15 @@ object2id <- function(x, types, valuetype = c("glob", "fixed", "regex"),
 #' @export
 #' @examples
 #' types <- c("A", "AA", "B", "BB", "B_B", "C", "C-C")
-#'
+#' 
+#' # dictionary
 #' dict <- dictionary(list(A = c("a", "aa"), 
 #'                         B = c("BB", "B B"),
 #'                         C = c("C", "C-C")))
 #' object2fixed(dict, types)
 #' object2fixed(dict, types, remove_unigram = TRUE)
 #' 
+#' # phrase
 #' pats <- phrase(c("a", "aa", "zz", "bb", "b b"))
 #' object2fixed(pats, types)
 #' object2fixed(pats, types, keep_nomatch = TRUE)

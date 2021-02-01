@@ -3,7 +3,7 @@
 \name{object2id}
 \alias{object2id}
 \alias{object2fixed}
-\title{Convert objects to type IDs or fixed patterns}
+\title{Match quanteda objects against token types}
 \usage{
 object2id(
   x,
@@ -28,6 +28,10 @@ object2fixed(
 )
 }
 \arguments{
+\item{x}{a list of character vectors, \link{dictionary} or collocations object}
+
+\item{types}{token types against which patterns are matched}
+
 \item{valuetype}{the type of pattern matching: \code{"glob"} for "glob"-style
 wildcard expressions; \code{"regex"} for regular expressions; or \code{"fixed"} for
 exact matching. See \link{valuetype} for details.}
@@ -35,26 +39,37 @@ exact matching. See \link{valuetype} for details.}
 \item{case_insensitive}{logical; if \code{TRUE}, ignore case when matching a
 \code{pattern} or \link{dictionary} values}
 
-\item{concatenator}{concatenator that join multi-word expression in tokens
-object}
+\item{concatenator}{the concatenation character that join multi-word
+expression in \code{types}}
 
-\item{levels}{only used when pattern is a dictionary}
+\item{levels}{integers specifying the levels of entries in a hierarchical
+dictionary that will be applied.  The top level is 1, and subsequent levels
+describe lower nesting levels.  Values may be combined, even if these
+levels are not contiguous, e.g. \code{levels = c(1:3)} will collapse the second
+level into the first, but record the third level (if present) collapsed
+below the first (see examples).}
 
-\item{remove_unigram}{ignore single-word patterns if \code{TRUE}}
+\item{remove_unigram}{if \code{TRUE}, ignores single-word patterns}
+
+\item{keep_nomatch}{keep patterns that did not match}
+}
+\value{
+a list of integer vectors containing indices of matched types
 }
 \description{
-Convert quanteda's objects (phrase, list, dictionary, collocations) to type
-IDs or fixed patterns.
+Developer function to match patterns in quanteda objects against token types.
 }
 \examples{
 types <- c("A", "AA", "B", "BB", "B_B", "C", "C-C")
 
+# dictionary
 dict <- dictionary(list(A = c("a", "aa"), 
                         B = c("BB", "B B"),
                         C = c("C", "C-C")))
 object2fixed(dict, types)
 object2fixed(dict, types, remove_unigram = TRUE)
 
+# phrase
 pats <- phrase(c("a", "aa", "zz", "bb", "b b"))
 object2fixed(pats, types)
 object2fixed(pats, types, keep_nomatch = TRUE)
