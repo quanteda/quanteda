@@ -93,7 +93,9 @@ convert.dfm <- function(x, to = c("lda", "tm", "stm", "austin", "topicmodels",
 
     x <- as.dfm(x)
     to <- match.arg(to)
-    omit_empty <- check_logical(omit_empty)
+    if (!missing(omit_empty)) {
+        omit_empty <- check_logical(omit_empty)
+    }
     docid_field <- check_character(docid_field)
     check_dots(...)
     
@@ -110,7 +112,7 @@ convert.dfm <- function(x, to = c("lda", "tm", "stm", "austin", "topicmodels",
             stop("cannot convert a non-count dfm to a topic model format")
     }
 
-    if (!to %in% c("lda", "topicmodels") && !missing(omit_empty) && omit_empty) {
+    if (!to %in% c("lda", "topicmodels") && !missing(omit_empty)) {
         warning("omit_empty not used for 'to = \"", to, "\"'")
     }
 
