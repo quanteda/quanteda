@@ -56,7 +56,7 @@ object2id <- function(x, types, valuetype = c("glob", "fixed", "regex"),
         if (remove_unigram)
             temp <- temp[lengths(temp) > 1] # drop single-word patterns
         result <- pattern2id(temp, types, valuetype, case_insensitive, keep_nomatch)
-        attr(result, "pattern") <- match(names(result), names(temp))
+        attr(result, "pattern") <- match(names(result), names(temp)) # TODO might need to return index in dictionary
         if (is.dictionary(x))
             attr(result, "key") <- key
     }
