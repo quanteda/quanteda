@@ -11,7 +11,7 @@
 #' @inheritParams valuetype
 #' @return  `pattern2id` returns a list of integer vectors containing type
 #'   IDs
-#' @keywords internal
+#' @keywords development
 #' @export
 #' @examples
 #' types <- c("A", "AA", "B", "BB", "BBB", "C", "CC")
@@ -372,11 +372,3 @@ unlist_character <- function(x, unique = FALSE, ...) {
         result <- unique(result)
     return(result)
 }
-
-
-
-# internal-only aliases for backward compatibility
-# TODO: this should be removed with in a year (by April 2019).
-regex2id <- pattern2id
-regex2fixed <- pattern2fixed
-
