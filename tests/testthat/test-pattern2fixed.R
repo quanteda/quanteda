@@ -139,23 +139,6 @@ test_that("glob patterns that contain regex special characters works", {
     
 })
 
-test_that("regex2fixed and regex2id still work", {
-   
-    regex <- list(c('^a$', '^b'), c('c'), c('d'), c('b$'))
-    glob <- list(c('a', 'b*'), c('*c*'), c('*d*'), c('*b'))
-    type <- c('A', 'AA', 'B', 'BB', 'C', 'CC', 'a', 'aa', 'b', 'bb', 'c', 'cc')
-    
-    expect_identical(quanteda:::regex2fixed(regex, type, 'regex', TRUE),
-                     pattern2fixed(regex, type, 'regex', TRUE))
-    expect_identical(quanteda:::regex2id(regex, type, 'regex', TRUE),
-                     pattern2id(regex, type, 'regex', TRUE))
-    
-    expect_identical(quanteda:::regex2fixed(glob, type, 'glob', TRUE),
-                     pattern2fixed(glob, type, 'glob', TRUE))
-    expect_identical(quanteda:::regex2id(glob, type, 'glob', TRUE),
-                     pattern2id(glob, type, 'glob', TRUE))
-})
-
 test_that("add value check for types (#1463)", {
     
     v1 <- list(c("a", "bb", "cc"))
