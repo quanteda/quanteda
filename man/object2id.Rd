@@ -3,7 +3,7 @@
 \name{object2id}
 \alias{object2id}
 \alias{object2fixed}
-\title{Convert quanteda's objects (list, dictionary, collocations) to type IDs or
+\title{Convert quanteda's objects (phrase, list, dictionary, collocations) to type IDs or
 fixed patterns.}
 \usage{
 object2id(
@@ -44,7 +44,7 @@ object}
 \item{remove_unigram}{ignore single-word patterns if \code{TRUE}}
 }
 \description{
-Convert quanteda's objects (list, dictionary, collocations) to type IDs or
+Convert quanteda's objects (phrase, list, dictionary, collocations) to type IDs or
 fixed patterns.
 }
 \examples{
@@ -56,9 +56,9 @@ dict <- dictionary(list(A = c("a", "aa"),
 object2fixed(dict, types)
 object2fixed(dict, types, remove_unigram = TRUE)
 
-pat <- phrase(c("a", "aa", "zz", "bb", "b b"))
-object2fixed(pat, types)
-object2fixed(pat, types, keep_nomatch = TRUE)
+pats <- phrase(c("a", "aa", "zz", "bb", "b b"))
+object2fixed(pats, types)
+object2fixed(pats, types, keep_nomatch = TRUE)
 }
 \seealso{
 \code{\link[=pattern2id]{pattern2id()}}

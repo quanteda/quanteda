@@ -133,6 +133,7 @@ Collate:
     'metadoc.R'
     'nfunctions.R'
     'object-builder.R'
+    'object2fixed.R'
     'pattern2fixed.R'
     'phrases.R'
     'quanteda_options.R'
