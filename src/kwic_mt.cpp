@@ -3,17 +3,17 @@
 #include "dev.h"
 using namespace quanteda;
 
-typedef std::tuple<unsigned int, size_t, size_t> Target;
-typedef std::vector<Target> Targets;
+typedef std::tuple<unsigned int, size_t, size_t> Match;
+typedef std::vector<Match> Matches;
 
-Targets kwic(Text tokens,
+Matches kwic(Text tokens,
                    const std::vector<std::size_t> &spans,
                    const MultiMapNgrams &map_pats,
                    UintParam &n_match){
     
     if(tokens.size() == 0) return {}; // return empty vector for empty text
     
-    Targets targets;
+    Matches targets;
     targets.reserve(tokens.size());
     for (std::size_t span : spans) { // substitution starts from the longest sequences
         if (tokens.size() < span) continue;
@@ -38,13 +38,13 @@ Targets kwic(Text tokens,
 struct kwic_mt : public Worker{
     
     Texts &texts;
-    std::vector<Targets> &temp;
+    std::vector<Matches> &temp;
     const std::vector<std::size_t> &spans;
     const MultiMapNgrams &map_pats;
     UintParam &n_match;
     
     // Constructor
-    kwic_mt(Texts &texts_, std::vector<Targets> &temp_,
+    kwic_mt(Texts &texts_, std::vector<Matches> &temp_,
             const std::vector<std::size_t> &spans_, const MultiMapNgrams &map_pats_,
             UintParam &n_match_):
             texts(texts_), temp(temp_), spans(spans_), map_pats(map_pats_), 
@@ -102,7 +102,7 @@ DataFrame qatd_cpp_kwic(const List &texts_,
     std::reverse(std::begin(spans), std::end(spans));
     
     dev::Timer timer;
-    std::vector<Targets> temp(texts.size());
+    std::vector<Matches> temp(texts.size());
     
     //dev::start_timer("Search keywords", timer);
     UintParam n_match = 0;
@@ -117,26 +117,26 @@ DataFrame qatd_cpp_kwic(const List &texts_,
     //dev::stop_timer("Search keywords", timer);
     
     //dev::start_timer("Create strings", timer);
-    IntegerVector documents_(n_match), segments_(n_match);
+    //IntegerVector documents_(n_match), segments_(n_match);
     IntegerVector kw_pattern_(n_match), kw_from_(n_match), kw_to_(n_match);
     CharacterVector kw_docname_(n_match);
     //CharacterVector coxs_pre_(n_match), coxs_target_(n_match), coxs_post_(n_match);
     
     std::size_t j = 0;
     for (std::size_t h = 0; h < temp.size(); h++) {
-        Targets targets = temp[h];
+        Matches targets = temp[h];
         if (targets.size() == 0) continue;
         Text tokens = texts[h];
         int last = (int)tokens.size() - 1;
         for (size_t i = 0; i < targets.size(); i++) {
-            Target target = targets[i];
+            Match target = targets[i];
             int from = std::get<1>(target) - window;
             int to = std::get<2>(target) + window;
             //Rcout << j << " " << std::get<1>(target) << ":" << std::get<2>(target) << "\n";
             
             // Save as intergers
-            documents_[j] = (int)h + 1;
-            segments_[j] = (int)i + 1;
+            // documents_[j] = (int)h + 1;
+            // segments_[j] = (int)i + 1;
             
             // Save as strings
             // Text cox_pre(tokens.begin() + std::max(0, from), tokens.begin() + std::get<1>(target));
@@ -156,7 +156,7 @@ DataFrame qatd_cpp_kwic(const List &texts_,
     }
     //dev::stop_timer("Create strings", timer);
     //dev::start_timer("Create data.frame", timer);
-    DataFrame output_ = DataFrame::create(_["docname"] = kw_docname_,
+    return DataFrame::create(_["docname"] = kw_docname_,
                                           _["from"]    = kw_from_,
                                           _["to"]      = kw_to_,
                                           // _["pre"]     = coxs_pre_,
@@ -165,9 +165,9 @@ DataFrame qatd_cpp_kwic(const List &texts_,
                                           _["pattern"] = kw_pattern_,
                                           _["stringsAsFactors"] = false);
     //dev::stop_timer("Create data.frame", timer);
-    output_.attr("docid") = documents_;
-    output_.attr("segid") = segments_;
-    return output_;
+    //output_.attr("docid") = documents_;
+    //output_.attr("segid") = segments_;
+    //return output_;
 }
 
 
