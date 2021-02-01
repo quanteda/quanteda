@@ -1,6 +1,8 @@
 
-#' Convert quanteda's objects (phrase, list, dictionary, collocations) to type IDs or
-#' fixed patterns.
+#' Convert objects to type IDs or fixed patterns
+#'
+#' Convert quanteda's objects (phrase, list, dictionary, collocations) to type
+#' IDs or fixed patterns.
 #' @inheritParams pattern
 #' @inheritParams valuetype
 #' @param concatenator concatenator that join multi-word expression in tokens

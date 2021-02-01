@@ -3,8 +3,7 @@
 \name{object2id}
 \alias{object2id}
 \alias{object2fixed}
-\title{Convert quanteda's objects (phrase, list, dictionary, collocations) to type IDs or
-fixed patterns.}
+\title{Convert objects to type IDs or fixed patterns}
 \usage{
 object2id(
   x,
@@ -44,8 +43,8 @@ object}
 \item{remove_unigram}{ignore single-word patterns if \code{TRUE}}
 }
 \description{
-Convert quanteda's objects (phrase, list, dictionary, collocations) to type IDs or
-fixed patterns.
+Convert quanteda's objects (phrase, list, dictionary, collocations) to type
+IDs or fixed patterns.
 }
 \examples{
 types <- c("A", "AA", "B", "BB", "B_B", "C", "C-C")
