@@ -13,8 +13,8 @@ Matches kwic(Text tokens,
     
     if(tokens.size() == 0) return {}; // return empty vector for empty text
     
-    Matches targets;
-    targets.reserve(tokens.size());
+    Matches matches;
+    matches.reserve(tokens.size());
     for (std::size_t span : spans) { // substitution starts from the longest sequences
         if (tokens.size() < span) continue;
         for (size_t i = 0; i < tokens.size() - (span - 1); i++) {
@@ -22,17 +22,17 @@ Matches kwic(Text tokens,
             auto range = map_pats.equal_range(ngram);
             for (auto it = range.first; it != range.second; ++it) {
                 unsigned int pat = it->second;
-                targets.push_back(std::make_tuple(pat, i, i + span - 1));
+                matches.push_back(std::make_tuple(pat, i, i + span - 1));
                 n_match++;
             }
         }
     }
     
     // sort by the starting positions
-    //std::sort(targets.begin(), targets.end(), [](const std::pair<int,int> &left, const std::pair<int,int> &right) {
+    //std::sort(matches.begin(), matches.end(), [](const std::pair<int,int> &left, const std::pair<int,int> &right) {
     //   return left.first < right.first;
     //});
-    return targets;
+    return matches;
 }
 
 struct kwic_mt : public Worker{
@@ -75,9 +75,7 @@ struct kwic_mt : public Worker{
 // [[Rcpp::export]]
 DataFrame qatd_cpp_kwic(const List &texts_,
                         const CharacterVector types_,
-                        const List &words_,
-                        const unsigned int &window,
-                        const String &delim_){
+                        const List &words_){
     
     Texts texts = Rcpp::as<Texts>(texts_);
     Types types = Rcpp::as< Types >(types_);
@@ -121,57 +119,29 @@ DataFrame qatd_cpp_kwic(const List &texts_,
     //dev::stop_timer("Search keywords", timer);
     
     //dev::start_timer("Create strings", timer);
-    //IntegerVector documents_(n_match), segments_(n_match);
     IntegerVector kw_from_(n_match), kw_to_(n_match);
     CharacterVector kw_pattern_(n_match), kw_docname_(n_match);
-    //CharacterVector coxs_pre_(n_match), coxs_target_(n_match), coxs_post_(n_match);
-    
+
     std::size_t j = 0;
     for (std::size_t h = 0; h < temp.size(); h++) {
-        Matches targets = temp[h];
-        if (targets.size() == 0) continue;
+        Matches matches = temp[h];
+        if (matches.size() == 0) continue;
         Text tokens = texts[h];
         int last = (int)tokens.size() - 1;
-        for (size_t i = 0; i < targets.size(); i++) {
-            Match target = targets[i];
-            int from = std::get<1>(target) - window;
-            int to = std::get<2>(target) + window;
-            //Rcout << j << " " << std::get<1>(target) << ":" << std::get<2>(target) << "\n";
-            
-            // Save as intergers
-            // documents_[j] = (int)h + 1;
-            // segments_[j] = (int)i + 1;
-            
-            // Save as strings
-            // Text cox_pre(tokens.begin() + std::max(0, from), tokens.begin() + std::get<1>(target));
-            // Text cox_target(tokens.begin() + std::get<1>(target), tokens.begin() + std::get<2>(target) + 1);
-            // Text cox_post(tokens.begin() + std::get<2>(target) + 1, tokens.begin() + std::min(to, last) + 1);
-            
-            kw_pattern_[j] = patters_[std::get<0>(target)];
-            kw_from_[j] = std::get<1>(target) + 1;
-            kw_to_[j] = std::get<2>(target) + 1;
-
-            // coxs_pre_[j] = join_strings(cox_pre, types_, delim_); 
-            // coxs_target_[j] = join_strings(cox_target, types_, delim_);
-            // coxs_post_[j] = join_strings(cox_post, types_, delim_);
+        for (size_t i = 0; i < matches.size(); i++) {
+            Match match = matches[i];
+            kw_pattern_[j] = patters_[std::get<0>(match)];
+            kw_from_[j] = std::get<1>(match) + 1;
+            kw_to_[j] = std::get<2>(match) + 1;
             kw_docname_[j] = docnames_[h];
             j++;
         }
     }
-    //dev::stop_timer("Create strings", timer);
-    //dev::start_timer("Create data.frame", timer);
     return DataFrame::create(_["docname"] = kw_docname_,
-                                          _["from"]    = kw_from_,
-                                          _["to"]      = kw_to_,
-                                          // _["pre"]     = coxs_pre_,
-                                          // _["keyword"] = coxs_target_,
-                                          // _["post"]    = coxs_post_,
-                                          _["pattern"] = kw_pattern_,
-                                          _["stringsAsFactors"] = false);
-    //dev::stop_timer("Create data.frame", timer);
-    //output_.attr("docid") = documents_;
-    //output_.attr("segid") = segments_;
-    //return output_;
+                             _["from"]    = kw_from_,
+                             _["to"]      = kw_to_,
+                             _["pattern"] = kw_pattern_,
+                             _["stringsAsFactors"] = false);
 }
 
 
