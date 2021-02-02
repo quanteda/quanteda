@@ -109,10 +109,8 @@ kwic.tokens <- function(x, pattern,
         names(pattern) <- pattern
     ids <- pattern2list(pattern, type, valuetype,
                         case_insensitive, field_object(attrs, "concatenator"))
-
     result <- qatd_cpp_kwic(x, type, ids)
-    #result[["pattern"]] <- factor(result[["pattern"]], levels = seq_along(ids),
-    #                              labels = names(ids))
+    result$pattern <- factor(result$pattern, levels = unique(names(ids)))
     if (nrow(result)) {
         r <- order(match(result$docname, docnames(x)),
                    result$from, result$to, result$pattern)
@@ -143,24 +141,18 @@ as.data.frame.kwic <- function(x, window = 5L, separator = " ", ...) {
     separator <- check_character(separator)
     
     attrs <- attributes(x)
+    x$pre <- rep("", nrow(x))
+    x$keyword <- rep("", nrow(x))
+    x$post <- rep("", nrow(x))
     if (nrow(x)) {
         toks <- attrs$tokens[x$docname]
-        lis_pre <- as.list(tokens_select(toks, startpos = x$from - window, endpos = x$to - 1))
+        lis_pre <- as.list(tokens_select(toks, startpos = pmax(x$from - window, 1), endpos = x$to - 1))
         lis_key <- as.list(tokens_select(toks, startpos = x$from, endpos = x$to))
         lis_post <- as.list(tokens_select(toks, startpos = x$from + 1, endpos = x$to + window))
         
-        pre <- key <- post <- character(nrow(x))
-        pre[lengths(lis_pre) > 0] <- stri_c_list(lis_pre, sep = separator)
-        key[lengths(lis_key) > 0] <- stri_c_list(lis_key, sep = separator)
-        post[lengths(lis_post) > 0] <- stri_c_list(lis_post, sep = separator)
-        
-        x$pre <- format(stri_replace_all_regex(pre, "(\\w*) (\\W)", "$1$2"), justify = "right")
-        x$keyword <- format(key, justify = "centre")
-        x$post <- format(stri_replace_all_regex(post, "(\\w*) (\\W)", "$1$2"), justify = "left")
-    } else {
-        x$pre <- character()
-        x$keyword <- character()
-        x$post <- character()
+        x$pre[lengths(lis_pre) > 0] <- stri_c_list(lis_pre, sep = separator)
+        x$keyword[lengths(lis_key) > 0] <- stri_c_list(lis_key, sep = separator)
+        x$post[lengths(lis_post) > 0] <- stri_c_list(lis_post, sep = separator)
     }
     attr(x, "tokens") <- NULL
     class(x) <- "data.frame"
