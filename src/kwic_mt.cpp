@@ -76,18 +76,22 @@ struct kwic_mt : public Worker{
 DataFrame qatd_cpp_kwic(const List &texts_,
                         const CharacterVector types_,
                         const List &words_,
-                        const IntegerVector &pats_,
                         const unsigned int &window,
                         const String &delim_){
     
     Texts texts = Rcpp::as<Texts>(texts_);
     Types types = Rcpp::as< Types >(types_);
     CharacterVector docnames_ = texts_.attr("names");
+    CharacterVector patters_ = words_.attr("names");
 
     MultiMapNgrams map_pats;
     map_pats.max_load_factor(GLOBAL_PATTERN_MAX_LOAD_FACTOR);
     Ngrams words = Rcpp::as<Ngrams>(words_);
-    std::vector<unsigned int> pats = Rcpp::as< std::vector<unsigned int> >(pats_);
+    std::vector<unsigned int> pats(words_.size());
+    unsigned int p = 0;
+    for (size_t f = 0; f < pats.size(); f++) {
+        pats[f] = p++;
+    }
     
     size_t len = words.size();
     std::vector<std::size_t> spans(len);
@@ -118,8 +122,8 @@ DataFrame qatd_cpp_kwic(const List &texts_,
     
     //dev::start_timer("Create strings", timer);
     //IntegerVector documents_(n_match), segments_(n_match);
-    IntegerVector kw_pattern_(n_match), kw_from_(n_match), kw_to_(n_match);
-    CharacterVector kw_docname_(n_match);
+    IntegerVector kw_from_(n_match), kw_to_(n_match);
+    CharacterVector kw_pattern_(n_match), kw_docname_(n_match);
     //CharacterVector coxs_pre_(n_match), coxs_target_(n_match), coxs_post_(n_match);
     
     std::size_t j = 0;
@@ -143,7 +147,7 @@ DataFrame qatd_cpp_kwic(const List &texts_,
             // Text cox_target(tokens.begin() + std::get<1>(target), tokens.begin() + std::get<2>(target) + 1);
             // Text cox_post(tokens.begin() + std::get<2>(target) + 1, tokens.begin() + std::min(to, last) + 1);
             
-            kw_pattern_[j] = std::get<0>(target);
+            kw_pattern_[j] = patters_[std::get<0>(target)];
             kw_from_[j] = std::get<1>(target) + 1;
             kw_to_[j] = std::get<2>(target) + 1;
 
