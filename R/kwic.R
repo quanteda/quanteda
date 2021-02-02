@@ -178,14 +178,13 @@ print.kwic <- function(x, window = 5L, separator = " ", ...) {
     }
 }
 
-#' @method "[" kwic
+#' @method [ kwic
 #' @export
 #' @noRd
-"[.kwic" <- function(x, i, j, ...) {
+`[.kwic` <- function(x, i, j, ...) {
     attrs <- attributes(x)
-    if (!missing(j))
-        x <- as.data.frame(x)[i,]
-    attrs$tokens <- attrs$tokens[unique(x$docname)]
-    attributes(x) <- attrs
+    x <- as.data.frame(x)[i,]
+    attr(x, "tokens") <- attrs$tokens[unique(x$docname)]
+    class(x) <- c("kwic", "data.frame")
     return(x)
 }
