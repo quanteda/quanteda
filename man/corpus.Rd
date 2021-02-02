@@ -5,7 +5,6 @@
 \alias{corpus.corpus}
 \alias{corpus.character}
 \alias{corpus.data.frame}
-\alias{corpus.kwic}
 \alias{corpus.Corpus}
 \title{Construct a corpus object}
 \usage{
@@ -36,8 +35,6 @@ corpus(x, ...)
   unique_docnames = TRUE,
   ...
 )
-
-\method{corpus}{kwic}(x, split_context = TRUE, extract_keyword = TRUE, meta = list(), ...)
 
 \method{corpus}{Corpus}(x, ...)
 }
@@ -73,14 +70,6 @@ based on \verb{([quanteda_options]("base_docname")}.}
 be a character vector. All other variables in the data.frame will be
 imported as docvars.  This argument is only used for \code{data.frame}
 objects (including those created by \pkg{readtext}).}
-
-\item{split_context}{logical; if \code{TRUE}, split each kwic row into two
-"documents", one for "pre" and one for "post", with this designation saved
-in a new docvar \code{context} and with the new number of documents
-therefore being twice the number of rows in the kwic.}
-
-\item{extract_keyword}{logical; if  \code{TRUE}, save the keyword matching
-\code{pattern} as a new docvar \code{keyword}}
 }
 \value{
 A \linkS4class{corpus} class object containing the original texts,
@@ -155,13 +144,6 @@ summary(corpus(dat, text_field = "some_text",
 # construct a corpus from a kwic object
 kw <- kwic(data_corpus_inaugural, "southern")
 summary(corpus(kw))
-# from a kwic
-kw <- kwic(data_char_sampletext, "econom*", separator = "",
-           remove_separators = FALSE) # keep original separators
-summary(corpus(kw))
-summary(corpus(kw, split_context = FALSE))
-texts(corpus(kw, split_context = FALSE))
-
 }
 \seealso{
 \linkS4class{corpus}, \code{\link[=docvars]{docvars()}},
