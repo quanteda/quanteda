@@ -3,19 +3,20 @@
 \name{kwic}
 \alias{kwic}
 \alias{is.kwic}
+\alias{as.data.frame.kwic}
 \title{Locate keywords-in-context}
 \usage{
 kwic(
   x,
   pattern,
-  window = 5,
   valuetype = c("glob", "regex", "fixed"),
-  separator = " ",
   case_insensitive = TRUE,
   ...
 )
 
 is.kwic(x)
+
+\method{as.data.frame}{kwic}(x, window = 5L, separator = " ", ...)
 }
 \arguments{
 \item{x}{a character, \link{corpus}, or \link{tokens} object}
@@ -23,13 +24,9 @@ is.kwic(x)
 \item{pattern}{a character vector, list of character vectors, \link{dictionary},
 or collocations object.  See \link{pattern} for details.}
 
-\item{window}{the number of context words to be displayed around the keyword.}
-
 \item{valuetype}{the type of pattern matching: \code{"glob"} for "glob"-style
 wildcard expressions; \code{"regex"} for regular expressions; or \code{"fixed"} for
 exact matching. See \link{valuetype} for details.}
-
-\item{separator}{character to separate words in the output}
 
 \item{case_insensitive}{logical; if \code{TRUE}, ignore case when matching a
 \code{pattern} or \link{dictionary} values}
@@ -66,13 +63,14 @@ will automatically be considered phrases where each whitespace-separated
 element matches a token in sequence.
 }
 \examples{
-head(kwic(data_corpus_inaugural, pattern = "secure*", window = 3, valuetype = "glob"))
-head(kwic(data_corpus_inaugural, pattern = "secur", window = 3, valuetype = "regex"))
-head(kwic(data_corpus_inaugural, pattern = "security", window = 3, valuetype = "fixed"))
+corp <- data_corpus_inaugural
+print(head(kwic(corp, pattern = "secure*", valuetype = "glob")), window = 3)
+print(head(kwic(corp, pattern = "secur", valuetype = "regex")), window = 3)
+print(head(kwic(corp, pattern = "security", valuetype = "fixed")), window = 3)
 
-toks <- tokens(data_corpus_inaugural)
-kwic(data_corpus_inaugural, pattern = phrase("war against"))
-kwic(data_corpus_inaugural, pattern = phrase("war against"), valuetype = "regex")
+toks <- tokens(corp)
+print(kwic(toks, pattern = phrase("war against")))
+print(kwic(toks, pattern = phrase("war against"), valuetype = "regex"))
 
 kw <- kwic(data_corpus_inaugural, "provident*")
 is.kwic(kw)
