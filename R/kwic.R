@@ -135,6 +135,38 @@ is.kwic <- function(x) {
     inherits(x, "kwic")
 }
 
+#' @rdname kwic
+#' @method as.data.frame kwic
+#' @export
+as.data.frame.kwic <- function(x, window = 5L, separator = " ", ...) {
+    window <- check_integer(window, 1, 1, 0)
+    separator <- check_character(separator)
+    
+    attrs <- attributes(x)
+    if (nrow(x)) {
+        toks <- attrs$tokens[x$docname]
+        lis_pre <- as.list(tokens_select(toks, startpos = x$from - window, endpos = x$to - 1))
+        lis_key <- as.list(tokens_select(toks, startpos = x$from, endpos = x$to))
+        lis_post <- as.list(tokens_select(toks, startpos = x$from + 1, endpos = x$to + window))
+        
+        pre <- key <- post <- character(nrow(x))
+        pre[lengths(lis_pre) > 0] <- stri_c_list(lis_pre, sep = separator)
+        key[lengths(lis_key) > 0] <- stri_c_list(lis_key, sep = separator)
+        post[lengths(lis_post) > 0] <- stri_c_list(lis_post, sep = separator)
+        
+        x$pre <- format(stri_replace_all_regex(pre, "(\\w*) (\\W)", "$1$2"), justify = "right")
+        x$keyword <- format(key, justify = "centre")
+        x$post <- format(stri_replace_all_regex(post, "(\\w*) (\\W)", "$1$2"), justify = "left")
+    } else {
+        x$pre <- character()
+        x$keyword <- character()
+        x$post <- character()
+    }
+    attr(x, "tokens") <- NULL
+    class(x) <- "data.frame"
+    return(x)
+}
+
 #' @method print kwic
 #' @param window the number of context words to be displayed around the keyword.
 #' @param separator character to separate words in the output
@@ -145,32 +177,23 @@ print.kwic <- function(x, window = 5L, separator = " ", ...) {
     
     window <- check_integer(window, 1, 1, 0)
     separator <- check_character(separator)
-    
-    cat(sprintf("kwic object with %d matches\n", nrow(x)))
     attrs <- attributes(x)
+    
+    cat(sprintf("Keyword-in-context with %d matches.", nrow(x)))
     if (nrow(x)) {
+        x <- as.data.frame(x, window, separator)
         if (all(x$from == x$to)) {
             labels <- stri_c("[", x$docname, ", ", x$from, "]")
         } else {
             labels <- stri_c("[", x$docname, ", ", x$from, ":", x$to, "]")
         }
-        toks <- attrs$tokens[x$docname]
-        lis_pre <- as.list(tokens_select(toks, startpos = x$from - window, endpos = x$to - 1))
-        lis_key <- as.list(tokens_select(toks, startpos = x$from, endpos = x$to))
-        lis_post <- as.list(tokens_select(toks, startpos = x$from + 1, endpos = x$to + window))
-        
-        pre <- key <- post <- character(nrow(x))
-        pre[lengths(lis_pre) > 0] <- stri_c_list(lis_pre, sep = separator)
-        key[lengths(lis_key) > 0] <- stri_c_list(lis_key, sep = separator)
-        post[lengths(lis_post) > 0] <- stri_c_list(lis_post, sep = separator)
-
         result <- data.frame(
             label = labels,
-            pre = format(stri_replace_all_regex(pre, "(\\w*) (\\W)", "$1$2"), justify = "right"),
+            pre = format(stri_replace_all_regex(x$pre, "(\\w*) (\\W)", "$1$2"), justify = "right"),
             s1 = rep("|", nrow(x)),
-            keyword = format(key, justify = "centre"),
+            keyword = format(x$keyword, justify = "centre"),
             s2 = rep("|", nrow(x)),
-            post = format(stri_replace_all_regex(post, "(\\w*) (\\W)", "$1$2"), justify = "left")
+            post = format(stri_replace_all_regex(x$post, "(\\w*) (\\W)", "$1$2"), justify = "left")
         )
         colnames(result) <- NULL
         print(result, row.names = FALSE)
