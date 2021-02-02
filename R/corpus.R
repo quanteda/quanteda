@@ -11,7 +11,6 @@
 #' document is a variable identified by `text_field`; and other variables
 #' are imported as document-level meta-data.  This matches the format of
 #' data.frames constructed by the the \pkg{readtext} package.
-#' \item a [kwic] object constructed by [kwic()].
 #' \item a \pkg{tm} [VCorpus][tm::VCorpus] or [SimpleCorpus][tm::SimpleCorpus] class  object,
 #'   with the fixed metadata
 #'   fields imported as [docvars] and corpus-level metadata imported
@@ -89,9 +88,6 @@
 #' summary(corpus(dat, text_field = "some_text",
 #'                meta = list(source = "From a data.frame called mydf.")))
 #'
-#' # construct a corpus from a kwic object
-#' kw <- kwic(data_corpus_inaugural, "southern")
-#' summary(corpus(kw))
 corpus <- function(x, ...) {
     UseMethod("corpus")
 }

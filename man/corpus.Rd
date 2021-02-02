@@ -96,7 +96,6 @@ document id is a variable identified by \code{docid_field}; the text of the
 document is a variable identified by \code{text_field}; and other variables
 are imported as document-level meta-data.  This matches the format of
 data.frames constructed by the the \pkg{readtext} package.
-\item a \link{kwic} object constructed by \code{\link[=kwic]{kwic()}}.
 \item a \pkg{tm} \link[tm:VCorpus]{VCorpus} or \link[tm:SimpleCorpus]{SimpleCorpus} class  object,
 with the fixed metadata
 fields imported as \link{docvars} and corpus-level metadata imported
@@ -141,9 +140,6 @@ dat
 summary(corpus(dat, text_field = "some_text",
                meta = list(source = "From a data.frame called mydf.")))
 
-# construct a corpus from a kwic object
-kw <- kwic(data_corpus_inaugural, "southern")
-summary(corpus(kw))
 }
 \seealso{
 \linkS4class{corpus}, \code{\link[=docvars]{docvars()}},
