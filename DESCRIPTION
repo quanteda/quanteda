@@ -25,11 +25,7 @@ Depends:
     R (>= 3.5.0),
     methods
 Imports:
-    data.table,
-    digest,
     fastmatch,
-    igraph,
-    network,
     magrittr,
     Matrix (>= 1.2),
     Rcpp (>= 0.12.12),
@@ -84,7 +80,6 @@ Collate:
     'quanteda-documentation.R'
     'aaa.R'
     'bootstrap_dfm.R'
-    'cache.R'
     'casechange-functions.R'
     'char_select.R'
     'convert.R'
