@@ -27,12 +27,13 @@ in turn built on C++ implementation of the ICU libraries for Unicode text
 handling, \pkg{quanteda} pays special attention to fast and correct
 implementation of Unicode and the handling of text in any character set.
 
-\pkg{quanteda} is built for efficiency and speed, through its design around
-three infrastructures: the \pkg{stringi} package for text processing, the
-\pkg{data.table} package for indexing large documents efficiently, and the
-\pkg{Matrix} package for sparse matrix objects. If you can fit it into
-memory, \pkg{quanteda} will handle it quickly. (And eventually, we will make
-it possible to process objects even larger than available memory.)
+\pkg{quanteda} is built for efficiency and speed, through its design
+around three infrastructures: the \pkg{stringi} package for text
+processing, the \pkg{Matrix} package for sparse matrix objects, and
+computationally intensive processing (e.g. for tokens) handled in
+parallelized C++. If you can fit it into memory, \pkg{quanteda} will handle
+it quickly. (And eventually, we will make it possible to process objects
+even larger than available memory.)
 
 \pkg{quanteda} is principally designed to allow users a fast and convenient
 method to go from a corpus of texts to a selected matrix of documents by
