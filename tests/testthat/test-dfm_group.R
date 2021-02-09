@@ -311,11 +311,10 @@ test_that("displayed matrix rownames are correct after dfm_group (#1949)", {
     )
     expect_output(
         print(dfm(letters[1:3], groups = c("x", "x", "y"))),
-        "Document-feature matrix of: 2 documents, 3 features (50.0% sparse).
-    features
-docs a b c
-   x 1 1 0
-   y 0 0 1",
-        fixed = TRUE
+        paste0("Document-feature matrix of: 2 documents, 3 features (50.00% sparse) and 0 docvars.\n",
+               "    features\n",
+               "docs a b c\n",
+               "   x 1 1 0\n",
+               "   y 0 0 1", collapse = ""), fixed = TRUE
     )
 })
