@@ -5,16 +5,11 @@
 \alias{metacorpus}
 \alias{meta<-}
 \alias{"metacorpus<-"}
-\alias{metacorpus<-}
 \title{Get or set object metadata}
 \usage{
 meta(x, field = NULL, type = c("user", "object", "system", "all"))
 
 meta(x, field = NULL) <- value
-
-metacorpus(x, field = NULL, type = c("user", "object", "system", "all"))
-
-metacorpus(x, field = NULL) <- value
 }
 \arguments{
 \item{x}{an object for which the metadata will be read or set}

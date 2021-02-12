@@ -124,17 +124,6 @@ select_meta <- function(x, field = NULL, type = c("user", "object", "system", "a
     return(x)
 }
 
-
-# legacy functions ----------
-
-#' @rdname meta
-#' @export
-metacorpus <- meta
-
-#' @rdname meta
-#' @export
-`metacorpus<-` <- `meta<-`
-
 # internal: meta_system ----------------
 
 #' Internal function to get, set or initialize system metadata
