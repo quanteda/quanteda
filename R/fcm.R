@@ -184,6 +184,7 @@ fcm.dfm <- function(x, context = c("document", "window"),
 
 
 #' @noRd
+#' @import Matrix
 #' @export
 fcm.tokens <- function(x, context = c("document", "window"),
                        count = c("frequency", "boolean", "weighted"),

@@ -25,11 +25,7 @@ Depends:
     R (>= 3.5.0),
     methods
 Imports:
-    data.table,
-    digest,
     fastmatch,
-    igraph,
-    network,
     magrittr,
     Matrix (>= 1.2),
     Rcpp (>= 0.12.12),
@@ -68,8 +64,6 @@ Suggests:
     DT,
     xtable,
     ggplot2
-Remotes:
-    quanteda/quanteda.textplots
 URL: https://quanteda.io
 Encoding: UTF-8
 BugReports: https://github.com/quanteda/quanteda/issues
@@ -86,7 +80,6 @@ Collate:
     'quanteda-documentation.R'
     'aaa.R'
     'bootstrap_dfm.R'
-    'cache.R'
     'casechange-functions.R'
     'char_select.R'
     'convert.R'

@@ -55,15 +55,18 @@ NULL
 #     return(x)
 # }
 
-#' Convert various input as pattern to a vector used in tokens_select,
-#' tokens_compound and kwic.
+#' Convert various inputs as pattern to a vector
+#' 
+#' Convert various inputs as pattern to a vector.  Used in [tokens_select],
+#' [tokens_compound], and [kwic].
 #' @inheritParams pattern
 #' @inheritParams valuetype
-#' @param concatenator concatenator that join multi-word expression in tokens object
+#' @param concatenator concatenator that joins multi-word expressions in a
+#'   tokens object
 #' @param levels only used when pattern is a dictionary
 #' @param remove_unigram ignore single-word patterns if `TRUE`
-#' @seealso [pattern2id()]
 #' @keywords internal
+#' @seealso [pattern2id()]
 pattern2list <- function(x, types, valuetype, case_insensitive,
                          concatenator = "_", levels = 1, remove_unigram = FALSE,
                          keep_nomatch = FALSE) {

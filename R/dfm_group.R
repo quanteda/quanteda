@@ -138,7 +138,7 @@ group_dfm <- function(x, documents = NULL, features = NULL, fill = FALSE,
         i <- x@i + 1L
     } else {
         if (!is.factor(documents))
-            documents <- factor(documents, levels = unique(features))
+            documents <- factor(documents, levels = unique(documents))
         if (!fill)
             documents <- droplevels(documents)
         docname <- levels(documents)
