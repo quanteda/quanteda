@@ -28,9 +28,11 @@
 #' @param weights a vector of weights applied to each distance from
 #'   `1:window`, strictly decreasing by default; can be a custom-defined
 #'   vector of the same length as `window`
-#' @param ordered if `TRUE` the number of times that a term appears before
-#'   or after the target feature are counted separately. Only makes sense for
-#'   context = "window".
+#' @param ordered if `TRUE`, count only the forward co-occurrences for each
+#'   target token for bigram models, so that the `i, j` cell of FCM is the
+#'   number of times that token `j` occurs before the target token `i` within the
+#'   window. Only makes sense for `context = "window"`, and when `ordered =
+#'   TRUE`, the argument `tri` has no effect.
 #' @param tri if `TRUE` return only upper triangle (including diagonal).
 #'   Ignored if `ordered = TRUE`
 #' @param ... not used here
