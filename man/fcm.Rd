@@ -45,9 +45,10 @@ target feature}
 \code{1:window}, strictly decreasing by default; can be a custom-defined
 vector of the same length as \code{window}}
 
-\item{ordered}{if \code{TRUE} the number of times that a term appears before
-or after the target feature are counted separately. Only makes sense for
-context = "window".}
+\item{ordered}{if \code{TRUE}, count only the forward co-occurrences for each
+target token for bigram models, so that the \verb{i, j} cell of FCM is the
+number of times that token \code{j} occurs before the target token \code{i} within the
+window. Only makes sense for \code{context = "window"}, and when \code{ordered = TRUE}, the argument \code{tri} has no effect.}
 
 \item{tri}{if \code{TRUE} return only upper triangle (including diagonal).
 Ignored if \code{ordered = TRUE}}

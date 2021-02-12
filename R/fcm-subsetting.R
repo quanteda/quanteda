@@ -2,28 +2,37 @@
 subset_fcm <- function(x, i, j, ..., drop) {
     
     if (missing(i) && missing(j)) return(x)
-    
-    slots <- get_fcm_slots(x)
-    error <- FALSE
-    if (nargs() == 2) error <- TRUE
+    x <- as.fcm(x)
+    attrs <- attributes(x)
+    if (nargs() == 2)
+        stop("Subscript out of bounds")
     if (!missing(i)) {
-        if (is.character(i) && any(!i %in% rownames(x))) error <- TRUE
-        if (is.numeric(i) && any(i > nrow(x))) error <- TRUE
+        index_row <- seq_len(nrow(x))
+        names(index_row) <- rownames(x)
+        index_row <- index_row[i]
+        if (any(is.na(index_row)))
+            stop("Subscript out of bounds")
     }
     if (!missing(j)) {
-        if (is.character(j) && any(!j %in% colnames(x))) error <- TRUE
-        if (is.numeric(j) && any(j > ncol(x))) error <- TRUE
+        index_col <- seq_len(ncol(x))
+        names(index_col) <- colnames(x)
+        index_col <- index_col[j]
+        if (any(is.na(index_col)))
+            stop("Subscript out of bounds")
     }
-    if (error) stop("Subscript out of bounds")
     
     if (!missing(i) && missing(j)) {
         x <- "["(as(x, "Matrix"), i, , ..., drop = FALSE)
     } else if (missing(i) && !missing(j)) {
         x <- "["(as(x, "Matrix"), , j, ..., drop = FALSE)
     } else {
-        x <- "["(as(x, "Matrix"), i, j, ..., drop = FALSE)    
+        x <- "["(as(x, "Matrix"), i, j, ..., drop = FALSE)
     }
-    matrix2fcm(x, slots)
+    
+    build_fcm(
+        x, rownames(x), colnames(x),
+        meta = attrs[["meta"]]
+    )
 }
 
 #' @param i index for features
