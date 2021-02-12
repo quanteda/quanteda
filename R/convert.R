@@ -14,7 +14,13 @@
 #'   [lda.collapsed.gibbs.sampler][lda::lda.collapsed.gibbs.sampler] from the
 #'   \pkg{lda} package}
 #'   \item{`"tm"`}{a \link[tm:matrix]{DocumentTermMatrix} from the \pkg{tm}
-#'   package}
+#'   package.  Note: The \pkg{tm} package version of `as.TermDocumentMatrix()`
+#'   allows a `weighting` argument, which supplies a weighting function for
+#'   \code{\link[tm:matrix]{TermDocumentMatrix()}}.  Here the default is for
+#'   term frequency weighting. If you want a different weighting, apply the
+#'   weights after converting using one of the \pkg{tm} functions. For other
+#'   available weighting functions from the \pkg{tm} package, see
+#'   \link[tm:matrix]{TermDocumentMatrix}.}
 #'   \item{`"stm"`}{the  format for the \pkg{stm} package} \item{`"austin"`}{the
 #'   `wfm` format from the **austin** package}
 #'   \item{`"topicmodels"`}{the "dtm" format as used by the \pkg{topicmodels}
@@ -194,53 +200,6 @@ convert.corpus <- function(x, to = c("data.frame", "json"), pretty = FALSE, ...)
 #' dfmat <- dfm(corp)
 #'
 NULL
-
-#' @rdname convert-wrappers
-#' @details `as.wfm` converts a quanteda [dfm] into the
-#' `wfm` format used by the `austin` package.
-#' @export
-#' @examples
-#' # shortcut conversion to austin package's wfm format
-#' identical(as.wfm(dfmat), convert(dfmat, to = "austin"))
-#'
-as.wfm <- function(x) {
-    UseMethod("as.wfm")
-}
-
-#' @rdname convert-wrappers
-#' @method as.wfm dfm
-#' @export
-as.wfm.dfm <- function(x) {
-    convert(as.dfm(x), to = "austin")
-}
-
-#' @export
-#' @rdname convert-wrappers
-#' @details `as.DocumentTermMatrix` will convert a quanteda [dfm] into the
-#'   \pkg{tm} package's \link[tm:matrix]{DocumentTermMatrix} format. Note: The
-#'   \pkg{tm} package version of `as.TermDocumentMatrix()` allows a `weighting`
-#'   argument, which supplies a weighting function for
-#'   \code{\link[tm:matrix]{TermDocumentMatrix()}}.  Here the default is for
-#'   term frequency weighting. If you want a different weighting, apply the
-#'   weights after converting using one of the \pkg{tm} functions. For other
-#'   available weighting functions from the \pkg{tm} package, see
-#'   \link[tm:matrix]{TermDocumentMatrix}.
-#' @examples
-#' \dontrun{
-#' # shortcut conversion to tm package's DocumentTermMatrix format
-#' identical(as.DocumentTermMatrix(dfmat), convert(dfmat, to = "tm"))
-#' }
-#'
-as.DocumentTermMatrix <- function(x) {
-    UseMethod("as.DocumentTermMatrix")
-}
-
-#' @rdname convert-wrappers
-#' @method as.DocumentTermMatrix dfm
-#' @export
-as.DocumentTermMatrix.dfm <- function(x) {
-    convert(as.dfm(x), to = "tm")
-}
 
 #' @rdname convert-wrappers
 dfm2austin <- function(x) {
