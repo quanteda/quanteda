@@ -110,7 +110,6 @@ Collate:
     'dictionaries.R'
     'dictionary_edit.R'
     'dimnames.R'
-    'directionchange-functions.R'
     'fcm-classes.R'
     'docnames.R'
     'docvars.R'
