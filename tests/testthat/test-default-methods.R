@@ -84,11 +84,11 @@ test_that("test detault fcm* methods", {
     )
     expect_error(
         fcm_keep(1),
-        "fcm_keep\\(\\) only works on fcm objects"
+        "fcm_select\\(\\) only works on fcm objects"
     )
     expect_error(
         fcm_remove(1),
-        "fcm_remove\\(\\) only works on fcm objects"
+        "fcm_select\\(\\) only works on fcm objects"
     )
     expect_error(
         fcm_select(1),

@@ -34,9 +34,9 @@ fcm_select(
   ...
 )
 
-fcm_remove(x, pattern = NULL, ...)
+fcm_remove(x, ...)
 
-fcm_keep(x, pattern = NULL, ...)
+fcm_keep(x, ...)
 }
 \arguments{
 \item{x}{the \link{dfm} or \link{fcm} object whose features will be selected}

@@ -41,13 +41,18 @@ test_that("fcm works with character and tokens in the same way", {
 })
 
 test_that("fcm works with dfm and tokens in the same way", {
-    skip("needs to be investigated")
     txt <- c("b a b c", "a a c b e", "a c e f g")
     toks <- tokens(txt)
-    fcmt_dfm <- fcm(dfm(toks), context = "document")
-    fcmt_toks <- fcm(toks, context = "window", window = 1000, ordered = FALSE)
-    expect_equivalent(as.matrix(fcmt_dfm),
-                      as.matrix(fcmt_toks))
+    
+    fcmat_toks_doc <- fcm(toks, context = "document")
+    fcmat_dfm_doc <- fcm(dfm(toks), context = "document")
+    expect_equal(as.matrix(fcmat_toks_doc), as.matrix(fcmat_dfm_doc))
+
+    # same as document context diagonal
+    fcmat_toks_win_ord <- fcm(toks, context = "window", window = 1000, ordered = TRUE)
+    fcmat_toks_win_ord
+    expect_equal(diag(as.matrix(fcmat_toks_doc)), 
+                 diag(as.matrix(fcmat_toks_win_ord)))
 })
 
 # Testing weighting function
