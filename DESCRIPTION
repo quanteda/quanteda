@@ -61,7 +61,6 @@ Suggests:
     quanteda,
     tibble,
     tidytext,
-    DT,
     xtable,
     ggplot2
 URL: https://quanteda.io
@@ -75,7 +74,6 @@ SystemRequirements: C++11
 Roxygen: list(markdown = TRUE)
 Collate: 
     'RcppExports.R'
-    'View.R'
     'meta.R'
     'quanteda-documentation.R'
     'aaa.R'
