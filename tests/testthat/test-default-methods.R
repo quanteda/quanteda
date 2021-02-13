@@ -7,7 +7,7 @@ test_that("test default corpus* methods", {
     )
     expect_error(
         as.corpus(c(1, 2, 3)),
-        "as.corpus\\(\\) only works on.*corpuszip"
+        "as.corpus\\(\\) only works on corpus objects"
     )
     expect_error(
         corpus_reshape(1),
