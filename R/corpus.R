@@ -30,10 +30,13 @@
 #'   `docnames`; otherwise, rename duplicated docnames using an added serial
 #'   number, and treat them as segments of the same document.
 #' @param text_field the character name or numeric index of the source
-#'   `data.frame` indicating the variable to be read in as text, which must
-#'   be a character vector. All other variables in the data.frame will be
-#'   imported as docvars.  This argument is only used for `data.frame`
-#'   objects (including those created by \pkg{readtext}).
+#'   `data.frame` indicating the variable to be read in as text, which must be a
+#'   character vector. All other variables in the data.frame will be imported as
+#'   docvars. When creating a corpus from an existing corpus and specifying an
+#'   existing docvar as the `text_field`, then this variable will be removed
+#'   from the docvars (see examples).  This argument is only used for
+#'   `data.frame` objects (including those created by \pkg{readtext}) and
+#'   `corpus` objects.
 #' @param meta a named list that will be added to the corpus as corpus-level,
 #'   user meta-data.  This can later be accessed or updated using
 #'   [meta()].
@@ -101,17 +104,6 @@ corpus <- function(x, ...) {
 #' @export
 corpus.default <- function(x, ...) {
     check_class(class(x), "corpus")
-}
-
-#' @rdname corpus
-#' @export
-corpus.corpus <- function(x, docnames = quanteda::docnames(x),
-                          docvars = quanteda::docvars(x),
-                          meta = quanteda::meta(x), ...) {
-    x <- as.corpus(x)
-    result <- corpus(texts(x), docnames = docnames, docvars = docvars, meta = meta, ...)
-    meta_system(result, "source") <- "corpus"
-    return(result)
 }
 
 #' @rdname corpus
@@ -234,6 +226,37 @@ corpus.data.frame <- function(x, docid_field = "doc_id", text_field = "text",
     return(result)
 }
 
+#' @rdname corpus
+#' @export
+#' @examples 
+#' # from a corpus, with a new text_id
+#' df <- data.frame(doc_id = paste0("d", 1:2),
+#'                  en = c("The room.", "The car."),
+#'                  fr = c("La chambre.", "La voiture."))
+#' corp <- corpus(df, text_field = "en")
+#' corp
+#' corpus(corp, text_field = "fr")
+#' # to preserve former text field
+#' corpus(corp, text_field = "fr", docvars = data.frame(en = texts(corp)))
+#' 
+corpus.corpus <- function(x, 
+                          docnames = quanteda::docnames(x),
+                          docvars = quanteda::docvars(x),
+                          text_field = NULL,
+                          meta = quanteda::meta(x), ...) {
+    x <- as.corpus(x)
+    if (is.null(text_field)) {
+        txt <- texts(x)
+    } else {
+        if (!text_field %in% names(docvars(x)))
+            stop("docvar '", text_field, "' not found")
+        txt <- docvars(x, text_field)
+        docvars <- docvars[, setdiff(names(docvars), text_field), drop = FALSE]
+    }
+    result <- corpus(txt, docnames = docnames, docvars = docvars, meta = meta, ...)
+    meta_system(result, "source") <- "corpus"
+    return(result)
+}
 
 #' @rdname corpus
 #' @param split_context logical; if `TRUE`, split each kwic row into two

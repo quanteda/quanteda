@@ -39,7 +39,6 @@ test_that("print works", {
     
 })                
 
-
 test_that("corpus constructors works for kwic", {
     kw <- kwic(data_char_sampletext, "econom*")
 
@@ -245,6 +244,25 @@ test_that("create a corpus on a corpus", {
         docvars(corp),
         docvars(corp2)
     )
+})
+
+test_that("corpus.corpus() works with text_field", {
+  df <- data.frame(doc_id = paste0("d", 1:2),
+                   en = c("The room.", "The car."),
+                   fr = c("La chambre.", "La voiture."))
+  corp <- corpus(df, text_field = "en")
+  expect_equivalent(
+    corpus(corp, text_field = "fr"),
+    corpus(df, text_field = "fr")
+  )
+  expect_identical(
+    dim(docvars(corpus(corp, text_field = "fr"))),
+    c(2L, 0L)
+  )
+  expect_error(
+    corpus(corp, text_field = "nonexistent"),
+    "docvar 'nonexistent' not found"
+  )
 })
 
 test_that("corpus constructor works with tibbles", {

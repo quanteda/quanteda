@@ -2,22 +2,14 @@
 % Please edit documentation in R/corpus.R
 \name{corpus}
 \alias{corpus}
-\alias{corpus.corpus}
 \alias{corpus.character}
 \alias{corpus.data.frame}
+\alias{corpus.corpus}
 \alias{corpus.kwic}
 \alias{corpus.Corpus}
 \title{Construct a corpus object}
 \usage{
 corpus(x, ...)
-
-\method{corpus}{corpus}(
-  x,
-  docnames = quanteda::docnames(x),
-  docvars = quanteda::docvars(x),
-  meta = quanteda::meta(x),
-  ...
-)
 
 \method{corpus}{character}(
   x,
@@ -34,6 +26,15 @@ corpus(x, ...)
   text_field = "text",
   meta = list(),
   unique_docnames = TRUE,
+  ...
+)
+
+\method{corpus}{corpus}(
+  x,
+  docnames = quanteda::docnames(x),
+  docvars = quanteda::docvars(x),
+  text_field = NULL,
+  meta = quanteda::meta(x),
   ...
 )
 
@@ -69,10 +70,13 @@ data.frame; if the rownames are not set, it will use the default sequence
 based on \verb{([quanteda_options]("base_docname")}.}
 
 \item{text_field}{the character name or numeric index of the source
-\code{data.frame} indicating the variable to be read in as text, which must
-be a character vector. All other variables in the data.frame will be
-imported as docvars.  This argument is only used for \code{data.frame}
-objects (including those created by \pkg{readtext}).}
+\code{data.frame} indicating the variable to be read in as text, which must be a
+character vector. All other variables in the data.frame will be imported as
+docvars. When creating a corpus from an existing corpus and specifying an
+existing docvar as the \code{text_field}, then this variable will be removed
+from the docvars (see examples).  This argument is only used for
+\code{data.frame} objects (including those created by \pkg{readtext}) and
+\code{corpus} objects.}
 
 \item{split_context}{logical; if \code{TRUE}, split each kwic row into two
 "documents", one for "pre" and one for "post", with this designation saved
@@ -155,6 +159,16 @@ summary(corpus(dat, text_field = "some_text",
 # construct a corpus from a kwic object
 kw <- kwic(data_corpus_inaugural, "southern")
 summary(corpus(kw))
+# from a corpus, with a new text_id
+df <- data.frame(doc_id = paste0("d", 1:2),
+                 en = c("The room.", "The car."),
+                 fr = c("La chambre.", "La voiture."))
+corp <- corpus(df, text_field = "en")
+corp
+corpus(corp, text_field = "fr")
+# to preserve former text field
+corpus(corp, text_field = "fr", docvars = data.frame(en = texts(corp)))
+
 # from a kwic
 kw <- kwic(data_char_sampletext, "econom*", separator = "",
            remove_separators = FALSE) # keep original separators

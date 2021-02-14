@@ -1,5 +1,9 @@
 # quanteda 3.0
 
+## New features
+
+* `corpus.corpus()` now allows `text_field` to be specified, to choose an existing docvar as the new source of text for the corpus. (#2017)
+
 ## Changes
 
 * Separated the `textplot_*()` functions from the main package into a separate package **quanteda.textplots**.
