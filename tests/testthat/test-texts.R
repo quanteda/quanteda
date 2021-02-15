@@ -72,14 +72,6 @@ test_that("text assignment works for corpus", {
     )
 })
 
-test_that("as.corpus.corpuszip works (legacy only", {
-    load("../data/pre_v2_objects/data_corpus_zipprev2.rda")
-    expect_identical(
-        texts(as.corpus(data_corpus_zipprev2)),
-        c(a = "text one", b = "text two")
-    )
-})
-
 test_that("groups drops NA", {
     txt <- c("Doc 1", "Doc 1b", "Doc2", "Doc 3 with NA", "Doc 4, more NA")
     grvar <- c("Yes", "Yes", "No", NA, NA)
