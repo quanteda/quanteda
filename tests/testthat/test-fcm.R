@@ -40,6 +40,21 @@ test_that("fcm works with character and tokens in the same way", {
                       round(as.matrix(fcmt_toks), 2))
 })
 
+test_that("fcm works with dfm and tokens in the same way", {
+    txt <- c("b a b c", "a a c b e", "a c e f g")
+    toks <- tokens(txt)
+    
+    fcmat_toks_doc <- fcm(toks, context = "document")
+    fcmat_dfm_doc <- fcm(dfm(toks), context = "document")
+    expect_equal(as.matrix(fcmat_toks_doc), as.matrix(fcmat_dfm_doc))
+
+    # same as document context diagonal
+    fcmat_toks_win_ord <- fcm(toks, context = "window", window = 1000, ordered = TRUE)
+    fcmat_toks_win_ord
+    expect_equal(diag(as.matrix(fcmat_toks_doc)), 
+                 diag(as.matrix(fcmat_toks_win_ord)))
+})
+
 # Testing weighting function
 
 test_that("not weighted", {
@@ -89,7 +104,8 @@ test_that("customized weighting function", {
 
 test_that("ordered setting: window", {
     txt <- "A D A C E A D F E B A C E D"
-    fcmat <- fcm(txt, context = "window", window = 3, ordered = TRUE, tri = FALSE)
+    toks <- tokens(txt)
+    fcmat <- fcm(toks, context = "window", window = 3, ordered = TRUE, tri = FALSE)
     fcmat <- fcm_sort(fcmat)
     mat <- matrix(c(2, 0, 3, 3, 3, 1,
                      1, 0, 1, 0, 1, 0,
@@ -99,9 +115,9 @@ test_that("ordered setting: window", {
                      1, 1, 0, 0, 1, 0),
                    nrow = 6, ncol = 6, byrow = TRUE)
     expect_true(all(round(fcmat, 2) == round(mat, 2)))
-    expect_true(fcmat@ordered)
+    expect_true(fcmat@meta$object$ordered)
 
-    fcmat_nord <- fcm(txt, context = "window", window = 3, ordered = FALSE, tri = FALSE)
+    fcmat_nord <- fcm(toks, context = "window", window = 3, ordered = FALSE, tri = FALSE)
     fcmat_nord <- fcm_sort(fcmat_nord)
     mat <- matrix(c(4, 1, 4, 4, 5, 2,
                      1, 0, 1, 1, 2, 1,
@@ -111,34 +127,46 @@ test_that("ordered setting: window", {
                      2, 1, 0, 1, 2, 0),
                    nrow = 6, ncol = 6, byrow = TRUE)
     expect_true(all(round(fcmat_nord, 2) == round(mat, 2)))
-    expect_false(fcmat_nord@ordered)
+    expect_false(fcmat_nord@meta$object$ordered)
 })
 
 test_that("ordered setting: boolean", {
     txt <- c("b a b c", "a a c b e", "a c e f g")
-    fcm <- fcm(txt, context = "window", count = "boolean", window = 2,
+    toks <- tokens(txt)
+    fcmat1 <- fcm(toks, context = "window", count = "boolean", window = 2,
                ordered = TRUE, tri = TRUE)
-    fcm <- fcm_sort(fcm)
-    mat <- matrix(c(1, 2, 3, 1, 0, 0,
+    fcmat1 <- fcm_sort(fcmat1)
+    mat1 <- matrix(c(1, 2, 3, 1, 0, 0,
                      1, 1, 1, 1, 0, 0,
                      0, 1, 0, 2, 1, 0,
                      0, 0, 0, 0, 1, 1,
                      0, 0, 0, 0, 0, 1,
                      0, 0, 0, 0, 0, 0),
                    nrow = 6, ncol = 6, byrow = TRUE)
-    expect_equivalent(mat, as.matrix(fcm))
+    expect_equivalent(mat1, as.matrix(fcmat1))
 
-    fcm <- fcm(txt, context = "window", count = "boolean", window = 2,
+    fcmat2 <- fcm(toks, context = "window", count = "boolean", window = 2,
                ordered = FALSE, tri = TRUE)
-    fcm <- fcm_sort(fcm)
-    mat <- matrix(c(2, 2, 3, 1, 0, 0,
+    fcmat2 <- fcm_sort(fcmat2)
+    mat2 <- matrix(c(2, 2, 3, 1, 0, 0,
                      0, 2, 2, 1, 0, 0,
                      0, 0, 0, 2, 1, 0,
                      0, 0, 0, 0, 1, 1,
                      0, 0, 0, 0, 0, 1,
                      0, 0, 0, 0, 0, 0),
                    nrow = 6, ncol = 6, byrow = TRUE)
-    expect_equivalent(mat, as.matrix(fcm))
+    expect_equivalent(mat2, as.matrix(fcmat2))
+    
+    fcmat3 <- fcm(dfm(toks), count = "boolean", tri = TRUE)
+    fcmat3 <- fcm_sort(fcmat3)
+    mat3 <- matrix(c(1, 2, 3, 2, 1, 1,
+                    0, 1, 2, 1, 0, 0,
+                    0, 0, 0, 2, 1, 1,
+                    0, 0, 0, 0, 1, 1,
+                    0, 0, 0, 0, 0, 1,
+                    0, 0, 0, 0, 0, 0),
+                  nrow = 6, ncol = 6, byrow = TRUE)
+    expect_equivalent(mat3, as.matrix(fcmat3))
 })
 
 test_that("window = 2", {

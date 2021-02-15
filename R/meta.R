@@ -124,17 +124,6 @@ select_meta <- function(x, field = NULL, type = c("user", "object", "system", "a
     return(x)
 }
 
-
-# legacy functions ----------
-
-#' @rdname meta
-#' @export
-metacorpus <- meta
-
-#' @rdname meta
-#' @export
-`metacorpus<-` <- `meta<-`
-
 # internal: meta_system ----------------
 
 #' Internal function to get, set or initialize system metadata
@@ -212,7 +201,7 @@ meta_system_defaults <- function() {
 
 # make_meta ------------
 
-#' Internal functions to create a list for the meta attribute
+#' Internal functions to create a list of the meta fields
 #' @param class object class either `dfm`, `tokens` or `corpus`
 #' @param inherit list from the meta attribute
 #' @param ... values assigned to the object meta fields
@@ -237,6 +226,8 @@ make_meta <- function(class, inherit = NULL, ...) {
         result$object <- make_meta_tokens(inherit$object, ...)
     } else if (class == "dfm") {
         result$object <- make_meta_dfm(inherit$object, ...)
+    } else if (class == "fcm") {
+        result$object <- make_meta_fcm(inherit$object, ...)
     } else if (class == "dictionary2") {
         result$object <- make_meta_dictionary2(inherit, ...)
     }
@@ -309,6 +300,25 @@ make_meta_dfm <- function(inherit = NULL, ...) {
 }
 
 #' @rdname make_meta
+make_meta_fcm <- function(inherit = NULL, ...) {
+    if (is.null(inherit))
+        inherit <- list()
+    default <- list(
+        "unit" = "documents",
+        "concatenator" = "_",
+        "what" = "word",
+        "context" = "document", 
+        "window" = 5L,
+        "count" = "frequency",
+        "weights" = 1,
+        "ordered" = FALSE,
+        "margin" = numeric(), 
+        "tri" = FALSE
+    )
+    update_meta(default, inherit, ..., warn = FALSE)
+}
+
+#' @rdname make_meta
 make_meta_dictionary2 <- function(inherit = NULL, ...) {
     if (is.null(inherit))
         inherit <- list()
@@ -319,10 +329,11 @@ make_meta_dictionary2 <- function(inherit = NULL, ...) {
 
 #' @rdname make_meta
 #' @param default default values for the meta attribute
-update_meta <- function(default, inherit, ...) {
+update_meta <- function(default, inherit, ..., warn = TRUE) {
     update <- list(...)
     for (m in setdiff(union(names(inherit), names(update)), names(default))) {
-        warning(m, " is ignored.")
+        if (warn)
+            warning(m, " is ignored.")
     }
     for (m in names(default)) {
         if (length(update) && m %in% names(update)) {

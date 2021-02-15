@@ -29,44 +29,30 @@ fcm_select.fcm <- function(x, pattern = NULL,
                            valuetype = c("glob", "regex", "fixed"),
                            case_insensitive = TRUE,
                            verbose = quanteda_options("verbose"), ...) {
-    slots <- get_fcm_slots(x)
+    
+    x <- as.fcm(x)
+    attrs <- attributes(x)
     x <- t(dfm_select(x, pattern, selection, valuetype, 
                       case_insensitive, verbose = verbose, ...))
     x <- t(dfm_select(x, pattern, selection, valuetype, 
                       case_insensitive, verbose = FALSE, ...))
-    matrix2fcm(x, slots)
-}
-
-
-#' @rdname dfm_select
-#' @export
-fcm_remove <- function(x, pattern = NULL, ...) {
-    UseMethod("fcm_remove")
-}
-
-#' @export
-fcm_remove.default <- function(x, pattern = NULL, ...) {
-    check_class(class(x), "fcm_remove")
-}
-
-#' @export
-fcm_remove.fcm <- function(x, pattern = NULL, ...) {
-    fcm_select(x, pattern, selection = "remove", ...)
+    build_fcm(x, colnames(x), meta = attrs[["meta"]])
 }
 
 #' @rdname dfm_select
 #' @export
-fcm_keep <- function(x, pattern = NULL, ...) {
-    UseMethod("fcm_keep")
+fcm_remove <- function(x, ...) {
+    if ("selection" %in% names(list(...))) {
+        stop("fcm_keep cannot include selection argument")
+    }
+    fcm_select(x, selection = "remove", ...)
 }
 
+#' @rdname dfm_select
 #' @export
-fcm_keep.default <- function(x, pattern = NULL, ...) {
-    check_class(class(x), "fcm_keep")
-}
-
-#' @noRd
-#' @export
-fcm_keep.fcm <- function(x, pattern = NULL, ...) {
-    fcm_select(x, pattern, selection = "keep", ...)
+fcm_keep <- function(x, ...) {
+    if ("selection" %in% names(list(...))) {
+        stop("fcm_keep cannot include selection argument")
+    }
+    fcm_select(x, ..., selection = "keep")
 }

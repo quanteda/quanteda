@@ -208,6 +208,7 @@ fcm_tolower.default <- function(x, keep_acronyms = FALSE) {
 
 #' @export
 fcm_tolower.fcm <- function(x, keep_acronyms = FALSE) {
+    x <- as.fcm(x)
     keep_acronyms <- check_logical(keep_acronyms)
     set_fcm_featnames(x) <- lowercase_types(featnames(x), keep_acronyms)
     fcm_compress(x)
@@ -227,6 +228,7 @@ fcm_toupper.default <- function(x) {
 
 #' @export
 fcm_toupper.fcm <- function(x) {
+    x <- as.fcm(x)
     set_fcm_featnames(x) <- char_toupper(colnames(x))
     fcm_compress(x)
 }

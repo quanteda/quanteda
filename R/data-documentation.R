@@ -33,7 +33,6 @@
 #'   -1.5, -0.75, 0, 0.75, 1.5.  Document V1 is assumed unknown, and will have a
 #'   raw text score of approximately -0.45 when computed as per LBG (2003).
 #' @keywords data
-#' @aliases data_dfm_LBGexample
 #' @format A [dfm] object with 6 documents and 37 features.
 #' @references Laver, M., Benoit, K.R., & Garry, J. (2003). 
 #'   [Estimating Policy 
@@ -144,6 +143,7 @@
 #' @name data-relocated
 #' @aliases data_corpus_dailnoconf1991 data_corpus_irishbudget2010
 #' @seealso `quanteda.textmodels::quanteda.textmodels-package`
+#' @keywords data internal
 NULL
 
 #' Internal data sets

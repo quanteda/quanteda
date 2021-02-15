@@ -15,10 +15,10 @@
 #' @keywords internal fcm
 #' @seealso [fcm]
 setClass("fcm",
-         slots = c(context = "character", window = "integer", 
-                   count = "character", weights = "numeric", 
-                   ordered = "logical", tri = "logical",
-                   margin = "numeric"),
+         # slots = c(context = "character", window = "integer", 
+         #           count = "character", weights = "numeric", 
+         #           ordered = "logical", tri = "logical",
+         #           margin = "numeric"),
          contains = c("dfm", "dgCMatrix"))
 
 ## S4 method fcm objects
@@ -35,21 +35,21 @@ setMethod("t",
 setMethod("Arith", signature(e1 = "fcm", e2 = "numeric"),
           function(e1, e2) {
               switch(.Generic[[1]],
-                 `+` = matrix2fcm(as(e1, "dgCMatrix") + e2, get_fcm_slots(e1)),
-                 `-` = matrix2fcm(as(e1, "dgCMatrix") - e2, get_fcm_slots(e1)),
-                 `*` = matrix2fcm(as(e1, "dgCMatrix") * e2, get_fcm_slots(e1)),
-                 `/` = matrix2fcm(as(e1, "dgCMatrix") / e2, get_fcm_slots(e1)),
-                 `^` = matrix2fcm(as(e1, "dgCMatrix") ^ e2, get_fcm_slots(e1))
+                 `+` = matrix2fcm(as(e1, "dgCMatrix") + e2, e1@meta),
+                 `-` = matrix2fcm(as(e1, "dgCMatrix") - e2, e1@meta),
+                 `*` = matrix2fcm(as(e1, "dgCMatrix") * e2, e1@meta),
+                 `/` = matrix2fcm(as(e1, "dgCMatrix") / e2, e1@meta),
+                 `^` = matrix2fcm(as(e1, "dgCMatrix") ^ e2, e1@meta)
               )
           })
 #' @rdname fcm-class
 setMethod("Arith", signature(e1 = "numeric", e2 = "fcm"),
           function(e1, e2) {
               switch(.Generic[[1]],
-                 `+` = matrix2fcm(e1 + as(e2, "dgCMatrix"), get_fcm_slots(e2)),
-                 `-` = matrix2fcm(e1 - as(e2, "dgCMatrix"), get_fcm_slots(e2)),
-                 `*` = matrix2fcm(e1 * as(e2, "dgCMatrix"), get_fcm_slots(e2)),
-                 `/` = matrix2fcm(e1 / as(e2, "dgCMatrix"), get_fcm_slots(e2)),
-                 `^` = matrix2fcm(e1 ^ as(e2, "dgCMatrix"), get_fcm_slots(e2))
+                 `+` = matrix2fcm(e1 + as(e2, "dgCMatrix"), e2@meta),
+                 `-` = matrix2fcm(e1 - as(e2, "dgCMatrix"), e2@meta),
+                 `*` = matrix2fcm(e1 * as(e2, "dgCMatrix"), e2@meta),
+                 `/` = matrix2fcm(e1 / as(e2, "dgCMatrix"), e2@meta),
+                 `^` = matrix2fcm(e1 ^ as(e2, "dgCMatrix"), e2@meta)
               )
           })

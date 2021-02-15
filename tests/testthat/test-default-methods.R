@@ -7,7 +7,7 @@ test_that("test default corpus* methods", {
     )
     expect_error(
         as.corpus(c(1, 2, 3)),
-        "as.corpus\\(\\) only works on.*corpuszip"
+        "as.corpus\\(\\) only works on corpus objects"
     )
     expect_error(
         corpus_reshape(1),
@@ -84,11 +84,11 @@ test_that("test detault fcm* methods", {
     )
     expect_error(
         fcm_keep(1),
-        "fcm_keep\\(\\) only works on fcm objects"
+        "fcm_select\\(\\) only works on fcm objects"
     )
     expect_error(
         fcm_remove(1),
-        "fcm_remove\\(\\) only works on fcm objects"
+        "fcm_select\\(\\) only works on fcm objects"
     )
     expect_error(
         fcm_select(1),
@@ -116,18 +116,6 @@ test_that("test default docvars methods", {
     expect_error(
         docvars(data_char_sampletext) <- "X",
         "docvars<-\\(\\) only works on.*corpus.*tokens objects"
-    )
-})
-
-test_that("test default metadoc methods", {
-    expect_error(
-        metadoc(0),
-        "metadoc\\(\\) only works on.*corpus.*tokens objects"
-    )
-    expect_error(
-        metadoc(data_char_sampletext) <- "X",
-        "metadoc<-() only works on corpus, dfm, tokens objects.",
-        fixed = TRUE
     )
 })
 
@@ -186,6 +174,10 @@ test_that("test new dfm methods", {
     expect_error(
         dfm_keep(TRUE),
         "dfm_select\\(\\) only works on dfm objects"
+    )
+    expect_error(
+        dfm_match(TRUE),
+        "dfm_match\\(\\) only works on dfm objects"
     )
     expect_error(
         dfm_lookup(TRUE),
@@ -355,20 +347,6 @@ test_that("test new docnames<- methods", {
     expect_error(
         docnames(data_char_sampletext) <- "X",
         "docnames<-\\(\\) only works on.*corpus.*tokens objects"
-    )
-})
-
-test_that("friendly_class_undefined_message for tokens_tortl()", {
-    expect_error(
-        tokens_tortl(data_dfm_lbgexample),
-        "tokens_tortl\\(\\) only works on.*tokens.*objects"
-    )
-})
-
-test_that("friendly_class_undefined_message for char_tortl()", {
-    expect_error(
-        char_tortl(data_dfm_lbgexample),
-        "char_tortl\\(\\) only works on.*character.*objects"
     )
 })
 

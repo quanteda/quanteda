@@ -14,7 +14,10 @@
 \alias{build_dictionary2}
 \alias{rebuild_dictionary2}
 \alias{upgrade_dictionary2}
-\title{Object compilers}
+\alias{build_fcm}
+\alias{rebuild_fcm}
+\alias{upgrade_fcm}
+\title{Object builders}
 \usage{
 build_dfm(
   x,
@@ -54,28 +57,56 @@ build_dictionary2(x, meta = list(), class = "dictionary2", ...)
 rebuild_dictionary2(x, attrs)
 
 upgrade_dictionary2(x)
+
+build_fcm(x, features1, features2 = NULL, meta = list(), class = "fcm", ...)
+
+rebuild_fcm(x, attrs)
+
+upgrade_fcm(x)
 }
 \arguments{
-\item{x}{an input \link{corpus}, \link{dfm}, \link{tokens}, or \link{dictionary} object}
+\item{x}{an input \link{corpus}, \link{tokens}, \link{dfm}, \link{fcm} or \link{dictionary} object.}
 
-\item{features}{character for feature of resulting \code{dfm}}
+\item{features}{character for feature of resulting \code{dfm}.}
 
-\item{docvars}{data.frame for document level variables}
+\item{docvars}{data.frame for document level variables created by
+\code{\link[=make_docvars]{make_docvars()}}. Names of documents are extracted from the
+\code{docname_} column.}
 
 \item{meta}{list for meta fields}
 
-\item{class}{class to be attached to the built object}
+\item{class}{class labels to be attached to the object.}
 
-\item{...}{further objects passed to object metadata}
+\item{...}{values saved in the object meta fields. They overwrite values
+passed via \code{meta}. If not specified, default values in
+\code{\link[=make_meta]{make_meta()}} will be used.}
 
 \item{attrs}{a list of attributes to be reassigned}
 
-\item{types}{character for types of resulting `tokens`` object}
+\item{types}{character for types of resulting the \code{tokens} object.}
 
-\item{padding}{logical indicating if the \code{tokens} object contains paddings}
+\item{padding}{logical indicating if the \code{tokens} object contains paddings.}
+
+\item{features1}{character for row feature of resulting \code{fcm}.}
+
+\item{features2}{character for column feature of resulting \code{fcm} iff.
+different from \code{feature1}}
 }
 \description{
 Functions to build or re-build core objects, or to upgrade earlier versions
 of these objects to the current format.
+}
+\examples{
+quanteda:::build_tokens(
+    list(c(1, 2, 3), c(4, 5, 6)),
+    docvars = quanteda:::make_docvars(n = 2L),
+    types = c("a", "b", "c", "d", "e", "f"),
+    padding = FALSE
+)
+quanteda:::build_corpus(
+    c("a b c", "d e f"),
+    docvars = quanteda:::make_docvars(n = 2L),
+    unit = "sentence"
+)
 }
 \keyword{internal}
