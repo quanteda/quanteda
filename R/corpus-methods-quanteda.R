@@ -128,16 +128,3 @@ as.corpus.default <- function(x) {
 as.corpus.corpus <- function(x) {
     upgrade_corpus(x)
 }
-
-#' @export
-#' @method as.corpus corpuszip
-as.corpus.corpuszip <- function(x) {
-    x <- unclass(x)
-    txt <- memDecompress(x$texts, "gzip", asChar = TRUE)
-    txt <- strsplit(txt, paste0("###END_DOCUMENT###", "\n"))
-    txt <- unlist(txt, use.names = FALSE)
-
-    # drop internal variables
-    flag <- is_system(names(x$documents))
-    corpus(txt, x$docnames, docvars = x$documents[!flag])
-}

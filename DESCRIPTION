@@ -61,7 +61,6 @@ Suggests:
     quanteda,
     tibble,
     tidytext,
-    DT,
     xtable,
     ggplot2
 URL: https://quanteda.io
@@ -75,7 +74,6 @@ SystemRequirements: C++11
 Roxygen: list(markdown = TRUE)
 Collate: 
     'RcppExports.R'
-    'View.R'
     'meta.R'
     'quanteda-documentation.R'
     'aaa.R'
@@ -112,7 +110,6 @@ Collate:
     'dictionaries.R'
     'dictionary_edit.R'
     'dimnames.R'
-    'directionchange-functions.R'
     'fcm-classes.R'
     'docnames.R'
     'docvars.R'
@@ -123,7 +120,6 @@ Collate:
     'fcm_select.R'
     'kwic.R'
     'message.R'
-    'metadoc.R'
     'nfunctions.R'
     'object-builder.R'
     'pattern2fixed.R'
