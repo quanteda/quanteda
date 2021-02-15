@@ -76,8 +76,6 @@ test_that("test tm package converter", {
     ## FAILS
     # expect_equivalent(dtmq, dfmtm)
     expect_equivalent(as.matrix(dtmq), as.matrix(dtmtm))
-
-    expect_identical(convert(dfmat_test, to = "tm"), quanteda::as.DocumentTermMatrix(dfmat_test))
 })
 
 test_that("test lda package converter", {
@@ -91,7 +89,10 @@ test_that("test topicmodels package converter", {
 })
 
 test_that("test austin package converter", {
-    expect_identical(convert(dfmat_test, to = "austin"), quanteda::as.wfm(dfmat_test))
+    expect_identical(convert(dfmat_test, to = "austin"), 
+                     structure(as.matrix(dfmat_test), class = c("wfm", "matrix"),
+                               dimnames = c(list(docs = docnames(dfmat_test), 
+                                                 words = featnames(dfmat_test)))))
 })
 
 test_that("test lsa converter", {
