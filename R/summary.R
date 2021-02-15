@@ -25,7 +25,7 @@ summary.corpus <- function(object, n = 100, tolower = FALSE, showmeta = TRUE, ..
     ndoc_all <- ndoc(object)
     object <- head(object, n)
     ndoc_show <- ndoc(object)
-    result <- summarize(as.corpus(object), cache = FALSE, tolower = tolower, ...)
+    result <- summarize(as.corpus(object), tolower = tolower, ...)
     result <- result[,c("document", "types", "tokens", "sents")]
     names(result) <- c("Text", "Types", "Tokens", "Sentences")
     if (showmeta)
@@ -61,15 +61,7 @@ print.summary.corpus <- function(x, ...) {
     NextMethod("[")
 }
 
-summarize <- function(x, cache = TRUE, ...) {
-
-    if (cache) {
-        result <- get_cache(x, "summary", ...)
-        if (!is.null(result))
-            return(result)
-    } else {
-        clear_cache(x, "summary")
-    }
+summarize <- function(x, ...) {
 
     patterns <- removals_regex(punct = TRUE, symbols = TRUE,
                                numbers = TRUE, url = TRUE)
@@ -106,7 +98,5 @@ summarize <- function(x, cache = TRUE, ...) {
         result$sents <- ntoken(tokens(x, what = "sentence"))
     }
 
-    if (cache)
-        set_cache(x, "summary", result, ...)
     return(result)
 }

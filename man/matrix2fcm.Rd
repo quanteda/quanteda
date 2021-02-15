@@ -4,7 +4,7 @@
 \alias{matrix2fcm}
 \title{Converts a Matrix to a fcm}
 \usage{
-matrix2fcm(x, slots = NULL)
+matrix2fcm(x, meta = NULL)
 }
 \arguments{
 \item{x}{a Matrix}

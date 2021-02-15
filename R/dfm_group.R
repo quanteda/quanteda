@@ -138,7 +138,7 @@ group_dfm <- function(x, documents = NULL, features = NULL, fill = FALSE,
         i <- x@i + 1L
     } else {
         if (!is.factor(documents))
-            documents <- factor(documents, levels = unique(features))
+            documents <- factor(documents, levels = unique(documents))
         if (!fill)
             documents <- droplevels(documents)
         docname <- levels(documents)
@@ -150,10 +150,9 @@ group_dfm <- function(x, documents = NULL, features = NULL, fill = FALSE,
     } else {
         attrs[["docvars"]] <- select_docvars(attrs[["docvars"]], user = FALSE, system = TRUE)
     }
-    build_dfm(
-        sparseMatrix(i = i, j = j, x = x@x,
-                     dims = c(length(docname), length(featname))),
-        features = featname,
+    x <- sparseMatrix(i = i, j = j, x = x@x,
+                      dims = c(length(docname), length(featname)))
+    build_dfm(x, featname,
         unit = "documents",
         docvars = group_docvars(attrs[["docvars"]], documents),
         meta = attrs[["meta"]]

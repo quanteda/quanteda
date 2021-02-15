@@ -233,6 +233,7 @@ test_that("object meta information is handled properly", {
     expect_error(
         quanteda:::make_meta("tokens", skip = FALSE)
     )
+    
     # make object meta for dfm
     meta_dfm1 <- quanteda:::make_meta("dfm", 
                                       inherit = meta_inherit,
@@ -244,4 +245,21 @@ test_that("object meta information is handled properly", {
     expect_identical(meta_dfm1$object$concatenator, "+")
     expect_identical(meta_dfm1$object$ngram, 10L)
     expect_identical(meta_dfm1$object$unit, "paragraphs")
+    
+    # make object meta for fcm
+    meta_inherit$object$unit <- "paragraphs"
+    meta_inherit$object$concatenator <- "+"
+    meta_inherit$object$what <- "word1"
+    meta_fcm1 <- quanteda:::make_meta("fcm", 
+                                      inherit = meta_inherit,
+                                      tri = TRUE, context = "window")
+    expect_identical(
+        names(meta_fcm1),
+        c("system", "object", "user")
+    )
+    expect_identical(meta_fcm1$object$unit, "paragraphs")
+    expect_identical(meta_fcm1$object$concatenator, "+")
+    expect_identical(meta_fcm1$object$what, "word1")
+    expect_identical(meta_fcm1$object$context, "window")
+    expect_identical(meta_fcm1$object$tri, TRUE)
 })

@@ -5,9 +5,9 @@ setMethod("print", signature(x = "fcm"),
                    show_summary = TRUE, ...) {
               if (show_summary) {
                 cat("Feature co-occurrence matrix of: ",
-                    format(ndoc(x), big.mark = ","), " by ",
-                    format(nfeat(x), big.mark = ","), " feature",
-                    if (nfeat(x) != 1L) "s" else "",
+                    format(nrow(x), big.mark = ","), " by ",
+                    format(ncol(x), big.mark = ","), " feature",
+                    if (nrow(x) != 1L || col(x) != 1L) "s" else "",
                     ".\n", sep = "")
               }
               print_fcm(x, max_nfeat, show_summary, ...)
