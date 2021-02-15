@@ -16,6 +16,14 @@
 
 * The documentation for `dfm` now has all references to the defunct `ngrams` argument removed.
 
+* The following functions have been removed:
+    - all methods for defunct `corpuszip` objects.
+    - `View()` functions
+    - `as.wfm()` and `as.DocumentTermMatrix()` (the same functionality is available via `convert()`)
+    - `metadoc()` and `metacorpus()`
+    - `corpus_trimsentences()` (replaced by `corpus_trim()`)
+    - all of the `tortl` functions
+
 ## Bug fixes and stability enhancements
 
 * Fixed a bug causing `topfeatures(x, group = something)` to fail with weighted dfms (#2032).

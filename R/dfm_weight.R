@@ -112,7 +112,6 @@ dfm_weight.dfm <- function(x,
     }
 
     x <- as.dfm(x)
-    scheme <- match.arg(scheme)
     base <- check_double(base)
     k <- check_double(k, min = 0, max = 1.0)
     smoothing <- check_double(smoothing)
