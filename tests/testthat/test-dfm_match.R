@@ -1,6 +1,6 @@
 context("test dfm_match")
 
-test_that("test dfm_match", {
+test_that("dfm_match works", {
 
     txt <- c(doc1 = "aa bb BB cc DD ee",
              doc2 = "aa bb cc DD ee")
@@ -33,11 +33,7 @@ test_that("test dfm_match", {
         colSums(mt_conf2),
         c("aa" = 2, "zz" = 0, "xx" = 0, "bb" = 2)
     )
-
-    expect_error(dfm_match(mt, c(TRUE, FALSE)),
-                 "features must be a character vector")
-    expect_error(dfm_match(mt, 1:3),
-                 "features must be a character vector")
+    
 })
 
 test_that("dfm_match works with padding", {
@@ -48,3 +44,16 @@ test_that("dfm_match works with padding", {
         c("aa", "bb", "cc", "")
     )
 })
+
+test_that("dfm_match coerce non-character feature", {
+    
+    txt <- c(doc1 = "TRUE TRUE FALSE",
+             doc2 = "1 2 100")
+    dfmat <- dfm(txt, tolower = FALSE)
+    expect_equal(featnames(dfm_match(dfmat, c(TRUE, FALSE))),
+                 c("TRUE", "FALSE"))
+    expect_equal(featnames(dfm_match(dfmat, c(100, 1))),
+                 c("100", 1))
+
+})
+

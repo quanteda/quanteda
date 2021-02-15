@@ -29,12 +29,14 @@ fcm_select.fcm <- function(x, pattern = NULL,
                            valuetype = c("glob", "regex", "fixed"),
                            case_insensitive = TRUE,
                            verbose = quanteda_options("verbose"), ...) {
-    slots <- get_fcm_slots(x)
+    
+    x <- as.fcm(x)
+    attrs <- attributes(x)
     x <- t(dfm_select(x, pattern, selection, valuetype, 
                       case_insensitive, verbose = verbose, ...))
     x <- t(dfm_select(x, pattern, selection, valuetype, 
                       case_insensitive, verbose = FALSE, ...))
-    matrix2fcm(x, slots)
+    build_fcm(x, colnames(x), meta = attrs[["meta"]])
 }
 
 

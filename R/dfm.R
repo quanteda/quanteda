@@ -276,8 +276,7 @@ dfm.tokens <- function(x,
                                    length(type)))
     dfm.dfm(
         build_dfm(
-            temp,
-            features = type,
+            temp, type,
             docvars = get_docvars(x, user = TRUE, system = TRUE),
             meta = attrs[["meta"]]),
         tolower = FALSE, stem = FALSE, verbose = verbose

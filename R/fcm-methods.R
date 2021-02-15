@@ -30,10 +30,11 @@ fcm_compress.default <- function(x) {
 
 #' @export
 fcm_compress.fcm <- function(x) {
-    if (x@context != "document")
+    attrs <- attributes(x)
+    if (field_object(attrs, "context") != "document")
         stop(message_error("fcm_context"))
-    matrix2fcm(group_dfm(x, rownames(x), colnames(x), use_docvars = FALSE), 
-               attributes(x))
+    x <- group_dfm(x, rownames(x), colnames(x), use_docvars = FALSE)
+    build_fcm(x, colnames(x), meta = attrs[["meta"]])
 }
 
 #' Sort an fcm in alphabetical order of the features
@@ -69,16 +70,17 @@ fcm_sort.default <- function(x) {
 
 #' @export
 fcm_sort.fcm <- function(x) {
-    slots <- get_fcm_slots(x)
+    x <- as.fcm(x)
+    attrs <- attributes(x)
     x <- as(x, "dgTMatrix")
     x <- x[order(rownames(x)), order(colnames(x))]
-    if (slots$tri) {
+    if (field_object(attrs, "tri")) {
         swap <- x@i > x@j
         i <- x@i[swap]
         x@i[swap] <- x@j[swap]
         x@j[swap] <- i
     }
-    matrix2fcm(x, slots)
+    build_fcm(x, colnames(x), meta = attrs[["meta"]])
 }
 
 #' Coercion and checking functions for fcm objects
@@ -102,7 +104,7 @@ as.fcm.default <- function(x) {
 #' @method as.fcm fcm
 #' @export
 as.fcm.fcm <- function(x) {
-    return(x)
+    upgrade_fcm(x)
 }
 
 #' @noRd
@@ -127,7 +129,7 @@ as.fcm.Matrix <- function(x) {
 #' @param x a Matrix
 #' @param slots slots a list of values to be assigned to slots
 #' @keywords internal
-matrix2fcm <- function(x, slots = NULL) {
+matrix2fcm <- function(x, meta = NULL) {
     
     rowname <- rownames(x)
     if (nrow(x) > length(rowname))
@@ -137,31 +139,10 @@ matrix2fcm <- function(x, slots = NULL) {
     if (ncol(x) > length(colname))
         colname <- paste0(quanteda_options("base_featname"), seq_len(ncol(x)))
     
-    x <- Matrix(x, sparse = TRUE)
-    x <- new("fcm", as(x, 'dgCMatrix'))
-    set_fcm_slots(x) <- slots
-    set_fcm_dimnames(x) <- list(rowname, colname)
-    return(x)
-}
-
-#' Set values to a fcm's S4 slots
-#' @param x a fcm 
-#' @param exceptions names of slots to be ignored
-#' @param value a list of values extracted using `attributes` and to be assigned to slots 
-#' @keywords internal
-"set_fcm_slots<-" <- function(x, exceptions = NULL, value) {
-    if (is.null(value)) return(x)
-    sname <- setdiff(slotNames("fcm"), c(slotNames("dgCMatrix"), exceptions))
-    for (s in sname) {
-        try({
-            slot(x, s) <- value[[s]]
-        }, silent = TRUE)
-    }
-    return(x)
-}
-
-#' @rdname set_fcm_slots-set
-get_fcm_slots <- function(x) {
-    sname <- setdiff(slotNames("fcm"), c(slotNames("dgCMatrix")))
-    attributes(x)[sname]
+    if (is.null(meta))
+        meta <- make_meta("fcm")
+    
+    build_fcm(as(Matrix(x, sparse = TRUE), "dgCMatrix"),
+              rowname, colname,
+              meta = meta)
 }

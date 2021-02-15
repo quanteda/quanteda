@@ -76,7 +76,15 @@ select_docvars <- function(x, field = NULL, user = TRUE, system = FALSE, drop = 
     }
 }
 
-# internal function to make new system-level docvars
+
+# Internal function to make new system-level docvars
+#' @param n the number of documents
+#' @param docname a character vector for the names of documents. Must be the
+#'   same length as `n` or `NULL`. If NULL, names are generated automatically.
+#' @param unique if `TRUE`, names must be all unique. If `FALSE`, documents with the same
+#'   names are treated as segments from the same document and given serial number.
+#' @param drop_docid if `TRUE`, drop unused names of documents.
+#' @keywords internal
 make_docvars <- function(n, docname = NULL, unique = TRUE, drop_docid = TRUE) {
     
     stopifnot(is.integer(n))
