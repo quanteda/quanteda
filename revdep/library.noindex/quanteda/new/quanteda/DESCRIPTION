@@ -1,0 +1,81 @@
+Package: quanteda
+Version: 2.9.9000
+Title: Quantitative Analysis of Textual Data
+Description: A fast, flexible, and comprehensive framework for 
+    quantitative text analysis in R.  Provides functionality for corpus management,
+    creating and manipulating tokens and ngrams, exploring keywords in context, 
+    forming and manipulating sparse matrices
+    of documents by features and feature co-occurrences, analyzing keywords, computing feature similarities and
+    distances, applying content dictionaries, applying supervised and unsupervised machine learning, 
+    visually representing text and text analyses, and more. 
+Authors@R: c( 
+    person("Kenneth", "Benoit", email = "kbenoit@lse.ac.uk", role = c("cre", "aut", "cph"), comment = c(ORCID = "0000-0002-0797-564X")), 
+    person("Kohei", "Watanabe", email = "watanabe.kohei@gmail.com", role = "aut", comment = c(ORCID = "0000-0001-6519-5265")), 
+    person("Haiyan", "Wang", email = "whyinsa@yahoo.com", role = "aut", comment = c(ORCID = "0000-0003-4992-4311")),
+    person("Paul", "Nulty", email = "paul.nulty@gmail.com", role = "aut", comment = c(ORCID = "0000-0002-7214-4666")), 
+    person("Adam", "Obeng", email = "quanteda@binaryeagle.com", role = "aut", comment = c(ORCID = "0000-0002-2906-4775")),
+    person("Stefan", "Müller", email = "mullers@tcd.ie", role = "aut", comment = c(ORCID = "0000-0002-6315-4125")),
+    person("Akitaka", "Matsuo", email = "a.matsuo@lse.ac.uk", role = "aut", comment = c(ORCID = "0000-0002-3323-6330")),
+    person("William", "Lowe", email = "wlowe@princeton.edu", role = "aut", comment = c(ORCID = "0000-0002-1549-6163")),
+    person("Christian", "Müller", email = "C.Mueller@lse.ac.uk", role = "ctb"),
+    person("European Research Council", role = "fnd", comment = "ERC-2011-StG 283794-QUANTESS")
+    )
+License: GPL-3
+Depends: R (>= 3.5.0), methods
+Imports: fastmatch, magrittr, Matrix (>= 1.2), Rcpp (>= 0.12.12),
+        RcppParallel, SnowballC, stopwords, stringi, xml2, yaml
+LinkingTo: Rcpp, RcppParallel, RcppArmadillo (>= 0.7.600.1.0)
+Suggests: rmarkdown, spelling, testthat, formatR, tm (>= 0.6),
+        tokenizers, knitr, lda, lsa, dplyr, purrr, quanteda.textmodels,
+        quanteda.textstats, quanteda.textplots, RColorBrewer, slam,
+        spacyr, stm, text2vec, topicmodels, jsonlite, quanteda, tibble,
+        tidytext, xtable, ggplot2
+URL: https://quanteda.io
+Encoding: UTF-8
+BugReports: https://github.com/quanteda/quanteda/issues
+LazyData: TRUE
+VignetteBuilder: knitr
+Language: en-GB
+RoxygenNote: 7.1.1
+SystemRequirements: C++11
+Roxygen: list(markdown = TRUE)
+Collate: 'RcppExports.R' 'meta.R' 'quanteda-documentation.R' 'aaa.R'
+        'bootstrap_dfm.R' 'casechange-functions.R' 'char_select.R'
+        'convert.R' 'corpus-addsummary-metadata.R'
+        'corpus-methods-base.R' 'corpus-methods-quanteda.R' 'corpus.R'
+        'corpus_reshape.R' 'corpus_sample.R' 'corpus_segment.R'
+        'corpus_subset.R' 'corpus_trim.R' 'data-documentation.R'
+        'dfm-classes.R' 'dfm-methods.R' 'dfm-print.R'
+        'dfm-subsetting.R' 'dfm.R' 'dfm_compress.R' 'dfm_group.R'
+        'dfm_lookup.R' 'dfm_match.R' 'dfm_replace.R' 'dfm_sample.R'
+        'dfm_select.R' 'dfm_sort.R' 'dfm_subset.R' 'dfm_trim.R'
+        'dfm_weight.R' 'dictionaries.R' 'dictionary_edit.R'
+        'dimnames.R' 'fcm-classes.R' 'docnames.R' 'docvars.R'
+        'fcm-methods.R' 'fcm-print.R' 'fcm-subsetting.R' 'fcm.R'
+        'fcm_select.R' 'kwic.R' 'message.R' 'nfunctions.R'
+        'object-builder.R' 'pattern2fixed.R' 'phrases.R'
+        'quanteda_options.R' 'readtext-methods.R' 'spacyr-methods.R'
+        'stopwords.R' 'summary.R' 'textmodel.R' 'textplot.R'
+        'textstat.R' 'tokenizers.R' 'tokens-methods-base.R' 'tokens.R'
+        'tokens_chunk.R' 'tokens_compound.R' 'tokens_group.R'
+        'tokens_lookup.R' 'tokens_ngrams.R' 'tokens_replace.R'
+        'tokens_sample.R' 'tokens_segment.R' 'tokens_select.R'
+        'tokens_split.R' 'tokens_subset.R' 'utils.R' 'validator.R'
+        'wordstem.R' 'zzz.R'
+RemoteType: local
+RemoteUrl: /Users/kbenoit/Dropbox (Personal)/GitHub/quanteda/quanteda
+NeedsCompilation: yes
+Packaged: 2021-02-15 14:31:59 UTC; kbenoit
+Author: Kenneth Benoit [cre, aut, cph]
+    (<https://orcid.org/0000-0002-0797-564X>),
+  Kohei Watanabe [aut] (<https://orcid.org/0000-0001-6519-5265>),
+  Haiyan Wang [aut] (<https://orcid.org/0000-0003-4992-4311>),
+  Paul Nulty [aut] (<https://orcid.org/0000-0002-7214-4666>),
+  Adam Obeng [aut] (<https://orcid.org/0000-0002-2906-4775>),
+  Stefan Müller [aut] (<https://orcid.org/0000-0002-6315-4125>),
+  Akitaka Matsuo [aut] (<https://orcid.org/0000-0002-3323-6330>),
+  William Lowe [aut] (<https://orcid.org/0000-0002-1549-6163>),
+  Christian Müller [ctb],
+  European Research Council [fnd] (ERC-2011-StG 283794-QUANTESS)
+Maintainer: Kenneth Benoit <kbenoit@lse.ac.uk>
+Built: R 4.0.3; x86_64-apple-darwin17.0; 2021-02-15 14:32:01 UTC; unix

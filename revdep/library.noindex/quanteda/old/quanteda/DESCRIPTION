@@ -1,0 +1,100 @@
+Package: quanteda
+Version: 2.1.2
+Title: Quantitative Analysis of Textual Data
+Description: A fast, flexible, and comprehensive framework for 
+    quantitative text analysis in R.  Provides functionality for corpus management,
+    creating and manipulating tokens and ngrams, exploring keywords in context, 
+    forming and manipulating sparse matrices
+    of documents by features and feature co-occurrences, analyzing keywords, computing feature similarities and
+    distances, applying content dictionaries, applying supervised and unsupervised machine learning, 
+    visually representing text and text analyses, and more. 
+Authors@R: c( 
+    person("Kenneth", "Benoit", email = "kbenoit@lse.ac.uk", role = c("cre", "aut", "cph"), comment = c(ORCID = "0000-0002-0797-564X")), 
+    person("Kohei", "Watanabe", email = "watanabe.kohei@gmail.com", role = "aut", comment = c(ORCID = "0000-0001-6519-5265")), 
+    person("Haiyan", "Wang", email = "whyinsa@yahoo.com", role = "aut", comment = c(ORCID = "0000-0003-4992-4311")),
+    person("Paul", "Nulty", email = "paul.nulty@gmail.com", role = "aut", comment = c(ORCID = "0000-0002-7214-4666")), 
+    person("Adam", "Obeng", email = "quanteda@binaryeagle.com", role = "aut", comment = c(ORCID = "0000-0002-2906-4775")),
+    person("Stefan", "Müller", email = "mullers@tcd.ie", role = "aut", comment = c(ORCID = "0000-0002-6315-4125")),
+    person("Akitaka", "Matsuo", email = "a.matsuo@lse.ac.uk", role = "aut", comment = c(ORCID = "0000-0002-3323-6330")),
+    person("Jiong Wei", "Lua", email = "J.W.Lua@lse.ac.uk", role = "aut"),
+    person("Jouni", "Kuha", email = "j.kuha@lse.ac.uk", role = "aut", comment = c(ORCID = "0000-0002-1156-8465")),
+    person("William", "Lowe", email = "wlowe@princeton.edu", role = "aut", comment = c(ORCID = "0000-0002-1549-6163")),
+    person("Christian", "Müller", email = "C.Mueller@lse.ac.uk", role = "ctb"),
+    person("Lori", "Young", role = "dtc", comment = "Lexicoder Sentiment Dictionary 2015"),
+    person("Stuart", "Soroka", role = "dtc", comment = "Lexicoder Sentiment Dictionary 2015"),
+    person("Ian", "Fellows", email = "ian@fellstat.com", role = "cph", 
+           comment = "authored wordcloud C source code (modified)"),
+    person("European Research Council", role = "fnd", comment = "ERC-2011-StG 283794-QUANTESS")
+    )
+License: GPL-3
+Depends: R (>= 3.1.0), methods
+Imports: data.table (>= 1.9.6), extrafont, fastmatch, ggplot2 (>=
+        2.2.0), ggrepel, jsonlite, magrittr, Matrix (>= 1.2), network,
+        Rcpp (>= 0.12.12), RcppParallel, sna, SnowballC, stopwords,
+        stringi, xml2, yaml, proxyC (>= 0.1.4), digest
+LinkingTo: Rcpp, RcppParallel, RcppArmadillo (>= 0.7.600.1.0)
+Suggests: dplyr, DT, e1071, entropy, ExPosition, lda, lsa, proxy,
+        purrr, quanteda.textmodels, RColorBrewer, rmarkdown, slam,
+        spacyr, spelling, stm, svs, testthat, text2vec, tibble,
+        formatR, tidytext, tm (>= 0.6), tokenizers, topicmodels,
+        xtable, knitr, igraph, wordcloud
+URL: https://quanteda.io
+Encoding: UTF-8
+BugReports: https://github.com/quanteda/quanteda/issues
+LazyData: TRUE
+VignetteBuilder: knitr
+Language: en-GB
+Collate: 'RcppExports.R' 'View.R' 'meta.R' 'quanteda-documentation.R'
+        'aaa.R' 'bootstrap_dfm.R' 'casechange-functions.R'
+        'char_select.R' 'convert.R' 'corpus-addsummary-metadata.R'
+        'corpus-methods-base.R' 'corpus-methods-quanteda.R' 'corpus.R'
+        'corpus_reshape.R' 'corpus_sample.R' 'corpus_segment.R'
+        'corpus_subset.R' 'corpus_trim.R' 'data-documentation.R'
+        'dfm-classes.R' 'dfm-methods.R' 'dfm-print.R'
+        'dfm-subsetting.R' 'dfm.R' 'dfm_compress.R' 'dfm_group.R'
+        'dfm_lookup.R' 'dfm_match.R' 'dfm_replace.R' 'dfm_sample.R'
+        'dfm_select.R' 'dfm_sort.R' 'dfm_subset.R' 'dfm_trim.R'
+        'dfm_weight.R' 'dictionaries.R' 'dictionary_edit.R'
+        'dimnames.R' 'directionchange-functions.R' 'fcm-classes.R'
+        'docnames.R' 'docvars.R' 'fcm-methods.R' 'fcm-print.R'
+        'fcm-subsetting.R' 'fcm.R' 'fcm_select.R' 'kwic.R' 'metadoc.R'
+        'nfunctions.R' 'nscrabble.R' 'nsyllable.R' 'object-builder.R'
+        'pattern2fixed.R' 'phrases.R' 'quanteda_options.R'
+        'readtext-methods.R' 'spacyr-methods.R' 'stopwords.R'
+        'summary.R' 'textmodel.R' 'textplot_keyness.R'
+        'textplot_network.R' 'textplot_wordcloud.R' 'textplot_xray.R'
+        'textstat-methods.R' 'textstat_collocations.R'
+        'textstat_entropy.R' 'textstat_frequency.R'
+        'textstat_keyness.R' 'textstat_lexdiv.R'
+        'textstat_readability.R' 'textstat_simil.R'
+        'textstat_summary.R' 'tokenizers.R' 'tokens-methods-base.R'
+        'tokens.R' 'tokens_chunk.R' 'tokens_compound.R'
+        'tokens_group.R' 'tokens_lookup.R' 'tokens_ngrams.R'
+        'tokens_replace.R' 'tokens_sample.R' 'tokens_segment.R'
+        'tokens_select.R' 'tokens_split.R' 'tokens_subset.R' 'utils.R'
+        'wordstem.R' 'zzz.R'
+RoxygenNote: 7.1.1
+SystemRequirements: C++11
+NeedsCompilation: yes
+Packaged: 2020-09-19 17:44:00 UTC; kbenoit
+Author: Kenneth Benoit [cre, aut, cph]
+    (<https://orcid.org/0000-0002-0797-564X>),
+  Kohei Watanabe [aut] (<https://orcid.org/0000-0001-6519-5265>),
+  Haiyan Wang [aut] (<https://orcid.org/0000-0003-4992-4311>),
+  Paul Nulty [aut] (<https://orcid.org/0000-0002-7214-4666>),
+  Adam Obeng [aut] (<https://orcid.org/0000-0002-2906-4775>),
+  Stefan Müller [aut] (<https://orcid.org/0000-0002-6315-4125>),
+  Akitaka Matsuo [aut] (<https://orcid.org/0000-0002-3323-6330>),
+  Jiong Wei Lua [aut],
+  Jouni Kuha [aut] (<https://orcid.org/0000-0002-1156-8465>),
+  William Lowe [aut] (<https://orcid.org/0000-0002-1549-6163>),
+  Christian Müller [ctb],
+  Lori Young [dtc] (Lexicoder Sentiment Dictionary 2015),
+  Stuart Soroka [dtc] (Lexicoder Sentiment Dictionary 2015),
+  Ian Fellows [cph] (authored wordcloud C source code (modified)),
+  European Research Council [fnd] (ERC-2011-StG 283794-QUANTESS)
+Maintainer: Kenneth Benoit <kbenoit@lse.ac.uk>
+Repository: CRAN
+Date/Publication: 2020-09-23 04:10:03 UTC
+Built: R 4.0.2; x86_64-apple-darwin17.0; 2020-09-23 11:19:28 UTC; unix
+Archs: quanteda.so.dSYM
