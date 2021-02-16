@@ -31,17 +31,17 @@
 #' dfm_subset(dfmat, grp > 1)
 #' # selecting on a supplied vector
 #' dfm_subset(dfmat, c(TRUE, FALSE, TRUE, FALSE))
-dfm_subset <- function(x, subset, ...) {
+dfm_subset <- function(x, subset, drop_docid = TRUE, ...) {
     UseMethod("dfm_subset")
 }
     
 #' @export
-dfm_subset.default <- function(x, subset, ...) {
+dfm_subset.default <- function(x, subset, drop_docid = TRUE, ...) {
     check_class(class(x), "dfm_subset")
 }
     
 #' @export
-dfm_subset.dfm <- function(x, subset, ...) {
+dfm_subset.dfm <- function(x, subset, drop_docid = TRUE, ...) {
     
     x <- as.dfm(x)
     check_dots(...)
@@ -62,5 +62,5 @@ dfm_subset.dfm <- function(x, subset, ...) {
     #     names(nl) <- names(usr)
     #     eval(substitute(select), nl, parent.frame())
     # }
-    return(x[r,])
+    return(x[r,,drop_docid = drop_docid])
 }

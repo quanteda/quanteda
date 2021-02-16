@@ -64,11 +64,12 @@ the calculations}
 
 \item{e2}{second quantity in "+" operation for dfm}
 
-\item{i}{index for documents}
+\item{i}{document names or indices for documents to extract.}
 
-\item{j}{index for features}
+\item{j}{feature names or indices for documents to extract.}
 
-\item{drop}{always set to \code{FALSE}}
+\item{drop_docid}{if \code{TRUE}, \code{docid} for documents are removed as the result
+of extraction.}
 }
 \description{
 The dfm class of object is a type of \link[Matrix:Matrix-class]{Matrix-class} object with

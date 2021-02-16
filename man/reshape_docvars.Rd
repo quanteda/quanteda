@@ -4,7 +4,7 @@
 \alias{reshape_docvars}
 \title{Internal function to subset or duplicate docvar rows}
 \usage{
-reshape_docvars(x, i = NULL)
+reshape_docvars(x, i = NULL, drop_docid = TRUE)
 }
 \arguments{
 \item{x}{docvar data.frame}

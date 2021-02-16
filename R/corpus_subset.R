@@ -8,7 +8,8 @@
 #' @param x [corpus] object to be subsetted
 #' @param subset logical expression indicating the documents to keep: missing
 #'   values are taken as false
-# @param select expression, indicating the \link{docvars} to keep
+#' @param drop_docid if `TRUE`, `docid` for documents are removed as the result 
+#'   of subsetting.
 #' @param ... not used
 #' @return corpus object, with a subset of documents (and docvars) selected according to arguments
 #' @export
@@ -17,17 +18,17 @@
 #' @examples
 #' summary(corpus_subset(data_corpus_inaugural, Year > 1980))
 #' summary(corpus_subset(data_corpus_inaugural, Year > 1930 & President == "Roosevelt"))
-corpus_subset <- function(x, subset, ...) {
+corpus_subset <- function(x, subset, drop_docid = TRUE, ...) {
     UseMethod("corpus_subset")
 }
     
 #' @export
-corpus_subset.default <- function(x, subset, ...) {
+corpus_subset.default <- function(x, subset, drop_docid = TRUE, ...) {
     check_class(class(x), "corpus_subset")
 }
 
 #' @export
-corpus_subset.corpus <- function(x, subset, ...) {
+corpus_subset.corpus <- function(x, subset, drop_docid = TRUE, ...) {
     
     x <- as.corpus(x)
     check_dots(...)
@@ -41,5 +42,5 @@ corpus_subset.corpus <- function(x, subset, ...) {
         r <- eval(e, docvar, parent.frame())
         r & !is.na(r)
     }
-    return(x[r])
+    return(x[r, drop_docid = drop_docid])
 }

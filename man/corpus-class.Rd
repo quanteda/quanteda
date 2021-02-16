@@ -15,7 +15,7 @@ is.corpus(x)
 
 \method{c}{corpus}(..., recursive = FALSE)
 
-\method{[}{corpus}(x, i)
+\method{[}{corpus}(x, i, drop_docid = TRUE)
 
 \method{print}{summary.corpus}(x, ...)
 }
@@ -28,13 +28,9 @@ is.corpus(x)
 
 \item{recursive}{logical used by \code{c()} method, always set to \code{FALSE}}
 
-\item{i}{index for documents or rows of document variables}
+\item{i}{document names or indices for documents to extract.}
 
-\item{j}{index for column of document variables}
-
-\item{drop}{if \code{TRUE}, return a vector if extracting a single document
-variable; if \code{FALSE}, return it as a single-column data.frame.  See
-\code{\link[=drop]{drop()}} for further details.}
+\item{if}{\code{TRUE}, drop_docid drop \code{docid} for documents removed as the result of extraction.}
 }
 \value{
 \code{is.corpus} returns \code{TRUE} if the object is a corpus
