@@ -10,7 +10,7 @@ escape_regex(x)
 \item{x}{character vector to be escaped}
 }
 \description{
-This function escapes glob patterns before \code{utils:glob2rx()}, therefore * and ?
-are unescaped.
+This function escapes glob patterns before \code{utils:glob2rx()}, therefore * and
+? are unescaped.
 }
 \keyword{internal}

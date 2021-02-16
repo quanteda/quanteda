@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{pattern2list}
 \alias{pattern2list}
-\title{Function to assign multiple slots to a S4 object}
+\title{Convert various inputs as pattern to a vector}
 \usage{
 pattern2list(
   x,
@@ -16,8 +16,6 @@ pattern2list(
 )
 }
 \arguments{
-\item{x}{an S4 object}
-
 \item{valuetype}{the type of pattern matching: \code{"glob"} for "glob"-style
 wildcard expressions; \code{"regex"} for regular expressions; or \code{"fixed"} for
 exact matching. See \link{valuetype} for details.}
@@ -31,30 +29,12 @@ tokens object}
 \item{levels}{only used when pattern is a dictionary}
 
 \item{remove_unigram}{ignore single-word patterns if \code{TRUE}}
-
-\item{exceptions}{slots to ignore}
-
-\item{value}{a list of attributes extracted by attributes()}
 }
 \description{
-Function to assign multiple slots to a S4 object
+Convert various inputs as pattern to a vector.  Used in \code{\link[=tokens_select]{tokens_select()}},
+\code{\link[=tokens_compound]{tokens_compound()}}, and \code{\link[=kwic]{kwic()}}.
 }
 \seealso{
 \code{\link[=pattern2id]{pattern2id()}}
 }
-\keyword{Convert}
-\keyword{Used}
-\keyword{[kwic].}
-\keyword{[tokens_compound],}
-\keyword{[tokens_select],}
-\keyword{a}
-\keyword{and}
-\keyword{as}
-\keyword{in}
-\keyword{inputs}
 \keyword{internal}
-\keyword{pattern}
-\keyword{to}
-\keyword{various}
-\keyword{vector}
-\keyword{vector.}

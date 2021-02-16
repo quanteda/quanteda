@@ -10,8 +10,7 @@ is_indexed(pattern)
 \item{pattern}{a glob pattern to be tested}
 }
 \description{
-Internal function for \code{select_types} to check if a glob pattern is
-indexed by
+Internal function for \code{select_types} to check if a glob pattern is indexed by
 \code{index_types}.
 }
 \keyword{internal}

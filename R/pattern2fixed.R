@@ -312,8 +312,7 @@ expand <- function(elem){
 
 #' Check if a glob pattern is indexed by index_types
 #' 
-#' Internal function for `select_types` to check if a glob pattern is
-#' indexed by
+#' Internal function for `select_types` to check if a glob pattern is indexed by
 #' `index_types`.
 #' @param pattern a glob pattern to be tested
 #' @keywords internal
@@ -374,9 +373,7 @@ unlist_character <- function(x, unique = FALSE, ...) {
 }
 
 
-
 # internal-only aliases for backward compatibility
 # TODO: this should be removed with in a year (by April 2019).
 regex2id <- pattern2id
 regex2fixed <- pattern2fixed
-
