@@ -77,7 +77,7 @@ select_docvars <- function(x, field = NULL, user = TRUE, system = FALSE, drop = 
 }
 
 
-# Internal function to make new system-level docvars
+#' Internal function to make new system-level docvars
 #' @param n the number of documents
 #' @param docname a character vector for the names of documents. Must be the
 #'   same length as `n` or `NULL`. If NULL, names are generated automatically.
