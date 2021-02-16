@@ -192,7 +192,8 @@ print.kwic <- function(x, window = 5L, separator = " ", ...) {
 #' @noRd
 `[.kwic` <- function(x, i, j, ...) {
     attrs <- attributes(x)
-    x <- as.data.frame(x)[i,]
+    class(x) <- c("data.frame")
+    x <- x[i,]
     attr(x, "tokens") <- attrs$tokens[unique(x$docname)]
     class(x) <- c("kwic", "data.frame")
     return(x)
