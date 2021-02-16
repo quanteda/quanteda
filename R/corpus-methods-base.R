@@ -173,11 +173,8 @@ c.corpus <- function(..., recursive = FALSE) {
 #' @rdname corpus-class
 #' @method [ corpus
 #' @export
-#' @param i index for documents or rows of document variables
-#' @param j index for column of document variables
-#' @param drop if `TRUE`, return a vector if extracting a single document
-#'   variable; if `FALSE`, return it as a single-column data.frame.  See
-#'   [drop()] for further details.
+#' @param i document names or indices for documents to extract.
+#' @param if `TRUE`, drop_docid drop `docid` for documents removed as the result of extraction.
 #' @return
 #' Indexing a corpus works in three ways, as of v2.x.x:
 #' * `[` returns a subsetted corpus
@@ -191,7 +188,7 @@ c.corpus <- function(..., recursive = FALSE) {
 #'
 #' # return the text itself
 #' data_corpus_inaugural[["1793-Washington"]]
-`[.corpus` <- function(x, i) {
+`[.corpus` <- function(x, i, drop_docid = TRUE) {
 
     if (missing(i)) return(x)
     x <- as.corpus(x)
@@ -205,7 +202,7 @@ c.corpus <- function(..., recursive = FALSE) {
 
     build_corpus(
         unclass(x)[index],
-        docvars = reshape_docvars(attrs[["docvars"]], index),
+        docvars = reshape_docvars(attrs[["docvars"]], index, drop_docid),
         meta = attrs[["meta"]],
         class = attrs[["class"]]
     )

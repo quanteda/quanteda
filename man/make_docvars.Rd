@@ -2,9 +2,9 @@
 % Please edit documentation in R/docvars.R
 \name{make_docvars}
 \alias{make_docvars}
-\title{Internal function to create docvars}
+\title{Internal function to make new system-level docvars}
 \usage{
-make_docvars(n, docname = NULL, unique = TRUE)
+make_docvars(n, docname = NULL, unique = TRUE, drop_docid = TRUE)
 }
 \arguments{
 \item{n}{the number of documents}
@@ -14,8 +14,10 @@ same length as \code{n} or \code{NULL}. If NULL, names are generated automatical
 
 \item{unique}{if \code{TRUE}, names must be all unique. If \code{FALSE}, documents with the same
 names are treated as segments from the same document and given serial number.}
+
+\item{drop_docid}{if \code{TRUE}, drop unused names of documents.}
 }
 \description{
-Internal function to create docvars
+Internal function to make new system-level docvars
 }
 \keyword{internal}

@@ -21,15 +21,15 @@ subset_dfm <- function(x, i, j, ..., drop) {
     }
 
     if (!missing(i) && missing(j)) {
-        x <- "["(as(x, "Matrix"), i, , ..., drop = FALSE)
+        x <- "["(as(x, "Matrix"), i, , drop = FALSE)
     } else if (missing(i) && !missing(j)) {
-        x <- "["(as(x, "Matrix"), , j, ..., drop = FALSE)
+        x <- "["(as(x, "Matrix"), , j, drop = FALSE)
     } else {
-        x <- "["(as(x, "Matrix"), i, j, ..., drop = FALSE)
+        x <- "["(as(x, "Matrix"), i, j, drop = FALSE)
     }
 
     if (!missing(i))
-        attrs[["docvars"]] <- reshape_docvars(attrs[["docvars"]], index_row)
+        attrs[["docvars"]] <- reshape_docvars(attrs[["docvars"]], index_row, ...)
 
     build_dfm(
         x, colnames(x),
@@ -38,9 +38,11 @@ subset_dfm <- function(x, i, j, ..., drop) {
     )
 }
 
-#' @param i index for documents
-#' @param j index for features
-#' @param drop always set to `FALSE`
+#' @param i document names or indices for documents to extract.
+#' @param j feature names or indices for documents to extract.
+#' @param drop_docid if `TRUE`, `docid` for documents are removed as the result 
+#'   of extraction.
+# @param drop always set to `FALSE`
 #' @param ... additional arguments not used here
 #' @rdname dfm-class
 #' @export

@@ -64,7 +64,7 @@ docnames.tokens <- function(x) {
 #' @export
 "docnames<-.corpus" <- function(x, value) {
     x <- as.corpus(x)
-    temp <- make_docvars(length(value), value, TRUE)
+    temp <- make_docvars(length(value), value, unique = TRUE)
     attr(x, "docvars")[c("docname_", "docid_", "segid_")] <- temp
     attr(x, "names") <- temp[["docname_"]]
     return(x)
@@ -74,7 +74,7 @@ docnames.tokens <- function(x) {
 #' @export
 "docnames<-.tokens" <- function(x, value) {
     x <- as.tokens(x)
-    temp <- make_docvars(length(value), value, TRUE)
+    temp <- make_docvars(length(value), value, unique = TRUE)
     attr(x, "docvars")[c("docname_", "docid_", "segid_")] <- temp
     attr(x, "names") <- temp[["docname_"]]
     return(x)
@@ -84,7 +84,7 @@ docnames.tokens <- function(x) {
 #' @export
 "docnames<-.dfm" <- function(x, value) {
     x <- as.dfm(x)
-    temp <- make_docvars(length(value), value, TRUE)
+    temp <- make_docvars(length(value), value, unique = TRUE)
     x@docvars[c("docname_", "docid_", "segid_")] <- temp
     x@Dimnames[["docs"]] <- temp[["docname_"]]
     return(x)
