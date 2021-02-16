@@ -111,7 +111,7 @@ kwic.tokens <- function(x, pattern,
         result <- result[r,]
     }
     rownames(result) <- NULL
-    attr(result, "tokens") <- x[unique(result$docname)]
+    attr(result, "tokens") <- x
     class(result) <- c("kwic", "data.frame")
     return(result)
 }
