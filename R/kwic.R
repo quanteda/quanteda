@@ -175,11 +175,11 @@ print.kwic <- function(x, window = 5L, separator = " ", ...) {
         }
         result <- data.frame(
             label = labels,
-            pre = format(stri_replace_all_regex(x$pre, "(\\w*) (\\W)", "$1$2"), justify = "right"),
+            pre = format(stri_replace_all_regex(x$pre, "(\\p{L}*) (\\p{Po})", "$1$2"), justify = "right"),
             s1 = rep("|", nrow(x)),
             keyword = format(x$keyword, justify = "centre"),
             s2 = rep("|", nrow(x)),
-            post = format(stri_replace_all_regex(x$post, "(\\w*) (\\W)", "$1$2"), justify = "left")
+            post = format(stri_replace_all_regex(x$post, "(\\p{L}*) (\\p{Po})", "$1$2"), justify = "left")
         )
         colnames(result) <- NULL
         print(result, row.names = FALSE)
