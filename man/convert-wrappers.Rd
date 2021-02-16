@@ -2,10 +2,6 @@
 % Please edit documentation in R/convert.R
 \name{convert-wrappers}
 \alias{convert-wrappers}
-\alias{as.wfm}
-\alias{as.wfm.dfm}
-\alias{as.DocumentTermMatrix}
-\alias{as.DocumentTermMatrix.dfm}
 \alias{dfm2austin}
 \alias{dfm2tm}
 \alias{dfm2lda}
@@ -14,14 +10,6 @@
 \alias{dfm2stm}
 \title{Convenience wrappers for dfm convert}
 \usage{
-as.wfm(x)
-
-\method{as.wfm}{dfm}(x)
-
-as.DocumentTermMatrix(x)
-
-\method{as.DocumentTermMatrix}{dfm}(x)
-
 dfm2austin(x)
 
 dfm2tm(x, weighting = tm::weightTf)
@@ -63,19 +51,6 @@ similar in syntax to analogous commands in the packages to whose format they
 are converting.
 }
 \details{
-\code{as.wfm} converts a quanteda \link{dfm} into the
-\code{wfm} format used by the \code{austin} package.
-
-\code{as.DocumentTermMatrix} will convert a quanteda \link{dfm} into the
-\pkg{tm} package's \link[tm:matrix]{DocumentTermMatrix} format. Note: The
-\pkg{tm} package version of \code{as.TermDocumentMatrix()} allows a \code{weighting}
-argument, which supplies a weighting function for
-\code{\link[tm:matrix]{TermDocumentMatrix()}}.  Here the default is for
-term frequency weighting. If you want a different weighting, apply the
-weights after converting using one of the \pkg{tm} functions. For other
-available weighting functions from the \pkg{tm} package, see
-\link[tm:matrix]{TermDocumentMatrix}.
-
 \code{dfm2lda} provides converts a \link{dfm} into the list representation
 of terms in documents used by the \pkg{lda} package (a list with components
 "documents" and "vocab" as needed by
@@ -97,14 +72,6 @@ a \link{data.frame}}
 \examples{
 corp <- corpus_subset(data_corpus_inaugural, Year > 1970)
 dfmat <- dfm(corp)
-
-# shortcut conversion to austin package's wfm format
-identical(as.wfm(dfmat), convert(dfmat, to = "austin"))
-
-\dontrun{
-# shortcut conversion to tm package's DocumentTermMatrix format
-identical(as.DocumentTermMatrix(dfmat), convert(dfmat, to = "tm"))
-}
 
 \dontrun{
 # shortcut conversion to lda package list format

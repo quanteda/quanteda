@@ -7,6 +7,14 @@ test_that("tokens_subset works in a basic way", {
         5
     )
     expect_equal(
+        length(levels(docid(tokens_subset(toks, Year > 2000, drop_docid = TRUE)))),
+        5
+    )
+    expect_equal(
+        length(levels(docid(tokens_subset(toks, Year > 2000, drop_docid = FALSE)))), 
+        10
+    )
+    expect_equal(
         docnames(tokens_subset(toks, President == "Clinton")),
         c("1993-Clinton", "1997-Clinton")
     )

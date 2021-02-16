@@ -4,13 +4,16 @@
 \alias{corpus_subset}
 \title{Extract a subset of a corpus}
 \usage{
-corpus_subset(x, subset, ...)
+corpus_subset(x, subset, drop_docid = TRUE, ...)
 }
 \arguments{
 \item{x}{\link{corpus} object to be subsetted}
 
 \item{subset}{logical expression indicating the documents to keep: missing
 values are taken as false}
+
+\item{drop_docid}{if \code{TRUE}, \code{docid} for documents are removed as the result
+of subsetting.}
 
 \item{...}{not used}
 }

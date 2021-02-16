@@ -7,6 +7,14 @@ test_that("dfm_subset works in a basic way", {
         5
     )
     expect_equal(
+        length(levels(docid(dfm_subset(dfmat, Year > 2000, drop_docid = TRUE)))),
+        5
+    )
+    expect_equal(
+        length(levels(docid(dfm_subset(dfmat, Year > 2000, drop_docid = FALSE)))), 
+        10
+    )
+    expect_equal(
         docnames(dfm_subset(dfmat, President == "Clinton")),
         c("1993-Clinton", "1997-Clinton")
     )

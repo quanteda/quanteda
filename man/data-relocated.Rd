@@ -16,3 +16,5 @@ package:
 \seealso{
 \code{quanteda.textmodels::quanteda.textmodels-package}
 }
+\keyword{data}
+\keyword{internal}

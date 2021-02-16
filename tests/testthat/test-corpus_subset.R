@@ -7,6 +7,14 @@ test_that("corpus_subset works in a basic way", {
         5
     )
     expect_equal(
+        length(levels(docid(corpus_subset(corp, Year > 2000, drop_docid = TRUE)))),
+        5
+    )
+    expect_equal(
+        length(levels(docid(corpus_subset(corp, Year > 2000, drop_docid = FALSE)))), 
+        10
+    )
+    expect_equal(
         docnames(corpus_subset(corp, President == "Clinton")),
         c("1993-Clinton", "1997-Clinton")
     )

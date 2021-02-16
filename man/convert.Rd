@@ -29,7 +29,13 @@ needed by the function
 \link[lda:lda.collapsed.gibbs.sampler]{lda.collapsed.gibbs.sampler} from the
 \pkg{lda} package}
 \item{\code{"tm"}}{a \link[tm:matrix]{DocumentTermMatrix} from the \pkg{tm}
-package}
+package.  Note: The \pkg{tm} package version of \code{as.TermDocumentMatrix()}
+allows a \code{weighting} argument, which supplies a weighting function for
+\code{\link[tm:matrix]{TermDocumentMatrix()}}.  Here the default is for
+term frequency weighting. If you want a different weighting, apply the
+weights after converting using one of the \pkg{tm} functions. For other
+available weighting functions from the \pkg{tm} package, see
+\link[tm:matrix]{TermDocumentMatrix}.}
 \item{\code{"stm"}}{the  format for the \pkg{stm} package} \item{\code{"austin"}}{the
 \code{wfm} format from the \strong{austin} package}
 \item{\code{"topicmodels"}}{the "dtm" format as used by the \pkg{topicmodels}
