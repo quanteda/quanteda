@@ -11,15 +11,9 @@
 #' @param ... additional arguments passed to [tokens], for applicable
 #'   object types
 #' @return A `kwic` classed data.frame, with the document name
-#'   (`docname`), the token index positions (`from` and `to`,
+#'   (`docname`) and the token index positions (`from` and `to`,
 #'   which will be the same for single-word patterns, or a sequence equal in
-#'   length to the number of elements for multi-word phrases), the context
-#'   before (`pre`), the keyword in its original format (`keyword`,
-#'   preserving case and attached punctuation), and the context after
-#'   (`post`).  The return object has its own `print` method, plus
-#'   some special attributes that are hidden in the print view.  If you want to
-#'   turn this into a simple data.frame, simply wrap the result in
-#'   `data.frame`.
+#'   length to the number of elements for multi-word phrases).
 #'
 #' @note `pattern` will be a keyword pattern or phrase, possibly multiple
 #'   patterns, that may include punctuation.  If a pattern contains whitespace,
@@ -136,7 +130,7 @@ is.kwic <- function(x) {
 #' @rdname kwic
 #' @method as.data.frame kwic
 #' @export
-as.data.frame.kwic <- function(x, window = 5L, separator = " ", ...) {
+as.data.frame.kwic <- function(x, ..., window = 5L, separator = " ") {
     window <- check_integer(window, 1, 1, 0)
     separator <- check_character(separator)
     
@@ -159,11 +153,11 @@ as.data.frame.kwic <- function(x, window = 5L, separator = " ", ...) {
     return(x)
 }
 
+#' @rdname kwic
 #' @method print kwic
 #' @param window the number of context words to be displayed around the keyword.
 #' @param separator character to separate words in the output
 #' @importFrom stringi stri_c stri_c_list
-#' @noRd
 #' @export
 print.kwic <- function(x, window = 5L, separator = " ", ...) {
     

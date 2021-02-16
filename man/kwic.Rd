@@ -4,6 +4,7 @@
 \alias{kwic}
 \alias{is.kwic}
 \alias{as.data.frame.kwic}
+\alias{print.kwic}
 \title{Locate keywords-in-context}
 \usage{
 kwic(
@@ -16,7 +17,9 @@ kwic(
 
 is.kwic(x)
 
-\method{as.data.frame}{kwic}(x, window = 5L, separator = " ", ...)
+\method{as.data.frame}{kwic}(x, ..., window = 5L, separator = " ")
+
+\method{print}{kwic}(x, window = 5L, separator = " ", ...)
 }
 \arguments{
 \item{x}{a character, \link{corpus}, or \link{tokens} object}
@@ -33,18 +36,16 @@ exact matching. See \link{valuetype} for details.}
 
 \item{...}{additional arguments passed to \link{tokens}, for applicable
 object types}
+
+\item{window}{the number of context words to be displayed around the keyword.}
+
+\item{separator}{character to separate words in the output}
 }
 \value{
 A \code{kwic} classed data.frame, with the document name
-(\code{docname}), the token index positions (\code{from} and \code{to},
+(\code{docname}) and the token index positions (\code{from} and \code{to},
 which will be the same for single-word patterns, or a sequence equal in
-length to the number of elements for multi-word phrases), the context
-before (\code{pre}), the keyword in its original format (\code{keyword},
-preserving case and attached punctuation), and the context after
-(\code{post}).  The return object has its own \code{print} method, plus
-some special attributes that are hidden in the print view.  If you want to
-turn this into a simple data.frame, simply wrap the result in
-\code{data.frame}.
+length to the number of elements for multi-word phrases).
 }
 \description{
 For a text or a collection of texts (in a quanteda corpus object), return a
