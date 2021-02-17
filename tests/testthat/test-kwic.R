@@ -8,11 +8,12 @@ test_that("test kwic general", {
             docname = c("text1"),
             from = 4L,
             to = 4L,
-            pattern = factor("D"),
             pre = "A B C",
             keyword = "D",
             post = "E F G H I",
-            stringsAsFactors = FALSE))
+            pattern = factor("D"),
+            stringsAsFactors = FALSE)
+    )
     
     expect_equal(
         as.data.frame(kwic(txt, "D"), window = 2),
@@ -20,10 +21,10 @@ test_that("test kwic general", {
             docname = c("text1"),
             from = 4L,
             to = 4L,
-            pattern = factor("D"),
             pre = "B C",
             keyword = "D",
             post = "E F",
+            pattern = factor("D"),
             stringsAsFactors = FALSE))
     
     expect_equal(
@@ -32,10 +33,10 @@ test_that("test kwic general", {
             docname = c("text1"),
             from = 4L,
             to = 4L,
-            pattern = factor("D"),
             pre = "B_C",
             keyword = "D",
             post = "E_F",
+            pattern = factor("D"),
             stringsAsFactors = FALSE))
 
     expect_equal(
@@ -44,13 +45,12 @@ test_that("test kwic general", {
             docname = c("text1"),
             from = 4L,
             to = 4L,
-            pattern = factor("D"),
             pre = "ABC",
             keyword = "D",
             post = "EFGHI",
+            pattern = factor("D"),
             stringsAsFactors = FALSE))
 })
-
 
 test_that("test kwic on first token", {
     testkwic <- kwic(paste(LETTERS, collapse = " "), "A")
@@ -60,10 +60,10 @@ test_that("test kwic on first token", {
             docname = "text1",
             from = 1L,
             to = 1L,
-            pattern = factor("A"),
             pre = "",
             keyword = "A",
             post = "B C D E F",
+            pattern = factor("A"),
             stringsAsFactors = FALSE
         )
     )
@@ -77,10 +77,10 @@ test_that("test kwic on last token", {
             docname = c("text1"),
             from = 26L,
             to = 26L,
-            pattern = factor("Z"),
             pre = "U V W X Y",
             keyword = "Z",
             post = "",
+            pattern = factor("Z"),
             stringsAsFactors = FALSE
         )
     )
@@ -95,10 +95,10 @@ test_that("test kwic on two tokens", {
             docname = "text1",
             from = c(4L, 5L, 8L),
             to = c(4L, 5L, 8L),
-            pattern = factor(c("D", "E", "D")),
             pre = c("A B C", "B C D", "E F G"),
             keyword = c("D", "E", "D"),
             post = c("E F G", "F G D", "H"),
+            pattern = factor(c("D", "E", "D")),
             stringsAsFactors = FALSE)
     )
 })
@@ -120,10 +120,10 @@ test_that("test kwic on multiple texts", {
             docname = c("text2"),
             from = 1L,
             to = 1L,
-            pattern = factor("A"),
             pre = "",
             keyword = "A",
             post = "B C D E F",
+            pattern = factor("A"),
             stringsAsFactors = FALSE
         ))
     )
@@ -140,10 +140,10 @@ test_that("test kwic with multiple matches", {
             docname = c(c("text1", "text1")),
             from = c(1L, 27L),
             to = c(1L, 27L),
-            pattern = factor(c("A", "A")),
             pre = c("", "V W X Y Z"),
             keyword = c("A", "A"),
             post = c("B C D E F", "B C D E F"),
+            pattern = factor(c("A", "A")),
             stringsAsFactors = FALSE
         ))
     )
@@ -157,10 +157,10 @@ test_that("test kwic with multiple matches, where one is the last (fixed bug)", 
             docname = c(c("text1", "text1")),
             from = c(4L, 6L),
             to = c(4L, 6L),
-            pattern = factor("fox"),
             pre = c("what does the", "what does the fox say"),
             keyword = c("fox", "fox"),
             post = c("say fox", ""),
+            pattern = factor("fox"),
             stringsAsFactors = F
         ))
     )
@@ -179,11 +179,9 @@ test_that("test that kwic works for glob types", {
         setequal(c("security", "secured", "securing"),
                  as.data.frame(kwic_glob2)$keyword)
     )
-
 })
 
 test_that("test that kwic works for regex types", {
-
     txt <- data_corpus_inaugural["2005-Bush"]
     kwic_regex <- kwic(txt, "^secur",valuetype = "regex", case_insensitive = TRUE)
     expect_true(
@@ -546,7 +544,6 @@ test_that("as.data.frame.kwic can override kwic defaults", {
 })
 
 test_that("pre and post for phrases are working", {
-    skip("until this is fixed")
     toks <- tokens(c(doc1 = "a a a b c d d d", doc2 = "a b c d e"))
     expect_identical(
         as.data.frame(kwic(toks, phrase("b c"), window = 2)),

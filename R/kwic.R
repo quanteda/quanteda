@@ -156,9 +156,9 @@ as.data.frame.kwic <- function(x, ..., window = NULL, separator = NULL) {
     x$post <- rep("", nrow(x))
     if (nrow(x)) {
         toks <- attrs$tokens[x$docname]
-        lis_pre <- as.list(tokens_select(toks, startpos = pmax(x$from - window, 1), endpos = x$to - 1))
+        lis_pre <- as.list(tokens_select(toks, startpos = pmax(x$from - window, 1), endpos = x$from - 1))
         lis_key <- as.list(tokens_select(toks, startpos = x$from, endpos = x$to))
-        lis_post <- as.list(tokens_select(toks, startpos = x$from + 1, endpos = x$to + window))
+        lis_post <- as.list(tokens_select(toks, startpos = x$to + 1, endpos = x$to + window))
         
         x$pre[lengths(lis_pre) > 0] <- stri_c_list(lis_pre, sep = separator)
         x$keyword[lengths(lis_key) > 0] <- stri_c_list(lis_key, sep = separator)
