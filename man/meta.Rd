@@ -4,7 +4,6 @@
 \alias{meta}
 \alias{metacorpus}
 \alias{meta<-}
-\alias{"metacorpus<-"}
 \title{Get or set object metadata}
 \usage{
 meta(x, field = NULL, type = c("user", "object", "system", "all"))

@@ -127,6 +127,7 @@ make_docvars <- function(n, docname = NULL, unique = TRUE, drop_docid = TRUE) {
 #' Internal function to subset or duplicate docvar rows
 #' @param x docvar data.frame
 #' @param i numeric or logical vector for subsetting/duplicating rows
+#' @inheritParams make_docvars
 #' @keywords internal
 reshape_docvars <- function(x, i = NULL, drop_docid = TRUE) {
     if (is.null(i)) return(x)
