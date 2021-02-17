@@ -11,11 +11,12 @@
 #' document is a variable identified by `text_field`; and other variables
 #' are imported as document-level meta-data.  This matches the format of
 #' data.frames constructed by the the \pkg{readtext} package.
+#' \item a [kwic] object constructed by [kwic()].
+#' \item another [corpus] object.
 #' \item a \pkg{tm} [VCorpus][tm::VCorpus] or [SimpleCorpus][tm::SimpleCorpus] class  object,
 #'   with the fixed metadata
 #'   fields imported as [docvars] and corpus-level metadata imported
 #'   as [metacorpus] information.
-#' \item a [corpus] object.
 #' }
 #' @param x a valid corpus source object
 #' @param docnames Names to be assigned to the texts.  Defaults to the names of
@@ -227,6 +228,53 @@ corpus.data.frame <- function(x, docid_field = "doc_id", text_field = "text",
     result <- corpus(x[[text_index]], docvars = docvars, docnames = docname,
                      meta = meta, unique_docnames = unique_docnames)
     meta_system(result, "source") <- "data.frame"
+    return(result)
+}
+
+#' @rdname corpus
+#' @param split_context logical; if `TRUE`, split each kwic row into two
+#'   "documents", one for "pre" and one for "post", with this designation saved
+#'   in a new docvar `context` and with the new number of documents
+#'   therefore being twice the number of rows in the kwic.
+#' @param extract_keyword logical; if  `TRUE`, save the keyword matching
+#'   `pattern` as a new docvar `keyword`
+#' @examples
+#' # from a kwic
+#' kw <- kwic(data_char_sampletext, "econom*", separator = "",
+#'            remove_separators = FALSE) # keep original separators
+#' summary(corpus(kw))
+#' summary(corpus(kw, split_context = FALSE))
+#' texts(corpus(kw, split_context = FALSE))
+#'
+#' @export
+corpus.kwic <- function(x, split_context = TRUE, extract_keyword = TRUE, meta = list(), ...) {
+    split_context <- check_logical(split_context)
+    extract_keyword <- check_logical(extract_keyword)
+    check_dots(...)
+    
+    x <- as.data.frame(x)
+    
+    if (split_context) {
+        pre <- corpus(x[, c("docname", "from", "to", "pre", "keyword")],
+                      docid_field = "docname", text_field = "pre", meta = meta, unique_docnames = FALSE)
+        docvars(pre, "context") <- "pre"
+        docnames(pre) <- paste0(docnames(pre), ".pre")
+
+        post <- corpus(x[, c("docname", "from", "to", "post", "keyword")],
+                       docid_field = "docname", text_field = "post",
+                       meta = meta, unique_docnames = FALSE)
+        docvars(post, "context") <- "post"
+        docnames(post) <- paste0(docnames(post), ".post")
+        result <- pre + post
+        if (!extract_keyword) docvars(result, "keyword") <- NULL
+    } else {
+        result <- corpus(paste0(x[["pre"]], x[["keyword"]], x[["post"]]),
+                         docnames = x[["docname"]], meta = meta, unique_docnames = FALSE)
+        docnames(result) <- paste0(x[["docname"]], ".L", x[["from"]])
+        if (extract_keyword) docvars(result, "keyword") <- x[["keyword"]]
+    }
+
+    meta_system(result, "source") <- "kwic"
     return(result)
 }
 

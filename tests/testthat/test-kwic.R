@@ -491,8 +491,19 @@ test_that("subsetting of kwic works", {
 })
 
 test_that("raise error when inputs are invalid", {
-    
-    toks <-tokens( "This is a sample text.")
+    toks <- tokens( "This is a sample text.")
+    expect_error(
+        kwic(toks, "sample", window = c(1, 1, 3)),
+        "The length of window must be 1"
+    )
+    expect_error(
+        kwic(toks, "sample", window = -1),
+        "The value of window must be between 0 and Inf"
+    )
+    expect_error(
+        kwic(toks, "sample", separator = character()),
+        "The length of separator must be 1"
+    )
     expect_error(
         print(kwic(toks, "sample"), window = c(1, 1, 3)),
         "The length of window must be 1"
@@ -501,9 +512,28 @@ test_that("raise error when inputs are invalid", {
         print(kwic(toks, "sample"), window = -1),
         "The value of window must be between 0 and Inf"
     )
-    
     expect_error(
         print(kwic(toks, "sample"), separator = character()),
         "The length of separator must be 1"
+    )
+})
+
+test_that("print can override kwic defaults", {
+    kw <- c(d2 = "one two three four five six", d1 = "first four three two one") %>%
+        tokens() %>%
+        kwic(pattern = "three", window = 2, separator = "_")
+    expect_output(
+        print(kw, separator = "~"),
+        "Keyword-in-context with 2 matches.                                       
+ [d2, 3]    one~two | three | four~five
+ [d1, 3] first~four | three | two~one",
+        fixed = TRUE
+    )
+    expect_output(
+        print(kw, separator = "~", window = 3),
+        "Keyword-in-context with 2 matches.                                           
+ [d2, 3]    one~two | three | four~five~six
+ [d1, 3] first~four | three | two~one",
+        fixed = TRUE
     )
 })

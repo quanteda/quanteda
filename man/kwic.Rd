@@ -10,16 +10,18 @@
 kwic(
   x,
   pattern,
+  window = 5,
   valuetype = c("glob", "regex", "fixed"),
+  separator = " ",
   case_insensitive = TRUE,
   ...
 )
 
 is.kwic(x)
 
-\method{as.data.frame}{kwic}(x, ..., window = 5L, separator = " ")
+\method{as.data.frame}{kwic}(x, ..., window = NULL, separator = NULL)
 
-\method{print}{kwic}(x, window = 5L, separator = " ", ...)
+\method{print}{kwic}(x, window = NULL, separator = NULL, ...)
 }
 \arguments{
 \item{x}{a character, \link{corpus}, or \link{tokens} object}
@@ -27,19 +29,19 @@ is.kwic(x)
 \item{pattern}{a character vector, list of character vectors, \link{dictionary},
 or collocations object.  See \link{pattern} for details.}
 
+\item{window}{the number of context words to be displayed around the keyword.}
+
 \item{valuetype}{the type of pattern matching: \code{"glob"} for "glob"-style
 wildcard expressions; \code{"regex"} for regular expressions; or \code{"fixed"} for
 exact matching. See \link{valuetype} for details.}
+
+\item{separator}{character to separate words in the output}
 
 \item{case_insensitive}{logical; if \code{TRUE}, ignore case when matching a
 \code{pattern} or \link{dictionary} values}
 
 \item{...}{additional arguments passed to \link{tokens}, for applicable
 object types}
-
-\item{window}{the number of context words to be displayed around the keyword.}
-
-\item{separator}{character to separate words in the output}
 }
 \value{
 A \code{kwic} classed data.frame, with the document name

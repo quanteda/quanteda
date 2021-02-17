@@ -7,7 +7,9 @@
 #' delimiters.)
 #' @param x a character, [corpus], or [tokens] object
 #' @inheritParams pattern
+#' @param window the number of context words to be displayed around the keyword
 #' @inheritParams valuetype
+#' @param separator character to separate words in the output
 #' @param ... additional arguments passed to [tokens], for applicable
 #'   object types
 #' @return A `kwic` classed data.frame, with the document name
@@ -33,8 +35,9 @@
 #' print(kwic(toks, pattern = phrase("war against")))
 #' print(kwic(toks, pattern = phrase("war against"), valuetype = "regex"))
 #'
-kwic <- function(x, pattern, 
+kwic <- function(x, pattern, window = 5,
                  valuetype = c("glob", "regex", "fixed"),
+                 separator = " ",
                  case_insensitive = TRUE, ...) {
     UseMethod("kwic")
 }
@@ -47,21 +50,23 @@ kwic.default <- function(x, ...) {
 #' @rdname kwic
 #' @noRd
 #' @export
-kwic.character <- function(x, pattern, 
+kwic.character <- function(x, pattern, window = 5,
                            valuetype = c("glob", "regex", "fixed"),
+                           separator = " ",
                            case_insensitive = TRUE, ...) {
-    kwic(corpus(x), pattern, valuetype, case_insensitive, ...)
+    kwic(corpus(x), pattern, window, valuetype, separator, case_insensitive, ...)
 }
 
 #' @rdname kwic
 #' @noRd
 #' @export
-kwic.corpus <- function(x, pattern, 
-                        valuetype = c("glob", "regex", "fixed"),
-                        case_insensitive = TRUE, ...) {
+kwic.corpus <- function(x, pattern, window = 5,
+                           valuetype = c("glob", "regex", "fixed"),
+                           separator = " ",
+                           case_insensitive = TRUE, ...) {
     x <- as.corpus(x)
-    kwic(tokens(x, what = "word", ...),
-         pattern, valuetype, case_insensitive, ...)
+    kwic(tokens(x, what = "word", ...), pattern, 
+         window, valuetype, separator, case_insensitive, ...)
 }
 
 #' @rdname kwic
@@ -73,29 +78,26 @@ kwic.corpus <- function(x, pattern,
 #'          "Is it a question?",
 #'          "Sometimes you don't know if this is it.",
 #'          "Is it a bird or a plane or is it a train?")
-#' print(kwic(txt, c("is", "a"), valuetype = "fixed"))
-#' print(kwic(txt, phrase(c("is", "a", "is it")), valuetype = "fixed"))
+#' kwic(txt, "is")
+#' kwic(txt, "in", valuetype = "regex")
+#' kwic(txt, phrase(c("is", "a", "is it")), valuetype = "fixed")
 #'
 #' toks <- tokens(txt)
-#' print(kwic(toks, c("is", "a"), valuetype = "fixed"))
-#' print(kwic(toks, phrase(c("is", "a", "is it")), valuetype = "fixed"), window = 5)
+#' kwic(txt, "is", valuetype = "regex")
+#' kwic(txt, "or", window = 2)
 #'
 #' corp <- corpus(txt)
-#' print(kwic(corp, c("is", "a"), valuetype = "fixed"), separator = "")
+#' print(kwic(corp, "is"), separator = "")
 #' @export
-kwic.tokens <- function(x, pattern,
-                        valuetype = c("glob", "regex", "fixed"),
-                        case_insensitive = TRUE, ...) {
-    
+kwic.tokens <- function(x, pattern, window = 5,
+                           valuetype = c("glob", "regex", "fixed"),
+                           separator = " ",
+                           case_insensitive = TRUE, ...) {
     dots <- list(...)
-    if ("window" %in% names(dots))
-        .Defunct(msg = "window has been moved to print()")
-        
-    if ("separator" %in% names(dots))
-        .Defunct(msg = "separator has been moved to print()")
-    
     x <- as.tokens(x)
     valuetype <- match.arg(valuetype)
+    window <- check_integer(window, 1, 1, 0)
+    separator <- check_character(separator)
     
     attrs <- attributes(x)
     type <- types(x)
@@ -112,6 +114,8 @@ kwic.tokens <- function(x, pattern,
     }
     rownames(result) <- NULL
     attr(result, "tokens") <- x
+    attr(result, "window") <- window
+    attr(result, "separator") <- separator
     class(result) <- c("kwic", "data.frame")
     return(result)
 }
@@ -130,9 +134,17 @@ is.kwic <- function(x) {
 #' @rdname kwic
 #' @method as.data.frame kwic
 #' @export
-as.data.frame.kwic <- function(x, ..., window = 5L, separator = " ") {
-    window <- check_integer(window, 1, 1, 0)
-    separator <- check_character(separator)
+as.data.frame.kwic <- function(x, ..., window = NULL, separator = NULL) {
+    
+    if (is.null(window))
+        window <- attr(x, "window")
+    else
+        window <- check_integer(window, 1, 1, 0)
+    
+    if (is.null(separator))
+        separator <- attr(x, "separator")
+    else
+        separator <- check_character(separator)
     
     attrs <- attributes(x)
     x$pre <- rep("", nrow(x))
@@ -149,6 +161,8 @@ as.data.frame.kwic <- function(x, ..., window = 5L, separator = " ") {
         x$post[lengths(lis_post) > 0] <- stri_c_list(lis_post, sep = separator)
     }
     attr(x, "tokens") <- NULL
+    attr(x, "window") <- NULL
+    attr(x, "separator") <- NULL
     class(x) <- "data.frame"
     return(x)
 }
@@ -159,15 +173,13 @@ as.data.frame.kwic <- function(x, ..., window = 5L, separator = " ") {
 #' @param separator character to separate words in the output
 #' @importFrom stringi stri_c stri_c_list
 #' @export
-print.kwic <- function(x, window = 5L, separator = " ", ...) {
+print.kwic <- function(x, window = NULL, separator = NULL, ...) {
     
-    window <- check_integer(window, 1, 1, 0)
-    separator <- check_character(separator)
     attrs <- attributes(x)
+    x <- as.data.frame(x, window = window, separator = separator)
     
     cat(sprintf("Keyword-in-context with %d matches.", nrow(x)))
     if (nrow(x)) {
-        x <- as.data.frame(x, window = window, separator = separator)
         if (all(x$from == x$to)) {
             labels <- stri_c("[", x$docname, ", ", x$from, "]")
         } else {
