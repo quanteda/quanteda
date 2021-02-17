@@ -178,7 +178,7 @@ print.kwic <- function(x, window = NULL, separator = NULL, ...) {
     attrs <- attributes(x)
     x <- as.data.frame(x, window = window, separator = separator)
     
-    cat(sprintf("Keyword-in-context with %d matches.", nrow(x)))
+    cat(sprintf("Keyword-in-context with %d match%s.", nrow(x), ifelse(nrow(x) != 1, "es", "")))
     if (nrow(x)) {
         if (all(x$from == x$to)) {
             labels <- stri_c("[", x$docname, ", ", x$from, "]")

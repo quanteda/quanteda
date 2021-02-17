@@ -1,28 +1,5 @@
 context("test kwic")
 
-# test_that("test attr(kwic, 'ntoken') with un-named texts", {
-#     txt <- c(
-#         "The quick brown fox jumped over the lazy dog",
-#         "The quick brown fox",
-#         "The quick brown dog jumped over the lazy dog",
-#         NA
-#     )
-#     kw <- suppressWarnings(kwic(txt, "fox"))
-# 
-#     expect_equal(
-#         attr(kw, "ntoken"),
-#         c("text1" = 9, "text2" = 4, "text3" = 9, "text4" = 0)
-#     )
-# })
-# 
-# test_that("test attr(kwic, 'ntoken') text names", {
-#     kw <- kwic(data_corpus_inaugural, "american")
-#     expect_equal(
-#         names(attr(kw, "ntoken")),
-#         names(texts(data_corpus_inaugural))
-#     )
-# })
-
 test_that("test kwic general", {
     txt <- paste(LETTERS, collapse = " ")
     expect_equal(
@@ -251,24 +228,28 @@ test_that("print method works as expected", {
     testkwic <- kwic("what does the fox say fox", "fox")
     expect_output(
         print(testkwic), 
-        paste0("Keyword-in-context with 2 matches\\.\\s*",                                      
-               " [text1, 4]         what does the | fox | say fox\\s*",
-               " [text1, 6] what does the fox say | fox |\\s*"),
+        "Keyword-in-context with 2 matches.                                                 
+ [text1, 4]         what does the | fox | say fox
+ [text1, 6] what does the fox say | fox |",
+        fixed = TRUE
         )
         
     testkwic <- kwic("what does the fox say fox", "foox")
-    expect_output(print(testkwic), "Keyword-in-context with 0 matches")
+    expect_output(print(testkwic), "Keyword-in-context with 0 matches.", fixed = TRUE)
 })
 
 test_that("kwic works with padding", {
     testtoks <- tokens("what does the fox say cat")
     expect_output(
         print(kwic(tokens_remove(testtoks, c("what", "the"), padding = TRUE), "fox")),
-        paste0("Keyword-in-context with 1 matches\\.\\s*", 
-               " [text1, 4] does | fox | say cat\\s*"))
+        "Keyword-in-context with 1 match.                                
+ [text1, 4] does | fox | say cat",
+        fixed = TRUE
+ )
     expect_output(
         print(kwic(tokens_remove(testtoks, "*", padding = TRUE), "fox")),
-        "Keyword-in-context with 0 matches"
+        "Keyword-in-context with 0 matches.",
+        fixed = TRUE
     )
 })
 
@@ -486,7 +467,7 @@ test_that("subsetting of kwic works", {
     expect_true("kwic" %in% class(kw2))
     expect_output(
         print(kw2),
-        paste0("Keyword-in-context with 3 matches\\.*")
+        paste0("^Keyword-in-context with 3 matches\\.")
     )
 })
 
@@ -535,5 +516,31 @@ test_that("print can override kwic defaults", {
  [d2, 3]    one~two | three | four~five~six
  [d1, 3] first~four | three | two~one",
         fixed = TRUE
+    )
+})
+
+test_that("as.data.frame.kwic can override kwic defaults", {
+    kw <- c(d2 = "one two three four five six", d1 = "first four three two one") %>%
+        tokens() %>%
+        kwic(pattern = "three", window = 2, separator = "_")
+    expect_identical(
+        as.data.frame(kw, separator = "~"),
+        structure(list(docname = c("d2", "d1"), 
+                       from = c(3L, 3L), to = c(3L, 3L), 
+                       pattern = structure(c(1L, 1L), .Label = "three", class = "factor"), 
+                       pre = c("one~two", "first~four"), 
+                       keyword = c("three", "three"), 
+                       post = c("four~five", "two~one")), 
+                  row.names = c(NA, -2L), class = "data.frame")
+    )
+    expect_identical(
+        as.data.frame(kw, separator = "~", window = 3),
+        structure(list(docname = c("d2", "d1"), 
+                       from = c(3L, 3L), to = c(3L, 3L), 
+                       pattern = structure(c(1L, 1L), .Label = "three", class = "factor"), 
+                       pre = c("one~two", "first~four"), 
+                       keyword = c("three", "three"), 
+                       post = c("four~five~six", "two~one")), 
+                  row.names = c(NA, -2L), class = "data.frame")
     )
 })
