@@ -66,14 +66,15 @@ will automatically be considered phrases where each whitespace-separated
 element matches a token in sequence.
 }
 \examples{
-corp <- data_corpus_inaugural
-print(head(kwic(corp, pattern = "secure*", valuetype = "glob")), window = 3)
-print(head(kwic(corp, pattern = "secur", valuetype = "regex")), window = 3)
-print(head(kwic(corp, pattern = "security", valuetype = "fixed")), window = 3)
+corp <- data_corpus_inaugural[1:8]
+kwic(corp, pattern = "secure*", valuetype = "glob", window = 3)
+kwic(corp, pattern = "secur", valuetype = "regex", window = 3)
+kwic(corp, pattern = "security", valuetype = "fixed", window = 3)
 
 toks <- tokens(corp)
-print(kwic(toks, pattern = phrase("war against")))
-print(kwic(toks, pattern = phrase("war against"), valuetype = "regex"))
+kwic(toks, pattern = phrase("secur* against"), window = 2)
+kw <- kwic(toks, pattern = phrase("war against"), valuetype = "regex")
+print(kw, window = 1)
 
 kw <- kwic(data_corpus_inaugural, "provident*")
 is.kwic(kw)

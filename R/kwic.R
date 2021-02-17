@@ -26,14 +26,15 @@
 #'   element matches a token in sequence.
 #' @export
 #' @examples
-#' corp <- data_corpus_inaugural
-#' print(head(kwic(corp, pattern = "secure*", valuetype = "glob")), window = 3)
-#' print(head(kwic(corp, pattern = "secur", valuetype = "regex")), window = 3)
-#' print(head(kwic(corp, pattern = "security", valuetype = "fixed")), window = 3)
+#' corp <- data_corpus_inaugural[1:8]
+#' kwic(corp, pattern = "secure*", valuetype = "glob", window = 3)
+#' kwic(corp, pattern = "secur", valuetype = "regex", window = 3)
+#' kwic(corp, pattern = "security", valuetype = "fixed", window = 3)
 #'
 #' toks <- tokens(corp)
-#' print(kwic(toks, pattern = phrase("war against")))
-#' print(kwic(toks, pattern = phrase("war against"), valuetype = "regex"))
+#' kwic(toks, pattern = phrase("secur* against"), window = 2)
+#' kw <- kwic(toks, pattern = phrase("war against"), valuetype = "regex")
+#' print(kw, window = 1)
 #'
 kwic <- function(x, pattern, window = 5,
                  valuetype = c("glob", "regex", "fixed"),
@@ -54,7 +55,9 @@ kwic.character <- function(x, pattern, window = 5,
                            valuetype = c("glob", "regex", "fixed"),
                            separator = " ",
                            case_insensitive = TRUE, ...) {
-    kwic(corpus(x), pattern, window, valuetype, separator, case_insensitive, ...)
+    kwic(corpus(x), pattern = pattern, window = window, 
+         valuetype = valuetype, separator = separator, 
+         case_insensitive = case_insensitive, ...)
 }
 
 #' @rdname kwic
@@ -65,8 +68,9 @@ kwic.corpus <- function(x, pattern, window = 5,
                            separator = " ",
                            case_insensitive = TRUE, ...) {
     x <- as.corpus(x)
-    kwic(tokens(x, what = "word", ...), pattern, 
-         window, valuetype, separator, case_insensitive, ...)
+    kwic(tokens(x, what = "word", ...), pattern = pattern, 
+         window = window, valuetype = valuetype, separator = separator, 
+         case_insensitive = case_insensitive, ...)
 }
 
 #' @rdname kwic
@@ -164,6 +168,8 @@ as.data.frame.kwic <- function(x, ..., window = NULL, separator = NULL) {
     attr(x, "window") <- NULL
     attr(x, "separator") <- NULL
     class(x) <- "data.frame"
+    # reorder columns to match pre-v3 order
+    x <- x[, c("docname", "from", "to", "pre", "keyword", "post", "pattern")]
     return(x)
 }
 
