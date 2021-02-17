@@ -527,20 +527,34 @@ test_that("as.data.frame.kwic can override kwic defaults", {
         as.data.frame(kw, separator = "~"),
         structure(list(docname = c("d2", "d1"), 
                        from = c(3L, 3L), to = c(3L, 3L), 
-                       pattern = structure(c(1L, 1L), .Label = "three", class = "factor"), 
                        pre = c("one~two", "first~four"), 
                        keyword = c("three", "three"), 
-                       post = c("four~five", "two~one")), 
+                       post = c("four~five", "two~one"),
+                       pattern = structure(c(1L, 1L), .Label = "three", class = "factor")), 
                   row.names = c(NA, -2L), class = "data.frame")
     )
     expect_identical(
         as.data.frame(kw, separator = "~", window = 3),
         structure(list(docname = c("d2", "d1"), 
                        from = c(3L, 3L), to = c(3L, 3L), 
-                       pattern = structure(c(1L, 1L), .Label = "three", class = "factor"), 
                        pre = c("one~two", "first~four"), 
                        keyword = c("three", "three"), 
-                       post = c("four~five~six", "two~one")), 
+                       post = c("four~five~six", "two~one"),
+                       pattern = structure(c(1L, 1L), .Label = "three", class = "factor")), 
                   row.names = c(NA, -2L), class = "data.frame")
+    )
+})
+
+test_that("pre and post for phrases are working", {
+    skip("until this is fixed")
+    toks <- tokens(c(doc1 = "a a a b c d d d", doc2 = "a b c d e"))
+    expect_identical(
+        as.data.frame(kwic(toks, phrase("b c"), window = 2)),
+        structure(list(docname = c("doc1", "doc2"), 
+                       from = c(4L, 2L), to = c(5L, 3L), 
+                       pre = c("a a", "a"), keyword = c("b c", "b c"), 
+                       post = c("d d", "d e"), 
+                       pattern = structure(c(1L, 1L), .Label = "b c", class = "factor")), 
+                  class = "data.frame", row.names = c(NA, -2L))
     )
 })
