@@ -91,3 +91,6 @@ object2fixed <- function(x, types, valuetype = c("glob", "fixed", "regex"),
     result <- lapply(temp, function(x) types[x])
     return(result)
 }
+
+# temporary duplication to avoid breaking existing packages
+pattern2id <- object2id
