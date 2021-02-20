@@ -11,12 +11,12 @@
 #' @inheritParams valuetype
 #' @param separator character to separate words in the output
 #' @param ... additional arguments passed to [tokens], for applicable
-#'   object types
+#'   object types; not used by `as.data.frame.kwic()`
 #' @return A `kwic` classed data.frame, with the document name
 #'   (`docname`) and the token index positions (`from` and `to`,
 #'   which will be the same for single-word patterns, or a sequence equal in
 #'   length to the number of elements for multi-word phrases).
-#'
+#'   
 #' @note `pattern` will be a keyword pattern or phrase, possibly multiple
 #'   patterns, that may include punctuation.  If a pattern contains whitespace,
 #'   it is best to wrap it in [phrase()] to make this explicit. However if
@@ -34,7 +34,6 @@
 #' toks <- tokens(corp)
 #' kwic(toks, pattern = phrase("secur* against"), window = 2)
 #' kw <- kwic(toks, pattern = phrase("war against"), valuetype = "regex")
-#' print(kw, window = 1)
 #'
 kwic <- function(x, pattern, window = 5,
                  valuetype = c("glob", "regex", "fixed"),
@@ -131,12 +130,24 @@ kwic.tokens <- function(x, pattern, window = 5,
 #' is.kwic(kw)
 #' is.kwic("Not a kwic")
 #' is.kwic(kw[, c("pre", "post")])
+#' 
 is.kwic <- function(x) {
     inherits(x, "kwic")
 }
 
 #' @rdname kwic
 #' @method as.data.frame kwic
+#' @return 
+#'   `as.data.frame.kwic()` returns a data.frame consisting of `docname`, token
+#'   index values for the keyword matches `from` and `to`, character fields
+#'   `pre`, `keyword`, and `post` and the original `pattern` used for the match.
+#'   The window size and separator can be adjusted in `as.data.frame()`,
+#'   regardless of their setting when the kwic was created.
+#' @examples
+#' corp <- data_corpus_inaugural[1:8]
+#' kw <- kwic(corp, pattern = "secure*", valuetype = "glob", window = 1)
+#' as.data.frame(kw)
+#' as.data.frame(kw, window = 3)
 #' @export
 as.data.frame.kwic <- function(x, ..., window = NULL, separator = NULL) {
     
@@ -173,18 +184,33 @@ as.data.frame.kwic <- function(x, ..., window = NULL, separator = NULL) {
     return(x)
 }
 
-#' @rdname kwic
+#' @rdname print-quanteda
 #' @method print kwic
-#' @param window the number of context words to be displayed around the keyword.
-#' @param separator character to separate words in the output
+#' @param max_nrow max number of documents to print; default is from the
+#'   `print_kwic_max_nrow` setting of [quanteda_options()]
 #' @importFrom stringi stri_c stri_c_list
 #' @export
-print.kwic <- function(x, window = NULL, separator = NULL, ...) {
+print.kwic <- function(x, max_nrow = quanteda_options("print_kwic_max_nrow"), 
+                       show_summary = quanteda_options("print_kwic_summary"), ...) {
+    # formerly arguments
+    window <- NULL
+    separator <- NULL
     
     attrs <- attributes(x)
-    x <- as.data.frame(x, window = window, separator = separator)
+    max_nrow <- check_integer(max_nrow, min = -1)
+    if (max_nrow < 0)
+        max_nrow <- nrow(x)
+    nrem <- max(0, nrow(x) - max_nrow)
+
+    x <- as.data.frame(x[seq_len(min(nrow(x), max_nrow)), ], 
+                       window = window, separator = separator)
     
-    cat(sprintf("Keyword-in-context with %d match%s.", nrow(x), ifelse(nrow(x) != 1, "es", "")))
+    if (show_summary) {
+        cat(msg("Keyword-in-context with %d %s",
+                list(nrow(x) + nrem, c("match", "matches")),
+                list(1, nrow(x) + nrem != 1)), ".", sep = "")
+    }
+    
     if (nrow(x)) {
         if (all(x$from == x$to)) {
             labels <- stri_c("[", x$docname, ", ", x$from, "]")
@@ -201,7 +227,15 @@ print.kwic <- function(x, window = NULL, separator = NULL, ...) {
         )
         colnames(result) <- NULL
         print(result, row.names = FALSE)
-        invisible(result)
+
+        if (nrem > 0) {
+            cat("[", sep = "") 
+            if (nrem > 0) {
+                cat(" reached max_nrow ... ", format(nrem, big.mark = ","), " more match", sep = "") 
+                if (nrem > 1) cat("es", sep = "")
+            }
+            cat(" ]\n", sep = "") 
+        }
     }
 }
 

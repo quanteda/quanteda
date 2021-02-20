@@ -234,6 +234,37 @@ test_that("print method works as expected", {
         
     testkwic <- kwic("what does the fox say fox", "foox")
     expect_output(print(testkwic), "Keyword-in-context with 0 matches.", fixed = TRUE)
+    
+    toks <- tokens(data_corpus_inaugural[1:8])
+    kw <- kwic(toks, "secure*", window = 1)
+    out <- "Keyword-in-context with 6 matches.                                                  
+      [1797-Adams, 478]   and | secure  | the     
+     [1797-Adams, 1512]   and | secured | immortal
+ [1805-Jefferson, 2367] shall | secure  | to      
+    [1817-Monroe, 1754]    To | secure  | us      
+    [1817-Monroe, 1814]    to | secure  | our     
+    [1817-Monroe, 3009]    to | secure  | economy"
+    expect_output(print(kw, max_nrow = -1), out, fixed = TRUE)
+    expect_output(print(kw, max_nrow = 6), out, fixed = TRUE)
+    expect_output(print(kw, max_nrow = 7), out, fixed = TRUE)
+    expect_output(print(kw, show_summary = FALSE),
+                  "      [1797-Adams, 478]   and | secure  | the     
+     [1797-Adams, 1512]   and | secured | immortal
+ [1805-Jefferson, 2367] shall | secure  | to      
+    [1817-Monroe, 1754]    To | secure  | us      
+    [1817-Monroe, 1814]    to | secure  | our     
+    [1817-Monroe, 3009]    to | secure  | economy", fixed = TRUE)
+    expect_output(print(kw, 3),
+                  "Keyword-in-context with 6 matches.                                                  
+      [1797-Adams, 478]   and | secure  | the     
+     [1797-Adams, 1512]   and | secured | immortal
+ [1805-Jefferson, 2367] shall | secure  | to      
+[ reached max_nrow ... 3 more matches ]", fixed = TRUE)
+    expect_output(print(kwic(toks, "secured", window = 1)),
+                  "Keyword-in-context with 1 match.                                            
+ [1797-Adams, 1512] and | secured | immortal", fixed = TRUE)
+    expect_output(print(kwic(toks, "XXX", window = 1)),
+                  "Keyword-in-context with 0 matches.", fixed = TRUE)
 })
 
 test_that("kwic works with padding", {
@@ -466,54 +497,6 @@ test_that("subsetting of kwic works", {
     expect_output(
         print(kw2),
         paste0("^Keyword-in-context with 3 matches\\.")
-    )
-})
-
-test_that("raise error when inputs are invalid", {
-    toks <- tokens( "This is a sample text.")
-    expect_error(
-        kwic(toks, "sample", window = c(1, 1, 3)),
-        "The length of window must be 1"
-    )
-    expect_error(
-        kwic(toks, "sample", window = -1),
-        "The value of window must be between 0 and Inf"
-    )
-    expect_error(
-        kwic(toks, "sample", separator = character()),
-        "The length of separator must be 1"
-    )
-    expect_error(
-        print(kwic(toks, "sample"), window = c(1, 1, 3)),
-        "The length of window must be 1"
-    )
-    expect_error(
-        print(kwic(toks, "sample"), window = -1),
-        "The value of window must be between 0 and Inf"
-    )
-    expect_error(
-        print(kwic(toks, "sample"), separator = character()),
-        "The length of separator must be 1"
-    )
-})
-
-test_that("print can override kwic defaults", {
-    kw <- c(d2 = "one two three four five six", d1 = "first four three two one") %>%
-        tokens() %>%
-        kwic(pattern = "three", window = 2, separator = "_")
-    expect_output(
-        print(kw, separator = "~"),
-        "Keyword-in-context with 2 matches.                                       
- [d2, 3]    one~two | three | four~five
- [d1, 3] first~four | three | two~one",
-        fixed = TRUE
-    )
-    expect_output(
-        print(kw, separator = "~", window = 3),
-        "Keyword-in-context with 2 matches.                                           
- [d2, 3]    one~two | three | four~five~six
- [d1, 3] first~four | three | two~one",
-        fixed = TRUE
     )
 })
 
