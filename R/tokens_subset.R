@@ -23,17 +23,17 @@
 #' tokens_subset(toks, grp > 1)
 #' # selecting on a supplied vector
 #' tokens_subset(toks, c(TRUE, FALSE, TRUE, FALSE))
-tokens_subset <- function(x, subset, ...) {
+tokens_subset <- function(x, subset, drop_docid = TRUE, ...) {
     UseMethod("tokens_subset")
 }
     
 #' @export
-tokens_subset.default <- function(x, subset, ...) {
+tokens_subset.default <- function(x, subset, drop_docid = TRUE, ...) {
     check_class(class(x), "tokens_subset")
 }
     
 #' @export
-tokens_subset.tokens <- function(x, subset, ...) {
+tokens_subset.tokens <- function(x, subset, drop_docid = TRUE, ...) {
     
     x <- as.tokens(x)
     check_dots(...)
@@ -47,5 +47,5 @@ tokens_subset.tokens <- function(x, subset, ...) {
         r <- eval(e, docvar, parent.frame())
         r & !is.na(r)
     }
-    return(x[r])
+    return(x[r, drop_docid = drop_docid])
 }

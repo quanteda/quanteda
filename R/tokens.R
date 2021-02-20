@@ -515,7 +515,7 @@ removals_regex <- function(separators = FALSE,
     if (separators)
         regex[["separators"]] <- "^[\\p{Z}\\p{C}]+$"
     if (punct)
-        regex[["punct"]] <- "^\\p{P}+$"
+        regex[["punct"]] <- "^\\p{P}$"
     if (symbols)
         regex[["symbols"]] <- "^\\p{S}$"
     if (numbers) # includes currency amounts and those containing , or . digit separators, and 100bn

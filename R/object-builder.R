@@ -20,7 +20,7 @@ NULL
 #' @rdname object-builders
 #' @param features character for feature of resulting `dfm`.
 #' @param docvars data.frame for document level variables created by
-#'   [quanteda::make_docvars()]. Names of documents are extracted from the
+#'   [make_docvars()]. Names of documents are extracted from the
 #'   `docname_` column.
 #' @keywords internal
 build_dfm <- function(x, features,
