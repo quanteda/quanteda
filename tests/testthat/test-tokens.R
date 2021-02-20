@@ -1180,4 +1180,10 @@ test_that("remove_numbers functions correctly", {
     )
 })
 
-
+test_that("edge case usernames are correctly recognized", {
+    toks <- tokens("Valid username: @_", remove_punct = TRUE)
+    expect_identical(
+        as.character(toks),
+        c("Valid", "username", "@_")
+    )
+})
