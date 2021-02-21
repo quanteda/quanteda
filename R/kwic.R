@@ -106,7 +106,7 @@ kwic.tokens <- function(x, pattern, window = 5,
     attrs <- attributes(x)
     if (is.list(pattern) && is.null(names(pattern)))
         names(pattern) <- pattern
-    ids <- pattern2list(pattern, attrs[["types"]], valuetype,
+    ids <- object2id(pattern, attrs[["types"]], valuetype,
                         case_insensitive, field_object(attrs, "concatenator"))
 
     result <- qatd_cpp_kwic(x, attrs[["types"]], ids, seq_along(ids), window, separator)
