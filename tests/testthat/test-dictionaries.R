@@ -476,7 +476,7 @@ test_that("dictionary merge values in duplicate keys", {
 
 })
 
-test_that("pattern2list() preserves the order of keys and values", {
+test_that("object2id() preserves the order of keys and values", {
 
   type <- stopwords()
   dict1 <- dictionary(list(th = c("tho*", "the"), wh = "wh*", ng = "not *"))
@@ -484,16 +484,16 @@ test_that("pattern2list() preserves the order of keys and values", {
   dict3 <- dictionary(list(ng = "not *", wh = "wh* is", th = c("tho*", "the")))
   dict4 <- dictionary(list(ng = "not *", th = c("tho*", "the"), wh = "wh* is"))
 
-  ids1 <- quanteda:::pattern2list(dict1, type, "glob", FALSE)
+  ids1 <- quanteda:::object2id(dict1, type, "glob", FALSE)
   expect_identical(unique(names(ids1)), names(dict1))
 
-  ids2 <- quanteda:::pattern2list(dict2, type, "glob", FALSE)
+  ids2 <- quanteda:::object2id(dict2, type, "glob", FALSE)
   expect_identical(unique(names(ids2)), names(dict2))
 
-  ids3 <- quanteda:::pattern2list(dict3, type, "glob", FALSE)
+  ids3 <- quanteda:::object2id(dict3, type, "glob", FALSE)
   expect_identical(unique(names(ids3)), names(dict3))
 
-  ids4 <- quanteda:::pattern2list(dict4, type, "glob", FALSE)
+  ids4 <- quanteda:::object2id(dict4, type, "glob", FALSE)
   expect_identical(unique(names(ids4)), names(dict4))
 })
 

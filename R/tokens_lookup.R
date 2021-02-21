@@ -135,7 +135,7 @@ tokens_lookup.tokens <- function(x, dictionary, levels = 1:5,
     if (verbose)
         catm("applying a dictionary consisting of ", length(dictionary), " key",
              if (length(dictionary) > 1L) "s" else "", "\n", sep = "")
-    ids <- pattern2list(dictionary, type, valuetype, case_insensitive,
+    ids <- object2id(dictionary, type, valuetype, case_insensitive,
                         field_object(attrs, "concatenator"), levels)
     key <- attr(ids, "key")
     id_key <- match(names(ids), key)

@@ -156,7 +156,7 @@ tokens_select.tokens <- function(x, pattern = NULL,
             ids <- list()
         }
     } else {
-        ids <- pattern2list(pattern, type, valuetype, case_insensitive,
+        ids <- object2id(pattern, type, valuetype, case_insensitive,
                             field_object(attrs, "concatenator"))
     }
 

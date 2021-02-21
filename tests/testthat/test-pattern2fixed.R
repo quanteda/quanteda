@@ -139,23 +139,6 @@ test_that("glob patterns that contain regex special characters works", {
     
 })
 
-test_that("regex2fixed and regex2id still work", {
-   
-    regex <- list(c('^a$', '^b'), c('c'), c('d'), c('b$'))
-    glob <- list(c('a', 'b*'), c('*c*'), c('*d*'), c('*b'))
-    type <- c('A', 'AA', 'B', 'BB', 'C', 'CC', 'a', 'aa', 'b', 'bb', 'c', 'cc')
-    
-    expect_identical(quanteda:::regex2fixed(regex, type, 'regex', TRUE),
-                     pattern2fixed(regex, type, 'regex', TRUE))
-    expect_identical(quanteda:::regex2id(regex, type, 'regex', TRUE),
-                     pattern2id(regex, type, 'regex', TRUE))
-    
-    expect_identical(quanteda:::regex2fixed(glob, type, 'glob', TRUE),
-                     pattern2fixed(glob, type, 'glob', TRUE))
-    expect_identical(quanteda:::regex2id(glob, type, 'glob', TRUE),
-                     pattern2id(glob, type, 'glob', TRUE))
-})
-
 test_that("add value check for types (#1463)", {
     
     v1 <- list(c("a", "bb", "cc"))
@@ -170,9 +153,9 @@ test_that("add value check for types (#1463)", {
 test_that("keep_unmatched is working", {
   pattern <- list(c("a", "b"), c("a", "z"), "x")
   type <- c("a", "b", "c")
-  expect_identical(quanteda:::regex2id(pattern, type, "fixed", keep_nomatch = FALSE),
+  expect_identical(quanteda:::pattern2id(pattern, type, "fixed", keep_nomatch = FALSE),
                    list(c(1L, 2L)))
-  expect_identical(quanteda:::regex2id(pattern, type, "fixed", keep_nomatch = TRUE),
+  expect_identical(quanteda:::pattern2id(pattern, type, "fixed", keep_nomatch = TRUE),
                    list(c(1L, 2L), integer(), integer()))
 })
 
