@@ -92,5 +92,5 @@ object2fixed <- function(x, types, valuetype = c("glob", "fixed", "regex"),
     return(result)
 }
 
-# temporary duplication to avoid breaking existing packages
-pattern2id <- object2id
+# temporary duplication to avoid breaking existing packages (quanteda.textstats)
+pattern2list <- object2id
