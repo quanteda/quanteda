@@ -1,17 +1,16 @@
-#' Convert regex and glob patterns to type IDs or fixed patterns
+#' Match patterns against token types
 #'
-#' @description `pattern2id` converts regex or glob to type IDs to allow
-#'   C++ function to perform fast searches in tokens object. C++ functions use a
-#'   list of type IDs to construct a hash table, against which sub-vectors of
-#'   tokens object are matched. This function constructs an index of glob
-#'   patterns for faster matching.
+#' Developer function to match regex, fixed or glob patterns against token
+#' types. This allows C++ function to perform fast searches in tokens object.
+#' C++ functions use a list of type IDs to construct a hash table, against which
+#' sub-vectors of tokens object are matched. This function constructs an index
+#' of glob patterns for faster matching.
 #' @inheritParams pattern
-#' @param types unique types of tokens obtained by [types()]
-#' @param keep_nomatch keep patterns not found
+#' @param types token types against which patterns are matched
+#' @param keep_nomatch keep patterns that did not match
 #' @inheritParams valuetype
-#' @return  `pattern2id` returns a list of integer vectors containing type
-#'   IDs
-#' @keywords internal
+#' @return a list of integer vectors containing indices of matched types
+#' @keywords development
 #' @export
 #' @examples
 #' types <- c("A", "AA", "B", "BB", "BBB", "C", "CC")
@@ -372,11 +371,3 @@ unlist_character <- function(x, unique = FALSE, ...) {
         result <- unique(result)
     return(result)
 }
-
-
-
-# internal-only aliases for backward compatibility
-# TODO: this should be removed with in a year (by April 2019).
-regex2id <- pattern2id
-regex2fixed <- pattern2fixed
-

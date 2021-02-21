@@ -61,28 +61,6 @@ test_that("pipes work", {
     )
 })
 
-test_that("pattern2list is working with a list", {
-    type <- letters
-    pat <- c('a', 'a b', 'c d', 'e f g')
-    ids <- quanteda:::pattern2list(phrase(pat), type, 'fixed', FALSE)
-    expect_equal(names(ids), pat)
-})
-
-test_that("pattern2list is working with a dictionary", {
-    type <- c("a", "ab", "b", "bb", "a a", "a b")
-    dict <- dictionary(list(key1 = c("a*", "b*"), key2 = c("a a*", "a b*")))
-    ids <- quanteda:::pattern2list(dict, type, "glob", FALSE)
-    expect_true(all(names(dict) %in% names(ids)))
-})
-
-test_that("pattern2list is working with empty patterns", {
-    col <- data.frame()
-    class(col) <- c("collocations", "data.frame")
-    pat <- list()
-    expect_silent(quanteda:::pattern2list(col, types(toks), "fixed", TRUE))
-    expect_silent(quanteda:::pattern2list(pat, types(toks), "fixed", TRUE))
-})
-
 test_that("get_package_version works", {
     load("../data/pre_v2_objects/data_corpus_pre2.rda")
     expect_true(quanteda:::get_object_version(data_corpus_pre2) == "1.4.0")
