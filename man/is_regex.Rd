@@ -10,7 +10,6 @@ is_regex(x)
 \item{x}{a character string to be tested}
 }
 \description{
-Internal function for \code{select_types()} to check if a string is a regular
-expression.
+Internal function for \code{select_types()} to check if a string is a regular expression
 }
 \keyword{internal}
