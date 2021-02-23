@@ -10,6 +10,7 @@ a \link{corpus} object with the following docvars:
 \item \code{Year} a four-digit integer year
 \item \code{President} character; President's last name
 \item \code{FirstName} character; President's first name (and possibly middle initial)
+\item \code{Party} character; name of the President's political party
 }
 }
 \source{
