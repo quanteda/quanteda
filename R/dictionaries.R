@@ -341,7 +341,7 @@ is.dictionary <- function(x) {
     is(x, "dictionary2")
 }
 
-#' @rdname print-quanteda
+#' @rdname print-method
 #' @aliases print.dictionary
 #' @param max_nkey max number of keys to print; default is from the
 #'   `print_dictionary_max_max_nkey` setting of [quanteda_options()]
@@ -373,7 +373,7 @@ setMethod("print", signature(x = "dictionary2"),
               invisible(print_dictionary(x, 1, max_nkey, max_nval, show_summary, ...))
           })
 
-#' @rdname print-quanteda
+#' @noRd
 setMethod("show", signature(object = "dictionary2"), function(object) print(object))
 
 # Internal function to print dictionary

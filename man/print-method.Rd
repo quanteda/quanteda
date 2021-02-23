@@ -2,16 +2,13 @@
 % Please edit documentation in R/quanteda-documentation.R,
 %   R/corpus-methods-base.R, R/dfm-print.R, R/dictionaries.R, R/fcm-print.R,
 %   R/tokens-methods-base.R
-\name{print-quanteda}
-\alias{print-quanteda}
+\name{print-method}
+\alias{print-method}
 \alias{print.corpus}
 \alias{print,dfm-method}
-\alias{show,dfm-method}
 \alias{print,dictionary2-method}
 \alias{print.dictionary}
-\alias{show,dictionary2-method}
 \alias{print,fcm-method}
-\alias{show,fcm-method}
 \alias{print.tokens}
 \title{Print methods for quanteda core objects}
 \usage{
@@ -31,8 +28,6 @@
   ...
 )
 
-\S4method{show}{dfm}(object)
-
 \S4method{print}{dictionary2}(
   x,
   max_nkey = quanteda_options("print_dictionary_max_nkey"),
@@ -41,16 +36,12 @@
   ...
 )
 
-\S4method{show}{dictionary2}(object)
-
 \S4method{print}{fcm}(
   x,
   max_nfeat = quanteda_options("print_dfm_max_nfeat"),
   show_summary = TRUE,
   ...
 )
-
-\S4method{show}{fcm}(object)
 
 \method{print}{tokens}(
   x,
