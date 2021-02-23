@@ -35,6 +35,7 @@ is.tokens <- function(x) "tokens" %in% class(x)
 #' @param recursive a required argument for [unlist] but inapplicable to
 #'   [tokens] objects
 #' @method unlist tokens
+#' @keywords internal
 #' @export
 unlist.tokens <- function(x, recursive = FALSE, use.names = TRUE) {
     unlist(as.list(x), use.names = use.names)
