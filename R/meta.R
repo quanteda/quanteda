@@ -5,8 +5,6 @@
 #' Get or set the object metadata in a [corpus], [tokens], [dfm], or
 #' [dictionary] object. With the exception of dictionaries, this will be
 #' corpus-level metadata.
-#'
-#' `metacorpus` and `metacorpus<-` are synonyms but are deprecated.
 #' @param x an object for which the metadata will be read or set
 #' @param field metadata field name(s); if `NULL` (default), return all
 #'   metadata names
@@ -19,7 +17,6 @@
 #'   user-level metadata may be assigned.
 #' @export
 #' @keywords corpus
-#' @aliases metacorpus
 #' @examples
 #' meta(data_corpus_inaugural)
 #' meta(data_corpus_inaugural, "source")
@@ -75,8 +72,7 @@ select_meta <- function(x, field = NULL, type = c("user", "object", "system", "a
 #' @param value new value of the metadata field
 #' @export
 #' @rdname meta
-#' @aliases "metacorpus<-"
-"meta<-" <- "metacorpus<-" <- function(x, field = NULL, value) {
+"meta<-" <- function(x, field = NULL, value) {
     if (is.null(field) && !is.list(value)) stop("value must be a named list")
         if (is.list(value) && length(names(value)) != length(value))
         stop("every element of the meta list must be named")

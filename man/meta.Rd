@@ -2,9 +2,7 @@
 % Please edit documentation in R/meta.R
 \name{meta}
 \alias{meta}
-\alias{metacorpus}
 \alias{meta<-}
-\alias{"metacorpus<-"}
 \title{Get or set object metadata}
 \usage{
 meta(x, field = NULL, type = c("user", "object", "system", "all"))
@@ -33,9 +31,6 @@ user-level metadata may be assigned.
 Get or set the object metadata in a \link{corpus}, \link{tokens}, \link{dfm}, or
 \link{dictionary} object. With the exception of dictionaries, this will be
 corpus-level metadata.
-}
-\details{
-\code{metacorpus} and \verb{metacorpus<-} are synonyms but are deprecated.
 }
 \examples{
 meta(data_corpus_inaugural)

@@ -12,10 +12,9 @@
 #' are imported as document-level meta-data.  This matches the format of
 #' data.frames constructed by the the \pkg{readtext} package.
 #' \item a [kwic] object constructed by [kwic()].
-#' \item a \pkg{tm} [VCorpus][tm::VCorpus] or [SimpleCorpus][tm::SimpleCorpus] class  object,
-#'   with the fixed metadata
-#'   fields imported as [docvars] and corpus-level metadata imported
-#'   as [metacorpus] information.
+#' \item a \pkg{tm} [VCorpus][tm::VCorpus] or [SimpleCorpus][tm::SimpleCorpus]
+#'   class  object, with the fixed metadata fields imported as [docvars] and
+#'   corpus-level metadata imported as [meta] information.
 #' \item a [corpus] object.
 #' }
 #' @param x a valid corpus source object
