@@ -195,7 +195,7 @@ NULL
 #' -1 shows all.
 #' @name print-method
 #' @rdname print-method
-#' @param x,object the object to be printed
+#' @param x the object to be printed
 #' @param max_ndoc max number of documents to print; default is from the
 #'   `print_*_max_ndoc` setting of [quanteda_options()]
 #' @param show_summary print a brief summary indicating the number of documents

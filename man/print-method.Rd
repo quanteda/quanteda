@@ -52,7 +52,7 @@
 )
 }
 \arguments{
-\item{x, object}{the object to be printed}
+\item{x}{the object to be printed}
 
 \item{max_ndoc}{max number of documents to print; default is from the
 \verb{print_*_max_ndoc} setting of \code{\link[=quanteda_options]{quanteda_options()}}}
