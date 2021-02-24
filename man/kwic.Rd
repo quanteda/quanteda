@@ -3,7 +3,7 @@
 \name{kwic}
 \alias{kwic}
 \alias{is.kwic}
-\alias{as.data.frame.kwic}
+\alias{kwic.locate}
 \title{Locate keywords-in-context}
 \usage{
 kwic(
@@ -18,7 +18,7 @@ kwic(
 
 is.kwic(x)
 
-\method{as.data.frame}{kwic}(x, ..., window = NULL, separator = NULL)
+\method{kwic}{locate}(x, ..., window = NULL, separator = NULL)
 }
 \arguments{
 \item{x}{a character, \link{corpus}, or \link{tokens} object}

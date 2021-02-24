@@ -81,9 +81,10 @@ kwic.corpus <- function(x, pattern, window = 5,
 #'          "Is it a question?",
 #'          "Sometimes you don't know if this is it.",
 #'          "Is it a bird or a plane or is it a train?")
-#' kwic(txt, "is")
-#' kwic(txt, "in", valuetype = "regex")
-#' kwic(txt, phrase(c("is", "a", "is it")), valuetype = "fixed")
+#' toks <- tokens(txt)
+#' kwic(toks, "is")
+#' kwic(toks, "in", valuetype = "regex")
+#' kwic(toks, phrase(c("is", "a", "is it")), valuetype = "fixed")
 #'
 #' toks <- tokens(txt)
 #' kwic(txt, "is", valuetype = "regex")
@@ -93,14 +94,38 @@ kwic.corpus <- function(x, pattern, window = 5,
 #' print(kwic(corp, "is"), separator = "")
 #' @export
 kwic.tokens <- function(x, pattern, window = 5,
+                        valuetype = c("glob", "regex", "fixed"),
+                        separator = " ",
+                        case_insensitive = TRUE, ...) {
+    
+    temp <- locate(x, pattern = pattern, valuetype = valuetype, 
+                   case_insensitive = case_insensitive)
+    kwic(temp, window = window, separator = separator)
+}
+
+#' @rdname kwic
+#' @noRd
+#' @export
+locate <- function(x, pattern, 
+                   valuetype = c("glob", "regex", "fixed"),
+                   case_insensitive = TRUE) {
+    UseMethod("locate")
+}
+
+#' @export
+locate.default <- function(x, ...) {
+    check_class(class(x), "locate")
+}
+
+#' @rdname kwic
+#' @noRd
+#' @export
+locate.tokens <- function(x, pattern, 
                            valuetype = c("glob", "regex", "fixed"),
-                           separator = " ",
-                           case_insensitive = TRUE, ...) {
-    dots <- list(...)
+                           case_insensitive = TRUE) {
+
     x <- as.tokens(x)
     valuetype <- match.arg(valuetype)
-    window <- check_integer(window, 1, 1, 0)
-    separator <- check_character(separator)
     
     attrs <- attributes(x)
     type <- types(x)
@@ -117,9 +142,7 @@ kwic.tokens <- function(x, pattern, window = 5,
     }
     rownames(result) <- NULL
     attr(result, "tokens") <- x
-    attr(result, "window") <- window
-    attr(result, "separator") <- separator
-    class(result) <- c("kwic", "data.frame")
+    class(result) <- c("locate", "data.frame")
     return(result)
 }
 
@@ -136,7 +159,7 @@ is.kwic <- function(x) {
 }
 
 #' @rdname kwic
-#' @method as.data.frame kwic
+#' @method kwic locate
 #' @return 
 #'   `as.data.frame.kwic()` returns a data.frame consisting of `docname`, token
 #'   index values for the keyword matches `from` and `to`, character fields
@@ -149,19 +172,15 @@ is.kwic <- function(x) {
 #' as.data.frame(kw)
 #' as.data.frame(kw, window = 3)
 #' @export
-as.data.frame.kwic <- function(x, ..., window = NULL, separator = NULL) {
+kwic.locate <- function(x, window = 5, separator = " ",
+                        max_nrow = quanteda_options("print_kwic_max_nrow")) {
     
-    if (is.null(window))
-        window <- attr(x, "window")
-    else
-        window <- check_integer(window, 1, 1, 0)
-    
-    if (is.null(separator))
-        separator <- attr(x, "separator")
-    else
-        separator <- check_character(separator)
+    window <- check_integer(window, 1, 1, 0)
+    separator <- check_character(separator)
+    max_nrow <- check_integer(max_nrow, min = -1)
     
     attrs <- attributes(x)
+    x <- head(x, max_nrow)
     x$pre <- rep("", nrow(x))
     x$keyword <- rep("", nrow(x))
     x$post <- rep("", nrow(x))
@@ -176,9 +195,7 @@ as.data.frame.kwic <- function(x, ..., window = NULL, separator = NULL) {
         x$post[lengths(lis_post) > 0] <- stri_c_list(lis_post, sep = separator)
     }
     attr(x, "tokens") <- NULL
-    attr(x, "window") <- NULL
-    attr(x, "separator") <- NULL
-    class(x) <- "data.frame"
+    class(x) <- c("kwic", "data.frame")
     # reorder columns to match pre-v3 order
     x <- x[, c("docname", "from", "to", "pre", "keyword", "post", "pattern")]
     return(x)
@@ -192,19 +209,13 @@ as.data.frame.kwic <- function(x, ..., window = NULL, separator = NULL) {
 #' @export
 print.kwic <- function(x, max_nrow = quanteda_options("print_kwic_max_nrow"), 
                        show_summary = quanteda_options("print_kwic_summary"), ...) {
-    # formerly arguments
-    window <- NULL
-    separator <- NULL
-    
+
     attrs <- attributes(x)
     max_nrow <- check_integer(max_nrow, min = -1)
     if (max_nrow < 0)
         max_nrow <- nrow(x)
     nrem <- max(0, nrow(x) - max_nrow)
 
-    x <- as.data.frame(x[seq_len(min(nrow(x), max_nrow)), ], 
-                       window = window, separator = separator)
-    
     if (show_summary) {
         cat(msg("Keyword-in-context with %d %s",
                 list(nrow(x) + nrem, c("match", "matches")),
