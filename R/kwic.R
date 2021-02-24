@@ -172,15 +172,12 @@ is.kwic <- function(x) {
 #' as.data.frame(kw)
 #' as.data.frame(kw, window = 3)
 #' @export
-kwic.locate <- function(x, window = 5, separator = " ",
-                        max_nrow = quanteda_options("print_kwic_max_nrow")) {
+kwic.locate <- function(x, window = 5, separator = " ") {
     
     window <- check_integer(window, 1, 1, 0)
     separator <- check_character(separator)
-    max_nrow <- check_integer(max_nrow, min = -1)
-    
+
     attrs <- attributes(x)
-    x <- head(x, max_nrow)
     x$pre <- rep("", nrow(x))
     x$keyword <- rep("", nrow(x))
     x$post <- rep("", nrow(x))
@@ -210,12 +207,12 @@ kwic.locate <- function(x, window = 5, separator = " ",
 print.kwic <- function(x, max_nrow = quanteda_options("print_kwic_max_nrow"), 
                        show_summary = quanteda_options("print_kwic_summary"), ...) {
 
-    attrs <- attributes(x)
     max_nrow <- check_integer(max_nrow, min = -1)
     if (max_nrow < 0)
         max_nrow <- nrow(x)
     nrem <- max(0, nrow(x) - max_nrow)
-
+    
+    x <- head(x, max_nrow)
     if (show_summary) {
         cat(msg("Keyword-in-context with %d %s",
                 list(nrow(x) + nrem, c("match", "matches")),
