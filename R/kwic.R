@@ -83,7 +83,8 @@ kwic.tokens <- function(x, pattern, window = 5,
     
     result <- locate(x, pattern = pattern, valuetype = valuetype, 
                      case_insensitive = case_insensitive)
-
+    
+    ntok <- ntoken(x)
     result$pre <- rep("", nrow(result))
     result$keyword <- rep("", nrow(result))
     result$post <- rep("", nrow(result))
@@ -101,6 +102,7 @@ kwic.tokens <- function(x, pattern, window = 5,
     # reorder columns to match pre-v3 order
     result <- result[, c("docname", "from", "to", "pre", "keyword", "post", "pattern")]
     class(result) <- c("kwic", "data.frame")
+    attr(result, "ntoken") <- ntok[unique(result$docname)]
     
     return(result)
 }
@@ -126,7 +128,7 @@ is.kwic <- function(x) {
 #' 
 #' @export
 as.data.frame.kwic <- function(x, ...) {
-    attr(x, "tokens") <- NULL
+    attr(x, "ntoken") <- NULL
     class(x) <- "data.frame"
     return(x)
 }

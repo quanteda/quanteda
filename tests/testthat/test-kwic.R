@@ -510,3 +510,19 @@ test_that("pre and post for phrases are working", {
                   class = "data.frame", row.names = c(NA, -2L))
     )
 })
+
+test_that("kwic structure is as expected", {
+    toks <- tokens(c(doc1 = "a a a b c d d d", doc2 = "a b c d e", doc3 = "b b a a"))
+    kw <- kwic(toks, phrase("a a"), window = 2)
+    expect_identical(
+      kw,
+      structure(data.frame(docname = c("doc1", "doc1", "doc3"), 
+                     from = 1:3, to = 2:4, 
+                     pre = c("", "a", "b b"), 
+                     keyword = c("a a", "a a", "a a"), 
+                     post = c("a b", "b c", ""), 
+                     pattern = factor(rep("a a", 3))),
+                     class = c("kwic", "data.frame"), 
+                     ntoken = c(doc1 = 8L, doc3 = 4L))
+    )
+})
