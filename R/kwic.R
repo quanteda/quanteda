@@ -25,16 +25,18 @@
 #'   will automatically be considered phrases where each whitespace-separated
 #'   element matches a token in sequence.
 #' @export
+#' @seealso [print.kwic()]
 #' @examples
-#' corp <- data_corpus_inaugural[1:8]
-#' kwic(corp, pattern = "secure*", valuetype = "glob", window = 3)
-#' kwic(corp, pattern = "secur", valuetype = "regex", window = 3)
-#' kwic(corp, pattern = "security", valuetype = "fixed", window = 3)
+#' # single token matching
+#' toks <- tokens(data_corpus_inaugural[1:8])
+#' kwic(toks, pattern = "secure*", valuetype = "glob", window = 3)
+#' kwic(toks, pattern = "secur", valuetype = "regex", window = 3)
+#' kwic(toks, pattern = "security", valuetype = "fixed", window = 3)
 #'
-#' toks <- tokens(corp)
+#' # phrase matching
 #' kwic(toks, pattern = phrase("secur* against"), window = 2)
-#' kw <- kwic(toks, pattern = phrase("war against"), valuetype = "regex")
-#'
+#' kwic(toks, pattern = phrase("war against"), valuetype = "regex", window = 2)
+#' 
 kwic <- function(x, pattern, window = 5,
                  valuetype = c("glob", "regex", "fixed"),
                  separator = " ",
@@ -47,8 +49,6 @@ kwic.default <- function(x, ...) {
     check_class(class(x), "kwic")
 }
 
-#' @rdname kwic
-#' @noRd
 #' @export
 kwic.character <- function(x, pattern, window = 5,
                            valuetype = c("glob", "regex", "fixed"),
@@ -59,8 +59,6 @@ kwic.character <- function(x, pattern, window = 5,
          case_insensitive = case_insensitive, ...)
 }
 
-#' @rdname kwic
-#' @noRd
 #' @export
 kwic.corpus <- function(x, pattern, window = 5,
                            valuetype = c("glob", "regex", "fixed"),
@@ -72,77 +70,38 @@ kwic.corpus <- function(x, pattern, window = 5,
          case_insensitive = case_insensitive, ...)
 }
 
-#' @rdname kwic
-#' @noRd
-#' @examples
-#' txt <- c("This is a test",
-#'          "This is it.",
-#'          "What is in a train?",
-#'          "Is it a question?",
-#'          "Sometimes you don't know if this is it.",
-#'          "Is it a bird or a plane or is it a train?")
-#' toks <- tokens(txt)
-#' kwic(toks, "is")
-#' kwic(toks, "in", valuetype = "regex")
-#' kwic(toks, phrase(c("is", "a", "is it")), valuetype = "fixed")
-#'
-#' toks <- tokens(txt)
-#' kwic(txt, "is", valuetype = "regex")
-#' kwic(txt, "or", window = 2)
-#'
-#' corp <- corpus(txt)
-#' print(kwic(corp, "is"), separator = "")
 #' @export
 kwic.tokens <- function(x, pattern, window = 5,
                         valuetype = c("glob", "regex", "fixed"),
                         separator = " ",
                         case_insensitive = TRUE, ...) {
-    
-    temp <- locate(x, pattern = pattern, valuetype = valuetype, 
-                   case_insensitive = case_insensitive)
-    kwic(temp, window = window, separator = separator)
-}
-
-#' @rdname kwic
-#' @noRd
-#' @export
-locate <- function(x, pattern, 
-                   valuetype = c("glob", "regex", "fixed"),
-                   case_insensitive = TRUE) {
-    UseMethod("locate")
-}
-
-#' @export
-locate.default <- function(x, ...) {
-    check_class(class(x), "locate")
-}
-
-#' @rdname kwic
-#' @noRd
-#' @export
-locate.tokens <- function(x, pattern, 
-                           valuetype = c("glob", "regex", "fixed"),
-                           case_insensitive = TRUE) {
-
     x <- as.tokens(x)
+    window <- check_integer(window, 1, 1, 0)
     valuetype <- match.arg(valuetype)
+    separator <- check_character(separator)
+    case_insensitive <- check_logical(case_insensitive)
     
-    attrs <- attributes(x)
-    type <- types(x)
-    if (is.list(pattern) && is.null(names(pattern)))
-        names(pattern) <- pattern
-    ids <- object2id(pattern, attrs[["types"]], valuetype,
-                     case_insensitive, field_object(attrs, "concatenator"))
-    result <- qatd_cpp_kwic(x, type, ids)
-    result$pattern <- factor(result$pattern, levels = unique(names(ids)))
+    result <- locate(x, pattern = pattern, valuetype = valuetype, 
+                     case_insensitive = case_insensitive)
+
+    result$pre <- rep("", nrow(result))
+    result$keyword <- rep("", nrow(result))
+    result$post <- rep("", nrow(result))
     if (nrow(result)) {
-        r <- order(match(result$docname, docnames(x)),
-                   result$from, result$to, result$pattern)
-        result <- result[r,]
+        x <- x[result$docname]
+        lis_pre <- as.list(tokens_select(x, startpos = pmax(result$from - window, 1), endpos = result$from - 1))
+        lis_key <- as.list(tokens_select(x, startpos = result$from, endpos = result$to))
+        lis_post <- as.list(tokens_select(x, startpos = result$to + 1, endpos = result$to + window))
+        
+        result$pre[lengths(lis_pre) > 0] <- stri_c_list(lis_pre, sep = separator)
+        result$keyword[lengths(lis_key) > 0] <- stri_c_list(lis_key, sep = separator)
+        result$post[lengths(lis_post) > 0] <- stri_c_list(lis_post, sep = separator)
     }
-    rownames(result) <- NULL
-    attr(result, "tokens") <- x
-    class(result) <- c("locate", "data.frame")
+    
+    # reorder columns to match pre-v3 order
+    result <- result[, c("docname", "from", "to", "pre", "keyword", "post", "pattern")]
+    class(result) <- c("kwic", "data.frame")
+    
     return(result)
 }
 
@@ -159,42 +118,16 @@ is.kwic <- function(x) {
 }
 
 #' @rdname kwic
-#' @method kwic locate
-#' @return 
-#'   `as.data.frame.kwic()` returns a data.frame consisting of `docname`, token
-#'   index values for the keyword matches `from` and `to`, character fields
-#'   `pre`, `keyword`, and `post` and the original `pattern` used for the match.
-#'   The window size and separator can be adjusted in `as.data.frame()`,
-#'   regardless of their setting when the kwic was created.
+#' @method as.data.frame kwic
 #' @examples
 #' corp <- data_corpus_inaugural[1:8]
-#' kw <- kwic(corp, pattern = "secure*", valuetype = "glob", window = 1)
+#' kw <- kwic(corp, pattern = "secure*", valuetype = "glob", window = 3)
 #' as.data.frame(kw)
-#' as.data.frame(kw, window = 3)
+#' 
 #' @export
-kwic.locate <- function(x, window = 5, separator = " ") {
-    
-    window <- check_integer(window, 1, 1, 0)
-    separator <- check_character(separator)
-
-    attrs <- attributes(x)
-    x$pre <- rep("", nrow(x))
-    x$keyword <- rep("", nrow(x))
-    x$post <- rep("", nrow(x))
-    if (nrow(x)) {
-        toks <- attrs$tokens[x$docname]
-        lis_pre <- as.list(tokens_select(toks, startpos = pmax(x$from - window, 1), endpos = x$from - 1))
-        lis_key <- as.list(tokens_select(toks, startpos = x$from, endpos = x$to))
-        lis_post <- as.list(tokens_select(toks, startpos = x$to + 1, endpos = x$to + window))
-        
-        x$pre[lengths(lis_pre) > 0] <- stri_c_list(lis_pre, sep = separator)
-        x$keyword[lengths(lis_key) > 0] <- stri_c_list(lis_key, sep = separator)
-        x$post[lengths(lis_post) > 0] <- stri_c_list(lis_post, sep = separator)
-    }
+as.data.frame.kwic <- function(x, ...) {
     attr(x, "tokens") <- NULL
-    class(x) <- c("kwic", "data.frame")
-    # reorder columns to match pre-v3 order
-    x <- x[, c("docname", "from", "to", "pre", "keyword", "post", "pattern")]
+    class(x) <- "data.frame"
     return(x)
 }
 

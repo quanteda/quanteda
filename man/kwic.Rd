@@ -3,7 +3,7 @@
 \name{kwic}
 \alias{kwic}
 \alias{is.kwic}
-\alias{kwic.locate}
+\alias{as.data.frame.kwic}
 \title{Locate keywords-in-context}
 \usage{
 kwic(
@@ -18,7 +18,7 @@ kwic(
 
 is.kwic(x)
 
-\method{kwic}{locate}(x, window = 5, separator = " ")
+\method{as.data.frame}{kwic}(x, ...)
 }
 \arguments{
 \item{x}{a character, \link{corpus}, or \link{tokens} object}
@@ -45,12 +45,6 @@ A \code{kwic} classed data.frame, with the document name
 (\code{docname}) and the token index positions (\code{from} and \code{to},
 which will be the same for single-word patterns, or a sequence equal in
 length to the number of elements for multi-word phrases).
-
-\code{as.data.frame.kwic()} returns a data.frame consisting of \code{docname}, token
-index values for the keyword matches \code{from} and \code{to}, character fields
-\code{pre}, \code{keyword}, and \code{post} and the original \code{pattern} used for the match.
-The window size and separator can be adjusted in \code{as.data.frame()},
-regardless of their setting when the kwic was created.
 }
 \description{
 For a text or a collection of texts (in a quanteda corpus object), return a
@@ -69,14 +63,15 @@ will automatically be considered phrases where each whitespace-separated
 element matches a token in sequence.
 }
 \examples{
-corp <- data_corpus_inaugural[1:8]
-kwic(corp, pattern = "secure*", valuetype = "glob", window = 3)
-kwic(corp, pattern = "secur", valuetype = "regex", window = 3)
-kwic(corp, pattern = "security", valuetype = "fixed", window = 3)
+# single token matching
+toks <- tokens(data_corpus_inaugural[1:8])
+kwic(toks, pattern = "secure*", valuetype = "glob", window = 3)
+kwic(toks, pattern = "secur", valuetype = "regex", window = 3)
+kwic(toks, pattern = "security", valuetype = "fixed", window = 3)
 
-toks <- tokens(corp)
+# phrase matching
 kwic(toks, pattern = phrase("secur* against"), window = 2)
-kw <- kwic(toks, pattern = phrase("war against"), valuetype = "regex")
+kwic(toks, pattern = phrase("war against"), valuetype = "regex", window = 2)
 
 kw <- kwic(data_corpus_inaugural, "provident*")
 is.kwic(kw)
@@ -84,7 +79,10 @@ is.kwic("Not a kwic")
 is.kwic(kw[, c("pre", "post")])
 
 corp <- data_corpus_inaugural[1:8]
-kw <- kwic(corp, pattern = "secure*", valuetype = "glob", window = 1)
+kw <- kwic(corp, pattern = "secure*", valuetype = "glob", window = 3)
 as.data.frame(kw)
-as.data.frame(kw, window = 3)
+
+}
+\seealso{
+\code{\link[=print.kwic]{print.kwic()}}
 }

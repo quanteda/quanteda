@@ -119,6 +119,7 @@ Collate:
     'fcm.R'
     'fcm_select.R'
     'kwic.R'
+    'locate.R'
     'message.R'
     'nfunctions.R'
     'object-builder.R'
