@@ -17,8 +17,8 @@ test_that("character vector works consistently on tokens", {
         c("d", "e", "a_b_c", "d", "e"))
 
     expect_equivalent(
-        kwic(toks, pattern = feat)[, 5],
-        c("a", "b", "c"))
+        kwic(toks, pattern = feat)$pattern,
+        factor(c("a", "b", "c")))
 })
 
 test_that("character vector works consistently on dfm", {
@@ -143,8 +143,8 @@ test_that("list works consistently on tokens", {
         c("d", "e", "a_b_c", "d", "e"))
 
     expect_equivalent(
-        kwic(toks, pattern = feat)[, 5],
-        c("a b c"))
+        kwic(toks, pattern = feat)$pattern,
+        factor(c("a b c")))
 })
 
 test_that("dictionary works consistently on tokens", {
@@ -181,11 +181,11 @@ test_that("dictionary works consistently on tokens", {
     )
 
     expect_equal(
-        kwic(toks, pattern = dict)$keyword,
+        as.data.frame(kwic(toks, pattern = dict))$keyword,
         c("a b c", "d", "e", "a_b_c", "d", "e")
     )
     expect_equal(
-        kwic(toks, pattern = phrase(dict))$keyword,
+        as.data.frame(kwic(toks, pattern = phrase(dict)))$keyword,
         c("a b c", "d", "e", "d", "e")
     )
 })

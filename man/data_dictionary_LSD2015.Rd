@@ -76,8 +76,8 @@ Lexicoder Sentiment Dictionary and related resources.
 Young, L. & Soroka, S. (2012). \emph{Lexicoder Sentiment
 Dictionary}. Available at \url{http://www.snsoroka.com/data-lexicoder/}.
 
-Young, L. & Soroka, S. (2012).
-\href{https://doi.org/10.1080/10584609.2012.671234}{Affective News: The Automated Coding of Sentiment in Political Texts}.
+Young, L. & Soroka, S. (2012). Affective News: The Automated Coding of
+Sentiment in Political Texts]. \doi{10.1080/10584609.2012.671234}.
 \emph{Political Communication}, 29(2), 205--231.
 }
 \keyword{data}

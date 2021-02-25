@@ -40,11 +40,11 @@ NULL
     return(x)
 }
 
-#' Function to assign multiple slots to a S4 object
-#' @param x an S4 object
-#' @param exceptions slots to ignore
-#' @param value a list of attributes extracted by attributes()
-#' @keywords internal
+# Function to assign multiple slots to a S4 object
+# param x an S4 object
+# param exceptions slots to ignore
+# param value a list of attributes extracted by attributes()
+# keywords internal
 # "slots<-" <- function(x, exceptions = c("Dim", "Dimnames", "i", "p", "x", "factors"), value) {
 #     slot <- methods::getSlots(head(class(x)))
 #     for (name in names(value)) {
@@ -55,6 +55,8 @@ NULL
 #     return(x)
 # }
 
+#' Check if a string is a regular expression
+#' 
 #' Internal function for `select_types()` to check if a string is a regular expression
 #' @param x a character string to be tested
 #' @keywords internal
@@ -64,8 +66,8 @@ is_regex <- function(x) {
 
 #' Internal function for `select_types()` to escape regular expressions
 #'
-#' This function escapes glob patterns before `utils:glob2rx()`, therefore * and ?
-#' are unescaped.
+#' This function escapes glob patterns before `utils:glob2rx()`, therefore * and
+#' ? are unescaped.
 #' @param x character vector to be escaped
 #' @keywords internal
 escape_regex <- function(x) {

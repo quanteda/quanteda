@@ -2,30 +2,14 @@
 % Please edit documentation in R/utils.R
 \name{is_regex}
 \alias{is_regex}
-\title{Function to assign multiple slots to a S4 object}
+\title{Check if a string is a regular expression}
 \usage{
 is_regex(x)
 }
 \arguments{
 \item{x}{a character string to be tested}
-
-\item{exceptions}{slots to ignore}
-
-\item{value}{a list of attributes extracted by attributes()}
 }
 \description{
-Function to assign multiple slots to a S4 object
+Internal function for \code{select_types()} to check if a string is a regular expression
 }
-\keyword{Internal}
-\keyword{`select_types()`}
-\keyword{a}
-\keyword{check}
-\keyword{expression}
-\keyword{for}
-\keyword{function}
-\keyword{if}
 \keyword{internal}
-\keyword{is}
-\keyword{regular}
-\keyword{string}
-\keyword{to}
