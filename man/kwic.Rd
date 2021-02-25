@@ -18,7 +18,7 @@ kwic(
 
 is.kwic(x)
 
-\method{kwic}{locate}(x, ..., window = NULL, separator = NULL)
+\method{kwic}{locate}(x, window = 5, separator = " ")
 }
 \arguments{
 \item{x}{a character, \link{corpus}, or \link{tokens} object}
