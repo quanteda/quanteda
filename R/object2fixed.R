@@ -11,7 +11,7 @@
 #' @param remove_unigram  if `TRUE`, ignores single-word patterns
 #' @return a list of integer vectors containing indices of matched types
 #' @seealso [pattern2id()]
-#' @keywords development
+#' @keywords development internal
 #' @export
 object2id <- function(x, types, valuetype = c("glob", "fixed", "regex"),
                       case_insensitive = TRUE,
@@ -65,7 +65,7 @@ object2id <- function(x, types, valuetype = c("glob", "fixed", "regex"),
 }
 
 #' @rdname object2id
-#' @keywords development
+#' @keywords development internal
 #' @export
 #' @examples
 #' types <- c("A", "AA", "B", "BB", "B_B", "C", "C-C")

@@ -35,12 +35,13 @@ is.tokens <- function(x) "tokens" %in% class(x)
 #' @param recursive a required argument for [unlist] but inapplicable to
 #'   [tokens] objects
 #' @method unlist tokens
+#' @keywords internal
 #' @export
 unlist.tokens <- function(x, recursive = FALSE, use.names = TRUE) {
     unlist(as.list(x), use.names = use.names)
 }
 
-#' @rdname print-quanteda
+#' @rdname print-method
 #' @method print tokens
 #' @param max_ntoken max number of tokens to print; default is from the
 #'   `print_tokens_max_ntoken` setting of [quanteda_options()]
