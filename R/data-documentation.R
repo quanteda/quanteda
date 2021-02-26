@@ -52,6 +52,7 @@
 #' * `Year` a four-digit integer year
 #' * `President` character; President's last name
 #' * `FirstName` character; President's first name (and possibly middle initial)
+#' * `Party` character; name of the President's political party
 #' @examples
 #' # some operations on the inaugural corpus
 #' summary(data_corpus_inaugural)

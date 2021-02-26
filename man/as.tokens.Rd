@@ -122,3 +122,4 @@ toks <- as.tokens(lis, concatenator = "-")
 tokens_lookup(toks, dict)
 
 }
+\keyword{internal}

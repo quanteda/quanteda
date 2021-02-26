@@ -46,7 +46,7 @@ dfm_match.default <- function(x, features) {
 #' @export
 dfm_match.dfm <- function(x, features) {
     x <- as.dfm(x)
-    features <- check_character(features, max_len = Inf)
+    features <- check_character(features, min_len = 0, max_len = Inf)
     attrs <- attributes(x)
     x <- pad_dfm(x, features)
     rebuild_dfm(x, attrs)

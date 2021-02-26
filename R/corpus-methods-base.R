@@ -7,7 +7,7 @@
 #' @seealso [summary.corpus()]
 NULL
 
-#' @rdname print-quanteda
+#' @rdname print-method
 #' @param max_nchar max number of tokens to print; default is from the
 #'   `print_corpus_max_nchar` setting of [quanteda_options()]
 #' @method print corpus
