@@ -5,8 +5,6 @@
 #' Get or set the object metadata in a [corpus], [tokens], [dfm], or
 #' [dictionary] object. With the exception of dictionaries, this will be
 #' corpus-level metadata.
-#'
-#' `metacorpus` and `metacorpus<-` are synonyms but are deprecated.
 #' @param x an object for which the metadata will be read or set
 #' @param field metadata field name(s); if `NULL` (default), return all
 #'   metadata names
@@ -19,7 +17,6 @@
 #'   user-level metadata may be assigned.
 #' @export
 #' @keywords corpus
-#' @aliases metacorpus
 #' @examples
 #' meta(data_corpus_inaugural)
 #' meta(data_corpus_inaugural, "source")

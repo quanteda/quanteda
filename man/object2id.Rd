@@ -78,3 +78,4 @@ object2fixed(pats, types, keep_nomatch = TRUE)
 \code{\link[=pattern2id]{pattern2id()}}
 }
 \keyword{development}
+\keyword{internal}

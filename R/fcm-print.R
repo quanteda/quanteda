@@ -1,4 +1,4 @@
-#' @rdname print-quanteda
+#' @rdname print-method
 #' @export
 setMethod("print", signature(x = "fcm"), 
           function(x, max_nfeat = quanteda_options("print_dfm_max_nfeat"), 
@@ -13,7 +13,7 @@ setMethod("print", signature(x = "fcm"),
               print_fcm(x, max_nfeat, show_summary, ...)
           })
 
-#' @rdname print-quanteda
+#' @noRd
 setMethod("show", signature(object = "fcm"), function(object) print(object))
 
 # internal function for print.fcm
