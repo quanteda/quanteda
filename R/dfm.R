@@ -103,11 +103,11 @@ dfm <- function(x,
                 groups = NULL,
                 verbose = quanteda_options("verbose"),
                 ...) {
-
+    
     if (!is.dfm(x) && is.dfm(select)) {
         stop("selection on a dfm is only available when x is a dfm")
     }
-
+    
     dfm_env$START_TIME <- proc.time()
     object_class <- class(x)[1]
     if (verbose) message("Creating a dfm from a ", object_class, " input...")
@@ -142,15 +142,15 @@ dfm.character <- function(x,
                           verbose = quanteda_options("verbose"),
                           ...) {
     dfm.tokens(tokens(corpus(x), ...),
-        tolower = tolower,
-        stem = stem,
-        select = select, remove = remove,
-        dictionary = dictionary,
-        thesaurus = thesaurus,
-        valuetype = valuetype,
-        case_insensitive = case_insensitive,
-        groups = groups,
-        verbose = verbose)
+               tolower = tolower,
+               stem = stem,
+               select = select, remove = remove,
+               dictionary = dictionary,
+               thesaurus = thesaurus,
+               valuetype = valuetype,
+               case_insensitive = case_insensitive,
+               groups = groups,
+               verbose = verbose)
 }
 
 
@@ -202,13 +202,13 @@ dfm.tokens <- function(x,
     # call tokens only if options given
     if (length(list(...)))
         x <- tokens(x, ...)
-
+    
     if (tolower) {
         if (verbose) catm(" ...lowercasing\n", sep = "")
         x <- tokens_tolower(x)
         tolower <- FALSE
     }
-
+    
     if (verbose) {
         catm(" ...found ",
              format(length(x), big.mark = ","), " document",
@@ -221,14 +221,16 @@ dfm.tokens <- function(x,
              ifelse(length(types(x)) > 1, "s", ""),
              "\n", sep = "")
     }
-
+    
     if (!is.null(groups)) {
+        .Deprecated(msg = 'groups is deprecated; use dfm_group() instead')
         if (verbose) catm(" ...grouping texts\n")
         x <- tokens_group(x, groups, fill = FALSE)
     }
-
+    
     # use tokens_lookup for tokens objects
     if (!is.null(dictionary) || !is.null(thesaurus)) {
+        .Deprecated(msg = 'dictionary and thesaurus are deprecated; use dfm_lookup() instead')
         if (!is.null(thesaurus)) dictionary <- dictionary(thesaurus)
         if (verbose) catm(" ...")
         x <- tokens_lookup(x, dictionary,
@@ -237,7 +239,7 @@ dfm.tokens <- function(x,
                            case_insensitive = case_insensitive,
                            verbose = verbose)
     }
-
+    
     # use tokens_select for tokens objects
     if (!is.null(c(remove, select))) {
         if (!is.null(remove) & !is.null(select))
@@ -250,25 +252,26 @@ dfm.tokens <- function(x,
                            case_insensitive = case_insensitive,
                            verbose = verbose)
     }
-
+    
     if (stem) {
+        .Deprecated(msg = 'stem is deprecated; use dfm_wordstem() instead')
         language <- quanteda_options("language_stemmer")
         if (verbose) catm(" ...stemming types (", stri_trans_totitle(language), ")\n", sep = "")
         x <- tokens_wordstem(x, language = language)
     }
-
+    
     # compile the dfm
     type <- types(x)
     attrs <- attributes(x)
     temp <- unclass(x)
-
+    
     # shift index for padding, if any
     index <- unlist(temp, use.names = FALSE)
     if (attr(temp, "padding")) {
         type <- c("", type)
         index <- index + 1L
     }
-
+    
     temp <-  sparseMatrix(j = index,
                           p = cumsum(c(1L, lengths(x))) - 1L,
                           x = 1L,
@@ -301,17 +304,19 @@ dfm.dfm <- function(x,
                     groups = NULL,
                     verbose = quanteda_options("verbose"),
                     ...) {
-
+    
     x <- as.dfm(x)
     valuetype <- match.arg(valuetype)
     check_dots(...)
     
     if (!is.null(groups)) {
+        .Deprecated(msg = 'groups is deprecated; use dfm_group() instead')
         if (verbose) catm(" ...grouping texts\n")
         x <- dfm_group(x, groups, fill = FALSE)
     }
-
+    
     if (!is.null(dictionary) || !is.null(thesaurus)) {
+        .Deprecated(msg = 'dictionary and thesaurus are deprecated; use dfm_lookup() instead')
         if (!is.null(thesaurus)) dictionary <- dictionary(thesaurus)
         if (verbose) catm(" ...")
         x <- dfm_lookup(x, dictionary,
@@ -320,7 +325,7 @@ dfm.dfm <- function(x,
                         case_insensitive = case_insensitive,
                         verbose = verbose)
     }
-
+    
     if (!is.null(c(remove, select))) {
         if (!is.null(remove) & !is.null(select))
             stop("only one of select and remove may be supplied at once")
@@ -332,14 +337,15 @@ dfm.dfm <- function(x,
                         case_insensitive = case_insensitive,
                         verbose = verbose)
     }
-
+    
     if (tolower) {
         if (verbose) catm(" ...lowercasing\n", sep = "")
         x <- dfm_tolower(x)
     }
-
-    language <- quanteda_options("language_stemmer")
+    
     if (stem) {
+        .Deprecated(msg = 'stem is deprecated; use dfm_wordstem() instead')
+        language <- quanteda_options("language_stemmer")
         if (verbose)
             catm(" ...stemming features (", stri_trans_totitle(language),
                  ")", sep = "")
@@ -351,12 +357,12 @@ dfm.dfm <- function(x,
                      ifelse(nfeat_org - nfeat(x) != 1, "s", ""),
                      "\n", sep = "")
     }
-
+    
     # remove any NA named columns
     is_na <- is.na(featnames(x))
     if (any(is_na))
         x <- x[, !is_na, drop = FALSE]
-
+    
     if (verbose) {
         catm(" ...complete, elapsed time:",
              format((proc.time() - dfm_env$START_TIME)[3], digits = 3), "seconds.\n")
@@ -391,7 +397,7 @@ make_null_dfm <- function(feature = NULL, document = NULL) {
         j = NULL,
         dims = c(length(document), length(feature))
     ), "dgCMatrix")
-
+    
     build_dfm(temp, feature,
               docvars = make_docvars(length(document), document))
 }
