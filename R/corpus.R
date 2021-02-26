@@ -88,9 +88,6 @@
 #' summary(corpus(dat, text_field = "some_text",
 #'                meta = list(source = "From a data.frame called mydf.")))
 #'
-#' # construct a corpus from a kwic object
-#' kw <- kwic(data_corpus_inaugural, "southern")
-#' summary(corpus(kw))
 corpus <- function(x, ...) {
     UseMethod("corpus")
 }
@@ -233,7 +230,6 @@ corpus.data.frame <- function(x, docid_field = "doc_id", text_field = "text",
     return(result)
 }
 
-
 #' @rdname corpus
 #' @param split_context logical; if `TRUE`, split each kwic row into two
 #'   "documents", one for "pre" and one for "post", with this designation saved
@@ -251,12 +247,12 @@ corpus.data.frame <- function(x, docid_field = "doc_id", text_field = "text",
 #'
 #' @export
 corpus.kwic <- function(x, split_context = TRUE, extract_keyword = TRUE, meta = list(), ...) {
-
     split_context <- check_logical(split_context)
     extract_keyword <- check_logical(extract_keyword)
     check_dots(...)
     
-    class(x) <- "data.frame"
+    x <- as.data.frame(x)
+    
     if (split_context) {
         pre <- corpus(x[, c("docname", "from", "to", "pre", "keyword")],
                       docid_field = "docname", text_field = "pre", meta = meta, unique_docnames = FALSE)

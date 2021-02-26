@@ -68,10 +68,9 @@ select_meta <- function(x, field = NULL, type = c("user", "object", "system", "a
 
 # meta<-   -----------
 
-#' Replacement function for corpus-level data
+#' @rdname meta
 #' @param value new value of the metadata field
 #' @export
-#' @rdname meta
 "meta<-" <- function(x, field = NULL, value) {
     if (is.null(field) && !is.list(value)) stop("value must be a named list")
         if (is.list(value) && length(names(value)) != length(value))
@@ -167,7 +166,6 @@ meta_system <- function(x, field = NULL)
     return(x)
 }
 
-
 #' @rdname meta_system
 `meta_system<-.dfm` <- function(x, field = NULL, value) {
     if (is.null(field)) {
@@ -235,6 +233,7 @@ make_meta <- function(class, inherit = NULL, ...) {
 }
 
 # newer version of meta_system_defaults
+#' @rdname make_meta
 make_meta_system <- function(inherit = NULL) {
     if (is.null(inherit))
         inherit <- list()

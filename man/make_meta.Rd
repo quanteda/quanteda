@@ -2,6 +2,7 @@
 % Please edit documentation in R/meta.R
 \name{make_meta}
 \alias{make_meta}
+\alias{make_meta_system}
 \alias{make_meta_corpus}
 \alias{make_meta_tokens}
 \alias{make_meta_dfm}
@@ -11,6 +12,8 @@
 \title{Internal functions to create a list of the meta fields}
 \usage{
 make_meta(class, inherit = NULL, ...)
+
+make_meta_system(inherit = NULL)
 
 make_meta_corpus(inherit = NULL, ...)
 

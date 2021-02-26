@@ -151,9 +151,6 @@ dat
 summary(corpus(dat, text_field = "some_text",
                meta = list(source = "From a data.frame called mydf.")))
 
-# construct a corpus from a kwic object
-kw <- kwic(data_corpus_inaugural, "southern")
-summary(corpus(kw))
 # from a kwic
 kw <- kwic(data_char_sampletext, "econom*", separator = "",
            remove_separators = FALSE) # keep original separators

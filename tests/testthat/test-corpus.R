@@ -39,7 +39,6 @@ test_that("print works", {
     
 })                
 
-
 test_that("corpus constructors works for kwic", {
     kw <- kwic(data_char_sampletext, "econom*")
 

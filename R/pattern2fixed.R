@@ -311,8 +311,7 @@ expand <- function(elem){
 
 #' Check if a glob pattern is indexed by index_types
 #' 
-#' Internal function for `select_types` to check if a glob pattern is
-#' indexed by
+#' Internal function for `select_types` to check if a glob pattern is indexed by
 #' `index_types`.
 #' @param pattern a glob pattern to be tested
 #' @keywords internal

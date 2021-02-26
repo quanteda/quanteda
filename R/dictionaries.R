@@ -100,7 +100,7 @@ check_entries <- function(dict) {
 #'   [`as.list()`][dictionary2-class], and checked using
 #'   [is.dictionary()].
 #' @references WordStat dictionaries page, from Provalis Research
-#'   <http://provalisresearch.com/products/content-analysis-software/wordstat-dictionary/>.
+#'   <https://provalisresearch.com/products/content-analysis-software/wordstat-dictionary/>.
 #'
 #'   Pennebaker, J.W., Chung, C.K., Ireland, M., Gonzales, A., & Booth, R.J.
 #'   (2007). The development and psychometric properties of LIWC2007. \[Software
