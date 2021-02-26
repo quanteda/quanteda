@@ -13,7 +13,7 @@ kwic(
   valuetype = c("glob", "regex", "fixed"),
   separator = " ",
   case_insensitive = TRUE,
-  inex = NULL,
+  index = NULL,
   ...
 )
 
@@ -33,10 +33,12 @@ or collocations object.  See \link{pattern} for details.}
 wildcard expressions; \code{"regex"} for regular expressions; or \code{"fixed"} for
 exact matching. See \link{valuetype} for details.}
 
-\item{separator}{character to separate words in the output}
+\item{separator}{a character to separate words in the output}
 
 \item{case_insensitive}{logical; if \code{TRUE}, ignore case when matching a
 \code{pattern} or \link{dictionary} values}
+
+\item{index}{an \link{index} object to specify keywords}
 
 \item{...}{additional arguments passed to \link{tokens}, for applicable
 object types; not used by \code{as.data.frame.kwic()}}

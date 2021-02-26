@@ -9,7 +9,8 @@
 #' @inheritParams pattern
 #' @param window the number of context words to be displayed around the keyword
 #' @inheritParams valuetype
-#' @param separator character to separate words in the output
+#' @param separator a character to separate words in the output
+#' @param index an [index] object to specify keywords
 #' @param ... additional arguments passed to [tokens], for applicable
 #'   object types; not used by `as.data.frame.kwic()`
 #' @return A `kwic` classed data.frame, with the document name
@@ -44,7 +45,7 @@ kwic <- function(x, pattern, window = 5,
                  valuetype = c("glob", "regex", "fixed"),
                  separator = " ",
                  case_insensitive = TRUE, 
-                 inex = NULL, ...) {
+                 index = NULL, ...) {
     UseMethod("kwic")
 }
 
