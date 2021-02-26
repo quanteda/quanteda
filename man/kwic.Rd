@@ -90,5 +90,5 @@ as.data.frame(kw)
 
 }
 \seealso{
-\code{\link[=print.kwic]{print.kwic()}}
+\link{print-method}
 }
