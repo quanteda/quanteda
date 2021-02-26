@@ -74,6 +74,9 @@ kwic(toks, pattern = "security", valuetype = "fixed", window = 3)
 kwic(toks, pattern = phrase("secur* against"), window = 2)
 kwic(toks, pattern = phrase("war against"), valuetype = "regex", window = 2)
 
+# use index
+idx <- index(toks, phrase("secur* against"))
+kwic(toks, index = idx, window = 2)
 kw <- kwic(data_corpus_inaugural, "provident*")
 is.kwic(kw)
 is.kwic("Not a kwic")

@@ -2,6 +2,7 @@
 % Please edit documentation in R/index.R
 \name{index}
 \alias{index}
+\alias{is.index}
 \title{Locate a pattern in a tokens object}
 \usage{
 index(
@@ -10,6 +11,8 @@ index(
   valuetype = c("glob", "regex", "fixed"),
   case_insensitive = TRUE
 )
+
+is.index(x)
 }
 \arguments{
 \item{x}{an input \link{tokens} object}
@@ -28,6 +31,9 @@ exact matching. See \link{valuetype} for details.}
 a data.frame consisting of one row per pattern match, with columns
 for the document name, index positions \code{from} and \code{to}, and the pattern
 matched.
+
+\code{is.index} returns \code{TRUE} if the object was created by
+\code{\link[=index]{index()}}; \code{FALSE} otherwise.
 }
 \description{
 Locates a \link{pattern} within a tokens object, returning the index positions of
