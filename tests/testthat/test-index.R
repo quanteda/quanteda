@@ -1,8 +1,8 @@
-test_that("locate returns the correct matches in a data.frame", {
+test_that("index returns the correct matches in a data.frame", {
     toks <- tokens(c(d1 = paste(LETTERS, collapse = " "),
                      d2 = paste(letters, collapse = " ")))
     
-    loc <- locate(toks, c("A", "D", "z", "h", phrase("H I J")))
+    loc <- index(toks, c("A", "D", "z", "h", phrase("H I J")))
     expect_equivalent(
         loc,
         data.frame(docname = c("d1", "d1", "d1", "d1", "d1", "d2", "d2", "d2", "d2", "d2"), 
@@ -11,7 +11,7 @@ test_that("locate returns the correct matches in a data.frame", {
                    pattern = factor(c("A", "D", "h", "H I J", "z", "A", "D", "h", "H I J", "z")))
     )
     
-    loc <- locate(toks, c("A", "D", "z", "h", phrase("H I J")), case_insensitive = FALSE)
+    loc <- index(toks, c("A", "D", "z", "h", phrase("H I J")), case_insensitive = FALSE)
     expect_equivalent(
         loc,
         data.frame(docname = c("d1", "d1", "d1", "d2", "d2"), 
@@ -20,7 +20,7 @@ test_that("locate returns the correct matches in a data.frame", {
                    pattern = factor(c("A", "D", "H I J", "h", "z")))
     )
 
-    loc <- locate(toks, "[b-c]", valuetype = "regex")
+    loc <- index(toks, "[b-c]", valuetype = "regex")
     expect_equivalent(
         loc,
         data.frame(docname = c("d1", "d1", "d2", "d2"), 
@@ -30,8 +30,3 @@ test_that("locate returns the correct matches in a data.frame", {
     )
 })
 
-test_that("locate returns the expected attributes", {
-    toks <- tokens(data_corpus_inaugural[1:8])
-    loc <- locate(toks, pattern = "secure*")
-    expect_identical(toks, attr(loc, "tokens"))
-})

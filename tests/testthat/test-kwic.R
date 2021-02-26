@@ -211,6 +211,23 @@ test_that("test that kwic works for fixed types", {
     )
 })
 
+test_that("test that kwic works with index", {
+  toks <- tokens(data_corpus_inaugural)
+  idx <- index(toks, "security")
+  kiwc_idx <- kwic(toks, index = idx)
+  kwic_pat <- kwic(toks, pattern = "security")
+  expect_identical(kiwc_idx, kwic_pat)
+  
+  kiwc_idx2 <- kwic(toks, index = idx[c(2, 3, 1),])
+  kwic_pat2 <- kwic(toks, pattern = "security")[c(2, 3, 1),]
+  expect_identical(kiwc_idx2, kwic_pat2)
+  
+  expect_error(kwic(toks),
+               "Either pattten or index must be provided")
+  expect_error(kwic(toks, index = data.frame(1:5)),
+               "Invalid index object")
+})
+
 test_that("is.kwic works as expected", {
     kwic1 <- kwic(data_corpus_inaugural[1:3], "provident*")
     expect_true(is.kwic(kwic1))
