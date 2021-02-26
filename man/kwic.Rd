@@ -13,6 +13,7 @@ kwic(
   valuetype = c("glob", "regex", "fixed"),
   separator = " ",
   case_insensitive = TRUE,
+  inex = NULL,
   ...
 )
 

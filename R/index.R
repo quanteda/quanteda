@@ -45,7 +45,14 @@ index.tokens <- function(x, pattern,
         result <- result[r,]
     }
     rownames(result) <- NULL
-    attr(result, "tokens") <- x
-    class(result) <- c("locate", "data.frame")
+    class(result) <- c("index", "data.frame")
     return(result)
+}
+
+#' @rdname index
+#' @return `is.index` returns `TRUE` if the object was created by
+#'   [index()]; `FALSE` otherwise.
+#' @export
+is.index <- function(x) {
+    "index" %in% class(x)
 }

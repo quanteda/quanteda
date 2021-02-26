@@ -21,16 +21,16 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// qatd_cpp_kwic
-DataFrame qatd_cpp_kwic(const List& texts_, const CharacterVector types_, const List& words_);
-RcppExport SEXP _quanteda_qatd_cpp_kwic(SEXP texts_SEXP, SEXP types_SEXP, SEXP words_SEXP) {
+// qatd_cpp_index
+DataFrame qatd_cpp_index(const List& texts_, const CharacterVector types_, const List& words_);
+RcppExport SEXP _quanteda_qatd_cpp_index(SEXP texts_SEXP, SEXP types_SEXP, SEXP words_SEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const List& >::type texts_(texts_SEXP);
     Rcpp::traits::input_parameter< const CharacterVector >::type types_(types_SEXP);
     Rcpp::traits::input_parameter< const List& >::type words_(words_SEXP);
-    rcpp_result_gen = Rcpp::wrap(qatd_cpp_kwic(texts_, types_, words_));
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_index(texts_, types_, words_));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -227,7 +227,7 @@ END_RCPP
 
 static const R_CallMethodDef CallEntries[] = {
     {"_quanteda_qatd_cpp_fcm", (DL_FUNC) &_quanteda_qatd_cpp_fcm, 5},
-    {"_quanteda_qatd_cpp_kwic", (DL_FUNC) &_quanteda_qatd_cpp_kwic, 3},
+    {"_quanteda_qatd_cpp_index", (DL_FUNC) &_quanteda_qatd_cpp_index, 3},
     {"_quanteda_qatd_cpp_tokens_chunk", (DL_FUNC) &_quanteda_qatd_cpp_tokens_chunk, 4},
     {"_quanteda_qatd_cpp_tokens_compound", (DL_FUNC) &_quanteda_qatd_cpp_tokens_compound, 7},
     {"_quanteda_qatd_cpp_tokens_lookup", (DL_FUNC) &_quanteda_qatd_cpp_tokens_lookup, 6},
