@@ -127,7 +127,6 @@ DataFrame qatd_cpp_index(const List &texts_,
         Matches matches = temp[h];
         if (matches.size() == 0) continue;
         Text tokens = texts[h];
-        int last = (int)tokens.size() - 1;
         for (size_t i = 0; i < matches.size(); i++) {
             Match match = matches[i];
             kw_pattern_[j] = patters_[std::get<0>(match)];
