@@ -11,21 +11,21 @@
 #' @export
 #' @examples
 #' toks <- tokens(data_corpus_inaugural[1:8])
-#' locate(toks, pattern = "secure*")
-#' locate(toks, pattern = c("secure*", phrase("united states"))) %>% head()
-locate <- function(x, pattern, 
+#' index(toks, pattern = "secure*")
+#' index(toks, pattern = c("secure*", phrase("united states"))) %>% head()
+index <- function(x, pattern, 
                    valuetype = c("glob", "regex", "fixed"),
                    case_insensitive = TRUE) {
-    UseMethod("locate")
+    UseMethod("index")
 }
 
 #' @export
-locate.default <- function(x, ...) {
-    check_class(class(x), "locate")
+index.default <- function(x, ...) {
+    check_class(class(x), "index")
 }
 
 #' @export
-locate.tokens <- function(x, pattern, 
+index.tokens <- function(x, pattern, 
                            valuetype = c("glob", "regex", "fixed"),
                            case_insensitive = TRUE) {
     x <- as.tokens(x)
@@ -37,7 +37,7 @@ locate.tokens <- function(x, pattern,
         names(pattern) <- pattern
     ids <- object2id(pattern, attrs[["types"]], valuetype,
                      case_insensitive, field_object(attrs, "concatenator"))
-    result <- qatd_cpp_kwic(x, type, ids)
+    result <- qatd_cpp_index(x, type, ids)
     result$pattern <- factor(result$pattern, levels = unique(names(ids)))
     if (nrow(result)) {
         r <- order(match(result$docname, docnames(x)),

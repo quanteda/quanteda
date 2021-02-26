@@ -6,7 +6,7 @@ using namespace quanteda;
 typedef std::tuple<unsigned int, size_t, size_t> Match;
 typedef std::vector<Match> Matches;
 
-Matches kwic(Text tokens,
+Matches index(Text tokens,
                    const std::vector<std::size_t> &spans,
                    const MultiMapNgrams &map_pats,
                    UintParam &n_match){
@@ -35,7 +35,7 @@ Matches kwic(Text tokens,
     return matches;
 }
 
-struct kwic_mt : public Worker{
+struct index_mt : public Worker{
     
     Texts &texts;
     std::vector<Matches> &temp;
@@ -44,7 +44,7 @@ struct kwic_mt : public Worker{
     UintParam &n_match;
     
     // Constructor
-    kwic_mt(Texts &texts_, std::vector<Matches> &temp_,
+    index_mt(Texts &texts_, std::vector<Matches> &temp_,
             const std::vector<std::size_t> &spans_, const MultiMapNgrams &map_pats_,
             UintParam &n_match_):
             texts(texts_), temp(temp_), spans(spans_), map_pats(map_pats_), 
@@ -54,7 +54,7 @@ struct kwic_mt : public Worker{
     void operator()(std::size_t begin, std::size_t end){
         //Rcout << "Range " << begin << " " << end << "\n";
         for (std::size_t h = begin; h < end; h++){
-            temp[h] = kwic(texts[h], spans, map_pats, n_match);
+            temp[h] = index(texts[h], spans, map_pats, n_match);
         }
     }
 };
@@ -63,7 +63,7 @@ struct kwic_mt : public Worker{
 /* 
  * This function generate generates keyword-in-contexts. 
  * The number of threads is set by RcppParallel::setThreadOptions()
- * @used kwic()
+ * @used index()
  * @creator Kohei Watanabe
  * @param texts_ tokens ojbect
  * @param types_ types
@@ -73,7 +73,7 @@ struct kwic_mt : public Worker{
  */
 
 // [[Rcpp::export]]
-DataFrame qatd_cpp_kwic(const List &texts_,
+DataFrame qatd_cpp_index(const List &texts_,
                         const CharacterVector types_,
                         const List &words_){
     
@@ -109,11 +109,11 @@ DataFrame qatd_cpp_kwic(const List &texts_,
     //dev::start_timer("Search keywords", timer);
     UintParam n_match = 0;
 #if QUANTEDA_USE_TBB
-    kwic_mt kwic_mt(texts, temp, spans, map_pats, n_match);
-    parallelFor(0, texts.size(), kwic_mt);
+    index_mt index_mt(texts, temp, spans, map_pats, n_match);
+    parallelFor(0, texts.size(), index_mt);
 #else
     for (std::size_t h = 0; h < texts.size(); h++) {
-        temp[h] = kwic(texts[h], spans, map_pats, n_match);
+        temp[h] = index(texts[h], spans, map_pats, n_match);
     }
 #endif
     //dev::stop_timer("Search keywords", timer);
@@ -153,12 +153,12 @@ toks <- list(text1=1:10, text2=5:15)
 #toks <- rep(list(rep(1:10, 1), rep(5:15, 1)), 1)
 #dict <- list(c(1, 2), c(5, 6), 10, 15, 20)
 #qatd_cpp_tokens_contexts(toks, dict, 2)
-qatd_cpp_kwic(toks, letters, list(10), 1, "_")
-qatd_cpp_kwic(toks, letters, list(10), 1, "_")
-qatd_cpp_kwic(toks, letters, list(c(3, 4), 7), 2, "_")
-qatd_cpp_kwic(toks, letters, list(c(3, 4), 7), 2, "_")
-qatd_cpp_kwic(toks, letters, c(3, 4, 7), 2, "_")
-qatd_cpp_kwic(toks, letters, c(3, 4, 7), 2, "_")
+qatd_cpp_index(toks, letters, list(10), 1, "_")
+qatd_cpp_index(toks, letters, list(10), 1, "_")
+qatd_cpp_index(toks, letters, list(c(3, 4), 7), 2, "_")
+qatd_cpp_index(toks, letters, list(c(3, 4), 7), 2, "_")
+qatd_cpp_index(toks, letters, c(3, 4, 7), 2, "_")
+qatd_cpp_index(toks, letters, c(3, 4, 7), 2, "_")
 
 
 */

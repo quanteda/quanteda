@@ -40,7 +40,8 @@
 kwic <- function(x, pattern, window = 5,
                  valuetype = c("glob", "regex", "fixed"),
                  separator = " ",
-                 case_insensitive = TRUE, ...) {
+                 case_insensitive = TRUE, 
+                 inex = NULL, ...) {
     UseMethod("kwic")
 }
 
@@ -53,7 +54,8 @@ kwic.default <- function(x, ...) {
 kwic.character <- function(x, pattern, window = 5,
                            valuetype = c("glob", "regex", "fixed"),
                            separator = " ",
-                           case_insensitive = TRUE, ...) {
+                           case_insensitive = TRUE, 
+                           ...) {
     kwic(corpus(x), pattern = pattern, window = window, 
          valuetype = valuetype, separator = separator, 
          case_insensitive = case_insensitive, ...)
@@ -61,9 +63,10 @@ kwic.character <- function(x, pattern, window = 5,
 
 #' @export
 kwic.corpus <- function(x, pattern, window = 5,
-                           valuetype = c("glob", "regex", "fixed"),
-                           separator = " ",
-                           case_insensitive = TRUE, ...) {
+                        valuetype = c("glob", "regex", "fixed"),
+                        separator = " ",
+                        case_insensitive = TRUE, 
+                        ...) {
     x <- as.corpus(x)
     kwic(tokens(x, what = "word", ...), pattern = pattern, 
          window = window, valuetype = valuetype, separator = separator, 
@@ -71,18 +74,23 @@ kwic.corpus <- function(x, pattern, window = 5,
 }
 
 #' @export
-kwic.tokens <- function(x, pattern, window = 5,
+kwic.tokens <- function(x, pattern = NULL, window = 5,
                         valuetype = c("glob", "regex", "fixed"),
                         separator = " ",
-                        case_insensitive = TRUE, ...) {
+                        case_insensitive = TRUE, 
+                        index = NULL, ...) {
     x <- as.tokens(x)
     window <- check_integer(window, 1, 1, 0)
     valuetype <- match.arg(valuetype)
     separator <- check_character(separator)
     case_insensitive <- check_logical(case_insensitive)
     
-    result <- locate(x, pattern = pattern, valuetype = valuetype, 
-                     case_insensitive = case_insensitive)
+    if (!is.null(index)) {
+        result <- index(x, pattern = pattern, valuetype = valuetype, 
+                        case_insensitive = case_insensitive)
+    } else {
+        result <- index
+    }
     
     ntok <- ntoken(x)
     result$pre <- rep("", nrow(result))
