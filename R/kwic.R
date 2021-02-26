@@ -99,11 +99,12 @@ kwic.tokens <- function(x, pattern = NULL, window = 5,
         result <- index
     }
     
+    n <- ntoken(x)
     result$pre <- rep("", nrow(result))
     result$keyword <- rep("", nrow(result))
     result$post <- rep("", nrow(result))
-    n <- integer()
     if (nrow(result)) {
+        n <- n[unique(result$docname)]
         x <- x[result$docname]
         lis_pre <- as.list(tokens_select(x, startpos = pmax(result$from - window, 1), endpos = result$from - 1))
         lis_key <- as.list(tokens_select(x, startpos = result$from, endpos = result$to))
@@ -112,7 +113,6 @@ kwic.tokens <- function(x, pattern = NULL, window = 5,
         result$pre[lengths(lis_pre) > 0] <- stri_c_list(lis_pre, sep = separator)
         result$keyword[lengths(lis_key) > 0] <- stri_c_list(lis_key, sep = separator)
         result$post[lengths(lis_post) > 0] <- stri_c_list(lis_post, sep = separator)
-        n  <- ntoken(x)
     }
     
     # reorder columns to match pre-v3 order
@@ -205,6 +205,7 @@ print.kwic <- function(x, max_nrow = quanteda_options("print_kwic_max_nrow"),
     attrs <- attributes(x)
     class(x) <- c("data.frame")
     x <- x[i,]
+    attr(x, "ntoken") <- attrs$ntoken[i]
     class(x) <- c("kwic", "data.frame")
     return(x)
 }
