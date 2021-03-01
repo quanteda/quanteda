@@ -118,6 +118,7 @@ Collate:
     'fcm-subsetting.R'
     'fcm.R'
     'fcm_select.R'
+    'index.R'
     'kwic.R'
     'message.R'
     'nfunctions.R'

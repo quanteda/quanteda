@@ -9,7 +9,8 @@
 #' @inheritParams pattern
 #' @param window the number of context words to be displayed around the keyword
 #' @inheritParams valuetype
-#' @param separator character to separate words in the output
+#' @param separator a character to separate words in the output
+#' @param index an [index] object to specify keywords
 #' @param ... additional arguments passed to [tokens], for applicable
 #'   object types; not used by `as.data.frame.kwic()`
 #' @return A `kwic` classed data.frame, with the document name
@@ -25,20 +26,26 @@
 #'   will automatically be considered phrases where each whitespace-separated
 #'   element matches a token in sequence.
 #' @export
+#' @seealso [print-method]
 #' @examples
-#' corp <- data_corpus_inaugural[1:8]
-#' kwic(corp, pattern = "secure*", valuetype = "glob", window = 3)
-#' kwic(corp, pattern = "secur", valuetype = "regex", window = 3)
-#' kwic(corp, pattern = "security", valuetype = "fixed", window = 3)
+#' # single token matching
+#' toks <- tokens(data_corpus_inaugural[1:8])
+#' kwic(toks, pattern = "secure*", valuetype = "glob", window = 3)
+#' kwic(toks, pattern = "secur", valuetype = "regex", window = 3)
+#' kwic(toks, pattern = "security", valuetype = "fixed", window = 3)
 #'
-#' toks <- tokens(corp)
+#' # phrase matching
 #' kwic(toks, pattern = phrase("secur* against"), window = 2)
-#' kw <- kwic(toks, pattern = phrase("war against"), valuetype = "regex")
-#'
+#' kwic(toks, pattern = phrase("war against"), valuetype = "regex", window = 2)
+#' 
+#' # use index
+#' idx <- index(toks, phrase("secur* against"))
+#' kwic(toks, index = idx, window = 2)
 kwic <- function(x, pattern, window = 5,
                  valuetype = c("glob", "regex", "fixed"),
                  separator = " ",
-                 case_insensitive = TRUE, ...) {
+                 case_insensitive = TRUE, 
+                 index = NULL, ...) {
     UseMethod("kwic")
 }
 
@@ -47,79 +54,73 @@ kwic.default <- function(x, ...) {
     check_class(class(x), "kwic")
 }
 
-#' @rdname kwic
-#' @noRd
 #' @export
 kwic.character <- function(x, pattern, window = 5,
                            valuetype = c("glob", "regex", "fixed"),
                            separator = " ",
-                           case_insensitive = TRUE, ...) {
+                           case_insensitive = TRUE, 
+                           ...) {
     kwic(corpus(x), pattern = pattern, window = window, 
          valuetype = valuetype, separator = separator, 
          case_insensitive = case_insensitive, ...)
 }
 
-#' @rdname kwic
-#' @noRd
 #' @export
 kwic.corpus <- function(x, pattern, window = 5,
-                           valuetype = c("glob", "regex", "fixed"),
-                           separator = " ",
-                           case_insensitive = TRUE, ...) {
+                        valuetype = c("glob", "regex", "fixed"),
+                        separator = " ",
+                        case_insensitive = TRUE, 
+                        ...) {
     x <- as.corpus(x)
     kwic(tokens(x, what = "word", ...), pattern = pattern, 
          window = window, valuetype = valuetype, separator = separator, 
          case_insensitive = case_insensitive, ...)
 }
 
-#' @rdname kwic
-#' @noRd
-#' @examples
-#' txt <- c("This is a test",
-#'          "This is it.",
-#'          "What is in a train?",
-#'          "Is it a question?",
-#'          "Sometimes you don't know if this is it.",
-#'          "Is it a bird or a plane or is it a train?")
-#' kwic(txt, "is")
-#' kwic(txt, "in", valuetype = "regex")
-#' kwic(txt, phrase(c("is", "a", "is it")), valuetype = "fixed")
-#'
-#' toks <- tokens(txt)
-#' kwic(txt, "is", valuetype = "regex")
-#' kwic(txt, "or", window = 2)
-#'
-#' corp <- corpus(txt)
-#' print(kwic(corp, "is"), separator = "")
 #' @export
-kwic.tokens <- function(x, pattern, window = 5,
-                           valuetype = c("glob", "regex", "fixed"),
-                           separator = " ",
-                           case_insensitive = TRUE, ...) {
-    dots <- list(...)
+kwic.tokens <- function(x, pattern = NULL, window = 5,
+                        valuetype = c("glob", "regex", "fixed"),
+                        separator = " ",
+                        case_insensitive = TRUE, 
+                        index = NULL, ...) {
     x <- as.tokens(x)
-    valuetype <- match.arg(valuetype)
     window <- check_integer(window, 1, 1, 0)
+    valuetype <- match.arg(valuetype)
     separator <- check_character(separator)
+    case_insensitive <- check_logical(case_insensitive)
     
-    attrs <- attributes(x)
-    type <- types(x)
-    if (is.list(pattern) && is.null(names(pattern)))
-        names(pattern) <- pattern
-    ids <- object2id(pattern, attrs[["types"]], valuetype,
-                     case_insensitive, field_object(attrs, "concatenator"))
-    result <- qatd_cpp_kwic(x, type, ids)
-    result$pattern <- factor(result$pattern, levels = unique(names(ids)))
-    if (nrow(result)) {
-        r <- order(match(result$docname, docnames(x)),
-                   result$from, result$to, result$pattern)
-        result <- result[r,]
+    if (is.null(pattern) && is.null(index))
+        stop("Either pattten or index must be provided\n", call. = FALSE)
+    if (!is.null(pattern)) {
+        result <- index(x, pattern = pattern, valuetype = valuetype, 
+                        case_insensitive = case_insensitive)
+    } else if (!is.null(index)) {
+        if (!is.index(index))
+            stop("Invalid index object\n", call. = FALSE)
+        result <- index
     }
-    rownames(result) <- NULL
-    attr(result, "tokens") <- x
-    attr(result, "window") <- window
-    attr(result, "separator") <- separator
+    
+    n <- ntoken(x)
+    result$pre <- rep("", nrow(result))
+    result$keyword <- rep("", nrow(result))
+    result$post <- rep("", nrow(result))
+    if (nrow(result)) {
+        n <- n[unique(result$docname)]
+        x <- x[result$docname]
+        lis_pre <- as.list(tokens_select(x, startpos = pmax(result$from - window, 1), endpos = result$from - 1))
+        lis_key <- as.list(tokens_select(x, startpos = result$from, endpos = result$to))
+        lis_post <- as.list(tokens_select(x, startpos = result$to + 1, endpos = result$to + window))
+        
+        result$pre[lengths(lis_pre) > 0] <- stri_c_list(lis_pre, sep = separator)
+        result$keyword[lengths(lis_key) > 0] <- stri_c_list(lis_key, sep = separator)
+        result$post[lengths(lis_post) > 0] <- stri_c_list(lis_post, sep = separator)
+    }
+    
+    # reorder columns to match pre-v3 order
+    result <- result[, c("docname", "from", "to", "pre", "keyword", "post", "pattern")]
     class(result) <- c("kwic", "data.frame")
+    attr(result, "ntoken") <- n
+    
     return(result)
 }
 
@@ -137,54 +138,19 @@ is.kwic <- function(x) {
 
 #' @rdname kwic
 #' @method as.data.frame kwic
-#' @return 
-#'   `as.data.frame.kwic()` returns a data.frame consisting of `docname`, token
-#'   index values for the keyword matches `from` and `to`, character fields
-#'   `pre`, `keyword`, and `post` and the original `pattern` used for the match.
-#'   The window size and separator can be adjusted in `as.data.frame()`,
-#'   regardless of their setting when the kwic was created.
 #' @examples
 #' corp <- data_corpus_inaugural[1:8]
-#' kw <- kwic(corp, pattern = "secure*", valuetype = "glob", window = 1)
+#' kw <- kwic(corp, pattern = "secure*", valuetype = "glob", window = 3)
 #' as.data.frame(kw)
-#' as.data.frame(kw, window = 3)
+#' 
 #' @export
-as.data.frame.kwic <- function(x, ..., window = NULL, separator = NULL) {
-    
-    if (is.null(window))
-        window <- attr(x, "window")
-    else
-        window <- check_integer(window, 1, 1, 0)
-    
-    if (is.null(separator))
-        separator <- attr(x, "separator")
-    else
-        separator <- check_character(separator)
-    
-    attrs <- attributes(x)
-    x$pre <- rep("", nrow(x))
-    x$keyword <- rep("", nrow(x))
-    x$post <- rep("", nrow(x))
-    if (nrow(x)) {
-        toks <- attrs$tokens[x$docname]
-        lis_pre <- as.list(tokens_select(toks, startpos = pmax(x$from - window, 1), endpos = x$from - 1))
-        lis_key <- as.list(tokens_select(toks, startpos = x$from, endpos = x$to))
-        lis_post <- as.list(tokens_select(toks, startpos = x$to + 1, endpos = x$to + window))
-        
-        x$pre[lengths(lis_pre) > 0] <- stri_c_list(lis_pre, sep = separator)
-        x$keyword[lengths(lis_key) > 0] <- stri_c_list(lis_key, sep = separator)
-        x$post[lengths(lis_post) > 0] <- stri_c_list(lis_post, sep = separator)
-    }
-    attr(x, "tokens") <- NULL
-    attr(x, "window") <- NULL
-    attr(x, "separator") <- NULL
+as.data.frame.kwic <- function(x, ...) {
+    attr(x, "ntoken") <- NULL
     class(x) <- "data.frame"
-    # reorder columns to match pre-v3 order
-    x <- x[, c("docname", "from", "to", "pre", "keyword", "post", "pattern")]
     return(x)
 }
 
-#' @rdname print-quanteda
+#' @rdname print-method
 #' @method print kwic
 #' @param max_nrow max number of documents to print; default is from the
 #'   `print_kwic_max_nrow` setting of [quanteda_options()]
@@ -192,19 +158,13 @@ as.data.frame.kwic <- function(x, ..., window = NULL, separator = NULL) {
 #' @export
 print.kwic <- function(x, max_nrow = quanteda_options("print_kwic_max_nrow"), 
                        show_summary = quanteda_options("print_kwic_summary"), ...) {
-    # formerly arguments
-    window <- NULL
-    separator <- NULL
-    
-    attrs <- attributes(x)
+
     max_nrow <- check_integer(max_nrow, min = -1)
     if (max_nrow < 0)
         max_nrow <- nrow(x)
     nrem <- max(0, nrow(x) - max_nrow)
-
-    x <- as.data.frame(x[seq_len(min(nrow(x), max_nrow)), ], 
-                       window = window, separator = separator)
     
+    x <- head(x, max_nrow)
     if (show_summary) {
         cat(msg("Keyword-in-context with %d %s",
                 list(nrow(x) + nrem, c("match", "matches")),
@@ -246,7 +206,7 @@ print.kwic <- function(x, max_nrow = quanteda_options("print_kwic_max_nrow"),
     attrs <- attributes(x)
     class(x) <- c("data.frame")
     x <- x[i,]
-    attr(x, "tokens") <- attrs$tokens
+    attr(x, "ntoken") <- attrs$ntoken[i]
     class(x) <- c("kwic", "data.frame")
     return(x)
 }
