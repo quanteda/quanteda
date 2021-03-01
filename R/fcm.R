@@ -5,8 +5,8 @@
 #' features within a user-defined context. The context can be defined as a
 #' document or a window within a collection of documents, with an optional
 #' vector of weights applied to the co-occurrence counts.
-#' @param x character, [corpus], [tokens], or [dfm] object from
-#'   which to generate the feature co-occurrence matrix
+#' @param x a [tokens], or [dfm] object from which to generate the feature
+#'   co-occurrence matrix
 #' @param context the context in which to consider term co-occurrence:
 #'   `"document"` for co-occurrence counts within document; `"window"`
 #'   for co-occurrence within a defined window of words, which requires a
@@ -81,25 +81,23 @@
 #'  *Computational Linguistics*, 16(1), 22-29.
 #' @examples
 #' # see http://bit.ly/29b2zOA
-#' txt1 <- "A D A C E A D F E B A C E D"
-#' fcm(txt1, context = "window", window = 2)
-#' fcm(txt1, context = "window", count = "weighted", window = 3)
-#' fcm(txt1, context = "window", count = "weighted", window = 3,
-#'              weights = c(3, 2, 1), ordered = TRUE, tri = FALSE)
+#' toks1 <- tokens(c("A D A C E A D F E B A C E D"))
+#' fcm(toks1, context = "window", window = 2)
+#' fcm(toks1, context = "window", count = "weighted", window = 3)
+#' fcm(toks1, context = "window", count = "weighted", window = 3,
+#'     weights = c(3, 2, 1), ordered = TRUE, tri = FALSE)
 #'
 #' # with multiple documents
-#' txt2 <- c("a a a b b c", "a a c e", "a c e f g")
-#' fcm(txt2, context = "document", count = "frequency")
-#' fcm(txt2, context = "document", count = "boolean")
-#' fcm(txt2, context = "window", window = 2)
+#' toks2 <- tokens(c("a a a b b c", "a a c e", "a c e f g"))
+#' fcm(toks2, context = "document", count = "frequency")
+#' fcm(toks2, context = "document", count = "boolean")
+#' fcm(toks2, context = "window", window = 2)
 #'
-#'
-#' # from tokens
 #' txt3 <- c("The quick brown fox jumped over the lazy dog.",
 #'          "The dog jumped and ate the fox.")
-#' toks <- tokens(char_tolower(txt3), remove_punct = TRUE)
-#' fcm(toks, context = "document")
-#' fcm(toks, context = "window", window = 3)
+#' toks3 <- tokens(char_tolower(txt3), remove_punct = TRUE)
+#' fcm(toks3, context = "document")
+#' fcm(toks3, context = "window", window = 3)
 fcm <- function(x, context = c("document", "window"),
                 count = c("frequency", "boolean", "weighted"),
                 window = 5L,
@@ -117,12 +115,14 @@ fcm.default <- function(x, ...) {
 #' @noRd
 #' @export
 fcm.character <- function(x, ...) {
+    .Deprecated(msg = "'fcm.character()' is deprecated. Use 'tokens()' or 'dfm()' first.")
     fcm(corpus(x), ...)
 }
 
 #' @noRd
 #' @export
 fcm.corpus <- function(x, ...) {
+    .Deprecated(msg = "'fcm.corpus()' is deprecated. Use 'tokens()' or 'dfm()' first.")
     fcm(tokens(x), ...)
 }
 
