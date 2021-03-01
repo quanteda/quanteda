@@ -1,5 +1,3 @@
-context("test corpus_reshape")
-
 test_that("corpus_reshape works for sentences", {
     corp <- corpus(c(textone = "This is a sentence.  Another sentence.  Yet another.", 
                      texttwo = "Premiere phrase.  Deuxieme phrase."), 

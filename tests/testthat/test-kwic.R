@@ -414,7 +414,7 @@ test_that("kwic works as expected with and without phrases", {
 
 test_that("kwic error when dfm is given, #1006", {
     toks <- tokens("a b c")
-    expect_error(kwic(toks, dfm("b c d")))
+    expect_error(kwic(toks, dfm(tokens("b c d"))))
 })
 
 test_that("keywords attribute is set correctly in textplot_kwic (#1514)", {

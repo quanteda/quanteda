@@ -1,5 +1,3 @@
-context("test spacyr methods")
-
 test_that("test quanteda methods for spacy_parsed objects", {
     load("../data/data_spacy_parsed.rda")
     expect_identical(docnames(data_spacy_parsed), "text1")

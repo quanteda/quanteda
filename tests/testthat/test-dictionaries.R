@@ -1,5 +1,3 @@
-context("dictionary construction")
-
 test_that("dictionary constructors fail if all elements unnamed: explicit", {
     expect_error(dictionary(list(c("a", "b"), "c")),
                  "Dictionary elements must be named: a b c")

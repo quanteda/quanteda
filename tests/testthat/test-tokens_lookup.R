@@ -1,6 +1,3 @@
-context('test tokens_lookup')
-
-
 txt <- c(d1 = "The United States is bordered by the Atlantic Ocean and the Pacific Ocean.",
          d2 = "The Supreme Court of the United States is seldom in a united state.",
          d3 = "It's Arsenal versus Manchester United, states the announcer.",

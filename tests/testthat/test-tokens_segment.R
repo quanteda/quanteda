@@ -1,5 +1,3 @@
-context("test tokens_segment")
-
 test_that("tokens_segment works for sentences", {
     txt <- c(d1 = "Sentence one.  Second sentence is this one!\n
                    Here is the third sentence.",

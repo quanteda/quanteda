@@ -1,5 +1,3 @@
-context("test fcm")
-
 test_that("compare the output feature co-occurrence matrix to that of the text2vec package", {
     skip_if_not_installed("text2vec")
     library("text2vec")
@@ -236,8 +234,8 @@ test_that("fcm works as expected for tokens_hashed", {
 })
 
 test_that("fcm print works as expected", {
-    dfmt <- dfm(data_corpus_inaugural[1:2],
-                remove_punct = FALSE, remove_numbers = FALSE, split_hyphens = TRUE)
+    dfmt <- dfm(tokens(data_corpus_inaugural[1:2],
+                remove_punct = FALSE, remove_numbers = FALSE, split_hyphens = TRUE))
     fcmt <- fcm(dfmt)
     expect_output(print(fcmt, max_nfeat = 6, show_summary = TRUE),
                   paste0("^Feature co-occurrence matrix of: 634 by 634 features\\.",
@@ -316,7 +314,7 @@ test_that("test empty object is handled properly", {
 
 test_that("arithmetic/linear operation works with dfm", {
 
-    mt <- fcm(dfm(c(d1 = "a a b", d2 = "a b b c", d3 = "c c d")))
+    mt <- fcm(dfm(tokens(c(d1 = "a a b", d2 = "a b b c", d3 = "c c d"))))
     expect_true(is.fcm(mt + 2))
     expect_true(is.fcm(mt - 2))
     expect_true(is.fcm(mt * 2))
@@ -398,7 +396,7 @@ test_that("fcm feature names have encoding", {
 test_that("fcm raise nicer error message, #1267", {
 
     txt <- c(d1 = "one two three", d2 = "two three four", d3 = "one three four")
-    mx <- fcm(dfm(txt))
+    mx <- fcm(dfm(tokens(txt)))
     expect_silent(mx[])
     expect_error(mx["five"], "Subscript out of bounds")
     expect_error(mx[, "five"], "Subscript out of bounds")

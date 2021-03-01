@@ -1,5 +1,3 @@
-context("test nfunctions")
-
 test_that("test nsentence", {
     txt <- c(doc1 = "This is Mr. Smith.  He is married to Mrs. Jones.",
              doc2 = "Never, before: a colon!  Gimme a break.")
@@ -12,8 +10,8 @@ test_that("test nsentence", {
 })
 
 test_that("test ntype with dfm (#748)", {
-    d <- dfm(c(doc1 = "one two three",
-               doc2 = "one one one"))
+    d <- dfm(tokens(c(doc1 = "one two three",
+                      doc2 = "one one one")))
     expect_identical(
         ntype(d),
         c(doc1 = 3L, doc2 = 1L)

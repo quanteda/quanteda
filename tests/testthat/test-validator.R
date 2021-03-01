@@ -1,5 +1,3 @@
-context("test validator")
-
 i1 <- 3L
 i2 <- -1L
 i3 <- c(-1L, 0L, 1L, 2L)

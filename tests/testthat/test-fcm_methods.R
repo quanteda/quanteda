@@ -1,5 +1,3 @@
-context("test fcm methods")
-
 toks_test <- tokens(c("b A A d", "C C a b B e"))
 fcmt_test <- fcm(toks_test, context = "document")
 

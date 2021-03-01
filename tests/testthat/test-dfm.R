@@ -1,25 +1,24 @@
-context("test dfm")
-
 test_that("test c.corpus", {
-    expect_equal(
+    suppressWarnings({
+        expect_equal(
         matrix(dfm(corpus(c("What does the fox say?", "What does the fox say?", "")),
                    remove_punct = TRUE)),
         matrix(rep(c(1, 1, 0), 5), nrow = 15, ncol = 1)
     )
+    })
 })
 
 ## rbind.dfm
 ## TODO: Test classes returned
 
 test_that("test rbind.dfm with the same columns", {
-
     fox <- "What does the fox say?"
     foxdfm <- rep(1, 20)
     dim(foxdfm) <- c(4, 5)
     colnames(foxdfm) <- c("does", "fox", "say", "the", "what")
     rownames(foxdfm) <-  rep(c("text1", "text2"), 2)
 
-    dfm1 <- dfm(c(fox, fox), remove_punct = TRUE)
+    dfm1 <- dfm(tokens(c(fox, fox)), remove_punct = TRUE)
 
     expect_true(
         all(rbind(dfm1, dfm1) == foxdfm)
@@ -34,8 +33,8 @@ test_that("test rbind.dfm with the same columns", {
 # TODO: Add function for testing the equality of dfms
 
 test_that("test rbind.dfm with different columns", {
-    dfmt1 <- dfm(c(text1 = "What does the fox?"), remove_punct = TRUE)
-    dfmt2 <- dfm(c(text2 = "fox say"), remove_punct = TRUE)
+    dfmt1 <- dfm(tokens(c(text1 = "What does the fox?"), remove_punct = TRUE))
+    dfmt2 <- dfm(tokens(c(text2 = "fox say"), remove_punct = TRUE))
     dfmt3 <- rbind(dfmt1, dfmt2)
     dfmt4 <- as.dfm(matrix(c(1, 0, 1, 1, 0, 1, 1, 0, 1, 0), nrow = 2,
                     dimnames = list(c("text1", "text2"),
@@ -53,10 +52,9 @@ test_that("test rbind.dfm with different columns", {
 })
 
 test_that("test rbind.dfm with different columns, three args and repeated words", {
-
-    dfmt1 <- dfm("What does the?", remove_punct = TRUE)
-    dfmt2 <- dfm("fox say fox", remove_punct = TRUE)
-    dfmt3 <- dfm("The quick brown fox", remove_punct = TRUE)
+    dfmt1 <- dfm(tokens("What does the?", remove_punct = TRUE))
+    dfmt2 <- dfm(tokens("fox say fox", remove_punct = TRUE))
+    dfmt3 <- dfm(tokens("The quick brown fox", remove_punct = TRUE))
     dfmt4 <- rbind(dfmt1, dfmt2, dfmt3)
 
     dfmt5 <- as.dfm(matrix(
@@ -83,25 +81,24 @@ test_that("test rbind.dfm with a single argument returns the same dfm", {
     fox <- "What does the fox say?"
     expect_true(
         all(
-            rbind(dfm(fox)) == dfm(fox)
+            rbind(dfm(tokens(fox))) == dfm(tokens(fox))
         )
     )
     expect_that(
-        rbind(dfm(fox, remove_punct = TRUE)),
+        rbind(dfm(tokens(fox, remove_punct = TRUE))),
         is_a("dfm")
     )
 })
 
 test_that("test rbind.dfm with the same features, but in a different order", {
-
     fox <- "What does the fox say?"
     xof <- "say fox the does What??"
     foxdfm <- rep(1, 20)
     dim(foxdfm) <- c(4, 5)
     colnames(foxdfm) <- c("does", "fox", "say", "the", "what")
-    rownames(foxdfm) <-  rep(c("text1", "text2"), 2)
+    rownames(foxdfm) <- rep(c("text1", "text2"), 2)
 
-    dfm1 <- dfm(c(fox, xof), remove_punct = TRUE)
+    dfm1 <- dfm(tokens(c(fox, xof), remove_punct = TRUE))
 
     expect_true(
         all(rbind(dfm1, dfm1) == foxdfm)
@@ -110,7 +107,7 @@ test_that("test rbind.dfm with the same features, but in a different order", {
 
 test_that("dfm keeps all types with > 10,000 documents (#438) (a)", {
     generate_testdfm <- function(n) {
-        dfm(paste("X", seq_len(n), sep = ""))
+        dfm(tokens(paste("X", seq_len(n), sep = "")))
     }
     expect_equal(nfeat(generate_testdfm(10000)), 10000)
     expect_equal(nfeat(generate_testdfm(20000)), 20000)
@@ -119,7 +116,7 @@ test_that("dfm keeps all types with > 10,000 documents (#438) (a)", {
 test_that("dfm keeps all types with > 10,000 documents (#438) (b)", {
     set.seed(10)
     generate_testdfm <- function(n) {
-        dfm(paste(sample(letters, n, replace = TRUE), 1:n))
+        dfm(tokens(paste(sample(letters, n, replace = TRUE), 1:n)))
     }
     expect_equal(nfeat(generate_testdfm(10000)), 10026)
     expect_equal(nfeat(generate_testdfm(10001)), 10027)
@@ -137,8 +134,8 @@ test_that("dfm.dfm works as expected", {
     expect_identical(dfm_tolower(dfmt), dfm(dfmt, tolower = TRUE))
 
     expect_true({
-        sum(dfm(corp, select = c("The", "a", "an"))) >
-        sum(dfm(corp, select = c("The", "a", "an"), case_insensitive = FALSE))
+        sum(dfm(tokens(corp), select = c("The", "a", "an"))) >
+        sum(dfm(tokens(corp), select = c("The", "a", "an"), case_insensitive = FALSE))
     })
 
     expect_identical(dfm(dfmt, remove = c("The", "a", "an"), case_insensitive = FALSE, tolower = FALSE),
@@ -162,12 +159,12 @@ test_that("dfm.dfm works as expected", {
                             preps = c("of", "for", "In")), tolower = FALSE)
 
     expect_true({
-        sum(dfm(corp, dictionary = dict)) >
-        sum(dfm(corp, dictionary = dict, case_insensitive = FALSE))
+        sum(dfm(tokens(corp), dictionary = dict)) >
+        sum(dfm(tokens(corp), dictionary = dict, case_insensitive = FALSE))
     })
 
     expect_equivalent(
-        dfm(corp, dictionary = dict),
+        suppressWarnings(dfm(corp, dictionary = dict)),
         dfm(dfmt, dictionary = dict)
     )
 
@@ -177,7 +174,7 @@ test_that("dfm.dfm works as expected", {
     )
 
     expect_equivalent(
-        dfm(corp, dictionary = dict, case_insensitive = FALSE),
+        suppressWarnings(dfm(corp, dictionary = dict, case_insensitive = FALSE)),
         dfm(dfmt, dictionary = dict, case_insensitive = FALSE)
     )
 
@@ -187,18 +184,18 @@ test_that("dfm.dfm works as expected", {
     )
 
     expect_identical(
-        dfm(corp, stem = TRUE),
+        dfm(tokens(corp), stem = TRUE),
         dfm(dfmt, stem = TRUE)
     )
     expect_identical(
-        dfm(corp, stem = TRUE),
+        dfm(tokens(corp), stem = TRUE),
         dfm(dfmt, stem = TRUE)
     )
 })
 
 test_that("cbind.dfm works as expected", {
-    dfm1 <- dfm("This is one sample text sample")
-    dfm2 <- dfm("More words here")
+    dfm1 <- dfm(tokens("This is one sample text sample"))
+    dfm2 <- dfm(tokens("More words here"))
     dfm12 <- cbind(dfm1, dfm2)
 
     expect_equal(nfeat(dfm12), 8)
@@ -207,7 +204,7 @@ test_that("cbind.dfm works as expected", {
 })
 
 test_that("cbind.dfm works with non-dfm objects", {
-    dfm1 <- dfm(c("a b c", "c d e"))
+    dfm1 <- dfm(tokens(c("a b c", "c d e")))
 
     vec <- c(10, 20)
     expect_equal(
@@ -266,7 +263,7 @@ test_that("cbind.dfm works with non-dfm objects", {
 
 test_that("more cbind tests for dfms", {
     txts <- c("a b c d", "b c d e")
-    mydfm <- dfm(txts)
+    mydfm <- dfm(tokens(txts))
 
     expect_equal(
         as.matrix(cbind(mydfm, as.dfm(cbind("ALL" = ntoken(mydfm))))),
@@ -303,8 +300,8 @@ test_that("cbind.dfm keeps attributes of the dfm", {
 })
 
 test_that("rbind.dfm works as expected", {
-    dfm1 <- dfm("This is one sample text sample")
-    dfm2 <- dfm("More words here")
+    dfm1 <- dfm(tokens("This is one sample text sample"))
+    dfm2 <- dfm(tokens("More words here"))
     dfm12 <- rbind(dfm1, dfm2)
 
     expect_equal(nfeat(dfm12), 8)
@@ -321,7 +318,7 @@ test_that("dfm(x, dictionary = mwvdict) works with multi-word values", {
              d4 = "f g")
 
     # as dictionary
-    dfm1 <- dfm(txt, dictionary = mwvdict, verbose = TRUE)
+    dfm1 <- dfm(tokens(txt), dictionary = mwvdict, verbose = TRUE)
     expect_identical(
         as.matrix(dfm1),
         matrix(c(1, 0, 0, 0, 1, 0, 1, 0, 2, 1, 0, 0),
@@ -331,7 +328,7 @@ test_that("dfm(x, dictionary = mwvdict) works with multi-word values", {
     )
 
     # as thesaurus
-    dfm2 <- dfm(txt, thesaurus = mwvdict, verbose = TRUE)
+    dfm2 <- dfm(tokens(txt), thesaurus = mwvdict, verbose = TRUE)
     expect_identical(
         as.matrix(dfm2),
         matrix(c(1, 0, 0, 0, 1, 0, 1, 0, 2, 1, 0, 0,
@@ -344,7 +341,7 @@ test_that("dfm(x, dictionary = mwvdict) works with multi-word values", {
 })
 
 test_that("dfm works with relational operators", {
-    testdfm <- dfm(c("This is an example.", "This is a second example."))
+    testdfm <- dfm(tokens(c("This is an example.", "This is a second example.")))
     expect_is(testdfm == 0, "lgCMatrix")
     expect_is(testdfm >= 0, "lgCMatrix")
     expect_is(testdfm <= 0, "lgCMatrix")
@@ -466,9 +463,9 @@ test_that("dfm's document counts in verbose message is correct", {
              d2 = "a c d x z",
              d3 = "x y",
              d4 = "f g")
-    expect_message(dfm(txt, remove = c("a", "f"), verbose = TRUE),
+    expect_message(dfm(tokens(txt), remove = c("a", "f"), verbose = TRUE),
                    "removed 2 features")
-    expect_message(dfm(txt, select = c("a", "f"), verbose = TRUE),
+    expect_message(dfm(tokens(txt), select = c("a", "f"), verbose = TRUE),
                    "kept 2 features")
 })
 
@@ -491,8 +488,8 @@ test_that("dfm head, tail work as expected", {
 })
 
 test_that("dfm print works with options as expected", {
-    dfmt <- dfm(data_corpus_inaugural[1:14],
-                remove_punct = FALSE, remove_numbers = FALSE, split_hyphens = TRUE)
+    dfmt <- dfm(tokens(data_corpus_inaugural[1:14],
+                remove_punct = FALSE, remove_numbers = FALSE, split_hyphens = TRUE))
     expect_output(
         print(dfmt, max_ndoc = 6, max_nfeat = 10, show_summary = TRUE),
         paste0("^Document-feature matrix of: 14 documents, 4,452 features \\(81\\.97% sparse\\) and 4 docvars",
@@ -538,11 +535,11 @@ test_that("cannot supply remove and select in one call (#793)", {
     corp <- corpus(txt, docvars = data.frame(grp = c(1, 1, 2)))
     toks <- tokens(corp)
     expect_error(
-        dfm(txt, select = "one", remove = "two"),
+        suppressWarnings(dfm(txt, select = "one", remove = "two")),
         "only one of select and remove may be supplied at once"
     )
     expect_error(
-        dfm(corp, select = "one", remove = "two"),
+        suppressWarnings(dfm(corp, select = "one", remove = "two")),
         "only one of select and remove may be supplied at once"
     )
     expect_error(
@@ -561,7 +558,7 @@ test_that("dfm with selection options produces correct output", {
     dfmt <- dfm(toks)
     feat <- c("b", "c", "d", "e", "f", "g")
     expect_message(
-        dfm(txt, remove = feat, verbose = TRUE),
+        suppressWarnings(dfm(txt, remove = feat, verbose = TRUE)),
         "removed 4 features"
     )
     expect_message(
@@ -584,29 +581,29 @@ test_that("dfm works with stem options", {
         c("run", "ran", "run")
     )
     expect_equal(
-        featnames(dfm(txt_english)),
+        featnames(dfm(tokens(txt_english))),
         c("running", "ran", "runs")
     )
     expect_equal(
-        featnames(dfm(txt_english, stem = TRUE)),
+        featnames(dfm(tokens(txt_english), stem = TRUE)),
         c("run", "ran")
     )
     expect_error(
-        dfm(txt_english, stem = c(TRUE, FALSE)),
+        dfm(tokens(txt_english), stem = c(TRUE, FALSE)),
         "The length of stem must be 1"
     )
-    
+
     quanteda_options(language_stemmer = "french")
     expect_equal(
         as.character(tokens_wordstem(tokens(txt_french))),
         rep("cour", 3)
     )
     expect_equal(
-        featnames(dfm(txt_french)),
+        featnames(dfm(tokens(txt_french))),
         c("courant", "courir", "cours")
     )
     expect_equal(
-        featnames(dfm(txt_french, stem = TRUE)),
+        featnames(dfm(tokens(txt_french), stem = TRUE)),
         "cour"
     )
     quanteda_options(reset = TRUE)
@@ -617,8 +614,8 @@ test_that("dfm verbose option prints correctly", {
     corp <- corpus(txt)
     toks <- tokens(txt)
     mydfm <- dfm(toks)
-    expect_message(dfm(txt, verbose = TRUE), "Creating a dfm from a character input")
-    expect_message(dfm(corp, verbose = TRUE), "Creating a dfm from a corpus input")
+    expect_message(suppressWarnings(dfm(txt, verbose = TRUE)), "Creating a dfm from a character input")
+    expect_message(suppressWarnings(dfm(corp, verbose = TRUE)), "Creating a dfm from a corpus input")
     expect_message(dfm(toks, verbose = TRUE), "Creating a dfm from a tokens input")
     expect_message(dfm(mydfm, verbose = TRUE), "Creating a dfm from a dfm input")
 })
@@ -627,20 +624,20 @@ test_that("dfm works with purrr::map (#928)", {
     skip_if_not_installed("purrr")
     a <- "a b"
     b <- "a a a b b"
-    expect_identical(
+    suppressWarnings(expect_identical(
         vapply(purrr::map(list(a, b), dfm), is.dfm, logical(1)),
         c(TRUE, TRUE)
-    )
-    expect_identical(
+    ))
+    suppressWarnings(expect_identical(
         vapply(purrr::map(list(corpus(a), corpus(b)), dfm), is.dfm, logical(1)),
         c(TRUE, TRUE)
-    )
+    ))
     expect_identical(
         vapply(purrr::map(list(tokens(a), tokens(b)), dfm), is.dfm, logical(1)),
         c(TRUE, TRUE)
     )
     expect_identical(
-        vapply(purrr::map(list(dfm(a), dfm(b)), dfm), is.dfm, logical(1)),
+        vapply(purrr::map(list(dfm(tokens(a)), dfm(tokens(b))), dfm), is.dfm, logical(1)),
         c(TRUE, TRUE)
     )
 })
@@ -658,13 +655,12 @@ test_that("dfm works when features are created (#946", {
     )
 
     expect_equal(
-        as.matrix(cbind(dfm("a b"), dfm("feat_1"))),
+        as.matrix(cbind(dfm(tokens("a b")), dfm(tokens("feat_1")))),
         matrix(c(1, 1, 1), nrow = 1, dimnames = list(docs = "text1", features = c("a", "b", "feat_1")))
     )
 })
 
 test_that("dfm warns of argument not used", {
-
     txt <- c(d1 = "a b c d e", d2 = "a a b c c c")
     corp <- corpus(txt)
     toks <- tokens(txt)
@@ -682,10 +678,10 @@ test_that("dfm warns of argument not used", {
 })
 
 test_that("dfm pass arguments to tokens, issue #1121", {
-
     txt <- data_char_sampletext
     corp <- corpus(txt)
 
+    suppressWarnings({
     expect_equal(dfm(txt, what = "character"),
                  dfm(tokens(corp, what = "character")))
 
@@ -697,7 +693,7 @@ test_that("dfm pass arguments to tokens, issue #1121", {
 
     expect_equivalent(dfm(txt, remove_punct = TRUE),
                       dfm(tokens(txt, remove_punct = TRUE)))
-
+    })
 })
 
 test_that("dfm error when a dfm is given to for feature selection when x is not a dfm, #1067", {
@@ -705,9 +701,9 @@ test_that("dfm error when a dfm is given to for feature selection when x is not 
     corp <- corpus(txt)
     toks <- tokens(txt)
     mx <- dfm(toks)
-    mx2 <- dfm(c("a b", "c"))
+    mx2 <- dfm(tokens(c("a b", "c")))
 
-    expect_error(dfm(txt, select = mx2),
+    expect_error(suppressMessages(dfm(txt, select = mx2)),
                 "selection on a dfm is only available when x is a dfm")
     expect_error(dfm(corp, select = mx2),
                 "selection on a dfm is only available when x is a dfm")
@@ -723,14 +719,15 @@ test_that("dfm error when a dfm is given to for feature selection when x is not 
 
 test_that("test topfeatures", {
     expect_identical(
-        topfeatures(dfm("a a a a b b b c c d"), scheme = "count"),
+        topfeatures(dfm(tokens("a a a a b b b c c d")), scheme = "count"),
         c(a = 4, b = 3, c = 2, d = 1)
     )
     expect_error(
-        topfeatures(dfm("a a a a b b b c c d"), "count"),
+        topfeatures(dfm(tokens("a a a a b b b c c d")), "count"),
         "n must be a number"
     )
     dfmat <- corpus(c("a b b c", "b d", "b c"), docvars = data.frame(numdv = c(1, 2, 1))) %>%
+        tokens() %>%
         dfm()
     expect_identical(
         topfeatures(dfmat, groups = "numdv"),
@@ -750,13 +747,12 @@ test_that("test topfeatures", {
 
 test_that("test sparsity", {
     expect_equal(
-        sparsity(dfm(c("a a a a  c c d", "b b b"))),
+        sparsity(dfm(tokens(c("a a a a  c c d", "b b b")))),
         0.5
     )
 })
 
 test_that("test null dfm is handled properly", {
-
     mx <- quanteda:::make_null_dfm()
 
     # constructor
@@ -803,12 +799,11 @@ test_that("test null dfm is handled properly", {
     expect_equal(rbind(mx, mx), mx)
     expect_equal(cbind(mx, mx), mx)
 
-    expect_output(print(mx), 
+    expect_output(print(mx),
                   "Document-feature matrix of: 0 documents, 0 features (0.00% sparse) and 0 docvars.", fixed = TRUE)
 })
 
 test_that("test empty dfm is handled properly (#1419)", {
-
     mx <- dfm_trim(data_dfm_lbgexample, 1000)
     docvars(mx) <- data.frame(var = c(1, 5, 3, 6, 6, 4))
 
@@ -856,14 +851,13 @@ test_that("test empty dfm is handled properly (#1419)", {
     expect_equal(ndoc(rbind(mx, mx)), ndoc(mx) * 2)
     expect_equal(ndoc(cbind(mx, mx)), ndoc(mx))
 
-    expect_output(print(mx), 
+    expect_output(print(mx),
                   "Document-feature matrix of: 6 documents, 0 features (0.00% sparse) and 1 docvar.", fixed = TRUE)
 })
 
 test_that("dfm raise nicer error message, #1267", {
-
     txt <- c(d1 = "one two three", d2 = "two three four", d3 = "one three four")
-    mx <- dfm(txt)
+    mx <- dfm(tokens(txt))
     expect_error(mx["d4"], "Subscript out of bounds")
     expect_error(mx["d4", ], "Subscript out of bounds")
     expect_error(mx[4], "Subscript out of bounds")
@@ -893,7 +887,6 @@ test_that("dfm raise nicer error message, #1267", {
 })
 
 test_that("dfm keeps non-existent types, #1278", {
-
     toks <- tokens("a b c")
     dict <- dictionary(list(A = "a", B = "b", Z = "z"))
 
@@ -909,8 +902,7 @@ test_that("dfm keeps non-existent types, #1278", {
 })
 
 test_that("arithmetic/linear operation works with dfm", {
-
-    mt <- dfm(c(d1 = "a a b", d2 = "a b b c", d3 = "c c d"))
+    mt <- dfm(tokens(c(d1 = "a a b", d2 = "a b b c", d3 = "c c d")))
     expect_true(is.dfm(mt + 2))
     expect_true(is.dfm(mt - 2))
     expect_true(is.dfm(mt * 2))
@@ -926,8 +918,7 @@ test_that("arithmetic/linear operation works with dfm", {
 })
 
 test_that("rbind and cbind wokrs with empty dfm", {
-
-    mt <- dfm(c(d1 = "a a b", d2 = "a b b c", d3 = "c c d"))
+    mt <- dfm(tokens(c(d1 = "a a b", d2 = "a b b c", d3 = "c c d")))
 
     expect_identical(docnames(rbind(mt, quanteda:::make_null_dfm())),
                      docnames(mt))
@@ -969,7 +960,7 @@ test_that("format_sparsity works correctly", {
 
 test_that("unused argument warning only happens only once (#1509)", {
     expect_warning(
-        dfm("some text", NOTARG = TRUE),
+        dfm(tokens("some text"), NOTARG = TRUE),
         "^NOTARG argument is not used\\.$"
     )
     expect_warning(
@@ -1008,7 +999,7 @@ test_that("dimnames are always character vectors", {
 })
 
 test_that("set_dfm_dimnames etc functions work", {
-    x <- dfm(c("a a b b c", "b b b c"))
+    x <- dfm(tokens(c("a a b b c", "b b b c")))
 
     quanteda:::set_dfm_featnames(x) <- paste0("feature", 1:3)
     expect_identical(featnames(x), c("feature1", "feature2", "feature3"))
@@ -1022,7 +1013,7 @@ test_that("set_dfm_dimnames etc functions work", {
 })
 
 test_that("dfm feature and document names have encoding", {
-    mt <- dfm(c("文書１" = "あ い い う", "文書２" = "え え え お"))
+    mt <- dfm(tokens(c("文書１" = "あ い い う", "文書２" = "え え え お")))
     expect_true(all(Encoding(colnames(mt)) == "UTF-8"))
     #expect_true(all(Encoding(rownames(mt)) == "UTF-8")) fix in new corpus
 
@@ -1045,40 +1036,40 @@ test_that("dfm feature and document names have encoding", {
 
 test_that("dfm verbose = TRUE works as expected", {
     expect_message(
-        tmp <- dfm(data_corpus_inaugural[1:3], verbose = TRUE),
+        tmp <- suppressWarnings(dfm(data_corpus_inaugural[1:3], verbose = TRUE)),
         "Creating a dfm from a corpus input"
     )
     expect_message(
-        tmp <- dfm(data_corpus_inaugural[1:3], verbose = TRUE),
+        tmp <- dfm(tokens(data_corpus_inaugural[1:3]), verbose = TRUE),
         "Finished constructing a 3 x 1,\\d{3} sparse dfm"
     )
     dict <- dictionary(list(pos = "good", neg = "bad", neg_pos = "not good", neg_neg = "not bad"))
     expect_message(
-        tmp <- dfm(data_corpus_inaugural[1:3], dictionary = dict, verbose = TRUE),
+        tmp <- dfm(tokens(data_corpus_inaugural[1:3]), dictionary = dict, verbose = TRUE),
         "applying a dictionary consisting of 4 keys"
     )
     expect_message(
-        tmp <- dfm(dfm(data_corpus_inaugural[1:3]), dictionary = dict, verbose = TRUE),
+        tmp <- dfm(dfm(tokens(data_corpus_inaugural[1:3])), dictionary = dict, verbose = TRUE),
         "applying a dictionary consisting of 4 keys"
     )
     expect_message(
-        tmp <- dfm(data_corpus_inaugural[1:3], groups = "President", verbose = TRUE),
+        tmp <- dfm(tokens(data_corpus_inaugural[1:3]), groups = "President", verbose = TRUE),
         "grouping texts"
     )
     expect_message(
-        tmp <- dfm(data_corpus_inaugural[1:2], stem = TRUE, verbose = TRUE),
+        tmp <- dfm(tokens(data_corpus_inaugural[1:2]), stem = TRUE, verbose = TRUE),
         "stemming types \\(English\\)"
     )
     expect_message(
-        tmp <- dfm(dfm(data_corpus_inaugural[1:2]), stem = TRUE, verbose = TRUE),
+        tmp <- dfm(dfm(tokens(data_corpus_inaugural[1:2])), stem = TRUE, verbose = TRUE),
         "stemming features \\(English\\)"
     )
     expect_message(
-        tmp <- dfm(dfm(data_corpus_inaugural[1:3]), groups = "President", verbose = TRUE),
+        tmp <- dfm(dfm(tokens(data_corpus_inaugural[1:3])), groups = "President", verbose = TRUE),
         "grouping texts"
     )
     expect_error(
-        dfm("one two three", remove = "one", select = "three"),
+        dfm(tokens("one two three"), remove = "one", select = "three"),
         "only one of select and remove may be supplied at once"
     )
 
@@ -1088,7 +1079,7 @@ test_that("dfm verbose = TRUE works as expected", {
 })
 
 test_that("dfm_sort works as expected", {
-    dfmat <- dfm(c(d1 = "z z x y a b", d3 = "x y y y c", d2 = "a z"))
+    dfmat <- dfm(tokens(c(d1 = "z z x y a b", d3 = "x y y y c", d2 = "a z")))
     expect_identical(
         featnames(dfm_sort(dfmat, margin = "features", decreasing = TRUE)),
         c("y", "z", "x", "a", "b", "c")
@@ -1108,7 +1099,7 @@ test_that("dfm_sort works as expected", {
 })
 
 test_that("test dfm transpose for #1903", {
-    dfmat <- dfm(c(d1 = "one two three", d2 = "two two three"))
+    dfmat <- dfm(tokens(c(d1 = "one two three", d2 = "two two three")))
     dfmat_t <- t(dfmat)
     expect_equal(
         names(dimnames(dfmat_t)),

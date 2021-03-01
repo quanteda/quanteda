@@ -1,5 +1,3 @@
-context("test tokens_split")
-
 test_that("tokens_split works", {
     toks <- tokens("a-a b+b B*B cc DD ee", what = "fastestword")
     expect_equal(as.list(tokens_split(toks, separator = "-", remove_separator = FALSE)),

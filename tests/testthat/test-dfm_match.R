@@ -1,10 +1,7 @@
-context("test dfm_match")
-
 test_that("dfm_match works", {
-
     txt <- c(doc1 = "aa bb BB cc DD ee",
              doc2 = "aa bb cc DD ee")
-    dfmat <- dfm(txt, tolower = FALSE)
+    dfmat <- dfm(tokens(txt), tolower = FALSE)
 
     dfmat_conf1 <- dfm_match(dfmat, c("aa", "zz", "xx", "bb"))
     expect_identical(
@@ -20,7 +17,7 @@ test_that("dfm_match works", {
         c("aa" = 2, "zz" = 0, "xx" = 0, "bb" = 2)
     )
 
-    dfmat_conf2 <- dfm_match(dfmat, featnames(dfm("aa zz xx bb")))
+    dfmat_conf2 <- dfm_match(dfmat, featnames(dfm(tokens("aa zz xx bb"))))
     expect_identical(
         featnames(dfmat_conf2),
         c("aa", "zz", "xx", "bb")
@@ -54,14 +51,12 @@ test_that("dfm_match works with padding", {
 })
 
 test_that("dfm_match coerce non-character feature", {
-    
     txt <- c(doc1 = "TRUE TRUE FALSE",
              doc2 = "1 2 100")
-    dfmat <- dfm(txt, tolower = FALSE)
+    dfmat <- dfm(tokens(txt), tolower = FALSE)
     expect_equal(featnames(dfm_match(dfmat, c(TRUE, FALSE))),
                  c("TRUE", "FALSE"))
     expect_equal(featnames(dfm_match(dfmat, c(100, 1))),
                  c("100", 1))
 
 })
-

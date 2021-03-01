@@ -1,5 +1,3 @@
-context("test quanteda_options")
-
 test_that("quanteda_options initialization works", {
     options('quanteda_initialized' = NULL)
     quanteda_options()

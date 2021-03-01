@@ -1,5 +1,3 @@
-context("test summary methods for objects")
-
 test_that("summary and print.summary work", {
     summary(data_corpus_inaugural[1:2])
     # a second time for the cache

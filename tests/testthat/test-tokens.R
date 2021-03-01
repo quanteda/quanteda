@@ -1,5 +1,3 @@
-context("test tokens")
-
 test_that("as.tokens list version works as expected", {
     txt <- c(doc1 = "The first sentence is longer than the second.",
              doc2 = "Told you so.")
@@ -370,18 +368,18 @@ test_that("tokens arguments works with values from parent frame (#721)", {
     )
 
     expect_identical(
-        dfm("This contains 99 numbers.", remove_numbers = T),
-        dfm("This contains 99 numbers.", remove_numbers = TRUE)
+        dfm(tokens("This contains 99 numbers."), remove_numbers = T),
+        dfm(tokens("This contains 99 numbers."), remove_numbers = TRUE)
     )
 
     val <- FALSE
     expect_identical(
         tokens("This contains 99 numbers.", remove_numbers = val),
-        tokens("This contains 99 numbers.", remove_numbers = F)
+        tokens("This contains 99 numbers.", remove_numbers = FALSE)
     )
     expect_identical(
-        dfm("This contains 99 numbers.", remove_numbers = val),
-        dfm("This contains 99 numbers.", remove_numbers = F)
+        dfm(tokens("This contains 99 numbers."), remove_numbers = val),
+        dfm(tokens("This contains 99 numbers."), remove_numbers = FALSE)
     )
 })
 
@@ -507,12 +505,14 @@ test_that("split_hyphens is working correctly", {
     corp <- data_corpus_inaugural[1:2]
     toks <- tokens(corp)
 
+    suppressWarnings({
     expect_equal(dfm(corp), dfm(toks))
     expect_equal(dfm(corp, remove_punct = TRUE), dfm(toks, remove_punct = TRUE))
     expect_equal(
         setdiff(featnames(dfm(corp)), featnames(dfm(toks))),
         character()
     )
+    })
 })
 
 test_that("tokens works as expected with NA, and blanks", {

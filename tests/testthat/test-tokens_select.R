@@ -1,5 +1,3 @@
-context("test tokens_select")
-
 test_that("test that tokens_select is working", {
     txt <- c(doc1 = "This IS UPPER And Lower case",
              doc2 = "THIS is ALL CAPS aNd sand")
@@ -407,7 +405,7 @@ test_that("tokens_select works when window sizes are given ", {
 
 test_that("tokens_select error when dfm is given, #1006", {
     toks <- tokens("a b c")
-    expect_error(tokens_select(toks, dfm("b c d")))
+    expect_error(tokens_select(toks, dfm(tokens("b c d"))))
 })
 
 test_that("shortcut functions works", {

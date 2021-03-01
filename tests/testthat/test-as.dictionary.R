@@ -1,5 +1,3 @@
-context("test as.dictionary function")
-
 test_that("as.dictionary works for data.frame", {
     df <- data.frame(
         word = letters[1:6],
