@@ -1,5 +1,3 @@
-context("test kwic")
-
 test_that("test kwic general", {
     txt <- paste(LETTERS, collapse = " ")
     expect_equal(
@@ -16,7 +14,7 @@ test_that("test kwic general", {
     )
     
     expect_equal(
-        as.data.frame(kwic(txt, "D"), window = 2),
+        as.data.frame(kwic(txt, "D", window = 2)),
         data.frame(
             docname = c("text1"),
             from = 4L,
@@ -28,7 +26,7 @@ test_that("test kwic general", {
             stringsAsFactors = FALSE))
     
     expect_equal(
-        as.data.frame(kwic(txt, "D"), window = 2, separator = "_"),
+        as.data.frame(kwic(txt, "D", window = 2, separator = "_")),
         data.frame(
             docname = c("text1"),
             from = 4L,
@@ -40,7 +38,7 @@ test_that("test kwic general", {
             stringsAsFactors = FALSE))
 
     expect_equal(
-        as.data.frame(kwic(txt, "D"), separator = ""),
+        as.data.frame(kwic(txt, "D", separator = "")),
         data.frame(
             docname = c("text1"),
             from = 4L,
@@ -88,9 +86,9 @@ test_that("test kwic on last token", {
 
 test_that("test kwic on two tokens", {
     txt <- "A B C D E F G D H"
-    testkwic <- kwic(txt, c("D", "E"))
+    testkwic <- kwic(txt, c("D", "E"), window = 3)
     expect_equivalent(
-        as.data.frame(testkwic, window = 3),
+        as.data.frame(testkwic),
         data.frame(
             docname = "text1",
             from = c(4L, 5L, 8L),
@@ -211,6 +209,23 @@ test_that("test that kwic works for fixed types", {
         setequal(c("security"),
                  as.data.frame(kwic_fixed2)$keyword)
     )
+})
+
+test_that("test that kwic works with index", {
+  toks <- tokens(data_corpus_inaugural)
+  idx <- index(toks, "security")
+  kiwc_idx <- kwic(toks, index = idx)
+  kwic_pat <- kwic(toks, pattern = "security")
+  expect_identical(kiwc_idx, kwic_pat)
+  
+  kiwc_idx2 <- kwic(toks, index = idx[c(2, 3, 1),])
+  kwic_pat2 <- kwic(toks, pattern = "security")[c(2, 3, 1),]
+  expect_identical(kiwc_idx2, kwic_pat2)
+  
+  expect_error(kwic(toks),
+               "Either pattten or index must be provided")
+  expect_error(kwic(toks, index = data.frame(1:5)),
+               "Invalid index object")
 })
 
 test_that("is.kwic works as expected", {
@@ -500,32 +515,6 @@ test_that("subsetting of kwic works", {
     )
 })
 
-test_that("as.data.frame.kwic can override kwic defaults", {
-    kw <- c(d2 = "one two three four five six", d1 = "first four three two one") %>%
-        tokens() %>%
-        kwic(pattern = "three", window = 2, separator = "_")
-    expect_identical(
-        as.data.frame(kw, separator = "~"),
-        structure(list(docname = c("d2", "d1"), 
-                       from = c(3L, 3L), to = c(3L, 3L), 
-                       pre = c("one~two", "first~four"), 
-                       keyword = c("three", "three"), 
-                       post = c("four~five", "two~one"),
-                       pattern = structure(c(1L, 1L), .Label = "three", class = "factor")), 
-                  row.names = c(NA, -2L), class = "data.frame")
-    )
-    expect_identical(
-        as.data.frame(kw, separator = "~", window = 3),
-        structure(list(docname = c("d2", "d1"), 
-                       from = c(3L, 3L), to = c(3L, 3L), 
-                       pre = c("one~two", "first~four"), 
-                       keyword = c("three", "three"), 
-                       post = c("four~five~six", "two~one"),
-                       pattern = structure(c(1L, 1L), .Label = "three", class = "factor")), 
-                  row.names = c(NA, -2L), class = "data.frame")
-    )
-})
-
 test_that("pre and post for phrases are working", {
     toks <- tokens(c(doc1 = "a a a b c d d d", doc2 = "a b c d e"))
     expect_identical(
@@ -536,5 +525,21 @@ test_that("pre and post for phrases are working", {
                        post = c("d d", "d e"), 
                        pattern = structure(c(1L, 1L), .Label = "b c", class = "factor")), 
                   class = "data.frame", row.names = c(NA, -2L))
+    )
+})
+
+test_that("kwic structure is as expected", {
+    toks <- tokens(c(doc1 = "a a a b c d d d", doc2 = "a b c d e", doc3 = "b b a a"))
+    kw <- kwic(toks, phrase("a a"), window = 2)
+    expect_identical(
+      kw,
+      structure(data.frame(docname = c("doc1", "doc1", "doc3"), 
+                     from = 1:3, to = 2:4, 
+                     pre = c("", "a", "b b"), 
+                     keyword = c("a a", "a a", "a a"), 
+                     post = c("a b", "b c", ""), 
+                     pattern = factor(rep("a a", 3))),
+                     class = c("kwic", "data.frame"), 
+                     ntoken = c(doc1 = 8L, doc3 = 4L))
     )
 })
