@@ -1,8 +1,5 @@
-context("test case change functions")
-
-txt <- c("According to NATO", "There is G7 meeting")
-
 test_that("tolower works", {
+    txt <- c("According to NATO", "There is G7 meeting")
     expect_equal(char_tolower(txt), c("according to nato", "there is g7 meeting"))
     expect_error(char_tolower(txt, logical()), 
                  "The length of keep_acronyms must be 1")
@@ -11,16 +8,19 @@ test_that("tolower works", {
 })
 
 test_that("char_tolower/char_toUpper works", {
+    txt <- c("According to NATO", "There is G7 meeting")
     expect_equal(char_tolower(txt[1]), "according to nato")
     expect_equal(char_toupper(txt[1]), "ACCORDING TO NATO")
 })
 
 test_that("char_tolower keeps acronyms", {
-    expect_equal((char_tolower(txt, keep_acronyms = TRUE)), 
+    txt <- c("According to NATO", "There is G7 meeting")
+    expect_equal(char_tolower(txt, keep_acronyms = TRUE),
                  c("according to NATO", "there is G7 meeting"))
 })
 
 test_that("tokens_tolower/tokens_toupper works", {
+    txt <- c("According to NATO", "There is G7 meeting")
     toks <- tokens(txt)
     expect_equal(as.list(tokens_tolower(toks)),
                   list(text1 = c("according", "to", "nato"),
@@ -38,7 +38,8 @@ test_that("tokens_tolower/tokens_toupper works", {
 })
 
 test_that("tokens_tolower/tokens_toupper works", {
-    dfmat <- dfm(txt, tolower = FALSE)
+    txt <- c("According to NATO", "There is G7 meeting")
+    dfmat <- dfm(tokens(txt), tolower = FALSE)
     expect_equal(featnames(dfm_tolower(dfmat)),
                  c("according", "to", "nato", "there", "is", "g7", "meeting"))
     expect_equal(featnames(dfm_tolower(dfmat, keep_acronyms = TRUE)),
@@ -52,7 +53,6 @@ test_that("tokens_tolower/tokens_toupper works", {
 })
 
 test_that("set encoding when no gap or duplication is found, #1387", {
-    
     toks <- tokens("привет tschüß bye")
     toks <- tokens_tolower(toks)
     expect_equal(Encoding(types(toks)), 

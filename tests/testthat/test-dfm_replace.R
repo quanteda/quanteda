@@ -1,10 +1,7 @@
-context("test dfm_replace")
-
 test_that("test dfm_replace", {
-    
     txt <- c(doc1 = "aa bb BB cc DD ee",
              doc2 = "aa bb cc DD ee")
-    dfmt <- dfm(txt, tolower = FALSE)
+    dfmt <- dfm(tokens(txt), tolower = FALSE)
     
     # case-insensitive
     expect_equal(featnames(dfm_replace(dfmt, c('aa', 'bb'), c('a', 'b'), case_insensitive = TRUE)),

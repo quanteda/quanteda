@@ -1,5 +1,3 @@
-context("test tokens_compound")
-
 test_that("tokens_compound join tokens correctly", {
 
     txt <- c("a b c d e f g", "A B C D E F G", "A b C d E f G",
@@ -177,7 +175,7 @@ test_that("tokens_compound works as expected with dictionaries", {
 
 test_that("tokens_compound error when dfm is given, #1006", {
     toks <- tokens("a b c")
-    expect_error(tokens_compound(toks, dfm("b c d")))
+    expect_error(tokens_compound(toks, dfm(tokens("b c d"))))
 })
 
 test_that("tokens_compound window is working", {

@@ -1,5 +1,3 @@
-context("test v2 core object operators")
-
 test_that("corpus core operators work for v2", {
     corp <- corpus_subset(data_corpus_inaugural, Year <= 1805)
     
@@ -60,7 +58,7 @@ test_that("tokens core operators work for v2", {
 })
 
 test_that("dfm core operators work for v2", {
-    dfmat <- dfm(corpus_subset(data_corpus_inaugural, Year <= 1805))
+    dfmat <- dfm(tokens(corpus_subset(data_corpus_inaugural, Year <= 1805)))
     
     # expect_is(dfmat["1793-Washington"], NA)
     # expect_identical(
@@ -84,7 +82,7 @@ test_that("dfm core operators work for v2", {
 })
 
 test_that("fcm core operators work for v2", {
-    dfmat <- dfm(corpus_subset(data_corpus_inaugural, Year <= 1805))
+    dfmat <- dfm(tokens(corpus_subset(data_corpus_inaugural, Year <= 1805)))
     fcmat <- fcm(dfm_trim(dfmat, min_termfreq = 20))
     
     # expect_is(fcmat[c("the", "and")], c(NA, NA))

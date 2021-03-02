@@ -1,5 +1,3 @@
-context("test object2id")
-
 test_that("object2id is working with a list", {
     
     pat <- c('A', 'a b', 'xxx', 'C D', 'e f g')

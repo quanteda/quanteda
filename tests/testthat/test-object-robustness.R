@@ -1,5 +1,3 @@
-context("test robustness of new object class handling")
-
 test_that("corpus is/as methods work with old and new formats", {
     load("../data/pre_v2_objects/data_corpus_pre2.rda")
 
@@ -25,7 +23,7 @@ test_that("tokens is/as methods work with old and new formats", {
 
 test_that("dfm is/as methods work with old and new formats", {
     load("../data/pre_v2_objects/data_dfm_pre2.rda")
-    dfmt <- dfm(data_corpus_inaugural[1:2])
+    dfmt <- dfm(tokens(data_corpus_inaugural[1:2]))
 
     expect_true(is.dfm(data_dfm_pre2))
     expect_true(is.dfm(dfmt))
@@ -37,7 +35,7 @@ test_that("dfm is/as methods work with old and new formats", {
 
 test_that("fcm is/as methods work with old and new formats", {
     load("../data/pre_v2_objects/data_fcm_pre2.rda")
-    fcmt <- fcm(dfm(data_corpus_inaugural[1:2]))
+    fcmt <- fcm(dfm(tokens(data_corpus_inaugural[1:2])))
     
     expect_true(is.fcm(data_fcm_pre2))
     expect_true(is.fcm(fcmt))

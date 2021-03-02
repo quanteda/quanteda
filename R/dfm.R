@@ -2,7 +2,7 @@
 #'
 #' Construct a sparse document-feature matrix, from a character, [corpus],
 #' [tokens], or even other [dfm] object.
-#' @param x character, [corpus], [tokens], or [dfm] object
+#' @param x a [tokens] or [dfm] object
 #' @param tolower convert all features to lowercase
 #' @param stem if `TRUE`, stem words
 #' @param remove a [pattern] of user-supplied features to ignore, such as "stop
@@ -40,57 +40,20 @@
 #' @seealso  [dfm_select()], [dfm-class]
 #' @examples
 #' ## for a corpus
-#' corp <- corpus_subset(data_corpus_inaugural, Year > 1980)
-#' dfm(corp)
-#' dfm(corp, tolower = FALSE)
+#' toks <- data_corpus_inaugural %>%
+#'   corpus_subset(Year > 1980) %>%
+#'   tokens()
+#' dfm(toks)
 #'
-#' # grouping documents by docvars in a corpus
-#' dfm(corp, groups = "President", verbose = TRUE)
-#'
-#' # with English stopwords and stemming
-#' dfm(corp, remove = stopwords("english"), stem = TRUE, verbose = TRUE)
-#' # works for both words in ngrams too
-#' tokens("Banking industry") %>%
-#'     tokens_ngrams(n = 2) %>%
-#'     dfm(stem = TRUE)
-#'
-#' # with dictionaries
-#' dict <- dictionary(list(christmas = c("Christmas", "Santa", "holiday"),
-#'                opposition = c("Opposition", "reject", "notincorpus"),
-#'                taxing = "taxing",
-#'                taxation = "taxation",
-#'                taxregex = "tax*",
-#'                country = "states"))
-#' dfm(corpus_subset(data_corpus_inaugural, Year > 1900), dictionary = dict)
-#'
-#'
-#' # removing stopwords
-#' txt <- "The quick brown fox named Seamus jumps over the lazy dog also named Seamus, with
-#'              the newspaper from a boy named Seamus, in his mouth."
-#' corp <- corpus(txt)
-#' # note: "also" is not in the default stopwords("english")
-#' featnames(dfm(corp, select = stopwords("english")))
-#'
-#' # removing stopwords before constructing ngrams
-#' toks1 <- tokens(char_tolower(txt), remove_punct = TRUE)
-#' toks2 <- tokens_remove(toks1, stopwords("english"), padding = TRUE)
-#' toks3 <- tokens_ngrams(toks2, 2)
-#' featnames(dfm(toks3))
-#'
-#' # keep only certain words
-#' dfm(corp, select = "*s")  # keep only words ending in "s"
-#' dfm(corp, select = "s$", valuetype = "regex")
-#'
-#' # testing Twitter functions
-#' txttweets <- c("My homie @@justinbieber #justinbieber shopping in #LA yesterday #beliebers",
-#'                 "2all the ha8ers including my bro #justinbieber #emabiggestfansjustinbieber",
-#'                 "Justin Bieber #justinbieber #belieber #fetusjustin #EMABiggestFansJustinBieber")
-#' dfm(txttweets, select = "#*", split_tags = FALSE)  # keep only hashtags
-#' dfm(txttweets, select = "^#.*$", valuetype = "regex", split_tags = FALSE)
-#'
-#' # for a dfm
-#' dfm(corpus_subset(data_corpus_inaugural, Year > 1980), groups = "Party")
-#'
+#' # removal options
+#' toks <- tokens(c("a b c", "A B C D")) %>%
+#'     tokens_remove("b", padding = TRUE)
+#' toks
+#' dfm(toks)                
+#' dfm(toks, remove = "") # remove "pads"
+#' 
+#' # preserving case
+#' dfm(toks, tolower = FALSE)
 dfm <- function(x,
                 tolower = TRUE,
                 stem = FALSE,
@@ -141,6 +104,7 @@ dfm.character <- function(x,
                           groups = NULL,
                           verbose = quanteda_options("verbose"),
                           ...) {
+    .Deprecated(msg = "'dfm.character()' is deprecated. Use 'tokens()' first.")
     dfm.tokens(tokens(corpus(x), ...),
                tolower = tolower,
                stem = stem,
@@ -169,6 +133,7 @@ dfm.corpus <- function(x,
                        groups = NULL,
                        verbose = quanteda_options("verbose"),
                        ...) {
+    .Deprecated(msg = "'dfm.corpus()' is deprecated. Use 'tokens()' first.")
     dfm.tokens(tokens(x, ...),
                tolower = tolower,
                stem = stem,
@@ -288,7 +253,6 @@ dfm.tokens <- function(x,
 
 
 #' @noRd
-#' @author Kenneth Benoit
 #' @import Matrix
 #' @importFrom stringi stri_trans_totitle
 #' @export

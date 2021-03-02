@@ -1,5 +1,3 @@
-context("test corpus_sample")
-
 corp <- corpus(c(one = "Sentence one.  Sentence two.  Third sentence.",
                  two = "First sentence, doc2.  Second sentence, doc2."))
 corp_sent <- corpus_reshape(corp, to = "sentences")

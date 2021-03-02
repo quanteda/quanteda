@@ -40,7 +40,6 @@ summary.corpus <- function(object, n = 100, tolower = FALSE, showmeta = TRUE, ..
 #' @rdname corpus-class
 #' @method print summary.corpus
 print.summary.corpus <- function(x, ...) {
-
     ndoc_all <- attr(x, "ndoc_all")
     ndoc_show <- attr(x, "ndoc_show")
 
@@ -61,8 +60,7 @@ print.summary.corpus <- function(x, ...) {
     NextMethod("[")
 }
 
-summarize <- function(x, ...) {
-
+summarize <- function(x, tolower = FALSE, ...) {
     patterns <- removals_regex(punct = TRUE, symbols = TRUE,
                                numbers = TRUE, url = TRUE)
     patterns[["tag"]] <-
@@ -71,7 +69,7 @@ summarize <- function(x, ...) {
     patterns[["emoji"]] <- "^\\p{Emoji_Presentation}+$"
     dict <- dictionary(patterns)
 
-    y <- dfm(x, ...)
+    y <- dfm(tokens(x, ...), tolower = tolower)
     temp <- convert(
         quanteda::dfm_lookup(y, dictionary = dict, valuetype = "regex", levels = 1),
         "data.frame",
@@ -94,7 +92,7 @@ summarize <- function(x, ...) {
     )
 
     if (is.corpus(x)) {
-        result$chars <- nchar(x)
+        result$chars <- stringi::stri_length(x)
         result$sents <- ntoken(tokens(x, what = "sentence"))
     }
 

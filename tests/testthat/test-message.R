@@ -1,5 +1,3 @@
-context("test messaging functions")
-
 test_that("msg works", {
     
     # no indices

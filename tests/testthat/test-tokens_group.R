@@ -1,5 +1,3 @@
-context("test tokens_group")
-
 test_that("test that tokens_group is working", {
     txt <- c("a b c d", "e f g h", "A B C", "X Y Z")
     toks <- tokens(txt)

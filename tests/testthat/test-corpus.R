@@ -1,5 +1,3 @@
-context("test corpus")
-
 test_that("print works", {
     expect_output(
         print(corpus(c("The"))),

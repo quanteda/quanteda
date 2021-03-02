@@ -1,5 +1,3 @@
-context('test pattern2fixed')
-
 test_that("pattern2fixed converts regex patterns correctly", {
       
     regex <- list(c('^a$', '^b'), c('c'), c('d'), c('b$'))

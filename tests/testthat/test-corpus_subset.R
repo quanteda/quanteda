@@ -1,5 +1,3 @@
-context('test corpus_subset')
-
 test_that("corpus_subset works in a basic way", {
     corp <- corpus(corpus_subset(data_corpus_inaugural, Year > 1980 & Year < 2018))
     expect_equal(

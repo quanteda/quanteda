@@ -44,7 +44,7 @@ bootstrap_dfm.corpus <- function(x, n = 10, ..., verbose = quanteda_options("ver
     x <- as.corpus(x)
     x <- corpus_reshape(x, to = "sentences")
     if (verbose) message("done.")
-    bootstrap_dfm(dfm(x, ...),  n = n, ..., verbose = verbose)
+    bootstrap_dfm(suppressWarnings(dfm(x, ...)),  n = n, ..., verbose = verbose)
 }
 
 #' @noRd

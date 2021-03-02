@@ -1,5 +1,3 @@
-context("test indexing")
-
 test_that("test dfm indexing", {
 
     x <- dfm(tokens(c("this contains lots of stopwords",
@@ -67,7 +65,7 @@ test_that("test dfm indexing with docvar selection", {
     testcorp <- corpus(c(d1 = "a b c d", d2 = "a a b e",
                          d3 = "b b c e", d4 = "e e f a b"),
                        docvars = data.frame(grp = c(1, 1, 2, 3)))
-    testdfm <- dfm(testcorp)
+    testdfm <- dfm(tokens(testcorp))
     expect_equal(
         docvars(testdfm[1:2, ]),
         data.frame(grp = c(1, 1))

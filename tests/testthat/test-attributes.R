@@ -1,7 +1,4 @@
-context("test attributes")
-
 test_that("unit attributes are set correctly", {
-    
     txt <- c(d1 = "Sentence one.  Second sentence is this one!\n
                    Here is the third sentence.",
              d2 = "Only sentence of doc2?  No there is another.")
@@ -26,11 +23,9 @@ test_that("unit attributes are set correctly", {
     toks_chunk <- tokens_chunk(toks, 2)
     expect_equal(attr(toks_chunk, "meta")$object$unit, "segments")
     
-    expect_equal(dfm(corp_sent)@meta$object$unit, "sentences")
-    expect_equal(dfm(corp_para)@meta$object$unit, "paragraphs")
+    expect_equal(dfm(tokens(corp_sent))@meta$object$unit, "sentences")
+    expect_equal(dfm(tokens(corp_para))@meta$object$unit, "paragraphs")
     expect_equal(dfm(toks_chunk)@meta$object$unit, "segments")
     expect_equal(fcm(dfm(toks_chunk))@meta$object$unit, "segments")
     expect_equal(fcm(toks_chunk)@meta$object$unit, "segments")
-    
 })
-

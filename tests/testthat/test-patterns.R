@@ -1,7 +1,4 @@
-context("test patterns")
-
 test_that("character vector works consistently on tokens", {
-
     toks <- tokens(c("a b c d e a_b_c d e"))
     feat <- c("a", "b", "c")
     expect_equivalent(
@@ -22,8 +19,7 @@ test_that("character vector works consistently on tokens", {
 })
 
 test_that("character vector works consistently on dfm", {
-
-    mx <- dfm(c("a b c d e a_b_c d e"))
+    mx <- dfm(tokens(c("a b c d e a_b_c d e")))
     feat <- c("a", "b", "c")
 
     expect_equivalent(
@@ -36,7 +32,6 @@ test_that("character vector works consistently on dfm", {
 })
 
 test_that("character vector with whitespace works consistently on tokens", {
-
     txt <- c("a b c d e a_b_c d e")
     toks <- tokens(txt)
     toksch <- as.character(toks)
@@ -75,8 +70,7 @@ test_that("character vector with whitespace works consistently on tokens", {
 })
 
 test_that("character vector with whitespace works consistently on dfm", {
-
-    mx <- dfm(c("a b c d e a_b_c d e"))
+    mx <- dfm(tokens(c("a b c d e a_b_c d e")))
     feat <- "a b c"
     expect_equivalent(
         featnames(dfm_select(mx, pattern = feat)),
@@ -88,7 +82,6 @@ test_that("character vector with whitespace works consistently on dfm", {
 })
 
 test_that("character vector with whitespace and wildcard works consistent on tokens", {
-
     toks <- tokens(c("a b c d e a_b_c d e"))
     toksch <- as.character(toks)
     feat <- "* d e"
@@ -123,11 +116,9 @@ test_that("character vector with whitespace and wildcard works consistent on tok
         nrow(kwic(toks, pattern = feat)),
         0
     )
-
 })
 
 test_that("list works consistently on tokens", {
-
     toks <- tokens(c("a b c d e a_b_c d e"))
     feat <- list(c("a", "b", "c"))
     expect_equivalent(
@@ -191,8 +182,7 @@ test_that("dictionary works consistently on tokens", {
 })
 
 test_that("dictionary works consistently on dfm", {
-
-    mx <- dfm(c("a b c d e a_b_c d e"))
+    mx <- dfm(tokens(c("a b c d e a_b_c d e")))
     dict <- dictionary(list(ABC = "a_b_c", D = "d", E = "e"))
     expect_equivalent(
         featnames(dfm_select(mx, pattern = dict)),

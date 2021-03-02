@@ -1,5 +1,3 @@
-context("test texts")
-
 txt_test <- c(d1 = "This is first document", 
               d2 = "This makes up a second text.",
               d3 = "something completely different")
