@@ -42,6 +42,13 @@
 
 * Convenience passing of arguments to `tokens()` via `...` for methods that skipped the tokenisation step are now deprecated, although they still function with a warning.  Users should now create a tokens object (using `tokens()` from character or corpus inputs before calling `dfm()` or `kwic()`.
 
+* Shortcut arguments to `dfm()` are now deprecated.  These are still active, with a warning, although they are no longer documented.  These are:
+    - `stem` -- use `tokens_wordstem()` or `dfm_wordstem()` instead.
+    - `select` -- use `tokens_select()` or `dfm_select()` instead (although the `remove` argument is retained).
+    - `dictionary`, `thesaurus` -- use `tokens_lookup()` or `dfm_lookup()` instead.
+    - `valuetype`, `case_insensitive` -- these are disabled; for the deprecated arguments that take these qualifiers, they are fixed to the defaults `"glob"` and `TRUE`.
+    - `groups` -- use `tokens_group()` or `dfm_group()` instead.
+
 ## Removed
 
 * See note above under **Changes** about the `textplot_*()` and `textstat_*()` functions.
@@ -55,6 +62,7 @@
     - all of the `tortl` functions
     - all legacy functions related to the ancient "corpuszip" corpus variant.
 
+* `dfm` objects can no longer be used as a `pattern` in `dfm_select()` (formerly deprecated).
 
 # quanteda 2.1.2
 
