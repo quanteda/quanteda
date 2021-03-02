@@ -35,7 +35,7 @@ test_that("test STM package converter with metadata", {
     skip_if_not_installed("tm")
     dat <- data.frame(myvar = c("A", "B"))
     corp <- corpus(txt_test, docvars = dat)
-    dfmat <- dfm(tokens(corp), remove_punct = TRUE)
+    dfmat <- dfm(tokens(corp, remove_punct = TRUE))
     stmdfm <- convert(dfmat, to = "stm")
     stmtp <- stm::textProcessor(txt_test, removestopwords = FALSE, verbose = FALSE,
                                 stem = FALSE, wordLengths = c(1, Inf))
@@ -53,7 +53,7 @@ test_that("test STM package converter with metadata w/zero-count document", {
                   text3 = "New York City has raised a taxes: an income tax and a sales tax.")
     dat <- data.frame(myvar = c("A", "B", "C"))
     corp <- corpus(txt_test2, docvars = dat)
-    dfmat <- dfm(tokens(corp), remove_punct = TRUE)
+    dfmat <- dfm(tokens(corp, remove_punct = TRUE))
     expect_true(ntoken(dfmat)[2] == 0)
 
     stmdfm <- suppressWarnings(convert(dfmat, to = "stm"))

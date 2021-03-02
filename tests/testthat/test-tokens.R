@@ -367,20 +367,24 @@ test_that("tokens arguments works with values from parent frame (#721)", {
         tokens("This contains 99 numbers.", remove_numbers = TRUE),
     )
 
-    expect_identical(
+    suppressWarnings({
+        expect_identical(
         dfm(tokens("This contains 99 numbers."), remove_numbers = T),
         dfm(tokens("This contains 99 numbers."), remove_numbers = TRUE)
     )
+    })
 
     val <- FALSE
     expect_identical(
         tokens("This contains 99 numbers.", remove_numbers = val),
         tokens("This contains 99 numbers.", remove_numbers = FALSE)
     )
-    expect_identical(
+    suppressWarnings({
+        expect_identical(
         dfm(tokens("This contains 99 numbers."), remove_numbers = val),
         dfm(tokens("This contains 99 numbers."), remove_numbers = FALSE)
     )
+    })
 })
 
 test_that("tokens works for strange spaces (#796)", {

@@ -18,7 +18,7 @@ test_that("test rbind.dfm with the same columns", {
     colnames(foxdfm) <- c("does", "fox", "say", "the", "what")
     rownames(foxdfm) <-  rep(c("text1", "text2"), 2)
 
-    dfm1 <- dfm(tokens(c(fox, fox)), remove_punct = TRUE)
+    suppressWarnings(dfm1 <- dfm(tokens(c(fox, fox)), remove_punct = TRUE))
 
     expect_true(
         all(rbind(dfm1, dfm1) == foxdfm)
@@ -27,7 +27,6 @@ test_that("test rbind.dfm with the same columns", {
         rbind(dfm1, dfm1),
         is_a("dfm")
     )
-
 })
 
 # TODO: Add function for testing the equality of dfms
@@ -133,63 +132,71 @@ test_that("dfm.dfm works as expected", {
     expect_identical(dfmt, dfm(dfmt, tolower = FALSE))
     expect_identical(dfm_tolower(dfmt), dfm(dfmt, tolower = TRUE))
 
-    expect_true({
-        sum(dfm(tokens(corp), select = c("The", "a", "an"))) >
-        sum(dfm(tokens(corp), select = c("The", "a", "an"), case_insensitive = FALSE))
-    })
+    # REMOVED in v3
+    # expect_true({
+    #     sum(suppressWarnings(dfm(tokens(corp), select = c("The", "a", "an")))) >
+    #     sum(suppressWarnings(dfm(tokens(corp), select = c("The", "a", "an"), case_insensitive = FALSE)))
+    # })
 
-    expect_identical(dfm(dfmt, remove = c("The", "a", "an"), case_insensitive = FALSE, tolower = FALSE),
-                     dfm_remove(dfmt, c("The", "a", "an"), case_insensitive = FALSE))
-    expect_identical(dfm(dfmt, remove = c("The", "a", "an"), case_insensitive = TRUE, tolower = FALSE),
-                     dfm_remove(dfmt, c("The", "a", "an"), case_insensitive = TRUE))
+    # expect_identical(dfm(dfmt, remove = c("The", "a", "an"), case_insensitive = FALSE, tolower = FALSE),
+    #                  dfm_remove(dfmt, c("The", "a", "an"), case_insensitive = FALSE))
+    # expect_identical(dfm(dfmt, remove = c("The", "a", "an"), case_insensitive = TRUE, tolower = FALSE),
+    #                  dfm_remove(dfmt, c("The", "a", "an"), case_insensitive = TRUE))
 
-    expect_identical(dfm(dfmt, remove = c("The", "a", "an"), case_insensitive = FALSE),
-                     dfm(tokens_remove(toks, c("The", "a", "an"), case_insensitive = FALSE)))
-    expect_identical(dfm(dfmt, remove = c("The", "a", "an"), case_insensitive = TRUE),
-                     dfm(tokens_remove(toks, c("The", "a", "an"), case_insensitive = TRUE)))
+    # expect_identical(dfm(dfmt, remove = c("The", "a", "an"), case_insensitive = FALSE),
+    #                  dfm(tokens_remove(toks, c("The", "a", "an"), case_insensitive = FALSE)))
+    # expect_identical(dfm(dfmt, remove = c("The", "a", "an"), case_insensitive = TRUE),
+    #                  dfm(tokens_remove(toks, c("The", "a", "an"), case_insensitive = TRUE)))
 
-    dfmt_group <- dfm(dfmt,
+    # DEPRECATED
+    dfmt_group <- suppressWarnings(dfm(dfmt,
                       groups =  ifelse(docvars(data_corpus_inaugural, "Party") %in%
                                            c("Democratic", "Republican"), "Mainstream", "Minor"),
-                      tolower = FALSE)
+                      tolower = FALSE))
     expect_identical(colSums(dfmt_group), colSums(dfmt_group))
     expect_identical(docnames(dfmt_group), c("Mainstream", "Minor"))
 
     dict <- dictionary(list(articles = c("The", "a", "an"),
                             preps = c("of", "for", "In")), tolower = FALSE)
 
-    expect_true({
-        sum(dfm(tokens(corp), dictionary = dict)) >
-        sum(dfm(tokens(corp), dictionary = dict, case_insensitive = FALSE))
-    })
+    # REMOVED in v3
+    # expect_true({
+    #     sum(dfm(tokens(corp), dictionary = dict)) >
+    #     sum(dfm(tokens(corp), dictionary = dict, case_insensitive = FALSE))
+    # })
 
+    # DEPRECATED
     expect_equivalent(
         suppressWarnings(dfm(corp, dictionary = dict)),
-        dfm(dfmt, dictionary = dict)
+        suppressWarnings(dfm(dfmt, dictionary = dict))
     )
 
+    # DEPRECATED
     expect_equivalent(
-        dfm(dfmt, dictionary = dict),
+        suppressWarnings(dfm(dfmt, dictionary = dict)),
         dfm(tokens_lookup(toks, dict))
     )
 
-    expect_equivalent(
-        suppressWarnings(dfm(corp, dictionary = dict, case_insensitive = FALSE)),
-        dfm(dfmt, dictionary = dict, case_insensitive = FALSE)
-    )
+    # REMOVED
+    # expect_equivalent(
+    #     suppressWarnings(dfm(corp, dictionary = dict, case_insensitive = FALSE)),
+    #     dfm(dfmt, dictionary = dict, case_insensitive = FALSE)
+    # )
 
-    expect_equivalent(
-        dfm(dfmt, dictionary = dict, case_insensitive = FALSE),
-        dfm(tokens_lookup(toks, dict, case_insensitive = FALSE))
-    )
+    # REMOVED
+    # expect_equivalent(
+    #     dfm(dfmt, dictionary = dict, case_insensitive = FALSE),
+    #     dfm(tokens_lookup(toks, dict, case_insensitive = FALSE))
+    # )
 
+    # DEPRECATED
     expect_identical(
-        dfm(tokens(corp), stem = TRUE),
-        dfm(dfmt, stem = TRUE)
+        suppressWarnings(dfm(tokens(corp), stem = TRUE)),
+        suppressWarnings(dfm(dfmt, stem = TRUE))
     )
     expect_identical(
-        dfm(tokens(corp), stem = TRUE),
-        dfm(dfmt, stem = TRUE)
+        suppressWarnings(dfm(tokens(corp), stem = TRUE)),
+        suppressWarnings(dfm(dfmt, stem = TRUE))
     )
 })
 
@@ -318,7 +325,7 @@ test_that("dfm(x, dictionary = mwvdict) works with multi-word values", {
              d4 = "f g")
 
     # as dictionary
-    dfm1 <- dfm(tokens(txt), dictionary = mwvdict, verbose = TRUE)
+    dfm1 <- suppressWarnings(dfm(tokens(txt), dictionary = mwvdict, verbose = TRUE))
     expect_identical(
         as.matrix(dfm1),
         matrix(c(1, 0, 0, 0, 1, 0, 1, 0, 2, 1, 0, 0),
@@ -328,7 +335,7 @@ test_that("dfm(x, dictionary = mwvdict) works with multi-word values", {
     )
 
     # as thesaurus
-    dfm2 <- dfm(tokens(txt), thesaurus = mwvdict, verbose = TRUE)
+    dfm2 <- suppressWarnings(dfm(tokens(txt), thesaurus = mwvdict, verbose = TRUE))
     expect_identical(
         as.matrix(dfm2),
         matrix(c(1, 0, 0, 0, 1, 0, 1, 0, 2, 1, 0, 0,
@@ -463,9 +470,9 @@ test_that("dfm's document counts in verbose message is correct", {
              d2 = "a c d x z",
              d3 = "x y",
              d4 = "f g")
-    expect_message(dfm(tokens(txt), remove = c("a", "f"), verbose = TRUE),
+    expect_message(suppressWarnings(dfm(tokens(txt), remove = c("a", "f"), verbose = TRUE)),
                    "removed 2 features")
-    expect_message(dfm(tokens(txt), select = c("a", "f"), verbose = TRUE),
+    expect_message(suppressWarnings(dfm(tokens(txt), select = c("a", "f"), verbose = TRUE)),
                    "kept 2 features")
 })
 
@@ -585,7 +592,7 @@ test_that("dfm works with stem options", {
         c("running", "ran", "runs")
     )
     expect_equal(
-        featnames(dfm(tokens(txt_english), stem = TRUE)),
+        featnames(suppressWarnings(dfm(tokens(txt_english), stem = TRUE))),
         c("run", "ran")
     )
     expect_error(
@@ -603,7 +610,7 @@ test_that("dfm works with stem options", {
         c("courant", "courir", "cours")
     )
     expect_equal(
-        featnames(dfm(tokens(txt_french), stem = TRUE)),
+        featnames(suppressWarnings(dfm(tokens(txt_french), stem = TRUE))),
         "cour"
     )
     quanteda_options(reset = TRUE)
@@ -674,7 +681,6 @@ test_that("dfm warns of argument not used", {
                    "^xxxxx, yyyyy arguments are not used")
     expect_warning(dfm(mx, xxxxx = "something", yyyyy = "else"),
                    "^xxxxx, yyyyy arguments are not used")
-
 })
 
 test_that("dfm pass arguments to tokens, issue #1121", {
@@ -703,18 +709,14 @@ test_that("dfm error when a dfm is given to for feature selection when x is not 
     mx <- dfm(toks)
     mx2 <- dfm(tokens(c("a b", "c")))
 
-    expect_error(suppressMessages(dfm(txt, select = mx2)),
-                "selection on a dfm is only available when x is a dfm")
-    expect_error(dfm(corp, select = mx2),
-                "selection on a dfm is only available when x is a dfm")
-    expect_error(dfm(toks, select = mx2),
-                "selection on a dfm is only available when x is a dfm")
-    expect_warning(dfm(mx, select = mx2),
-                "pattern = dfm is deprecated")
-    expect_equal(
-        suppressWarnings(as.matrix(dfm(mx, select = mx2))),
-        matrix(c(1, 2, 1, 1, 1, 3), nrow = 2, dimnames = list(docs = c("d1", "d2"), features = letters[1:3]))
-    )
+    expect_error(suppressWarnings(dfm(txt, select = mx2)),
+                "dfm cannot be used as pattern")
+    expect_error(suppressWarnings(dfm(corp, select = mx2)),
+                "dfm cannot be used as pattern")
+    expect_error(suppressWarnings(dfm(toks, select = mx2)),
+                "dfm cannot be used as pattern")
+    expect_error(suppressWarnings(dfm(mx, select = mx2)),
+                "dfm cannot be used as pattern; use 'dfm_match' instead")
 })
 
 test_that("test topfeatures", {
@@ -979,8 +981,8 @@ test_that("unused argument warning only happens only once (#1509)", {
 
 test_that("dfm.tokens() with groups works as expected", {
     x <- tokens(data_corpus_inaugural)
-    groupeddfm <- dfm(tokens(x),
-                      groups = c("FF", "FF", rep("non-FF", ndoc(x) - 2)))
+    groupeddfm <- suppressWarnings(dfm(tokens(x),
+                                       groups = c("FF", "FF", rep("non-FF", ndoc(x) - 2))))
     expect_equal(ndoc(groupeddfm), 2)
     expect_equal(docnames(groupeddfm), c("FF", "non-FF"))
     expect_equal(featnames(groupeddfm), featnames(dfm(x)))
@@ -1045,27 +1047,27 @@ test_that("dfm verbose = TRUE works as expected", {
     )
     dict <- dictionary(list(pos = "good", neg = "bad", neg_pos = "not good", neg_neg = "not bad"))
     expect_message(
-        tmp <- dfm(tokens(data_corpus_inaugural[1:3]), dictionary = dict, verbose = TRUE),
+        tmp <- suppressWarnings(dfm(tokens(data_corpus_inaugural[1:3]), dictionary = dict, verbose = TRUE)),
         "applying a dictionary consisting of 4 keys"
     )
     expect_message(
-        tmp <- dfm(dfm(tokens(data_corpus_inaugural[1:3])), dictionary = dict, verbose = TRUE),
+        tmp <- suppressWarnings(dfm(dfm(tokens(data_corpus_inaugural[1:3])), dictionary = dict, verbose = TRUE)),
         "applying a dictionary consisting of 4 keys"
     )
     expect_message(
-        tmp <- dfm(tokens(data_corpus_inaugural[1:3]), groups = "President", verbose = TRUE),
+        tmp <- suppressWarnings(dfm(tokens(data_corpus_inaugural[1:3]), groups = "President", verbose = TRUE)),
         "grouping texts"
     )
     expect_message(
-        tmp <- dfm(tokens(data_corpus_inaugural[1:2]), stem = TRUE, verbose = TRUE),
+        tmp <- suppressWarnings(dfm(tokens(data_corpus_inaugural[1:2]), stem = TRUE, verbose = TRUE)),
         "stemming types \\(English\\)"
     )
     expect_message(
-        tmp <- dfm(dfm(tokens(data_corpus_inaugural[1:2])), stem = TRUE, verbose = TRUE),
+        tmp <- suppressWarnings(dfm(dfm(tokens(data_corpus_inaugural[1:2])), stem = TRUE, verbose = TRUE)),
         "stemming features \\(English\\)"
     )
     expect_message(
-        tmp <- dfm(dfm(tokens(data_corpus_inaugural[1:3])), groups = "President", verbose = TRUE),
+        tmp <- suppressWarnings(dfm(dfm(tokens(data_corpus_inaugural[1:3])), groups = "President", verbose = TRUE)),
         "grouping texts"
     )
     expect_error(

@@ -8,11 +8,11 @@
 #'   words".  To access one possible list (from any list you wish), use
 #'   [stopwords()].  The pattern matching type is fixed to "glob"; if you want
 #'   greater control, use [tokens_remove()] or [dfm_remove()].  `remove` is
-#'   primarily useful for removing artifacts created during the [tokens]
+#'   primarily useful for removing artefacts created during the [tokens]
 #'   creation process, such as pads.  See examples.
 #' @param verbose display messages if `TRUE`
 #' @param ... not used directly
-#' @section Changes to dfm() in version 3:
+#' @section Changes in version 3:
 #' In \pkg{quanteda} v3, many convenience functions formerly available in
 #' `dfm()` were deprecated. Formerly, `dfm()` could be called directly on a
 #' `character` or `corpus` object, but we now steer users to tokenise their
@@ -82,7 +82,8 @@ dfm.character <- function(x,
         .Deprecated(msg = "'...' should not be used for tokens() arguments; use 'tokens()' first.")
 
     x <- do.call(tokens, c(list(x = x), otherargs_tokens))    
-    do.call(dfm, c(list(x = x), otherargs[!names(otherargs) %in% names(otherargs_tokens)]))
+    do.call(dfm, c(list(x = x, tolower = tolower, remove = remove, verbose = verbose),
+                   otherargs[!names(otherargs) %in% names(otherargs_tokens)]))
 }
 
 
@@ -103,7 +104,8 @@ dfm.corpus <- function(x,
         .Deprecated(msg = "'...' should not be used for tokens() arguments; use 'tokens()' first.")
 
     x <- do.call(tokens, c(list(x = x), otherargs_tokens))    
-    do.call(dfm, c(list(x = x), otherargs[!names(otherargs) %in% names(otherargs_tokens)]))
+    do.call(dfm, c(list(x = x, tolower = tolower, remove = remove, verbose = verbose),
+                   otherargs[!names(otherargs) %in% names(otherargs_tokens)]))
 }
 
 #' @noRd
@@ -167,9 +169,9 @@ dfm.tokens <- function(x,
     
     # deprecation for select
     if ("select" %in% names(otherargs)) {
-        .Deprecated(msg = "'select' is deprecated; use dfm_select() instead")
         if (!is.null(remove))
-            stop("only one of select and remove may be supplied at once")
+            stop("only one of select and remove may be supplied at once", call. = FALSE)
+        .Deprecated(msg = "'select' is deprecated; use dfm_select() instead")
         if (verbose) catm(" ...")
         x <- do.call(tokens_select, list(x = x,
                            pattern = otherargs[["select"]],
@@ -181,17 +183,19 @@ dfm.tokens <- function(x,
     }
     
     if (!is.null(remove)) {
-        x <- tokens_remove(x = x, pattern = remove)
+        x <- tokens_remove(x = x, pattern = remove, verbose = verbose)
     }
         
     if ("stem" %in% names(otherargs)) {
-        .Deprecated(msg = "'stem' is deprecated; use dfm_wordstem() instead")
-        if (otherargs[["stem"]]) {
+        if (!is.null(otherargs[["stem"]])) {
+            stem <- otherargs[["stem"]]
+            check_logical(stem)
             language <- quanteda_options("language_stemmer")
             if (verbose) catm(" ...stemming types (", stri_trans_totitle(language), ")\n", sep = "")
             x <- do.call(tokens_wordstem, list(x = x, language = language))
         }
         otherargs <- otherargs[-which(names(otherargs) %in% "stem")]
+        .Deprecated(msg = "'stem' is deprecated; use dfm_wordstem() instead")
     }
     
     check_dots(otherargs, method = "dfm")
@@ -260,9 +264,9 @@ dfm.dfm <- function(x,
     
     # deprecation for select
     if ("select" %in% names(otherargs)) {
-        .Deprecated(msg = "'select' is deprecated; use dfm_select() instead")
         if (!is.null(remove))
-            stop("only one of select and remove may be supplied at once")
+            stop("only one of select and remove may be supplied at once", call. = FALSE)
+        .Deprecated(msg = "'select' is deprecated; use dfm_select() instead")
         if (verbose) catm(" ...")
         x <- do.call(dfm_select, list(x = x,
                            pattern = otherargs[["select"]],
@@ -274,7 +278,7 @@ dfm.dfm <- function(x,
     }
     
     if (!is.null(remove)) {
-        x <- dfm_remove(x = x, pattern = remove)
+        x <- dfm_remove(x = x, pattern = remove, verbose = verbose)
     }
         
     if (tolower) {
@@ -283,15 +287,19 @@ dfm.dfm <- function(x,
     }
     
     if ("stem" %in% names(otherargs)) {
-        .Deprecated(msg = "'stem' is deprecated; use dfm_wordstem() instead")
-        if (otherargs[["stem"]]) {
-            language = quanteda_options("language_stemmer")
+        if (!is.null(otherargs[["stem"]])) {
+            stem <- otherargs[["stem"]]
+            check_logical(stem)
+            language <- quanteda_options("language_stemmer")
             if (verbose)
-                if (verbose) catm(" ...stemming types (", stri_trans_totitle(language), ")\n", sep = "")
+                if (verbose) catm(" ...stemming features (", stri_trans_totitle(language), ")\n", sep = "")
             x <- do.call(dfm_wordstem, list(x = x, language = language))
         }
         otherargs <- otherargs[-which(names(otherargs) %in% "stem")]
+        .Deprecated(msg = "'stem' is deprecated; use dfm_wordstem() instead")
     }
+    
+    check_dots(otherargs, method = "dfm")
     
     # remove any NA named columns
     is_na <- is.na(featnames(x))

@@ -13,7 +13,7 @@ test_that("test dfm_lookup, issue #389", {
                              HOR = c("House"),
                              law = c("law*", "constitution"),
                              freedom = c("free*", "libert*")))
-    expect_equal(as.numeric(dfm(toks, dictionary = dict2)[, "Country"]),
+    expect_equal(as.numeric(suppressWarnings(dfm(toks, dictionary = dict2))[, "Country"]),
                  c(4, 1, 3, 0, 1))
 })
 

@@ -13,7 +13,7 @@ test_that("bootstrap_dfm works with character and corpus objects", {
     
     bs2 <- bootstrap_dfm(txt, n = 10, verbose = TRUE)
     expect_identical(bs2[[1]],
-                     dfm(tokens(corp), include_docvars = FALSE))
+                     dfm(tokens(corp, include_docvars = FALSE)))
     
     # are feature names of resamples identical?
     expect_identical(
@@ -47,7 +47,7 @@ test_that("bootstrap_dfm works as planned with dfm", {
     
     bs2 <- bootstrap_dfm(txt, n = 3, verbose = FALSE)
     expect_identical(bs2[[1]], 
-                     dfm(tokens(corp), include_docvars = FALSE))
+                     dfm(tokens(corp, include_docvars = FALSE)))
 
     # are feature names of resamples identical?
     expect_identical(
