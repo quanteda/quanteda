@@ -1,5 +1,3 @@
-context("test docvars")
-
 test_that("make_docvars() works", {
     docvar1 <- quanteda:::make_docvars(0L, docname = character())
     docvar2 <- quanteda:::make_docvars(3L, docname = c("A", "B", "C"))
@@ -214,28 +212,6 @@ test_that("docvars is working with tokens", {
     )
 })
 
-test_that("metadoc for tokens works", {
-    skip("Until we resolve metadoc issues")
-    corp <- data_corpus_inaugural
-    expect_warning(
-        metadoc(corp, "language") <- "english",
-        "metadoc is deprecated"
-    )
-    suppressWarnings(metadoc(corp, "language") <- "english")
-    toks <- tokens(corp, include_docvars = TRUE)
-
-    expect_equal(docvars(toks), docvars(corp))
-    suppressWarnings(
-        expect_equal(metadoc(toks), metadoc(corp))
-    )
-
-    expect_equal(docvars(toks, "President"), docvars(corp, "President"))
-
-    # Subset
-    toks2 <- toks[docvars(toks, "_language") == "english"]
-    expect_equal(ndoc(toks2), nrow(docvars(toks2)))
-})
-
 test_that("docvars is working with dfm", {
     corp <- data_corpus_inaugural
     toks <- tokens(corp, include_docvars = TRUE)
@@ -244,12 +220,12 @@ test_that("docvars is working with dfm", {
     expect_equal(docvars(toks), docvars(thedfm))
     expect_equal(docvars(toks, "Party"), docvars(corp, "Party"))
 
-    thedfm2 <- dfm(corp)
+    thedfm2 <- dfm(tokens(corp))
     expect_equal(docvars(corp), docvars(thedfm2))
     expect_equal(docvars(corp, "Party"), docvars(thedfm2, "Party"))
 
     corp2 <- corpus_subset(corp, Party == "Democratic")
-    thedfm3 <- dfm(corp2)
+    thedfm3 <- dfm(tokens(corp2))
     expect_equal(docvars(corp2), docvars(thedfm3))
 })
 
@@ -269,7 +245,7 @@ test_that("creating tokens and dfms with empty docvars", {
         length(docvars(tokens(data_corpus_inaugural, include_docvars = FALSE))), 0
     )
     expect_equal(
-        length(docvars(dfm(data_corpus_inaugural, include_docvars = FALSE))), 0
+        length(docvars(dfm(tokens(data_corpus_inaugural), include_docvars = FALSE))), 0
     )
 })
 
@@ -298,10 +274,9 @@ test_that("dfm works works with one docvar", {
     mycorpus1 <- corpus(c(d1 = "This is sample document one.",
                           d2 = "Here is the second sample document."),
                         docvars = docv1)
-    dfm1 <- dfm(mycorpus1, include_docvars = TRUE)
+    dfm1 <- dfm(tokens(mycorpus1), include_docvars = TRUE)
     expect_equivalent(docvars(dfm1), docv1)
 })
-
 
 test_that("dfm works works with two docvars", {
     docv2 <- data.frame(dvar1 = c("A", "B"),
@@ -309,12 +284,11 @@ test_that("dfm works works with two docvars", {
     mycorpus2 <- corpus(c(d1 = "This is sample document one.",
                           d2 = "Here is the second sample document."),
                         docvars = docv2)
-    dfm2 <- dfm(mycorpus2, include_docvars = TRUE)
+    dfm2 <- dfm(tokens(mycorpus2), include_docvars = TRUE)
     expect_equivalent(docvars(dfm2), docv2)
 })
 
 test_that("object always have docvars in the same rows as documents", {
-
     txt <- data_char_ukimmig2010
     corp1 <- corpus(txt)
     expect_true(nrow(docvars(corp1)) == ndoc(corp1))
@@ -348,7 +322,7 @@ test_that("object always have docvars in the same rows as documents", {
     expect_true(nrow(docvars(toks4)) == ndoc(toks4))
     expect_true(all(row.names(docvars(toks4)) == seq_len(ndoc(toks4))))
 
-    dfm1 <- dfm(txt)
+    dfm1 <- dfm(tokens(txt))
     expect_true(nrow(docvars(dfm1)) == ndoc(dfm1))
     expect_true(all(row.names(docvars(dfm1)) == seq_len(ndoc(dfm1))))
 
@@ -356,7 +330,7 @@ test_that("object always have docvars in the same rows as documents", {
     expect_true(nrow(docvars(dfm2)) == ndoc(dfm2))
     expect_true(all(row.names(docvars(dfm2)) == seq_len(ndoc(dfm2))))
 
-    dfm3 <- dfm(corpus(txt))
+    dfm3 <- dfm(tokens(corpus(txt)))
     expect_true(nrow(docvars(dfm3)) == ndoc(dfm3))
     expect_true(all(row.names(docvars(dfm3)) == seq_len(ndoc(dfm3))))
 
@@ -401,7 +375,7 @@ test_that("assignment of NULL only drop columns", {
     docvars(toks) <- NULL
     expect_identical(dim(docvars(toks)), c(14L, 0L))
 
-    mt <- dfm(data_corpus_inaugural[1:14])
+    mt <- dfm(tokens(data_corpus_inaugural[1:14]))
     docvars(mt) <- NULL
     expect_identical(dim(docvars(mt)), c(14L, 0L))
 })
@@ -409,14 +383,14 @@ test_that("assignment of NULL only drop columns", {
 test_that("can assign docvars when value is a dfm (#1417)", {
     mycorp <- corpus(data_char_ukimmig2010)
 
-    thedfm <- dfm(mycorp)[, "the"]
+    thedfm <- dfm(tokens(mycorp))[, "the"]
     docvars(mycorp) <- thedfm
     expect_identical(
         docvars(mycorp),
         data.frame(the = as.vector(thedfm))
     )
 
-    anddfm <- dfm(mycorp)[, "and"]
+    anddfm <- dfm(tokens(mycorp))[, "and"]
     docvars(anddfm) <- anddfm
     expect_identical(
         docvars(anddfm),
@@ -442,7 +416,7 @@ test_that("docvar can be renamed (#1603)", {
     expect_identical(names(docvars(toks)),
                      c("year", "President", "forename", "Party"))
 
-    dfmat <- dfm(data_corpus_inaugural)
+    dfmat <- dfm(tokens(data_corpus_inaugural))
     names(docvars(dfmat))[c(1, 3)] <- c("year", "forename")
     expect_identical(names(docvars(dfmat)),
                      c("year", "President", "forename", "Party"))

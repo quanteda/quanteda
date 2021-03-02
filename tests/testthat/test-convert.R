@@ -1,8 +1,6 @@
-context("test convert function and shortcuts")
-
 txt_test <- c(text1 = "The new law included a capital gains tax, and an inheritance tax.",
               text2 = "New York City has raised a taxes: an income tax and a sales tax.")
-dfmat_test <- dfm(txt_test, remove_punct = TRUE)
+dfmat_test <- dfm(tokens(txt_test, remove_punct = TRUE))
 
 test_that("test STM package converter", {
     skip_if_not_installed("stm")
@@ -37,7 +35,7 @@ test_that("test STM package converter with metadata", {
     skip_if_not_installed("tm")
     dat <- data.frame(myvar = c("A", "B"))
     corp <- corpus(txt_test, docvars = dat)
-    dfmat <- dfm(corp, remove_punct = TRUE)
+    dfmat <- dfm(tokens(corp), remove_punct = TRUE)
     stmdfm <- convert(dfmat, to = "stm")
     stmtp <- stm::textProcessor(txt_test, removestopwords = FALSE, verbose = FALSE,
                                 stem = FALSE, wordLengths = c(1, Inf))
@@ -55,7 +53,7 @@ test_that("test STM package converter with metadata w/zero-count document", {
                   text3 = "New York City has raised a taxes: an income tax and a sales tax.")
     dat <- data.frame(myvar = c("A", "B", "C"))
     corp <- corpus(txt_test2, docvars = dat)
-    dfmat <- dfm(corp, remove_punct = TRUE)
+    dfmat <- dfm(tokens(corp), remove_punct = TRUE)
     expect_true(ntoken(dfmat)[2] == 0)
 
     stmdfm <- suppressWarnings(convert(dfmat, to = "stm"))
@@ -170,7 +168,7 @@ test_that("lsa converter works under extreme situations", {
 })
 
 test_that("topicmodels converter works under extreme situations", {
-    skip_on_os("mac") 
+    # skip_on_os("mac") 
     skip_if_not_installed("topicmodels")
     require(topicmodels)
     #zero-count document
@@ -266,8 +264,7 @@ test_that("weighted dfm is not convertible to a topic model format (#1091)", {
 })
 
 test_that("triplet converter works", {
-
-    mt <- dfm(c("a b c", "c c d"))
+    mt <- dfm(tokens(c("a b c", "c c d")))
     expect_identical(convert(mt, to = "tripletlist"),
                      list(document = c(rep("text1", 3), rep("text2", 2)),
                           feature = c("a", "b", "c", "c", "d"),
@@ -322,7 +319,7 @@ test_that("convert.corpus works", {
         "^nothing argument is not used",
     )
     expect_warning(
-        convert(dfm(corp), to = "data.frame", nothing = TRUE),
+        convert(dfm(tokens(corp)), to = "data.frame", nothing = TRUE),
         "^nothing argument is not used",
     )
 
@@ -352,8 +349,8 @@ test_that("convert.corpus works", {
 })
 
 test_that("convert to = data.frame works", {
-    dfmat <- dfm(c(d1 = "this is a fine document",
-                   d2 = "this is a fine feature"))
+    dfmat <- dfm(tokens(c(d1 = "this is a fine document",
+                   d2 = "this is a fine feature")))
     expect_identical(
         convert(dfmat, to = "data.frame"),
         data.frame(

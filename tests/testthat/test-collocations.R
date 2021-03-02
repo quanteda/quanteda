@@ -1,5 +1,3 @@
-context("test core methods with collocations objects")
-
 test_that("object2id is working with collocations", {
     txt <- c(". . . . a b c . . a b c . . . c d e",
              "a b . . a b . . a b . . a b . a b",
@@ -50,7 +48,7 @@ test_that("tokens_compound works as expected with collocations", {
 })
 
 
-context("tokens_select feature selection works according to new scheme")
+# context("tokens_select feature selection works according to new scheme")
 
 test_that("tokens_select works correctly with collocations objects", {
   txt <- c(d1 = "a b c d e g h",  d2 = "a b e g h i j")

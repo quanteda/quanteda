@@ -1,5 +1,3 @@
-context("test object builder functions")
-
 test_that("corpus object builder retains class", {
     corp <- corpus(c("a / b", "a / b c", "abc"),
                    docvars = data.frame(dv = 11:13),

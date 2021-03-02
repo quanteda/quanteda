@@ -247,7 +247,8 @@ Convertir los textos en tokens es una opción intermedia y la mayoría de los us
 corp_inaug_post1990 <- corpus_subset(data_corpus_inaugural, Year > 1990)
 
 # make a dfm
-dfmat_inaug_post1990 <- dfm(corp_inaug_post1990)
+dfmat_inaug_post1990 <- tokens(corp_inaug_post1990) %>%
+    dfm()
 dfmat_inaug_post1990[, 1:5]
 ```
 

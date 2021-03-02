@@ -1,8 +1,6 @@
-context("test dfm_weight")
-
 test_that("dfm_weight works", {
     str <- c("apple is better than banana", "banana banana apple much better")
-    mydfm <- dfm(str, remove = stopwords("english"))
+    mydfm <- dfm(tokens(str), remove = stopwords("english"))
 
     expect_equivalent(round(as.matrix(dfm_weight(mydfm, scheme = "count")), 2),
                       matrix(c(1, 1, 1, 1, 1, 2, 0, 1), nrow = 2))
@@ -19,7 +17,7 @@ test_that("dfm_weight works", {
     # replication of worked example from
     # https://en.wikipedia.org/wiki/Tf-idf#Example_of_tf.E2.80.93idf
     str <- c("this is a  a sample", "this is another example another example example")
-    wikidfm <- dfm(str)
+    wikidfm <- dfm(tokens(str))
     expect_equal(
         as.matrix(dfm_tfidf(wikidfm, scheme_tf = "prop")),
         matrix(c(0, 0, 0, 0, 0.120412, 0, 0.060206, 0, 0, 0.08600857, 0, 0.1290129), nrow = 2,
@@ -36,7 +34,7 @@ test_that("dfm_weight works", {
 test_that("dfm_weight works with weights", {
     str <- c("apple is better than banana", "banana banana apple much better")
     w <- c(apple = 5, banana = 3, much = 0.5)
-    mydfm <- dfm(str, remove = stopwords("english"))
+    mydfm <- dfm(tokens(str), remove = stopwords("english"))
 
     expect_equivalent(as.matrix(dfm_weight(mydfm, weights = w)),
                       matrix(c(5, 5, 1, 1, 3, 6, 0, 0.5), nrow = 2))
@@ -59,8 +57,8 @@ test_that("dfm_weight works with weights", {
 })
 
 test_that("dfm_weight exceptions work", {
-    mydfm <- dfm(c("He went out to buy a car",
-                   "He went out and bought pickles and onions"))
+    mydfm <- dfm(tokens(c("He went out to buy a car",
+                   "He went out and bought pickles and onions")))
     mydfm_tfprop <- dfm_weight(mydfm, "prop")
     expect_error(
         dfm_tfidf(mydfm_tfprop),
@@ -77,9 +75,9 @@ test_that("dfm_weight exceptions work", {
 })
 
 test_that("docfreq works as expected", {
-    mydfm <- dfm(c("He went out to buy a car",
+    mydfm <- dfm(tokens(c("He went out to buy a car",
                    "He went out and bought pickles and onions",
-                   "He ate pickles in the car."))
+                   "He ate pickles in the car.")))
     expect_equivalent(
         docfreq(mydfm, scheme = "unary"),
         rep(1, ncol(mydfm))
@@ -119,8 +117,8 @@ test_that("docfreq works as expected", {
 })
 
 test_that("tf with logave now working as expected", {
-    mydfm <- dfm(c("He went out to buy a car",
-                   "He went out and bought pickles and onions"))
+    mydfm <- dfm(tokens(c("He went out to buy a car",
+                   "He went out and bought pickles and onions")))
     manually_calculated <-
         as.matrix((1 + log10(mydfm)) / (1 + log10(apply(mydfm, 1, function(x) sum(x) / sum(x > 0)))))
     manually_calculated[is.infinite(manually_calculated)] <- 0
@@ -131,8 +129,8 @@ test_that("tf with logave now working as expected", {
 })
 
 test_that("tfidf works with different log base", {
-    mydfm <- dfm(c("He went out to buy a car",
-                   "He went out and bought pickles and onions"))
+    mydfm <- dfm(tokens(c("He went out to buy a car",
+                   "He went out and bought pickles and onions")))
     expect_true(
         !identical(
             as.matrix(dfm_tfidf(mydfm)),
@@ -142,7 +140,7 @@ test_that("tfidf works with different log base", {
 })
 
 test_that("docfreq works when features have duplicated names (#829)", {
-    mydfm <- dfm(c(d1 = "a b c d e", d2 = "a a b b e f", d3 = "b e e f f f"))
+    mydfm <- dfm(tokens(c(d1 = "a b c d e", d2 = "a a b b e f", d3 = "b e e f f f")))
     colnames(mydfm)[3] <- "b"
     expect_equal(
         docfreq(mydfm),
@@ -151,8 +149,8 @@ test_that("docfreq works when features have duplicated names (#829)", {
 })
 
 test_that("dfm_weight works with zero-frequency features (#929)", {
-    d1 <- dfm(c("a b c", "a b c d"))
-    d2 <- dfm(letters[1:6])
+    d1 <- dfm(tokens(c("a b c", "a b c d")))
+    d2 <- dfm(tokens(letters[1:6]))
     dtest <- dfm_match(d1, featnames(d2))
 
     expect_equal(
@@ -176,7 +174,7 @@ test_that("dfm_weight works with zero-frequency features (#929)", {
 test_that("settings are recorded for tf-idf weightings", {
     txt <- c(text1 = "The new law included a capital gains tax, and an inheritance tax.",
              text2 = "New York City has raised a taxes: an income tax and a sales tax.")
-    dfmt <- dfm(txt, remove_punct = TRUE)
+    dfmt <- dfm(tokens(txt, remove_punct = TRUE))
     dfmt_tfidf <- dfm_tfidf(dfmt)
     expect_equal(dfmt_tfidf@meta$object$weight_tf$scheme, "count")
     expect_equal(dfmt_tfidf@meta$object$weight_df$scheme, "inverse")
@@ -194,9 +192,8 @@ test_that("settings are recorded for tf-idf weightings", {
 })
 
 test_that("weights argument works, issue 1150", {
-
     txt <- c("brown brown yellow green", "yellow green blue")
-    mt <- dfm(txt)
+    mt <- dfm(tokens(txt))
     w <- c(brown = 0.1, yellow = 0.3, green = 0.4, blue = 2)
 
     expect_equal(
@@ -222,7 +219,7 @@ test_that("weights argument works, issue 1150", {
 
     # test when a feature is not assigned a weight
     txt2 <- c(d1 = "brown brown yellow green black", d2 = "yellow green blue")
-    mt2 <- dfm(txt2)
+    mt2 <- dfm(tokens(txt2))
     w2 <- c(green = .1, blue = .2, brown = .3, yellow = .4)
     expect_equal(
         as.matrix(dfm_weight(mt2, weights = w2)),
@@ -232,8 +229,8 @@ test_that("weights argument works, issue 1150", {
 })
 
 test_that("deprecated dfm_weight argument values still work", {
-    mydfm <- dfm(c("He went out to buy a car",
-                   "He went out and bought pickles and onions"))
+    mydfm <- dfm(tokens(c("He went out to buy a car",
+                   "He went out and bought pickles and onions")))
 
     # frequency
     expect_identical(
@@ -311,7 +308,7 @@ test_that("dfm_weight invalid scheme produces error", {
 })
 
 test_that("featfreq() works", {
-    dfmat <- dfm(c(d1 = "a a a b", d2 = "a b c"))
+    dfmat <- dfm(tokens(c(d1 = "a a a b", d2 = "a b c")))
     expect_identical(
         featfreq(dfmat),
         c(a = 4, b = 2, c = 1)
@@ -319,7 +316,7 @@ test_that("featfreq() works", {
 })
 
 test_that("logsmooth works", {
-    dfmat <- dfm(c("a a a b c d d", "b b c d d d"))
+    dfmat <- dfm(tokens(c("a a a b c d d", "b b c d d d")))
     expect_equivalent(
         dfm_weight(dfmat, scheme = "logsmooth", smoothing = 0.5, base = exp(1)) %>% as.matrix(),
         matrix(log(c(3, 0, 1, 2, 1, 1, 2, 3) + 0.5), nrow = 2)

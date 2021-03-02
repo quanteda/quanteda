@@ -1,5 +1,3 @@
-context("testing tokens_recompile")
-
 test_that("tokens_recompile: tokens_tolower", {
     toks1 <- tokens(c(one = "a b c d A B C D",
                       two = "A B C d"))

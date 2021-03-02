@@ -1,5 +1,3 @@
-context("test char_select functions")
-
 test_that("test character selection", {
     txt <- c("natural", "National", "denatured", "other")
     

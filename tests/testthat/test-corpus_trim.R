@@ -1,5 +1,3 @@
-context("test corpus_trim")
-
 txt <- c("PAGE 1. This is a single sentence.  Short sentence. Three word sentence.",
          "PAGE 2. Very short! Shorter.",
          "Very long sentence, with multiple parts, separated by commas.  PAGE 3.")

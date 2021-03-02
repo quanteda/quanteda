@@ -1,5 +1,3 @@
-context("test phrase() function")
-
 test_that("test phrase for character", {
     txt <- c("capital gains tax", "one two", "three")
     expect_equivalent(

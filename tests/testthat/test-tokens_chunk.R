@@ -1,5 +1,3 @@
-context("test tokens_chunk")
-
 test_that("tokens_chunk works", {
     txt <- c(d1 = "a b c d", d2 = "e f g")
 

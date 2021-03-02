@@ -1,5 +1,3 @@
-context("test tokens_subset")
-        
 test_that("tokens_subset works in a basic way", {
     toks <- tokens(corpus_subset(data_corpus_inaugural, Year > 1980 & Year < 2018))
     expect_equal(

@@ -1,5 +1,3 @@
-context("test meta")
-
 field_system <- c("source", "package-version", "r-version", "system", "directory", "created")
 
 test_that("meta works", {

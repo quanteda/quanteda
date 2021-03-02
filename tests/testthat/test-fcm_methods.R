@@ -1,5 +1,3 @@
-context("test fcm methods")
-
 toks_test <- tokens(c("b A A d", "C C a b B e"))
 fcmt_test <- fcm(toks_test, context = "document")
 
@@ -40,7 +38,7 @@ test_that("fcm_toupper and fcm_compress work as expected",{
 txt <- c(doc1 = "a B c D e",
          doc2 = "a BBB c D e",
          doc3 = "Aaaa BBB cc")
-fcmt_test2 <- fcm(txt, context = "document", count = "frequency", tri = TRUE)
+fcmt_test2 <- fcm(tokens(txt), context = "document", count = "frequency", tri = TRUE)
 
 test_that("test fcm_select, fixed", {
     expect_equal(
@@ -162,7 +160,7 @@ test_that("test fcm_compress retains class", {
 })
 
 test_that("shortcut functions works", {
-    fcmt_test2 <- fcm(data_corpus_inaugural[1:5])
+    fcmt_test2 <- fcm(tokens(data_corpus_inaugural[1:5]))
     expect_equal(fcm_select(fcmt_test2, stopwords('english'), selection = 'keep'),
                  fcm_keep(fcmt_test2, stopwords('english')))
     expect_equal(fcm_select(fcmt_test2, stopwords('english'), selection = 'remove'),

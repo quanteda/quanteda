@@ -1,5 +1,3 @@
-context("test utils")
-
 test_that("message_select works as expected", {
     expect_message(
         quanteda:::message_select("remove", 10, 5, 0, 0),
@@ -75,7 +73,7 @@ test_that("get_package_version works", {
     load("../data/pre_v2_objects/data_dfm_pre2.rda")
     expect_true(quanteda:::get_object_version(data_dfm_pre2) == "1.4.0")
     expect_true(quanteda:::is_pre2(data_dfm_pre2))
-    expect_true(quanteda:::get_object_version(dfm("one")) > "1.4.9")
+    expect_true(quanteda:::get_object_version(dfm(tokens("one"))) > "1.4.9")
 })
 
 test_that("resample works with sizes", {

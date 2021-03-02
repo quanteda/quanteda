@@ -1,5 +1,3 @@
-context('test extractor')
-
 txt <- c(doc1 = "This is a sample text.\nIt has three lines.\nThe third line.",
          doc2 = "one\ntwo\tpart two\nthree\nfour.",
          doc3 = "A single sentence.",

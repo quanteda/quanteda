@@ -1,5 +1,3 @@
-context("test tokens_replace")
-
 txt <- c(doc1 = "aa bb BB cc DD ee",
          doc2 = "aa bb cc DD ee")
 toks_test <- tokens(txt)

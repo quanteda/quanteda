@@ -1,7 +1,4 @@
-context("test stopwords.R")
-
 test_that("old stopwords are the same as the new", {
-
     load("../data/data_char_stopwords.rda")
     stopwords_old <- function(kind = "english", swdata) {
         if (!(kind %in% names(swdata)))
@@ -18,4 +15,3 @@ test_that("old stopwords are the same as the new", {
         stopwords("english", source = "smart")
     )
 })
-

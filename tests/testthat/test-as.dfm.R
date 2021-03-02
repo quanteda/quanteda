@@ -1,9 +1,6 @@
-context("test as.dfm")
-
-set.seed(19)
-elements <- rpois(20, 1)
-
 test_that("as.dfm adds document and feature names when a matrix has none", {
+    set.seed(19)
+    elements <- rpois(20, 1)
     m <- matrix(elements, nrow = 4)
     expect_equal(
         docnames(as.dfm(m)),
@@ -20,6 +17,8 @@ test_that("as.dfm adds document and feature names when a matrix has none", {
 })
 
 test_that("as.dfm adds names of dimnames when a matrix has none", {
+    set.seed(19)
+    elements <- rpois(20, 1)
     m <- matrix(elements, nrow = 4)
     dimnames(m) <- list(paste0("text", seq_len(nrow(m))),
                         letters[seq_len(ncol(m))])
@@ -38,6 +37,9 @@ test_that("as.dfm adds names of dimnames when a matrix has none", {
 })
 
 test_that("as.dfm keeps document and feature names from a data.frame", {
+    set.seed(19)
+    elements <- rpois(20, 1)
+    m <- matrix(elements, nrow = 4)
     m <- data.frame(matrix(elements, nrow = 4))
     expect_equal(
         docnames(as.dfm(m)),
@@ -54,6 +56,9 @@ test_that("as.dfm keeps document and feature names from a data.frame", {
 })
 
 test_that("as.dfm adds names of dimnames when a data.frame has none", {
+    set.seed(19)
+    elements <- rpois(20, 1)
+    m <- matrix(elements, nrow = 4)
     m <- data.frame(matrix(elements, nrow = 4))
     dimnames(m) <- list(paste0("text", seq_len(nrow(m))),
                         letters[seq_len(ncol(m))])
@@ -72,6 +77,9 @@ test_that("as.dfm adds names of dimnames when a data.frame has none", {
 })
 
 test_that("is.dfm works as expected", {
+    set.seed(19)
+    elements <- rpois(20, 1)
+    m <- matrix(elements, nrow = 4)
     m <- data.frame(matrix(elements, nrow = 4))
     expect_true(is.dfm(as.dfm(m)))
     expect_false(is.dfm(m))
@@ -87,14 +95,14 @@ test_that("as.dfm for tm matrix objects", {
                                   control = list(wordLengths = c(1, Inf)))
     expect_equivalent(
         as.dfm(dtm),
-        dfm(txt)
+        dfm(tokens(txt))
     )
     
     tdm <- tm::TermDocumentMatrix(tm::Corpus(tm::VectorSource(txt)),
                                   control = list(wordLengths = c(1, Inf)))
     expect_equivalent(
         as.dfm(tdm),
-        dfm(txt)
+        dfm(tokens(txt))
     )
 })
 
@@ -148,7 +156,7 @@ test_that("dfm2dataframe same as as.data.frame.dfm", {
 test_that("as.data.frame.dfm handles irregular feature names correctly", {
     skip_on_os("windows")
     skip_on_cran()
-    mydfm <- dfm(data_char_sampletext, 
+    mydfm <- dfm(tokens(data_char_sampletext),
                  dictionary = dictionary(list("字" = "a", "spe cial" = "the", 
                                               "飛機" = "if", "spec+ial" = "of")))
     expect_equal(
@@ -189,22 +197,13 @@ test_that("as.dfm to and from a matrix works with docvars", {
     txt <- c(docA = "a a a b c c f",
              docB = "a b b b c d",
              docC = "c c c f f")
+    toks <- tokens(txt)
     expect_identical(
-        attributes(dfm(txt)@docvars)$row.names,
-        attributes(as.dfm(as.matrix(dfm(txt)))@docvars)$row.names
+        attributes(dfm(toks)@docvars)$row.names,
+        attributes(as.dfm(as.matrix(dfm(toks)))@docvars)$row.names
     )
     expect_equivalent(
-        dfm(txt),
-        as.dfm(as.matrix(dfm(txt)))
+        dfm(toks),
+        as.dfm(as.matrix(dfm(toks)))
     )
 })
-
-# test_that("as.dfm works on old objects", {
-#     load("../data/pre_v2_objects/data_dfm_pre2.rda")
-#     expect_is(as.dfm(data_dfm_pre2), "dfm")
-#     expect_false(quanteda:::is_pre2(as.dfm(data_dfm_pre2)))
-#     expect_identical(
-#         names(as.dfm(data_dfm_pre2)@meta),
-#         c("user", "system")
-#     )
-# })

@@ -1,5 +1,3 @@
-context("test meta functions")
-
 test_that("meta/meta<- works user data", {
     txt <- c(d1 = "a b c", d2 = "x y z")
     corp <- corpus(txt, docvars = data.frame(dv = 1:2))

@@ -1,7 +1,5 @@
-context("test dfm_subset")
-        
 test_that("dfm_subset works in a basic way", {
-    dfmat <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980 & Year < 2018))
+    dfmat <- dfm(tokens(corpus_subset(data_corpus_inaugural, Year > 1980 & Year < 2018)))
     expect_equal(
         ndoc(dfm_subset(dfmat, Year > 2000)),
         5
@@ -29,7 +27,7 @@ test_that("dfm_subset works in a basic way", {
 })
 
 test_that("dfm_subset works with docvars", {
-    dfmat <- dfm(corpus_subset(data_corpus_inaugural, Year > 1900))
+    dfmat <- dfm(tokens(corpus_subset(data_corpus_inaugural, Year > 1900)))
     expect_equal(
         docvars(head(dfmat, 5))$President,
         c("McKinley", "Roosevelt", "Taft", "Wilson", "Wilson")

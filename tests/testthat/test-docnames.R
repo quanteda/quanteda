@@ -1,5 +1,3 @@
-context("test docnames")
-
 test_that("docnames always return names even if there aren't", {
     corp <- corpus(c("aaa", "bbb", "ccc"))
     expect_equal(length(docnames(corp)), ndoc(corp))
@@ -58,7 +56,7 @@ test_that("special names<- operator works as planned", {
         attr(toks, "docvars")[["docname_"]]
     )
 
-    dfmat <- dfm(corpus(LETTERS[1:3], docnames = letters[1:3]))
+    dfmat <- dfm(tokens(corpus(LETTERS[1:3], docnames = letters[1:3])))
     rownames(dfmat)[1] <- "X"
     expect_identical(
         rownames(dfmat),
