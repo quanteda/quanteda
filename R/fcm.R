@@ -1,4 +1,3 @@
-
 #' Create a feature co-occurrence matrix
 #'
 #' Create a sparse feature co-occurrence matrix, measuring co-occurrences of

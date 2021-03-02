@@ -1,5 +1,7 @@
 # quanteda 3.0
 
+**quanteda** 3.0 is a major release that improves functionality, completes the modularisation of the package begun in v2.0, and further improves function consistency by removing previously deprecated functions, and deprecating some shortcut steps in the text analysis workflow.
+
 ## Changes
 
 * Separated the `textplot_*()` functions from the main package into a separate package **quanteda.textplots**.
@@ -12,13 +14,15 @@
 
 * The documentation for `dfm` now has all references to the defunct `ngrams` argument removed.
 
-* The following functions have been removed:
-    - all methods for defunct `corpuszip` objects.
-    - `View()` functions
-    - `as.wfm()` and `as.DocumentTermMatrix()` (the same functionality is available via `convert()`)
-    - `metadoc()` and `metacorpus()`
-    - `corpus_trimsentences()` (replaced by `corpus_trim()`)
-    - all of the `tortl` functions
+* The package dependency structure is now greatly reduced, partly by addressing complex downstream dependencies in packages such as **stopwords**, but also by reducing several package dependencies and through modularisation.
+
+* The punctuation regular expression and that for matching social media usernames has now been redefined so that the valid Twitter username `@_` is now counted as a "tag" rather than as "punctuation". (#2049)
+
+* The `kwic()` return object structure has been redefined, and built with an option to use a new function `index()` that returns token spans following a pattern search.  (#2045 and #2065)
+
+* The data object `data_corpus_inaugural` has been updated to include the Biden 2021 inaugural address.
+
+* A new system of validators for input types now provides better argument type and value checking, with more consistent error messages for invalid types or values.
 
 ## Bug fixes and stability enhancements
 
@@ -26,25 +30,30 @@
 
 * `kwic()` is more stable and does not crash when a vector is supplied as the `window` argument (#2008).
 
+* Allow use of multi-threading with more than two threads by fixing `quanteda_options()`.
+
+* Mentions of the now-removed `ngrams` option in `dfm(x, ...)` has now been removed from the dfm documentation.  (#1990)
 
 ## Deprecated
 
 * `dfm_sample(x, margins = "features")` is deprecated; future versions will not support sampling on features using `dfm_sample()`.
 
+* `dfm.character()` and `dfm.corpus()` are deprecated.  Users should create a tokens object first, and input that to `dfm()`.
+
+* Convenience passing of arguments to `tokens()` via `...` for methods that skipped the tokenisation step are now deprecated, although they still function with a warning.  Users should now create a tokens object (using `tokens()` from character or corpus inputs before calling `dfm()` or `kwic()`.
+
 ## Removed
 
 * See note above under **Changes** about the `textplot_*()` and `textstat_*()` functions.
 
-
-# quanteda 2.1.3
-
-## Changes
-
-* Mentions of the now-removed `ngrams` option in `dfm(x, ...)` has now been removed from the dfm documentation.  (#1990)
-
-## Bug fixes and stability enhancements
-
-* Allow use of multi-threading with more than two threads by fixing `quanteda_options()`.
+* The following functions have been removed:
+    - all methods for defunct `corpuszip` objects.
+    - `View()` functions
+    - `as.wfm()` and `as.DocumentTermMatrix()` (the same functionality is available via `convert()`)
+    - `metadoc()` and `metacorpus()`
+    - `corpus_trimsentences()` (replaced by `corpus_trim()`)
+    - all of the `tortl` functions
+    - all legacy functions related to the ancient "corpuszip" corpus variant.
 
 
 # quanteda 2.1.2
