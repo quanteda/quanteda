@@ -55,8 +55,9 @@
 #' @examples
 #' ## convert a dfm
 #'
-#' corp <- corpus_subset(data_corpus_inaugural, Year > 1970)
-#' dfmat1 <- dfm(corp)
+#' toks <- corpus_subset(data_corpus_inaugural, Year > 1970) %>%
+#'     tokens()
+#' dfmat1 <- dfm(toks)
 #'
 #' # austin's wfm format
 #' identical(dim(dfmat1), dim(convert(dfmat1, to = "austin")))
@@ -196,8 +197,9 @@ convert.corpus <- function(x, to = c("data.frame", "json"), pretty = FALSE, ...)
 #' @name convert-wrappers
 #' @keywords internal
 #' @examples
-#' corp <- corpus_subset(data_corpus_inaugural, Year > 1970)
-#' dfmat <- dfm(corp)
+#' dfmat <- corpus_subset(data_corpus_inaugural, Year > 1970) %>%
+#'     tokens() %>%
+#'     dfm()
 #'
 NULL
 
@@ -355,8 +357,8 @@ ijv.to.doc <- function(i, j, v) {
 #' @param x dfm to be converted
 #' @examples
 #' \dontrun{
-#' (dfmat <- dfm(c(d1 = "this is a first matrix",
-#'                 d2 = "this is second matrix as example")))
+#' (dfmat <- dfm(tokens(c(d1 = "this is a first matrix",
+#'                        d2 = "this is second matrix as example"))))
 #' lsa::lsa(convert(dfmat, to = "lsa"))
 #' }
 #' @keywords internal

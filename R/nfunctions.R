@@ -15,7 +15,7 @@
 #' ndoc(data_corpus_inaugural)
 #' ndoc(corpus_subset(data_corpus_inaugural, Year > 1980))
 #' ndoc(tokens(data_corpus_inaugural))
-#' ndoc(dfm(corpus_subset(data_corpus_inaugural, Year > 1980)))
+#' ndoc(dfm(tokens(corpus_subset(data_corpus_inaugural, Year > 1980))))
 #'
 ndoc <- function(x) {
     UseMethod("ndoc")
@@ -51,8 +51,10 @@ ndoc.tokens <- function(x) {
 #' @seealso [ntoken()]
 #' @examples
 #' # number of features
-#' nfeat(dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove_punct = FALSE))
-#' nfeat(dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove_punct = TRUE))
+#' toks1 <- tokens(corpus_subset(data_corpus_inaugural, Year > 1980), remove_punct = FALSE)
+#' toks2 <- tokens(corpus_subset(data_corpus_inaugural, Year > 1980), remove_punct = TRUE)
+#' nfeat(dfm(toks1))
+#' nfeat(dfm(toks2))
 nfeat <- function(x) {
     UseMethod("nfeat")
 }
@@ -97,8 +99,8 @@ nfeat.dfm <- function(x) {
 #' # with some real texts
 #' ntoken(corpus_subset(data_corpus_inaugural, Year < 1806), remove_punct = TRUE)
 #' ntype(corpus_subset(data_corpus_inaugural, Year < 1806), remove_punct = TRUE)
-#' ntoken(dfm(corpus_subset(data_corpus_inaugural, Year < 1800)))
-#' ntype(dfm(corpus_subset(data_corpus_inaugural, Year < 1800)))
+#' ntoken(dfm(tokens(corpus_subset(data_corpus_inaugural, Year < 1800))))
+#' ntype(dfm(tokens(corpus_subset(data_corpus_inaugural, Year < 1800))))
 #' @export
 ntoken <- function(x, ...) {
     UseMethod("ntoken")

@@ -36,8 +36,8 @@ currently preserved.
 }
 \examples{
 # cbind() for dfm objects
-(dfmat1 <- dfm(c("a b c d", "c d e f")))
-(dfmat2 <- dfm(c("a b", "x y z")))
+(dfmat1 <- dfm(tokens(c("a b c d", "c d e f"))))
+(dfmat2 <- dfm(tokens(c("a b", "x y z"))))
 cbind(dfmat1, dfmat2)
 cbind(dfmat1, 100)
 cbind(100, dfmat1)
@@ -46,9 +46,9 @@ cbind(matrix(c(101, 102), ncol = 1), dfmat1)
 
 
 # rbind() for dfm objects
-(dfmat1 <- dfm(c(doc1 = "This is one sample text sample.")))
-(dfmat2 <- dfm(c(doc2 = "One two three text text.")))
-(dfmat3 <- dfm(c(doc3 = "This is the fourth sample text.")))
+(dfmat1 <- dfm(tokens(c(doc1 = "This is one sample text sample."))))
+(dfmat2 <- dfm(tokens(c(doc2 = "One two three text text."))))
+(dfmat3 <- dfm(tokens(c(doc3 = "This is the fourth sample text."))))
 rbind(dfmat1, dfmat2)
 rbind(dfmat1, dfmat2, dfmat3)
 }

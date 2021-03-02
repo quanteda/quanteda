@@ -40,7 +40,7 @@ Sample randomly from a dfm object, from documents or features.
 }
 \examples{
 set.seed(10)
-dfmat <- dfm(c("a b c c d", "a a c c d d d"))
+dfmat <- dfm(tokens(c("a b c c d", "a a c c d d d")))
 head(dfmat)
 head(dfm_sample(dfmat))
 head(dfm_sample(dfmat, replace = TRUE))

@@ -21,7 +21,7 @@ dfm(
 words".  To access one possible list (from any list you wish), use
 \code{\link[=stopwords]{stopwords()}}.  The pattern matching type is fixed to "glob"; if you want
 greater control, use \code{\link[=tokens_remove]{tokens_remove()}} or \code{\link[=dfm_remove]{dfm_remove()}}.  \code{remove} is
-primarily useful for removing artifacts created during the \link{tokens}
+primarily useful for removing artefacts created during the \link{tokens}
 creation process, such as pads.  See examples.}
 
 \item{verbose}{display messages if \code{TRUE}}
@@ -35,7 +35,7 @@ a \linkS4class{dfm} object
 Construct a sparse document-feature matrix, from a character, \link{corpus},
 \link{tokens}, or even other \link{dfm} object.
 }
-\section{Changes to dfm() in version 3}{
+\section{Changes in version 3}{
 
 In \pkg{quanteda} v3, many convenience functions formerly available in
 \code{dfm()} were deprecated. Formerly, \code{dfm()} could be called directly on a
