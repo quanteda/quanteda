@@ -211,3 +211,14 @@ NULL
 #' dfmat <- dfm(toks)
 #' print(dfmat, max_ndoc = 3, max_nfeat = 10)
 NULL
+
+#' quanteda deprecations
+#' 
+#' Deprecations in **quanteda** v3 explained.
+#' @name quanteda-deprecations
+#' @examples
+#' txt <- c("This is a text example.", "With @usernames and #hashtag tokens.")
+#' tokens(txt, remove_punct = TRUE) %>%
+#'     dfm() %>%
+#'     dfm_remove(pattern = c("@*", "#*"))
+NULL
