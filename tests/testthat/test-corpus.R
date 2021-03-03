@@ -38,7 +38,7 @@ test_that("print works", {
 })                
 
 test_that("corpus constructors works for kwic", {
-    kw <- kwic(data_char_sampletext, "econom*")
+    kw <- kwic(tokens(data_char_sampletext), "econom*")
 
     # split_context = TRUE, extract_keyword = TRUE
     corp <- corpus(kw, split_context = TRUE, extract_keyword = TRUE)

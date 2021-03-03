@@ -24,9 +24,9 @@ selected according to arguments
 \description{
 Returns document subsets of a tokens that meet certain conditions, including
 direct logical operations on docvars (document-level variables).
-\code{tokens_subset} functions identically to
-\code{\link[=subset.data.frame]{subset.data.frame()}}, using non-standard evaluation to evaluate
-conditions based on the \link{docvars} in the tokens.
+\code{tokens_subset()} functions identically to \code{\link[=subset.data.frame]{subset.data.frame()}}, using
+non-standard evaluation to evaluate conditions based on the \link{docvars} in the
+tokens.
 }
 \examples{
 corp <- corpus(c(d1 = "a b c d", d2 = "a a b e",

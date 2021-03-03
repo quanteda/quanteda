@@ -1120,3 +1120,107 @@ test_that("test dfm transpose for #1903", {
         c("system", "object", "user")
     )
 })
+
+test_that("dfm deprecations work as expected", {
+    txt <- c("a a b b c", "a a b c c d d")
+    corp <- corpus(txt)
+    toks <- tokens(corp)
+    
+    # deprecated methods
+    expect_warning(
+      dfm(txt),
+      "'dfm.character()' is deprecated. Use 'tokens()' first.",
+      fixed = TRUE
+    )
+    expect_warning(
+      dfm(corp),
+      "'dfm.corpus()' is deprecated. Use 'tokens()' first.",
+      fixed = TRUE
+    )
+    
+    # old arguments
+    expect_warning(
+        dfm(txt, stem = TRUE),
+        "'stem' is deprecated; use dfm_wordstem() instead",
+        fixed = TRUE
+    )
+    expect_warning(
+        dfm(txt, select = "a"),
+        "'select' is deprecated; use dfm_select() instead",
+        fixed = TRUE
+    )
+    expect_warning(
+        dfm(txt, dictionary = dictionary(list(one = "b"))),
+        "'dictionary' and 'thesaurus' are deprecated; use dfm_lookup() instead",
+        fixed = TRUE
+    )
+    expect_warning(
+        dfm(txt, groups = c(1, 1)),
+        "'groups' is deprecated; use dfm_group() instead",
+        fixed = TRUE
+    )
+    expect_warning(
+        dfm(txt, remove = "a", valuetype = "regex"),
+        "valuetype argument is not used", fixed = TRUE
+    )
+    expect_warning(
+        dfm(txt, remove = "a", case_insensitive = FALSE),
+        "case_insensitive argument is not used", fixed = TRUE
+    )
+    expect_warning(
+        dfm(corp, stem = TRUE),
+        "'stem' is deprecated; use dfm_wordstem() instead",
+        fixed = TRUE
+    )
+    expect_warning(
+        dfm(corp, select = "a"),
+        "'select' is deprecated; use dfm_select() instead",
+        fixed = TRUE
+    )
+    expect_warning(
+        dfm(corp, dictionary = dictionary(list(one = "b"))),
+        "'dictionary' and 'thesaurus' are deprecated; use dfm_lookup() instead",
+        fixed = TRUE
+    )
+    expect_warning(
+        dfm(corp, groups = c(1, 1)),
+        "'groups' is deprecated; use dfm_group() instead",
+        fixed = TRUE
+    )
+    expect_warning(
+        dfm(corp, remove = "a", valuetype = "regex"),
+        "valuetype argument is not used", fixed = TRUE
+    )
+    expect_warning(
+        dfm(corp, remove = "a", case_insensitive = FALSE),
+        "case_insensitive argument is not used", fixed = TRUE
+    )
+     expect_warning(
+        dfm(toks, stem = TRUE),
+        "'stem' is deprecated; use dfm_wordstem() instead",
+        fixed = TRUE
+    )
+    expect_warning(
+        dfm(toks, select = "a"),
+        "'select' is deprecated; use dfm_select() instead",
+        fixed = TRUE
+    )
+    expect_warning(
+        dfm(toks, dictionary = dictionary(list(one = "b"))),
+        "'dictionary' and 'thesaurus' are deprecated; use dfm_lookup() instead",
+        fixed = TRUE
+    )
+    expect_warning(
+        dfm(toks, groups = c(1, 1)),
+        "'groups' is deprecated; use dfm_group() instead",
+        fixed = TRUE
+    )
+    expect_warning(
+        dfm(toks, remove = "a", valuetype = "regex"),
+        "valuetype argument is not used", fixed = TRUE
+    )
+    expect_warning(
+        dfm(toks, remove = "a", case_insensitive = FALSE),
+        "case_insensitive argument is not used", fixed = TRUE
+    )
+})

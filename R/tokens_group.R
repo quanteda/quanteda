@@ -1,5 +1,7 @@
-#' Recombine documents tokens by groups
+#' Recombine documents in tokens by a grouping variable
 #'
+#' Combine documents in a [tokens] object by a grouping variable, which can also
+#' be one of the [docvars] attached to the dfm.
 #' @param x [tokens] object
 #' @inheritParams groups
 #' @keywords tokens internal
