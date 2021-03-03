@@ -35,11 +35,13 @@ tokens, see \code{\link[=ntoken]{ntoken()}}.)
 ndoc(data_corpus_inaugural)
 ndoc(corpus_subset(data_corpus_inaugural, Year > 1980))
 ndoc(tokens(data_corpus_inaugural))
-ndoc(dfm(corpus_subset(data_corpus_inaugural, Year > 1980)))
+ndoc(dfm(tokens(corpus_subset(data_corpus_inaugural, Year > 1980))))
 
 # number of features
-nfeat(dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove_punct = FALSE))
-nfeat(dfm(corpus_subset(data_corpus_inaugural, Year > 1980), remove_punct = TRUE))
+toks1 <- tokens(corpus_subset(data_corpus_inaugural, Year > 1980), remove_punct = FALSE)
+toks2 <- tokens(corpus_subset(data_corpus_inaugural, Year > 1980), remove_punct = TRUE)
+nfeat(dfm(toks1))
+nfeat(dfm(toks2))
 }
 \seealso{
 \code{\link[=ntoken]{ntoken()}}

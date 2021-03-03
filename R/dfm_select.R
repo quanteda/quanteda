@@ -39,12 +39,12 @@
 #' @keywords dfm
 #' @seealso [dfm_match()]
 #' @examples
-#' dfmat <- dfm(c("My Christmas was ruined by your opposition tax plan.",
-#'                "Does the United_States or Sweden have more progressive taxation?"),
-#'              tolower = FALSE)
+#' dfmat <- tokens(c("My Christmas was ruined by your opposition tax plan.",
+#'                "Does the United_States or Sweden have more progressive taxation?")) %>%
+#'     dfm(tolower = FALSE)
 #' dict <- dictionary(list(countries = c("United_States", "Sweden", "France"),
-#'                           wordsEndingInY = c("by", "my"),
-#'                           notintext = "blahblah"))
+#'                         wordsEndingInY = c("by", "my"),
+#'                         notintext = "blahblah"))
 #' dfm_select(dfmat, pattern = dict)
 #' dfm_select(dfmat, pattern = dict, case_insensitive = FALSE)
 #' dfm_select(dfmat, pattern = c("s$", ".y"), selection = "keep", valuetype = "regex")
@@ -97,15 +97,8 @@ dfm_select.dfm <-  function(x, pattern = NULL,
             id_pat <- integer()
         }
     } else {
-        # special handling if pattern is a dfm
         if (is.dfm(pattern)) {
-            .Deprecated(msg = "pattern = dfm is deprecated; use dfm_match() instead")
-            pattern <- featnames(pattern)
-            valuetype <- "fixed"
-            case_insensitive <- FALSE
-            if (selection == "keep") {
-                is_dfm <- TRUE
-            }
+            .Defunct(msg = "dfm cannot be used as pattern; use 'dfm_match' instead")
         } else if (is.dictionary(pattern)) {
             pattern <- stri_replace_all_fixed(
                 unlist(pattern, use.names = FALSE),
@@ -154,8 +147,8 @@ dfm_select.dfm <-  function(x, pattern = NULL,
 #'   `selection`.
 #' @export
 #' @examples
-#' dfmat <- dfm(c("This is a document with lots of stopwords.",
-#'                "No if, and, or but about it: lots of stopwords."))
+#' dfmat <- dfm(tokens(c("This is a document with lots of stopwords.",
+#'                       "No if, and, or but about it: lots of stopwords.")))
 #' dfmat
 #' dfm_remove(dfmat, stopwords("english"))
 dfm_remove <- function(x, ...) {

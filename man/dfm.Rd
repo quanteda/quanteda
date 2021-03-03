@@ -7,14 +7,7 @@
 dfm(
   x,
   tolower = TRUE,
-  stem = FALSE,
-  select = NULL,
   remove = NULL,
-  dictionary = NULL,
-  thesaurus = NULL,
-  valuetype = c("glob", "regex", "fixed"),
-  case_insensitive = TRUE,
-  groups = NULL,
   verbose = quanteda_options("verbose"),
   ...
 )
@@ -24,48 +17,16 @@ dfm(
 
 \item{tolower}{convert all features to lowercase}
 
-\item{stem}{if \code{TRUE}, stem words}
-
-\item{select}{a  \link{pattern}  of user-supplied features to keep, while
-excluding all others.  This can be used in lieu of a dictionary if there
-are only specific features that a user wishes to keep. To extract only
-Twitter usernames, for example, set \code{select = "@*"} and make sure that
-\code{split_tags = FALSE} as an additional argument passed to \link{tokens}.
-Note: \code{select = "^@\\\\\\w+\\\\\\b"} would be the regular expression version of
-this matching pattern.  The pattern matching type will be set by
-\code{valuetype}.  See also \code{\link[=tokens_remove]{tokens_remove()}}.}
-
 \item{remove}{a \link{pattern} of user-supplied features to ignore, such as "stop
 words".  To access one possible list (from any list you wish), use
-\code{\link[=stopwords]{stopwords()}}.  The pattern matching type will be set by \code{valuetype}.  See
-also \code{\link[=tokens_select]{tokens_select()}}.}
-
-\item{dictionary}{a \link{dictionary} object to apply to the tokens when creating
-the dfm}
-
-\item{thesaurus}{a \link{dictionary} object that will be applied as if \code{exclusive = FALSE}. See also \code{\link[=tokens_lookup]{tokens_lookup()}}.  For more fine-grained control over
-this and other aspects of converting features into dictionary/thesaurus
-keys from pattern matches to values, consider creating the dfm first, and
-then applying \code{\link[=dfm_lookup]{dfm_lookup()}} separately, or using \code{\link[=tokens_lookup]{tokens_lookup()}} on the
-tokenized text before calling \code{dfm}.}
-
-\item{valuetype}{the type of pattern matching: \code{"glob"} for "glob"-style
-wildcard expressions; \code{"regex"} for regular expressions; or \code{"fixed"} for
-exact matching. See \link{valuetype} for details.}
-
-\item{case_insensitive}{logical; if \code{TRUE}, ignore case when matching a
-\code{pattern} or \link{dictionary} values}
-
-\item{groups}{either: a character vector containing the names of document
-variables to be used for grouping; or a factor or object that can be
-coerced into a factor equal in length or rows to the number of documents.
-\code{NA} values of the grouping value are dropped.
-See \link{groups} for details.}
+\code{\link[=stopwords]{stopwords()}}.  The pattern matching type is fixed to "glob"; if you want
+greater control, use \code{\link[=tokens_remove]{tokens_remove()}} or \code{\link[=dfm_remove]{dfm_remove()}}.  \code{remove} is
+primarily useful for removing artefacts created during the \link{tokens}
+creation process, such as pads.  See examples.}
 
 \item{verbose}{display messages if \code{TRUE}}
 
-\item{...}{additional arguments passed to \link{tokens}; not used when \code{x} is a
-\link{dfm}}
+\item{...}{not used directly}
 }
 \value{
 a \linkS4class{dfm} object
@@ -74,10 +35,17 @@ a \linkS4class{dfm} object
 Construct a sparse document-feature matrix, from a character, \link{corpus},
 \link{tokens}, or even other \link{dfm} object.
 }
-\note{
-When \code{x} is a \link{dfm}, \code{groups} provides a convenient and fast method of
-combining and refactoring the documents of the dfm according to the groups.
+\section{Changes in version 3}{
+
+In \pkg{quanteda} v3, many convenience functions formerly available in
+\code{dfm()} were deprecated. Formerly, \code{dfm()} could be called directly on a
+\code{character} or \code{corpus} object, but we now steer users to tokenise their
+inputs first using \code{\link[=tokens]{tokens()}}.  Other convenience arguments to \code{dfm()} were
+also removed, such as \code{select}, \code{dictionary}, \code{thesaurus}, and \code{groups}.  All
+of these functions are available elsewhere, e.g. through \code{\link[=dfm_group]{dfm_group()}}.
+See \link{quanteda-deprecations}.
 }
+
 \examples{
 ## for a corpus
 toks <- data_corpus_inaugural \%>\%

@@ -5,8 +5,10 @@ test_that("character wordstem test to test testing.", {
 
 test_that("can wordstem dfms with zero features and zero docs", {
     # zero feature documents
-    dfmt1 <- dfm(tokens(c("one", "0")), stem = TRUE, remove_numbers = TRUE)
-    dfmt2 <- dfm(tokens(c("one", "!!")), stem = TRUE, remove_punct = TRUE)
+    dfmt1 <- dfm(tokens(c("one", "0"), remove_numbers = TRUE)) %>%
+        dfm_wordstem()
+    dfmt2 <- dfm(tokens(c("one", "!!"), remove_punct = TRUE)) %>%
+        dfm_wordstem()
     expect_equal(ndoc(dfmt1), ndoc(dfmt2), 2)
 
     # features with zero docfreq

@@ -245,7 +245,7 @@ test_that("creating tokens and dfms with empty docvars", {
         length(docvars(tokens(data_corpus_inaugural, include_docvars = FALSE))), 0
     )
     expect_equal(
-        length(docvars(dfm(tokens(data_corpus_inaugural), include_docvars = FALSE))), 0
+        length(docvars(suppressWarnings(dfm(tokens(data_corpus_inaugural), include_docvars = FALSE)))), 0
     )
 })
 
@@ -274,7 +274,7 @@ test_that("dfm works works with one docvar", {
     mycorpus1 <- corpus(c(d1 = "This is sample document one.",
                           d2 = "Here is the second sample document."),
                         docvars = docv1)
-    dfm1 <- dfm(tokens(mycorpus1), include_docvars = TRUE)
+    dfm1 <- suppressWarnings(dfm(tokens(mycorpus1), include_docvars = TRUE))
     expect_equivalent(docvars(dfm1), docv1)
 })
 
@@ -284,7 +284,7 @@ test_that("dfm works works with two docvars", {
     mycorpus2 <- corpus(c(d1 = "This is sample document one.",
                           d2 = "Here is the second sample document."),
                         docvars = docv2)
-    dfm2 <- dfm(tokens(mycorpus2), include_docvars = TRUE)
+    dfm2 <- suppressWarnings(dfm(tokens(mycorpus2), include_docvars = TRUE))
     expect_equivalent(docvars(dfm2), docv2)
 })
 
@@ -338,7 +338,7 @@ test_that("object always have docvars in the same rows as documents", {
     expect_true(nrow(docvars(dfm4)) == ndoc(dfm4))
     expect_true(all(row.names(docvars(dfm4)) == seq_len(ndoc(dfm4))))
 
-    dfm5 <- dfm(dfm1, group = rep(c(1, 2, 3), 3))
+    dfm5 <- suppressWarnings(dfm(dfm1, groups = rep(c(1, 2, 3), 3)))
     expect_true(nrow(docvars(dfm5)) == ndoc(dfm5))
     expect_true(all(row.names(docvars(dfm5)) == seq_len(ndoc(dfm5))))
 
@@ -353,7 +353,6 @@ test_that("object always have docvars in the same rows as documents", {
     dfm8 <- suppressWarnings(cbind(dfm1, dfm1))
     expect_true(nrow(docvars(dfm8)) == ndoc(dfm8))
     expect_true(all(row.names(docvars(dfm8)) == seq_len(ndoc(dfm8))))
-
 })
 
 test_that("error when nrow and ndoc mismatch", {

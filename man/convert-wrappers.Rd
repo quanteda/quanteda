@@ -70,8 +70,9 @@ a \link{data.frame}}
 \link{matrix}} }
 }
 \examples{
-corp <- corpus_subset(data_corpus_inaugural, Year > 1970)
-dfmat <- dfm(corp)
+dfmat <- corpus_subset(data_corpus_inaugural, Year > 1970) \%>\%
+    tokens() \%>\%
+    dfm()
 
 \dontrun{
 # shortcut conversion to lda package list format

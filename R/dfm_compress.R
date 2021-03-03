@@ -18,8 +18,8 @@
 #' @export
 #' @examples
 #' # dfm_compress examples
-#' dfmat <- rbind(dfm(c("b A A", "C C a b B"), tolower = FALSE),
-#'              dfm("A C C C C C", tolower = FALSE))
+#' dfmat <- rbind(dfm(tokens(c("b A A", "C C a b B")), tolower = FALSE),
+#'                dfm(tokens("A C C C C C"), tolower = FALSE))
 #' colnames(dfmat) <- char_tolower(featnames(dfmat))
 #' dfmat
 #' dfm_compress(dfmat, margin = "documents")
@@ -27,7 +27,7 @@
 #' dfm_compress(dfmat)
 #'
 #' # no effect if no compression needed
-#' dfmatsubset <- dfm(data_corpus_inaugural[1:5])
+#' dfmatsubset <- dfm(tokens(data_corpus_inaugural[1:5]))
 #' dim(dfmatsubset)
 #' dim(dfm_compress(dfmatsubset))
 #'
@@ -43,7 +43,6 @@ dfm_compress.default <- function(x,
 
 #' @export
 dfm_compress.dfm <- function(x, margin = c("both", "documents", "features")) {
-
     x <- as.dfm(x)
     if (!nfeat(x) || !ndoc(x)) return(x)
     margin <- match.arg(margin)

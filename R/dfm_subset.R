@@ -26,7 +26,7 @@
 #' corp <- corpus(c(d1 = "a b c d", d2 = "a a b e",
 #'                  d3 = "b b c e", d4 = "e e f a b"),
 #'                docvars = data.frame(grp = c(1, 1, 2, 3)))
-#' dfmat <- dfm(corp)
+#' dfmat <- dfm(tokens(corp))
 #' # selecting on a docvars condition
 #' dfm_subset(dfmat, grp > 1)
 #' # selecting on a supplied vector

@@ -4,34 +4,22 @@
 #' [tokens], or even other [dfm] object.
 #' @param x a [tokens] or [dfm] object
 #' @param tolower convert all features to lowercase
-#' @param stem if `TRUE`, stem words
 #' @param remove a [pattern] of user-supplied features to ignore, such as "stop
 #'   words".  To access one possible list (from any list you wish), use
-#'   [stopwords()].  The pattern matching type will be set by `valuetype`.  See
-#'   also [tokens_select()].  
-#' @param select a  [pattern]  of user-supplied features to keep, while
-#'   excluding all others.  This can be used in lieu of a dictionary if there
-#'   are only specific features that a user wishes to keep. To extract only
-#'   Twitter usernames, for example, set `select = "@@*"` and make sure that
-#'   `split_tags = FALSE` as an additional argument passed to [tokens].
-#'   Note: `select = "^@@\\\w+\\\b"` would be the regular expression version of
-#'   this matching pattern.  The pattern matching type will be set by
-#'   `valuetype`.  See also [tokens_remove()].
-#' @param dictionary a [dictionary] object to apply to the tokens when creating
-#'   the dfm
-#' @param thesaurus a [dictionary] object that will be applied as if `exclusive
-#'   = FALSE`. See also [tokens_lookup()].  For more fine-grained control over
-#'   this and other aspects of converting features into dictionary/thesaurus
-#'   keys from pattern matches to values, consider creating the dfm first, and
-#'   then applying [dfm_lookup()] separately, or using [tokens_lookup()] on the
-#'   tokenized text before calling `dfm`.
-#' @inheritParams valuetype
-#' @inheritParams groups
-#' @note When `x` is a [dfm], `groups` provides a convenient and fast method of
-#'   combining and refactoring the documents of the dfm according to the groups.
+#'   [stopwords()].  The pattern matching type is fixed to "glob"; if you want
+#'   greater control, use [tokens_remove()] or [dfm_remove()].  `remove` is
+#'   primarily useful for removing artefacts created during the [tokens]
+#'   creation process, such as pads.  See examples.
 #' @param verbose display messages if `TRUE`
-#' @param ... additional arguments passed to [tokens]; not used when `x` is a
-#'   [dfm]
+#' @param ... not used directly
+#' @section Changes in version 3:
+#' In \pkg{quanteda} v3, many convenience functions formerly available in
+#' `dfm()` were deprecated. Formerly, `dfm()` could be called directly on a
+#' `character` or `corpus` object, but we now steer users to tokenise their
+#' inputs first using [tokens()].  Other convenience arguments to `dfm()` were
+#' also removed, such as `select`, `dictionary`, `thesaurus`, and `groups`.  All
+#' of these functions are available elsewhere, e.g. through [dfm_group()].
+#' See [quanteda-deprecations].
 #' @return a [dfm-class] object
 #' @import Matrix
 #' @export
@@ -56,21 +44,9 @@
 #' dfm(toks, tolower = FALSE)
 dfm <- function(x,
                 tolower = TRUE,
-                stem = FALSE,
-                select = NULL,
                 remove = NULL,
-                dictionary = NULL,
-                thesaurus = NULL,
-                valuetype = c("glob", "regex", "fixed"),
-                case_insensitive = TRUE,
-                groups = NULL,
                 verbose = quanteda_options("verbose"),
                 ...) {
-
-    if (!is.dfm(x) && is.dfm(select)) {
-        stop("selection on a dfm is only available when x is a dfm")
-    }
-
     dfm_env$START_TIME <- proc.time()
     object_class <- class(x)[1]
     if (verbose) message("Creating a dfm from a ", object_class, " input...")
@@ -94,27 +70,20 @@ dfm_env$START_TIME <- NULL
 #' @export
 dfm.character <- function(x,
                           tolower = TRUE,
-                          stem = FALSE,
-                          select = NULL,
                           remove = NULL,
-                          dictionary = NULL,
-                          thesaurus = NULL,
-                          valuetype = c("glob", "regex", "fixed"),
-                          case_insensitive = TRUE,
-                          groups = NULL,
                           verbose = quanteda_options("verbose"),
                           ...) {
     .Deprecated(msg = "'dfm.character()' is deprecated. Use 'tokens()' first.")
-    dfm.tokens(tokens(corpus(x), ...),
-        tolower = tolower,
-        stem = stem,
-        select = select, remove = remove,
-        dictionary = dictionary,
-        thesaurus = thesaurus,
-        valuetype = valuetype,
-        case_insensitive = case_insensitive,
-        groups = groups,
-        verbose = verbose)
+    
+    # deprecation for passing tokens arguments via ...
+    otherargs <- list(...)
+    otherargs_tokens <- otherargs[names(otherargs) %in% names(as.list(args("tokens")))]
+    if (length(otherargs_tokens))
+        .Deprecated(msg = "'...' should not be used for tokens() arguments; use 'tokens()' first.")
+
+    x <- do.call(tokens, c(list(x = x), otherargs_tokens))    
+    do.call(dfm, c(list(x = x, tolower = tolower, remove = remove, verbose = verbose),
+                   otherargs[!names(otherargs) %in% names(otherargs_tokens)]))
 }
 
 
@@ -123,26 +92,20 @@ dfm.character <- function(x,
 #' @export
 dfm.corpus <- function(x,
                        tolower = TRUE,
-                       stem = FALSE,
-                       select = NULL,
                        remove = NULL,
-                       dictionary = NULL,
-                       thesaurus = NULL,
-                       valuetype = c("glob", "regex", "fixed"),
-                       case_insensitive = TRUE,
-                       groups = NULL,
                        verbose = quanteda_options("verbose"),
                        ...) {
     .Deprecated(msg = "'dfm.corpus()' is deprecated. Use 'tokens()' first.")
-    dfm.tokens(tokens(x, ...),
-               tolower = tolower,
-               stem = stem,
-               select = select, remove = remove,
-               dictionary = dictionary, thesaurus = thesaurus,
-               valuetype = valuetype,
-               case_insensitive = case_insensitive,
-               groups = groups,
-               verbose = verbose)
+    
+    # deprecation for passing tokens arguments via ...
+    otherargs <- list(...)
+    otherargs_tokens <- otherargs[names(otherargs) %in% names(as.list(args("tokens")))]
+    if (length(otherargs_tokens))
+        .Deprecated(msg = "'...' should not be used for tokens() arguments; use 'tokens()' first.")
+
+    x <- do.call(tokens, c(list(x = x), otherargs_tokens))    
+    do.call(dfm, c(list(x = x, tolower = tolower, remove = remove, verbose = verbose),
+                   otherargs[!names(otherargs) %in% names(otherargs_tokens)]))
 }
 
 #' @noRd
@@ -150,30 +113,24 @@ dfm.corpus <- function(x,
 #' @export
 dfm.tokens <- function(x,
                        tolower = TRUE,
-                       stem = FALSE,
-                       select = NULL,
                        remove = NULL,
-                       dictionary = NULL,
-                       thesaurus = NULL,
-                       valuetype = c("glob", "regex", "fixed"),
-                       case_insensitive = TRUE,
-                       groups = NULL,
                        verbose = quanteda_options("verbose"),
                        ...) {
-    valuetype <- match.arg(valuetype)
-    stem <- check_logical(stem)
-    check_dots(..., method = "tokens")
-    
-    # call tokens only if options given
-    if (length(list(...)))
-        x <- tokens(x, ...)
+    # check for arguments passed to tokens via ...
+    otherargs <- list(...)
+    otherargs_tokens <- otherargs[names(otherargs) %in% names(as.list(args("tokens")))]
+    if (length(otherargs_tokens)) {
+        .Deprecated(msg = "'...' should not be used for tokens() arguments; use 'tokens()' first.")
+        x <- do.call(tokens, c(list(x = x), otherargs_tokens))
+        otherargs <- otherargs[!names(otherargs) %in% names(otherargs_tokens)]
+    }
 
     if (tolower) {
         if (verbose) catm(" ...lowercasing\n", sep = "")
         x <- tokens_tolower(x)
         tolower <- FALSE
     }
-
+    
     if (verbose) {
         catm(" ...found ",
              format(length(x), big.mark = ","), " document",
@@ -186,54 +143,75 @@ dfm.tokens <- function(x,
              ifelse(length(types(x)) > 1, "s", ""),
              "\n", sep = "")
     }
-
-    if (!is.null(groups)) {
+    
+    # deprecation for groups
+    if ("groups" %in% names(otherargs)) {
+        .Deprecated(msg = "'groups' is deprecated; use dfm_group() instead")
         if (verbose) catm(" ...grouping texts\n")
-        x <- tokens_group(x, groups, fill = FALSE)
+        x <- do.call(tokens_group, list(x = x, groups = otherargs[["groups"]], fill = FALSE))
+        otherargs <- otherargs[-which(names(otherargs) == "groups")]
     }
-
-    # use tokens_lookup for tokens objects
-    if (!is.null(dictionary) || !is.null(thesaurus)) {
+    
+    # deprecations for dictionary, thesaurus
+    if (any(c("dictionary", "thesaurus") %in% names(otherargs))) {
+        .Deprecated(msg = "'dictionary' and 'thesaurus' are deprecated; use dfm_lookup() instead")
+        dictionary <- otherargs[["dictionary"]]
+        thesaurus <- otherargs[["thesaurus"]]
         if (!is.null(thesaurus)) dictionary <- dictionary(thesaurus)
         if (verbose) catm(" ...")
-        x <- tokens_lookup(x, dictionary,
+        x <- do.call(tokens_lookup, list(x = x, dictionary = dictionary,
                            exclusive = ifelse(!is.null(thesaurus), FALSE, TRUE),
-                           valuetype = valuetype,
-                           case_insensitive = case_insensitive,
-                           verbose = verbose)
+                           # valuetype = valuetype,
+                           # case_insensitive = case_insensitive,
+                           verbose = verbose))
+        otherargs <- otherargs[-which(names(otherargs) %in% c("dictionary", "thesaurus"))]
     }
-
-    # use tokens_select for tokens objects
-    if (!is.null(c(remove, select))) {
-        if (!is.null(remove) & !is.null(select))
-            stop("only one of select and remove may be supplied at once")
+    
+    # deprecation for select
+    if ("select" %in% names(otherargs)) {
+        if (!is.null(remove))
+            stop("only one of select and remove may be supplied at once", call. = FALSE)
+        .Deprecated(msg = "'select' is deprecated; use dfm_select() instead")
         if (verbose) catm(" ...")
-        x <- tokens_select(x,
-                           pattern = if (!is.null(remove)) remove else select,
-                           selection = if (!is.null(remove)) "remove" else "keep",
-                           valuetype = valuetype,
-                           case_insensitive = case_insensitive,
-                           verbose = verbose)
+        x <- do.call(tokens_select, list(x = x,
+                           pattern = otherargs[["select"]],
+                           selection = "keep",
+                           # valuetype = valuetype,
+                           # case_insensitive = case_insensitive,
+                           verbose = verbose))
+        otherargs <- otherargs[-which(names(otherargs) %in% "select")]
     }
-
-    if (stem) {
-        language <- quanteda_options("language_stemmer")
-        if (verbose) catm(" ...stemming types (", stri_trans_totitle(language), ")\n", sep = "")
-        x <- tokens_wordstem(x, language = language)
+    
+    if (!is.null(remove)) {
+        x <- tokens_remove(x = x, pattern = remove, verbose = verbose)
     }
-
+        
+    if ("stem" %in% names(otherargs)) {
+        if (!is.null(otherargs[["stem"]])) {
+            stem <- otherargs[["stem"]]
+            check_logical(stem)
+            language <- quanteda_options("language_stemmer")
+            if (verbose) catm(" ...stemming types (", stri_trans_totitle(language), ")\n", sep = "")
+            x <- do.call(tokens_wordstem, list(x = x, language = language))
+        }
+        otherargs <- otherargs[-which(names(otherargs) %in% "stem")]
+        .Deprecated(msg = "'stem' is deprecated; use dfm_wordstem() instead")
+    }
+    
+    check_dots(otherargs, method = "dfm")
+    
     # compile the dfm
     type <- types(x)
     attrs <- attributes(x)
     temp <- unclass(x)
-
+    
     # shift index for padding, if any
     index <- unlist(temp, use.names = FALSE)
     if (attr(temp, "padding")) {
         type <- c("", type)
         index <- index + 1L
     }
-
+    
     temp <-  sparseMatrix(j = index,
                           p = cumsum(c(1L, lengths(x))) - 1L,
                           x = 1L,
@@ -244,7 +222,7 @@ dfm.tokens <- function(x,
             temp, type,
             docvars = get_docvars(x, user = TRUE, system = TRUE),
             meta = attrs[["meta"]]),
-        tolower = FALSE, stem = FALSE, verbose = verbose
+        tolower = FALSE, verbose = verbose
     )
 }
 
@@ -255,78 +233,86 @@ dfm.tokens <- function(x,
 #' @export
 dfm.dfm <- function(x,
                     tolower = TRUE,
-                    stem = FALSE,
-                    select = NULL,
                     remove = NULL,
-                    dictionary = NULL,
-                    thesaurus = NULL,
-                    valuetype = c("glob", "regex", "fixed"),
-                    case_insensitive = TRUE,
-                    groups = NULL,
                     verbose = quanteda_options("verbose"),
                     ...) {
-
     x <- as.dfm(x)
-    valuetype <- match.arg(valuetype)
-    check_dots(...)
-    
-    if (!is.null(groups)) {
+    otherargs <- list(...)
+
+    # deprecation for groups
+    if ("groups" %in% names(otherargs)) {
+        .Deprecated(msg = "'groups' is deprecated; use dfm_group() instead")
         if (verbose) catm(" ...grouping texts\n")
-        x <- dfm_group(x, groups, fill = FALSE)
+        x <- do.call(dfm_group, list(x = x, groups = otherargs[["groups"]], fill = FALSE))
+        otherargs <- otherargs[-which(names(otherargs) == "groups")]
     }
 
-    if (!is.null(dictionary) || !is.null(thesaurus)) {
+    # deprecations for dictionary, thesaurus
+    if (any(c("dictionary", "thesaurus") %in% names(otherargs))) {
+        .Deprecated(msg = "'dictionary' and 'thesaurus' are deprecated; use dfm_lookup() instead")
+        dictionary <- otherargs[["dictionary"]]
+        thesaurus <- otherargs[["thesaurus"]]
         if (!is.null(thesaurus)) dictionary <- dictionary(thesaurus)
         if (verbose) catm(" ...")
-        x <- dfm_lookup(x, dictionary,
-                        exclusive = ifelse(!is.null(thesaurus), FALSE, TRUE),
-                        valuetype = valuetype,
-                        case_insensitive = case_insensitive,
-                        verbose = verbose)
+        x <- do.call(dfm_lookup, list(x = x, dictionary = dictionary,
+                           exclusive = ifelse(!is.null(thesaurus), FALSE, TRUE),
+                           # valuetype = valuetype,
+                           # case_insensitive = case_insensitive,
+                           verbose = verbose))
+        otherargs <- otherargs[-which(names(otherargs) %in% c("dictionary", "thesaurus"))]
     }
-
-    if (!is.null(c(remove, select))) {
-        if (!is.null(remove) & !is.null(select))
-            stop("only one of select and remove may be supplied at once")
+    
+    # deprecation for select
+    if ("select" %in% names(otherargs)) {
+        if (!is.null(remove))
+            stop("only one of select and remove may be supplied at once", call. = FALSE)
+        .Deprecated(msg = "'select' is deprecated; use dfm_select() instead")
         if (verbose) catm(" ...")
-        x <- dfm_select(x,
-                        pattern = if (!is.null(remove)) remove else select,
-                        selection = if (!is.null(remove)) "remove" else "keep",
-                        valuetype = valuetype,
-                        case_insensitive = case_insensitive,
-                        verbose = verbose)
+        x <- do.call(dfm_select, list(x = x,
+                           pattern = otherargs[["select"]],
+                           selection = "keep",
+                           # valuetype = valuetype,
+                           # case_insensitive = case_insensitive,
+                           verbose = verbose))
+        otherargs <- otherargs[-which(names(otherargs) %in% "select")]
     }
-
+    
+    if (!is.null(remove)) {
+        x <- dfm_remove(x = x, pattern = remove, verbose = verbose)
+    }
+        
     if (tolower) {
         if (verbose) catm(" ...lowercasing\n", sep = "")
         x <- dfm_tolower(x)
     }
-
-    language <- quanteda_options("language_stemmer")
-    if (stem) {
-        if (verbose)
-            catm(" ...stemming features (", stri_trans_totitle(language),
-                 ")", sep = "")
-        nfeat_org <- nfeat(x)
-        x <- dfm_wordstem(x, language)
-        if (verbose)
-            if (nfeat_org - nfeat(x) > 0)
-                catm(", trimmed ", nfeat_org - nfeat(x), " feature variant",
-                     ifelse(nfeat_org - nfeat(x) != 1, "s", ""),
-                     "\n", sep = "")
+    
+    if ("stem" %in% names(otherargs)) {
+        if (!is.null(otherargs[["stem"]])) {
+            stem <- otherargs[["stem"]]
+            check_logical(stem)
+            language <- quanteda_options("language_stemmer")
+            if (verbose)
+                if (verbose) catm(" ...stemming features (", stri_trans_totitle(language), ")\n", sep = "")
+            x <- do.call(dfm_wordstem, list(x = x, language = language))
+        }
+        otherargs <- otherargs[-which(names(otherargs) %in% "stem")]
+        .Deprecated(msg = "'stem' is deprecated; use dfm_wordstem() instead")
     }
-
+    
+    check_dots(otherargs, method = "dfm")
+    
     # remove any NA named columns
     is_na <- is.na(featnames(x))
     if (any(is_na))
         x <- x[, !is_na, drop = FALSE]
-
+    
     if (verbose) {
         catm(" ...complete, elapsed time:",
              format((proc.time() - dfm_env$START_TIME)[3], digits = 3), "seconds.\n")
         catm("Finished constructing a", paste(format(dim(x), big.mark = ",", trim = TRUE), collapse = " x "),
              "sparse dfm.\n")
     }
+    
     return(x)
 }
 
@@ -355,7 +341,7 @@ make_null_dfm <- function(feature = NULL, document = NULL) {
         j = NULL,
         dims = c(length(document), length(feature))
     ), "dgCMatrix")
-
+    
     build_dfm(temp, feature,
               docvars = make_docvars(length(document), document))
 }

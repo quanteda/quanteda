@@ -150,10 +150,9 @@ test_that("dfm_select on a dfm returns equal feature sets", {
     txts <- c(d1 = "This is text one", d2 = "The second text", d3 = "This is text three")
     dfmt1 <- dfm(tokens(txts[1:2]))
     dfmt2 <- dfm(tokens(txts[2:3]))
-    expect_warning({
+    expect_error({
         dfmt3 <- dfm_select(dfmt1, dfmt2)
-    }, "pattern = dfm is deprecated")
-    expect_true(setequal(featnames(dfmt2), featnames(dfmt3)))
+    }, "dfm cannot be used as pattern; use 'dfm_match' instead")
 })
 
 test_that("dfm_select removes padding", {
@@ -264,22 +263,12 @@ test_that("dfm_remove/keep fail if selection argument is used", {
 test_that("dfm_remove works when selection is a dfm (#1320)", {
     d1 <- dfm(tokens("a b b c c c d d d d"))
     d2 <- dfm(tokens("d d d a a"))
-
-    expect_warning({
+    expect_error({
         d3 <- dfm_remove(d1, pattern = d2)
-    }, "pattern = dfm is deprecated")
-    expect_identical(
-        featnames(d3),
-        c("b", "c")
-    )
-
-    expect_warning({
+    }, "dfm cannot be used as pattern; use 'dfm_match' instead")
+    expect_error({
         d4 <- dfm_select(d1, pattern = d2, selection = "remove")
-    }, "pattern = dfm is deprecated")
-    expect_identical(
-        featnames(d4),
-        c("b", "c")
-    )
+    }, "dfm cannot be used as pattern; use 'dfm_match' instead")
 })
 
 test_that("really long words are not removed in tokens() (#1713)", {

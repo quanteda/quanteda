@@ -45,11 +45,11 @@ test_that("dfm.character groups works (#794)", {
     toks <- tokens(corp)
     expect_equal(
         suppressWarnings(dfm(txt, groups = grp)),
-        dfm(toks, groups = grp)
+        suppressWarnings(dfm(toks, groups = grp))
     )
     expect_equal(
         suppressWarnings(dfm(txt, groups = grp)),
-        dfm(tokens(corp), groups = grp)
+        suppressWarnings(dfm(tokens(corp), groups = grp))
     )
 })
 
@@ -293,8 +293,8 @@ test_that("dfm_group works with NA group labels", {
     corp <- corpus(c("Doc 1", "Doc 1b", "Doc2", "Doc 3 with NA", "Doc 4, more NA"),
                    docvars = data.frame(factorvar = c("Yes", "Yes", "No", NA, NA)))
     expect_identical(
-        dfm(tokens(corp), groups = "factorvar"),
-        dfm(tokens(corp[1:3]), groups = "factorvar")
+        suppressWarnings(dfm(tokens(corp), groups = "factorvar")),
+        suppressWarnings(dfm(tokens(corp[1:3]), groups = "factorvar"))
     )
     # expect_identical(
     #     dfm(tokens(corp)) %>% dfm_group(groups = "factorvar"),
@@ -304,11 +304,11 @@ test_that("dfm_group works with NA group labels", {
 
 test_that("displayed matrix rownames are correct after dfm_group (#1949)", {
     expect_identical(
-        docnames(dfm(tokens(letters[1:3]), groups = c("x", "x", "y"))),
+        docnames(suppressWarnings(dfm(tokens(letters[1:3]), groups = c("x", "x", "y")))),
         c("x", "y")
     )
     expect_output(
-        print(dfm(tokens(letters[1:3]), groups = c("x", "x", "y"))),
+        print(suppressWarnings(dfm(tokens(letters[1:3]), groups = c("x", "x", "y")))),
         paste0("Document-feature matrix of: 2 documents, 3 features (50.00% sparse) and 0 docvars.\n",
                "    features\n",
                "docs a b c\n",

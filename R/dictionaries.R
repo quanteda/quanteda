@@ -121,7 +121,7 @@ check_entries <- function(dict) {
 #'                           taxation = "taxation",
 #'                           taxregex = "tax*",
 #'                           country = "america"))
-#' head(dfm(corp, dictionary = dict))
+#' head(dfm(tokens(corp), dictionary = dict))
 #'
 #' # subset a dictionary
 #' dict[1:2]
