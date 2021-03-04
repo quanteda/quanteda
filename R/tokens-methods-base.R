@@ -1,3 +1,11 @@
+#' Base method extensions for tokens objects
+#'
+#' Extensions of base R functions for tokens objects.
+#' @name tokens-class
+#' @param x a tokens object
+#' @keywords internal tokens
+NULL
+
 #' @rdname as.tokens
 #' @return `as.list` returns a simple list of characters from a
 #'   [tokens] object.
@@ -95,7 +103,8 @@ print.tokens <- function(x, max_ndoc = quanteda_options("print_tokens_max_ndoc")
 }
 
 
-#' @method "[" tokens
+#' @rdname tokens-class
+#' @method [ tokens
 #' @param i document names or indices for documents to extract.
 #' @param drop_docid if `TRUE`, `docid` for documents are removed as the result
 #'   of extraction.
@@ -126,7 +135,8 @@ print.tokens <- function(x, max_ndoc = quanteda_options("print_tokens_max_ndoc")
     tokens_recompile(result)
 }
 
-#' @method "[[" tokens
+#' @rdname tokens-class
+#' @method [[ tokens
 #' @export
 #' @noRd
 #' @examples
@@ -159,7 +169,7 @@ lengths.tokens <- function(x, use.names = TRUE) {
     NextMethod()
 }
 
-#' @rdname as.tokens
+#' @rdname tokens-class
 #' @param t1 tokens one to be added
 #' @param t2 tokens two to be added
 #' @return `c(...)` and `+` return a tokens object whose documents
@@ -211,7 +221,7 @@ lengths.tokens <- function(x, use.names = TRUE) {
     tokens_recompile(result)
 }
 
-#' @rdname as.tokens
+#' @rdname tokens-class
 #' @export
 c.tokens <- function(...) {
     x <- list(...)

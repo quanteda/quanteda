@@ -5,8 +5,6 @@
 \alias{as.character.tokens}
 \alias{is.tokens}
 \alias{unlist.tokens}
-\alias{+.tokens}
-\alias{c.tokens}
 \alias{as.tokens}
 \alias{as.tokens.list}
 \alias{as.tokens.tokens}
@@ -20,10 +18,6 @@
 is.tokens(x)
 
 \method{unlist}{tokens}(x, recursive = FALSE, use.names = TRUE)
-
-\method{+}{tokens}(t1, t2)
-
-\method{c}{tokens}(...)
 
 as.tokens(x, concatenator = "_", ...)
 
@@ -53,10 +47,6 @@ is.tokens(x)
 \item{recursive}{a required argument for \link{unlist} but inapplicable to
 \link{tokens} objects}
 
-\item{t1}{tokens one to be added}
-
-\item{t2}{tokens two to be added}
-
 \item{concatenator}{character between multi-word expressions, default is the
 underscore character.  See Details.}
 
@@ -81,9 +71,6 @@ tokens, \code{FALSE} otherwise.
 \code{unlist} returns a simple vector of characters from a
 \link{tokens} object.
 
-\code{c(...)} and \code{+} return a tokens object whose documents
-have been added as a single sequence of documents.
-
 \code{as.tokens} returns a quanteda \link{tokens} object.
 
 \code{is.tokens} returns \code{TRUE} if the object is of class
@@ -106,12 +93,6 @@ inter-word delimiter, when reading in the elements that will become the
 tokens.
 }
 \examples{
-# combining tokens
-toks1 <- tokens(c(doc1 = "a b c d e", doc2 = "f g h"))
-toks2 <- tokens(c(doc3 = "1 2 3"))
-toks1 + toks2
-c(toks1, toks2)
-
 
 # create tokens object from list of characters with custom concatenator
 dict <- dictionary(list(country = "United States",
