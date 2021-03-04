@@ -2,9 +2,9 @@
 #'
 #' Returns document subsets of a tokens that meet certain conditions, including
 #' direct logical operations on docvars (document-level variables).
-#' `tokens_subset` functions identically to
-#' [subset.data.frame()], using non-standard evaluation to evaluate
-#' conditions based on the [docvars] in the tokens.
+#' `tokens_subset()` functions identically to [subset.data.frame()], using
+#' non-standard evaluation to evaluate conditions based on the [docvars] in the
+#' tokens.
 #'
 #' @param x [tokens] object to be subsetted
 #' @inheritParams corpus_subset

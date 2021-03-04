@@ -37,9 +37,9 @@
 #' toks <- tokens(c("a b c", "A B C D")) %>%
 #'     tokens_remove("b", padding = TRUE)
 #' toks
-#' dfm(toks)                
+#' dfm(toks)
 #' dfm(toks, remove = "") # remove "pads"
-#' 
+#'
 #' # preserving case
 #' dfm(toks, tolower = FALSE)
 dfm <- function(x,
@@ -53,8 +53,6 @@ dfm <- function(x,
     UseMethod("dfm")
 }
 
-#' @rdname dfm
-#' @noRd
 #' @export
 dfm.default <- function(x, ...) {
     check_class(class(x), "dfm")
@@ -64,52 +62,36 @@ dfm.default <- function(x, ...) {
 dfm_env <- new.env()
 dfm_env$START_TIME <- NULL
 
-
-#' @rdname dfm
-#' @noRd
 #' @export
-dfm.character <- function(x,
-                          tolower = TRUE,
-                          remove = NULL,
-                          verbose = quanteda_options("verbose"),
-                          ...) {
+dfm.character <- function(x, ...) {
     .Deprecated(msg = "'dfm.character()' is deprecated. Use 'tokens()' first.")
-    
+
     # deprecation for passing tokens arguments via ...
     otherargs <- list(...)
     otherargs_tokens <- otherargs[names(otherargs) %in% names(as.list(args("tokens")))]
     if (length(otherargs_tokens))
         .Deprecated(msg = "'...' should not be used for tokens() arguments; use 'tokens()' first.")
 
-    x <- do.call(tokens, c(list(x = x), otherargs_tokens))    
-    do.call(dfm, c(list(x = x, tolower = tolower, remove = remove, verbose = verbose),
-                   otherargs[!names(otherargs) %in% names(otherargs_tokens)]))
+    x <- do.call(tokens, c(list(x = x), otherargs_tokens))
+    otherargs_tokens$verbose <- NULL
+    do.call(dfm, c(list(x = x), otherargs[!names(otherargs) %in% names(otherargs_tokens)]))
 }
 
-
-#' @rdname dfm
-#' @noRd
 #' @export
-dfm.corpus <- function(x,
-                       tolower = TRUE,
-                       remove = NULL,
-                       verbose = quanteda_options("verbose"),
-                       ...) {
+dfm.corpus <- function(x, ...) {
     .Deprecated(msg = "'dfm.corpus()' is deprecated. Use 'tokens()' first.")
-    
+
     # deprecation for passing tokens arguments via ...
     otherargs <- list(...)
     otherargs_tokens <- otherargs[names(otherargs) %in% names(as.list(args("tokens")))]
     if (length(otherargs_tokens))
         .Deprecated(msg = "'...' should not be used for tokens() arguments; use 'tokens()' first.")
 
-    x <- do.call(tokens, c(list(x = x), otherargs_tokens))    
-    do.call(dfm, c(list(x = x, tolower = tolower, remove = remove, verbose = verbose),
-                   otherargs[!names(otherargs) %in% names(otherargs_tokens)]))
+    x <- do.call(tokens, c(list(x = x), otherargs_tokens))
+    otherargs_tokens$verbose <- NULL
+    do.call(dfm, c(list(x = x), otherargs[!names(otherargs) %in% names(otherargs_tokens)]))
 }
 
-#' @noRd
-#' @importFrom utils glob2rx
 #' @export
 dfm.tokens <- function(x,
                        tolower = TRUE,
@@ -130,7 +112,7 @@ dfm.tokens <- function(x,
         x <- tokens_tolower(x)
         tolower <- FALSE
     }
-    
+
     if (verbose) {
         catm(" ...found ",
              format(length(x), big.mark = ","), " document",
@@ -143,7 +125,7 @@ dfm.tokens <- function(x,
              ifelse(length(types(x)) > 1, "s", ""),
              "\n", sep = "")
     }
-    
+
     # deprecation for groups
     if ("groups" %in% names(otherargs)) {
         .Deprecated(msg = "'groups' is deprecated; use dfm_group() instead")
@@ -151,7 +133,7 @@ dfm.tokens <- function(x,
         x <- do.call(tokens_group, list(x = x, groups = otherargs[["groups"]], fill = FALSE))
         otherargs <- otherargs[-which(names(otherargs) == "groups")]
     }
-    
+
     # deprecations for dictionary, thesaurus
     if (any(c("dictionary", "thesaurus") %in% names(otherargs))) {
         .Deprecated(msg = "'dictionary' and 'thesaurus' are deprecated; use dfm_lookup() instead")
@@ -166,7 +148,7 @@ dfm.tokens <- function(x,
                            verbose = verbose))
         otherargs <- otherargs[-which(names(otherargs) %in% c("dictionary", "thesaurus"))]
     }
-    
+
     # deprecation for select
     if ("select" %in% names(otherargs)) {
         if (!is.null(remove))
@@ -181,11 +163,11 @@ dfm.tokens <- function(x,
                            verbose = verbose))
         otherargs <- otherargs[-which(names(otherargs) %in% "select")]
     }
-    
+
     if (!is.null(remove)) {
         x <- tokens_remove(x = x, pattern = remove, verbose = verbose)
     }
-        
+
     if ("stem" %in% names(otherargs)) {
         if (!is.null(otherargs[["stem"]])) {
             stem <- otherargs[["stem"]]
@@ -197,21 +179,21 @@ dfm.tokens <- function(x,
         otherargs <- otherargs[-which(names(otherargs) %in% "stem")]
         .Deprecated(msg = "'stem' is deprecated; use dfm_wordstem() instead")
     }
-    
+
     check_dots(otherargs, method = "dfm")
-    
+
     # compile the dfm
     type <- types(x)
     attrs <- attributes(x)
     temp <- unclass(x)
-    
+
     # shift index for padding, if any
     index <- unlist(temp, use.names = FALSE)
     if (attr(temp, "padding")) {
         type <- c("", type)
         index <- index + 1L
     }
-    
+
     temp <-  sparseMatrix(j = index,
                           p = cumsum(c(1L, lengths(x))) - 1L,
                           x = 1L,
@@ -227,8 +209,6 @@ dfm.tokens <- function(x,
 }
 
 
-#' @noRd
-#' @import Matrix
 #' @importFrom stringi stri_trans_totitle
 #' @export
 dfm.dfm <- function(x,
@@ -261,7 +241,7 @@ dfm.dfm <- function(x,
                            verbose = verbose))
         otherargs <- otherargs[-which(names(otherargs) %in% c("dictionary", "thesaurus"))]
     }
-    
+
     # deprecation for select
     if ("select" %in% names(otherargs)) {
         if (!is.null(remove))
@@ -276,16 +256,16 @@ dfm.dfm <- function(x,
                            verbose = verbose))
         otherargs <- otherargs[-which(names(otherargs) %in% "select")]
     }
-    
+
     if (!is.null(remove)) {
         x <- dfm_remove(x = x, pattern = remove, verbose = verbose)
     }
-        
+
     if (tolower) {
         if (verbose) catm(" ...lowercasing\n", sep = "")
         x <- dfm_tolower(x)
     }
-    
+
     if ("stem" %in% names(otherargs)) {
         if (!is.null(otherargs[["stem"]])) {
             stem <- otherargs[["stem"]]
@@ -298,21 +278,21 @@ dfm.dfm <- function(x,
         otherargs <- otherargs[-which(names(otherargs) %in% "stem")]
         .Deprecated(msg = "'stem' is deprecated; use dfm_wordstem() instead")
     }
-    
+
     check_dots(otherargs, method = "dfm")
-    
+
     # remove any NA named columns
     is_na <- is.na(featnames(x))
     if (any(is_na))
         x <- x[, !is_na, drop = FALSE]
-    
+
     if (verbose) {
         catm(" ...complete, elapsed time:",
              format((proc.time() - dfm_env$START_TIME)[3], digits = 3), "seconds.\n")
         catm("Finished constructing a", paste(format(dim(x), big.mark = ",", trim = TRUE), collapse = " x "),
              "sparse dfm.\n")
     }
-    
+
     return(x)
 }
 
@@ -341,7 +321,7 @@ make_null_dfm <- function(feature = NULL, document = NULL) {
         j = NULL,
         dims = c(length(document), length(feature))
     ), "dgCMatrix")
-    
+
     build_dfm(temp, feature,
               docvars = make_docvars(length(document), document))
 }

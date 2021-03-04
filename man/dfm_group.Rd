@@ -42,9 +42,8 @@ consist of one row of the dfm per date, regardless of whether any documents
 previously existed with that date.
 }
 \description{
-Combine documents in a \link{dfm} by a grouping variable, which can also be
-one of the \link{docvars} attached to the dfm. This is identical in
-functionality to using the \code{"groups"} argument in \code{\link[=dfm]{dfm()}}.
+Combine documents in a \link{dfm} by a grouping variable, which can also be one of
+the \link{docvars} attached to the dfm.
 }
 \examples{
 corp <- corpus(c("a a b", "a b c c", "a c d d", "a c c d"),

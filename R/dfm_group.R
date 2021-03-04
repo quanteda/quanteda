@@ -1,8 +1,7 @@
 #' Combine documents in a dfm by a grouping variable
 #'
-#' Combine documents in a [dfm] by a grouping variable, which can also be
-#' one of the [docvars] attached to the dfm. This is identical in
-#' functionality to using the `"groups"` argument in [dfm()].
+#' Combine documents in a [dfm] by a grouping variable, which can also be one of
+#' the [docvars] attached to the dfm.
 #' @param x a [dfm]
 #' @inheritParams groups
 #' @param force logical; if `TRUE`, group by summing existing counts, even

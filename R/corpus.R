@@ -239,8 +239,8 @@ corpus.data.frame <- function(x, docid_field = "doc_id", text_field = "text",
 #'   `pattern` as a new docvar `keyword`
 #' @examples
 #' # from a kwic
-#' kw <- kwic(data_char_sampletext, "econom*", separator = "",
-#'            remove_separators = FALSE) # keep original separators
+#' kw <- kwic(tokens(data_char_sampletext, remove_separators = FALSE),
+#'            pattern = "econom*", separator = "")
 #' summary(corpus(kw))
 #' summary(corpus(kw, split_context = FALSE))
 #' texts(corpus(kw, split_context = FALSE))

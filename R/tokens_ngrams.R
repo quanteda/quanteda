@@ -46,7 +46,7 @@ tokens_ngrams.default <- function(x, n = 2L, skip = 0L, concatenator = "_") {
 }
 
 ## this function is not exported because it should not exist - it violates
-## the grammatrical rules of quanteda (inputs character, outputs tokens),
+## the grammatical rules of quanteda (inputs character, outputs tokens),
 ## but starts with "tokens_"
 #' @importFrom stats complete.cases
 tokens_ngrams.character <- function(x, n = 2L, skip = 0L, concatenator = "_") {

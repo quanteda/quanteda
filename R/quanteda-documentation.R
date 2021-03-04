@@ -214,11 +214,86 @@ NULL
 
 #' quanteda deprecations
 #' 
-#' Deprecations in **quanteda** v3 explained.
+#' Details on major changes in \pkg{quanteda} version 3, including breaking
+#' changes.
+#' 
+#' @section Deprecations and removals in quanteda v3:
+#' The main user-facing changes in version 3 relate to the
+#' deprecation or elimination of shortcut steps that allowed functions that
+#' required tokens inputs to skip the tokens creation step.  We did this to
+#' require users to take more direct control of tokenization options, or to
+#' substitute the alternative tokeniser of their choice (and then coercing it to
+#' tokens via [as.tokens()]).  This also allows our function behaviour to be
+#' more consistent, with each function performing a single task, rather than
+#' combining functions (such as tokenisation _and_ constructing a matrix).
+#' 
+#' The most common example involves constructing a [dfm] directly from a
+#' character or corpus object.  Formerly, this would construct a [tokens] object
+#' internally before creating the dfm, and allowed passing arguments to
+#' [tokens()] via `...`.  This is now deprecated, although still functional with
+#' a warning.
+#' 
+#' We strongly encourage either creating a [tokens] object first, or piping the
+#' tokens return to [dfm()] using `%>`.  (See examples below.)
+#' 
+#' We have also deprecated direct character or corpus inputs to [kwic()], since
+#' this also requires a tokenised input.
+#' 
+#' The full list of deprecations:
+#' * `dfm_sample(x, margins = "features")` is deprecated; future versions will
+#'   not support sampling on features using `dfm_sample()`.
+#' * `dfm.character()` and `dfm.corpus()` are deprecated.  Users should create a
+#'   tokens object first, and input that to `dfm()`.
+#' * `dfm()`: As of version 3, only tokens objects are supported as inputs to
+#'   `dfm()`.  Calling `dfm()` for character or corpus objects is still
+#'   functional, but issues a warning.  Convenience passing of arguments to
+#'   `tokens()` via `...` for `dfm()` is also deprecated, but undocumented, and
+#'   functions only with a warning.  Users should now create a tokens object
+#'   (using `tokens()` from character or corpus inputs before calling `dfm()`.
+#' * `kwic()`: As of version 3, only tokens objects are supported as inputs to
+#'   `kwic()`.  Calling `kwic()` for character or corpus objects is still
+#'   functional, but issues a warning.  Passing arguments to `tokens()` via `...`
+#'   in `kwic()` is now disabled.  Users should now create a tokens object (using
+#'   `tokens()` from character or corpus inputs before calling `kwic()`.
+#' * Shortcut arguments to `dfm()` are now deprecated.  These are still active,
+#'   with a warning, although they are no longer documented.  These are:
+#'     - `stem` -- use `tokens_wordstem()` or `dfm_wordstem()` instead.
+#'     - `select` -- use `tokens_select()` or `dfm_select()` instead (although the `remove` argument is retained).
+#'     - `dictionary`, `thesaurus` -- use `tokens_lookup()` or `dfm_lookup()` instead.
+#'     - `valuetype`, `case_insensitive` -- these are disabled; for the deprecated arguments that take these qualifiers, they are fixed to the defaults `"glob"` and `TRUE`.
+#'     - `groups` -- use `tokens_group()` or `dfm_group()` instead.
+#' 
+#' The following functionality is removed in version 3:
+#' * The `textplot_*()` and `textstat_*()` functions.
+#' 
+#' * The following functions have been removed:
+#'     - all methods for defunct `corpuszip` objects.
+#'     - `View()` functions
+#'     - `as.wfm()` and `as.DocumentTermMatrix()` (the same functionality is available via `convert()`)
+#'     - `metadoc()` and `metacorpus()`
+#'     - `corpus_trimsentences()` (replaced by `corpus_trim()`)
+#'     - all of the `tortl` functions
+#'     - all legacy functions related to the ancient "corpuszip" corpus variant.
+#' * `dfm` objects can no longer be used as a `pattern` in `dfm_select()` (formerly deprecated).
+#' 
+#' @section Moved to other packages:
+#' In version 3, we also completed a modularisation of the "quantedaverse"
+#' packages begun with version 2. All `textstat_*()` functions are now moved to
+#' the \pkg{quanteda.textstats} package, and all `textplot_*()` functions now
+#' reside in the \pkg{quanteda.textplots} package.  (The `textmodel_*()`
+#' functions were moved to the \pkg{quanteda.textmodels} package with the
+#' version 2 release.)
+#' 
 #' @name quanteda-deprecations
 #' @examples
+#' # creating a dfm
 #' txt <- c("This is a text example.", "With @usernames and #hashtag tokens.")
 #' tokens(txt, remove_punct = TRUE) %>%
 #'     dfm() %>%
 #'     dfm_remove(pattern = c("@*", "#*"))
+#'     
+#' # keywords-in-context
+#' data_corpus_inaugural[1:6] %>%
+#'     tokens() %>%
+#'     kwic(pattern = "secur*", window = 3)
 NULL

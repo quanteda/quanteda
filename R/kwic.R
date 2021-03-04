@@ -11,8 +11,7 @@
 #' @inheritParams valuetype
 #' @param separator a character to separate words in the output
 #' @param index an [index] object to specify keywords
-#' @param ... additional arguments passed to [tokens], for applicable
-#'   object types; not used by `as.data.frame.kwic()`
+#' @param ... unused
 #' @return A `kwic` classed data.frame, with the document name
 #'   (`docname`) and the token index positions (`from` and `to`,
 #'   which will be the same for single-word patterns, or a sequence equal in
@@ -45,7 +44,8 @@ kwic <- function(x, pattern, window = 5,
                  valuetype = c("glob", "regex", "fixed"),
                  separator = " ",
                  case_insensitive = TRUE, 
-                 index = NULL, ...) {
+                 index = NULL, 
+                 ...) {
     UseMethod("kwic")
 }
 
@@ -55,26 +55,16 @@ kwic.default <- function(x, ...) {
 }
 
 #' @export
-kwic.character <- function(x, pattern, window = 5,
-                           valuetype = c("glob", "regex", "fixed"),
-                           separator = " ",
-                           case_insensitive = TRUE, 
-                           ...) {
-    kwic(corpus(x), pattern = pattern, window = window, 
-         valuetype = valuetype, separator = separator, 
-         case_insensitive = case_insensitive, ...)
+kwic.character <- function(x, ...) {
+    .Deprecated(msg = "'kwic.character()' is deprecated. Use 'tokens()' first.")
+    kwic(tokens(x, what = "word"), ...)
 }
 
 #' @export
-kwic.corpus <- function(x, pattern, window = 5,
-                        valuetype = c("glob", "regex", "fixed"),
-                        separator = " ",
-                        case_insensitive = TRUE, 
-                        ...) {
+kwic.corpus <- function(x, ...) {
+    .Deprecated(msg = "'kwic.corpus()' is deprecated. Use 'tokens()' first.")
     x <- as.corpus(x)
-    kwic(tokens(x, what = "word", ...), pattern = pattern, 
-         window = window, valuetype = valuetype, separator = separator, 
-         case_insensitive = case_insensitive, ...)
+    kwic(tokens(x, what = "word"), ...)
 }
 
 #' @export
@@ -82,8 +72,11 @@ kwic.tokens <- function(x, pattern = NULL, window = 5,
                         valuetype = c("glob", "regex", "fixed"),
                         separator = " ",
                         case_insensitive = TRUE, 
-                        index = NULL, ...) {
+                        index = NULL,
+                        ...) {
     x <- as.tokens(x)
+    check_dots(..., "kwic")
+    
     window <- check_integer(window, 1, 1, 0)
     valuetype <- match.arg(valuetype)
     separator <- check_character(separator)
@@ -127,7 +120,7 @@ kwic.tokens <- function(x, pattern = NULL, window = 5,
 #' @rdname kwic
 #' @export
 #' @examples
-#' kw <- kwic(data_corpus_inaugural, "provident*")
+#' kw <- kwic(tokens(data_corpus_inaugural[1:20]), "provident*")
 #' is.kwic(kw)
 #' is.kwic("Not a kwic")
 #' is.kwic(kw[, c("pre", "post")])
@@ -139,8 +132,8 @@ is.kwic <- function(x) {
 #' @rdname kwic
 #' @method as.data.frame kwic
 #' @examples
-#' corp <- data_corpus_inaugural[1:8]
-#' kw <- kwic(corp, pattern = "secure*", valuetype = "glob", window = 3)
+#' toks <- tokens(data_corpus_inaugural[1:8])
+#' kw <- kwic(toks, pattern = "secure*", valuetype = "glob", window = 3)
 #' as.data.frame(kw)
 #' 
 #' @export

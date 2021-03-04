@@ -40,8 +40,7 @@ exact matching. See \link{valuetype} for details.}
 
 \item{index}{an \link{index} object to specify keywords}
 
-\item{...}{additional arguments passed to \link{tokens}, for applicable
-object types; not used by \code{as.data.frame.kwic()}}
+\item{...}{unused}
 }
 \value{
 A \code{kwic} classed data.frame, with the document name
@@ -79,13 +78,13 @@ kwic(toks, pattern = phrase("war against"), valuetype = "regex", window = 2)
 # use index
 idx <- index(toks, phrase("secur* against"))
 kwic(toks, index = idx, window = 2)
-kw <- kwic(data_corpus_inaugural, "provident*")
+kw <- kwic(tokens(data_corpus_inaugural[1:20]), "provident*")
 is.kwic(kw)
 is.kwic("Not a kwic")
 is.kwic(kw[, c("pre", "post")])
 
-corp <- data_corpus_inaugural[1:8]
-kw <- kwic(corp, pattern = "secure*", valuetype = "glob", window = 3)
+toks <- tokens(data_corpus_inaugural[1:8])
+kw <- kwic(toks, pattern = "secure*", valuetype = "glob", window = 3)
 as.data.frame(kw)
 
 }

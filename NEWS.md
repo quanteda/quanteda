@@ -40,7 +40,9 @@
 
 * `dfm.character()` and `dfm.corpus()` are deprecated.  Users should create a tokens object first, and input that to `dfm()`.
 
-* Convenience passing of arguments to `tokens()` via `...` for methods that skipped the tokenisation step are now deprecated, although they still function with a warning.  Users should now create a tokens object (using `tokens()` from character or corpus inputs before calling `dfm()` or `kwic()`.
+* `dfm()`: As of version 3, only tokens objects are supported as inputs to `dfm()`.  Calling `dfm()` for character or corpus objects is still functional, but issues a warning.  Convenience passing of arguments to `tokens()` via `...` for `dfm()` is also deprecated, but undocumented, and functions only with a warning.  Users should now create a tokens object (using `tokens()` from character or corpus inputs before calling `dfm()`.
+
+* `kwic()`: As of version 3, only tokens objects are supported as inputs to `kwic()`.  Calling `kwic()` for character or corpus objects is still functional, but issues a warning.  Passing arguments to `tokens()` via `...` in `kwic()` is now disabled.  Users should now create a tokens object (using `tokens()` from character or corpus inputs before calling `kwic()`.
 
 * Shortcut arguments to `dfm()` are now deprecated.  These are still active, with a warning, although they are no longer documented.  These are:
     - `stem` -- use `tokens_wordstem()` or `dfm_wordstem()` instead.
