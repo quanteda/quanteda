@@ -2,20 +2,11 @@
 % Please edit documentation in R/tokens-methods-base.R
 \name{tokens-class}
 \alias{tokens-class}
-\alias{print.tokens}
 \alias{[.tokens}
 \alias{+.tokens}
 \alias{c.tokens}
 \title{Base method extensions for tokens objects}
 \usage{
-\method{print}{tokens}(
-  x,
-  max_ndoc = quanteda_options("print_tokens_max_ndoc"),
-  max_ntoken = quanteda_options("print_tokens_max_ntoken"),
-  show_summary = quanteda_options("print_tokens_summary"),
-  ...
-)
-
 \method{[}{tokens}(x, i, drop_docid = TRUE)
 
 \method{+}{tokens}(t1, t2)
@@ -24,11 +15,6 @@
 }
 \arguments{
 \item{x}{a tokens object}
-
-\item{max_ntoken}{max number of tokens to print; default is from the
-\code{print_tokens_max_ntoken} setting of \code{\link[=quanteda_options]{quanteda_options()}}}
-
-\item{...}{not used}
 
 \item{i}{document names or indices for documents to extract.}
 
@@ -56,9 +42,6 @@ toks2 <- tokens(c(doc3 = "1 2 3"))
 toks1 + toks2
 c(toks1, toks2)
 
-}
-\seealso{
-\code{\link[=summary.tokens]{summary.tokens()}}
 }
 \keyword{internal}
 \keyword{tokens}

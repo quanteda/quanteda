@@ -4,7 +4,6 @@
 #' @name tokens-class
 #' @param x a tokens object
 #' @keywords internal tokens
-#' @seealso [summary.tokens()]
 NULL
 
 #' @rdname as.tokens
@@ -50,7 +49,7 @@ unlist.tokens <- function(x, recursive = FALSE, use.names = TRUE) {
     unlist(as.list(x), use.names = use.names)
 }
 
-#' @rdname tokens-class
+#' @rdname print-method
 #' @method print tokens
 #' @param max_ntoken max number of tokens to print; default is from the
 #'   `print_tokens_max_ntoken` setting of [quanteda_options()]
