@@ -68,7 +68,7 @@ dfm.character <- function(x, ...) {
 
     # deprecation for passing tokens arguments via ...
     otherargs <- list(...)
-    otherargs_tokens <- otherargs[names(otherargs) %in% names(as.list(args("tokens")))]
+    otherargs_tokens <- otherargs[names(otherargs) %in% names(as.list(args(quanteda::tokens)))]
     if (length(otherargs_tokens))
         .Deprecated(msg = "'...' should not be used for tokens() arguments; use 'tokens()' first.")
 
@@ -83,7 +83,7 @@ dfm.corpus <- function(x, ...) {
 
     # deprecation for passing tokens arguments via ...
     otherargs <- list(...)
-    otherargs_tokens <- otherargs[names(otherargs) %in% names(as.list(args("tokens")))]
+    otherargs_tokens <- otherargs[names(otherargs) %in% names(as.list(args(quanteda::tokens)))]
     if (length(otherargs_tokens))
         .Deprecated(msg = "'...' should not be used for tokens() arguments; use 'tokens()' first.")
 
@@ -100,7 +100,7 @@ dfm.tokens <- function(x,
                        ...) {
     # check for arguments passed to tokens via ...
     otherargs <- list(...)
-    otherargs_tokens <- otherargs[names(otherargs) %in% names(as.list(args("tokens")))]
+    otherargs_tokens <- otherargs[names(otherargs) %in% names(as.list(args(quanteda::tokens)))]
     if (length(otherargs_tokens)) {
         .Deprecated(msg = "'...' should not be used for tokens() arguments; use 'tokens()' first.")
         x <- do.call(tokens, c(list(x = x), otherargs_tokens))
