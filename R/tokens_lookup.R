@@ -123,6 +123,8 @@ tokens_lookup.tokens <- function(x, dictionary, levels = 1:5,
     x <- as.tokens(x)
     if (!is.dictionary(dictionary))
         stop("dictionary must be a dictionary object")
+    dictionary <- as.dictionary(dictionary)
+    
     levels <- check_integer(levels, min = 1, max_len = Inf)
     valuetype <- match.arg(valuetype)
     capkeys <- check_logical(capkeys)
