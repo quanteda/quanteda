@@ -92,9 +92,8 @@ dfm_lookup.dfm <- function(x, dictionary, levels = 1:5,
     
     if (!nfeat(x) || !ndoc(x)) return(x)
 
-    if (!is.dictionary(dictionary))
+    if (!is.dictionary(try(dictionary <- as.dictionary(dictionary), silent = TRUE)))
         stop("dictionary must be a dictionary object")
-    dictionary <- as.dictionary(dictionary)
 
     valuetype <- match.arg(valuetype)
     type <- colnames(x)
