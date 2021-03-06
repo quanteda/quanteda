@@ -1161,11 +1161,11 @@ test_that("dfm deprecations work as expected", {
     )
     expect_warning(
         dfm(txt, remove = "a", valuetype = "regex"),
-        "valuetype argument is not used", fixed = TRUE
+        "valuetype is deprecated in dfm()", fixed = TRUE
     )
     expect_warning(
         dfm(txt, remove = "a", case_insensitive = FALSE),
-        "case_insensitive argument is not used", fixed = TRUE
+        "case_insensitive is deprecated in dfm()", fixed = TRUE
     )
     expect_warning(
         dfm(corp, stem = TRUE),
@@ -1189,11 +1189,11 @@ test_that("dfm deprecations work as expected", {
     )
     expect_warning(
         dfm(corp, remove = "a", valuetype = "regex"),
-        "valuetype argument is not used", fixed = TRUE
+        "valuetype is deprecated in dfm()", fixed = TRUE
     )
     expect_warning(
         dfm(corp, remove = "a", case_insensitive = FALSE),
-        "case_insensitive argument is not used", fixed = TRUE
+        "case_insensitive is deprecated in dfm()", fixed = TRUE
     )
      expect_warning(
         dfm(toks, stem = TRUE),
@@ -1217,10 +1217,68 @@ test_that("dfm deprecations work as expected", {
     )
     expect_warning(
         dfm(toks, remove = "a", valuetype = "regex"),
-        "valuetype argument is not used", fixed = TRUE
+        "valuetype is deprecated in dfm()", fixed = TRUE
     )
     expect_warning(
         dfm(toks, remove = "a", case_insensitive = FALSE),
-        "case_insensitive argument is not used", fixed = TRUE
+        "case_insensitive is deprecated in dfm()", fixed = TRUE
+    )
+})
+
+test_that("valuetype and case_insensitive are still working", {
+    txt <- c("a a b b c", "A A b C C d d")
+    corp <- corpus(txt)
+    toks <- tokens(corp)
+    dfmat <- dfm(toks, tolower = FALSE)
+
+    # for txt
+    expect_identical(
+        featnames(suppressWarnings(dfm(txt, tolower = FALSE, remove = "a|c", 
+                                       valuetype = "regex"))),
+        c("b", "d")
+    )
+    expect_identical(
+        featnames(suppressWarnings(dfm(txt, tolower = FALSE, remove = "a|c", 
+                                       valuetype = "regex", case_insensitive = TRUE))),
+        c("b", "d")
+    )
+    expect_identical(
+        featnames(suppressWarnings(dfm(txt, tolower = FALSE, remove = "a|c", 
+                                       valuetype = "regex", case_insensitive = FALSE))),
+        c("b", "A", "C", "d")
+    )
+
+    # for corpus
+    expect_identical(
+        featnames(suppressWarnings(dfm(corp, tolower = FALSE, remove = "a|c", 
+                                       valuetype = "regex"))),
+        c("b", "d")
+    )
+    expect_identical(
+        featnames(suppressWarnings(dfm(corp, tolower = FALSE, remove = "a|c", 
+                                       valuetype = "regex", case_insensitive = TRUE))),
+        c("b", "d")
+    )
+    expect_identical(
+        featnames(suppressWarnings(dfm(corp, tolower = FALSE, remove = "a|c", 
+                                       valuetype = "regex", case_insensitive = FALSE))),
+        c("b", "A", "C", "d")
+    )
+    
+    # for dfm
+    expect_identical(
+        featnames(suppressWarnings(dfm(dfmat, tolower = FALSE, remove = "a|c", 
+                                       valuetype = "regex"))),
+        c("b", "d")
+    )
+    expect_identical(
+        featnames(suppressWarnings(dfm(dfmat, tolower = FALSE, remove = "a|c", 
+                                       valuetype = "regex", case_insensitive = TRUE))),
+        c("b", "d")
+    )
+    expect_identical(
+        featnames(suppressWarnings(dfm(dfmat, tolower = FALSE, remove = "a|c", 
+                                       valuetype = "regex", case_insensitive = FALSE))),
+        c("b", "A", "C", "d")
     )
 })
