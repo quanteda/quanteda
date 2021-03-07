@@ -24,6 +24,8 @@
 
 * A new system of validators for input types now provides better argument type and value checking, with more consistent error messages for invalid types or values.
 
+* `dfm()` has a new argument, `remove_padding`, for removing the "pads" left behind after removing tokens with `padding = TRUE`.  (For other extensive changes to `dfm()`, see "Deprecated" below.)
+
 ## Bug fixes and stability enhancements
 
 * Fixed a bug causing `topfeatures(x, group = something)` to fail with weighted dfms (#2032).
@@ -46,14 +48,14 @@
 
 * Shortcut arguments to `dfm()` are now deprecated.  These are still active, with a warning, although they are no longer documented.  These are:
     - `stem` -- use `tokens_wordstem()` or `dfm_wordstem()` instead.
-    - `select` -- use `tokens_select()` or `dfm_select()` instead (although the `remove` argument is retained).
+    - `select`, `remove` -- use `tokens_select()` / `dfm_select()` or `tokens_remove()` / `dfm_remove()` instead.
     - `dictionary`, `thesaurus` -- use `tokens_lookup()` or `dfm_lookup()` instead.
     - `valuetype`, `case_insensitive` -- these are disabled; for the deprecated arguments that take these qualifiers, they are fixed to the defaults `"glob"` and `TRUE`.
     - `groups` -- use `tokens_group()` or `dfm_group()` instead.
 
 ## Removed
 
-* See note above under **Changes** about the `textplot_*()` and `textstat_*()` functions.
+* See note above under "Changes" about the `textplot_*()` and `textstat_*()` functions.
 
 * The following functions have been removed:
     - all methods for defunct `corpuszip` objects.

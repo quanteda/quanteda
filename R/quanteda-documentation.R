@@ -257,11 +257,12 @@ NULL
 #'   `tokens()` from character or corpus inputs before calling `kwic()`.
 #' * Shortcut arguments to `dfm()` are now deprecated.  These are still active,
 #'   with a warning, although they are no longer documented.  These are:
-#'     - `stem` -- use `tokens_wordstem()` or `dfm_wordstem()` instead.
-#'     - `select` -- use `tokens_select()` or `dfm_select()` instead (although the `remove` argument is retained).
-#'     - `dictionary`, `thesaurus` -- use `tokens_lookup()` or `dfm_lookup()` instead.
+#'     - `stem` -- use [tokens_wordstem()] or [dfm_wordstem()] instead.
+#'     - `select`/`remove` -- use [tokens_select()] / [tokens_remove()], or
+#'       [dfm_select()] / [dfm_remove()] instead
+#'     - `dictionary`, `thesaurus` -- use [tokens_lookup()] or [dfm_lookup()] instead.
 #'     - `valuetype`, `case_insensitive` -- these are disabled; for the deprecated arguments that take these qualifiers, they are fixed to the defaults `"glob"` and `TRUE`.
-#'     - `groups` -- use `tokens_group()` or `dfm_group()` instead.
+#'     - `groups` -- use [tokens_group()] or [dfm_group()] instead.
 #' 
 #' The following functionality is removed in version 3:
 #' * The `textplot_*()` and `textstat_*()` functions.
