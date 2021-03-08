@@ -66,6 +66,8 @@
 
 * `dfm` objects can no longer be used as a `pattern` in `dfm_select()` (formerly deprecated).
 
+* `dictionary_edit()`, `char_edit()`, and `list_edit()` are removed.
+
 # quanteda 2.1.2
 
 ## Changes
