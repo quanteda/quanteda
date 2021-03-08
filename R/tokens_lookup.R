@@ -121,10 +121,8 @@ tokens_lookup.tokens <- function(x, dictionary, levels = 1:5,
                           verbose = quanteda_options("verbose")) {
 
     x <- as.tokens(x)
-
-    if (!is.dictionary(try(dictionary <- as.dictionary(dictionary), silent = TRUE)))
+    if (!is.dictionary(dictionary))
         stop("dictionary must be a dictionary object")
-    
     levels <- check_integer(levels, min = 1, max_len = Inf)
     valuetype <- match.arg(valuetype)
     capkeys <- check_logical(capkeys)
