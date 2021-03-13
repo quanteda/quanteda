@@ -10,41 +10,53 @@ corpus_sample(x, size = ndoc(x), replace = FALSE, prob = NULL, by = NULL)
 \item{x}{a \link{corpus} object whose documents will be sampled}
 
 \item{size}{a positive number, the number of documents to select; when used
-with groups, the number to select from each group or a vector equal in
+with \code{by}, the number to select from each group or a vector equal in
 length to the number of groups defining the samples to be chosen in each
-group category.  By defining a size larger than the number of documents, it
-is possible to \emph{over}sample groups.}
+category of \code{by}.  By defining a size larger than the number of documents,
+it is possible to oversample when \code{replace = TRUE}.}
 
 \item{replace}{if \code{TRUE}, sample  with replacement}
 
 \item{prob}{a vector of probability weights for obtaining the elements of the
 vector being sampled.  May not be applied when \code{by} is used.}
 
-\item{by}{a grouping variable for sampling.  Useful for resampling
-sub-document units such as sentences, for instance by specifying \code{by = "document"}.}
+\item{by}{optional grouping variable for sampling.  This will be evaluated in
+the docvars data.frame, so that docvars may be referred to by name without
+quoting.  This also changes previous behaviours for \code{by}. See
+\link{quanteda-deprecations} for details.}
 }
 \value{
-a corpus object with number of documents equal to \code{size}, drawn
-from the corpus \code{x}.  The returned corpus object will contain all of
-the meta-data of the original corpus, and the same document variables for
-the documents selected.
+a \link{corpus} object (re)sampled on the documents, containing the document
+variables for the documents sampled.
 }
 \description{
 Take a random sample of documents of the specified size from a corpus, with
-or without replacement.  Works just as \code{\link[=sample]{sample()}} works for the
-documents and their associated document-level variables.
+or without replacement, optionally by grouping variables or with probability
+weights.
 }
 \examples{
-set.seed(2000)
+set.seed(123)
 # sampling from a corpus
-summary(corpus_sample(data_corpus_inaugural, 5))
-summary(corpus_sample(data_corpus_inaugural, 10, replace = TRUE))
+summary(corpus_sample(data_corpus_inaugural, size = 5))
+summary(corpus_sample(data_corpus_inaugural, size = 10, replace = TRUE))
 
-# sampling sentences within document
+# sampling with by
+corp <- data_corpus_inaugural
+corp$century <- paste(floor(corp$Year / 100) + 1)
+corp$century <- paste0(corp$century, ifelse(corp$century < 21, "th", "st"))
+corpus_sample(corp, size = 2, by = century) \%>\% summary()
+# needs drop = TRUE to avoid empty interactions
+corpus_sample(corp, size = 1, by = interaction(Party, century, drop = TRUE), replace = TRUE) \%>\%
+    summary()
+
+# sampling sentences by document
 corp <- corpus(c(one = "Sentence one.  Sentence two.  Third sentence.",
-                      two = "First sentence, doc2.  Second sentence, doc2."))
-corpsent <- corpus_reshape(corp, to = "sentences")
-texts(corpsent)
-texts(corpus_sample(corpsent, replace = TRUE, by = "document"))
+                 two = "First sentence, doc2.  Second sentence, doc2."),
+               docvars = data.frame(var1 = c("a", "a"), var2 = c(1, 2)))
+corpus_reshape(corp, to = "sentences") \%>\%
+    corpus_sample(replace = TRUE, by = docid(.))
+
+# oversampling
+corpus_sample(corp, size = 5, replace = TRUE)
 }
 \keyword{corpus}

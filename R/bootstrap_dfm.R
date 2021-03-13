@@ -75,7 +75,7 @@ bootstrap_dfm.dfm <- function(x, n = 10, ..., verbose = quanteda_options("verbos
     for (i in seq_len(n)) {
         if (verbose)
             message(", ", i, appendLF = FALSE)
-        temp <- dfm_sample(x, size = NULL, replace = TRUE, by = "document")
+        temp <- dfm_sample(x, size = NULL, replace = TRUE, by = docid(x))
         temp <- dfm_group(temp)
         result[[i + 1]] <- temp
     }

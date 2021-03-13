@@ -7,6 +7,18 @@
 Details on major changes in \pkg{quanteda} version 3, including breaking
 changes.
 }
+\section{Behaviour changes}{
+
+\itemize{
+\item Non-standard evaluation for \code{by}, in \code{\link[=corpus_sample]{corpus_sample()}}, \code{\link[=tokens_sample]{tokens_sample()}},
+and \code{\link[=dfm_sample]{dfm_sample()}}. The \code{by} argument is now evaluated within the docvars
+data.frame of the object, so that docvar columns may be specified unquoted.
+Prior to v3, \code{by} took quoted docvar names, including "document" as a
+shortcut to \verb{[docid()]}.  These are now evaluated literally and hence cannot
+refer to docvar columns or the docid of the object.
+}
+}
+
 \section{Deprecations and removals in quanteda v3}{
 
 The main user-facing changes in version 3 relate to the

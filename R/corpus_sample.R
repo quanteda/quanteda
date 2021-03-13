@@ -1,38 +1,49 @@
 #' Randomly sample documents from a corpus
-#' 
+#'
 #' Take a random sample of documents of the specified size from a corpus, with
-#' or without replacement.  Works just as [sample()] works for the
-#' documents and their associated document-level variables.
+#' or without replacement, optionally by grouping variables or with probability
+#' weights.
 #' @param x a [corpus] object whose documents will be sampled
 #' @param size a positive number, the number of documents to select; when used
-#'   with groups, the number to select from each group or a vector equal in
+#'   with `by`, the number to select from each group or a vector equal in
 #'   length to the number of groups defining the samples to be chosen in each
-#'   group category.  By defining a size larger than the number of documents, it
-#'   is possible to *over*sample groups.
+#'   category of `by`.  By defining a size larger than the number of documents,
+#'   it is possible to oversample when `replace = TRUE`.
 #' @param replace if `TRUE`, sample  with replacement
 #' @param prob a vector of probability weights for obtaining the elements of the
 #'   vector being sampled.  May not be applied when `by` is used.
-#' @param by a grouping variable for sampling.  Useful for resampling
-#'   sub-document units such as sentences, for instance by specifying `by =
-#'   "document"`.
-#' @return a corpus object with number of documents equal to `size`, drawn 
-#'   from the corpus `x`.  The returned corpus object will contain all of 
-#'   the meta-data of the original corpus, and the same document variables for 
-#'   the documents selected.
+#' @param by optional grouping variable for sampling.  This will be evaluated in
+#'   the docvars data.frame, so that docvars may be referred to by name without
+#'   quoting.  This also changes previous behaviours for `by`. See
+#'   [quanteda-deprecations] for details.
+#' @return a [corpus] object (re)sampled on the documents, containing the document
+#'   variables for the documents sampled.
 #' @export
 #' @keywords corpus
 #' @examples
-#' set.seed(2000)
+#' set.seed(123)
 #' # sampling from a corpus
-#' summary(corpus_sample(data_corpus_inaugural, 5))
-#' summary(corpus_sample(data_corpus_inaugural, 10, replace = TRUE))
-#' 
-#' # sampling sentences within document
+#' summary(corpus_sample(data_corpus_inaugural, size = 5))
+#' summary(corpus_sample(data_corpus_inaugural, size = 10, replace = TRUE))
+#'
+#' # sampling with by
+#' corp <- data_corpus_inaugural
+#' corp$century <- paste(floor(corp$Year / 100) + 1)
+#' corp$century <- paste0(corp$century, ifelse(corp$century < 21, "th", "st"))
+#' corpus_sample(corp, size = 2, by = century) %>% summary()
+#' # needs drop = TRUE to avoid empty interactions
+#' corpus_sample(corp, size = 1, by = interaction(Party, century, drop = TRUE), replace = TRUE) %>%
+#'     summary()
+#'
+#' # sampling sentences by document
 #' corp <- corpus(c(one = "Sentence one.  Sentence two.  Third sentence.",
-#'                       two = "First sentence, doc2.  Second sentence, doc2."))
-#' corpsent <- corpus_reshape(corp, to = "sentences")
-#' texts(corpsent)
-#' texts(corpus_sample(corpsent, replace = TRUE, by = "document"))
+#'                  two = "First sentence, doc2.  Second sentence, doc2."),
+#'                docvars = data.frame(var1 = c("a", "a"), var2 = c(1, 2)))
+#' corpus_reshape(corp, to = "sentences") %>%
+#'     corpus_sample(replace = TRUE, by = docid(.))
+#'
+#' # oversampling
+#' corpus_sample(corp, size = 5, replace = TRUE)
 corpus_sample <- function(x, size = ndoc(x), replace = FALSE, prob = NULL, by = NULL) {
     UseMethod("corpus_sample")
 }
@@ -44,15 +55,12 @@ corpus_sample.default <- function(x, size = ndoc(x), replace = FALSE, prob = NUL
 
 #' @export
 corpus_sample.corpus <- function(x, size = NULL, replace = FALSE, prob = NULL, by = NULL) {
-    
     x <- as.corpus(x)
 
-    if (!is.null(by)) {
-        if (by == "document") by <- "docid_"
-        i <- resample(seq_len(ndoc(x)), size = size, replace = replace, prob = prob,
-                      by = get_docvars(x, by, system = TRUE, drop = TRUE))
-    } else {
-        i <- resample(seq_len(ndoc(x)), size = size, replace = replace, prob = prob) 
+    if (!missing(by)) {
+        by <- eval(substitute(by), get_docvars(x, user = TRUE, system = TRUE), parent.frame())
     }
+
+    i <- resample(seq_len(ndoc(x)), size = size, replace = replace, prob = prob, by = by)
     return(x[i])
 }

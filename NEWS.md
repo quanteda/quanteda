@@ -24,6 +24,11 @@
 
 * A new system of validators for input types now provides better argument type and value checking, with more consistent error messages for invalid types or values.
 
+* Non-standard evaluation for arguments `by`:
+    - The `*_sample()` functions' argument `by` now takes unquoted document variable (docvar) names directly, similar to the way the `subset` argument works in the `*_subset()` functions.
+    - Quoted docvar names no longer work, as these will be evaluated literally.
+    - The `by = "document"` formerly sampled from `docid(x)`, but this functionality is now removed.  Instead, use `by = docid(x)` to replicate this functionality.
+
 ## Bug fixes and stability enhancements
 
 * Fixed a bug causing `topfeatures(x, group = something)` to fail with weighted dfms (#2032).
@@ -65,6 +70,10 @@
     - all legacy functions related to the ancient "corpuszip" corpus variant.
 
 * `dfm` objects can no longer be used as a `pattern` in `dfm_select()` (formerly deprecated).
+
+* `dfm_sample()`:
+    - no longer has a `margin` argument.  Instead, `dfm_sample()` now samples only on documents, the same as `corpus_sample()` and `tokens_sample()`; and
+    - no longer works with `by = "document"` -- use `by = docid(x)` instead.
 
 # quanteda 2.1.2
 

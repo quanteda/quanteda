@@ -10,34 +10,42 @@ tokens_sample(x, size = NULL, replace = FALSE, prob = NULL, by = NULL)
 \item{x}{a \link{tokens} object whose documents will be sampled}
 
 \item{size}{a positive number, the number of documents to select; when used
-with groups, the number to select from each group or a vector equal in
+with \code{by}, the number to select from each group or a vector equal in
 length to the number of groups defining the samples to be chosen in each
-group category.  By defining a size larger than the number of documents, it
-is possible to \emph{over}sample groups.}
+category of \code{by}.  By defining a size larger than the number of documents,
+it is possible to oversample when \code{replace = TRUE}.}
 
 \item{replace}{if \code{TRUE}, sample  with replacement}
 
 \item{prob}{a vector of probability weights for obtaining the elements of the
 vector being sampled.  May not be applied when \code{by} is used.}
 
-\item{by}{a grouping variable for sampling.  Useful for resampling
-sub-document units such as sentences, for instance by specifying \code{by = "document"}.}
+\item{by}{optional grouping variable for sampling.  This will be evaluated in
+the docvars data.frame, so that docvars may be referred to by name without
+quoting.  This also changes previous behaviours for \code{by}. See
+\link{quanteda-deprecations} for details.}
 }
 \value{
-A \link{tokens} object with number of documents or features equal to
-\code{size}, drawn from the tokens \code{x}.
+a \link{tokens} object (re)sampled on the documents, containing the document
+variables for the documents sampled.
 }
 \description{
-Sample tokenized documents randomly from a tokens object, with or without
-replacement. Works just as \code{\link[=sample]{sample()}} works, for document-level
-units (and their associated document-level variables).
+Take a random sample of documents of the specified size from a corpus, with
+or without replacement, optionally by grouping variables or with probability
+weights.
 }
 \examples{
-set.seed(10)
-toks <- tokens(data_corpus_inaugural[1:10])
-head(toks)
-head(tokens_sample(toks))
-head(tokens_sample(toks, replace = TRUE))
+set.seed(123)
+toks <- tokens(data_corpus_inaugural[1:6])
+toks
+tokens_sample(toks)
+tokens_sample(toks, replace = TRUE) \%>\% docnames()
+tokens_sample(toks, size = 3, replace = TRUE) \%>\% docnames()
+
+# sampling using by
+docvars(toks)
+tokens_sample(toks, size = 2, replace = TRUE, by = Party) \%>\% docnames()
+
 }
 \seealso{
 \link{sample}
