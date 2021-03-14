@@ -7,7 +7,7 @@
 dfm(
   x,
   tolower = TRUE,
-  remove = NULL,
+  remove_padding = FALSE,
   verbose = quanteda_options("verbose"),
   ...
 )
@@ -17,12 +17,8 @@ dfm(
 
 \item{tolower}{convert all features to lowercase}
 
-\item{remove}{a \link{pattern} of user-supplied features to ignore, such as "stop
-words".  To access one possible list (from any list you wish), use
-\code{\link[=stopwords]{stopwords()}}.  The pattern matching type is fixed to "glob"; if you want
-greater control, use \code{\link[=tokens_remove]{tokens_remove()}} or \code{\link[=dfm_remove]{dfm_remove()}}.  \code{remove} is
-primarily useful for removing artefacts created during the \link{tokens}
-creation process, such as pads.  See examples.}
+\item{remove_padding}{logical; if \code{TRUE}, remove the "pads" left as empty tokens after
+calling \code{\link[=tokens]{tokens()}} or \code{\link[=tokens_remove]{tokens_remove()}} with \code{padding = TRUE}}
 
 \item{verbose}{display messages if \code{TRUE}}
 
