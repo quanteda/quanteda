@@ -24,11 +24,10 @@ otherwise return the \code{n} least frequent features}
 \code{group} if applicable), or \code{docfreq} for the document frequencies
 of features}
 
-\item{groups}{either: a character vector containing the names of document
-variables to be used for grouping; or a factor or object that can be
-coerced into a factor equal in length or rows to the number of documents.
-\code{NA} values of the grouping value are dropped.
-See \link{groups} for details.}
+\item{groups}{grouping variable for sampling, equal in length to the number
+of documents. This will be evaluated in the docvars data.frame, so that
+docvars may be referred to by name without quoting. This also changes
+previous behaviours for \code{groups}. See \link{quanteda-deprecations} for details.}
 }
 \value{
 A named numeric vector of feature counts, where the names are the
@@ -54,7 +53,7 @@ topfeatures(dfmat2, decreasing = FALSE)
 topfeatures(dfmat2, n = 5, groups = docnames(dfmat2))
 
 # grouping by president last name
-topfeatures(dfmat2, n = 5, groups = "President")
+topfeatures(dfmat2, n = 5, groups = President)
 
 # features by document frequencies
 tail(topfeatures(dfmat1, scheme = "docfreq", n = 200))

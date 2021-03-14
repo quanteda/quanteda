@@ -177,14 +177,14 @@ NULL
 #' Grouping variable(s) for various functions
 #'
 #' Groups for aggregation by various functions that take grouping options.
-#' Groups can be the name(s) of document variables (as a character vector), or
-#' variables whose length or number of rows (if a data.frame) equal the number
-#' of documents.
-#' @param groups either: a character vector containing the names of document
-#'   variables to be used for grouping; or a factor or object that can be
-#'   coerced into a factor equal in length or rows to the number of documents.
-#'   `NA` values of the grouping value are dropped.
-#'   See [groups] for details.
+#' @param groups grouping variable for sampling, equal in length to the number
+#'   of documents. This will be evaluated in the docvars data.frame, so that
+#'   docvars may be referred to by name without quoting. This also changes
+#'   previous behaviours for `groups`. See [quanteda-deprecations] for details.
+#' @param fill logical; if `TRUE` and `groups` is a factor, then use all levels
+#'   of the factor when forming the new "documents" of the grouped dfm.  This
+#'   will result in a new "document" with empty content, for levels not
+#'   observed.  Has no effect if the `groups` variable(s) are not factors.
 #' @name groups
 #' @keywords internal
 NULL

@@ -728,11 +728,12 @@ test_that("test topfeatures", {
         topfeatures(dfm(tokens("a a a a b b b c c d")), "count"),
         "n must be a number"
     )
-    dfmat <- corpus(c("a b b c", "b d", "b c"), docvars = data.frame(numdv = c(1, 2, 1))) %>%
+    dfmat <- corpus(c("a b b c", "b d", "b c"), 
+                    docvars = data.frame(numdv = c(1, 2, 1))) %>%
         tokens() %>%
         dfm()
     expect_identical(
-        topfeatures(dfmat, groups = "numdv"),
+        topfeatures(dfmat, groups = numdv),
         list("1" = c(b = 3, c = 2, a = 1, d = 0),
              "2" = c(b = 1, d = 1, a = 0, c = 0))
     )
@@ -741,7 +742,7 @@ test_that("test topfeatures", {
         c(b = 3L, c = 2L, a = 1L, d = 1L)
     )
     expect_identical(
-        topfeatures(dfm_weight(dfmat, scheme = "prop"), groups = "numdv"),
+        topfeatures(dfm_weight(dfmat, scheme = "prop"), groups = numdv),
         list("1" = c(b = 1.00, c = 0.75, a = 0.25, d = 0.00),
              "2" = c(b = 0.5, d = 0.5, a = 0, c = 0))
     )
@@ -1055,7 +1056,9 @@ test_that("dfm verbose = TRUE works as expected", {
         "applying a dictionary consisting of 4 keys"
     )
     expect_message(
-        tmp <- suppressWarnings(dfm(tokens(data_corpus_inaugural[1:3]), groups = "President", verbose = TRUE)),
+        tmp <- suppressWarnings(dfm(tokens(data_corpus_inaugural[1:3]), 
+                                    groups = data_corpus_inaugural$President[1:3], 
+                                    verbose = TRUE)),
         "grouping texts"
     )
     expect_message(
@@ -1067,7 +1070,9 @@ test_that("dfm verbose = TRUE works as expected", {
         "stemming features \\(English\\)"
     )
     expect_message(
-        tmp <- suppressWarnings(dfm(dfm(tokens(data_corpus_inaugural[1:3])), groups = "President", verbose = TRUE)),
+        tmp <- suppressWarnings(dfm(dfm(tokens(data_corpus_inaugural[1:3])), 
+                                    groups = data_corpus_inaugural$President[1:3], 
+                                    verbose = TRUE)),
         "grouping texts"
     )
     expect_error(

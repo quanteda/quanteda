@@ -9,22 +9,21 @@ dfm_group(x, groups = NULL, fill = FALSE, force = FALSE)
 \arguments{
 \item{x}{a \link{dfm}}
 
-\item{groups}{either: a character vector containing the names of document
-variables to be used for grouping; or a factor or object that can be
-coerced into a factor equal in length or rows to the number of documents.
-\code{NA} values of the grouping value are dropped.
-See \link{groups} for details.}
+\item{groups}{grouping variable for sampling, equal in length to the number
+of documents. This will be evaluated in the docvars data.frame, so that
+docvars may be referred to by name without quoting. This also changes
+previous behaviours for \code{groups}. See \link{quanteda-deprecations} for details.}
 
-\item{fill}{logical; if \code{TRUE} and \code{groups} is a factor, then use
-all levels of the factor when forming the new "documents" of the grouped
-dfm.  This will result in documents with zero feature counts for levels not
+\item{fill}{logical; if \code{TRUE} and \code{groups} is a factor, then use all levels
+of the factor when forming the new "documents" of the grouped dfm.  This
+will result in a new "document" with empty content, for levels not
 observed.  Has no effect if the \code{groups} variable(s) are not factors.}
 
-\item{force}{logical; if \code{TRUE}, group by summing existing counts, even
-if the dfm has been weighted.  This can result in invalid sums, such as
-adding log counts (when a dfm has been weighted by \code{"logcount"} for
-instance using \code{\link[=dfm_weight]{dfm_weight()}}).  Does not apply to the term
-weight schemes "count" and "prop".}
+\item{force}{logical; if \code{TRUE}, group by summing existing counts, even if
+the dfm has been weighted.  This can result in invalid sums, such as adding
+log counts (when a dfm has been weighted by \code{"logcount"} for instance using
+\code{\link[=dfm_weight]{dfm_weight()}}).  Not needed when the term weight schemes "count" and
+"prop".}
 }
 \value{
 \code{dfm_group} returns a \link{dfm} whose documents are equal to
@@ -34,25 +33,25 @@ variation within groups are saved in \link{docvars}.  Document-level
 variables that are lists are dropped from grouping, even when these exhibit
 no variation within groups.
 
-Setting the \code{fill = TRUE} offers a way to "pad" a dfm with document
-groups that may not have been observed, but for which an empty document is
-needed, for various reasons.  If \code{groups} is a factor of dates, for
-instance, then using \code{fill = TRUE} ensures that the new documents will
-consist of one row of the dfm per date, regardless of whether any documents
-previously existed with that date.
+Setting \code{fill = TRUE} offers a way to add document groups to the result
+that may not have been observed, but for which an empty document is needed,
+for various reasons.  If \code{groups} is a factor of dates, for instance, then
+using \code{fill = TRUE} ensures that the new object will consist of one row
+of the dfm per date, regardless of whether any documents previously existed
+with that date.
 }
 \description{
-Combine documents in a \link{dfm} by a grouping variable, which can also be one of
-the \link{docvars} attached to the dfm.
+Combine documents in a \link{dfm} by a grouping variable, by summing the cell
+frequencies within group and creating new "documents" with the group labels.
 }
 \examples{
 corp <- corpus(c("a a b", "a b c c", "a c d d", "a c c d"),
                docvars = data.frame(grp = c("grp1", "grp1", "grp2", "grp2")))
 dfmat <- dfm(tokens(corp))
-dfm_group(dfmat, groups = "grp")
+dfm_group(dfmat, groups = grp)
 dfm_group(dfmat, groups = c(1, 1, 2, 2))
 
-# equivalent
-dfm(dfmat, groups = "grp")
-dfm(dfmat, groups = c(1, 1, 2, 2))
+# with fill = TRUE
+dfm_group(dfmat, fill = TRUE,
+          groups = factor(c("A", "A", "B", "C"), levels = LETTERS[1:4]))
 }

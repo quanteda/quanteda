@@ -24,6 +24,8 @@
 
 * A new system of validators for input types now provides better argument type and value checking, with more consistent error messages for invalid types or values.
 
+* `tokens_group()`, formerly internal-only, is now exported.
+
 * Non-standard evaluation for arguments `by`:
     - The `*_sample()` functions' argument `by` now takes unquoted document variable (docvar) names directly, similar to the way the `subset` argument works in the `*_subset()` functions.
     - Quoted docvar names no longer work, as these will be evaluated literally.

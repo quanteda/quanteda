@@ -33,7 +33,7 @@ test_that("dfm_group works with docvars", {
                        docvars = data.frame(grp = c(1, 1, 2, 2)))
     mydfm <- dfm(tokens(mycorpus))
     expect_equal(
-        colSums(dfm_group(mydfm, groups = "grp")),
+        colSums(dfm_group(mydfm, groups = grp)),
         colSums(mydfm)
     )
 })
@@ -58,12 +58,12 @@ test_that("test dfm_group with factor levels, fill = TRUE and FALSE, #854", {
                    docvars = data.frame(grp = factor(c("A", "A", "B"), levels = LETTERS[1:4])))
     dfmt <- dfm(tokens(corp))
     expect_equal(
-        as.matrix(dfm_group(dfmt, groups = "grp", fill = FALSE)),
+        as.matrix(dfm_group(dfmt, groups = grp, fill = FALSE)),
         matrix(c(1,2,3,1, 1,0,0,0), byrow = TRUE, nrow = 2, 
                dimnames = list(docs = c("A", "B"), features = letters[1:4]))
     )
     expect_equal(
-        as.matrix(dfm_group(dfmt, groups = "grp", fill = TRUE)),
+        as.matrix(dfm_group(dfmt, groups = grp, fill = TRUE)),
         matrix(c(1,2,3,1, 1,0,0,0, 0,0,0,0, 0,0,0,0), byrow = TRUE, nrow = 4 , 
                dimnames = list(docs = c("A", "B", "C", "D"), features = letters[1:4]))
     )
@@ -96,18 +96,18 @@ test_that("test dfm_group with factor levels, fill = TRUE and FALSE, #854", {
 })
 
 test_that("test dfm_group with non-factor grouping variable, with fill", {
-    grp <- c("D", "D", "A", "C")
+    grpvar <- c("D", "D", "A", "C")
     corp <- corpus(c("a b c c", "b c d", "a", "b d d"),
-                   docvars = data.frame(grp = grp, stringsAsFactors = FALSE))
+                   docvars = data.frame(grp = grpvar, stringsAsFactors = FALSE))
     dfmt <- dfm(tokens(corp))
     expect_equal(
-        as.matrix(dfm_group(dfmt, groups = "grp", fill = FALSE)),
+        as.matrix(dfm_group(dfmt, groups = grp, fill = FALSE)),
         matrix(c(1,0,0,0, 0,1,0,2, 1,2,3,1), byrow = TRUE, nrow = 3, 
                dimnames = list(docs = c("A", "C", "D"), features = letters[1:4]))
     )
     expect_equal(
-        dfm_group(dfmt, groups = "grp", fill = FALSE),
-        dfm_group(dfmt, groups = "grp", fill = TRUE)
+        dfm_group(dfmt, groups = grpvar, fill = FALSE),
+        dfm_group(dfmt, groups = grpvar, fill = TRUE)
     )
     expect_equal(
         dfm_group(dfmt, groups = grp, fill = FALSE),
@@ -120,27 +120,27 @@ test_that("test dfm_group with non-factor grouping variable, with fill", {
                dimnames = list(docs = c("A", "C", "D"), features = letters[1:4]))
     )
     expect_equal(
-        dfm_group(dfmt, groups = grp, fill = FALSE),
-        dfm_group(dfmt, groups = "grp", fill = FALSE)
+        dfm_group(dfmt, groups = grpvar, fill = FALSE),
+        dfm_group(dfmt, groups = grp, fill = FALSE)
     )
 })
     
 test_that("test dfm_group with wrongly dimensioned groups variables", {
-    grp <- c("D", "D", "A", "C")
+    grpvar <- c("D", "D", "A", "C")
     corp <- corpus(c("a b c c", "b c d", "a", "b d d"),
-                   docvars = data.frame(grp = grp, stringsAsFactors = FALSE))
+                   docvars = data.frame(grp = grpvar, stringsAsFactors = FALSE))
     dfmt <- dfm(tokens(corp))
     expect_error(
         dfm_group(dfmt, groups = c(1, 1, 2, 3, 3), fill = FALSE),
-        "groups must name docvars or provide data matching the documents in x"
+        "groups must have length ndoc(x)", fixed = TRUE
     )
     expect_error(
         dfm_group(dfmt, groups = c(1, 1, 2, 3, 3), fill = TRUE),
-        "groups must name docvars or provide data matching the documents in x"
+        "groups must have length ndoc(x)", fixed = TRUE
     )
     expect_error(
         dfm_group(dfmt, groups = c(1, 1, 2, 3, 4), fill = TRUE),
-        "groups must name docvars or provide data matching the documents in x"
+        "groups must have length ndoc(x)", fixed = TRUE
     )
 })
 
@@ -240,14 +240,14 @@ test_that("force argument works as expected (#1545)", {
     dfmat_tfprop <- dfm_weight(dfmat, "prop")
     dfmat_tfidf <- dfm_tfidf(dfmat)
 
-    expect_is(dfm_group(dfmat_tfprop, groups = "grp", force = FALSE), "dfm")
-    expect_is(dfm_group(dfmat_tfprop, groups = "grp", force = TRUE), "dfm")
+    expect_is(dfm_group(dfmat_tfprop, groups = grp, force = FALSE), "dfm")
+    expect_is(dfm_group(dfmat_tfprop, groups = grp, force = TRUE), "dfm")
     
     expect_error(
-        dfm_group(dfm_group(dfmat_tfidf, groups = "grp", force = FALSE)),
+        dfm_group(dfm_group(dfmat_tfidf, groups = grp, force = FALSE)),
         "will not group a weighted dfm; use force = TRUE to override"
     )
-    expect_is(dfm_group(dfmat_tfidf, groups = "grp", force = TRUE), "dfm")
+    expect_is(dfm_group(dfmat_tfidf, groups = grp, force = TRUE), "dfm")
 })
 
 test_that("group_docvar drops list column (#1553)", {
@@ -293,8 +293,8 @@ test_that("dfm_group works with NA group labels", {
     corp <- corpus(c("Doc 1", "Doc 1b", "Doc2", "Doc 3 with NA", "Doc 4, more NA"),
                    docvars = data.frame(factorvar = c("Yes", "Yes", "No", NA, NA)))
     expect_identical(
-        suppressWarnings(dfm(tokens(corp), groups = "factorvar")),
-        suppressWarnings(dfm(tokens(corp[1:3]), groups = "factorvar"))
+        suppressWarnings(dfm(tokens(corp), groups = corp$factorvar)),
+        suppressWarnings(dfm(tokens(corp[1:3]), groups = corp$factorvar[1:3]))
     )
     # expect_identical(
     #     dfm(tokens(corp)) %>% dfm_group(groups = "factorvar"),
