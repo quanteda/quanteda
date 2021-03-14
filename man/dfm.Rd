@@ -39,7 +39,7 @@ In \pkg{quanteda} v3, many convenience functions formerly available in
 inputs first using \code{\link[=tokens]{tokens()}}.  Other convenience arguments to \code{dfm()} were
 also removed, such as \code{select}, \code{dictionary}, \code{thesaurus}, and \code{groups}.  All
 of these functions are available elsewhere, e.g. through \code{\link[=dfm_group]{dfm_group()}}.
-See \link{quanteda-deprecations}.
+See \code{news(Version >= "2.9", package = "quanteda")} for details.
 }
 
 \examples{

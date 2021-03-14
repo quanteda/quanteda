@@ -22,8 +22,8 @@ vector being sampled.  May not be applied when \code{by} is used.}
 
 \item{by}{optional grouping variable for sampling.  This will be evaluated in
 the docvars data.frame, so that docvars may be referred to by name without
-quoting.  This also changes previous behaviours for \code{by}. See
-\link{quanteda-deprecations} for details.}
+quoting.  This also changes previous behaviours for \code{by}.
+See \code{news(Version >= "2.9", package = "quanteda")} for details.}
 }
 \value{
 a \link{tokens} object (re)sampled on the documents, containing the document

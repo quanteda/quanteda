@@ -14,8 +14,8 @@
 #'   vector being sampled.  May not be applied when `by` is used.
 #' @param by optional grouping variable for sampling.  This will be evaluated in
 #'   the docvars data.frame, so that docvars may be referred to by name without
-#'   quoting.  This also changes previous behaviours for `by`. See
-#'   [quanteda-deprecations] for details.
+#'   quoting.  This also changes previous behaviours for `by`.
+#'   See `news(Version >= "2.9", package = "quanteda")` for details.
 #' @return a [corpus] object (re)sampled on the documents, containing the document
 #'   variables for the documents sampled.
 #' @export

@@ -18,7 +18,7 @@ texts(x) <- value
 \item{groups}{grouping variable for sampling, equal in length to the number
 of documents. This will be evaluated in the docvars data.frame, so that
 docvars may be referred to by name without quoting. This also changes
-previous behaviours for \code{groups}. See \link{quanteda-deprecations} for details.}
+previous behaviours for \code{groups}. See \code{?news(Version >= "2.9", package = "quanteda")} for details.}
 
 \item{spacer}{when concatenating texts by using \code{groups}, this will be the
 spacing added between texts.  (Default is two spaces.)}
