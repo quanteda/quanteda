@@ -202,7 +202,7 @@ dfm.tokens <- function(x,
 
     remove_padding <- check_logical(remove_padding)
     if (remove_padding) {
-        x <- tokens_remove(x, "")
+        x <- tokens_remove(x, "", valuetype = "fixed")
     }
     
     # compile the dfm
@@ -329,7 +329,7 @@ dfm.dfm <- function(x,
 
     remove_padding <- check_logical(remove_padding)
     if (remove_padding) {
-        x <- dfm_remove(x, "")
+        x <- dfm_remove(x, "", valuetype = "fixed")
     }
 
     # remove any NA named columns
