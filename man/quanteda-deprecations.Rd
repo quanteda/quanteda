@@ -50,11 +50,12 @@ in \code{kwic()} is now disabled.  Users should now create a tokens object (usin
 \item Shortcut arguments to \code{dfm()} are now deprecated.  These are still active,
 with a warning, although they are no longer documented.  These are:
 \itemize{
-\item \code{stem} -- use \code{tokens_wordstem()} or \code{dfm_wordstem()} instead.
-\item \code{select} -- use \code{tokens_select()} or \code{dfm_select()} instead (although the \code{remove} argument is retained).
-\item \code{dictionary}, \code{thesaurus} -- use \code{tokens_lookup()} or \code{dfm_lookup()} instead.
+\item \code{stem} -- use \code{\link[=tokens_wordstem]{tokens_wordstem()}} or \code{\link[=dfm_wordstem]{dfm_wordstem()}} instead.
+\item \code{select}/\code{remove} -- use \code{\link[=tokens_select]{tokens_select()}} / \code{\link[=tokens_remove]{tokens_remove()}}, or
+\code{\link[=dfm_select]{dfm_select()}} / \code{\link[=dfm_remove]{dfm_remove()}} instead
+\item \code{dictionary}, \code{thesaurus} -- use \code{\link[=tokens_lookup]{tokens_lookup()}} or \code{\link[=dfm_lookup]{dfm_lookup()}} instead.
 \item \code{valuetype}, \code{case_insensitive} -- these are disabled; for the deprecated arguments that take these qualifiers, they are fixed to the defaults \code{"glob"} and \code{TRUE}.
-\item \code{groups} -- use \code{tokens_group()} or \code{dfm_group()} instead.
+\item \code{groups} -- use \code{\link[=tokens_group]{tokens_group()}} or \code{\link[=dfm_group]{dfm_group()}} instead.
 }
 }
 

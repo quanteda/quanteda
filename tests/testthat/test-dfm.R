@@ -569,11 +569,11 @@ test_that("dfm with selection options produces correct output", {
         "removed 4 features"
     )
     expect_message(
-        dfm(toks, remove = feat, verbose = TRUE),
+        suppressWarnings(dfm(toks, remove = feat, verbose = TRUE)),
         "removed 4 features"
     )
     expect_message(
-        dfm(dfmt, remove = feat, verbose = TRUE),
+        suppressWarnings(dfm(dfmt, remove = feat, verbose = TRUE)),
         "removed 4 features"
     )
 })
@@ -1125,6 +1125,7 @@ test_that("dfm deprecations work as expected", {
     txt <- c("a a b b c", "a a b c c d d")
     corp <- corpus(txt)
     toks <- tokens(corp)
+    dfmat <- dfm(toks)
     
     # deprecated methods
     expect_warning(
@@ -1150,6 +1151,11 @@ test_that("dfm deprecations work as expected", {
         fixed = TRUE
     )
     expect_warning(
+        dfm(txt, remove = "a"),
+        "'remove' is deprecated; use dfm_remove() instead",
+        fixed = TRUE
+    )
+    expect_warning(
         dfm(txt, dictionary = dictionary(list(one = "b"))),
         "'dictionary' and 'thesaurus' are deprecated; use dfm_lookup() instead",
         fixed = TRUE
@@ -1161,11 +1167,11 @@ test_that("dfm deprecations work as expected", {
     )
     expect_warning(
         dfm(txt, remove = "a", valuetype = "regex"),
-        "valuetype argument is not used", fixed = TRUE
+        "valuetype is deprecated in dfm()", fixed = TRUE
     )
     expect_warning(
         dfm(txt, remove = "a", case_insensitive = FALSE),
-        "case_insensitive argument is not used", fixed = TRUE
+        "case_insensitive is deprecated in dfm()", fixed = TRUE
     )
     expect_warning(
         dfm(corp, stem = TRUE),
@@ -1175,6 +1181,11 @@ test_that("dfm deprecations work as expected", {
     expect_warning(
         dfm(corp, select = "a"),
         "'select' is deprecated; use dfm_select() instead",
+        fixed = TRUE
+    )
+    expect_warning(
+        dfm(corp, remove = "a"),
+        "'remove' is deprecated; use dfm_remove() instead",
         fixed = TRUE
     )
     expect_warning(
@@ -1189,11 +1200,11 @@ test_that("dfm deprecations work as expected", {
     )
     expect_warning(
         dfm(corp, remove = "a", valuetype = "regex"),
-        "valuetype argument is not used", fixed = TRUE
+        "valuetype is deprecated in dfm()", fixed = TRUE
     )
     expect_warning(
         dfm(corp, remove = "a", case_insensitive = FALSE),
-        "case_insensitive argument is not used", fixed = TRUE
+        "case_insensitive is deprecated in dfm()", fixed = TRUE
     )
      expect_warning(
         dfm(toks, stem = TRUE),
@@ -1203,6 +1214,11 @@ test_that("dfm deprecations work as expected", {
     expect_warning(
         dfm(toks, select = "a"),
         "'select' is deprecated; use dfm_select() instead",
+        fixed = TRUE
+    )
+    expect_warning(
+        dfm(toks, remove = "a"),
+        "'remove' is deprecated; use dfm_remove() instead",
         fixed = TRUE
     )
     expect_warning(
@@ -1217,10 +1233,129 @@ test_that("dfm deprecations work as expected", {
     )
     expect_warning(
         dfm(toks, remove = "a", valuetype = "regex"),
-        "valuetype argument is not used", fixed = TRUE
+        "valuetype is deprecated in dfm()", fixed = TRUE
     )
     expect_warning(
         dfm(toks, remove = "a", case_insensitive = FALSE),
-        "case_insensitive argument is not used", fixed = TRUE
+        "case_insensitive is deprecated in dfm()", fixed = TRUE
+    )
+    
+    expect_warning(
+        dfm(dfmat, stem = TRUE),
+        "'stem' is deprecated; use dfm_wordstem() instead",
+        fixed = TRUE
+    )
+    expect_warning(
+        dfm(dfmat, select = "a"),
+        "'select' is deprecated; use dfm_select() instead",
+        fixed = TRUE
+    )
+    expect_warning(
+        dfm(dfmat, remove = "a"),
+        "'remove' is deprecated; use dfm_remove() instead",
+        fixed = TRUE
+    )
+    expect_warning(
+        dfm(dfmat, dictionary = dictionary(list(one = "b"))),
+        "'dictionary' and 'thesaurus' are deprecated; use dfm_lookup() instead",
+        fixed = TRUE
+    )
+    expect_warning(
+        dfm(dfmat, groups = c(1, 1)),
+        "'groups' is deprecated; use dfm_group() instead",
+        fixed = TRUE
+    )
+    expect_warning(
+        dfm(dfmat, remove = "a", valuetype = "regex"),
+        "valuetype is deprecated in dfm()", fixed = TRUE
+    )
+    expect_warning(
+        dfm(dfmat, remove = "a", case_insensitive = FALSE),
+        "case_insensitive is deprecated in dfm()", fixed = TRUE
+    )
+})
+
+test_that("valuetype and case_insensitive are still working", {
+    txt <- c("a a b b c", "A A b C C d d")
+    corp <- corpus(txt)
+    toks <- tokens(corp)
+    dfmat <- dfm(toks, tolower = FALSE)
+
+    # for txt
+    expect_identical(
+        featnames(suppressWarnings(dfm(txt, tolower = FALSE, remove = "a|c", 
+                                       valuetype = "regex"))),
+        c("b", "d")
+    )
+    expect_identical(
+        featnames(suppressWarnings(dfm(txt, tolower = FALSE, remove = "a|c", 
+                                       valuetype = "regex", case_insensitive = TRUE))),
+        c("b", "d")
+    )
+    expect_identical(
+        featnames(suppressWarnings(dfm(txt, tolower = FALSE, remove = "a|c", 
+                                       valuetype = "regex", case_insensitive = FALSE))),
+        c("b", "A", "C", "d")
+    )
+
+    # for corpus
+    expect_identical(
+        featnames(suppressWarnings(dfm(corp, tolower = FALSE, remove = "a|c", 
+                                       valuetype = "regex"))),
+        c("b", "d")
+    )
+    expect_identical(
+        featnames(suppressWarnings(dfm(corp, tolower = FALSE, remove = "a|c", 
+                                       valuetype = "regex", case_insensitive = TRUE))),
+        c("b", "d")
+    )
+    expect_identical(
+        featnames(suppressWarnings(dfm(corp, tolower = FALSE, remove = "a|c", 
+                                       valuetype = "regex", case_insensitive = FALSE))),
+        c("b", "A", "C", "d")
+    )
+    
+    # for dfm
+    expect_identical(
+        featnames(suppressWarnings(dfm(dfmat, tolower = FALSE, remove = "a|c", 
+                                       valuetype = "regex"))),
+        c("b", "d")
+    )
+    expect_identical(
+        featnames(suppressWarnings(dfm(dfmat, tolower = FALSE, remove = "a|c", 
+                                       valuetype = "regex", case_insensitive = TRUE))),
+        c("b", "d")
+    )
+    expect_identical(
+        featnames(suppressWarnings(dfm(dfmat, tolower = FALSE, remove = "a|c", 
+                                       valuetype = "regex", case_insensitive = FALSE))),
+        c("b", "A", "C", "d")
+    )
+})
+
+test_that("remove_padding argument works", {
+    txt <- c("a a b b c", "a a b c c d d")
+    toks <- tokens(txt) %>% tokens_remove("b", padding = TRUE)
+    dfmat <- dfm(toks)
+    
+    expect_identical(
+        featnames(suppressWarnings(dfm(txt, remove_padding = TRUE))),
+        c("a", "b", "c", "d")
+    )
+    expect_identical(
+        featnames(suppressWarnings(dfm(txt, remove_padding = FALSE))),
+        c("a", "b", "c", "d")
+    )
+    expect_identical(
+        featnames(dfm(toks, remove_padding = FALSE)),
+        c("", "a", "c", "d")
+    )
+    expect_identical(
+        featnames(dfm(dfmat, remove_padding = TRUE)),
+        c("a", "c", "d")
+    )
+    expect_identical(
+        featnames(dfm(dfmat, remove_padding = FALSE)),
+        c("", "a", "c", "d")
     )
 })
