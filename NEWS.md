@@ -75,6 +75,8 @@
     - no longer has a `margin` argument.  Instead, `dfm_sample()` now samples only on documents, the same as `corpus_sample()` and `tokens_sample()`; and
     - no longer works with `by = "document"` -- use `by = docid(x)` instead.
 
+* `dictionary_edit()`, `char_edit()`, and `list_edit()` are removed.
+
 # quanteda 2.1.2
 
 ## Changes
