@@ -108,7 +108,6 @@ Collate:
     'dfm_trim.R'
     'dfm_weight.R'
     'dictionaries.R'
-    'dictionary_edit.R'
     'dimnames.R'
     'fcm-classes.R'
     'docnames.R'
