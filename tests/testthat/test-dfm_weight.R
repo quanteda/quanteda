@@ -1,6 +1,7 @@
 test_that("dfm_weight works", {
     str <- c("apple is better than banana", "banana banana apple much better")
-    mydfm <- dfm(tokens(str), remove = stopwords("english"))
+    mydfm <- dfm(tokens(str)) %>%
+        dfm_remove(stopwords("english"))
 
     expect_equivalent(round(as.matrix(dfm_weight(mydfm, scheme = "count")), 2),
                       matrix(c(1, 1, 1, 1, 1, 2, 0, 1), nrow = 2))
@@ -34,7 +35,8 @@ test_that("dfm_weight works", {
 test_that("dfm_weight works with weights", {
     str <- c("apple is better than banana", "banana banana apple much better")
     w <- c(apple = 5, banana = 3, much = 0.5)
-    mydfm <- dfm(tokens(str), remove = stopwords("english"))
+    mydfm <- dfm(tokens(str)) %>%
+        dfm_remove(stopwords("english"))
 
     expect_equivalent(as.matrix(dfm_weight(mydfm, weights = w)),
                       matrix(c(5, 5, 1, 1, 3, 6, 0, 0.5), nrow = 2))

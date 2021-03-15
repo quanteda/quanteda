@@ -33,17 +33,17 @@
 #' # with fill = TRUE
 #' dfm_group(dfmat, fill = TRUE,
 #'           groups = factor(c("A", "A", "B", "C"), levels = LETTERS[1:4]))
-dfm_group <- function(x, groups = NULL, fill = FALSE, force = FALSE) {
+dfm_group <- function(x, groups, fill = FALSE, force = FALSE) {
     UseMethod("dfm_group")
 }
 
 #' @export
-dfm_group.default <- function(x, groups = NULL, fill = FALSE, force = FALSE) {
+dfm_group.default <- function(x, groups, fill = FALSE, force = FALSE) {
     check_class(class(x), "dfm_group")
 }
     
 #' @export
-dfm_group.dfm <- function(x, groups = NULL, fill = FALSE, force = FALSE) {
+dfm_group.dfm <- function(x, groups, fill = FALSE, force = FALSE) {
 
     x <- as.dfm(x)
     fill <- check_logical(fill)
