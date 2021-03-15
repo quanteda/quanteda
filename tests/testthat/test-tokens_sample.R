@@ -12,9 +12,9 @@ test_that("test tokens_sample to see if without grouping, documents can be overs
 
 test_that("test tokens_sample to see if with grouping, documents can be oversampled", {
     for (i in 1:10) {
-        toks_samp <- tokens_sample(toks_sent, replace = TRUE, by = "document")
+        toks_samp <- tokens_sample(toks_sent, replace = TRUE, by = docid(toks_sent))
         expect_equal(
-            sum(stringi::stri_detect_regex(docnames(tokens_sample(toks_samp, replace = TRUE, by = "docid_")), "^one")),
+            sum(stringi::stri_detect_regex(docnames(tokens_sample(toks_samp, replace = TRUE, by = docid_)), "^one")),
             3
         )
     }
@@ -28,15 +28,15 @@ test_that("tokens_sample by group works", {
                              stringsAsFactors = FALSE)
     ))
     expect_equal(
-        docvars(tokens_sample(toks, size = 2, by = "grp"), "grp"),
+        docvars(tokens_sample(toks, size = 2, by = grp), "grp"),
         rep(LETTERS[1:2], each = 2)
     )
     expect_equal(
-        docvars(tokens_sample(toks, size = 25, by = "grp", replace = TRUE), "grp"),
+        docvars(tokens_sample(toks, size = 25, by = grp, replace = TRUE), "grp"),
         rep(LETTERS[1:2], each = 25)
     )
     expect_equal(
-        docvars(tokens_sample(toks, by = "grp"), "grp"),
+        docvars(tokens_sample(toks, by = grp), "grp"),
         rep(LETTERS[1:2], each = 5)
     )
 })

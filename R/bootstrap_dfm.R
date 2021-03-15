@@ -65,17 +65,17 @@ bootstrap_dfm.dfm <- function(x, n = 10, ..., verbose = quanteda_options("verbos
     x <- as.dfm(x)
     n <- check_integer(n, min = 0)
     verbose <- check_logical(verbose)
-    
+
     if (verbose) {
         message("Bootstrapping the sentences to create multiple dfm objects...")
         message("   ...resampling and forming dfms: 0", appendLF = FALSE)
     }
     result <- list()
-    result[[1]] <- dfm_group(x, groups = "docid_", fill = TRUE)
+    result[[1]] <- dfm_group(x, groups = docid(x), fill = TRUE)
     for (i in seq_len(n)) {
         if (verbose)
             message(", ", i, appendLF = FALSE)
-        temp <- dfm_sample(x, size = NULL, replace = TRUE, by = "document")
+        temp <- dfm_sample(x, size = NULL, replace = TRUE, by = docid(x))
         temp <- dfm_group(temp)
         result[[i + 1]] <- temp
     }

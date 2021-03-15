@@ -4,7 +4,7 @@
 #' Works for plain character vectors too, if `groups` is a factor.
 #' @note The `groups` will be used for concatenating the texts based on shared
 #' values of `groups`, without any specified order of aggregation.
-#' @param x a [corpus] or character object
+#' @param x a [corpus]
 #' @inheritParams groups
 #' @param spacer when concatenating texts by using `groups`, this will be the
 #'   spacing added between texts.  (Default is two spaces.)
@@ -17,13 +17,11 @@
 #' nchar(texts(corpus_subset(data_corpus_inaugural, Year < 1806)))
 #'
 #' # grouping on a document variable
-#' nchar(texts(corpus_subset(data_corpus_inaugural, Year < 1806), groups = "President"))
+#' nchar(texts(corpus_subset(data_corpus_inaugural, Year < 1806), groups = President))
 #'
 #' # grouping a character vector using a factor
-#' nchar(texts(data_corpus_inaugural[1:5],
-#'       groups = "President"))
-#' nchar(texts(data_corpus_inaugural[1:5],
-#'       groups = factor(c("W", "W", "A", "J", "J"))))
+#' nchar(texts(data_corpus_inaugural[1:5], groups = President))
+#' nchar(texts(data_corpus_inaugural[1:5], groups = c("W", "W", "A", "J", "J")))
 #'
 texts <- function(x, groups = NULL, spacer = " ") {
     UseMethod("texts")
@@ -36,9 +34,17 @@ texts.corpus <- function(x, groups = NULL, spacer = " ") {
     x <- as.corpus(x)
     spacer <- check_character(spacer)
     attrs <- attributes(x)
-    if (!is.null(groups)) {
-        if (!is.factor(groups))
-            groups <- generate_groups(x, groups)
+    if (!missing(groups)) {
+        groups <- eval(substitute(groups),
+                       get_docvars(x, user = TRUE, system = TRUE), parent.frame())
+
+        # needed to preserve order of groups, rather than alphabetise them
+        # if (!is.factor(groups)) groups <- factor(groups, levels = unique(groups))
+        groups <- as.factor(groups)
+
+        if (ndoc(x) != length(groups))
+            stop("groups must have length ndoc(x)", call. = FALSE)
+
         result <- stri_c_list(split(x, groups), sep = spacer)
         attrs$docvars <- group_docvars(attrs$docvars, groups)
     } else {
@@ -46,13 +52,6 @@ texts.corpus <- function(x, groups = NULL, spacer = " ") {
     }
     names(result) <- attrs$docvars[["docname_"]]
     return(result)
-}
-
-#' @noRd
-#' @importFrom stringi stri_c_list
-#' @export
-texts.character <- function(x, groups = NULL, spacer = " ") {
-    texts(corpus(x), groups = groups, spacer = spacer)
 }
 
 #' @rdname texts

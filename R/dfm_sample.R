@@ -1,16 +1,13 @@
-#' Randomly sample documents or features from a dfm
+#' Randomly sample documents from a dfm
 #'
-#' Sample randomly from a dfm object, from documents or features.
-#' @param x the [dfm] object whose documents or features will be sampled
-#' @param size a positive number, the number of documents or features to select.
-#'   The default is the number of documents or the number of features, for
-#'   `margin = "documents"` and `margin = "features"` respectively.
-#' @param margin dimension (of a [dfm]) to sample: can be `documents` or
-#'   `features`. This argument is deprecated.
+#' Take a random sample of documents of the specified size from a dfm, with
+#' or without replacement, optionally by grouping variables or with probability
+#' weights.
+#' @param x the [dfm] object whose documents will be sampled
 #' @inheritParams corpus_sample
 #' @export
-#' @return A dfm object with number of documents or features equal to `size`, drawn
-#'   from the dfm `x`.
+#' @return a [dfm] object (re)sampled on the documents, containing the document
+#'   variables for the documents sampled.
 #' @seealso [sample]
 #' @keywords dfm
 #' @examples
@@ -19,41 +16,28 @@
 #' head(dfmat)
 #' head(dfm_sample(dfmat))
 #' head(dfm_sample(dfmat, replace = TRUE))
-#' head(dfm_sample(dfmat, margin = "features"))
-#' head(dfm_sample(dfmat, margin = "features", replace = TRUE))
-dfm_sample <- function(x, size = NULL, replace = FALSE, prob = NULL, by = NULL,
-                       margin = c("documents", "features")) {
+#'
+#' # by groups
+#' dfmat <- dfm(tokens(data_corpus_inaugural[50:58]))
+#' dfm_sample(dfmat, by = Party, size = 2)
+dfm_sample <- function(x, size = NULL, replace = FALSE, prob = NULL, by = NULL) {
     UseMethod("dfm_sample")
 }
 
 #' @export
-dfm_sample.default <- function(x, size = NULL, replace = FALSE, prob = NULL, by = NULL,
-                               margin = c("documents", "features")) {
+dfm_sample.default <- function(x, size = NULL, replace = FALSE, prob = NULL, by = NULL) {
     check_class(class(x), "dfm_sample")
 }
     
 #' @export
-dfm_sample.dfm <- function(x, size = NULL, replace = FALSE, prob = NULL, by = NULL,
-                           margin = c("documents", "features")) {
-     
+dfm_sample.dfm <- function(x, size = NULL, replace = FALSE, prob = NULL, by = NULL) {
     x <- as.dfm(x)
-    margin <- match.arg(margin)
-    
-    if (margin == "features")
-        .Deprecated(msg = 'margin is deprecated')
-    
-    if (margin == "documents") {
-        if (!is.null(by)) {
-            if (by == "document") by <- "docid_"
-            i <- resample(seq_len(ndoc(x)), size = size, replace = replace, prob = prob,
-                          by = get_docvars(x, by, system = TRUE, drop = TRUE))
-        } else {
-            i <- resample(seq_len(ndoc(x)), size = size, replace = replace, prob = prob) 
-        }
-        x <- x[i,]
-    } else if (margin == "features") {
-        j <- resample(seq_len(nfeat(x)), size = size, replace = replace, prob = prob)
-        x <- x[,j]
+
+    if (!missing(by)) {
+        by <- eval(substitute(by), get_docvars(x, user = TRUE, system = TRUE), parent.frame())
     }
-    return(x)
+
+    i <- resample(seq_len(ndoc(x)), size = size, replace = replace, prob = prob, by = by)
+
+    return(x[i, ])
 }

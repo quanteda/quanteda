@@ -1,14 +1,14 @@
 #' Combine documents in a dfm by a grouping variable
 #'
-#' Combine documents in a [dfm] by a grouping variable, which can also be one of
-#' the [docvars] attached to the dfm.
+#' Combine documents in a [dfm] by a grouping variable, by summing the cell
+#' frequencies within group and creating new "documents" with the group labels.
 #' @param x a [dfm]
 #' @inheritParams groups
-#' @param force logical; if `TRUE`, group by summing existing counts, even
-#'   if the dfm has been weighted.  This can result in invalid sums, such as
-#'   adding log counts (when a dfm has been weighted by `"logcount"` for
-#'   instance using [dfm_weight()]).  Does not apply to the term
-#'   weight schemes "count" and "prop".
+#' @param force logical; if `TRUE`, group by summing existing counts, even if
+#'   the dfm has been weighted.  This can result in invalid sums, such as adding
+#'   log counts (when a dfm has been weighted by `"logcount"` for instance using
+#'   [dfm_weight()]).  Not needed when the term weight schemes "count" and
+#'   "prop".
 #' @return `dfm_group` returns a [dfm] whose documents are equal to
 #'   the unique group combinations, and whose cell values are the sums of the
 #'   previous values summed by group. Document-level variables that have no
@@ -16,23 +16,23 @@
 #'   variables that are lists are dropped from grouping, even when these exhibit
 #'   no variation within groups.
 #'
-#'   Setting the `fill = TRUE` offers a way to "pad" a dfm with document
-#'   groups that may not have been observed, but for which an empty document is
-#'   needed, for various reasons.  If `groups` is a factor of dates, for
-#'   instance, then using `fill = TRUE` ensures that the new documents will
-#'   consist of one row of the dfm per date, regardless of whether any documents
-#'   previously existed with that date.
+#'   Setting `fill = TRUE` offers a way to add document groups to the result
+#'   that may not have been observed, but for which an empty document is needed,
+#'   for various reasons.  If `groups` is a factor of dates, for instance, then
+#'   using `fill = TRUE` ensures that the new object will consist of one row
+#'   of the dfm per date, regardless of whether any documents previously existed
+#'   with that date.
 #' @export
 #' @examples
 #' corp <- corpus(c("a a b", "a b c c", "a c d d", "a c c d"),
 #'                docvars = data.frame(grp = c("grp1", "grp1", "grp2", "grp2")))
 #' dfmat <- dfm(tokens(corp))
-#' dfm_group(dfmat, groups = "grp")
+#' dfm_group(dfmat, groups = grp)
 #' dfm_group(dfmat, groups = c(1, 1, 2, 2))
 #'
-#' # equivalent
-#' dfm(dfmat, groups = "grp")
-#' dfm(dfmat, groups = c(1, 1, 2, 2))
+#' # with fill = TRUE
+#' dfm_group(dfmat, fill = TRUE,
+#'           groups = factor(c("A", "A", "B", "C"), levels = LETTERS[1:4]))
 dfm_group <- function(x, groups = NULL, fill = FALSE, force = FALSE) {
     UseMethod("dfm_group")
 }
@@ -48,10 +48,14 @@ dfm_group.dfm <- function(x, groups = NULL, fill = FALSE, force = FALSE) {
     x <- as.dfm(x)
     fill <- check_logical(fill)
     force <- check_logical(force)
-    
+
     attrs <- attributes(x)
-    if (is.null(groups))
+    if (missing(groups)) {
         groups <- docid(x)
+    } else {
+        groups <- eval(substitute(groups), get_docvars(x, user = TRUE, system = TRUE), parent.frame())
+        groups <- as.factor(groups)
+    }
 
     if (!force) {
         if ((!field_object(attrs, "weight_tf")[["scheme"]] %in% c("count", "prop") &&
@@ -62,15 +66,16 @@ dfm_group.dfm <- function(x, groups = NULL, fill = FALSE, force = FALSE) {
         }
     }
     if (!nfeat(x) || !ndoc(x)) return(x)
-    if (!is.factor(groups))
-        groups <- generate_groups(x, groups)
     if (!fill)
         groups <- droplevels(groups)
+
+    if (ndoc(x) != length(groups))
+        stop("groups must have length ndoc(x)", call. = FALSE)
 
     # remove NA groups
     x <- dfm_subset(x, !is.na(groups))
     groups <- groups[!is.na(groups)]
-    
+
     group_dfm(x, documents = groups, fill = fill)
 }
 

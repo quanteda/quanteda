@@ -64,6 +64,25 @@ test_that("dfm_group and tokens_group are equivalent", {
         dfm(tokens_group(toks, c(1, 1, 1))))
 })
 
+test_that("test tokenss_group with wrongly dimensioned groups variables", {
+    grpvar <- c("D", "D", "A", "C")
+    corp <- corpus(c("a b c c", "b c d", "a", "b d d"),
+                   docvars = data.frame(grp = grpvar, stringsAsFactors = FALSE))
+    toks <- tokens(corp)
+    expect_error(
+        tokens_group(toks, groups = c(1, 1, 2, 3, 3), fill = FALSE),
+        "groups must have length ndoc(x)", fixed = TRUE
+    )
+    expect_error(
+        tokens_group(toks, groups = c(1, 1, 2, 3, 3), fill = TRUE),
+        "groups must have length ndoc(x)", fixed = TRUE
+    )
+    expect_error(
+        tokens_group(toks, groups = c(1, 1, 2, 3, 4), fill = TRUE),
+        "groups must have length ndoc(x)", fixed = TRUE
+    )
+})
+
 test_that("generate_groups works for tokens objects", {
     corp <- tail(data_corpus_inaugural, 14)
     docvars(corp, "Party") <- factor(docvars(corp, "Party"))

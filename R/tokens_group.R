@@ -1,7 +1,21 @@
-#' Recombine documents in tokens by a grouping variable
+#' Combine documents in a tokens object by a grouping variable
 #'
-#' Combine documents in a [tokens] object by a grouping variable, which can also
-#' be one of the [docvars] attached to the dfm.
+#' Combine documents in a [tokens] object by a grouping variable, by
+#' concatenating the tokens in the order of the documents within each grouping
+#' variable.
+#' @return a [tokens] object whose documents are equal to
+#'   the unique group combinations, and whose tokens are the concatenations
+#'   of the tokens by group. Document-level variables that have no
+#'   variation within groups are saved in [docvars].  Document-level
+#'   variables that are lists are dropped from grouping, even when these exhibit
+#'   no variation within groups.
+#'
+#'   Setting `fill = TRUE` offers a way to add document groups to the result
+#'   that may not have been observed, but for which an empty document is needed,
+#'   for various reasons.  If `groups` is a factor of dates, for instance, then
+#'   using `fill = TRUE` ensures that the new object will consist of one new
+#'   "document" by date, regardless of whether any documents previously existed
+#'   with that date.
 #' @param x [tokens] object
 #' @inheritParams groups
 #' @keywords tokens
@@ -10,9 +24,12 @@
 #' corp <- corpus(c("a a b", "a b c c", "a c d d", "a c c d"),
 #'                docvars = data.frame(grp = c("grp1", "grp1", "grp2", "grp2")))
 #' toks <- tokens(corp)
-#' tokens_group(toks, groups = "grp")
+#' tokens_group(toks, groups = grp)
 #' tokens_group(toks, groups = c(1, 1, 2, 2))
+#'
+#' # with fill
 #' tokens_group(toks, groups = factor(c(1, 1, 2, 2), levels = 1:3))
+#' tokens_group(toks, groups = factor(c(1, 1, 2, 2), levels = 1:3), fill = TRUE)
 tokens_group <- function(x, groups = NULL, fill = FALSE) {
     UseMethod("tokens_group")
 }
@@ -25,16 +42,24 @@ tokens_group.default <- function(x, groups = NULL, fill = FALSE) {
 #' @export
 tokens_group.tokens <- function(x, groups = NULL, fill = FALSE) {
     x <- as.tokens(x)
-    if (!is.factor(groups))
-        groups <- generate_groups(x, groups, fill)
+    if (!missing(groups)) {
+        groups <- eval(substitute(groups), get_docvars(x, user = TRUE, system = TRUE), parent.frame())
+        groups <- as.factor(groups)
+    }
     if (!fill)
         groups <- droplevels(groups)
+
+    if (ndoc(x) != length(groups))
+        stop("groups must have length ndoc(x)", call. = FALSE)
+
     # remove NA groups
     x <- tokens_subset(x, !is.na(groups))
     attrs <- attributes(x)
     groups <- groups[!is.na(groups)]
+
     result <- group_tokens(x, groups)
     attrs[["docvars"]] <- group_docvars(attrs[["docvars"]], groups)
+
     rebuild_tokens(result, attrs)
 }
 

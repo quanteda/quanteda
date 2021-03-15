@@ -312,6 +312,10 @@ test_that("test token default methods", {
         tokens_wordstem(TRUE),
         "tokens_wordstem\\(\\) only works on tokens objects"
     )
+    expect_error(
+        tokens_group(TRUE),
+        "tokens_group\\(\\) only works on tokens objects"
+    )
 })
 
 test_that("test new as.dfm methods", {

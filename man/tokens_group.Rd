@@ -2,34 +2,52 @@
 % Please edit documentation in R/tokens_group.R
 \name{tokens_group}
 \alias{tokens_group}
-\title{Recombine documents in tokens by a grouping variable}
+\title{Combine documents in a tokens object by a grouping variable}
 \usage{
 tokens_group(x, groups = NULL, fill = FALSE)
 }
 \arguments{
 \item{x}{\link{tokens} object}
 
-\item{groups}{either: a character vector containing the names of document
-variables to be used for grouping; or a factor or object that can be
-coerced into a factor equal in length or rows to the number of documents.
-\code{NA} values of the grouping value are dropped.
-See \link{groups} for details.}
+\item{groups}{grouping variable for sampling, equal in length to the number
+of documents. This will be evaluated in the docvars data.frame, so that
+docvars may be referred to by name without quoting. This also changes
+previous behaviours for \code{groups}. See \code{?news(Version >= "2.9", package = "quanteda")} for details.}
 
-\item{fill}{logical; if \code{TRUE} and \code{groups} is a factor, then use
-all levels of the factor when forming the new "documents" of the grouped
-object.  This will result in empty documents for levels not
+\item{fill}{logical; if \code{TRUE} and \code{groups} is a factor, then use all levels
+of the factor when forming the new "documents" of the grouped dfm.  This
+will result in a new "document" with empty content, for levels not
 observed.  Has no effect if the \code{groups} variable(s) are not factors.}
 }
+\value{
+a \link{tokens} object whose documents are equal to
+the unique group combinations, and whose tokens are the concatenations
+of the tokens by group. Document-level variables that have no
+variation within groups are saved in \link{docvars}.  Document-level
+variables that are lists are dropped from grouping, even when these exhibit
+no variation within groups.
+
+Setting \code{fill = TRUE} offers a way to add document groups to the result
+that may not have been observed, but for which an empty document is needed,
+for various reasons.  If \code{groups} is a factor of dates, for instance, then
+using \code{fill = TRUE} ensures that the new object will consist of one new
+"document" by date, regardless of whether any documents previously existed
+with that date.
+}
 \description{
-Combine documents in a \link{tokens} object by a grouping variable, which can also
-be one of the \link{docvars} attached to the dfm.
+Combine documents in a \link{tokens} object by a grouping variable, by
+concatenating the tokens in the order of the documents within each grouping
+variable.
 }
 \examples{
 corp <- corpus(c("a a b", "a b c c", "a c d d", "a c c d"),
                docvars = data.frame(grp = c("grp1", "grp1", "grp2", "grp2")))
 toks <- tokens(corp)
-tokens_group(toks, groups = "grp")
+tokens_group(toks, groups = grp)
 tokens_group(toks, groups = c(1, 1, 2, 2))
+
+# with fill
 tokens_group(toks, groups = factor(c(1, 1, 2, 2), levels = 1:3))
+tokens_group(toks, groups = factor(c(1, 1, 2, 2), levels = 1:3), fill = TRUE)
 }
 \keyword{tokens}
