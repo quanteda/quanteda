@@ -15,7 +15,7 @@
 #' inputs first using [tokens()].  Other convenience arguments to `dfm()` were
 #' also removed, such as `select`, `dictionary`, `thesaurus`, and `groups`.  All
 #' of these functions are available elsewhere, e.g. through [dfm_group()].
-#' See [quanteda-deprecations].
+#' See `news(Version >= "2.9", package = "quanteda")` for details.
 #' @return a [dfm-class] object
 #' @import Matrix
 #' @export

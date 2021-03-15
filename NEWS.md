@@ -1,44 +1,57 @@
 # quanteda 3.0
 
-**quanteda** 3.0 is a major release that improves functionality, completes the modularisation of the package begun in v2.0, and further improves function consistency by removing previously deprecated functions, and deprecating some shortcut steps in the text analysis workflow.
+**quanteda** 3.0 is a major release that improves functionality, completes the modularisation of the package begun in v2.0, further improves function consistency by removing previously deprecated functions, and enhances workflow stability and consistency by deprecating some shortcut steps built into some functions.
 
-## Changes
+## Changes and additions
 
-* Separated the `textplot_*()` functions from the main package into a separate package **quanteda.textplots**.
+* Modularisation: We have now separated the `textplot_*()` functions from the main package into a separate package **quanteda.textplots**, and the `textstat_*()` functions from the main package into a separate package **quanteda.textstats**.  This completes the modularisation begun in v2 with the move of the `textmodel_*()` functions to the separate package **quanteda.textmodels**.  **quanteda** now consists of core functions for textual data processing and management.
 
-* Separated the `textstat_*()` functions from the main package into a separate package **quanteda.textstats**.
+* The package dependency structure is now greatly reduced, by eliminating some unnecessary package dependencies, through modularisation, and by addressing complex downstream dependencies in packages such as **stopwords**.  v3 should serve as a more lightweight and more consistent platform for other text analysis packages to build on.
+
+* We have added non-standard evaluation for `by` and `groups` arguments to access object docvars:
+    - The `*_sample()` functions' argument `by`, and `groups` in the `*_group()` functions, now take unquoted document variable (docvar) names directly, similar to the way the `subset` argument works in the `*_subset()` functions.
+    - Quoted docvar names no longer work, as these will be evaluated literally.
+    - The `by = "document"` formerly sampled from `docid(x)`, but this functionality is now removed.  Instead, use `by = docid(x)` to replicate this functionality.
+
+* `dfm()` has a new argument, `remove_padding`, for removing the "pads" left behind after removing tokens with `padding = TRUE`.  (For other extensive changes to `dfm()`, see "Deprecated" below.)
+
+* `tokens_group()`, formerly internal-only, is now exported.
 
 * `corpus_sample()`, `dfm_sample()`, and `tokens_sample()` now work consistently (#2023).
 
-* Upon startup, we now message the console with the Unicode and ICU version information.
-
-* The documentation for `dfm` now has all references to the defunct `ngrams` argument removed.
-
-* The package dependency structure is now greatly reduced, partly by addressing complex downstream dependencies in packages such as **stopwords**, but also by reducing several package dependencies and through modularisation.
+* The `kwic()` return object structure has been redefined, and built with an option to use a new function `index()` that returns token spans following a pattern search.  (#2045 and #2065)
 
 * The punctuation regular expression and that for matching social media usernames has now been redefined so that the valid Twitter username `@_` is now counted as a "tag" rather than as "punctuation". (#2049)
-
-* The `kwic()` return object structure has been redefined, and built with an option to use a new function `index()` that returns token spans following a pattern search.  (#2045 and #2065)
 
 * The data object `data_corpus_inaugural` has been updated to include the Biden 2021 inaugural address.
 
 * A new system of validators for input types now provides better argument type and value checking, with more consistent error messages for invalid types or values.
 
-* `dfm()` has a new argument, `remove_padding`, for removing the "pads" left behind after removing tokens with `padding = TRUE`.  (For other extensive changes to `dfm()`, see "Deprecated" below.)
+* Upon startup, we now message the console with the Unicode and ICU version information.  Because we removed our redefinition of `View()` (see below), the former conflict warning is now gone.
 
-## Bug fixes and stability enhancements
+## Deprecations
 
-* Fixed a bug causing `topfeatures(x, group = something)` to fail with weighted dfms (#2032).
+The main potentially breaking changes in version 3 relate to the deprecation or
+elimination of shortcut steps that allowed functions that required tokens inputs
+to skip the tokens creation step.  We did this to require users to take more
+direct control of tokenization options, or to substitute the alternative
+tokeniser of their choice (and then coercing it to tokens via [as.tokens()]).
+This also allows our function behaviour to be more consistent, with each
+function performing a single task, rather than combining functions (such as
+tokenisation _and_ constructing a matrix).
 
-* `kwic()` is more stable and does not crash when a vector is supplied as the `window` argument (#2008).
+The most common example involves constructing a dfm directly from a character
+or corpus object.  Formerly, this would construct a tokens object internally
+before creating the dfm, and allowed passing arguments to `tokens()` via `...`.
+This is now deprecated, although still functional with a warning.
 
-* Allow use of multi-threading with more than two threads by fixing `quanteda_options()`.
+We strongly encourage either creating a tokens object first, or piping the
+tokens return to `dfm()` using `%>%`.  (See examples below.)
 
-* Mentions of the now-removed `ngrams` option in `dfm(x, ...)` has now been removed from the dfm documentation.  (#1990)
+We have also deprecated direct character or corpus inputs to [kwic()], since
+this also requires a tokenised input.
 
-## Deprecated
-
-* `dfm_sample(x, margins = "features")` is deprecated; future versions will not support sampling on features using `dfm_sample()`.
+The full listing of deprecations is:
 
 * `dfm.character()` and `dfm.corpus()` are deprecated.  Users should create a tokens object first, and input that to `dfm()`.
 
@@ -53,7 +66,8 @@
     - `valuetype`, `case_insensitive` -- these are disabled; for the deprecated arguments that take these qualifiers, they are fixed to the defaults `"glob"` and `TRUE`.
     - `groups` -- use `tokens_group()` or `dfm_group()` instead.
 
-## Removed
+
+## Removals
 
 * See note above under "Changes" about the `textplot_*()` and `textstat_*()` functions.
 
@@ -68,7 +82,22 @@
 
 * `dfm` objects can no longer be used as a `pattern` in `dfm_select()` (formerly deprecated).
 
+* `dfm_sample()`:
+    - no longer has a `margin` argument.  Instead, `dfm_sample()` now samples only on documents, the same as `corpus_sample()` and `tokens_sample()`; and
+    - no longer works with `by = "document"` -- use `by = docid(x)` instead.
+
 * `dictionary_edit()`, `char_edit()`, and `list_edit()` are removed.
+
+## Bug fixes and stability enhancements
+
+* Fixed a bug causing `topfeatures(x, group = something)` to fail with weighted dfms (#2032).
+
+* `kwic()` is more stable and does not crash when a vector is supplied as the `window` argument (#2008).
+
+* Allow use of multi-threading with more than two threads by fixing `quanteda_options()`.
+
+* Mentions of the now-removed `ngrams` option in `dfm(x, ...)` has now been removed from the dfm documentation.  (#1990)
+
 
 # quanteda 2.1.2
 

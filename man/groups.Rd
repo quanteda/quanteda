@@ -4,16 +4,17 @@
 \alias{groups}
 \title{Grouping variable(s) for various functions}
 \arguments{
-\item{groups}{either: a character vector containing the names of document
-variables to be used for grouping; or a factor or object that can be
-coerced into a factor equal in length or rows to the number of documents.
-\code{NA} values of the grouping value are dropped.
-See \link{groups} for details.}
+\item{groups}{grouping variable for sampling, equal in length to the number
+of documents. This will be evaluated in the docvars data.frame, so that
+docvars may be referred to by name without quoting. This also changes
+previous behaviours for \code{groups}. See \code{?news(Version >= "2.9", package = "quanteda")} for details.}
+
+\item{fill}{logical; if \code{TRUE} and \code{groups} is a factor, then use all levels
+of the factor when forming the new "documents" of the grouped dfm.  This
+will result in a new "document" with empty content, for levels not
+observed.  Has no effect if the \code{groups} variable(s) are not factors.}
 }
 \description{
 Groups for aggregation by various functions that take grouping options.
-Groups can be the name(s) of document variables (as a character vector), or
-variables whose length or number of rows (if a data.frame) equal the number
-of documents.
 }
 \keyword{internal}

@@ -2,41 +2,37 @@
 % Please edit documentation in R/dfm_sample.R
 \name{dfm_sample}
 \alias{dfm_sample}
-\title{Randomly sample documents or features from a dfm}
+\title{Randomly sample documents from a dfm}
 \usage{
-dfm_sample(
-  x,
-  size = NULL,
-  replace = FALSE,
-  prob = NULL,
-  by = NULL,
-  margin = c("documents", "features")
-)
+dfm_sample(x, size = NULL, replace = FALSE, prob = NULL, by = NULL)
 }
 \arguments{
-\item{x}{the \link{dfm} object whose documents or features will be sampled}
+\item{x}{the \link{dfm} object whose documents will be sampled}
 
-\item{size}{a positive number, the number of documents or features to select.
-The default is the number of documents or the number of features, for
-\code{margin = "documents"} and \code{margin = "features"} respectively.}
+\item{size}{a positive number, the number of documents to select; when used
+with \code{by}, the number to select from each group or a vector equal in
+length to the number of groups defining the samples to be chosen in each
+category of \code{by}.  By defining a size larger than the number of documents,
+it is possible to oversample when \code{replace = TRUE}.}
 
 \item{replace}{if \code{TRUE}, sample  with replacement}
 
 \item{prob}{a vector of probability weights for obtaining the elements of the
 vector being sampled.  May not be applied when \code{by} is used.}
 
-\item{by}{a grouping variable for sampling.  Useful for resampling
-sub-document units such as sentences, for instance by specifying \code{by = "document"}.}
-
-\item{margin}{dimension (of a \link{dfm}) to sample: can be \code{documents} or
-\code{features}. This argument is deprecated.}
+\item{by}{optional grouping variable for sampling.  This will be evaluated in
+the docvars data.frame, so that docvars may be referred to by name without
+quoting.  This also changes previous behaviours for \code{by}.
+See \code{news(Version >= "2.9", package = "quanteda")} for details.}
 }
 \value{
-A dfm object with number of documents or features equal to \code{size}, drawn
-from the dfm \code{x}.
+a \link{dfm} object (re)sampled on the documents, containing the document
+variables for the documents sampled.
 }
 \description{
-Sample randomly from a dfm object, from documents or features.
+Take a random sample of documents of the specified size from a dfm, with
+or without replacement, optionally by grouping variables or with probability
+weights.
 }
 \examples{
 set.seed(10)
@@ -44,8 +40,10 @@ dfmat <- dfm(tokens(c("a b c c d", "a a c c d d d")))
 head(dfmat)
 head(dfm_sample(dfmat))
 head(dfm_sample(dfmat, replace = TRUE))
-head(dfm_sample(dfmat, margin = "features"))
-head(dfm_sample(dfmat, margin = "features", replace = TRUE))
+
+# by groups
+dfmat <- dfm(tokens(data_corpus_inaugural[50:58]))
+dfm_sample(dfmat, by = Party, size = 2)
 }
 \seealso{
 \link{sample}

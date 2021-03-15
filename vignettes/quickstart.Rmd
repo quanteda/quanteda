@@ -328,8 +328,11 @@ textplot_wordcloud(dfmat_uk, min_count = 6, random_order = FALSE,
 Often, we are interested in analysing how texts differ according to substantive factors which may be encoded in the document variables, rather than simply by the boundaries of the document files. We can group documents which share the same value for a document variable when creating a dfm:
 
 ```{r}
-dfmat_pres <- dfm(tail(data_corpus_inaugural, 20), groups = "Party",
-                  remove = stopwords("english"), remove_punct = TRUE)
+dfmat_pres <- tail(data_corpus_inaugural, 20) %>%
+  tokens(remove_punct = TRUE) %>%
+  tokens_remove(stopwords("en")) %>%
+  dfm() %>%
+  dfm_group(groups = Party)
 ```
 
 We can sort this dfm, and inspect it:

@@ -1,4 +1,5 @@
 ACL
+Benoit
 Biden
 Bormuth
 CMD
@@ -174,6 +175,7 @@ phrasetotokens
 pkgdown
 pmi
 proxyC
+quanteda
 quantedaData
 quantedaverse
 rOpenSci

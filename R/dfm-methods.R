@@ -119,7 +119,7 @@ as.dfm.TermDocumentMatrix <- function(x) {
     as.dfm(
         sparseMatrix(i = x$j, j = x$i, x = x$v,
                      dims = rev(dim(x)),
-                     dimnames = list(docs = colnames(x), 
+                     dimnames = list(docs = colnames(x),
                                      features = rownames(x))))
 }
 
@@ -191,7 +191,7 @@ is.dfm <- function(x) {
 #' topfeatures(dfmat2, n = 5, groups = docnames(dfmat2))
 #'
 #' # grouping by president last name
-#' topfeatures(dfmat2, n = 5, groups = "President")
+#' topfeatures(dfmat2, n = 5, groups = President)
 #'
 #' # features by document frequencies
 #' tail(topfeatures(dfmat1, scheme = "docfreq", n = 200))
@@ -218,9 +218,10 @@ topfeatures.dfm <- function(x, n = 10, decreasing = TRUE,
     if (!is.numeric(n)) stop("n must be a number")
     scheme <- match.arg(scheme)
 
-    if (!is.null(groups)) {
+    if (!missing(groups) && !is.null(substitute(groups))) {
+        groupsub <- substitute(groups)
         result <- list()
-        x <- dfm_group(x, groups, force = TRUE)
+        x <- dfm_group(x, eval(groupsub), force = TRUE)
         for (i in seq_len(ndoc(x))) {
             result[[i]] <- topfeatures(x[i, ], n = n, scheme = scheme,
                                        decreasing = decreasing, groups = NULL)
