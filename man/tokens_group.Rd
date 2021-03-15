@@ -20,13 +20,12 @@ Combine documents in a \link{tokens} object by a grouping variable, which can al
 be one of the \link{docvars} attached to the dfm.
 }
 \examples{
-# dfm_group examples
 corp <- corpus(c("a a b", "a b c c", "a c d d", "a c c d"),
                    docvars = data.frame(grp = c("grp1", "grp1", "grp2", "grp2")))
 toks <- tokens(corp)
-quanteda:::tokens_group(toks, groups = "grp")
-quanteda:::tokens_group(toks, groups = c(1, 1, 2, 2))
-quanteda:::tokens_group(toks, groups = factor(c(1, 1, 2, 2), levels = 1:3))
+tokens_group(toks, groups = "grp")
+tokens_group(toks, groups = c(1, 1, 2, 2))
+tokens_group(toks, groups = factor(c(1, 1, 2, 2), levels = 1:3))
 }
 \keyword{internal}
 \keyword{tokens}
