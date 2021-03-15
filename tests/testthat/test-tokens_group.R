@@ -48,8 +48,8 @@ test_that("tokens_group works with empty documents", {
 })
 
 test_that("dfm_group and tokens_group are equivalent", {
-    txts <- c("a b c c", "b c d", "a")
-    toks <- tokens(txts)
+    txt <- c("a b c c", "b c d", "a")
+    toks <- tokens(txt)
 
     expect_identical(
         dfm_group(dfm(toks), c("doc1", "doc1", "doc2")),
@@ -69,23 +69,23 @@ test_that("generate_groups works for tokens objects", {
     docvars(corp, "Party") <- factor(docvars(corp, "Party"))
     toks <- tokens(corp)
     expect_equal(
-        generate_groups(toks, rep(c("A", "B"), each = 7)),
+        quanteda:::generate_groups(toks, rep(c("A", "B"), each = 7)),
         factor(rep(c("A", "B"), each = 7))
     )
     expect_equal(
-        generate_groups(toks, factor(rep(c("A", "B"), each = 7))),
+        quanteda:::generate_groups(toks, factor(rep(c("A", "B"), each = 7))),
         factor(rep(c("A", "B"), each = 7))
     )
     expect_equal(
-        generate_groups(toks, factor(rep(c(1, 2), each = 7))),
+        quanteda:::generate_groups(toks, factor(rep(c(1, 2), each = 7))),
         factor(rep(c(1, 2), each = 7))
     )
     expect_equal(
-        generate_groups(toks, "Party"),
+        quanteda:::generate_groups(toks, "Party"),
         factor(docvars(corp, "Party"))
     )
     expect_error(
-        generate_groups(toks, rep(c("A", "B"), each = 6)),
+        quanteda:::generate_groups(toks, rep(c("A", "B"), each = 6)),
         "groups must name docvars or provide data matching the documents in x"
     )
 })
@@ -94,23 +94,23 @@ test_that("generate_groups works for corpus objects", {
     corp <- as.corpus(tail(data_corpus_inaugural, 14))
     docvars(corp, "Party") <- factor(docvars(corp, "Party"))
     expect_equal(
-        generate_groups(corp, rep(c("A", "B"), each = 7)),
+        quanteda:::generate_groups(corp, rep(c("A", "B"), each = 7)),
         factor(rep(c("A", "B"), each = 7))
     )
     expect_equal(
-        generate_groups(corp, factor(rep(c("A", "B"), each = 7))),
+        quanteda:::generate_groups(corp, factor(rep(c("A", "B"), each = 7))),
         factor(rep(c("A", "B"), each = 7))
     )
     expect_equal(
-        generate_groups(corp, factor(rep(c(1, 2), each = 7))),
+        quanteda:::generate_groups(corp, factor(rep(c(1, 2), each = 7))),
         factor(rep(c(1, 2), each = 7))
     )
     expect_equal(
-        generate_groups(corp, "Party"),
+        quanteda:::generate_groups(corp, "Party"),
         factor(docvars(corp, "Party"))
     )
     expect_error(
-        generate_groups(corp, rep(c("A", "B"), each = 6)),
+        quanteda:::generate_groups(corp, rep(c("A", "B"), each = 6)),
         "groups must name docvars or provide data matching the documents in x"
     )
 })
