@@ -15,13 +15,6 @@
 #'   variation within groups are saved in [docvars].  Document-level
 #'   variables that are lists are dropped from grouping, even when these exhibit
 #'   no variation within groups.
-#'
-#'   Setting `fill = TRUE` offers a way to add document groups to the result
-#'   that may not have been observed, but for which an empty document is needed,
-#'   for various reasons.  If `groups` is a factor of dates, for instance, then
-#'   using `fill = TRUE` ensures that the new object will consist of one row
-#'   of the dfm per date, regardless of whether any documents previously existed
-#'   with that date.
 #' @export
 #' @examples
 #' corp <- corpus(c("a a b", "a b c c", "a c d d", "a c c d"),
@@ -44,7 +37,6 @@ dfm_group.default <- function(x, groups, fill = FALSE, force = FALSE) {
     
 #' @export
 dfm_group.dfm <- function(x, groups, fill = FALSE, force = FALSE) {
-
     x <- as.dfm(x)
     fill <- check_logical(fill)
     force <- check_logical(force)

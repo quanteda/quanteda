@@ -126,9 +126,27 @@ test_that("corpus_group works with NA group labels", {
     corp <- corpus(c("Doc 1", "Doc 1b", "Doc2", "Doc 3 with NA", "Doc 4, more NA"),
                    docvars = data.frame(factorvar = c("Yes", "Yes", "No", NA, NA)))
     corp <- corpus(corp) %>%
-        corpus_group(groups = "factorvar")
+        corpus_group(groups = factorvar)
     expect_identical(
         texts(corp),
         c(No = "Doc2", Yes = "Doc 1 Doc 1b")
+    )
+})
+
+test_that("test corpus_group with wrongly dimensioned groups variables", {
+    grpvar <- c("D", "D", "A", "C")
+    corp <- corpus(c("a b c c", "b c d", "a", "b d d"),
+                   docvars = data.frame(grp = grpvar, stringsAsFactors = FALSE))
+    expect_error(
+        corpus_group(corp, groups = c(1, 1, 2, 3, 3), fill = FALSE),
+        "groups must have length ndoc(x)", fixed = TRUE
+    )
+    expect_error(
+        corpus_group(corp, groups = c(1, 1, 2, 3, 3), fill = TRUE),
+        "groups must have length ndoc(x)", fixed = TRUE
+    )
+    expect_error(
+        corpus_group(corp, groups = c(1, 1, 2, 3, 4), fill = TRUE),
+        "groups must have length ndoc(x)", fixed = TRUE
     )
 })

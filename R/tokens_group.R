@@ -3,21 +3,13 @@
 #' Combine documents in a [tokens] object by a grouping variable, by
 #' concatenating the tokens in the order of the documents within each grouping
 #' variable.
-#' @return a [tokens] object whose documents are equal to
-#'   the unique group combinations, and whose tokens are the concatenations
-#'   of the tokens by group. Document-level variables that have no
-#'   variation within groups are saved in [docvars].  Document-level
-#'   variables that are lists are dropped from grouping, even when these exhibit
-#'   no variation within groups.
-#'
-#'   Setting `fill = TRUE` offers a way to add document groups to the result
-#'   that may not have been observed, but for which an empty document is needed,
-#'   for various reasons.  If `groups` is a factor of dates, for instance, then
-#'   using `fill = TRUE` ensures that the new object will consist of one new
-#'   "document" by date, regardless of whether any documents previously existed
-#'   with that date.
 #' @param x [tokens] object
 #' @inheritParams groups
+#' @return a [tokens] object whose documents are equal to the unique group
+#'   combinations, and whose tokens are the concatenations of the tokens by
+#'   group. Document-level variables that have no variation within groups are
+#'   saved in [docvars].  Document-level variables that are lists are dropped
+#'   from grouping, even when these exhibit no variation within groups.
 #' @keywords tokens
 #' @export
 #' @examples

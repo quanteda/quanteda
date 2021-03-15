@@ -16,23 +16,19 @@ previous behaviours for \code{groups}. See \code{news(Version >= "2.9", package 
 
 \item{fill}{logical; if \code{TRUE} and \code{groups} is a factor, then use all levels
 of the factor when forming the new documents of the grouped object.  This
-will result in a new "document" with empty content, for levels not
-observed.  Has no effect if the \code{groups} variable(s) are not factors.}
+will result in a new "document" with empty content for levels not observed,
+but for which an empty document may be needed.  If \code{groups} is a factor of
+dates, for instance, then \code{fill = TRUE} ensures that the new object will
+consist of one new "document" by date, regardless of whether any documents
+previously existed with that date.  Has no effect if the \code{groups}
+variable(s) are not factors.}
 }
 \value{
-a \link{tokens} object whose documents are equal to
-the unique group combinations, and whose tokens are the concatenations
-of the tokens by group. Document-level variables that have no
-variation within groups are saved in \link{docvars}.  Document-level
-variables that are lists are dropped from grouping, even when these exhibit
-no variation within groups.
-
-Setting \code{fill = TRUE} offers a way to add document groups to the result
-that may not have been observed, but for which an empty document is needed,
-for various reasons.  If \code{groups} is a factor of dates, for instance, then
-using \code{fill = TRUE} ensures that the new object will consist of one new
-"document" by date, regardless of whether any documents previously existed
-with that date.
+a \link{tokens} object whose documents are equal to the unique group
+combinations, and whose tokens are the concatenations of the tokens by
+group. Document-level variables that have no variation within groups are
+saved in \link{docvars}.  Document-level variables that are lists are dropped
+from grouping, even when these exhibit no variation within groups.
 }
 \description{
 Combine documents in a \link{tokens} object by a grouping variable, by

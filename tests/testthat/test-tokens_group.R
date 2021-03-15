@@ -64,7 +64,7 @@ test_that("dfm_group and tokens_group are equivalent", {
         dfm(tokens_group(toks, c(1, 1, 1))))
 })
 
-test_that("test tokenss_group with wrongly dimensioned groups variables", {
+test_that("test tokens_group with wrongly dimensioned groups variables", {
     grpvar <- c("D", "D", "A", "C")
     corp <- corpus(c("a b c c", "b c d", "a", "b d d"),
                    docvars = data.frame(grp = grpvar, stringsAsFactors = FALSE))

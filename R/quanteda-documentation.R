@@ -184,9 +184,14 @@ NULL
 #'   "quanteda")` for details.
 #' @param fill logical; if `TRUE` and `groups` is a factor, then use all levels
 #'   of the factor when forming the new documents of the grouped object.  This
-#'   will result in a new "document" with empty content, for levels not
-#'   observed.  Has no effect if the `groups` variable(s) are not factors.
+#'   will result in a new "document" with empty content for levels not observed,
+#'   but for which an empty document may be needed.  If `groups` is a factor of
+#'   dates, for instance, then `fill = TRUE` ensures that the new object will
+#'   consist of one new "document" by date, regardless of whether any documents
+#'   previously existed with that date.  Has no effect if the `groups`
+#'   variable(s) are not factors.
 #' @name groups
+#' @seealso [corpus_group()], [tokens_group()], [dfm_group()]
 #' @keywords internal
 NULL
 

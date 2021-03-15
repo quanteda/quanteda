@@ -11,10 +11,17 @@ previous behaviours for \code{groups}. See \code{news(Version >= "2.9", package 
 
 \item{fill}{logical; if \code{TRUE} and \code{groups} is a factor, then use all levels
 of the factor when forming the new documents of the grouped object.  This
-will result in a new "document" with empty content, for levels not
-observed.  Has no effect if the \code{groups} variable(s) are not factors.}
+will result in a new "document" with empty content for levels not observed,
+but for which an empty document may be needed.  If \code{groups} is a factor of
+dates, for instance, then \code{fill = TRUE} ensures that the new object will
+consist of one new "document" by date, regardless of whether any documents
+previously existed with that date.  Has no effect if the \code{groups}
+variable(s) are not factors.}
 }
 \description{
 Groups for aggregation by various functions that take grouping options.
+}
+\seealso{
+\code{\link[=corpus_group]{corpus_group()}}, \code{\link[=tokens_group]{tokens_group()}}, \code{\link[=dfm_group]{dfm_group()}}
 }
 \keyword{internal}
