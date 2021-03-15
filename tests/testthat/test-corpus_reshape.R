@@ -1,10 +1,16 @@
 test_that("corpus_reshape works for sentences", {
     corp <- corpus(c(textone = "This is a sentence.  Another sentence.  Yet another.", 
-                     texttwo = "Premiere phrase.  Deuxieme phrase."), 
-                   docvars = data.frame(country = factor(c("UK", "USA")), year=c(1990, 2000)))
+                     texttwo = "Premiere phrase.  Deuxieme phrase.",
+                     textthree = ""), 
+                   docvars = data.frame(country = factor(c("UK", "US", "ZA")), year=c(1990, 2000, 2020)))
     corp_reshaped <- corpus_reshape(corp, to = "sentences")
+    expect_equal(docid(corp_reshaped),
+                 factor(c("textone", "textone", "textone", "texttwo", "texttwo", "textthree"),
+                        levels = c("textone", "texttwo", "textthree")))
     expect_equal(as.character(corp_reshaped)[4], c(texttwo.1 = "Premiere phrase."))
-    expect_equal(docvars(corp_reshaped, "country"), factor(c("UK", "UK", "UK", "USA", "USA")))
+    expect_equal(as.character(corp_reshaped)[6], c(textthree.1 = ""))
+    expect_equal(docvars(corp_reshaped, "country"), 
+                 factor(c("UK", "UK", "UK", "US", "US", "ZA"), levels = c("UK", "US", "ZA")))
 })
 
 test_that("corpus_reshape works for paragraphs", {

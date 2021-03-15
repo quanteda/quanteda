@@ -55,19 +55,23 @@ test_that("corpus_segment works with blank before tag", {
     expect_equal(as.character(summ[1, "Text"]), "text1.1")
 })
 
-
 test_that("corpus_segment works with use_docvars TRUE or FALSE", {
     corp <- corpus(c(d1 = "##TEST One two ##TEST2 Three",
-                     d2 = "##TEST3 Four"),
-                     docvars = data.frame(test = c("A", "B"), stringsAsFactors = FALSE))
+                     d2 = "##TEST3 Four", 
+                     d3 = ""),
+                     docvars = data.frame(test = c("A", "B", "B"), stringsAsFactors = FALSE))
     corp_seg1 <- corpus_segment(corp, "##[A-Z0-9]+", valuetype = "regex", 
                                 pattern_position = "before", extract_pattern = TRUE, 
                                 use_docvars = TRUE)
     expect_equal(docvars(corp_seg1, "test"), c("A", "A", "B"))
+    expect_equal(docid(corp_seg1), 
+                 factor(c("d1", "d1", "d2"), levels = c("d1", "d2", "d3")))
     
     corp_seg2 <- corpus_segment(corp, "##[A-Z0-9]+", valuetype = "regex", 
                                 pattern_position = "before", extract_pattern = TRUE, use_docvars = FALSE)
     expect_error(docvars(corp_seg2, "test"))
+    expect_equal(docid(corp_seg2), 
+                 factor(c("d1", "d1", "d2"), levels = c("d1", "d2", "d3")))
 })
 
 test_that("char_segment works with Japanese texts", {
