@@ -4,7 +4,7 @@
 \alias{corpus_group}
 \title{Recombine documents in corpus by a grouping variable}
 \usage{
-corpus_group(x, groups = NULL, fill = FALSE)
+corpus_group(x, groups = NULL, fill = FALSE, concatenator = " ")
 }
 \arguments{
 \item{x}{\link{corpus} object}
@@ -14,6 +14,8 @@ variables to be used for grouping; or a factor or object that can be
 coerced into a factor equal in length or rows to the number of documents.
 \code{NA} values of the grouping value are dropped.
 See \link{groups} for details.}
+
+\item{concatenator}{the concatenation character that will connect the documents.}
 }
 \description{
 Combine documents in a \link{corpus} object by a grouping variable, which can also
@@ -21,10 +23,9 @@ be one of the \link{docvars} attached to the dfm.
 }
 \examples{
 corp <- corpus(c("a a b", "a b c c", "a c d d", "a c c d"),
-                   docvars = data.frame(grp = c("grp1", "grp1", "grp2", "grp2")))
-corpus_group(toks, groups = "grp")
-corpus_group(toks, groups = c(1, 1, 2, 2))
-corpus_group(toks, groups = factor(c(1, 1, 2, 2), levels = 1:3))
+               docvars = data.frame(grp = c("grp1", "grp1", "grp2", "grp2")))
+corpus_group(corp, groups = "grp")
+corpus_group(corp, groups = c(1, 1, 2, 2))
+corpus_group(corp, groups = factor(c(1, 1, 2, 2), levels = 1:3))
 }
 \keyword{corpus}
-\keyword{internal}
