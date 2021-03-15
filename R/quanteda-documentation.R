@@ -185,6 +185,10 @@ NULL
 #'   coerced into a factor equal in length or rows to the number of documents.
 #'   `NA` values of the grouping value are dropped.
 #'   See [groups] for details.
+#' @param fill logical; if `TRUE` and `groups` is a factor, then use
+#'   all levels of the factor when forming the new "documents" of the grouped
+#'   object.  This will result in empty documents for levels not
+#'   observed.  Has no effect if the `groups` variable(s) are not factors.
 #' @name groups
 #' @keywords internal
 NULL

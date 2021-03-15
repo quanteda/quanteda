@@ -17,7 +17,7 @@ See \link{groups} for details.}
 
 \item{fill}{logical; if \code{TRUE} and \code{groups} is a factor, then use
 all levels of the factor when forming the new "documents" of the grouped
-dfm.  This will result in documents with zero feature counts for levels not
+object.  This will result in empty documents for levels not
 observed.  Has no effect if the \code{groups} variable(s) are not factors.}
 
 \item{force}{logical; if \code{TRUE}, group by summing existing counts, even

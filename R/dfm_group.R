@@ -9,10 +9,6 @@
 #'   adding log counts (when a dfm has been weighted by `"logcount"` for
 #'   instance using [dfm_weight()]).  Does not apply to the term
 #'   weight schemes "count" and "prop".
-#' @param fill logical; if `TRUE` and `groups` is a factor, then use
-#'   all levels of the factor when forming the new "documents" of the grouped
-#'   dfm.  This will result in documents with zero feature counts for levels not
-#'   observed.  Has no effect if the `groups` variable(s) are not factors.
 #' @return `dfm_group` returns a [dfm] whose documents are equal to
 #'   the unique group combinations, and whose cell values are the sums of the
 #'   previous values summed by group. Document-level variables that have no
