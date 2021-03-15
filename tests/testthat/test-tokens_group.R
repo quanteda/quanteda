@@ -138,7 +138,7 @@ test_that("tokens_group works with NA group labels", {
     corp <- corpus(c("Doc 1", "Doc 1b", "Doc2", "Doc 3 with NA", "Doc 4, more NA"),
                    docvars = data.frame(factorvar = c("Yes", "Yes", "No", NA, NA)))
     toks <- tokens(corp) %>%
-        tokens_group(groups = "factorvar")
+        tokens_group(groups = factorvar)
     expect_identical(
         as.list(toks),
         list(No = "Doc2", Yes = c("Doc", "1", "Doc", "1b"))
