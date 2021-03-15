@@ -27,7 +27,7 @@ of features}
 \item{groups}{grouping variable for sampling, equal in length to the number
 of documents. This will be evaluated in the docvars data.frame, so that
 docvars may be referred to by name without quoting. This also changes
-previous behaviours for \code{groups}. See \code{?news(Version >= "2.9", package = "quanteda")} for details.}
+previous behaviours for \code{groups}. See \code{news(Version >= "2.9", package = "quanteda")} for details.}
 }
 \value{
 A named numeric vector of feature counts, where the names are the

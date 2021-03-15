@@ -4,6 +4,10 @@ test_that("test default corpus* methods", {
         "corpus\\(\\) only works on.*character.*corpus.*objects"
     )
     expect_error(
+        corpus_group(TRUE),
+        "corpus_group\\(\\) only works on corpus objects"
+    )
+    expect_error(
         as.corpus(c(1, 2, 3)),
         "as.corpus\\(\\) only works on corpus objects"
     )
@@ -247,6 +251,10 @@ test_that("test token default methods", {
     expect_error(
         tokens(TRUE),
         "tokens\\(\\) only works on character, corpus, list, tokens objects"
+    )
+    expect_error(
+        tokens_group(TRUE),
+        "tokens_group\\(\\) only works on tokens objects"
     )
     expect_error(
         tokens_subset(TRUE),

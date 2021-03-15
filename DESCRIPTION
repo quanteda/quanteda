@@ -85,6 +85,7 @@ Collate:
     'corpus-methods-base.R'
     'corpus-methods-quanteda.R'
     'corpus.R'
+    'corpus_group.R'
     'corpus_reshape.R'
     'corpus_sample.R'
     'corpus_segment.R'

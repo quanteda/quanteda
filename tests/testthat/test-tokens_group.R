@@ -2,32 +2,32 @@ test_that("test that tokens_group is working", {
     txt <- c("a b c d", "e f g h", "A B C", "X Y Z")
     toks <- tokens(txt)
     expect_equal(
-        as.list(quanteda:::tokens_group(toks, c(1, 1, 2, 2))),
+        as.list(tokens_group(toks, c(1, 1, 2, 2))),
         list("1" = c("a", "b", "c", "d", "e", "f", "g", "h"),
              "2" = c("A", "B", "C", "X", "Y", "Z"))
     )
 
     expect_equal(
-        as.list(quanteda:::tokens_group(toks, c(2, 1, 2, 1))),
+        as.list(tokens_group(toks, c(2, 1, 2, 1))),
         list("1" = c("e", "f", "g", "h", "X", "Y", "Z"),
              "2" = c("a", "b", "c", "d", "A", "B", "C"))
     )
 
     expect_equal(
-        as.list(quanteda:::tokens_group(toks, c("Z", "A", "Z", "A"))),
+        as.list(tokens_group(toks, c("Z", "A", "Z", "A"))),
         list("A" = c("e", "f", "g", "h", "X", "Y", "Z"),
              "Z" = c("a", "b", "c", "d", "A", "B", "C"))
     )
 
     group <- factor(c("Z", "A", "Z", "A"), levels = c("A", "B", "Z"))
     expect_equal(
-        as.list(quanteda:::tokens_group(toks, group)),
+        as.list(tokens_group(toks, group)),
         list("A" = c("e", "f", "g", "h", "X", "Y", "Z"),
              "Z" = c("a", "b", "c", "d", "A", "B", "C"))
     )
 
     expect_equal(
-        as.list(quanteda:::tokens_group(toks, group, fill = TRUE)),
+        as.list(tokens_group(toks, group, fill = TRUE)),
         list("A" = c("e", "f", "g", "h", "X", "Y", "Z"),
              "B" = character(),
              "Z" = c("a", "b", "c", "d", "A", "B", "C"))
@@ -37,34 +37,34 @@ test_that("test that tokens_group is working", {
 test_that("tokens_group works with empty documents", {
     toks <- tokens(c(doc1 = "a b c c", doc2 = "b c d", doc3 = ""))
     expect_equivalent(
-        as.list(quanteda:::tokens_group(toks, c("doc1", "doc1", "doc2"))),
+        as.list(tokens_group(toks, c("doc1", "doc1", "doc2"))),
         list(doc1 = c("a", "b", "c", "c", "b", "c", "d"), doc2 = character())
     )
 
     expect_equivalent(
-        as.list(quanteda:::tokens_group(toks, c(1, 1, 2))),
+        as.list(tokens_group(toks, c(1, 1, 2))),
         list(doc1 = c("a", "b", "c", "c", "b", "c", "d"), doc2 = character())
     )
 })
 
 test_that("dfm_group and tokens_group are equivalent", {
-    txts <- c("a b c c", "b c d", "a")
-    toks <- tokens(txts)
+    txt <- c("a b c c", "b c d", "a")
+    toks <- tokens(txt)
 
     expect_identical(
         dfm_group(dfm(toks), c("doc1", "doc1", "doc2")),
-        dfm(quanteda:::tokens_group(toks, c("doc1", "doc1", "doc2"))))
+        dfm(tokens_group(toks, c("doc1", "doc1", "doc2"))))
 
     expect_identical(
         dfm_group(dfm(toks), c(1, 1, 2)),
-        dfm(quanteda:::tokens_group(toks, c(1, 1, 2))))
+        dfm(tokens_group(toks, c(1, 1, 2))))
 
     expect_identical(
         dfm_group(dfm(toks), c(1, 1, 1)),
-        dfm(quanteda:::tokens_group(toks, c(1, 1, 1))))
+        dfm(tokens_group(toks, c(1, 1, 1))))
 })
 
-test_that("test tokenss_group with wrongly dimensioned groups variables", {
+test_that("test tokens_group with wrongly dimensioned groups variables", {
     grpvar <- c("D", "D", "A", "C")
     corp <- corpus(c("a b c c", "b c d", "a", "b d d"),
                    docvars = data.frame(grp = grpvar, stringsAsFactors = FALSE))
@@ -138,7 +138,7 @@ test_that("tokens_group works with NA group labels", {
     corp <- corpus(c("Doc 1", "Doc 1b", "Doc2", "Doc 3 with NA", "Doc 4, more NA"),
                    docvars = data.frame(factorvar = c("Yes", "Yes", "No", NA, NA)))
     toks <- tokens(corp) %>%
-        quanteda:::tokens_group(groups = factorvar)
+        tokens_group(groups = factorvar)
     expect_identical(
         as.list(toks),
         list(No = "Doc2", Yes = c("Doc", "1", "Doc", "1b"))
@@ -148,7 +148,7 @@ test_that("tokens_group works with NA group labels", {
 test_that("element names are correctly reset after tokens_group() - #1949", {
     expect_identical(
         tokens(letters[1:3]) %>% 
-            quanteda:::tokens_group(groups = c("x", "x", "y")) %>%
+            tokens_group(groups = c("x", "x", "y")) %>%
             names(),
         c("x", "y")
     )

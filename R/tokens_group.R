@@ -3,21 +3,13 @@
 #' Combine documents in a [tokens] object by a grouping variable, by
 #' concatenating the tokens in the order of the documents within each grouping
 #' variable.
-#' @return a [tokens] object whose documents are equal to
-#'   the unique group combinations, and whose tokens are the concatenations
-#'   of the tokens by group. Document-level variables that have no
-#'   variation within groups are saved in [docvars].  Document-level
-#'   variables that are lists are dropped from grouping, even when these exhibit
-#'   no variation within groups.
-#'
-#'   Setting `fill = TRUE` offers a way to add document groups to the result
-#'   that may not have been observed, but for which an empty document is needed,
-#'   for various reasons.  If `groups` is a factor of dates, for instance, then
-#'   using `fill = TRUE` ensures that the new object will consist of one new
-#'   "document" by date, regardless of whether any documents previously existed
-#'   with that date.
 #' @param x [tokens] object
 #' @inheritParams groups
+#' @return a [tokens] object whose documents are equal to the unique group
+#'   combinations, and whose tokens are the concatenations of the tokens by
+#'   group. Document-level variables that have no variation within groups are
+#'   saved in [docvars].  Document-level variables that are lists are dropped
+#'   from grouping, even when these exhibit no variation within groups.
 #' @keywords tokens
 #' @export
 #' @examples
@@ -30,17 +22,17 @@
 #' # with fill
 #' tokens_group(toks, groups = factor(c(1, 1, 2, 2), levels = 1:3))
 #' tokens_group(toks, groups = factor(c(1, 1, 2, 2), levels = 1:3), fill = TRUE)
-tokens_group <- function(x, groups = NULL, fill = FALSE) {
+tokens_group <- function(x, groups, fill = FALSE) {
     UseMethod("tokens_group")
 }
 
 #' @export
-tokens_group.default <- function(x, groups = NULL, fill = FALSE) {
+tokens_group.default <- function(x, groups, fill = FALSE) {
     check_class(class(x), "tokens_group")
 }
-    
+
 #' @export
-tokens_group.tokens <- function(x, groups = NULL, fill = FALSE) {
+tokens_group.tokens <- function(x, groups, fill = FALSE) {
     x <- as.tokens(x)
     if (!missing(groups)) {
         groups <- eval(substitute(groups), get_docvars(x, user = TRUE, system = TRUE), parent.frame())
@@ -64,7 +56,7 @@ tokens_group.tokens <- function(x, groups = NULL, fill = FALSE) {
 }
 
 group_tokens <- function(x, groups) {
-    result <- base::split(unlist(unclass(x), use.names = FALSE), rep(groups, lengths(x)))
+    result <- split(unlist(unclass(x), use.names = FALSE), rep(groups, lengths(x)))
     attr(result, "class") <- "tokens"
     attr(result, "types") <- attr(x, "types")
     attr(result, "padding") <- attr(x, "padding")
