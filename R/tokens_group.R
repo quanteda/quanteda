@@ -23,7 +23,7 @@ tokens_group.default <- function(x, groups = NULL, fill = FALSE) {
 }
 
 #' @export
-tokens_group <- function(x, groups = NULL, fill = FALSE) {
+tokens_group.tokens <- function(x, groups = NULL, fill = FALSE) {
     x <- as.tokens(x)
     if (!is.factor(groups))
         groups <- generate_groups(x, groups, fill)

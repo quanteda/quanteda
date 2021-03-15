@@ -23,7 +23,7 @@ corpus_group.default <- function(x, groups = NULL, fill = FALSE, concatenator = 
 }
 
 #' @export
-corpus_group <- function(x, groups = NULL, fill = FALSE, concatenator = " ") {
+corpus_group.corpus <- function(x, groups = NULL, fill = FALSE, concatenator = " ") {
     x <- as.corpus(x)
     if (!is.factor(groups))
         groups <- generate_groups(x, groups, fill)
