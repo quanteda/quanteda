@@ -48,12 +48,12 @@ txt <- c("PAGE 1. This is a single sentence.  Short sentence. Three word sentenc
          "PAGE 2. Very short! Shorter.",
          "Very long sentence, with multiple parts, separated by commas.  PAGE 3.")
 corp <- corpus(txt, docvars = data.frame(serial = 1:3))
-texts(corp)
+corp
 
 # exclude sentences shorter than 3 tokens
-texts(corpus_trim(corp, min_ntoken = 3))
+corpus_trim(corp, min_ntoken = 3)
 # exclude sentences that start with "PAGE <digit(s)>"
-texts(corpus_trim(corp, exclude_pattern = "^PAGE \\\\d+"))
+corpus_trim(corp, exclude_pattern = "^PAGE \\\\d+")
 
 # trimming character objects
 char_trim(txt, "sentences", min_ntoken = 3)

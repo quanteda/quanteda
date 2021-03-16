@@ -38,7 +38,7 @@ print.corpus <- function(x, max_ndoc = quanteda_options("print_corpus_max_ndoc")
     }
 
     if (max_ndoc > 0 && ndoc(x) > 0) {
-        x <- head(texts(x), max_ndoc)
+        x <- head(as.character(x), max_ndoc)
         label <- paste0(names(x), " :")
         x <- stri_replace_all_regex(x, "[\\p{C}]+", " ")
         len <- stri_length(x)
@@ -61,12 +61,6 @@ print.corpus <- function(x, max_ndoc = quanteda_options("print_corpus_max_ndoc")
 
 }
 
-#' @return `is.corpus` returns `TRUE` if the object is a corpus
-#' @rdname corpus-class
-#' @export
-is.corpus <- function(x) {
-    "corpus" %in% class(x)
-}
 
 #' Return the first or last part of a corpus
 #'
@@ -178,7 +172,7 @@ c.corpus <- function(..., recursive = FALSE) {
 #' @return
 #' Indexing a corpus works in three ways, as of v2.x.x:
 #' * `[` returns a subsetted corpus
-#' * `[[` returns the textual contents of a subsetted corpus (similar to [texts()])
+#' * `[[` returns the textual contents of a subsetted corpus (similar to [as.character()])
 #' * `$` returns a vector containing the single named [docvars]
 #' @examples
 #'
@@ -206,4 +200,53 @@ c.corpus <- function(..., recursive = FALSE) {
         meta = attrs[["meta"]],
         class = attrs[["class"]]
     )
+}
+
+
+# coercion and checking functions -----------
+
+#' Coercion and checking methods for corpus objects
+#'
+#' Coercion functions to and from [corpus] objects, including conversion to a
+#' plain [character] object; and checks for whether an object is a corpus.
+#' @param x object to be coerced or checked
+#' @param use.names logical; preserve (document) names if `TRUE`
+#' @param ... additional arguments used by specific methods
+#' @note `as.character(x)` where `x` is a corpus is equivalent to
+#' calling the deprecated `texts(x)`.
+#' @return `as.character()` returns the corpus as a plain character vector, with
+#'   or without named elements.
+#' @method as.character corpus
+#' @export
+as.character.corpus <- function(x, use.names = TRUE, ...) {
+    use.names <- check_logical(use.names)
+    dnames <- if (use.names) docnames(x) else NULL
+    attributes(x) <- NULL
+    return(structure(x, names = dnames))
+}
+
+#' @rdname as.character.corpus
+#' @return `is.corpus` returns `TRUE` if the object is a corpus.
+#' @export
+is.corpus <- function(x) {
+    "corpus" %in% class(x)
+}
+
+#' @rdname as.character.corpus
+#' @return `as.corpus()` upgrades a corpus object to the newest format.
+#' object.
+#' @export
+as.corpus <- function(x) {
+    UseMethod("as.corpus")
+}
+
+#' @export
+as.corpus.default <- function(x) {
+    check_class(class(x), "as.corpus")
+}
+
+#' @export
+#' @method as.corpus corpus
+as.corpus.corpus <- function(x) {
+    upgrade_corpus(x)
 }

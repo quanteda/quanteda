@@ -79,18 +79,18 @@
 #'                   ##DOC3 Third document starts here.  End of third document.",
 #'                  "##INTRO Document ##NUMBER Two starts before ##NUMBER Three."))
 #' corpseg1 <- corpus_segment(corp1, pattern = "##*")
-#' cbind(texts(corpseg1), docvars(corpseg1))
+#' cbind(corpseg1, docvars(corpseg1))
 #'
 #' # segmenting a transcript based on speaker identifiers
 #' corp2 <- corpus("Mr. Smith: Text.\nMrs. Jones: More text.\nMr. Smith: I'm speaking, again.")
 #' corpseg2 <- corpus_segment(corp2, pattern = "\\b[A-Z].+\\s[A-Z][a-z]+:",
 #'                            valuetype = "regex")
-#' cbind(texts(corpseg2), docvars(corpseg2))
+#' cbind(corpseg2, docvars(corpseg2))
 #'
 #' # segmenting a corpus using crude end-of-sentence segmentation
 #' corpseg3 <- corpus_segment(corp1, pattern = ".", valuetype = "fixed",
 #'                            pattern_position = "after", extract_pattern = FALSE)
-#' cbind(texts(corpseg3), docvars(corpseg3))
+#' cbind(corpseg3, docvars(corpseg3))
 #' 
 #' @importFrom stringi stri_trim_both stri_replace_all_fixed stri_locate_last_fixed 
 #'   stri_locate_first_fixed stri_sub
@@ -129,7 +129,7 @@ corpus_segment.corpus <- function(x, pattern = "##*",
     use_docvars <- check_logical(use_docvars)
     attrs <- attributes(x)
 
-    temp <- segment_texts(texts(x), pattern, valuetype, case_insensitive,
+    temp <- segment_texts(as.character(x), pattern, valuetype, case_insensitive,
                           extract_pattern, pattern_position)
 
     if (use_docvars) {
@@ -199,7 +199,7 @@ char_segment.character <- function(x, pattern = "##*",
     temp <- corpus_segment(corpus(x, names(x), unique_docnames = FALSE),
                            pattern, valuetype, case_insensitive,
                            remove_pattern, pattern_position)
-    result <- texts(temp)
+    result <- as.character(temp)
     if (is.null(names(x)))
         names(result) <- NULL
     return(result)

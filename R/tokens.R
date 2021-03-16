@@ -277,7 +277,7 @@ tokens.corpus <- function(x,
         warning("remove_separators is always TRUE for this type")
 
     # split x into smaller blocks to reduce peak memory consumption
-    x <- texts(x)
+    x <- as.character(x)
     x <- split(x, factor(ceiling(seq_along(x) / quanteda_options("tokens_block_size"))))
     x <- lapply(x, function(y) {
         if (verbose)
