@@ -458,7 +458,6 @@ as.tokens.default <- function(x, concatenator = "", ...) {
     check_class(class(x), "as.tokens")
 }
 
-#' @rdname as.tokens
 #' @importFrom stringi stri_trans_nfc
 #' @export
 as.tokens.list <- function(x, concatenator = "_", ...) {
@@ -472,7 +471,6 @@ as.tokens.list <- function(x, concatenator = "_", ...) {
     )
 }
 
-#' @rdname as.tokens
 #' @export
 as.tokens.tokens <- function(x, ...) {
     upgrade_tokens(x)
