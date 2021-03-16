@@ -534,13 +534,14 @@ test_that("kwic structure is as expected", {
     expect_identical(
       kw,
       structure(data.frame(docname = c("doc1", "doc1", "doc3"), 
-                     from = 1:3, to = 2:4, 
-                     pre = c("", "a", "b b"), 
-                     keyword = c("a a", "a a", "a a"), 
-                     post = c("a b", "b c", ""), 
-                     pattern = factor(rep("a a", 3))),
-                     class = c("kwic", "data.frame"), 
-                     ntoken = c(doc1 = 8L, doc3 = 4L))
+                           from = 1:3, to = 2:4, 
+                           pre = c("", "a", "b b"), 
+                           keyword = c("a a", "a a", "a a"), 
+                           post = c("a b", "b c", ""), 
+                           pattern = factor(rep("a a", 3)),
+                           stringsAsFactors = FALSE),
+                class = c("kwic", "data.frame"), 
+                ntoken = c(doc1 = 8L, doc3 = 4L))
     )
 })
 
