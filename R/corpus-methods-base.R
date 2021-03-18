@@ -68,44 +68,6 @@ is.corpus <- function(x) {
     "corpus" %in% class(x)
 }
 
-#' Return the first or last part of a corpus
-#'
-#' For a [corpus] object, returns the first or last `n` documents.
-#' @param x a dfm object
-#' @param n a single integer.  If positive, the number of documents for the
-#'   resulting object: number of first/last documents for the dfm.  If negative,
-#'   all but the n last/first number of documents of x.
-#' @param ... additional arguments passed to other functions
-#' @return A [corpus] class object corresponding to the subset defined
-#'   by `n`.
-#' @export
-#' @name head.corpus
-#' @method head corpus
-#' @keywords corpus
-#' @examples
-#' head(data_corpus_inaugural, 3) %>% 
-#'    summary()
-#'
-head.corpus <- function(x, n = 6L, ...) {
-    x <- as.corpus(x)
-    n <- check_integer(n)
-    i <- seq_len(ndoc(x))
-    corpus_subset(x, i %in% head(i, n))
-}
-
-#' @rdname head.corpus
-#' @method tail corpus
-#' @export
-#' @examples
-#' tail(data_corpus_inaugural, 3) %>% 
-#'     summary()
-tail.corpus <- function(x, n = 6L, ...) {
-    x <- as.corpus(x)
-    n <- check_integer(n)
-    i <- seq_len(ndoc(x))
-    corpus_subset(x, i %in% tail(i, n))
-}
-
 #' @rdname corpus-class
 #' @param c1 corpus one to be added
 #' @param c2 corpus two to be added
