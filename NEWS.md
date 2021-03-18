@@ -90,6 +90,8 @@ The full listing of deprecations is:
 
 * `dfm_weight()` - formerly deprecated `"scheme"` options are now removed. 
 
+* `tokens()` - formerly deprecated options `remove_hyphens` and `remove_twitter` are now removed.  (Use `split_hyphens` instead, and the default tokenizer always now preserves Twitter and other social media tags.)
+
 ## Bug fixes and stability enhancements
 
 * Fixed a bug causing `topfeatures(x, group = something)` to fail with weighted dfms (#2032).
