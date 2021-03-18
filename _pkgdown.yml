@@ -68,7 +68,7 @@ reference:
     - data_char_sampletext
     - data_char_ukimmig2010
     - data_corpus_inaugural
-    - data_dfm_LBGexample
+    - data_dfm_lbgexample
     - data_dictionary_LSD2015
     - data-relocated
 - title: Corpus functions
@@ -77,29 +77,11 @@ reference:
     - starts_with("corpus")
     - docvars
     - head.corpus
-    - metacorpus
-    - metadoc
-    - texts
     - as.character.corpus
 - title: Tokens functions
   desc: Functions for constructing and manipulating tokens class objects.
   contents:
-    - tokens
-    - tokens_chunk
-    - tokens_compound
-    - tokens_lookup
-    - tokens_ngrams
-    - tokens_skipgrams
-    - tokens_remove
-    - tokens_replace
-    - tokens_sample
-    - tokens_select
-    - tokens_split
-    - tokens_subset
-    - tokens_tolower
-    - tokens_toupper
-    - tokens_tortl
-    - tokens_wordstem
+    - starts_with("tokens")
     - types
     - as.character.tokens
     - as.list.tokens
@@ -120,24 +102,7 @@ reference:
 - title: Text matrix functions
   desc: Functions for constructing and manipulating a document-feature matrix (dfm) or feature co-occurrence matrix object.
   contents:
-    - dfm
-    - dfm_compress
-    - dfm_group
-    - dfm_lookup
-    - dfm_match
-    - dfm_remove
-    - dfm_replace
-    - dfm_sample
-    - dfm_select
-    - dfm_subset
-    - dfm_sort
-    - dfm_tfidf
-    - dfm_tolower
-    - dfm_toupper
-    - dfm_trim
-    - dfm_smooth
-    - dfm_weight
-    - dfm_wordstem
+    - starts_with("dfm")
     - docfreq
     - featfreq
     - head.dfm
@@ -146,30 +111,13 @@ reference:
     - is.dfm
     - as.data.frame.dfm
     - as.matrix.dfm
-    - fcm
-    - fcm_compress
-    - fcm_remove
-    - fcm_select
-    - fcm_tolower
-    - fcm_toupper
-    - fcm_sort
+    - starts_with("fcm")
     - as.fcm
     - is.fcm
-- title: Text statistics
-  desc: Functions for computing statistics from texts and dfm objects.
-  contents:
-    - textstats
-    - sparsity
-    - topfeatures
-- title: Text models
-  desc: Functions for fitting models to textual data.
-  contents:
-    - textmodels
 - title: Dictionary functions
   desc: Constructor and utility functions for working with dictionaries.
   contents:
     - dictionary
-    - dictionary_edit
     - is.dictionary
     - as.yaml
 - title: Phrase discovery functions
@@ -178,19 +126,16 @@ reference:
     - is.collocations
     - is.kwic
     - kwic
-- title: Text plot functions
-  desc: Plot functions for representing text and the analysis of texts.
-  contents:
-    - textplots
 - title: Utility functions
   desc: R-like functions to return counts and object information.
   contents:
+    - index
     - ndoc
     - nfeat
     - nsentence
     - ntoken
     - ntype
-    - print-quanteda
+    - print-method
     - starts_with("docnames")
     - featnames
 - title: Miscellaneous functions
@@ -198,5 +143,14 @@ reference:
     - phrase
     - convert
     - bootstrap_dfm
+    - meta
     - readtext-methods
     - spacyr-methods
+- title: Statistics, models, and plots
+  desc: Functions for computing statistics, fitting models, and producing visualisations models from text.
+  contents:
+    - sparsity
+    - topfeatures
+    - textmodels
+    - textplots
+    - textstats

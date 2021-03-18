@@ -26,7 +26,8 @@ load("data/data_corpus_tweets.rda")
 
 ## Construct a document-feature matrix of Twitter posts
 ```{r}
-tweet_dfm <- dfm(data_corpus_tweets, remove_punct = TRUE)
+tweet_dfm <- tokens(data_corpus_tweets, remove_punct = TRUE) %>%
+    dfm()
 head(tweet_dfm)
 ```
 
@@ -34,7 +35,7 @@ head(tweet_dfm)
 
 ## Extract most common hashtags
 ```{r}
-tag_dfm <- dfm_select(tweet_dfm, pattern = ("#*"))
+tag_dfm <- dfm_select(tweet_dfm, pattern = "#*")
 toptag <- names(topfeatures(tag_dfm, 50))
 head(toptag)
 ```

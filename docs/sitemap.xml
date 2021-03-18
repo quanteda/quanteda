@@ -4,9 +4,6 @@
     <loc>https://quanteda.io/index.html</loc>
   </url>
   <url>
-    <loc>https://quanteda.io/reference/View.html</loc>
-  </url>
-  <url>
     <loc>https://quanteda.io/reference/as.corpus.html</loc>
   </url>
   <url>
@@ -46,6 +43,15 @@
     <loc>https://quanteda.io/reference/char_tolower.html</loc>
   </url>
   <url>
+    <loc>https://quanteda.io/reference/check_class.html</loc>
+  </url>
+  <url>
+    <loc>https://quanteda.io/reference/check_dots.html</loc>
+  </url>
+  <url>
+    <loc>https://quanteda.io/reference/check_integer.html</loc>
+  </url>
+  <url>
     <loc>https://quanteda.io/reference/convert-wrappers.html</loc>
   </url>
   <url>
@@ -56,6 +62,9 @@
   </url>
   <url>
     <loc>https://quanteda.io/reference/corpus.html</loc>
+  </url>
+  <url>
+    <loc>https://quanteda.io/reference/corpus_group.html</loc>
   </url>
   <url>
     <loc>https://quanteda.io/reference/corpus_reshape.html</loc>
@@ -71,12 +80,6 @@
   </url>
   <url>
     <loc>https://quanteda.io/reference/corpus_trim.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/corpus_trimsentences.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/create.html</loc>
   </url>
   <url>
     <loc>https://quanteda.io/reference/data-internal.html</loc>
@@ -157,9 +160,6 @@
     <loc>https://quanteda.io/reference/dictionary.html</loc>
   </url>
   <url>
-    <loc>https://quanteda.io/reference/dictionary_edit.html</loc>
-  </url>
-  <url>
     <loc>https://quanteda.io/reference/docfreq.html</loc>
   </url>
   <url>
@@ -199,9 +199,6 @@
     <loc>https://quanteda.io/reference/format_sparsity.html</loc>
   </url>
   <url>
-    <loc>https://quanteda.io/reference/friendly_class_undefined_message.html</loc>
-  </url>
-  <url>
     <loc>https://quanteda.io/reference/generate_groups.html</loc>
   </url>
   <url>
@@ -218,6 +215,9 @@
   </url>
   <url>
     <loc>https://quanteda.io/reference/head.dfm.html</loc>
+  </url>
+  <url>
+    <loc>https://quanteda.io/reference/index-topic.html</loc>
   </url>
   <url>
     <loc>https://quanteda.io/reference/is.collocations.html</loc>
@@ -241,6 +241,9 @@
     <loc>https://quanteda.io/reference/lowercase_dictionary_values.html</loc>
   </url>
   <url>
+    <loc>https://quanteda.io/reference/make_docvars.html</loc>
+  </url>
+  <url>
     <loc>https://quanteda.io/reference/make_meta.html</loc>
   </url>
   <url>
@@ -262,7 +265,7 @@
     <loc>https://quanteda.io/reference/meta_system.html</loc>
   </url>
   <url>
-    <loc>https://quanteda.io/reference/metadoc.html</loc>
+    <loc>https://quanteda.io/reference/msg.html</loc>
   </url>
   <url>
     <loc>https://quanteda.io/reference/names-quanteda.html</loc>
@@ -283,13 +286,13 @@
     <loc>https://quanteda.io/reference/object-builders.html</loc>
   </url>
   <url>
+    <loc>https://quanteda.io/reference/object2id.html</loc>
+  </url>
+  <url>
     <loc>https://quanteda.io/reference/pattern.html</loc>
   </url>
   <url>
     <loc>https://quanteda.io/reference/pattern2id.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/pattern2list.html</loc>
   </url>
   <url>
     <loc>https://quanteda.io/reference/phrase.html</loc>
@@ -298,7 +301,7 @@
     <loc>https://quanteda.io/reference/pipe.html</loc>
   </url>
   <url>
-    <loc>https://quanteda.io/reference/print-quanteda.html</loc>
+    <loc>https://quanteda.io/reference/print-method.html</loc>
   </url>
   <url>
     <loc>https://quanteda.io/reference/print.phrases.html</loc>
@@ -313,6 +316,9 @@
     <loc>https://quanteda.io/reference/read_dict_functions.html</loc>
   </url>
   <url>
+    <loc>https://quanteda.io/reference/readtext-methods.html</loc>
+  </url>
+  <url>
     <loc>https://quanteda.io/reference/reexports.html</loc>
   </url>
   <url>
@@ -322,10 +328,10 @@
     <loc>https://quanteda.io/reference/replace_dictionary_values.html</loc>
   </url>
   <url>
-    <loc>https://quanteda.io/reference/reshape_docvars.html</loc>
+    <loc>https://quanteda.io/reference/resample.html</loc>
   </url>
   <url>
-    <loc>https://quanteda.io/reference/sample_bygroup.html</loc>
+    <loc>https://quanteda.io/reference/reshape_docvars.html</loc>
   </url>
   <url>
     <loc>https://quanteda.io/reference/search_glob.html</loc>
@@ -338,12 +344,6 @@
   </url>
   <url>
     <loc>https://quanteda.io/reference/set_dfm_dimnames.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/set_dfm_slots-set.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/set_fcm_slots-set.html</loc>
   </url>
   <url>
     <loc>https://quanteda.io/reference/spacyr-methods.html</loc>
@@ -364,6 +364,9 @@
     <loc>https://quanteda.io/reference/textmodels.html</loc>
   </url>
   <url>
+    <loc>https://quanteda.io/reference/textplots.html</loc>
+  </url>
+  <url>
     <loc>https://quanteda.io/reference/texts.html</loc>
   </url>
   <url>
@@ -374,6 +377,9 @@
   </url>
   <url>
     <loc>https://quanteda.io/reference/tokenize_internal.html</loc>
+  </url>
+  <url>
+    <loc>https://quanteda.io/reference/tokens-class.html</loc>
   </url>
   <url>
     <loc>https://quanteda.io/reference/tokens.html</loc>
@@ -418,9 +424,6 @@
     <loc>https://quanteda.io/reference/tokens_tolower.html</loc>
   </url>
   <url>
-    <loc>https://quanteda.io/reference/tokens_tortl.html</loc>
-  </url>
-  <url>
     <loc>https://quanteda.io/reference/tokens_wordstem.html</loc>
   </url>
   <url>
@@ -434,9 +437,6 @@
   </url>
   <url>
     <loc>https://quanteda.io/reference/unlist_integer.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/unused_dots.html</loc>
   </url>
   <url>
     <loc>https://quanteda.io/reference/valuetype.html</loc>

@@ -54,6 +54,8 @@ tokens or dfm object." />
 
 
 
+
+
 <!-- mathjax -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script>
@@ -75,9 +77,15 @@ tokens or dfm object." />
 </script>
 
 
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -188,7 +196,7 @@ tokens or dfm object." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/quanteda/quanteda">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -297,8 +305,8 @@ the <code><a href='https://rdrr.io/r/base/Extract.html'>$</a></code> operator.  
 #&gt; 4 1801  Jefferson    Thomas Democratic-Republican
 #&gt; 5 1805  Jefferson    Thomas Democratic-Republican
 #&gt; 6 1809    Madison     James Democratic-Republican</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>tail</a></span><span class='op'>(</span><span class='fu'>docvars</span><span class='op'>(</span><span class='va'>data_corpus_inaugural</span>, <span class='st'>"President"</span><span class='op'>)</span>, <span class='fl'>10</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;  [1] "Reagan"  "Reagan"  "Bush"    "Clinton" "Clinton" "Bush"    "Bush"   
-#&gt;  [8] "Obama"   "Obama"   "Trump"  </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>data_corpus_inaugural</span><span class='op'>$</span><span class='va'>President</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;  [1] "Reagan"  "Bush"    "Clinton" "Clinton" "Bush"    "Bush"    "Obama"  
+#&gt;  [8] "Obama"   "Trump"   "Biden"  </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>data_corpus_inaugural</span><span class='op'>$</span><span class='va'>President</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "Washington" "Washington" "Adams"      "Jefferson"  "Jefferson" 
 #&gt; [6] "Madison"   </div><div class='input'>
 <span class='co'># assigning document variables to a corpus</span>
@@ -314,19 +322,19 @@ the <code><a href='https://rdrr.io/r/base/Extract.html'>$</a></code> operator.  
 #&gt; 6 1809     prez6     James Democratic-Republican</div><div class='input'><span class='va'>corp</span><span class='op'>$</span><span class='va'>fullname</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span><span class='op'>(</span><span class='va'>data_corpus_inaugural</span><span class='op'>$</span><span class='va'>FirstName</span>,
                        <span class='va'>data_corpus_inaugural</span><span class='op'>$</span><span class='va'>President</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>tail</a></span><span class='op'>(</span><span class='va'>corp</span><span class='op'>$</span><span class='va'>fullname</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "Bill Clinton"    "George W. Bush"  "George W. Bush"  "Barack Obama"   
-#&gt; [5] "Barack Obama"    "Donald J. Trump"</div><div class='input'>
+</div><div class='output co'>#&gt; [1] "George W. Bush"  "George W. Bush"  "Barack Obama"    "Barack Obama"   
+#&gt; [5] "Donald J. Trump" "Joseph R. Biden"</div><div class='input'>
 
 <span class='co'># accessing or assigning docvars for a corpus using "$"</span>
 <span class='va'>data_corpus_inaugural</span><span class='op'>$</span><span class='va'>Year</span>
 </div><div class='output co'>#&gt;  [1] 1789 1793 1797 1801 1805 1809 1813 1817 1821 1825 1829 1833 1837 1841 1845
 #&gt; [16] 1849 1853 1857 1861 1865 1869 1873 1877 1881 1885 1889 1893 1897 1901 1905
 #&gt; [31] 1909 1913 1917 1921 1925 1929 1933 1937 1941 1945 1949 1953 1957 1961 1965
-#&gt; [46] 1969 1973 1977 1981 1985 1989 1993 1997 2001 2005 2009 2013 2017</div><div class='input'><span class='va'>data_corpus_inaugural</span><span class='op'>$</span><span class='va'>century</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/Round.html'>floor</a></span><span class='op'>(</span><span class='va'>data_corpus_inaugural</span><span class='op'>$</span><span class='va'>Year</span> <span class='op'>/</span> <span class='fl'>100</span><span class='op'>)</span>
+#&gt; [46] 1969 1973 1977 1981 1985 1989 1993 1997 2001 2005 2009 2013 2017 2021</div><div class='input'><span class='va'>data_corpus_inaugural</span><span class='op'>$</span><span class='va'>century</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/Round.html'>floor</a></span><span class='op'>(</span><span class='va'>data_corpus_inaugural</span><span class='op'>$</span><span class='va'>Year</span> <span class='op'>/</span> <span class='fl'>100</span><span class='op'>)</span>
 <span class='va'>data_corpus_inaugural</span><span class='op'>$</span><span class='va'>century</span>
 </div><div class='output co'>#&gt;  [1] 17 17 17 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18
 #&gt; [26] 18 18 18 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19
-#&gt; [51] 19 19 19 20 20 20 20 20</div><div class='input'>
+#&gt; [51] 19 19 19 20 20 20 20 20 20</div><div class='input'>
 <span class='co'># accessing or assigning docvars for tokens using "$"</span>
 <span class='va'>toks</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span><span class='op'>(</span><span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span><span class='op'>(</span><span class='va'>data_corpus_inaugural</span>, <span class='va'>Year</span> <span class='op'>&lt;=</span> <span class='fl'>1805</span><span class='op'>)</span><span class='op'>)</span>
 <span class='va'>toks</span><span class='op'>$</span><span class='va'>Year</span>
@@ -364,11 +372,11 @@ the <code><a href='https://rdrr.io/r/base/Extract.html'>$</a></code> operator.  
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p>
+  <p><p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p></p>
 </div>
 
       </footer>
@@ -393,6 +401,8 @@ the <code><a href='https://rdrr.io/r/base/Extract.html'>$</a></code> operator.  
 </script>
 
 
+
+  
 
   </body>
 </html>
