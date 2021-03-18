@@ -87,30 +87,6 @@ dfm_weight.dfm <- function(x,
                            scheme = c("count", "prop", "propmax", "logcount", "boolean", "augmented", "logave"),
                            weights = NULL, base = 10, k = 0.5, smoothing = 0.5,
                            force = FALSE) {
-
-    # traps for deprecated scheme values
-    if (!missing(scheme)) {
-        scheme <- tolower(scheme)
-        if (scheme == "frequency") {
-            .Deprecated(msg = 'scheme = "frequency" is deprecated; use dfm_weight(x, scheme = "count") instead')
-            return(dfm_weight(x, scheme = "count", base = base, weights = weights))
-        } else if (scheme == "relfreq") {
-            .Deprecated(msg = 'scheme = "relfreq" is deprecated; use dfm_weight(x, scheme = "prop") instead')
-            return(dfm_weight(x, scheme = "prop", base = base, weights = weights))
-        } else if (scheme == "relmaxfreq") {
-            .Deprecated(msg = 'scheme = "relmaxfreq" is deprecated; use dfm_weight(x, scheme = "propmax") instead')
-            return(dfm_weight(x, scheme = "propmax", base = base, weights = weights))
-        } else if (scheme == "logfreq") {
-            .Deprecated(msg = 'scheme = "logfreq" is deprecated; use dfm_weight(x, scheme = "logcount") instead')
-            return(dfm_weight(x, scheme = "logcount", base = base, weights = weights))
-        } else if (scheme == "tfidf") {
-            .Deprecated(msg = 'scheme = "tfidf" is deprecated; use dfm_tfidf(x) instead')
-            return(dfm_tfidf(x, base = base))
-        } else if (scheme == "logsmooth") {
-            return(as.dfm(log(dfm_smooth(x, smoothing), base = base)))
-        }
-    }
-
     x <- as.dfm(x)
     base <- check_double(base)
     k <- check_double(k, min = 0, max = 1.0)

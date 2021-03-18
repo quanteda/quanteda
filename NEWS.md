@@ -88,6 +88,8 @@ The full listing of deprecations is:
 
 * `dictionary_edit()`, `char_edit()`, and `list_edit()` are removed.
 
+* `dfm_weight()` - formerly deprecated `"scheme"` options are now removed. 
+
 ## Bug fixes and stability enhancements
 
 * Fixed a bug causing `topfeatures(x, group = something)` to fail with weighted dfms (#2032).
