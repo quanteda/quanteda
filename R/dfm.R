@@ -252,7 +252,8 @@ dfm.dfm <- function(x,
     if ("groups" %in% names(otherargs)) {
         .Deprecated(msg = "'groups' is deprecated; use dfm_group() instead")
         if (verbose) catm(" ...grouping texts\n")
-        x <- do.call(dfm_group, list(x = x, groups = otherargs[["groups"]], fill = FALSE))
+        #x <- do.call(dfm_group, list(x = x, groups = otherargs[["groups"]], fill = FALSE))
+        x <- dfm_group(x, groups = otherargs[["groups"]], fill = FALSE)
         otherargs <- otherargs[-which(names(otherargs) == "groups")]
     }
 
