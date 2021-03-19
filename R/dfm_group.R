@@ -80,28 +80,6 @@ dfm_group.dfm <- function(x, groups, fill = FALSE, force = FALSE) {
     )
 }
 
-
-#' #' Generate a grouping vector from docvars
-#' #'
-#' #' Internal function to generate a grouping vector from docvars used in
-#' #' dfm.corpus, dfm.tokens, dfm.group, and tokens_group
-#' #' @param x corpus, tokens or dfm
-#' #' @param groups names of docvars or vector that can be coerced to a factor
-#' #' @return a factor
-#' #' @keywords internal
-#' generate_groups <- function(x, groups, drop = FALSE) {
-#'     drop <- check_logical(drop)
-#'     docvar <- get_docvars(x, user = TRUE, system = TRUE)
-#'     if (is.character(groups) && all(groups %in% names(docvar))) {
-#'         groups <- interaction(docvar[groups], drop = FALSE)
-#'     } else {
-#'         if (length(groups) != ndoc(x))
-#'             stop("groups must name docvars or provide data matching the documents in x")
-#'         groups <- factor(groups)
-#'     }
-#'     return(groups)
-#' }
-
 # check if values are uniform within groups
 is_grouped <- function(x, group) {
     if (is.list(x)) {

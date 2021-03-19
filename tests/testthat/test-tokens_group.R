@@ -83,57 +83,6 @@ test_that("test tokens_group with wrongly dimensioned groups variables", {
     )
 })
 
-test_that("generate_groups works for tokens objects", {
-    corp <- tail(data_corpus_inaugural, 14)
-    docvars(corp, "Party") <- factor(docvars(corp, "Party"))
-    toks <- tokens(corp)
-    expect_equal(
-        quanteda:::generate_groups(toks, rep(c("A", "B"), each = 7)),
-        factor(rep(c("A", "B"), each = 7))
-    )
-    expect_equal(
-        quanteda:::generate_groups(toks, factor(rep(c("A", "B"), each = 7))),
-        factor(rep(c("A", "B"), each = 7))
-    )
-    expect_equal(
-        quanteda:::generate_groups(toks, factor(rep(c(1, 2), each = 7))),
-        factor(rep(c(1, 2), each = 7))
-    )
-    expect_equal(
-        quanteda:::generate_groups(toks, "Party"),
-        factor(docvars(corp, "Party"))
-    )
-    expect_error(
-        quanteda:::generate_groups(toks, rep(c("A", "B"), each = 6)),
-        "groups must name docvars or provide data matching the documents in x"
-    )
-})
-
-test_that("generate_groups works for corpus objects", {
-    corp <- as.corpus(tail(data_corpus_inaugural, 14))
-    docvars(corp, "Party") <- factor(docvars(corp, "Party"))
-    expect_equal(
-        quanteda:::generate_groups(corp, rep(c("A", "B"), each = 7)),
-        factor(rep(c("A", "B"), each = 7))
-    )
-    expect_equal(
-        quanteda:::generate_groups(corp, factor(rep(c("A", "B"), each = 7))),
-        factor(rep(c("A", "B"), each = 7))
-    )
-    expect_equal(
-        quanteda:::generate_groups(corp, factor(rep(c(1, 2), each = 7))),
-        factor(rep(c(1, 2), each = 7))
-    )
-    expect_equal(
-        quanteda:::generate_groups(corp, "Party"),
-        factor(docvars(corp, "Party"))
-    )
-    expect_error(
-        quanteda:::generate_groups(corp, rep(c("A", "B"), each = 6)),
-        "groups must name docvars or provide data matching the documents in x"
-    )
-})
-
 test_that("tokens_group works with NA group labels", {
     corp <- corpus(c("Doc 1", "Doc 1b", "Doc2", "Doc 3 with NA", "Doc 4, more NA"),
                    docvars = data.frame(factorvar = c("Yes", "Yes", "No", NA, NA)))
