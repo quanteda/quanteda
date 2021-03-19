@@ -63,14 +63,14 @@ dfm.character <- function(x, ...) {
     .Deprecated(msg = "'dfm.character()' is deprecated. Use 'tokens()' first.")
 
     # deprecation for passing tokens arguments via ...
-    otherargs <- list(...)
-    otherargs_tokens <- otherargs[names(otherargs) %in% names(as.list(args(quanteda::tokens)))]
-    if (length(otherargs_tokens[!which(names(otherargs_tokens) == "verbose")]))
+    dots <- list(...)
+    dots_tokens <- dots[names(dots) %in% names(as.list(args(quanteda::tokens)))]
+    if (length(dots_tokens[!which(names(dots_tokens) == "verbose")]))
         .Deprecated(msg = "'...' should not be used for tokens() arguments; use 'tokens()' first.")
 
-    x <- do.call(tokens, c(list(x = x), otherargs_tokens))
-    otherargs_tokens$verbose <- NULL
-    do.call(dfm, c(list(x = x), otherargs[!names(otherargs) %in% names(otherargs_tokens)]))
+    x <- do.call(tokens, c(list(x = x), dots_tokens))
+    dots_tokens$verbose <- NULL
+    do.call(dfm, c(list(x = x), dots[!names(dots) %in% names(dots_tokens)]))
 }
 
 #' @export
@@ -78,14 +78,14 @@ dfm.corpus <- function(x, ...) {
     .Deprecated(msg = "'dfm.corpus()' is deprecated. Use 'tokens()' first.")
 
     # deprecation for passing tokens arguments via ...
-    otherargs <- list(...)
-    otherargs_tokens <- otherargs[names(otherargs) %in% names(as.list(args(quanteda::tokens)))]
-    if (length(otherargs_tokens[!which(names(otherargs_tokens) == "verbose")]))
+    dots <- list(...)
+    dots_tokens <- dots[names(dots) %in% names(as.list(args(quanteda::tokens)))]
+    if (length(dots_tokens[!which(names(dots_tokens) == "verbose")]))
         .Deprecated(msg = "'...' should not be used for tokens() arguments; use 'tokens()' first.")
 
-    x <- do.call(tokens, c(list(x = x), otherargs_tokens))
-    otherargs_tokens$verbose <- NULL
-    do.call(dfm, c(list(x = x), otherargs[!names(otherargs) %in% names(otherargs_tokens)]))
+    x <- do.call(tokens, c(list(x = x), dots_tokens))
+    dots_tokens$verbose <- NULL
+    do.call(dfm, c(list(x = x), dots[!names(dots) %in% names(dots_tokens)]))
 }
 
 #' @export
@@ -95,17 +95,17 @@ dfm.tokens <- function(x,
                        verbose = quanteda_options("verbose"),
                        ...) {
     # check for arguments passed to tokens via ...
-    otherargs <- list(...)
+    dots <- list(...)
     # if "remove" was matched to "remove_padding"
     if ("remove" %in% setdiff(names(as.list(sys.call())), names(as.list(match.call())))) {
-        otherargs[["remove"]] <- remove_padding
+        dots[["remove"]] <- remove_padding
         remove_padding <- FALSE
     }
-    otherargs_tokens <- otherargs[names(otherargs) %in% names(as.list(args(quanteda::tokens)))]
-    if (length(setdiff(names(otherargs_tokens), "verbose"))) {
+    dots_tokens <- dots[names(dots) %in% names(as.list(args(quanteda::tokens)))]
+    if (length(setdiff(names(dots_tokens), "verbose"))) {
         .Deprecated(msg = "'...' should not be used for tokens() arguments; use 'tokens()' first.")
-        x <- do.call(tokens, c(list(x = x), otherargs_tokens))
-        otherargs <- otherargs[!names(otherargs) %in% names(otherargs_tokens)]
+        x <- do.call(tokens, c(list(x = x), dots_tokens))
+        dots <- dots[!names(dots) %in% names(dots_tokens)]
     }
 
     if (tolower) {
@@ -128,30 +128,30 @@ dfm.tokens <- function(x,
     }
 
     # deprecation for groups
-    if ("groups" %in% names(otherargs)) {
+    if ("groups" %in% names(dots)) {
         .Deprecated(msg = "'groups' is deprecated; use dfm_group() instead")
         if (verbose) catm(" ...grouping texts\n")
-        x <- do.call(tokens_group, list(x = x, groups = otherargs[["groups"]], fill = FALSE))
-        otherargs <- otherargs[-which(names(otherargs) == "groups")]
+        x <- do.call(tokens_group, list(x = x, groups = dots[["groups"]], fill = FALSE))
+        dots <- dots[-which(names(dots) == "groups")]
     }
 
     # fix to set valuetype and case_insensitive for dictionary/thesaurus, select/remove
-    if (!is.null(otherargs[["valuetype"]]))
+    if (!is.null(dots[["valuetype"]]))
         warning("valuetype is deprecated in dfm()", call. = FALSE)
-    valuetype <- match.arg(otherargs[["valuetype"]], c("glob", "regex", "fixed"))
-    otherargs[["valuetype"]] <- NULL
-    if (!is.null(otherargs[["case_insensitive"]]))
+    valuetype <- match.arg(dots[["valuetype"]], c("glob", "regex", "fixed"))
+    dots[["valuetype"]] <- NULL
+    if (!is.null(dots[["case_insensitive"]]))
         warning("case_insensitive is deprecated in dfm()", call. = FALSE)
-    case_insensitive <- otherargs[["case_insensitive"]]
+    case_insensitive <- dots[["case_insensitive"]]
     if (is.null(case_insensitive)) case_insensitive <- TRUE
     check_logical(case_insensitive)
-    otherargs[["case_insensitive"]] <- NULL
+    dots[["case_insensitive"]] <- NULL
 
     # deprecations for dictionary, thesaurus
-    if (any(c("dictionary", "thesaurus") %in% names(otherargs))) {
+    if (any(c("dictionary", "thesaurus") %in% names(dots))) {
         .Deprecated(msg = "'dictionary' and 'thesaurus' are deprecated; use dfm_lookup() instead")
-        dictionary <- otherargs[["dictionary"]]
-        thesaurus <- otherargs[["thesaurus"]]
+        dictionary <- dots[["dictionary"]]
+        thesaurus <- dots[["thesaurus"]]
         if (!is.null(thesaurus)) dictionary <- dictionary(thesaurus)
         if (verbose) catm(" ...")
         x <- do.call(tokens_lookup, list(x = x, dictionary = dictionary,
@@ -159,46 +159,46 @@ dfm.tokens <- function(x,
                                          valuetype = valuetype,
                                          case_insensitive = case_insensitive,
                                          verbose = verbose))
-        otherargs <- otherargs[-which(names(otherargs) %in% c("dictionary", "thesaurus"))]
+        dots <- dots[-which(names(dots) %in% c("dictionary", "thesaurus"))]
     }
 
     # deprecation for select/remove
-    if (any(c("select", "remove") %in% names(otherargs))) {
+    if (any(c("select", "remove") %in% names(dots))) {
         select <- remove <- NULL
-        if (!is.null(otherargs[["select"]]) && !is.null(otherargs[["remove"]]))
+        if (!is.null(dots[["select"]]) && !is.null(dots[["remove"]]))
             stop("only one of select and remove may be supplied at once", call. = FALSE)
-        if (!is.null(otherargs[["select"]])) {
+        if (!is.null(dots[["select"]])) {
             .Deprecated(msg = "'select' is deprecated; use dfm_select() instead")
-            select <- otherargs[["select"]]
+            select <- dots[["select"]]
         }
-        if (!is.null(otherargs[["remove"]])) {
+        if (!is.null(dots[["remove"]])) {
             .Deprecated(msg = "'remove' is deprecated; use dfm_remove() instead")
-            select <- otherargs[["remove"]]
+            select <- dots[["remove"]]
         }
         if (verbose) catm(" ...")
         x <- do.call(tokens_select, 
                      list(x = x,
                           pattern = select,
-                          selection = if (!is.null(otherargs[["select"]])) "keep" else "remove",
+                          selection = if (!is.null(dots[["select"]])) "keep" else "remove",
                           valuetype = valuetype,
                           case_insensitive = case_insensitive,
                           verbose = verbose))
-        otherargs[["select"]] <- otherargs[["remove"]] <- NULL
+        dots[["select"]] <- dots[["remove"]] <- NULL
     }
 
-    if ("stem" %in% names(otherargs)) {
-        if (!is.null(otherargs[["stem"]])) {
-            stem <- otherargs[["stem"]]
+    if ("stem" %in% names(dots)) {
+        if (!is.null(dots[["stem"]])) {
+            stem <- dots[["stem"]]
             check_logical(stem)
             language <- quanteda_options("language_stemmer")
             if (verbose) catm(" ...stemming types (", stri_trans_totitle(language), ")\n", sep = "")
             x <- do.call(tokens_wordstem, list(x = x, language = language))
         }
-        otherargs <- otherargs[-which(names(otherargs) %in% "stem")]
+        dots <- dots[-which(names(dots) %in% "stem")]
         .Deprecated(msg = "'stem' is deprecated; use dfm_wordstem() instead")
     }
 
-    check_dots(otherargs, method = "dfm")
+    check_dots(dots, method = "dfm")
 
     remove_padding <- check_logical(remove_padding)
     if (remove_padding) {
@@ -240,40 +240,39 @@ dfm.dfm <- function(x,
                     verbose = quanteda_options("verbose"),
                     ...) {
     x <- as.dfm(x)
-    otherargs <- list(...)
+    dots <- list(...)
 
     # if "remove" was matched to "remove_padding"
     if ("remove" %in% setdiff(names(as.list(sys.call())), names(as.list(match.call())))) {
-        otherargs[["remove"]] <- remove_padding
+        dots[["remove"]] <- remove_padding
         remove_padding <- FALSE
     }
 
     # deprecation for groups
-    if ("groups" %in% names(otherargs)) {
+    if ("groups" %in% names(dots)) {
         .Deprecated(msg = "'groups' is deprecated; use dfm_group() instead")
         if (verbose) catm(" ...grouping texts\n")
-        #x <- do.call(dfm_group, list(x = x, groups = otherargs[["groups"]], fill = FALSE))
-        x <- dfm_group(x, groups = otherargs[["groups"]], fill = FALSE)
-        otherargs <- otherargs[-which(names(otherargs) == "groups")]
+        x <- dfm_group(x, groups = dots[["groups"]], fill = FALSE)
+        dots["groups"] <- NULL
     }
 
     # fix to set valuetype and case_insensitive for dictionary/thesaurus, select/remove
-    if (!is.null(otherargs[["valuetype"]]))
+    if (!is.null(dots[["valuetype"]]))
         warning("valuetype is deprecated in dfm()", call. = FALSE)
-    valuetype <- match.arg(otherargs[["valuetype"]], c("glob", "regex", "fixed"))
-    otherargs[["valuetype"]] <- NULL
-    if (!is.null(otherargs[["case_insensitive"]]))
+    valuetype <- match.arg(dots[["valuetype"]], c("glob", "regex", "fixed"))
+    dots[["valuetype"]] <- NULL
+    if (!is.null(dots[["case_insensitive"]]))
         warning("case_insensitive is deprecated in dfm()", call. = FALSE)
-    case_insensitive <- otherargs[["case_insensitive"]]
+    case_insensitive <- dots[["case_insensitive"]]
     if (is.null(case_insensitive)) case_insensitive <- TRUE
     check_logical(case_insensitive)
-    otherargs[["case_insensitive"]] <- NULL
+    dots[["case_insensitive"]] <- NULL
     
     # deprecations for dictionary, thesaurus
-    if (any(c("dictionary", "thesaurus") %in% names(otherargs))) {
+    if (any(c("dictionary", "thesaurus") %in% names(dots))) {
         .Deprecated(msg = "'dictionary' and 'thesaurus' are deprecated; use dfm_lookup() instead")
-        dictionary <- otherargs[["dictionary"]]
-        thesaurus <- otherargs[["thesaurus"]]
+        dictionary <- dots[["dictionary"]]
+        thesaurus <- dots[["thesaurus"]]
         if (!is.null(thesaurus)) dictionary <- dictionary(thesaurus)
         if (verbose) catm(" ...")
         x <- do.call(dfm_lookup, list(x = x, dictionary = dictionary,
@@ -281,31 +280,31 @@ dfm.dfm <- function(x,
                            valuetype = valuetype,
                            case_insensitive = case_insensitive,
                            verbose = verbose))
-        otherargs <- otherargs[-which(names(otherargs) %in% c("dictionary", "thesaurus"))]
+        dots <- dots[-which(names(dots) %in% c("dictionary", "thesaurus"))]
     }
 
     # deprecation for select/remove
-    if (any(c("select", "remove") %in% names(otherargs))) {
+    if (any(c("select", "remove") %in% names(dots))) {
         select <- remove <- NULL
-        if (!is.null(otherargs[["select"]]) && !is.null(otherargs[["remove"]]))
+        if (!is.null(dots[["select"]]) && !is.null(dots[["remove"]]))
             stop("only one of select and remove may be supplied at once", call. = FALSE)
-        if (!is.null(otherargs[["select"]])) {
+        if (!is.null(dots[["select"]])) {
             .Deprecated(msg = "'select' is deprecated; use dfm_select() instead")
-            select <- otherargs[["select"]]
+            select <- dots[["select"]]
         }
-        if (!is.null(otherargs[["remove"]])) {
+        if (!is.null(dots[["remove"]])) {
             .Deprecated(msg = "'remove' is deprecated; use dfm_remove() instead")
-            select <- otherargs[["remove"]]
+            select <- dots[["remove"]]
         }
         if (verbose) catm(" ...")
         x <- do.call(dfm_select, 
                      list(x = x,
                           pattern = select,
-                          selection = if (!is.null(otherargs[["select"]])) "keep" else "remove",
+                          selection = if (!is.null(dots[["select"]])) "keep" else "remove",
                           valuetype = valuetype,
                           case_insensitive = case_insensitive,
                           verbose = verbose))
-        otherargs[["select"]] <- otherargs[["remove"]] <- NULL
+        dots[["select"]] <- dots[["remove"]] <- NULL
     }
 
     if (tolower) {
@@ -313,20 +312,20 @@ dfm.dfm <- function(x,
         x <- dfm_tolower(x)
     }
 
-    if ("stem" %in% names(otherargs)) {
-        if (!is.null(otherargs[["stem"]])) {
-            stem <- otherargs[["stem"]]
+    if ("stem" %in% names(dots)) {
+        if (!is.null(dots[["stem"]])) {
+            stem <- dots[["stem"]]
             check_logical(stem)
             language <- quanteda_options("language_stemmer")
             if (verbose)
                 if (verbose) catm(" ...stemming features (", stri_trans_totitle(language), ")\n", sep = "")
             x <- do.call(dfm_wordstem, list(x = x, language = language))
         }
-        otherargs <- otherargs[-which(names(otherargs) %in% "stem")]
+        dots <- dots[-which(names(dots) %in% "stem")]
         .Deprecated(msg = "'stem' is deprecated; use dfm_wordstem() instead")
     }
 
-    check_dots(otherargs, method = "dfm")
+    check_dots(dots, method = "dfm")
 
     remove_padding <- check_logical(remove_padding)
     if (remove_padding) {
