@@ -57,27 +57,43 @@ test_that("test dfm_group with factor levels, fill = TRUE and FALSE, #854", {
     corp <- corpus(c("a b c c", "b c d", "a"),
                    docvars = data.frame(grp = factor(c("A", "A", "B"), levels = LETTERS[1:4])))
     dfmt <- dfm(tokens(corp))
+    
+    dfmt1 <- dfm_group(dfmt, groups = grp, fill = FALSE)
     expect_equal(
-        as.matrix(dfm_group(dfmt, groups = grp, fill = FALSE)),
+        as.matrix(dfmt1),
         matrix(c(1,2,3,1, 1,0,0,0), byrow = TRUE, nrow = 2, 
                dimnames = list(docs = c("A", "B"), features = letters[1:4]))
     )
     expect_equal(
-        as.matrix(dfm_group(dfmt, groups = grp, fill = TRUE)),
+        docvars(dfmt1, "grp"),
+        factor(c("A", "B"))
+    )
+    
+    dfmt2 <- dfm_group(dfmt, groups = grp, fill = TRUE)
+    expect_equal(
+        as.matrix(dfmt2),
         matrix(c(1,2,3,1, 1,0,0,0, 0,0,0,0, 0,0,0,0), byrow = TRUE, nrow = 4 , 
                dimnames = list(docs = c("A", "B", "C", "D"), features = letters[1:4]))
     )
+    expect_equal(
+        docvars(dfmt2, "grp"),
+        factor(c("A", "B", "C", "D"))
+    )
+    
+})
+
+test_that("test dfm_group with factor levels, fill = TRUE and FALSE", {
     
     dfmt <- dfm(tokens(c("a b c c", "b c d", "a")))
-    external_factor <- factor(c("text1", "text1", "text2"), 
+    grpvar <- factor(c("text1", "text1", "text2"), 
                               levels = paste0("text", 0:3))
     expect_equal(
-        as.matrix(dfm_group(dfmt, groups = external_factor, fill = FALSE)),
+        as.matrix(dfm_group(dfmt, groups = grpvar, fill = FALSE)),
         matrix(c(1,2,3,1, 1,0,0,0), byrow = TRUE, nrow = 2, 
                dimnames = list(docs = c("text1", "text2"), features = letters[1:4]))
     )
     expect_equal(
-        as.matrix(dfm_group(dfmt, groups = external_factor, fill = TRUE)),
+        as.matrix(dfm_group(dfmt, groups = grpvar, fill = TRUE)),
         matrix(c(0,0,0,0, 1,2,3,1, 1,0,0,0, 0,0,0,0), byrow = TRUE, nrow = 4, 
                dimnames = list(docs = paste0("text", 0:3), features = letters[1:4]))
     )
@@ -93,6 +109,7 @@ test_that("test dfm_group with factor levels, fill = TRUE and FALSE, #854", {
         matrix(c(1,2,3,1, 1,0,0,0), byrow = TRUE, nrow = 2,
                dimnames = list(docs = c(3, 1), features = letters[1:4]))
     )
+    
 })
 
 test_that("test dfm_group with non-factor grouping variable, with fill", {
