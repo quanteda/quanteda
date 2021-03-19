@@ -48,9 +48,11 @@
   <script src="../extra.js"></script>
 
 <meta property="og:title" content="Randomly sample documents from a tokens object — tokens_sample" />
-<meta property="og:description" content="Sample tokenized documents randomly from a tokens object, with or without
-replacement. Works just as sample() works, for document-level
-units (and their associated document-level variables)." />
+<meta property="og:description" content="Take a random sample of documents of the specified size from a corpus, with
+or without replacement, optionally by grouping variables or with probability
+weights." />
+
+
 
 
 
@@ -76,9 +78,15 @@ units (and their associated document-level variables)." />
 </script>
 
 
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -189,7 +197,7 @@ units (and their associated document-level variables)." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/quanteda/quanteda">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -218,47 +226,58 @@ units (and their associated document-level variables)." />
     </div>
 
     <div class="ref-description">
-    <p>Sample tokenized documents randomly from a tokens object, with or without
-replacement. Works just as <code><a href='https://rdrr.io/r/base/sample.html'>sample()</a></code> works, for document-level
-units (and their associated document-level variables).</p>
+    <p>Take a random sample of documents of the specified size from a corpus, with
+or without replacement, optionally by grouping variables or with probability
+weights.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>tokens_sample</span><span class='op'>(</span><span class='va'>x</span>, size <span class='op'>=</span> <span class='fu'><a href='ndoc.html'>ndoc</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>, replace <span class='op'>=</span> <span class='cn'>FALSE</span>, prob <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>tokens_sample</span><span class='op'>(</span><span class='va'>x</span>, size <span class='op'>=</span> <span class='cn'>NULL</span>, replace <span class='op'>=</span> <span class='cn'>FALSE</span>, prob <span class='op'>=</span> <span class='cn'>NULL</span>, by <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>the <a href='tokens.html'>tokens</a> object whose documents will be sampled</p></td>
+      <td><p>a <a href='tokens.html'>tokens</a> object whose documents will be sampled</p></td>
     </tr>
     <tr>
       <th>size</th>
-      <td><p>a positive number, the number of documents or features to select</p></td>
+      <td><p>a positive number, the number of documents to select; when used
+with <code>by</code>, the number to select from each group or a vector equal in
+length to the number of groups defining the samples to be chosen in each
+category of <code>by</code>.  By defining a size larger than the number of documents,
+it is possible to oversample when <code>replace = TRUE</code>.</p></td>
     </tr>
     <tr>
       <th>replace</th>
-      <td><p>logical; should sampling be with replacement?</p></td>
+      <td><p>if <code>TRUE</code>, sample  with replacement</p></td>
     </tr>
     <tr>
       <th>prob</th>
       <td><p>a vector of probability weights for obtaining the elements of the
-vector being sampled.</p></td>
+vector being sampled.  May not be applied when <code>by</code> is used.</p></td>
+    </tr>
+    <tr>
+      <th>by</th>
+      <td><p>optional grouping variable for sampling.  This will be evaluated in
+the docvars data.frame, so that docvars may be referred to by name without
+quoting.  This also changes previous behaviours for <code>by</code>.
+See <code>news(Version &gt;= "2.9", package = "quanteda")</code> for details.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A <a href='tokens.html'>tokens</a> object with number of documents or features equal to
-<code>size</code>, drawn from the tokens <code>x</code>.</p>
+    <p>a <a href='tokens.html'>tokens</a> object (re)sampled on the documents, containing the document
+variables for the documents sampled.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><a href='https://rdrr.io/r/base/sample.html'>sample</a></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>10</span><span class='op'>)</span>
-<span class='va'>toks</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span><span class='op'>(</span><span class='va'>data_corpus_inaugural</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span><span class='op'>]</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>toks</span><span class='op'>)</span>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>123</span><span class='op'>)</span>
+<span class='va'>toks</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span><span class='op'>(</span><span class='va'>data_corpus_inaugural</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span><span class='op'>]</span><span class='op'>)</span>
+<span class='va'>toks</span>
 </div><div class='output co'>#&gt; Tokens consisting of 6 documents and 4 docvars.
 #&gt; 1789-Washington :
 #&gt;  [1] "Fellow-Citizens" "of"              "the"             "Senate"         
@@ -291,72 +310,55 @@ vector being sampled.</p></td>
 #&gt;  [1] "Unwilling" "to"        "depart"    "from"      "examples"  "of"       
 #&gt;  [7] "the"       "most"      "revered"   "authority" ","         "I"        
 #&gt; [ ... and 1,249 more ]
-#&gt; </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fu'>tokens_sample</span><span class='op'>(</span><span class='va'>toks</span><span class='op'>)</span><span class='op'>)</span>
+#&gt; </div><div class='input'><span class='fu'>tokens_sample</span><span class='op'>(</span><span class='va'>toks</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Tokens consisting of 6 documents and 4 docvars.
-#&gt; 1821-Monroe :
-#&gt;  [1] "Fellow"   "citizens" ","        "I"        "shall"    "not"     
-#&gt;  [7] "attempt"  "to"       "describe" "the"      "grateful" "emotions"
-#&gt; [ ... and 4,874 more ]
-#&gt; 
-#&gt; 1813-Madison :
-#&gt;  [1] "About"       "to"          "add"         "the"         "solemnity"  
-#&gt;  [6] "of"          "an"          "oath"        "to"          "the"        
-#&gt; [11] "obligations" "imposed"    
-#&gt; [ ... and 1,290 more ]
-#&gt; 
-#&gt; 1817-Monroe :
-#&gt;  [1] "I"         "should"    "be"        "destitute" "of"        "feeling"  
-#&gt;  [7] "if"        "I"         "was"       "not"       "deeply"    "affected" 
-#&gt; [ ... and 3,665 more ]
+#&gt; 1797-Adams :
+#&gt;  [1] "When"      "it"        "was"       "first"     "perceived" ","        
+#&gt;  [7] "in"        "early"     "times"     ","         "that"      "no"       
+#&gt; [ ... and 2,565 more ]
 #&gt; 
 #&gt; 1809-Madison :
 #&gt;  [1] "Unwilling" "to"        "depart"    "from"      "examples"  "of"       
 #&gt;  [7] "the"       "most"      "revered"   "authority" ","         "I"        
 #&gt; [ ... and 1,249 more ]
 #&gt; 
-#&gt; 1797-Adams :
-#&gt;  [1] "When"      "it"        "was"       "first"     "perceived" ","        
-#&gt;  [7] "in"        "early"     "times"     ","         "that"      "no"       
-#&gt; [ ... and 2,565 more ]
-#&gt; 
 #&gt; 1793-Washington :
 #&gt;  [1] "Fellow"   "citizens" ","        "I"        "am"       "again"   
 #&gt;  [7] "called"   "upon"     "by"       "the"      "voice"    "of"      
 #&gt; [ ... and 135 more ]
-#&gt; </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fu'>tokens_sample</span><span class='op'>(</span><span class='va'>toks</span>, replace <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Tokens consisting of 6 documents and 4 docvars.
-#&gt; 1817-Monroe.1 :
-#&gt;  [1] "I"         "should"    "be"        "destitute" "of"        "feeling"  
-#&gt;  [7] "if"        "I"         "was"       "not"       "deeply"    "affected" 
-#&gt; [ ... and 3,665 more ]
 #&gt; 
-#&gt; 1813-Madison.1 :
-#&gt;  [1] "About"       "to"          "add"         "the"         "solemnity"  
-#&gt;  [6] "of"          "an"          "oath"        "to"          "the"        
-#&gt; [11] "obligations" "imposed"    
-#&gt; [ ... and 1,290 more ]
+#&gt; 1801-Jefferson :
+#&gt;  [1] "Friends"   "and"       "Fellow"    "Citizens"  ":"         "Called"   
+#&gt;  [7] "upon"      "to"        "undertake" "the"       "duties"    "of"       
+#&gt; [ ... and 1,911 more ]
 #&gt; 
-#&gt; 1809-Madison.1 :
-#&gt;  [1] "Unwilling" "to"        "depart"    "from"      "examples"  "of"       
-#&gt;  [7] "the"       "most"      "revered"   "authority" ","         "I"        
-#&gt; [ ... and 1,249 more ]
+#&gt; 1805-Jefferson :
+#&gt;  [1] "Proceeding"    ","             "fellow"        "citizens"     
+#&gt;  [5] ","             "to"            "that"          "qualification"
+#&gt;  [9] "which"         "the"           "Constitution"  "requires"     
+#&gt; [ ... and 2,368 more ]
 #&gt; 
-#&gt; 1813-Madison.2 :
-#&gt;  [1] "About"       "to"          "add"         "the"         "solemnity"  
-#&gt;  [6] "of"          "an"          "oath"        "to"          "the"        
-#&gt; [11] "obligations" "imposed"    
-#&gt; [ ... and 1,290 more ]
-#&gt; 
-#&gt; 1809-Madison.2 :
-#&gt;  [1] "Unwilling" "to"        "depart"    "from"      "examples"  "of"       
-#&gt;  [7] "the"       "most"      "revered"   "authority" ","         "I"        
-#&gt; [ ... and 1,249 more ]
-#&gt; 
-#&gt; 1793-Washington.1 :
-#&gt;  [1] "Fellow"   "citizens" ","        "I"        "am"       "again"   
-#&gt;  [7] "called"   "upon"     "by"       "the"      "voice"    "of"      
-#&gt; [ ... and 135 more ]
-#&gt; </div></pre>
+#&gt; 1789-Washington :
+#&gt;  [1] "Fellow-Citizens" "of"              "the"             "Senate"         
+#&gt;  [5] "and"             "of"              "the"             "House"          
+#&gt;  [9] "of"              "Representatives" ":"               "Among"          
+#&gt; [ ... and 1,525 more ]
+#&gt; </div><div class='input'><span class='fu'>tokens_sample</span><span class='op'>(</span><span class='va'>toks</span>, replace <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='docnames.html'>docnames</a></span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "1805-Jefferson.1"  "1801-Jefferson.1"  "1809-Madison.1"   
+#&gt; [4] "1809-Madison.2"    "1789-Washington.1" "1793-Washington.1"</div><div class='input'><span class='fu'>tokens_sample</span><span class='op'>(</span><span class='va'>toks</span>, size <span class='op'>=</span> <span class='fl'>3</span>, replace <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='docnames.html'>docnames</a></span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "1797-Adams.1"     "1805-Jefferson.1" "1797-Adams.2"    </div><div class='input'>
+<span class='co'># sampling using by</span>
+<span class='fu'><a href='docvars.html'>docvars</a></span><span class='op'>(</span><span class='va'>toks</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;   Year  President FirstName                 Party
+#&gt; 1 1789 Washington    George                  none
+#&gt; 2 1793 Washington    George                  none
+#&gt; 3 1797      Adams      John            Federalist
+#&gt; 4 1801  Jefferson    Thomas Democratic-Republican
+#&gt; 5 1805  Jefferson    Thomas Democratic-Republican
+#&gt; 6 1809    Madison     James Democratic-Republican</div><div class='input'><span class='fu'>tokens_sample</span><span class='op'>(</span><span class='va'>toks</span>, size <span class='op'>=</span> <span class='fl'>2</span>, replace <span class='op'>=</span> <span class='cn'>TRUE</span>, by <span class='op'>=</span> <span class='va'>Party</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='docnames.html'>docnames</a></span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "1809-Madison.1"    "1801-Jefferson.1"  "1797-Adams.1"     
+#&gt; [4] "1797-Adams.2"      "1789-Washington.1" "1789-Washington.2"</div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -368,11 +370,11 @@ vector being sampled.</p></td>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p>
+  <p><p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p></p>
 </div>
 
       </footer>
@@ -397,6 +399,8 @@ vector being sampled.</p></td>
 </script>
 
 
+
+  
 
   </body>
 </html>

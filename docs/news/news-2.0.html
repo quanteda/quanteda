@@ -52,6 +52,8 @@
 
 
 
+
+
 <!-- mathjax -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script>
@@ -73,9 +75,15 @@
 </script>
 
 
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-news">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -186,7 +194,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/quanteda/quanteda">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -217,32 +225,32 @@
 <h1 class="page-header" data-toc-text="2.0">
 <a href="#quanteda-20" class="anchor"></a>quanteda 2.0<small> Unreleased </small>
 </h1>
-<div id="changes-5" class="section level2">
+<div id="changes-4" class="section level2">
 <h2 class="hasAnchor">
-<a href="#changes-5" class="anchor"></a>Changes</h2>
+<a href="#changes-4" class="anchor"></a>Changes</h2>
 <p><strong>quanteda</strong> 2.0 introduces some major changes, detailed here.</p>
-<ol>
+<ol style="list-style-type: decimal">
 <li>
 <p>New corpus object structure.</p>
 <p>The internals of the corpus object have been redesigned, and now are based around a character vector with meta- and system-data in attributes. These are all updated to work with the existing extractor and replacement functions. If you were using these before, then you should not even notice the change. Docvars are now handled separately from the texts, in the same way that docvars are handled for tokens objects.</p>
 </li>
 <li>
 <p>New metadata handling.</p>
-<p>Corpus-level metadata is now inserted in a user metadata list via <code><a href="../reference/meta.html">meta()</a></code> and <code>meta&lt;-()</code>. <code><a href="../reference/meta.html">metacorpus()</a></code> is kept as a synonym for <code><a href="../reference/meta.html">meta()</a></code>, for backwards compatibility. Additional system-level corpus information is also recorded, but automatically when an object is created.</p>
-<p>Document-level metadata is deprecated, and now all document-level information is simply a “docvar”. For backward compatibility, <code><a href="../reference/metadoc.html">metadoc()</a></code> is kept and will insert document variables (docvars) with the name prefixed by an underscore.</p>
+<p>Corpus-level metadata is now inserted in a user metadata list via <code><a href="../reference/meta.html">meta()</a></code> and <code>meta&lt;-()</code>. <code>metacorpus()</code> is kept as a synonym for <code><a href="../reference/meta.html">meta()</a></code>, for backwards compatibility. Additional system-level corpus information is also recorded, but automatically when an object is created.</p>
+<p>Document-level metadata is deprecated, and now all document-level information is simply a “docvar”. For backward compatibility, <code>metadoc()</code> is kept and will insert document variables (docvars) with the name prefixed by an underscore.</p>
 </li>
 <li><p>Corpus objects now store default summary statistics for efficiency. When these are present, <code><a href="../reference/summary.corpus.html">summary.corpus()</a></code> retrieves them rather than computing them on the fly.</p></li>
 <li>
-<p>New index operators for core objects. The main change here is to redefine the <code><a href="https://rdrr.io/r/base/Extract.html">$</a></code> operator for corpus, tokens, and dfm objects (all objects that retain docvars) to allow this operator to access single docvars by name. Some other index operators have been redefined as well, such as <code>[.corpus</code> returning a slice of a corpus, and <code>[[.corpus</code> returning the texts from a corpus.</p>
-<p>See the full details at <a href="https://github.com/quanteda/quanteda/wiki/indexing_core_objects" class="uri">https://github.com/quanteda/quanteda/wiki/indexing_core_objects</a>.</p>
+<p>New index operators for core objects. The main change here is to redefine the <code><a href="https://rdrr.io/r/base/Extract.html" class="external-link">$</a></code> operator for corpus, tokens, and dfm objects (all objects that retain docvars) to allow this operator to access single docvars by name. Some other index operators have been redefined as well, such as <code>[.corpus</code> returning a slice of a corpus, and <code>[[.corpus</code> returning the texts from a corpus.</p>
+<p>See the full details at https://github.com/quanteda/quanteda/wiki/indexing_core_objects.</p>
 </li>
 <li>
 <p><code>*_subset()</code> functions.</p>
-<p>The <code>subset</code> argument now must be logical, and the <code>select</code> argument has been removed. (This is part of <code><a href="https://rdrr.io/r/base/subset.html">base::subset()</a></code> but has never made sense, either in <strong>quanteda</strong> or <strong>base</strong>.)</p>
+<p>The <code>subset</code> argument now must be logical, and the <code>select</code> argument has been removed. (This is part of <code><a href="https://rdrr.io/r/base/subset.html" class="external-link">base::subset()</a></code> but has never made sense, either in <strong>quanteda</strong> or <strong>base</strong>.)</p>
 </li>
 <li>
 <p>Return format from <code><a href="https://quanteda.io/reference/textstat_simil.html">textstat_simil()</a></code> and <code><a href="https://quanteda.io/reference/textstat_simil.html">textstat_dist()</a></code>.</p>
-<p>Now defaults to a sparse matrix from the <strong>Matrix</strong> package, but coercion methods are provided for <code><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame()</a></code>, to make these functions return a data.frame just like the other textstat functions. Additional coercion methods are provided for <code><a href="https://rdrr.io/r/stats/dist.html">as.dist()</a></code>, <code>as.simil()</code>, and <code><a href="https://rdrr.io/r/base/matrix.html">as.matrix()</a></code>.</p>
+<p>Now defaults to a sparse matrix from the <strong>Matrix</strong> package, but coercion methods are provided for <code><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame()</a></code>, to make these functions return a data.frame just like the other textstat functions. Additional coercion methods are provided for <code><a href="https://rdrr.io/r/stats/dist.html" class="external-link">as.dist()</a></code>, <code>as.simil()</code>, and <code><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix()</a></code>.</p>
 </li>
 <li><p>settings functions (and related slots and object attributes) are gone. These are now replaced by a new <code><a href="../reference/meta.html">meta(x, type = "object")</a></code> that records object-specific meta-data, including settings such as the <code>n</code> for tokens (to record the <code>ngrams</code>).</p></li>
 <li><p>All included data objects are upgraded to the new formats. This includes the three corpus objects, the single dfm data object, and the LSD 2015 dictionary object.</p></li>
@@ -251,13 +259,13 @@
 <li>
 <p><strong>quanteda</strong> v2 implements major changes to the <code><a href="../reference/tokens.html">tokens()</a></code> constructor. These are designed to simplify the code and its maintenance in <strong>quanteda</strong>, to allow users to work with other (external) tokenizers, and to improve consistency across the tokens processing options. Changes include:</p>
 <ul>
-<li><p>A new method <code>tokens.list(x, ...)</code> constructs a <code>tokens</code> object from named list of characters, allowing users to tokenize texts using some other function (or package) such as <code>tokenize_words()</code>, <code>tokenize_sentences()</code>, or <code>tokenize_tweets()</code> from the <strong>tokenizers</strong> package, or the list returned by <code><a href="http://spacyr.quanteda.io/reference/spacy_tokenize.html">spacyr::spacy_tokenize()</a></code>. This allows users to use their choice of tokenizer, as long as it returns a named list of characters. With <code>tokens.list()</code>, all tokens processing (<code>remove_*</code>) options can be applied, or the list can be converted directly to a <code>tokens</code> object without processing using <code><a href="../reference/as.list.tokens.html">as.tokens.list()</a></code>.</p></li>
+<li><p>A new method <code>tokens.list(x, ...)</code> constructs a <code>tokens</code> object from named list of characters, allowing users to tokenize texts using some other function (or package) such as <code>tokenize_words()</code>, <code>tokenize_sentences()</code>, or <code>tokenize_tweets()</code> from the <strong>tokenizers</strong> package, or the list returned by <code><a href="http://spacyr.quanteda.io/reference/spacy_tokenize.html" class="external-link">spacyr::spacy_tokenize()</a></code>. This allows users to use their choice of tokenizer, as long as it returns a named list of characters. With <code>tokens.list()</code>, all tokens processing (<code>remove_*</code>) options can be applied, or the list can be converted directly to a <code>tokens</code> object without processing using <code><a href="../reference/as.list.tokens.html">as.tokens.list()</a></code>.</p></li>
 <li><p>All tokens options are now <em>intervention</em> options, to split or remove things that by default are not split or removed. All <code>remove_*</code> options to <code><a href="../reference/tokens.html">tokens()</a></code> now remove them from tokens objects by calling <code>tokens.tokens()</code>, after constructing the object. “Pre-processing” is now actually post-processing using <code>tokens_*()</code> methods internally, after a conservative tokenization on token boundaries. This both improves performance and improves consistency in handling special characters (e.g. Twitter characters) across different tokenizer engines. (<a href='https://github.com/quanteda/quanteda/issues/1503'>#1503</a>, <a href='https://github.com/quanteda/quanteda/issues/1446'>#1446</a>, <a href='https://github.com/quanteda/quanteda/issues/1801'>#1801</a>)</p></li>
 </ul>
 <p>Note that <code>tokens.tokens()</code> will remove what is found, but cannot “undo” a removal – for instance it cannot replace missing punctuation characters if these have already been removed.</p>
 <ul>
 <li><p>The option <code>remove_hyphens</code> is removed and deprecated, but replaced by <code>split_hyphens</code>. This preserves infix (internal) hyphens rather than splitting them. This behaviour is implemented in both the <code>what = "word"</code> and <code>what = "word2"</code> tokenizer options. This option is <code>FALSE</code> by default.</p></li>
-<li><p>The option <code>remove_twitter</code> has been removed. The new <code>what = "word"</code> is a smarter tokenizer that preserves social media tags, URLs, and email-addresses. “Tags” are defined as valid social media hashtags and usernames (using Twitter rules for validity) rather than removing the <code>#</code> and <code><a href="https://rdrr.io/r/base/slotOp.html">@</a></code> punctuation characters, even if <code>remove_punct = TRUE</code>.</p></li>
+<li><p>The option <code>remove_twitter</code> has been removed. The new <code>what = "word"</code> is a smarter tokenizer that preserves social media tags, URLs, and email-addresses. “Tags” are defined as valid social media hashtags and usernames (using Twitter rules for validity) rather than removing the <code>#</code> and <code><a href="https://rdrr.io/r/base/slotOp.html" class="external-link">@</a></code> punctuation characters, even if <code>remove_punct = TRUE</code>.</p></li>
 </ul>
 </li>
 </ol>
@@ -270,7 +278,7 @@
 <li>Fixes a few CRAN-related issues (compiler warnings on Solaris and encoding warnings on r-devel-linux-x86_64-debian-clang.)</li>
 <li>Added <code>startpos</code> and <code>endpos</code> arguments to <code><a href="../reference/tokens_select.html">tokens_select()</a></code>, for selecting on token positions relative to the start or end of the tokens in each document. (<a href='https://github.com/quanteda/quanteda/issues/1475'>#1475</a>)</li>
 <li>Added a <code><a href="../reference/convert.html">convert()</a></code> method for corpus objects, to convert them into data.frame or json formats.</li>
-<li>Added a <code><a href="http://spacyr.quanteda.io/reference/spacy_tokenize.html">spacy_tokenize()</a></code> method for corpus objects, to provide direct access via the <strong>spacyr</strong> package.</li>
+<li>Added a <code><a href="http://spacyr.quanteda.io/reference/spacy_tokenize.html" class="external-link">spacy_tokenize()</a></code> method for corpus objects, to provide direct access via the <strong>spacyr</strong> package.</li>
 </ul>
 </div>
 <div id="behaviour-changes" class="section level2">
@@ -280,7 +288,7 @@
 <li>Added a <code>force = TRUE</code> option and error checking for the situations of applying <code><a href="../reference/dfm_weight.html">dfm_weight()</a></code> or <code><a href="../reference/dfm_group.html">dfm_group()</a></code> to a dfm that has already been weighted. (<a href='https://github.com/quanteda/quanteda/issues/1545'>#1545</a>) The function <code><a href="https://quanteda.io/reference/textstat_frequency.html">textstat_frequency()</a></code> now allows passing this argument to <code><a href="../reference/dfm_group.html">dfm_group()</a></code> via <code>...</code>. (<a href='https://github.com/quanteda/quanteda/issues/1646'>#1646</a>)</li>
 <li>
 <code><a href="https://quanteda.io/reference/textstat_frequency.html">textstat_frequency()</a></code> now has a new argument for resolving ties when ranking term frequencies, defaulting to the “min” method. (<a href='https://github.com/quanteda/quanteda/issues/1634'>#1634</a>)</li>
-<li>New docvars accessor and replacement functions are available for corpus, tokens, and dfm objects via <code><a href="https://rdrr.io/r/base/Extract.html">$</a></code>. (See Index Operators for Core Objects above.)</li>
+<li>New docvars accessor and replacement functions are available for corpus, tokens, and dfm objects via <code><a href="https://rdrr.io/r/base/Extract.html" class="external-link">$</a></code>. (See Index Operators for Core Objects above.)</li>
 <li>
 <code><a href="https://quanteda.io/reference/textstat_entropy.html">textstat_entropy()</a></code> now produces a data.frame that is more consistent with other <code>textstat</code> methods. (<a href='https://github.com/quanteda/quanteda/issues/1690'>#1690</a>)</li>
 </ul>
@@ -307,9 +315,9 @@
 <h1 class="page-header" data-toc-text="2.0.1">
 <a href="#quanteda-201" class="anchor"></a>quanteda 2.0.1<small> 2020-03-18 </small>
 </h1>
-<div id="changes-4" class="section level2">
+<div id="changes-3" class="section level2">
 <h2 class="hasAnchor">
-<a href="#changes-4" class="anchor"></a>Changes</h2>
+<a href="#changes-3" class="anchor"></a>Changes</h2>
 <ul>
 <li>Moved <code>data_corpus_irishbudget2010</code> and <code>data_corpus_dailnoconf1991</code> to the <strong>quanteda.textmodels</strong> package.</li>
 <li>Em dashes and double dashes between words, whether surrounded by a space or not, are now converted to " - " to distinguish them from infix hyphens. (<a href='https://github.com/quanteda/quanteda/issues/1889'>#1889</a>)</li>
@@ -341,11 +349,11 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p>
+  <p><p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p></p>
 </div>
 
       </footer>
@@ -370,6 +378,8 @@
 </script>
 
 
+
+  
 
   </body>
 </html>

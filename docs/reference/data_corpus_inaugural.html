@@ -54,6 +54,8 @@
 
 
 
+
+
 <!-- mathjax -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script>
@@ -75,9 +77,15 @@
 </script>
 
 
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -188,7 +196,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/quanteda/quanteda">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -230,6 +238,7 @@
 <li><p><code>Year</code> a four-digit integer year</p></li>
 <li><p><code>President</code> character; President's last name</p></li>
 <li><p><code>FirstName</code> character; President's first name (and possibly middle initial)</p></li>
+<li><p><code>Party</code> character; name of the President's political party</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="source"><a class="anchor" href="#source"></a>Source</h2>
@@ -245,7 +254,7 @@ contain the year of the address and the last name of the president.</p>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># some operations on the inaugural corpus</span>
 <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>data_corpus_inaugural</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Corpus consisting of 58 documents, showing 58 documents:
+</div><div class='output co'>#&gt; Corpus consisting of 59 documents, showing 59 documents:
 #&gt; 
 #&gt;             Text Types Tokens Sentences Year  President       FirstName
 #&gt;  1789-Washington   625   1537        23 1789 Washington          George
@@ -306,6 +315,7 @@ contain the year of the address and the last name of the president.</p>
 #&gt;       2009-Obama   938   2689       110 2009      Obama          Barack
 #&gt;       2013-Obama   814   2317        88 2013      Obama          Barack
 #&gt;       2017-Trump   582   1660        88 2017      Trump       Donald J.
+#&gt;   2021-Biden.txt   811   2766       216 2021      Biden       Joseph R.
 #&gt;                  Party
 #&gt;                   none
 #&gt;                   none
@@ -365,6 +375,7 @@ contain the year of the address and the last name of the president.</p>
 #&gt;             Democratic
 #&gt;             Democratic
 #&gt;             Republican
+#&gt;             Democratic
 #&gt; </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fu'><a href='docvars.html'>docvars</a></span><span class='op'>(</span><span class='va'>data_corpus_inaugural</span><span class='op'>)</span>, <span class='fl'>10</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;    Year  President   FirstName                 Party
 #&gt; 1  1789 Washington      George                  none
@@ -388,11 +399,11 @@ contain the year of the address and the last name of the president.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p>
+  <p><p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p></p>
 </div>
 
       </footer>
@@ -417,6 +428,8 @@ contain the year of the address and the last name of the president.</p>
 </script>
 
 
+
+  
 
   </body>
 </html>

@@ -56,6 +56,8 @@ are converting." />
 
 
 
+
+
 <!-- mathjax -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script>
@@ -77,9 +79,15 @@ are converting." />
 </script>
 
 
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -190,7 +198,7 @@ are converting." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/quanteda/quanteda">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -225,17 +233,7 @@ similar in syntax to analogous commands in the packages to whose format they
 are converting.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>as.wfm</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
-
-<span class='co'># S3 method for dfm</span>
-<span class='fu'>as.wfm</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
-
-<span class='fu'>as.DocumentTermMatrix</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
-
-<span class='co'># S3 method for dfm</span>
-<span class='fu'>as.DocumentTermMatrix</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
-
-<span class='fu'>dfm2austin</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+    <pre class="usage"><span class='fu'>dfm2austin</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
 
 <span class='fu'>dfm2tm</span><span class='op'>(</span><span class='va'>x</span>, weighting <span class='op'>=</span> <span class='fu'>tm</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/tm/man/weightTf.html'>weightTf</a></span><span class='op'>)</span>
 
@@ -285,18 +283,7 @@ See conversion target package documentation for more detailed descriptions
 of the return formats.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p><code>as.wfm</code> converts a quanteda <a href='dfm.html'>dfm</a> into the
-<code>wfm</code> format used by the <code>austin</code> package.</p>
-<p><code>as.DocumentTermMatrix</code> will convert a quanteda <a href='dfm.html'>dfm</a> into the
-<span class="pkg">tm</span> package's DocumentTermMatrix format. Note: The
-<span class="pkg">tm</span> package version of <code>as.TermDocumentMatrix()</code> allows a <code>weighting</code>
-argument, which supplies a weighting function for
-<code>TermDocumentMatrix()</code>.  Here the default is for
-term frequency weighting. If you want a different weighting, apply the
-weights after converting using one of the <span class="pkg">tm</span> functions. For other
-available weighting functions from the <span class="pkg">tm</span> package, see
-TermDocumentMatrix.</p>
-<p><code>dfm2lda</code> provides converts a <a href='dfm.html'>dfm</a> into the list representation
+    <p><code>dfm2lda</code> provides converts a <a href='dfm.html'>dfm</a> into the list representation
 of terms in documents used by the <span class="pkg">lda</span> package (a list with components
 "documents" and "vocab" as needed by
 <code><a href='https://rdrr.io/pkg/lda/man/lda.collapsed.gibbs.sampler.html'>lda::lda.collapsed.gibbs.sampler()</a></code>).</p>
@@ -316,16 +303,9 @@ a <a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></p></dd>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>corp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span><span class='op'>(</span><span class='va'>data_corpus_inaugural</span>, <span class='va'>Year</span> <span class='op'>&gt;</span> <span class='fl'>1970</span><span class='op'>)</span>
-<span class='va'>dfmat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span><span class='op'>(</span><span class='va'>corp</span><span class='op'>)</span>
-
-<span class='co'># shortcut conversion to austin package's wfm format</span>
-<span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span><span class='op'>(</span><span class='fu'>as.wfm</span><span class='op'>(</span><span class='va'>dfmat</span><span class='op'>)</span>, <span class='fu'><a href='convert.html'>convert</a></span><span class='op'>(</span><span class='va'>dfmat</span>, to <span class='op'>=</span> <span class='st'>"austin"</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
-<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
-<span class='co'># shortcut conversion to tm package's DocumentTermMatrix format</span>
-<span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span><span class='op'>(</span><span class='fu'>as.DocumentTermMatrix</span><span class='op'>(</span><span class='va'>dfmat</span><span class='op'>)</span>, <span class='fu'><a href='convert.html'>convert</a></span><span class='op'>(</span><span class='va'>dfmat</span>, to <span class='op'>=</span> <span class='st'>"tm"</span><span class='op'>)</span><span class='op'>)</span>
-<span class='op'>}</span>
+    <pre class="examples"><div class='input'><span class='va'>dfmat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span><span class='op'>(</span><span class='va'>data_corpus_inaugural</span>, <span class='va'>Year</span> <span class='op'>&gt;</span> <span class='fl'>1970</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='tokens.html'>tokens</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='dfm.html'>dfm</a></span><span class='op'>(</span><span class='op'>)</span>
 
 <span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 <span class='co'># shortcut conversion to lda package list format</span>
@@ -348,11 +328,11 @@ a <a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></p></dd>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p>
+  <p><p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p></p>
 </div>
 
       </footer>
@@ -377,6 +357,8 @@ a <a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></p></dd>
 </script>
 
 
+
+  
 
   </body>
 </html>

@@ -1,6 +1,6 @@
-pandoc: 2.9.2.1
-pkgdown: 1.6.1
-pkgdown_sha: ~
+pandoc: 2.11.2
+pkgdown: 1.6.1.9000
+pkgdown_sha: ae4332d48aedc46be2b532b26661a9bc6b7244fc
 articles:
   pkgdown/comparison: comparison.html
   pkgdown/design: design.html
@@ -19,7 +19,7 @@ articles:
   pkgdown/replication/qss: qss.html
   pkgdown/replication/text2vec: text2vec.html
   quickstart: quickstart.html
-last_built: 2020-12-07T16:34Z
+last_built: 2021-03-18T10:18Z
 urls:
   reference: https://quanteda.io/reference
   article: https://quanteda.io/articles

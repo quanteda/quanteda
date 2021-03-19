@@ -54,6 +54,8 @@ tokens, or even other dfm object." />
 
 
 
+
+
 <!-- mathjax -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script>
@@ -75,9 +77,15 @@ tokens, or even other dfm object." />
 </script>
 
 
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -188,7 +196,7 @@ tokens, or even other dfm object." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/quanteda/quanteda">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -224,14 +232,7 @@ tokens, or even other dfm object." />
     <pre class="usage"><span class='fu'>dfm</span><span class='op'>(</span>
   <span class='va'>x</span>,
   tolower <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  stem <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  select <span class='op'>=</span> <span class='cn'>NULL</span>,
-  remove <span class='op'>=</span> <span class='cn'>NULL</span>,
-  dictionary <span class='op'>=</span> <span class='cn'>NULL</span>,
-  thesaurus <span class='op'>=</span> <span class='cn'>NULL</span>,
-  valuetype <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"glob"</span>, <span class='st'>"regex"</span>, <span class='st'>"fixed"</span><span class='op'>)</span>,
-  case_insensitive <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  groups <span class='op'>=</span> <span class='cn'>NULL</span>,
+  remove_padding <span class='op'>=</span> <span class='cn'>FALSE</span>,
   verbose <span class='op'>=</span> <span class='fu'><a href='quanteda_options.html'>quanteda_options</a></span><span class='op'>(</span><span class='st'>"verbose"</span><span class='op'>)</span>,
   <span class='va'>...</span>
 <span class='op'>)</span></pre>
@@ -241,65 +242,16 @@ tokens, or even other dfm object." />
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>character, <a href='corpus.html'>corpus</a>, <a href='tokens.html'>tokens</a>, or dfm object</p></td>
+      <td><p>a <a href='tokens.html'>tokens</a> or dfm object</p></td>
     </tr>
     <tr>
       <th>tolower</th>
       <td><p>convert all features to lowercase</p></td>
     </tr>
     <tr>
-      <th>stem</th>
-      <td><p>if <code>TRUE</code>, stem words</p></td>
-    </tr>
-    <tr>
-      <th>select</th>
-      <td><p>a  <a href='pattern.html'>pattern</a>  of user-supplied features to keep, while
-excluding all others.  This can be used in lieu of a dictionary if there
-are only specific features that a user wishes to keep. To extract only
-Twitter usernames, for example, set <code>select = "@*"</code> and make sure that
-<code>split_tags = FALSE</code> as an additional argument passed to <a href='tokens.html'>tokens</a>.
-Note: <code>select = "^@\\\w+\\\b"</code> would be the regular expression version of
-this matching pattern.  The pattern matching type will be set by
-<code>valuetype</code>.  See also <code><a href='tokens_select.html'>tokens_remove()</a></code>.</p></td>
-    </tr>
-    <tr>
-      <th>remove</th>
-      <td><p>a <a href='pattern.html'>pattern</a> of user-supplied features to ignore, such as "stop
-words".  To access one possible list (from any list you wish), use
-<code><a href='https://rdrr.io/pkg/stopwords/man/stopwords.html'>stopwords()</a></code>.  The pattern matching type will be set by <code>valuetype</code>.  See
-also <code><a href='tokens_select.html'>tokens_select()</a></code>.</p></td>
-    </tr>
-    <tr>
-      <th>dictionary</th>
-      <td><p>a <a href='dictionary.html'>dictionary</a> object to apply to the tokens when creating
-the dfm</p></td>
-    </tr>
-    <tr>
-      <th>thesaurus</th>
-      <td><p>a <a href='dictionary.html'>dictionary</a> object that will be applied as if <code>exclusive = FALSE</code>. See also <code><a href='tokens_lookup.html'>tokens_lookup()</a></code>.  For more fine-grained control over
-this and other aspects of converting features into dictionary/thesaurus
-keys from pattern matches to values, consider creating the dfm first, and
-then applying <code><a href='dfm_lookup.html'>dfm_lookup()</a></code> separately, or using <code><a href='tokens_lookup.html'>tokens_lookup()</a></code> on the
-tokenized text before calling <code>dfm</code>.</p></td>
-    </tr>
-    <tr>
-      <th>valuetype</th>
-      <td><p>the type of pattern matching: <code>"glob"</code> for "glob"-style
-wildcard expressions; <code>"regex"</code> for regular expressions; or <code>"fixed"</code> for
-exact matching. See <a href='valuetype.html'>valuetype</a> for details.</p></td>
-    </tr>
-    <tr>
-      <th>case_insensitive</th>
-      <td><p>logical; if <code>TRUE</code>, ignore case when matching a
-<code>pattern</code> or <a href='dictionary.html'>dictionary</a> values</p></td>
-    </tr>
-    <tr>
-      <th>groups</th>
-      <td><p>either: a character vector containing the names of document
-variables to be used for grouping; or a factor or object that can be
-coerced into a factor equal in length or rows to the number of documents.
-<code>NA</code> values of the grouping value are dropped.
-See <a href='groups.html'>groups</a> for details.</p></td>
+      <th>remove_padding</th>
+      <td><p>logical; if <code>TRUE</code>, remove the "pads" left as empty tokens after
+calling <code><a href='tokens.html'>tokens()</a></code> or <code><a href='tokens_select.html'>tokens_remove()</a></code> with <code>padding = TRUE</code></p></td>
     </tr>
     <tr>
       <th>verbose</th>
@@ -307,27 +259,35 @@ See <a href='groups.html'>groups</a> for details.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>additional arguments passed to <a href='tokens.html'>tokens</a>; not used when <code>x</code> is a
-dfm</p></td>
+      <td><p>not used directly</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>a <a href='dfm-class.html'>dfm</a> object</p>
-    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
+    <h2 class="hasAnchor" id="changes-in-version-"><a class="anchor" href="#changes-in-version-"></a>Changes in version 3</h2>
 
-    <p>When <code>x</code> is a dfm, <code>groups</code> provides a convenient and fast method of
-combining and refactoring the documents of the dfm according to the groups.</p>
+    
+
+<p>In <span class="pkg">quanteda</span> v3, many convenience functions formerly available in
+<code>dfm()</code> were deprecated. Formerly, <code>dfm()</code> could be called directly on a
+<code>character</code> or <code>corpus</code> object, but we now steer users to tokenise their
+inputs first using <code><a href='tokens.html'>tokens()</a></code>.  Other convenience arguments to <code>dfm()</code> were
+also removed, such as <code>select</code>, <code>dictionary</code>, <code>thesaurus</code>, and <code>groups</code>.  All
+of these functions are available elsewhere, e.g. through <code><a href='dfm_group.html'>dfm_group()</a></code>.
+See <code>news(Version &gt;= "2.9", package = "quanteda")</code> for details.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='dfm_select.html'>dfm_select()</a></code>, <a href='dfm-class.html'>dfm</a></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>## for a corpus</span>
-<span class='va'>corp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span><span class='op'>(</span><span class='va'>data_corpus_inaugural</span>, <span class='va'>Year</span> <span class='op'>&gt;</span> <span class='fl'>1980</span><span class='op'>)</span>
-<span class='fu'>dfm</span><span class='op'>(</span><span class='va'>corp</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Document-feature matrix of: 10 documents, 3,261 features (77.4% sparse) and 4 docvars.
+<span class='va'>toks</span> <span class='op'>&lt;-</span> <span class='va'>data_corpus_inaugural</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span><span class='op'>(</span><span class='va'>Year</span> <span class='op'>&gt;</span> <span class='fl'>1980</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='tokens.html'>tokens</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='fu'>dfm</span><span class='op'>(</span><span class='va'>toks</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Document-feature matrix of: 11 documents, 3,426 features (78.47% sparse) and 4 docvars.
 #&gt;               features
 #&gt; docs           senator hatfield   , mr   . chief justice president vice bush
 #&gt;   1981-Reagan        2        1 174  3 130     1       1         5    2    1
@@ -336,126 +296,35 @@ combining and refactoring the documents of the dfm according to the groups.</p>
 #&gt;   1993-Clinton       0        0 139  0  81     0       0         2    0    1
 #&gt;   1997-Clinton       0        0 131  0 108     0       1         1    0    0
 #&gt;   2001-Bush          0        0 110  0  96     0       3         3    1    0
-#&gt; [ reached max_ndoc ... 4 more documents, reached max_nfeat ... 3,251 more features ]</div><div class='input'><span class='fu'>dfm</span><span class='op'>(</span><span class='va'>corp</span>, tolower <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Document-feature matrix of: 10 documents, 3,479 features (77.7% sparse) and 4 docvars.
-#&gt;               features
-#&gt; docs           Senator Hatfield   , Mr   . Chief Justice President Vice Bush
-#&gt;   1981-Reagan        2        1 174  3 130     1       1         5    2    1
-#&gt;   1985-Reagan        4        0 177  0 124     1       1         3    1    1
-#&gt;   1989-Bush          2        0 166  6 142     1       1         6    1    0
-#&gt;   1993-Clinton       0        0 139  0  81     0       0         1    0    1
-#&gt;   1997-Clinton       0        0 131  0 108     0       0         1    0    0
-#&gt;   2001-Bush          0        0 110  0  96     0       0         3    1    0
-#&gt; [ reached max_ndoc ... 4 more documents, reached max_nfeat ... 3,469 more features ]</div><div class='input'>
-<span class='co'># grouping documents by docvars in a corpus</span>
-<span class='fu'>dfm</span><span class='op'>(</span><span class='va'>corp</span>, groups <span class='op'>=</span> <span class='st'>"President"</span>, verbose <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Creating a dfm from a corpus input...</span></div><div class='output co'>#&gt; <span class='message'> ...lowercasing</span></div><div class='output co'>#&gt; <span class='message'> ...found 10 documents, 3,261 features</span></div><div class='output co'>#&gt; <span class='message'> ...grouping texts</span></div><div class='output co'>#&gt; <span class='message'> ...complete, elapsed time: 0.045 seconds.</span></div><div class='output co'>#&gt; <span class='message'>Finished constructing a 5 x 3,261 sparse dfm.</span></div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 3,261 features (64.2% sparse) and 2 docvars.
-#&gt;          features
-#&gt; docs      senator hatfield   , mr   . chief justice president vice bush
-#&gt;   Bush          2        0 396  7 336     2      11        13    3    1
-#&gt;   Clinton       0        0 270  0 189     0       1         3    0    1
-#&gt;   Obama         0        0 229  1 207     1       2         3    1    1
-#&gt;   Reagan        6        1 351  3 254     2       2         8    3    2
-#&gt;   Trump         0        0  96  0  88     1       1         5    0    1
-#&gt; [ reached max_nfeat ... 3,251 more features ]</div><div class='input'>
-<span class='co'># with English stopwords and stemming</span>
-<span class='fu'>dfm</span><span class='op'>(</span><span class='va'>corp</span>, remove <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/stopwords/man/stopwords.html'>stopwords</a></span><span class='op'>(</span><span class='st'>"english"</span><span class='op'>)</span>, stem <span class='op'>=</span> <span class='cn'>TRUE</span>, verbose <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Creating a dfm from a corpus input...</span></div><div class='output co'>#&gt; <span class='message'> ...lowercasing</span></div><div class='output co'>#&gt; <span class='message'> ...found 10 documents, 3,261 features</span></div><div class='output co'>#&gt; <span class='message'> ...</span></div><div class='output co'>#&gt; <span class='message'>removed 131 features</span></div><div class='output co'>#&gt; </div><div class='output co'>#&gt; <span class='message'> ...stemming types (English)</span></div><div class='output co'>#&gt; <span class='message'> ...complete, elapsed time: 0.081 seconds.</span></div><div class='output co'>#&gt; <span class='message'>Finished constructing a 10 x 2,304 sparse dfm.</span></div><div class='output co'>#&gt; Document-feature matrix of: 10 documents, 2,304 features (75.1% sparse) and 4 docvars.
-#&gt;               features
-#&gt; docs           senat hatfield   , mr   . chief justic presid vice bush
-#&gt;   1981-Reagan      2        1 174  3 130     1      1      6    2    1
-#&gt;   1985-Reagan      4        0 177  0 124     1      1      3    1    1
-#&gt;   1989-Bush        3        0 166  6 142     1      2      7    1    0
-#&gt;   1993-Clinton     0        0 139  0  81     0      0      3    0    1
-#&gt;   1997-Clinton     0        0 131  0 108     0      1      1    0    0
-#&gt;   2001-Bush        0        0 110  0  96     0      3      3    1    0
-#&gt; [ reached max_ndoc ... 4 more documents, reached max_nfeat ... 2,294 more features ]</div><div class='input'><span class='co'># works for both words in ngrams too</span>
-<span class='fu'><a href='tokens.html'>tokens</a></span><span class='op'>(</span><span class='st'>"Banking industry"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='tokens_ngrams.html'>tokens_ngrams</a></span><span class='op'>(</span>n <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-    <span class='fu'>dfm</span><span class='op'>(</span>stem <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Document-feature matrix of: 1 document, 1 feature (0.0% sparse).
+#&gt; [ reached max_ndoc ... 5 more documents, reached max_nfeat ... 3,416 more features ]</div><div class='input'>
+<span class='co'># removal options</span>
+<span class='va'>toks</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"a b c"</span>, <span class='st'>"A B C D"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='tokens_select.html'>tokens_remove</a></span><span class='op'>(</span><span class='st'>"b"</span>, padding <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+<span class='va'>toks</span>
+</div><div class='output co'>#&gt; Tokens consisting of 2 documents.
+#&gt; text1 :
+#&gt; [1] "a" ""  "c"
+#&gt; 
+#&gt; text2 :
+#&gt; [1] "A" ""  "C" "D"
+#&gt; </div><div class='input'><span class='fu'>dfm</span><span class='op'>(</span><span class='va'>toks</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 4 features (12.50% sparse) and 0 docvars.
 #&gt;        features
-#&gt; docs    bank_industri
-#&gt;   text1             1</div><div class='input'>
-<span class='co'># with dictionaries</span>
-<span class='va'>dict</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dictionary.html'>dictionary</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>christmas <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Christmas"</span>, <span class='st'>"Santa"</span>, <span class='st'>"holiday"</span><span class='op'>)</span>,
-               opposition <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Opposition"</span>, <span class='st'>"reject"</span>, <span class='st'>"notincorpus"</span><span class='op'>)</span>,
-               taxing <span class='op'>=</span> <span class='st'>"taxing"</span>,
-               taxation <span class='op'>=</span> <span class='st'>"taxation"</span>,
-               taxregex <span class='op'>=</span> <span class='st'>"tax*"</span>,
-               country <span class='op'>=</span> <span class='st'>"states"</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'>dfm</span><span class='op'>(</span><span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span><span class='op'>(</span><span class='va'>data_corpus_inaugural</span>, <span class='va'>Year</span> <span class='op'>&gt;</span> <span class='fl'>1900</span><span class='op'>)</span>, dictionary <span class='op'>=</span> <span class='va'>dict</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Document-feature matrix of: 30 documents, 6 features (73.3% sparse) and 4 docvars.
-#&gt;                 features
-#&gt; docs             christmas opposition taxing taxation taxregex country
-#&gt;   1901-McKinley          0          2      0        1        1       9
-#&gt;   1905-Roosevelt         0          0      0        0        0       0
-#&gt;   1909-Taft              0          1      0        4        6      12
-#&gt;   1913-Wilson            0          0      0        1        1       0
-#&gt;   1917-Wilson            0          0      0        0        0       2
-#&gt;   1921-Harding           0          0      0        1        2       1
-#&gt; [ reached max_ndoc ... 24 more documents ]</div><div class='input'>
-
-<span class='co'># removing stopwords</span>
-<span class='va'>txt</span> <span class='op'>&lt;-</span> <span class='st'>"The quick brown fox named Seamus jumps over the lazy dog also named Seamus, with
-             the newspaper from a boy named Seamus, in his mouth."</span>
-<span class='va'>corp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='corpus.html'>corpus</a></span><span class='op'>(</span><span class='va'>txt</span><span class='op'>)</span>
-<span class='co'># note: "also" is not in the default stopwords("english")</span>
-<span class='fu'><a href='featnames.html'>featnames</a></span><span class='op'>(</span><span class='fu'>dfm</span><span class='op'>(</span><span class='va'>corp</span>, select <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/stopwords/man/stopwords.html'>stopwords</a></span><span class='op'>(</span><span class='st'>"english"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "the"  "over" "with" "from" "a"    "in"   "his" </div><div class='input'>
-<span class='co'># removing stopwords before constructing ngrams</span>
-<span class='va'>toks1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span><span class='op'>(</span><span class='fu'><a href='char_tolower.html'>char_tolower</a></span><span class='op'>(</span><span class='va'>txt</span><span class='op'>)</span>, remove_punct <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-<span class='va'>toks2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tokens_select.html'>tokens_remove</a></span><span class='op'>(</span><span class='va'>toks1</span>, <span class='fu'><a href='https://rdrr.io/pkg/stopwords/man/stopwords.html'>stopwords</a></span><span class='op'>(</span><span class='st'>"english"</span><span class='op'>)</span>, padding <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-<span class='va'>toks3</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tokens_ngrams.html'>tokens_ngrams</a></span><span class='op'>(</span><span class='va'>toks2</span>, <span class='fl'>2</span><span class='op'>)</span>
-<span class='fu'><a href='featnames.html'>featnames</a></span><span class='op'>(</span><span class='fu'>dfm</span><span class='op'>(</span><span class='va'>toks3</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "quick_brown"  "brown_fox"    "fox_named"    "named_seamus" "seamus_jumps"
-#&gt; [6] "lazy_dog"     "dog_also"     "also_named"   "boy_named"   </div><div class='input'>
-<span class='co'># keep only certain words</span>
-<span class='fu'>dfm</span><span class='op'>(</span><span class='va'>corp</span>, select <span class='op'>=</span> <span class='st'>"*s"</span><span class='op'>)</span>  <span class='co'># keep only words ending in "s"</span>
-</div><div class='output co'>#&gt; Document-feature matrix of: 1 document, 3 features (0.0% sparse).
+#&gt; docs      a c d
+#&gt;   text1 1 1 1 0
+#&gt;   text2 1 1 1 1</div><div class='input'><span class='fu'>dfm</span><span class='op'>(</span><span class='va'>toks</span>, remove <span class='op'>=</span> <span class='st'>""</span><span class='op'>)</span> <span class='co'># remove "pads"</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: 'remove' is deprecated; use dfm_remove() instead</span></div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 3 features (16.67% sparse) and 0 docvars.
 #&gt;        features
-#&gt; docs    seamus jumps his
-#&gt;   text1      3     1   1</div><div class='input'><span class='fu'>dfm</span><span class='op'>(</span><span class='va'>corp</span>, select <span class='op'>=</span> <span class='st'>"s$"</span>, valuetype <span class='op'>=</span> <span class='st'>"regex"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Document-feature matrix of: 1 document, 3 features (0.0% sparse).
+#&gt; docs    a c d
+#&gt;   text1 1 1 0
+#&gt;   text2 1 1 1</div><div class='input'>
+<span class='co'># preserving case</span>
+<span class='fu'>dfm</span><span class='op'>(</span><span class='va'>toks</span>, tolower <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (41.67% sparse) and 0 docvars.
 #&gt;        features
-#&gt; docs    seamus jumps his
-#&gt;   text1      3     1   1</div><div class='input'>
-<span class='co'># testing Twitter functions</span>
-<span class='va'>txttweets</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"My homie @justinbieber #justinbieber shopping in #LA yesterday #beliebers"</span>,
-                <span class='st'>"2all the ha8ers including my bro #justinbieber #emabiggestfansjustinbieber"</span>,
-                <span class='st'>"Justin Bieber #justinbieber #belieber #fetusjustin #EMABiggestFansJustinBieber"</span><span class='op'>)</span>
-<span class='fu'>dfm</span><span class='op'>(</span><span class='va'>txttweets</span>, select <span class='op'>=</span> <span class='st'>"#*"</span>, split_tags <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>  <span class='co'># keep only hashtags</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: split_tags argument is not used.</span></div><div class='output co'>#&gt; Document-feature matrix of: 3 documents, 6 features (50.0% sparse).
-#&gt;        features
-#&gt; docs    #justinbieber #la #beliebers #emabiggestfansjustinbieber #belieber
-#&gt;   text1             1   1          1                           0         0
-#&gt;   text2             1   0          0                           1         0
-#&gt;   text3             1   0          0                           1         1
-#&gt;        features
-#&gt; docs    #fetusjustin
-#&gt;   text1            0
-#&gt;   text2            0
-#&gt;   text3            1</div><div class='input'><span class='fu'>dfm</span><span class='op'>(</span><span class='va'>txttweets</span>, select <span class='op'>=</span> <span class='st'>"^#.*$"</span>, valuetype <span class='op'>=</span> <span class='st'>"regex"</span>, split_tags <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: split_tags argument is not used.</span></div><div class='output co'>#&gt; Document-feature matrix of: 3 documents, 6 features (50.0% sparse).
-#&gt;        features
-#&gt; docs    #justinbieber #la #beliebers #emabiggestfansjustinbieber #belieber
-#&gt;   text1             1   1          1                           0         0
-#&gt;   text2             1   0          0                           1         0
-#&gt;   text3             1   0          0                           1         1
-#&gt;        features
-#&gt; docs    #fetusjustin
-#&gt;   text1            0
-#&gt;   text2            0
-#&gt;   text3            1</div><div class='input'>
-<span class='co'># for a dfm</span>
-<span class='fu'>dfm</span><span class='op'>(</span><span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span><span class='op'>(</span><span class='va'>data_corpus_inaugural</span>, <span class='va'>Year</span> <span class='op'>&gt;</span> <span class='fl'>1980</span><span class='op'>)</span>, groups <span class='op'>=</span> <span class='st'>"Party"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 3,261 features (33.9% sparse) and 1 docvar.
-#&gt;             features
-#&gt; docs         senator hatfield   , mr   . chief justice president vice bush
-#&gt;   Democratic       0        0 499  1 396     1       3         6    1    2
-#&gt;   Republican       8        1 843 10 678     5      14        26    6    4
-#&gt; [ reached max_nfeat ... 3,251 more features ]</div><div class='input'>
-</div></pre>
+#&gt; docs      a c A C D
+#&gt;   text1 1 1 1 0 0 0
+#&gt;   text2 1 0 0 1 1 1</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -467,11 +336,11 @@ combining and refactoring the documents of the dfm according to the groups.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p>
+  <p><p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p></p>
 </div>
 
       </footer>
@@ -496,6 +365,8 @@ combining and refactoring the documents of the dfm according to the groups.</p>
 </script>
 
 
+
+  
 
   </body>
 </html>

@@ -57,6 +57,8 @@ an easy way to make a corpus and its document variables into a data.frame." />
 
 
 
+
+
 <!-- mathjax -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script>
@@ -78,9 +80,15 @@ an easy way to make a corpus and its document variables into a data.frame." />
 </script>
 
 
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -191,7 +199,7 @@ an easy way to make a corpus and its document variables into a data.frame." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/quanteda/quanteda">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -258,7 +266,13 @@ needed by the function
 <a href='https://rdrr.io/pkg/lda/man/lda.collapsed.gibbs.sampler.html'>lda.collapsed.gibbs.sampler</a> from the
 <span class="pkg">lda</span> package</p></dd>
 <dt><code>"tm"</code></dt><dd><p>a DocumentTermMatrix from the <span class="pkg">tm</span>
-package</p></dd>
+package.  Note: The <span class="pkg">tm</span> package version of <code>as.TermDocumentMatrix()</code>
+allows a <code>weighting</code> argument, which supplies a weighting function for
+<code>TermDocumentMatrix()</code>.  Here the default is for
+term frequency weighting. If you want a different weighting, apply the
+weights after converting using one of the <span class="pkg">tm</span> functions. For other
+available weighting functions from the <span class="pkg">tm</span> package, see
+TermDocumentMatrix.</p></dd>
 <dt><code>"stm"</code></dt><dd><p>the  format for the <span class="pkg">stm</span> package</p></dd> <dt><code>"austin"</code></dt><dd><p>the
 <code>wfm</code> format from the <strong>austin</strong> package</p></dd>
 <dt><code>"topicmodels"</code></dt><dd><p>the "dtm" format as used by the <span class="pkg">topicmodels</span>
@@ -314,8 +328,9 @@ of the return formats.</p>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>## convert a dfm</span>
 
-<span class='va'>corp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span><span class='op'>(</span><span class='va'>data_corpus_inaugural</span>, <span class='va'>Year</span> <span class='op'>&gt;</span> <span class='fl'>1970</span><span class='op'>)</span>
-<span class='va'>dfmat1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span><span class='op'>(</span><span class='va'>corp</span><span class='op'>)</span>
+<span class='va'>toks</span> <span class='op'>&lt;-</span> <span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span><span class='op'>(</span><span class='va'>data_corpus_inaugural</span>, <span class='va'>Year</span> <span class='op'>&gt;</span> <span class='fl'>1970</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='tokens.html'>tokens</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='va'>dfmat1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span><span class='op'>(</span><span class='va'>toks</span><span class='op'>)</span>
 
 <span class='co'># austin's wfm format</span>
 <span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/dim.html'>dim</a></span><span class='op'>(</span><span class='va'>dfmat1</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/dim.html'>dim</a></span><span class='op'>(</span><span class='fu'>convert</span><span class='op'>(</span><span class='va'>dfmat1</span>, to <span class='op'>=</span> <span class='st'>"austin"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
@@ -324,32 +339,33 @@ of the return formats.</p>
 <span class='va'>stmmat</span> <span class='op'>&lt;-</span> <span class='fu'>convert</span><span class='op'>(</span><span class='va'>dfmat1</span>, to <span class='op'>=</span> <span class='st'>"stm"</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='va'>stmmat</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; List of 3
-#&gt;  $ documents:List of 12
-#&gt;   ..$ 1973-Nixon  : int [1:2, 1:515] 1 17 2 96 3 1 4 5 6 3 ...
-#&gt;   ..$ 1977-Carter : int [1:2, 1:501] 1 11 2 65 3 7 4 4 7 52 ...
-#&gt;   ..$ 1981-Reagan : int [1:2, 1:850] 1 9 2 174 3 7 4 3 6 5 ...
-#&gt;   ..$ 1985-Reagan : int [1:2, 1:876] 1 12 2 177 3 13 4 7 6 3 ...
-#&gt;   ..$ 1989-Bush   : int [1:2, 1:756] 1 7 2 166 3 14 4 16 6 5 ...
-#&gt;   ..$ 1993-Clinton: int [1:2, 1:605] 2 139 3 6 4 5 7 81 9 4 ...
-#&gt;   ..$ 1997-Clinton: int [1:2, 1:726] 1 13 2 131 3 13 4 7 6 3 ...
-#&gt;   ..$ 2001-Bush   : int [1:2, 1:592] 1 2 2 110 3 4 4 7 6 1 ...
-#&gt;   ..$ 2005-Bush   : int [1:2, 1:734] 1 2 2 120 3 3 4 8 6 2 ...
-#&gt;   ..$ 2009-Obama  : int [1:2, 1:900] 1 22 2 130 3 22 4 4 5 1 ...
-#&gt;   ..$ 2013-Obama  : int [1:2, 1:786] 1 13 2 99 3 14 4 5 7 89 ...
-#&gt;   ..$ 2017-Trump  : int [1:2, 1:547] 1 11 2 96 3 9 4 8 7 88 ...
-#&gt;  $ vocab    : chr [1:3463] "-" "," ";" ":" ...
-#&gt;  $ meta     :'data.frame':	12 obs. of  4 variables:
-#&gt;   ..$ Year     : int [1:12] 1973 1977 1981 1985 1989 1993 1997 2001 2005 2009 ...
-#&gt;   ..$ President: chr [1:12] "Nixon" "Carter" "Reagan" "Reagan" ...
-#&gt;   ..$ FirstName: chr [1:12] "Richard Milhous" "Jimmy" "Ronald" "Ronald" ...
-#&gt;   ..$ Party    : Factor w/ 6 levels "Democratic","Democratic-Republican",..: 5 1 5 5 5 1 1 5 5 1 ...</div><div class='input'>
+#&gt;  $ documents:List of 13
+#&gt;   ..$ 1973-Nixon    : int [1:2, 1:515] 1 17 2 96 3 1 4 5 6 3 ...
+#&gt;   ..$ 1977-Carter   : int [1:2, 1:501] 1 11 2 65 3 7 4 4 7 52 ...
+#&gt;   ..$ 1981-Reagan   : int [1:2, 1:850] 1 9 2 174 3 7 4 3 6 5 ...
+#&gt;   ..$ 1985-Reagan   : int [1:2, 1:876] 1 12 2 177 3 13 4 7 6 3 ...
+#&gt;   ..$ 1989-Bush     : int [1:2, 1:756] 1 7 2 166 3 14 4 16 6 5 ...
+#&gt;   ..$ 1993-Clinton  : int [1:2, 1:605] 2 139 3 6 4 5 7 81 10 4 ...
+#&gt;   ..$ 1997-Clinton  : int [1:2, 1:726] 1 13 2 131 3 13 4 7 6 3 ...
+#&gt;   ..$ 2001-Bush     : int [1:2, 1:592] 1 2 2 110 3 4 4 7 6 1 ...
+#&gt;   ..$ 2005-Bush     : int [1:2, 1:734] 1 2 2 120 3 3 4 8 6 2 ...
+#&gt;   ..$ 2009-Obama    : int [1:2, 1:900] 1 22 2 130 3 22 4 4 5 1 ...
+#&gt;   ..$ 2013-Obama    : int [1:2, 1:786] 1 13 2 99 3 14 4 5 7 89 ...
+#&gt;   ..$ 2017-Trump    : int [1:2, 1:547] 1 11 2 96 3 9 4 8 7 88 ...
+#&gt;   ..$ 2021-Biden.txt: int [1:2, 1:743] 1 9 2 147 4 10 6 6 7 210 ...
+#&gt;  $ vocab    : chr [1:3616] "-" "," ";" ":" ...
+#&gt;  $ meta     :'data.frame':	13 obs. of  4 variables:
+#&gt;   ..$ Year     : int [1:13] 1973 1977 1981 1985 1989 1993 1997 2001 2005 2009 ...
+#&gt;   ..$ President: chr [1:13] "Nixon" "Carter" "Reagan" "Reagan" ...
+#&gt;   ..$ FirstName: chr [1:13] "Richard Milhous" "Jimmy" "Ronald" "Ronald" ...
+#&gt;   ..$ Party    : chr [1:13] "Republican" "Democratic" "Republican" "Republican" ...</div><div class='input'>
 <span class='co'># triplet</span>
 <span class='va'>tripletmat</span> <span class='op'>&lt;-</span> <span class='fu'>convert</span><span class='op'>(</span><span class='va'>dfmat1</span>, to <span class='op'>=</span> <span class='st'>"tripletlist"</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='va'>tripletmat</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; List of 3
-#&gt;  $ document : chr [1:8388] "1973-Nixon" "1981-Reagan" "1989-Bush" "2005-Bush" ...
-#&gt;  $ feature  : chr [1:8388] "mr" "mr" "mr" "mr" ...
-#&gt;  $ frequency: num [1:8388] 3 3 6 1 1 69 52 130 124 142 ...</div><div class='input'>
+#&gt;  $ document : chr [1:9131] "1973-Nixon" "1981-Reagan" "1989-Bush" "2005-Bush" ...
+#&gt;  $ feature  : chr [1:9131] "mr" "mr" "mr" "mr" ...
+#&gt;  $ frequency: num [1:9131] 3 3 6 1 1 69 52 130 124 142 ...</div><div class='input'>
 <span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 <span class='co'># tm's DocumentTermMatrix format</span>
 <span class='va'>tmdfm</span> <span class='op'>&lt;-</span> <span class='fu'>convert</span><span class='op'>(</span><span class='va'>dfmat1</span>, to <span class='op'>=</span> <span class='st'>"tm"</span><span class='op'>)</span>
@@ -383,11 +399,11 @@ of the return formats.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p>
+  <p><p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p></p>
 </div>
 
       </footer>
@@ -412,6 +428,8 @@ of the return formats.</p>
 </script>
 
 
+
+  
 
   </body>
 </html>

@@ -48,9 +48,11 @@
   <script src="../extra.js"></script>
 
 <meta property="og:title" content="An R package for the quantitative analysis of textual data — quanteda-package" />
-<meta property="og:description" content="A set of functions for creating and managing text corpora, extracting
-features from text corpora, and analyzing those features using quantitative
+<meta property="og:description" content="Functions for creating and managing textual corpora, extracting
+features from textual data, and analyzing those features using quantitative
 methods." />
+
+
 
 
 
@@ -76,9 +78,15 @@ methods." />
 </script>
 
 
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -189,7 +197,7 @@ methods." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/quanteda/quanteda">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -218,8 +226,8 @@ methods." />
     </div>
 
     <div class="ref-description">
-    <p>A set of functions for creating and managing text corpora, extracting
-features from text corpora, and analyzing those features using quantitative
+    <p>Functions for creating and managing textual corpora, extracting
+features from textual data, and analyzing those features using quantitative
 methods.</p>
     </div>
 
@@ -227,47 +235,55 @@ methods.</p>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p><span class="pkg">quanteda</span> makes it easy to manage texts in the form of a corpus, defined
-as a collection of texts that includes document-level variables specific to
-each text, as well as meta-data for documents and for the collection as a
-whole. <span class="pkg">quanteda</span> includes tools to make it easy and fast to manipulate
-the texts in a corpus, by performing the most common natural language
-processing tasks simply and quickly, such as tokenizing, stemming, or forming
-ngrams. <span class="pkg">quanteda</span>'s functions for tokenizing texts and forming multiple
+    <p><span class="pkg">quanteda</span> makes it easy to manage texts in the form of a
+corpus, defined as a collection of texts that includes document-level
+variables specific to each text, as well as meta-data. <span class="pkg">quanteda</span>
+includes tools to make it easy and fast to manipulate the texts in a
+corpus, by performing the most common natural language processing tasks
+simply and quickly, such as tokenizing, stemming, or forming ngrams.
+<span class="pkg">quanteda</span>'s functions for tokenizing texts and forming multiple
 tokenized documents into a document-feature matrix are both extremely fast
-and extremely simple to use. <span class="pkg">quanteda</span> can segment texts easily by
-words, paragraphs, sentences, or even user-supplied delimiters and tags.</p>
-<p>Built on the text processing functions in the <span class="pkg">stringi</span> package, which is
-in turn built on C++ implementation of the ICU libraries for Unicode text
-handling, <span class="pkg">quanteda</span> pays special attention to fast and correct
-implementation of Unicode and the handling of text in any character set.</p>
-<p><span class="pkg">quanteda</span> is built for efficiency and speed, through its design around
-three infrastructures: the <span class="pkg">stringi</span> package for text processing, the
-<span class="pkg">data.table</span> package for indexing large documents efficiently, and the
-<span class="pkg">Matrix</span> package for sparse matrix objects. If you can fit it into
-memory, <span class="pkg">quanteda</span> will handle it quickly. (And eventually, we will make
-it possible to process objects even larger than available memory.)</p>
-<p><span class="pkg">quanteda</span> is principally designed to allow users a fast and convenient
-method to go from a corpus of texts to a selected matrix of documents by
-features, after defining what the documents and features. The package makes
-it easy to redefine documents, for instance by splitting them into sentences
-or paragraphs, or by tags, as well as to group them into larger documents by
-document variables, or to subset them based on logical conditions or
-combinations of document variables. The package also implements common NLP
-feature selection functions, such as removing stopwords and stemming in
-numerous languages, selecting words found in dictionaries, treating words as
-equivalent based on a user-defined "thesaurus", and trimming and weighting
-features based on document frequency, feature frequency, and related measures
-such as tf-idf.</p>
-<p>Once constructed, a <span class="pkg">quanteda</span> document-feature matrix ("<a href='dfm.html'>dfm</a>") can be
-easily analyzed using either <span class="pkg">quanteda</span>'s built-in tools for scaling
-document positions, or used with a number of other text analytic tools, such
-as: topic models (including converters for direct use with the topicmodels,
-LDA, and stm packages) document scaling (using <span class="pkg">quanteda</span>'s own functions
-for the "wordfish" and "Wordscores" models, direct use with the <strong>ca</strong>
-package for correspondence analysis, or scaling with the austin package)
-machine learning through a variety of other packages that take matrix or
-matrix-like inputs.</p>
+and very simple to use. <span class="pkg">quanteda</span> can segment texts easily by words,
+paragraphs, sentences, or even user-supplied delimiters and tags.</p>
+<p>Built on the text processing functions in the <span class="pkg">stringi</span> package,
+which is in turn built on C++ implementation of the ICU libraries for
+Unicode text handling, <span class="pkg">quanteda</span> pays special attention to fast and
+correct implementation of Unicode and the handling of text in any character
+set.</p>
+<p><span class="pkg">quanteda</span> is built for efficiency and speed, through its design
+around three infrastructures: the <span class="pkg">stringi</span> package for text
+processing, the <span class="pkg">Matrix</span> package for sparse matrix objects, and
+computationally intensive processing (e.g. for tokens) handled in
+parallelized C++. If you can fit it into memory, <span class="pkg">quanteda</span> will handle
+it quickly. (And eventually, we will make it possible to process objects
+even larger than available memory.)</p>
+<p><span class="pkg">quanteda</span> is principally designed to allow users a fast and
+convenient method to go from a corpus of texts to a selected matrix of
+documents by features, after defining what the documents and features. The
+package makes it easy to redefine documents, for instance by splitting them
+into sentences or paragraphs, or by tags, as well as to group them into
+larger documents by document variables, or to subset them based on logical
+conditions or combinations of document variables. The package also
+implements common NLP feature selection functions, such as removing
+stopwords and stemming in numerous languages, selecting words found in
+dictionaries, treating words as equivalent based on a user-defined
+"thesaurus", and trimming and weighting features based on document
+frequency, feature frequency, and related measures such as tf-idf.</p>
+<p>Tools for working with dictionaries are one of <span class="pkg">quanteda</span>'s
+principal strengths, and the package includes several core functions for
+preparing and applying dictionaries to texts, for example for lexicon-based
+sentiment analysis.</p>
+<p>Once constructed, a <span class="pkg">quanteda</span> document-feature matrix ("<a href='dfm.html'>dfm</a>")
+can be easily analyzed using either <span class="pkg">quanteda</span>'s built-in tools for
+scaling document positions, or used with a number of other text analytic
+tools, such as: topic models (including converters for direct use with the
+topicmodels, LDA, and stm packages) document scaling (using the
+<span class="pkg">quanteda.textmodels</span> package's functions for the "wordfish" and
+"Wordscores" models, or direct use with the <strong>ca</strong> package for
+correspondence analysis), or machine learning through a variety of other
+packages that take matrix or matrix-like inputs. <span class="pkg">quanteda</span> includes
+functions for converting its core objects, but especially a dfm, into other
+formats so that these are easy to use with other analytic packages.</p>
 <p>Additional features of <span class="pkg">quanteda</span> include:</p><ul>
 <li><p>powerful, flexible tools for working with <a href='dictionary.html'>dictionaries</a>;</p></li>
 <li><p>the ability to identify <a href='https://quanteda.io/reference/textstat_keyness.html'>keywords</a>
@@ -328,11 +344,11 @@ available in the package.</p></li>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p>
+  <p><p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p></p>
 </div>
 
       </footer>
@@ -357,6 +373,8 @@ available in the package.</p></li>
 </script>
 
 
+
+  
 
   </body>
 </html>

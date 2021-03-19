@@ -57,6 +57,8 @@ docvars in the dfm." />
 
 
 
+
+
 <!-- mathjax -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script>
@@ -78,9 +80,15 @@ docvars in the dfm." />
 </script>
 
 
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -191,7 +199,7 @@ docvars in the dfm." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/quanteda/quanteda">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -227,7 +235,7 @@ using non-standard evaluation to evaluate conditions based on the
 <a href='docvars.html'>docvars</a> in the dfm.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>dfm_subset</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>subset</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>dfm_subset</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>subset</span>, drop_docid <span class='op'>=</span> <span class='cn'>TRUE</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -240,6 +248,11 @@ using non-standard evaluation to evaluate conditions based on the
       <th>subset</th>
       <td><p>logical expression indicating the documents to keep: missing
 values are taken as false</p></td>
+    </tr>
+    <tr>
+      <th>drop_docid</th>
+      <td><p>if <code>TRUE</code>, <code>docid</code> for documents are removed as the result
+of subsetting.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -267,16 +280,16 @@ document-level version of using <code><a href='dfm_select.html'>dfm_select()</a>
     <pre class="examples"><div class='input'><span class='va'>corp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='corpus.html'>corpus</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>d1 <span class='op'>=</span> <span class='st'>"a b c d"</span>, d2 <span class='op'>=</span> <span class='st'>"a a b e"</span>,
                  d3 <span class='op'>=</span> <span class='st'>"b b c e"</span>, d4 <span class='op'>=</span> <span class='st'>"e e f a b"</span><span class='op'>)</span>,
                docvars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>grp <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>dfmat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span><span class='op'>(</span><span class='va'>corp</span><span class='op'>)</span>
+<span class='va'>dfmat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span><span class='op'>(</span><span class='fu'><a href='tokens.html'>tokens</a></span><span class='op'>(</span><span class='va'>corp</span><span class='op'>)</span><span class='op'>)</span>
 <span class='co'># selecting on a docvars condition</span>
 <span class='fu'>dfm_subset</span><span class='op'>(</span><span class='va'>dfmat</span>, <span class='va'>grp</span> <span class='op'>&gt;</span> <span class='fl'>1</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (41.7% sparse) and 1 docvar.
+</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (41.67% sparse) and 1 docvar.
 #&gt;     features
 #&gt; docs a b c d e f
 #&gt;   d3 0 2 1 0 1 0
 #&gt;   d4 1 1 0 0 2 1</div><div class='input'><span class='co'># selecting on a supplied vector</span>
 <span class='fu'>dfm_subset</span><span class='op'>(</span><span class='va'>dfmat</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>TRUE</span>, <span class='cn'>FALSE</span>, <span class='cn'>TRUE</span>, <span class='cn'>FALSE</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (41.7% sparse) and 1 docvar.
+</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (41.67% sparse) and 1 docvar.
 #&gt;     features
 #&gt; docs a b c d e f
 #&gt;   d1 1 1 1 1 0 0
@@ -292,11 +305,11 @@ document-level version of using <code><a href='dfm_select.html'>dfm_select()</a>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p>
+  <p><p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p></p>
 </div>
 
       </footer>
@@ -321,6 +334,8 @@ document-level version of using <code><a href='dfm_select.html'>dfm_select()</a>
 </script>
 
 
+
+  
 
   </body>
 </html>

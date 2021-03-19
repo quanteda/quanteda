@@ -54,6 +54,8 @@ Works for plain character vectors too, if groups is a factor." />
 
 
 
+
+
 <!-- mathjax -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script>
@@ -75,9 +77,15 @@ Works for plain character vectors too, if groups is a factor." />
 </script>
 
 
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -188,7 +196,7 @@ Works for plain character vectors too, if groups is a factor." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/quanteda/quanteda">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -233,15 +241,14 @@ Works for plain character vectors too, if <code>groups</code> is a factor.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>a <a href='corpus.html'>corpus</a> or character object</p></td>
+      <td><p>a <a href='corpus.html'>corpus</a></p></td>
     </tr>
     <tr>
       <th>groups</th>
-      <td><p>either: a character vector containing the names of document
-variables to be used for grouping; or a factor or object that can be
-coerced into a factor equal in length or rows to the number of documents.
-<code>NA</code> values of the grouping value are dropped.
-See <a href='groups.html'>groups</a> for details.</p></td>
+      <td><p>grouping variable for sampling, equal in length to the number
+of documents. This will be evaluated in the docvars data.frame, so that
+docvars may be referred to by name without quoting. This also changes
+previous behaviours for <code>groups</code>. See <code>news(Version &gt;= "2.9", package = "quanteda")</code> for details.</p></td>
     </tr>
     <tr>
       <th>spacer</th>
@@ -285,15 +292,13 @@ corpus, or use the option <code>tolower = TRUE</code> in <code><a href='dfm.html
 </div><div class='output co'>#&gt; 1789-Washington 1793-Washington      1797-Adams  1801-Jefferson  1805-Jefferson 
 #&gt;            8619             790           13877           10140           12908 </div><div class='input'>
 <span class='co'># grouping on a document variable</span>
-<span class='fu'><a href='https://rdrr.io/r/base/nchar.html'>nchar</a></span><span class='op'>(</span><span class='fu'>texts</span><span class='op'>(</span><span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span><span class='op'>(</span><span class='va'>data_corpus_inaugural</span>, <span class='va'>Year</span> <span class='op'>&lt;</span> <span class='fl'>1806</span><span class='op'>)</span>, groups <span class='op'>=</span> <span class='st'>"President"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/nchar.html'>nchar</a></span><span class='op'>(</span><span class='fu'>texts</span><span class='op'>(</span><span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span><span class='op'>(</span><span class='va'>data_corpus_inaugural</span>, <span class='va'>Year</span> <span class='op'>&lt;</span> <span class='fl'>1806</span><span class='op'>)</span>, groups <span class='op'>=</span> <span class='va'>President</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;      Adams  Jefferson Washington 
 #&gt;      13877      23049       9410 </div><div class='input'>
 <span class='co'># grouping a character vector using a factor</span>
-<span class='fu'><a href='https://rdrr.io/r/base/nchar.html'>nchar</a></span><span class='op'>(</span><span class='fu'>texts</span><span class='op'>(</span><span class='va'>data_corpus_inaugural</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>]</span>,
-      groups <span class='op'>=</span> <span class='st'>"President"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/nchar.html'>nchar</a></span><span class='op'>(</span><span class='fu'>texts</span><span class='op'>(</span><span class='va'>data_corpus_inaugural</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>]</span>, groups <span class='op'>=</span> <span class='va'>President</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;      Adams  Jefferson Washington 
-#&gt;      13877      23049       9410 </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/nchar.html'>nchar</a></span><span class='op'>(</span><span class='fu'>texts</span><span class='op'>(</span><span class='va'>data_corpus_inaugural</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>]</span>,
-      groups <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"W"</span>, <span class='st'>"W"</span>, <span class='st'>"A"</span>, <span class='st'>"J"</span>, <span class='st'>"J"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+#&gt;      13877      23049       9410 </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/nchar.html'>nchar</a></span><span class='op'>(</span><span class='fu'>texts</span><span class='op'>(</span><span class='va'>data_corpus_inaugural</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>]</span>, groups <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"W"</span>, <span class='st'>"W"</span>, <span class='st'>"A"</span>, <span class='st'>"J"</span>, <span class='st'>"J"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;     A     J     W 
 #&gt; 13877 23049  9410 </div><div class='input'>
 <span class='va'>corp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='corpus.html'>corpus</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"We must prioritise honour in our neighbourhood."</span>,
@@ -324,11 +329,11 @@ corpus, or use the option <code>tolower = TRUE</code> in <code><a href='dfm.html
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p>
+  <p><p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p></p>
 </div>
 
       </footer>
@@ -353,6 +358,8 @@ corpus, or use the option <code>tolower = TRUE</code> in <code><a href='dfm.html
 </script>
 
 
+
+  
 
   </body>
 </html>

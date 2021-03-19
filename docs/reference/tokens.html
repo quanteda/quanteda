@@ -55,6 +55,8 @@ tokenizer." />
 
 
 
+
+
 <!-- mathjax -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script>
@@ -76,9 +78,15 @@ tokenizer." />
 </script>
 
 
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -189,7 +197,7 @@ tokenizer." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/quanteda/quanteda">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -400,8 +408,8 @@ tokenization, consider using <span class="pkg">spacyr</span>.</p></dd>
 #&gt; [1] "Self-documenting" "code"             "?"                "?"               
 #&gt; 
 #&gt; doc4 :
-#&gt; [1] "£"          "1,000,000"  "for"        "50"         "¢"         
-#&gt; [6] "is"         "gr8"        "4ever"      "\U0001f600"
+#&gt; [1] "£"         "1,000,000" "for"       "50"        "¢"         "is"       
+#&gt; [7] "gr8"       "4ever"     "😀"       
 #&gt; </div><div class='input'><span class='fu'>tokens</span><span class='op'>(</span><span class='va'>txt</span>, what <span class='op'>=</span> <span class='st'>"word1"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Tokens consisting of 4 documents.
 #&gt; doc1 :
@@ -418,8 +426,8 @@ tokenization, consider using <span class="pkg">spacyr</span>.</p></dd>
 #&gt; [1] "Self-documenting" "code"             "?"                "?"               
 #&gt; 
 #&gt; doc4 :
-#&gt; [1] "£"          "1,000,000"  "for"        "50"         "¢"         
-#&gt; [6] "is"         "gr8"        "4ever"      "\U0001f600"
+#&gt; [1] "£"         "1,000,000" "for"       "50"        "¢"         "is"       
+#&gt; [7] "gr8"       "4ever"     "😀"       
 #&gt; </div><div class='input'>
 <span class='co'># removing punctuation marks but keeping tags and URLs</span>
 <span class='fu'>tokens</span><span class='op'>(</span><span class='va'>txt</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span><span class='op'>]</span>, remove_punct <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
@@ -446,21 +454,20 @@ tokenization, consider using <span class="pkg">spacyr</span>.</p></dd>
 <span class='fu'>tokens</span><span class='op'>(</span><span class='va'>txt</span><span class='op'>[</span><span class='fl'>4</span><span class='op'>]</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Tokens consisting of 1 document.
 #&gt; doc4 :
-#&gt; [1] "£"          "1,000,000"  "for"        "50"         "¢"         
-#&gt; [6] "is"         "gr8"        "4ever"      "\U0001f600"
+#&gt; [1] "£"         "1,000,000" "for"       "50"        "¢"         "is"       
+#&gt; [7] "gr8"       "4ever"     "😀"       
 #&gt; </div><div class='input'><span class='fu'>tokens</span><span class='op'>(</span><span class='va'>txt</span><span class='op'>[</span><span class='fl'>4</span><span class='op'>]</span>, remove_numbers <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Tokens consisting of 1 document.
 #&gt; doc4 :
-#&gt; [1] "£"          "for"        "¢"          "is"         "gr8"       
-#&gt; [6] "4ever"      "\U0001f600"
+#&gt; [1] "£"     "for"   "¢"     "is"    "gr8"   "4ever" "😀"   
 #&gt; </div><div class='input'><span class='fu'>tokens</span><span class='op'>(</span><span class='va'>txt</span><span class='op'>[</span><span class='fl'>4</span><span class='op'>]</span>, remove_numbers <span class='op'>=</span> <span class='cn'>TRUE</span>, remove_symbols <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Tokens consisting of 1 document.
 #&gt; doc4 :
 #&gt; [1] "for"   "is"    "gr8"   "4ever"
 #&gt; </div><div class='input'>
 <span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='co'># using other tokenizers</span>
-<span class='fu'>tokens</span><span class='op'>(</span><span class='fu'>tokenizers</span><span class='fu'>::</span><span class='fu'><a href='https://docs.ropensci.org/tokenizers/reference/basic-tokenizers.html'>tokenize_words</a></span><span class='op'>(</span><span class='va'>txt</span><span class='op'>[</span><span class='fl'>4</span><span class='op'>]</span><span class='op'>)</span>, remove_symbols <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-<span class='fu'>tokenizers</span><span class='fu'>::</span><span class='fu'><a href='https://docs.ropensci.org/tokenizers/reference/basic-tokenizers.html'>tokenize_words</a></span><span class='op'>(</span><span class='va'>txt</span>, lowercase <span class='op'>=</span> <span class='cn'>FALSE</span>, strip_punct <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+<span class='fu'>tokens</span><span class='op'>(</span><span class='fu'>tokenizers</span><span class='fu'>::</span><span class='fu'><a href='https://lincolnmullen.com/software/tokenizers/reference/basic-tokenizers.html'>tokenize_words</a></span><span class='op'>(</span><span class='va'>txt</span><span class='op'>[</span><span class='fl'>4</span><span class='op'>]</span><span class='op'>)</span>, remove_symbols <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+<span class='fu'>tokenizers</span><span class='fu'>::</span><span class='fu'><a href='https://lincolnmullen.com/software/tokenizers/reference/basic-tokenizers.html'>tokenize_words</a></span><span class='op'>(</span><span class='va'>txt</span>, lowercase <span class='op'>=</span> <span class='cn'>FALSE</span>, strip_punct <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
     <span class='fu'>tokens</span><span class='op'>(</span>remove_symbols <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Tokens consisting of 4 documents.
 #&gt; doc1 :
@@ -479,13 +486,13 @@ tokenization, consider using <span class="pkg">spacyr</span>.</p></dd>
 #&gt; 
 #&gt; doc4 :
 #&gt; [1] "1,000,000" "for"       "50"        "is"        "gr8"       "4ever"    
-#&gt; </div><div class='input'><span class='fu'>tokenizers</span><span class='fu'>::</span><span class='fu'><a href='https://docs.ropensci.org/tokenizers/reference/basic-tokenizers.html'>tokenize_characters</a></span><span class='op'>(</span><span class='va'>txt</span><span class='op'>[</span><span class='fl'>3</span><span class='op'>]</span>, strip_non_alphanum <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+#&gt; </div><div class='input'><span class='fu'>tokenizers</span><span class='fu'>::</span><span class='fu'><a href='https://lincolnmullen.com/software/tokenizers/reference/basic-tokenizers.html'>tokenize_characters</a></span><span class='op'>(</span><span class='va'>txt</span><span class='op'>[</span><span class='fl'>3</span><span class='op'>]</span>, strip_non_alphanum <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
     <span class='fu'>tokens</span><span class='op'>(</span>remove_punct <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Tokens consisting of 1 document.
 #&gt; doc3 :
 #&gt;  [1] "s" "e" "l" "f" "d" "o" "c" "u" "m" "e" "n" "t"
 #&gt; [ ... and 7 more ]
-#&gt; </div><div class='input'><span class='fu'>tokenizers</span><span class='fu'>::</span><span class='fu'><a href='https://docs.ropensci.org/tokenizers/reference/basic-tokenizers.html'>tokenize_sentences</a></span><span class='op'>(</span>
+#&gt; </div><div class='input'><span class='fu'>tokenizers</span><span class='fu'>::</span><span class='fu'><a href='https://lincolnmullen.com/software/tokenizers/reference/basic-tokenizers.html'>tokenize_sentences</a></span><span class='op'>(</span>
     <span class='st'>"The quick brown fox.  It jumped over the lazy dog."</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
     <span class='fu'>tokens</span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Tokens consisting of 1 document.
@@ -505,11 +512,11 @@ tokenization, consider using <span class="pkg">spacyr</span>.</p></dd>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p>
+  <p><p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p></p>
 </div>
 
       </footer>
@@ -534,6 +541,8 @@ tokenization, consider using <span class="pkg">spacyr</span>.</p></dd>
 </script>
 
 
+
+  
 
   </body>
 </html>
