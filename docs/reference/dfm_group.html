@@ -48,9 +48,10 @@
   <script src="../extra.js"></script>
 
 <meta property="og:title" content="Combine documents in a dfm by a grouping variable — dfm_group" />
-<meta property="og:description" content="Combine documents in a dfm by a grouping variable, which can also be
-one of the docvars attached to the dfm. This is identical in
-functionality to using the &quot;groups&quot; argument in dfm()." />
+<meta property="og:description" content="Combine documents in a dfm by a grouping variable, by summing the cell
+frequencies within group and creating new &quot;documents&quot; with the group labels." />
+
+
 
 
 
@@ -76,9 +77,15 @@ functionality to using the &quot;groups&quot; argument in dfm()." />
 </script>
 
 
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -189,7 +196,7 @@ functionality to using the &quot;groups&quot; argument in dfm()." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/quanteda/quanteda">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -218,12 +225,11 @@ functionality to using the &quot;groups&quot; argument in dfm()." />
     </div>
 
     <div class="ref-description">
-    <p>Combine documents in a <a href='dfm.html'>dfm</a> by a grouping variable, which can also be
-one of the <a href='docvars.html'>docvars</a> attached to the dfm. This is identical in
-functionality to using the <code>"groups"</code> argument in <code><a href='dfm.html'>dfm()</a></code>.</p>
+    <p>Combine documents in a <a href='dfm.html'>dfm</a> by a grouping variable, by summing the cell
+frequencies within group and creating new "documents" with the group labels.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>dfm_group</span><span class='op'>(</span><span class='va'>x</span>, groups <span class='op'>=</span> <span class='cn'>NULL</span>, fill <span class='op'>=</span> <span class='cn'>FALSE</span>, force <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>dfm_group</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>groups</span>, fill <span class='op'>=</span> <span class='cn'>FALSE</span>, force <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -234,26 +240,29 @@ functionality to using the <code>"groups"</code> argument in <code><a href='dfm.
     </tr>
     <tr>
       <th>groups</th>
-      <td><p>either: a character vector containing the names of document
-variables to be used for grouping; or a factor or object that can be
-coerced into a factor equal in length or rows to the number of documents.
-<code>NA</code> values of the grouping value are dropped.
-See <a href='groups.html'>groups</a> for details.</p></td>
+      <td><p>grouping variable for sampling, equal in length to the number
+of documents. This will be evaluated in the docvars data.frame, so that
+docvars may be referred to by name without quoting. This also changes
+previous behaviours for <code>groups</code>. See <code>news(Version &gt;= "2.9", package = "quanteda")</code> for details.</p></td>
     </tr>
     <tr>
       <th>fill</th>
-      <td><p>logical; if <code>TRUE</code> and <code>groups</code> is a factor, then use
-all levels of the factor when forming the new "documents" of the grouped
-dfm.  This will result in documents with zero feature counts for levels not
-observed.  Has no effect if the <code>groups</code> variable(s) are not factors.</p></td>
+      <td><p>logical; if <code>TRUE</code> and <code>groups</code> is a factor, then use all levels
+of the factor when forming the new documents of the grouped object.  This
+will result in a new "document" with empty content for levels not observed,
+but for which an empty document may be needed.  If <code>groups</code> is a factor of
+dates, for instance, then <code>fill = TRUE</code> ensures that the new object will
+consist of one new "document" by date, regardless of whether any documents
+previously existed with that date.  Has no effect if the <code>groups</code>
+variable(s) are not factors.</p></td>
     </tr>
     <tr>
       <th>force</th>
-      <td><p>logical; if <code>TRUE</code>, group by summing existing counts, even
-if the dfm has been weighted.  This can result in invalid sums, such as
-adding log counts (when a dfm has been weighted by <code>"logcount"</code> for
-instance using <code><a href='dfm_weight.html'>dfm_weight()</a></code>).  Does not apply to the term
-weight schemes "count" and "prop".</p></td>
+      <td><p>logical; if <code>TRUE</code>, group by summing existing counts, even if
+the dfm has been weighted.  This can result in invalid sums, such as adding
+log counts (when a dfm has been weighted by <code>"logcount"</code> for instance using
+<code><a href='dfm_weight.html'>dfm_weight()</a></code>).  Not needed when the term weight schemes "count" and
+"prop".</p></td>
     </tr>
     </table>
 
@@ -265,40 +274,32 @@ previous values summed by group. Document-level variables that have no
 variation within groups are saved in <a href='docvars.html'>docvars</a>.  Document-level
 variables that are lists are dropped from grouping, even when these exhibit
 no variation within groups.</p>
-<p>Setting the <code>fill = TRUE</code> offers a way to "pad" a dfm with document
-groups that may not have been observed, but for which an empty document is
-needed, for various reasons.  If <code>groups</code> is a factor of dates, for
-instance, then using <code>fill = TRUE</code> ensures that the new documents will
-consist of one row of the dfm per date, regardless of whether any documents
-previously existed with that date.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='va'>corp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='corpus.html'>corpus</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"a a b"</span>, <span class='st'>"a b c c"</span>, <span class='st'>"a c d d"</span>, <span class='st'>"a c c d"</span><span class='op'>)</span>,
                docvars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>grp <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"grp1"</span>, <span class='st'>"grp1"</span>, <span class='st'>"grp2"</span>, <span class='st'>"grp2"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>dfmat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span><span class='op'>(</span><span class='va'>corp</span><span class='op'>)</span>
-<span class='fu'>dfm_group</span><span class='op'>(</span><span class='va'>dfmat</span>, groups <span class='op'>=</span> <span class='st'>"grp"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 4 features (25.0% sparse) and 1 docvar.
+<span class='va'>dfmat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span><span class='op'>(</span><span class='fu'><a href='tokens.html'>tokens</a></span><span class='op'>(</span><span class='va'>corp</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'>dfm_group</span><span class='op'>(</span><span class='va'>dfmat</span>, groups <span class='op'>=</span> <span class='va'>grp</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 4 features (25.00% sparse) and 1 docvar.
 #&gt;       features
 #&gt; docs   a b c d
 #&gt;   grp1 3 2 2 0
 #&gt;   grp2 2 0 3 3</div><div class='input'><span class='fu'>dfm_group</span><span class='op'>(</span><span class='va'>dfmat</span>, groups <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 4 features (25.0% sparse) and 1 docvar.
+</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 4 features (25.00% sparse) and 1 docvar.
 #&gt;     features
 #&gt; docs a b c d
 #&gt;    1 3 2 2 0
 #&gt;    2 2 0 3 3</div><div class='input'>
-<span class='co'># equivalent</span>
-<span class='fu'><a href='dfm.html'>dfm</a></span><span class='op'>(</span><span class='va'>dfmat</span>, groups <span class='op'>=</span> <span class='st'>"grp"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 4 features (25.0% sparse) and 1 docvar.
-#&gt;       features
-#&gt; docs   a b c d
-#&gt;   grp1 3 2 2 0
-#&gt;   grp2 2 0 3 3</div><div class='input'><span class='fu'><a href='dfm.html'>dfm</a></span><span class='op'>(</span><span class='va'>dfmat</span>, groups <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 4 features (25.0% sparse) and 1 docvar.
+<span class='co'># with fill = TRUE</span>
+<span class='fu'>dfm_group</span><span class='op'>(</span><span class='va'>dfmat</span>, fill <span class='op'>=</span> <span class='cn'>TRUE</span>,
+          groups <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"A"</span>, <span class='st'>"A"</span>, <span class='st'>"B"</span>, <span class='st'>"C"</span><span class='op'>)</span>, levels <span class='op'>=</span> <span class='va'>LETTERS</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>]</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Document-feature matrix of: 4 documents, 4 features (43.75% sparse) and 1 docvar.
 #&gt;     features
 #&gt; docs a b c d
-#&gt;    1 3 2 2 0
-#&gt;    2 2 0 3 3</div></pre>
+#&gt;    A 3 2 2 0
+#&gt;    B 1 0 1 2
+#&gt;    C 1 0 2 1
+#&gt;    D 0 0 0 0</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -310,11 +311,11 @@ previously existed with that date.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p>
+  <p><p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p></p>
 </div>
 
       </footer>
@@ -339,6 +340,8 @@ previously existed with that date.</p>
 </script>
 
 
+
+  
 
   </body>
 </html>

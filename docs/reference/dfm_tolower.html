@@ -54,6 +54,8 @@ fcm to lower and upper case, respectively, and then recombine the counts." />
 
 
 
+
+
 <!-- mathjax -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script>
@@ -75,9 +77,15 @@ fcm to lower and upper case, respectively, and then recombine the counts." />
 </script>
 
 
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -188,7 +196,7 @@ fcm to lower and upper case, respectively, and then recombine the counts." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/quanteda/quanteda">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -252,19 +260,19 @@ the counts. This works only on fcm objects created with <code>context = "documen
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># for a document-feature matrix</span>
-<span class='va'>dfmat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"b A A"</span>, <span class='st'>"C C a b B"</span><span class='op'>)</span>, tolower <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+<span class='va'>dfmat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span><span class='op'>(</span><span class='fu'><a href='tokens.html'>tokens</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"b A A"</span>, <span class='st'>"C C a b B"</span><span class='op'>)</span><span class='op'>)</span>, tolower <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
 <span class='va'>dfmat</span>
-</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 5 features (40.0% sparse).
+</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 5 features (40.00% sparse) and 0 docvars.
 #&gt;        features
 #&gt; docs    b A C a B
 #&gt;   text1 1 2 0 0 0
 #&gt;   text2 1 0 2 1 1</div><div class='input'><span class='fu'>dfm_tolower</span><span class='op'>(</span><span class='va'>dfmat</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 3 features (16.7% sparse).
+</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 3 features (16.67% sparse) and 0 docvars.
 #&gt;        features
 #&gt; docs    b a c
 #&gt;   text1 1 2 0
 #&gt;   text2 2 1 2</div><div class='input'><span class='fu'>dfm_toupper</span><span class='op'>(</span><span class='va'>dfmat</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 3 features (16.7% sparse).
+</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 3 features (16.67% sparse) and 0 docvars.
 #&gt;        features
 #&gt; docs    B A C
 #&gt;   text1 1 2 0
@@ -310,11 +318,11 @@ the counts. This works only on fcm objects created with <code>context = "documen
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p>
+  <p><p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p></p>
 </div>
 
       </footer>
@@ -339,6 +347,8 @@ the counts. This works only on fcm objects created with <code>context = "documen
 </script>
 
 
+
+  
 
   </body>
 </html>

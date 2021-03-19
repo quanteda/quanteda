@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Recombine documents tokens by groups — tokens_group • quanteda</title>
+<title>Combine documents in a tokens object by a grouping variable — tokens_group • quanteda</title>
 
 
 <!-- jquery -->
@@ -47,8 +47,12 @@
   <link href="../extra.css" rel="stylesheet">
   <script src="../extra.js"></script>
 
-<meta property="og:title" content="Recombine documents tokens by groups — tokens_group" />
-<meta property="og:description" content="Recombine documents tokens by groups" />
+<meta property="og:title" content="Combine documents in a tokens object by a grouping variable — tokens_group" />
+<meta property="og:description" content="Combine documents in a tokens object by a grouping variable, by
+concatenating the tokens in the order of the documents within each grouping
+variable." />
+
+
 
 
 
@@ -74,9 +78,15 @@
 </script>
 
 
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -187,7 +197,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/quanteda/quanteda">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -210,16 +220,18 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Recombine documents tokens by groups</h1>
+    <h1>Combine documents in a tokens object by a grouping variable</h1>
     <small class="dont-index">Source: <a href='https://github.com/quanteda/quanteda/blob/master/R/tokens_group.R'><code>R/tokens_group.R</code></a></small>
     <div class="hidden name"><code>tokens_group.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Recombine documents tokens by groups</p>
+    <p>Combine documents in a <a href='tokens.html'>tokens</a> object by a grouping variable, by
+concatenating the tokens in the order of the documents within each grouping
+variable.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>tokens_group</span><span class='op'>(</span><span class='va'>x</span>, groups <span class='op'>=</span> <span class='cn'>NULL</span>, fill <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>tokens_group</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>groups</span>, fill <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -230,41 +242,69 @@
     </tr>
     <tr>
       <th>groups</th>
-      <td><p>either: a character vector containing the names of document
-variables to be used for grouping; or a factor or object that can be
-coerced into a factor equal in length or rows to the number of documents.
-<code>NA</code> values of the grouping value are dropped.
-See <a href='groups.html'>groups</a> for details.</p></td>
+      <td><p>grouping variable for sampling, equal in length to the number
+of documents. This will be evaluated in the docvars data.frame, so that
+docvars may be referred to by name without quoting. This also changes
+previous behaviours for <code>groups</code>. See <code>news(Version &gt;= "2.9", package = "quanteda")</code> for details.</p></td>
+    </tr>
+    <tr>
+      <th>fill</th>
+      <td><p>logical; if <code>TRUE</code> and <code>groups</code> is a factor, then use all levels
+of the factor when forming the new documents of the grouped object.  This
+will result in a new "document" with empty content for levels not observed,
+but for which an empty document may be needed.  If <code>groups</code> is a factor of
+dates, for instance, then <code>fill = TRUE</code> ensures that the new object will
+consist of one new "document" by date, regardless of whether any documents
+previously existed with that date.  Has no effect if the <code>groups</code>
+variable(s) are not factors.</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>a <a href='tokens.html'>tokens</a> object whose documents are equal to the unique group
+combinations, and whose tokens are the concatenations of the tokens by
+group. Document-level variables that have no variation within groups are
+saved in <a href='docvars.html'>docvars</a>.  Document-level variables that are lists are dropped
+from grouping, even when these exhibit no variation within groups.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># dfm_group examples</span>
-<span class='va'>corp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='corpus.html'>corpus</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"a a b"</span>, <span class='st'>"a b c c"</span>, <span class='st'>"a c d d"</span>, <span class='st'>"a c c d"</span><span class='op'>)</span>,
-                   docvars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>grp <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"grp1"</span>, <span class='st'>"grp1"</span>, <span class='st'>"grp2"</span>, <span class='st'>"grp2"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+    <pre class="examples"><div class='input'><span class='va'>corp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='corpus.html'>corpus</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"a a b"</span>, <span class='st'>"a b c c"</span>, <span class='st'>"a c d d"</span>, <span class='st'>"a c c d"</span><span class='op'>)</span>,
+               docvars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>grp <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"grp1"</span>, <span class='st'>"grp1"</span>, <span class='st'>"grp2"</span>, <span class='st'>"grp2"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
 <span class='va'>toks</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span><span class='op'>(</span><span class='va'>corp</span><span class='op'>)</span>
-<span class='fu'>quanteda</span><span class='fu'>:::</span><span class='fu'>tokens_group</span><span class='op'>(</span><span class='va'>toks</span>, groups <span class='op'>=</span> <span class='st'>"grp"</span><span class='op'>)</span>
+<span class='fu'>tokens_group</span><span class='op'>(</span><span class='va'>toks</span>, groups <span class='op'>=</span> <span class='va'>grp</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Tokens consisting of 2 documents and 1 docvar.
 #&gt; grp1 :
 #&gt; [1] "a" "a" "b" "a" "b" "c" "c"
 #&gt; 
 #&gt; grp2 :
 #&gt; [1] "a" "c" "d" "d" "a" "c" "c" "d"
-#&gt; </div><div class='input'><span class='fu'>quanteda</span><span class='fu'>:::</span><span class='fu'>tokens_group</span><span class='op'>(</span><span class='va'>toks</span>, groups <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
+#&gt; </div><div class='input'><span class='fu'>tokens_group</span><span class='op'>(</span><span class='va'>toks</span>, groups <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Tokens consisting of 2 documents and 1 docvar.
 #&gt; 1 :
 #&gt; [1] "a" "a" "b" "a" "b" "c" "c"
 #&gt; 
 #&gt; 2 :
 #&gt; [1] "a" "c" "d" "d" "a" "c" "c" "d"
-#&gt; </div><div class='input'><span class='fu'>quanteda</span><span class='fu'>:::</span><span class='fu'>tokens_group</span><span class='op'>(</span><span class='va'>toks</span>, groups <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>2</span><span class='op'>)</span>, levels <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span>
+#&gt; </div><div class='input'>
+<span class='co'># with fill</span>
+<span class='fu'>tokens_group</span><span class='op'>(</span><span class='va'>toks</span>, groups <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>2</span><span class='op'>)</span>, levels <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Tokens consisting of 2 documents and 1 docvar.
 #&gt; 1 :
 #&gt; [1] "a" "a" "b" "a" "b" "c" "c"
 #&gt; 
 #&gt; 2 :
 #&gt; [1] "a" "c" "d" "d" "a" "c" "c" "d"
+#&gt; </div><div class='input'><span class='fu'>tokens_group</span><span class='op'>(</span><span class='va'>toks</span>, groups <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>2</span><span class='op'>)</span>, levels <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span><span class='op'>)</span>, fill <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Tokens consisting of 3 documents and 1 docvar.
+#&gt; 1 :
+#&gt; [1] "a" "a" "b" "a" "b" "c" "c"
+#&gt; 
+#&gt; 2 :
+#&gt; [1] "a" "c" "d" "d" "a" "c" "c" "d"
+#&gt; 
+#&gt; 3 :
+#&gt; character(0)
 #&gt; </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -277,11 +317,11 @@ See <a href='groups.html'>groups</a> for details.</p></td>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p>
+  <p><p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p></p>
 </div>
 
       </footer>
@@ -306,6 +346,8 @@ See <a href='groups.html'>groups</a> for details.</p></td>
 </script>
 
 
+
+  
 
   </body>
 </html>
