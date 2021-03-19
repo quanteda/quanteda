@@ -47,9 +47,9 @@ dfm_group.dfm <- function(x, groups, fill = FALSE, force = FALSE) {
         groups <- docid(x)
     } else {
         field <- deparse(substitute(groups))
-        if (!field %in% names(get_docvars(x)))
-            field <- NULL
         groups <- eval(substitute(groups), get_docvars(x, user = TRUE, system = TRUE), parent.frame())
+        if (!field %in% names(get_docvars(x)) || !is.factor(groups))
+            field <- NULL
         groups <- as.factor(groups)
     }
 

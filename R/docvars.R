@@ -139,7 +139,8 @@ reshape_docvars <- function(x, i = NULL, drop_docid = TRUE) {
 }
 
 # Reshape docvars keeping variables that have the same values within groups
-group_docvars <- function(x, group = NULL) {
+group_docvars <- function(x, group = NULL, field = NULL) {
+    
     if (is.null(group))
         return(x)
     l <- rep(FALSE, length(x))
@@ -149,7 +150,10 @@ group_docvars <- function(x, group = NULL) {
         }
     }
     temp <- make_docvars(length(levels(group)), levels(group), unique = TRUE)
-    result <- x[match(levels(group), group), l, drop = FALSE]
+    i <- match(levels(group), group)
+    result <- x[i, l, drop = FALSE]
+    if (!is.null(field))
+        result[[field]] <- factor(levels(group), levels = levels(group))
     result[c("docname_", "docid_", "segid_")] <- temp
     rownames(result) <- NULL
     return(result)
