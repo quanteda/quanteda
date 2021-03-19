@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Convert regex and glob patterns to type IDs or fixed patterns — pattern2id • quanteda</title>
+<title>Match patterns against token types — pattern2id • quanteda</title>
 
 
 <!-- jquery -->
@@ -47,17 +47,19 @@
   <link href="../extra.css" rel="stylesheet">
   <script src="../extra.js"></script>
 
-<meta property="og:title" content="Convert regex and glob patterns to type IDs or fixed patterns — pattern2id" />
-<meta property="og:description" content="pattern2id converts regex or glob to type IDs to allow
-C++ function to perform fast searches in tokens object. C++ functions use a
-list of type IDs to construct a hash table, against which sub-vectors of
-tokens object are matched. This function constructs an index of glob
-patterns for faster matching.
+<meta property="og:title" content="Match patterns against token types — pattern2id" />
+<meta property="og:description" content="Developer function to match regex, fixed or glob patterns against token
+types. This allows C++ function to perform fast searches in tokens object.
+C++ functions use a list of type IDs to construct a hash table, against which
+sub-vectors of tokens object are matched. This function constructs an index
+of glob patterns for faster matching.
 pattern2fixed converts regex and glob patterns to fixed patterns.
 index_types is an auxiliary function for pattern2id that
 constructs an index of &quot;glob&quot; or &quot;fixed&quot; patterns to avoid expensive
 sequential search. For example, a type &quot;cars&quot; is index by keys &quot;cars&quot;,
 &quot;car?&quot;, &quot;c*&quot;, &quot;ca*&quot;, &quot;car*&quot; and &quot;cars*&quot; when valuetype=&quot;glob&quot;." />
+
+
 
 
 
@@ -83,9 +85,15 @@ sequential search. For example, a type &quot;cars&quot; is index by keys &quot;c
 </script>
 
 
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -196,7 +204,7 @@ sequential search. For example, a type &quot;cars&quot; is index by keys &quot;c
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/quanteda/quanteda">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -219,17 +227,17 @@ sequential search. For example, a type &quot;cars&quot; is index by keys &quot;c
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Convert regex and glob patterns to type IDs or fixed patterns</h1>
+    <h1>Match patterns against token types</h1>
     <small class="dont-index">Source: <a href='https://github.com/quanteda/quanteda/blob/master/R/pattern2fixed.R'><code>R/pattern2fixed.R</code></a></small>
     <div class="hidden name"><code>pattern2id.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>pattern2id</code> converts regex or glob to type IDs to allow
-C++ function to perform fast searches in tokens object. C++ functions use a
-list of type IDs to construct a hash table, against which sub-vectors of
-tokens object are matched. This function constructs an index of glob
-patterns for faster matching.</p>
+    <p>Developer function to match regex, fixed or glob patterns against token
+types. This allows C++ function to perform fast searches in tokens object.
+C++ functions use a list of type IDs to construct a hash table, against which
+sub-vectors of tokens object are matched. This function constructs an index
+of glob patterns for faster matching.</p>
 <p><code>pattern2fixed</code> converts regex and glob patterns to fixed patterns.</p>
 <p><code>index_types</code> is an auxiliary function for <code>pattern2id</code> that
 constructs an index of "glob" or "fixed" patterns to avoid expensive
@@ -265,7 +273,7 @@ or collocations object.  See <a href='pattern.html'>pattern</a> for details.</p>
     </tr>
     <tr>
       <th>types</th>
-      <td><p>unique types of tokens obtained by <code><a href='types.html'>types()</a></code></p></td>
+      <td><p>token types against which patterns are matched</p></td>
     </tr>
     <tr>
       <th>valuetype</th>
@@ -280,7 +288,7 @@ exact matching. See <a href='valuetype.html'>valuetype</a> for details.</p></td>
     </tr>
     <tr>
       <th>keep_nomatch</th>
-      <td><p>keep patterns not found</p></td>
+      <td><p>keep patterns that did not match</p></td>
     </tr>
     <tr>
       <th>max_len</th>
@@ -290,8 +298,7 @@ exact matching. See <a href='valuetype.html'>valuetype</a> for details.</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>pattern2id</code> returns a list of integer vectors containing type
-IDs</p>
+    <p>a list of integer vectors containing indices of matched types</p>
 <p><code>pattern2fixed</code> returns a list of character vectors containing
 types</p>
 <p><code>index_types</code> returns a list of integer vectors containing type
@@ -371,11 +378,11 @@ IDs with index keys as an attribute</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p>
+  <p><p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p></p>
 </div>
 
       </footer>
@@ -400,6 +407,8 @@ IDs with index keys as an attribute</p>
 </script>
 
 
+
+  
 
   </body>
 </html>

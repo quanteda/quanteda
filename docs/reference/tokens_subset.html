@@ -50,9 +50,11 @@
 <meta property="og:title" content="Extract a subset of a tokens — tokens_subset" />
 <meta property="og:description" content="Returns document subsets of a tokens that meet certain conditions, including
 direct logical operations on docvars (document-level variables).
-tokens_subset functions identically to
-subset.data.frame(), using non-standard evaluation to evaluate
-conditions based on the docvars in the tokens." />
+tokens_subset() functions identically to subset.data.frame(), using
+non-standard evaluation to evaluate conditions based on the docvars in the
+tokens." />
+
+
 
 
 
@@ -78,9 +80,15 @@ conditions based on the docvars in the tokens." />
 </script>
 
 
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -191,7 +199,7 @@ conditions based on the docvars in the tokens." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/quanteda/quanteda">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -222,12 +230,12 @@ conditions based on the docvars in the tokens." />
     <div class="ref-description">
     <p>Returns document subsets of a tokens that meet certain conditions, including
 direct logical operations on docvars (document-level variables).
-<code>tokens_subset</code> functions identically to
-<code><a href='https://rdrr.io/r/base/subset.html'>subset.data.frame()</a></code>, using non-standard evaluation to evaluate
-conditions based on the <a href='docvars.html'>docvars</a> in the tokens.</p>
+<code>tokens_subset()</code> functions identically to <code><a href='https://rdrr.io/r/base/subset.html'>subset.data.frame()</a></code>, using
+non-standard evaluation to evaluate conditions based on the <a href='docvars.html'>docvars</a> in the
+tokens.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>tokens_subset</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>subset</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>tokens_subset</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>subset</span>, drop_docid <span class='op'>=</span> <span class='cn'>TRUE</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -240,6 +248,11 @@ conditions based on the <a href='docvars.html'>docvars</a> in the tokens.</p>
       <th>subset</th>
       <td><p>logical expression indicating the documents to keep: missing
 values are taken as false</p></td>
+    </tr>
+    <tr>
+      <th>drop_docid</th>
+      <td><p>if <code>TRUE</code>, <code>docid</code> for documents are removed as the result
+of subsetting.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -288,11 +301,11 @@ selected according to arguments</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p>
+  <p><p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p></p>
 </div>
 
       </footer>
@@ -317,6 +330,8 @@ selected according to arguments</p>
 </script>
 
 
+
+  
 
   </body>
 </html>

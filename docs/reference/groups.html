@@ -48,10 +48,9 @@
   <script src="../extra.js"></script>
 
 <meta property="og:title" content="Grouping variable(s) for various functions — groups" />
-<meta property="og:description" content="Groups for aggregation by various functions that take grouping options.
-Groups can be the name(s) of document variables (as a character vector), or
-variables whose length or number of rows (if a data.frame) equal the number
-of documents." />
+<meta property="og:description" content="Groups for aggregation by various functions that take grouping options." />
+
+
 
 
 
@@ -77,9 +76,15 @@ of documents." />
 </script>
 
 
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -190,7 +195,7 @@ of documents." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/quanteda/quanteda">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -219,10 +224,7 @@ of documents." />
     </div>
 
     <div class="ref-description">
-    <p>Groups for aggregation by various functions that take grouping options.
-Groups can be the name(s) of document variables (as a character vector), or
-variables whose length or number of rows (if a data.frame) equal the number
-of documents.</p>
+    <p>Groups for aggregation by various functions that take grouping options.</p>
     </div>
 
 
@@ -231,14 +233,27 @@ of documents.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>groups</th>
-      <td><p>either: a character vector containing the names of document
-variables to be used for grouping; or a factor or object that can be
-coerced into a factor equal in length or rows to the number of documents.
-<code>NA</code> values of the grouping value are dropped.
-See groups for details.</p></td>
+      <td><p>grouping variable for sampling, equal in length to the number
+of documents. This will be evaluated in the docvars data.frame, so that
+docvars may be referred to by name without quoting. This also changes
+previous behaviours for <code>groups</code>. See <code>news(Version &gt;= "2.9", package = "quanteda")</code> for details.</p></td>
+    </tr>
+    <tr>
+      <th>fill</th>
+      <td><p>logical; if <code>TRUE</code> and <code>groups</code> is a factor, then use all levels
+of the factor when forming the new documents of the grouped object.  This
+will result in a new "document" with empty content for levels not observed,
+but for which an empty document may be needed.  If <code>groups</code> is a factor of
+dates, for instance, then <code>fill = TRUE</code> ensures that the new object will
+consist of one new "document" by date, regardless of whether any documents
+previously existed with that date.  Has no effect if the <code>groups</code>
+variable(s) are not factors.</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><code><a href='corpus_group.html'>corpus_group()</a></code>, <code><a href='tokens_group.html'>tokens_group()</a></code>, <code><a href='dfm_group.html'>dfm_group()</a></code></p></div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -251,11 +266,11 @@ See groups for details.</p></td>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p>
+  <p><p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p></p>
 </div>
 
       </footer>
@@ -280,6 +295,8 @@ See groups for details.</p></td>
 </script>
 
 
+
+  
 
   </body>
 </html>

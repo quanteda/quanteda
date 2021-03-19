@@ -53,6 +53,8 @@
 
 
 
+
+
 <!-- mathjax -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script>
@@ -74,9 +76,15 @@
 </script>
 
 
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -187,7 +195,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/quanteda/quanteda">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -289,7 +297,7 @@ tokenization and corpus reshaping. See <code><a href='https://rdrr.io/pkg/string
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='op'>(</span><span class='va'>opt</span> <span class='op'>&lt;-</span> <span class='fu'>quanteda_options</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; $threads
-#&gt; [1] 8
+#&gt; [1] 12
 #&gt; 
 #&gt; $verbose
 #&gt; [1] FALSE
@@ -330,6 +338,12 @@ tokenization and corpus reshaping. See <code><a href='https://rdrr.io/pkg/string
 #&gt; $print_dictionary_summary
 #&gt; [1] TRUE
 #&gt; 
+#&gt; $print_kwic_max_nrow
+#&gt; [1] 1000
+#&gt; 
+#&gt; $print_kwic_summary
+#&gt; [1] TRUE
+#&gt; 
 #&gt; $base_docname
 #&gt; [1] "text"
 #&gt; 
@@ -357,7 +371,7 @@ tokenization and corpus reshaping. See <code><a href='https://rdrr.io/pkg/string
 <span class='fu'>quanteda_options</span><span class='op'>(</span>verbose <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 <span class='fu'>quanteda_options</span><span class='op'>(</span><span class='st'>"verbose"</span> <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
 <span class='fu'>quanteda_options</span><span class='op'>(</span><span class='st'>"threads"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] 8</div><div class='input'><span class='fu'>quanteda_options</span><span class='op'>(</span>print_dfm_max_ndoc <span class='op'>=</span> <span class='fl'>50L</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 12</div><div class='input'><span class='fu'>quanteda_options</span><span class='op'>(</span>print_dfm_max_ndoc <span class='op'>=</span> <span class='fl'>50L</span><span class='op'>)</span>
 <span class='co'># reset to defaults</span>
 <span class='fu'>quanteda_options</span><span class='op'>(</span>reset <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 <span class='co'># reset to saved options</span>
@@ -375,11 +389,11 @@ tokenization and corpus reshaping. See <code><a href='https://rdrr.io/pkg/string
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p>
+  <p><p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p></p>
 </div>
 
       </footer>
@@ -404,6 +418,8 @@ tokenization and corpus reshaping. See <code><a href='https://rdrr.io/pkg/string
 </script>
 
 
+
+  
 
   </body>
 </html>
