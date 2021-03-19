@@ -177,8 +177,9 @@ is.dfm <- function(x) {
 #'   feature labels, or a list of these if `groups` is given.
 #' @examples
 #' dfmat1 <- corpus_subset(data_corpus_inaugural, Year > 1980) %>%
-#'     dfm(remove_punct = TRUE)
-#' dfmat2 <- dfm_remove(dfmat1, stopwords("english"))
+#'     tokens(remove_punct = TRUE) %>%
+#'     dfm()
+#' dfmat2 <- dfm_remove(dfmat1, stopwords("en"))
 #'
 #' # most frequent features
 #' topfeatures(dfmat1)

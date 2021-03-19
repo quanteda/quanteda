@@ -42,8 +42,8 @@ dfm_match(data_dfm_lbgexample, c("B", "newfeat1", "A", "newfeat2"))
 
 # matching one dfm to another
 txt <- c("This is text one", "The second text", "This is text three")
-(dfmat1 <- dfm(txt[1:2]))
-(dfmat2 <- dfm(txt[2:3]))
+(dfmat1 <- dfm(tokens(txt[1:2])))
+(dfmat2 <- dfm(tokens(txt[2:3])))
 (dfmat3 <- dfm_match(dfmat1, featnames(dfmat2)))
 setequal(featnames(dfmat2), featnames(dfmat3))
 }

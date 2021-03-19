@@ -25,7 +25,7 @@
 #'   will automatically be considered phrases where each whitespace-separated
 #'   element matches a token in sequence.
 #' @export
-#' @seealso [print-method]
+#' @seealso [print-methods]
 #' @examples
 #' # single token matching
 #' toks <- tokens(data_corpus_inaugural[1:8])
@@ -143,7 +143,7 @@ as.data.frame.kwic <- function(x, ...) {
     return(x)
 }
 
-#' @rdname print-method
+#' @rdname print-methods
 #' @method print kwic
 #' @param max_nrow max number of documents to print; default is from the
 #'   `print_kwic_max_nrow` setting of [quanteda_options()]
