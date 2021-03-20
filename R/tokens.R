@@ -249,18 +249,6 @@ tokens.corpus <- function(x,
     check_dots(..., method = "tokens")
     
     attrs <- attributes(x)
-    # deprecated arguments
-    dots <- list(...)
-    if ("remove_hyphens" %in% names(dots)) {
-        split_hyphens <- dots[["remove_hyphens"]]
-        .Deprecated(msg = "'remove_hyphens' is deprecated, use 'split_hyphens' instead.")
-        dots$remove_hyphens <- NULL
-    }
-    if ("remove_twitter" %in% names(dots)) {
-        warning("'remove_twitter' is defunct; see 'quanteda Tokenizers' in ?tokens",
-                call. = FALSE)
-        dots$remove_twitter <- NULL
-    }
 
     # call the appropriate tokenizer function
     if (verbose) catm(" ...starting tokenization\n")
@@ -277,7 +265,7 @@ tokens.corpus <- function(x,
         warning("remove_separators is always TRUE for this type")
 
     # split x into smaller blocks to reduce peak memory consumption
-    x <- texts(x)
+    x <- as.character(x)
     x <- split(x, factor(ceiling(seq_along(x) / quanteda_options("tokens_block_size"))))
     x <- lapply(x, function(y) {
         if (verbose)
@@ -356,19 +344,6 @@ tokens.tokens <-  function(x,
     padding <- check_logical(padding)
     verbose <- check_logical(verbose)
     check_dots(..., method = "tokens")
-    
-    # deprecated arguments
-    dots <- list(...)
-    if ("remove_hyphens" %in% names(dots)) {
-        split_hyphens <- dots[["remove_hyphens"]]
-        .Deprecated(msg = "'remove_hyphens' is deprecated, use 'split_hyphens' instead.")
-        dots$remove_hyphens <- NULL
-
-    }
-    if ("remove_twitter" %in% names(dots)) {
-        .Deprecated(msg = "'remove_twitter' is deprecated and inactive for tokens.tokens()")
-        dots$remove_twitter <- NULL
-    }
     
     # splits
     if (split_hyphens) {
@@ -458,7 +433,6 @@ as.tokens.default <- function(x, concatenator = "", ...) {
     check_class(class(x), "as.tokens")
 }
 
-#' @rdname as.tokens
 #' @importFrom stringi stri_trans_nfc
 #' @export
 as.tokens.list <- function(x, concatenator = "_", ...) {
@@ -472,7 +446,6 @@ as.tokens.list <- function(x, concatenator = "_", ...) {
     )
 }
 
-#' @rdname as.tokens
 #' @export
 as.tokens.tokens <- function(x, ...) {
     upgrade_tokens(x)

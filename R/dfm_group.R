@@ -43,9 +43,13 @@ dfm_group.dfm <- function(x, groups, fill = FALSE, force = FALSE) {
 
     attrs <- attributes(x)
     if (missing(groups)) {
+        field <- NULL
         groups <- docid(x)
     } else {
+        field <- deparse(substitute(groups))
         groups <- eval(substitute(groups), get_docvars(x, user = TRUE, system = TRUE), parent.frame())
+        if (!field %in% names(get_docvars(x)) || !is.factor(groups))
+            field <- NULL
         groups <- as.factor(groups)
     }
 
@@ -60,7 +64,6 @@ dfm_group.dfm <- function(x, groups, fill = FALSE, force = FALSE) {
     if (!nfeat(x) || !ndoc(x)) return(x)
     if (!fill)
         groups <- droplevels(groups)
-
     if (ndoc(x) != length(groups))
         stop("groups must have length ndoc(x)", call. = FALSE)
 
@@ -68,29 +71,12 @@ dfm_group.dfm <- function(x, groups, fill = FALSE, force = FALSE) {
     x <- dfm_subset(x, !is.na(groups))
     groups <- groups[!is.na(groups)]
 
-    group_dfm(x, documents = groups, fill = fill)
-}
-
-
-#' Generate a grouping vector from docvars
-#'
-#' Internal function to generate a grouping vector from docvars used in
-#' dfm.corpus, dfm.tokens, dfm.group, and tokens_group
-#' @param x corpus, tokens or dfm
-#' @param groups names of docvars or vector that can be coerced to a factor
-#' @return a factor
-#' @keywords internal
-generate_groups <- function(x, groups, drop = FALSE) {
-    drop <- check_logical(drop)
-    docvar <- get_docvars(x, user = TRUE, system = TRUE)
-    if (is.character(groups) && all(groups %in% names(docvar))) {
-        groups <- interaction(docvar[groups], drop = FALSE)
-    } else {
-        if (length(groups) != ndoc(x))
-            stop("groups must name docvars or provide data matching the documents in x")
-        groups <- factor(groups)
-    }
-    return(groups)
+    x <- group_matrix(x, documents = groups, fill = fill)
+    build_dfm(x, colnames(x),
+              unit = "documents",
+              docvars = group_docvars(attrs[["docvars"]], groups, field),
+              meta = attrs[["meta"]]
+    )
 }
 
 # check if values are uniform within groups
@@ -104,10 +90,9 @@ is_grouped <- function(x, group) {
     }
 }
 
-# internal code to perform dfm compression and grouping
+# internal code to perform sparse matrix compression and grouping
 # on features and/or documents
-group_dfm <- function(x, documents = NULL, features = NULL, fill = FALSE,
-                      use_docvars = TRUE) {
+group_matrix <- function(x, documents = NULL, features = NULL, fill = FALSE) {
 
     if (!length(features) && !length(documents))
         return(x)
@@ -137,16 +122,7 @@ group_dfm <- function(x, documents = NULL, features = NULL, fill = FALSE,
         i <- as.integer(documents)
         i <- i[x@i + 1L]
     }
-    if (use_docvars) {
-        attrs[["docvars"]] <- select_docvars(attrs[["docvars"]], user = TRUE, system = TRUE)
-    } else {
-        attrs[["docvars"]] <- select_docvars(attrs[["docvars"]], user = FALSE, system = TRUE)
-    }
-    x <- sparseMatrix(i = i, j = j, x = x@x,
-                      dims = c(length(docname), length(featname)))
-    build_dfm(x, featname,
-        unit = "documents",
-        docvars = group_docvars(attrs[["docvars"]], documents),
-        meta = attrs[["meta"]]
-    )
+    sparseMatrix(i = i, j = j, x = x@x, 
+                 dims = c(length(docname), length(featname)),
+                 dimnames = list(docname, featname))
 }

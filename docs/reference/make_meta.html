@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Internal functions to create a list for the meta attribute — make_meta • quanteda</title>
+<title>Internal functions to create a list of the meta fields — make_meta • quanteda</title>
 
 
 <!-- jquery -->
@@ -47,8 +47,10 @@
   <link href="../extra.css" rel="stylesheet">
   <script src="../extra.js"></script>
 
-<meta property="og:title" content="Internal functions to create a list for the meta attribute — make_meta" />
-<meta property="og:description" content="Internal functions to create a list for the meta attribute" />
+<meta property="og:title" content="Internal functions to create a list of the meta fields — make_meta" />
+<meta property="og:description" content="Internal functions to create a list of the meta fields" />
+
+
 
 
 
@@ -74,9 +76,15 @@
 </script>
 
 
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -187,7 +195,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/quanteda/quanteda">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -210,16 +218,18 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Internal functions to create a list for the meta attribute</h1>
+    <h1>Internal functions to create a list of the meta fields</h1>
     <small class="dont-index">Source: <a href='https://github.com/quanteda/quanteda/blob/master/R/meta.R'><code>R/meta.R</code></a></small>
     <div class="hidden name"><code>make_meta.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Internal functions to create a list for the meta attribute</p>
+    <p>Internal functions to create a list of the meta fields</p>
     </div>
 
     <pre class="usage"><span class='fu'>make_meta</span><span class='op'>(</span><span class='va'>class</span>, inherit <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span>
+
+<span class='fu'>make_meta_system</span><span class='op'>(</span>inherit <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
 
 <span class='fu'>make_meta_corpus</span><span class='op'>(</span>inherit <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span>
 
@@ -227,9 +237,11 @@
 
 <span class='fu'>make_meta_dfm</span><span class='op'>(</span>inherit <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span>
 
+<span class='fu'>make_meta_fcm</span><span class='op'>(</span>inherit <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span>
+
 <span class='fu'>make_meta_dictionary2</span><span class='op'>(</span>inherit <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>update_meta</span><span class='op'>(</span><span class='va'>default</span>, <span class='va'>inherit</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+<span class='fu'>update_meta</span><span class='op'>(</span><span class='va'>default</span>, <span class='va'>inherit</span>, <span class='va'>...</span>, warn <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -264,11 +276,11 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p>
+  <p><p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p></p>
 </div>
 
       </footer>
@@ -293,6 +305,8 @@
 </script>
 
 
+
+  
 
   </body>
 </html>

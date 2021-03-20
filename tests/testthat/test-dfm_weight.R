@@ -230,52 +230,6 @@ test_that("weights argument works, issue 1150", {
     )
 })
 
-test_that("deprecated dfm_weight argument values still work", {
-    mydfm <- dfm(tokens(c("He went out to buy a car",
-                   "He went out and bought pickles and onions")))
-
-    # frequency
-    expect_identical(
-        suppressWarnings(dfm_weight(mydfm, "frequency")),
-        dfm_weight(mydfm, "count")
-    )
-    expect_warning(
-        dfm_weight(mydfm, "frequency"),
-        'scheme = \"frequency\" is deprecated; use dfm_weight\\(x, scheme = "count"\\) instead'
-    )
-
-    # relfreq
-    expect_identical(
-        suppressWarnings(dfm_weight(mydfm, "relfreq")),
-        dfm_weight(mydfm, "prop")
-    )
-    expect_warning(
-        dfm_weight(mydfm, "relfreq"),
-        'scheme = \"relfreq\" is deprecated; use dfm_weight\\(x, scheme = "prop"\\) instead'
-    )
-
-    # relmaxfreq
-    expect_identical(
-        suppressWarnings(dfm_weight(mydfm, "relmaxfreq")),
-        dfm_weight(mydfm, "propmax")
-    )
-    expect_warning(
-        dfm_weight(mydfm, "relmaxfreq"),
-        'scheme = \"relmaxfreq\" is deprecated; use dfm_weight\\(x, scheme = "propmax"\\) instead'
-    )
-
-    # relfreq
-    expect_identical(
-        suppressWarnings(dfm_weight(mydfm, "logfreq")),
-        dfm_weight(mydfm, "logcount")
-    )
-    expect_warning(
-        dfm_weight(mydfm, "logfreq"),
-        'scheme = \"logfreq\" is deprecated; use dfm_weight\\(x, scheme = "logcount"\\) instead'
-    )
-
-})
-
 test_that("docfreq works previously a weighted dfm (#1237)", {
     df1 <- dfm(data_dfm_lbgexample) %>% dfm_tfidf(scheme_tf = "prop")
     computed <- c(rep(1, 5), 2, 2, 3, 3, 3, 4)
@@ -314,21 +268,5 @@ test_that("featfreq() works", {
     expect_identical(
         featfreq(dfmat),
         c(a = 4, b = 2, c = 1)
-    )
-})
-
-test_that("logsmooth works", {
-    dfmat <- dfm(tokens(c("a a a b c d d", "b b c d d d")))
-    expect_equivalent(
-        dfm_weight(dfmat, scheme = "logsmooth", smoothing = 0.5, base = exp(1)) %>% as.matrix(),
-        matrix(log(c(3, 0, 1, 2, 1, 1, 2, 3) + 0.5), nrow = 2)
-    )
-    expect_equivalent(
-        dfm_weight(dfmat, scheme = "logsmooth", smoothing = 0.5, base = 10) %>% as.matrix(),
-        matrix(log10(c(3, 0, 1, 2, 1, 1, 2, 3) + 0.5), nrow = 2)
-    )
-    expect_equivalent(
-        dfm_weight(dfmat, scheme = "logsmooth", smoothing = 1, base = 10) %>% as.matrix(),
-        matrix(log10(c(3, 0, 1, 2, 1, 1, 2, 3) + 1), nrow = 2)
     )
 })

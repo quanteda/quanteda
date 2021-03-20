@@ -37,7 +37,7 @@ is.tokens <- function(x) "tokens" %in% class(x)
 
 # extension of generics for tokens -----------
 
-#' @rdname as.tokens
+#' @rdname tokens-class
 #' @return `unlist` returns a simple vector of characters from a
 #'   [tokens] object.
 #' @param recursive a required argument for [unlist] but inapplicable to
@@ -49,7 +49,7 @@ unlist.tokens <- function(x, recursive = FALSE, use.names = TRUE) {
     unlist(as.list(x), use.names = use.names)
 }
 
-#' @rdname print-method
+#' @rdname print-methods
 #' @method print tokens
 #' @param max_ntoken max number of tokens to print; default is from the
 #'   `print_tokens_max_ntoken` setting of [quanteda_options()]

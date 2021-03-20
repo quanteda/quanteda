@@ -57,6 +57,8 @@ supplied as part of the LIWC 2001, 2007, and 2015 software (see References)." />
 
 
 
+
+
 <!-- mathjax -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script>
@@ -78,9 +80,15 @@ supplied as part of the LIWC 2001, 2007, and 2015 software (see References)." />
 </script>
 
 
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -191,7 +199,7 @@ supplied as part of the LIWC 2001, 2007, and 2015 software (see References)." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/quanteda/quanteda">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -296,7 +304,7 @@ coerced to named lists of characters using
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>WordStat dictionaries page, from Provalis Research
-<a href='http://provalisresearch.com/products/content-analysis-software/wordstat-dictionary/'>http://provalisresearch.com/products/content-analysis-software/wordstat-dictionary/</a>.</p>
+<a href='https://provalisresearch.com/products/content-analysis-software/wordstat-dictionary/'>https://provalisresearch.com/products/content-analysis-software/wordstat-dictionary/</a>.</p>
 <p>Pennebaker, J.W., Chung, C.K., Ireland, M., Gonzales, A., &amp; Booth, R.J.
 (2007). The development and psychometric properties of LIWC2007. [Software
 manual]. Austin, TX (<a href='https://liwc.net'>https://liwc.net</a>).</p>
@@ -316,8 +324,8 @@ manual]. Austin, TX (<a href='https://liwc.net'>https://liwc.net</a>).</p>
                           taxation <span class='op'>=</span> <span class='st'>"taxation"</span>,
                           taxregex <span class='op'>=</span> <span class='st'>"tax*"</span>,
                           country <span class='op'>=</span> <span class='st'>"america"</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fu'><a href='dfm.html'>dfm</a></span><span class='op'>(</span><span class='va'>corp</span>, dictionary <span class='op'>=</span> <span class='va'>dict</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Document-feature matrix of: 6 documents, 6 features (63.9% sparse) and 4 docvars.
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fu'><a href='dfm.html'>dfm</a></span><span class='op'>(</span><span class='fu'><a href='tokens.html'>tokens</a></span><span class='op'>(</span><span class='va'>corp</span><span class='op'>)</span>, dictionary <span class='op'>=</span> <span class='va'>dict</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: 'dictionary' and 'thesaurus' are deprecated; use dfm_lookup() instead</span></div><div class='output co'>#&gt; Document-feature matrix of: 6 documents, 6 features (63.89% sparse) and 4 docvars.
 #&gt;                 features
 #&gt; docs             christmas opposition taxing taxation taxregex country
 #&gt;   1901-McKinley          0          2      0        1        1       0
@@ -372,11 +380,11 @@ manual]. Austin, TX (<a href='https://liwc.net'>https://liwc.net</a>).</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p>
+  <p><p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p></p>
 </div>
 
       </footer>
@@ -401,6 +409,8 @@ manual]. Austin, TX (<a href='https://liwc.net'>https://liwc.net</a>).</p>
 </script>
 
 
+
+  
 
   </body>
 </html>

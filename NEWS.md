@@ -29,6 +29,8 @@
 
 * Upon startup, we now message the console with the Unicode and ICU version information.  Because we removed our redefinition of `View()` (see below), the former conflict warning is now gone.
 
+* `as.character.corpus()` now has a `use.names = TRUE` argument, similar to `as.character.tokens()` (but with a different default value).
+
 ## Deprecations
 
 The main potentially breaking changes in version 3 relate to the deprecation or
@@ -65,7 +67,11 @@ The full listing of deprecations is:
     - `dictionary`, `thesaurus` -- use `tokens_lookup()` or `dfm_lookup()` instead.
     - `valuetype`, `case_insensitive` -- these are disabled; for the deprecated arguments that take these qualifiers, they are fixed to the defaults `"glob"` and `TRUE`.
     - `groups` -- use `tokens_group()` or `dfm_group()` instead.
-
+    
+* `texts()` and `texts<-` are deprecated.
+    - Use `as.character.corpus()` to turn a corpus into a simple named character vector.
+    - Use `corpus_group()` instead of `texts(x, groups = ...)` to aggregate texts by a grouping variable.
+    - Use `[<-` instead of `texts()<-` for replacing texts in a corpus object.
 
 ## Removals
 
@@ -87,6 +93,12 @@ The full listing of deprecations is:
     - no longer works with `by = "document"` -- use `by = docid(x)` instead.
 
 * `dictionary_edit()`, `char_edit()`, and `list_edit()` are removed.
+
+* `dfm_weight()` - formerly deprecated `"scheme"` options are now removed. 
+
+* `tokens()` - formerly deprecated options `remove_hyphens` and `remove_twitter` are now removed.  (Use `split_hyphens` instead, and the default tokenizer always now preserves Twitter and other social media tags.)
+
+* Special versions of `head()` and `tail()` for corpus, dfm, and fcm objects are now removed, since the base methods work fine for these objects. The main consequence was the removal of the `nf` option from the methods for dfm and fcm objects, which limited the number of features.  This can be accomplished using the index operator `[` instead, or for printing, by specifying `print(x, max_nfeat = 6L)` (for instance).
 
 ## Bug fixes and stability enhancements
 

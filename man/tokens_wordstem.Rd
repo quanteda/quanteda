@@ -49,7 +49,7 @@ tokens_wordstem(th)
 char_wordstem(c("win", "winning", "wins", "won", "winner"))
 
 # example applied to a dfm
-(origdfm <- dfm(txt))
+(origdfm <- dfm(tokens(txt)))
 dfm_wordstem(origdfm)
 
 }

@@ -28,6 +28,8 @@
 </script>
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container">
@@ -136,8 +138,8 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/quanteda/quanteda">
-    <span class="fa fa-github fa-lg"></span>
+  <a href="https://github.com/quanteda/quanteda" class="external-link">
+    <span class="fas fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -157,15 +159,14 @@
 
       
 
-      </header><script src="text2vec_files/header-attrs-2.5/header-attrs.js"></script><script src="text2vec_files/accessible-code-block-0.0.1/empty-anchor.js"></script><link href="text2vec_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet">
-<script src="text2vec_files/anchor-sections-1.0/anchor-sections.js"></script><div class="row">
+      </header><script src="text2vec_files/header-attrs-2.7/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Replication: word embedding (gloVe/word2vec)</h1>
-                        <h4 class="author">Kenneth Benoit, Haiyan Wang and Kohei Watanabe</h4>
+                        <h4 data-toc-skip class="author">Kenneth Benoit, Haiyan Wang and Kohei Watanabe</h4>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/quanteda/quanteda/blob/master/vignettes/pkgdown/replication/text2vec.Rmd"><code>vignettes/pkgdown/replication/text2vec.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/quanteda/quanteda/blob/master/vignettes/pkgdown/replication/text2vec.Rmd" class="external-link"><code>vignettes/pkgdown/replication/text2vec.Rmd</code></a></small>
       <div class="hidden name"><code>text2vec.Rmd</code></div>
 
     </div>
@@ -173,14 +174,14 @@
     
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://quanteda.io">"quanteda"</a></span><span class="op">)</span></code></pre></div>
-<p>This is intended to show how <strong>quanteda</strong> can be used with the <a href="http://text2vec.org"><strong>text2vec</strong></a> package in order to replicate its <a href="http://text2vec.org/glove.html">gloVe example</a>.</p>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://quanteda.io">"quanteda"</a></span><span class="op">)</span></code></pre></div>
+<p>This is intended to show how <strong>quanteda</strong> can be used with the <a href="http://text2vec.org" class="external-link"><strong>text2vec</strong></a> package in order to replicate its <a href="http://text2vec.org/glove.html" class="external-link">gloVe example</a>.</p>
 <div id="download-the-corpus" class="section level2">
 <h2 class="hasAnchor">
 <a href="#download-the-corpus" class="anchor"></a>Download the corpus</h2>
-<p>Download a corpus comprising the texts used in the <a href="http://text2vec.org/glove.html"><strong>text2vec</strong> vignette</a>:</p>
+<p>Download a corpus comprising the texts used in the <a href="http://text2vec.org/glove.html" class="external-link"><strong>text2vec</strong> vignette</a>:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">wiki_corp</span> <span class="op">&lt;-</span> <span class="fu">quanteda.corpora</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/quanteda.corpora/man/download.html">download</a></span><span class="op">(</span>url <span class="op">=</span> <span class="st">"https://www.dropbox.com/s/9mubqwpgls3qi9t/data_corpus_wiki.rds?dl=1"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="va">wiki_corp</span> <span class="op">&lt;-</span> <span class="fu">quanteda.corpora</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/quanteda.corpora/man/download.html" class="external-link">download</a></span><span class="op">(</span>url <span class="op">=</span> <span class="st">"https://www.dropbox.com/s/9mubqwpgls3qi9t/data_corpus_wiki.rds?dl=1"</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="select-features" class="section level2">
 <h2 class="hasAnchor">
@@ -194,7 +195,7 @@
 <pre><code>## Creating a dfm from a tokens input...</code></pre>
 <pre><code>##  ...lowercasing</code></pre>
 <pre><code>##  ...found 1 document, 253,854 features</code></pre>
-<pre><code>##  ...complete, elapsed time: 1.4 seconds.</code></pre>
+<pre><code>##  ...complete, elapsed time: 1.43 seconds.</code></pre>
 <pre><code>## Finished constructing a 1 x 253,854 sparse dfm.</code></pre>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># leave the pads so that non-adjacent words will not become adjacent</span>
@@ -209,27 +210,27 @@
 <div id="fit-word-embedding-model" class="section level2">
 <h2 class="hasAnchor">
 <a href="#fit-word-embedding-model" class="anchor"></a>Fit word embedding model</h2>
-<p>Fit the <a href="https://nlp.stanford.edu/pubs/glove.pdf">GloVe model</a> using <a href="http://text2vec.org"><strong>rsparse</strong></a>.</p>
+<p>Fit the <a href="https://nlp.stanford.edu/pubs/glove.pdf" class="external-link">GloVe model</a> using <a href="http://text2vec.org" class="external-link"><strong>rsparse</strong></a>.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="http://text2vec.org">"text2vec"</a></span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="http://text2vec.org" class="external-link">"text2vec"</a></span><span class="op">)</span></code></pre></div>
 <p>GloVe is an unsupervised learning algorithm for obtaining vector representations for words. Training is performed on aggregated global word-word co-occurrence statistics from a corpus, and the resulting representations showcase interesting linear substructures of the word vector space.</p>
 <p>GloVe encodes the ratios of word-word co-occurrence probabilities, which is thought to represent some crude form of meaning associated with the abstract concept of the word, as vector difference. The training objective of GloVe is to learn word vectors such that their dot product equals the logarithm of the words’ probability of co-occurrence.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">glove</span> <span class="op">&lt;-</span> <span class="va"><a href="https://rdrr.io/pkg/text2vec/man/GloVe.html">GlobalVectors</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>rank <span class="op">=</span> <span class="fl">50</span>, x_max <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">glove</span> <span class="op">&lt;-</span> <span class="va"><a href="https://rdrr.io/pkg/text2vec/man/GloVe.html" class="external-link">GlobalVectors</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>rank <span class="op">=</span> <span class="fl">50</span>, x_max <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
 <span class="va">wv_main</span> <span class="op">&lt;-</span> <span class="va">glove</span><span class="op">$</span><span class="fu">fit_transform</span><span class="op">(</span><span class="va">wiki_fcm</span>, n_iter <span class="op">=</span> <span class="fl">10</span>,
                                convergence_tol <span class="op">=</span> <span class="fl">0.01</span>, n_threads <span class="op">=</span> <span class="fl">8</span><span class="op">)</span></code></pre></div>
-<pre><code>## INFO  [18:39:50.494] epoch 1, loss 0.1621 
-## INFO  [18:40:07.941] epoch 2, loss 0.1235 
-## INFO  [18:40:26.175] epoch 3, loss 0.1075 
-## INFO  [18:40:44.414] epoch 4, loss 0.0993 
-## INFO  [18:41:02.597] epoch 5, loss 0.0943 
-## INFO  [18:41:20.701] epoch 6, loss 0.0909 
-## INFO  [18:41:38.756] epoch 7, loss 0.0883 
-## INFO  [18:41:57.202] epoch 8, loss 0.0862 
-## INFO  [18:42:16.194] epoch 9, loss 0.0845 
-## INFO  [18:42:35.172] epoch 10, loss 0.0831</code></pre>
+<pre><code>## INFO  [18:43:23.603] epoch 1, loss 0.1619 
+## INFO  [18:43:40.144] epoch 2, loss 0.1234 
+## INFO  [18:43:56.243] epoch 3, loss 0.1074 
+## INFO  [18:44:12.093] epoch 4, loss 0.0992 
+## INFO  [18:44:28.221] epoch 5, loss 0.0943 
+## INFO  [18:44:44.084] epoch 6, loss 0.0908 
+## INFO  [18:44:59.947] epoch 7, loss 0.0882 
+## INFO  [18:45:16.236] epoch 8, loss 0.0862 
+## INFO  [18:45:32.448] epoch 9, loss 0.0845 
+## INFO  [18:45:48.740] epoch 10, loss 0.0831</code></pre>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">wv_main</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">wv_main</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] 71290    50</code></pre>
 </div>
 <div id="averaging-learned-word-vectors" class="section level2">
@@ -238,10 +239,10 @@
 <p>The two vectors are main and context. According to the Glove paper, averaging the two word vectors results in more accurate representation.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">wv_context</span> <span class="op">&lt;-</span> <span class="va">glove</span><span class="op">$</span><span class="va">components</span>
-<span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">wv_context</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">wv_context</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1]    50 71290</code></pre>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">word_vectors</span> <span class="op">&lt;-</span> <span class="va">wv_main</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span><span class="op">(</span><span class="va">wv_context</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="va">word_vectors</span> <span class="op">&lt;-</span> <span class="va">wv_main</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="va">wv_context</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="examining-term-representations" class="section level2">
 <h2 class="hasAnchor">
@@ -251,12 +252,12 @@
 <code class="sourceCode R"><span class="va">berlin</span> <span class="op">&lt;-</span> <span class="va">word_vectors</span><span class="op">[</span><span class="st">"paris"</span>, , drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span> <span class="op">-</span>
   <span class="va">word_vectors</span><span class="op">[</span><span class="st">"france"</span>, , drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span> <span class="op">+</span>
   <span class="va">word_vectors</span><span class="op">[</span><span class="st">"germany"</span>, , drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://quanteda.io">"quanteda.textstats"</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://quanteda.io">"quanteda.textstats"</a></span><span class="op">)</span>
 <span class="va">cos_sim</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://quanteda.io/reference/textstat_simil.html">textstat_simil</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="../../../reference/as.dfm.html">as.dfm</a></span><span class="op">(</span><span class="va">word_vectors</span><span class="op">)</span>, y <span class="op">=</span> <span class="fu"><a href="../../../reference/as.dfm.html">as.dfm</a></span><span class="op">(</span><span class="va">berlin</span><span class="op">)</span>,
                           method <span class="op">=</span> <span class="st">"cosine"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sort.html">sort</a></span><span class="op">(</span><span class="va">cos_sim</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span>, decreasing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, <span class="fl">5</span><span class="op">)</span></code></pre></div>
-<pre><code>##     paris    berlin   germany      near    munich 
-## 0.7841271 0.6786656 0.6779839 0.6636990 0.6617708</code></pre>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sort.html" class="external-link">sort</a></span><span class="op">(</span><span class="va">cos_sim</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span>, decreasing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, <span class="fl">5</span><span class="op">)</span></code></pre></div>
+<pre><code>##     paris   germany    berlin    munich        at 
+## 0.7871978 0.6831811 0.6639100 0.6412553 0.6327915</code></pre>
 <p>Here is another example for <code>london = paris - france + uk + england</code></p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">london</span> <span class="op">&lt;-</span>  <span class="va">word_vectors</span><span class="op">[</span><span class="st">"paris"</span>, , drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span> <span class="op">-</span>
@@ -266,9 +267,9 @@
 
 <span class="va">cos_sim</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://quanteda.io/reference/textstat_simil.html">textstat_simil</a></span><span class="op">(</span><span class="fu"><a href="../../../reference/as.dfm.html">as.dfm</a></span><span class="op">(</span><span class="va">word_vectors</span><span class="op">)</span>, y <span class="op">=</span> <span class="fu"><a href="../../../reference/as.dfm.html">as.dfm</a></span><span class="op">(</span><span class="va">london</span><span class="op">)</span>,
                           margin <span class="op">=</span> <span class="st">"documents"</span>, method <span class="op">=</span> <span class="st">"cosine"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sort.html">sort</a></span><span class="op">(</span><span class="va">cos_sim</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span>, decreasing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, <span class="fl">5</span><span class="op">)</span></code></pre></div>
-<pre><code>##    london      york   founded        at   england 
-## 0.7781350 0.7736458 0.7609861 0.7464017 0.7441927</code></pre>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sort.html" class="external-link">sort</a></span><span class="op">(</span><span class="va">cos_sim</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span>, decreasing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, <span class="fl">5</span><span class="op">)</span></code></pre></div>
+<pre><code>##    london   england        uk        at      york 
+## 0.7727412 0.7699522 0.7602181 0.7554082 0.7486472</code></pre>
 </div>
   </div>
 
@@ -283,11 +284,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p>
+  <p></p>
+<p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link external-link">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>

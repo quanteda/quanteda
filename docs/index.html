@@ -34,6 +34,8 @@
 </script>
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container">
@@ -143,7 +145,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/quanteda/quanteda">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -168,11 +170,11 @@
 
 
 <!-- badges: start -->
-<p><a href="https://CRAN.R-project.org/package=quanteda"><img src="https://www.r-pkg.org/badges/version/quanteda" alt="CRAN Version"></a> <a href="https://github.com/quanteda/quanteda"><img src="https://img.shields.io/badge/devel%20version-2.1.2.9000-royalblue.svg"></a> <a href="https://CRAN.R-project.org/package=quanteda"><img src="https://cranlogs.r-pkg.org/badges/quanteda" alt="Downloads"></a> <a href="https://CRAN.R-project.org/package=quanteda"><img src="https://cranlogs.r-pkg.org/badges/grand-total/quanteda?color=orange" alt="Total Downloads"></a> <a href="https://github.com/quanteda/quanteda/actions"><img src="https://github.com/quanteda/quanteda/workflows/R-CMD-check/badge.svg" alt="R build status"></a> <a href="https://codecov.io/gh/quanteda/quanteda"><img src="https://codecov.io/gh/quanteda/quanteda/branch/master/graph/badge.svg" alt="codecov"></a> <a href="https://zenodo.org/badge/latestdoi/5424649"><img src="https://zenodo.org/badge/5424649.svg" alt="DOI"></a> <a href="https://doi.org/10.21105/joss.00774"><img src="http://joss.theoj.org/papers/10.21105/joss.00774/status.svg" alt="DOI"></a> <!-- badges: end --></p>
+<p><a href="https://CRAN.R-project.org/package=quanteda" class="external-link"><img src="https://www.r-pkg.org/badges/version/quanteda" alt="CRAN Version"></a> <a href="https://github.com/quanteda/quanteda" class="external-link"><img src="https://img.shields.io/badge/devel%20version-2.9.9000-royalblue.svg"></a> <a href="https://CRAN.R-project.org/package=quanteda" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/quanteda" alt="Downloads"></a> <a href="https://CRAN.R-project.org/package=quanteda" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/grand-total/quanteda?color=orange" alt="Total Downloads"></a> <a href="https://github.com/quanteda/quanteda/actions" class="external-link"><img src="https://github.com/quanteda/quanteda/workflows/R-CMD-check/badge.svg" alt="R build status"></a> <a href="https://codecov.io/gh/quanteda/quanteda" class="external-link"><img src="https://codecov.io/gh/quanteda/quanteda/branch/master/graph/badge.svg" alt="codecov"></a> <a href="https://zenodo.org/badge/latestdoi/5424649" class="external-link"><img src="https://zenodo.org/badge/5424649.svg" alt="DOI"></a> <a href="https://doi.org/10.21105/joss.00774" class="external-link"><img src="http://joss.theoj.org/papers/10.21105/joss.00774/status.svg" alt="DOI"></a> <!-- badges: end --></p>
 <div id="about" class="section level2">
 <h2 class="hasAnchor">
 <a href="#about" class="anchor"></a>About</h2>
-<p>An R package for managing and analyzing text, created by <a href="https://kenbenoit.net">Kenneth Benoit</a>. Supported by the European Research Council grant ERC-2011-StG 283794-QUANTESS.</p>
+<p>An R package for managing and analyzing text, created by <a href="https://kenbenoit.net" class="external-link">Kenneth Benoit</a>. Supported by the European Research Council grant ERC-2011-StG 283794-QUANTESS.</p>
 <p>For more details, see <a href="https://quanteda.io" class="uri">https://quanteda.io</a>.</p>
 </div>
 <div id="how-to-install" class="section level2">
@@ -180,14 +182,37 @@
 <a href="#how-to-install" class="anchor"></a>How to Install</h2>
 <p>The normal way from CRAN, using your R GUI or</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"quanteda"</span><span class="op">)</span> </code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"quanteda"</span><span class="op">)</span> </code></pre></div>
 <p>Or for the latest development version:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># devtools package required to install quanteda from Github </span>
-<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"quanteda/quanteda"</span><span class="op">)</span> </code></pre></div>
+<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"quanteda/quanteda"</span><span class="op">)</span> </code></pre></div>
 <p>Because this compiles some C++ and Fortran source code, you will need to have installed the appropriate compilers.</p>
-<p><strong>If you are using a Windows platform</strong>, this means you will need also to install the <a href="https://CRAN.R-project.org/bin/windows/Rtools/">Rtools</a> software available from CRAN.</p>
-<p><strong>If you are using macOS</strong>, you should install the <a href="https://cran.r-project.org/bin/macosx/tools/">macOS tools</a>, namely the Clang 6.x compiler and the GNU Fortran compiler (as <strong>quanteda</strong> requires gfortran to build). If you are still getting errors related to gfortran, follow the fixes <a href="https://thecoatlessprofessor.com/programming/rcpp-rcpparmadillo-and-os-x-mavericks--lgfortran-and--lquadmath-error/">here</a>.</p>
+<p><strong>If you are using a Windows platform</strong>, this means you will need also to install the <a href="https://CRAN.R-project.org/bin/windows/Rtools/" class="external-link">Rtools</a> software available from CRAN.</p>
+<p><strong>If you are using macOS</strong>, you should install the <a href="https://cran.r-project.org/bin/macosx/tools/" class="external-link">macOS tools</a>, namely the Clang 6.x compiler and the GNU Fortran compiler (as <strong>quanteda</strong> requires gfortran to build). If you are still getting errors related to gfortran, follow the fixes <a href="https://thecoatlessprofessor.com/programming/rcpp-rcpparmadillo-and-os-x-mavericks--lgfortran-and--lquadmath-error/" class="external-link">here</a>.</p>
+</div>
+<div id="the-quanteda-family-of-packages" class="section level2">
+<h2 class="hasAnchor">
+<a href="#the-quanteda-family-of-packages" class="anchor"></a>The <strong>quanteda</strong> family of packages</h2>
+<p>As of v3.0, we have continued our trend of splitting <strong>quanteda</strong> into modular packages. These are now the following:</p>
+<ul>
+<li>
+<strong>quanteda</strong>: contains all of the core natural language processing and textual data management functions</li>
+<li>
+<strong>quanteda.textmodels</strong>: contains all of the text models and supporting functions, namely the <code>textmodel_*()</code> functions. This was split from the main package with the v2 release</li>
+<li>
+<strong>quanteda.textstats</strong>: statistics for textual data, namely the <code>textstat_*()</code> functions, split with the v3 release</li>
+<li>
+<strong>quanteda.textplots</strong>: plots for textual data, namely the <code>textplot_*()</code> functions, split with the v3 release</li>
+</ul>
+<p>We are working on additional package releases, available in the meantime from our GitHub pages:</p>
+<ul>
+<li>
+<strong>quanteda.sentiment</strong>: Functions and lexicons for sentiment analysis using dictionaries</li>
+<li>
+<strong>quanteda.tidy</strong>: Extensions for manipulating document variables in core <strong>quanteda</strong> objects using your favourite <strong>tidyverse</strong> functions</li>
+</ul>
+<p>and more to come.</p>
 </div>
 <div id="how-to-use" class="section level2">
 <h2 class="hasAnchor">
@@ -197,22 +222,22 @@
 <div id="how-to-cite" class="section level2">
 <h2 class="hasAnchor">
 <a href="#how-to-cite" class="anchor"></a>How to cite</h2>
-<p>Benoit, Kenneth, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, and Akitaka Matsuo. (2018) “<a href="https://www.theoj.org/joss-papers/joss.00774/10.21105.joss.00774.pdf">quanteda: An R package for the quantitative analysis of textual data</a>”. <em>Journal of Open Source Software</em>. 3(30), 774. <a href="https://doi.org/10.21105/joss.00774" class="uri">https://doi.org/10.21105/joss.00774</a>.</p>
-<p>For a BibTeX entry, use the output from <code><a href="https://rdrr.io/r/utils/citation.html">citation(package = "quanteda")</a></code>.</p>
+<p>Benoit, Kenneth, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, and Akitaka Matsuo. (2018) “<a href="https://www.theoj.org/joss-papers/joss.00774/10.21105.joss.00774.pdf" class="external-link">quanteda: An R package for the quantitative analysis of textual data</a>”. <em>Journal of Open Source Software</em>. 3(30), 774. <a href="https://doi.org/10.21105/joss.00774" class="external-link uri">https://doi.org/10.21105/joss.00774</a>.</p>
+<p>For a BibTeX entry, use the output from <code><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation(package = "quanteda")</a></code>.</p>
 </div>
 <div id="leaving-feedback" class="section level2">
 <h2 class="hasAnchor">
 <a href="#leaving-feedback" class="anchor"></a>Leaving Feedback</h2>
-<p>If you like <strong>quanteda</strong>, please consider leaving <a href="https://github.com/quanteda/quanteda/issues/461">feedback or a testimonial here</a>.</p>
+<p>If you like <strong>quanteda</strong>, please consider leaving <a href="https://github.com/quanteda/quanteda/issues/461" class="external-link">feedback or a testimonial here</a>.</p>
 </div>
 <div id="contributing" class="section level2">
 <h2 class="hasAnchor">
 <a href="#contributing" class="anchor"></a>Contributing</h2>
 <p>Contributions in the form of feedback, comments, code, and bug reports are most welcome. How to contribute:</p>
 <ul>
-<li>Fork the source code, modify, and issue a <a href="https://help.github.com/articles/creating-a-pull-request-from-a-fork/">pull request</a> through the <a href="https://github.com/quanteda/quanteda">project GitHub page</a>. See our <a href="https://github.com/quanteda/quanteda/blob/master/CONDUCT.md">Contributor Code of Conduct</a> and the all-important <strong>quanteda</strong> <a href="https://github.com/quanteda/quanteda/wiki/Style-guide">Style Guide</a>.</li>
-<li>Issues, bug reports, and wish lists: <a href="https://github.com/quanteda/quanteda/issues">File a GitHub issue</a>.</li>
-<li>Usage questions: Submit a question on the <a href="https://stackoverflow.com/questions/tagged/quanteda"><strong>quanteda</strong> channel on StackOverflow</a>.</li>
+<li>Fork the source code, modify, and issue a <a href="https://help.github.com/articles/creating-a-pull-request-from-a-fork/" class="external-link">pull request</a> through the <a href="https://github.com/quanteda/quanteda" class="external-link">project GitHub page</a>. See our <a href="https://github.com/quanteda/quanteda/blob/master/CONDUCT.md" class="external-link">Contributor Code of Conduct</a> and the all-important <strong>quanteda</strong> <a href="https://github.com/quanteda/quanteda/wiki/Style-guide" class="external-link">Style Guide</a>.</li>
+<li>Issues, bug reports, and wish lists: <a href="https://github.com/quanteda/quanteda/issues" class="external-link">File a GitHub issue</a>.</li>
+<li>Usage questions: Submit a question on the <a href="https://stackoverflow.com/questions/tagged/quanteda" class="external-link"><strong>quanteda</strong> channel on StackOverflow</a>.</li>
 <li>Contact <a href="mailto:kbenoit@lse.ac.uk">the maintainer</a> by email.</li>
 </ul>
 </div>
@@ -221,7 +246,7 @@
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2>Links</h2>
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
 <li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=quanteda">https://​cloud.r-project.org/​package=quanteda</a>
 </li>
@@ -231,20 +256,24 @@
 </li>
 </ul>
 </div>
+
 <div class="license">
-<h2>License</h2>
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
 <li><a href="https://www.r-project.org/Licenses/GPL-3">GPL-3</a></li>
 </ul>
 </div>
+
+
 <div class="citation">
-<h2>Citation</h2>
+<h2 data-toc-skip>Citation</h2>
 <ul class="list-unstyled">
 <li><a href="authors.html">Citing quanteda</a></li>
 </ul>
 </div>
+
 <div class="developers">
-<h2>Developers</h2>
+<h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
 <li>Kenneth Benoit <br><small class="roles"> Maintainer, author, copyright holder </small> <a href="https://orcid.org/0000-0002-0797-564X" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 <li>Kohei Watanabe <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0001-6519-5265" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
@@ -254,28 +283,30 @@
 <li>Stefan Müller <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-6315-4125" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 <li>Akitaka Matsuo <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-3323-6330" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 <li>William Lowe <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-1549-6163" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
-<li>European Research Council <br><small class="roles"> Funder </small>  <br><small>(ERC-2011-StG 283794-QUANTESS)</small>
-</li>
-<li><a href="authors.html">All authors...</a></li>
+<li>European Research Council <br><small class="roles"> Funder </small>  </li>
+<li><a href="authors.html">More on authors...</a></li>
 </ul>
 </div>
 
-  <div class="dev-status">
-<h2>Dev status</h2>
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="http://quanteda.io"><img src="https://cdn.rawgit.com/quanteda/quanteda/master/images/quanteda_logo.svg" alt="quanteda: quantitative analysis of textual data"></a></li>
+<li><a href="http://quanteda.io" class="external-link"><img src="https://cdn.rawgit.com/quanteda/quanteda/master/images/quanteda_logo.svg" alt="quanteda: quantitative analysis of textual data"></a></li>
 </ul>
 </div>
-</div>
+
+  </div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p>
+  <p></p>
+<p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>

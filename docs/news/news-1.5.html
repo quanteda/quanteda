@@ -52,6 +52,8 @@
 
 
 
+
+
 <!-- mathjax -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script>
@@ -73,9 +75,15 @@
 </script>
 
 
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-news">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -186,7 +194,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/quanteda/quanteda">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -232,7 +240,7 @@
 <a href="#behaviour-changes-1" class="anchor"></a>Behaviour changes</h2>
 <ul>
 <li>
-<code><a href="https://quanteda.io/reference/textstat_simil.html">textstat_dist()</a></code> and <code><a href="https://quanteda.io/reference/textstat_simil.html">textstat_simil()</a></code> now return sparse symmetric matrix objects using classes from the <strong>Matrix</strong> package. This replaces the former structure based on the <code>dist</code> class. Computation of these classes is now also based on the fast implementation in the <strong>proxyC</strong> package. When computing similarities, the new <code>min_simil</code> argument allows a user to ignore certain values below a specified similarity threshold. A new coercion method <code>as.data.frame.textstat_simildist()</code> now exists for converting these returns into a data.frame of pairwise comparisons. Existing methods such as <code><a href="https://rdrr.io/r/base/matrix.html">as.matrix()</a></code>, <code><a href="https://rdrr.io/r/stats/dist.html">as.dist()</a></code>, and <code><a href="https://rdrr.io/r/base/list.html">as.list()</a></code> work as they did before.</li>
+<code><a href="https://quanteda.io/reference/textstat_simil.html">textstat_dist()</a></code> and <code><a href="https://quanteda.io/reference/textstat_simil.html">textstat_simil()</a></code> now return sparse symmetric matrix objects using classes from the <strong>Matrix</strong> package. This replaces the former structure based on the <code>dist</code> class. Computation of these classes is now also based on the fast implementation in the <strong>proxyC</strong> package. When computing similarities, the new <code>min_simil</code> argument allows a user to ignore certain values below a specified similarity threshold. A new coercion method <code>as.data.frame.textstat_simildist()</code> now exists for converting these returns into a data.frame of pairwise comparisons. Existing methods such as <code><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix()</a></code>, <code><a href="https://rdrr.io/r/stats/dist.html" class="external-link">as.dist()</a></code>, and <code><a href="https://rdrr.io/r/base/list.html" class="external-link">as.list()</a></code> work as they did before.</li>
 <li>We have removed the “faith”, “chi-squared”, and “kullback” methods from <code><a href="https://quanteda.io/reference/textstat_simil.html">textstat_dist()</a></code> and <code><a href="https://quanteda.io/reference/textstat_simil.html">textstat_simil()</a></code> because these were either not symmetric or not invariant to document or feature ordering. Finally, the <code>selection</code> argument has been deprecated in favour of a new <code>y</code> argument.<br>
 </li>
 <li>
@@ -307,11 +315,11 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p>
+  <p><p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p></p>
 </div>
 
       </footer>
@@ -336,6 +344,8 @@
 </script>
 
 
+
+  
 
   </body>
 </html>

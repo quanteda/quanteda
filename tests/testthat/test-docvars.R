@@ -518,3 +518,67 @@ test_that("works correctly in edge cases", {
     expect_equal(docvars(corp, "var3"), c(1, 2, 1, 2))
     expect_error(docvars(corp, "var4") <- 1:3)
 })
+
+test_that("group_docvars() works", {
+
+    docvar <- data.frame("docname_" = c("A", "B", "C"),
+                         "docid_" = factor(c("A", "B", "C")),
+                         "segid_" = rep(1L, 3),
+                         "var1" = c(100, 100, 200),
+                         "var2" = c(TRUE, TRUE, FALSE),
+                         stringsAsFactors = FALSE)
+    
+    docvar1 <- quanteda:::group_docvars(docvar, factor(c("X", "X", "Y")))
+    expect_equal(
+        names(docvar1), 
+        c("docname_", "docid_", "segid_", "var1", "var2")
+    )
+    expect_equal(
+        docvar1$var1,
+        c(100, 200)
+    )
+    expect_equal(
+        docvar1$var2,
+        c(TRUE, FALSE)
+    )
+    
+    docvar2 <- quanteda:::group_docvars(docvar, 
+                                        factor(c("X", "X", "Y"), levels = c("X", "Y", "Z")), 
+                                        field = "var3")
+    expect_equal(
+        names(docvar2), 
+        c("docname_", "docid_", "segid_", "var1", "var2", "var3")
+    )
+    expect_equal(
+        docvar2$var1,
+        c(100, 200, NA)
+    )
+    expect_equal(
+        docvar2$var2,
+        c(TRUE, FALSE, NA)
+    )
+    expect_equal(
+        docvar2$var3,
+        factor(c("X", "Y", "Z"), levels = c("X", "Y", "Z"))
+    )
+    
+    docvar3 <- quanteda:::group_docvars(docvar, 
+                                        factor(c("X", "X", "Y"), levels = c("Z", "Y", "X")), 
+                                        field = "var3")
+    expect_equal(
+        names(docvar3), 
+        c("docname_", "docid_", "segid_", "var1", "var2", "var3")
+    )
+    expect_equal(
+        docvar3$var1,
+        c(NA, 200, 100)
+    )
+    expect_equal(
+        docvar3$var2,
+        c(NA, FALSE, TRUE)
+    )
+    expect_equal(
+        docvar3$var3,
+        factor(c("Z", "Y", "X"), levels = c("Z", "Y", "X"))
+    )
+})

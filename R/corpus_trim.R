@@ -20,12 +20,12 @@
 #'          "PAGE 2. Very short! Shorter.",
 #'          "Very long sentence, with multiple parts, separated by commas.  PAGE 3.")
 #' corp <- corpus(txt, docvars = data.frame(serial = 1:3))
-#' texts(corp)
+#' corp
 #'
 #' # exclude sentences shorter than 3 tokens
-#' texts(corpus_trim(corp, min_ntoken = 3))
+#' corpus_trim(corp, min_ntoken = 3)
 #' # exclude sentences that start with "PAGE <digit(s)>"
-#' texts(corpus_trim(corp, exclude_pattern = "^PAGE \\d+"))
+#' corpus_trim(corp, exclude_pattern = "^PAGE \\d+")
 #'
 corpus_trim <- function(x, what = c("sentences", "paragraphs", "documents"),
                         min_ntoken = 1, max_ntoken = NULL,
@@ -57,7 +57,7 @@ corpus_trim.corpus <- function(x, what = c("sentences", "paragraphs", "documents
     # exclude based on regular expression match
     if (!is.null(exclude_pattern)) {
         exclude_pattern <- check_character(exclude_pattern)
-        is_pattern <- stri_detect_regex(texts(result), exclude_pattern)
+        is_pattern <- stri_detect_regex(result, exclude_pattern)
         result <- corpus_subset(result, !is_pattern)
     }
     if (what != "documents" && ndoc(result) > 0)
@@ -83,5 +83,5 @@ char_trim <- function(x, what = c("sentences", "paragraphs", "documents"),
 char_trim.character <- function(x, what = c("sentences", "paragraphs", "documents"),
                                 min_ntoken = 1, max_ntoken = NULL, exclude_pattern = NULL) {
     what <- match.arg(what)
-    texts(corpus_trim(corpus(x), what, min_ntoken, max_ntoken, exclude_pattern))
+    as.character(corpus_trim(corpus(x), what, min_ntoken, max_ntoken, exclude_pattern))
 }

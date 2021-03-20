@@ -52,6 +52,8 @@
 
 
 
+
+
 <!-- mathjax -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script>
@@ -73,9 +75,15 @@
 </script>
 
 
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-news">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -186,7 +194,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/quanteda/quanteda">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -217,20 +225,20 @@
 <h1 class="page-header" data-toc-text="2.1.0">
 <a href="#quanteda-210" class="anchor"></a>quanteda 2.1.0<small> 2020-07-05 </small>
 </h1>
-<div id="changes-3" class="section level2">
+<div id="changes-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#changes-3" class="anchor"></a>Changes</h2>
+<a href="#changes-2" class="anchor"></a>Changes</h2>
 <ul>
 <li>Added <code>block_size</code> to <code><a href="../reference/quanteda_options.html">quanteda_options()</a></code> to control the number of documents in blocked tokenization.</li>
 <li>Fixed <code>print.dictionary2()</code> to control the printing of nested levels with <code>max_nkey</code> (<a href='https://github.com/quanteda/quanteda/issues/1967'>#1967</a>)</li>
-<li>Added <code><a href="https://quanteda.io/reference/textstat_summary.html">textstat_summary()</a></code> to provide detailed information about dfm, tokens and corpus objects. It will replace <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code> in future versions.</li>
+<li>Added <code><a href="https://quanteda.io/reference/textstat_summary.html">textstat_summary()</a></code> to provide detailed information about dfm, tokens and corpus objects. It will replace <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> in future versions.</li>
 <li>Fixed a performance issue causing slowdowns in tokenizing (using the default <code>what = "word"</code>) corpora with large numbers of documents that contain social media tags and URLs that needed to be preserved (such a large corpus of Tweets).</li>
 <li>Updated the (default) “word” tokenizer to preserve hashtags and usernames better with non-ASCII text, and made these patterns user-configurable in <code><a href="../reference/quanteda_options.html">quanteda_options()</a></code>. The following are now preserved: “#政治” as well as Weibo-style hashtags such as “#英国首相#”.</li>
 <li>
 <code><a href="../reference/convert.html">convert(x, to = "data.frame")</a></code> now outputs the first column as “doc_id” rather than “document” since “document” is a commonly occurring term in many texts. (<a href='https://github.com/quanteda/quanteda/issues/1918'>#1918</a>)</li>
 <li>Added new methods <code><a href="../reference/char_select.html">char_select()</a></code>, <code><a href="../reference/char_select.html">char_keep()</a></code>, and <code><a href="../reference/char_select.html">char_remove()</a></code> for easy manipulation of character vectors.</li>
-<li>Added <code><a href="../reference/dictionary_edit.html">dictionary_edit()</a></code> for easy, interactive editing of dictionaries, plus the functions <code><a href="../reference/dictionary_edit.html">char_edit()</a></code> and <code><a href="../reference/dictionary_edit.html">list_edit()</a></code> for editing character and list of character objects.</li>
-<li>Added a method to <code><a href="https://rdrr.io/pkg/quanteda.textplots/man/textplot_wordcloud.html">textplot_wordcloud()</a></code> that plots objects from <code><a href="https://quanteda.io/reference/textstat_keyness.html">textstat_keyness()</a></code>, to visualize keywords either by comparison or for the target category only.</li>
+<li>Added <code>dictionary_edit()</code> for easy, interactive editing of dictionaries, plus the functions <code>char_edit()</code> and <code>list_edit()</code> for editing character and list of character objects.</li>
+<li>Added a method to <code><a href="https://rdrr.io/pkg/quanteda.textplots/man/textplot_wordcloud.html" class="external-link">textplot_wordcloud()</a></code> that plots objects from <code><a href="https://quanteda.io/reference/textstat_keyness.html">textstat_keyness()</a></code>, to visualize keywords either by comparison or for the target category only.</li>
 <li>Improved the performance of <code><a href="../reference/kwic.html">kwic()</a></code> (<a href='https://github.com/quanteda/quanteda/issues/1840'>#1840</a>).</li>
 <li>Added new <code>logsmooth</code> scheme to <code><a href="../reference/dfm_weight.html">dfm_weight()</a></code>.</li>
 <li>Added new <code><a href="https://quanteda.io/reference/textstat_summary.html">textstat_summary()</a></code> method, which returns summary information about the tokens/types/features etc in an object. It also caches summary information so that this can be retrieved on subsequent calls, rather than re-computed.</li>
@@ -253,9 +261,9 @@
 <h1 class="page-header" data-toc-text="2.1.1">
 <a href="#quanteda-211" class="anchor"></a>quanteda 2.1.1<small> 2020-07-27 </small>
 </h1>
-<div id="changes-2" class="section level2">
+<div id="changes-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#changes-2" class="anchor"></a>Changes</h2>
+<a href="#changes-1" class="anchor"></a>Changes</h2>
 </div>
 <div id="bug-fixes-and-stability-enhancements-2" class="section level2">
 <h2 class="hasAnchor">
@@ -271,9 +279,9 @@
 <h1 class="page-header" data-toc-text="2.1.2">
 <a href="#quanteda-212" class="anchor"></a>quanteda 2.1.2<small> 2020-09-23 </small>
 </h1>
-<div id="changes-1" class="section level2">
+<div id="changes" class="section level2">
 <h2 class="hasAnchor">
-<a href="#changes-1" class="anchor"></a>Changes</h2>
+<a href="#changes" class="anchor"></a>Changes</h2>
 <ul>
 <li>
 <code><a href="https://quanteda.io/reference/textstat_keyness.html">textstat_keyness()</a></code> performance is now improved through implementation in (multi-threaded) C++.</li>
@@ -284,25 +292,6 @@
 <a href="#bug-fixes-and-stability-enhancements-1" class="anchor"></a>Bug fixes and stability enhancements</h2>
 <ul>
 <li>Fixes breaking tests and examples on Solaris platform as well as other changes introduced by changes to the stringi package.</li>
-</ul>
-</div>
-</div>
-    <div id="quanteda-213" class="section level1">
-<h1 class="page-header" data-toc-text="2.1.3">
-<a href="#quanteda-213" class="anchor"></a>quanteda 2.1.3<small> Unreleased </small>
-</h1>
-<div id="changes" class="section level2">
-<h2 class="hasAnchor">
-<a href="#changes" class="anchor"></a>Changes</h2>
-<ul>
-<li>Mentions of the now-removed <code>ngrams</code> option in <code><a href="../reference/dfm.html">dfm(x, ...)</a></code> has now been removed from the dfm documentation. (<a href='https://github.com/quanteda/quanteda/issues/1990'>#1990</a>)</li>
-</ul>
-</div>
-<div id="bug-fixes-and-stability-enhancements" class="section level2">
-<h2 class="hasAnchor">
-<a href="#bug-fixes-and-stability-enhancements" class="anchor"></a>Bug fixes and stability enhancements</h2>
-<ul>
-<li>Allow use of multi-threading with more than two threads by fixing <code><a href="../reference/quanteda_options.html">quanteda_options()</a></code>.</li>
 </ul>
 </div>
 </div>
@@ -319,11 +308,11 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p>
+  <p><p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p></p>
 </div>
 
       </footer>
@@ -348,6 +337,8 @@
 </script>
 
 
+
+  
 
   </body>
 </html>

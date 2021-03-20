@@ -86,9 +86,9 @@ summary(corp_uk)
 
 यदि हम प्रत्येक डॉक्युमेंट को अतिरिक्त मेटा-डेटा के साथ टैग करना चाहते हैं जो विश्लेषण के लिए ज़रूरी नहीं है, बल्कि कुछ ऐसा है जिसे हमें डॉक्युमेंट की विशेषता के रूप में जानने की आवश्यकता है, हम उन्हें भी अपने कार्पस में जोड़ सकते हैं।
 ```{r}
-metadoc(corp_uk, "language") <- "english"
-metadoc(corp_uk, "docsource")  <- paste("data_char_ukimmig2010", 1:ndoc(corp_uk), sep = "_")
-summary(corp_uk, showmeta = TRUE)
+docvars(corp_uk, "language") <- "english"
+docvars(corp_uk, "docsource")  <- paste("data_char_ukimmig2010", 1:ndoc(corp_uk), sep = "_")
+summary(corp_uk)
 ```
 
 अंतिम कमांड `metadoc`, आपको अपने डॉक्युमेंट के मेटा-डेटा फ़ील्ड को परिभाषित करने की सुविधा देता है। ध्यान दें कि `"english"` की सिंगल वैल्यू को असाइन करने के लिए, आर ने वैल्यू को तब तक रीसायकल किया है जब तक कि यह कॉर्पस में डॉक्युमेंट की संख्या से मेल नहीं खाता। हमारे कस्टम मेटाडॉक फ़ील्ड`docsource` के लिए एक सरल टैग बनाने में, हमने अपने कॉर्पस में डॉक्युमेंट की संख्या को प्राप्त करने के लिए क्वांटेडा फ़ंक्शन `ndoc()` का उपयोग किया है। इस फ़ंक्शन को उन कार्यों के समान काम करने के लिए डिज़ाइन किया गया है जो आप पहले से ही आर में उपयोग कर सकते हैं, जैसे कि `nrow()` और `ncol()`।
@@ -324,8 +324,11 @@ textplot_wordcloud(dfmat_uk, min_count = 6, random_order = FALSE,
 अक्सर, हम सिर्फ दस्तावेज़ फ़ाइलों की बौंडरीस के बजाय यह विश्लेषण करने में रुचि रखते हैं कि टेक्स्ट्स सब्सटांटिव कारकों - जो दस्तावेज़ चर में एन्कोड किया हुआ सकता है - के अनुसार कैसे अलग हो सकता है। dfm बनाते समय हम जिन दस्तावेज़ को समूह कर सकते है जो दस्तावेज़ चर के लिए समान मूल्य साझा करते हैं:
     
 ```{r}
-dfmat_pres <- dfm(tail(data_corpus_inaugural, 20), groups = "Party",
-                  remove = stopwords("english"), remove_punct = TRUE)
+dfmat_pres <- tail(data_corpus_inaugural, 20) %>%
+  tokens(remove_punct = TRUE) %>%
+  tokens_remove(stopwords("en")) %>%
+  tokens_group(groups = Party) %>%
+  dfm()
 ```
 
 हम इस dfm को सॉर्ट कर सकते हैं, और इसका निरीक्षण कर सकते हैं:

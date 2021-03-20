@@ -89,5 +89,5 @@ as.data.frame(kw)
 
 }
 \seealso{
-\link{print-method}
+\link{print-methods}
 }
