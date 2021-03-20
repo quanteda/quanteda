@@ -64,7 +64,6 @@ dfm_group.dfm <- function(x, groups, fill = FALSE, force = FALSE) {
     if (!nfeat(x) || !ndoc(x)) return(x)
     if (!fill)
         groups <- droplevels(groups)
-
     if (ndoc(x) != length(groups))
         stop("groups must have length ndoc(x)", call. = FALSE)
 

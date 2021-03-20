@@ -35,13 +35,19 @@ corpus_group.default <- function(x, groups, fill = FALSE, concatenator = " ") {
 #' @export
 corpus_group.corpus <- function(x, groups, fill = FALSE, concatenator = " ") {
     x <- as.corpus(x)
-     if (!missing(groups)) {
+    if (missing(groups)) {
+        field <- NULL
+        groups <- docid(x)
+    } else {
+        field <- deparse(substitute(groups))
         groups <- eval(substitute(groups), get_docvars(x, user = TRUE, system = TRUE), parent.frame())
+        if (!field %in% names(get_docvars(x)) || !is.factor(groups))
+            field <- NULL
         groups <- as.factor(groups)
     }
+    
     if (!fill)
         groups <- droplevels(groups)
-
     if (ndoc(x) != length(groups))
         stop("groups must have length ndoc(x)", call. = FALSE)
     
@@ -51,7 +57,7 @@ corpus_group.corpus <- function(x, groups, fill = FALSE, concatenator = " ") {
     groups <- groups[!is.na(groups)]
     
     result <- group_corpus(x, groups, concatenator)
-    attrs[["docvars"]] <- group_docvars(attrs[["docvars"]], groups)
+    attrs[["docvars"]] <- group_docvars(attrs[["docvars"]], groups, field)
     
     rebuild_corpus(result, attrs)
 }
