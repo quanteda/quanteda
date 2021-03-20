@@ -28,6 +28,8 @@
 </script>
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container">
@@ -136,8 +138,8 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/quanteda/quanteda">
-    <span class="fa fa-github fa-lg"></span>
+  <a href="https://github.com/quanteda/quanteda" class="external-link">
+    <span class="fas fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -157,15 +159,14 @@
 
       
 
-      </header><script src="japanese_twitter_ja_files/header-attrs-2.5/header-attrs.js"></script><script src="japanese_twitter_ja_files/accessible-code-block-0.0.1/empty-anchor.js"></script><link href="japanese_twitter_ja_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet">
-<script src="japanese_twitter_ja_files/anchor-sections-1.0/anchor-sections.js"></script><div class="row">
+      </header><script src="japanese_twitter_ja_files/header-attrs-2.7/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>事例: 2017年総選挙に関するツイート</h1>
-                        <h4 class="author">Kohei Watanabe and Akitaka Matsuo</h4>
+                        <h4 data-toc-skip class="author">Kohei Watanabe and Akitaka Matsuo</h4>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/quanteda/quanteda/blob/master/vignettes/pkgdown/examples/japanese_twitter_ja.Rmd"><code>vignettes/pkgdown/examples/japanese_twitter_ja.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/quanteda/quanteda/blob/master/vignettes/pkgdown/examples/japanese_twitter_ja.Rmd" class="external-link"><code>vignettes/pkgdown/examples/japanese_twitter_ja.Rmd</code></a></small>
       <div class="hidden name"><code>japanese_twitter_ja.Rmd</code></div>
 
     </div>
@@ -173,15 +174,15 @@
     
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://quanteda.io">quanteda</a></span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://quanteda.io">quanteda</a></span><span class="op">)</span></code></pre></div>
 <div id="download" class="section level2">
 <h2 class="hasAnchor">
 <a href="#download" class="anchor"></a>コーパスのダウンロード</h2>
 <p>本コーパスは，2017年総選挙の際に収集されたツイートから構成されている．ツイートは，TwitterのStrem APIから、キーワード“選挙”を使い，10月20日から10月31日の期間にダウンロードした．インターネット上で収集されたテキストは，英数字の全半角が統一されていないので，<code>stri_trans_nfkc()</code>によって表記を標準化すると良い．</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"quanteda/quanteda.corpora"</span><span class="op">)</span>
-<span class="va">corp</span> <span class="op">&lt;-</span> <span class="fu">quanteda.corpora</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/quanteda.corpora/man/download.html">download</a></span><span class="op">(</span>url <span class="op">=</span> <span class="st">"https://www.dropbox.com/s/co12wpj08pzqz71/data_corpus_election2017tweets.rds?dl=1"</span><span class="op">)</span>
-<span class="fu"><a href="../../../reference/texts.html">texts</a></span><span class="op">(</span><span class="va">corp</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu">stringi</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/stringi/man/stri_trans_nf.html">stri_trans_nfkc</a></span><span class="op">(</span><span class="fu"><a href="../../../reference/texts.html">texts</a></span><span class="op">(</span><span class="va">corp</span><span class="op">)</span><span class="op">)</span> <span class="co"># 表記を標準化</span></code></pre></div>
+<code class="sourceCode R"><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"quanteda/quanteda.corpora"</span><span class="op">)</span>
+<span class="va">corp</span> <span class="op">&lt;-</span> <span class="fu">quanteda.corpora</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/quanteda.corpora/man/download.html" class="external-link">download</a></span><span class="op">(</span>url <span class="op">=</span> <span class="st">"https://www.dropbox.com/s/co12wpj08pzqz71/data_corpus_election2017tweets.rds?dl=1"</span><span class="op">)</span>
+<span class="fu"><a href="../../../reference/texts.html">texts</a></span><span class="op">(</span><span class="va">corp</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu">stringi</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/stringi/man/stri_trans_nf.html" class="external-link">stri_trans_nfkc</a></span><span class="op">(</span><span class="fu"><a href="../../../reference/texts.html">texts</a></span><span class="op">(</span><span class="va">corp</span><span class="op">)</span><span class="op">)</span> <span class="co"># 表記を標準化</span></code></pre></div>
 </div>
 <div id="number-of-tweets" class="section level2">
 <h2 class="hasAnchor">
@@ -190,7 +191,7 @@
 <code class="sourceCode R"><span class="fu"><a href="../../../reference/ndoc.html">ndoc</a></span><span class="op">(</span><span class="va">corp</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] 132346</code></pre>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/range.html">range</a></span><span class="op">(</span><span class="fu"><a href="../../../reference/docvars.html">docvars</a></span><span class="op">(</span><span class="va">corp</span>, <span class="st">"created_at"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/range.html" class="external-link">range</a></span><span class="op">(</span><span class="fu"><a href="../../../reference/docvars.html">docvars</a></span><span class="op">(</span><span class="va">corp</span>, <span class="st">"created_at"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] "2017-10-19 16:55:25 GMT" "2017-10-31 15:09:19 GMT"</code></pre>
 </div>
 <div id="pre-processing" class="section level1">
@@ -207,7 +208,7 @@
 <span class="va">min_count</span> <span class="op">&lt;-</span> <span class="fl">10</span>
 
 <span class="co"># 漢字</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://quanteda.io">"quanteda.textstats"</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://quanteda.io">"quanteda.textstats"</a></span><span class="op">)</span>
 <span class="va">kanji_col</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/tokens_select.html">tokens_keep</a></span><span class="op">(</span><span class="va">toks</span>, pattern <span class="op">=</span> <span class="st">"^[一-龠]+$"</span>, valuetype <span class="op">=</span> <span class="st">"regex"</span>, padding <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">%&gt;%</span> 
              <span class="fu"><a href="https://quanteda.io/reference/textstat_collocations.html">textstat_collocations</a></span><span class="op">(</span>min_count <span class="op">=</span> <span class="va">min_count</span><span class="op">)</span>
 <span class="va">toks</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/tokens_compound.html">tokens_compound</a></span><span class="op">(</span><span class="va">toks</span>, <span class="va">kanji_col</span><span class="op">[</span><span class="va">kanji_col</span><span class="op">$</span><span class="va">z</span> <span class="op">&gt;</span> <span class="fl">3</span>,<span class="op">]</span>, concatenator <span class="op">=</span> <span class="st">""</span><span class="op">)</span>
@@ -236,36 +237,36 @@
 <a href="#network-tag" class="anchor"></a>タグの共起ネットワーク</h2>
 <p>ここでは，<code><a href="../../../reference/dfm_select.html">dfm_select()</a></code>によってハッシュタグを選択しているが，そこに多くに含まれる’#選挙’や’#衆院選’などのハッシュタグは，クラスターを明確にするために削除している．</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st">"quanteda.textplots"</span><span class="op">)</span></code></pre></div>
-<pre><code>## No methods found in package 'quanteda.textmodels' for request: 'coef' when loading 'quanteda.textplots'</code></pre>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">tag_fcm</span> <span class="op">&lt;-</span> 
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">"quanteda.textplots"</span><span class="op">)</span>
+<span class="va">tag_fcm</span> <span class="op">&lt;-</span> 
     <span class="va">tweet_dfm</span> <span class="op">%&gt;%</span> 
     <span class="fu"><a href="../../../reference/dfm_select.html">dfm_select</a></span><span class="op">(</span>pattern <span class="op">=</span> <span class="st">"#*"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-    <span class="fu"><a href="../../../reference/dfm_select.html">dfm_remove</a></span><span class="op">(</span>pattern <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"*選挙*"</span>, <span class="st">"*衆院選*"</span>, <span class="st">"*衆議院*"</span>, <span class="st">"*投票*"</span><span class="op">)</span>, min_nchar <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+    <span class="fu"><a href="../../../reference/dfm_select.html">dfm_remove</a></span><span class="op">(</span>pattern <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"*選挙*"</span>, <span class="st">"*衆院選*"</span>, <span class="st">"*衆議院*"</span>, <span class="st">"*投票*"</span><span class="op">)</span>, min_nchar <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">%&gt;%</span> 
     <span class="fu"><a href="../../../reference/dfm_trim.html">dfm_trim</a></span><span class="op">(</span>min_termfreq <span class="op">=</span> <span class="fl">10</span><span class="op">)</span> <span class="op">%&gt;%</span> 
     <span class="fu"><a href="../../../reference/fcm.html">fcm</a></span><span class="op">(</span><span class="op">)</span>
-<span class="va">feat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="fu"><a href="../../../reference/topfeatures.html">topfeatures</a></span><span class="op">(</span><span class="va">tag_fcm</span>, <span class="fl">100</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/quanteda.textplots/man/textplot_network.html">textplot_network</a></span><span class="op">(</span><span class="fu"><a href="../../../reference/dfm_select.html">fcm_select</a></span><span class="op">(</span><span class="va">tag_fcm</span>, pattern <span class="op">=</span> <span class="va">feat</span><span class="op">)</span>, 
+<span class="va">feat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="fu"><a href="../../../reference/topfeatures.html">topfeatures</a></span><span class="op">(</span><span class="va">tag_fcm</span>, <span class="fl">100</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/quanteda.textplots/man/textplot_network.html" class="external-link">textplot_network</a></span><span class="op">(</span><span class="fu"><a href="../../../reference/dfm_select.html">fcm_select</a></span><span class="op">(</span><span class="va">tag_fcm</span>, pattern <span class="op">=</span> <span class="va">feat</span><span class="op">)</span>, 
                  min_freq <span class="op">=</span> <span class="fl">0.8</span>,
-                 vertex_labelfont <span class="op">=</span> <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.info.html">Sys.info</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="st">"sysname"</span><span class="op">]</span> <span class="op">==</span> <span class="st">"Darwin"</span><span class="op">)</span> <span class="st">"SimHei"</span> <span class="kw">else</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
+                 vertex_labelfont <span class="op">=</span> <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.info.html" class="external-link">Sys.info</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="st">"sysname"</span><span class="op">]</span> <span class="op">==</span> <span class="st">"Darwin"</span><span class="op">)</span> <span class="st">"SimHei"</span> <span class="kw">else</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
+<pre><code>## Warning: ggrepel: 4 unlabeled data points (too many overlaps). Consider
+## increasing max.overlaps</code></pre>
 <p><img src="japanese_twitter_ja_files/figure-html/unnamed-chunk-6-1.png" width="700"></p>
 </div>
 <div id="network-word" class="section level2">
 <h2 class="hasAnchor">
 <a href="#network-word" class="anchor"></a>語の共起ネットワーク</h2>
 <p>ツイートのメッセージを分析するためには，<code><a href="../../../reference/dfm_select.html">dfm_remove()</a></code>でハッシュタグやユーザー名を削除する．ここでは，平仮名だけからなる特徴は文法的な要素であることが多く，話題を理解するのに役に立たないので削除している．</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://quanteda.io">"quanteda.textstats"</a></span><span class="op">)</span>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://quanteda.io">"quanteda.textstats"</a></span><span class="op">)</span>
 <span class="va">msg_fcm</span> <span class="op">&lt;-</span> <span class="va">tweet_dfm</span> <span class="op">%&gt;%</span> 
-    <span class="fu"><a href="../../../reference/dfm_select.html">dfm_remove</a></span><span class="op">(</span>pattern <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"#*"</span>, <span class="st">"@*"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+    <span class="fu"><a href="../../../reference/dfm_select.html">dfm_remove</a></span><span class="op">(</span>pattern <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#*"</span>, <span class="st">"@*"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> 
     <span class="fu"><a href="../../../reference/dfm_select.html">dfm_remove</a></span><span class="op">(</span>pattern <span class="op">=</span> <span class="st">"^[ぁ-ん]+$"</span>, valuetype <span class="op">=</span> <span class="st">"regex"</span>, min_nchar <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">%&gt;%</span> 
     <span class="fu"><a href="../../../reference/dfm_trim.html">dfm_trim</a></span><span class="op">(</span>min_termfreq <span class="op">=</span> <span class="fl">10</span><span class="op">)</span> <span class="op">%&gt;%</span> 
     <span class="fu"><a href="../../../reference/dfm_tolower.html">dfm_toupper</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> 
     <span class="fu"><a href="../../../reference/fcm.html">fcm</a></span><span class="op">(</span><span class="op">)</span>
-<span class="va">feat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="fu"><a href="../../../reference/topfeatures.html">topfeatures</a></span><span class="op">(</span><span class="va">msg_fcm</span>, <span class="fl">50</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/quanteda.textplots/man/textplot_network.html">textplot_network</a></span><span class="op">(</span><span class="fu"><a href="../../../reference/dfm_select.html">fcm_select</a></span><span class="op">(</span><span class="va">msg_fcm</span>, pattern <span class="op">=</span> <span class="va">feat</span><span class="op">)</span>, min_freq <span class="op">=</span> <span class="fl">0.3</span>,
-                 vertex_labelfont <span class="op">=</span> <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.info.html">Sys.info</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="st">"sysname"</span><span class="op">]</span> <span class="op">==</span> <span class="st">"Darwin"</span><span class="op">)</span> <span class="st">"SimHei"</span> <span class="kw">else</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
+<span class="va">feat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="fu"><a href="../../../reference/topfeatures.html">topfeatures</a></span><span class="op">(</span><span class="va">msg_fcm</span>, <span class="fl">50</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/quanteda.textplots/man/textplot_network.html" class="external-link">textplot_network</a></span><span class="op">(</span><span class="fu"><a href="../../../reference/dfm_select.html">fcm_select</a></span><span class="op">(</span><span class="va">msg_fcm</span>, pattern <span class="op">=</span> <span class="va">feat</span><span class="op">)</span>, min_freq <span class="op">=</span> <span class="fl">0.3</span>,
+                 vertex_labelfont <span class="op">=</span> <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.info.html" class="external-link">Sys.info</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="st">"sysname"</span><span class="op">]</span> <span class="op">==</span> <span class="st">"Darwin"</span><span class="op">)</span> <span class="st">"SimHei"</span> <span class="kw">else</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
 <p><img src="japanese_twitter_ja_files/figure-html/unnamed-chunk-7-1.png" width="700"></p>
 </div>
 </div>
@@ -282,11 +283,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p>
+  <p></p>
+<p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link external-link">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>

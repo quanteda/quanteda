@@ -28,6 +28,8 @@
 </script>
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container">
@@ -136,8 +138,8 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/quanteda/quanteda">
-    <span class="fa fa-github fa-lg"></span>
+  <a href="https://github.com/quanteda/quanteda" class="external-link">
+    <span class="fas fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -157,15 +159,14 @@
 
       
 
-      </header><script src="phrase_files/header-attrs-2.5/header-attrs.js"></script><script src="phrase_files/accessible-code-block-0.0.1/empty-anchor.js"></script><link href="phrase_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet">
-<script src="phrase_files/anchor-sections-1.0/anchor-sections.js"></script><div class="row">
+      </header><script src="phrase_files/header-attrs-2.7/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Working with multi-word expressions</h1>
-                        <h4 class="author">Kohei Watanabe</h4>
+                        <h4 data-toc-skip class="author">Kohei Watanabe</h4>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/quanteda/quanteda/blob/master/vignettes/pkgdown/examples/phrase.Rmd"><code>vignettes/pkgdown/examples/phrase.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/quanteda/quanteda/blob/master/vignettes/pkgdown/examples/phrase.Rmd" class="external-link"><code>vignettes/pkgdown/examples/phrase.Rmd</code></a></small>
       <div class="hidden name"><code>phrase.Rmd</code></div>
 
     </div>
@@ -174,7 +175,7 @@
     
 <p><strong>quanteda</strong> has the functionality to select, remove or compound multi-word expressions, such as phrasal verbs (“try on”, “wake up” etc.) and place names (“New York”, “South Korea” etc.).</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://quanteda.io">quanteda</a></span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://quanteda.io">quanteda</a></span><span class="op">)</span></code></pre></div>
 <div id="tokenize" class="section level1">
 <h1 class="hasAnchor">
 <a href="#tokenize" class="anchor"></a>Tokenize</h1>
@@ -190,14 +191,14 @@
 <a href="#character-vector" class="anchor"></a>Character vector</h2>
 <p>The most basic way to define multi-word expressions is separating words by whitespaces and wrap the character vector by <code><a href="../../../reference/phrase.html">phrase()</a></code>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">multiword</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"United States"</span>, <span class="st">"New York"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="va">multiword</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"United States"</span>, <span class="st">"New York"</span><span class="op">)</span></code></pre></div>
 <div id="keyword-in-context" class="section level3">
 <h3 class="hasAnchor">
 <a href="#keyword-in-context" class="anchor"></a>Keyword-in-context</h3>
 <p><code><a href="../../../reference/kwic.html">kwic()</a></code> is useful to find multi-word expressions in tokens. If you are not sure if “United” and “States” are separated, check their positions (e.g. “434:435”).</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fu"><a href="../../../reference/kwic.html">kwic</a></span><span class="op">(</span><span class="va">toks</span>, pattern <span class="op">=</span> <span class="fu"><a href="../../../reference/phrase.html">phrase</a></span><span class="op">(</span><span class="va">multiword</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<pre><code>##                                                                              
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="../../../reference/kwic.html">kwic</a></span><span class="op">(</span><span class="va">toks</span>, pattern <span class="op">=</span> <span class="fu"><a href="../../../reference/phrase.html">phrase</a></span><span class="op">(</span><span class="va">multiword</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<pre><code>## Keyword-in-context with 6 matches.                                                                             
 ##  [1789-Washington, 433:434]            of the people of the | United States |
 ##  [1789-Washington, 529:530]          more than those of the | United States |
 ##       [1797-Adams, 524:525]     saw the Constitution of the | United States |
@@ -217,7 +218,7 @@
 <a href="#select-tokens" class="anchor"></a>Select tokens</h3>
 <p>Similarly, you can select or remove multi-word expression using <code><a href="../../../reference/tokens_select.html">tokens_select()</a></code>.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fu"><a href="../../../reference/tokens_select.html">tokens_select</a></span><span class="op">(</span><span class="va">toks</span>, pattern <span class="op">=</span> <span class="fu"><a href="../../../reference/phrase.html">phrase</a></span><span class="op">(</span><span class="va">multiword</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="../../../reference/tokens_select.html">tokens_select</a></span><span class="op">(</span><span class="va">toks</span>, pattern <span class="op">=</span> <span class="fu"><a href="../../../reference/phrase.html">phrase</a></span><span class="op">(</span><span class="va">multiword</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## Tokens consisting of 6 documents and 4 docvars.
 ## 1789-Washington :
 ## [1] "United" "States" "United" "States"
@@ -243,7 +244,7 @@
 <p><code><a href="../../../reference/tokens_compound.html">tokens_compound()</a></code> joins elements of multi-word expressions by underscore, so they become “United_States” and “New_York”.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">comp_toks</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/tokens_compound.html">tokens_compound</a></span><span class="op">(</span><span class="va">toks</span>, pattern <span class="op">=</span> <span class="fu"><a href="../../../reference/phrase.html">phrase</a></span><span class="op">(</span><span class="va">multiword</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fu"><a href="../../../reference/tokens_select.html">tokens_select</a></span><span class="op">(</span><span class="va">comp_toks</span>, pattern <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"United_States"</span>, <span class="st">"New_York"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="../../../reference/tokens_select.html">tokens_select</a></span><span class="op">(</span><span class="va">comp_toks</span>, pattern <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"United_States"</span>, <span class="st">"New_York"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## Tokens consisting of 6 documents and 4 docvars.
 ## 1789-Washington :
 ## [1] "United_States" "United_States"
@@ -269,13 +270,13 @@
 <a href="#dictionary" class="anchor"></a>Dictionary</h2>
 <p>Elements of multi-word expressions should be separately by whitespaces in a dictionary, but you do not use <code><a href="../../../reference/phrase.html">phrase()</a></code> here.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">multiword_dict</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/dictionary.html">dictionary</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>country <span class="op">=</span> <span class="st">"United States"</span>, 
+<code class="sourceCode R"><span class="va">multiword_dict</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/dictionary.html">dictionary</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>country <span class="op">=</span> <span class="st">"United States"</span>, 
                                   city <span class="op">=</span> <span class="st">"New York"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <div id="lookup-dictionary" class="section level3">
 <h3 class="hasAnchor">
 <a href="#lookup-dictionary" class="anchor"></a>Lookup dictionary</h3>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fu"><a href="../../../reference/tokens_lookup.html">tokens_lookup</a></span><span class="op">(</span><span class="va">toks</span>, dictionary <span class="op">=</span> <span class="va">multiword_dict</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="../../../reference/tokens_lookup.html">tokens_lookup</a></span><span class="op">(</span><span class="va">toks</span>, dictionary <span class="op">=</span> <span class="va">multiword_dict</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## Tokens consisting of 6 documents and 4 docvars.
 ## 1789-Washington :
 ## [1] "country" "country"
@@ -305,20 +306,20 @@
 <a href="#discover-collocations" class="anchor"></a>Discover collocations</h3>
 <p>If <code><a href="https://quanteda.io/reference/textstat_collocations.html">textstat_collocations()</a></code> is applied to a tokens object comprised only of capitalize words, it usually returns multi-word proper names.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://quanteda.io">"quanteda.textstats"</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://quanteda.io">"quanteda.textstats"</a></span><span class="op">)</span>
 <span class="va">col</span> <span class="op">&lt;-</span> <span class="va">toks</span> <span class="op">%&gt;%</span> 
-       <span class="fu"><a href="../../../reference/tokens_select.html">tokens_remove</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html">stopwords</a></span><span class="op">(</span><span class="st">"en"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+       <span class="fu"><a href="../../../reference/tokens_select.html">tokens_remove</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html" class="external-link">stopwords</a></span><span class="op">(</span><span class="st">"en"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> 
        <span class="fu"><a href="../../../reference/tokens_select.html">tokens_select</a></span><span class="op">(</span>pattern <span class="op">=</span> <span class="st">"^[A-Z]"</span>, valuetype <span class="op">=</span> <span class="st">"regex"</span>, 
                      case_insensitive <span class="op">=</span> <span class="cn">FALSE</span>, padding <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">%&gt;%</span> 
        <span class="fu"><a href="https://quanteda.io/reference/textstat_collocations.html">textstat_collocations</a></span><span class="op">(</span>min_count <span class="op">=</span> <span class="fl">5</span>, tolower <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">col</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">col</span><span class="op">)</span></code></pre></div>
 <pre><code>##           collocation count count_nested length   lambda        z
-## 1       United States   157            0      2 8.643955 28.47365
-## 2  Federal Government    32            0      2 5.575158 21.87650
-## 3        Almighty God    15            0      2 7.104604 18.21044
-## 4       Chief Justice    13            0      2 8.841726 18.11272
-## 5 Constitution United    19            0      2 4.032441 15.99701
-## 6         North South     8            0      2 8.151032 15.41085</code></pre>
+## 1       United States   158            0      2 8.669720 28.56477
+## 2  Federal Government    32            0      2 5.594610 21.95287
+## 3       Chief Justice    14            0      2 8.932546 18.49814
+## 4        Almighty God    15            0      2 7.070951 18.16615
+## 5 Constitution United    19            0      2 4.028551 15.99879
+## 6         North South     8            0      2 8.170406 15.44748</code></pre>
 </div>
 <div id="compound-collocations" class="section level3">
 <h3 class="hasAnchor">
@@ -326,8 +327,8 @@
 <p>Collocations are automatically recognized as multi-word expressions by <code><a href="../../../reference/tokens_compound.html">tokens_compound()</a></code> in <em>case-sensitive fixed pattern matching</em>. This is the fastest way to compound large numbers of multi-word expressions, but make sure that <code>tolower = FALSE</code> in <code><a href="https://quanteda.io/reference/textstat_collocations.html">textstat_collocations()</a></code> to do this.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">comp_toks2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/tokens_compound.html">tokens_compound</a></span><span class="op">(</span><span class="va">toks</span>, pattern <span class="op">=</span> <span class="va">col</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fu"><a href="../../../reference/kwic.html">kwic</a></span><span class="op">(</span><span class="va">comp_toks2</span>, pattern <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"United_States"</span>, <span class="st">"New_York"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<pre><code>##                                                                          
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="../../../reference/kwic.html">kwic</a></span><span class="op">(</span><span class="va">comp_toks2</span>, pattern <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"United_States"</span>, <span class="st">"New_York"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<pre><code>## Keyword-in-context with 6 matches.                                                                         
 ##  [1789-Washington, 433]            of the people of the | United_States |
 ##  [1789-Washington, 528]          more than those of the | United_States |
 ##       [1797-Adams, 524]     saw the Constitution of the | United_States |
@@ -344,8 +345,8 @@
 <p>You can use <code><a href="../../../reference/phrase.html">phrase()</a></code> on collocations if more flexibility is needed. This is usually the case if you compound tokens from different corpus.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">comp_toks3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/tokens_compound.html">tokens_compound</a></span><span class="op">(</span><span class="va">toks</span>, pattern <span class="op">=</span> <span class="fu"><a href="../../../reference/phrase.html">phrase</a></span><span class="op">(</span><span class="va">col</span><span class="op">$</span><span class="va">collocation</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fu"><a href="../../../reference/kwic.html">kwic</a></span><span class="op">(</span><span class="va">comp_toks3</span>, pattern <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"United_States"</span>, <span class="st">"New_York"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<pre><code>##                                                                          
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="../../../reference/kwic.html">kwic</a></span><span class="op">(</span><span class="va">comp_toks3</span>, pattern <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"United_States"</span>, <span class="st">"New_York"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<pre><code>## Keyword-in-context with 6 matches.                                                                         
 ##  [1789-Washington, 433]            of the people of the | United_States |
 ##  [1789-Washington, 528]          more than those of the | United_States |
 ##       [1797-Adams, 524]     saw the Constitution of the | United_States |
@@ -375,11 +376,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p>
+  <p></p>
+<p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link external-link">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>

@@ -56,6 +56,8 @@ or to select only terms of interest from a dictionary." />
 
 
 
+
+
 <!-- mathjax -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script>
@@ -77,9 +79,15 @@ or to select only terms of interest from a dictionary." />
 </script>
 
 
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -190,7 +198,7 @@ or to select only terms of interest from a dictionary." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/quanteda/quanteda">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -250,9 +258,9 @@ or to select only terms of interest from a dictionary.</p>
   <span class='va'>...</span>
 <span class='op'>)</span>
 
-<span class='fu'>fcm_remove</span><span class='op'>(</span><span class='va'>x</span>, pattern <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span>
+<span class='fu'>fcm_remove</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>fcm_keep</span><span class='op'>(</span><span class='va'>x</span>, pattern <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+<span class='fu'>fcm_keep</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -328,40 +336,40 @@ features based on the values of the document-feature matrix, use
     <div class='dont-index'><p><code><a href='dfm_match.html'>dfm_match()</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>dfmat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"My Christmas was ruined by your opposition tax plan."</span>,
-               <span class='st'>"Does the United_States or Sweden have more progressive taxation?"</span><span class='op'>)</span>,
-             tolower <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+    <pre class="examples"><div class='input'><span class='va'>dfmat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"My Christmas was ruined by your opposition tax plan."</span>,
+               <span class='st'>"Does the United_States or Sweden have more progressive taxation?"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='dfm.html'>dfm</a></span><span class='op'>(</span>tolower <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
 <span class='va'>dict</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dictionary.html'>dictionary</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>countries <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"United_States"</span>, <span class='st'>"Sweden"</span>, <span class='st'>"France"</span><span class='op'>)</span>,
-                          wordsEndingInY <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"by"</span>, <span class='st'>"my"</span><span class='op'>)</span>,
-                          notintext <span class='op'>=</span> <span class='st'>"blahblah"</span><span class='op'>)</span><span class='op'>)</span>
+                        wordsEndingInY <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"by"</span>, <span class='st'>"my"</span><span class='op'>)</span>,
+                        notintext <span class='op'>=</span> <span class='st'>"blahblah"</span><span class='op'>)</span><span class='op'>)</span>
 <span class='fu'>dfm_select</span><span class='op'>(</span><span class='va'>dfmat</span>, pattern <span class='op'>=</span> <span class='va'>dict</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 4 features (50.0% sparse).
+</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 4 features (50.00% sparse) and 0 docvars.
 #&gt;        features
 #&gt; docs    My by United_States Sweden
 #&gt;   text1  1  1             0      0
 #&gt;   text2  0  0             1      1</div><div class='input'><span class='fu'>dfm_select</span><span class='op'>(</span><span class='va'>dfmat</span>, pattern <span class='op'>=</span> <span class='va'>dict</span>, case_insensitive <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 1 feature (50.0% sparse).
+</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 1 feature (50.00% sparse) and 0 docvars.
 #&gt;        features
 #&gt; docs    by
 #&gt;   text1  1
 #&gt;   text2  0</div><div class='input'><span class='fu'>dfm_select</span><span class='op'>(</span><span class='va'>dfmat</span>, pattern <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"s$"</span>, <span class='st'>".y"</span><span class='op'>)</span>, selection <span class='op'>=</span> <span class='st'>"keep"</span>, valuetype <span class='op'>=</span> <span class='st'>"regex"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (50.0% sparse).
+</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (50.00% sparse) and 0 docvars.
 #&gt;        features
 #&gt; docs    My Christmas was by Does United_States
 #&gt;   text1  1         1   1  1    0             0
 #&gt;   text2  0         0   0  0    1             1</div><div class='input'><span class='fu'>dfm_select</span><span class='op'>(</span><span class='va'>dfmat</span>, pattern <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"s$"</span>, <span class='st'>".y"</span><span class='op'>)</span>, selection <span class='op'>=</span> <span class='st'>"remove"</span>, valuetype <span class='op'>=</span> <span class='st'>"regex"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 14 features (50.0% sparse).
+</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 14 features (50.00% sparse) and 0 docvars.
 #&gt;        features
 #&gt; docs    ruined your opposition tax plan . the or Sweden have
 #&gt;   text1      1    1          1   1    1 1   0  0      0    0
 #&gt;   text2      0    0          0   0    0 0   1  1      1    1
 #&gt; [ reached max_nfeat ... 4 more features ]</div><div class='input'><span class='fu'>dfm_select</span><span class='op'>(</span><span class='va'>dfmat</span>, pattern <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/stopwords/man/stopwords.html'>stopwords</a></span><span class='op'>(</span><span class='st'>"english"</span><span class='op'>)</span>, selection <span class='op'>=</span> <span class='st'>"keep"</span>, valuetype <span class='op'>=</span> <span class='st'>"fixed"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 9 features (50.0% sparse).
+</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 9 features (50.00% sparse) and 0 docvars.
 #&gt;        features
 #&gt; docs    My was by your Does the or have more
 #&gt;   text1  1   1  1    1    0   0  0    0    0
 #&gt;   text2  0   0  0    0    1   1  1    1    1</div><div class='input'><span class='fu'>dfm_select</span><span class='op'>(</span><span class='va'>dfmat</span>, pattern <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/stopwords/man/stopwords.html'>stopwords</a></span><span class='op'>(</span><span class='st'>"english"</span><span class='op'>)</span>, selection <span class='op'>=</span> <span class='st'>"remove"</span>, valuetype <span class='op'>=</span> <span class='st'>"fixed"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 11 features (50.0% sparse).
+</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 11 features (50.00% sparse) and 0 docvars.
 #&gt;        features
 #&gt; docs    Christmas ruined opposition tax plan . United_States Sweden progressive
 #&gt;   text1         1      1          1   1    1 1             0      0           0
@@ -373,21 +381,21 @@ features based on the values of the document-feature matrix, use
 #&gt; [ reached max_nfeat ... 1 more feature ]</div><div class='input'>
 <span class='co'># select based on character length</span>
 <span class='fu'>dfm_select</span><span class='op'>(</span><span class='va'>dfmat</span>, min_nchar <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 7 features (50.0% sparse).
+</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 7 features (50.00% sparse) and 0 docvars.
 #&gt;        features
 #&gt; docs    Christmas ruined opposition United_States Sweden progressive taxation
 #&gt;   text1         1      1          1             0      0           0        0
 #&gt;   text2         0      0          0             1      1           1        1</div><div class='input'>
-<span class='va'>dfmat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"This is a document with lots of stopwords."</span>,
-               <span class='st'>"No if, and, or but about it: lots of stopwords."</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>dfmat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span><span class='op'>(</span><span class='fu'><a href='tokens.html'>tokens</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"This is a document with lots of stopwords."</span>,
+                      <span class='st'>"No if, and, or but about it: lots of stopwords."</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
 <span class='va'>dfmat</span>
-</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 18 features (38.9% sparse).
+</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 18 features (38.89% sparse) and 0 docvars.
 #&gt;        features
 #&gt; docs    this is a document with lots of stopwords . no
 #&gt;   text1    1  1 1        1    1    1  1         1 1  0
 #&gt;   text2    0  0 0        0    0    1  1         1 1  1
 #&gt; [ reached max_nfeat ... 8 more features ]</div><div class='input'><span class='fu'>dfm_remove</span><span class='op'>(</span><span class='va'>dfmat</span>, <span class='fu'><a href='https://rdrr.io/pkg/stopwords/man/stopwords.html'>stopwords</a></span><span class='op'>(</span><span class='st'>"english"</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (25.0% sparse).
+</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (25.00% sparse) and 0 docvars.
 #&gt;        features
 #&gt; docs    document lots stopwords . , :
 #&gt;   text1        1    1         1 1 0 0
@@ -427,11 +435,11 @@ features based on the values of the document-feature matrix, use
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p>
+  <p><p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p></p>
 </div>
 
       </footer>
@@ -456,6 +464,8 @@ features based on the values of the document-feature matrix, use
 </script>
 
 
+
+  
 
   </body>
 </html>

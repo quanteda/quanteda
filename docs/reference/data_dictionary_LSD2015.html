@@ -54,6 +54,8 @@ format." />
 
 
 
+
+
 <!-- mathjax -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script>
@@ -75,9 +77,15 @@ format." />
 </script>
 
 
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -188,7 +196,7 @@ format." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/quanteda/quanteda">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -263,8 +271,9 @@ in detail in Young and Soroka (2012). Please cite this article when using the
 Lexicoder Sentiment Dictionary and related resources.
 Young, L. &amp; Soroka, S. (2012). <em>Lexicoder Sentiment
 Dictionary</em>. Available at <a href='http://www.snsoroka.com/data-lexicoder/'>http://www.snsoroka.com/data-lexicoder/</a>.</p>
-<p>Young, L. &amp; Soroka, S. (2012).
-<a href='https://doi.org/10.1080/10584609.2012.671234'>Affective News: The Automated Coding of Sentiment in Political Texts</a>.
+<p>Young, L. &amp; Soroka, S. (2012). Affective News: The Automated Coding of
+Sentiment in Political Texts]. doi: <a href='https://doi.org/10.1080/10584609.2012.671234'>10.1080/10584609.2012.671234</a>
+.
 <em>Political Communication</em>, 29(2), 205--231.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -294,7 +303,7 @@ Dictionary</em>. Available at <a href='http://www.snsoroka.com/data-lexicoder/'>
 
 <span class='co'># on larger examples - notice that few negations are used</span>
 <span class='fu'><a href='dfm.html'>dfm</a></span><span class='op'>(</span><span class='va'>data_char_ukimmig2010</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>]</span>, dictionary <span class='op'>=</span> <span class='va'>data_dictionary_LSD2015</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 4 features (45.0% sparse).
+</div><div class='output co'>#&gt; <span class='warning'>Warning: 'dfm.character()' is deprecated. Use 'tokens()' first.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'dictionary' and 'thesaurus' are deprecated; use dfm_lookup() instead</span></div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 4 features (45.00% sparse) and 0 docvars.
 #&gt;               features
 #&gt; docs           negative positive neg_positive neg_negative
 #&gt;   BNP               146      107            0            0
@@ -306,7 +315,7 @@ Dictionary</em>. Available at <a href='http://www.snsoroka.com/data-lexicoder/'>
 <span class='va'>toks</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tokens_compound.html'>tokens_compound</a></span><span class='op'>(</span><span class='fu'><a href='tokens.html'>tokens</a></span><span class='op'>(</span><span class='va'>txt</span><span class='op'>)</span>, <span class='va'>data_dictionary_LSD2015</span><span class='op'>)</span>
 
 <span class='fu'><a href='dfm_lookup.html'>dfm_lookup</a></span><span class='op'>(</span><span class='fu'><a href='dfm.html'>dfm</a></span><span class='op'>(</span><span class='va'>toks</span><span class='op'>)</span>, <span class='va'>data_dictionary_LSD2015</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Document-feature matrix of: 1 document, 4 features (25.0% sparse).
+</div><div class='output co'>#&gt; Document-feature matrix of: 1 document, 4 features (25.00% sparse) and 0 docvars.
 #&gt;        features
 #&gt; docs    negative positive neg_positive neg_negative
 #&gt;   text1        2        1            1            0</div></pre>
@@ -321,11 +330,11 @@ Dictionary</em>. Available at <a href='http://www.snsoroka.com/data-lexicoder/'>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p>
+  <p><p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p></p>
 </div>
 
       </footer>
@@ -350,6 +359,8 @@ Dictionary</em>. Available at <a href='http://www.snsoroka.com/data-lexicoder/'>
 </script>
 
 
+
+  
 
   </body>
 </html>

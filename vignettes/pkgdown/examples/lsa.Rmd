@@ -44,7 +44,7 @@ Now the new unseen document can be represented in the reduced 2-dimensional spac
 The unseen query document:
 ```{r}
 querydfm <- dfm(c("gold silver truck")) %>%
-    dfm_select(pattern = mydfm)
+    dfm_match(features = featnames(mydfm))
 querydfm
 ```
 ```{r}

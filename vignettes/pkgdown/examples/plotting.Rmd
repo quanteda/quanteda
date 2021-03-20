@@ -31,7 +31,10 @@ You can also plot a "comparison cloud", but this can only be done with fewer tha
 ```{r eval=TRUE, fig.width=10, fig.height=8}
 corpus_subset(data_corpus_inaugural, 
               President %in% c("Washington", "Jefferson", "Madison")) %>%
-    dfm(groups = "President", remove = stopwords("english"), remove_punct = TRUE) %>%
+    tokens(remove_punct = TRUE) %>%
+    tokens_remove(stopwords("english")) %>%
+    dfm() %>%
+    dfm_group(groups = President) %>%
     dfm_trim(min_termfreq = 5, verbose = FALSE) %>%
     textplot_wordcloud(comparison = TRUE)
 ```
@@ -49,7 +52,7 @@ Plotting a `kwic` object produces a lexical dispersion plot which allows us to v
 ```{r eval=TRUE, fig.width=8, fig.height=4}
 data_corpus_inaugural_subset <- 
     corpus_subset(data_corpus_inaugural, Year > 1949)
-kwic(data_corpus_inaugural_subset, pattern = "american") %>%
+kwic(tokens(data_corpus_inaugural_subset), pattern = "american") %>%
     textplot_xray()
 ```
 
@@ -71,18 +74,19 @@ data_char_mobydick <- texts(readtext("http://www.gutenberg.org/cache/epub/2701/p
 names(data_char_mobydick) <- "Moby Dick"
 
 textplot_xray(
-    kwic(data_char_mobydick, pattern = "whale"),
-    kwic(data_char_mobydick, pattern = "ahab")
+    kwic(tokens(data_char_mobydick), pattern = "whale"),
+    kwic(tokens(data_char_mobydick), pattern = "ahab")
 ) 
 ```
 
 You might also have noticed that the x-axis scale is the absolute token index for single texts and relative token index when multiple texts are being compared. If you prefer, you can specify that you want an absolute scale:
 
 ```{r eval=TRUE, fig.width=8, fig.height=4}
+toks <- tokens(data_corpus_inaugural_subset)
 textplot_xray(
-    kwic(data_corpus_inaugural_subset, pattern = "american"),
-    kwic(data_corpus_inaugural_subset, pattern = "people"),
-    kwic(data_corpus_inaugural_subset, pattern = "communist"),
+    kwic(toks, pattern = "american"),
+    kwic(toks, pattern = "people"),
+    kwic(toks, pattern = "communist"),
     scale = "absolute"
 )
 ```
@@ -97,9 +101,9 @@ The object returned is a ggplot object, which can be modified using ggplot:
 library("ggplot2")
 theme_set(theme_bw())
 g <- textplot_xray(
-    kwic(data_corpus_inaugural_subset, pattern = "american"),
-    kwic(data_corpus_inaugural_subset, pattern = "people"),
-    kwic(data_corpus_inaugural_subset, pattern = "communist")
+    kwic(toks, pattern = "american"),
+    kwic(toks, pattern = "people"),
+    kwic(toks, pattern = "communist")
 )
 g + aes(color = keyword) + 
     scale_color_manual(values = c("blue", "red", "green")) +
@@ -127,8 +131,8 @@ If you wanted to compare the frequency of a single term across different texts, 
 
 ```{r eval=TRUE, fig.width=8, fig.height=4}
 # Get frequency grouped by president
-freq_grouped <- textstat_frequency(dfm(data_corpus_inaugural_subset), 
-                                   groups = "President")
+freq_grouped <- textstat_frequency(dfm(tokens(data_corpus_inaugural_subset)), 
+                                   groups = data_corpus_inaugural_subset$President)
 
 # Filter the term "american"
 freq_american <- subset(freq_grouped, freq_grouped$feature %in% "american")  
@@ -144,10 +148,10 @@ ggplot(freq_american, aes(x = group, y = frequency)) +
 The above plots are raw frequency plots. For relative frequency plots, (word count divided by the length of the chapter) we need to weight the document-frequency matrix first. To obtain expected word frequency per 100 words, we multiply by 100. 
 
 ```{r eval=TRUE, fig.width=8, fig.height=4}
-dfm_rel_freq <- dfm_weight(dfm(data_corpus_inaugural_subset), scheme = "prop") * 100
+dfm_rel_freq <- dfm_weight(dfm(tokens(data_corpus_inaugural_subset)), scheme = "prop") * 100
 head(dfm_rel_freq)
 
-rel_freq <- textstat_frequency(dfm_rel_freq, groups = "President")
+rel_freq <- textstat_frequency(dfm_rel_freq, groups = dfm_rel_freq$President)
 
 # Filter the term "american"
 rel_freq_american <- subset(rel_freq, feature %in% "american")  
@@ -164,12 +168,15 @@ Finally, `texstat_frequency` allows to plot the most frequent words in terms of 
 
 ```{r eval=TRUE, fig.width=8, fig.height=6}
 dfm_weight_pres <- data_corpus_inaugural %>%
-     corpus_subset(Year > 2000) %>%
-     dfm(remove = stopwords("english"), remove_punct = TRUE) %>%
-     dfm_weight(scheme = "prop")
+  corpus_subset(Year > 2000) %>%
+  tokens(remove_punct = TRUE) %>%
+  tokens_remove(stopwords("english")) %>%
+  dfm() %>%
+  dfm_weight(scheme = "prop")
 
 # Calculate relative frequency by president
-freq_weight <- textstat_frequency(dfm_weight_pres, n = 10, groups = "President")
+freq_weight <- textstat_frequency(dfm_weight_pres, n = 10, 
+                                  groups = dfm_weight_pres$President)
 
 ggplot(data = freq_weight, aes(x = nrow(freq_weight):1, y = frequency)) +
      geom_point() +
@@ -191,8 +198,10 @@ pres_corpus <- corpus_subset(data_corpus_inaugural,
                             President %in% c("Obama", "Trump"))
 
 # Create a dfm grouped by president
-pres_dfm <- dfm(pres_corpus, groups = "President", remove = stopwords("english"), 
-                remove_punct = TRUE)
+pres_dfm <- tokens(pres_corpus, remove_punct = TRUE) %>%
+  tokens_remove(stopwords("english")) %>%
+  tokens_group(groups = President) %>%
+  dfm()
 
 # Calculate keyness and determine Trump as target group
 result_keyness <- textstat_keyness(pres_dfm, target = "Trump")
@@ -217,7 +226,7 @@ library("quanteda.textmodels")
 
 # Transform corpus to dfm
 data(data_corpus_irishbudget2010, package = "quanteda.textmodels")
-ie_dfm <- dfm(data_corpus_irishbudget2010)
+ie_dfm <- dfm(tokens(data_corpus_irishbudget2010))
 
 # Set reference scores
 refscores <- c(rep(NA, 4), 1, -1, rep(NA, 8))
@@ -252,7 +261,7 @@ Wordfish is a Poisson scaling model that estimates one-dimension document positi
 ```{r eval=TRUE, fig.width=8, fig.height=6}
 # Estimate Wordfish model
 library("quanteda.textmodels")
-wf <- textmodel_wordfish(dfm(data_corpus_irishbudget2010), dir = c(6,5))
+wf <- textmodel_wordfish(dfm(tokens(data_corpus_irishbudget2010)), dir = c(6, 5))
 
 # Plot estimated word positions
 textplot_scale1d(wf, margin = "features", 
@@ -262,7 +271,7 @@ textplot_scale1d(wf, margin = "features",
                  highlighted_color = "red")
 
 # Plot estimated document positions
-textplot_scale1d(wf, groups = docvars(data_corpus_irishbudget2010, "party"))
+textplot_scale1d(wf, groups = data_corpus_irishbudget2010$party)
 ```
 
 ## Correspondence Analysis
@@ -271,7 +280,7 @@ You can also plot the estimated document positions of a correspodence analysis (
 
 ```{r eval=TRUE, fig.width=8, fig.height=6}
 # Transform corpus to dfm
-ie_dfm <- dfm(data_corpus_irishbudget2010)
+ie_dfm <- dfm(tokens(data_corpus_irishbudget2010))
 
 # Run correspondence analysis on dfm
 ca <- textmodel_ca(ie_dfm)
