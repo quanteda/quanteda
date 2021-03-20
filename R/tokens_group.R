@@ -34,13 +34,19 @@ tokens_group.default <- function(x, groups, fill = FALSE) {
 #' @export
 tokens_group.tokens <- function(x, groups, fill = FALSE) {
     x <- as.tokens(x)
-    if (!missing(groups)) {
+    if (missing(groups)) {
+        field <- NULL
+        groups <- docid(x)
+    } else {
+        field <- deparse(substitute(groups))
         groups <- eval(substitute(groups), get_docvars(x, user = TRUE, system = TRUE), parent.frame())
+        if (!field %in% names(get_docvars(x)) || !is.factor(groups))
+            field <- NULL
         groups <- as.factor(groups)
     }
+    
     if (!fill)
         groups <- droplevels(groups)
-
     if (ndoc(x) != length(groups))
         stop("groups must have length ndoc(x)", call. = FALSE)
 
@@ -50,7 +56,7 @@ tokens_group.tokens <- function(x, groups, fill = FALSE) {
     groups <- groups[!is.na(groups)]
 
     result <- group_tokens(x, groups)
-    attrs[["docvars"]] <- group_docvars(attrs[["docvars"]], groups)
+    attrs[["docvars"]] <- group_docvars(attrs[["docvars"]], groups, field)
 
     rebuild_tokens(result, attrs)
 }

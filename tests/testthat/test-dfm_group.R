@@ -57,27 +57,43 @@ test_that("test dfm_group with factor levels, fill = TRUE and FALSE, #854", {
     corp <- corpus(c("a b c c", "b c d", "a"),
                    docvars = data.frame(grp = factor(c("A", "A", "B"), levels = LETTERS[1:4])))
     dfmt <- dfm(tokens(corp))
+    
+    dfmt1 <- dfm_group(dfmt, groups = grp, fill = FALSE)
     expect_equal(
-        as.matrix(dfm_group(dfmt, groups = grp, fill = FALSE)),
+        as.matrix(dfmt1),
         matrix(c(1,2,3,1, 1,0,0,0), byrow = TRUE, nrow = 2, 
                dimnames = list(docs = c("A", "B"), features = letters[1:4]))
     )
     expect_equal(
-        as.matrix(dfm_group(dfmt, groups = grp, fill = TRUE)),
+        docvars(dfmt1, "grp"),
+        factor(c("A", "B"))
+    )
+    
+    dfmt2 <- dfm_group(dfmt, groups = grp, fill = TRUE)
+    expect_equal(
+        as.matrix(dfmt2),
         matrix(c(1,2,3,1, 1,0,0,0, 0,0,0,0, 0,0,0,0), byrow = TRUE, nrow = 4 , 
                dimnames = list(docs = c("A", "B", "C", "D"), features = letters[1:4]))
     )
+    expect_equal(
+        docvars(dfmt2, "grp"),
+        factor(c("A", "B", "C", "D"))
+    )
+    
+})
+
+test_that("test dfm_group with factor levels, fill = TRUE and FALSE", {
     
     dfmt <- dfm(tokens(c("a b c c", "b c d", "a")))
-    external_factor <- factor(c("text1", "text1", "text2"), 
+    grpvar <- factor(c("text1", "text1", "text2"), 
                               levels = paste0("text", 0:3))
     expect_equal(
-        as.matrix(dfm_group(dfmt, groups = external_factor, fill = FALSE)),
+        as.matrix(dfm_group(dfmt, groups = grpvar, fill = FALSE)),
         matrix(c(1,2,3,1, 1,0,0,0), byrow = TRUE, nrow = 2, 
                dimnames = list(docs = c("text1", "text2"), features = letters[1:4]))
     )
     expect_equal(
-        as.matrix(dfm_group(dfmt, groups = external_factor, fill = TRUE)),
+        as.matrix(dfm_group(dfmt, groups = grpvar, fill = TRUE)),
         matrix(c(0,0,0,0, 1,2,3,1, 1,0,0,0, 0,0,0,0), byrow = TRUE, nrow = 4, 
                dimnames = list(docs = paste0("text", 0:3), features = letters[1:4]))
     )
@@ -93,6 +109,7 @@ test_that("test dfm_group with factor levels, fill = TRUE and FALSE, #854", {
         matrix(c(1,2,3,1, 1,0,0,0), byrow = TRUE, nrow = 2,
                dimnames = list(docs = c(3, 1), features = letters[1:4]))
     )
+    
 })
 
 test_that("test dfm_group with non-factor grouping variable, with fill", {
@@ -315,4 +332,42 @@ test_that("displayed matrix rownames are correct after dfm_group (#1949)", {
                "   x 1 1 0\n",
                "   y 0 0 1", collapse = ""), fixed = TRUE
     )
+})
+
+test_that("dfm_group save grouping variable (#2037)", {
+    corp <- corpus(c("a b c c", "b c d", "a", "b d d"),
+                   docvars = data.frame(grp = factor(c("D", "D", "A", "C"), levels = c("A", "B", "C", "D")), 
+                                        var1 = c(1, 1, 2, 2),
+                                        var2 = c(1, 1, 2, 2), 
+                                        var3 = c("x", "x", "y", NA),
+                                        var4 = c("x", "y", "y", "x"),
+                                        var5 = as.Date(c("2018-01-01", "2018-01-01", "2015-03-01", "2012-12-15")),
+                                        var6 = as.Date(c("2018-01-01", "2015-03-01", "2015-03-01", "2012-12-15")),
+                                        stringsAsFactors = FALSE))
+    dfmat <- dfm(tokens(corp))
+    
+    grpvar <- factor(c("E", "E", "F", "G"), levels = c("E", "F", "G", "H"))
+    dfmat_grp1 <- dfm_group(dfmat, grp)
+    dfmat_grp2 <- dfm_group(dfmat, grpvar)
+    dfmat_grp3 <- dfm_group(dfmat, var1)
+    dfmat_grp4 <- dfm_group(dfmat, grp, fill = TRUE)
+    dfmat_grp5 <- dfm_group(dfmat, grpvar, fill = TRUE)
+    dfmat_grp6 <- dfm_group(dfmat, var1, fill = TRUE)
+    
+    expect_equal(
+        docvars(dfmat_grp1, "grp"), 
+        factor(c("A", "C", "D"), levels = c("A", "C", "D"))
+    )
+    expect_equal(docvars(dfmat_grp1)$var1, c(2, 2, 1))
+    expect_null(docvars(dfmat_grp2)$grpvar)
+    expect_equal(docvars(dfmat_grp2)$var1, c(1, 2, 2))
+    expect_equal(docvars(dfmat_grp3)$var1, c(1, 2))
+    expect_equal(
+        docvars(dfmat_grp4, "grp"), 
+        factor(c("A", "B", "C", "D"), levels = c("A", "B", "C", "D"))
+    )
+    expect_equal(docvars(dfmat_grp4)$var1, c(2, NA, 2, 1))
+    expect_null(docvars(dfmat_grp5)$grpvar)
+    expect_equal(docvars(dfmat_grp5)$var1, c(1, 2, 2, NA))
+    expect_equal(docvars(dfmat_grp6)$var1, c(1, 2))
 })

@@ -43,13 +43,23 @@ dfm_compress.default <- function(x,
 
 #' @export
 dfm_compress.dfm <- function(x, margin = c("both", "documents", "features")) {
+    
     x <- as.dfm(x)
-    if (!nfeat(x) || !ndoc(x)) return(x)
     margin <- match.arg(margin)
+    
+    if (!nfeat(x) || !ndoc(x)) return(x)
+    
+    attrs <- attributes(x)
     documents <- features <- NULL
     if (margin %in% c("both", "documents"))
         documents <- factor(docnames(x), levels = unique(docnames(x)))
     if (margin %in% c("both", "features"))
         features <- factor(featnames(x), levels = unique(featnames(x)))
-    group_dfm(x, documents, features)
+    
+    x <- group_matrix(x, documents, features)
+    build_dfm(x, colnames(x),
+              unit = "documents",
+              docvars = group_docvars(attrs[["docvars"]], documents),
+              meta = attrs[["meta"]]
+    )
 }

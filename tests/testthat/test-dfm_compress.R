@@ -62,19 +62,19 @@ test_that("dfm_compress preserves docvars (#1506)", {
     )
 })
 
-test_that("add test for group_dfm with features and fill = TRUE", {
+test_that("add test for group_matrix with features and fill = TRUE", {
     x <- dfm(tokens(c("a a b c d", "b c d e")))
     colnames(x)[4] <- "e"
     expect_identical(
-        as.matrix(quanteda:::group_dfm(x, fill = TRUE,
-                                       features = factor(featnames(x), levels = letters[1:5]))),
+        as.matrix(quanteda:::group_matrix(x, fill = TRUE,
+                                          features = factor(featnames(x), levels = letters[1:5]))),
         matrix(c(2, 0, 1, 1, 1, 1, 0, 0, 1, 2), nrow = 2,
-               dimnames = list(docs = paste0("text", 1:2), features = c("a", "b", "c", "d", "e")))
+               dimnames = list(paste0("text", 1:2), c("a", "b", "c", "d", "e")))
     )
     expect_identical(
-        as.matrix(quanteda:::group_dfm(x, fill = FALSE,
-                                       features = factor(featnames(x), levels = letters[1:5]))),
+        as.matrix(quanteda:::group_matrix(x, fill = FALSE,
+                                          features = factor(featnames(x), levels = letters[1:5]))),
         matrix(c(2, 0, 1, 1, 1, 1, 1, 2), nrow = 2,
-               dimnames = list(docs = paste0("text", 1:2), features = c("a", "b", "c", "e")))
+               dimnames = list(paste0("text", 1:2), c("a", "b", "c", "e")))
     )
 })

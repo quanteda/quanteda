@@ -9,25 +9,6 @@ test_that("test c.corpus", {
 })
 
 ## rbind.dfm
-## TODO: Test classes returned
-
-test_that("test rbind.dfm with the same columns", {
-    fox <- "What does the fox say?"
-    foxdfm <- rep(1, 20)
-    dim(foxdfm) <- c(4, 5)
-    colnames(foxdfm) <- c("does", "fox", "say", "the", "what")
-    rownames(foxdfm) <-  rep(c("text1", "text2"), 2)
-
-    suppressWarnings(dfm1 <- dfm(tokens(c(fox, fox)), remove_punct = TRUE))
-
-    expect_true(
-        all(rbind(dfm1, dfm1) == foxdfm)
-    )
-    expect_that(
-        rbind(dfm1, dfm1),
-        is_a("dfm")
-    )
-})
 
 # TODO: Add function for testing the equality of dfms
 
@@ -578,7 +559,7 @@ test_that("dfm works with stem options", {
         c("run", "ran")
     )
     expect_error(
-        dfm(tokens(txt_english), stem = c(TRUE, FALSE)),
+        suppressWarnings(dfm(tokens(txt_english), stem = c(TRUE, FALSE))),
         "The length of stem must be 1"
     )
 

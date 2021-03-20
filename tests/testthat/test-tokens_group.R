@@ -1,10 +1,18 @@
 test_that("test that tokens_group is working", {
-    txt <- c("a b c d", "e f g h", "A B C", "X Y Z")
-    toks <- tokens(txt)
+    corp <- corpus(c("a b c d", "e f g h", "A B C", "X Y Z"),
+                   docname = c("doc1", "doc1", "doc2", "doc2"),
+                   unique_docnames = FALSE)
+    toks <- tokens(corp)
     expect_equal(
         as.list(tokens_group(toks, c(1, 1, 2, 2))),
         list("1" = c("a", "b", "c", "d", "e", "f", "g", "h"),
              "2" = c("A", "B", "C", "X", "Y", "Z"))
+    )
+    
+    expect_equal(
+        as.list(tokens_group(toks)),
+        list("doc1" = c("a", "b", "c", "d", "e", "f", "g", "h"),
+             "doc2" = c("A", "B", "C", "X", "Y", "Z"))
     )
 
     expect_equal(
@@ -83,57 +91,6 @@ test_that("test tokens_group with wrongly dimensioned groups variables", {
     )
 })
 
-test_that("generate_groups works for tokens objects", {
-    corp <- tail(data_corpus_inaugural, 14)
-    docvars(corp, "Party") <- factor(docvars(corp, "Party"))
-    toks <- tokens(corp)
-    expect_equal(
-        quanteda:::generate_groups(toks, rep(c("A", "B"), each = 7)),
-        factor(rep(c("A", "B"), each = 7))
-    )
-    expect_equal(
-        quanteda:::generate_groups(toks, factor(rep(c("A", "B"), each = 7))),
-        factor(rep(c("A", "B"), each = 7))
-    )
-    expect_equal(
-        quanteda:::generate_groups(toks, factor(rep(c(1, 2), each = 7))),
-        factor(rep(c(1, 2), each = 7))
-    )
-    expect_equal(
-        quanteda:::generate_groups(toks, "Party"),
-        factor(docvars(corp, "Party"))
-    )
-    expect_error(
-        quanteda:::generate_groups(toks, rep(c("A", "B"), each = 6)),
-        "groups must name docvars or provide data matching the documents in x"
-    )
-})
-
-test_that("generate_groups works for corpus objects", {
-    corp <- as.corpus(tail(data_corpus_inaugural, 14))
-    docvars(corp, "Party") <- factor(docvars(corp, "Party"))
-    expect_equal(
-        quanteda:::generate_groups(corp, rep(c("A", "B"), each = 7)),
-        factor(rep(c("A", "B"), each = 7))
-    )
-    expect_equal(
-        quanteda:::generate_groups(corp, factor(rep(c("A", "B"), each = 7))),
-        factor(rep(c("A", "B"), each = 7))
-    )
-    expect_equal(
-        quanteda:::generate_groups(corp, factor(rep(c(1, 2), each = 7))),
-        factor(rep(c(1, 2), each = 7))
-    )
-    expect_equal(
-        quanteda:::generate_groups(corp, "Party"),
-        factor(docvars(corp, "Party"))
-    )
-    expect_error(
-        quanteda:::generate_groups(corp, rep(c("A", "B"), each = 6)),
-        "groups must name docvars or provide data matching the documents in x"
-    )
-})
-
 test_that("tokens_group works with NA group labels", {
     corp <- corpus(c("Doc 1", "Doc 1b", "Doc2", "Doc 3 with NA", "Doc 4, more NA"),
                    docvars = data.frame(factorvar = c("Yes", "Yes", "No", NA, NA)))
@@ -153,3 +110,43 @@ test_that("element names are correctly reset after tokens_group() - #1949", {
         c("x", "y")
     )
 })
+
+
+test_that("tokens_group save grouping variable (#2037)", {
+    corp <- corpus(c("a b c c", "b c d", "a", "b d d"),
+                   docvars = data.frame(grp = factor(c("D", "D", "A", "C"), levels = c("A", "B", "C", "D")), 
+                                        var1 = c(1, 1, 2, 2),
+                                        var2 = c(1, 1, 2, 2), 
+                                        var3 = c("x", "x", "y", NA),
+                                        var4 = c("x", "y", "y", "x"),
+                                        var5 = as.Date(c("2018-01-01", "2018-01-01", "2015-03-01", "2012-12-15")),
+                                        var6 = as.Date(c("2018-01-01", "2015-03-01", "2015-03-01", "2012-12-15")),
+                                        stringsAsFactors = FALSE))
+    
+    toks <- tokens(corp)
+    grpvar <- factor(c("E", "E", "F", "G"), levels = c("E", "F", "G", "H"))
+    toks_grp1 <- tokens_group(toks, grp)
+    toks_grp2 <- tokens_group(toks, grpvar)
+    toks_grp3 <- tokens_group(toks, var1)
+    toks_grp4 <- tokens_group(toks, grp, fill = TRUE)
+    toks_grp5 <- tokens_group(toks, grpvar, fill = TRUE)
+    toks_grp6 <- tokens_group(toks, var1, fill = TRUE)
+    
+    expect_equal(
+        docvars(toks_grp1, "grp"), 
+        factor(c("A", "C", "D"), levels = c("A", "C", "D"))
+    )
+    expect_equal(docvars(toks_grp1)$var1, c(2, 2, 1))
+    expect_null(docvars(toks_grp2)$grpvar)
+    expect_equal(docvars(toks_grp2)$var1, c(1, 2, 2))
+    expect_equal(docvars(toks_grp3)$var1, c(1, 2))
+    expect_equal(
+        docvars(toks_grp4, "grp"), 
+        factor(c("A", "B", "C", "D"), levels = c("A", "B", "C", "D"))
+    )
+    expect_equal(docvars(toks_grp4)$var1, c(2, NA, 2, 1))
+    expect_null(docvars(toks_grp5)$grpvar)
+    expect_equal(docvars(toks_grp5)$var1, c(1, 2, 2, NA))
+    expect_equal(docvars(toks_grp6)$var1, c(1, 2))
+})
+
