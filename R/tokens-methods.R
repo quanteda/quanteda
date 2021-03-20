@@ -37,7 +37,7 @@ is.tokens <- function(x) "tokens" %in% class(x)
 
 # extension of generics for tokens -----------
 
-#' @rdname as.tokens
+#' @rdname tokens-class
 #' @return `unlist` returns a simple vector of characters from a
 #'   [tokens] object.
 #' @param recursive a required argument for [unlist] but inapplicable to

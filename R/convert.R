@@ -164,7 +164,7 @@ convert.corpus <- function(x, to = c("data.frame", "json"), pretty = FALSE, ...)
     
     if (to == "data.frame") {
         result <- data.frame(doc_id = docnames(x),
-                         text = texts(x),
+                         text = as.character(x, use.names = FALSE),
                          stringsAsFactors = FALSE,
                          row.names = NULL)
         result <- cbind(result, docvars(x))

@@ -29,6 +29,8 @@
 
 * Upon startup, we now message the console with the Unicode and ICU version information.  Because we removed our redefinition of `View()` (see below), the former conflict warning is now gone.
 
+* `as.character.corpus()` now has a `use.names = TRUE` argument, similar to `as.character.tokens()` (but with a different default value).
+
 ## Deprecations
 
 The main potentially breaking changes in version 3 relate to the deprecation or
@@ -65,7 +67,11 @@ The full listing of deprecations is:
     - `dictionary`, `thesaurus` -- use `tokens_lookup()` or `dfm_lookup()` instead.
     - `valuetype`, `case_insensitive` -- these are disabled; for the deprecated arguments that take these qualifiers, they are fixed to the defaults `"glob"` and `TRUE`.
     - `groups` -- use `tokens_group()` or `dfm_group()` instead.
-
+    
+* `texts()` and `texts<-` are deprecated.
+    - Use `as.character.corpus()` to turn a corpus into a simple named character vector.
+    - Use `corpus_group()` instead of `texts(x, groups = ...)` to aggregate texts by a grouping variable.
+    - Use `[<-` instead of `texts()<-` for replacing texts in a corpus object.
 
 ## Removals
 

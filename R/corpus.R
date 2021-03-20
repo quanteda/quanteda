@@ -49,7 +49,7 @@
 #'   of a corpus object change.  Using the accessor and replacement functions
 #'   ensures that future code to manipulate corpus objects will continue to work.
 #' @seealso [corpus-class], [docvars()],
-#'   [meta()], [texts()], [ndoc()],
+#'   [meta()], [as.character.corpus()], [ndoc()],
 #'   [docnames()]
 #' @details The texts and document variables of corpus objects can also be
 #'   accessed using index notation and the `$` operator for accessing or assigning
@@ -105,7 +105,7 @@ corpus.corpus <- function(x, docnames = quanteda::docnames(x),
                           docvars = quanteda::docvars(x),
                           meta = quanteda::meta(x), ...) {
     x <- as.corpus(x)
-    result <- corpus(texts(x), docnames = docnames, docvars = docvars, meta = meta, ...)
+    result <- corpus(as.character(x), docnames = docnames, docvars = docvars, meta = meta, ...)
     meta_system(result, "source") <- "corpus"
     return(result)
 }
@@ -243,7 +243,7 @@ corpus.data.frame <- function(x, docid_field = "doc_id", text_field = "text",
 #'            pattern = "econom*", separator = "")
 #' summary(corpus(kw))
 #' summary(corpus(kw, split_context = FALSE))
-#' texts(corpus(kw, split_context = FALSE))
+#' as.character(corpus(kw, split_context = FALSE))
 #'
 #' @export
 corpus.kwic <- function(x, split_context = TRUE, extract_keyword = TRUE, meta = list(), ...) {

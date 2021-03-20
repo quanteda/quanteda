@@ -156,12 +156,12 @@ kw <- kwic(tokens(data_char_sampletext, remove_separators = FALSE),
            pattern = "econom*", separator = "")
 summary(corpus(kw))
 summary(corpus(kw, split_context = FALSE))
-texts(corpus(kw, split_context = FALSE))
+as.character(corpus(kw, split_context = FALSE))
 
 }
 \seealso{
 \linkS4class{corpus}, \code{\link[=docvars]{docvars()}},
-\code{\link[=meta]{meta()}}, \code{\link[=texts]{texts()}}, \code{\link[=ndoc]{ndoc()}},
+\code{\link[=meta]{meta()}}, \code{\link[=as.character.corpus]{as.character.corpus()}}, \code{\link[=ndoc]{ndoc()}},
 \code{\link[=docnames]{docnames()}}
 }
 \keyword{corpus}

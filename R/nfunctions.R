@@ -128,7 +128,7 @@ ntype.default <- function(x, ...) {
 #' @export
 ntoken.corpus <- function(x, ...) {
     x <- as.corpus(x)
-    ntoken(texts(x), ...)
+    ntoken(as.character(x), ...)
 }
 
 #' @export
@@ -167,7 +167,7 @@ ntype.character <- function(x, ...) {
 #' @export
 ntype.corpus <- function(x, ...) {
     x <- as.corpus(x)
-    ntype(texts(x), ...)
+    ntype(as.character(x), ...)
 }
 
 #' @export
@@ -229,7 +229,7 @@ nsentence.character <- function(x) {
 #' @export
 nsentence.corpus <- function(x) {
     x <- as.corpus(x)
-    nsentence(texts(x))
+    nsentence(as.character(x))
 }
 
 #' @export
