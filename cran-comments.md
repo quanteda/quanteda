@@ -1,26 +1,35 @@
 # Submission notes
 
-- Fixes breaking tests and examples caused by changes to the stringi package
-- Fixes errors on Solaris introduced in quanteda 2.1.0/1
-- Minor performance improvements
+This is a major new release that completes the modularisation begin in quanteda v2.  It also:
+    - improves the consistency of many functions
+    - adds functionality through new functions
+    - removes many deprecations introduced in v2
+    - reduces the package dependencies
+
+All of this is designed to improve stability and maintainability for the future.
+
+As a major release, however, this introduces complications for the CRAN checks.
+
+1. This breaks quanteda.textstats, although we have simultaneously submitted a new version of that package that will not be broken by this release.
+
+2. This breaks two other packages, although we have fixed both for the authors.
+    - **collector**, although we fixed this for the package author in https://github.com/davidski/collector/pull/5, submitted December 2020
+    - and **politeness**, although we fixed this in https://github.com/myeomans/politeness/pull/3, submitted 5 March 2020 and merged by the package author.
+
+
 
 ## Test environments
 
-* local macOS 10.15.6, R 4.0.2
-* Ubuntu 18.04 LTS and 18.10, R 4.0.2
+* local macOS 10.15.7, R 4.0.4
+* Ubuntu 20.04 LTS, R 4.0.4
 * Windows release via devtools::check_win_release()
 * Windows devel via devtools::check_win_devel()
+* Windows oldrelease via devtools::check_win_oldrelease()
+
 
 ## R CMD check results
 
-No ERRORs, NOTEs, or WARNINGs produced, _except_:
-
-> checking installed package size ... NOTE
-    installed size is  5.1Mb
-    sub-directories of 1Mb or more:
-      R   2.0Mb
-
-There are WARNINGS from several URLs referencing JSTOR articles that are not working on the Windows platform, but in correspondence with Uwe Ligges, he told me that this was a CRAN issue due to the JSTOR firewall, and something that I should ignore.
+No ERRORs, NOTEs, or WARNINGs produced, _except_ those notes above.
 
 
 ## Downstream dependencies
