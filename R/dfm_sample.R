@@ -12,10 +12,10 @@
 #' @keywords dfm
 #' @examples
 #' set.seed(10)
-#' dfmat <- dfm(tokens(c("a b c c d", "a a c c d d d")))
-#' head(dfmat)
-#' head(dfm_sample(dfmat))
-#' head(dfm_sample(dfmat, replace = TRUE))
+#' dfmat <- dfm(tokens(c("a b c c d", "a a c c d d d", "a b b c")))
+#' dfmat
+#' dfm_sample(dfmat)
+#' dfm_sample(dfmat, replace = TRUE)
 #'
 #' # by groups
 #' dfmat <- dfm(tokens(data_corpus_inaugural[50:58]))
