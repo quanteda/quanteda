@@ -151,63 +151,6 @@ test_that("remove_url works as expected", {
     )
 })
 
-test_that("deprecated remove_ arguments work", {
-    txt <- "they: #stretched, @ @@ in,, a # ## never-ending @line."
-    toks <- tokens(txt)
-    txt <- "Pre- and post-war self-fulfilling."
-    expect_identical(
-        as.character(tokens(txt, what = "word", remove_punct = TRUE, split_hyphens = TRUE)),
-        as.character(suppressWarnings(tokens(txt, what = "word", remove_punct = TRUE,
-                                             remove_hyphens = TRUE)))
-    )
-    expect_warning(
-        tokens(txt, what = "word", remove_hyphens = TRUE),
-        "'remove_hyphens' is deprecated, use 'split_hyphens' instead.",
-        fixed = TRUE
-    )
-    expect_warning(
-        tokens(tokens(txt, what = "word"), remove_hyphens = TRUE),
-        "'remove_hyphens' is deprecated, use 'split_hyphens' instead.",
-        fixed = TRUE
-    )
-})
-
-test_that("defunct remove_twitter warning works", {
-    # character
-    txt <- "they: #stretched, @ @@ in,, a # ## never-ending @line."
-    expect_warning(
-        tokens(txt, remove_twitter = TRUE),
-        "'remove_twitter' is defunct; see 'quanteda Tokenizers' in ?tokens",
-        fixed = TRUE
-    )
-    expect_warning(
-        tokens(txt, remove_twitter = FALSE),
-        "'remove_twitter' is defunct; see 'quanteda Tokenizers' in ?tokens",
-        fixed = TRUE
-    )
-    expect_identical(
-        suppressWarnings(as.list(tokens(txt, remove_twitter = FALSE, remove_punct = TRUE))),
-        list(text1 = c("they", "#stretched", "in", "a", "never-ending", "@line"))
-    )
-    expect_identical(
-        suppressWarnings(tokens(txt, remove_twitter = FALSE, remove_punct = TRUE)),
-        tokens(txt, what = "word", remove_punct = TRUE)
-    )
-
-    # tokens
-    toks <- tokens(txt)
-    expect_warning(
-        tokens(toks, remove_twitter = TRUE),
-        "'remove_twitter' is deprecated and inactive for tokens.tokens()",
-        fixed = TRUE
-    )
-    expect_warning(
-        tokens(toks, remove_twitter = FALSE),
-        "'remove_twitter' is deprecated and inactive for tokens.tokens()",
-        fixed = TRUE
-    )
-})
-
 test_that("+ operator works with tokens", {
     txt1 <- c(d1 = "This is sample document one.",
               d2 = "Here is the second sample document.")

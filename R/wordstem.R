@@ -88,7 +88,7 @@ char_wordstem.character <- function(x, language = quanteda_options("language_ste
 #'   equivalent because of stemming.
 #' @examples
 #' # example applied to a dfm
-#' (origdfm <- dfm(txt))
+#' (origdfm <- dfm(tokens(txt)))
 #' dfm_wordstem(origdfm)
 #'
 #' @export

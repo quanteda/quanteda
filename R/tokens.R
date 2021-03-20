@@ -249,18 +249,6 @@ tokens.corpus <- function(x,
     check_dots(..., method = "tokens")
     
     attrs <- attributes(x)
-    # deprecated arguments
-    dots <- list(...)
-    if ("remove_hyphens" %in% names(dots)) {
-        split_hyphens <- dots[["remove_hyphens"]]
-        .Deprecated(msg = "'remove_hyphens' is deprecated, use 'split_hyphens' instead.")
-        dots$remove_hyphens <- NULL
-    }
-    if ("remove_twitter" %in% names(dots)) {
-        warning("'remove_twitter' is defunct; see 'quanteda Tokenizers' in ?tokens",
-                call. = FALSE)
-        dots$remove_twitter <- NULL
-    }
 
     # call the appropriate tokenizer function
     if (verbose) catm(" ...starting tokenization\n")
@@ -356,19 +344,6 @@ tokens.tokens <-  function(x,
     padding <- check_logical(padding)
     verbose <- check_logical(verbose)
     check_dots(..., method = "tokens")
-    
-    # deprecated arguments
-    dots <- list(...)
-    if ("remove_hyphens" %in% names(dots)) {
-        split_hyphens <- dots[["remove_hyphens"]]
-        .Deprecated(msg = "'remove_hyphens' is deprecated, use 'split_hyphens' instead.")
-        dots$remove_hyphens <- NULL
-
-    }
-    if ("remove_twitter" %in% names(dots)) {
-        .Deprecated(msg = "'remove_twitter' is deprecated and inactive for tokens.tokens()")
-        dots$remove_twitter <- NULL
-    }
     
     # splits
     if (split_hyphens) {

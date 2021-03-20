@@ -2,10 +2,11 @@
 % Please edit documentation in R/quanteda-documentation.R,
 %   R/corpus-methods-base.R, R/dfm-print.R, R/dictionaries.R, R/fcm-print.R,
 %   R/kwic.R, R/tokens-methods-base.R
-\name{print-method}
-\alias{print-method}
+\name{print-methods}
+\alias{print-methods}
 \alias{print.corpus}
 \alias{print,dfm-method}
+\alias{print.dfm}
 \alias{print,dictionary2-method}
 \alias{print.dictionary}
 \alias{print,fcm-method}

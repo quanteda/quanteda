@@ -88,6 +88,12 @@ The full listing of deprecations is:
 
 * `dictionary_edit()`, `char_edit()`, and `list_edit()` are removed.
 
+* `dfm_weight()` - formerly deprecated `"scheme"` options are now removed. 
+
+* `tokens()` - formerly deprecated options `remove_hyphens` and `remove_twitter` are now removed.  (Use `split_hyphens` instead, and the default tokenizer always now preserves Twitter and other social media tags.)
+
+* Special versions of `head()` and `tail()` for corpus, dfm, and fcm objects are now removed, since the base methods work fine for these objects. The main consequence was the removal of the `nf` option from the methods for dfm and fcm objects, which limited the number of features.  This can be accomplished using the index operator `[` instead, or for printing, by specifying `print(x, max_nfeat = 6L)` (for instance).
+
 ## Bug fixes and stability enhancements
 
 * Fixed a bug causing `topfeatures(x, group = something)` to fail with weighted dfms (#2032).

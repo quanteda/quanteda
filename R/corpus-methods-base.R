@@ -7,7 +7,7 @@
 #' @seealso [summary.corpus()]
 NULL
 
-#' @rdname print-method
+#' @rdname print-methods
 #' @param max_nchar max number of tokens to print; default is from the
 #'   `print_corpus_max_nchar` setting of [quanteda_options()]
 #' @method print corpus
@@ -66,44 +66,6 @@ print.corpus <- function(x, max_ndoc = quanteda_options("print_corpus_max_ndoc")
 #' @export
 is.corpus <- function(x) {
     "corpus" %in% class(x)
-}
-
-#' Return the first or last part of a corpus
-#'
-#' For a [corpus] object, returns the first or last `n` documents.
-#' @param x a dfm object
-#' @param n a single integer.  If positive, the number of documents for the
-#'   resulting object: number of first/last documents for the dfm.  If negative,
-#'   all but the n last/first number of documents of x.
-#' @param ... additional arguments passed to other functions
-#' @return A [corpus] class object corresponding to the subset defined
-#'   by `n`.
-#' @export
-#' @name head.corpus
-#' @method head corpus
-#' @keywords corpus
-#' @examples
-#' head(data_corpus_inaugural, 3) %>% 
-#'    summary()
-#'
-head.corpus <- function(x, n = 6L, ...) {
-    x <- as.corpus(x)
-    n <- check_integer(n)
-    i <- seq_len(ndoc(x))
-    corpus_subset(x, i %in% head(i, n))
-}
-
-#' @rdname head.corpus
-#' @method tail corpus
-#' @export
-#' @examples
-#' tail(data_corpus_inaugural, 3) %>% 
-#'     summary()
-tail.corpus <- function(x, n = 6L, ...) {
-    x <- as.corpus(x)
-    n <- check_integer(n)
-    i <- seq_len(ndoc(x))
-    corpus_subset(x, i %in% tail(i, n))
 }
 
 #' @rdname corpus-class
