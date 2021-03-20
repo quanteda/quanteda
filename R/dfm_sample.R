@@ -35,6 +35,7 @@ dfm_sample.dfm <- function(x, size = NULL, replace = FALSE, prob = NULL, by = NU
 
     if (!missing(by)) {
         by <- eval(substitute(by), get_docvars(x, user = TRUE, system = TRUE), parent.frame())
+        if (is.factor(by)) by <- droplevels(by)
     }
 
     i <- resample(seq_len(ndoc(x)), size = size, replace = replace, prob = prob, by = by)
