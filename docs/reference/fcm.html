@@ -56,6 +56,8 @@ vector of weights applied to the co-occurrence counts." />
 
 
 
+
+
 <!-- mathjax -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script>
@@ -77,9 +79,15 @@ vector of weights applied to the co-occurrence counts." />
 </script>
 
 
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -190,7 +198,7 @@ vector of weights applied to the co-occurrence counts." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/quanteda/quanteda">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -241,8 +249,8 @@ vector of weights applied to the co-occurrence counts.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>character, <a href='corpus.html'>corpus</a>, <a href='tokens.html'>tokens</a>, or <a href='dfm.html'>dfm</a> object from
-which to generate the feature co-occurrence matrix</p></td>
+      <td><p>a <a href='tokens.html'>tokens</a>, or <a href='dfm.html'>dfm</a> object from which to generate the feature
+co-occurrence matrix</p></td>
     </tr>
     <tr>
       <th>context</th>
@@ -279,14 +287,15 @@ vector of the same length as <code>window</code></p></td>
     </tr>
     <tr>
       <th>ordered</th>
-      <td><p>if <code>TRUE</code> the number of times that a term appears before
-or after the target feature are counted separately. Only makes sense for
-context = "window".</p></td>
+      <td><p>if <code>TRUE</code>, count only the forward co-occurrences for each
+target token for bigram models, so that the <code>i, j</code> cell of the fcm is the
+number of times that token <code>j</code> occurs before the target token <code>i</code> within
+the window. Only makes sense for <code>context = "window"</code>, and when <code>ordered = TRUE</code>, the argument <code>tri</code> has no effect.</p></td>
     </tr>
     <tr>
       <th>tri</th>
       <td><p>if <code>TRUE</code> return only upper triangle (including diagonal).
-Ignored if <code>ordered = TRUE</code></p></td>
+Ignored if <code>ordered = TRUE</code>.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -333,8 +342,8 @@ Semantics). Available at <a href='https://web.stanford.edu/~jurafsky/slp3/'>http
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># see http://bit.ly/29b2zOA</span>
-<span class='va'>txt1</span> <span class='op'>&lt;-</span> <span class='st'>"A D A C E A D F E B A C E D"</span>
-<span class='fu'>fcm</span><span class='op'>(</span><span class='va'>txt1</span>, context <span class='op'>=</span> <span class='st'>"window"</span>, window <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
+<span class='va'>toks1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"A D A C E A D F E B A C E D"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'>fcm</span><span class='op'>(</span><span class='va'>toks1</span>, context <span class='op'>=</span> <span class='st'>"window"</span>, window <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Feature co-occurrence matrix of: 6 by 6 features.
 #&gt;         features
 #&gt; features A D C E F B
@@ -343,7 +352,7 @@ Semantics). Available at <a href='https://web.stanford.edu/~jurafsky/slp3/'>http
 #&gt;        C 0 0 0 2 0 1
 #&gt;        E 0 0 0 0 1 1
 #&gt;        F 0 0 0 0 0 1
-#&gt;        B 0 0 0 0 0 0</div><div class='input'><span class='fu'>fcm</span><span class='op'>(</span><span class='va'>txt1</span>, context <span class='op'>=</span> <span class='st'>"window"</span>, count <span class='op'>=</span> <span class='st'>"weighted"</span>, window <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span>
+#&gt;        B 0 0 0 0 0 0</div><div class='input'><span class='fu'>fcm</span><span class='op'>(</span><span class='va'>toks1</span>, context <span class='op'>=</span> <span class='st'>"window"</span>, count <span class='op'>=</span> <span class='st'>"weighted"</span>, window <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Feature co-occurrence matrix of: 6 by 6 features.
 #&gt;         features
 #&gt; features        A        D        C        E         F         B
@@ -352,8 +361,8 @@ Semantics). Available at <a href='https://web.stanford.edu/~jurafsky/slp3/'>http
 #&gt;        C 0        0        0        2.333333 0         0.5000000
 #&gt;        E 0        0        0        0        1.3333333 1.3333333
 #&gt;        F 0        0        0        0        0         0.5000000
-#&gt;        B 0        0        0        0        0         0        </div><div class='input'><span class='fu'>fcm</span><span class='op'>(</span><span class='va'>txt1</span>, context <span class='op'>=</span> <span class='st'>"window"</span>, count <span class='op'>=</span> <span class='st'>"weighted"</span>, window <span class='op'>=</span> <span class='fl'>3</span>,
-             weights <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>, <span class='fl'>2</span>, <span class='fl'>1</span><span class='op'>)</span>, ordered <span class='op'>=</span> <span class='cn'>TRUE</span>, tri <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+#&gt;        B 0        0        0        0        0         0        </div><div class='input'><span class='fu'>fcm</span><span class='op'>(</span><span class='va'>toks1</span>, context <span class='op'>=</span> <span class='st'>"window"</span>, count <span class='op'>=</span> <span class='st'>"weighted"</span>, window <span class='op'>=</span> <span class='fl'>3</span>,
+    weights <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>, <span class='fl'>2</span>, <span class='fl'>1</span><span class='op'>)</span>, ordered <span class='op'>=</span> <span class='cn'>TRUE</span>, tri <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Feature co-occurrence matrix of: 6 by 6 features.
 #&gt;         features
 #&gt; features A D C E F B
@@ -364,8 +373,8 @@ Semantics). Available at <a href='https://web.stanford.edu/~jurafsky/slp3/'>http
 #&gt;        F 1 0 0 3 0 2
 #&gt;        B 3 0 2 1 0 0</div><div class='input'>
 <span class='co'># with multiple documents</span>
-<span class='va'>txt2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"a a a b b c"</span>, <span class='st'>"a a c e"</span>, <span class='st'>"a c e f g"</span><span class='op'>)</span>
-<span class='fu'>fcm</span><span class='op'>(</span><span class='va'>txt2</span>, context <span class='op'>=</span> <span class='st'>"document"</span>, count <span class='op'>=</span> <span class='st'>"frequency"</span><span class='op'>)</span>
+<span class='va'>toks2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"a a a b b c"</span>, <span class='st'>"a a c e"</span>, <span class='st'>"a c e f g"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'>fcm</span><span class='op'>(</span><span class='va'>toks2</span>, context <span class='op'>=</span> <span class='st'>"document"</span>, count <span class='op'>=</span> <span class='st'>"frequency"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Feature co-occurrence matrix of: 6 by 6 features.
 #&gt;         features
 #&gt; features a b c e f g
@@ -374,7 +383,7 @@ Semantics). Available at <a href='https://web.stanford.edu/~jurafsky/slp3/'>http
 #&gt;        c 0 0 0 2 1 1
 #&gt;        e 0 0 0 0 1 1
 #&gt;        f 0 0 0 0 0 1
-#&gt;        g 0 0 0 0 0 0</div><div class='input'><span class='fu'>fcm</span><span class='op'>(</span><span class='va'>txt2</span>, context <span class='op'>=</span> <span class='st'>"document"</span>, count <span class='op'>=</span> <span class='st'>"boolean"</span><span class='op'>)</span>
+#&gt;        g 0 0 0 0 0 0</div><div class='input'><span class='fu'>fcm</span><span class='op'>(</span><span class='va'>toks2</span>, context <span class='op'>=</span> <span class='st'>"document"</span>, count <span class='op'>=</span> <span class='st'>"boolean"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Feature co-occurrence matrix of: 6 by 6 features.
 #&gt;         features
 #&gt; features a b c e f g
@@ -383,7 +392,7 @@ Semantics). Available at <a href='https://web.stanford.edu/~jurafsky/slp3/'>http
 #&gt;        c 0 0 0 2 1 1
 #&gt;        e 0 0 0 0 1 1
 #&gt;        f 0 0 0 0 0 1
-#&gt;        g 0 0 0 0 0 0</div><div class='input'><span class='fu'>fcm</span><span class='op'>(</span><span class='va'>txt2</span>, context <span class='op'>=</span> <span class='st'>"window"</span>, window <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
+#&gt;        g 0 0 0 0 0 0</div><div class='input'><span class='fu'>fcm</span><span class='op'>(</span><span class='va'>toks2</span>, context <span class='op'>=</span> <span class='st'>"window"</span>, window <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Feature co-occurrence matrix of: 6 by 6 features.
 #&gt;         features
 #&gt; features a b c e f g
@@ -393,12 +402,10 @@ Semantics). Available at <a href='https://web.stanford.edu/~jurafsky/slp3/'>http
 #&gt;        e 0 0 0 0 1 1
 #&gt;        f 0 0 0 0 0 1
 #&gt;        g 0 0 0 0 0 0</div><div class='input'>
-
-<span class='co'># from tokens</span>
 <span class='va'>txt3</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"The quick brown fox jumped over the lazy dog."</span>,
          <span class='st'>"The dog jumped and ate the fox."</span><span class='op'>)</span>
-<span class='va'>toks</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span><span class='op'>(</span><span class='fu'><a href='char_tolower.html'>char_tolower</a></span><span class='op'>(</span><span class='va'>txt3</span><span class='op'>)</span>, remove_punct <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-<span class='fu'>fcm</span><span class='op'>(</span><span class='va'>toks</span>, context <span class='op'>=</span> <span class='st'>"document"</span><span class='op'>)</span>
+<span class='va'>toks3</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span><span class='op'>(</span><span class='fu'><a href='char_tolower.html'>char_tolower</a></span><span class='op'>(</span><span class='va'>txt3</span><span class='op'>)</span>, remove_punct <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+<span class='fu'>fcm</span><span class='op'>(</span><span class='va'>toks3</span>, context <span class='op'>=</span> <span class='st'>"document"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Feature co-occurrence matrix of: 10 by 10 features.
 #&gt;         features
 #&gt; features the quick brown fox jumped over lazy dog and ate
@@ -411,7 +418,7 @@ Semantics). Available at <a href='https://web.stanford.edu/~jurafsky/slp3/'>http
 #&gt;   lazy     0     0     0   0      0    0    0   1   0   0
 #&gt;   dog      0     0     0   0      0    0    0   0   1   1
 #&gt;   and      0     0     0   0      0    0    0   0   0   1
-#&gt;   ate      0     0     0   0      0    0    0   0   0   0</div><div class='input'><span class='fu'>fcm</span><span class='op'>(</span><span class='va'>toks</span>, context <span class='op'>=</span> <span class='st'>"window"</span>, window <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span>
+#&gt;   ate      0     0     0   0      0    0    0   0   0   0</div><div class='input'><span class='fu'>fcm</span><span class='op'>(</span><span class='va'>toks3</span>, context <span class='op'>=</span> <span class='st'>"window"</span>, window <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Feature co-occurrence matrix of: 10 by 10 features.
 #&gt;         features
 #&gt; features the quick brown fox jumped over lazy dog and ate
@@ -436,11 +443,11 @@ Semantics). Available at <a href='https://web.stanford.edu/~jurafsky/slp3/'>http
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p>
+  <p><p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p></p>
 </div>
 
       </footer>
@@ -465,6 +472,8 @@ Semantics). Available at <a href='https://web.stanford.edu/~jurafsky/slp3/'>http
 </script>
 
 
+
+  
 
   </body>
 </html>

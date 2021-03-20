@@ -65,11 +65,13 @@ Next, we transform the corpus to a document-feature matrix. `dfm_prep` (used in 
 
 ```{r}
 # transform corpus to a document-feature matrix
-dfm_prep <- dfm(corpus_raw, remove_numbers = TRUE, tolower = TRUE,
-                remove_punct = TRUE, verbose = TRUE)
+dfm_prep <- tokens(corpus_raw, remove_numbers = TRUE, remove_punct = TRUE) %>%
+  dfm(tolower = TRUE)
 
 # remove stop words and stem words
-dfm_papers <- dfm(dfm_prep, stem = TRUE, remove = stopwords("english"))
+dfm_papers <- dfm_prep %>%
+  dfm_remove(stopwords("en")) %>%
+  dfm_wordstem("en")
 
 # inspect
 dfm_papers
@@ -156,11 +158,11 @@ words <- c("although", "always", "commonly", "consequently",
 tfm <- dfm_select(tfm, words, valuetype = "fixed")
 
 # average among Hamilton/Madison essays
-tfm_ave <- dfm_group(dfm_subset(tfm, !is.na(author)), "author") /
-           as.numeric(table(docvars(tfm, "author")))
-    
+tfm_ave <- dfm_group(dfm_subset(tfm, !is.na(author)), groups = author) /
+  as.numeric(table(docvars(tfm, "author")))
+
 # bind docvars from corpus and tfm to a data frame
-author_data <- data.frame(docvars(corpus_raw), tfm)
+author_data <- data.frame(docvars(corpus_raw), convert(tfm, to = "data.frame"))
 
 # create numeric variable that takes value 1 for Hamilton's essays,
 # -1 for Madison's essays and NA for the essays with unknown authorship

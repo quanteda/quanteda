@@ -20,14 +20,15 @@ Since **quanteda** is available on [CRAN](https://CRAN.R-project.org/package=qua
 ```{r, eval = FALSE}
 install.packages("quanteda")
 ```
-See an instructions at https://github.com/quanteda/quanteda to install the GitHub version, 
+See an instructions at https://github.com/quanteda/quanteda to install the (development) GitHub version. 
 
 ## Additional recommended packages:
 
 The following packages contain modularised functions that were formerly part of **quanteda**, and we recommend that you always install them along with **quanteda**:
-* [**quanteda.textmodels**](https://github.com/quanteda/quanteda.textmodels): Functions for scaling and classifying textual data.
-* [**quanteda.textstats**](https://github.com/quanteda/quanteda.textstats): Statistics for textual data.
-* [**quanteda.textplot**](https://github.com/quanteda/quanteda.textplots): Statistics for textual data.
+
+*  [**quanteda.textmodels**](https://github.com/quanteda/quanteda.textmodels): Functions for scaling and classifying textual data.  
+*  [**quanteda.textstats**](https://github.com/quanteda/quanteda.textstats): Statistics for textual data.  
+*  [**quanteda.textplot**](https://github.com/quanteda/quanteda.textplots): Statistics for textual data.  
 
 The following packages work well with or extend **quanteda** and we recommend that you also install them:
 
@@ -191,21 +192,22 @@ summary(corpus_subset(data_corpus_inaugural, President == "Adams"))
 The `kwic` function (keywords-in-context) performs a search for a word and allows us to view the contexts in which it occurs:
 
 ```{r}
-kwic(data_corpus_inaugural, pattern = "terror")
+data_tokens_inaugural <- tokens(data_corpus_inaugural)
+kwic(data_tokens_inaugural, pattern = "terror")
 ```
 
 ```{r}
-kwic(data_corpus_inaugural, pattern = "terror", valuetype = "regex")
+kwic(data_tokens_inaugural, pattern = "terror", valuetype = "regex")
 ```
 
 ```{r}
-kwic(data_corpus_inaugural, pattern = "communist*")
+kwic(data_tokens_inaugural, pattern = "communist*")
 ```
 
 Using `phrase()` we can also look up multi-word expressions.
 
 ```{r}
-kwic(data_corpus_inaugural, pattern = phrase("United States")) %>%
+kwic(data_tokens_inaugural, pattern = phrase("United States")) %>%
     head() # show context of the first six occurrences of "United States"
 ```
 
@@ -304,7 +306,9 @@ head(stopwords("ar", source = "misc"), 10)
 The dfm can be inspected in the Environment pane in RStudio, or by calling R's `View()` function. Calling `textplot_wordcloud()` on a dfm will display a wordcloud.
 
 ```{r warning=FALSE, fig.width = 8, fig.height = 8}
-dfmat_uk <- dfm(data_char_ukimmig2010, remove = stopwords("english"), remove_punct = TRUE)
+dfmat_uk <- tokens(data_char_ukimmig2010, remove_punct = TRUE) %>%
+  tokens_remove(stopwords("en")) %>%
+  dfm()
 dfmat_uk
 ```
 
@@ -370,7 +374,7 @@ LIWC and Provalis Research's Wordstat format. For instance, we can load the LIWC
 ```{r, eval = FALSE}
 dictliwc <- dictionary(file = "~/Dropbox/QUANTESS/dictionaries/LIWC/LIWC2001_English.dic",
                        format = "LIWC")
-dfmat_inaug_subset <- dfm(data_corpus_inaugural[52:58], dictionary = dictliwc)
+dfmat_inaug_subset <- dfm(tokens(data_corpus_inaugural[52:58]), dictionary = dictliwc)
 dfmat_inaug_subset[, 1:10]
 ```
 
@@ -433,7 +437,7 @@ lapply(as.list(tstat_sim), head, 10)
 Here is a demonstration of unsupervised document scaling comparing the "Wordfish" model: 
 ```{r fig.width = 7, fig.height = 5}
 if (require("quanteda.textmodels")) {
-  dfmat_ire <- dfm(data_corpus_irishbudget2010)
+  dfmat_ire <- dfm(tokens(data_corpus_irishbudget2010))
   tmod_wf <- textmodel_wordfish(dfmat_ire, dir = c(2, 1))
   
   # plot the Wordfish estimates by party
@@ -446,9 +450,9 @@ if (require("quanteda.textmodels")) {
 **quanteda** makes it very easy to fit topic models as well, e.g.:
 
 ```{r}
-quant_dfm <- dfm(data_corpus_irishbudget2010, 
-                 remove_punct = TRUE, remove_numbers = TRUE, 
-                 remove = stopwords("english"))
+quant_dfm <- tokens(data_corpus_irishbudget2010, remove_punct = TRUE, remove_numbers = TRUE) %>%
+  tokens_remove(stopwords("en")) %>%
+  dfm()
 quant_dfm <- dfm_trim(quant_dfm, min_termfreq = 4, max_docfreq = 10)
 quant_dfm
 ```

@@ -55,7 +55,7 @@ The Gutenburg edition of the text contains some metadata before and after the te
 Here, we found the character index of the beginning and end of the novel, rather than counting the lines as in the book, but the result will be very similar.  If we want to verify that "orphan." is the end of the novel, we can use the `kwic()` function:
 ```{r out.width="\\textwidth"}
 # verify that "orphan" is the end of the novel
-kwic(data_char_mobydick, "orphan")
+kwic(tokens(data_char_mobydick), "orphan")
 ```
 
 If we want to count the number of lines, we can do so by counting the newlines in the text.
@@ -438,14 +438,14 @@ This is going to be super easy since we don't need to reinvent the wheel here, s
 
 Let's create a corpus containing _Moby Dick_ but also Jane Austen's _Sense and Sensibility_.
 ```{r}
-data_char_senseandsensibility <- texts(readtext("http://www.gutenberg.org/files/161/161.txt"))
+data_char_senseandsensibility <- texts(readtext("http://www.gutenberg.org/files/161/161-0.txt"))
 names(data_char_senseandsensibility) <- "Sense and Sensibility"
 
 litcorpus <- corpus(c(data_char_mobydick, data_char_senseandsensibility))
 ```
 Now we can use `kwic()` to find out where in each novel this occurred:
 ```{r}
-(dogkwic <- kwic(litcorpus, pattern = "dog"))
+(dogkwic <- kwic(tokens(litcorpus), pattern = "dog"))
 ```
 
 We can plot this easily too, as a lexical dispersion plot.  By specifying the scale as "absolute", we are looking at absolute token index position rather than relative position, and therefore we see that _Moby Dick_ is nearly twice as long as _Sense and Sensibility_.
@@ -462,10 +462,11 @@ Chapter 11 describes how to detect clusters in a corpus. While the book uses the
 
 ```{r}
 library(quanteda.corpora)
-pres_dfm <- dfm(corpus_subset(data_corpus_sotu, Date > "1980-01-01"), 
-               stem = TRUE, remove_punct = TRUE,
-               remove = stopwords("english")) %>% 
-    dfm_trim(min_termfreq = 5, min_docfreq = 3)
+pres_dfm <- tokens(corpus_subset(data_corpus_sotu, Date > "1980-01-01"), remove_punct = TRUE) %>%
+  tokens_wordstem("en") %>%
+  tokens_remove(stopwords("en")) %>%
+  dfm() %>%
+  dfm_trim(min_termfreq = 5, min_docfreq = 3)
 
 # hierarchical clustering - get distances on normalized dfm
 pres_dist_mat <- dfm_weight(pres_dfm, scheme = "prop") %>%
@@ -492,10 +493,10 @@ Finally, Jockers' book introduces topic modelling of a corpus and the visualisat
 
 ```{r}
 data(data_corpus_irishbudget2010, package = "quanteda.textmodels")
-dfm_speeches <- dfm(data_corpus_irishbudget2010, 
-                remove_punct = TRUE, remove_numbers = TRUE, 
-                remove = stopwords("english")) %>% 
-    dfm_trim(min_termfreq = 4, max_docfreq = 10)
+dfm_speeches <- tokens(data_corpus_irishbudget2010, remove_punct = TRUE, remove_numbers = TRUE) %>%
+  tokens_remove(stopwords("en")) %>% 
+  dfm() %>%
+  dfm_trim(min_termfreq = 4, max_docfreq = 10)
 
 library(topicmodels)
 LDA_fit_20 <- convert(dfm_speeches, to = "topicmodels") %>% 

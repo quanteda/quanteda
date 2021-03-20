@@ -52,6 +52,8 @@
 
 
 
+
+
 <!-- mathjax -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script>
@@ -73,9 +75,15 @@
 </script>
 
 
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-index">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -186,7 +194,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/quanteda/quanteda">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -315,6 +323,12 @@
       </tr><tr>
         
         <td>
+          <p><code><a href="corpus_group.html">corpus_group()</a></code> </p>
+        </td>
+        <td><p>Combine documents in corpus by a grouping variable</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="corpus_reshape.html">corpus_reshape()</a></code> </p>
         </td>
         <td><p>Recast the document units of a corpus</p></td>
@@ -357,18 +371,6 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="meta.html">meta()</a></code> <code><a href="meta.html">`meta&lt;-`()</a></code> <code><a href="meta.html">metacorpus()</a></code> <code><a href="meta.html">`metacorpus&lt;-`()</a></code> </p>
-        </td>
-        <td><p>Get or set object metadata</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="metadoc.html">metadoc()</a></code> <code><a href="metadoc.html">`metadoc&lt;-`()</a></code> </p>
-        </td>
-        <td><p>Get or set document-level meta-data</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="texts.html">texts()</a></code> <code><a href="texts.html">`texts&lt;-`()</a></code> <code><a href="texts.html">as.character(<i>&lt;corpus&gt;</i>)</a></code> </p>
         </td>
         <td><p>Get or assign corpus texts</p></td>
@@ -406,6 +408,12 @@
       </tr><tr>
         
         <td>
+          <p><code><a href="tokens_group.html">tokens_group()</a></code> </p>
+        </td>
+        <td><p>Combine documents in a tokens object by a grouping variable</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="tokens_lookup.html">tokens_lookup()</a></code> </p>
         </td>
         <td><p>Apply a dictionary to a tokens object</p></td>
@@ -418,12 +426,6 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="tokens_select.html">tokens_select()</a></code> <code><a href="tokens_select.html">tokens_remove()</a></code> <code><a href="tokens_select.html">tokens_keep()</a></code> </p>
-        </td>
-        <td><p>Select or remove tokens from a tokens object</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="tokens_replace.html">tokens_replace()</a></code> </p>
         </td>
         <td><p>Replace tokens in a tokens object</p></td>
@@ -433,6 +435,12 @@
           <p><code><a href="tokens_sample.html">tokens_sample()</a></code> </p>
         </td>
         <td><p>Randomly sample documents from a tokens object</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="tokens_select.html">tokens_select()</a></code> <code><a href="tokens_select.html">tokens_remove()</a></code> <code><a href="tokens_select.html">tokens_keep()</a></code> </p>
+        </td>
+        <td><p>Select or remove tokens from a tokens object</p></td>
       </tr><tr>
         
         <td>
@@ -454,12 +462,6 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="tokens_tortl.html">tokens_tortl()</a></code> <code><a href="tokens_tortl.html">char_tortl()</a></code> </p>
-        </td>
-        <td><p>[Experimental] Change direction of words in tokens</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="tokens_wordstem.html">tokens_wordstem()</a></code> <code><a href="tokens_wordstem.html">char_wordstem()</a></code> <code><a href="tokens_wordstem.html">dfm_wordstem()</a></code> </p>
         </td>
         <td><p>Stem the terms in an object</p></td>
@@ -472,7 +474,7 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="as.tokens.html">as.list(<i>&lt;tokens&gt;</i>)</a></code> <code><a href="as.tokens.html">as.character(<i>&lt;tokens&gt;</i>)</a></code> <code><a href="as.tokens.html">is.tokens()</a></code> <code><a href="as.tokens.html">unlist(<i>&lt;tokens&gt;</i>)</a></code> <code><a href="as.tokens.html">`+`(<i>&lt;tokens&gt;</i>)</a></code> <code><a href="as.tokens.html">c(<i>&lt;tokens&gt;</i>)</a></code> <code><a href="as.tokens.html">as.tokens()</a></code> <code><a href="as.tokens.html">is.tokens()</a></code> </p>
+          <p><code><a href="as.tokens.html">as.list(<i>&lt;tokens&gt;</i>)</a></code> <code><a href="as.tokens.html">as.character(<i>&lt;tokens&gt;</i>)</a></code> <code><a href="as.tokens.html">is.tokens()</a></code> <code><a href="as.tokens.html">unlist(<i>&lt;tokens&gt;</i>)</a></code> <code><a href="as.tokens.html">as.tokens()</a></code> <code><a href="as.tokens.html">is.tokens()</a></code> </p>
         </td>
         <td><p>Coercion, checking, and combining functions for tokens objects</p></td>
       </tr>
@@ -570,12 +572,6 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="dfm_select.html">dfm_select()</a></code> <code><a href="dfm_select.html">dfm_remove()</a></code> <code><a href="dfm_select.html">dfm_keep()</a></code> <code><a href="dfm_select.html">fcm_select()</a></code> <code><a href="dfm_select.html">fcm_remove()</a></code> <code><a href="dfm_select.html">fcm_keep()</a></code> </p>
-        </td>
-        <td><p>Select features from a dfm or fcm</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="dfm_replace.html">dfm_replace()</a></code> </p>
         </td>
         <td><p>Replace features in dfm</p></td>
@@ -584,19 +580,25 @@
         <td>
           <p><code><a href="dfm_sample.html">dfm_sample()</a></code> </p>
         </td>
-        <td><p>Randomly sample documents or features from a dfm</p></td>
+        <td><p>Randomly sample documents from a dfm</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="dfm_subset.html">dfm_subset()</a></code> </p>
+          <p><code><a href="dfm_select.html">dfm_select()</a></code> <code><a href="dfm_select.html">dfm_remove()</a></code> <code><a href="dfm_select.html">dfm_keep()</a></code> <code><a href="dfm_select.html">fcm_select()</a></code> <code><a href="dfm_select.html">fcm_remove()</a></code> <code><a href="dfm_select.html">fcm_keep()</a></code> </p>
         </td>
-        <td><p>Extract a subset of a dfm</p></td>
+        <td><p>Select features from a dfm or fcm</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="dfm_sort.html">dfm_sort()</a></code> </p>
         </td>
         <td><p>Sort a dfm by frequency of one or more margins</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="dfm_subset.html">dfm_subset()</a></code> </p>
+        </td>
+        <td><p>Extract a subset of a dfm</p></td>
       </tr><tr>
         
         <td>
@@ -685,56 +687,6 @@
     </tbody><tbody>
       <tr>
         <th colspan="2">
-          <h2 id="section-text-statistics" class="hasAnchor"><a href="#section-text-statistics" class="anchor"></a>Text statistics</h2>
-          <p class="section-desc"><p>Functions for computing statistics from texts and dfm objects.</p></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      <tr>
-        
-        <td>
-          <p><code><a href="textstats.html">textstats</a></code> </p>
-        </td>
-        <td><p>Statistics for textual data</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="sparsity.html">sparsity()</a></code> </p>
-        </td>
-        <td><p>Compute the sparsity of a document-feature matrix</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="topfeatures.html">topfeatures()</a></code> </p>
-        </td>
-        <td><p>Identify the most frequent features in a dfm</p></td>
-      </tr>
-    </tbody><tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-text-models" class="hasAnchor"><a href="#section-text-models" class="anchor"></a>Text models</h2>
-          <p class="section-desc"><p>Functions for fitting models to textual data.</p></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      <tr>
-        
-        <td>
-          <p><code><a href="textmodels.html">textmodels</a></code> </p>
-        </td>
-        <td><p>Models for scaling and classification of textual data</p></td>
-      </tr>
-    </tbody><tbody>
-      <tr>
-        <th colspan="2">
           <h2 id="section-dictionary-functions" class="hasAnchor"><a href="#section-dictionary-functions" class="anchor"></a>Dictionary functions</h2>
           <p class="section-desc"><p>Constructor and utility functions for working with dictionaries.</p></p>
         </th>
@@ -750,12 +702,6 @@
           <p><code><a href="dictionary.html">dictionary()</a></code> </p>
         </td>
         <td><p>Create a dictionary</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="dictionary_edit.html">dictionary_edit()</a></code> <code><a href="dictionary_edit.html">list_edit()</a></code> <code><a href="dictionary_edit.html">char_edit()</a></code> </p>
-        </td>
-        <td><p>Conveniently edit dictionaries</p></td>
       </tr><tr>
         
         <td>
@@ -790,28 +736,9 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="kwic.html">kwic()</a></code> <code><a href="kwic.html">is.kwic()</a></code> </p>
+          <p><code><a href="kwic.html">kwic()</a></code> <code><a href="kwic.html">is.kwic()</a></code> <code><a href="kwic.html">as.data.frame(<i>&lt;kwic&gt;</i>)</a></code> </p>
         </td>
         <td><p>Locate keywords-in-context</p></td>
-      </tr>
-    </tbody><tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-text-plot-functions" class="hasAnchor"><a href="#section-text-plot-functions" class="anchor"></a>Text plot functions</h2>
-          <p class="section-desc"><p>Plot functions for representing text and the analysis of texts.</p></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      <tr>
-        
-        <td>
-          <p><code><a href="textplots.html">textplots</a></code> </p>
-        </td>
-        <td><p>Plots for textual data</p></td>
       </tr>
     </tbody><tbody>
       <tr>
@@ -826,6 +753,12 @@
       
       
       <tr>
+        
+        <td>
+          <p><code><a href="index-topic.html">index()</a></code> <code><a href="index-topic.html">is.index()</a></code> </p>
+        </td>
+        <td><p>Locate a pattern in a tokens object</p></td>
+      </tr><tr>
         
         <td>
           <p><code><a href="ndoc.html">ndoc()</a></code> <code><a href="ndoc.html">nfeat()</a></code> </p>
@@ -846,7 +779,7 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="print-quanteda.html">print(<i>&lt;corpus&gt;</i>)</a></code> <code><a href="print-quanteda.html">print(<i>&lt;dfm&gt;</i>)</a></code> <code><a href="print-quanteda.html">show(<i>&lt;dfm&gt;</i>)</a></code> <code><a href="print-quanteda.html">print(<i>&lt;dictionary2&gt;</i>)</a></code> <code><a href="print-quanteda.html">show(<i>&lt;dictionary2&gt;</i>)</a></code> <code><a href="print-quanteda.html">print(<i>&lt;fcm&gt;</i>)</a></code> <code><a href="print-quanteda.html">show(<i>&lt;fcm&gt;</i>)</a></code> <code><a href="print-quanteda.html">print(<i>&lt;tokens&gt;</i>)</a></code> </p>
+          <p><code><a href="print-method.html">print(<i>&lt;corpus&gt;</i>)</a></code> <code><a href="print-method.html">print(<i>&lt;dfm&gt;</i>)</a></code> <code><a href="print-method.html">print(<i>&lt;dictionary2&gt;</i>)</a></code> <code><a href="print-method.html">print(<i>&lt;fcm&gt;</i>)</a></code> <code><a href="print-method.html">print(<i>&lt;kwic&gt;</i>)</a></code> <code><a href="print-method.html">print(<i>&lt;tokens&gt;</i>)</a></code> </p>
         </td>
         <td><p>Print methods for quanteda core objects</p></td>
       </tr><tr>
@@ -895,6 +828,12 @@
       </tr><tr>
         
         <td>
+          <p><code><a href="meta.html">meta()</a></code> <code><a href="meta.html">`meta&lt;-`()</a></code> </p>
+        </td>
+        <td><p>Get or set object metadata</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="readtext-methods.html">readtext-methods</a></code> </p>
         </td>
         <td><p>Extensions for readtext objects</p></td>
@@ -904,6 +843,49 @@
           <p><code><a href="spacyr-methods.html">spacyr-methods</a></code> </p>
         </td>
         <td><p>Extensions for and from spacy_parse objects</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-statistics-models-and-plots" class="hasAnchor"><a href="#section-statistics-models-and-plots" class="anchor"></a>Statistics, models, and plots</h2>
+          <p class="section-desc"><p>Functions for computing statistics, fitting models, and producing visualisations models from text.</p></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="sparsity.html">sparsity()</a></code> </p>
+        </td>
+        <td><p>Compute the sparsity of a document-feature matrix</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="topfeatures.html">topfeatures()</a></code> </p>
+        </td>
+        <td><p>Identify the most frequent features in a dfm</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="textmodels.html">textmodels</a></code> </p>
+        </td>
+        <td><p>Models for scaling and classification of textual data</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="textplots.html">textplots</a></code> </p>
+        </td>
+        <td><p>Plots for textual data</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="textstats.html">textstats</a></code> </p>
+        </td>
+        <td><p>Statistics for textual data</p></td>
       </tr>
     </tbody>
     </table>
@@ -919,11 +901,11 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p>
+  <p><p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p></p>
 </div>
 
       </footer>
@@ -948,6 +930,8 @@
 </script>
 
 
+
+  
 
   </body>
 </html>

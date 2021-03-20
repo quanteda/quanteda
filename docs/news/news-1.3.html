@@ -52,6 +52,8 @@
 
 
 
+
+
 <!-- mathjax -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script>
@@ -73,9 +75,15 @@
 </script>
 
 
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-news">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -186,7 +194,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/quanteda/quanteda">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -222,7 +230,7 @@
 <a href="#new-features-8" class="anchor"></a>New Features</h2>
 <ul>
 <li>Added <code>to = "tripletlist"</code> output type for <code><a href="../reference/convert.html">convert()</a></code>, to convert a dfm into a simple triplet list. (<a href='https://github.com/quanteda/quanteda/issues/1321'>#1321</a>)</li>
-<li>Added <code><a href="../reference/tokens_tortl.html">tokens_tortl()</a></code> and <code><a href="../reference/tokens_tortl.html">char_tortl()</a></code> to add markers for right-to-left language tokens and character objects. (<a href='https://github.com/quanteda/quanteda/issues/1322'>#1322</a>)</li>
+<li>Added <code>tokens_tortl()</code> and <code>char_tortl()</code> to add markers for right-to-left language tokens and character objects. (<a href='https://github.com/quanteda/quanteda/issues/1322'>#1322</a>)</li>
 </ul>
 </div>
 <div id="behaviour-changes-4" class="section level2">
@@ -232,14 +240,14 @@
 <li>Improved <code><a href="../reference/corpus.html">corpus.kwic()</a></code> by adding new arguments <code>split_context</code> and <code>extract_keyword</code>.</li>
 <li>
 <code><a href="../reference/dfm_select.html">dfm_remove(x, selection = anydfm)</a></code> is now equivalent to <code><a href="../reference/dfm_select.html">dfm_remove(x, selection = featnames(anydfm))</a></code>. (<a href='https://github.com/quanteda/quanteda/issues/1320'>#1320</a>)</li>
-<li>Improved consistency of <code><a href="https://rdrr.io/pkg/quanteda.textmodels/man/predict.textmodel_nb.html">predict.textmodel_nb()</a></code> returns, and added <code>type =</code> argument. (<a href='https://github.com/quanteda/quanteda/issues/1329'>#1329</a>)</li>
+<li>Improved consistency of <code><a href="https://rdrr.io/pkg/quanteda.textmodels/man/predict.textmodel_nb.html" class="external-link">predict.textmodel_nb()</a></code> returns, and added <code>type =</code> argument. (<a href='https://github.com/quanteda/quanteda/issues/1329'>#1329</a>)</li>
 </ul>
 </div>
 <div id="bug-fixes-1" class="section level2">
 <h2 class="hasAnchor">
 <a href="#bug-fixes-1" class="anchor"></a>Bug fixes</h2>
 <ul>
-<li>Fixed a bug in <code><a href="https://rdrr.io/pkg/quanteda.textmodels/man/textmodel_affinity.html">textmodel_affinity()</a></code> that caused failure when the input dfm had been compiled with <code>tolower = FALSE</code>. (<a href='https://github.com/quanteda/quanteda/issues/1338'>#1338</a>)</li>
+<li>Fixed a bug in <code><a href="https://rdrr.io/pkg/quanteda.textmodels/man/textmodel_affinity.html" class="external-link">textmodel_affinity()</a></code> that caused failure when the input dfm had been compiled with <code>tolower = FALSE</code>. (<a href='https://github.com/quanteda/quanteda/issues/1338'>#1338</a>)</li>
 <li>Fixed a bug affecting <code><a href="../reference/tokens_lookup.html">tokens_lookup()</a></code> and <code><a href="../reference/dfm_lookup.html">dfm_lookup()</a></code> when <code>nomatch</code> is used. (<a href='https://github.com/quanteda/quanteda/issues/1347'>#1347</a>)</li>
 <li>Fixed a problem whereby NA texts created a “document” (or tokens) containing <code>"NA"</code> (<a href='https://github.com/quanteda/quanteda/issues/1372'>#1372</a>)</li>
 </ul>
@@ -270,7 +278,7 @@
 <h2 class="hasAnchor">
 <a href="#new-features-7" class="anchor"></a>New Features</h2>
 <ul>
-<li>Added <code><a href="https://rdrr.io/pkg/quanteda.textplots/man/textplot_network.html">as.igraph.fcm()</a></code> method for converting an fcm object into an <strong>igraph</strong> graph object.</li>
+<li>Added <code><a href="https://rdrr.io/pkg/quanteda.textplots/man/textplot_network.html" class="external-link">as.igraph.fcm()</a></code> method for converting an fcm object into an <strong>igraph</strong> graph object.</li>
 <li>Added a <code>case_insensitive</code> argument to <code><a href="../reference/corpus_segment.html">char_segment()</a></code> and <code><a href="../reference/corpus_segment.html">corpus_segment()</a></code>.</li>
 </ul>
 </div>
@@ -288,9 +296,9 @@
 <li>Fixed behaviour from <code><a href="../reference/tokens.html">tokens(x, what = "fasterword", remove_separators = TRUE)</a></code> so that it correctly splits words separated by <code>\n</code> and <code>\t</code> characters. (<a href='https://github.com/quanteda/quanteda/issues/1420'>#1420</a>)</li>
 <li>Add error checking for functions taking dfm inputs in case a dfm has empty features (<a href='https://github.com/quanteda/quanteda/issues/1419'>#1419</a>).</li>
 <li>For <code><a href="https://quanteda.io/reference/textstat_readability.html">textstat_readability()</a></code>, fixed a bug in Dale-Chall-based measures and in the Spache word list measure. These were caused by an incorrect lookup mechanism but also by limited implementation of the wordlists. The new wordlists include all of the variations called for in the original measures, but using fast fixed matching. (<a href='https://github.com/quanteda/quanteda/issues/1410'>#1410</a>)</li>
-<li>Fixed problems with basic dfm operations (<code><a href="https://rdrr.io/r/base/colSums.html">rowMeans()</a></code>, <code><a href="https://rdrr.io/r/base/colSums.html">rowSums()</a></code>, <code><a href="https://rdrr.io/r/base/colSums.html">colMeans()</a></code>, <code><a href="https://rdrr.io/r/base/colSums.html">colSums()</a></code>) caused by not having access to the <strong>Matrix</strong> package methods. (<a href='https://github.com/quanteda/quanteda/issues/1428'>#1428</a>)</li>
-<li>Fixed problem in <code><a href="https://rdrr.io/pkg/quanteda.textmodels/man/textplot_scale1d.html">textplot_scale1d()</a></code> when input a predicted wordscores object with <code>se.fit = TRUE</code> (<a href='https://github.com/quanteda/quanteda/issues/1440'>#1440</a>).</li>
-<li>Improved the stability of <code><a href="https://rdrr.io/pkg/quanteda.textplots/man/textplot_network.html">textplot_network()</a></code>. (<a href='https://github.com/quanteda/quanteda/issues/1460'>#1460</a>)</li>
+<li>Fixed problems with basic dfm operations (<code><a href="https://rdrr.io/r/base/colSums.html" class="external-link">rowMeans()</a></code>, <code><a href="https://rdrr.io/r/base/colSums.html" class="external-link">rowSums()</a></code>, <code><a href="https://rdrr.io/r/base/colSums.html" class="external-link">colMeans()</a></code>, <code><a href="https://rdrr.io/r/base/colSums.html" class="external-link">colSums()</a></code>) caused by not having access to the <strong>Matrix</strong> package methods. (<a href='https://github.com/quanteda/quanteda/issues/1428'>#1428</a>)</li>
+<li>Fixed problem in <code><a href="https://rdrr.io/pkg/quanteda.textplots/man/textplot_scale1d.html" class="external-link">textplot_scale1d()</a></code> when input a predicted wordscores object with <code>se.fit = TRUE</code> (<a href='https://github.com/quanteda/quanteda/issues/1440'>#1440</a>).</li>
+<li>Improved the stability of <code><a href="https://rdrr.io/pkg/quanteda.textplots/man/textplot_network.html" class="external-link">textplot_network()</a></code>. (<a href='https://github.com/quanteda/quanteda/issues/1460'>#1460</a>)</li>
 </ul>
 </div>
 <div id="new-features-6" class="section level2">
@@ -346,11 +354,11 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p>
+  <p><p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p></p>
 </div>
 
       </footer>
@@ -375,6 +383,8 @@
 </script>
 
 
+
+  
 
   </body>
 </html>

@@ -56,6 +56,8 @@ evaluation to evaluate conditions based on the docvars in the corpus." />
 
 
 
+
+
 <!-- mathjax -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script>
@@ -77,9 +79,15 @@ evaluation to evaluate conditions based on the docvars in the corpus." />
 </script>
 
 
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -190,7 +198,7 @@ evaluation to evaluate conditions based on the docvars in the corpus." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/quanteda/quanteda">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -225,7 +233,7 @@ functions identically to <code><a href='https://rdrr.io/r/base/subset.html'>subs
 evaluation to evaluate conditions based on the <a href='docvars.html'>docvars</a> in the corpus.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>corpus_subset</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>subset</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>corpus_subset</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>subset</span>, drop_docid <span class='op'>=</span> <span class='cn'>TRUE</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -238,6 +246,11 @@ evaluation to evaluate conditions based on the <a href='docvars.html'>docvars</a
       <th>subset</th>
       <td><p>logical expression indicating the documents to keep: missing
 values are taken as false</p></td>
+    </tr>
+    <tr>
+      <th>drop_docid</th>
+      <td><p>if <code>TRUE</code>, <code>docid</code> for documents are removed as the result
+of subsetting.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -254,19 +267,20 @@ values are taken as false</p></td>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='fu'>corpus_subset</span><span class='op'>(</span><span class='va'>data_corpus_inaugural</span>, <span class='va'>Year</span> <span class='op'>&gt;</span> <span class='fl'>1980</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Corpus consisting of 10 documents, showing 10 documents:
+</div><div class='output co'>#&gt; Corpus consisting of 11 documents, showing 11 documents:
 #&gt; 
-#&gt;          Text Types Tokens Sentences Year President FirstName      Party
-#&gt;   1981-Reagan   902   2780       129 1981    Reagan    Ronald Republican
-#&gt;   1985-Reagan   925   2909       123 1985    Reagan    Ronald Republican
-#&gt;     1989-Bush   795   2673       141 1989      Bush    George Republican
-#&gt;  1993-Clinton   642   1833        81 1993   Clinton      Bill Democratic
-#&gt;  1997-Clinton   773   2436       111 1997   Clinton      Bill Democratic
-#&gt;     2001-Bush   621   1806        97 2001      Bush George W. Republican
-#&gt;     2005-Bush   772   2312        99 2005      Bush George W. Republican
-#&gt;    2009-Obama   938   2689       110 2009     Obama    Barack Democratic
-#&gt;    2013-Obama   814   2317        88 2013     Obama    Barack Democratic
-#&gt;    2017-Trump   582   1660        88 2017     Trump Donald J. Republican
+#&gt;            Text Types Tokens Sentences Year President FirstName      Party
+#&gt;     1981-Reagan   902   2780       129 1981    Reagan    Ronald Republican
+#&gt;     1985-Reagan   925   2909       123 1985    Reagan    Ronald Republican
+#&gt;       1989-Bush   795   2673       141 1989      Bush    George Republican
+#&gt;    1993-Clinton   642   1833        81 1993   Clinton      Bill Democratic
+#&gt;    1997-Clinton   773   2436       111 1997   Clinton      Bill Democratic
+#&gt;       2001-Bush   621   1806        97 2001      Bush George W. Republican
+#&gt;       2005-Bush   772   2312        99 2005      Bush George W. Republican
+#&gt;      2009-Obama   938   2689       110 2009     Obama    Barack Democratic
+#&gt;      2013-Obama   814   2317        88 2013     Obama    Barack Democratic
+#&gt;      2017-Trump   582   1660        88 2017     Trump Donald J. Republican
+#&gt;  2021-Biden.txt   811   2766       216 2021     Biden Joseph R. Democratic
 #&gt; </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='fu'>corpus_subset</span><span class='op'>(</span><span class='va'>data_corpus_inaugural</span>, <span class='va'>Year</span> <span class='op'>&gt;</span> <span class='fl'>1930</span> <span class='op'>&amp;</span> <span class='va'>President</span> <span class='op'>==</span> <span class='st'>"Roosevelt"</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Corpus consisting of 4 documents, showing 4 documents:
 #&gt; 
@@ -287,11 +301,11 @@ values are taken as false</p></td>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p>
+  <p><p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p></p>
 </div>
 
       </footer>
@@ -316,6 +330,8 @@ values are taken as false</p></td>
 </script>
 
 
+
+  
 
   </body>
 </html>
