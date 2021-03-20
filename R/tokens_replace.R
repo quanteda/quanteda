@@ -1,7 +1,7 @@
 #' Replace tokens in a tokens object
 #'
 #' Substitute token types based on vectorized one-to-one matching. Since this
-#' function is created for lemmatization or user-defined stemming. It support
+#' function is created for lemmatization or user-defined stemming. It supports
 #' substitution of multi-word features by multi-word features, but substitution
 #' is fastest when `pattern` and `replacement` are character vectors
 #' and `valuetype = "fixed"` as the function only substitute types of

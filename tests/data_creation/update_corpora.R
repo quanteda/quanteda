@@ -2,7 +2,7 @@
 ##### data_corpus_inaugual
 
 # fix line breaks and escaped quotes in Bush 2005 text
-texts(data_corpus_inaugural)["2005-Bush"] <- readtext::readtext("tests/data_creation/inaugural/2005-Bush.txt")[["text"]]
+as.character(data_corpus_inaugural)["2005-Bush"] <- readtext::readtext("tests/data_creation/inaugural/2005-Bush.txt")[["text"]]
 
 # structure metadata
 meta(data_corpus_inaugural) <- list( 
@@ -28,7 +28,7 @@ usethis::use_data(data_corpus_inaugural, overwrite = TRUE)
 
 for (i in docnames(data_corpus_dailnoconf1991)) {
     
-    txt <- texts(data_corpus_dailnoconf1991)[i] %>%
+    txt <- as.character(data_corpus_dailnoconf1991)[i] %>%
         # fix paragraph delimiters
         stringi::stri_replace_all_regex("([^\n])\\n{1}([^\n])", "$1\n\n$2") %>%
         # fix page references such as "[545]"
@@ -43,8 +43,8 @@ for (i in docnames(data_corpus_dailnoconf1991)) {
 
 
 rt <- readtext::readtext("tests/data_creation/dailnoconf/*.txt")
-texts(data_corpus_dailnoconf1991) <- rt[["text"]]
-Encoding(texts(data_corpus_dailnoconf1991)) <- "UTF-8"
+as.character(data_corpus_dailnoconf1991) <- rt[["text"]]
+Encoding(as.character(data_corpus_dailnoconf1991)) <- "UTF-8"
 docnames(data_corpus_dailnoconf1991) <- stringi::stri_replace_last_fixed(rt$doc_id, ".txt", "")
 
 # add metdata
@@ -68,8 +68,8 @@ usethis::use_data(data_corpus_dailnoconf1991, overwrite = TRUE)
 
 ##### data_corpus_irishbudget2010
 
-texts(data_corpus_irishbudget2010) <- 
-    stringi::stri_replace_all_regex(texts(data_corpus_irishbudget2010), "([^\n])\\n{1}([^\n])", "$1\n\n$2")
+data_corpus_irishbudget2010 <- 
+    stringi::stri_replace_all_regex(as.character(data_corpus_irishbudget2010), "([^\n])\\n{1}([^\n])", "$1\n\n$2")
 
 # structure metadata
 meta(data_corpus_irishbudget2010) <- list( 

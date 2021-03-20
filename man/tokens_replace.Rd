@@ -33,7 +33,7 @@ exact matching. See \link{valuetype} for details.}
 }
 \description{
 Substitute token types based on vectorized one-to-one matching. Since this
-function is created for lemmatization or user-defined stemming. It support
+function is created for lemmatization or user-defined stemming. It supports
 substitution of multi-word features by multi-word features, but substitution
 is fastest when \code{pattern} and \code{replacement} are character vectors
 and \code{valuetype = "fixed"} as the function only substitute types of

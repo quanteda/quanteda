@@ -21,19 +21,19 @@ test_that("test that corpus_group is working", {
 
     group <- factor(c("Z", "A", "Z", "A"), levels = c("A", "B", "Z"))
     expect_equal(
-        texts(corpus_group(corp, group)),
+        as.character(corpus_group(corp, group)),
         c("A" = "e f g h X Y Z",
           "Z" = "a b c d A B C")
     )
     
     expect_equal(
-        texts(corpus_group(corp, group, concatenator = " + ")),
+        as.character(corpus_group(corp, group, concatenator = " + ")),
         c("A" = "e f g h + X Y Z",
           "Z" = "a b c d + A B C")
     )
 
     expect_equal(
-        texts(corpus_group(corp, group, fill = TRUE)),
+        as.character(corpus_group(corp, group, fill = TRUE)),
         c("A" = "e f g h X Y Z",
           "B" = "",
           "Z" = "a b c d A B C")
@@ -43,12 +43,12 @@ test_that("test that corpus_group is working", {
 test_that("corpus_group works with empty documents", {
     corp <- corpus(c(doc1 = "a b c c", doc2 = "b c d", doc3 = ""))
     expect_equivalent(
-        texts(corpus_group(corp, c("doc1", "doc1", "doc2"))),
+        as.character(corpus_group(corp, c("doc1", "doc1", "doc2"))),
         c(doc1 = "a b c c b c d", doc2 = "")
     )
 
     expect_equivalent(
-        texts(corpus_group(corp, c(1, 1, 2))),
+        as.character(corpus_group(corp, c(1, 1, 2))),
         c(doc1 = "a b c c b c d", doc2 = "")
     )
 })
@@ -128,7 +128,7 @@ test_that("corpus_group works with NA group labels", {
     corp <- corpus(corp) %>%
         corpus_group(groups = factorvar)
     expect_identical(
-        texts(corp),
+        as.character(corp),
         c(No = "Doc2", Yes = "Doc 1 Doc 1b")
     )
 })

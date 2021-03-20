@@ -265,7 +265,7 @@ tokens.corpus <- function(x,
         warning("remove_separators is always TRUE for this type")
 
     # split x into smaller blocks to reduce peak memory consumption
-    x <- texts(x)
+    x <- as.character(x)
     x <- split(x, factor(ceiling(seq_along(x) / quanteda_options("tokens_block_size"))))
     x <- lapply(x, function(y) {
         if (verbose)
@@ -433,7 +433,6 @@ as.tokens.default <- function(x, concatenator = "", ...) {
     check_class(class(x), "as.tokens")
 }
 
-#' @rdname as.tokens
 #' @importFrom stringi stri_trans_nfc
 #' @export
 as.tokens.list <- function(x, concatenator = "_", ...) {
@@ -447,7 +446,6 @@ as.tokens.list <- function(x, concatenator = "_", ...) {
     )
 }
 
-#' @rdname as.tokens
 #' @export
 as.tokens.tokens <- function(x, ...) {
     upgrade_tokens(x)
