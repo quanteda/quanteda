@@ -1,39 +1,52 @@
 test_that("test that corpus_group is working", {
-    txt <- c("a b c d", "e f g h", "A B C", "X Y Z")
-    corp <- corpus(txt)
+    corp <- corpus(c("a b c d", "e f g h", "A B C", "X Y Z"),
+                   docname = c("doc1", "doc1", "doc2", "doc2"),
+                   unique_docnames = FALSE)
     expect_equal(
-        as.list(corpus_group(corp, c(1, 1, 2, 2))),
-        list("1" = c("a b c d e f g h"),
-             "2" = c("A B C X Y Z"))
+        as.character(corpus_group(corp, c(1, 1, 2, 2))),
+        c("1" = "a b c d e f g h",
+          "2" = "A B C X Y Z")
+    )
+    
+    expect_equal(
+        as.character(corpus_group(corp)),
+        c("doc1" = "a b c d e f g h",
+          "doc2" = "A B C X Y Z")
+    )
+    
+    expect_equal(
+        as.character(corpus_group(corp, c(1, 1, 2, 2))),
+        c("1" = "a b c d e f g h",
+          "2" = "A B C X Y Z")
     )
 
     expect_equal(
-        as.list(corpus_group(corp, c(2, 1, 2, 1))),
-        list("1" = c("e f g h X Y Z"),
-             "2" = c("a b c d A B C"))
+        as.character(corpus_group(corp, c(2, 1, 2, 1))),
+        c("1" = "e f g h X Y Z",
+          "2" = "a b c d A B C")
     )
 
     expect_equal(
-        as.list(corpus_group(corp, c("Z", "A", "Z", "A"))),
-        list("A" = c("e f g h X Y Z"),
-             "Z" = c("a b c d A B C"))
+        as.character(corpus_group(corp, c("Z", "A", "Z", "A"))),
+        c("A" = "e f g h X Y Z",
+          "Z" = "a b c d A B C")
     )
 
     group <- factor(c("Z", "A", "Z", "A"), levels = c("A", "B", "Z"))
     expect_equal(
-        texts(corpus_group(corp, group)),
+        as.character(corpus_group(corp, group)),
         c("A" = "e f g h X Y Z",
           "Z" = "a b c d A B C")
     )
     
     expect_equal(
-        texts(corpus_group(corp, group, concatenator = " + ")),
+        as.character(corpus_group(corp, group, concatenator = " + ")),
         c("A" = "e f g h + X Y Z",
           "Z" = "a b c d + A B C")
     )
 
     expect_equal(
-        texts(corpus_group(corp, group, fill = TRUE)),
+        as.character(corpus_group(corp, group, fill = TRUE)),
         c("A" = "e f g h X Y Z",
           "B" = "",
           "Z" = "a b c d A B C")
@@ -43,12 +56,12 @@ test_that("test that corpus_group is working", {
 test_that("corpus_group works with empty documents", {
     corp <- corpus(c(doc1 = "a b c c", doc2 = "b c d", doc3 = ""))
     expect_equivalent(
-        texts(corpus_group(corp, c("doc1", "doc1", "doc2"))),
+        as.character(corpus_group(corp, c("doc1", "doc1", "doc2"))),
         c(doc1 = "a b c c b c d", doc2 = "")
     )
 
     expect_equivalent(
-        texts(corpus_group(corp, c(1, 1, 2))),
+        as.character(corpus_group(corp, c(1, 1, 2))),
         c(doc1 = "a b c c b c d", doc2 = "")
     )
 })
@@ -59,7 +72,7 @@ test_that("corpus_group works with NA group labels", {
     corp <- corpus(corp) %>%
         corpus_group(groups = factorvar)
     expect_identical(
-        texts(corp),
+        as.character(corp),
         c(No = "Doc2", Yes = "Doc 1 Doc 1b")
     )
 })

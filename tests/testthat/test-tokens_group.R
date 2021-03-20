@@ -1,10 +1,18 @@
 test_that("test that tokens_group is working", {
-    txt <- c("a b c d", "e f g h", "A B C", "X Y Z")
-    toks <- tokens(txt)
+    corp <- corpus(c("a b c d", "e f g h", "A B C", "X Y Z"),
+                   docname = c("doc1", "doc1", "doc2", "doc2"),
+                   unique_docnames = FALSE)
+    toks <- tokens(corp)
     expect_equal(
         as.list(tokens_group(toks, c(1, 1, 2, 2))),
         list("1" = c("a", "b", "c", "d", "e", "f", "g", "h"),
              "2" = c("A", "B", "C", "X", "Y", "Z"))
+    )
+    
+    expect_equal(
+        as.list(tokens_group(toks)),
+        list("doc1" = c("a", "b", "c", "d", "e", "f", "g", "h"),
+             "doc2" = c("A", "B", "C", "X", "Y", "Z"))
     )
 
     expect_equal(
