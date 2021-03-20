@@ -1,6 +1,6 @@
 #' Print a dfm object
 #'
-#' @rdname print-method
+#' @rdname print-methods
 #' @param max_nfeat max number of features to print; default is from the
 #'   `print_dfm_max_nfeat` setting of [quanteda_options()]
 #' @export
@@ -36,6 +36,10 @@ setMethod("print", signature(x = "dfm"),
 
 #' @noRd
 setMethod("show", signature(object = "dfm"), function(object) print(object))
+
+#' @rdname print-methods
+#' @name print.dfm
+NULL
 
 # internal function for print.dfm
 print_dfm <- function(x, max_ndoc, max_nfeat, show_summary, ...) {

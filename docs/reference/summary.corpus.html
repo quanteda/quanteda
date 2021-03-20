@@ -54,6 +54,8 @@ as date of number of texts, creation and source." />
 
 
 
+
+
 <!-- mathjax -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script>
@@ -75,9 +77,15 @@ as date of number of texts, creation and source." />
 </script>
 
 
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -188,7 +196,7 @@ as date of number of texts, creation and source." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/quanteda/quanteda">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -253,7 +261,7 @@ meta-data</p></td>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>data_corpus_inaugural</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Corpus consisting of 58 documents, showing 58 documents:
+</div><div class='output co'>#&gt; Corpus consisting of 59 documents, showing 59 documents:
 #&gt; 
 #&gt;             Text Types Tokens Sentences Year  President       FirstName
 #&gt;  1789-Washington   625   1537        23 1789 Washington          George
@@ -314,6 +322,7 @@ meta-data</p></td>
 #&gt;       2009-Obama   938   2689       110 2009      Obama          Barack
 #&gt;       2013-Obama   814   2317        88 2013      Obama          Barack
 #&gt;       2017-Trump   582   1660        88 2017      Trump       Donald J.
+#&gt;   2021-Biden.txt   811   2766       216 2021      Biden       Joseph R.
 #&gt;                  Party
 #&gt;                   none
 #&gt;                   none
@@ -373,8 +382,9 @@ meta-data</p></td>
 #&gt;             Democratic
 #&gt;             Democratic
 #&gt;             Republican
+#&gt;             Democratic
 #&gt; </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>data_corpus_inaugural</span>, n <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Corpus consisting of 58 documents, showing 10 documents:
+</div><div class='output co'>#&gt; Corpus consisting of 59 documents, showing 10 documents:
 #&gt; 
 #&gt;             Text Types Tokens Sentences Year  President   FirstName
 #&gt;  1789-Washington   625   1537        23 1789 Washington      George
@@ -428,11 +438,11 @@ meta-data</p></td>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p>
+  <p><p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p></p>
 </div>
 
       </footer>
@@ -457,6 +467,8 @@ meta-data</p></td>
 </script>
 
 
+
+  
 
   </body>
 </html>

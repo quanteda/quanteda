@@ -238,21 +238,6 @@ fcm.tokens <- function(x, context = c("document", "window"),
     return(result)
 }
 
-
-#' @noRd
-#' @method head fcm
-#' @export
-head.fcm <- function(x, n = 6L, nfeature = 6L, ...) {
-    head.dfm(x, n, nfeature, ...)
-}
-
-#' @noRd
-#' @method tail fcm
-#' @export
-tail.fcm <- function(x, n = 6L, nfeature = 6L, ...) {
-    head.dfm(x, n, nfeature, ...)
-}
-
 #' @noRd
 #' @rdname as.fcm
 #' @export

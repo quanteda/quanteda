@@ -476,24 +476,6 @@ test_that("dfm's document counts in verbose message is correct", {
                    "kept 2 features")
 })
 
-test_that("dfm head, tail work as expected", {
-    dfmt <- head(data_dfm_lbgexample, 4, nf = 3)
-    expect_equal(featnames(dfmt), LETTERS[1:3])
-    expect_equal(docnames(dfmt), paste0("R", 1:4))
-
-    dfmt <- head(data_dfm_lbgexample, -4, nf = -30)
-    expect_equal(featnames(dfmt), LETTERS[1:7])
-    expect_equal(docnames(dfmt), paste0("R", 1:2))
-
-    dfmt <- tail(data_dfm_lbgexample, 4, nf = 3)
-    expect_equal(featnames(dfmt), c("ZI", "ZJ", "ZK"))
-    expect_equal(docnames(dfmt), c("R3", "R4", "R5", "V1"))
-
-    dfmt <- tail(data_dfm_lbgexample, -4, nf = -34)
-    expect_equal(featnames(dfmt), c("ZI", "ZJ", "ZK"))
-    expect_equal(docnames(dfmt), c("R5", "V1"))
-})
-
 test_that("dfm print works with options as expected", {
     dfmt <- dfm(tokens(data_corpus_inaugural[1:14],
                 remove_punct = FALSE, remove_numbers = FALSE, split_hyphens = TRUE))

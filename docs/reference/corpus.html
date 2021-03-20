@@ -59,13 +59,14 @@ document is a variable identified by text_field; and other variables
 are imported as document-level meta-data.  This matches the format of
 data.frames constructed by the the readtext package.
 a kwic object constructed by kwic().
-a tm VCorpus or SimpleCorpus class  object,
-with the fixed metadata
-fields imported as docvars and corpus-level metadata imported
-as metacorpus information.
+a tm VCorpus or SimpleCorpus
+class  object, with the fixed metadata fields imported as docvars and
+corpus-level metadata imported as meta information.
 a corpus object.
 
 " />
+
+
 
 
 
@@ -91,9 +92,15 @@ a corpus object.
 </script>
 
 
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -204,7 +211,7 @@ a corpus object.
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/quanteda/quanteda">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -244,10 +251,9 @@ document is a variable identified by <code>text_field</code>; and other variable
 are imported as document-level meta-data.  This matches the format of
 data.frames constructed by the the <span class="pkg">readtext</span> package.</p></li>
 <li><p>a <a href='kwic.html'>kwic</a> object constructed by <code><a href='kwic.html'>kwic()</a></code>.</p></li>
-<li><p>a <span class="pkg">tm</span> <a href='https://rdrr.io/pkg/tm/man/VCorpus.html'>VCorpus</a> or <a href='https://rdrr.io/pkg/tm/man/SimpleCorpus.html'>SimpleCorpus</a> class  object,
-with the fixed metadata
-fields imported as <a href='docvars.html'>docvars</a> and corpus-level metadata imported
-as <a href='meta.html'>metacorpus</a> information.</p></li>
+<li><p>a <span class="pkg">tm</span> <a href='https://rdrr.io/pkg/tm/man/VCorpus.html'>VCorpus</a> or <a href='https://rdrr.io/pkg/tm/man/SimpleCorpus.html'>SimpleCorpus</a>
+class  object, with the fixed metadata fields imported as <a href='docvars.html'>docvars</a> and
+corpus-level metadata imported as <a href='meta.html'>meta</a> information.</p></li>
 <li><p>a corpus object.</p></li>
 </ul>
 
@@ -429,15 +435,15 @@ docvars.  For details, see <code><a href='corpus-class.html'>[.corpus()</a></cod
 </div><div class='output co'>#&gt; Corpus consisting of 9 documents, showing 9 documents:
 #&gt; 
 #&gt;          Text Types Tokens Sentences author       datetimestamp description
-#&gt;           BNP  1125   3280        88     NA 2020-12-07 16:34:36          NA
-#&gt;     Coalition   142    260         4     NA 2020-12-07 16:34:36          NA
-#&gt;  Conservative   251    499        15     NA 2020-12-07 16:34:36          NA
-#&gt;        Greens   322    677        21     NA 2020-12-07 16:34:36          NA
-#&gt;        Labour   298    680        29     NA 2020-12-07 16:34:36          NA
-#&gt;        LibDem   251    483        14     NA 2020-12-07 16:34:36          NA
-#&gt;            PC    77    114         5     NA 2020-12-07 16:34:36          NA
-#&gt;           SNP    88    134         4     NA 2020-12-07 16:34:36          NA
-#&gt;          UKIP   346    722        26     NA 2020-12-07 16:34:36          NA
+#&gt;           BNP  1125   3280        88     NA 2021-03-18 10:18:47          NA
+#&gt;     Coalition   142    260         4     NA 2021-03-18 10:18:47          NA
+#&gt;  Conservative   251    499        15     NA 2021-03-18 10:18:47          NA
+#&gt;        Greens   322    677        21     NA 2021-03-18 10:18:47          NA
+#&gt;        Labour   298    680        29     NA 2021-03-18 10:18:47          NA
+#&gt;        LibDem   251    483        14     NA 2021-03-18 10:18:47          NA
+#&gt;            PC    77    114         5     NA 2021-03-18 10:18:47          NA
+#&gt;           SNP    88    134         4     NA 2021-03-18 10:18:47          NA
+#&gt;          UKIP   346    722        26     NA 2021-03-18 10:18:47          NA
 #&gt;  heading id language origin
 #&gt;       NA  1       en     NA
 #&gt;       NA  2       en     NA
@@ -474,43 +480,9 @@ docvars.  For details, see <code><a href='corpus-class.html'>[.corpus()</a></cod
 #&gt;  fromDf_5     6      6         1             c         5
 #&gt;  fromDf_6     6      6         1             c         6
 #&gt; </div><div class='input'>
-<span class='co'># construct a corpus from a kwic object</span>
-<span class='va'>kw</span> <span class='op'>&lt;-</span> <span class='fu'><a href='kwic.html'>kwic</a></span><span class='op'>(</span><span class='va'>data_corpus_inaugural</span>, <span class='st'>"southern"</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='fu'>corpus</span><span class='op'>(</span><span class='va'>kw</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Corpus consisting of 28 documents, showing 28 documents:
-#&gt; 
-#&gt;                    Text Types Tokens Sentences from   to  keyword context
-#&gt;        1797-Adams.1.pre     5      5         1 1802 1802 southern     pre
-#&gt;        1825-Adams.1.pre     4      5         1 2427 2427 southern     pre
-#&gt;      1861-Lincoln.1.pre     4      5         1   96   96 Southern     pre
-#&gt;      1865-Lincoln.1.pre     5      5         1  278  278 southern     pre
-#&gt;        1877-Hayes.1.pre     5      5         1  376  376 Southern     pre
-#&gt;        1877-Hayes.2.pre     5      5         1  946  946 Southern     pre
-#&gt;        1877-Hayes.3.pre     5      5         1 1238 1238 Southern     pre
-#&gt;     1881-Garfield.1.pre     5      5         1  988  988 Southern     pre
-#&gt;         1909-Taft.1.pre     4      5         1 4026 4026 Southern     pre
-#&gt;         1909-Taft.2.pre     5      5         1 4227 4227 Southern     pre
-#&gt;         1909-Taft.3.pre     5      5         1 4347 4347 Southern     pre
-#&gt;         1909-Taft.4.pre     5      5         1 4532 4532 Southern     pre
-#&gt;         1909-Taft.5.pre     5      5         1 4592 4592 Southern     pre
-#&gt;   1953-Eisenhower.1.pre     5      5         1 1221 1221 southern     pre
-#&gt;       1797-Adams.1.post     5      5         1 1802 1802 southern    post
-#&gt;       1825-Adams.1.post     5      5         1 2427 2427 southern    post
-#&gt;     1861-Lincoln.1.post     5      5         1   96   96 Southern    post
-#&gt;     1865-Lincoln.1.post     5      5         2  278  278 southern    post
-#&gt;       1877-Hayes.1.post     5      5         2  376  376 Southern    post
-#&gt;       1877-Hayes.2.post     5      5         1  946  946 Southern    post
-#&gt;       1877-Hayes.3.post     5      5         1 1238 1238 Southern    post
-#&gt;    1881-Garfield.1.post     5      5         2  988  988 Southern    post
-#&gt;        1909-Taft.1.post     5      5         2 4026 4026 Southern    post
-#&gt;        1909-Taft.2.post     5      5         1 4227 4227 Southern    post
-#&gt;        1909-Taft.3.post     5      5         1 4347 4347 Southern    post
-#&gt;        1909-Taft.4.post     5      5         1 4532 4532 Southern    post
-#&gt;        1909-Taft.5.post     5      5         1 4592 4592 Southern    post
-#&gt;  1953-Eisenhower.1.post     5      5         1 1221 1221 southern    post
-#&gt; </div><div class='input'><span class='co'># from a kwic</span>
-<span class='va'>kw</span> <span class='op'>&lt;-</span> <span class='fu'><a href='kwic.html'>kwic</a></span><span class='op'>(</span><span class='va'>data_char_sampletext</span>, <span class='st'>"econom*"</span>, separator <span class='op'>=</span> <span class='st'>""</span>,
-           remove_separators <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span> <span class='co'># keep original separators</span>
+<span class='co'># from a kwic</span>
+<span class='va'>kw</span> <span class='op'>&lt;-</span> <span class='fu'><a href='kwic.html'>kwic</a></span><span class='op'>(</span><span class='fu'><a href='tokens.html'>tokens</a></span><span class='op'>(</span><span class='va'>data_char_sampletext</span>, remove_separators <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>,
+           pattern <span class='op'>=</span> <span class='st'>"econom*"</span>, separator <span class='op'>=</span> <span class='st'>""</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='fu'>corpus</span><span class='op'>(</span><span class='va'>kw</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Corpus consisting of 10 documents, showing 10 documents:
 #&gt; 
@@ -557,11 +529,11 @@ docvars.  For details, see <code><a href='corpus-class.html'>[.corpus()</a></cod
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p>
+  <p><p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p></p>
 </div>
 
       </footer>
@@ -586,6 +558,8 @@ docvars.  For details, see <code><a href='corpus-class.html'>[.corpus()</a></cod
 </script>
 
 
+
+  
 
   </body>
 </html>

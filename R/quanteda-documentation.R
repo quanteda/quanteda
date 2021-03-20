@@ -199,8 +199,8 @@ NULL
 #'
 #' Print method for \pkg{quanteda} objects.  In each `max_n*` option, 0 shows none, and
 #' -1 shows all.
-#' @name print-method
-#' @rdname print-method
+#' @name print-methods
+#' @rdname print-methods
 #' @param x the object to be printed
 #' @param max_ndoc max number of documents to print; default is from the
 #'   `print_*_max_ndoc` setting of [quanteda_options()]

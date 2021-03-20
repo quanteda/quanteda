@@ -54,6 +54,8 @@ object." />
 
 
 
+
+
 <!-- mathjax -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script>
@@ -75,9 +77,15 @@ object." />
 </script>
 
 
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -188,7 +196,7 @@ object." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/quanteda/quanteda">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -323,7 +331,7 @@ keys, or as one match if the overlap is within the same key.
                    law<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"law*"</span>, <span class='st'>"constitution"</span><span class='op'>)</span>,
                    freedom<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"free*"</span>, <span class='st'>"libert*"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
 <span class='fu'><a href='dfm.html'>dfm</a></span><span class='op'>(</span><span class='fu'>tokens_lookup</span><span class='op'>(</span><span class='va'>toks1</span>, <span class='va'>dict1</span>, valuetype <span class='op'>=</span> <span class='st'>"glob"</span>, verbose <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>applying a dictionary consisting of 3 keys</span></div><div class='output co'>#&gt; Document-feature matrix of: 58 documents, 3 features (14.9% sparse) and 4 docvars.
+</div><div class='output co'>#&gt; <span class='message'>applying a dictionary consisting of 3 keys</span></div><div class='output co'>#&gt; Document-feature matrix of: 59 documents, 3 features (14.69% sparse) and 4 docvars.
 #&gt;                  features
 #&gt; docs              country law freedom
 #&gt;   1789-Washington       2   1       6
@@ -332,8 +340,8 @@ keys, or as one match if the overlap is within the same key.
 #&gt;   1801-Jefferson        0   6      11
 #&gt;   1805-Jefferson        1  13       6
 #&gt;   1809-Madison          2   2       5
-#&gt; [ reached max_ndoc ... 52 more documents ]</div><div class='input'><span class='fu'><a href='dfm.html'>dfm</a></span><span class='op'>(</span><span class='fu'>tokens_lookup</span><span class='op'>(</span><span class='va'>toks1</span>, <span class='va'>dict1</span>, valuetype <span class='op'>=</span> <span class='st'>"glob"</span>, verbose <span class='op'>=</span> <span class='cn'>TRUE</span>, nomatch <span class='op'>=</span> <span class='st'>"NONE"</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>applying a dictionary consisting of 3 keys</span></div><div class='output co'>#&gt; Document-feature matrix of: 58 documents, 4 features (11.2% sparse) and 4 docvars.
+#&gt; [ reached max_ndoc ... 53 more documents ]</div><div class='input'><span class='fu'><a href='dfm.html'>dfm</a></span><span class='op'>(</span><span class='fu'>tokens_lookup</span><span class='op'>(</span><span class='va'>toks1</span>, <span class='va'>dict1</span>, valuetype <span class='op'>=</span> <span class='st'>"glob"</span>, verbose <span class='op'>=</span> <span class='cn'>TRUE</span>, nomatch <span class='op'>=</span> <span class='st'>"NONE"</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>applying a dictionary consisting of 3 keys</span></div><div class='output co'>#&gt; Document-feature matrix of: 59 documents, 4 features (11.02% sparse) and 4 docvars.
 #&gt;                  features
 #&gt; docs              country law freedom none
 #&gt;   1789-Washington       2   1       6 1526
@@ -342,13 +350,13 @@ keys, or as one match if the overlap is within the same key.
 #&gt;   1801-Jefferson        0   6      11 1906
 #&gt;   1805-Jefferson        1  13       6 2359
 #&gt;   1809-Madison          2   2       5 1250
-#&gt; [ reached max_ndoc ... 52 more documents ]</div><div class='input'>
+#&gt; [ reached max_ndoc ... 53 more documents ]</div><div class='input'>
 <span class='va'>dict2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dictionary.html'>dictionary</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>country <span class='op'>=</span> <span class='st'>"united states"</span>,
                        law <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"law"</span>, <span class='st'>"constitution"</span><span class='op'>)</span>,
                        freedom <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"freedom"</span>, <span class='st'>"liberty"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
 <span class='co'># dfm(applyDictionary(toks1, dict2, valuetype = "fixed"))</span>
 <span class='fu'><a href='dfm.html'>dfm</a></span><span class='op'>(</span><span class='fu'>tokens_lookup</span><span class='op'>(</span><span class='va'>toks1</span>, <span class='va'>dict2</span>, valuetype <span class='op'>=</span> <span class='st'>"fixed"</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Document-feature matrix of: 58 documents, 3 features (21.3% sparse) and 4 docvars.
+</div><div class='output co'>#&gt; Document-feature matrix of: 59 documents, 3 features (20.90% sparse) and 4 docvars.
 #&gt;                  features
 #&gt; docs              country law freedom
 #&gt;   1789-Washington       2   1       1
@@ -357,7 +365,7 @@ keys, or as one match if the overlap is within the same key.
 #&gt;   1801-Jefferson        0   6       7
 #&gt;   1805-Jefferson        1   9       5
 #&gt;   1809-Madison          2   2       3
-#&gt; [ reached max_ndoc ... 52 more documents ]</div><div class='input'>
+#&gt; [ reached max_ndoc ... 53 more documents ]</div><div class='input'>
 <span class='co'># hierarchical dictionary example</span>
 <span class='va'>txt</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>d1 <span class='op'>=</span> <span class='st'>"The United States has the Atlantic Ocean and the Pacific Ocean."</span>,
          d2 <span class='op'>=</span> <span class='st'>"Britain and Ireland have the Irish Sea and the English Channel."</span><span class='op'>)</span>
@@ -448,11 +456,11 @@ keys, or as one match if the overlap is within the same key.
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p>
+  <p><p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p></p>
 </div>
 
       </footer>
@@ -477,6 +485,8 @@ keys, or as one match if the overlap is within the same key.
 </script>
 
 
+
+  
 
   </body>
 </html>

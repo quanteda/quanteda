@@ -55,6 +55,8 @@ objects." />
 
 
 
+
+
 <!-- mathjax -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script>
@@ -76,9 +78,15 @@ objects." />
 </script>
 
 
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -189,7 +197,7 @@ objects." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/quanteda/quanteda">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -223,41 +231,35 @@ object is a <a href='tokens.html'>tokens</a> object, and functions to combine <a
 objects.</p>
     </div>
 
-    <pre class="usage"># S3 method for tokens
-as.list(x, ...)
+    <pre class="usage"><span class='co'># S3 method for tokens</span>
+<span class='fu'><a href='https://rdrr.io/r/base/list.html'>as.list</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span>
 
-# S3 method for tokens
-as.character(x, use.names = FALSE, ...)
+<span class='co'># S3 method for tokens</span>
+<span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span><span class='op'>(</span><span class='va'>x</span>, use.names <span class='op'>=</span> <span class='cn'>FALSE</span>, <span class='va'>...</span><span class='op'>)</span>
 
-is.tokens(x)
+<span class='fu'>is.tokens</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
 
-# S3 method for tokens
-unlist(x, recursive = FALSE, use.names = TRUE)
+<span class='co'># S3 method for tokens</span>
+<span class='fu'><a href='https://rdrr.io/r/base/unlist.html'>unlist</a></span><span class='op'>(</span><span class='va'>x</span>, recursive <span class='op'>=</span> <span class='cn'>FALSE</span>, use.names <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 
-# S3 method for tokens
-+(t1, t2)
+<span class='fu'>as.tokens</span><span class='op'>(</span><span class='va'>x</span>, concatenator <span class='op'>=</span> <span class='st'>"_"</span>, <span class='va'>...</span><span class='op'>)</span>
 
-# S3 method for tokens
-c(...)
+<span class='co'># S3 method for list</span>
+<span class='fu'>as.tokens</span><span class='op'>(</span><span class='va'>x</span>, concatenator <span class='op'>=</span> <span class='st'>"_"</span>, <span class='va'>...</span><span class='op'>)</span>
 
-as.tokens(x, concatenator = "_", ...)
+<span class='co'># S3 method for tokens</span>
+<span class='fu'>as.tokens</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span>
 
-# S3 method for list
-as.tokens(x, concatenator = "_", ...)
+<span class='co'># S3 method for spacyr_parsed</span>
+<span class='fu'>as.tokens</span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  concatenator <span class='op'>=</span> <span class='st'>"/"</span>,
+  include_pos <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"none"</span>, <span class='st'>"pos"</span>, <span class='st'>"tag"</span><span class='op'>)</span>,
+  use_lemma <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span>
 
-# S3 method for tokens
-as.tokens(x, ...)
-
-# S3 method for spacyr_parsed
-as.tokens(
-  x,
-  concatenator = "/",
-  include_pos = c("none", "pos", "tag"),
-  use_lemma = FALSE,
-  ...
-)
-
-is.tokens(x)</pre>
+<span class='fu'>is.tokens</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -269,7 +271,7 @@ is.tokens(x)</pre>
     <tr>
       <th>...</th>
       <td><p>additional arguments used by specific methods.  For
-c.tokens, these are the <a href='tokens.html'>tokens</a> objects to be concatenated.</p></td>
+<a href='tokens-class.html'>c.tokens</a>, these are the <a href='tokens.html'>tokens</a> objects to be concatenated.</p></td>
     </tr>
     <tr>
       <th>use.names</th>
@@ -280,14 +282,6 @@ c.tokens, these are the <a href='tokens.html'>tokens</a> objects to be concatena
       <th>recursive</th>
       <td><p>a required argument for <a href='https://rdrr.io/r/base/unlist.html'>unlist</a> but inapplicable to
 <a href='tokens.html'>tokens</a> objects</p></td>
-    </tr>
-    <tr>
-      <th>t1</th>
-      <td><p>tokens one to be added</p></td>
-    </tr>
-    <tr>
-      <th>t2</th>
-      <td><p>tokens two to be added</p></td>
     </tr>
     <tr>
       <th>concatenator</th>
@@ -318,8 +312,6 @@ token</p></td>
 tokens, <code>FALSE</code> otherwise.</p>
 <p><code>unlist</code> returns a simple vector of characters from a
 <a href='tokens.html'>tokens</a> object.</p>
-<p><code><a href='https://rdrr.io/r/base/c.html'>c(...)</a></code> and <code><a href='https://rdrr.io/r/base/Arithmetic.html'>+</a></code> return a tokens object whose documents
-have been added as a single sequence of documents.</p>
 <p><code>as.tokens</code> returns a quanteda <a href='tokens.html'>tokens</a> object.</p>
 <p><code>is.tokens</code> returns <code>TRUE</code> if the object is of class
 tokens, <code>FALSE</code> otherwise.</p>
@@ -336,31 +328,7 @@ inter-word delimiter, when reading in the elements that will become the
 tokens.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># combining tokens</span>
-<span class='va'>toks1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>doc1 <span class='op'>=</span> <span class='st'>"a b c d e"</span>, doc2 <span class='op'>=</span> <span class='st'>"f g h"</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>toks2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>doc3 <span class='op'>=</span> <span class='st'>"1 2 3"</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>toks1</span> <span class='op'>+</span> <span class='va'>toks2</span>
-</div><div class='output co'>#&gt; Tokens consisting of 3 documents.
-#&gt; doc1 :
-#&gt; [1] "a" "b" "c" "d" "e"
-#&gt; 
-#&gt; doc2 :
-#&gt; [1] "f" "g" "h"
-#&gt; 
-#&gt; doc3 :
-#&gt; [1] "1" "2" "3"
-#&gt; </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='va'>toks1</span>, <span class='va'>toks2</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Tokens consisting of 3 documents.
-#&gt; doc1 :
-#&gt; [1] "a" "b" "c" "d" "e"
-#&gt; 
-#&gt; doc2 :
-#&gt; [1] "f" "g" "h"
-#&gt; 
-#&gt; doc3 :
-#&gt; [1] "1" "2" "3"
-#&gt; </div><div class='input'>
-
+    <pre class="examples"><div class='input'>
 <span class='co'># create tokens object from list of characters with custom concatenator</span>
 <span class='va'>dict</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dictionary.html'>dictionary</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>country <span class='op'>=</span> <span class='st'>"United States"</span>,
                    sea <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Atlantic Ocean"</span>, <span class='st'>"Pacific Ocean"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
@@ -384,11 +352,11 @@ tokens.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p>
+  <p><p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p></p>
 </div>
 
       </footer>
@@ -413,6 +381,8 @@ tokens.</p>
 </script>
 
 
+
+  
 
   </body>
 </html>
