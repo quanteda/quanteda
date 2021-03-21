@@ -3,11 +3,14 @@
 \name{docnames}
 \alias{docnames}
 \alias{docnames<-}
+\alias{docid}
 \title{Get or set document names}
 \usage{
 docnames(x)
 
 docnames(x) <- value
+
+docid(x)
 }
 \arguments{
 \item{x}{the object with docnames}
@@ -20,9 +23,22 @@ docnames(x) <- value
 \verb{docnames <-} assigns new values to the document names of an object.
 docnames can only be character, so any non-character value assigned to be a
 docname will be coerced to mode \code{character}.
+
+\code{docid} returns an internal variable denoting the original "docname"
+from which a document came.  Unless an object has been reshaped (e.g.
+\code{\link[=corpus_reshape]{corpus_reshape()}}, split (e.g.\code{\link[=tokens_split]{tokens_split()}}), or segmented (e.g.
+\code{\link[=corpus_segment]{corpus_segment()}}), \code{docid(x)} will return the docnames.
 }
 \description{
 Get or set the document names of a \link{corpus}, \link{tokens}, or \link{dfm} object.
+}
+\note{
+\code{docid} is designed primarily for developers, not for end users.  In
+most cases, you will want \code{docnames} instead.  It is, however, the
+default for \link{groups}, so that documents that have been previously reshaped
+(e.g. \code{\link[=corpus_reshape]{corpus_reshape()}}, split (e.g.\code{\link[=tokens_split]{tokens_split()}}), or segmented (e.g.
+\code{\link[=corpus_segment]{corpus_segment()}}) will be regrouped into their original \code{docnames} when
+\code{groups = docid(x)}.
 }
 \examples{
 # get and set doument names to a corpus
@@ -40,6 +56,15 @@ docnames(dfmat) <- char_tolower(docnames(dfmat))
 # reassign the document names of the inaugural speech corpus
 docnames(data_corpus_inaugural) <- paste("Speech", 1:ndoc(data_corpus_inaugural), sep="")
 
+# docid
+corp <- corpus(c(textone = "This is a sentence.  Another sentence.  Yet another.",
+                 textwo = "Sentence 1. Sentence 2."))
+corpsent <- corp \%>\%
+    corpus_reshape(to = "sentences")
+docnames(corpsent)
+docid(corpsent)
+docid(tokens(corpsent))
+docid(dfm(tokens(corpsent)))
 }
 \seealso{
 \code{\link[=featnames]{featnames()}}

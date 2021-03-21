@@ -22,17 +22,17 @@
 #' # with fill
 #' tokens_group(toks, groups = factor(c(1, 1, 2, 2), levels = 1:3))
 #' tokens_group(toks, groups = factor(c(1, 1, 2, 2), levels = 1:3), fill = TRUE)
-tokens_group <- function(x, groups, fill = FALSE) {
+tokens_group <- function(x, groups = docid(x), fill = FALSE) {
     UseMethod("tokens_group")
 }
 
 #' @export
-tokens_group.default <- function(x, groups, fill = FALSE) {
+tokens_group.default <- function(x, groups = docid(x), fill = FALSE) {
     check_class(class(x), "tokens_group")
 }
 
 #' @export
-tokens_group.tokens <- function(x, groups, fill = FALSE) {
+tokens_group.tokens <- function(x, groups = docid(x), fill = FALSE) {
     x <- as.tokens(x)
     if (missing(groups)) {
         field <- NULL

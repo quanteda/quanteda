@@ -23,17 +23,17 @@
 #' 
 #' # with fill
 #' corpus_group(corp, groups = factor(c(1, 1, 2, 2), levels = 1:3), fill = TRUE)
-corpus_group <- function(x, groups, fill = FALSE, concatenator = " ") {
+corpus_group <- function(x, groups = docid(x), fill = FALSE, concatenator = " ") {
     UseMethod("corpus_group")
 }
 
 #' @export
-corpus_group.default <- function(x, groups, fill = FALSE, concatenator = " ") {
+corpus_group.default <- function(x, groups = docid(x), fill = FALSE, concatenator = " ") {
     check_class(class(x), "corpus_group")
 }
 
 #' @export
-corpus_group.corpus <- function(x, groups, fill = FALSE, concatenator = " ") {
+corpus_group.corpus <- function(x, groups = docid(x), fill = FALSE, concatenator = " ") {
     x <- as.corpus(x)
     if (missing(groups)) {
         field <- NULL

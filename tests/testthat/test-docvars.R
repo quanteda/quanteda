@@ -582,3 +582,49 @@ test_that("group_docvars() works", {
         factor(c("Z", "Y", "X"), levels = c("Z", "Y", "X"))
     )
 })
+
+test_that("docid works", {
+    corp <- corpus(c(textone = "This is a sentence.  Another sentence.  Yet another.",
+                     textwo = "Sentence 1. Sentence 2."))
+    corpsent <- corp %>%
+        corpus_reshape(to = "sentences")
+    
+    expect_identical(
+        docid(corpsent),
+        factor(c("textone", "textone", "textone", "textwo", "textwo"))
+    )
+    expect_identical(
+        docid(tokens(corpsent)),
+        docid(corpsent)
+    )
+    expect_identical(
+        docid(dfm(tokens(corpsent))),
+        docid(corpsent)
+    )
+    
+    # defaults for group functions
+    expect_identical(
+        docid(corpus_group(corpsent)),
+        factor(docnames(corp))
+    )
+    expect_identical(
+        docid(tokens_group(tokens(corpsent))),
+        factor(docnames(corp))
+    )
+    expect_identical(
+        docid(dfm_group(dfm(tokens(corpsent)))),
+        factor(docnames(corp))
+    )
+    expect_identical(
+        docid(corpus_group(corpsent, groups = docid(corpsent))),
+        factor(docnames(corp))
+    )
+    expect_identical(
+        docid(tokens_group(tokens(corpsent), groups = docid(corpsent))),
+        factor(docnames(corp))
+    )
+    expect_identical(
+        docid(dfm_group(dfm(tokens(corpsent)), groups = docid(corpsent))),
+        factor(docnames(corp))
+    )
+})
