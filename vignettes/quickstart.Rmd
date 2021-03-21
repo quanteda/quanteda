@@ -372,17 +372,28 @@ dfmat_inaug_post1991_dict
 The constructor function `dictionary()` also works with two common "foreign" dictionary formats: the 
 LIWC and Provalis Research's Wordstat format. For instance, we can load the LIWC and apply this to the Presidential inaugural speech corpus:
 ```{r, eval = FALSE}
-dictliwc <- dictionary(file = "~/Dropbox/QUANTESS/dictionaries/LIWC/LIWC2001_English.dic",
-                       format = "LIWC")
+dictliwc <- dictionary(file = "LIWC2001_English.dic", format = "LIWC")
 dfmat_inaug_subset <- dfm(tokens(data_corpus_inaugural[52:58]), dictionary = dictliwc)
 dfmat_inaug_subset[, 1:10]
+```
+```
+## Document-feature matrix of: 7 documents, 10 features (1.43% sparse) and 4 docvars.
+##               features
+## docs           Pronoun  I  We Self You Other Negate Assent Article Preps
+##   1993-Clinton     179 15 124  139  12    12     25      2     115   211
+##   1997-Clinton     188  8 134  142   0    27     27      4     194   310
+##   2001-Bush        176 15 111  126   8    16     40      2     104   208
+##   2005-Bush        171 10  92  102  25    20     25      5     174   307
+##   2009-Obama       243  5 156  161  17    34     40      2     185   294
+##   2013-Obama       219  7 168  175   5    21     42      1     148   265
+## [ reached max_ndoc ... 1 more document ]
 ```
 
 # Further examples
 
 ## Similarities between texts
 
-```{r fig.width = 6, fig.height = 3}
+```{r fig.width = 6, fig.height = 3, eval = FALSE}
 library("quanteda.textstats")
 dfmat_inaug_post1980 <- corpus_subset(data_corpus_inaugural, Year > 1980) %>%
   tokens(remove_punct = TRUE) %>%
@@ -395,6 +406,8 @@ tstat_obama <- textstat_simil(dfmat_inaug_post1980,
 as.list(tstat_obama)
 dotchart(as.list(tstat_obama)$"2013-Obama", xlab = "Cosine similarity", pch = 19)
 ```
+<img src="images/fig1.png" width="700"/>
+
 
 We can use these distances to plot a dendrogram, clustering presidents.  
 First, load some data.
@@ -413,7 +426,7 @@ load("../tests/data/dfmat_sotu.rda")
 ```
 
 Now we compute clusters and plot the dendrogram:
-```{r, fig.width = 8, fig.height = 5}
+```{r, fig.width = 8, fig.height = 5, eval = FALSE}
 # hierarchical clustering - get distances on normalized dfm
 tstat_dist <- textstat_dist(dfm_weight(dfmat_sotu, scheme = "prop"))
 # hiarchical clustering the distance object
@@ -425,11 +438,26 @@ plot(pres_cluster, xlab = "", sub = "",
      main = "Euclidean Distance on Normalized Token Frequency")
 ```
 
+<img src="images/fig2.png" width="700"/>
+
 We can also look at term similarities:
-```{r}
+```{r, eval = FALSE}
 tstat_sim <- textstat_simil(dfmat_sotu, dfmat_sotu[, c("fair", "health", "terror")],
                           method = "cosine", margin = "features")
 lapply(as.list(tstat_sim), head, 10)
+```
+```
+## $fair
+##      time    better       far  strategi        us     lower      long       one   practic      onli 
+## 0.8266617 0.8135324 0.8036487 0.8002557 0.8000581 0.7995066 0.7977770 0.7949795 0.7944127 0.7899963 
+## 
+## $health
+##    system      issu    privat      need    expand    reform   support      hous    dramat      mani 
+## 0.9232094 0.9229859 0.9175231 0.9145142 0.9118901 0.9072380 0.9072374 0.9063870 0.9051588 0.9045851 
+## 
+## $terror
+## terrorist    coalit    cheney      evil  homeland   liberti      11th    sudden     regim   septemb 
+## 0.8539894 0.8179609 0.8175618 0.7949619 0.7878223 0.7697739 0.7603221 0.7556575 0.7533021 0.7502925 
 ```
 
 ## Scaling document positions
@@ -454,7 +482,7 @@ quant_dfm <- tokens(data_corpus_irishbudget2010, remove_punct = TRUE, remove_num
   tokens_remove(stopwords("en")) %>%
   dfm()
 quant_dfm <- dfm_trim(quant_dfm, min_termfreq = 4, max_docfreq = 10)
-quant_dfm
+quant_dfm 
 ```
 
 Now we can fit the topic model and plot it:
