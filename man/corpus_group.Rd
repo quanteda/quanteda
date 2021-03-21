@@ -4,7 +4,7 @@
 \alias{corpus_group}
 \title{Combine documents in corpus by a grouping variable}
 \usage{
-corpus_group(x, groups, fill = FALSE, concatenator = " ")
+corpus_group(x, groups = docid(x), fill = FALSE, concatenator = " ")
 }
 \arguments{
 \item{x}{\link{corpus} object}

@@ -4,7 +4,7 @@
 \alias{tokens_group}
 \title{Combine documents in a tokens object by a grouping variable}
 \usage{
-tokens_group(x, groups, fill = FALSE)
+tokens_group(x, groups = docid(x), fill = FALSE)
 }
 \arguments{
 \item{x}{\link{tokens} object}
