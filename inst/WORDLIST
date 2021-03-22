@@ -84,6 +84,7 @@ cleanC
 codecov
 color
 colors
+com
 compoundWords
 concatenator
 corpusSource
@@ -127,6 +128,7 @@ gcc
 getStemLanguages
 getTweets
 gfortran
+github
 ggplot
 httr
 idf
@@ -154,6 +156,7 @@ magrittr
 manifestoR
 matrixType
 mcmc
+md
 metacorpus
 metadoc
 minCount

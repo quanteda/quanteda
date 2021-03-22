@@ -12,7 +12,7 @@ corpus_group(x, groups = docid(x), fill = FALSE, concatenator = " ")
 \item{groups}{grouping variable for sampling, equal in length to the number
 of documents. This will be evaluated in the docvars data.frame, so that
 docvars may be referred to by name without quoting. This also changes
-previous behaviours for \code{groups}. See \code{news(Version >= "2.9", package = "quanteda")} for details.}
+previous behaviours for \code{groups}. See \code{news(Version >= "3.0", package = "quanteda")} for details.}
 
 \item{fill}{logical; if \code{TRUE} and \code{groups} is a factor, then use all levels
 of the factor when forming the new documents of the grouped object.  This
