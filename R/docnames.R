@@ -141,6 +141,10 @@ setMethod("rownames<-",
 #' @rdname names-quanteda
 #' @export
 docid <- function(x) {
-    get_docvars(x, "docid_", system = TRUE, drop = TRUE)
+    tryCatch({
+        return(get_docvars(x, "docid_", system = TRUE, drop = TRUE))
+    }, error = function(e) {
+        return(NULL)
+    })
 } 
 
