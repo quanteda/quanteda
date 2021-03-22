@@ -12,6 +12,7 @@
     - The `*_sample()` functions' argument `by`, and `groups` in the `*_group()` functions, now take unquoted document variable (docvar) names directly, similar to the way the `subset` argument works in the `*_subset()` functions.
     - Quoted docvar names no longer work, as these will be evaluated literally.
     - The `by = "document"` formerly sampled from `docid(x)`, but this functionality is now removed.  Instead, use `by = docid(x)` to replicate this functionality.
+    - For `groups`, the default is now `docid(x)`, which is now documented more completely.  See `?groups` and `?docid`.
 
 * `dfm()` has a new argument, `remove_padding`, for removing the "pads" left behind after removing tokens with `padding = TRUE`.  (For other extensive changes to `dfm()`, see "Deprecated" below.)
 
@@ -110,6 +111,7 @@ The full listing of deprecations is:
 
 * Mentions of the now-removed `ngrams` option in `dfm(x, ...)` has now been removed from the dfm documentation.  (#1990)
 
+* Handling for some early-cycle v2 dfm object is improved, to ensure that they are updated to the latest object format.  (#2097)
 
 # quanteda 2.1.2
 
