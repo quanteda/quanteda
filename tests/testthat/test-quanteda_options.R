@@ -68,6 +68,7 @@ test_that("quanteda_options reset works correctly", {
 })
 
 test_that("quanteda_options works with threads", {
+    skip_on_cran()
     if (RcppParallel::defaultNumThreads() == 2) {
         quanteda_options(threads = 1)
     } else {
@@ -86,4 +87,3 @@ test_that("quanteda_options works with threads", {
     expect_warning(quanteda_options(threads = 100),
                  "^Setting threads instead to maximum available.*")
 })
-

@@ -1,3 +1,9 @@
+# Resubmission notes
+
+- We submitted this a second time after commenting out a single test that failed on Debian (R Under development (unstable) (2021-03-21 r80102)), apparently due to a reported issue with RcppParallel.  We've skipped that test now.
+
+- We avoided the "Found the following (possibly) invalid URLs" warning from https://www.hashtags.org/featured/what-characters-can-a-hashtag-include/ by removing it as a hyperlink.
+
 # Submission notes
 
 This is a major new release that completes the modularisation begin in quanteda v2.  It also:

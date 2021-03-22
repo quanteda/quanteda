@@ -108,10 +108,10 @@ The default word tokenizer \code{what = "word"} splits tokens using
 \link[stringi:stri_split_boundaries]{stri_split_boundaries(x, type = "word")}
 but by default preserves infix hyphens (e.g. "self-funding"), URLs, and
 social media "tag" characters (#hashtags and @usernames), and email
-addresses.  The rules defining a valid "tag" can be found
-\href{https://www.hashtags.org/featured/what-characters-can-a-hashtag-include/}{here}
-for hashtags and
-\href{https://help.twitter.com/en/managing-your-account/twitter-username-rules}{here}
+addresses.  The rules defining a valid "tag" can be found at
+https://www.hashtags.org/featured/what-characters-can-a-hashtag-include/
+for hashtags and at
+https://help.twitter.com/en/managing-your-account/twitter-username-rules
 for usernames.
 
 In versions < 2, the argument \code{remove_twitter} controlled whether social
