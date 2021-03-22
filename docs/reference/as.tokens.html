@@ -100,7 +100,7 @@ objects." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.9.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.0.0</span>
       </span>
     </div>
 
@@ -221,7 +221,7 @@ objects." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Coercion, checking, and combining functions for tokens objects</h1>
-    <small class="dont-index">Source: <a href='https://github.com/quanteda/quanteda/blob/master/R/tokens-methods-base.R'><code>R/tokens-methods-base.R</code></a>, <a href='https://github.com/quanteda/quanteda/blob/master/R/tokens.R'><code>R/tokens.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/quanteda/quanteda/blob/master/R/tokens-methods.R'><code>R/tokens-methods.R</code></a>, <a href='https://github.com/quanteda/quanteda/blob/master/R/tokens.R'><code>R/tokens.R</code></a></small>
     <div class="hidden name"><code>as.tokens.Rd</code></div>
     </div>
 
@@ -239,16 +239,7 @@ objects.</p>
 
 <span class='fu'>is.tokens</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
 
-<span class='co'># S3 method for tokens</span>
-<span class='fu'><a href='https://rdrr.io/r/base/unlist.html'>unlist</a></span><span class='op'>(</span><span class='va'>x</span>, recursive <span class='op'>=</span> <span class='cn'>FALSE</span>, use.names <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-
 <span class='fu'>as.tokens</span><span class='op'>(</span><span class='va'>x</span>, concatenator <span class='op'>=</span> <span class='st'>"_"</span>, <span class='va'>...</span><span class='op'>)</span>
-
-<span class='co'># S3 method for list</span>
-<span class='fu'>as.tokens</span><span class='op'>(</span><span class='va'>x</span>, concatenator <span class='op'>=</span> <span class='st'>"_"</span>, <span class='va'>...</span><span class='op'>)</span>
-
-<span class='co'># S3 method for tokens</span>
-<span class='fu'>as.tokens</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S3 method for spacyr_parsed</span>
 <span class='fu'>as.tokens</span><span class='op'>(</span>
@@ -279,11 +270,6 @@ objects.</p>
 <code>as.character</code> and <code>unlist</code> only.</p></td>
     </tr>
     <tr>
-      <th>recursive</th>
-      <td><p>a required argument for <a href='https://rdrr.io/r/base/unlist.html'>unlist</a> but inapplicable to
-<a href='tokens.html'>tokens</a> objects</p></td>
-    </tr>
-    <tr>
       <th>concatenator</th>
       <td><p>character between multi-word expressions, default is the
 underscore character.  See Details.</p></td>
@@ -310,8 +296,6 @@ token</p></td>
 <a href='tokens.html'>tokens</a> object.</p>
 <p><code>is.tokens</code> returns <code>TRUE</code> if the object is of class
 tokens, <code>FALSE</code> otherwise.</p>
-<p><code>unlist</code> returns a simple vector of characters from a
-<a href='tokens.html'>tokens</a> object.</p>
 <p><code>as.tokens</code> returns a quanteda <a href='tokens.html'>tokens</a> object.</p>
 <p><code>is.tokens</code> returns <code>TRUE</code> if the object is of class
 tokens, <code>FALSE</code> otherwise.</p>

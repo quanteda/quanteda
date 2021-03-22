@@ -98,7 +98,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.9.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.0.0</span>
       </span>
     </div>
 
@@ -219,7 +219,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Base method extensions for corpus objects</h1>
-    <small class="dont-index">Source: <a href='https://github.com/quanteda/quanteda/blob/master/R/corpus-methods-base.R'><code>R/corpus-methods-base.R</code></a>, <a href='https://github.com/quanteda/quanteda/blob/master/R/summary.R'><code>R/summary.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/quanteda/quanteda/blob/master/R/corpus-methods.R'><code>R/corpus-methods.R</code></a>, <a href='https://github.com/quanteda/quanteda/blob/master/R/summary.R'><code>R/summary.R</code></a></small>
     <div class="hidden name"><code>corpus-class.Rd</code></div>
     </div>
 
@@ -227,9 +227,7 @@
     <p>Extensions of base R functions for corpus objects.</p>
     </div>
 
-    <pre class="usage">is.corpus(x)
-
-# S3 method for corpus
+    <pre class="usage"># S3 method for corpus
 +(c1, c2)
 
 # S3 method for corpus
@@ -245,10 +243,6 @@ print(x, ...)</pre>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p>a corpus object</p></td>
-    </tr>
-    <tr>
       <th>c1</th>
       <td><p>corpus one to be added</p></td>
     </tr>
@@ -259,6 +253,10 @@ print(x, ...)</pre>
     <tr>
       <th>recursive</th>
       <td><p>logical used by <code><a href='https://rdrr.io/r/base/c.html'>c()</a></code> method, always set to <code>FALSE</code></p></td>
+    </tr>
+    <tr>
+      <th>x</th>
+      <td><p>a corpus object</p></td>
     </tr>
     <tr>
       <th>i</th>
@@ -272,11 +270,10 @@ print(x, ...)</pre>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>is.corpus</code> returns <code>TRUE</code> if the object is a corpus</p>
-<p>The <code><a href='https://rdrr.io/r/base/Arithmetic.html'>+</a></code> and <code><a href='https://rdrr.io/r/base/c.html'>c()</a></code> operators return a <code><a href='corpus.html'>corpus()</a></code> object.</p>
+    <p>The <code><a href='https://rdrr.io/r/base/Arithmetic.html'>+</a></code> and <code><a href='https://rdrr.io/r/base/c.html'>c()</a></code> operators return a <code><a href='corpus.html'>corpus()</a></code> object.</p>
 <p>Indexing a corpus works in three ways, as of v2.x.x:</p><ul>
 <li><p><code><a href='https://rdrr.io/r/base/Extract.html'>[</a></code> returns a subsetted corpus</p></li>
-<li><p><code><a href='https://rdrr.io/r/base/Extract.html'>[[</a></code> returns the textual contents of a subsetted corpus (similar to <code><a href='texts.html'>texts()</a></code>)</p></li>
+<li><p><code><a href='https://rdrr.io/r/base/Extract.html'>[[</a></code> returns the textual contents of a subsetted corpus (similar to <code><a href='https://rdrr.io/r/base/character.html'>as.character()</a></code>)</p></li>
 <li><p><code><a href='https://rdrr.io/r/base/Extract.html'>$</a></code> returns a vector containing the single named <a href='docvars.html'>docvars</a></p></li>
 </ul>
 

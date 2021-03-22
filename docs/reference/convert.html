@@ -102,7 +102,7 @@ an easy way to make a corpus and its document variables into a data.frame." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.9.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.0.0</span>
       </span>
     </div>
 
@@ -358,7 +358,7 @@ of the return formats.</p>
 #&gt;   ..$ Year     : int [1:13] 1973 1977 1981 1985 1989 1993 1997 2001 2005 2009 ...
 #&gt;   ..$ President: chr [1:13] "Nixon" "Carter" "Reagan" "Reagan" ...
 #&gt;   ..$ FirstName: chr [1:13] "Richard Milhous" "Jimmy" "Ronald" "Ronald" ...
-#&gt;   ..$ Party    : chr [1:13] "Republican" "Democratic" "Republican" "Republican" ...</div><div class='input'>
+#&gt;   ..$ Party    : Factor w/ 6 levels "Democratic","Democratic-Republican",..: 5 1 5 5 5 1 1 5 5 1 ...</div><div class='input'>
 <span class='co'># triplet</span>
 <span class='va'>tripletmat</span> <span class='op'>&lt;-</span> <span class='fu'>convert</span><span class='op'>(</span><span class='va'>dfmat1</span>, to <span class='op'>=</span> <span class='st'>"tripletlist"</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='va'>tripletmat</span><span class='op'>)</span>

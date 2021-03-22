@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Convert a dfm to a data.frame — as.data.frame.dfm • quanteda</title>
+<title>Coercion and checking methods for corpus objects — as.character.corpus • quanteda</title>
 
 
 <!-- jquery -->
@@ -47,9 +47,9 @@
   <link href="../extra.css" rel="stylesheet">
   <script src="../extra.js"></script>
 
-<meta property="og:title" content="Convert a dfm to a data.frame — as.data.frame.dfm" />
-<meta property="og:description" content="Deprecated function to convert a dfm into a data.frame.
-Recommended that you use convert(x, to = &quot;data.frame&quot;) instead." />
+<meta property="og:title" content="Coercion and checking methods for corpus objects — as.character.corpus" />
+<meta property="og:description" content="Coercion functions to and from corpus objects, including conversion to a
+plain character object; and checks for whether an object is a corpus." />
 
 
 
@@ -219,65 +219,51 @@ Recommended that you use convert(x, to = &quot;data.frame&quot;) instead." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Convert a dfm to a data.frame</h1>
-    <small class="dont-index">Source: <a href='https://github.com/quanteda/quanteda/blob/master/R/dfm-classes.R'><code>R/dfm-classes.R</code></a></small>
-    <div class="hidden name"><code>as.data.frame.dfm.Rd</code></div>
+    <h1>Coercion and checking methods for corpus objects</h1>
+    <small class="dont-index">Source: <a href='https://github.com/quanteda/quanteda/blob/master/R/corpus-methods.R'><code>R/corpus-methods.R</code></a></small>
+    <div class="hidden name"><code>as.character.corpus.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Deprecated function to convert a dfm into a data.frame.
-Recommended that you use <code><a href='convert.html'>convert(x, to = "data.frame")</a></code> instead.</p>
+    <p>Coercion functions to and from <a href='corpus.html'>corpus</a> objects, including conversion to a
+plain <a href='https://rdrr.io/r/base/character.html'>character</a> object; and checks for whether an object is a corpus.</p>
     </div>
 
-    <pre class="usage"><span class='co'># S3 method for dfm</span>
-<span class='fu'><a href='https://rdrr.io/r/base/as.data.frame.html'>as.data.frame</a></span><span class='op'>(</span>
-  <span class='va'>x</span>,
-  row.names <span class='op'>=</span> <span class='cn'>NULL</span>,
-  <span class='va'>...</span>,
-  document <span class='op'>=</span> <span class='fu'><a href='docnames.html'>docnames</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>,
-  docid_field <span class='op'>=</span> <span class='st'>"doc_id"</span>,
-  check.names <span class='op'>=</span> <span class='cn'>FALSE</span>
-<span class='op'>)</span></pre>
+    <pre class="usage"><span class='co'># S3 method for corpus</span>
+<span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span><span class='op'>(</span><span class='va'>x</span>, use.names <span class='op'>=</span> <span class='cn'>TRUE</span>, <span class='va'>...</span><span class='op'>)</span>
+
+<span class='fu'>is.corpus</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+
+<span class='fu'>as.corpus</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>any <span style="R">R</span> object.</p></td>
+      <td><p>object to be coerced or checked</p></td>
     </tr>
     <tr>
-      <th>row.names</th>
-      <td><p><code>NULL</code> or a character vector giving the row
-    names for the data frame.  Missing values are not allowed.</p></td>
+      <th>use.names</th>
+      <td><p>logical; preserve (document) names if <code>TRUE</code></p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>unused</p></td>
-    </tr>
-    <tr>
-      <th>document</th>
-      <td><p>optional first column of mode <code>character</code> in the
-data.frame, defaults <code><a href='docnames.html'>docnames(x)</a></code>.  Set to <code>NULL</code> to exclude.</p></td>
-    </tr>
-    <tr>
-      <th>docid_field</th>
-      <td><p>character; the name of the column containing document
-names used when <code>to = "data.frame"</code>.  Unused for other conversions.</p></td>
-    </tr>
-    <tr>
-      <th>check.names</th>
-      <td><p>logical.  If <code>TRUE</code> then the names of the
-    variables in the data frame are checked to ensure that they are
-    syntactically valid variable names and are not duplicated.
-    If necessary they are adjusted (by <code><a href='https://rdrr.io/r/base/make.names.html'>make.names</a></code>)
-    so that they are.</p></td>
+      <td><p>additional arguments used by specific methods</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <div class='dont-index'><p><code><a href='convert.html'>convert()</a></code></p></div>
+    <p><code><a href='https://rdrr.io/r/base/character.html'>as.character()</a></code> returns the corpus as a plain character vector, with
+or without named elements.</p>
+<p><code>is.corpus</code> returns <code>TRUE</code> if the object is a corpus.</p>
+<p><code>as.corpus()</code> upgrades a corpus object to the newest format.
+object.</p>
+    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
+
+    <p><code><a href='https://rdrr.io/r/base/character.html'>as.character(x)</a></code> where <code>x</code> is a corpus is equivalent to
+calling the deprecated <code><a href='texts.html'>texts(x)</a></code>.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

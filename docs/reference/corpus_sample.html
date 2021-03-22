@@ -100,7 +100,7 @@ weights." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.9.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.0.0</span>
       </span>
     </div>
 
@@ -367,7 +367,7 @@ variables for the documents sampled.</p>
                  two <span class='op'>=</span> <span class='st'>"First sentence, doc2.  Second sentence, doc2."</span><span class='op'>)</span>,
                docvars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>var1 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"a"</span>, <span class='st'>"a"</span><span class='op'>)</span>, var2 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
 <span class='fu'><a href='corpus_reshape.html'>corpus_reshape</a></span><span class='op'>(</span><span class='va'>corp</span>, to <span class='op'>=</span> <span class='st'>"sentences"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-    <span class='fu'>corpus_sample</span><span class='op'>(</span>replace <span class='op'>=</span> <span class='cn'>TRUE</span>, by <span class='op'>=</span> <span class='fu'><a href='names-quanteda.html'>docid</a></span><span class='op'>(</span><span class='va'>.</span><span class='op'>)</span><span class='op'>)</span>
+    <span class='fu'>corpus_sample</span><span class='op'>(</span>replace <span class='op'>=</span> <span class='cn'>TRUE</span>, by <span class='op'>=</span> <span class='fu'><a href='docnames.html'>docid</a></span><span class='op'>(</span><span class='va'>.</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Corpus consisting of 5 documents and 2 docvars.
 #&gt; one.1 :
 #&gt; "Third sentence."

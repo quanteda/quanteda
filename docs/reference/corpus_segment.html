@@ -101,7 +101,7 @@ transcript) or a user-supplied annotation." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.9.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.0.0</span>
       </span>
     </div>
 
@@ -365,8 +365,8 @@ syntactic units such as sentences, paragraphs, or fixed-length chunks</p></div>
                   ##DOC3 Third document starts here.  End of third document."</span>,
                  <span class='st'>"##INTRO Document ##NUMBER Two starts before ##NUMBER Three."</span><span class='op'>)</span><span class='op'>)</span>
 <span class='va'>corpseg1</span> <span class='op'>&lt;-</span> <span class='fu'>corpus_segment</span><span class='op'>(</span><span class='va'>corp1</span>, pattern <span class='op'>=</span> <span class='st'>"##*"</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span><span class='op'>(</span><span class='fu'><a href='texts.html'>texts</a></span><span class='op'>(</span><span class='va'>corpseg1</span><span class='op'>)</span>, <span class='fu'><a href='docvars.html'>docvars</a></span><span class='op'>(</span><span class='va'>corpseg1</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;                                                texts(corpseg1)  pattern
+<span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span><span class='op'>(</span><span class='va'>corpseg1</span>, <span class='fu'><a href='docvars.html'>docvars</a></span><span class='op'>(</span><span class='va'>corpseg1</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;                                                       corpseg1  pattern
 #&gt; text1.1                              This is the introduction.  ##INTRO
 #&gt; text1.2 This is the first document.  Second sentence in Doc 1.   ##DOC1
 #&gt; text1.3    Third document starts here.  End of third document.   ##DOC3
@@ -377,16 +377,16 @@ syntactic units such as sentences, paragraphs, or fixed-length chunks</p></div>
 <span class='va'>corp2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='corpus.html'>corpus</a></span><span class='op'>(</span><span class='st'>"Mr. Smith: Text.\nMrs. Jones: More text.\nMr. Smith: I'm speaking, again."</span><span class='op'>)</span>
 <span class='va'>corpseg2</span> <span class='op'>&lt;-</span> <span class='fu'>corpus_segment</span><span class='op'>(</span><span class='va'>corp2</span>, pattern <span class='op'>=</span> <span class='st'>"\\b[A-Z].+\\s[A-Z][a-z]+:"</span>,
                            valuetype <span class='op'>=</span> <span class='st'>"regex"</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span><span class='op'>(</span><span class='fu'><a href='texts.html'>texts</a></span><span class='op'>(</span><span class='va'>corpseg2</span><span class='op'>)</span>, <span class='fu'><a href='docvars.html'>docvars</a></span><span class='op'>(</span><span class='va'>corpseg2</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;              texts(corpseg2)     pattern
+<span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span><span class='op'>(</span><span class='va'>corpseg2</span>, <span class='fu'><a href='docvars.html'>docvars</a></span><span class='op'>(</span><span class='va'>corpseg2</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;                     corpseg2     pattern
 #&gt; text1.1                Text.  Mr. Smith:
 #&gt; text1.2           More text. Mrs. Jones:
 #&gt; text1.3 I'm speaking, again.  Mr. Smith:</div><div class='input'>
 <span class='co'># segmenting a corpus using crude end-of-sentence segmentation</span>
 <span class='va'>corpseg3</span> <span class='op'>&lt;-</span> <span class='fu'>corpus_segment</span><span class='op'>(</span><span class='va'>corp1</span>, pattern <span class='op'>=</span> <span class='st'>"."</span>, valuetype <span class='op'>=</span> <span class='st'>"fixed"</span>,
                            pattern_position <span class='op'>=</span> <span class='st'>"after"</span>, extract_pattern <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span><span class='op'>(</span><span class='fu'><a href='texts.html'>texts</a></span><span class='op'>(</span><span class='va'>corpseg3</span><span class='op'>)</span>, <span class='fu'><a href='docvars.html'>docvars</a></span><span class='op'>(</span><span class='va'>corpseg3</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;                                                     texts(corpseg3)
+<span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span><span class='op'>(</span><span class='va'>corpseg3</span>, <span class='fu'><a href='docvars.html'>docvars</a></span><span class='op'>(</span><span class='va'>corpseg3</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;                                                            corpseg3
 #&gt; text1.1                           ##INTRO This is the introduction.
 #&gt; text1.2                          ##DOC1 This is the first document.
 #&gt; text1.3                                   Second sentence in Doc 1.

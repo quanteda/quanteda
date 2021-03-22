@@ -102,7 +102,7 @@ features but not found in x will be added with all zero counts." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.9.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.0.0</span>
       </span>
     </div>
 
@@ -297,13 +297,13 @@ case-sensitive matches.  For more flexible feature selection, see
 #&gt;   V1 0        0 0        0</div><div class='input'>
 <span class='co'># matching one dfm to another</span>
 <span class='va'>txt</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"This is text one"</span>, <span class='st'>"The second text"</span>, <span class='st'>"This is text three"</span><span class='op'>)</span>
-<span class='op'>(</span><span class='va'>dfmat1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span><span class='op'>(</span><span class='va'>txt</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span><span class='op'>]</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: 'dfm.character()' is deprecated. Use 'tokens()' first.</span></div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (41.67% sparse) and 0 docvars.
+<span class='op'>(</span><span class='va'>dfmat1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span><span class='op'>(</span><span class='fu'><a href='tokens.html'>tokens</a></span><span class='op'>(</span><span class='va'>txt</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span><span class='op'>]</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (41.67% sparse) and 0 docvars.
 #&gt;        features
 #&gt; docs    this is text one the second
 #&gt;   text1    1  1    1   1   0      0
-#&gt;   text2    0  0    1   0   1      1</div><div class='input'><span class='op'>(</span><span class='va'>dfmat2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span><span class='op'>(</span><span class='va'>txt</span><span class='op'>[</span><span class='fl'>2</span><span class='op'>:</span><span class='fl'>3</span><span class='op'>]</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: 'dfm.character()' is deprecated. Use 'tokens()' first.</span></div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (41.67% sparse) and 0 docvars.
+#&gt;   text2    0  0    1   0   1      1</div><div class='input'><span class='op'>(</span><span class='va'>dfmat2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span><span class='op'>(</span><span class='fu'><a href='tokens.html'>tokens</a></span><span class='op'>(</span><span class='va'>txt</span><span class='op'>[</span><span class='fl'>2</span><span class='op'>:</span><span class='fl'>3</span><span class='op'>]</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (41.67% sparse) and 0 docvars.
 #&gt;        features
 #&gt; docs    the second text this is three
 #&gt;   text1   1      1    1    0  0     0

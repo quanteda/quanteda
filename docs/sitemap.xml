@@ -4,7 +4,7 @@
     <loc>https://quanteda.io/index.html</loc>
   </url>
   <url>
-    <loc>https://quanteda.io/reference/as.corpus.html</loc>
+    <loc>https://quanteda.io/reference/as.character.corpus.html</loc>
   </url>
   <url>
     <loc>https://quanteda.io/reference/as.data.frame.dfm.html</loc>
@@ -199,9 +199,6 @@
     <loc>https://quanteda.io/reference/format_sparsity.html</loc>
   </url>
   <url>
-    <loc>https://quanteda.io/reference/generate_groups.html</loc>
-  </url>
-  <url>
     <loc>https://quanteda.io/reference/get_docvars.html</loc>
   </url>
   <url>
@@ -209,9 +206,6 @@
   </url>
   <url>
     <loc>https://quanteda.io/reference/groups.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/head.corpus.html</loc>
   </url>
   <url>
     <loc>https://quanteda.io/reference/head.dfm.html</loc>
@@ -301,7 +295,7 @@
     <loc>https://quanteda.io/reference/pipe.html</loc>
   </url>
   <url>
-    <loc>https://quanteda.io/reference/print-method.html</loc>
+    <loc>https://quanteda.io/reference/print-methods.html</loc>
   </url>
   <url>
     <loc>https://quanteda.io/reference/print.phrases.html</loc>
@@ -368,9 +362,6 @@
   </url>
   <url>
     <loc>https://quanteda.io/reference/texts.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/textstat_proxy-class.html</loc>
   </url>
   <url>
     <loc>https://quanteda.io/reference/textstats.html</loc>

@@ -76,7 +76,6 @@ reference:
   contents:
     - starts_with("corpus")
     - docvars
-    - head.corpus
     - as.character.corpus
 - title: Tokens functions
   desc: Functions for constructing and manipulating tokens class objects.
@@ -86,9 +85,7 @@ reference:
     - as.character.tokens
     - as.list.tokens
     - as.tokens
-    - as.tokens.list
     - is.tokens
-    - as.tokens.list
 - title: Character functions
   desc: Functions for constructing and manipulating character objects.
   contents:
@@ -135,7 +132,7 @@ reference:
     - nsentence
     - ntoken
     - ntype
-    - print-method
+    - print-methods
     - starts_with("docnames")
     - featnames
 - title: Miscellaneous functions
