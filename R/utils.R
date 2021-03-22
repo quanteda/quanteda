@@ -172,7 +172,7 @@ get_object_version <- function(x) {
 #' @return `ispre2()` returns `TRUE` if the object was created before
 #' \pkg{quanteda} version 2, or `FALSE` otherwise
 is_pre2 <- function(x) {
-    if (is.corpus(x) || is.tokens(x) || is.dfm(x)) {
+    if (is.corpus(x) || is.tokens(x) || (is.dfm(x) && !is.fcm(x))) {
         is.null(attributes(x)[["meta"]][["object"]]) || is.null(docid(x))
     } else {
         is.null(attributes(x)[["meta"]][["object"]])
