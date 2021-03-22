@@ -52,6 +52,11 @@ rebuild_dfm <- function(x, attrs) {
 upgrade_dfm <- function(x) {
     if (!is_pre2(x)) return(x)
     attrs <- attributes(x)
+    if ("meta" %in% names(attrs)) {
+        x@docvars <- upgrade_docvars(attrs$docvars, rownames(x))
+        return(x)
+    }
+    
     build_dfm(
         x, colnames(x),
         docvars = upgrade_docvars(attrs$docvars, rownames(x)),
@@ -69,6 +74,7 @@ upgrade_dfm <- function(x) {
                     ),
                     user = list())
     )
+
 }
 
 # tokens -------
@@ -115,6 +121,11 @@ rebuild_tokens <- function(x, attrs) {
 upgrade_tokens <- function(x) {
     if (!is_pre2(x)) return(x)
     attrs <- attributes(x)
+    if ("meta" %in% names(attrs)) {
+        attr(x, "docvars") <- upgrade_docvars(attrs$docvars, names(x))
+        return(x)
+    }
+    
     x <- unclass(x)
     build_tokens(
         x, attrs[["types"]],
@@ -171,6 +182,11 @@ rebuild_corpus <- function(x, attrs) {
 upgrade_corpus <- function(x) {
     if (!is_pre2(x)) return(x)
     attrs <- attributes(x)
+    if ("meta" %in% names(attrs)) {
+        attr(x, "docvars") <- upgrade_docvars(attrs$docvars, names(x))
+        return(x)
+    }
+    
     x <- unclass(x)
     if ("documents" %in% names(x)) {
         if ("settings" %in% names(x)) {
@@ -194,7 +210,6 @@ upgrade_corpus <- function(x) {
                         object = list(unit = attrs[["unit"]]),
                         user = attrs[["meta"]][["user"]])
         )
-
     }
 }
 

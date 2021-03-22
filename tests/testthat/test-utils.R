@@ -155,3 +155,26 @@ test_that("max_load_factor can be configured", {
                  list(pattern = 0.2, ngrams = 0.7), tolerance = 0.001)
     
 })
+
+test_that("is_pre2 can detect docvars failed to upgrade (#2097)", {
+    
+    corp <- data_corpus_inaugural[1:5]
+    toks <- tokens(corp)
+    dfmt <- dfm(toks)
+    id <- docid(data_corpus_inaugural[1:5])
+    name <- docnames(data_corpus_inaugural[1:5])
+    
+    attr(corp, "docvars")[c("docname_", "docid_", "segid_")] <- NULL
+    expect_equal(docid(as.corpus(corp)), id)
+    expect_equal(docnames(as.corpus(corp)), name)
+    
+    attr(toks, "docvars")[c("docname_", "docid_", "segid_")] <- NULL
+    expect_equal(docid(as.tokens(toks)), id)
+    expect_equal(docnames(as.tokens(toks)), name)
+    
+    attr(dfmt, "docvars")[c("docname_", "docid_", "segid_")] <- NULL
+    expect_equal(docid(as.dfm(dfmt)), id)
+    expect_equal(docnames(as.dfm(dfmt)), name)
+    
+})
+

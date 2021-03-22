@@ -176,15 +176,27 @@ docid.default <- function(x) {
 
 #' @export
 docid.corpus <- function(x) {
-    get_docvars(x, "docid_", system = TRUE, drop = TRUE)
+    tryCatch({
+        return(get_docvars(x, "docid_", system = TRUE, drop = TRUE))
+    }, error = function(e) {
+        return(NULL)
+    })
 }
 
 #' @export
 docid.tokens <- function(x) {
-    get_docvars(x, "docid_", system = TRUE, drop = TRUE)
+    tryCatch({
+        return(get_docvars(x, "docid_", system = TRUE, drop = TRUE))
+    }, error = function(e) {
+        return(NULL)
+    })
 }
 
 #' @export
 docid.dfm <- function(x) {
-    get_docvars(x, "docid_", system = TRUE, drop = TRUE)
+    tryCatch({
+        return(get_docvars(x, "docid_", system = TRUE, drop = TRUE))
+    }, error = function(e) {
+        return(NULL)
+    })
 }
