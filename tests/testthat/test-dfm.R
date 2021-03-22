@@ -342,7 +342,7 @@ test_that("dfm works with relational operators", {
 })
 
 test_that("dfm addition (+) keeps attributes #1279", {
-    dfmt <- head(data_dfm_lbgexample, 4, nf = 3)
+    dfmt <- head(data_dfm_lbgexample, 4)
 
     # @settings slot
     meta(dfmt, "testsetting") <- list(test = 1)

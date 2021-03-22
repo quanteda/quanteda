@@ -26,7 +26,7 @@
 #' # with fill = TRUE
 #' dfm_group(dfmat, fill = TRUE,
 #'           groups = factor(c("A", "A", "B", "C"), levels = LETTERS[1:4]))
-dfm_group <- function(x, groups, fill = FALSE, force = FALSE) {
+dfm_group <- function(x, groups = docid(x), fill = FALSE, force = FALSE) {
     UseMethod("dfm_group")
 }
 
@@ -36,7 +36,7 @@ dfm_group.default <- function(x, groups, fill = FALSE, force = FALSE) {
 }
     
 #' @export
-dfm_group.dfm <- function(x, groups, fill = FALSE, force = FALSE) {
+dfm_group.dfm <- function(x, groups = docid(x), fill = FALSE, force = FALSE) {
     x <- as.dfm(x)
     fill <- check_logical(fill)
     force <- check_logical(force)

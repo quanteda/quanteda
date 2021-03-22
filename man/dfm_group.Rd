@@ -4,7 +4,7 @@
 \alias{dfm_group}
 \title{Combine documents in a dfm by a grouping variable}
 \usage{
-dfm_group(x, groups, fill = FALSE, force = FALSE)
+dfm_group(x, groups = docid(x), fill = FALSE, force = FALSE)
 }
 \arguments{
 \item{x}{a \link{dfm}}

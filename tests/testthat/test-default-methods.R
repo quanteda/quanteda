@@ -360,6 +360,13 @@ test_that("test new docnames<- methods", {
     )
 })
 
+test_that("test docid methods", {
+    expect_error(
+        docid(0),
+        "docid() only works on corpus, dfm, tokens objects.", fixed = TRUE
+    )
+})
+
 test_that("friendly_class_undefined_message for featfreq()", {
     expect_error(
         featfreq(tokens(data_char_sampletext)),
