@@ -6,7 +6,7 @@ data](https://cdn.rawgit.com/quanteda/quanteda/master/images/quanteda_logo.svg)]
 
 [![CRAN
 Version](https://www.r-pkg.org/badges/version/quanteda)](https://CRAN.R-project.org/package=quanteda)
-[![](https://img.shields.io/badge/devel%20version-2.9.9000-royalblue.svg)](https://github.com/quanteda/quanteda)
+[![](https://img.shields.io/badge/devel%20version-3.0.0-royalblue.svg)](https://github.com/quanteda/quanteda)
 [![Downloads](https://cranlogs.r-pkg.org/badges/quanteda)](https://CRAN.R-project.org/package=quanteda)
 [![Total
 Downloads](https://cranlogs.r-pkg.org/badges/grand-total/quanteda?color=orange)](https://CRAN.R-project.org/package=quanteda)
@@ -54,27 +54,39 @@ gfortran to build). If you are still getting errors related to gfortran,
 follow the fixes
 [here](https://thecoatlessprofessor.com/programming/rcpp-rcpparmadillo-and-os-x-mavericks--lgfortran-and--lquadmath-error/).
 
+## **quanteda** version 3: New major release
+
+**quanteda** 3.0 is a major release that improves functionality,
+completes the modularisation of the package begun in v2.0, further
+improves function consistency by removing previously deprecated
+functions, and enhances workflow stability and consistency by
+deprecating some shortcut steps built into some functions.
+
+See
+<https://github.com/quanteda/quanteda/blob/master/NEWS.md#quanteda-30>
+for a full list of the changes.
+
 ## The **quanteda** family of packages
 
 As of v3.0, we have continued our trend of splitting **quanteda** into
 modular packages. These are now the following:
 
-  - **quanteda**: contains all of the core natural language processing
+-   **quanteda**: contains all of the core natural language processing
     and textual data management functions
-  - **quanteda.textmodels**: contains all of the text models and
+-   **quanteda.textmodels**: contains all of the text models and
     supporting functions, namely the `textmodel_*()` functions. This was
     split from the main package with the v2 release
-  - **quanteda.textstats**: statistics for textual data, namely the
+-   **quanteda.textstats**: statistics for textual data, namely the
     `textstat_*()` functions, split with the v3 release
-  - **quanteda.textplots**: plots for textual data, namely the
+-   **quanteda.textplots**: plots for textual data, namely the
     `textplot_*()` functions, split with the v3 release
 
 We are working on additional package releases, available in the meantime
 from our GitHub pages:
 
-  - **quanteda.sentiment**: Functions and lexicons for sentiment
+-   **quanteda.sentiment**: Functions and lexicons for sentiment
     analysis using dictionaries
-  - **quanteda.tidy**: Extensions for manipulating document variables in
+-   **quanteda.tidy**: Extensions for manipulating document variables in
     core **quanteda** objects using your favourite **tidyverse**
     functions
 
@@ -95,8 +107,8 @@ data](https://www.theoj.org/joss-papers/joss.00774/10.21105.joss.00774.pdf)”.
 *Journal of Open Source Software*. 3(30), 774.
 <https://doi.org/10.21105/joss.00774>.
 
-For a BibTeX entry, use the output from `citation(package =
-"quanteda")`.
+For a BibTeX entry, use the output from
+`citation(package = "quanteda")`.
 
 ## Leaving Feedback
 
@@ -108,7 +120,7 @@ testimonial here](https://github.com/quanteda/quanteda/issues/461).
 Contributions in the form of feedback, comments, code, and bug reports
 are most welcome. How to contribute:
 
-  - Fork the source code, modify, and issue a [pull
+-   Fork the source code, modify, and issue a [pull
     request](https://help.github.com/articles/creating-a-pull-request-from-a-fork/)
     through the [project GitHub
     page](https://github.com/quanteda/quanteda). See our [Contributor
@@ -116,8 +128,8 @@ are most welcome. How to contribute:
     Conduct](https://github.com/quanteda/quanteda/blob/master/CONDUCT.md)
     and the all-important **quanteda** [Style
     Guide](https://github.com/quanteda/quanteda/wiki/Style-guide).
-  - Issues, bug reports, and wish lists: [File a GitHub
+-   Issues, bug reports, and wish lists: [File a GitHub
     issue](https://github.com/quanteda/quanteda/issues).
-  - Usage questions: Submit a question on the [**quanteda** channel on
+-   Usage questions: Submit a question on the [**quanteda** channel on
     StackOverflow](https://stackoverflow.com/questions/tagged/quanteda).
-  - Contact [the maintainer](mailto:kbenoit@lse.ac.uk) by email.
+-   Contact [the maintainer](mailto:kbenoit@lse.ac.uk) by email.
