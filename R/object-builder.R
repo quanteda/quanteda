@@ -52,23 +52,28 @@ rebuild_dfm <- function(x, attrs) {
 upgrade_dfm <- function(x) {
     if (!is_pre2(x)) return(x)
     attrs <- attributes(x)
-    build_dfm(
-        x, colnames(x),
-        docvars = upgrade_docvars(attrs$docvars, rownames(x)),
-        meta = list(system = list(),
-                    object = list(
-                        ngram = as.integer(attrs[["ngrams"]]),
-                        skip = as.integer(attrs[["skip"]]),
-                        concatenator = attrs[["concatenator"]],
-                        weight_tf = list(scheme = attrs[["weightTf"]][["scheme"]],
-                                         base = attrs[["weightTf"]][["scheme"]],
-                                         k = attrs[["weightTf"]][["K"]]),
-                        weight_df = list(scheme = attrs[["weightDf"]][["scheme"]],
-                                         base = attrs[["weightDf"]][["scheme"]]),
-                        smooth = attrs[["smooth"]]
-                    ),
-                    user = list())
-    )
+    if ("meta" %in% names(attrs)) {
+        x@docvars <- upgrade_docvars(attrs$docvars, rownames(x))
+        return(x)
+    } else {
+        build_dfm(
+            x, colnames(x),
+            docvars = upgrade_docvars(attrs$docvars, rownames(x)),
+            meta = list(system = list(),
+                        object = list(
+                            ngram = as.integer(attrs[["ngrams"]]),
+                            skip = as.integer(attrs[["skip"]]),
+                            concatenator = attrs[["concatenator"]],
+                            weight_tf = list(scheme = attrs[["weightTf"]][["scheme"]],
+                                             base = attrs[["weightTf"]][["scheme"]],
+                                             k = attrs[["weightTf"]][["K"]]),
+                            weight_df = list(scheme = attrs[["weightDf"]][["scheme"]],
+                                             base = attrs[["weightDf"]][["scheme"]]),
+                            smooth = attrs[["smooth"]]
+                        ),
+                        user = list())
+        )
+    }
 }
 
 # tokens -------
@@ -115,22 +120,27 @@ rebuild_tokens <- function(x, attrs) {
 upgrade_tokens <- function(x) {
     if (!is_pre2(x)) return(x)
     attrs <- attributes(x)
-    x <- unclass(x)
-    build_tokens(
-        x, attrs[["types"]],
-        padding = attrs[["padding"]],
-        docvars = upgrade_docvars(attr(x, "docvars"), names(x)),
-        meta = list(
-            system = list(),
-            object = list(
-                ngram = as.integer(attrs[["ngrams"]]),
-                skip = as.integer(attrs[["skip"]]),
-                what = attrs[["what"]],
-                concatenator = attrs[["concatenator"]]
-                ),
-            user = list()
+    if ("meta" %in% names(attrs)) {
+        attr(x, "docvars") <- upgrade_docvars(attrs$docvars, names(x))
+        return(x)
+    } else {
+        x <- unclass(x)
+        build_tokens(
+            x, attrs[["types"]],
+            padding = attrs[["padding"]],
+            docvars = upgrade_docvars(attr(x, "docvars"), names(x)),
+            meta = list(
+                system = list(),
+                object = list(
+                    ngram = as.integer(attrs[["ngrams"]]),
+                    skip = as.integer(attrs[["skip"]]),
+                    what = attrs[["what"]],
+                    concatenator = attrs[["concatenator"]]
+                    ),
+                user = list()
+            )
         )
-    )
+    }
 }
 
 
@@ -171,30 +181,34 @@ rebuild_corpus <- function(x, attrs) {
 upgrade_corpus <- function(x) {
     if (!is_pre2(x)) return(x)
     attrs <- attributes(x)
-    x <- unclass(x)
-    if ("documents" %in% names(x)) {
-        if ("settings" %in% names(x)) {
-            unit <- x[["settings"]][["units"]]
-        } else {
-            unit <- "documents"
-        }
-        meta_user <- x[["metadata"]]
-        build_corpus(
-            x[["documents"]][["texts"]],
-            docvars = upgrade_docvars(x[["documents"]]),
-            meta = list(system = list(),
-                        object = list(unit = unit),
-                        user = meta_user[!sapply(meta_user, is.null)])
-        )
+    if ("meta" %in% names(attrs)) {
+        attr(x, "docvars") <- upgrade_docvars(attrs$docvars, names(x))
+        return(x)
     } else {
-        build_corpus(
-            x,
-            docvars = attrs[["docvars"]],
-            meta = list(system = list(),
-                        object = list(unit = attrs[["unit"]]),
-                        user = attrs[["meta"]][["user"]])
-        )
-
+        x <- unclass(x)
+        if ("documents" %in% names(x)) {
+            if ("settings" %in% names(x)) {
+                unit <- x[["settings"]][["units"]]
+            } else {
+                unit <- "documents"
+            }
+            meta_user <- x[["metadata"]]
+            build_corpus(
+                x[["documents"]][["texts"]],
+                docvars = upgrade_docvars(x[["documents"]]),
+                meta = list(system = list(),
+                            object = list(unit = unit),
+                            user = meta_user[!sapply(meta_user, is.null)])
+            )
+        } else {
+            build_corpus(
+                x,
+                docvars = attrs[["docvars"]],
+                meta = list(system = list(),
+                            object = list(unit = attrs[["unit"]]),
+                            user = attrs[["meta"]][["user"]])
+            )
+        }
     }
 }
 
