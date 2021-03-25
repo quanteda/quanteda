@@ -1,8 +1,6 @@
 # Resubmission notes
 
-- We submitted this a second time after commenting out a single test that failed on Debian (R Under development (unstable) (2021-03-21 r80102)), apparently due to a reported issue with RcppParallel.  We've skipped that test now.
-
-- We avoided the "Found the following (possibly) invalid URLs" warning from https://www.hashtags.org/featured/what-characters-can-a-hashtag-include/ by removing it as a hyperlink.
+- We submitted this after fixing an issue with a warning when threads were set, which caused a warning on Debian (R Under development (unstable) (2021-03-21 r80102)).  It was determined that this warning was unnecessary so we removed it.
 
 # Submission notes
 
