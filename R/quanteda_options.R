@@ -13,9 +13,8 @@
 #' \item{`verbose`}{logical; if `TRUE` then use this as the default
 #' for all functions with a `verbose` argument}
 #' \item{`threads`}{integer; specifies the number of threads to use in
-#' parallelized functions; defaults to `RcppParallel::defaultNumThreads()` 
-#' unless `OMP_THREAD_LIMIT` is set; the number of threads can be changed 
-#' only once in a session}
+#' parallelized functions; defaults to `RcppParallel::defaultNumThreads()`; 
+#' the number of threads can be changed only once in a session}
 #' \item{`print_dfm_max_ndoc`}{integer; specifies the number of documents
 #' to display when using the defaults for printing a dfm}
 #' \item{`print_dfm_max_nfeat`}{integer; specifies the number of
@@ -129,13 +128,8 @@ set_option_value <- function(key, value) {
             warning("Setting threads instead to maximum available ", thread["max"], call. = FALSE)
             value <- thread["max"]
         }
-        if (is.na(thread["tbb"])) {
-            if (value != thread["max"])
-                RcppParallel::setThreadOptions(value)
-        } else {
-            if (value != thread["tbb"])
-                warning("Number of threads can be changed only once in a session", call. = FALSE)   
-        }
+        if (value != thread["max"])
+            RcppParallel::setThreadOptions(value)
     }
     
     # assign the key-value
@@ -146,8 +140,7 @@ set_option_value <- function(key, value) {
 
 # returns thread settings
 get_threads <- function() {
-    c("omp" = as.integer(Sys.getenv("OMP_THREAD_LIMIT")),
-      "tbb" = as.integer(Sys.getenv("RCPP_PARALLEL_NUM_THREADS")),
+    c("tbb" = as.integer(Sys.getenv("RCPP_PARALLEL_NUM_THREADS")),
       "max" = RcppParallel::defaultNumThreads())
 }
 

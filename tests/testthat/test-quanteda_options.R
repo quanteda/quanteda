@@ -68,7 +68,7 @@ test_that("quanteda_options reset works correctly", {
 })
 
 test_that("quanteda_options works with threads", {
-    skip_on_cran()
+#    skip_on_cran()
     if (RcppParallel::defaultNumThreads() == 2) {
         quanteda_options(threads = 1)
     } else {
@@ -78,10 +78,10 @@ test_that("quanteda_options works with threads", {
         as.numeric(Sys.getenv('RCPP_PARALLEL_NUM_THREADS')),
         quanteda_options("threads")
     )
-    expect_warning(
-        quanteda_options(threads = 4),
-        "Number of threads can be changed only once"
-    )
+    # expect_warning(
+    #     quanteda_options(threads = 4),
+    #     "Number of threads can be changed only once"
+    # )
     expect_error(quanteda_options(threads = 0),
                  "^Number of threads must be greater or equal to 1")
     expect_warning(quanteda_options(threads = 100),
