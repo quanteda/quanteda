@@ -38,9 +38,8 @@ Currently available options are: \describe{
 \item{\code{verbose}}{logical; if \code{TRUE} then use this as the default
 for all functions with a \code{verbose} argument}
 \item{\code{threads}}{integer; specifies the number of threads to use in
-parallelized functions; defaults to \code{RcppParallel::defaultNumThreads()}
-unless \code{OMP_THREAD_LIMIT} is set; the number of threads can be changed
-only once in a session}
+parallelized functions; defaults to \code{RcppParallel::defaultNumThreads()};
+the number of threads can be changed only once in a session}
 \item{\code{print_dfm_max_ndoc}}{integer; specifies the number of documents
 to display when using the defaults for printing a dfm}
 \item{\code{print_dfm_max_nfeat}}{integer; specifies the number of
