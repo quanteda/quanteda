@@ -42,7 +42,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.9.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.0.0</span>
       </span>
     </div>
 
@@ -304,7 +304,7 @@
     textfield <span class="op">=</span> <span class="st">"COMMON"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu"><a href="../reference/corpus.html">corpus</a></span><span class="op">(</span><span class="va">dat_xml</span><span class="op">)</span>, <span class="fl">5</span><span class="op">)</span>
 <span class="co"># csv file</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>inaug_speech <span class="op">=</span> <span class="fu"><a href="../reference/texts.html">texts</a></span><span class="op">(</span><span class="va">data_corpus_inaugural</span><span class="op">)</span>, <span class="fu"><a href="../reference/docvars.html">docvars</a></span><span class="op">(</span><span class="va">data_corpus_inaugural</span><span class="op">)</span><span class="op">)</span>, 
+<span class="fu"><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>inaug_speech <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">data_corpus_inaugural</span><span class="op">)</span>, <span class="fu"><a href="../reference/docvars.html">docvars</a></span><span class="op">(</span><span class="va">data_corpus_inaugural</span><span class="op">)</span><span class="op">)</span>, 
     file <span class="op">=</span> <span class="st">"/tmp/inaug_texts.csv"</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 <span class="va">dat_csv</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/readtext/man/readtext.html" class="external-link">readtext</a></span><span class="op">(</span><span class="st">"/tmp/inaug_texts.csv"</span>, textfield <span class="op">=</span> <span class="st">"inaug_speech"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu"><a href="../reference/corpus.html">corpus</a></span><span class="op">(</span><span class="va">dat_csv</span><span class="op">)</span>, <span class="fl">5</span><span class="op">)</span></code></pre></div>
@@ -318,9 +318,9 @@
 <a href="#corpus-principles" class="anchor"></a>Corpus principles</h3>
 <p>A corpus is designed to be a “library” of original documents that have been converted to plain, UTF-8 encoded text, and stored along with meta-data at the corpus level and at the document-level. We have a special name for document-level meta-data: <em>docvars</em>. These are variables or features that describe attributes of each document.</p>
 <p>A corpus is designed to be a more or less static container of texts with respect to processing and analysis. This means that the texts in corpus are not designed to be changed internally through (for example) cleaning or pre-processing steps, such as stemming or removing punctuation. Rather, texts can be extracted from the corpus as part of processing, and assigned to new objects, but the idea is that the corpus will remain as an original reference copy so that other analyses – for instance those in which stems and punctuation were required, such as analyzing a reading ease index – can be performed on the same corpus.</p>
-<p>To extract texts from a corpus, we use an extractor, called <code><a href="../reference/texts.html">texts()</a></code>.</p>
+<p>To extract texts from a corpus, we simply coerce this to a plain character type, using <code><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character()</a></code>.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/texts.html">texts</a></span><span class="op">(</span><span class="va">data_corpus_inaugural</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">data_corpus_inaugural</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span></code></pre></div>
 <pre><code>##                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              1793-Washington 
 ## "Fellow citizens, I am again called upon by the voice of my country to execute the functions of its Chief Magistrate. When the occasion proper for it shall arrive, I shall endeavor to express the high sense I entertain of this distinguished honor, and of the confidence which has been reposed in me by the people of united America.\n\nPrevious to the execution of any official act of the President the Constitution requires an oath of office. This oath I am now about to take, and in your presence: That if it shall be found during my administration of the Government I have in any instance violated willingly or knowingly the injunctions thereof, I may (besides incurring constitutional punishment) be subject to the upbraidings of all who are now witnesses of the present solemn ceremony.\n\n "</code></pre>
 <p>To summarize the texts from a corpus, we can call a <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> method defined for a corpus.</p>
@@ -668,9 +668,9 @@
 <code class="sourceCode R"><span class="co"># make a dfm, removing stopwords and applying stemming</span>
 <span class="va">dfmat_inaug_post1990</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dfm.html">dfm</a></span><span class="op">(</span><span class="va">dfmat_inaug_post1990</span>, remove <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html" class="external-link">stopwords</a></span><span class="op">(</span><span class="st">"english"</span><span class="op">)</span>, 
     stem <span class="op">=</span> <span class="cn">TRUE</span>, remove_punct <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<pre><code>## Warning: remove_punct argument is not used.</code></pre>
 <pre><code>## Warning: 'remove' is deprecated; use dfm_remove() instead</code></pre>
 <pre><code>## Warning: 'stem' is deprecated; use dfm_wordstem() instead</code></pre>
-<pre><code>## Warning: remove_punct argument is not used.</code></pre>
 <div class="sourceCode" id="cb60"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dfmat_inaug_post1990</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></code></pre></div>
 <pre><code>## Document-feature matrix of: 8 documents, 5 features (2.50% sparse) and 4 docvars.
@@ -792,10 +792,19 @@
 ## [ reached max_ndoc ... 2 more documents ]</code></pre>
 <p>The constructor function <code><a href="../reference/dictionary.html">dictionary()</a></code> also works with two common “foreign” dictionary formats: the LIWC and Provalis Research’s Wordstat format. For instance, we can load the LIWC and apply this to the Presidential inaugural speech corpus:</p>
 <div class="sourceCode" id="cb80"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">dictliwc</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dictionary.html">dictionary</a></span><span class="op">(</span>file <span class="op">=</span> <span class="st">"~/Dropbox/QUANTESS/dictionaries/LIWC/LIWC2001_English.dic"</span>, 
-    format <span class="op">=</span> <span class="st">"LIWC"</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">dictliwc</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dictionary.html">dictionary</a></span><span class="op">(</span>file <span class="op">=</span> <span class="st">"LIWC2001_English.dic"</span>, format <span class="op">=</span> <span class="st">"LIWC"</span><span class="op">)</span>
 <span class="va">dfmat_inaug_subset</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dfm.html">dfm</a></span><span class="op">(</span><span class="fu"><a href="../reference/tokens.html">tokens</a></span><span class="op">(</span><span class="va">data_corpus_inaugural</span><span class="op">[</span><span class="fl">52</span><span class="op">:</span><span class="fl">58</span><span class="op">]</span><span class="op">)</span>, dictionary <span class="op">=</span> <span class="va">dictliwc</span><span class="op">)</span>
 <span class="va">dfmat_inaug_subset</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span></code></pre></div>
+<pre><code>## Document-feature matrix of: 7 documents, 10 features (1.43% sparse) and 4 docvars.
+##               features
+## docs           Pronoun  I  We Self You Other Negate Assent Article Preps
+##   1993-Clinton     179 15 124  139  12    12     25      2     115   211
+##   1997-Clinton     188  8 134  142   0    27     27      4     194   310
+##   2001-Bush        176 15 111  126   8    16     40      2     104   208
+##   2005-Bush        171 10  92  102  25    20     25      5     174   307
+##   2009-Obama       243  5 156  161  17    34     40      2     185   294
+##   2013-Obama       219  7 168  175   5    21     42      1     148   265
+## [ reached max_ndoc ... 1 more document ]</code></pre>
 </div>
 </div>
 </div>
@@ -805,36 +814,24 @@
 <div id="similarities-between-texts" class="section level2">
 <h2 class="hasAnchor">
 <a href="#similarities-between-texts" class="anchor"></a>Similarities between texts</h2>
-<div class="sourceCode" id="cb81"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb82"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://quanteda.io">"quanteda.textstats"</a></span><span class="op">)</span>
 <span class="va">dfmat_inaug_post1980</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/corpus_subset.html">corpus_subset</a></span><span class="op">(</span><span class="va">data_corpus_inaugural</span>, <span class="va">Year</span> <span class="op">&gt;</span> <span class="fl">1980</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="../reference/tokens.html">tokens</a></span><span class="op">(</span>remove_punct <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">%&gt;%</span> 
     <span class="fu"><a href="../reference/tokens_wordstem.html">tokens_wordstem</a></span><span class="op">(</span>language <span class="op">=</span> <span class="st">"en"</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="../reference/tokens_select.html">tokens_remove</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html" class="external-link">stopwords</a></span><span class="op">(</span><span class="st">"en"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="../reference/dfm.html">dfm</a></span><span class="op">(</span><span class="op">)</span>
 <span class="va">tstat_obama</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://quanteda.io/reference/textstat_simil.html">textstat_simil</a></span><span class="op">(</span><span class="va">dfmat_inaug_post1980</span>, <span class="va">dfmat_inaug_post1980</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2009-Obama"</span>, 
     <span class="st">"2013-Obama"</span><span class="op">)</span>, <span class="op">]</span>, margin <span class="op">=</span> <span class="st">"documents"</span>, method <span class="op">=</span> <span class="st">"cosine"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">as.list</a></span><span class="op">(</span><span class="va">tstat_obama</span><span class="op">)</span></code></pre></div>
-<pre><code>## $`2009-Obama`
-##     2013-Obama   1997-Clinton 2021-Biden.txt    1985-Reagan      1989-Bush 
-##      0.6842927      0.6569810      0.6559086      0.6402519      0.6294509 
-##   1993-Clinton    1981-Reagan      2001-Bush      2005-Bush     2017-Trump 
-##      0.6242125      0.6231864      0.6060299      0.5362962      0.5213239 
-## 
-## $`2013-Obama`
-##     2009-Obama    1985-Reagan   1997-Clinton 2021-Biden.txt    1981-Reagan 
-##      0.6842927      0.6595027      0.6467600      0.6442203      0.6381810 
-##   1993-Clinton      2001-Bush      2005-Bush      1989-Bush     2017-Trump 
-##      0.6234969      0.6215870      0.5905799      0.5804661      0.5157923</code></pre>
-<div class="sourceCode" id="cb83"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/dotchart.html" class="external-link">dotchart</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">as.list</a></span><span class="op">(</span><span class="va">tstat_obama</span><span class="op">)</span><span class="op">$</span><span class="st">"2013-Obama"</span>, xlab <span class="op">=</span> <span class="st">"Cosine similarity"</span>, pch <span class="op">=</span> <span class="fl">19</span><span class="op">)</span></code></pre></div>
-<p><img src="quickstart_files/figure-html/unnamed-chunk-35-1.png" width="576"></p>
+<span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">as.list</a></span><span class="op">(</span><span class="va">tstat_obama</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/dotchart.html" class="external-link">dotchart</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">as.list</a></span><span class="op">(</span><span class="va">tstat_obama</span><span class="op">)</span><span class="op">$</span><span class="st">"2013-Obama"</span>, xlab <span class="op">=</span> <span class="st">"Cosine similarity"</span>, pch <span class="op">=</span> <span class="fl">19</span><span class="op">)</span></code></pre></div>
+<p><img src="../../../../../Dropbox%20(Personal)/GitHub/quanteda/quanteda/vignettes/images/fig1.png" width="700"></p>
 <p>We can use these distances to plot a dendrogram, clustering presidents.<br>
 First, load some data.</p>
-<div class="sourceCode" id="cb84"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb83"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">data_corpus_sotu</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/connections.html" class="external-link">url</a></span><span class="op">(</span><span class="st">"https://quanteda.org/data/data_corpus_sotu.rds"</span><span class="op">)</span><span class="op">)</span>
 <span class="va">dfmat_sotu</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/corpus_subset.html">corpus_subset</a></span><span class="op">(</span><span class="va">data_corpus_sotu</span>, <span class="va">Date</span> <span class="op">&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"1980-01-01"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="../reference/tokens.html">tokens</a></span><span class="op">(</span>remove_punct <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">%&gt;%</span> 
     <span class="fu"><a href="../reference/tokens_wordstem.html">tokens_wordstem</a></span><span class="op">(</span>language <span class="op">=</span> <span class="st">"en"</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="../reference/tokens_select.html">tokens_remove</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html" class="external-link">stopwords</a></span><span class="op">(</span><span class="st">"en"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="../reference/dfm.html">dfm</a></span><span class="op">(</span><span class="op">)</span>
 <span class="va">dfmat_sotu</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dfm_trim.html">dfm_trim</a></span><span class="op">(</span><span class="va">dfmat_sotu</span>, min_termfreq <span class="op">=</span> <span class="fl">5</span>, min_docfreq <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></code></pre></div>
 <p>Now we compute clusters and plot the dendrogram:</p>
-<div class="sourceCode" id="cb85"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb84"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># hierarchical clustering - get distances on normalized dfm</span>
 <span class="va">tstat_dist</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://quanteda.io/reference/textstat_simil.html">textstat_dist</a></span><span class="op">(</span><span class="fu"><a href="../reference/dfm_weight.html">dfm_weight</a></span><span class="op">(</span><span class="va">dfmat_sotu</span>, scheme <span class="op">=</span> <span class="st">"prop"</span><span class="op">)</span><span class="op">)</span>
 <span class="co"># hiarchical clustering the distance object</span>
@@ -843,35 +840,29 @@ First, load some data.</p>
 <span class="va">pres_cluster</span><span class="op">$</span><span class="va">labels</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/docnames.html">docnames</a></span><span class="op">(</span><span class="va">dfmat_sotu</span><span class="op">)</span>
 <span class="co"># plot as a dendrogram</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">pres_cluster</span>, xlab <span class="op">=</span> <span class="st">""</span>, sub <span class="op">=</span> <span class="st">""</span>, main <span class="op">=</span> <span class="st">"Euclidean Distance on Normalized Token Frequency"</span><span class="op">)</span></code></pre></div>
-<p><img src="quickstart_files/figure-html/unnamed-chunk-38-1.png" width="768"></p>
+<p><img src="../../../../../Dropbox%20(Personal)/GitHub/quanteda/quanteda/vignettes/images/fig2.png" width="700"></p>
 <p>We can also look at term similarities:</p>
-<div class="sourceCode" id="cb86"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb85"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">tstat_sim</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://quanteda.io/reference/textstat_simil.html">textstat_simil</a></span><span class="op">(</span><span class="va">dfmat_sotu</span>, <span class="va">dfmat_sotu</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"fair"</span>, <span class="st">"health"</span>, <span class="st">"terror"</span><span class="op">)</span><span class="op">]</span>, 
     method <span class="op">=</span> <span class="st">"cosine"</span>, margin <span class="op">=</span> <span class="st">"features"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">as.list</a></span><span class="op">(</span><span class="va">tstat_sim</span><span class="op">)</span>, <span class="va">head</span>, <span class="fl">10</span><span class="op">)</span></code></pre></div>
 <pre><code>## $fair
-##   economi       tax      much   continu     might      best      lead      well 
-## 0.8426587 0.7888467 0.7770360 0.7608859 0.7431505 0.7401957 0.7395740 0.7382537 
-##      done  determin 
-## 0.7366444 0.7201415 
+##      time    better       far  strategi        us     lower      long       one   practic      onli 
+## 0.8266617 0.8135324 0.8036487 0.8002557 0.8000581 0.7995066 0.7977770 0.7949795 0.7944127 0.7899963 
 ## 
 ## $health
-##     delay  profound     adapt    advanc    extend      judg     whole     ideal 
-## 0.8295614 0.7680246 0.7581425 0.7454135 0.7392493 0.7383504 0.7265214 0.7258662 
-##    servic    danger 
-## 0.7238483 0.7184212 
+##    system      issu    privat      need    expand    reform   support      hous    dramat      mani 
+## 0.9232094 0.9229859 0.9175231 0.9145142 0.9118901 0.9072380 0.9072374 0.9063870 0.9051588 0.9045851 
 ## 
 ## $terror
-## adversari   loyalti   potenti    around      side        go      told       end 
-## 0.7500000 0.7349684 0.6614378 0.6481812 0.6396021 0.6271815 0.6240377 0.6197507 
-##      land     grate 
-## 0.6197117 0.6123724</code></pre>
+## terrorist    coalit    cheney      evil  homeland   liberti      11th    sudden     regim   septemb 
+## 0.8539894 0.8179609 0.8175618 0.7949619 0.7878223 0.7697739 0.7603221 0.7556575 0.7533021 0.7502925 </code></pre>
 </div>
 <div id="scaling-document-positions" class="section level2">
 <h2 class="hasAnchor">
 <a href="#scaling-document-positions" class="anchor"></a>Scaling document positions</h2>
 <p>Here is a demonstration of unsupervised document scaling comparing the “Wordfish” model:</p>
-<div class="sourceCode" id="cb88"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb87"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw">if</span> <span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="https://github.com/quanteda/quanteda.textmodels" class="external-link">"quanteda.textmodels"</a></span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
     <span class="va">dfmat_ire</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dfm.html">dfm</a></span><span class="op">(</span><span class="fu"><a href="../reference/tokens.html">tokens</a></span><span class="op">(</span><span class="va">data_corpus_irishbudget2010</span><span class="op">)</span><span class="op">)</span>
     <span class="va">tmod_wf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/quanteda.textmodels/man/textmodel_wordfish.html" class="external-link">textmodel_wordfish</a></span><span class="op">(</span><span class="va">dfmat_ire</span>, dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span>
@@ -880,18 +871,13 @@ First, load some data.</p>
     <span class="fu"><a href="https://rdrr.io/pkg/quanteda.textplots/man/textplot_scale1d.html" class="external-link">textplot_scale1d</a></span><span class="op">(</span><span class="va">tmod_wf</span>, groups <span class="op">=</span> <span class="fu"><a href="../reference/docvars.html">docvars</a></span><span class="op">(</span><span class="va">dfmat_ire</span>, <span class="st">"party"</span><span class="op">)</span><span class="op">)</span>
 <span class="op">}</span></code></pre></div>
 <pre><code>## Loading required package: quanteda.textmodels</code></pre>
-<pre><code>## 
-## Attaching package: 'quanteda.textmodels'</code></pre>
-<pre><code>## The following object is masked from 'package:quanteda':
-## 
-##     data_dfm_lbgexample</code></pre>
 <p><img src="quickstart_files/figure-html/unnamed-chunk-40-1.png" width="672"></p>
 </div>
 <div id="topic-models" class="section level2">
 <h2 class="hasAnchor">
 <a href="#topic-models" class="anchor"></a>Topic models</h2>
 <p><strong>quanteda</strong> makes it very easy to fit topic models as well, e.g.:</p>
-<div class="sourceCode" id="cb92"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb89"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">quant_dfm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tokens.html">tokens</a></span><span class="op">(</span><span class="va">data_corpus_irishbudget2010</span>, remove_punct <span class="op">=</span> <span class="cn">TRUE</span>, remove_numbers <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">%&gt;%</span> 
     <span class="fu"><a href="../reference/tokens_select.html">tokens_remove</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html" class="external-link">stopwords</a></span><span class="op">(</span><span class="st">"en"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="../reference/dfm.html">dfm</a></span><span class="op">(</span><span class="op">)</span>
 <span class="va">quant_dfm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dfm_trim.html">dfm_trim</a></span><span class="op">(</span><span class="va">quant_dfm</span>, min_termfreq <span class="op">=</span> <span class="fl">4</span>, max_docfreq <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
@@ -915,7 +901,7 @@ First, load some data.</p>
 ##   Kenny, Enda (FG)                0      2    5
 ## [ reached max_ndoc ... 8 more documents, reached max_nfeat ... 1,253 more features ]</code></pre>
 <p>Now we can fit the topic model and plot it:</p>
-<div class="sourceCode" id="cb94"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb91"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span>
 <span class="kw">if</span> <span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="http://www.structuraltopicmodel.com/" class="external-link">"stm"</a></span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
     <span class="va">my_lda_fit20</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/stm/man/stm.html" class="external-link">stm</a></span><span class="op">(</span><span class="va">quant_dfm</span>, K <span class="op">=</span> <span class="fl">20</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>

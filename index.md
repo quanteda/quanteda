@@ -1,29 +1,21 @@
+# quanteda: Quantitative Analysis of Textual Data
 
-[![quanteda: quantitative analysis of textual
-data](https://cdn.rawgit.com/quanteda/quanteda/master/images/quanteda_logo.svg)](http://quanteda.io)
+**quanteda** is an R package for managing and analyzing textual data
+developed by [Kenneth Benoit](http://kenbenoit.net), [Kohei
+Watanabe](https://blog.koheiw.net/), and other contributors. Its initial
+development was supported by the European Research Council grant
+ERC-2011-StG 283794-QUANTESS.
 
-<!-- badges: start -->
-
-[![CRAN
-Version](https://www.r-pkg.org/badges/version/quanteda)](https://CRAN.R-project.org/package=quanteda)
-[![](https://img.shields.io/badge/devel%20version-3.0.0-royalblue.svg)](https://github.com/quanteda/quanteda)
-[![Downloads](https://cranlogs.r-pkg.org/badges/quanteda)](https://CRAN.R-project.org/package=quanteda)
-[![Total
-Downloads](https://cranlogs.r-pkg.org/badges/grand-total/quanteda?color=orange)](https://CRAN.R-project.org/package=quanteda)
-[![R build
-status](https://github.com/quanteda/quanteda/workflows/R-CMD-check/badge.svg)](https://github.com/quanteda/quanteda/actions)
-[![codecov](https://codecov.io/gh/quanteda/quanteda/branch/master/graph/badge.svg)](https://codecov.io/gh/quanteda/quanteda)
-[![DOI](https://zenodo.org/badge/5424649.svg)](https://zenodo.org/badge/latestdoi/5424649)
-[![DOI](http://joss.theoj.org/papers/10.21105/joss.00774/status.svg)](https://doi.org/10.21105/joss.00774)
-<!-- badges: end -->
-
-## About
-
-An R package for managing and analyzing text, created by [Kenneth
-Benoit](https://kenbenoit.net). Supported by the European Research
-Council grant ERC-2011-StG 283794-QUANTESS.
-
-For more details, see <https://quanteda.io>.
+The package is designed for R users needing to apply natural language
+processing to texts, from documents to final analysis. Its capabilities
+match or exceed those provided in many end-user software applications,
+many of which are expensive and not open source. The package is
+therefore of great benefit to researchers, students, and other analysts
+with fewer financial resources. While using **quanteda** requires R
+programming knowledge, its API is designed to enable powerful, efficient
+analysis with a minimum of steps. By emphasizing consistent design,
+furthermore, **quanteda** lowers the barriers to learning and using NLP
+and quantitative text analysis even for proficient R programmers.
 
 ## **quanteda** version 3: New major release
 
@@ -69,16 +61,12 @@ and more to come.
 
 The normal way from CRAN, using your R GUI or
 
-``` r
-install.packages("quanteda") 
-```
+    install.packages("quanteda") 
 
 Or for the latest development version:
 
-``` r
-# devtools package required to install quanteda from Github 
-devtools::install_github("quanteda/quanteda") 
-```
+    # devtools package required to install quanteda from Github 
+    devtools::install_github("quanteda/quanteda") 
 
 Because this compiles some C++ and Fortran source code, you will need to
 have installed the appropriate compilers to build the development

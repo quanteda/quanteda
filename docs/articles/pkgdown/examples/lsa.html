@@ -42,7 +42,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.9.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.0.0</span>
       </span>
     </div>
 
@@ -202,18 +202,12 @@
 <h1 class="hasAnchor">
 <a href="#construct-the-lsa-model" class="anchor"></a>Construct the LSA model</h1>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/quanteda/quanteda.textmodels" class="external-link">"quanteda.textmodels"</a></span><span class="op">)</span></code></pre></div>
-<pre><code>## 
-## Attaching package: 'quanteda.textmodels'</code></pre>
-<pre><code>## The following object is masked from 'package:quanteda':
-## 
-##     data_dfm_lbgexample</code></pre>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">mylsa</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/quanteda.textmodels/man/textmodel_lsa.html" class="external-link">textmodel_lsa</a></span><span class="op">(</span><span class="va">mydfm</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/quanteda/quanteda.textmodels" class="external-link">"quanteda.textmodels"</a></span><span class="op">)</span>
+<span class="va">mylsa</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/quanteda.textmodels/man/textmodel_lsa.html" class="external-link">textmodel_lsa</a></span><span class="op">(</span><span class="va">mydfm</span><span class="op">)</span></code></pre></div>
 <pre><code>## Warning in fun(A, k, nu, nv, opts, mattype = "dgCMatrix"): all singular values
 ## are requested, svd() is used instead</code></pre>
 <p>the new document vector coordinates in the reduced 2-dimensional space is:</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mylsa</span><span class="op">$</span><span class="va">docs</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span></code></pre></div>
 <pre><code>##          [,1]       [,2]
 ## d1 -0.4944666  0.6491758
@@ -224,18 +218,18 @@
 <h1 class="hasAnchor">
 <a href="#apply-the-constructed-lsa-model-to-new-data" class="anchor"></a>Apply the constructed LSA model to new data</h1>
 <p>Now the new unseen document can be represented in the reduced 2-dimensional space. The unseen query document:</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">querydfm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/dfm.html">dfm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"gold silver truck"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
     <span class="fu"><a href="../../../reference/dfm_match.html">dfm_match</a></span><span class="op">(</span>features <span class="op">=</span> <span class="fu"><a href="../../../reference/featnames.html">featnames</a></span><span class="op">(</span><span class="va">mydfm</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## Warning: 'dfm.character()' is deprecated. Use 'tokens()' first.</code></pre>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">querydfm</span></code></pre></div>
 <pre><code>## Document-feature matrix of: 1 document, 11 features (72.73% sparse) and 0 docvars.
 ##        features
 ## docs    shipment of gold damaged in a fire delivery silver arrived
 ##   text1        0  0    1       0  0 0    0        0      1       0
 ## [ reached max_nfeat ... 1 more feature ]</code></pre>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">newq</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">mylsa</span>, newdata <span class="op">=</span> <span class="va">querydfm</span><span class="op">)</span>
 <span class="va">newq</span><span class="op">$</span><span class="va">docs_newspace</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span></code></pre></div>
 <pre><code>## [1] -0.2140026 -0.1820571</code></pre>

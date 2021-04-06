@@ -13,7 +13,7 @@ knitr::opts_chunk$set(
 
 # quanteda: Quantitative Analysis of Textual Data
 
-**quanteda** is an R package for managing and analyzing textual data developed by [Kenneth Benoit](http://kenbenoit.net) and other contributors. Its initial development was supported by the European Research Council grant ERC-2011-StG 283794-QUANTESS.
+**quanteda** is an R package for managing and analyzing textual data developed by [Kenneth Benoit](http://kenbenoit.net), [Kohei Watanabe](https://blog.koheiw.net/), and other contributors. Its initial development was supported by the European Research Council grant ERC-2011-StG 283794-QUANTESS.
 
 The package is designed for R users needing to apply natural language
 processing to texts, from documents to final analysis.  Its
@@ -26,7 +26,31 @@ minimum of steps.  By emphasizing consistent design, furthermore, **quanteda**
 lowers the barriers to learning and using NLP and quantitative text analysis
 even for proficient R programmers.
 
-## How to Install
+## **quanteda** version 3: New major release
+
+**quanteda** 3.0 is a major release that improves functionality, completes the modularisation of the package begun in v2.0, further improves function consistency by removing previously deprecated functions, and enhances workflow stability and consistency by deprecating some shortcut steps built into some functions.
+
+See https://github.com/quanteda/quanteda/blob/master/NEWS.md#quanteda-30 for a full list of the changes.
+
+## The **quanteda** family of packages
+
+As of v3.0, we have continued our trend of splitting **quanteda** into modular packages.  These are now the following:
+
+- **quanteda**: contains all of the core natural language processing and textual data management functions
+- **quanteda.textmodels**: contains all of the text models and supporting functions, namely the `textmodel_*()` functions.  This was split from the main package with the v2 release
+- **quanteda.textstats**: statistics for textual data, namely the `textstat_*()` functions, split with the v3 release
+- **quanteda.textplots**: plots for textual data, namely the `textplot_*()` functions, split with the v3 release
+
+We are working on additional package releases, available in the meantime from our GitHub pages:
+
+- **quanteda.sentiment**: Functions and lexicons for sentiment analysis using dictionaries
+- **quanteda.tidy**: Extensions for manipulating document variables in core **quanteda** objects using your favourite **tidyverse** functions
+
+and more to come.
+
+## How To...
+
+### How to Install
 
 The normal way from CRAN, using your R GUI or 
 ```{r eval = FALSE}
@@ -39,48 +63,32 @@ Or for the latest development version:
 devtools::install_github("quanteda/quanteda") 
 ```
 
-Because this compiles some C++ and Fortran source code, you will need to have installed the appropriate compilers.
+Because this compiles some C++ and Fortran source code, you will need to have installed the appropriate compilers to build the development version.
 
-**If you are using a Windows platform**, this means you will need also to install
-the [Rtools](https://CRAN.R-project.org/bin/windows/Rtools/) software available
-from CRAN.  
+### How to Use 
 
-**If you are using macOS**, you should install the 
-[macOS tools](https://cran.r-project.org/bin/macosx/tools/), 
-namely the Clang 6.x compiler and the GNU Fortran compiler (as **quanteda** requires gfortran to build).
- If you are still getting errors related to gfortran, follow the fixes [here](https://thecoatlessprofessor.com/programming/rcpp-rcpparmadillo-and-os-x-mavericks--lgfortran-and--lquadmath-error/).  
- 
-## System Requirements
+See the [quick start guide](https://quanteda.io/articles/pkgdown/quickstart.html) to learn how to use **quanteda**.
 
-**quanteda** is cross-platform but we recommend MacOS or Linux as an operating system for their better handling of Unicode. RAM depends on the size and the structure of the textual data to analyse. Usually, a text file of 100MB on disk takes 500MB to 1GB on memory as a tokens object (short texts require more memory than long texts when the total numbers of words are the same). 
+### How to Get Help
 
-| | Minimum | Recommended |
-| --- | :---: | :---: |
-| OS | Windows/MacOS/Linux | MacOS/Linux |
-| CPU | 1 core | 4 cores or more |
-| RAM | 2GB | 8GB more more |
-| IDE | | R Studio |    
+*  Read out documentation at https://quanteda.io.
+*  Submit a question on the [**quanteda** channel on StackOverflow](https://stackoverflow.com/questions/tagged/quanteda).
+*  See our [tutorial site](https://tutorials.quanteda.io/).
 
-## How to Use 
-
-See the [quick start guide](https://quanteda.io/articles/quickstart.html) to learn how to use **quanteda**.
-
-## How to cite
+### How to Cite
 
 Benoit, Kenneth, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, and Akitaka Matsuo.  (2018) "[quanteda: An R package for the quantitative analysis of textual data](https://www.theoj.org/joss-papers/joss.00774/10.21105.joss.00774.pdf)".  _Journal of Open Source Software_.  3(30), 774. [https://doi.org/10.21105/joss.00774](https://doi.org/10.21105/joss.00774).
 
 For a BibTeX entry, use the output from `citation(package = "quanteda")`.
 
-## Leaving Feedback
+### How to Leave Feedback
 
 If you like **quanteda**, please consider leaving [feedback or a testimonial here](https://github.com/quanteda/quanteda/issues/461).
 
-## Contributing
+### How to Contribute
 
 Contributions in the form of feedback, comments, code, and bug reports are most welcome.  How to contribute:
 
 *  Fork the source code, modify, and issue a [pull request](https://help.github.com/articles/creating-a-pull-request-from-a-fork/) through the [project GitHub page](https://github.com/quanteda/quanteda).  See our [Contributor Code of Conduct](https://github.com/quanteda/quanteda/blob/master/CONDUCT.md) and the all-important **quanteda** [Style Guide](https://github.com/quanteda/quanteda/wiki/Style-guide).
 *  Issues, bug reports, and wish lists: [File a GitHub issue](https://github.com/quanteda/quanteda/issues).
-*  Usage questions:  Submit a question on the [**quanteda** channel on StackOverflow](https://stackoverflow.com/questions/tagged/quanteda).
 *  Contact [the maintainer](mailto:kbenoit@lse.ac.uk) by email.
-

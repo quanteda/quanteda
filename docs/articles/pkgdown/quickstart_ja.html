@@ -42,7 +42,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.9.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.0.0</span>
       </span>
     </div>
 
@@ -316,10 +316,13 @@
 <p>コーパスから文書を取り出すためには，<code><a href="../../reference/texts.html">texts()</a></code>と呼ばれる関数を使用する．</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../../reference/texts.html">texts</a></span><span class="op">(</span><span class="va">data_corpus_inaugural</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span></code></pre></div>
+<pre><code>## Warning: 'texts.corpus' is deprecated.
+## Use 'as.character' instead.
+## See help("Deprecated")</code></pre>
 <pre><code>##                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              1793-Washington 
 ## "Fellow citizens, I am again called upon by the voice of my country to execute the functions of its Chief Magistrate. When the occasion proper for it shall arrive, I shall endeavor to express the high sense I entertain of this distinguished honor, and of the confidence which has been reposed in me by the people of united America.\n\nPrevious to the execution of any official act of the President the Constitution requires an oath of office. This oath I am now about to take, and in your presence: That if it shall be found during my administration of the Government I have in any instance violated willingly or knowingly the injunctions thereof, I may (besides incurring constitutional punishment) be subject to the upbraidings of all who are now witnesses of the present solemn ceremony.\n\n "</code></pre>
 <p><code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code>により，コーパス内のテキストの要約を行うことができる．</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">data_corpus_irishbudget2010</span>, package <span class="op">=</span> <span class="st">"quanteda.textmodels"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">data_corpus_irishbudget2010</span><span class="op">)</span></code></pre></div>
 <pre><code>## Corpus consisting of 14 documents, showing 14 documents:
@@ -355,7 +358,7 @@
 ##     Cuffe Green
 ##  OCaolain    SF</code></pre>
 <p><code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code>の出力をデータ・フレームとして保存し，基本的な記述統計を描画することができる．</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">tokeninfo</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">data_corpus_inaugural</span><span class="op">)</span>
 <span class="kw">if</span> <span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span><span class="op">)</span>
     <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">tokeninfo</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">Year</span>, y <span class="op">=</span> <span class="va">Tokens</span>, group <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
@@ -365,7 +368,7 @@
     <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <pre><code>## Loading required package: ggplot2</code></pre>
 <p><img src="quickstart_ja_files/figure-html/unnamed-chunk-11-1.png" width="768"></p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Longest inaugural address: William Henry Harrison</span>
 <span class="va">tokeninfo</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/which.min.html" class="external-link">which.max</a></span><span class="op">(</span><span class="va">tokeninfo</span><span class="op">$</span><span class="va">Tokens</span><span class="op">)</span>, <span class="op">]</span></code></pre></div>
 <pre><code>##             Text Types Tokens Sentences Year President     FirstName Party
@@ -379,7 +382,7 @@
 <h3 class="hasAnchor">
 <a href="#adding-two-corpus-objects-together" class="anchor"></a>コーパスの結合</h3>
 <p><code><a href="https://rdrr.io/r/base/Arithmetic.html" class="external-link">+</a></code>演算子を用いると，簡単に二個のコーパスを連結できます．コーパスが異なる構造を持つ場合でも，文書変数が失われることはなく，コーパスのメタデータも引き継がれる．</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://quanteda.io">quanteda</a></span><span class="op">)</span>
 <span class="va">corp1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/corpus.html">corpus</a></span><span class="op">(</span><span class="va">data_corpus_inaugural</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span><span class="op">)</span>
 <span class="va">corp2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/corpus.html">corpus</a></span><span class="op">(</span><span class="va">data_corpus_inaugural</span><span class="op">[</span><span class="fl">53</span><span class="op">:</span><span class="fl">58</span><span class="op">]</span><span class="op">)</span>
@@ -416,7 +419,7 @@
 <h3 class="hasAnchor">
 <a href="#subsetting-corpus-objects" class="anchor"></a>コーパスから文書を抽出</h3>
 <p><code><a href="../../reference/corpus_subset.html">corpus_subset()</a></code>により，文書変数に適用される論理条件に基づいて文書を抽出することができる．</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu"><a href="../../reference/corpus_subset.html">corpus_subset</a></span><span class="op">(</span><span class="va">data_corpus_inaugural</span>, <span class="va">Year</span> <span class="op">&gt;</span> <span class="fl">1990</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## Corpus consisting of 8 documents, showing 8 documents:
 ## 
@@ -429,7 +432,7 @@
 ##      2013-Obama   814   2317        88 2013     Obama    Barack Democratic
 ##      2017-Trump   582   1660        88 2017     Trump Donald J. Republican
 ##  2021-Biden.txt   811   2766       216 2021     Biden Joseph R. Democratic</code></pre>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu"><a href="../../reference/corpus_subset.html">corpus_subset</a></span><span class="op">(</span><span class="va">data_corpus_inaugural</span>, <span class="va">President</span> <span class="op">==</span> <span class="st">"Adams"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## Corpus consisting of 2 documents, showing 2 documents:
 ## 
@@ -445,7 +448,7 @@
 <h2 class="hasAnchor">
 <a href="#exploring-corpus-texts" class="anchor"></a>コーパス内の文書の探索</h2>
 <p><code><a href="../../reference/kwic.html">kwic()</a></code>（keywords-in-context）は単語の検索を行い，その単語が現れる文脈を表示する．</p>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../../reference/kwic.html">kwic</a></span><span class="op">(</span><span class="va">data_corpus_inaugural</span>, pattern <span class="op">=</span> <span class="st">"terror"</span><span class="op">)</span></code></pre></div>
 <pre><code>## Warning: 'kwic.corpus()' is deprecated. Use 'tokens()' first.</code></pre>
 <pre><code>## Keyword-in-context with 8 matches.                                                                    
@@ -466,7 +469,7 @@
 ##  . And they torment the           
 ##  and destruction. Our children    
 ##  and slaughtering innocents, we</code></pre>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../../reference/kwic.html">kwic</a></span><span class="op">(</span><span class="va">data_corpus_inaugural</span>, pattern <span class="op">=</span> <span class="st">"terror"</span>, valuetype <span class="op">=</span> <span class="st">"regex"</span><span class="op">)</span></code></pre></div>
 <pre><code>## Warning: 'kwic.corpus()' is deprecated. Use 'tokens()' first.</code></pre>
 <pre><code>## Keyword-in-context with 12 matches.                                                                            
@@ -495,7 +498,7 @@
 ##  and slaughtering innocents, we   
 ##  , which we will eradicate        
 ##  that we must confront and</code></pre>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../../reference/kwic.html">kwic</a></span><span class="op">(</span><span class="va">data_corpus_inaugural</span>, pattern <span class="op">=</span> <span class="st">"communist*"</span><span class="op">)</span></code></pre></div>
 <pre><code>## Warning: 'kwic.corpus()' is deprecated. Use 'tokens()' first.</code></pre>
 <pre><code>## Keyword-in-context with 2 matches.                                                                  
@@ -505,7 +508,7 @@
 ##  philosophy are a threat to
 ##  may be doing it,</code></pre>
 <p>上記の要約では，“Year”と“President”は各文書に結び付けられた変数であり，<code><a href="../../reference/docvars.html">docvars()</a></code>によってそれらにアクセスできる．</p>
-<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="../../reference/docvars.html">docvars</a></span><span class="op">(</span><span class="va">data_corpus_inaugural</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>##   Year  President FirstName                 Party
 ## 1 1789 Washington    George                  none
@@ -526,7 +529,7 @@
 <a href="#tokenizing-texts" class="anchor"></a>文書のトークン化</h2>
 <p>テキストを簡単にトークン化するために，<strong>quanteda</strong>は <code><a href="../../reference/tokens.html">tokens()</a></code>と呼ばれる強力なコマンドを提供する．この関数は，文字ベクトルのトークンのリストからなるオブジェクトを生成する．このオブジェクトでは，リストの一つ一つの要素は入力された文書に対応している．</p>
 <p><code><a href="../../reference/tokens.html">tokens()</a></code>は保守的に設計されており、ユーザーが明示的に指示を与えないかぎりは，要素を削除しない．</p>
-<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">txt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>text1 <span class="op">=</span> <span class="st">"This is $10 in 999 different ways,\n up and down; left and right!"</span>,
          text2 <span class="op">=</span> <span class="st">"@kenbenoit working: on #quanteda 2day\t4ever, http://textasdata.com?page=123."</span><span class="op">)</span>
 <span class="fu"><a href="../../reference/tokens.html">tokens</a></span><span class="op">(</span><span class="va">txt</span><span class="op">)</span></code></pre></div>
@@ -542,7 +545,7 @@
 ## [5] "#quanteda"                       "2day"                           
 ## [7] "4ever"                           ","                              
 ## [9] "http://textasdata.com?page=123."</code></pre>
-<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../../reference/tokens.html">tokens</a></span><span class="op">(</span><span class="va">txt</span>, remove_numbers <span class="op">=</span> <span class="cn">TRUE</span>,  remove_punct <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <pre><code>## Tokens consisting of 2 documents.
 ## text1 :
@@ -554,7 +557,7 @@
 ## [3] "on"                              "#quanteda"                      
 ## [5] "2day"                            "4ever"                          
 ## [7] "http://textasdata.com?page=123."</code></pre>
-<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../../reference/tokens.html">tokens</a></span><span class="op">(</span><span class="va">txt</span>, remove_numbers <span class="op">=</span> <span class="cn">FALSE</span>, remove_punct <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <pre><code>## Tokens consisting of 2 documents.
 ## text1 :
@@ -567,7 +570,7 @@
 ## [3] "on"                              "#quanteda"                      
 ## [5] "2day"                            "4ever"                          
 ## [7] "http://textasdata.com?page=123."</code></pre>
-<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../../reference/tokens.html">tokens</a></span><span class="op">(</span><span class="va">txt</span>, remove_numbers <span class="op">=</span> <span class="cn">TRUE</span>,  remove_punct <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <pre><code>## Tokens consisting of 2 documents.
 ## text1 :
@@ -581,7 +584,7 @@
 ## [5] "#quanteda"                       "2day"                           
 ## [7] "4ever"                           ","                              
 ## [9] "http://textasdata.com?page=123."</code></pre>
-<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../../reference/tokens.html">tokens</a></span><span class="op">(</span><span class="va">txt</span>, remove_numbers <span class="op">=</span> <span class="cn">FALSE</span>, remove_punct <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <pre><code>## Tokens consisting of 2 documents.
 ## text1 :
@@ -595,7 +598,7 @@
 ## [5] "#quanteda"                       "2day"                           
 ## [7] "4ever"                           ","                              
 ## [9] "http://textasdata.com?page=123."</code></pre>
-<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../../reference/tokens.html">tokens</a></span><span class="op">(</span><span class="va">txt</span>, remove_numbers <span class="op">=</span> <span class="cn">FALSE</span>, remove_punct <span class="op">=</span> <span class="cn">FALSE</span>, remove_separators <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <pre><code>## Tokens consisting of 2 documents.
 ## text1 :
@@ -609,13 +612,13 @@
 ## [11] "\t"         "4ever"     
 ## [ ... and 3 more ]</code></pre>
 <p>また，<code><a href="../../reference/tokens.html">tokens()</a></code>には個々の文字をトークン化するオプションもある．</p>
-<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../../reference/tokens.html">tokens</a></span><span class="op">(</span><span class="st">"Great website: http://textasdata.com?page=123."</span>, what <span class="op">=</span> <span class="st">"character"</span><span class="op">)</span></code></pre></div>
 <pre><code>## Tokens consisting of 1 document.
 ## text1 :
 ##  [1] "G" "r" "e" "a" "t" "w" "e" "b" "s" "i" "t" "e"
 ## [ ... and 32 more ]</code></pre>
-<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../../reference/tokens.html">tokens</a></span><span class="op">(</span><span class="st">"Great website: http://textasdata.com?page=123."</span>, what <span class="op">=</span> <span class="st">"character"</span>,
          remove_separators <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <pre><code>## Tokens consisting of 1 document.
@@ -623,7 +626,7 @@
 ##  [1] "G" "r" "e" "a" "t" " " "w" "e" "b" "s" "i" "t"
 ## [ ... and 34 more ]</code></pre>
 <p>もしくは，一文ごとにトークン化するオプションもある．</p>
-<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># sentence level         </span>
 <span class="fu"><a href="../../reference/tokens.html">tokens</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Kurt Vongeut said; only assholes use semi-colons."</span>,
          <span class="st">"Today is Thursday in Canberra:  It is yesterday in London."</span>,
@@ -643,13 +646,13 @@
 <h2 class="hasAnchor">
 <a href="#constructing-a-document-feature-matrix" class="anchor"></a>文書行列の作成</h2>
 <p>データからすぐに文書行列を作成したい場合は、<code><a href="../../reference/dfm.html">dfm()</a></code>に直接文字列ベクトルもしくはコーパスを渡すと、自動的にトークン化が行われ。<code><a href="../../reference/dfm.html">dfm()</a></code>は、デフォルトで大文字から小文字への置換や，句読点を除去などの操作を適用する．また，<code><a href="../../reference/dfm.html">dfm()</a></code>から<code><a href="../../reference/tokens.html">tokens()</a></code>の全てのオプションを利用できる．</p>
-<div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb54"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">corp_inaug_post1990</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/corpus_subset.html">corpus_subset</a></span><span class="op">(</span><span class="va">data_corpus_inaugural</span>, <span class="va">Year</span> <span class="op">&gt;</span> <span class="fl">1990</span><span class="op">)</span>
 
 <span class="co"># make a dfm</span>
 <span class="va">dfmat_inaug_post1990</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/dfm.html">dfm</a></span><span class="op">(</span><span class="va">corp_inaug_post1990</span><span class="op">)</span></code></pre></div>
 <pre><code>## Warning: 'dfm.corpus()' is deprecated. Use 'tokens()' first.</code></pre>
-<div class="sourceCode" id="cb55"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb56"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dfmat_inaug_post1990</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></code></pre></div>
 <pre><code>## Document-feature matrix of: 8 documents, 5 features (0.00% sparse) and 4 docvars.
 ##               features
@@ -662,15 +665,15 @@
 ##   2013-Obama    3      3        6  99     4
 ## [ reached max_ndoc ... 2 more documents ]</code></pre>
 <p>以下の例では<code><a href="../../reference/dfm.html">dfm()</a></code>の追加のオプションを用いて、ストップワードの削除（<code>remove</code>）と語のステミング（<code>stem</code>）を行っている．</p>
-<div class="sourceCode" id="cb57"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># make a dfm, removing stopwords and applying stemming</span>
 <span class="va">dfmat_inaug_post1990</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/dfm.html">dfm</a></span><span class="op">(</span><span class="va">dfmat_inaug_post1990</span>,
                             remove <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html" class="external-link">stopwords</a></span><span class="op">(</span><span class="st">"english"</span><span class="op">)</span>,
                             stem <span class="op">=</span> <span class="cn">TRUE</span>, remove_punct <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<pre><code>## Warning: remove_punct argument is not used.</code></pre>
 <pre><code>## Warning: 'remove' is deprecated; use dfm_remove() instead</code></pre>
 <pre><code>## Warning: 'stem' is deprecated; use dfm_wordstem() instead</code></pre>
-<pre><code>## Warning: remove_punct argument is not used.</code></pre>
-<div class="sourceCode" id="cb61"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb62"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dfmat_inaug_post1990</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></code></pre></div>
 <pre><code>## Document-feature matrix of: 8 documents, 5 features (2.50% sparse) and 4 docvars.
 ##               features
@@ -683,19 +686,19 @@
 ##   2013-Obama        3       8  99     6      1
 ## [ reached max_ndoc ... 2 more documents ]</code></pre>
 <p><code>remove</code>によって，文書行列から除外するトークンを指定する．<code><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html" class="external-link">stopwords()</a></code>は，幾つかの言語で定義されたストップワードのリストを返す．</p>
-<div class="sourceCode" id="cb63"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb64"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html" class="external-link">stopwords</a></span><span class="op">(</span><span class="st">"en"</span><span class="op">)</span>, <span class="fl">20</span><span class="op">)</span></code></pre></div>
 <pre><code>##  [1] "i"          "me"         "my"         "myself"     "we"        
 ##  [6] "our"        "ours"       "ourselves"  "you"        "your"      
 ## [11] "yours"      "yourself"   "yourselves" "he"         "him"       
 ## [16] "his"        "himself"    "she"        "her"        "hers"</code></pre>
-<div class="sourceCode" id="cb65"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb66"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html" class="external-link">stopwords</a></span><span class="op">(</span><span class="st">"ru"</span><span class="op">)</span>, <span class="fl">10</span><span class="op">)</span></code></pre></div>
 <pre><code>##  [1] "\u0438"             "\u0432"             "\u0432\u043e"      
 ##  [4] "\u043d\u0435"       "\u0447\u0442\u043e" "\u043e\u043d"      
 ##  [7] "\u043d\u0430"       "\u044f"             "\u0441"            
 ## [10] "\u0441\u043e"</code></pre>
-<div class="sourceCode" id="cb67"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb68"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html" class="external-link">stopwords</a></span><span class="op">(</span><span class="st">"ar"</span>, source <span class="op">=</span> <span class="st">"misc"</span><span class="op">)</span>, <span class="fl">10</span><span class="op">)</span></code></pre></div>
 <pre><code>##  [1] "\u0641\u0649"       "\u0641\u064a"       "\u0643\u0644"      
 ##  [4] "\u0644\u0645"       "\u0644\u0646"       "\u0644\u0647"      
@@ -705,7 +708,7 @@
 <h3 class="hasAnchor">
 <a href="#viewing-the-document-feature-matrix" class="anchor"></a>文書行列の表示</h3>
 <p>RStudioの“Environment”パネル，またはRの<code><a href="https://rdrr.io/r/utils/View.html" class="external-link">View()</a></code>を用いることで，dfmに格納された値を見ることができる．</p>
-<div class="sourceCode" id="cb69"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb70"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dfmat_uk</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/dfm.html">dfm</a></span><span class="op">(</span><span class="va">data_char_ukimmig2010</span>, remove <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html" class="external-link">stopwords</a></span><span class="op">(</span><span class="st">"english"</span><span class="op">)</span>, remove_punct <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="va">dfmat_uk</span></code></pre></div>
 <pre><code>## Document-feature matrix of: 9 documents, 1,551 features (83.81% sparse) and 0 docvars.
@@ -727,7 +730,7 @@
 ##   LibDem           0          0
 ## [ reached max_ndoc ... 3 more documents, reached max_nfeat ... 1,541 more features ]</code></pre>
 <p>頻度が最も高い特長を見るには，<code><a href="../../reference/topfeatures.html">topfeatures()</a></code>を用いる．</p>
-<div class="sourceCode" id="cb71"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb72"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../../reference/topfeatures.html">topfeatures</a></span><span class="op">(</span><span class="va">dfmat_uk</span>, <span class="fl">20</span><span class="op">)</span>  <span class="co"># 20 most frequent words</span></code></pre></div>
 <pre><code>## immigration     british      people      asylum     britain          uk 
 ##          66          37          35          29          28          27 
@@ -738,7 +741,7 @@
 ##        work     percent 
 ##          13          12</code></pre>
 <p>dfmを<code><a href="https://rdrr.io/pkg/quanteda.textplots/man/textplot_wordcloud.html" class="external-link">textplot_wordcloud()</a></code>に渡すことで，ワードクラウドを描画できる．この関数は，オブジェクトや引数を<strong>wordcloud</strong>パッケージの<code><a href="https://rdrr.io/pkg/quanteda.textplots/man/wordcloud.html" class="external-link">wordcloud()</a></code>に渡すので，ワードクラウドの表示を変更できる．</p>
-<div class="sourceCode" id="cb73"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb74"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">"quanteda.textplots"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/quanteda.textplots/man/textplot_wordcloud.html" class="external-link">textplot_wordcloud</a></span><span class="op">(</span><span class="va">dfmat_uk</span>, min_count <span class="op">=</span> <span class="fl">6</span>, random_order <span class="op">=</span> <span class="cn">FALSE</span>,
@@ -750,13 +753,13 @@
 <h3 class="hasAnchor">
 <a href="#grouping-documents-by-document-variable" class="anchor"></a>変数による文書のグループ化</h3>
 <p><strong>quanteda</strong>では，dfmを作成する際に，文書変数の値によって文書をグループ化するすることができる．</p>
-<div class="sourceCode" id="cb74"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb75"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dfmat_ire</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/tokens.html">tokens</a></span><span class="op">(</span><span class="va">data_corpus_irishbudget2010</span>, remove_punct <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">%&gt;%</span>
     <span class="fu"><a href="../../reference/tokens_select.html">tokens_remove</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html" class="external-link">stopwords</a></span><span class="op">(</span><span class="st">"en"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
     <span class="fu"><a href="../../reference/tokens_group.html">tokens_group</a></span><span class="op">(</span>groups <span class="op">=</span> <span class="va">party</span><span class="op">)</span> <span class="op">%&gt;%</span>
     <span class="fu"><a href="../../reference/dfm.html">dfm</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p>また、以下のように，dfmを語の頻度順に並べ替えて，中身を確かめられる．</p>
-<div class="sourceCode" id="cb75"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb76"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../../reference/dfm_sort.html">dfm_sort</a></span><span class="op">(</span><span class="va">dfmat_ire</span><span class="op">)</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span></code></pre></div>
 <pre><code>## Document-feature matrix of: 5 documents, 10 features (0.00% sparse) and 3 docvars.
 ##        features
@@ -771,18 +774,18 @@
 <h3 class="hasAnchor">
 <a href="#grouping-words-by-dictionary-or-equivalence-class" class="anchor"></a>辞書による語のグループ化</h3>
 <p>キーワードがあらかじめ分かっている場合，<code><a href="../../reference/dictionary.html">dictionary()</a></code>によって辞書を作成し、語の出現回数を測定できる。次の例では，テロリズムに関連する言葉や経済に関連する言葉が，クリントン以降の大統領演説でどのように異なるかを示している．</p>
-<div class="sourceCode" id="cb77"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb78"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">corp_inaug_post1991</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/corpus_subset.html">corpus_subset</a></span><span class="op">(</span><span class="va">data_corpus_inaugural</span>, <span class="va">Year</span> <span class="op">&gt;</span> <span class="fl">1991</span><span class="op">)</span></code></pre></div>
 <p>テロリズムと経済という2つのリストからなる辞書を作成する．</p>
-<div class="sourceCode" id="cb78"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb79"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dict</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/dictionary.html">dictionary</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>terror <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"terrorism"</span>, <span class="st">"terrorists"</span>, <span class="st">"threat"</span><span class="op">)</span>,
                         economy <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"jobs"</span>, <span class="st">"business"</span>, <span class="st">"grow"</span>, <span class="st">"work"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p>文書行列を作成するときに，この辞書を<code><a href="../../reference/dfm.html">dfm()</a></code>の<code>dictionary</code>に渡す．</p>
-<div class="sourceCode" id="cb79"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb80"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dfmat_inaug_post1991_dict</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/dfm.html">dfm</a></span><span class="op">(</span><span class="va">corp_inaug_post1991</span>, dictionary <span class="op">=</span> <span class="va">dict</span><span class="op">)</span></code></pre></div>
 <pre><code>## Warning: 'dfm.corpus()' is deprecated. Use 'tokens()' first.</code></pre>
 <pre><code>## Warning: 'dictionary' and 'thesaurus' are deprecated; use dfm_lookup() instead</code></pre>
-<div class="sourceCode" id="cb82"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb83"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dfmat_inaug_post1991_dict</span></code></pre></div>
 <pre><code>## Document-feature matrix of: 8 documents, 2 features (12.50% sparse) and 4 docvars.
 ##               features
@@ -795,7 +798,7 @@
 ##   2013-Obama        1       6
 ## [ reached max_ndoc ... 2 more documents ]</code></pre>
 <p><code><a href="../../reference/dictionary.html">dictionary()</a></code>は，LIWCやWordstatなどの一般的な辞書ファイルを読み込むことができる．以下では，LIWCの辞書を大統領就任演説に適用している．</p>
-<div class="sourceCode" id="cb84"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb85"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dictliwc</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/dictionary.html">dictionary</a></span><span class="op">(</span>file <span class="op">=</span> <span class="st">"~/Dropbox/QUANTESS/dictionaries/LIWC/LIWC2001_English.dic"</span>,
                        format <span class="op">=</span> <span class="st">"LIWC"</span><span class="op">)</span>
 <span class="va">dfmat_inaug_subset</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/dfm.html">dfm</a></span><span class="op">(</span><span class="va">data_corpus_inaugural</span><span class="op">[</span><span class="fl">52</span><span class="op">:</span><span class="fl">58</span><span class="op">]</span>, dictionary <span class="op">=</span> <span class="va">dictliwc</span><span class="op">)</span>
@@ -809,13 +812,14 @@
 <div id="similarities-between-texts" class="section level2">
 <h2 class="hasAnchor">
 <a href="#similarities-between-texts" class="anchor"></a>文書の類似性</h2>
-<div class="sourceCode" id="cb85"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb86"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dfmat_inaug_post1980</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/dfm.html">dfm</a></span><span class="op">(</span><span class="fu"><a href="../../reference/corpus_subset.html">corpus_subset</a></span><span class="op">(</span><span class="va">data_corpus_inaugural</span>, <span class="va">Year</span> <span class="op">&gt;</span> <span class="fl">1980</span><span class="op">)</span>,
                             remove <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html" class="external-link">stopwords</a></span><span class="op">(</span><span class="st">"english"</span><span class="op">)</span>, stem <span class="op">=</span> <span class="cn">TRUE</span>, remove_punct <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <pre><code>## Warning: 'dfm.corpus()' is deprecated. Use 'tokens()' first.</code></pre>
+<pre><code>## Warning: '...' should not be used for tokens() arguments; use 'tokens()' first.</code></pre>
 <pre><code>## Warning: 'remove' is deprecated; use dfm_remove() instead</code></pre>
 <pre><code>## Warning: 'stem' is deprecated; use dfm_wordstem() instead</code></pre>
-<div class="sourceCode" id="cb89"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb91"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://quanteda.io">"quanteda.textstats"</a></span><span class="op">)</span>
 <span class="va">tstat_obama</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://quanteda.io/reference/textstat_simil.html">textstat_simil</a></span><span class="op">(</span><span class="va">dfmat_inaug_post1980</span>,
                               <span class="va">dfmat_inaug_post1980</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2009-Obama"</span>, <span class="st">"2013-Obama"</span><span class="op">)</span>, <span class="op">]</span>,
@@ -834,19 +838,20 @@
 ## 2013-Obama          0.682      1.000
 ## 2017-Trump          0.519      0.516
 ## 2021-Biden.txt      0.662      0.645</code></pre>
-<div class="sourceCode" id="cb91"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb93"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># dotchart(as.list(tstat_obama)$"2009-Obama", xlab = "Cosine similarity")</span></code></pre></div>
 <p>上記の文書間の類似性から樹形図を作成して，大統領を階層的に分類することができる．</p>
-<div class="sourceCode" id="cb92"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb94"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">data_corpus_sotu</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/connections.html" class="external-link">url</a></span><span class="op">(</span><span class="st">"https://quanteda.org/data/data_corpus_sotu.rds"</span><span class="op">)</span><span class="op">)</span>
 
 <span class="va">dfmat_sotu</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/dfm.html">dfm</a></span><span class="op">(</span><span class="fu"><a href="../../reference/corpus_subset.html">corpus_subset</a></span><span class="op">(</span><span class="va">data_corpus_sotu</span>, <span class="va">Date</span> <span class="op">&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"1980-01-01"</span><span class="op">)</span><span class="op">)</span>,
                   stem <span class="op">=</span> <span class="cn">TRUE</span>, remove_punct <span class="op">=</span> <span class="cn">TRUE</span>,
                   remove <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html" class="external-link">stopwords</a></span><span class="op">(</span><span class="st">"english"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## Warning: 'dfm.corpus()' is deprecated. Use 'tokens()' first.</code></pre>
+<pre><code>## Warning: '...' should not be used for tokens() arguments; use 'tokens()' first.</code></pre>
 <pre><code>## Warning: 'remove' is deprecated; use dfm_remove() instead</code></pre>
 <pre><code>## Warning: 'stem' is deprecated; use dfm_wordstem() instead</code></pre>
-<div class="sourceCode" id="cb96"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb99"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dfmat_sotu</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/dfm_trim.html">dfm_trim</a></span><span class="op">(</span><span class="va">dfmat_sotu</span>, min_termfreq <span class="op">=</span> <span class="fl">5</span>, min_docfreq <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>
 
 <span class="co"># hierarchical clustering - get distances on normalized dfm</span>
@@ -861,7 +866,7 @@
      main <span class="op">=</span> <span class="st">"Euclidean Distance on Normalized Token Frequency"</span><span class="op">)</span></code></pre></div>
 <p><img src="quickstart_ja_files/figure-html/unnamed-chunk-34-1.png" width="960"></p>
 <p>文書間と同様に用語間の類似性も測定できる．</p>
-<div class="sourceCode" id="cb97"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb100"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">tstat_sim</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://quanteda.io/reference/textstat_simil.html">textstat_simil</a></span><span class="op">(</span><span class="va">dfmat_sotu</span>, <span class="va">dfmat_sotu</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"fair"</span>, <span class="st">"health"</span>, <span class="st">"terror"</span><span class="op">)</span><span class="op">]</span>,
                           method <span class="op">=</span> <span class="st">"cosine"</span>, margin <span class="op">=</span> <span class="st">"features"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">as.list</a></span><span class="op">(</span><span class="va">tstat_sim</span><span class="op">)</span>, <span class="va">head</span>, <span class="fl">10</span><span class="op">)</span></code></pre></div>
@@ -887,15 +892,9 @@
 <h2 class="hasAnchor">
 <a href="#scaling-document-positions" class="anchor"></a>文書のスケーリング</h2>
 <p><strong>quanteda</strong>には多数のテキスト分析のためのモデルが含まれている．ここでは，ワードフィッシュ（<code><a href="https://rdrr.io/pkg/quanteda.textmodels/man/textmodel_wordfish.html" class="external-link">textmodel_wordfish()</a></code>）による教師なしの文書のスケーリングを2010年のアイルランドの予算討論の分析に用いている．</p>
-<div class="sourceCode" id="cb99"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/quanteda/quanteda.textmodels" class="external-link">"quanteda.textmodels"</a></span><span class="op">)</span></code></pre></div>
-<pre><code>## 
-## Attaching package: 'quanteda.textmodels'</code></pre>
-<pre><code>## The following object is masked from 'package:quanteda':
-## 
-##     data_dfm_lbgexample</code></pre>
 <div class="sourceCode" id="cb102"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">dfmat_ire</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/dfm.html">dfm</a></span><span class="op">(</span><span class="va">data_corpus_irishbudget2010</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/quanteda/quanteda.textmodels" class="external-link">"quanteda.textmodels"</a></span><span class="op">)</span>
+<span class="va">dfmat_ire</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/dfm.html">dfm</a></span><span class="op">(</span><span class="va">data_corpus_irishbudget2010</span><span class="op">)</span></code></pre></div>
 <pre><code>## Warning: 'dfm.corpus()' is deprecated. Use 'tokens()' first.</code></pre>
 <div class="sourceCode" id="cb104"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">tmod_wf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/quanteda.textmodels/man/textmodel_wordfish.html" class="external-link">textmodel_wordfish</a></span><span class="op">(</span><span class="va">dfmat_ire</span>, dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span>
@@ -912,8 +911,9 @@
 <code class="sourceCode R"><span class="va">dfmat_ire2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/dfm.html">dfm</a></span><span class="op">(</span><span class="va">data_corpus_irishbudget2010</span>,
                 remove_punct <span class="op">=</span> <span class="cn">TRUE</span>, remove_numbers <span class="op">=</span> <span class="cn">TRUE</span>, remove <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html" class="external-link">stopwords</a></span><span class="op">(</span><span class="st">"english"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## Warning: 'dfm.corpus()' is deprecated. Use 'tokens()' first.</code></pre>
+<pre><code>## Warning: '...' should not be used for tokens() arguments; use 'tokens()' first.</code></pre>
 <pre><code>## Warning: 'remove' is deprecated; use dfm_remove() instead</code></pre>
-<div class="sourceCode" id="cb108"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb109"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dfmat_ire2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/dfm_trim.html">dfm_trim</a></span><span class="op">(</span><span class="va">dfmat_ire2</span>, min_termfreq <span class="op">=</span> <span class="fl">4</span>, max_docfreq <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
 <span class="va">dfmat_ire2</span></code></pre></div>
 <pre><code>## Document-feature matrix of: 14 documents, 1,263 features (64.52% sparse) and 6 docvars.
@@ -934,37 +934,37 @@
 ##   Cowen, Brian (FF)               1      3    2
 ##   Kenny, Enda (FG)                0      2    5
 ## [ reached max_ndoc ... 8 more documents, reached max_nfeat ... 1,253 more features ]</code></pre>
-<div class="sourceCode" id="cb110"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb111"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span>
 <span class="kw">if</span> <span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va">topicmodels</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
     <span class="va">my_lda_fit20</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/topicmodels/man/lda.html" class="external-link">LDA</a></span><span class="op">(</span><span class="fu"><a href="../../reference/convert.html">convert</a></span><span class="op">(</span><span class="va">dfmat_ire2</span>, to <span class="op">=</span> <span class="st">"topicmodels"</span><span class="op">)</span>, k <span class="op">=</span> <span class="fl">20</span><span class="op">)</span>
     <span class="fu"><a href="https://rdrr.io/pkg/topicmodels/man/get.html" class="external-link">get_terms</a></span><span class="op">(</span><span class="va">my_lda_fit20</span>, <span class="fl">5</span><span class="op">)</span>
 <span class="op">}</span></code></pre></div>
 <pre><code>## Loading required package: topicmodels</code></pre>
-<pre><code>##      Topic 1   Topic 2        Topic 3   Topic 4   Topic 5   Topic 6  
-## [1,] "levy"    "society"      "failed"  "welfare" "benefit" "care"   
-## [2,] "million" "enterprising" "cycle"   "fianna"  "child"   "welfare"
-## [3,] "carbon"  "sense"        "radical" "child"   "day"     "hit"    
-## [4,] "change"  "equal"        "sort"    "face"    "today"   "benefit"
-## [5,] "welfare" "nation"       "per"     "irish"   "banks"   "system" 
-##      Topic 7     Topic 8      Topic 9     Topic 10      Topic 11    
-## [1,] "welfare"   "investment" "taoiseach" "million"     "spending"  
-## [2,] "system"    "back"       "employees" "support"     "rate"      
-## [3,] "fianna"    "reductions" "rate"      "welfare"     "million"   
-## [4,] "stimulus"  "irish"      "referred"  "confidence"  "investment"
-## [5,] "education" "rates"      "debate"    "development" "per"       
-##      Topic 12      Topic 13      Topic 14       Topic 15    Topic 16  
-## [1,] "kind"        "alternative" "fáil"         "strategy"  "measures"
-## [2,] "imagination" "citizenship" "welfare"      "ministers" "review"  
-## [3,] "policies"    "wealth"      "government's" "needed"    "million" 
-## [4,] "wit"         "adjustment"  "system"       "seen"      "scheme"  
-## [5,] "create"      "breaks"      "taxation"     "adopted"   "level"   
-##      Topic 17       Topic 18   Topic 19   Topic 20   
-## [1,] "per"          "day"      "fianna"   "taoiseach"
-## [2,] "carers"       "credit"   "fáil"     "fine"     
-## [3,] "unemployment" "spending" "national" "gael"     
-## [4,] "million"      "recovery" "irish"    "may"      
-## [5,] "families"     "mortgage" "support"  "irish"</code></pre>
+<pre><code>##      Topic 1     Topic 2    Topic 3      Topic 4        Topic 5    Topic 6    
+## [1,] "taoiseach" "fáil"     "support"    "society"      "measures" "taoiseach"
+## [2,] "rate"      "fianna"   "million"    "enterprising" "spending" "employees"
+## [3,] "debate"    "national" "reductions" "sense"        "review"   "referred" 
+## [4,] "per"       "child"    "investment" "equal"        "pension"  "proper"   
+## [5,] "three"     "deal"     "hospital"   "nation"       "million"  "stimulus" 
+##      Topic 7   Topic 8     Topic 9       Topic 10   Topic 11 Topic 12 
+## [1,] "child"   "failed"    "kind"        "irish"    "fianna" "million"
+## [2,] "benefit" "strategy"  "imagination" "fianna"   "fáil"   "working"
+## [3,] "day"     "system"    "policies"    "fáil"     "side"   "set"    
+## [4,] "today"   "ministers" "wit"         "national" "level"  "months" 
+## [5,] "bank"    "needed"    "create"      "benefit"  "third"  "welfare"
+##      Topic 13    Topic 14   Topic 15  Topic 16    Topic 17      Topic 18    
+## [1,] "taoiseach" "welfare"  "levy"    "care"      "alternative" "sort"      
+## [2,] "fine"      "system"   "million" "per"       "citizenship" "confront"  
+## [3,] "gael"      "taxation" "carbon"  "welfare"   "wealth"      "welfare"   
+## [4,] "may"       "fianna"   "change"  "allowance" "adjustment"  "leadership"
+## [5,] "irish"     "fáil"     "welfare" "hospital"  "breaks"      "real"      
+##      Topic 19     Topic 20    
+## [1,] "welfare"    "reduction" 
+## [2,] "back"       "level"     
+## [3,] "million"    "increasing"
+## [4,] "investment" "rate"      
+## [5,] "continue"   "levels"</code></pre>
 </div>
 </div>
   </div>

@@ -42,7 +42,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.9.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.0.0</span>
       </span>
     </div>
 
@@ -882,14 +882,8 @@
 <p>我们在<code><a href="https://rdrr.io/pkg/quanteda.textmodels/man/textmodel_wordfish.html" class="external-link">textmodel_wordfish()</a></code>功能上做了大量的开发工作，这里仅演示“wordfish”模型的无监督文档缩放分析：</p>
 <div class="sourceCode" id="cb81"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># make prettier document names</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/quanteda/quanteda.textmodels" class="external-link">"quanteda.textmodels"</a></span><span class="op">)</span></code></pre></div>
-<pre><code>## 
-## Attaching package: 'quanteda.textmodels'</code></pre>
-<pre><code>## The following object is masked from 'package:quanteda':
-## 
-##     data_dfm_lbgexample</code></pre>
-<div class="sourceCode" id="cb84"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">dfmat_ire</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/dfm.html">dfm</a></span><span class="op">(</span><span class="fu"><a href="../../reference/tokens.html">tokens</a></span><span class="op">(</span><span class="va">data_corpus_irishbudget2010</span><span class="op">)</span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/quanteda/quanteda.textmodels" class="external-link">"quanteda.textmodels"</a></span><span class="op">)</span>
+<span class="va">dfmat_ire</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/dfm.html">dfm</a></span><span class="op">(</span><span class="fu"><a href="../../reference/tokens.html">tokens</a></span><span class="op">(</span><span class="va">data_corpus_irishbudget2010</span><span class="op">)</span><span class="op">)</span>
 <span class="va">tmod_wf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/quanteda.textmodels/man/textmodel_wordfish.html" class="external-link">textmodel_wordfish</a></span><span class="op">(</span><span class="va">dfmat_ire</span>, dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span>
 
 <span class="co"># plot the Wordfish estimates by party</span>
@@ -900,7 +894,7 @@
 <h2 class="hasAnchor">
 <a href="#topic-models" class="anchor"></a>主题模型</h2>
 <p><strong>quanteda</strong>可以很轻松训练主题模型：</p>
-<div class="sourceCode" id="cb85"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb82"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">quant_dfm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/tokens.html">tokens</a></span><span class="op">(</span><span class="va">data_corpus_irishbudget2010</span>, remove_punct <span class="op">=</span> <span class="cn">TRUE</span>, remove_numbers <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../../reference/tokens_select.html">tokens_remove</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html" class="external-link">stopwords</a></span><span class="op">(</span><span class="st">"en"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../../reference/dfm.html">dfm</a></span><span class="op">(</span><span class="op">)</span>
@@ -924,7 +918,7 @@
 ##   Cowen, Brian (FF)               1      3    2
 ##   Kenny, Enda (FG)                0      2    5
 ## [ reached max_ndoc ... 8 more documents, reached max_nfeat ... 1,253 more features ]</code></pre>
-<div class="sourceCode" id="cb87"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb84"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span>
 <span class="kw">if</span> <span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="http://www.structuraltopicmodel.com/" class="external-link">"stm"</a></span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
     <span class="va">my_lda_fit20</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/stm/man/stm.html" class="external-link">stm</a></span><span class="op">(</span><span class="va">quant_dfm</span>, K <span class="op">=</span> <span class="fl">20</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
@@ -943,7 +937,7 @@
 <div id="chinese-stop-words" class="section level2">
 <h2 class="hasAnchor">
 <a href="#chinese-stop-words" class="anchor"></a>中文停用词：取自百度停用词</h2>
-<div class="sourceCode" id="cb90"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb87"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 读取中文停用词</span>
 <span class="va">stopw_zh</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html" class="external-link">stopwords</a></span><span class="op">(</span><span class="st">"zh"</span>, source <span class="op">=</span> <span class="st">"misc"</span><span class="op">)</span>
 
@@ -953,7 +947,7 @@
 ## [1] "\u4e2d\u534e"       "\u4eba\u6c11"       "\u5171\u548c\u56fd"
 ## [4] "\u6210\u7acb"       "\u4e8e"             "1949"              
 ## [7] "\u5e74"</code></pre>
-<div class="sourceCode" id="cb92"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb89"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 除去停用词</span>
 <span class="fu"><a href="../../reference/tokens.html">tokens</a></span><span class="op">(</span><span class="st">"中华人民共和国成立于1949 年"</span><span class="op">)</span> <span class="op">%&gt;%</span>
     <span class="fu"><a href="../../reference/tokens_select.html">tokens_remove</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html" class="external-link">stopwords</a></span><span class="op">(</span><span class="st">"zh"</span>, source <span class="op">=</span> <span class="st">"misc"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
@@ -966,7 +960,7 @@
 <h2 class="hasAnchor">
 <a href="#chinese-government-report" class="anchor"></a>例子：中国总理的“政府工作报告”</h2>
 <p>四十九份中国总理的“政府工作报告”，1954 - 2017</p>
-<div class="sourceCode" id="cb94"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb91"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 读取文件</span>
 <span class="fu"><a href="https://rdrr.io/r/base/load.html" class="external-link">load</a></span><span class="op">(</span><span class="st">"examples/data/data_corpus_chinesegovreport.rda"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">data_corpus_chinesegovreport</span>, <span class="fl">10</span><span class="op">)</span></code></pre></div>
@@ -1005,7 +999,7 @@
 ##  1964 \u5468\u6069\u6765
 ##  1975 \u5468\u6069\u6765
 ##  1978 \u534e\u56fd\u950b</code></pre>
-<div class="sourceCode" id="cb96"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb93"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 分词</span>
 <span class="va">toks_china</span> <span class="op">&lt;-</span> <span class="va">data_corpus_chinesegovreport</span> <span class="op">%&gt;%</span>
     <span class="fu"><a href="../../reference/tokens.html">tokens</a></span><span class="op">(</span>remove_punct <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">%&gt;%</span>
@@ -1018,7 +1012,7 @@
 ##         5627         5036         4255         4248         2931         2897 
 ## \u4e3b\u4e49 \u5de5\u4f5c \u4f01\u4e1a \u56fd\u5bb6 
 ##         2817         2642         2627         2595</code></pre>
-<div class="sourceCode" id="cb98"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb95"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#发展 经济 社会 建设 改革 人民 主义 工作 企业 国家 </span>
 <span class="co">#5627 5036 4255 4248 2931 2897 2817 2642 2627 2595 </span>
 
@@ -1036,7 +1030,7 @@
 <div id="feature-co-occurrence-matrix" class="section level2">
 <h2 class="hasAnchor">
 <a href="#feature-co-occurrence-matrix" class="anchor"></a>特征共现矩阵</h2>
-<div class="sourceCode" id="cb99"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb96"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># fcm -共现窗口为5，2017政府工作报告</span>
 <span class="va">corp_china2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/corpus_subset.html">corpus_subset</a></span><span class="op">(</span><span class="va">data_corpus_chinesegovreport</span>, <span class="va">Year</span> <span class="op">==</span> <span class="st">"2017"</span><span class="op">)</span>
 <span class="va">toks_china2</span> <span class="op">&lt;-</span> <span class="va">corp_china2</span> <span class="op">%&gt;%</span>
@@ -1049,7 +1043,7 @@
 ##           20           19           11           11           10            8 
 ##       \u70b9       \u4fa7 \u519c\u6751 \u7efc\u5408 
 ##            8            7            7            7</code></pre>
-<div class="sourceCode" id="cb101"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb98"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># fcm 共现窗口为："改革" + “xx”</span>
 <span class="va">fcmat_china2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/fcm.html">fcm</a></span><span class="op">(</span><span class="va">toks_china2</span>, context <span class="op">=</span> <span class="st">"window"</span>, ordered <span class="op">=</span> <span class="cn">TRUE</span>, tri <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 <span class="fu"><a href="../../reference/topfeatures.html">topfeatures</a></span><span class="op">(</span><span class="va">fcmat_china2</span><span class="op">[</span><span class="st">"改革"</span>, <span class="op">]</span><span class="op">)</span></code></pre></div>
@@ -1061,7 +1055,7 @@
 <div id="wordfish" class="section level2">
 <h2 class="hasAnchor">
 <a href="#wordfish" class="anchor"></a>文本缩放模型</h2>
-<div class="sourceCode" id="cb103"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb100"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">wfm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/quanteda.textmodels/man/textmodel_wordfish.html" class="external-link">textmodel_wordfish</a></span><span class="op">(</span><span class="va">dfmat_china</span><span class="op">)</span>
 <span class="va">y</span> <span class="op">&lt;-</span> <span class="fl">1954</span><span class="op">:</span><span class="fl">2017</span>
 <span class="va">y</span> <span class="op">&lt;-</span> <span class="va">y</span><span class="op">[</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="va">y</span> <span class="op">==</span> <span class="fl">1963</span> <span class="op">|</span> <span class="va">y</span> <span class="op">==</span> <span class="fl">1961</span> <span class="op">|</span> <span class="va">y</span> <span class="op">==</span> <span class="fl">1962</span> <span class="op">|</span> <span class="op">(</span><span class="va">y</span> <span class="op">&gt;</span> <span class="fl">1964</span> <span class="op">&amp;</span> <span class="va">y</span> <span class="op">&lt;</span> <span class="fl">1975</span><span class="op">)</span> <span class="op">|</span> <span class="va">y</span> <span class="op">==</span> <span class="fl">1976</span> <span class="op">|</span> <span class="va">y</span> <span class="op">==</span> <span class="fl">1977</span><span class="op">)</span><span class="op">]</span>
@@ -1071,7 +1065,7 @@
 <div id="collocation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#collocation" class="anchor"></a>词组 - 双词词组/三词词组等</h2>
-<div class="sourceCode" id="cb104"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb101"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 所有报告中的双词词组</span>
 <span class="va">tstat_col</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://quanteda.io/reference/textstat_collocations.html">textstat_collocations</a></span><span class="op">(</span><span class="va">toks_china</span>, size <span class="op">=</span> <span class="fl">2</span>, min_count <span class="op">=</span> <span class="fl">20</span>, tolower <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">tstat_col</span>, <span class="fl">10</span><span class="op">)</span></code></pre></div>
@@ -1086,7 +1080,7 @@
 ## 8  \u4e94\u5e74 \u8ba1\u5212   341            0      2 5.379229  71.91712
 ## 9  \u5404\u7ea7 \u653f\u5e9c   306            0      2 6.130740  66.85440
 ## 10 \u589e\u957f \u767e\u5206   300            0      2 5.540923  66.12134</code></pre>
-<div class="sourceCode" id="cb106"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb103"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 2017 报告中的双词词组</span>
 <span class="va">tstat_col2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://quanteda.io/reference/textstat_collocations.html">textstat_collocations</a></span><span class="op">(</span><span class="va">toks_china2</span>, size <span class="op">=</span> <span class="fl">2</span>, tolower <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">tstat_col2</span>, <span class="fl">10</span><span class="op">)</span></code></pre></div>

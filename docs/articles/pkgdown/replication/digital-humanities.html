@@ -42,7 +42,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.9.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.0.0</span>
       </span>
     </div>
 
@@ -315,14 +315,17 @@
 <code class="sourceCode R"><span class="co"># ten most frequent words</span>
 <span class="va">moby_dfm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/dfm.html">dfm</a></span><span class="op">(</span><span class="va">novel_lower_v</span>, remove_punct <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <pre><code>## Warning: 'dfm.character()' is deprecated. Use 'tokens()' first.</code></pre>
-<div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
+<pre><code>## Warning: '...' should not be used for tokens() arguments; use 'tokens()' first.</code></pre>
+<div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">moby_dfm</span>, nf <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></code></pre></div>
-<pre><code>## Document-feature matrix of: 1 document, 10 features (0.00% sparse) and 0 docvars.
+<pre><code>## Warning: nf argument is not used.</code></pre>
+<pre><code>## Document-feature matrix of: 1 document, 18,525 features (0.00% sparse) and 0 docvars.
 ##        features
 ## docs    chapter 1 loomings call  me ishmael some years ago never
-##   text1     172 2        1   54 628      19  608    91  35   203</code></pre>
+##   text1     172 2        1   54 628      19  608    91  35   203
+## [ reached max_nfeat ... 18,515 more features ]</code></pre>
 <p>Getting the list of the most frequent 10 terms is easy, using <code><a href="https://quanteda.io/reference/textstat_frequency.html">textstat_frequency()</a></code>.</p>
-<div class="sourceCode" id="cb54"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb56"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://quanteda.io">"quanteda.textstats"</a></span><span class="op">)</span>
 <span class="fu"><a href="https://quanteda.io/reference/textstat_frequency.html">textstat_frequency</a></span><span class="op">(</span><span class="va">moby_dfm</span>, n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span> </code></pre></div>
 <pre><code>##    feature frequency rank docfreq group
@@ -337,7 +340,7 @@
 ## 9       it      2394    9       1   all
 ## 10       i      1976   10       1   all</code></pre>
 <p>Finally, if we wish to plot the most frequent (50) terms, we can supply the results of <code><a href="https://quanteda.io/reference/textstat_frequency.html">textstat_frequency()</a></code> to <code><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot()</a></code> to plot their frequency by their rank:</p>
-<div class="sourceCode" id="cb56"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># plot frequency of 50 most frequent terms </span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span>
 <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme_get.html" class="external-link">theme_set</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_minimal</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
@@ -347,7 +350,7 @@
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Frequency rank"</span>, y <span class="op">=</span> <span class="st">"Term frequency"</span><span class="op">)</span></code></pre></div>
 <p><img src="digital-humanities_files/figure-html/unnamed-chunk-17-1.png" width="768"></p>
 <p>For direct comparison with the next chapter, we also create the sorted list of the most frequently found words using this:</p>
-<div class="sourceCode" id="cb57"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb59"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">sorted_moby_freqs_t</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/topfeatures.html">topfeatures</a></span><span class="op">(</span><span class="va">moby_dfm</span>, n <span class="op">=</span> <span class="fu"><a href="../../../reference/ndoc.html">nfeat</a></span><span class="op">(</span><span class="va">moby_dfm</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 </div>
 </div>
@@ -358,41 +361,41 @@
 <h2 class="hasAnchor">
 <a href="#accessing-word-data" class="anchor"></a>3.1 Accessing Word Data</h2>
 <p>We can query the document-frequency matrix to retrieve word frequencies, as with a normal matrix:</p>
-<div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb60"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># frequencies of "he" and "she" - these are matrixes, not numerics</span>
 <span class="va">sorted_moby_freqs_t</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"he"</span>, <span class="st">"she"</span>, <span class="st">"him"</span>, <span class="st">"her"</span><span class="op">)</span><span class="op">]</span></code></pre></div>
 <pre><code>##   he  she  him  her 
 ## 1758  112 1058  330</code></pre>
-<div class="sourceCode" id="cb60"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb62"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># another method: indexing the dfm</span>
 <span class="va">moby_dfm</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"he"</span>, <span class="st">"she"</span>, <span class="st">"him"</span>, <span class="st">"her"</span><span class="op">)</span><span class="op">]</span></code></pre></div>
 <pre><code>## Document-feature matrix of: 1 document, 4 features (0.00% sparse) and 0 docvars.
 ##        features
 ## docs      he she  him her
 ##   text1 1758 112 1058 330</code></pre>
-<div class="sourceCode" id="cb62"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb64"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">sorted_moby_freqs_t</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></code></pre></div>
 <pre><code>##   the 
 ## 14173</code></pre>
-<div class="sourceCode" id="cb64"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb66"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">sorted_moby_freqs_t</span><span class="op">[</span><span class="st">"the"</span><span class="op">]</span></code></pre></div>
 <pre><code>##   the 
 ## 14173</code></pre>
-<div class="sourceCode" id="cb66"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb68"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># term frequency ratios</span>
 <span class="va">sorted_moby_freqs_t</span><span class="op">[</span><span class="st">"him"</span><span class="op">]</span> <span class="op">/</span> <span class="va">sorted_moby_freqs_t</span><span class="op">[</span><span class="st">"her"</span><span class="op">]</span></code></pre></div>
 <pre><code>##      him 
 ## 3.206061</code></pre>
-<div class="sourceCode" id="cb68"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb70"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">sorted_moby_freqs_t</span><span class="op">[</span><span class="st">"he"</span><span class="op">]</span> <span class="op">/</span> <span class="va">sorted_moby_freqs_t</span><span class="op">[</span><span class="st">"she"</span><span class="op">]</span></code></pre></div>
 <pre><code>##       he 
 ## 15.69643</code></pre>
 <p>Total number of tokens:</p>
-<div class="sourceCode" id="cb70"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb72"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../../../reference/ntoken.html">ntoken</a></span><span class="op">(</span><span class="va">moby_dfm</span><span class="op">)</span></code></pre></div>
 <pre><code>##  text1 
 ## 209999</code></pre>
-<div class="sourceCode" id="cb72"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb74"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">sorted_moby_freqs_t</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] 209999</code></pre>
 </div>
@@ -400,12 +403,12 @@
 <h2 class="hasAnchor">
 <a href="#recycling" class="anchor"></a>3.2 Recycling</h2>
 <p>Relative term frequencies:</p>
-<div class="sourceCode" id="cb74"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb76"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">sorted_moby_rel_freqs_t</span> <span class="op">&lt;-</span> <span class="va">sorted_moby_freqs_t</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">sorted_moby_freqs_t</span><span class="op">)</span> <span class="op">*</span> <span class="fl">100</span>
 <span class="va">sorted_moby_rel_freqs_t</span><span class="op">[</span><span class="st">"the"</span><span class="op">]</span></code></pre></div>
 <pre><code>##     the 
 ## 6.74908</code></pre>
-<div class="sourceCode" id="cb76"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb78"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># by weighting the dfm directly</span>
 <span class="va">moby_dfm_pct</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/dfm_weight.html">dfm_weight</a></span><span class="op">(</span><span class="va">moby_dfm</span>, scheme <span class="op">=</span> <span class="st">"prop"</span><span class="op">)</span> <span class="op">*</span> <span class="fl">100</span>
 
@@ -415,13 +418,13 @@
 ## docs        the
 ##   text1 6.74908</code></pre>
 <p>Plotting the most frequent terms, replicating the plot from the book:</p>
-<div class="sourceCode" id="cb78"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb80"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sorted_moby_rel_freqs_t</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span>, type <span class="op">=</span> <span class="st">"b"</span>,
      xlab <span class="op">=</span> <span class="st">"Top Ten Words"</span>, ylab <span class="op">=</span> <span class="st">"Percentage of Full Text"</span>, xaxt <span class="op">=</span> <span class="st">"n"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/axis.html" class="external-link">axis</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">sorted_moby_rel_freqs_t</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="digital-humanities_files/figure-html/unnamed-chunk-22-1.png" width="700"></p>
 <p>Plotting the most frequent terms using <strong>ggplot2</strong>:</p>
-<div class="sourceCode" id="cb79"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb81"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://quanteda.io/reference/textstat_frequency.html">textstat_frequency</a></span><span class="op">(</span><span class="va">moby_dfm_pct</span>, n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/reorder.factor.html" class="external-link">reorder</a></span><span class="op">(</span><span class="va">feature</span>, <span class="op">-</span><span class="va">rank</span><span class="op">)</span>, y <span class="op">=</span> <span class="va">frequency</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_bar</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"identity"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> 
@@ -436,7 +439,7 @@
 <h2 class="hasAnchor">
 <a href="#dispersion-plots" class="anchor"></a>4.1 Dispersion plots</h2>
 <p>A dispersion plot allows us to visualize the occurrences of particular terms throughout the text. The object returned by the <code>kwic</code> function can be plotted to display a dispersion plot. The <strong>quanteda</strong> <code>textplot_</code> objects are based on <strong>ggplot2</strong>, so you can easily change the plot, for example by adding custom title.</p>
-<div class="sourceCode" id="cb80"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb82"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># using words from tokenized corpus for dispersion</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">"quanteda.textplots"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/quanteda.textplots/man/textplot_xray.html" class="external-link">textplot_xray</a></span><span class="op">(</span><span class="fu"><a href="../../../reference/kwic.html">kwic</a></span><span class="op">(</span><span class="va">novel_v</span>, pattern <span class="op">=</span> <span class="st">"whale"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
@@ -445,7 +448,7 @@
 <pre><code>## Warning: Use of `x$ntokens` is discouraged. Use `ntokens` instead.</code></pre>
 <p><img src="digital-humanities_files/figure-html/unnamed-chunk-24-1.png" width="768"></p>
 <p>To produce multiple dispersion plots for comparison, you can simply send more than one <code><a href="../../../reference/kwic.html">kwic()</a></code> output to <code><a href="https://rdrr.io/pkg/quanteda.textplots/man/textplot_xray.html" class="external-link">textplot_xray()</a></code>:</p>
-<div class="sourceCode" id="cb83"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb85"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/quanteda.textplots/man/textplot_xray.html" class="external-link">textplot_xray</a></span><span class="op">(</span>
     <span class="fu"><a href="../../../reference/kwic.html">kwic</a></span><span class="op">(</span><span class="va">novel_v</span>, pattern <span class="op">=</span> <span class="st">"whale"</span><span class="op">)</span>,
     <span class="fu"><a href="../../../reference/kwic.html">kwic</a></span><span class="op">(</span><span class="va">novel_v</span>, pattern <span class="op">=</span> <span class="st">"Ahab"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
@@ -459,11 +462,11 @@
 <div id="searching-with-regular-expression" class="section level2">
 <h2 class="hasAnchor">
 <a href="#searching-with-regular-expression" class="anchor"></a>4.2 Searching with regular expression</h2>
-<div class="sourceCode" id="cb86"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb88"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># identify the chapter break locations</span>
 <span class="va">chap_positions_v</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/kwic.html">kwic</a></span><span class="op">(</span><span class="va">novel_v</span>, <span class="fu"><a href="../../../reference/phrase.html">phrase</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"CHAPTER \\d"</span><span class="op">)</span><span class="op">)</span>, valuetype <span class="op">=</span> <span class="st">"regex"</span><span class="op">)</span><span class="op">$</span><span class="va">from</span></code></pre></div>
 <pre><code>## Warning: 'kwic.character()' is deprecated. Use 'tokens()' first.</code></pre>
-<div class="sourceCode" id="cb88"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb90"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">chap_positions_v</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1]     1  2554  4242 11127 13041 13908</code></pre>
 </div>
@@ -471,7 +474,7 @@
 <h2 class="hasAnchor">
 <a href="#identifying-chapter-breaks" class="anchor"></a>4.2 Identifying chapter breaks</h2>
 <p>Splitting the text into chapters means that we will have a collection of documents, which makes this a good time to make a <code>corpus</code> object to hold the texts. Initially, we make a single-document corpus, and then use the <code><a href="../../../reference/corpus_segment.html">char_segment()</a></code> function to split this by the string which specifies the chapter breaks.</p>
-<div class="sourceCode" id="cb90"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb92"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">chapters_corp</span> <span class="op">&lt;-</span> 
     <span class="fu"><a href="../../../reference/corpus.html">corpus</a></span><span class="op">(</span><span class="va">data_char_mobydick</span><span class="op">)</span> <span class="op">%&gt;%</span>
     <span class="fu"><a href="../../../reference/corpus_segment.html">corpus_segment</a></span><span class="op">(</span>pattern <span class="op">=</span> <span class="st">"CHAPTER\\s\\d+.*\\n"</span>, valuetype <span class="op">=</span> <span class="st">"regex"</span><span class="op">)</span>
@@ -490,7 +493,7 @@
 ##   Moby Dick.9  1260   4250       166      CHAPTER 9. The Sermon.\n
 ##  Moby Dick.10   658   1791        66 CHAPTER 10. A Bosom Friend.\n</code></pre>
 <p>The titles are automatically extracted into the <code>pattern</code> document variables, and the text of each chapter becomes the text of each new document unit. To tidy this up, we can remove the trailing <code>\n</code> character, using <code><a href="https://rdrr.io/pkg/stringi/man/stri_trim.html" class="external-link">stri_trim_right()</a></code>, since the <code>\n</code> is a member of the “whitespace” group.</p>
-<div class="sourceCode" id="cb92"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb94"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../../../reference/docvars.html">docvars</a></span><span class="op">(</span><span class="va">chapters_corp</span>, <span class="st">"pattern"</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu">stringi</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/stringi/man/stri_trim.html" class="external-link">stri_trim_right</a></span><span class="op">(</span><span class="fu"><a href="../../../reference/docvars.html">docvars</a></span><span class="op">(</span><span class="va">chapters_corp</span>, <span class="st">"pattern"</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">chapters_corp</span>, n <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></code></pre></div>
 <pre><code>## Corpus consisting of 136 documents, showing 3 documents:
@@ -500,17 +503,17 @@
 ##  Moby Dick.2   651   1682        60  CHAPTER 2. The Carpet-Bag.
 ##  Moby Dick.3  1744   6879       263 CHAPTER 3. The Spouter-Inn.</code></pre>
 <p>For better reference, let’s also rename the document labels with these chapter headings:</p>
-<div class="sourceCode" id="cb94"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb96"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../../../reference/docnames.html">docnames</a></span><span class="op">(</span><span class="va">chapters_corp</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/docvars.html">docvars</a></span><span class="op">(</span><span class="va">chapters_corp</span>, <span class="st">"pattern"</span><span class="op">)</span></code></pre></div>
 <div id="barplots-of-whale-and-ahab" class="section level3">
 <h3 class="hasAnchor">
 <a href="#barplots-of-whale-and-ahab" class="anchor"></a>4.4.5 barplots of whale and ahab</h3>
 <p>With the corpus split into chapters, we can use the <code><a href="../../../reference/dfm.html">dfm()</a></code> function to create a matrix of counts of each word in each chapter – a document-frequency matrix.</p>
-<div class="sourceCode" id="cb95"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb97"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># create a dfm</span>
 <span class="va">chap_dfm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/dfm.html">dfm</a></span><span class="op">(</span><span class="va">chapters_corp</span><span class="op">)</span></code></pre></div>
 <pre><code>## Warning: 'dfm.corpus()' is deprecated. Use 'tokens()' first.</code></pre>
-<div class="sourceCode" id="cb97"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb99"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># extract row with count for "whale"/"ahab" in each chapter</span>
 <span class="co"># and convert to data frame for plotting</span>
 <span class="va">whales_ahabs_df</span> <span class="op">&lt;-</span> <span class="va">chap_dfm</span> <span class="op">%&gt;%</span> 
@@ -525,7 +528,7 @@
          y <span class="op">=</span> <span class="st">"Frequency"</span>,
          title <span class="op">=</span> <span class="st">'Occurrence of "whale"'</span><span class="op">)</span></code></pre></div>
 <p><img src="digital-humanities_files/figure-html/unnamed-chunk-30-1.png" width="768"></p>
-<div class="sourceCode" id="cb98"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb100"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">whales_ahabs_df</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">chapter</span>, y <span class="op">=</span> <span class="va">ahab</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
     <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_bar</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"identity"</span><span class="op">)</span> <span class="op">+</span>
         <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Chapter"</span>, 
@@ -533,7 +536,7 @@
          title <span class="op">=</span> <span class="st">'Occurrence of "ahab"'</span><span class="op">)</span></code></pre></div>
 <p><img src="digital-humanities_files/figure-html/unnamed-chunk-30-2.png" width="768"></p>
 <p>The above plots are raw frequency plots. For relative frequency plots, (word count divided by the length of the chapter) we can weight the document-frequency matrix. To obtain expected word frequency per 100 words, we multiply by 100. To get a feel for what the resulting weighted dfm (document-feature matrix) looks like, you can inspect it with the <code>head</code> function, which prints the first few rows and columns.</p>
-<div class="sourceCode" id="cb99"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb101"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">rel_dfm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/dfm_weight.html">dfm_weight</a></span><span class="op">(</span><span class="va">chap_dfm</span>, scheme <span class="op">=</span> <span class="st">"prop"</span><span class="op">)</span> <span class="op">*</span> <span class="fl">100</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">rel_dfm</span><span class="op">)</span></code></pre></div>
 <pre><code>## Document-feature matrix of: 6 documents, 18,630 features (95.86% sparse) and 1 docvar.
@@ -562,7 +565,7 @@
 ##   CHAPTER 5. Breakfast.       0.1160093 0         
 ##   CHAPTER 6. The Street.      0         0         
 ## [ reached max_nfeat ... 18,620 more features ]</code></pre>
-<div class="sourceCode" id="cb101"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb103"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># subset dfm and convert to data.frame object</span>
 <span class="va">rel_chap_freq</span> <span class="op">&lt;-</span> <span class="va">rel_dfm</span> <span class="op">%&gt;%</span> 
     <span class="fu"><a href="../../../reference/dfm_select.html">dfm_keep</a></span><span class="op">(</span>pattern <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"whale"</span>, <span class="st">"ahab"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> 
@@ -574,7 +577,7 @@
     <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Chapter"</span>, y <span class="op">=</span> <span class="st">"Relative frequency"</span>,
          title <span class="op">=</span> <span class="st">'Occurrence of "whale"'</span><span class="op">)</span></code></pre></div>
 <p><img src="digital-humanities_files/figure-html/unnamed-chunk-31-1.png" width="768"></p>
-<div class="sourceCode" id="cb102"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb104"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">rel_chap_freq</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">chapter</span>, y <span class="op">=</span> <span class="va">ahab</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
     <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_bar</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"identity"</span><span class="op">)</span> <span class="op">+</span>
     <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Chapter"</span>, y <span class="op">=</span> <span class="st">"Relative frequency"</span>,
@@ -590,7 +593,7 @@
 <h2 class="hasAnchor">
 <a href="#correlation-analysis" class="anchor"></a>5.2 Correlation Analysis</h2>
 <p>Correlation analysis (and many other similarity measures) can be constructed using fast, sparse means through the <code><a href="https://quanteda.io/reference/textstat_simil.html">textstat_simil()</a></code> function. Here, we select feature comparisons for just “whale” and “ahab”, and convert this into a matrix as in the book. Because correlations are sensitive to document length, we first convert this into a relative frequency using <code><a href="../../../reference/dfm_weight.html">dfm_weight()</a></code>.</p>
-<div class="sourceCode" id="cb103"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb105"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../../../reference/dfm_weight.html">dfm_weight</a></span><span class="op">(</span><span class="va">chap_dfm</span>, scheme <span class="op">=</span> <span class="st">"prop"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
     <span class="fu"><a href="https://quanteda.io/reference/textstat_simil.html">textstat_simil</a></span><span class="op">(</span>selection <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"whale"</span>, <span class="st">"ahab"</span><span class="op">)</span>, method <span class="op">=</span> <span class="st">"correlation"</span>, margin <span class="op">=</span> <span class="st">"features"</span><span class="op">)</span> <span class="op">%&gt;%</span>
     <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
@@ -604,7 +607,7 @@
 <div id="testing-correlation-with-randomization" class="section level2">
 <h2 class="hasAnchor">
 <a href="#testing-correlation-with-randomization" class="anchor"></a>5.4 Testing Correlation with Randomization</h2>
-<div class="sourceCode" id="cb106"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb108"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">cor_data_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/dfm_weight.html">dfm_weight</a></span><span class="op">(</span><span class="va">chap_dfm</span>, scheme <span class="op">=</span> <span class="st">"prop"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
     <span class="fu"><a href="../../../reference/dfm_select.html">dfm_keep</a></span><span class="op">(</span>pattern <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ahab"</span>, <span class="st">"whale"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> 
     <span class="fu"><a href="../../../reference/convert.html">convert</a></span><span class="op">(</span>to <span class="op">=</span> <span class="st">"data.frame"</span><span class="op">)</span>
@@ -631,18 +634,18 @@
 <div id="mean-word-frequency" class="section level2">
 <h2 class="hasAnchor">
 <a href="#mean-word-frequency" class="anchor"></a>6.2 Mean word frequency</h2>
-<div class="sourceCode" id="cb107"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb109"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># length of the book in chapters</span>
 <span class="fu"><a href="../../../reference/ndoc.html">ndoc</a></span><span class="op">(</span><span class="va">chapters_corp</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] 136</code></pre>
-<div class="sourceCode" id="cb109"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb111"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># chapter names</span>
 <span class="fu"><a href="../../../reference/docnames.html">docnames</a></span><span class="op">(</span><span class="va">chapters_corp</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] "CHAPTER 1. Loomings."        "CHAPTER 2. The Carpet-Bag." 
 ## [3] "CHAPTER 3. The Spouter-Inn." "CHAPTER 4. The Counterpane."
 ## [5] "CHAPTER 5. Breakfast."       "CHAPTER 6. The Street."</code></pre>
 <p>Calculating the mean word frequencies is easy:</p>
-<div class="sourceCode" id="cb111"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb113"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># for first few chapters</span>
 <span class="fu"><a href="../../../reference/ntoken.html">ntoken</a></span><span class="op">(</span><span class="va">chapters_corp</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <pre><code>##        CHAPTER 1. Loomings.  CHAPTER 2. The Carpet-Bag. 
@@ -651,7 +654,7 @@
 ##                        6879                        1908 
 ##       CHAPTER 5. Breakfast.      CHAPTER 6. The Street. 
 ##                         862                         936</code></pre>
-<div class="sourceCode" id="cb113"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb115"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># average</span>
 <span class="op">(</span><span class="fu"><a href="../../../reference/ntoken.html">ntoken</a></span><span class="op">(</span><span class="va">chapters_corp</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="../../../reference/ntoken.html">ntype</a></span><span class="op">(</span><span class="va">chapters_corp</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <pre><code>##        CHAPTER 1. Loomings.  CHAPTER 2. The Carpet-Bag. 
@@ -665,12 +668,12 @@
 <h2 class="hasAnchor">
 <a href="#extracting-word-usage-means" class="anchor"></a>6.3 Extracting Word Usage Means</h2>
 <p>Since the quotient of the number of tokens and number of types is a vector, we can simply feed this to <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> using the pipe operator:</p>
-<div class="sourceCode" id="cb115"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb117"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="op">(</span><span class="fu"><a href="../../../reference/ntoken.html">ntoken</a></span><span class="op">(</span><span class="va">chapters_corp</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="../../../reference/ntoken.html">ntype</a></span><span class="op">(</span><span class="va">chapters_corp</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
     <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"h"</span>, ylab <span class="op">=</span> <span class="st">"Mean word frequency"</span><span class="op">)</span></code></pre></div>
 <p><img src="digital-humanities_files/figure-html/unnamed-chunk-36-1.png" width="768"></p>
 <p>For the scaled plot:</p>
-<div class="sourceCode" id="cb116"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb118"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="op">(</span><span class="fu"><a href="../../../reference/ntoken.html">ntoken</a></span><span class="op">(</span><span class="va">chapters_corp</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="../../../reference/ntoken.html">ntype</a></span><span class="op">(</span><span class="va">chapters_corp</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
     <span class="fu"><a href="https://rdrr.io/r/base/scale.html" class="external-link">scale</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
     <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"h"</span>, ylab <span class="op">=</span> <span class="st">"Scaled mean word frequency"</span><span class="op">)</span></code></pre></div>
@@ -679,7 +682,7 @@
 <div id="ranking-the-values" class="section level2">
 <h2 class="hasAnchor">
 <a href="#ranking-the-values" class="anchor"></a>6.4 Ranking the values</h2>
-<div class="sourceCode" id="cb117"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb119"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mean_word_use_m</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="fu"><a href="../../../reference/ntoken.html">ntoken</a></span><span class="op">(</span><span class="va">chapters_corp</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="../../../reference/ntoken.html">ntype</a></span><span class="op">(</span><span class="va">chapters_corp</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/sort.html" class="external-link">sort</a></span><span class="op">(</span><span class="va">mean_word_use_m</span>, decreasing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <pre><code>##    CHAPTER 54. The Town-Ho's Story. CHAPTER 135. The Chase.--Third Day. 
@@ -693,7 +696,7 @@
 <h2 class="hasAnchor">
 <a href="#calculating-the-ttr" class="anchor"></a>6.5 Calculating the TTR</h2>
 <p>Measures of lexical diversity can be estimated using <code><a href="https://quanteda.io/reference/textstat_lexdiv.html">textstat_lexdiv()</a></code>. The TTR (Type-Token Ratio), a measure used in section 6.5, can be calculated for each document of the <code>dfm</code>.</p>
-<div class="sourceCode" id="cb119"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb121"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../../../reference/dfm.html">dfm</a></span><span class="op">(</span><span class="va">chapters_corp</span><span class="op">)</span> <span class="op">%&gt;%</span> 
     <span class="fu"><a href="https://quanteda.io/reference/textstat_lexdiv.html">textstat_lexdiv</a></span><span class="op">(</span>measure <span class="op">=</span> <span class="st">"TTR"</span><span class="op">)</span> <span class="op">%&gt;%</span>
     <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></code></pre></div>
@@ -715,7 +718,7 @@
 <h1 class="hasAnchor">
 <a href="#hapax-richness" class="anchor"></a>7 Hapax Richness</h1>
 <p>Another measure of lexical diversity is Hapax richness, defined as the number of words that occur only once divided by the total number of words. We can calculate Hapax richness very simply by using a logical operation on the document-feature matrix, to return a logical value for each term that occurs once, and then sum these to get a count.</p>
-<div class="sourceCode" id="cb122"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb124"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># hapaxes per document</span>
 <span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">rowSums</a></span><span class="op">(</span><span class="va">chap_dfm</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <pre><code>##        CHAPTER 1. Loomings.  CHAPTER 2. The Carpet-Bag. 
@@ -724,7 +727,7 @@
 ##                        1084                         464 
 ##       CHAPTER 5. Breakfast.      CHAPTER 6. The Street. 
 ##                         276                         341</code></pre>
-<div class="sourceCode" id="cb124"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb126"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># as a proportion</span>
 <span class="va">hapax_proportion</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">rowSums</a></span><span class="op">(</span><span class="va">chap_dfm</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="../../../reference/ntoken.html">ntoken</a></span><span class="op">(</span><span class="va">chap_dfm</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">hapax_proportion</span><span class="op">)</span></code></pre></div>
@@ -735,7 +738,7 @@
 ##       CHAPTER 5. Breakfast.      CHAPTER 6. The Street. 
 ##                   0.3201856                   0.3643162</code></pre>
 <p>To plot this:</p>
-<div class="sourceCode" id="cb126"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb128"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/barplot.html" class="external-link">barplot</a></span><span class="op">(</span><span class="va">hapax_proportion</span>, beside <span class="op">=</span> <span class="cn">TRUE</span>, col <span class="op">=</span> <span class="st">"grey"</span>, names.arg <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fu"><a href="../../../reference/ndoc.html">ndoc</a></span><span class="op">(</span><span class="va">chap_dfm</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="digital-humanities_files/figure-html/unnamed-chunk-41-1.png" width="768"></p>
 </div>
@@ -743,10 +746,10 @@
 <h1 class="hasAnchor">
 <a href="#do-it-kwic" class="anchor"></a>8 Do it KWIC</h1>
 <p>For this, and the next chapter, we simply use <strong>quanteda</strong>’s excellent <code><a href="../../../reference/kwic.html">kwic()</a></code> function. To find the indexes of the token positions for “gutenberg”, for instance, we use the following, which returns a data.frame with the name <code>from</code> indicating the index position of the start of the token match:</p>
-<div class="sourceCode" id="cb127"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb129"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">gutenberg_kwic</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/kwic.html">kwic</a></span><span class="op">(</span><span class="va">data_char_mobydick</span>, pattern <span class="op">=</span> <span class="st">"gutenberg"</span><span class="op">)</span></code></pre></div>
 <pre><code>## Warning: 'kwic.character()' is deprecated. Use 'tokens()' first.</code></pre>
-<div class="sourceCode" id="cb129"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb131"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">gutenberg_kwic</span><span class="op">$</span><span class="va">from</span>, <span class="fl">10</span><span class="op">)</span></code></pre></div>
 <pre><code>##  [1]      3     52    108 253650 253799 253910 253957 254145 254261 254359</code></pre>
 </div>
@@ -755,13 +758,13 @@
 <a href="#do-it-kwic-better" class="anchor"></a>9 Do it KWIC (Better)</h1>
 <p>This is going to be super easy since we don’t need to reinvent the wheel here, since <code><a href="../../../reference/kwic.html">kwic()</a></code> already does all that we need.</p>
 <p>Let’s create a corpus containing <em>Moby Dick</em> but also Jane Austen’s <em>Sense and Sensibility</em>.</p>
-<div class="sourceCode" id="cb131"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb133"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">data_char_senseandsensibility</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/texts.html">texts</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/readtext/man/readtext.html" class="external-link">readtext</a></span><span class="op">(</span><span class="st">"http://www.gutenberg.org/files/161/161-0.txt"</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">data_char_senseandsensibility</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"Sense and Sensibility"</span>
 
 <span class="va">litcorpus</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/corpus.html">corpus</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">data_char_mobydick</span>, <span class="va">data_char_senseandsensibility</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p>Now we can use <code><a href="../../../reference/kwic.html">kwic()</a></code> to find out where in each novel this occurred:</p>
-<div class="sourceCode" id="cb132"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb134"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="op">(</span><span class="va">dogkwic</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/kwic.html">kwic</a></span><span class="op">(</span><span class="fu"><a href="../../../reference/tokens.html">tokens</a></span><span class="op">(</span><span class="va">litcorpus</span><span class="op">)</span>, pattern <span class="op">=</span> <span class="st">"dog"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## Keyword-in-context with 17 matches.                                                                       
 ##              [Moby Dick, 16994]    all over like a Newfoundland | dog |
@@ -800,7 +803,7 @@
 ##  will, in drawing nigh     
 ##  ! It was only the</code></pre>
 <p>We can plot this easily too, as a lexical dispersion plot. By specifying the scale as “absolute”, we are looking at absolute token index position rather than relative position, and therefore we see that <em>Moby Dick</em> is nearly twice as long as <em>Sense and Sensibility</em>.</p>
-<div class="sourceCode" id="cb134"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb136"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/quanteda.textplots/man/textplot_xray.html" class="external-link">textplot_xray</a></span><span class="op">(</span><span class="va">dogkwic</span>, scale <span class="op">=</span> <span class="st">"absolute"</span><span class="op">)</span></code></pre></div>
 <pre><code>## Warning: Use of `x$ntokens` is discouraged. Use `ntokens` instead.</code></pre>
 <p><img src="digital-humanities_files/figure-html/unnamed-chunk-45-1.png" width="768"></p>
@@ -813,7 +816,7 @@
 <h1 class="hasAnchor">
 <a href="#clustering" class="anchor"></a>11 Clustering</h1>
 <p>Chapter 11 describes how to detect clusters in a corpus. While the book uses the <code>XMLAuthorCorpus</code>, we describe clustering using U.S. State of the Union addresses included in the <strong>quanteda.corpora</strong> package. We trim the corpus with <code><a href="../../../reference/dfm_trim.html">dfm_trim()</a></code> by keeping only those words that occur at least five times in the corpus and in at least three speeches.</p>
-<div class="sourceCode" id="cb136"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb138"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://github.com/quanteda/quanteda.corpora" class="external-link">quanteda.corpora</a></span><span class="op">)</span>
 <span class="va">pres_dfm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/tokens.html">tokens</a></span><span class="op">(</span><span class="fu"><a href="../../../reference/corpus_subset.html">corpus_subset</a></span><span class="op">(</span><span class="va">data_corpus_sotu</span>, <span class="va">Date</span> <span class="op">&gt;</span> <span class="st">"1980-01-01"</span><span class="op">)</span>, remove_punct <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../../../reference/tokens_wordstem.html">tokens_wordstem</a></span><span class="op">(</span><span class="st">"en"</span><span class="op">)</span> <span class="op">%&gt;%</span>
@@ -845,7 +848,7 @@
 <h1 class="hasAnchor">
 <a href="#topic-modelling" class="anchor"></a>13 Topic Modelling</h1>
 <p>Finally, Jockers’ book introduces topic modelling of a corpus and the visualisation through wordclouds. We can easily apply functions from the <strong>topicmodels</strong> package by using <strong>quanteda</strong>’s <code><a href="../../../reference/convert.html">convert()</a></code> function. In our example, we use the Irish budget speeches from 2010 (<code>data_corpus_irishbudget2010</code>) and classify 20 topics using Latent Dirichlet Allocation.</p>
-<div class="sourceCode" id="cb137"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb139"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">data_corpus_irishbudget2010</span>, package <span class="op">=</span> <span class="st">"quanteda.textmodels"</span><span class="op">)</span>
 <span class="va">dfm_speeches</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/tokens.html">tokens</a></span><span class="op">(</span><span class="va">data_corpus_irishbudget2010</span>, remove_punct <span class="op">=</span> <span class="cn">TRUE</span>, remove_numbers <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../../../reference/tokens_select.html">tokens_remove</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html" class="external-link">stopwords</a></span><span class="op">(</span><span class="st">"en"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> 
@@ -858,30 +861,30 @@
 
 <span class="co"># get top five terms per topic</span>
 <span class="fu"><a href="https://rdrr.io/pkg/topicmodels/man/get.html" class="external-link">get_terms</a></span><span class="op">(</span><span class="va">LDA_fit_20</span>, <span class="fl">5</span><span class="op">)</span></code></pre></div>
-<pre><code>##      Topic 1    Topic 2       Topic 3         Topic 4      Topic 5   
-## [1,] "measures" "kind"        "scheme"        "welfare"    "welfare" 
-## [2,] "million"  "imagination" "reduction"     "support"    "child"   
-## [3,] "welfare"  "policies"    "million"       "confidence" "high"    
-## [4,] "spending" "wit"         "international" "increased"  "system"  
-## [5,] "recent"   "create"      "system"        "research"   "stimulus"
-##      Topic 6     Topic 7   Topic 8     Topic 9     Topic 10   Topic 11   
-## [1,] "taoiseach" "welfare" "taoiseach" "care"      "system"   "taoiseach"
-## [2,] "stimulus"  "placing" "fine"      "welfare"   "welfare"  "employees"
-## [3,] "recession" "future"  "gael"      "per"       "fianna"   "rate"     
-## [4,] "necessary" "levy"    "may"       "allowance" "fáil"     "referred" 
-## [5,] "earning"   "climate" "irish"     "hit"       "taxation" "debate"   
-##      Topic 12      Topic 13  Topic 14   Topic 15   Topic 16     Topic 17 
-## [1,] "alternative" "irish"   "strategy" "fianna"   "million"    "child"  
-## [2,] "citizenship" "pension" "failed"   "fáil"     "investment" "benefit"
-## [3,] "wealth"      "create"  "system"   "national" "back"       "bank"   
-## [4,] "adjustment"  "review"  "vision"   "irish"    "continue"   "today"  
-## [5,] "breaks"      "details" "change"   "support"  "future"     "day"    
-##      Topic 18  Topic 19  Topic 20
-## [1,] "society" "levy"    "fianna"
-## [2,] "per"     "carbon"  "fáil"  
-## [3,] "benefit" "change"  "side"  
-## [4,] "day"     "harsh"   "level" 
-## [5,] "nama"    "million" "third"</code></pre>
+<pre><code>##      Topic 1      Topic 2    Topic 3    Topic 4   Topic 5      Topic 6      
+## [1,] "million"    "child"    "pain"     "pension" "lemass"     "alternative"
+## [2,] "support"    "welfare"  "back"     "benefit" "employment" "citizenship"
+## [3,] "welfare"    "stimulus" "bring"    "details" "investment" "wealth"     
+## [4,] "investment" "much"     "able"     "system"  "creating"   "adjustment" 
+## [5,] "confidence" "fianna"   "spending" "welfare" "dealing"    "breaks"     
+##      Topic 7         Topic 8    Topic 9     Topic 10    Topic 11      Topic 12
+## [1,] "welfare"       "welfare"  "taoiseach" "allowance" "kind"        "fianna"
+## [2,] "reduction"     "system"   "fine"      "million"   "carbon"      "fáil"  
+## [3,] "reduce"        "taxation" "gael"      "back"      "imagination" "side"  
+## [4,] "international" "fianna"   "may"       "fianna"    "change"      "level" 
+## [5,] "measures"      "fáil"     "irish"     "earners"   "levy"        "third" 
+##      Topic 13  Topic 14    Topic 15   Topic 16   Topic 17   Topic 18   
+## [1,] "benefit" "failed"    "deficit"  "fianna"   "million"  "taoiseach"
+## [2,] "day"     "strategy"  "welfare"  "fáil"     "measures" "employees"
+## [3,] "child"   "needed"    "bill"     "national" "scheme"   "rate"     
+## [4,] "bank"    "ministers" "measures" "irish"    "spending" "referred" 
+## [5,] "society" "system"    "banks"    "support"  "review"   "debate"   
+##      Topic 19  Topic 20      
+## [1,] "care"    "society"     
+## [2,] "welfare" "enterprising"
+## [3,] "hit"     "sense"       
+## [4,] "child"   "equal"       
+## [5,] "workers" "nation"</code></pre>
 </div>
   </div>
 

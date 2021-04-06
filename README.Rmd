@@ -32,29 +32,6 @@ An R package for managing and analyzing text, created by [Kenneth Benoit](https:
 
 For more details, see https://quanteda.io.
 
-## How to Install
-
-The normal way from CRAN, using your R GUI or 
-```{r eval = FALSE}
-install.packages("quanteda") 
-```
-
-Or for the latest development version:
-```{r eval = FALSE}
-# devtools package required to install quanteda from Github 
-devtools::install_github("quanteda/quanteda") 
-```
-
-Because this compiles some C++ and Fortran source code, you will need to have installed the appropriate compilers.
-
-**If you are using a Windows platform**, this means you will need also to install
-the [Rtools](https://CRAN.R-project.org/bin/windows/Rtools/) software available
-from CRAN.  
-
-**If you are using macOS**, you should install the 
-[macOS tools](https://cran.r-project.org/bin/macosx/tools/), 
-namely the Clang 6.x compiler and the GNU Fortran compiler (as **quanteda** requires gfortran to build).  If you are still getting errors related to gfortran, follow the fixes [here](https://thecoatlessprofessor.com/programming/rcpp-rcpparmadillo-and-os-x-mavericks--lgfortran-and--lquadmath-error/).  
-    
 ## **quanteda** version 3: New major release
 
 **quanteda** 3.0 is a major release that improves functionality, completes the modularisation of the package begun in v2.0, further improves function consistency by removing previously deprecated functions, and enhances workflow stability and consistency by deprecating some shortcut steps built into some functions.
@@ -77,27 +54,47 @@ We are working on additional package releases, available in the meantime from ou
 
 and more to come.
 
+## How To...
 
-## How to Use 
+### How to Install
+
+The normal way from CRAN, using your R GUI or 
+```{r eval = FALSE}
+install.packages("quanteda") 
+```
+
+Or for the latest development version:
+```{r eval = FALSE}
+# devtools package required to install quanteda from Github 
+devtools::install_github("quanteda/quanteda") 
+```
+
+Because this compiles some C++ and Fortran source code, you will need to have installed the appropriate compilers to build the development version.
+
+### How to Use 
 
 See the [quick start guide](https://quanteda.io/articles/pkgdown/quickstart.html) to learn how to use **quanteda**.
 
-## How to cite
+### How to Get Help
+
+*  Read out documentation at https://quanteda.io.
+*  Submit a question on the [**quanteda** channel on StackOverflow](https://stackoverflow.com/questions/tagged/quanteda).
+*  See our [tutorial site](https://tutorials.quanteda.io/).
+
+### How to Cite
 
 Benoit, Kenneth, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, and Akitaka Matsuo.  (2018) "[quanteda: An R package for the quantitative analysis of textual data](https://www.theoj.org/joss-papers/joss.00774/10.21105.joss.00774.pdf)".  _Journal of Open Source Software_.  3(30), 774. [https://doi.org/10.21105/joss.00774](https://doi.org/10.21105/joss.00774).
 
 For a BibTeX entry, use the output from `citation(package = "quanteda")`.
 
-## Leaving Feedback
+### How to Leave Feedback
 
 If you like **quanteda**, please consider leaving [feedback or a testimonial here](https://github.com/quanteda/quanteda/issues/461).
 
-## Contributing
+### How to Contribute
 
 Contributions in the form of feedback, comments, code, and bug reports are most welcome.  How to contribute:
 
 *  Fork the source code, modify, and issue a [pull request](https://help.github.com/articles/creating-a-pull-request-from-a-fork/) through the [project GitHub page](https://github.com/quanteda/quanteda).  See our [Contributor Code of Conduct](https://github.com/quanteda/quanteda/blob/master/CONDUCT.md) and the all-important **quanteda** [Style Guide](https://github.com/quanteda/quanteda/wiki/Style-guide).
 *  Issues, bug reports, and wish lists: [File a GitHub issue](https://github.com/quanteda/quanteda/issues).
-*  Usage questions:  Submit a question on the [**quanteda** channel on StackOverflow](https://stackoverflow.com/questions/tagged/quanteda).
 *  Contact [the maintainer](mailto:kbenoit@lse.ac.uk) by email.
-

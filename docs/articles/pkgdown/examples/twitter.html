@@ -42,7 +42,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.9.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.0.0</span>
       </span>
     </div>
 
@@ -228,7 +228,7 @@
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">"quanteda.textplots"</span><span class="op">)</span>
 <span class="va">tag_fcm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/fcm.html">fcm</a></span><span class="op">(</span><span class="va">tag_dfm</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">tag_fcm</span><span class="op">)</span></code></pre></div>
-<pre><code>## Feature co-occurrence matrix of: 6 by 6 features.
+<pre><code>## Feature co-occurrence matrix of: 6 by 2,755 features.
 ##                  features
 ## features          #pomeriggio5 #canale5 #miaou #iovotoitaliano #fdian #bravo
 ##   #pomeriggio5               0        2      0               0      0      0
@@ -236,7 +236,16 @@
 ##   #miaou                     0        0      0               0      0      0
 ##   #iovotoitaliano            0        0      0               0     60      0
 ##   #fdian                     0        0      0               0      0      0
-##   #bravo                     0        0      0               0      0      0</code></pre>
+##   #bravo                     0        0      0               0      0      0
+##                  features
+## features          #primaveraeuropea #dpdabayrou #umps #pesticides
+##   #pomeriggio5                    0           0     0           0
+##   #canale5                        0           0     0           0
+##   #miaou                          0           0     0           0
+##   #iovotoitaliano                 0           0     0           0
+##   #fdian                          0           0     0           0
+##   #bravo                          0           0     0           0
+## [ reached max_nfeat ... 2,745 more features ]</code></pre>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">topgat_fcm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/dfm_select.html">fcm_select</a></span><span class="op">(</span><span class="va">tag_fcm</span>, pattern <span class="op">=</span> <span class="va">toptag</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/quanteda.textplots/man/textplot_network.html" class="external-link">textplot_network</a></span><span class="op">(</span><span class="va">topgat_fcm</span>, min_freq <span class="op">=</span> <span class="fl">0.1</span>, edge_alpha <span class="op">=</span> <span class="fl">0.8</span>, edge_size <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></code></pre></div>
@@ -262,7 +271,7 @@
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">user_fcm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/fcm.html">fcm</a></span><span class="op">(</span><span class="va">user_dfm</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">user_fcm</span><span class="op">)</span></code></pre></div>
-<pre><code>## Feature co-occurrence matrix of: 6 by 6 features.
+<pre><code>## Feature co-occurrence matrix of: 6 by 5,951 features.
 ##                   features
 ## features           @pacomarhuenda @pablo_iglesias_ @kopriths @gapatzhs
 ##   @pacomarhuenda                0                1         0         0
@@ -272,13 +281,22 @@
 ##   @mariaspyraki                 0                0         0         0
 ##   @ernesturtasun                0                0         0         0
 ##                   features
-## features           @mariaspyraki @ernesturtasun
-##   @pacomarhuenda               0              0
-##   @pablo_iglesias_             0              1
-##   @kopriths                    1              0
-##   @gapatzhs                    1              0
-##   @mariaspyraki                0              0
-##   @ernesturtasun               0              0</code></pre>
+## features           @mariaspyraki @ernesturtasun @gabrielamard @nigel_farage
+##   @pacomarhuenda               0              0             0             0
+##   @pablo_iglesias_             0              1             0             0
+##   @kopriths                    1              0             0             0
+##   @gapatzhs                    1              0             0             0
+##   @mariaspyraki                0              0             0             0
+##   @ernesturtasun               0              0             0             0
+##                   features
+## features           @ukip @youtube
+##   @pacomarhuenda       0        0
+##   @pablo_iglesias_     0        0
+##   @kopriths            0        0
+##   @gapatzhs            0        0
+##   @mariaspyraki        0        0
+##   @ernesturtasun       0        0
+## [ reached max_nfeat ... 5,941 more features ]</code></pre>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">user_fcm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/dfm_select.html">fcm_select</a></span><span class="op">(</span><span class="va">user_fcm</span>, pattern <span class="op">=</span> <span class="va">topuser</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/quanteda.textplots/man/textplot_network.html" class="external-link">textplot_network</a></span><span class="op">(</span><span class="va">user_fcm</span>, min_freq <span class="op">=</span> <span class="fl">0.1</span>, edge_color <span class="op">=</span> <span class="st">"orange"</span>, edge_alpha <span class="op">=</span> <span class="fl">0.8</span>, edge_size <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></code></pre></div>

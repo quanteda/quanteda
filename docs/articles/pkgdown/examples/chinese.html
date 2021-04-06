@@ -42,7 +42,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.9.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.0.0</span>
       </span>
     </div>
 
@@ -245,14 +245,8 @@
 <h2 class="hasAnchor">
 <a href="#unsupervised-document-scaling" class="anchor"></a>Unsupervised document scaling</h2>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/quanteda/quanteda.textmodels" class="external-link">"quanteda.textmodels"</a></span><span class="op">)</span></code></pre></div>
-<pre><code>## 
-## Attaching package: 'quanteda.textmodels'</code></pre>
-<pre><code>## The following object is masked from 'package:quanteda':
-## 
-##     data_dfm_lbgexample</code></pre>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">wf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/quanteda.textmodels/man/textmodel_wordfish.html" class="external-link">textmodel_wordfish</a></span><span class="op">(</span><span class="va">ch_dfm</span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/quanteda/quanteda.textmodels" class="external-link">"quanteda.textmodels"</a></span><span class="op">)</span>
+<span class="va">wf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/quanteda.textmodels/man/textmodel_wordfish.html" class="external-link">textmodel_wordfish</a></span><span class="op">(</span><span class="va">ch_dfm</span><span class="op">)</span>
 <span class="va">y</span> <span class="op">&lt;-</span> <span class="fl">1954</span><span class="op">:</span><span class="fl">2017</span>
 <span class="va">y</span> <span class="op">&lt;-</span> <span class="va">y</span><span class="op">[</span><span class="va">y</span> <span class="op">&lt;=</span> <span class="fl">1964</span> <span class="op">|</span> <span class="va">y</span> <span class="op">&gt;=</span> <span class="fl">1975</span><span class="op">]</span>
 <span class="va">y</span> <span class="op">&lt;-</span> <span class="va">y</span><span class="op">[</span><span class="op">!</span><span class="va">y</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1963</span>, <span class="fl">1961</span>, <span class="fl">1962</span>, <span class="fl">1976</span>, <span class="fl">1977</span><span class="op">)</span><span class="op">]</span>
@@ -262,7 +256,7 @@
 <div id="collocations" class="section level2">
 <h2 class="hasAnchor">
 <a href="#collocations" class="anchor"></a>Collocations</h2>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># bigrams cross the whole dataset</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://quanteda.io">"quanteda.textstats"</a></span><span class="op">)</span>
 <span class="va">ch_col</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://quanteda.io/reference/textstat_collocations.html">textstat_collocations</a></span><span class="op">(</span><span class="va">ch_toks</span>, size <span class="op">=</span> <span class="fl">2</span>, min_count <span class="op">=</span> <span class="fl">20</span><span class="op">)</span>
@@ -359,7 +353,7 @@
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># bigrams in 2017 report</span>
 <span class="va">ch17_col</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://quanteda.io/reference/textstat_collocations.html">textstat_collocations</a></span><span class="op">(</span><span class="va">ch17_toks</span>, size <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
 <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">ch17_col</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span></code></pre></div>
