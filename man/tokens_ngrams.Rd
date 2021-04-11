@@ -6,14 +6,48 @@
 \alias{tokens_skipgrams}
 \title{Create ngrams and skipgrams from tokens}
 \usage{
-tokens_ngrams(x, n = 2L, skip = 0L, concatenator = "_")
+tokens_ngrams(
+  x,
+  pattern = NULL,
+  valuetype = c("glob", "regex", "fixed"),
+  case_insensitive = TRUE,
+  n = 2L,
+  skip = 0L,
+  concatenator = "_"
+)
 
-char_ngrams(x, n = 2L, skip = 0L, concatenator = "_")
+char_ngrams(
+  x,
+  pattern = NULL,
+  valuetype = c("glob", "regex", "fixed"),
+  case_insensitive = TRUE,
+  n = 2L,
+  skip = 0L,
+  concatenator = "_"
+)
 
-tokens_skipgrams(x, n, skip, concatenator = "_")
+tokens_skipgrams(
+  x,
+  pattern = NULL,
+  valuetype = c("glob", "regex", "fixed"),
+  case_insensitive = TRUE,
+  n,
+  skip,
+  concatenator = "_"
+)
 }
 \arguments{
 \item{x}{a tokens object, or a character vector, or a list of characters}
+
+\item{pattern}{a character vector, list of character vectors, \link{dictionary},
+or collocations object.  See \link{pattern} for details.}
+
+\item{valuetype}{the type of pattern matching: \code{"glob"} for "glob"-style
+wildcard expressions; \code{"regex"} for regular expressions; or \code{"fixed"} for
+exact matching. See \link{valuetype} for details.}
+
+\item{case_insensitive}{logical; if \code{TRUE}, ignore case when matching a
+\code{pattern} or \link{dictionary} values}
 
 \item{n}{integer vector specifying the number of elements to be concatenated
 in each ngram.  Each element of this vector will define a \eqn{n} in the
@@ -68,6 +102,10 @@ toks <- tokens(c(text1 = "the quick brown fox jumped over the lazy dog"))
 tokens_ngrams(toks, n = 1:3)
 tokens_ngrams(toks, n = c(2,4), concatenator = " ")
 tokens_ngrams(toks, n = c(2,4), skip = 1, concatenator = " ")
+
+toks_inaug <- tokens(tail(data_corpus_inaugural), remove_punct = TRUE)
+tokens_ngrams(toks_inaug, phrase("not *"), skip = 0:4) \%>\% 
+    tokens_lookup(data_dictionary_LSD2015["neg_positive"])
 # on character
 char_ngrams(letters[1:3], n = 1:3)
 
@@ -80,7 +118,4 @@ tokens_skipgrams(toks, n = 3, skip = 0:2, concatenator = " ")
 \references{
 Guthrie, David, Ben Allison, Wei Liu, Louise Guthrie, and Yorick Wilks. 2006.
 "\href{https://www.aclweb.org/anthology/L06-1210/}{A Closer Look at Skip-Gram Modelling}."
-}
-\author{
-Kohei Watanabe (C++) and Ken Benoit (R)
 }

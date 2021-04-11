@@ -4,7 +4,6 @@
 #' objects, with an optional skip argument to form skipgrams. Both the ngram
 #' length and the skip lengths take vectors of arguments to form multiple
 #' lengths or skips in one pass.  Implemented in C++ for efficiency.
-#' @author Kohei Watanabe (C++) and Ken Benoit (R)
 #' @return a tokens object consisting a list of character vectors of ngrams, one
 #'   list element per text, or a character vector if called on a simple
 #'   character vector
@@ -23,6 +22,7 @@
 #'   Guthrie et al (2006).
 #' @param concatenator character for combining words, default is `_`
 #'   (underscore) character
+#' @inheritParams tokens_select
 #' @details Normally, these functions will be called through
 #'   `[tokens](x, ngrams = , ...)`, but these functions are provided
 #'   in case a user wants to perform lower-level ngram construction on tokenized
@@ -36,12 +36,18 @@
 #' tokens_ngrams(toks, n = 1:3)
 #' tokens_ngrams(toks, n = c(2,4), concatenator = " ")
 #' tokens_ngrams(toks, n = c(2,4), skip = 1, concatenator = " ")
-tokens_ngrams <- function(x, n = 2L, skip = 0L, concatenator = "_") {
+#' 
+#' toks_inaug <- tokens(tail(data_corpus_inaugural), remove_punct = TRUE)
+#' tokens_ngrams(toks_inaug, phrase("not *"), skip = 0:4) %>% 
+#'     tokens_lookup(data_dictionary_LSD2015["neg_positive"])
+tokens_ngrams <- function(x, pattern = NULL, valuetype = c("glob", "regex", "fixed"),
+                          case_insensitive = TRUE, n = 2L, skip = 0L, concatenator = "_") {
     UseMethod("tokens_ngrams")
 }
 
 #' @export
-tokens_ngrams.default <- function(x, n = 2L, skip = 0L, concatenator = "_") {
+tokens_ngrams.default <- function(x, pattern = NULL, valuetype = c("glob", "regex", "fixed"),
+                                  case_insensitive = TRUE, n = 2L, skip = 0L, concatenator = "_") {
     check_class(class(x), "tokens_ngrams")
 }
 
@@ -49,7 +55,8 @@ tokens_ngrams.default <- function(x, n = 2L, skip = 0L, concatenator = "_") {
 ## the grammatical rules of quanteda (inputs character, outputs tokens),
 ## but starts with "tokens_"
 #' @importFrom stats complete.cases
-tokens_ngrams.character <- function(x, n = 2L, skip = 0L, concatenator = "_") {
+tokens_ngrams.character <- function(x, pattern = NULL, valuetype = c("glob", "regex", "fixed"),
+                                    case_insensitive = TRUE, n = 2L, skip = 0L, concatenator = "_") {
 
     # trap condition where a "text" is a single NA
     if (is.na(x[1]) && length(x) == 1) return(NULL)
@@ -63,7 +70,9 @@ tokens_ngrams.character <- function(x, n = 2L, skip = 0L, concatenator = "_") {
     }
     # converts the character to a tokens object, and returns just the first "document"
     # as a character vector
-    tokens_ngrams(as.tokens(list(x)), n = n, skip = skip, concatenator = concatenator)[[1]]
+    tokens_ngrams(as.tokens(list(x)), pattern = pattern, valuetype = valuetype, 
+                  case_insensitive = case_insensitive, 
+                  n = n, skip = skip, concatenator = concatenator)[[1]]
 }
 
 #' @rdname tokens_ngrams
@@ -75,18 +84,23 @@ tokens_ngrams.character <- function(x, n = 2L, skip = 0L, concatenator = "_") {
 #' char_ngrams(letters[1:3], n = 1:3)
 #'
 #' @export
-char_ngrams <- function(x, n = 2L, skip = 0L, concatenator = "_") {
+char_ngrams <- function(x, pattern = NULL, valuetype = c("glob", "regex", "fixed"),
+                        case_insensitive = TRUE, n = 2L, skip = 0L, concatenator = "_") {
     UseMethod("char_ngrams")
 }
 
 #' @export
-char_ngrams.default <- function(x, n = 2L, skip = 0L, concatenator = "_") {
+char_ngrams.default <- function(x, pattern = NULL, valuetype = c("glob", "regex", "fixed"),
+                                case_insensitive = TRUE, n = 2L, skip = 0L, concatenator = "_") {
     check_class(class(x), "char_ngrams")
 }
 
 #' @export
-char_ngrams.character <- function(x, n = 2L, skip = 0L, concatenator = "_") {
-    as.character(tokens_ngrams(x, n, skip, concatenator))
+char_ngrams.character <- function(x, pattern = NULL, valuetype = c("glob", "regex", "fixed"),
+                                  case_insensitive = TRUE, n = 2L, skip = 0L, concatenator = "_") {
+    as.character(tokens_ngrams(x, pattern = pattern, valuetype = valuetype, 
+                               case_insensitive = case_insensitive, 
+                               n = n, skip = skip, concatenator = concatenator))
 }
 
 
@@ -95,20 +109,30 @@ char_ngrams.character <- function(x, n = 2L, skip = 0L, concatenator = "_") {
 #' @examples
 #' txt <- c(txt1 = "a b c d e", txt2 = "c d e f g")
 #' toks <- tokens(txt)
-#' tokens_ngrams(toks, n = 2:3)
+#' tokens_ngrams(toks, phrase("b d"), n = 2:3)
 #' @importFrom RcppParallel RcppParallelLibs
 #' @export
-tokens_ngrams.tokens <- function(x, n = 2L, skip = 0L, concatenator = "_") {
+tokens_ngrams.tokens <- function(x, pattern = NULL, valuetype = c("glob", "regex", "fixed"),
+                                 case_insensitive = TRUE, n = 2L, skip = 0L, concatenator = "_") {
 
     x <- as.tokens(x)
     n <- check_integer(n, min = 1, max_len = Inf)
     skip <- check_integer(skip, min = 0, max_len = Inf)
     concatenator <- check_character(concatenator)
-
+    
     attrs <- attributes(x)
+    type <- types(x)
+    
+    if (is.null(pattern)) {
+        ids <- list()
+    } else {
+        ids <- object2id(pattern, type, valuetype = "glob", case_insensitive = TRUE,
+                         field_object(attrs, "concatenator"))
+    }
+
     if (identical(n, 1L) && identical(skip, 0L))
         return(x)
-    result <- qatd_cpp_tokens_ngrams(x, types(x), concatenator, n, skip + 1L)
+    result <- qatd_cpp_tokens_ngrams(x, type, ids, concatenator, n, skip + 1L)
     field_object(attrs, "ngram") <- n
     field_object(attrs, "skip") <- skip
     field_object(attrs, "concatenator") <- concatenator
@@ -135,16 +159,20 @@ tokens_ngrams.tokens <- function(x, n = 2L, skip = 0L, concatenator = "_") {
 #' tokens_skipgrams(toks, n = 2, skip = 0:1, concatenator = " ")
 #' tokens_skipgrams(toks, n = 2, skip = 0:2, concatenator = " ")
 #' tokens_skipgrams(toks, n = 3, skip = 0:2, concatenator = " ")
-tokens_skipgrams <- function(x, n, skip, concatenator = "_") {
+tokens_skipgrams <- function(x, pattern = NULL, valuetype = c("glob", "regex", "fixed"),
+                             case_insensitive = TRUE, n, skip, concatenator = "_") {
     UseMethod("tokens_skipgrams")
 }
 
 #' @export
-tokens_skipgrams.default <- function(x, n, skip, concatenator = "_") {
+tokens_skipgrams.default <- function(x, pattern = NULL, valuetype = c("glob", "regex", "fixed"),
+                                     case_insensitive = TRUE, n, skip, concatenator = "_") {
     check_class(class(x), "tokens_skipgrams")
 }
 
 #' @export
-tokens_skipgrams.tokens <- function(x, n, skip, concatenator = "_") {
-    tokens_ngrams(x, n = n, skip = skip, concatenator = concatenator)
+tokens_skipgrams.tokens <- function(x, pattern = NULL, valuetype = c("glob", "regex", "fixed"),
+                                    case_insensitive = TRUE, n, skip, concatenator = "_") {
+    tokens_ngrams(x, pattern = pattern, valuetype = valuetype, case_insensitive = case_insensitive,
+                  n = n, skip = skip, concatenator = concatenator)
 }

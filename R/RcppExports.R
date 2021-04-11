@@ -21,8 +21,8 @@ qatd_cpp_tokens_lookup <- function(texts_, types_, words_, keys_, overlap, nomat
     .Call(`_quanteda_qatd_cpp_tokens_lookup`, texts_, types_, words_, keys_, overlap, nomatch)
 }
 
-qatd_cpp_tokens_ngrams <- function(texts_, types_, delim_, ns_, skips_) {
-    .Call(`_quanteda_qatd_cpp_tokens_ngrams`, texts_, types_, delim_, ns_, skips_)
+qatd_cpp_tokens_ngrams <- function(texts_, types_, words_, delim_, ns_, skips_) {
+    .Call(`_quanteda_qatd_cpp_tokens_ngrams`, texts_, types_, words_, delim_, ns_, skips_)
 }
 
 qatd_cpp_tokens_recompile <- function(texts_, types_, gap = TRUE, dup = TRUE) {

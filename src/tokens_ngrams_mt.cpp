@@ -20,6 +20,7 @@ unsigned int ngram_id(const Ngram &ngram,
     
 void skip(const Text &tokens,
           Text &tokens_ng,
+          const SetNgrams &set_words,
           const unsigned int &start,
           const unsigned int &n, 
           const std::vector<unsigned int> &skips,
@@ -38,15 +39,23 @@ void skip(const Text &tokens,
             if(tokens.size() - 1 < next) break;
             if(tokens[next] == 0) break; // Skip padding
             //Rcout << "Join " << tokens[start] << " at " << start << " with " << next << "\n";
-            skip(tokens, tokens_ng, next, n, skips, ngram, map_ngram, id_ngram);
+            skip(tokens, tokens_ng, set_words, next, n, skips, ngram, map_ngram, id_ngram);
         }
     } else {
-        tokens_ng.push_back(ngram_id(ngram, map_ngram, id_ngram));
+        if (set_words.size() == 0) {
+            tokens_ng.push_back(ngram_id(ngram, map_ngram, id_ngram));
+        } else {
+            auto it = set_words.find(ngram);
+            if (it != set_words.end()) {
+                tokens_ng.push_back(ngram_id(ngram, map_ngram, id_ngram));
+            }
+        }
     }
 }
 
 
 Text skipgram(const Text &tokens,
+              const SetNgrams &set_words,
               const std::vector<unsigned int> &ns, 
               const std::vector<unsigned int> &skips,
               MapNgrams &map_ngram,
@@ -70,7 +79,7 @@ Text skipgram(const Text &tokens,
         ngram.reserve(n);
         for (std::size_t start = 0; start < tokens.size() - (n - 1); start++) {
             if(tokens[start] == 0) continue; // skip padding
-            skip(tokens, tokens_ng, start, n, skips, ngram, map_ngram, id_ngram); // Get ngrams as reference
+            skip(tokens, tokens_ng, set_words, start, n, skips, ngram, map_ngram, id_ngram); // Get ngrams as reference
         }
     }
     return tokens_ng;
@@ -79,19 +88,22 @@ Text skipgram(const Text &tokens,
 struct skipgram_mt : public Worker{
     
     Texts &texts;
+    const SetNgrams &set_words;
     const std::vector<unsigned int> &ns;
     const std::vector<unsigned int> &skips;
     MapNgrams &map_ngram;
     IdNgram &id_ngram;
     
-    skipgram_mt(Texts &texts_, const std::vector<unsigned int> &ns_, const std::vector<unsigned int> &skips_, 
+    skipgram_mt(Texts &texts_, const SetNgrams &set_words_, 
+                const std::vector<unsigned int> &ns_, const std::vector<unsigned int> &skips_, 
                 MapNgrams &map_ngram_, IdNgram &id_ngram_):
-                texts(texts_), ns(ns_), skips(skips_), map_ngram(map_ngram_), id_ngram(id_ngram_){}
+                texts(texts_), set_words(set_words_), ns(ns_), skips(skips_), 
+                map_ngram(map_ngram_), id_ngram(id_ngram_){}
     
     void operator()(std::size_t begin, std::size_t end){
         //Rcout << "Range " << begin << " " << end << "\n";
         for (std::size_t h = begin; h < end; h++) {
-            texts[h] = skipgram(texts[h], ns, skips, map_ngram, id_ngram);
+            texts[h] = skipgram(texts[h], set_words, ns, skips, map_ngram, id_ngram);
         }
     }
 };
@@ -154,6 +166,7 @@ struct type_mt : public Worker{
 // [[Rcpp::export]]
 List qatd_cpp_tokens_ngrams(const List &texts_,
                             const CharacterVector types_,
+                            const List &words_,
                             const String delim_,
                             const IntegerVector ns_,
                             const IntegerVector skips_) {
@@ -164,6 +177,9 @@ List qatd_cpp_tokens_ngrams(const List &texts_,
     std::vector<unsigned int> ns = Rcpp::as< std::vector<unsigned int> >(ns_);
     std::vector<unsigned int> skips = Rcpp::as< std::vector<unsigned int> >(skips_);
     
+    SetNgrams set_words;
+    std::vector<std::size_t> spans = register_ngrams(words_, set_words);
+    
     // Register both ngram (key) and unigram (value) IDs in a hash table
     MapNgrams map_ngram;
     map_ngram.max_load_factor(GLOBAL_NGRAMS_MAX_LOAD_FACTOR);
@@ -172,12 +188,12 @@ List qatd_cpp_tokens_ngrams(const List &texts_,
     //dev::start_timer("Ngram generation", timer);
 #if QUANTEDA_USE_TBB
     IdNgram id_ngram(1);
-    skipgram_mt skipgram_mt(texts, ns, skips, map_ngram, id_ngram);
+    skipgram_mt skipgram_mt(texts, set_words, ns, skips, map_ngram, id_ngram);
     parallelFor(0, texts.size(), skipgram_mt);
 #else
     IdNgram id_ngram = 1;
     for (std::size_t h = 0; h < texts.size(); h++) {
-        texts[h] = skipgram(texts[h], ns, skips, map_ngram, id_ngram);
+        texts[h] = skipgram(texts[h], set_words, ns, skips, map_ngram, id_ngram);
     }
 #endif
     //dev::stop_timer("Ngram generation", timer);
@@ -208,17 +224,13 @@ List qatd_cpp_tokens_ngrams(const List &texts_,
 /*** R
 
 library(quanteda)
-#txt <- c('a b c d e')
-txt <- c('a b c d e', 'c d e f g')
-tok <- quanteda::tokens(txt)
-out <- qatd_cpp_tokens_ngrams(tok, attr(tok, 'types'), "-", 2, 1)
+toks <- list(rep(1:10, 1))
+#toks <- list(rep(1:10, 1), rep(5:15, 1))
+#dict <- as.list(1:100000)
+dict <- list(c(1, 2), c(5, 6), 10, 15, 20)
+out <- qatd_cpp_tokens_ngrams(tok, letters, dict, "-", 2, 1)
 str(out)
 
-tok2 <- quanteda::tokens(data_corpus_inaugural)
-microbenchmark::microbenchmark(
-    qatd_cpp_tokens_ngrams(tok2, attr(tok2, 'types'), "-", 2, 1),
-    tokenizers::tokenize_ngrams(texts(data_corpus_inaugural))
-)
 
 
 

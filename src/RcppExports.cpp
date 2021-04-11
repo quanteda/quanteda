@@ -82,17 +82,18 @@ BEGIN_RCPP
 END_RCPP
 }
 // qatd_cpp_tokens_ngrams
-List qatd_cpp_tokens_ngrams(const List& texts_, const CharacterVector types_, const String delim_, const IntegerVector ns_, const IntegerVector skips_);
-RcppExport SEXP _quanteda_qatd_cpp_tokens_ngrams(SEXP texts_SEXP, SEXP types_SEXP, SEXP delim_SEXP, SEXP ns_SEXP, SEXP skips_SEXP) {
+List qatd_cpp_tokens_ngrams(const List& texts_, const CharacterVector types_, const List& words_, const String delim_, const IntegerVector ns_, const IntegerVector skips_);
+RcppExport SEXP _quanteda_qatd_cpp_tokens_ngrams(SEXP texts_SEXP, SEXP types_SEXP, SEXP words_SEXP, SEXP delim_SEXP, SEXP ns_SEXP, SEXP skips_SEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const List& >::type texts_(texts_SEXP);
     Rcpp::traits::input_parameter< const CharacterVector >::type types_(types_SEXP);
+    Rcpp::traits::input_parameter< const List& >::type words_(words_SEXP);
     Rcpp::traits::input_parameter< const String >::type delim_(delim_SEXP);
     Rcpp::traits::input_parameter< const IntegerVector >::type ns_(ns_SEXP);
     Rcpp::traits::input_parameter< const IntegerVector >::type skips_(skips_SEXP);
-    rcpp_result_gen = Rcpp::wrap(qatd_cpp_tokens_ngrams(texts_, types_, delim_, ns_, skips_));
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_tokens_ngrams(texts_, types_, words_, delim_, ns_, skips_));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -231,7 +232,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_quanteda_qatd_cpp_tokens_chunk", (DL_FUNC) &_quanteda_qatd_cpp_tokens_chunk, 4},
     {"_quanteda_qatd_cpp_tokens_compound", (DL_FUNC) &_quanteda_qatd_cpp_tokens_compound, 7},
     {"_quanteda_qatd_cpp_tokens_lookup", (DL_FUNC) &_quanteda_qatd_cpp_tokens_lookup, 6},
-    {"_quanteda_qatd_cpp_tokens_ngrams", (DL_FUNC) &_quanteda_qatd_cpp_tokens_ngrams, 5},
+    {"_quanteda_qatd_cpp_tokens_ngrams", (DL_FUNC) &_quanteda_qatd_cpp_tokens_ngrams, 6},
     {"_quanteda_qatd_cpp_tokens_recompile", (DL_FUNC) &_quanteda_qatd_cpp_tokens_recompile, 4},
     {"_quanteda_qatd_cpp_tokens_replace", (DL_FUNC) &_quanteda_qatd_cpp_tokens_replace, 4},
     {"_quanteda_qatd_cpp_tokens_segment", (DL_FUNC) &_quanteda_qatd_cpp_tokens_segment, 5},
