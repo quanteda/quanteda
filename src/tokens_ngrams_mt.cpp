@@ -33,7 +33,11 @@ void skip(const Text &tokens,
     //Rcout << "Size " << tokens.size() << "\n";
     //Rcout << "Token " << tokens[start] << "\n";
     
-    if(ngram.size() < n){
+    if (set_words.size() > 0 && ngram.size() == 1) {
+        tokens_ng.push_back(ngram_id(ngram, map_ngram, id_ngram));
+    }
+    
+    if (ngram.size() < n) {
         for (std::size_t j = 0; j < skips.size(); j++) {
             unsigned int next = start + skips[j];
             if(tokens.size() - 1 < next) break;
@@ -42,13 +46,13 @@ void skip(const Text &tokens,
             skip(tokens, tokens_ng, set_words, next, n, skips, ngram, map_ngram, id_ngram);
         }
     } else {
-        if (set_words.size() == 0) {
-            tokens_ng.push_back(ngram_id(ngram, map_ngram, id_ngram));
-        } else {
+        if (set_words.size() > 0) {
             auto it = set_words.find(ngram);
             if (it != set_words.end()) {
                 tokens_ng.push_back(ngram_id(ngram, map_ngram, id_ngram));
             }
+        } else {
+            tokens_ng.push_back(ngram_id(ngram, map_ngram, id_ngram));
         }
     }
 }
