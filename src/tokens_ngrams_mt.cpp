@@ -1,50 +1,8 @@
 //#include "dev.h"
 #include "lib.h"
 #include "recompile.h"
+#include "skipgram.h"
 using namespace quanteda;
-
-unsigned int ngram_id(const Ngram &ngram,
-                      MapNgrams &map_ngram,
-                      IdNgram &id_ngram){
-
-    auto it1 = map_ngram.find(ngram);
-    if (it1 != map_ngram.end()) return it1->second;
-#if QUANTEDA_USE_TBB    
-    auto it2 = map_ngram.insert(std::pair<Ngram, unsigned int>(ngram, id_ngram.fetch_and_increment()));
-#else
-    auto it2 = map_ngram.insert(std::pair<Ngram, unsigned int>(ngram, id_ngram++));
-#endif
-    return it2.first->second;
-
-}
-    
-void skip(const Text &tokens,
-          Text &tokens_ng,
-          const unsigned int &start,
-          const unsigned int &n, 
-          const std::vector<unsigned int> &skips,
-          Ngram ngram,
-          MapNgrams &map_ngram,
-          IdNgram &id_ngram) {
-    
-    ngram.push_back(tokens[start]);
-    
-    //Rcout << "Size " << tokens.size() << "\n";
-    //Rcout << "Token " << tokens[start] << "\n";
-    
-    if(ngram.size() < n){
-        for (std::size_t j = 0; j < skips.size(); j++) {
-            unsigned int next = start + skips[j];
-            if(tokens.size() - 1 < next) break;
-            if(tokens[next] == 0) break; // Skip padding
-            //Rcout << "Join " << tokens[start] << " at " << start << " with " << next << "\n";
-            skip(tokens, tokens_ng, next, n, skips, ngram, map_ngram, id_ngram);
-        }
-    } else {
-        tokens_ng.push_back(ngram_id(ngram, map_ngram, id_ngram));
-    }
-}
-
 
 Text skipgram(const Text &tokens,
               const std::vector<unsigned int> &ns, 
@@ -61,6 +19,7 @@ Text skipgram(const Text &tokens,
     }
     Text tokens_ng;
     tokens_ng.reserve(size_reserve);
+    SetNgrams set_words; // keep empty
     
     // Generate skipgrams recursively
     for (std::size_t k = 0; k < ns.size(); k++) {
@@ -70,7 +29,7 @@ Text skipgram(const Text &tokens,
         ngram.reserve(n);
         for (std::size_t start = 0; start < tokens.size() - (n - 1); start++) {
             if(tokens[start] == 0) continue; // skip padding
-            skip(tokens, tokens_ng, start, n, skips, ngram, map_ngram, id_ngram); // Get ngrams as reference
+            skip(tokens, tokens_ng, set_words, start, n, skips, ngram, map_ngram, id_ngram); // Get ngrams as reference
         }
     }
     return tokens_ng;
