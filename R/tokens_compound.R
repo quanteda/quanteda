@@ -21,6 +21,8 @@
 #'   with the first giving the window size before `pattern` and the second the
 #'   window size after.  If paddings (empty `""` tokens) are found, window will
 #'   be shrunk to exclude them.
+#' @param skip if larger than zero, it compound non-adjacent tokens that matches
+#'   patterns.
 #' @return A [tokens] object in which the token sequences matching `pattern`
 #'   have been replaced by new compounded "tokens" joined by the concatenator.
 #' @note Patterns to be compounded (naturally) consist of multi-word sequences,
@@ -63,12 +65,17 @@
 #' # use window to form ngrams
 #' tokens_remove(toks, pattern = stopwords("en")) %>%
 #'     tokens_compound(pattern = "leav*", join = FALSE, window = c(0, 3))
-#'
+#'     
+#' toks_inaug <- tokens(tail(data_corpus_inaugural), remove_punct = TRUE)
+#' tokens_compound(toks_inaug, phrase("not *"), skip = 0:4) %>% 
+#'     tokens_lookup(data_dictionary_LSD2015["neg_positive"])
+#'     
 tokens_compound <- function(x, pattern,
                     valuetype = c("glob", "regex", "fixed"),
                     concatenator = "_", 
-                    window = 0,
-                    case_insensitive = TRUE, join = TRUE) {
+                    window = 0L,
+                    case_insensitive = TRUE, join = TRUE, 
+                    skip = 0L) {
     UseMethod("tokens_compound")
 }
 
@@ -76,8 +83,8 @@ tokens_compound <- function(x, pattern,
 tokens_compound.default <- function(x, pattern,
                                    valuetype = c("glob", "regex", "fixed"),
                                    concatenator = "_", 
-                                   window = 0,
-                                   case_insensitive = TRUE, join = TRUE) {
+                                   window = 0L,
+                                   case_insensitive = TRUE, join = TRUE, skip = 0L) {
     check_class(class(x), "tokens_compound")
 }
 
@@ -87,13 +94,14 @@ tokens_compound.tokens <- function(x, pattern,
                    valuetype = c("glob", "regex", "fixed"),
                    concatenator = "_", 
                    window = 0,
-                   case_insensitive = TRUE, join = TRUE) {
+                   case_insensitive = TRUE, join = TRUE, skip = 0) {
 
     x <- as.tokens(x)
     valuetype <- match.arg(valuetype)
     concatenator <- check_character(concatenator)
     window <- check_integer(window, min_len = 1, max_len = 2, min = 0)
     join <- check_logical(join)
+    skip <- check_integer(skip, min_len = 1, max_len = Inf, min = 0)
     
     attrs <- attributes(x)
     type <- types(x)
@@ -101,7 +109,7 @@ tokens_compound.tokens <- function(x, pattern,
     seqs_id <- object2id(pattern, type, valuetype, case_insensitive, remove_unigram = FALSE)
     if (length(seqs_id) == 0) return(x) # do nothing
     if (length(window) == 1) window <- rep(window, 2)
-    result <- qatd_cpp_tokens_compound(x, seqs_id, type, concatenator, join, window[1], window[2])
+    result <- qatd_cpp_tokens_compound(x, seqs_id, type, concatenator, join, window[1], window[2], skip)
     field_object(attrs, "concatenator") <- concatenator
     rebuild_tokens(result, attrs)
 }
