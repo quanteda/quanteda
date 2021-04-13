@@ -81,6 +81,3 @@ tokens_skipgrams(toks, n = 3, skip = 0:2, concatenator = " ")
 Guthrie, David, Ben Allison, Wei Liu, Louise Guthrie, and Yorick Wilks. 2006.
 "\href{https://www.aclweb.org/anthology/L06-1210/}{A Closer Look at Skip-Gram Modelling}."
 }
-\author{
-Kohei Watanabe (C++) and Ken Benoit (R)
-}

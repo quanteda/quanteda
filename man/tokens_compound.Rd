@@ -9,10 +9,9 @@ tokens_compound(
   pattern,
   valuetype = c("glob", "regex", "fixed"),
   concatenator = "_",
-  window = 0,
+  window = 0L,
   case_insensitive = TRUE,
-  join = TRUE,
-  skip = 0
+  join = TRUE
 )
 }
 \arguments{
@@ -43,9 +42,6 @@ be shrunk to exclude them.}
 
 \item{join}{logical; if \code{TRUE}, join overlapping compounds into a single
 compound; otherwise, form these separately.  See examples.}
-
-\item{skip}{if larger than zero, it compound non-adjacent tokens that matches
-patterns.}
 }
 \value{
 A \link{tokens} object in which the token sequences matching \code{pattern}
@@ -99,5 +95,5 @@ tokens_compound(toks, pattern = compounds, join = FALSE)
 # use window to form ngrams
 tokens_remove(toks, pattern = stopwords("en")) \%>\%
     tokens_compound(pattern = "leav*", join = FALSE, window = c(0, 3))
-
+    
 }

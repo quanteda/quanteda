@@ -13,8 +13,8 @@ qatd_cpp_tokens_chunk <- function(texts_, types_, size, overlap) {
     .Call(`_quanteda_qatd_cpp_tokens_chunk`, texts_, types_, size, overlap)
 }
 
-qatd_cpp_tokens_compound <- function(texts_, compounds_, types_, delim_, join, window_left, window_right, skips_) {
-    .Call(`_quanteda_qatd_cpp_tokens_compound`, texts_, compounds_, types_, delim_, join, window_left, window_right, skips_)
+qatd_cpp_tokens_compound <- function(texts_, compounds_, types_, delim_, join, window_left, window_right) {
+    .Call(`_quanteda_qatd_cpp_tokens_compound`, texts_, compounds_, types_, delim_, join, window_left, window_right)
 }
 
 qatd_cpp_tokens_lookup <- function(texts_, types_, words_, keys_, overlap, nomatch) {
