@@ -36,6 +36,7 @@ Text skip_comp(const Text &tokens,
             skip(tokens, tokens_ng, set_comps, start, n, skips, ngram, map_ngram, id_ngram); // Get ngrams as reference
         }
     }
+    dev::print_ngram(tokens_ng);
     return tokens_ng;
 }
 
@@ -203,14 +204,14 @@ struct compound_mt : public Worker{
     void operator()(std::size_t begin, std::size_t end){
         //Rcout << "Range " << begin << " " << end << "\n";
         for (std::size_t h = begin; h < end; h++) {
-            if (join) {
-                texts[h] = join_comp(texts[h], spans, set_comps, map_comps, id_comp, window);
-            } else {
-                if (skips.size() == 1 && skips[0] == 0) {
-                    texts[h] = match_comp(texts[h], spans, set_comps, map_comps, id_comp, window);
+            if (skips.size() == 1 && skips[0] == 0) {
+                if (join) {
+                    texts[h] = join_comp(texts[h], spans, set_comps, map_comps, id_comp, window);
                 } else {
-                    texts[h] = skip_comp(texts[h], spans, skips, set_comps, map_comps, id_comp);
+                    texts[h] = match_comp(texts[h], spans, set_comps, map_comps, id_comp, window);
                 }
+            } else {
+                texts[h] = skip_comp(texts[h], spans, skips, set_comps, map_comps, id_comp);
             }
         }
     }
@@ -253,6 +254,12 @@ List qatd_cpp_tokens_compound(const List &texts_,
     IdNgram id_comp = id_last;
     #endif
     
+    // #if QUANTEDA_USE_TBB
+    // IdNgram id_comp(1);
+    // #else
+    // IdNgram id_comp = 1;
+    // #endif
+    
     SetNgrams set_comps; // for matching
     set_comps.max_load_factor(GLOBAL_PATTERN_MAX_LOAD_FACTOR);
     MapNgrams map_comps; // for ID generation
@@ -275,24 +282,28 @@ List qatd_cpp_tokens_compound(const List &texts_,
     parallelFor(0, texts.size(), compound_mt);
 #else
     for (std::size_t h = 0; h < texts.size(); h++) {
-        if (join) {
-            texts[h] = join_comp(texts[h], spans, set_comps, map_comps, id_comp, window);
-        } else {
-            if (skips.size() == 1 && skips[0] == 0) {
-                texts[h] = match_comp(texts[h], spans, set_comps, map_comps, id_comp, window);
+        if (skips.size() == 1 && skips[0] == 0) {
+            if (join) {
+                texts[h] = join_comp(texts[h], spans, set_comps, map_comps, id_comp, window);
             } else {
-                texts[h] = skip_comp(texts[h], spans, skips, set_comps, map_comps, id_comp);
+                texts[h] = match_comp(texts[h], spans, set_comps, map_comps, id_comp, window);
             }
+        } else {
+            texts[h] = skip_comp(texts[h], spans, skips, set_comps, map_comps, id_comp);
         }
     }
 #endif
-    
+
     // Extract only keys in order of the ID
+    Rcout << "id_comp " << id_comp << ", id_last " << id_last << "\n";
     VecNgrams ids_comp(id_comp - id_last);
     for (std::pair<Ngram, unsigned int> it : map_comps) {
-        ids_comp[it.second - id_last - 1] = it.first;
+        Rcout << "Ngram ";
+        dev::print_ngram(it.first);
+        Rcout << "ID " << it.second << "\n";
+        //ids_comp[it.second - id_last - 1] = it.first; // NOTE: remove -1
     }
-    
+    return texts_;
     // Create compound types
     Types types_comp(ids_comp.size());
     for (std::size_t i = 0; i < ids_comp.size(); i++) {
