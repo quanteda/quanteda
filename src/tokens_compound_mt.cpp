@@ -297,12 +297,12 @@ List qatd_cpp_tokens_compound(const List &texts_,
 
     // Extract only keys in order of the ID
     Rcout << "id_comp " << id_comp << ", id_last " << id_last << "\n";
-    VecNgrams ids_comp(id_comp - id_last);
+    VecNgrams ids_comp(id_comp - id_last - 1);
     for (std::pair<Ngram, unsigned int> it : map_comps) {
         Rcout << "Ngram ";
         dev::print_ngram(it.first);
         Rcout << "ID " << it.second << "\n";
-        ids_comp[it.second - id_last] = it.first;
+        ids_comp[it.second - id_last - 1] = it.first;
     }
     
     // Create compound types
