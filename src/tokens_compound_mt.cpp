@@ -95,17 +95,18 @@ Text join_comp(Text tokens,
         } else {
             if (tokens_seq.size() > 0) {
                 tokens_seq.push_back(tokens[i]);
-#if QUANTEDA_USE_TBB
-                id_mutex.lock();
-#endif
-                UintParam &id = map_comps[tokens_seq];
-                if (!id) id = ++id_comp; // assign new ID if not exisis
-                //Rcout << "Compund "<< id << ": ";
-                //dev::print_ngram(tokens_seq);
-                tokens_flat.push_back(id);
-#if QUANTEDA_USE_TBB
-                id_mutex.unlock();
-#endif
+                tokens_flat.push_back(ngram_id(tokens_seq, map_comps, id_comp)); // assign ID to ngram
+// #if QUANTEDA_USE_TBB
+//                 id_mutex.lock();
+// #endif
+//                 UintParam &id = map_comps[tokens_seq];
+//                 if (!id) id = ++id_comp; // assign new ID if not exisis
+//                 //Rcout << "Compund "<< id << ": ";
+//                 //dev::print_ngram(tokens_seq);
+//                 tokens_flat.push_back(id);
+// #if QUANTEDA_USE_TBB
+//                 id_mutex.unlock();
+// #endif
                 tokens_seq.clear();
             } else {
                 tokens_flat.push_back(tokens[i]);
@@ -142,18 +143,18 @@ Text match_comp(Text tokens,
                 int to = adjust_window(tokens, i, i + span + window.second);
                 std::fill(flags_match.begin() + from, flags_match.begin() + to + 1, true); // mark tokens matched
                 Ngram tokens_seq(tokens.begin() + from, tokens.begin() + to + 1); // extract tokens matched
-                
-#if QUANTEDA_USE_TBB
-                id_mutex.lock();
-#endif
-                UintParam &id = map_comps[tokens_seq];
-                if (!id) id = ++id_comp; // assign new ID if not exists
-                //Rcout << "Compund "<< id << ": ";
-                //dev::print_ngram(tokens_seq);
-                tokens_multi[i].push_back(id); // keep multiple IDs in the same position
-#if QUANTEDA_USE_TBB
-                id_mutex.unlock();
-#endif
+                tokens_multi[i].push_back(ngram_id(tokens_seq, map_comps, id_comp)); // assign ID to ngram
+// #if QUANTEDA_USE_TBB
+//                 id_mutex.lock();
+// #endif
+//                 UintParam &id = map_comps[tokens_seq];
+//                 if (!id) id = ++id_comp; // assign new ID if not exists
+//                 //Rcout << "Compund "<< id << ": ";
+//                 //dev::print_ngram(tokens_seq);
+//                 tokens_multi[i].push_back(id); // keep multiple IDs in the same position
+// #if QUANTEDA_USE_TBB
+//                 id_mutex.unlock();
+// #endif
                 match++;
             }
         }
@@ -249,9 +250,9 @@ List qatd_cpp_tokens_compound(const List &texts_,
 
     unsigned int id_last = types.size();
     #if QUANTEDA_USE_TBB
-    IdNgram id_comp(id_last);
+    IdNgram id_comp(id_last + 1);
     #else
-    IdNgram id_comp = id_last;
+    IdNgram id_comp = id_last + 1;
     #endif
     
     // #if QUANTEDA_USE_TBB
@@ -301,9 +302,9 @@ List qatd_cpp_tokens_compound(const List &texts_,
         Rcout << "Ngram ";
         dev::print_ngram(it.first);
         Rcout << "ID " << it.second << "\n";
-        //ids_comp[it.second - id_last - 1] = it.first; // NOTE: remove -1
+        ids_comp[it.second - id_last] = it.first;
     }
-    return texts_;
+    
     // Create compound types
     Types types_comp(ids_comp.size());
     for (std::size_t i = 0; i < ids_comp.size(); i++) {
@@ -321,7 +322,8 @@ List qatd_cpp_tokens_compound(const List &texts_,
     types.insert(types.end(), types_comp.begin(), types_comp.end());
     
     // dev::stop_timer("Token compound", timer);
-    return recompile(texts, types, true, true, is_encoded(delim_) || is_encoded(types_));
+    return recompile(texts, types, false, false, is_encoded(delim_) || is_encoded(types_)); // for debugging
+    //return recompile(texts, types, true, true, is_encoded(delim_) || is_encoded(types_));
 }
 
 /***R
