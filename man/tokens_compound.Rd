@@ -11,7 +11,8 @@ tokens_compound(
   concatenator = "_",
   window = 0,
   case_insensitive = TRUE,
-  join = TRUE
+  join = TRUE,
+  skip = 0
 )
 }
 \arguments{
@@ -42,6 +43,9 @@ be shrunk to exclude them.}
 
 \item{join}{logical; if \code{TRUE}, join overlapping compounds into a single
 compound; otherwise, form these separately.  See examples.}
+
+\item{skip}{if larger than zero, it compound non-adjacent tokens that matches
+patterns.}
 }
 \value{
 A \link{tokens} object in which the token sequences matching \code{pattern}

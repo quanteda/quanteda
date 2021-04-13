@@ -49,8 +49,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // qatd_cpp_tokens_compound
-List qatd_cpp_tokens_compound(const List& texts_, const List& compounds_, const CharacterVector& types_, const String& delim_, const bool& join, int window_left, int window_right);
-RcppExport SEXP _quanteda_qatd_cpp_tokens_compound(SEXP texts_SEXP, SEXP compounds_SEXP, SEXP types_SEXP, SEXP delim_SEXP, SEXP joinSEXP, SEXP window_leftSEXP, SEXP window_rightSEXP) {
+List qatd_cpp_tokens_compound(const List& texts_, const List& compounds_, const CharacterVector& types_, const String& delim_, const bool& join, int window_left, int window_right, const IntegerVector skips_);
+RcppExport SEXP _quanteda_qatd_cpp_tokens_compound(SEXP texts_SEXP, SEXP compounds_SEXP, SEXP types_SEXP, SEXP delim_SEXP, SEXP joinSEXP, SEXP window_leftSEXP, SEXP window_rightSEXP, SEXP skips_SEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -61,7 +61,8 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const bool& >::type join(joinSEXP);
     Rcpp::traits::input_parameter< int >::type window_left(window_leftSEXP);
     Rcpp::traits::input_parameter< int >::type window_right(window_rightSEXP);
-    rcpp_result_gen = Rcpp::wrap(qatd_cpp_tokens_compound(texts_, compounds_, types_, delim_, join, window_left, window_right));
+    Rcpp::traits::input_parameter< const IntegerVector >::type skips_(skips_SEXP);
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_tokens_compound(texts_, compounds_, types_, delim_, join, window_left, window_right, skips_));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -229,7 +230,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_quanteda_qatd_cpp_fcm", (DL_FUNC) &_quanteda_qatd_cpp_fcm, 5},
     {"_quanteda_qatd_cpp_index", (DL_FUNC) &_quanteda_qatd_cpp_index, 3},
     {"_quanteda_qatd_cpp_tokens_chunk", (DL_FUNC) &_quanteda_qatd_cpp_tokens_chunk, 4},
-    {"_quanteda_qatd_cpp_tokens_compound", (DL_FUNC) &_quanteda_qatd_cpp_tokens_compound, 7},
+    {"_quanteda_qatd_cpp_tokens_compound", (DL_FUNC) &_quanteda_qatd_cpp_tokens_compound, 8},
     {"_quanteda_qatd_cpp_tokens_lookup", (DL_FUNC) &_quanteda_qatd_cpp_tokens_lookup, 6},
     {"_quanteda_qatd_cpp_tokens_ngrams", (DL_FUNC) &_quanteda_qatd_cpp_tokens_ngrams, 5},
     {"_quanteda_qatd_cpp_tokens_recompile", (DL_FUNC) &_quanteda_qatd_cpp_tokens_recompile, 4},
