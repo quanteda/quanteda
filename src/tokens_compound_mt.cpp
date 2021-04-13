@@ -29,10 +29,13 @@ Text skip_comp(const Text &tokens,
     for (std::size_t k = 0; k < ns.size(); k++) {
         unsigned int n = ns[k];
         if (tokens.size() < n) continue;
-        Ngram ngram;
+        Ngram ngram, index;
         ngram.reserve(n);
-        for (std::size_t start = 0; start < tokens.size() - (n - 1); start++) {
-            if(tokens[start] == 0) continue; // skip padding
+        //for (std::size_t start = 0; start < tokens.size() - (n - 1); start++) {
+        for (std::size_t start = 0; start < tokens.size(); start++) {
+            if (tokens[start] == 0) continue; // skip padding
+            //size_t size_prev = tokens_ng.size(); // detect match
+            tokens_ng.push_back(tokens[start]);
             skip(tokens, tokens_ng, set_comps, start, n, skips, ngram, map_ngram, id_ngram); // Get ngrams as reference
         }
     }
