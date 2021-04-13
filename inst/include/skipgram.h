@@ -4,8 +4,8 @@ using namespace quanteda;
 
 
 inline unsigned int ngram_id(const Ngram &ngram,
-                      MapNgrams &map_ngram,
-                      IdNgram &id_ngram){
+                             MapNgrams &map_ngram,
+                             IdNgram &id_ngram){
     
     auto it1 = map_ngram.find(ngram);
     if (it1 != map_ngram.end()) return it1->second;
@@ -30,25 +30,29 @@ inline void skip(const Text &tokens,
     
     ngram.push_back(tokens[start]);
     
-    //Rcout << "Size " << tokens.size() << "\n";
-    //Rcout << "Token " << tokens[start] << "\n";
+    // Rcout << "Size " << tokens.size() << ", ";
+    // Rcout << "Token " << tokens[start] << ", ";
+    // Rcout << "N " << n << "\n";
     
     if (ngram.size() < n) {
         for (std::size_t j = 0; j < skips.size(); j++) {
-            unsigned int next = start + skips[j];
+            unsigned int next = start + 1 + skips[j];
             if(tokens.size() - 1 < next) break;
             if(tokens[next] == 0) break; // skip padding
-            //Rcout << "Join " << tokens[start] << " at " << start << " with " << next << "\n";
+            Rcout << "Compound " << tokens[start] << " at " << start << " with " << next << "\n";
             skip(tokens, tokens_ng, set_words, next, n, skips, ngram, map_ngram, id_ngram);
         }
     } else {
+        //dev::print_ngram(ngram);
+        //Rcout << "Ngram ID " << ngram_id(ngram, map_ngram, id_ngram) << "\n";
         if (set_words.size() > 0) { // for compounding
             auto it = set_words.find(ngram);
             if (it != set_words.end()) {
-                //tokens_ng.push_back(ngram_id(ngram, map_ngram, id_ngram));
+                tokens_ng.push_back(ngram_id(ngram, map_ngram, id_ngram));
             } else {
-                Ngram unigram(1, tokens[start]);
-                tokens_ng.push_back(ngram_id(unigram, map_ngram, id_ngram));
+                //Ngram unigram(1, tokens[start]);
+                //tokens_ng.push_back(ngram_id(unigram, map_ngram, id_ngram));
+                tokens_ng.push_back(tokens[start]);
             }
         } else {
             tokens_ng.push_back(ngram_id(ngram, map_ngram, id_ngram));
