@@ -4,7 +4,6 @@
 #' objects, with an optional skip argument to form skipgrams. Both the ngram
 #' length and the skip lengths take vectors of arguments to form multiple
 #' lengths or skips in one pass.  Implemented in C++ for efficiency.
-#' @author Kohei Watanabe (C++) and Ken Benoit (R)
 #' @return a tokens object consisting a list of character vectors of ngrams, one
 #'   list element per text, or a character vector if called on a simple
 #'   character vector
@@ -102,13 +101,13 @@ tokens_ngrams.tokens <- function(x, n = 2L, skip = 0L, concatenator = "_") {
 
     x <- as.tokens(x)
     n <- check_integer(n, min = 1, max_len = Inf)
-    skip <- check_integer(skip, min = 0, max_len = Inf)
+    skip <- check_integer(skip, min_len = 1, max_len = Inf, min = 0)
     concatenator <- check_character(concatenator)
 
     attrs <- attributes(x)
     if (identical(n, 1L) && identical(skip, 0L))
         return(x)
-    result <- qatd_cpp_tokens_ngrams(x, types(x), concatenator, n, skip + 1L)
+    result <- qatd_cpp_tokens_ngrams(x, types(x), concatenator, n, skip)
     field_object(attrs, "ngram") <- n
     field_object(attrs, "skip") <- skip
     field_object(attrs, "concatenator") <- concatenator

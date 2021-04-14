@@ -63,11 +63,11 @@
 #' # use window to form ngrams
 #' tokens_remove(toks, pattern = stopwords("en")) %>%
 #'     tokens_compound(pattern = "leav*", join = FALSE, window = c(0, 3))
-#'
+#'     
 tokens_compound <- function(x, pattern,
                     valuetype = c("glob", "regex", "fixed"),
                     concatenator = "_", 
-                    window = 0,
+                    window = 0L,
                     case_insensitive = TRUE, join = TRUE) {
     UseMethod("tokens_compound")
 }
@@ -76,7 +76,7 @@ tokens_compound <- function(x, pattern,
 tokens_compound.default <- function(x, pattern,
                                    valuetype = c("glob", "regex", "fixed"),
                                    concatenator = "_", 
-                                   window = 0,
+                                   window = 0L,
                                    case_insensitive = TRUE, join = TRUE) {
     check_class(class(x), "tokens_compound")
 }
@@ -86,7 +86,7 @@ tokens_compound.default <- function(x, pattern,
 tokens_compound.tokens <- function(x, pattern,
                    valuetype = c("glob", "regex", "fixed"),
                    concatenator = "_", 
-                   window = 0,
+                   window = 0L,
                    case_insensitive = TRUE, join = TRUE) {
 
     x <- as.tokens(x)
