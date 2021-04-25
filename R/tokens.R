@@ -286,7 +286,7 @@ tokens.corpus <- function(x,
             y <- restore_special1(y, split_hyphens = FALSE, split_tags = TRUE)
         return(y)
     })
-    type <- unique(unlist(lapply(x, attr, "types"), use.names = FALSE))
+    type <- unique(unlist_character(lapply(x, attr, "types"), use.names = FALSE))
     if (verbose)
         catm(" ...", format(length(type), big.mark = ",", trim = TRUE),
              " unique type", if (length(type) == 1) "" else "s",
