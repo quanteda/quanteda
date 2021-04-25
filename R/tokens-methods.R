@@ -80,7 +80,7 @@ print.tokens <- function(x, max_ndoc = quanteda_options("print_tokens_max_ndoc")
         cat(".\n")
     }
 
-    if (max_ndoc > 0) {
+    if (max_ndoc > 0 && ndoc(x) > 0) {
         x <- head(x, max_ndoc)
         label <- paste0(names(x), " :")
         types <- c("", types(x))
