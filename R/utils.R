@@ -187,14 +187,16 @@ rbind_fill <- function(x, y) {
         name <- union(name1, name2)
         name1_missing <- setdiff(name, name1)
         if (length(name1_missing)) {
-            fill1 <- rep(list(rep(NA, nrow(x))), length(name1_missing))
+            # generate NA with appropriate class
+            fill1 <- lapply(name1_missing, function(m) y[[m]][0][seq_len(nrow(y))])
             names(fill1) <- name1_missing
             x <- cbind(x, fill1)
         }
 
         name2_missing <- setdiff(name, name2)
         if (length(name2_missing)) {
-            fill2 <- rep(list(rep(NA, nrow(y))), length(name2_missing))
+            # generate NA with appropriate class
+            fill2 <- lapply(name2_missing, function(m) x[[m]][0][seq_len(nrow(x))])
             names(fill2) <- name2_missing
             y <- cbind(y, fill2)
         }
