@@ -264,7 +264,8 @@ rbind.dfm <- function(...) {
     result <- build_dfm(
         Matrix::rbind2(pad_dfm(x, featname), pad_dfm(y, featname)),
         features = featname,
-        docvars = make_docvars(nrow(x) + nrow(y), c(docnames(x), docnames(y)), unique = FALSE),
+        docvars = rbind_fill(get_docvars(x, user = TRUE, system = TRUE),
+                             get_docvars(y, user = TRUE, system = TRUE)),
         meta = attrs[["meta"]]
     )
 
