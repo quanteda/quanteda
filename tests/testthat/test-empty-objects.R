@@ -106,3 +106,14 @@ test_that("empty DFM works", {
     expect_equal(featnames(dfmat3), character())
     expect_equal(featfreq(dfmat3), structure(numeric(), names = character()))
 })
+
+test_that("subsetting zero documents works", {
+  corp <- corpus(c("a b c", "d e f"))
+  expect_equal(ndoc(corp[0]), 0)
+  
+  toks <- tokens(corp)
+  expect_equal(ndoc(toks[0]), 0)
+  
+  dfmat <- dfm(toks)
+  expect_equal(ndoc(dfmat[0,]), 0)
+})
