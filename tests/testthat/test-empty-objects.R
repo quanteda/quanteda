@@ -22,11 +22,13 @@ test_that("empty corpus works", {
                 "Corpus consisting of 0 documents and 2 docvars.")
   
   # works with corpus methods
-  expect_silent(corpus(corp3))
-  expect_silent(corpus_subset(corp3))
-  expect_silent(corpus_segment(corp3))
-  expect_silent(corpus_reshape(corp3))
-  expect_silent(corpus_group(corp3))
+  expect_s3_class(corpus(corp3), "corpus")
+  expect_s3_class(corpus_subset(corp3), "corpus")
+  expect_s3_class(corpus_segment(corp3), "corpus")
+  expect_s3_class(corpus_reshape(corp3), "corpus")
+  expect_s3_class(corpus_trim(corp3), "corpus")
+  expect_s3_class(corpus_group(corp3), "corpus")
+  expect_s3_class(corpus_sample(corp3), "corpus")
 })
 
 test_that("empty tokens works", {
@@ -50,13 +52,18 @@ test_that("empty tokens works", {
                 "Tokens consisting of 0 documents and 2 docvars.")
   
   # works with tokens methods
-  expect_silent(tokens(toks3))
-  expect_silent(tokens_subset(toks3))
-  expect_silent(tokens_select(toks3, stopwords("en")))
-  expect_silent(tokens_segment(toks3, pattern = "."))
-  expect_silent(tokens_group(toks3))
-  expect_silent(as.tokens(list()))
-
+  expect_s3_class(tokens(toks3), "tokens")
+  expect_s3_class(tokens_subset(toks3), "tokens")
+  expect_s3_class(tokens_select(toks3, stopwords("en")), "tokens")
+  expect_s3_class(tokens_lookup(toks3, data_dictionary_LSD2015), "tokens")
+  expect_s3_class(tokens_segment(toks3, pattern = "."), "tokens")
+  expect_s3_class(tokens_group(toks3), "tokens")
+  expect_s3_class(tokens_sample(toks3), "tokens")
+  expect_s3_class(tokens_wordstem(toks3), "tokens")
+  expect_s3_class(as.tokens(list()), "tokens")
+  expect_s3_class(kwic(toks3, stopwords("en")), "kwic")
+  expect_s4_class(fcm(toks3), "fcm")
+  expect_equal(types(toks3), character())
 })
 
 test_that("empty DFM works", {
@@ -76,19 +83,26 @@ test_that("empty DFM works", {
     
     dfmat3 <- rbind(dfmat1, dfmat2)
     expect_equal(ndoc(dfmat3), 0)
-    # fixed #2111
-    # expect_equal(docvars(dfmat3),
-    #              data.frame(var1 = integer(), var2 = numeric()))
-    # expect_output(print(dfmat3),
-    #               "Document-feature matrix of: 0 documents, 0 features (0.00% sparse) and 2 docvar.", 
-    #               fixed = TRUE)
     
-    # works with dfm methods
-    expect_silent(dfm(dfmat3))
-    expect_silent(dfm_subset(dfmat3))
-    expect_silent(dfm_select(dfmat3, stopwords("en")))
-    expect_silent(dfm_group(dfmat3))
-    expect_silent(as.dfm(matrix(nrow = 0, ncol = 0)))
-    expect_silent(as.dfm(Matrix::Matrix(nrow = 0, ncol = 0)))
+    expect_equal(docvars(dfmat3),
+                 data.frame(var1 = integer(), var2 = numeric()))
+    expect_output(print(dfmat3),
+                  "Document-feature matrix of: 0 documents, 0 features (0.00% sparse) and 2 docvars.",
+                  fixed = TRUE)
 
+    # works with dfm methods
+    expect_s4_class(dfm(dfmat3), "dfm")
+    expect_s4_class(dfm_subset(dfmat3), "dfm")
+    expect_s4_class(dfm_select(dfmat3, stopwords("en")), "dfm")
+    expect_s4_class(dfm_lookup(dfmat3, data_dictionary_LSD2015), "dfm")
+    expect_s4_class(dfm_group(dfmat3), "dfm")
+    expect_s4_class(dfm_sample(dfmat3), "dfm")
+    expect_s4_class(dfm_wordstem(dfmat3), "dfm")
+    expect_s4_class(dfm_sort(dfmat3), "dfm")
+    expect_s4_class(dfm_weight(dfmat3), "dfm")
+    expect_s4_class(as.dfm(matrix(nrow = 0, ncol = 0)), "dfm")
+    expect_s4_class(as.dfm(Matrix::Matrix(nrow = 0, ncol = 0)), "dfm")
+    expect_s4_class(fcm(dfmat3), "fcm")
+    expect_equal(featnames(dfmat3), character())
+    expect_equal(featfreq(dfmat3), structure(numeric(), names = character()))
 })
