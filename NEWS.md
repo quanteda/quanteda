@@ -1,3 +1,9 @@
+# quanteda 3.1
+
+## Bug fixes and stability enhancements
+
+* `rbind.dfm()` now preserves docvars (#2109).
+
 # quanteda 3.0
 
 **quanteda** 3.0 is a major release that improves functionality, completes the modularisation of the package begun in v2.0, further improves function consistency by removing previously deprecated functions, and enhances workflow stability and consistency by deprecating some shortcut steps built into some functions.
