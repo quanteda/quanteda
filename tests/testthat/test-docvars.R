@@ -628,3 +628,24 @@ test_that("docid works", {
         factor(docnames(corp))
     )
 })
+
+test_that("docvars are combined along with the main objects", {
+    
+    docvar <- data.frame("var1" = c(100, 100, 200, NA, NA),
+                         "var2" = c(NA, NA, NA, TRUE, FALSE))
+    
+    corp1 <- corpus(data.frame(text = c(d1 = "aa",  d2 = "bb", d3 = "cc"),
+                               var1 = c(100, 100, 200)))
+    corp2 <- corpus(data.frame(text = c(d4 = "dd", d5 = "ee"),
+                               var2 = c(TRUE, FALSE)))
+    expect_equal(docvars(c(corp1, corp2)), docvar)
+    
+    toks1 <- tokens(corp1)
+    toks2 <- tokens(corp2)
+    expect_equal(docvars(c(toks1, toks2)), docvar)
+    
+    dfmat1 <- dfm(tokens(corp1))
+    dfmat2 <- dfm(tokens(corp2))
+    expect_equal(docvars(rbind(dfmat1, dfmat2)), docvar)
+})
+

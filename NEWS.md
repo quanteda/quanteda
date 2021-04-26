@@ -3,7 +3,7 @@
 ## Bug fixes and stability enhancements
 
 * Improved and more consistent handling of empty corpus, tokens and dfm objects, to address #2110.
-
+* `rbind.dfm()` now preserves docvars (#2109).
 
 # quanteda 3.0
 
