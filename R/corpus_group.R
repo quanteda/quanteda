@@ -63,7 +63,7 @@ corpus_group.corpus <- function(x, groups = docid(x), fill = FALSE, concatenator
 }
 
 group_corpus <- function(x, groups, concatenator = " ") {
-    result <- unlist(lapply(split(unclass(x), groups), paste, collapse = concatenator))
+    result <- unlist_character(lapply(split(unclass(x), groups), paste, collapse = concatenator))
     attr(result, "class") <- "corpus"
     return(result)
 }

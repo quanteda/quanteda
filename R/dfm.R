@@ -215,7 +215,7 @@ dfm.tokens <- function(x,
     temp <- unclass(x)
 
     # shift index for padding, if any
-    index <- unlist(temp, use.names = FALSE)
+    index <- unlist_integer(temp, use.names = FALSE)
     if (attr(temp, "padding")) {
         type <- c("", type)
         index <- index + 1L

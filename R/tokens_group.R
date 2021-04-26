@@ -62,7 +62,7 @@ tokens_group.tokens <- function(x, groups = docid(x), fill = FALSE) {
 }
 
 group_tokens <- function(x, groups) {
-    result <- split(unlist(unclass(x), use.names = FALSE), rep(groups, lengths(x)))
+    result <- split(unlist_integer(unclass(x), use.names = FALSE), rep(groups, lengths(x)))
     attr(result, "class") <- "tokens"
     attr(result, "types") <- attr(x, "types")
     attr(result, "padding") <- attr(x, "padding")
