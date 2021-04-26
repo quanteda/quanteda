@@ -16,7 +16,7 @@ test_that("assignment works", {
     corp <- corpus(txt_test)
     expect_error(
         suppressWarnings(texts(corp) <- c("aaaa", "bbbbb")),
-        "documents must the the same length as x"
+        "documents must be the same length as x"
     )
     suppressWarnings(texts(corp) <- c(12345, 0, Inf))
     expect_equal(
