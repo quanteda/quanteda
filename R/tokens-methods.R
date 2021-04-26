@@ -73,10 +73,10 @@ print.tokens <- function(x, max_ndoc = quanteda_options("print_tokens_max_ndoc")
 
     if (show_summary) {
         cat("Tokens consisting of ", format(ndoc, big.mark = ","), " document",
-            if (ndoc > 1L) "s" else "", sep = "")
+            if (ndoc != 1L) "s" else "", sep = "")
         if (ncol(docvars))
             cat(" and ", format(ncol(docvars), big.mark = ","), " docvar",
-                if (ncol(docvars) == 1L) "" else "s", sep = "")
+                if (ncol(docvars) != 1L) "s" else "", sep = "")
         cat(".\n")
     }
 
