@@ -256,13 +256,14 @@ test_that("docvars are erased for tokens added", {
     corp <- corpus(c(d1 = "This is sample document one.",
                      d2 = "Here is the second sample document."),
                    docvars = data.frame(dvar1 = c("A", "B"), dvar2 = c(1, 2)))
-    toks <- tokens(corp, include_docvars = TRUE)
+    toks1 <- tokens(corp, include_docvars = TRUE)
     expect_equivalent(
-        docvars(toks),
+        docvars(toks1),
         data.frame(dvar1 = c("A", "B"), dvar2 = c(1, 2))
     )
+    toks2 <- tokens(c(d3 = "And the third sample document."))
     expect_equivalent(
-        docvars(toks + tokens("And the third sample document.")),
+        docvars(toks1 + toks2),
         data.frame(dvar1 = c("A", "B", NA), dvar2 = c(1, 2, NA))
     )
 })

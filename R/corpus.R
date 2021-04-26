@@ -133,7 +133,7 @@ corpus.character <- function(x, docnames = NULL, docvars = NULL,
     }
     if (any(duplicated(docnames)) && unique_docnames)
         stop("docnames must be unique")
-    if (!is.null(docvars) && nrow(docvars) > 0) {
+    if (!is.null(docvars)) {
         row.names(docvars) <- NULL
         if (any(is_system(names(docvars))))
             stop(message_error("docvars_invalid"))
@@ -205,7 +205,11 @@ corpus.data.frame <- function(x, docid_field = "doc_id", text_field = "text",
                 if (is.character(attr(x, "row.names"))) {
                     docname <- rownames(x)
                 } else {
-                    docname <- paste0(quanteda_options("base_docname"), seq_len(nrow(x)))
+                    if (nrow(x) > 0) {
+                        docname <- paste0(quanteda_options("base_docname"), seq_len(nrow(x)))
+                    } else {
+                        docname <- character()
+                    }
                 }
                 docid_index <- 0
             } else {

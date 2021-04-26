@@ -267,10 +267,10 @@ segment_texts <- function(x, pattern = NULL, valuetype = "regex",
         x <- stri_split_fixed(x, pattern = "\uE000", omit_empty = omit_empty)
     }
     n <- lengths(x)
-    x <- unlist(x, use.names = FALSE)
+    x <- unlist_character(x, use.names = FALSE)
 
     if (extract_pattern) {
-        pos <- matrix(rep(NA, length(x) * 2), nrow = length(x))
+        pos <- matrix(rep(as.integer(NA), length(x) * 2), ncol = 2)
         for (pat in pattern) {
             if (valuetype == "fixed") {
                 if (pattern_position == "after") {

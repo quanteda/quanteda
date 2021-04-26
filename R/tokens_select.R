@@ -178,7 +178,7 @@ tokens_select.tokens <- function(x, pattern = NULL,
                 if (all(lengths(ids) == 1)) {
                     ids <- setdiff(ids, as.list(id_out))
                 } else {
-                    has_out <- unlist(lapply(ids, function(x, y) length(intersect(x, y)) > 0, id_out))
+                    has_out <- unlist_integer(lapply(ids, function(x, y) length(intersect(x, y)) > 0, id_out))
                     ids <- ids[!has_out]
                 }
             } else {

@@ -83,8 +83,8 @@ message_error <- function(key = NULL) {
              "fcm_empty" = "fcm must have at least one non-zero value",
              "fcm_context" = "fcm must be created with a document context",
              "matrix_mismatch" = "matrix must have the same rownames and colnames",
-             "docnames_mismatch" = "docnames must the the same length as x",
-             "ndoc_mismatch" = "documents must the the same length as x",
+             "docnames_mismatch" = "docnames must be the same length as x",
+             "ndoc_mismatch" = "documents must be the same length as x",
              "docvars_mismatch" = "data.frame must have the same number of rows as documents",
              "docvars_invalid" = "document variables cannot begin with the underscore",
              "docvar_nofield" = "you must supply field name(s)",
@@ -187,14 +187,16 @@ rbind_fill <- function(x, y) {
         name <- union(name1, name2)
         name1_missing <- setdiff(name, name1)
         if (length(name1_missing)) {
-            fill1 <- rep(list(rep(NA, nrow(x))), length(name1_missing))
+            # generate NA with appropriate class
+            fill1 <- lapply(name1_missing, function(m) y[[m]][0][seq_len(nrow(x))])
             names(fill1) <- name1_missing
             x <- cbind(x, fill1)
         }
 
         name2_missing <- setdiff(name, name2)
         if (length(name2_missing)) {
-            fill2 <- rep(list(rep(NA, nrow(y))), length(name2_missing))
+            # generate NA with appropriate class
+            fill2 <- lapply(name2_missing, function(m) x[[m]][0][seq_len(nrow(y))])
             names(fill2) <- name2_missing
             y <- cbind(y, fill2)
         }

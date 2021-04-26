@@ -286,7 +286,7 @@ tokens.corpus <- function(x,
             y <- restore_special1(y, split_hyphens = FALSE, split_tags = TRUE)
         return(y)
     })
-    type <- unique(unlist(lapply(x, attr, "types"), use.names = FALSE))
+    type <- unique(unlist_character(lapply(x, attr, "types"), use.names = FALSE))
     if (verbose)
         catm(" ...", format(length(type), big.mark = ",", trim = TRUE),
              " unique type", if (length(type) == 1) "" else "s",
@@ -298,7 +298,7 @@ tokens.corpus <- function(x,
     })
 
     result <- build_tokens(
-        unlist(x, recursive = FALSE),
+        unlist_integer(x, recursive = FALSE),
         types = type, what = what,
         docvars = select_docvars(attrs[["docvars"]], user = include_docvars, system = TRUE),
         meta = attrs[["meta"]]
@@ -515,7 +515,7 @@ serialize_tokens <- function(x, types_reserved = NULL, ...) {
     types <- unique(unlist(x, use.names = FALSE))
     # remove empty types and control chracters
     types <- types[nzchar(types) & !stri_detect_regex(types, "^[\\p{Cf}]+$")]
-    types <- union(types_reserved, types) # prepend new types
+    types <- union(types_reserved, types) # append new types
 
     x <- lapply(x, function(x) {
         id <- fastmatch::fmatch(x, types)

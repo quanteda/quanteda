@@ -73,7 +73,7 @@ preserve_special <- function(x, split_hyphens = TRUE, split_tags = TRUE, verbose
 
     s <- stri_extract_all_regex(x, paste(regex, collapse = "|"),  omit_no_match = TRUE)
     r <- lengths(s)
-    s <- unlist(s, use.names = FALSE)
+    s <- unlist_character(s, use.names = FALSE)
 
     # index specials
     u <- unique(s)
@@ -105,7 +105,7 @@ restore_special <- function(x, special, recompile = TRUE) {
     # extract all placeholders
     d <- stri_extract_all_regex(type, "\u100000\\d+\u100001", omit_no_match = TRUE)
     r <- lengths(d)
-    d <- unlist(d, use.names = FALSE)
+    d <- unlist_character(d, use.names = FALSE)
 
     # index placeholders
     index <- split(rep(seq_along(type), r), factor(d, levels = unique(d)))

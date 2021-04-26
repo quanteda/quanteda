@@ -344,14 +344,14 @@ is_glob <- function(pattern) {
 #' @keywords internal
 #' @return integer vector
 unlist_integer <- function(x, unique = FALSE, ...) {
-    stopifnot(all(unlist(lapply(x, typeof), use.names = FALSE) == "integer"))
-    result <- integer()
-    if (!length(x))
-        return(result)
     result <- unlist(x, ...)
     if (unique)
         result <- unique(result)
-    return(result)
+    if (is.null(result)) {
+        return(integer())
+    } else {
+        return(result)
+    }
 }
 
 #' Unlist a list of character vectors safely
@@ -361,12 +361,12 @@ unlist_integer <- function(x, unique = FALSE, ...) {
 #' @keywords internal
 #' @return character vector
 unlist_character <- function(x, unique = FALSE, ...) {
-    stopifnot(all(unlist(lapply(x, typeof), use.names = FALSE) == "character"))
-    result <- character()
-    if (!length(x))
-        return(result)
     result <- unlist(x, ...)
     if (unique)
         result <- unique(result)
-    return(result)
+    if (is.null(result)) {
+        return(character())
+    } else {
+        return(result)
+    }
 }
