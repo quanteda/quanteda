@@ -4,6 +4,7 @@
 
 * Improved and more consistent handling of empty corpus, tokens and dfm objects, to address #2110.
 * `rbind.dfm()` now preserves docvars (#2109).
+* Correct document name for Biden's 2021 Inaugural Address in `data_corpus_inaugural` object.
 
 # quanteda 3.0
 
