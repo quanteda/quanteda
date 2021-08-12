@@ -112,7 +112,7 @@ test_that("docnames are alwyas unique", {
 
 
 test_that("docnames are the same after subsetting (#2127)", {
-    corp <- corpus_reshape(data_corpus_inaugural)
+    corp <- corpus_reshape(data_corpus_inaugural[1])
     toks <- tokens(corp)
     dfmat <- dfm(toks)
     dname <- c("1789-Washington.2", "1789-Washington.3")
