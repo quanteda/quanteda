@@ -5,59 +5,75 @@
 #' around [pattern()] to make it explicit that the pattern elements
 #' are to be used for matches to multi-word sequences, rather than individual,
 #' unordered matches to single words.
-#' @param x the sequence, as a `character` object containing whitespace
-#'   separating the patterns
+#' @param x `character` object containing the `separator` between
+#'   the patterns.
+#' @param separator	the character in between the patterns. This defaults to " ".
 #' @return `phrase` returns a specially classed list whose white-spaced
 #'   elements have been parsed into separate `character` elements.
 #' @export
 #' @examples
 #' # make phrases from characters
 #' phrase(c("a b", "c d e", "f"))
+#' phrase(c("a_b", "c_d_e", "f"), separator = "_")
 #'
 #' # from a dictionary
 #' phrase(dictionary(list(catone = c("a b"), cattwo = "c d e", catthree = "f")))
 #'
-phrase <- function(x) {
+phrase <- function(x, separator = " ") {
     UseMethod("phrase")
 }
 
 #' @export
-phrase.default <- function(x) {
+phrase.default <- function(x, separator = " ") {
     check_class(class(x), "phrase")
 }
 
 #' @noRd
 #' @importFrom stringi stri_split_charclass
 #' @export
-phrase.character <- function(x) {
-    phrase(stri_split_charclass(x, "\\p{Z}"))
+phrase.character <- function(x, separator = " ") {
+    separator <- check_character(separator, 1, 1, 1, 1)
+    x <- stri_split_fixed(x, separator)
+    class(x) <- c("phrases", class(x))
+    return(x)
 }
 
 #' @noRd
 #' @export
-phrase.dictionary2 <- function(x) {
-    phrase(unlist(x, use.names = FALSE))
+phrase.dictionary2 <- function(x, separator = " ") {
+    phrase(unlist(x, use.names = FALSE), separator = " ")
+}
+
+#' @rdname phrase
+#' @export
+as.phrase <- function(x) {
+    UseMethod("as.phrase")
+}
+
+#' @export
+as.phrase.default <- function(x) {
+    check_class(class(x), "as.phrase")
 }
 
 #' @noRd
 #' @export
-phrase.collocations <- function(x) {
+as.phrase.collocations <- function(x) {
     phrase(x[["collocation"]])
 }
 
 #' @noRd
 #' @export
-phrase.list <- function(x) {
-    if (!all(is.character(unlist(x, use.names = FALSE))))
+as.phrase.list <- function(x) {
+    if (!all(unlist(lapply(x, is.character), use.names = FALSE)))
         stop("all list elements must be character")
     class(x) <- c("phrases", class(x))
-    x
+    return(x)
 }
 
 #' @noRd
 #' @export
-phrase.tokens <- function(x) {
-    phrase(as.list(x))
+as.phrase.tokens <- function(x) {
+    as.phrase(as.list(x))
 }
 
 

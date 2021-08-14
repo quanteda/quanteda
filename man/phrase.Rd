@@ -2,16 +2,21 @@
 % Please edit documentation in R/phrases.R
 \name{phrase}
 \alias{phrase}
+\alias{as.phrase}
 \alias{is.phrase}
 \title{Declare a compound character to be a sequence of separate pattern matches}
 \usage{
-phrase(x)
+phrase(x, separator = " ")
+
+as.phrase(x)
 
 is.phrase(x)
 }
 \arguments{
-\item{x}{the sequence, as a \code{character} object containing whitespace
-separating the patterns}
+\item{x}{\code{character} object containing the \code{separator} between
+the patterns.}
+
+\item{separator}{the character in between the patterns. This defaults to " ".}
 }
 \value{
 \code{phrase} returns a specially classed list whose white-spaced
@@ -30,6 +35,7 @@ unordered matches to single words.
 \examples{
 # make phrases from characters
 phrase(c("a b", "c d e", "f"))
+phrase(c("a_b", "c_d_e", "f"), separator = "_")
 
 # from a dictionary
 phrase(dictionary(list(catone = c("a b"), cattwo = "c d e", catthree = "f")))
