@@ -109,3 +109,26 @@ test_that("docnames are alwyas unique", {
     expect_false(any(duplicated((docnames(dfmat3)))))
     expect_identical(docnames(dfmat3), dfmat3@Dimnames[["docs"]])
 })
+
+
+test_that("docnames are the same after subsetting (#2127)", {
+    corp <- corpus_reshape(data_corpus_inaugural[1])
+    toks <- tokens(corp)
+    dfmat <- dfm(toks)
+    dname <- c("1789-Washington.2", "1789-Washington.3")
+    
+    expect_identical(docnames(corp[dname]), dname)
+    expect_identical(docnames(corp[dname[1]]), dname[1])
+    expect_identical(docnames(corp[2:3]), dname)
+    expect_identical(docnames(corp[2]), dname[1])
+    
+    expect_identical(docnames(toks[dname]), dname)
+    expect_identical(docnames(toks[dname[1]]), dname[1])
+    expect_identical(docnames(toks[2:3]), dname)
+    expect_identical(docnames(toks[2]), dname[1])
+    
+    expect_identical(docnames(dfmat[dname,]), dname)
+    expect_identical(docnames(dfmat[dname[1],]), dname[1])
+    expect_identical(docnames(dfmat[2:3,]), dname)
+    expect_identical(docnames(dfmat[2,]), dname[1])
+})
