@@ -133,6 +133,11 @@ test_that("phrase default works", {
         phrase(TRUE),
         "phrase\\(\\) only works on character, dictionary2 objects"
     )
+    
+    expect_error(
+        as.phrase(TRUE),
+        "phrase\\(\\) only works on collocations, list, tokens objects"
+    )
 })
 
 test_that("types defaults work", {
