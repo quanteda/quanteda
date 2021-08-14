@@ -132,8 +132,13 @@ make_docvars <- function(n, docname = NULL, unique = TRUE, drop_docid = TRUE) {
 reshape_docvars <- function(x, i = NULL, drop_docid = TRUE) {
     if (is.null(i)) return(x)
     x <- x[i, , drop = FALSE]
-    temp <- make_docvars(nrow(x), x[["docid_"]], unique = TRUE, drop_docid)
-    x[c("docname_", "docid_", "segid_")] <- temp
+    if (any(duplicated(i))) {
+        temp <- make_docvars(nrow(x), x[["docid_"]], unique = TRUE, drop_docid)
+        x[c("docname_", "docid_", "segid_")] <- temp
+    } else {
+        if (drop_docid)
+            x[["docid_"]] <- droplevels(x[["docid_"]])
+    }
     rownames(x) <- NULL
     return(x)
 }

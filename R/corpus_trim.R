@@ -44,15 +44,18 @@ corpus_trim.corpus <- function(x, what = c("sentences", "paragraphs", "documents
 
     # segment corpus
     temp <- corpus_reshape(x, to = what)
-
+    
+    if (length(temp) == 0)
+        return(x)
+    
     # exclude based on lengths
-    length <- ntoken(temp, remove_punct = TRUE)
+    len <- ntoken(temp, remove_punct = TRUE)
     if (!is.null(max_ntoken)) {
         max_ntoken <- check_integer(max_ntoken)
     } else {
-        max_ntoken <- max(length)
+        max_ntoken <- max(len)
     }
-    result <- corpus_subset(temp, length >= min_ntoken & length <= max_ntoken)
+    result <- corpus_subset(temp, len >= min_ntoken & len <= max_ntoken)
 
     # exclude based on regular expression match
     if (!is.null(exclude_pattern)) {
