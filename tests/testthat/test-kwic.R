@@ -355,12 +355,12 @@ test_that("kwic works as expected with and without phrases", {
     )
 
     expect_equal(
-        as.data.frame(kwic(txt, phrase(coll_bi)))$keyword,
+        as.data.frame(kwic(txt, as.phrase(coll_bi)))$keyword,
         c("a b", "e g", "g h",
           "a b", "e g", "g h")
     )
     expect_equal(
-        as.data.frame(kwic(txt, phrase(dict_bi)))$keyword,
+        as.data.frame(kwic(txt, as.phrase(dict_bi)))$keyword,
         c("a b", "a b")
     )
     expect_equal(
@@ -401,7 +401,7 @@ test_that("kwic works as expected with and without phrases", {
     expect_equal(nrow(kwic(toks_uni, coll_tri)), 2)
 
     expect_equal(
-        as.data.frame(kwic(toks_uni, phrase(coll_bi)))$keyword,
+        as.data.frame(kwic(toks_uni, as.phrase(coll_bi)))$keyword,
         c("a b", "e g", "g h", "a b", "e g", "g h")
     )
     expect_equal(
