@@ -4,12 +4,15 @@
 \alias{reshape_docvars}
 \title{Internal function to subset or duplicate docvar rows}
 \usage{
-reshape_docvars(x, i = NULL, drop_docid = TRUE)
+reshape_docvars(x, i = NULL, unique = FALSE, drop_docid = TRUE)
 }
 \arguments{
 \item{x}{docvar data.frame}
 
 \item{i}{numeric or logical vector for subsetting/duplicating rows}
+
+\item{unique}{if \code{TRUE}, names must be all unique. If \code{FALSE}, documents with the same
+names are treated as segments from the same document and given serial number.}
 
 \item{drop_docid}{if \code{TRUE}, drop unused names of documents.}
 }
