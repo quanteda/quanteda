@@ -29,7 +29,7 @@ subset_dfm <- function(x, i, j, ..., drop) {
     }
 
     if (!missing(i))
-        attrs[["docvars"]] <- reshape_docvars(attrs[["docvars"]], index_row, ...)
+        attrs[["docvars"]] <- reshape_docvars(attrs[["docvars"]], index_row, unique = FALSE, ...)
 
     build_dfm(
         x, colnames(x),
