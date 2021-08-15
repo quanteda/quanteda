@@ -138,8 +138,8 @@ reshape_docvars <- function(x, i = NULL, unique = FALSE, drop_docid = TRUE) {
         x[["docname_"]] <- as.character(x[["docid_"]])
     } else {
         if (any(duplicated(x[["docname_"]]))) {
-            segids <- lapply(split(x[["segid_"]], x[["docid_"]]), FUN = rank, ties.method = "first")
-            x[["segid_"]] <- as.integer(unlist(segids, use.names = FALSE))
+            x[["segid_"]] <- as.integer(stats::ave(x[["segid_"]], x[["docid_"]], 
+                                                   FUN = function(y) rank(y, ties.method = "first")))
             x[["docname_"]] <- paste0(x[["docid_"]], ".", x[["segid_"]])
         }
     }

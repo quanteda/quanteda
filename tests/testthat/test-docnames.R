@@ -135,12 +135,18 @@ test_that("docnames are the same after subsetting (#2127)", {
     # preserve order of segid 
     expect_identical(docnames(corp[c("doc1.1", "doc1.3", "doc1.1")]), c("doc1.1", "doc1.3", "doc1.2"))
     expect_identical(docnames(corp[c(1, 3, 1)]), c("doc1.1", "doc1.3", "doc1.2"))
+    expect_identical(docnames(corp[c("doc2.1", "doc1.2", "doc2.1")]), c("doc2.1", "doc1.1", "doc2.2"))
+    expect_identical(docnames(corp[c(4, 2, 4)]), c("doc2.1", "doc1.1", "doc2.2"))
     
     expect_identical(docnames(toks[c("doc1.1", "doc1.3", "doc1.1")]), c("doc1.1", "doc1.3", "doc1.2"))
     expect_identical(docnames(toks[c(1, 3, 1)]), c("doc1.1", "doc1.3", "doc1.2"))
+    expect_identical(docnames(toks[c("doc2.1", "doc1.2", "doc2.1")]), c("doc2.1", "doc1.1", "doc2.2"))
+    expect_identical(docnames(toks[c(4, 2, 4)]), c("doc2.1", "doc1.1", "doc2.2"))
     
     expect_identical(docnames(dfmat[c("doc1.1", "doc1.3", "doc1.1"),]), c("doc1.1", "doc1.3", "doc1.2"))
     expect_identical(docnames(dfmat[c(1, 3, 1),]), c("doc1.1", "doc1.3", "doc1.2"))
+    expect_identical(docnames(dfmat[c("doc2.1", "doc1.2", "doc2.1"),]), c("doc2.1", "doc1.1", "doc2.2"))
+    expect_identical(docnames(dfmat[c(4, 2, 4),]), c("doc2.1", "doc1.1", "doc2.2"))
 })
 
     
