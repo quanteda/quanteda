@@ -19,7 +19,7 @@ test_that("msg works", {
         "there is a document"
     )
     expect_equal(
-        quanteda:::msg("there is %s", "a document", indices = c(1, 2)),
+        suppressWarnings(quanteda:::msg("there is %s", "a document", indices = c(1, 2))),
         "there is a document"
     )
     
