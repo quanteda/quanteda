@@ -45,6 +45,10 @@ test_that("test as.phrase", {
         as.phrase(toks),
         list(c("United", "States"), "Congress", c("federal", "government"))
     )
+    expect_equivalent(
+        suppressWarnings(phrase(toks)),
+        list(c("United", "States"), "Congress", c("federal", "government"))
+    )
     lis <- as.list(toks)
     expect_equivalent(
         as.phrase(lis),
@@ -53,6 +57,10 @@ test_that("test as.phrase", {
     load("../data/collocations/col.rda")
     expect_equivalent(
         as.phrase(col),
+        list(c("a", "b"), c("b", "c"), c("c", "d"), c("a", "b", "c"))
+    )
+    expect_equivalent(
+        suppressWarnings(phrase(col)),
         list(c("a", "b"), c("b", "c"), c("c", "d"), c("a", "b", "c"))
     )
 })

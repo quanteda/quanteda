@@ -1,24 +1,33 @@
-#' Declare a compound character to be a sequence of separate pattern matches
+#' Declare a pattern to be a sequence of separate patterns
 #'
-#' Declares that a whitespace-separated expression consists of multiple
-#' patterns, separated by whitespace.  This is typically used as a wrapper
-#' around [pattern()] to make it explicit that the pattern elements
-#' are to be used for matches to multi-word sequences, rather than individual,
-#' unordered matches to single words.
-#' @param x `character` object containing the `separator` between
-#'   the patterns.
-#' @param separator	the character in between the patterns. This defaults to " ".
-#' @return `phrase` returns a specially classed list whose white-spaced
-#'   elements have been parsed into separate `character` elements.
+#' Declares that a character expression consists of multiple patterns, separated
+#' by an element such as whitespace.  This is typically used as a wrapper around
+#' [pattern()] to make it explicit that the pattern elements are to be used for
+#' matches to multi-word sequences, rather than individual, unordered matches to
+#' single words.
+#' @param x character, [dictionary], list, collocations, or tokens object; the
+#'   compound patterns to be treated as a sequence separated by `separator`.
+#'   For list, collocations, or tokens objects, use `as.phrase()`.
+#' @param separator	character; the character in between the patterns. This
+#'   defaults to " ".  For `phrase()` only.
+#' @return `phrase()` and `as.phrase()` return a specially classed list whose elements have been
+#'   split into separate `character` (pattern) elements.
+#' @seealso [as.phrase()]
 #' @export
 #' @examples
 #' # make phrases from characters
-#' phrase(c("a b", "c d e", "f"))
-#' phrase(c("a_b", "c_d_e", "f"), separator = "_")
+#' phrase(c("natural language processing"))
+#' phrase(c("natural_language_processing", "text_analysis"), separator = "_")
 #'
 #' # from a dictionary
 #' phrase(dictionary(list(catone = c("a b"), cattwo = "c d e", catthree = "f")))
-#'
+#' 
+#' # from a list
+#' as.phrase(list(c("natural", "language", "processing")))
+#' 
+#' # from tokens
+#' as.phrase(tokens("natural language processing"))
+#
 phrase <- function(x, separator = " ") {
     UseMethod("phrase")
 }
@@ -63,6 +72,13 @@ as.phrase.collocations <- function(x) {
 
 #' @noRd
 #' @export
+phrase.collocations <- function(x, separator = " ") {
+    .Deprecated("as.phrase")
+    as.phrase(x)
+}
+
+#' @noRd
+#' @export
 as.phrase.list <- function(x) {
     if (!all(unlist(lapply(x, is.character), use.names = FALSE)))
         stop("all list elements must be character")
@@ -72,10 +88,23 @@ as.phrase.list <- function(x) {
 
 #' @noRd
 #' @export
+phrase.list <- function(x, separator = " ") {
+    .Deprecated("as.phrase")
+    as.phrase(x)
+}
+
+#' @noRd
+#' @export
 as.phrase.tokens <- function(x) {
     as.phrase(as.list(x))
 }
 
+#' @noRd
+#' @export
+phrase.tokens <- function(x, separator = " ") {
+    .Deprecated("as.phrase")
+    as.phrase(x)
+}
 
 #' @rdname phrase
 #' @return `is.phrase` returns `TRUE` if the object was created by
