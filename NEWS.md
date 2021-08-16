@@ -7,6 +7,14 @@
 * Document name for Biden's 2021 Inaugural Address in `data_corpus_inaugural` is now consistent with all other documents.
 * Fix #2127 that caused subsetting to change document names.
 
+## Changes and additions
+
+* `phrase()` now has a `separator` argument (#2124)
+
+## Deprecations
+
+* `phrase()` methods for tokens, collocations, and lists are deprecated in favour of `as.phrase()`.  (#2129)
+
 # quanteda 3.0
 
 **quanteda** 3.0 is a major release that improves functionality, completes the modularisation of the package begun in v2.0, further improves function consistency by removing previously deprecated functions, and enhances workflow stability and consistency by deprecating some shortcut steps built into some functions.
