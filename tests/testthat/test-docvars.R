@@ -29,11 +29,11 @@ test_that("make_docvars() works", {
 
 })
 
-test_that("reshape_docvars() words", {
+test_that("reshape_docvars() works", {
     
     docvar1 <- data.frame("docname_" = c("doc1", "doc2"),
                           "docid_" = factor(c("doc1", "doc2")),
-                          "segid_" = c(1, 2), stringsAsFactors = FALSE)
+                          "segid_" = c(1, 1), stringsAsFactors = FALSE)
     
     expect_identical(
         quanteda:::reshape_docvars(docvar1, c(1, 2))[["docname_"]],

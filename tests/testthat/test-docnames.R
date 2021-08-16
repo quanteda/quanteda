@@ -112,23 +112,41 @@ test_that("docnames are alwyas unique", {
 
 
 test_that("docnames are the same after subsetting (#2127)", {
-    corp <- corpus_reshape(data_corpus_inaugural[1])
+    
+    corp <- corpus(c(doc1 = "This is a sentence.  Another sentence.  Yet another.", 
+                     doc2 = "Premiere phrase.  Deuxieme phrase."))
+    corp <- corpus_reshape(corp)
     toks <- tokens(corp)
     dfmat <- dfm(toks)
-    dname <- c("1789-Washington.2", "1789-Washington.3")
+
+    # do not change docnames
+    expect_identical(docnames(corp[c("doc1.2", "doc2.1", "doc2.2")]), c("doc1.2", "doc2.1", "doc2.2"))
+    expect_identical(docnames(corp[c(2, 4, 5)]), c("doc1.2", "doc2.1", "doc2.2"))
+    expect_identical(docnames(corp[c(FALSE, TRUE, FALSE, TRUE, TRUE)]), c("doc1.2", "doc2.1", "doc2.2"))
     
-    expect_identical(docnames(corp[dname]), dname)
-    expect_identical(docnames(corp[dname[1]]), dname[1])
-    expect_identical(docnames(corp[2:3]), dname)
-    expect_identical(docnames(corp[2]), dname[1])
+    expect_identical(docnames(toks[c("doc1.2", "doc2.1", "doc2.2")]), c("doc1.2", "doc2.1", "doc2.2"))
+    expect_identical(docnames(toks[c(2, 4, 5)]), c("doc1.2", "doc2.1", "doc2.2"))
+    expect_identical(docnames(toks[c(FALSE, TRUE, FALSE, TRUE, TRUE)]), c("doc1.2", "doc2.1", "doc2.2"))
     
-    expect_identical(docnames(toks[dname]), dname)
-    expect_identical(docnames(toks[dname[1]]), dname[1])
-    expect_identical(docnames(toks[2:3]), dname)
-    expect_identical(docnames(toks[2]), dname[1])
+    expect_identical(docnames(dfmat[c("doc1.2", "doc2.1", "doc2.2"),]), c("doc1.2", "doc2.1", "doc2.2"))
+    expect_identical(docnames(dfmat[c(2, 4, 5),]), c("doc1.2", "doc2.1", "doc2.2"))
+    expect_identical(docnames(dfmat[c(FALSE, TRUE, FALSE, TRUE, TRUE),]), c("doc1.2", "doc2.1", "doc2.2"))
     
-    expect_identical(docnames(dfmat[dname,]), dname)
-    expect_identical(docnames(dfmat[dname[1],]), dname[1])
-    expect_identical(docnames(dfmat[2:3,]), dname)
-    expect_identical(docnames(dfmat[2,]), dname[1])
+    # preserve order of segid 
+    expect_identical(docnames(corp[c("doc1.1", "doc1.3", "doc1.1")]), c("doc1.1", "doc1.3", "doc1.2"))
+    expect_identical(docnames(corp[c(1, 3, 1)]), c("doc1.1", "doc1.3", "doc1.2"))
+    expect_identical(docnames(corp[c("doc2.1", "doc1.2", "doc2.1")]), c("doc2.1", "doc1.1", "doc2.2"))
+    expect_identical(docnames(corp[c(4, 2, 4)]), c("doc2.1", "doc1.1", "doc2.2"))
+    
+    expect_identical(docnames(toks[c("doc1.1", "doc1.3", "doc1.1")]), c("doc1.1", "doc1.3", "doc1.2"))
+    expect_identical(docnames(toks[c(1, 3, 1)]), c("doc1.1", "doc1.3", "doc1.2"))
+    expect_identical(docnames(toks[c("doc2.1", "doc1.2", "doc2.1")]), c("doc2.1", "doc1.1", "doc2.2"))
+    expect_identical(docnames(toks[c(4, 2, 4)]), c("doc2.1", "doc1.1", "doc2.2"))
+    
+    expect_identical(docnames(dfmat[c("doc1.1", "doc1.3", "doc1.1"),]), c("doc1.1", "doc1.3", "doc1.2"))
+    expect_identical(docnames(dfmat[c(1, 3, 1),]), c("doc1.1", "doc1.3", "doc1.2"))
+    expect_identical(docnames(dfmat[c("doc2.1", "doc1.2", "doc2.1"),]), c("doc2.1", "doc1.1", "doc2.2"))
+    expect_identical(docnames(dfmat[c(4, 2, 4),]), c("doc2.1", "doc1.1", "doc2.2"))
 })
+
+    

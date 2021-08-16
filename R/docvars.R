@@ -129,15 +129,19 @@ make_docvars <- function(n, docname = NULL, unique = TRUE, drop_docid = TRUE) {
 #' @param i numeric or logical vector for subsetting/duplicating rows
 #' @inheritParams make_docvars
 #' @keywords internal
-reshape_docvars <- function(x, i = NULL, drop_docid = TRUE) {
+reshape_docvars <- function(x, i = NULL, unique = FALSE, drop_docid = TRUE) {
     if (is.null(i)) return(x)
     x <- x[i, , drop = FALSE]
-    if (any(duplicated(i))) {
-        temp <- make_docvars(nrow(x), x[["docid_"]], unique = TRUE, drop_docid)
-        x[c("docname_", "docid_", "segid_")] <- temp
+    if (drop_docid)
+        x[["docid_"]] <- droplevels(x[["docid_"]])
+    if (unique) {
+        x[["docname_"]] <- as.character(x[["docid_"]])
     } else {
-        if (drop_docid)
-            x[["docid_"]] <- droplevels(x[["docid_"]])
+        if (any(duplicated(x[["docname_"]]))) {
+            x[["segid_"]] <- as.integer(stats::ave(x[["segid_"]], x[["docid_"]], 
+                                                   FUN = function(y) rank(y, ties.method = "first")))
+            x[["docname_"]] <- paste0(x[["docid_"]], ".", x[["segid_"]])
+        }
     }
     rownames(x) <- NULL
     return(x)
