@@ -1,9 +1,20 @@
 test_that("test phrase for character", {
-    txt <- c("capital gains tax", "one two", "three")
+    txt1 <- c("capital gains tax", "one two", "three")
     expect_equivalent(
-        phrase(txt),
+        phrase(txt1),
         list(c("capital", "gains", "tax"), c("one", "two"), "three")
     )
+    
+    txt2 <- c("capital_gains_tax", "one_two", "three")
+    expect_equivalent(
+        phrase(txt2, separator = "_"),
+        list(c("capital", "gains", "tax"), c("one", "two"), "three")
+    )
+    expect_error(phrase(txt2, separator = "__"),
+                 "The value of separator must be 1 character")
+    expect_error(phrase(txt2, separator = c("_", " ")),
+                 "The length of separator must be 1")
+    
     expect_equivalent(
         phrase(letters),
         as.list(letters)
@@ -28,18 +39,29 @@ test_that("test phrase for dictionaries", {
     )
 })
 
-test_that("test phrase for tokens", {
+test_that("test as.phrase", {
     toks <- tokens(c("United States", "Congress", "federal government"))
     expect_equivalent(
-        phrase(toks),
+        as.phrase(toks),
         list(c("United", "States"), "Congress", c("federal", "government"))
     )
-
-    toks2 <- tokens(c("United States", "Congress", "federal government")) %>%
-        tokens_ngrams(n = 2, concatenator = " ")
     expect_equivalent(
-        phrase(toks2),
-        list("United States", character(0), "federal government")
+        suppressWarnings(phrase(toks)),
+        list(c("United", "States"), "Congress", c("federal", "government"))
+    )
+    lis <- as.list(toks)
+    expect_equivalent(
+        as.phrase(lis),
+        list(c("United", "States"), "Congress", c("federal", "government"))
+    )
+    load("../data/collocations/col.rda")
+    expect_equivalent(
+        as.phrase(col),
+        list(c("a", "b"), c("b", "c"), c("c", "d"), c("a", "b", "c"))
+    )
+    expect_equivalent(
+        suppressWarnings(phrase(col)),
+        list(c("a", "b"), c("b", "c"), c("c", "d"), c("a", "b", "c"))
     )
 })
 

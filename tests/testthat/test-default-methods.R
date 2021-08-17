@@ -131,7 +131,12 @@ test_that("kwic default works", {
 test_that("phrase default works", {
     expect_error(
         phrase(TRUE),
-        "phrase\\(\\) only works on character.*tokens objects"
+        "phrase\\(\\) only works on character.*dictionary2"
+    )
+    
+    expect_error(
+        as.phrase(TRUE),
+        "phrase\\(\\) only works on collocations, list, tokens objects"
     )
 })
 

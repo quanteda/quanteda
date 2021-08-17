@@ -2,36 +2,52 @@
 % Please edit documentation in R/phrases.R
 \name{phrase}
 \alias{phrase}
+\alias{as.phrase}
 \alias{is.phrase}
-\title{Declare a compound character to be a sequence of separate pattern matches}
+\title{Declare a pattern to be a sequence of separate patterns}
 \usage{
-phrase(x)
+phrase(x, separator = " ")
+
+as.phrase(x)
 
 is.phrase(x)
 }
 \arguments{
-\item{x}{the sequence, as a \code{character} object containing whitespace
-separating the patterns}
+\item{x}{character, \link{dictionary}, list, collocations, or tokens object; the
+compound patterns to be treated as a sequence separated by \code{separator}.
+For list, collocations, or tokens objects, use \code{as.phrase()}.}
+
+\item{separator}{character; the character in between the patterns. This
+defaults to " ".  For \code{phrase()} only.}
 }
 \value{
-\code{phrase} returns a specially classed list whose white-spaced
-elements have been parsed into separate \code{character} elements.
+\code{phrase()} and \code{as.phrase()} return a specially classed list whose elements have been
+split into separate \code{character} (pattern) elements.
 
 \code{is.phrase} returns \code{TRUE} if the object was created by
 \code{\link[=phrase]{phrase()}}; \code{FALSE} otherwise.
 }
 \description{
-Declares that a whitespace-separated expression consists of multiple
-patterns, separated by whitespace.  This is typically used as a wrapper
-around \code{\link[=pattern]{pattern()}} to make it explicit that the pattern elements
-are to be used for matches to multi-word sequences, rather than individual,
-unordered matches to single words.
+Declares that a character expression consists of multiple patterns, separated
+by an element such as whitespace.  This is typically used as a wrapper around
+\code{\link[=pattern]{pattern()}} to make it explicit that the pattern elements are to be used for
+matches to multi-word sequences, rather than individual, unordered matches to
+single words.
 }
 \examples{
 # make phrases from characters
-phrase(c("a b", "c d e", "f"))
+phrase(c("natural language processing"))
+phrase(c("natural_language_processing", "text_analysis"), separator = "_")
 
 # from a dictionary
 phrase(dictionary(list(catone = c("a b"), cattwo = "c d e", catthree = "f")))
 
+# from a list
+as.phrase(list(c("natural", "language", "processing")))
+
+# from tokens
+as.phrase(tokens("natural language processing"))
+}
+\seealso{
+\code{\link[=as.phrase]{as.phrase()}}
 }

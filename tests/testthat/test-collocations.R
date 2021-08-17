@@ -19,12 +19,12 @@ test_that("tokens_compound works as expected with collocations", {
 
     expect_true(all(
       c("The_new", "capital_gains", "gains_taxes") %in%
-      as.character(tokens_compound(toks, phrase(cols), join = FALSE))
+      as.character(tokens_compound(toks, as.phrase(cols), join = FALSE))
     ))
 
     expect_true(all(
       c("The_new", "capital_gains_taxes") %in%
-        as.character(tokens_compound(toks, phrase(cols), join = TRUE))
+        as.character(tokens_compound(toks, as.phrase(cols), join = TRUE))
     ))
 
     expect_true(all(
@@ -39,11 +39,11 @@ test_that("tokens_compound works as expected with collocations", {
 
     expect_equal(
          tokens_compound(toks, cols),
-         tokens_compound(toks, phrase(cols))
+         tokens_compound(toks, as.phrase(cols))
      )
     expect_equal(
         tokens_compound(toks, cols, join = TRUE),
-        tokens_compound(toks, phrase(cols), join = TRUE)
+        tokens_compound(toks, as.phrase(cols), join = TRUE)
     )
 })
 
@@ -177,12 +177,12 @@ test_that("kwic works as expected with and without collocations phrases", {
     )
 
     expect_equal(
-        as.data.frame(kwic(txt, phrase(coll_bi)))$keyword,
+        as.data.frame(kwic(txt, as.phrase(coll_bi)))$keyword,
         c("a b", "e g", "g h",
           "a b", "e g", "g h")
     )
     expect_equal(
-        as.data.frame(kwic(txt, phrase(dict_bi)))$keyword,
+        as.data.frame(kwic(txt, as.phrase(dict_bi)))$keyword,
         c("a b", "a b")
     )
     })
@@ -191,11 +191,11 @@ test_that("kwic works as expected with and without collocations phrases", {
     expect_equal(nrow(kwic(toks_uni, coll_tri)), 2)
 
     expect_equal(
-        as.data.frame(kwic(toks_uni, phrase(coll_bi)))$keyword,
+        as.data.frame(kwic(toks_uni, as.phrase(coll_bi)))$keyword,
         c("a b", "e g", "g h", "a b", "e g", "g h")
     )
     expect_equal(
-        nrow(kwic(toks_bi, phrase(coll_bi))),
+        nrow(kwic(toks_bi, as.phrase(coll_bi))),
         0
     )
 })
@@ -227,7 +227,7 @@ test_that("test phrase for collocations", {
                        row.names = c("1", "2"), class = c("collocations", "textstat", "data.frame"), 
                        types = c("United", "States", "Congress", "federal", "government"))
     expect_equivalent(
-        phrase(colls),
+        as.phrase(colls),
         list(c("United", "States"), c("federal", "government"))
     )
 })
