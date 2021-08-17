@@ -10,8 +10,8 @@
 #'   For list, collocations, or tokens objects, use `as.phrase()`.
 #' @param separator	character; the character in between the patterns. This
 #'   defaults to " ".  For `phrase()` only.
-#' @return `phrase()` and `as.phrase()` return a specially classed list whose elements have been
-#'   split into separate `character` (pattern) elements.
+#' @return `phrase()` and `as.phrase()` return a specially classed list whose
+#'   elements have been split into separate `character` (pattern) elements.
 #' @seealso [as.phrase()]
 #' @export
 #' @examples
@@ -73,7 +73,7 @@ as.phrase.collocations <- function(x) {
 #' @noRd
 #' @export
 phrase.collocations <- function(x, separator = " ") {
-    .Deprecated("as.phrase")
+    # .Deprecated("as.phrase")
     as.phrase(x)
 }
 
