@@ -52,8 +52,6 @@
 
 
 
-
-
 <!-- mathjax -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script>
@@ -75,15 +73,9 @@
 </script>
 
 
-  
-
-  
-
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    
-
     <div class="container template-news">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -97,7 +89,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.9.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.1.0</span>
       </span>
     </div>
 
@@ -194,7 +186,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/quanteda/quanteda">
-    <span class="fas fa-github fa-lg"></span>
+    <span class="fa fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -236,14 +228,14 @@
 <code><a href="../reference/corpus_segment.html">corpus_segment()</a></code> now behaves more logically and flexibly, and is clearly differentiated from <code><a href="../reference/corpus_reshape.html">corpus_reshape()</a></code> in terms of its functionality. Its documentation is also vastly improved. (<a href='https://github.com/quanteda/quanteda/issues/908'>#908</a>)</li>
 <li>Added <code>data_dictionary_LSD2015</code>, the Lexicoder Sentiment 2015 dictionary (<a href='https://github.com/quanteda/quanteda/issues/963'>#963</a>).</li>
 <li>Significant improvements to the performance of <code><a href="../reference/tokens_lookup.html">tokens_lookup()</a></code> and <code><a href="../reference/dfm_lookup.html">dfm_lookup()</a></code> (<a href='https://github.com/quanteda/quanteda/issues/960'>#960</a>).</li>
-<li>New functions <code><a href="../reference/head.corpus.html">head.corpus()</a></code>, <code><a href="../reference/head.corpus.html">tail.corpus()</a></code> provide fast subsetting of the first or last documents in a corpus. (<a href='https://github.com/quanteda/quanteda/issues/952'>#952</a>)</li>
+<li>New functions <code>head.corpus()</code>, <code>tail.corpus()</code> provide fast subsetting of the first or last documents in a corpus. (<a href='https://github.com/quanteda/quanteda/issues/952'>#952</a>)</li>
 </ul>
 </div>
-<div id="bug-fixes-and-stability-enhancements-18" class="section level2">
+<div id="bug-fixes-and-stability-enhancements-19" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-and-stability-enhancements-18" class="anchor"></a>Bug fixes and stability enhancements</h2>
+<a href="#bug-fixes-and-stability-enhancements-19" class="anchor"></a>Bug fixes and stability enhancements</h2>
 <ul>
-<li>Fixed a problem when applying <code><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">purrr::map()</a></code> to <code><a href="../reference/dfm.html">dfm()</a></code> (<a href='https://github.com/quanteda/quanteda/issues/928'>#928</a>).</li>
+<li>Fixed a problem when applying <code><a href="https://purrr.tidyverse.org/reference/map.html">purrr::map()</a></code> to <code><a href="../reference/dfm.html">dfm()</a></code> (<a href='https://github.com/quanteda/quanteda/issues/928'>#928</a>).</li>
 <li>Added documentation for <code>regex2fixed()</code> and associated functions.</li>
 <li>Fixed a bug in <code>textstat_collocations.tokens()</code> caused by “documents” containing only <code>""</code> as tokens. (<a href='https://github.com/quanteda/quanteda/issues/940'>#940</a>)</li>
 <li>Fixed a bug caused by <code><a href="../reference/cbind.dfm.html">cbind.dfm()</a></code> when features shared a name starting with <code><a href="../reference/quanteda_options.html">quanteda_options("base_featname")</a></code> (<a href='https://github.com/quanteda/quanteda/issues/946'>#946</a>)</li>
@@ -258,7 +250,7 @@
 <li>
 <code><a href="../reference/summary.corpus.html">summary.corpus()</a></code> now generates a special data.frame, which has its own print method, rather than requiring <code>verbose = FALSE</code> to suppress output (<a href='https://github.com/quanteda/quanteda/issues/926'>#926</a>).</li>
 <li>
-<code><a href="https://quanteda.io/reference/textstat_collocations.html">textstat_collocations()</a></code> is now multi-threaded.</li>
+<code>textstat_collocations()</code> is now multi-threaded.</li>
 <li>
 <code><a href="../reference/head.dfm.html">head.dfm()</a></code>, <code><a href="../reference/head.dfm.html">tail.dfm()</a></code> now behave consistently with base R methods for matrix, with the added argument <code>nfeature</code>. Previously, these methods printed the subset and invisibly returned it. Now, they simply return the subset. (<a href='https://github.com/quanteda/quanteda/issues/952'>#952</a>)</li>
 <li>Dictionary keys are now unique, and if multiple, identical keys are defined for a dictionary when constructed, the values will be merged into the consolidated key. (<a href='https://github.com/quanteda/quanteda/issues/959'>#959</a>)</li>
@@ -274,12 +266,12 @@
 <a href="#new-features-13" class="anchor"></a>New Features</h2>
 <ul>
 <li>Added methods for changing the docnames of tokens and dfm objects (<a href='https://github.com/quanteda/quanteda/issues/987'>#987</a>).</li>
-<li>Added new function <code><a href="https://rdrr.io/pkg/quanteda.textmodels/man/textmodel_lsa.html" class="external-link">textmodel_lsa()</a></code> for Latent Semantic Analysis.</li>
+<li>Added new function <code>textmodel_lsa()</code> for Latent Semantic Analysis.</li>
 </ul>
 </div>
-<div id="bug-fixes-and-stability-enhancements-17" class="section level2">
+<div id="bug-fixes-and-stability-enhancements-18" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-and-stability-enhancements-17" class="anchor"></a>Bug fixes and stability enhancements</h2>
+<a href="#bug-fixes-and-stability-enhancements-18" class="anchor"></a>Bug fixes and stability enhancements</h2>
 <ul>
 <li>The computation of tfidf has been more thoroughly described in the documentation for this function (<a href='https://github.com/quanteda/quanteda/issues/997'>#997</a>).</li>
 <li>Fixed a bug discovered in <a href='https://github.com/quanteda/quanteda/issues/1011'>#1011</a> for unused keys in <code><a href="../reference/tokens_lookup.html">tokens_lookup(..., exclusive = FALSE)</a></code>.</li>
@@ -299,15 +291,15 @@
 <li>
 <code><a href="../reference/tokens_replace.html">tokens_replace()</a></code> now allows token types to be substituted directly and quickly.</li>
 <li>
-<code><a href="https://rdrr.io/pkg/quanteda.textmodels/man/textmodel_affinity.html" class="external-link">textmodel_affinity()</a></code> now adds functionality to fit the Perry and Benoit (2017) class affinity model.</li>
+<code>textmodel_affinity()</code> now adds functionality to fit the Perry and Benoit (2017) class affinity model.</li>
 <li>Added a <code>spacy_parse</code> method for corpus objects. Also restored quanteda methods for <strong>spacyr</strong> <code>spacy_parsed</code> objects.</li>
 </ul>
 </div>
-<div id="bug-fixes-and-stability-enhancements-16" class="section level2">
+<div id="bug-fixes-and-stability-enhancements-17" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-and-stability-enhancements-16" class="anchor"></a>Bug fixes and stability enhancements</h2>
+<a href="#bug-fixes-and-stability-enhancements-17" class="anchor"></a>Bug fixes and stability enhancements</h2>
 <ul>
-<li>Improved documentation for <code><a href="https://rdrr.io/pkg/quanteda.textmodels/man/textmodel_nb.html" class="external-link">textmodel_nb()</a></code> (<a href='https://github.com/quanteda/quanteda/issues/1010'>#1010</a>), and made output quantities from the fitted NB model regular matrix objects instead of <strong>Matrix</strong> classes.</li>
+<li>Improved documentation for <code>textmodel_nb()</code> (<a href='https://github.com/quanteda/quanteda/issues/1010'>#1010</a>), and made output quantities from the fitted NB model regular matrix objects instead of <strong>Matrix</strong> classes.</li>
 </ul>
 </div>
 <div id="behaviour-changes-8" class="section level2">
@@ -320,7 +312,7 @@
 <li>The deprecated “list of characters” <code><a href="../reference/tokenize_internal.html">tokenize()</a></code> function and all methods associated with the <code>tokenizedTexts</code> object types have been removed.</li>
 <li>Added convenience functions for keeping tokens or features: <code><a href="../reference/tokens_select.html">tokens_keep()</a></code>, <code><a href="../reference/dfm_select.html">dfm_keep()</a></code>, and <code><a href="../reference/dfm_select.html">fcm_keep()</a></code>. (<a href='https://github.com/quanteda/quanteda/issues/1037'>#1037</a>)</li>
 <li>
-<code>textmodel_NB()</code> has been replaced by <code><a href="https://rdrr.io/pkg/quanteda.textmodels/man/textmodel_nb.html" class="external-link">textmodel_nb()</a></code>.</li>
+<code>textmodel_NB()</code> has been replaced by <code>textmodel_nb()</code>.</li>
 </ul>
 </div>
 </div>
@@ -337,11 +329,11 @@
 
       <footer>
       <div class="copyright">
-  <p><p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p></p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">
-  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p></p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
@@ -366,8 +358,6 @@
 </script>
 
 
-
-  
 
   </body>
 </html>

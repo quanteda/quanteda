@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Declare a compound character to be a sequence of separate pattern matches — phrase • quanteda</title>
+<title>Declare a pattern to be a sequence of separate patterns — phrase • quanteda</title>
 
 
 <!-- jquery -->
@@ -47,14 +47,12 @@
   <link href="../extra.css" rel="stylesheet">
   <script src="../extra.js"></script>
 
-<meta property="og:title" content="Declare a compound character to be a sequence of separate pattern matches — phrase" />
-<meta property="og:description" content="Declares that a whitespace-separated expression consists of multiple
-patterns, separated by whitespace.  This is typically used as a wrapper
-around pattern() to make it explicit that the pattern elements
-are to be used for matches to multi-word sequences, rather than individual,
-unordered matches to single words." />
-
-
+<meta property="og:title" content="Declare a pattern to be a sequence of separate patterns — phrase" />
+<meta property="og:description" content="Declares that a character expression consists of multiple patterns, separated
+by an element such as whitespace.  This is typically used as a wrapper around
+pattern() to make it explicit that the pattern elements are to be used for
+matches to multi-word sequences, rather than individual, unordered matches to
+single words." />
 
 
 
@@ -80,15 +78,9 @@ unordered matches to single words." />
 </script>
 
 
-  
-
-  
-
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    
-
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -102,7 +94,7 @@ unordered matches to single words." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.1.0</span>
       </span>
     </div>
 
@@ -199,7 +191,7 @@ unordered matches to single words." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/quanteda/quanteda">
-    <span class="fas fa-github fa-lg"></span>
+    <span class="fa fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -222,20 +214,22 @@ unordered matches to single words." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Declare a compound character to be a sequence of separate pattern matches</h1>
+    <h1>Declare a pattern to be a sequence of separate patterns</h1>
     <small class="dont-index">Source: <a href='https://github.com/quanteda/quanteda/blob/master/R/phrases.R'><code>R/phrases.R</code></a></small>
     <div class="hidden name"><code>phrase.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Declares that a whitespace-separated expression consists of multiple
-patterns, separated by whitespace.  This is typically used as a wrapper
-around <code><a href='pattern.html'>pattern()</a></code> to make it explicit that the pattern elements
-are to be used for matches to multi-word sequences, rather than individual,
-unordered matches to single words.</p>
+    <p>Declares that a character expression consists of multiple patterns, separated
+by an element such as whitespace.  This is typically used as a wrapper around
+<code><a href='pattern.html'>pattern()</a></code> to make it explicit that the pattern elements are to be used for
+matches to multi-word sequences, rather than individual, unordered matches to
+single words.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>phrase</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+    <pre class="usage"><span class='fu'>phrase</span><span class='op'>(</span><span class='va'>x</span>, separator <span class='op'>=</span> <span class='st'>" "</span><span class='op'>)</span>
+
+<span class='fu'>as.phrase</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
 
 <span class='fu'>is.phrase</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></pre>
 
@@ -244,29 +238,38 @@ unordered matches to single words.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>the sequence, as a <code>character</code> object containing whitespace
-separating the patterns</p></td>
+      <td><p>character, <a href='dictionary.html'>dictionary</a>, list, collocations, or tokens object; the
+compound patterns to be treated as a sequence separated by <code>separator</code>.
+For list, collocations, or tokens objects, use <code>as.phrase()</code>.</p></td>
+    </tr>
+    <tr>
+      <th>separator</th>
+      <td><p>character; the character in between the patterns. This
+defaults to " ".  For <code>phrase()</code> only.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>phrase</code> returns a specially classed list whose white-spaced
-elements have been parsed into separate <code>character</code> elements.</p>
+    <p><code>phrase()</code> and <code>as.phrase()</code> return a specially classed list whose elements have been
+split into separate <code>character</code> (pattern) elements.</p>
 <p><code>is.phrase</code> returns <code>TRUE</code> if the object was created by
 <code>phrase()</code>; <code>FALSE</code> otherwise.</p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><code>as.phrase()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># make phrases from characters</span>
-<span class='fu'>phrase</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"a b"</span>, <span class='st'>"c d e"</span>, <span class='st'>"f"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'>phrase</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"natural language processing"</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [[1]]
-#&gt; [1] "a" "b"
+#&gt; [1] "natural"    "language"   "processing"
+#&gt; </div><div class='input'><span class='fu'>phrase</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"natural_language_processing"</span>, <span class='st'>"text_analysis"</span><span class='op'>)</span>, separator <span class='op'>=</span> <span class='st'>"_"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [[1]]
+#&gt; [1] "natural"    "language"   "processing"
 #&gt; 
 #&gt; [[2]]
-#&gt; [1] "c" "d" "e"
-#&gt; 
-#&gt; [[3]]
-#&gt; [1] "f"
+#&gt; [1] "text"     "analysis"
 #&gt; </div><div class='input'>
 <span class='co'># from a dictionary</span>
 <span class='fu'>phrase</span><span class='op'>(</span><span class='fu'><a href='dictionary.html'>dictionary</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>catone <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"a b"</span><span class='op'>)</span>, cattwo <span class='op'>=</span> <span class='st'>"c d e"</span>, catthree <span class='op'>=</span> <span class='st'>"f"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
@@ -279,7 +282,16 @@ elements have been parsed into separate <code>character</code> elements.</p>
 #&gt; [[3]]
 #&gt; [1] "f"
 #&gt; </div><div class='input'>
-</div></pre>
+<span class='co'># from a list</span>
+<span class='fu'>as.phrase</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"natural"</span>, <span class='st'>"language"</span>, <span class='st'>"processing"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [[1]]
+#&gt; [1] "natural"    "language"   "processing"
+#&gt; </div><div class='input'>
+<span class='co'># from tokens</span>
+<span class='fu'>as.phrase</span><span class='op'>(</span><span class='fu'><a href='tokens.html'>tokens</a></span><span class='op'>(</span><span class='st'>"natural language processing"</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [[1]]
+#&gt; [1] "natural"    "language"   "processing"
+#&gt; </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -291,11 +303,11 @@ elements have been parsed into separate <code>character</code> elements.</p>
 
       <footer>
       <div class="copyright">
-  <p><p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p></p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">
-  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p></p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
@@ -320,8 +332,6 @@ elements have been parsed into separate <code>character</code> elements.</p>
 </script>
 
 
-
-  
 
   </body>
 </html>

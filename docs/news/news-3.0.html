@@ -52,8 +52,6 @@
 
 
 
-
-
 <!-- mathjax -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script>
@@ -75,15 +73,9 @@
 </script>
 
 
-  
-
-  
-
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    
-
     <div class="container template-news">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -97,7 +89,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.9.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.1.0</span>
       </span>
     </div>
 
@@ -194,7 +186,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/quanteda/quanteda">
-    <span class="fas fa-github fa-lg"></span>
+    <span class="fa fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -226,9 +218,9 @@
 <a href="#quanteda-30" class="anchor"></a>quanteda 3.0<small> Unreleased </small>
 </h1>
 <p><strong>quanteda</strong> 3.0 is a major release that improves functionality, completes the modularisation of the package begun in v2.0, further improves function consistency by removing previously deprecated functions, and enhances workflow stability and consistency by deprecating some shortcut steps built into some functions.</p>
-<div id="changes-and-additions" class="section level2">
+<div id="changes-and-additions-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#changes-and-additions" class="anchor"></a>Changes and additions</h2>
+<a href="#changes-and-additions-1" class="anchor"></a>Changes and additions</h2>
 <ul>
 <li><p>Modularisation: We have now separated the <code>textplot_*()</code> functions from the main package into a separate package <strong>quanteda.textplots</strong>, and the <code>textstat_*()</code> functions from the main package into a separate package <strong>quanteda.textstats</strong>. This completes the modularisation begun in v2 with the move of the <code>textmodel_*()</code> functions to the separate package <strong>quanteda.textmodels</strong>. <strong>quanteda</strong> now consists of core functions for textual data processing and management.</p></li>
 <li><p>The package dependency structure is now greatly reduced, by eliminating some unnecessary package dependencies, through modularisation, and by addressing complex downstream dependencies in packages such as <strong>stopwords</strong>. v3 should serve as a more lightweight and more consistent platform for other text analysis packages to build on.</p></li>
@@ -237,7 +229,8 @@
 <ul>
 <li>The <code>*_sample()</code> functions’ argument <code>by</code>, and <code>groups</code> in the <code>*_group()</code> functions, now take unquoted document variable (docvar) names directly, similar to the way the <code>subset</code> argument works in the <code>*_subset()</code> functions.</li>
 <li>Quoted docvar names no longer work, as these will be evaluated literally.</li>
-<li>The <code>by = "document"</code> formerly sampled from <code><a href="../reference/names-quanteda.html">docid(x)</a></code>, but this functionality is now removed. Instead, use <code>by = docid(x)</code> to replicate this functionality.</li>
+<li>The <code>by = "document"</code> formerly sampled from <code><a href="../reference/docnames.html">docid(x)</a></code>, but this functionality is now removed. Instead, use <code>by = docid(x)</code> to replicate this functionality.</li>
+<li>For <code>groups</code>, the default is now <code><a href="../reference/docnames.html">docid(x)</a></code>, which is now documented more completely. See <code><a href="../reference/groups.html">?groups</a></code> and <code><a href="../reference/docnames.html">?docid</a></code>.</li>
 </ul>
 </li>
 <li><p><code><a href="../reference/dfm.html">dfm()</a></code> has a new argument, <code>remove_padding</code>, for removing the “pads” left behind after removing tokens with <code>padding = TRUE</code>. (For other extensive changes to <code><a href="../reference/dfm.html">dfm()</a></code>, see “Deprecated” below.)</p></li>
@@ -247,12 +240,13 @@
 <li><p>The punctuation regular expression and that for matching social media usernames has now been redefined so that the valid Twitter username <code>@_</code> is now counted as a “tag” rather than as “punctuation”. (<a href='https://github.com/quanteda/quanteda/issues/2049'>#2049</a>)</p></li>
 <li><p>The data object <code>data_corpus_inaugural</code> has been updated to include the Biden 2021 inaugural address.</p></li>
 <li><p>A new system of validators for input types now provides better argument type and value checking, with more consistent error messages for invalid types or values.</p></li>
-<li><p>Upon startup, we now message the console with the Unicode and ICU version information. Because we removed our redefinition of <code><a href="https://rdrr.io/r/utils/View.html" class="external-link">View()</a></code> (see below), the former conflict warning is now gone.</p></li>
+<li><p>Upon startup, we now message the console with the Unicode and ICU version information. Because we removed our redefinition of <code><a href="https://rdrr.io/r/utils/View.html">View()</a></code> (see below), the former conflict warning is now gone.</p></li>
+<li><p><code><a href="../reference/as.character.corpus.html">as.character.corpus()</a></code> now has a <code>use.names = TRUE</code> argument, similar to <code><a href="../reference/as.list.tokens.html">as.character.tokens()</a></code> (but with a different default value).</p></li>
 </ul>
 </div>
-<div id="deprecations" class="section level2">
+<div id="deprecations-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#deprecations" class="anchor"></a>Deprecations</h2>
+<a href="#deprecations-1" class="anchor"></a>Deprecations</h2>
 <p>The main potentially breaking changes in version 3 relate to the deprecation or elimination of shortcut steps that allowed functions that required tokens inputs to skip the tokens creation step. We did this to require users to take more direct control of tokenization options, or to substitute the alternative tokeniser of their choice (and then coercing it to tokens via [as.tokens()]). This also allows our function behaviour to be more consistent, with each function performing a single task, rather than combining functions (such as tokenisation <em>and</em> constructing a matrix).</p>
 <p>The most common example involves constructing a dfm directly from a character or corpus object. Formerly, this would construct a tokens object internally before creating the dfm, and allowed passing arguments to <code><a href="../reference/tokens.html">tokens()</a></code> via <code>...</code>. This is now deprecated, although still functional with a warning.</p>
 <p>We strongly encourage either creating a tokens object first, or piping the tokens return to <code><a href="../reference/dfm.html">dfm()</a></code> using <code><a href="../reference/%&gt;%.html">%&gt;%</a></code>. (See examples below.)</p>
@@ -277,6 +271,14 @@
 <code>groups</code> – use <code><a href="../reference/tokens_group.html">tokens_group()</a></code> or <code><a href="../reference/dfm_group.html">dfm_group()</a></code> instead.</li>
 </ul>
 </li>
+<li>
+<p><code><a href="../reference/texts.html">texts()</a></code> and <code>texts&lt;-</code> are deprecated.</p>
+<ul>
+<li>Use <code><a href="../reference/as.character.corpus.html">as.character.corpus()</a></code> to turn a corpus into a simple named character vector.</li>
+<li>Use <code><a href="../reference/corpus_group.html">corpus_group()</a></code> instead of <code><a href="../reference/texts.html">texts(x, groups = ...)</a></code> to aggregate texts by a grouping variable.</li>
+<li>Use <code>[&lt;-</code> instead of <code>texts()&lt;-</code> for replacing texts in a corpus object.</li>
+</ul>
+</li>
 </ul>
 </div>
 <div id="removals" class="section level2">
@@ -289,7 +291,7 @@
 <ul>
 <li>all methods for defunct <code>corpuszip</code> objects.</li>
 <li>
-<code><a href="https://rdrr.io/r/utils/View.html" class="external-link">View()</a></code> functions</li>
+<code><a href="https://rdrr.io/r/utils/View.html">View()</a></code> functions</li>
 <li>
 <code>as.wfm()</code> and <code>as.DocumentTermMatrix()</code> (the same functionality is available via <code><a href="../reference/convert.html">convert()</a></code>)</li>
 <li>
@@ -310,16 +312,20 @@
 </ul>
 </li>
 <li><p><code>dictionary_edit()</code>, <code>char_edit()</code>, and <code>list_edit()</code> are removed.</p></li>
+<li><p><code><a href="../reference/dfm_weight.html">dfm_weight()</a></code> - formerly deprecated <code>"scheme"</code> options are now removed.</p></li>
+<li><p><code><a href="../reference/tokens.html">tokens()</a></code> - formerly deprecated options <code>remove_hyphens</code> and <code>remove_twitter</code> are now removed. (Use <code>split_hyphens</code> instead, and the default tokenizer always now preserves Twitter and other social media tags.)</p></li>
+<li><p>Special versions of <code><a href="https://rdrr.io/r/utils/head.html">head()</a></code> and <code><a href="https://rdrr.io/r/utils/head.html">tail()</a></code> for corpus, dfm, and fcm objects are now removed, since the base methods work fine for these objects. The main consequence was the removal of the <code>nf</code> option from the methods for dfm and fcm objects, which limited the number of features. This can be accomplished using the index operator <code><a href="https://rdrr.io/r/base/Extract.html">[</a></code> instead, or for printing, by specifying <code><a href="https://rdrr.io/r/base/print.html">print(x, max_nfeat = 6L)</a></code> (for instance).</p></li>
 </ul>
 </div>
-<div id="bug-fixes-and-stability-enhancements" class="section level2">
+<div id="bug-fixes-and-stability-enhancements-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-and-stability-enhancements" class="anchor"></a>Bug fixes and stability enhancements</h2>
+<a href="#bug-fixes-and-stability-enhancements-1" class="anchor"></a>Bug fixes and stability enhancements</h2>
 <ul>
 <li><p>Fixed a bug causing <code><a href="../reference/topfeatures.html">topfeatures(x, group = something)</a></code> to fail with weighted dfms (<a href='https://github.com/quanteda/quanteda/issues/2032'>#2032</a>).</p></li>
 <li><p><code><a href="../reference/kwic.html">kwic()</a></code> is more stable and does not crash when a vector is supplied as the <code>window</code> argument (<a href='https://github.com/quanteda/quanteda/issues/2008'>#2008</a>).</p></li>
 <li><p>Allow use of multi-threading with more than two threads by fixing <code><a href="../reference/quanteda_options.html">quanteda_options()</a></code>.</p></li>
 <li><p>Mentions of the now-removed <code>ngrams</code> option in <code><a href="../reference/dfm.html">dfm(x, ...)</a></code> has now been removed from the dfm documentation. (<a href='https://github.com/quanteda/quanteda/issues/1990'>#1990</a>)</p></li>
+<li><p>Handling for some early-cycle v2 dfm object is improved, to ensure that they are updated to the latest object format. (<a href='https://github.com/quanteda/quanteda/issues/2097'>#2097</a>)</p></li>
 </ul>
 </div>
 </div>
@@ -336,11 +342,11 @@
 
       <footer>
       <div class="copyright">
-  <p><p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p></p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">
-  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p></p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
@@ -365,8 +371,6 @@
 </script>
 
 
-
-  
 
   </body>
 </html>

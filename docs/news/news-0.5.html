@@ -52,8 +52,6 @@
 
 
 
-
-
 <!-- mathjax -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script>
@@ -75,15 +73,9 @@
 </script>
 
 
-  
-
-  
-
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    
-
     <div class="container template-news">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -97,7 +89,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.9.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.1.0</span>
       </span>
     </div>
 
@@ -194,7 +186,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/quanteda/quanteda">
-    <span class="fas fa-github fa-lg"></span>
+    <span class="fa fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -303,7 +295,7 @@ Mostly these related to documentation.</p></li>
 <li><p>added field to docvars()</p></li>
 <li><p>enc argument in corpus() methods now actually converts from enc to “UTF-8”</p></li>
 <li><p>started working on clean to give it exceptions for @ # _ for twitter text and to allow preservation of underscores used in bigrams/collocations.</p></li>
-<li><p>Added: a <code><a href="https://rdrr.io/r/base/Arithmetic.html" class="external-link">+</a></code> method for corpus objects, to combine a corpus using this operator.</p></li>
+<li><p>Added: a <code><a href="https://rdrr.io/r/base/Arithmetic.html">+</a></code> method for corpus objects, to combine a corpus using this operator.</p></li>
 <li><p>Changed and fixed: collocations(), which was not only fatally slow and inefficient, but also wrong. Now is much faster and O(n) because it uses data.table and vector operations only.</p></li>
 <li><p>Added: resample() for corpus texts.</p></li>
 </ul>
@@ -340,7 +332,7 @@ Mostly these related to documentation.</p></li>
 <a href="#quanteda-057" class="anchor"></a>quanteda 0.5.7<small> Unreleased </small>
 </h1>
 <ul>
-<li><p>added compoundWords() to turn space-delimited phrases into single “tokens”. Works with dfm(, dictionary=) if the text has been pre-processed with compoundWords() and the dictionary joins phrases with the connector ("_"). May add this functionality to be more automatic in future versions.</p></li>
+<li><p>added compoundWords() to turn space-delimited phrases into single “tokens”. Works with dfm(, dictionary=) if the text has been pre-processed with compoundWords() and the dictionary joins phrases with the connector (“_“). May add this functionality to be more automatic in future versions.</p></li>
 <li><p>new keep argument for trimdfm() now takes a regular expression for which feature labels to retain. New defaults for minDoc and minCount (1 each).</p></li>
 <li><p>added nfeature() method for dfm objects.</p></li>
 </ul>
@@ -378,11 +370,11 @@ Mostly these related to documentation.</p></li>
 
       <footer>
       <div class="copyright">
-  <p><p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p></p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">
-  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p></p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
@@ -407,8 +399,6 @@ Mostly these related to documentation.</p></li>
 </script>
 
 
-
-  
 
   </body>
 </html>

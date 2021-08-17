@@ -52,8 +52,6 @@
 
 
 
-
-
 <!-- mathjax -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script>
@@ -75,15 +73,9 @@
 </script>
 
 
-  
-
-  
-
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    
-
     <div class="container template-news">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -97,7 +89,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.9.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.1.0</span>
       </span>
     </div>
 
@@ -194,7 +186,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/quanteda/quanteda">
-    <span class="fas fa-github fa-lg"></span>
+    <span class="fa fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -231,29 +223,29 @@
 <ul>
 <li>Added <code>block_size</code> to <code><a href="../reference/quanteda_options.html">quanteda_options()</a></code> to control the number of documents in blocked tokenization.</li>
 <li>Fixed <code>print.dictionary2()</code> to control the printing of nested levels with <code>max_nkey</code> (<a href='https://github.com/quanteda/quanteda/issues/1967'>#1967</a>)</li>
-<li>Added <code><a href="https://quanteda.io/reference/textstat_summary.html">textstat_summary()</a></code> to provide detailed information about dfm, tokens and corpus objects. It will replace <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> in future versions.</li>
+<li>Added <code>textstat_summary()</code> to provide detailed information about dfm, tokens and corpus objects. It will replace <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code> in future versions.</li>
 <li>Fixed a performance issue causing slowdowns in tokenizing (using the default <code>what = "word"</code>) corpora with large numbers of documents that contain social media tags and URLs that needed to be preserved (such a large corpus of Tweets).</li>
 <li>Updated the (default) “word” tokenizer to preserve hashtags and usernames better with non-ASCII text, and made these patterns user-configurable in <code><a href="../reference/quanteda_options.html">quanteda_options()</a></code>. The following are now preserved: “#政治” as well as Weibo-style hashtags such as “#英国首相#”.</li>
 <li>
 <code><a href="../reference/convert.html">convert(x, to = "data.frame")</a></code> now outputs the first column as “doc_id” rather than “document” since “document” is a commonly occurring term in many texts. (<a href='https://github.com/quanteda/quanteda/issues/1918'>#1918</a>)</li>
 <li>Added new methods <code><a href="../reference/char_select.html">char_select()</a></code>, <code><a href="../reference/char_select.html">char_keep()</a></code>, and <code><a href="../reference/char_select.html">char_remove()</a></code> for easy manipulation of character vectors.</li>
 <li>Added <code>dictionary_edit()</code> for easy, interactive editing of dictionaries, plus the functions <code>char_edit()</code> and <code>list_edit()</code> for editing character and list of character objects.</li>
-<li>Added a method to <code><a href="https://rdrr.io/pkg/quanteda.textplots/man/textplot_wordcloud.html" class="external-link">textplot_wordcloud()</a></code> that plots objects from <code><a href="https://quanteda.io/reference/textstat_keyness.html">textstat_keyness()</a></code>, to visualize keywords either by comparison or for the target category only.</li>
+<li>Added a method to <code>textplot_wordcloud()</code> that plots objects from <code>textstat_keyness()</code>, to visualize keywords either by comparison or for the target category only.</li>
 <li>Improved the performance of <code><a href="../reference/kwic.html">kwic()</a></code> (<a href='https://github.com/quanteda/quanteda/issues/1840'>#1840</a>).</li>
 <li>Added new <code>logsmooth</code> scheme to <code><a href="../reference/dfm_weight.html">dfm_weight()</a></code>.</li>
-<li>Added new <code><a href="https://quanteda.io/reference/textstat_summary.html">textstat_summary()</a></code> method, which returns summary information about the tokens/types/features etc in an object. It also caches summary information so that this can be retrieved on subsequent calls, rather than re-computed.</li>
+<li>Added new <code>textstat_summary()</code> method, which returns summary information about the tokens/types/features etc in an object. It also caches summary information so that this can be retrieved on subsequent calls, rather than re-computed.</li>
 </ul>
 </div>
-<div id="bug-fixes-and-stability-enhancements-3" class="section level2">
+<div id="bug-fixes-and-stability-enhancements-4" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-and-stability-enhancements-3" class="anchor"></a>Bug fixes and stability enhancements</h2>
+<a href="#bug-fixes-and-stability-enhancements-4" class="anchor"></a>Bug fixes and stability enhancements</h2>
 <ul>
-<li>Stopped returning <code>NA</code> for non-existent features when <code>n</code> &gt; <code><a href="../reference/ndoc.html">nfeat(x)</a></code> in <code><a href="https://quanteda.io/reference/textstat_frequency.html">textstat_frequency(x, n)</a></code>. (<a href='https://github.com/quanteda/quanteda/issues/1929'>#1929</a>)</li>
+<li>Stopped returning <code>NA</code> for non-existent features when <code>n</code> &gt; <code><a href="../reference/ndoc.html">nfeat(x)</a></code> in <code>textstat_frequency(x, n)</code>. (<a href='https://github.com/quanteda/quanteda/issues/1929'>#1929</a>)</li>
 <li>Fixed a problem in <code><a href="../reference/dfm_lookup.html">dfm_lookup()</a></code> and <code><a href="../reference/tokens_lookup.html">tokens_lookup()</a></code> in which an error was caused when no dictionary key returned a single match (<a href='https://github.com/quanteda/quanteda/issues/1946'>#1946</a>).</li>
 <li>Fixed a bug that caused a <code>textstat_simil/dist</code> object converted to a data.frame to drop its <code>document2</code> labels (<a href='https://github.com/quanteda/quanteda/issues/1939'>#1939</a>).</li>
 <li>Fixed a bug causing <code><a href="../reference/dfm_match.html">dfm_match()</a></code> to fail on a dfm that included “pads” (<code>""</code>). (<a href='https://github.com/quanteda/quanteda/issues/1960'>#1960</a>)</li>
 <li>Updated the <code>data_dfm_lbgexample</code> object using more modern dfm internals.</li>
-<li>Updates <code><a href="https://quanteda.io/reference/textstat_readability.html">textstat_readability()</a></code>, <code><a href="https://quanteda.io/reference/textstat_lexdiv.html">textstat_lexdiv()</a></code>, and <code><a href="https://quanteda.io/reference/nscrabble.html">nscrabble()</a></code> so that empty texts are not dropped in the result. (<a href='https://github.com/quanteda/quanteda/issues/1976'>#1976</a>)</li>
+<li>Updates <code>textstat_readability()</code>, <code>textstat_lexdiv()</code>, and <code>nscrabble()</code> so that empty texts are not dropped in the result. (<a href='https://github.com/quanteda/quanteda/issues/1976'>#1976</a>)</li>
 </ul>
 </div>
 </div>
@@ -265,13 +257,13 @@
 <h2 class="hasAnchor">
 <a href="#changes-1" class="anchor"></a>Changes</h2>
 </div>
-<div id="bug-fixes-and-stability-enhancements-2" class="section level2">
+<div id="bug-fixes-and-stability-enhancements-3" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-and-stability-enhancements-2" class="anchor"></a>Bug fixes and stability enhancements</h2>
+<a href="#bug-fixes-and-stability-enhancements-3" class="anchor"></a>Bug fixes and stability enhancements</h2>
 <ul>
 <li>
 <code><a href="../reference/corpus_reshape.html">corpus_reshape()</a></code> now allows reshaping back to documents even when segmented texts were of zero length. (<a href='https://github.com/quanteda/quanteda/issues/1978'>#1978</a>)</li>
-<li>Special handling applied for Solaris to some issues breaking on that build, relating to the cacheing in <code><a href="../reference/summary.corpus.html">summary.corpus()</a></code>/<code><a href="https://quanteda.io/reference/textstat_summary.html">textstat_summary()</a></code>.</li>
+<li>Special handling applied for Solaris to some issues breaking on that build, relating to the cacheing in <code><a href="../reference/summary.corpus.html">summary.corpus()</a></code>/<code>textstat_summary()</code>.</li>
 </ul>
 </div>
 </div>
@@ -284,12 +276,12 @@
 <a href="#changes" class="anchor"></a>Changes</h2>
 <ul>
 <li>
-<code><a href="https://quanteda.io/reference/textstat_keyness.html">textstat_keyness()</a></code> performance is now improved through implementation in (multi-threaded) C++.</li>
+<code>textstat_keyness()</code> performance is now improved through implementation in (multi-threaded) C++.</li>
 </ul>
 </div>
-<div id="bug-fixes-and-stability-enhancements-1" class="section level2">
+<div id="bug-fixes-and-stability-enhancements-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-and-stability-enhancements-1" class="anchor"></a>Bug fixes and stability enhancements</h2>
+<a href="#bug-fixes-and-stability-enhancements-2" class="anchor"></a>Bug fixes and stability enhancements</h2>
 <ul>
 <li>Fixes breaking tests and examples on Solaris platform as well as other changes introduced by changes to the stringi package.</li>
 </ul>
@@ -308,11 +300,11 @@
 
       <footer>
       <div class="copyright">
-  <p><p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p></p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">
-  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p></p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
@@ -337,8 +329,6 @@
 </script>
 
 
-
-  
 
   </body>
 </html>

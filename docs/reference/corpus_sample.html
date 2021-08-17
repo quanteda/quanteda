@@ -55,8 +55,6 @@ weights." />
 
 
 
-
-
 <!-- mathjax -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script>
@@ -78,15 +76,9 @@ weights." />
 </script>
 
 
-  
-
-  
-
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    
-
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -100,7 +92,7 @@ weights." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.1.0</span>
       </span>
     </div>
 
@@ -197,7 +189,7 @@ weights." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/quanteda/quanteda">
-    <span class="fas fa-github fa-lg"></span>
+    <span class="fa fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -369,19 +361,19 @@ variables for the documents sampled.</p>
 <span class='fu'><a href='corpus_reshape.html'>corpus_reshape</a></span><span class='op'>(</span><span class='va'>corp</span>, to <span class='op'>=</span> <span class='st'>"sentences"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
     <span class='fu'>corpus_sample</span><span class='op'>(</span>replace <span class='op'>=</span> <span class='cn'>TRUE</span>, by <span class='op'>=</span> <span class='fu'><a href='docnames.html'>docid</a></span><span class='op'>(</span><span class='va'>.</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Corpus consisting of 5 documents and 2 docvars.
-#&gt; one.1 :
-#&gt; "Third sentence."
-#&gt; 
 #&gt; one.2 :
 #&gt; "Third sentence."
 #&gt; 
 #&gt; one.3 :
+#&gt; "Third sentence."
+#&gt; 
+#&gt; one.1 :
 #&gt; "Sentence one."
 #&gt; 
-#&gt; two.1 :
+#&gt; two.2 :
 #&gt; "Second sentence, doc2."
 #&gt; 
-#&gt; two.2 :
+#&gt; two.1 :
 #&gt; "First sentence, doc2."
 #&gt; </div><div class='input'>
 <span class='co'># oversampling</span>
@@ -413,11 +405,11 @@ variables for the documents sampled.</p>
 
       <footer>
       <div class="copyright">
-  <p><p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p></p>
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">
-  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p></p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
@@ -442,8 +434,6 @@ variables for the documents sampled.</p>
 </script>
 
 
-
-  
 
   </body>
 </html>
