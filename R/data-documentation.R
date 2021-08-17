@@ -5,7 +5,7 @@
 #' @format character vector with one element
 #' @keywords data
 #' @source Dáil Éireann Debate, 
-#' [Financial Resolution No. 13: General (Resumed).](http://oireachtasdebates.oireachtas.ie/debates\%20authoring/debateswebpack.nsf/takes/dail2011120700006?opendocument)
+#' [Financial Resolution No. 13: General (Resumed).](https://www.oireachtas.ie/en/debates/find/)
 #' 7 December 2011.  vol. 749, no. 1.
 #' @examples
 #' tokens(data_char_sampletext, remove_punct = TRUE)

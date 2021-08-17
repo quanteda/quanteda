@@ -66,7 +66,7 @@
 #' @references 
 #'   Momtazi, S., Khudanpur, S., & Klakow, D. (2010). "[A comparative study of
 #'   word co-occurrence for term clustering in language model-based sentence
-#'   retrieval.](https://www.aclweb.org/anthology/N10-1046/)" *Human Language
+#'   retrieval.](https://aclanthology.org/N10-1046/)" *Human Language
 #'   Technologies: The 2010 Annual Conference of the North American Chapter of
 #'   the ACL*, Los Angeles, California, June 2010, 325-328.
 #'   

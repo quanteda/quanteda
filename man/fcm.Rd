@@ -108,7 +108,7 @@ fcm(toks3, context = "document")
 fcm(toks3, context = "window", window = 3)
 }
 \references{
-Momtazi, S., Khudanpur, S., & Klakow, D. (2010). "\href{https://www.aclweb.org/anthology/N10-1046/}{A comparative study of word co-occurrence for term clustering in language model-based sentence retrieval.}" \emph{Human Language
+Momtazi, S., Khudanpur, S., & Klakow, D. (2010). "\href{https://aclanthology.org/N10-1046/}{A comparative study of word co-occurrence for term clustering in language model-based sentence retrieval.}" \emph{Human Language
 Technologies: The 2010 Annual Conference of the North American Chapter of
 the ACL}, Los Angeles, California, June 2010, 325-328.
 
