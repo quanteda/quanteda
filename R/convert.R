@@ -43,7 +43,7 @@
 #' @param omit_empty logical; if `TRUE`, omit empty documents and features
 #'   from the converted dfm. This is required for some formats (such as STM)
 #'   that do not accept empty documents.  Only used when `to = "lda"` or
-#'   `to = "topicmodels"`.  For `to = "stm"` format, `omit_empty`` is
+#'   `to = "topicmodels"`.  For `to = "stm"` format, `omit_empty` is
 #'   always `TRUE`.
 #' @param docid_field character; the name of the column containing document
 #'   names used when `to = "data.frame"`.  Unused for other conversions.
