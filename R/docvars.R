@@ -150,12 +150,8 @@ reshape_docvars <- function(x, i = NULL, unique = FALSE, drop_docid = TRUE) {
 # Reshape docvars keeping variables that have the same values within groups
 group_docvars <- function(x, group = NULL, field = NULL) {
     
-    if (is.null(group)) {
+    if (is.null(group))
         return(x)
-    } else {
-        x <- x[!is.na(group),]
-        group <- group[!is.na(group)]
-    }
     l <- rep(FALSE, length(x))
     for (i in seq_along(l)) {
         if (is_system(names(x)[i]) || is_grouped(x[[i]], group)) {
