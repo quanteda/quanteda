@@ -388,3 +388,33 @@ test_that("dfm_group save grouping variable (#2037)", {
     expect_equal(docvars(dfmat_grp5)$var1, c(1, 2, 2, NA))
     expect_equal(docvars(dfmat_grp6)$var1, c(1, 2))
 })
+
+
+test_that("tokens_group drop document for NA", {
+    
+    corp <- corpus(c("a b c c", "b c d", "a", "b d d"),
+                   docvars = data.frame(grp = factor(c(NA, NA, "A", "C"), levels = c("A", "B", "C", "D")), 
+                                        var1 = c(1, 1, 2, 2),
+                                        var2 = c("x", "x", "y", NA),
+                                        stringsAsFactors = FALSE))
+    toks <- tokens(corp)
+    dfmat <- dfm(toks)
+    expect_equal(dfm_group(dfmat, grp)@docvars,
+                 data.frame(docname_ = c("A", "C"),
+                            docid_ = factor(c("A", "C"), levels = c("A", "C")),
+                            segid_ = c(1L, 1L),
+                            grp = factor(c("A", "C"), levels = c("A", "C")), 
+                            var1 = c(2, 2),
+                            var2 = c("y", NA),
+                            stringsAsFactors = FALSE))
+    
+    expect_equal(dfm_group(dfmat, grp, fill = TRUE)@docvars,
+                 data.frame(docname_ = c("A", "B", "C", "D"),
+                            docid_ = factor(c("A", "B", "C", "D"), levels = c("A", "B", "C", "D")),
+                            segid_ = c(1L, 1L, 1L, 1L),
+                            grp = factor(c("A", "B", "C", "D"), levels = c("A", "B", "C", "D")), 
+                            var1 = c(2, NA, 2, NA),
+                            var2 = c("y", NA, NA, NA),
+                            stringsAsFactors = FALSE))
+})
+
