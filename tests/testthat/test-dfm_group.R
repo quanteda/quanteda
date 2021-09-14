@@ -200,6 +200,23 @@ test_that("test dfm_group keeps group-level variables", {
                    var5 = as.Date(c("2015-03-01", NA, "2012-12-15", "2018-01-01")),
                    stringsAsFactors = FALSE)
     )
+    
+    grp3 <- c(NA, NA, "A", "C")
+    expect_equal(
+        dfm_group(dfmt, grp3)@docvars,
+        data.frame("docname_" = c("A", "C"),
+                   "docid_" = factor(c("A", "C"), 
+                                     levels = c("A", "C")),
+                   "segid_" = c(1L, 1L),
+                   grp = c("A", "C"),
+                   var1 = c(2, 2),
+                   var2 = c(2, 3),
+                   var3 = c("y", NA),
+                   var4 = c("y", "x"),
+                   var5 = as.Date(c("2015-03-01", "2012-12-15")),
+                   var6 = as.Date(c("2015-03-01", "2012-12-15")),
+                   stringsAsFactors = FALSE)
+    )
 })
 
 test_that("is_grouped is working", {
