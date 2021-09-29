@@ -53,6 +53,20 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// qatd_cpp_tokens_combine
+List qatd_cpp_tokens_combine(const List& texts1_, const CharacterVector types1_, const List& texts2_, const CharacterVector types2_);
+RcppExport SEXP _quanteda_qatd_cpp_tokens_combine(SEXP texts1_SEXP, SEXP types1_SEXP, SEXP texts2_SEXP, SEXP types2_SEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const List& >::type texts1_(texts1_SEXP);
+    Rcpp::traits::input_parameter< const CharacterVector >::type types1_(types1_SEXP);
+    Rcpp::traits::input_parameter< const List& >::type texts2_(texts2_SEXP);
+    Rcpp::traits::input_parameter< const CharacterVector >::type types2_(types2_SEXP);
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_tokens_combine(texts1_, types1_, texts2_, types2_));
+    return rcpp_result_gen;
+END_RCPP
+}
 // qatd_cpp_tokens_compound
 List qatd_cpp_tokens_compound(const List& texts_, const List& compounds_, const CharacterVector& types_, const String& delim_, const bool& join, int window_left, int window_right);
 RcppExport SEXP _quanteda_qatd_cpp_tokens_compound(SEXP texts_SEXP, SEXP compounds_SEXP, SEXP types_SEXP, SEXP delim_SEXP, SEXP joinSEXP, SEXP window_leftSEXP, SEXP window_rightSEXP) {
@@ -234,6 +248,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_quanteda_qatd_cpp_fcm", (DL_FUNC) &_quanteda_qatd_cpp_fcm, 5},
     {"_quanteda_qatd_cpp_index", (DL_FUNC) &_quanteda_qatd_cpp_index, 3},
     {"_quanteda_qatd_cpp_tokens_chunk", (DL_FUNC) &_quanteda_qatd_cpp_tokens_chunk, 4},
+    {"_quanteda_qatd_cpp_tokens_combine", (DL_FUNC) &_quanteda_qatd_cpp_tokens_combine, 4},
     {"_quanteda_qatd_cpp_tokens_compound", (DL_FUNC) &_quanteda_qatd_cpp_tokens_compound, 7},
     {"_quanteda_qatd_cpp_tokens_lookup", (DL_FUNC) &_quanteda_qatd_cpp_tokens_lookup, 6},
     {"_quanteda_qatd_cpp_tokens_ngrams", (DL_FUNC) &_quanteda_qatd_cpp_tokens_ngrams, 5},
