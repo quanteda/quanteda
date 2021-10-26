@@ -512,8 +512,8 @@ removals_regex <- function(separators = FALSE,
 serialize_tokens <- function(x, types_reserved = NULL, ...) {
 
     attrs <- attributes(x)
-    types <- unique(unlist(x, use.names = FALSE))
-    # remove empty types and control chracters
+    types <- unlist_character(x, unique = TRUE, use.names = FALSE)
+    # remove empty types and control characters
     types <- types[nzchar(types) & !stri_detect_regex(types, "^[\\p{Cf}]+$")]
     types <- union(types_reserved, types) # append new types
 
