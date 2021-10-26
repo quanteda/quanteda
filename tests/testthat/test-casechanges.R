@@ -46,6 +46,7 @@ test_that("tokens_tolower/tokens_toupper works", {
                  c("according", "to", "NATO", "there", "is", "G7", "meeting"))
     expect_equal(featnames(dfm_toupper(dfmat)),
                  c("ACCORDING", "TO", "NATO", "THERE", "IS", "G7", "MEETING"))
+    
     expect_error(dfm_tolower(dfmat, logical()), 
                  "The length of keep_acronyms must be 1")
     expect_error(dfm_tolower(dfmat, c(TRUE, FALSE)), 
@@ -57,4 +58,21 @@ test_that("set encoding when no gap or duplication is found, #1387", {
     toks <- tokens_tolower(toks)
     expect_equal(Encoding(types(toks)), 
                  c("UTF-8", "UTF-8", "unknown")) 
+})
+
+test_that("works with empty objects (#2142)", {
+    
+    dfmat <- as.dfm(matrix(nrow = 0, ncol = 0))
+    toks <- as.tokens(list())
+    
+    expect_identical(types(tokens_tolower(toks)),
+                     character())
+    expect_identical(types(tokens_toupper(toks)),
+                     character())
+    
+    expect_identical(featnames(dfm_tolower(dfmat)), 
+                     character())
+    expect_identical(featnames(dfm_toupper(dfmat)), 
+                     character())
+
 })
