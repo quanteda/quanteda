@@ -38,10 +38,9 @@ tokens_wordstem.default <- function(x, language = quanteda_options("language_ste
 #' @importFrom stringi stri_split_fixed stri_paste_list
 #' @export
 tokens_wordstem.tokens <- function(x, language = quanteda_options("language_stemmer")) {
-
     x <- as.tokens(x)
     attrs <- attributes(x)
-    if (identical(field_object(attrs, "ngrams"), 1L)) {
+    if (identical(field_object(attrs, "ngram"), 1L)) {
         types(x) <- char_wordstem(types(x), language = language)
     } else {
         types(x) <- wordstem_ngrams(
@@ -55,6 +54,8 @@ tokens_wordstem.tokens <- function(x, language = quanteda_options("language_stem
 
 
 #' @rdname tokens_wordstem
+#' @param check_whitespace logical; if `TRUE`, stop with a warning when trying
+#'   to stem inputs containing whitespace
 #' @export
 #' @return `char_wordstem` returns a [character] object whose word
 #'   types have been stemmed.
@@ -62,20 +63,24 @@ tokens_wordstem.tokens <- function(x, language = quanteda_options("language_stem
 #' # simple example
 #' char_wordstem(c("win", "winning", "wins", "won", "winner"))
 #'
-char_wordstem <- function(x, language = quanteda_options("language_stemmer")) {
+char_wordstem <- function(x, language = quanteda_options("language_stemmer"),
+                                    check_whitespace = TRUE) {
     UseMethod("char_wordstem")
 }
 
 #' @export
-char_wordstem.default <- function(x, language = quanteda_options("language_stemmer")) {
+char_wordstem.default <- function(x, language = quanteda_options("language_stemmer"),
+                                    check_whitespace = TRUE) {
     check_class(class(x), "char_wordstem")
 }
 
 #' @importFrom stringi stri_detect_regex
 #' @export
-char_wordstem.character <- function(x, language = quanteda_options("language_stemmer")) {
-    if (any(stri_detect_regex(x, "^\\P{Z}+\\p{Z}+") & !is.na(x)))
+char_wordstem.character <- function(x, language = quanteda_options("language_stemmer"),
+                                    check_whitespace = TRUE) {
+    if (check_whitespace && any(stri_detect_regex(x, "^\\P{Z}+\\p{Z}+") & !is.na(x))) {
         stop("whitespace detected: you can only stem tokenized texts")
+    }
     result <- SnowballC::wordStem(x, language)
     result[which(is.na(x))] <- NA
     result
@@ -106,7 +111,7 @@ dfm_wordstem.default <- function(x, language = quanteda_options("language_stemme
 dfm_wordstem.dfm <- function(x, language = quanteda_options("language_stemmer")) {
     x <- as.dfm(x)
     attrs <- attributes(x)
-    if (identical(field_object(attrs, "ngrams"), 1L)) {
+    if (identical(field_object(attrs, "ngram"), 1L)) {
         set_dfm_featnames(x) <- char_wordstem(featnames(x), language = language)
     } else {
         set_dfm_featnames(x) <- wordstem_ngrams(

@@ -8,7 +8,11 @@
 \usage{
 tokens_wordstem(x, language = quanteda_options("language_stemmer"))
 
-char_wordstem(x, language = quanteda_options("language_stemmer"))
+char_wordstem(
+  x,
+  language = quanteda_options("language_stemmer"),
+  check_whitespace = TRUE
+)
 
 dfm_wordstem(x, language = quanteda_options("language_stemmer"))
 }
@@ -20,6 +24,9 @@ removed.  If tokenized texts, the tokenization must be word-based.}
 \link[SnowballC:getStemLanguages]{getStemLanguages}, or a two- or three-letter ISO-639 code
 corresponding to one of these languages (see references for the list of
 codes)}
+
+\item{check_whitespace}{logical; if \code{TRUE}, stop with a warning when trying
+to stem inputs containing whitespace}
 }
 \value{
 \code{tokens_wordstem} returns a \link{tokens} object whose word

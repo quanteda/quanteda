@@ -62,7 +62,8 @@ documents with non-zero counts.  Only affects the "stm" format.}
 \item{omit_empty}{logical; if \code{TRUE}, omit empty documents and features
 from the converted dfm. This is required for some formats (such as STM)
 that do not accept empty documents.  Only used when \code{to = "lda"} or
-\code{to = "topicmodels"}.  For \code{to = "stm"} format, \verb{omit_empty`` is always }TRUE`.}
+\code{to = "topicmodels"}.  For \code{to = "stm"} format, \code{omit_empty} is
+always \code{TRUE}.}
 
 \item{docid_field}{character; the name of the column containing document
 names used when \code{to = "data.frame"}.  Unused for other conversions.}

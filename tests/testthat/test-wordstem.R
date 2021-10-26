@@ -80,3 +80,16 @@ test_that("wordstem works on tokens that include separators (#909)", {
         list(text1 = c("Test", "for", "develop"))
     )
 })
+
+test_that("wordstem handles spacing in character objects robustly", {
+    txt <- c("code coding")
+    expect_error(
+        char_wordstem(txt),
+        "whitespace detected: you can only stem tokenized texts"
+    )
+    expect_identical(
+        char_wordstem(txt, check_whitespace = FALSE),
+        "code cod"
+    )
+})
+

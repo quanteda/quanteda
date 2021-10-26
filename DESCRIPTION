@@ -1,5 +1,5 @@
 Package: quanteda
-Version: 3.1.0
+Version: 3.1.0.9000
 Title: Quantitative Analysis of Textual Data
 Description: A fast, flexible, and comprehensive framework for 
     quantitative text analysis in R.  Provides functionality for corpus management,
@@ -69,7 +69,7 @@ BugReports: https://github.com/quanteda/quanteda/issues
 LazyData: TRUE
 VignetteBuilder: knitr
 Language: en-GB
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 SystemRequirements: C++11
 Roxygen: list(markdown = TRUE)
 Collate: 
