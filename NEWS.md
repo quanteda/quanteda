@@ -2,11 +2,11 @@
 
 ## Bug fixes and stability enhancements
 
+* `dfm_group()` with NA values in a grouping variable now drops those, similar to the behaviour of `tokens_group() and `corpus_group()`.  (#2134)
 
 ## Changes and additions
 
 * `char_wordstem()` now has a a new argument `check_whitespace`, which will not throw an error when lower-casing text containing a whitespace character.
-
 
 # quanteda 3.1
 
