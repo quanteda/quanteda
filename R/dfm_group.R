@@ -69,8 +69,9 @@ dfm_group.dfm <- function(x, groups = docid(x), fill = FALSE, force = FALSE) {
 
     # remove NA groups
     x <- dfm_subset(x, !is.na(groups))
+    attrs <- attributes(x)
     groups <- groups[!is.na(groups)]
-
+    
     x <- group_matrix(x, documents = groups, fill = fill)
     build_dfm(x, colnames(x),
               unit = "documents",
