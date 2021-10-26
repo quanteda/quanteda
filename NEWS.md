@@ -1,3 +1,11 @@
+# quanteda 3.2
+
+## Bug fixes and stability enhancements
+
+* `dfm_group()` with NA values in a grouping variable now drops those, similar to the behaviour of `tokens_group() and `corpus_group()`.  (#2134)
+
+## Changes and additions
+
 # quanteda 3.1
 
 ## Bug fixes and stability enhancements
