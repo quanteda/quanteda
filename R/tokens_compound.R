@@ -45,7 +45,7 @@
 #' # list of characters - is compounded
 #' tokens_compound(toks, list(c("United", "Kingdom"), c("European", "Union")))
 #'
-#' # elements separated by spaces, wrapped in phrase)() - is compounded
+#' # elements separated by spaces, wrapped in phrase() - is compounded
 #' tokens_compound(toks, phrase(c("United Kingdom", "European Union")))
 #'
 #' # supplied as values in a dictionary (same as list) - is compounded
