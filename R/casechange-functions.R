@@ -21,7 +21,9 @@ tokens_tolower.default <- function(x, keep_acronyms = FALSE) {
 
 #' @export
 tokens_tolower.tokens <- function(x, keep_acronyms = FALSE) {
+    x <- as.tokens(x)
     keep_acronyms <- check_logical(keep_acronyms)
+    if (!length(types(x))) return(x)
     types(x) <- lowercase_types(types(x), keep_acronyms)
     tokens_recompile(x, gap = FALSE, dup = TRUE)
 }
@@ -51,6 +53,8 @@ tokens_toupper.default <- function(x) {
 #' @noRd
 #' @export
 tokens_toupper.tokens <- function(x) {
+    x <- as.tokens(x)
+    if (!length(types(x))) return(x)
     types(x) <- char_toupper(types(x))
     tokens_recompile(x, gap = FALSE, dup = TRUE)
 }
@@ -159,7 +163,7 @@ dfm_tolower.default <- function(x, keep_acronyms = FALSE) {
 dfm_tolower.dfm <- function(x, keep_acronyms = FALSE) {
     x <- as.dfm(x)
     keep_acronyms <- check_logical(keep_acronyms)
-    if (!nfeat(x) || !ndoc(x)) return(x)
+    if (!nfeat(x)) return(x)
     set_dfm_featnames(x) <- lowercase_types(featnames(x), keep_acronyms)
     dfm_compress(x, margin = "features")
 }
@@ -179,7 +183,7 @@ dfm_toupper.default <- function(x) {
 #' @export
 dfm_toupper.dfm <- function(x) {
     x <- as.dfm(x)
-    if (!nfeat(x) || !ndoc(x)) return(x)
+    if (!nfeat(x)) return(x)
     set_dfm_featnames(x) <- char_toupper(featnames(x))
     dfm_compress(x, margin = "features")
 }
