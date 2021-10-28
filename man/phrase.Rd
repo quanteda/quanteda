@@ -21,8 +21,8 @@ For list, collocations, or tokens objects, use \code{as.phrase()}.}
 defaults to " ".  For \code{phrase()} only.}
 }
 \value{
-\code{phrase()} and \code{as.phrase()} return a specially classed list whose elements have been
-split into separate \code{character} (pattern) elements.
+\code{phrase()} and \code{as.phrase()} return a specially classed list whose
+elements have been split into separate \code{character} (pattern) elements.
 
 \code{is.phrase} returns \code{TRUE} if the object was created by
 \code{\link[=phrase]{phrase()}}; \code{FALSE} otherwise.
