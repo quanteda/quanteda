@@ -190,6 +190,7 @@ print.kwic <- function(x, max_nrow = quanteda_options("print_kwic_max_nrow"),
             cat(" ]\n", sep = "") 
         }
     }
+    cat("\n", sep = "") 
 }
 
 #' @method [ kwic
