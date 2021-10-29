@@ -6,6 +6,8 @@
 
 ## Changes and additions
 
+* `char_wordstem()` now has a a new argument `check_whitespace`, which will not throw an error when lower-casing text containing a whitespace character.
+
 # quanteda 3.1
 
 ## Bug fixes and stability enhancements
