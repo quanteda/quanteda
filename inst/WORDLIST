@@ -1,5 +1,4 @@
 ACL
-Benoit
 Biden
 Biden's
 Bormuth
@@ -14,9 +13,7 @@ Datatables
 DocumentTermMatrix
 Docvars
 Dáil
-dist
 ERC
-Fellows's
 fileset
 Haass
 Herdan's
@@ -42,8 +39,6 @@ Raghavan
 Rcpp
 Rdata
 Rprofile
-Rtools
-simil
 STM
 SnowballC
 Soroka
@@ -84,7 +79,6 @@ ci
 cleanC
 codecov
 color
-colors
 com
 compoundWords
 concatenator
@@ -105,7 +99,6 @@ docfreq
 docname
 docnames
 docid
-docids
 docvar
 docvars
 doi
@@ -120,7 +113,6 @@ etc
 exampleString
 fastmatch
 fcm
-fcm's
 featnames
 fitmodel
 formals
@@ -128,7 +120,6 @@ fromJSON
 gcc
 getStemLanguages
 getTweets
-gfortran
 github
 ggplot
 httr
@@ -150,6 +141,7 @@ lda
 lexdiv
 libicu
 libstemmer
+lintr
 linux
 lsa
 macOS
@@ -179,9 +171,7 @@ phrasetotokens
 pkgdown
 pmi
 proxyC
-quanteda
 quantedaData
-quantedaverse
 rOpenSci
 readLIWCdict
 readWStatDict

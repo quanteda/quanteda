@@ -41,7 +41,7 @@ tokens_wordstem.tokens <- function(x, language = quanteda_options("language_stem
     x <- as.tokens(x)
     attrs <- attributes(x)
     if (identical(field_object(attrs, "ngram"), 1L)) {
-        types(x) <- char_wordstem(types(x), language = language)
+        types(x) <- char_wordstem(types(x), language = language, check_whitespace = FALSE)
     } else {
         types(x) <- wordstem_ngrams(
             types(x),
@@ -64,13 +64,13 @@ tokens_wordstem.tokens <- function(x, language = quanteda_options("language_stem
 #' char_wordstem(c("win", "winning", "wins", "won", "winner"))
 #'
 char_wordstem <- function(x, language = quanteda_options("language_stemmer"),
-                                    check_whitespace = TRUE) {
+                          check_whitespace = TRUE) {
     UseMethod("char_wordstem")
 }
 
 #' @export
 char_wordstem.default <- function(x, language = quanteda_options("language_stemmer"),
-                                    check_whitespace = TRUE) {
+                                  check_whitespace = TRUE) {
     check_class(class(x), "char_wordstem")
 }
 
@@ -112,7 +112,7 @@ dfm_wordstem.dfm <- function(x, language = quanteda_options("language_stemmer"))
     x <- as.dfm(x)
     attrs <- attributes(x)
     if (identical(field_object(attrs, "ngram"), 1L)) {
-        set_dfm_featnames(x) <- char_wordstem(featnames(x), language = language)
+        set_dfm_featnames(x) <- char_wordstem(featnames(x), language = language, check_whitespace = FALSE)
     } else {
         set_dfm_featnames(x) <- wordstem_ngrams(
             featnames(x),
