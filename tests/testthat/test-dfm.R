@@ -1327,3 +1327,25 @@ test_that("remove_padding argument works", {
         c("", "a", "c", "d")
     )
 })
+
+
+test_that("features of DFM are always in the same order (#2100)", {
+    
+    toks1 <- quanteda:::build_tokens(list(c(1, 0, 2, 3, 4)), types = c("a", "b", "c", "d"),
+                                     padding = TRUE,
+                                     docvars = quanteda:::make_docvars(1L))
+    toks2 <- quanteda:::build_tokens(list(c(1, 0, 3, 2, 4)), types = c("a", "c", "b", "d"),
+                                     padding = TRUE,
+                                     docvars = quanteda:::make_docvars(1L))
+    toks3 <- quanteda:::build_tokens(list(c(1, 2, 3, 4)), types = c("a", "b", "c", "d"),
+                                     padding = FALSE,
+                                     docvars = quanteda:::make_docvars(1L))
+    dfmat1 <- dfm(toks1)
+    dfmat2 <- dfm(toks2)
+    dfmat3 <- dfm(toks3)
+    
+    expect_identical(c("", "a", "b", "c", "d"), featnames(dfmat1))
+    expect_identical(c("", "a", "b", "c", "d"), featnames(dfmat2))
+    expect_identical(c("a", "b", "c", "d"), featnames(dfmat3))
+    
+})
