@@ -234,3 +234,18 @@ test_that("dfm_lookup with nomatch works with key that do not appear in the text
                              nrow = 4, dimnames = list(docs = c("text1", "text2", "text3", "text4"),
                                                        features = c("CR", "CB", "CA", "NONE"))))
 })
+
+test_that("dfm_lookup works exclusive = TRUE and FALSE, #970", {
+    
+    dfmat <- dfm(tokens("say good bye to Hollywood"), tolower = FALSE)
+    dict <- dictionary(list(pos = "good", farewell = "bye"))
+    
+    dfmat_ex <- dfm_lookup(dfmat, dict, exclusive = TRUE)
+    expect_true(dfmat_ex@meta$object$what == "dictionary")
+    expect_equal(featnames(dfmat_ex), c("pos", "farewell"))
+    
+    dfmat_ne <- dfm_lookup(dfmat, dict, exclusive = FALSE)
+    expect_true(dfmat_ne@meta$object$what == "word")
+    expect_equal(featnames(dfmat_ne), c("say", "POS", "FAREWELL", "to", "Hollywood"))
+    
+})

@@ -147,7 +147,7 @@ dfm_lookup.dfm <- function(x, dictionary, levels = 1:5,
             result <- x
         }
     }
-
-    field_object(attrs, "what") <- "dictionary"
+    if (exclusive)
+        field_object(attrs, "what") <- "dictionary"
     rebuild_dfm(result, attrs)
 }
