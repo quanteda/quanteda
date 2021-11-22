@@ -304,9 +304,10 @@ test_that("dfm(x, dictionary = mwvdict) works with multi-word values", {
              d2 = "a c d x z",
              d3 = "x y",
              d4 = "f g")
-
+    toks <- tokens(txt)
+    
     # as dictionary
-    dfm1 <- suppressWarnings(dfm(tokens(txt), dictionary = mwvdict, verbose = TRUE))
+    dfm1 <- suppressWarnings(dfm(toks, dictionary = mwvdict, verbose = TRUE))
     expect_identical(
         as.matrix(dfm1),
         matrix(c(1, 0, 0, 0, 1, 0, 1, 0, 2, 1, 0, 0),
@@ -316,15 +317,15 @@ test_that("dfm(x, dictionary = mwvdict) works with multi-word values", {
     )
 
     # as thesaurus
-    dfm2 <- suppressWarnings(dfm(tokens(txt), thesaurus = mwvdict, verbose = TRUE))
+    dfm2 <- suppressWarnings(dfm(toks, thesaurus = mwvdict, verbose = TRUE))
     expect_identical(
         as.matrix(dfm2),
-        matrix(c(1, 0, 0, 0, 1, 0, 1, 0, 2, 1, 0, 0,
-                 0, 1, 0, 0,  1, 1, 0, 0,  1, 0, 0, 1,  1, 0, 0, 1,  0, 1, 0, 0, 1, 1, 0, 0),
+        matrix(c(1, 0, 0, 0,  1, 1, 0, 0,  2, 1, 0, 0,  1, 0, 0, 1,  
+                 1, 0, 0, 1,  1, 0, 1, 0,  1, 1, 0, 0,  0, 1, 0, 0,  0, 1, 0, 0),
                nrow = 4,
                dimnames = list(docs = paste0("d", 1:4),
-                               features = c("SEQUENCE1", "SEQUENCE2", "NOTSEQ",
-                                            "a", "c", "f", "g", "x", "z")))
+                               features = c("SEQUENCE1", "c", "NOTSEQ", "f", "g", 
+                                            "SEQUENCE2", "z", "a", "x")))
     )
 })
 
