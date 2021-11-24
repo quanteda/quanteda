@@ -2,7 +2,8 @@
 
 ## Bug fixes and stability enhancements
 
-* `dfm_group()` with NA values in a grouping variable now drops those, similar to the behaviour of `tokens_group() and `corpus_group()`.  (#2134)
+* `dfm()` returns a dfm with the identical column order even if `tokens_compound()` or `tokens_ngrams()` is used in the upstream (#2100).
+* `dfm_group()` with NA values in a grouping variable now drops those, similar to the behaviour of `tokens_group()` and `corpus_group()` (#2134).
 
 ## Changes and additions
 
@@ -19,11 +20,11 @@
 
 ## Changes and additions
 
-* `phrase()` now has a `separator` argument (#2124)
+* `phrase()` now has a `separator` argument (#2124).
 
 ## Deprecations
 
-* `phrase()` methods for tokens, collocations, and lists are deprecated in favour of `as.phrase()`.  (#2129)
+* `phrase()` methods for tokens, collocations, and lists are deprecated in favour of `as.phrase()` (#2129).
 
 # quanteda 3.0
 
