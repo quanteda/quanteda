@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.2.0</span>
       </span>
     </div>
 
@@ -157,7 +157,7 @@
 
       
 
-      </header><script src="design_files/header-attrs-2.10/header-attrs.js"></script><div class="row">
+      </header><script src="design_files/header-attrs-2.11/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>The Structure of quanteda</h1>
@@ -310,16 +310,16 @@
 <p>Once features have been identified and separated from the texts in the tokenization step, features may be removed from token lists, or handled as part of <code>dfm</code> construction. Features may be:</p>
 <ul>
 <li>
-<em>eliminated</em> through use of predefined lists or patterns of <em>stop words</em>, using <code><a href="../../reference/dfm.html">dfm(x, remove = )</a></code> or <code><a href="../../reference/tokens_select.html">tokens_remove()</a></code>
+<em>eliminated</em> through use of predefined lists or patterns of <em>stop words</em>, using <code>dfm(x, remove = )</code> or <code><a href="../../reference/tokens_select.html">tokens_remove()</a></code>
 </li>
 <li>
-<em>kept</em> through use of predefined lists or patterns of <em>stop words</em>, using <code><a href="../../reference/dfm.html">dfm(x, select = )</a></code> or <code><a href="../../reference/tokens_select.html">tokens_select()</a></code>
+<em>kept</em> through use of predefined lists or patterns of <em>stop words</em>, using <code>dfm(x, select = )</code> or <code><a href="../../reference/tokens_select.html">tokens_select()</a></code>
 </li>
 <li>
 <em>collapsed</em> by:
 <ul>
 <li>considering morphological variations as equivalent to a stem or lemma, through <code>stem</code> option in <code>dfm</code> (or <code><a href="../../reference/tokens_wordstem.html">dfm_wordstem()</a></code>)</li>
-<li>considering lists of features as equivalent to a <em>dictionary</em> key, either exclusively using <code><a href="../../reference/dfm.html">dfm(x, dictionary = )</a></code> or as a supplement to uncollapsed features through <code><a href="../../reference/dfm.html">dfm(x, thesaurus = )</a></code>
+<li>considering lists of features as equivalent to a <em>dictionary</em> key, either exclusively using <code>dfm(x, dictionary = )</code> or as a supplement to uncollapsed features through <code>dfm(x, thesaurus = )</code>
 </li>
 <li>
 <code><a href="../../reference/tokens_tolower.html">tokens_tolower()</a></code> or <code><a href="../../reference/dfm_tolower.html">dfm_tolower()</a></code> to consider as equivalent the same word features despite having different cases, by converting all features to lower case</li>
@@ -349,13 +349,13 @@
 <h2 class="hasAnchor">
 <a href="#dfm-the-swiss-army-knife" class="anchor"></a>dfm, the Swiss Army knife</h2>
 <p>In most cases, users will use the default settings to create a dfm straight from a corpus. <code><a href="../../reference/dfm.html">dfm()</a></code> will combine steps 3–4, even though basic functions will be available to perform these separately. All options shown in steps 3–4 will be available in <code><a href="../../reference/dfm.html">dfm()</a></code>.</p>
-<p><code>dfm</code> objects can always be built up using constituent steps, through tokenizing and then selecting on the tokens. <strong>quanteda</strong> integrates the <strong>magrittr</strong> <code><a href="../../reference/%&gt;%.html">%&gt;%</a></code> pipe operator, to make it easy to chain functions without creating intermediate objects:</p>
+<p><code>dfm</code> objects can always be built up using constituent steps, through tokenizing and then selecting on the tokens. <strong>quanteda</strong> integrates the <strong>magrittr</strong> <code>%&gt;%</code> pipe operator, to make it easy to chain functions without creating intermediate objects:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">mydfm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/texts.html">texts</a></span><span class="op">(</span><span class="va">mycorpus</span>, group <span class="op">=</span> <span class="st">"party"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-    <span class="fu"><a href="../../reference/char_tolower.html">char_tolower</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-    <span class="fu"><a href="../../reference/tokens.html">tokens</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-    <span class="fu"><a href="../../reference/tokens_wordstem.html">tokens_wordstem</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="../../reference/tokens_select.html">tokens_remove</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html">stopwords</a></span><span class="op">(</span><span class="st">"english"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+<code class="sourceCode R"><span class="va">mydfm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/texts.html">texts</a></span><span class="op">(</span><span class="va">mycorpus</span>, group <span class="op">=</span> <span class="st">"party"</span><span class="op">)</span> <span class="op"><a href="../../reference/%&gt;%.html">%&gt;%</a></span> 
+    <span class="fu"><a href="../../reference/char_tolower.html">char_tolower</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../../reference/%&gt;%.html">%&gt;%</a></span> 
+    <span class="fu"><a href="../../reference/tokens.html">tokens</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../../reference/%&gt;%.html">%&gt;%</a></span> 
+    <span class="fu"><a href="../../reference/tokens_wordstem.html">tokens_wordstem</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../../reference/%&gt;%.html">%&gt;%</a></span>
+    <span class="fu"><a href="../../reference/tokens_select.html">tokens_remove</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html">stopwords</a></span><span class="op">(</span><span class="st">"english"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../../reference/%&gt;%.html">%&gt;%</a></span> 
     <span class="fu"><a href="../../reference/dfm.html">dfm</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p>We recognize however that not all sequences will make sense, for instance <code><a href="../../reference/tokens_wordstem.html">tokens_wordstem()</a></code> will only work <em>after</em> tokenization, and will try to catch these errors and make the proper sequence clear to users.</p>
 </div>

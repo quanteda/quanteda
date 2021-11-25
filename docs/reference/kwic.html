@@ -94,7 +94,7 @@ delimiters.)" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.2.0</span>
       </span>
     </div>
 
@@ -304,78 +304,94 @@ element matches a token in sequence.</p>
     <div class='dont-index'><p><a href='print-methods.html'>print-methods</a></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># single token matching</span>
-<span class='va'>toks</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span><span class='op'>(</span><span class='va'>data_corpus_inaugural</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>8</span><span class='op'>]</span><span class='op'>)</span>
-<span class='fu'>kwic</span><span class='op'>(</span><span class='va'>toks</span>, pattern <span class='op'>=</span> <span class='st'>"secure*"</span>, valuetype <span class='op'>=</span> <span class='st'>"glob"</span>, window <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Keyword-in-context with 6 matches.                                                                      
-#&gt;       [1797-Adams, 478]  welfare, and | secure  | the blessings of    
-#&gt;      [1797-Adams, 1512]  nations, and | secured | immortal glory with 
-#&gt;  [1805-Jefferson, 2367]   , and shall | secure  | to you the          
-#&gt;     [1817-Monroe, 1754] cherished. To | secure  | us against these    
-#&gt;     [1817-Monroe, 1814] defense as to | secure  | our cities and      
-#&gt;     [1817-Monroe, 3009]      I can to | secure  | economy and fidelity</div><div class='input'><span class='fu'>kwic</span><span class='op'>(</span><span class='va'>toks</span>, pattern <span class='op'>=</span> <span class='st'>"secur"</span>, valuetype <span class='op'>=</span> <span class='st'>"regex"</span>, window <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Keyword-in-context with 10 matches.                                                        
-#&gt;  [1789-Washington, 1496] government for the | security |
-#&gt;        [1797-Adams, 478]       welfare, and |  secure  |
-#&gt;       [1797-Adams, 1512]       nations, and | secured  |
-#&gt;   [1805-Jefferson, 2367]        , and shall |  secure  |
-#&gt;      [1813-Madison, 321]       seas and the | security |
-#&gt;      [1817-Monroe, 1609]      may form some | security |
-#&gt;      [1817-Monroe, 1754]      cherished. To |  secure  |
-#&gt;      [1817-Monroe, 1814]      defense as to |  secure  |
-#&gt;      [1817-Monroe, 3009]           I can to |  secure  |
-#&gt;      [1817-Monroe, 3427]           and as a | security |
-#&gt;                         
-#&gt;  of their union         
-#&gt;  the blessings of       
-#&gt;  immortal glory with    
-#&gt;  to you the             
-#&gt;  of an important        
-#&gt;  against these dangers  
-#&gt;  us against these       
-#&gt;  our cities and         
-#&gt;  economy and fidelity   
-#&gt;  against foreign dangers</div><div class='input'><span class='fu'>kwic</span><span class='op'>(</span><span class='va'>toks</span>, pattern <span class='op'>=</span> <span class='st'>"security"</span>, valuetype <span class='op'>=</span> <span class='st'>"fixed"</span>, window <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Keyword-in-context with 4 matches.                                                        
-#&gt;  [1789-Washington, 1496] government for the | security |
-#&gt;      [1813-Madison, 321]       seas and the | security |
-#&gt;      [1817-Monroe, 1609]      may form some | security |
-#&gt;      [1817-Monroe, 3427]           and as a | security |
-#&gt;                         
-#&gt;  of their union         
-#&gt;  of an important        
-#&gt;  against these dangers  
-#&gt;  against foreign dangers</div><div class='input'>
-<span class='co'># phrase matching</span>
-<span class='fu'>kwic</span><span class='op'>(</span><span class='va'>toks</span>, pattern <span class='op'>=</span> <span class='fu'><a href='phrase.html'>phrase</a></span><span class='op'>(</span><span class='st'>"secur* against"</span><span class='op'>)</span>, window <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Keyword-in-context with 2 matches.                                                                        
-#&gt;  [1817-Monroe, 1609:1610] form some | security against | these dangers  
-#&gt;  [1817-Monroe, 3427:3428]      as a | security against | foreign dangers</div><div class='input'><span class='fu'>kwic</span><span class='op'>(</span><span class='va'>toks</span>, pattern <span class='op'>=</span> <span class='fu'><a href='phrase.html'>phrase</a></span><span class='op'>(</span><span class='st'>"war against"</span><span class='op'>)</span>, valuetype <span class='op'>=</span> <span class='st'>"regex"</span>, window <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Keyword-in-context with 1 match.                                                            
-#&gt;  [1801-Jefferson, 1268:1269] the surest | bulwarks against |
-#&gt;                           
-#&gt;  antirepublican tendencies</div><div class='input'>
-<span class='co'># use index</span>
-<span class='va'>idx</span> <span class='op'>&lt;-</span> <span class='fu'><a href='index.html'>index</a></span><span class='op'>(</span><span class='va'>toks</span>, <span class='fu'><a href='phrase.html'>phrase</a></span><span class='op'>(</span><span class='st'>"secur* against"</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'>kwic</span><span class='op'>(</span><span class='va'>toks</span>, index <span class='op'>=</span> <span class='va'>idx</span>, window <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Keyword-in-context with 2 matches.                                                                        
-#&gt;  [1817-Monroe, 1609:1610] form some | security against | these dangers  
-#&gt;  [1817-Monroe, 3427:3428]      as a | security against | foreign dangers</div><div class='input'><span class='va'>kw</span> <span class='op'>&lt;-</span> <span class='fu'>kwic</span><span class='op'>(</span><span class='fu'><a href='tokens.html'>tokens</a></span><span class='op'>(</span><span class='va'>data_corpus_inaugural</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>20</span><span class='op'>]</span><span class='op'>)</span>, <span class='st'>"provident*"</span><span class='op'>)</span>
-<span class='fu'>is.kwic</span><span class='op'>(</span><span class='va'>kw</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>is.kwic</span><span class='op'>(</span><span class='st'>"Not a kwic"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'><span class='fu'>is.kwic</span><span class='op'>(</span><span class='va'>kw</span><span class='op'>[</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"pre"</span>, <span class='st'>"post"</span><span class='op'>)</span><span class='op'>]</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
-<span class='va'>toks</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span><span class='op'>(</span><span class='va'>data_corpus_inaugural</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>8</span><span class='op'>]</span><span class='op'>)</span>
-<span class='va'>kw</span> <span class='op'>&lt;-</span> <span class='fu'>kwic</span><span class='op'>(</span><span class='va'>toks</span>, pattern <span class='op'>=</span> <span class='st'>"secure*"</span>, valuetype <span class='op'>=</span> <span class='st'>"glob"</span>, window <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/as.data.frame.html'>as.data.frame</a></span><span class='op'>(</span><span class='va'>kw</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;          docname from   to            pre keyword                 post pattern
-#&gt; 1     1797-Adams  478  478  welfare , and  secure     the blessings of secure*
-#&gt; 2     1797-Adams 1512 1512  nations , and secured  immortal glory with secure*
-#&gt; 3 1805-Jefferson 2367 2367    , and shall  secure           to you the secure*
-#&gt; 4    1817-Monroe 1754 1754 cherished . To  secure     us against these secure*
-#&gt; 5    1817-Monroe 1814 1814  defense as to  secure       our cities and secure*
-#&gt; 6    1817-Monroe 3009 3009       I can to  secure economy and fidelity secure*</div><div class='input'>
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='co'># single token matching</span></span>
+<span class='r-in'><span class='va'>toks</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span><span class='op'>(</span><span class='va'>data_corpus_inaugural</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>8</span><span class='op'>]</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>kwic</span><span class='op'>(</span><span class='va'>toks</span>, pattern <span class='op'>=</span> <span class='st'>"secure*"</span>, valuetype <span class='op'>=</span> <span class='st'>"glob"</span>, window <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Keyword-in-context with 6 matches.                                                                      </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       [1797-Adams, 478]  welfare, and | secure  | the blessings of    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      [1797-Adams, 1512]  nations, and | secured | immortal glory with </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1805-Jefferson, 2367]   , and shall | secure  | to you the          </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     [1817-Monroe, 1754] cherished. To | secure  | us against these    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     [1817-Monroe, 1814] defense as to | secure  | our cities and      </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     [1817-Monroe, 3009]      I can to | secure  | economy and fidelity</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='fu'>kwic</span><span class='op'>(</span><span class='va'>toks</span>, pattern <span class='op'>=</span> <span class='st'>"secur"</span>, valuetype <span class='op'>=</span> <span class='st'>"regex"</span>, window <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Keyword-in-context with 10 matches.                                                        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1789-Washington, 1496] government for the | security |</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        [1797-Adams, 478]       welfare, and |  secure  |</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       [1797-Adams, 1512]       nations, and | secured  |</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   [1805-Jefferson, 2367]        , and shall |  secure  |</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      [1813-Madison, 321]       seas and the | security |</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      [1817-Monroe, 1609]      may form some | security |</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      [1817-Monroe, 1754]      cherished. To |  secure  |</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      [1817-Monroe, 1814]      defense as to |  secure  |</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      [1817-Monroe, 3009]           I can to |  secure  |</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      [1817-Monroe, 3427]           and as a | security |</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                         </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  of their union         </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  the blessings of       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  immortal glory with    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  to you the             </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  of an important        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  against these dangers  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  us against these       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  our cities and         </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  economy and fidelity   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  against foreign dangers</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='fu'>kwic</span><span class='op'>(</span><span class='va'>toks</span>, pattern <span class='op'>=</span> <span class='st'>"security"</span>, valuetype <span class='op'>=</span> <span class='st'>"fixed"</span>, window <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Keyword-in-context with 4 matches.                                                        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1789-Washington, 1496] government for the | security |</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      [1813-Madison, 321]       seas and the | security |</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      [1817-Monroe, 1609]      may form some | security |</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      [1817-Monroe, 3427]           and as a | security |</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                         </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  of their union         </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  of an important        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  against these dangers  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  against foreign dangers</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># phrase matching</span></span>
+<span class='r-in'><span class='fu'>kwic</span><span class='op'>(</span><span class='va'>toks</span>, pattern <span class='op'>=</span> <span class='fu'><a href='phrase.html'>phrase</a></span><span class='op'>(</span><span class='st'>"secur* against"</span><span class='op'>)</span>, window <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Keyword-in-context with 2 matches.                                                                        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1817-Monroe, 1609:1610] form some | security against | these dangers  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1817-Monroe, 3427:3428]      as a | security against | foreign dangers</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='fu'>kwic</span><span class='op'>(</span><span class='va'>toks</span>, pattern <span class='op'>=</span> <span class='fu'><a href='phrase.html'>phrase</a></span><span class='op'>(</span><span class='st'>"war against"</span><span class='op'>)</span>, valuetype <span class='op'>=</span> <span class='st'>"regex"</span>, window <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Keyword-in-context with 1 match.                                                            </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1801-Jefferson, 1268:1269] the surest | bulwarks against |</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                           </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  antirepublican tendencies</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># use index</span></span>
+<span class='r-in'><span class='va'>idx</span> <span class='op'>&lt;-</span> <span class='fu'><a href='index.html'>index</a></span><span class='op'>(</span><span class='va'>toks</span>, <span class='fu'><a href='phrase.html'>phrase</a></span><span class='op'>(</span><span class='st'>"secur* against"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>kwic</span><span class='op'>(</span><span class='va'>toks</span>, index <span class='op'>=</span> <span class='va'>idx</span>, window <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Keyword-in-context with 2 matches.                                                                        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1817-Monroe, 1609:1610] form some | security against | these dangers  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1817-Monroe, 3427:3428]      as a | security against | foreign dangers</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='va'>kw</span> <span class='op'>&lt;-</span> <span class='fu'>kwic</span><span class='op'>(</span><span class='fu'><a href='tokens.html'>tokens</a></span><span class='op'>(</span><span class='va'>data_corpus_inaugural</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>20</span><span class='op'>]</span><span class='op'>)</span>, <span class='st'>"provident*"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>is.kwic</span><span class='op'>(</span><span class='va'>kw</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
+<span class='r-in'><span class='fu'>is.kwic</span><span class='op'>(</span><span class='st'>"Not a kwic"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] FALSE</span>
+<span class='r-in'><span class='fu'>is.kwic</span><span class='op'>(</span><span class='va'>kw</span><span class='op'>[</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"pre"</span>, <span class='st'>"post"</span><span class='op'>)</span><span class='op'>]</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>toks</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span><span class='op'>(</span><span class='va'>data_corpus_inaugural</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>8</span><span class='op'>]</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>kw</span> <span class='op'>&lt;-</span> <span class='fu'>kwic</span><span class='op'>(</span><span class='va'>toks</span>, pattern <span class='op'>=</span> <span class='st'>"secure*"</span>, valuetype <span class='op'>=</span> <span class='st'>"glob"</span>, window <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/as.data.frame.html'>as.data.frame</a></span><span class='op'>(</span><span class='va'>kw</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          docname from   to            pre keyword                 post pattern</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1     1797-Adams  478  478  welfare , and  secure     the blessings of secure*</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2     1797-Adams 1512 1512  nations , and secured  immortal glory with secure*</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3 1805-Jefferson 2367 2367    , and shall  secure           to you the secure*</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4    1817-Monroe 1754 1754 cherished . To  secure     us against these secure*</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5    1817-Monroe 1814 1814  defense as to  secure       our cities and secure*</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 6    1817-Monroe 3009 3009       I can to  secure economy and fidelity secure*</span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

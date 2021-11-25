@@ -91,7 +91,7 @@ with full control over options.  Uses fully sparse methods for efficiency." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.2.0</span>
       </span>
     </div>
 
@@ -278,68 +278,75 @@ can be overridden using <code>scheme_tf = "prop"</code>.</p>
 <a href='https://nlp.stanford.edu/IR-book/pdf/irbookonlinereading.pdf'>https://nlp.stanford.edu/IR-book/pdf/irbookonlinereading.pdf</a></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>dfmat1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='as.dfm.html'>as.dfm</a></span><span class='op'>(</span><span class='va'>data_dfm_lbgexample</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>dfmat1</span><span class='op'>[</span>, <span class='fl'>5</span><span class='op'>:</span><span class='fl'>10</span><span class='op'>]</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Document-feature matrix of: 6 documents, 6 features (61.11% sparse) and 0 docvars.
-#&gt;     features
-#&gt; docs  E  F   G   H   I   J
-#&gt;   R1 45 78 115 146 158 146
-#&gt;   R2  0  2   3  10  22  45
-#&gt;   R3  0  0   0   0   0   0
-#&gt;   R4  0  0   0   0   0   0
-#&gt;   R5  0  0   0   0   0   0
-#&gt;   V1  0  0   0   2   3  10</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fu'>dfm_tfidf</span><span class='op'>(</span><span class='va'>dfmat1</span><span class='op'>)</span><span class='op'>[</span>, <span class='fl'>5</span><span class='op'>:</span><span class='fl'>10</span><span class='op'>]</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Document-feature matrix of: 6 documents, 6 features (61.11% sparse) and 0 docvars.
-#&gt;     features
-#&gt; docs        E          F         G        H        I        J
-#&gt;   R1 35.01681 37.2154579 54.868944 43.95038 47.56274 43.95038
-#&gt;   R2  0        0.9542425  1.431364  3.01030  6.62266 13.54635
-#&gt;   R3  0        0          0         0        0        0      
-#&gt;   R4  0        0          0         0        0        0      
-#&gt;   R5  0        0          0         0        0        0      
-#&gt;   V1  0        0          0         0.60206  0.90309  3.01030</div><div class='input'><span class='fu'><a href='docfreq.html'>docfreq</a></span><span class='op'>(</span><span class='va'>dfmat1</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>5</span><span class='op'>:</span><span class='fl'>15</span><span class='op'>]</span>
-</div><div class='output co'>#&gt; E F G H I J K L M N O 
-#&gt; 1 2 2 3 3 3 4 4 4 4 4 </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fu'><a href='dfm_weight.html'>dfm_weight</a></span><span class='op'>(</span><span class='va'>dfmat1</span><span class='op'>)</span><span class='op'>[</span>, <span class='fl'>5</span><span class='op'>:</span><span class='fl'>10</span><span class='op'>]</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Document-feature matrix of: 6 documents, 6 features (61.11% sparse) and 0 docvars.
-#&gt;     features
-#&gt; docs  E  F   G   H   I   J
-#&gt;   R1 45 78 115 146 158 146
-#&gt;   R2  0  2   3  10  22  45
-#&gt;   R3  0  0   0   0   0   0
-#&gt;   R4  0  0   0   0   0   0
-#&gt;   R5  0  0   0   0   0   0
-#&gt;   V1  0  0   0   2   3  10</div><div class='input'>
-<span class='co'># replication of worked example from</span>
-<span class='co'># https://en.wikipedia.org/wiki/Tf-idf#Example_of_tf.E2.80.93idf</span>
-<span class='va'>dfmat2</span> <span class='op'>&lt;-</span>
-    <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>0</span>, <span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>2</span>,<span class='fl'>3</span><span class='op'>)</span>,
-           byrow <span class='op'>=</span> <span class='cn'>TRUE</span>, nrow <span class='op'>=</span> <span class='fl'>2</span>,
-           dimnames <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>docs <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"document1"</span>, <span class='st'>"document2"</span><span class='op'>)</span>,
-                           features <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"this"</span>, <span class='st'>"is"</span>, <span class='st'>"a"</span>, <span class='st'>"sample"</span>,
-                                        <span class='st'>"another"</span>, <span class='st'>"example"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='as.dfm.html'>as.dfm</a></span><span class='op'>(</span><span class='op'>)</span>
-<span class='va'>dfmat2</span>
-</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (33.33% sparse) and 0 docvars.
-#&gt;            features
-#&gt; docs        this is a sample another example
-#&gt;   document1    1  1 2      1       0       0
-#&gt;   document2    1  1 0      0       2       3</div><div class='input'><span class='fu'><a href='docfreq.html'>docfreq</a></span><span class='op'>(</span><span class='va'>dfmat2</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;    this      is       a  sample another example 
-#&gt;       2       2       1       1       1       1 </div><div class='input'><span class='fu'>dfm_tfidf</span><span class='op'>(</span><span class='va'>dfmat2</span>, scheme_tf <span class='op'>=</span> <span class='st'>"prop"</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span><span class='op'>(</span>digits <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (33.33% sparse) and 0 docvars.
-#&gt;            features
-#&gt; docs        this is    a sample another example
-#&gt;   document1    0  0 0.12   0.06    0       0   
-#&gt;   document2    0  0 0      0       0.09    0.13</div><div class='input'>
-<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
-<span class='co'># comparison with tm</span>
-<span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span><span class='op'>(</span><span class='st'>"tm"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
-    <span class='fu'><a href='convert.html'>convert</a></span><span class='op'>(</span><span class='va'>dfmat2</span>, to <span class='op'>=</span> <span class='st'>"tm"</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'>tm</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/tm/man/weightTfIdf.html'>weightTfIdf</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>as.matrix</a></span><span class='op'>(</span><span class='op'>)</span>
-    <span class='co'># same as:</span>
-    <span class='fu'>dfm_tfidf</span><span class='op'>(</span><span class='va'>dfmat2</span>, base <span class='op'>=</span> <span class='fl'>2</span>, scheme_tf <span class='op'>=</span> <span class='st'>"prop"</span><span class='op'>)</span>
-<span class='op'>}</span>
-<span class='op'>}</span>
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='va'>dfmat1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='as.dfm.html'>as.dfm</a></span><span class='op'>(</span><span class='va'>data_dfm_lbgexample</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>dfmat1</span><span class='op'>[</span>, <span class='fl'>5</span><span class='op'>:</span><span class='fl'>10</span><span class='op'>]</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Document-feature matrix of: 6 documents, 6 features (61.11% sparse) and 0 docvars.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     features</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> docs  E  F   G   H   I   J</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   R1 45 78 115 146 158 146</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   R2  0  2   3  10  22  45</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   R3  0  0   0   0   0   0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   R4  0  0   0   0   0   0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   R5  0  0   0   0   0   0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   V1  0  0   0   2   3  10</span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fu'>dfm_tfidf</span><span class='op'>(</span><span class='va'>dfmat1</span><span class='op'>)</span><span class='op'>[</span>, <span class='fl'>5</span><span class='op'>:</span><span class='fl'>10</span><span class='op'>]</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Document-feature matrix of: 6 documents, 6 features (61.11% sparse) and 0 docvars.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     features</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> docs        E          F         G        H        I        J</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   R1 35.01681 37.2154579 54.868944 43.95038 47.56274 43.95038</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   R2  0        0.9542425  1.431364  3.01030  6.62266 13.54635</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   R3  0        0          0         0        0        0      </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   R4  0        0          0         0        0        0      </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   R5  0        0          0         0        0        0      </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   V1  0        0          0         0.60206  0.90309  3.01030</span>
+<span class='r-in'><span class='fu'><a href='docfreq.html'>docfreq</a></span><span class='op'>(</span><span class='va'>dfmat1</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>5</span><span class='op'>:</span><span class='fl'>15</span><span class='op'>]</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> E F G H I J K L M N O </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1 2 2 3 3 3 4 4 4 4 4 </span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fu'><a href='dfm_weight.html'>dfm_weight</a></span><span class='op'>(</span><span class='va'>dfmat1</span><span class='op'>)</span><span class='op'>[</span>, <span class='fl'>5</span><span class='op'>:</span><span class='fl'>10</span><span class='op'>]</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Document-feature matrix of: 6 documents, 6 features (61.11% sparse) and 0 docvars.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     features</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> docs  E  F   G   H   I   J</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   R1 45 78 115 146 158 146</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   R2  0  2   3  10  22  45</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   R3  0  0   0   0   0   0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   R4  0  0   0   0   0   0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   R5  0  0   0   0   0   0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   V1  0  0   0   2   3  10</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># replication of worked example from</span></span>
+<span class='r-in'><span class='co'># https://en.wikipedia.org/wiki/Tf-idf#Example_of_tf.E2.80.93idf</span></span>
+<span class='r-in'><span class='va'>dfmat2</span> <span class='op'>&lt;-</span></span>
+<span class='r-in'>    <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>0</span>, <span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>2</span>,<span class='fl'>3</span><span class='op'>)</span>,</span>
+<span class='r-in'>           byrow <span class='op'>=</span> <span class='cn'>TRUE</span>, nrow <span class='op'>=</span> <span class='fl'>2</span>,</span>
+<span class='r-in'>           dimnames <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>docs <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"document1"</span>, <span class='st'>"document2"</span><span class='op'>)</span>,</span>
+<span class='r-in'>                           features <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"this"</span>, <span class='st'>"is"</span>, <span class='st'>"a"</span>, <span class='st'>"sample"</span>,</span>
+<span class='r-in'>                                        <span class='st'>"another"</span>, <span class='st'>"example"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>    <span class='fu'><a href='as.dfm.html'>as.dfm</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>dfmat2</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Document-feature matrix of: 2 documents, 6 features (33.33% sparse) and 0 docvars.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>            features</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> docs        this is a sample another example</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   document1    1  1 2      1       0       0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   document2    1  1 0      0       2       3</span>
+<span class='r-in'><span class='fu'><a href='docfreq.html'>docfreq</a></span><span class='op'>(</span><span class='va'>dfmat2</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    this      is       a  sample another example </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       2       2       1       1       1       1 </span>
+<span class='r-in'><span class='fu'>dfm_tfidf</span><span class='op'>(</span><span class='va'>dfmat2</span>, scheme_tf <span class='op'>=</span> <span class='st'>"prop"</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span> <span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span><span class='op'>(</span>digits <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Document-feature matrix of: 2 documents, 6 features (33.33% sparse) and 0 docvars.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>            features</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> docs        this is    a sample another example</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   document1    0  0 0.12   0.06    0       0   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   document2    0  0 0      0       0.09    0.13</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span></span>
+<span class='r-in'><span class='co'># comparison with tm</span></span>
+<span class='r-in'><span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span><span class='op'>(</span><span class='st'>"tm"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span></span>
+<span class='r-in'>    <span class='fu'><a href='convert.html'>convert</a></span><span class='op'>(</span><span class='va'>dfmat2</span>, to <span class='op'>=</span> <span class='st'>"tm"</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span> <span class='fu'>tm</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/tm/man/weightTfIdf.html'>weightTfIdf</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>as.matrix</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-in'>    <span class='co'># same as:</span></span>
+<span class='r-in'>    <span class='fu'>dfm_tfidf</span><span class='op'>(</span><span class='va'>dfmat2</span>, base <span class='op'>=</span> <span class='fl'>2</span>, scheme_tf <span class='op'>=</span> <span class='st'>"prop"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>}</span></span>
+<span class='r-in'><span class='op'>}</span></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

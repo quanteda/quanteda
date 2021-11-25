@@ -91,7 +91,7 @@ in documents, or both." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.2.0</span>
       </span>
     </div>
 
@@ -251,54 +251,58 @@ and <code>both</code> to sort by both</p></td>
     <p>Ken Benoit</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>dfmat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span><span class='op'>(</span><span class='va'>data_corpus_inaugural</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: 'dfm.corpus()' is deprecated. Use 'tokens()' first.</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>dfmat</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Document-feature matrix of: 6 documents, 9,439 features (93.84% sparse) and 4 docvars.
-#&gt;                  features
-#&gt; docs              fellow-citizens  of the senate and house representatives :
-#&gt;   1789-Washington               1  71 116      1  48     2               2 1
-#&gt;   1793-Washington               0  11  13      0   2     0               0 1
-#&gt;   1797-Adams                    3 140 163      1 130     0               2 0
-#&gt;   1801-Jefferson                2 104 130      0  81     0               0 1
-#&gt;   1805-Jefferson                0 101 143      0  93     0               0 0
-#&gt;   1809-Madison                  1  69 104      0  43     0               0 0
-#&gt;                  features
-#&gt; docs              among vicissitudes
-#&gt;   1789-Washington     1            1
-#&gt;   1793-Washington     0            0
-#&gt;   1797-Adams          4            0
-#&gt;   1801-Jefferson      1            0
-#&gt;   1805-Jefferson      7            0
-#&gt;   1809-Madison        0            0
-#&gt; [ reached max_nfeat ... 9,429 more features ]</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fu'>dfm_sort</span><span class='op'>(</span><span class='va'>dfmat</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Document-feature matrix of: 6 documents, 9,439 features (93.84% sparse) and 4 docvars.
-#&gt;                  features
-#&gt; docs              the  of   , and  . to in  a our we
-#&gt;   1789-Washington 116  71  70  48 23 48 31 14   1  1
-#&gt;   1793-Washington  13  11   5   2  4  5  3  0   0  0
-#&gt;   1797-Adams      163 140 201 130 33 72 47 51   6  3
-#&gt;   1801-Jefferson  130 104 128  81 37 61 24 21  24 10
-#&gt;   1805-Jefferson  143 101 142  93 41 83 35 20  24 13
-#&gt;   1809-Madison    104  69  47  43 21 61 34 19   9  2
-#&gt; [ reached max_nfeat ... 9,429 more features ]</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fu'>dfm_sort</span><span class='op'>(</span><span class='va'>dfmat</span>, decreasing <span class='op'>=</span> <span class='cn'>FALSE</span>, <span class='st'>"both"</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Document-feature matrix of: 6 documents, 9,439 features (96.33% sparse) and 4 docvars.
-#&gt;                  features
-#&gt; docs              notification 14th fondest predilection flattering asylum
-#&gt;   1793-Washington            0    0       0            0          0      0
-#&gt;   1945-Roosevelt             0    0       0            0          0      0
-#&gt;   1865-Lincoln               0    0       0            0          0      0
-#&gt;   1905-Roosevelt             0    0       0            0          0      0
-#&gt;   1849-Taylor                0    0       0            0          0      0
-#&gt;   1829-Jackson               0    0       0            0          0      0
-#&gt;                  features
-#&gt; docs              interruptions awaken distrustful despondence
-#&gt;   1793-Washington             0      0           0           0
-#&gt;   1945-Roosevelt              0      0           0           0
-#&gt;   1865-Lincoln                0      0           0           0
-#&gt;   1905-Roosevelt              0      0           0           0
-#&gt;   1849-Taylor                 0      0           0           0
-#&gt;   1829-Jackson                0      0           0           0
-#&gt; [ reached max_nfeat ... 9,429 more features ]</div></pre>
+    <pre class="examples"><span class='r-in'><span class='va'>dfmat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span><span class='op'>(</span><span class='va'>data_corpus_inaugural</span><span class='op'>)</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>'dfm.corpus()' is deprecated. Use 'tokens()' first.</span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>dfmat</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Document-feature matrix of: 6 documents, 9,439 features (93.84% sparse) and 4 docvars.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                  features</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> docs              fellow-citizens  of the senate and house representatives :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1789-Washington               1  71 116      1  48     2               2 1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1793-Washington               0  11  13      0   2     0               0 1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1797-Adams                    3 140 163      1 130     0               2 0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1801-Jefferson                2 104 130      0  81     0               0 1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1805-Jefferson                0 101 143      0  93     0               0 0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1809-Madison                  1  69 104      0  43     0               0 0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                  features</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> docs              among vicissitudes</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1789-Washington     1            1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1793-Washington     0            0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1797-Adams          4            0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1801-Jefferson      1            0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1805-Jefferson      7            0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1809-Madison        0            0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [ reached max_nfeat ... 9,429 more features ]</span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fu'>dfm_sort</span><span class='op'>(</span><span class='va'>dfmat</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Document-feature matrix of: 6 documents, 9,439 features (93.84% sparse) and 4 docvars.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                  features</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> docs              the  of   , and  . to in  a our we</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1789-Washington 116  71  70  48 23 48 31 14   1  1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1793-Washington  13  11   5   2  4  5  3  0   0  0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1797-Adams      163 140 201 130 33 72 47 51   6  3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1801-Jefferson  130 104 128  81 37 61 24 21  24 10</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1805-Jefferson  143 101 142  93 41 83 35 20  24 13</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1809-Madison    104  69  47  43 21 61 34 19   9  2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [ reached max_nfeat ... 9,429 more features ]</span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fu'>dfm_sort</span><span class='op'>(</span><span class='va'>dfmat</span>, decreasing <span class='op'>=</span> <span class='cn'>FALSE</span>, <span class='st'>"both"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Document-feature matrix of: 6 documents, 9,439 features (96.33% sparse) and 4 docvars.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                  features</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> docs              notification 14th fondest predilection flattering asylum</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1793-Washington            0    0       0            0          0      0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1945-Roosevelt             0    0       0            0          0      0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1865-Lincoln               0    0       0            0          0      0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1905-Roosevelt             0    0       0            0          0      0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1849-Taylor                0    0       0            0          0      0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1829-Jackson               0    0       0            0          0      0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                  features</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> docs              interruptions awaken distrustful despondence</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1793-Washington             0      0           0           0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1945-Roosevelt              0      0           0           0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1865-Lincoln                0      0           0           0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1905-Roosevelt              0      0           0           0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1849-Taylor                 0      0           0           0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1829-Jackson                0      0           0           0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [ reached max_nfeat ... 9,429 more features ]</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -89,7 +89,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.2.0</span>
       </span>
     </div>
 
@@ -233,7 +233,7 @@
 </li>
 <li><p>Corpus objects now store default summary statistics for efficiency. When these are present, <code><a href="../reference/summary.corpus.html">summary.corpus()</a></code> retrieves them rather than computing them on the fly.</p></li>
 <li>
-<p>New index operators for core objects. The main change here is to redefine the <code><a href="https://rdrr.io/r/base/Extract.html">$</a></code> operator for corpus, tokens, and dfm objects (all objects that retain docvars) to allow this operator to access single docvars by name. Some other index operators have been redefined as well, such as <code>[.corpus</code> returning a slice of a corpus, and <code>[[.corpus</code> returning the texts from a corpus.</p>
+<p>New index operators for core objects. The main change here is to redefine the <code>$</code> operator for corpus, tokens, and dfm objects (all objects that retain docvars) to allow this operator to access single docvars by name. Some other index operators have been redefined as well, such as <code>[.corpus</code> returning a slice of a corpus, and <code>[[.corpus</code> returning the texts from a corpus.</p>
 <p>See the full details at <a href="https://github.com/quanteda/quanteda/wiki/indexing_core_objects" class="uri">https://github.com/quanteda/quanteda/wiki/indexing_core_objects</a>.</p>
 </li>
 <li>
@@ -241,10 +241,10 @@
 <p>The <code>subset</code> argument now must be logical, and the <code>select</code> argument has been removed. (This is part of <code><a href="https://rdrr.io/r/base/subset.html">base::subset()</a></code> but has never made sense, either in <strong>quanteda</strong> or <strong>base</strong>.)</p>
 </li>
 <li>
-<p>Return format from <code>textstat_simil()</code> and <code>textstat_dist()</code>.</p>
+<p>Return format from <code><a href="https://quanteda.io/reference/textstat_simil.html">textstat_simil()</a></code> and <code><a href="https://quanteda.io/reference/textstat_simil.html">textstat_dist()</a></code>.</p>
 <p>Now defaults to a sparse matrix from the <strong>Matrix</strong> package, but coercion methods are provided for <code><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame()</a></code>, to make these functions return a data.frame just like the other textstat functions. Additional coercion methods are provided for <code><a href="https://rdrr.io/r/stats/dist.html">as.dist()</a></code>, <code>as.simil()</code>, and <code><a href="https://rdrr.io/r/base/matrix.html">as.matrix()</a></code>.</p>
 </li>
-<li><p>settings functions (and related slots and object attributes) are gone. These are now replaced by a new <code><a href="../reference/meta.html">meta(x, type = "object")</a></code> that records object-specific meta-data, including settings such as the <code>n</code> for tokens (to record the <code>ngrams</code>).</p></li>
+<li><p>settings functions (and related slots and object attributes) are gone. These are now replaced by a new <code>meta(x, type = "object")</code> that records object-specific meta-data, including settings such as the <code>n</code> for tokens (to record the <code>ngrams</code>).</p></li>
 <li><p>All included data objects are upgraded to the new formats. This includes the three corpus objects, the single dfm data object, and the LSD 2015 dictionary object.</p></li>
 <li><p>New print methods for core objects (corpus, tokens, dfm, dictionary) now exist, each with new global options to control the number of documents shown, as well as the length of a text snippet (corpus), the tokens (tokens), dfm cells (dfm), or keys and values (dictionary). Similar to the extended printing options for dfm objects, printing of corpus objects now allows for brief summaries of the texts to be printed, and for the number of documents and the length of the previews to be controlled by new global options.</p></li>
 <li><p>All textmodels and related functions have been moved to a new package <strong>quanteda.textmodels</strong>. This makes them easier to maintain and update, and keeps the size of the core package down.</p></li>
@@ -257,7 +257,7 @@
 <p>Note that <code>tokens.tokens()</code> will remove what is found, but cannot “undo” a removal – for instance it cannot replace missing punctuation characters if these have already been removed.</p>
 <ul>
 <li><p>The option <code>remove_hyphens</code> is removed and deprecated, but replaced by <code>split_hyphens</code>. This preserves infix (internal) hyphens rather than splitting them. This behaviour is implemented in both the <code>what = "word"</code> and <code>what = "word2"</code> tokenizer options. This option is <code>FALSE</code> by default.</p></li>
-<li><p>The option <code>remove_twitter</code> has been removed. The new <code>what = "word"</code> is a smarter tokenizer that preserves social media tags, URLs, and email-addresses. “Tags” are defined as valid social media hashtags and usernames (using Twitter rules for validity) rather than removing the <code>#</code> and <code><a href="https://rdrr.io/r/base/slotOp.html">@</a></code> punctuation characters, even if <code>remove_punct = TRUE</code>.</p></li>
+<li><p>The option <code>remove_twitter</code> has been removed. The new <code>what = "word"</code> is a smarter tokenizer that preserves social media tags, URLs, and email-addresses. “Tags” are defined as valid social media hashtags and usernames (using Twitter rules for validity) rather than removing the <code>#</code> and <code>@</code> punctuation characters, even if <code>remove_punct = TRUE</code>.</p></li>
 </ul>
 </li>
 </ol>
@@ -277,17 +277,17 @@
 <h2 class="hasAnchor">
 <a href="#behaviour-changes" class="anchor"></a>Behaviour changes</h2>
 <ul>
-<li>Added a <code>force = TRUE</code> option and error checking for the situations of applying <code><a href="../reference/dfm_weight.html">dfm_weight()</a></code> or <code><a href="../reference/dfm_group.html">dfm_group()</a></code> to a dfm that has already been weighted. (<a href='https://github.com/quanteda/quanteda/issues/1545'>#1545</a>) The function <code>textstat_frequency()</code> now allows passing this argument to <code><a href="../reference/dfm_group.html">dfm_group()</a></code> via <code>...</code>. (<a href='https://github.com/quanteda/quanteda/issues/1646'>#1646</a>)</li>
+<li>Added a <code>force = TRUE</code> option and error checking for the situations of applying <code><a href="../reference/dfm_weight.html">dfm_weight()</a></code> or <code><a href="../reference/dfm_group.html">dfm_group()</a></code> to a dfm that has already been weighted. (<a href='https://github.com/quanteda/quanteda/issues/1545'>#1545</a>) The function <code><a href="https://quanteda.io/reference/textstat_frequency.html">textstat_frequency()</a></code> now allows passing this argument to <code><a href="../reference/dfm_group.html">dfm_group()</a></code> via <code>...</code>. (<a href='https://github.com/quanteda/quanteda/issues/1646'>#1646</a>)</li>
 <li>
-<code>textstat_frequency()</code> now has a new argument for resolving ties when ranking term frequencies, defaulting to the “min” method. (<a href='https://github.com/quanteda/quanteda/issues/1634'>#1634</a>)</li>
-<li>New docvars accessor and replacement functions are available for corpus, tokens, and dfm objects via <code><a href="https://rdrr.io/r/base/Extract.html">$</a></code>. (See Index Operators for Core Objects above.)</li>
+<code><a href="https://quanteda.io/reference/textstat_frequency.html">textstat_frequency()</a></code> now has a new argument for resolving ties when ranking term frequencies, defaulting to the “min” method. (<a href='https://github.com/quanteda/quanteda/issues/1634'>#1634</a>)</li>
+<li>New docvars accessor and replacement functions are available for corpus, tokens, and dfm objects via <code>$</code>. (See Index Operators for Core Objects above.)</li>
 <li>
-<code>textstat_entropy()</code> now produces a data.frame that is more consistent with other <code>textstat</code> methods. (<a href='https://github.com/quanteda/quanteda/issues/1690'>#1690</a>)</li>
+<code><a href="https://quanteda.io/reference/textstat_entropy.html">textstat_entropy()</a></code> now produces a data.frame that is more consistent with other <code>textstat</code> methods. (<a href='https://github.com/quanteda/quanteda/issues/1690'>#1690</a>)</li>
 </ul>
 </div>
-<div id="bug-fixes-and-stability-enhancements-6" class="section level2">
+<div id="bug-fixes-and-stability-enhancements-7" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-and-stability-enhancements-6" class="anchor"></a>Bug fixes and stability enhancements</h2>
+<a href="#bug-fixes-and-stability-enhancements-7" class="anchor"></a>Bug fixes and stability enhancements</h2>
 <ul>
 <li>docnames now enforced to be character (formerly, could be numeric for some objects).</li>
 <li>docnames are now enforced to be strictly unique for all object classes.</li>
@@ -316,9 +316,9 @@
 <li>Verbose output for dfm and tokens creation is now corrected and more consistent. (<a href='https://github.com/quanteda/quanteda/issues/1894'>#1894</a>)</li>
 </ul>
 </div>
-<div id="bug-fixes-and-stability-enhancements-5" class="section level2">
+<div id="bug-fixes-and-stability-enhancements-6" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-and-stability-enhancements-5" class="anchor"></a>Bug fixes and stability enhancements</h2>
+<a href="#bug-fixes-and-stability-enhancements-6" class="anchor"></a>Bug fixes and stability enhancements</h2>
 <ul>
 <li>Number removal is now both improved and fixed (<a href='https://github.com/quanteda/quanteda/issues/1909'>#1909</a>).</li>
 <li>Fixed an issue causing CRAN errors in pre-v4, related to the new default of <code>stringsAsFactors = FALSE</code> for data.frame objects.</li>

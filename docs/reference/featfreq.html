@@ -91,7 +91,7 @@ across all documents in the dfm. This is equivalent to colSums(x)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.2.0</span>
       </span>
     </div>
 
@@ -218,7 +218,7 @@ across all documents in the dfm. This is equivalent to colSums(x)." />
 
     <div class="ref-description">
     <p>For a <a href='dfm.html'>dfm</a> object, returns a frequency for each feature, computed
-across all documents in the dfm. This is equivalent to <code><a href='https://rdrr.io/r/base/colSums.html'>colSums(x)</a></code>.</p>
+across all documents in the dfm. This is equivalent to <code>colSums(x)</code>.</p>
     </div>
 
     <pre class="usage"><span class='fu'>featfreq</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></pre>
@@ -240,104 +240,106 @@ across all documents in the dfm. This is equivalent to <code><a href='https://rd
     <div class='dont-index'><p><code><a href='dfm_tfidf.html'>dfm_tfidf()</a></code>, <code><a href='dfm_weight.html'>dfm_weight()</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>dfmat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span><span class='op'>(</span><span class='va'>data_char_sampletext</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: 'dfm.character()' is deprecated. Use 'tokens()' first.</span></div><div class='input'><span class='fu'>featfreq</span><span class='op'>(</span><span class='va'>dfmat</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;       instead            we          have             a          fine 
-#&gt;             1             5             1             4             1 
-#&gt;   gael-labour         party    government             ,        coming 
-#&gt;             1             1             4            16             1 
-#&gt;          into         power     promising          real        change 
-#&gt;             3             1             1             1             1 
-#&gt;           but     slavishly     following           the      previous 
-#&gt;             4             2             1            46             1 
-#&gt;  government's        policy             .          that           has 
-#&gt;             1             4            14             8             4 
-#&gt;          been      dictated            by           imf            eu 
-#&gt;             2             1             4             1             1 
-#&gt;           and           ecb           not            to          bail 
-#&gt;            20             1             4            11             1 
-#&gt;           out         irish        people       salvage        german 
-#&gt;             3             5             7             1             1 
-#&gt;        french       british         banks         those            of 
-#&gt;             1             1             3             2            37 
-#&gt;         other     countries          from         their    disastrous 
-#&gt;             3             1             3             3             1 
-#&gt;      frenzied       embrace       bankers   speculators            in 
-#&gt;             1             1             1             2            15 
-#&gt;      property        market        bubble            it            is 
-#&gt;             1             2             1             4             9 
-#&gt;      criminal            an         would          ever         agree 
-#&gt;             1             1             2             1             1 
-#&gt;          make        vassal         state      republic       ireland 
-#&gt;             1             1             1             1             1 
-#&gt;           its       squeeze       tribute           our          save 
-#&gt;             1             1             1             3             1 
-#&gt;    capitalist        europe         doing            so       destroy 
-#&gt;             1             1             1             1             1 
-#&gt;         lives      hundreds     thousands           now       plunged 
-#&gt;             1             2             6             2             1 
-#&gt;  unemployment     financial      hardship        social   dislocation 
-#&gt;             3             2             1             1             1 
-#&gt;          this        budget          past          four         years 
-#&gt;             6             1             1             1             2 
-#&gt;     austerity         means             €            25       billion 
-#&gt;             3             2             3             1             1 
-#&gt;        reefed       economy       pursuit      cringing    acceptance 
-#&gt;             1             5             1             1             1 
-#&gt;       diktats       markets           can           see          only 
-#&gt;             1             1             1             1             1 
-#&gt;       immoral        unjust       extreme    decimating      domestic 
-#&gt;             2             1             1             1             3 
-#&gt;             ?            as           are         tired      pointing 
-#&gt;             1             1             6             1             1 
-#&gt;            if        savage       ability      majority      purchase 
-#&gt;             1             1             1             1             2 
-#&gt;         goods       utilise      services          then          tens 
-#&gt;             2             1             2             1             3 
-#&gt;       workers     depending            on        demand           for 
-#&gt;             2             1             5             2             4 
-#&gt;          jobs          will            be        thrown     scrapheap 
-#&gt;             3             4             4             1             1 
-#&gt;    tragically          what     happening           all           key 
-#&gt;             1             1             1             1             1 
-#&gt;    indicators          show        abject       failure       private 
-#&gt;             1             1             1             1             1 
-#&gt;    investment     collapsed           vat      receipts          more 
-#&gt;             3             1             2             1             1 
-#&gt;          than           400       million        behind         risen 
-#&gt;             1             1             2             1             1 
-#&gt;         since       entered        office          much          made 
-#&gt;             1             1             1             1             1 
-#&gt;        growth       exports         every           job        export 
-#&gt;             1             2             1             1             1 
-#&gt;        sector         vital        defend          type       capital 
-#&gt;             1             1             1             1             1 
-#&gt;     intensive        nature          goes         where          need 
-#&gt;             1             1             1             1             1 
-#&gt;       created          next        period          hand        taking 
-#&gt;             1             1             1             1             2 
-#&gt;           670       pockets      ordinary       through     increases 
-#&gt;             1             1             1             1             1 
-#&gt;         money          cuts         child       benefit     elsewhere 
-#&gt;             1             1             1             1             1 
-#&gt;       further           add      downward        spiral      interest 
-#&gt;             1             1             1             1             1 
-#&gt;        relief  householders           who       trapped     nightmare 
-#&gt;             1             1             3             2             2 
-#&gt;      negative        equity  extortionate       monthly      mortgage 
-#&gt;             1             1             1             1             1 
-#&gt;      payments      welcomed        degree      dismally    inadequate 
-#&gt;             1             1             1             1             1 
-#&gt;    generation       victims     extortion   perpetrated          them 
-#&gt;             1             1             1             1             1 
-#&gt;       housing    legislated        fianna          fáil           pds 
-#&gt;             1             1             1             1             1 
-#&gt;          huge    proportion       incomes     continues            go 
-#&gt;             1             1             1             1             1 
-#&gt;     massively    dislocates     otherwise         funds         going 
-#&gt;             1             1             1             1             1 
-#&gt;   stimulating    sustaining          dole unfortunately 
-#&gt;             1             1             1             1 </div></pre>
+    <pre class="examples"><span class='r-in'><span class='va'>dfmat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span><span class='op'>(</span><span class='va'>data_char_sampletext</span><span class='op'>)</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>'dfm.character()' is deprecated. Use 'tokens()' first.</span>
+<span class='r-in'><span class='fu'>featfreq</span><span class='op'>(</span><span class='va'>dfmat</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       instead            we          have             a          fine </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             1             5             1             4             1 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   gael-labour         party    government             ,        coming </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             1             1             4            16             1 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          into         power     promising          real        change </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             3             1             1             1             1 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>           but     slavishly     following           the      previous </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             4             2             1            46             1 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  government's        policy             .          that           has </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             1             4            14             8             4 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          been      dictated            by           imf            eu </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             2             1             4             1             1 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>           and           ecb           not            to          bail </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>            20             1             4            11             1 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>           out         irish        people       salvage        german </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             3             5             7             1             1 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        french       british         banks         those            of </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             1             1             3             2            37 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         other     countries          from         their    disastrous </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             3             1             3             3             1 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      frenzied       embrace       bankers   speculators            in </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             1             1             1             2            15 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      property        market        bubble            it            is </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             1             2             1             4             9 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      criminal            an         would          ever         agree </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             1             1             2             1             1 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          make        vassal         state      republic       ireland </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             1             1             1             1             1 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>           its       squeeze       tribute           our          save </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             1             1             1             3             1 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    capitalist        europe         doing            so       destroy </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             1             1             1             1             1 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         lives      hundreds     thousands           now       plunged </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             1             2             6             2             1 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  unemployment     financial      hardship        social   dislocation </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             3             2             1             1             1 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          this        budget          past          four         years </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             6             1             1             1             2 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     austerity         means             €            25       billion </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             3             2             3             1             1 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        reefed       economy       pursuit      cringing    acceptance </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             1             5             1             1             1 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       diktats       markets           can           see          only </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             1             1             1             1             1 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       immoral        unjust       extreme    decimating      domestic </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             2             1             1             1             3 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             ?            as           are         tired      pointing </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             1             1             6             1             1 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>            if        savage       ability      majority      purchase </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             1             1             1             1             2 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         goods       utilise      services          then          tens </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             2             1             2             1             3 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       workers     depending            on        demand           for </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             2             1             5             2             4 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          jobs          will            be        thrown     scrapheap </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             3             4             4             1             1 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    tragically          what     happening           all           key </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             1             1             1             1             1 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    indicators          show        abject       failure       private </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             1             1             1             1             1 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    investment     collapsed           vat      receipts          more </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             3             1             2             1             1 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          than           400       million        behind         risen </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             1             1             2             1             1 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         since       entered        office          much          made </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             1             1             1             1             1 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        growth       exports         every           job        export </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             1             2             1             1             1 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        sector         vital        defend          type       capital </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             1             1             1             1             1 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     intensive        nature          goes         where          need </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             1             1             1             1             1 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       created          next        period          hand        taking </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             1             1             1             1             2 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>           670       pockets      ordinary       through     increases </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             1             1             1             1             1 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         money          cuts         child       benefit     elsewhere </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             1             1             1             1             1 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       further           add      downward        spiral      interest </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             1             1             1             1             1 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        relief  householders           who       trapped     nightmare </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             1             1             3             2             2 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      negative        equity  extortionate       monthly      mortgage </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             1             1             1             1             1 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      payments      welcomed        degree      dismally    inadequate </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             1             1             1             1             1 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    generation       victims     extortion   perpetrated          them </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             1             1             1             1             1 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       housing    legislated        fianna          fáil           pds </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             1             1             1             1             1 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          huge    proportion       incomes     continues            go </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             1             1             1             1             1 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     massively    dislocates     otherwise         funds         going </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             1             1             1             1             1 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   stimulating    sustaining          dole unfortunately </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             1             1             1             1 </span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

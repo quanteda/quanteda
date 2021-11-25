@@ -91,7 +91,7 @@ object." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.2.0</span>
       </span>
     </div>
 
@@ -318,125 +318,139 @@ keys, or as one match if the overlap is within the same key.
     <div class='dont-index'><p>tokens_replace</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>toks1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span><span class='op'>(</span><span class='va'>data_corpus_inaugural</span><span class='op'>)</span>
-<span class='va'>dict1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dictionary.html'>dictionary</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>country <span class='op'>=</span> <span class='st'>"united states"</span>,
-                   law<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"law*"</span>, <span class='st'>"constitution"</span><span class='op'>)</span>,
-                   freedom<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"free*"</span>, <span class='st'>"libert*"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'><a href='dfm.html'>dfm</a></span><span class='op'>(</span><span class='fu'>tokens_lookup</span><span class='op'>(</span><span class='va'>toks1</span>, <span class='va'>dict1</span>, valuetype <span class='op'>=</span> <span class='st'>"glob"</span>, verbose <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>applying a dictionary consisting of 3 keys</span></div><div class='output co'>#&gt; Document-feature matrix of: 59 documents, 3 features (14.69% sparse) and 4 docvars.
-#&gt;                  features
-#&gt; docs              country law freedom
-#&gt;   1789-Washington       2   1       6
-#&gt;   1793-Washington       0   1       0
-#&gt;   1797-Adams            3  10       6
-#&gt;   1801-Jefferson        0   6      11
-#&gt;   1805-Jefferson        1  13       6
-#&gt;   1809-Madison          2   2       5
-#&gt; [ reached max_ndoc ... 53 more documents ]</div><div class='input'><span class='fu'><a href='dfm.html'>dfm</a></span><span class='op'>(</span><span class='fu'>tokens_lookup</span><span class='op'>(</span><span class='va'>toks1</span>, <span class='va'>dict1</span>, valuetype <span class='op'>=</span> <span class='st'>"glob"</span>, verbose <span class='op'>=</span> <span class='cn'>TRUE</span>, nomatch <span class='op'>=</span> <span class='st'>"NONE"</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>applying a dictionary consisting of 3 keys</span></div><div class='output co'>#&gt; Document-feature matrix of: 59 documents, 4 features (11.02% sparse) and 4 docvars.
-#&gt;                  features
-#&gt; docs              country law freedom none
-#&gt;   1789-Washington       2   1       6 1526
-#&gt;   1793-Washington       0   1       0  146
-#&gt;   1797-Adams            3  10       6 2555
-#&gt;   1801-Jefferson        0   6      11 1906
-#&gt;   1805-Jefferson        1  13       6 2359
-#&gt;   1809-Madison          2   2       5 1250
-#&gt; [ reached max_ndoc ... 53 more documents ]</div><div class='input'>
-<span class='va'>dict2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dictionary.html'>dictionary</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>country <span class='op'>=</span> <span class='st'>"united states"</span>,
-                       law <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"law"</span>, <span class='st'>"constitution"</span><span class='op'>)</span>,
-                       freedom <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"freedom"</span>, <span class='st'>"liberty"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
-<span class='co'># dfm(applyDictionary(toks1, dict2, valuetype = "fixed"))</span>
-<span class='fu'><a href='dfm.html'>dfm</a></span><span class='op'>(</span><span class='fu'>tokens_lookup</span><span class='op'>(</span><span class='va'>toks1</span>, <span class='va'>dict2</span>, valuetype <span class='op'>=</span> <span class='st'>"fixed"</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Document-feature matrix of: 59 documents, 3 features (20.90% sparse) and 4 docvars.
-#&gt;                  features
-#&gt; docs              country law freedom
-#&gt;   1789-Washington       2   1       1
-#&gt;   1793-Washington       0   1       0
-#&gt;   1797-Adams            3   8       3
-#&gt;   1801-Jefferson        0   6       7
-#&gt;   1805-Jefferson        1   9       5
-#&gt;   1809-Madison          2   2       3
-#&gt; [ reached max_ndoc ... 53 more documents ]</div><div class='input'>
-<span class='co'># hierarchical dictionary example</span>
-<span class='va'>txt</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>d1 <span class='op'>=</span> <span class='st'>"The United States has the Atlantic Ocean and the Pacific Ocean."</span>,
-         d2 <span class='op'>=</span> <span class='st'>"Britain and Ireland have the Irish Sea and the English Channel."</span><span class='op'>)</span>
-<span class='va'>toks2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span><span class='op'>(</span><span class='va'>txt</span><span class='op'>)</span>
-<span class='va'>dict3</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dictionary.html'>dictionary</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>US <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>Countries <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"States"</span><span class='op'>)</span>,
-                                  oceans <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Atlantic"</span>, <span class='st'>"Pacific"</span><span class='op'>)</span><span class='op'>)</span>,
-                        Europe <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>Countries <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Britain"</span>, <span class='st'>"Ireland"</span><span class='op'>)</span>,
-                                      oceans <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>west <span class='op'>=</span> <span class='st'>"Irish Sea"</span>,
-                                                    east <span class='op'>=</span> <span class='st'>"English Channel"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'>tokens_lookup</span><span class='op'>(</span><span class='va'>toks2</span>, <span class='va'>dict3</span>, levels <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Tokens consisting of 2 documents.
-#&gt; d1 :
-#&gt; [1] "US" "US" "US"
-#&gt; 
-#&gt; d2 :
-#&gt; [1] "Europe" "Europe" "Europe" "Europe"
-#&gt; </div><div class='input'><span class='fu'>tokens_lookup</span><span class='op'>(</span><span class='va'>toks2</span>, <span class='va'>dict3</span>, levels <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Tokens consisting of 2 documents.
-#&gt; d1 :
-#&gt; [1] "Countries" "oceans"    "oceans"   
-#&gt; 
-#&gt; d2 :
-#&gt; [1] "Countries" "Countries" "oceans"    "oceans"   
-#&gt; </div><div class='input'><span class='fu'>tokens_lookup</span><span class='op'>(</span><span class='va'>toks2</span>, <span class='va'>dict3</span>, levels <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Tokens consisting of 2 documents.
-#&gt; d1 :
-#&gt; [1] "US.Countries" "US.oceans"    "US.oceans"   
-#&gt; 
-#&gt; d2 :
-#&gt; [1] "Europe.Countries" "Europe.Countries" "Europe.oceans"    "Europe.oceans"   
-#&gt; </div><div class='input'><span class='fu'>tokens_lookup</span><span class='op'>(</span><span class='va'>toks2</span>, <span class='va'>dict3</span>, levels <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Tokens consisting of 2 documents.
-#&gt; d1 :
-#&gt; character(0)
-#&gt; 
-#&gt; d2 :
-#&gt; [1] "west" "east"
-#&gt; </div><div class='input'><span class='fu'>tokens_lookup</span><span class='op'>(</span><span class='va'>toks2</span>, <span class='va'>dict3</span>, levels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Tokens consisting of 2 documents.
-#&gt; d1 :
-#&gt; [1] "US" "US" "US"
-#&gt; 
-#&gt; d2 :
-#&gt; [1] "Europe"      "Europe"      "Europe.west" "Europe.east"
-#&gt; </div><div class='input'><span class='fu'>tokens_lookup</span><span class='op'>(</span><span class='va'>toks2</span>, <span class='va'>dict3</span>, levels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Tokens consisting of 2 documents.
-#&gt; d1 :
-#&gt; [1] "Countries" "oceans"    "oceans"   
-#&gt; 
-#&gt; d2 :
-#&gt; [1] "Countries"   "Countries"   "oceans.west" "oceans.east"
-#&gt; </div><div class='input'>
-<span class='co'># show unmatched tokens</span>
-<span class='fu'>tokens_lookup</span><span class='op'>(</span><span class='va'>toks2</span>, <span class='va'>dict3</span>, nomatch <span class='op'>=</span> <span class='st'>"_UNMATCHED"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Tokens consisting of 2 documents.
-#&gt; d1 :
-#&gt;  [1] "_UNMATCHED"   "_UNMATCHED"   "US.Countries" "_UNMATCHED"   "_UNMATCHED"  
-#&gt;  [6] "US.oceans"    "_UNMATCHED"   "_UNMATCHED"   "_UNMATCHED"   "US.oceans"   
-#&gt; [11] "_UNMATCHED"   "_UNMATCHED"  
-#&gt; 
-#&gt; d2 :
-#&gt;  [1] "Europe.Countries"   "_UNMATCHED"         "Europe.Countries"  
-#&gt;  [4] "_UNMATCHED"         "_UNMATCHED"         "Europe.oceans.west"
-#&gt;  [7] "_UNMATCHED"         "_UNMATCHED"         "Europe.oceans.east"
-#&gt; [10] "_UNMATCHED"        
-#&gt; </div><div class='input'>
-<span class='co'># nested matching differences</span>
-<span class='va'>dict4</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dictionary.html'>dictionary</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>paper <span class='op'>=</span> <span class='st'>"New York Times"</span>, city <span class='op'>=</span> <span class='st'>"New York"</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>toks4</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span><span class='op'>(</span><span class='st'>"The New York Times is a New York paper."</span><span class='op'>)</span>
-<span class='fu'>tokens_lookup</span><span class='op'>(</span><span class='va'>toks4</span>, <span class='va'>dict4</span>, nested_scope <span class='op'>=</span> <span class='st'>"key"</span>, exclusive <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Tokens consisting of 1 document.
-#&gt; text1 :
-#&gt; [1] "The"   "PAPER" "CITY"  "is"    "a"     "CITY"  "paper" "."    
-#&gt; </div><div class='input'><span class='fu'>tokens_lookup</span><span class='op'>(</span><span class='va'>toks4</span>, <span class='va'>dict4</span>, nested_scope <span class='op'>=</span> <span class='st'>"dictionary"</span>, exclusive <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Tokens consisting of 1 document.
-#&gt; text1 :
-#&gt; [1] "The"   "PAPER" "is"    "a"     "CITY"  "paper" "."    
-#&gt; </div><div class='input'>
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='va'>toks1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span><span class='op'>(</span><span class='va'>data_corpus_inaugural</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>dict1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dictionary.html'>dictionary</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>country <span class='op'>=</span> <span class='st'>"united states"</span>,</span>
+<span class='r-in'>                   law<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"law*"</span>, <span class='st'>"constitution"</span><span class='op'>)</span>,</span>
+<span class='r-in'>                   freedom<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"free*"</span>, <span class='st'>"libert*"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='dfm.html'>dfm</a></span><span class='op'>(</span><span class='fu'>tokens_lookup</span><span class='op'>(</span><span class='va'>toks1</span>, <span class='va'>dict1</span>, valuetype <span class='op'>=</span> <span class='st'>"glob"</span>, verbose <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> applying a dictionary consisting of 3 keys</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Document-feature matrix of: 59 documents, 3 features (14.69% sparse) and 4 docvars.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                  features</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> docs              country law freedom</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1789-Washington       2   1       6</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1793-Washington       0   1       0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1797-Adams            3  10       6</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1801-Jefferson        0   6      11</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1805-Jefferson        1  13       6</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1809-Madison          2   2       5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [ reached max_ndoc ... 53 more documents ]</span>
+<span class='r-in'><span class='fu'><a href='dfm.html'>dfm</a></span><span class='op'>(</span><span class='fu'>tokens_lookup</span><span class='op'>(</span><span class='va'>toks1</span>, <span class='va'>dict1</span>, valuetype <span class='op'>=</span> <span class='st'>"glob"</span>, verbose <span class='op'>=</span> <span class='cn'>TRUE</span>, nomatch <span class='op'>=</span> <span class='st'>"NONE"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> applying a dictionary consisting of 3 keys</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Document-feature matrix of: 59 documents, 4 features (11.02% sparse) and 4 docvars.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                  features</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> docs              country law freedom none</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1789-Washington       2   1       6 1526</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1793-Washington       0   1       0  146</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1797-Adams            3  10       6 2555</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1801-Jefferson        0   6      11 1906</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1805-Jefferson        1  13       6 2359</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1809-Madison          2   2       5 1250</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [ reached max_ndoc ... 53 more documents ]</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>dict2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dictionary.html'>dictionary</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>country <span class='op'>=</span> <span class='st'>"united states"</span>,</span>
+<span class='r-in'>                       law <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"law"</span>, <span class='st'>"constitution"</span><span class='op'>)</span>,</span>
+<span class='r-in'>                       freedom <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"freedom"</span>, <span class='st'>"liberty"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='co'># dfm(applyDictionary(toks1, dict2, valuetype = "fixed"))</span></span>
+<span class='r-in'><span class='fu'><a href='dfm.html'>dfm</a></span><span class='op'>(</span><span class='fu'>tokens_lookup</span><span class='op'>(</span><span class='va'>toks1</span>, <span class='va'>dict2</span>, valuetype <span class='op'>=</span> <span class='st'>"fixed"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Document-feature matrix of: 59 documents, 3 features (20.90% sparse) and 4 docvars.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                  features</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> docs              country law freedom</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1789-Washington       2   1       1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1793-Washington       0   1       0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1797-Adams            3   8       3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1801-Jefferson        0   6       7</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1805-Jefferson        1   9       5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1809-Madison          2   2       3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [ reached max_ndoc ... 53 more documents ]</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># hierarchical dictionary example</span></span>
+<span class='r-in'><span class='va'>txt</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>d1 <span class='op'>=</span> <span class='st'>"The United States has the Atlantic Ocean and the Pacific Ocean."</span>,</span>
+<span class='r-in'>         d2 <span class='op'>=</span> <span class='st'>"Britain and Ireland have the Irish Sea and the English Channel."</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>toks2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span><span class='op'>(</span><span class='va'>txt</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>dict3</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dictionary.html'>dictionary</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>US <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>Countries <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"States"</span><span class='op'>)</span>,</span>
+<span class='r-in'>                                  oceans <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Atlantic"</span>, <span class='st'>"Pacific"</span><span class='op'>)</span><span class='op'>)</span>,</span>
+<span class='r-in'>                        Europe <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>Countries <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Britain"</span>, <span class='st'>"Ireland"</span><span class='op'>)</span>,</span>
+<span class='r-in'>                                      oceans <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>west <span class='op'>=</span> <span class='st'>"Irish Sea"</span>,</span>
+<span class='r-in'>                                                    east <span class='op'>=</span> <span class='st'>"English Channel"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>tokens_lookup</span><span class='op'>(</span><span class='va'>toks2</span>, <span class='va'>dict3</span>, levels <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Tokens consisting of 2 documents.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> d1 :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "US" "US" "US"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> d2 :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Europe" "Europe" "Europe" "Europe"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='fu'>tokens_lookup</span><span class='op'>(</span><span class='va'>toks2</span>, <span class='va'>dict3</span>, levels <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Tokens consisting of 2 documents.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> d1 :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Countries" "oceans"    "oceans"   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> d2 :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Countries" "Countries" "oceans"    "oceans"   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='fu'>tokens_lookup</span><span class='op'>(</span><span class='va'>toks2</span>, <span class='va'>dict3</span>, levels <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Tokens consisting of 2 documents.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> d1 :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "US.Countries" "US.oceans"    "US.oceans"   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> d2 :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Europe.Countries" "Europe.Countries" "Europe.oceans"    "Europe.oceans"   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='fu'>tokens_lookup</span><span class='op'>(</span><span class='va'>toks2</span>, <span class='va'>dict3</span>, levels <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Tokens consisting of 2 documents.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> d1 :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> character(0)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> d2 :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "west" "east"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='fu'>tokens_lookup</span><span class='op'>(</span><span class='va'>toks2</span>, <span class='va'>dict3</span>, levels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Tokens consisting of 2 documents.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> d1 :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "US" "US" "US"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> d2 :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Europe"      "Europe"      "Europe.west" "Europe.east"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='fu'>tokens_lookup</span><span class='op'>(</span><span class='va'>toks2</span>, <span class='va'>dict3</span>, levels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Tokens consisting of 2 documents.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> d1 :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Countries" "oceans"    "oceans"   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> d2 :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Countries"   "Countries"   "oceans.west" "oceans.east"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># show unmatched tokens</span></span>
+<span class='r-in'><span class='fu'>tokens_lookup</span><span class='op'>(</span><span class='va'>toks2</span>, <span class='va'>dict3</span>, nomatch <span class='op'>=</span> <span class='st'>"_UNMATCHED"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Tokens consisting of 2 documents.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> d1 :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] "_UNMATCHED"   "_UNMATCHED"   "US.Countries" "_UNMATCHED"   "_UNMATCHED"  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [6] "US.oceans"    "_UNMATCHED"   "_UNMATCHED"   "_UNMATCHED"   "US.oceans"   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [11] "_UNMATCHED"   "_UNMATCHED"  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> d2 :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] "Europe.Countries"   "_UNMATCHED"         "Europe.Countries"  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [4] "_UNMATCHED"         "_UNMATCHED"         "Europe.oceans.west"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [7] "_UNMATCHED"         "_UNMATCHED"         "Europe.oceans.east"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [10] "_UNMATCHED"        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># nested matching differences</span></span>
+<span class='r-in'><span class='va'>dict4</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dictionary.html'>dictionary</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>paper <span class='op'>=</span> <span class='st'>"New York Times"</span>, city <span class='op'>=</span> <span class='st'>"New York"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>toks4</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span><span class='op'>(</span><span class='st'>"The New York Times is a New York paper."</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>tokens_lookup</span><span class='op'>(</span><span class='va'>toks4</span>, <span class='va'>dict4</span>, nested_scope <span class='op'>=</span> <span class='st'>"key"</span>, exclusive <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Tokens consisting of 1 document.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> text1 :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "The"   "PAPER" "CITY"  "is"    "a"     "CITY"  "paper" "."    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='fu'>tokens_lookup</span><span class='op'>(</span><span class='va'>toks4</span>, <span class='va'>dict4</span>, nested_scope <span class='op'>=</span> <span class='st'>"dictionary"</span>, exclusive <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Tokens consisting of 1 document.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> text1 :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "The"   "PAPER" "is"    "a"     "CITY"  "paper" "."    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

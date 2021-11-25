@@ -91,7 +91,7 @@ column names of the dfm object." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.2.0</span>
       </span>
     </div>
 
@@ -237,47 +237,51 @@ column names of the <a href='dfm.html'>dfm</a> object.</p>
     <p>character vector of the feature labels</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>dfmat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span><span class='op'>(</span><span class='va'>data_corpus_inaugural</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: 'dfm.corpus()' is deprecated. Use 'tokens()' first.</span></div><div class='input'>
-<span class='co'># first 50 features (in original text order)</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fu'>featnames</span><span class='op'>(</span><span class='va'>dfmat</span><span class='op'>)</span>, <span class='fl'>50</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;  [1] "fellow-citizens" "of"              "the"             "senate"         
-#&gt;  [5] "and"             "house"           "representatives" ":"              
-#&gt;  [9] "among"           "vicissitudes"    "incident"        "to"             
-#&gt; [13] "life"            "no"              "event"           "could"          
-#&gt; [17] "have"            "filled"          "me"              "with"           
-#&gt; [21] "greater"         "anxieties"       "than"            "that"           
-#&gt; [25] "which"           "notification"    "was"             "transmitted"    
-#&gt; [29] "by"              "your"            "order"           ","              
-#&gt; [33] "received"        "on"              "14th"            "day"            
-#&gt; [37] "present"         "month"           "."               "one"            
-#&gt; [41] "hand"            "i"               "summoned"        "my"             
-#&gt; [45] "country"         "whose"           "voice"           "can"            
-#&gt; [49] "never"           "hear"           </div><div class='input'>
-<span class='co'># first 50 features alphabetically</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/sort.html'>sort</a></span><span class='op'>(</span><span class='fu'>featnames</span><span class='op'>(</span><span class='va'>dfmat</span><span class='op'>)</span><span class='op'>)</span>, <span class='fl'>50</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;  [1] "-"           ","           ";"           ":"           "!"          
-#&gt;  [6] "?"           "."           "…"           "'"           "\""         
-#&gt; [11] "("           ")"           "["           "]"           "/"          
-#&gt; [16] "\\"          "$"           "1"           "1,000"       "100"        
-#&gt; [21] "100,000,000" "108"         "11"          "120,000,000" "125"        
-#&gt; [26] "13"          "14th"        "15th"        "16"          "1774"       
-#&gt; [31] "1776"        "1778"        "1780"        "1787"        "1789"       
-#&gt; [36] "1790"        "1800"        "1801"        "1812"        "1815"       
-#&gt; [41] "1816"        "1817"        "1818"        "1826"        "1850"       
-#&gt; [46] "1861"        "1863"        "1868"        "1873"        "1880"       </div><div class='input'>
-<span class='co'># contrast with descending total frequency order from topfeatures()</span>
-<span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='fu'><a href='topfeatures.html'>topfeatures</a></span><span class='op'>(</span><span class='va'>dfmat</span>, <span class='fl'>50</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;  [1] "the"        "of"         ","          "and"        "."         
-#&gt;  [6] "to"         "in"         "a"          "our"        "we"        
-#&gt; [11] "that"       "be"         "is"         "it"         "for"       
-#&gt; [16] "by"         "have"       "which"      "not"        "with"      
-#&gt; [21] "as"         "will"       "this"       "i"          "all"       
-#&gt; [26] "are"        "their"      "but"        "has"        "people"    
-#&gt; [31] "from"       "its"        ";"          "government" "or"        
-#&gt; [36] "on"         "my"         "us"         "been"       "can"       
-#&gt; [41] "no"         "they"       "-"          "so"         "an"        
-#&gt; [46] "who"        "must"       "upon"       "at"         "great"     </div></pre>
+    <pre class="examples"><span class='r-in'><span class='va'>dfmat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span><span class='op'>(</span><span class='va'>data_corpus_inaugural</span><span class='op'>)</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>'dfm.corpus()' is deprecated. Use 'tokens()' first.</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># first 50 features (in original text order)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fu'>featnames</span><span class='op'>(</span><span class='va'>dfmat</span><span class='op'>)</span>, <span class='fl'>50</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] "fellow-citizens" "of"              "the"             "senate"         </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [5] "and"             "house"           "representatives" ":"              </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [9] "among"           "vicissitudes"    "incident"        "to"             </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [13] "life"            "no"              "event"           "could"          </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [17] "have"            "filled"          "me"              "with"           </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [21] "greater"         "anxieties"       "than"            "that"           </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [25] "which"           "notification"    "was"             "transmitted"    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [29] "by"              "your"            "order"           ","              </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [33] "received"        "on"              "14th"            "day"            </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [37] "present"         "month"           "."               "one"            </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [41] "hand"            "i"               "summoned"        "my"             </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [45] "country"         "whose"           "voice"           "can"            </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [49] "never"           "hear"           </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># first 50 features alphabetically</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/sort.html'>sort</a></span><span class='op'>(</span><span class='fu'>featnames</span><span class='op'>(</span><span class='va'>dfmat</span><span class='op'>)</span><span class='op'>)</span>, <span class='fl'>50</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] "-"           ","           ";"           ":"           "!"          </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [6] "?"           "."           "…"           "'"           "\""         </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [11] "("           ")"           "["           "]"           "/"          </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [16] "\\"          "$"           "1"           "1,000"       "100"        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [21] "100,000,000" "108"         "11"          "120,000,000" "125"        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [26] "13"          "14th"        "15th"        "16"          "1774"       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [31] "1776"        "1778"        "1780"        "1787"        "1789"       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [36] "1790"        "1800"        "1801"        "1812"        "1815"       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [41] "1816"        "1817"        "1818"        "1826"        "1850"       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [46] "1861"        "1863"        "1868"        "1873"        "1880"       </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># contrast with descending total frequency order from topfeatures()</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='fu'><a href='topfeatures.html'>topfeatures</a></span><span class='op'>(</span><span class='va'>dfmat</span>, <span class='fl'>50</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] "the"        "of"         ","          "and"        "."         </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [6] "to"         "in"         "a"          "our"        "we"        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [11] "that"       "be"         "is"         "it"         "for"       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [16] "by"         "have"       "which"      "not"        "with"      </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [21] "as"         "will"       "this"       "i"          "all"       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [26] "are"        "their"      "but"        "has"        "people"    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [31] "from"       "its"        ";"          "government" "or"        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [36] "on"         "my"         "us"         "been"       "can"       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [41] "no"         "they"       "-"          "so"         "an"        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [46] "who"        "must"       "upon"       "at"         "great"     </span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -90,7 +90,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.2.0</span>
       </span>
     </div>
 
@@ -232,31 +232,32 @@
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>dict</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='st'>"A"</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>AA <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='st'>"aaaaa"</span><span class='op'>)</span>, <span class='st'>"a"</span><span class='op'>)</span>,
-             <span class='st'>"B"</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='st'>"b"</span><span class='op'>)</span>,
-             <span class='st'>"C"</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='st'>"c"</span><span class='op'>)</span>,
-             <span class='st'>"A"</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='st'>"aa"</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'>quanteda</span><span class='fu'>:::</span><span class='fu'>merge_dictionary_values</span><span class='op'>(</span><span class='va'>dict</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $A
-#&gt; $A$AA
-#&gt; $A$AA[[1]]
-#&gt; [1] "aaaaa"
-#&gt; 
-#&gt; 
-#&gt; $A[[2]]
-#&gt; [1] "a"  "aa"
-#&gt; 
-#&gt; 
-#&gt; $B
-#&gt; $B[[1]]
-#&gt; [1] "b"
-#&gt; 
-#&gt; 
-#&gt; $C
-#&gt; $C[[1]]
-#&gt; [1] "c"
-#&gt; 
-#&gt; </div></pre>
+    <pre class="examples"><span class='r-in'><span class='va'>dict</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='st'>"A"</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>AA <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='st'>"aaaaa"</span><span class='op'>)</span>, <span class='st'>"a"</span><span class='op'>)</span>,</span>
+<span class='r-in'>             <span class='st'>"B"</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='st'>"b"</span><span class='op'>)</span>,</span>
+<span class='r-in'>             <span class='st'>"C"</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='st'>"c"</span><span class='op'>)</span>,</span>
+<span class='r-in'>             <span class='st'>"A"</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='st'>"aa"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>quanteda</span><span class='fu'>:::</span><span class='fu'>merge_dictionary_values</span><span class='op'>(</span><span class='va'>dict</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $A</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $A$AA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $A$AA[[1]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "aaaaa"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $A[[2]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "a"  "aa"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $B</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $B[[1]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "b"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $C</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $C[[1]]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "c"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

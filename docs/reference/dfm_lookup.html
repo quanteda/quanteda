@@ -96,7 +96,7 @@ the document)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.2.0</span>
       </span>
     </div>
 
@@ -305,69 +305,78 @@ and then construct the dfm.</p>
     <div class='dont-index'><p>dfm_replace</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>dict</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dictionary.html'>dictionary</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>christmas <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Christmas"</span>, <span class='st'>"Santa"</span>, <span class='st'>"holiday"</span><span class='op'>)</span>,
-                          opposition <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Opposition"</span>, <span class='st'>"reject"</span>, <span class='st'>"notincorpus"</span><span class='op'>)</span>,
-                          taxglob <span class='op'>=</span> <span class='st'>"tax*"</span>,
-                          taxregex <span class='op'>=</span> <span class='st'>"tax.+$"</span>,
-                          country <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"United_States"</span>, <span class='st'>"Sweden"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>dfmat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span><span class='op'>(</span><span class='fu'><a href='tokens.html'>tokens</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"My Christmas was ruined by your opposition tax plan."</span>,
-                      <span class='st'>"Does the United_States or Sweden have more progressive taxation?"</span><span class='op'>)</span><span class='op'>)</span>,
-             remove <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/stopwords/man/stopwords.html'>stopwords</a></span><span class='op'>(</span><span class='st'>"english"</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: 'remove' is deprecated; use dfm_remove() instead</span></div><div class='input'><span class='va'>dfmat</span>
-</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 11 features (50.00% sparse) and 0 docvars.
-#&gt;        features
-#&gt; docs    christmas ruined opposition tax plan . united_states sweden progressive
-#&gt;   text1         1      1          1   1    1 1             0      0           0
-#&gt;   text2         0      0          0   0    0 0             1      1           1
-#&gt;        features
-#&gt; docs    taxation
-#&gt;   text1        0
-#&gt;   text2        1
-#&gt; [ reached max_nfeat ... 1 more feature ]</div><div class='input'>
-<span class='co'># glob format</span>
-<span class='fu'>dfm_lookup</span><span class='op'>(</span><span class='va'>dfmat</span>, <span class='va'>dict</span>, valuetype <span class='op'>=</span> <span class='st'>"glob"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 5 features (50.00% sparse) and 0 docvars.
-#&gt;        features
-#&gt; docs    christmas opposition taxglob taxregex country
-#&gt;   text1         1          1       1        0       0
-#&gt;   text2         0          0       1        0       2</div><div class='input'><span class='fu'>dfm_lookup</span><span class='op'>(</span><span class='va'>dfmat</span>, <span class='va'>dict</span>, valuetype <span class='op'>=</span> <span class='st'>"glob"</span>, case_insensitive <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 5 features (50.00% sparse) and 0 docvars.
-#&gt;        features
-#&gt; docs    christmas opposition taxglob taxregex country
-#&gt;   text1         1          1       1        0       0
-#&gt;   text2         0          0       1        0       2</div><div class='input'>
-<span class='co'># regex v. glob format: note that "united_states" is a regex match for "tax*"</span>
-<span class='fu'>dfm_lookup</span><span class='op'>(</span><span class='va'>dfmat</span>, <span class='va'>dict</span>, valuetype <span class='op'>=</span> <span class='st'>"glob"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 5 features (50.00% sparse) and 0 docvars.
-#&gt;        features
-#&gt; docs    christmas opposition taxglob taxregex country
-#&gt;   text1         1          1       1        0       0
-#&gt;   text2         0          0       1        0       2</div><div class='input'><span class='fu'>dfm_lookup</span><span class='op'>(</span><span class='va'>dfmat</span>, <span class='va'>dict</span>, valuetype <span class='op'>=</span> <span class='st'>"regex"</span>, case_insensitive <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 5 features (40.00% sparse) and 0 docvars.
-#&gt;        features
-#&gt; docs    christmas opposition taxglob taxregex country
-#&gt;   text1         1          1       1        0       0
-#&gt;   text2         0          0       2        1       2</div><div class='input'>
-<span class='co'># fixed format: no pattern matching</span>
-<span class='fu'>dfm_lookup</span><span class='op'>(</span><span class='va'>dfmat</span>, <span class='va'>dict</span>, valuetype <span class='op'>=</span> <span class='st'>"fixed"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 5 features (70.00% sparse) and 0 docvars.
-#&gt;        features
-#&gt; docs    christmas opposition taxglob taxregex country
-#&gt;   text1         1          1       0        0       0
-#&gt;   text2         0          0       0        0       2</div><div class='input'><span class='fu'>dfm_lookup</span><span class='op'>(</span><span class='va'>dfmat</span>, <span class='va'>dict</span>, valuetype <span class='op'>=</span> <span class='st'>"fixed"</span>, case_insensitive <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 5 features (70.00% sparse) and 0 docvars.
-#&gt;        features
-#&gt; docs    christmas opposition taxglob taxregex country
-#&gt;   text1         1          1       0        0       0
-#&gt;   text2         0          0       0        0       2</div><div class='input'>
-<span class='co'># show unmatched tokens</span>
-<span class='fu'>dfm_lookup</span><span class='op'>(</span><span class='va'>dfmat</span>, <span class='va'>dict</span>, nomatch <span class='op'>=</span> <span class='st'>"_UNMATCHED"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (41.67% sparse) and 0 docvars.
-#&gt;        features
-#&gt; docs    christmas opposition taxglob taxregex country _UNMATCHED
-#&gt;   text1         1          1       1        0       0          3
-#&gt;   text2         0          0       1        0       2          2</div><div class='input'>
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='va'>dict</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dictionary.html'>dictionary</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>christmas <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Christmas"</span>, <span class='st'>"Santa"</span>, <span class='st'>"holiday"</span><span class='op'>)</span>,</span>
+<span class='r-in'>                          opposition <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Opposition"</span>, <span class='st'>"reject"</span>, <span class='st'>"notincorpus"</span><span class='op'>)</span>,</span>
+<span class='r-in'>                          taxglob <span class='op'>=</span> <span class='st'>"tax*"</span>,</span>
+<span class='r-in'>                          taxregex <span class='op'>=</span> <span class='st'>"tax.+$"</span>,</span>
+<span class='r-in'>                          country <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"United_States"</span>, <span class='st'>"Sweden"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>dfmat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span><span class='op'>(</span><span class='fu'><a href='tokens.html'>tokens</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"My Christmas was ruined by your opposition tax plan."</span>,</span>
+<span class='r-in'>                      <span class='st'>"Does the United_States or Sweden have more progressive taxation?"</span><span class='op'>)</span><span class='op'>)</span>,</span>
+<span class='r-in'>             remove <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/stopwords/man/stopwords.html'>stopwords</a></span><span class='op'>(</span><span class='st'>"english"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>'remove' is deprecated; use dfm_remove() instead</span>
+<span class='r-in'><span class='va'>dfmat</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Document-feature matrix of: 2 documents, 11 features (50.00% sparse) and 0 docvars.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        features</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> docs    christmas ruined opposition tax plan . united_states sweden progressive</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   text1         1      1          1   1    1 1             0      0           0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   text2         0      0          0   0    0 0             1      1           1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        features</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> docs    taxation</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   text1        0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   text2        1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [ reached max_nfeat ... 1 more feature ]</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># glob format</span></span>
+<span class='r-in'><span class='fu'>dfm_lookup</span><span class='op'>(</span><span class='va'>dfmat</span>, <span class='va'>dict</span>, valuetype <span class='op'>=</span> <span class='st'>"glob"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Document-feature matrix of: 2 documents, 5 features (50.00% sparse) and 0 docvars.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        features</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> docs    christmas opposition taxglob taxregex country</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   text1         1          1       1        0       0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   text2         0          0       1        0       2</span>
+<span class='r-in'><span class='fu'>dfm_lookup</span><span class='op'>(</span><span class='va'>dfmat</span>, <span class='va'>dict</span>, valuetype <span class='op'>=</span> <span class='st'>"glob"</span>, case_insensitive <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Document-feature matrix of: 2 documents, 5 features (50.00% sparse) and 0 docvars.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        features</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> docs    christmas opposition taxglob taxregex country</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   text1         1          1       1        0       0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   text2         0          0       1        0       2</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># regex v. glob format: note that "united_states" is a regex match for "tax*"</span></span>
+<span class='r-in'><span class='fu'>dfm_lookup</span><span class='op'>(</span><span class='va'>dfmat</span>, <span class='va'>dict</span>, valuetype <span class='op'>=</span> <span class='st'>"glob"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Document-feature matrix of: 2 documents, 5 features (50.00% sparse) and 0 docvars.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        features</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> docs    christmas opposition taxglob taxregex country</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   text1         1          1       1        0       0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   text2         0          0       1        0       2</span>
+<span class='r-in'><span class='fu'>dfm_lookup</span><span class='op'>(</span><span class='va'>dfmat</span>, <span class='va'>dict</span>, valuetype <span class='op'>=</span> <span class='st'>"regex"</span>, case_insensitive <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Document-feature matrix of: 2 documents, 5 features (40.00% sparse) and 0 docvars.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        features</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> docs    christmas opposition taxglob taxregex country</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   text1         1          1       1        0       0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   text2         0          0       2        1       2</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># fixed format: no pattern matching</span></span>
+<span class='r-in'><span class='fu'>dfm_lookup</span><span class='op'>(</span><span class='va'>dfmat</span>, <span class='va'>dict</span>, valuetype <span class='op'>=</span> <span class='st'>"fixed"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Document-feature matrix of: 2 documents, 5 features (70.00% sparse) and 0 docvars.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        features</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> docs    christmas opposition taxglob taxregex country</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   text1         1          1       0        0       0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   text2         0          0       0        0       2</span>
+<span class='r-in'><span class='fu'>dfm_lookup</span><span class='op'>(</span><span class='va'>dfmat</span>, <span class='va'>dict</span>, valuetype <span class='op'>=</span> <span class='st'>"fixed"</span>, case_insensitive <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Document-feature matrix of: 2 documents, 5 features (70.00% sparse) and 0 docvars.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        features</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> docs    christmas opposition taxglob taxregex country</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   text1         1          1       0        0       0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   text2         0          0       0        0       2</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># show unmatched tokens</span></span>
+<span class='r-in'><span class='fu'>dfm_lookup</span><span class='op'>(</span><span class='va'>dfmat</span>, <span class='va'>dict</span>, nomatch <span class='op'>=</span> <span class='st'>"_UNMATCHED"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Document-feature matrix of: 2 documents, 6 features (41.67% sparse) and 0 docvars.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        features</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> docs    christmas opposition taxglob taxregex country _UNMATCHED</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   text1         1          1       1        0       0          3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   text2         0          0       1        0       2          2</span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

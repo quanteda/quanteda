@@ -92,7 +92,7 @@ weights." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.2.0</span>
       </span>
     </div>
 
@@ -264,136 +264,142 @@ See <code>news(Version &gt;= "2.9", package = "quanteda")</code> for details.</p
 variables for the documents sampled.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>123</span><span class='op'>)</span>
-<span class='co'># sampling from a corpus</span>
-<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='fu'>corpus_sample</span><span class='op'>(</span><span class='va'>data_corpus_inaugural</span>, size <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Corpus consisting of 5 documents, showing 5 documents:
-#&gt; 
-#&gt;           Text Types Tokens Sentences Year President      FirstName      Party
-#&gt;      1909-Taft  1437   5821       158 1909      Taft William Howard Republican
-#&gt;      1845-Polk  1334   5186       153 1845      Polk     James Knox       Whig
-#&gt;      1989-Bush   795   2673       141 1989      Bush         George Republican
-#&gt;  1841-Harrison  1898   9123       210 1841  Harrison  William Henry       Whig
-#&gt;     1797-Adams   826   2577        37 1797     Adams           John Federalist
-#&gt; </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='fu'>corpus_sample</span><span class='op'>(</span><span class='va'>data_corpus_inaugural</span>, size <span class='op'>=</span> <span class='fl'>10</span>, replace <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Corpus consisting of 10 documents, showing 10 documents:
-#&gt; 
-#&gt;               Text Types Tokens Sentences Year  President     FirstName
-#&gt;  1953-Eisenhower.1   900   2743       119 1953 Eisenhower     Dwight D.
-#&gt;      1985-Reagan.1   925   2909       123 1985     Reagan        Ronald
-#&gt;        2001-Bush.1   621   1806        97 2001       Bush     George W.
-#&gt;  1957-Eisenhower.1   621   1907        92 1957 Eisenhower     Dwight D.
-#&gt;   1933-Roosevelt.1   743   2057        85 1933  Roosevelt   Franklin D.
-#&gt;     1993-Clinton.1   642   1833        81 1993    Clinton          Bill
-#&gt;    1841-Harrison.1  1898   9123       210 1841   Harrison William Henry
-#&gt;        2001-Bush.2   621   1806        97 2001       Bush     George W.
-#&gt;   1885-Cleveland.1   676   1816        44 1885  Cleveland        Grover
-#&gt;    1889-Harrison.1  1352   4721       157 1889   Harrison      Benjamin
-#&gt;       Party
-#&gt;  Republican
-#&gt;  Republican
-#&gt;  Republican
-#&gt;  Republican
-#&gt;  Democratic
-#&gt;  Democratic
-#&gt;        Whig
-#&gt;  Republican
-#&gt;  Democratic
-#&gt;  Republican
-#&gt; </div><div class='input'>
-<span class='co'># sampling with by</span>
-<span class='va'>corp</span> <span class='op'>&lt;-</span> <span class='va'>data_corpus_inaugural</span>
-<span class='va'>corp</span><span class='op'>$</span><span class='va'>century</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Round.html'>floor</a></span><span class='op'>(</span><span class='va'>corp</span><span class='op'>$</span><span class='va'>Year</span> <span class='op'>/</span> <span class='fl'>100</span><span class='op'>)</span> <span class='op'>+</span> <span class='fl'>1</span><span class='op'>)</span>
-<span class='va'>corp</span><span class='op'>$</span><span class='va'>century</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='va'>corp</span><span class='op'>$</span><span class='va'>century</span>, <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>corp</span><span class='op'>$</span><span class='va'>century</span> <span class='op'>&lt;</span> <span class='fl'>21</span>, <span class='st'>"th"</span>, <span class='st'>"st"</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'>corpus_sample</span><span class='op'>(</span><span class='va'>corp</span>, size <span class='op'>=</span> <span class='fl'>2</span>, by <span class='op'>=</span> <span class='va'>century</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Corpus consisting of 8 documents, showing 8 documents:
-#&gt; 
-#&gt;             Text Types Tokens Sentences Year  President   FirstName
-#&gt;       1797-Adams   826   2577        37 1797      Adams        John
-#&gt;  1793-Washington    96    147         4 1793 Washington      George
-#&gt;      1817-Monroe  1040   3677       121 1817     Monroe       James
-#&gt;       1873-Grant   552   1472        43 1873      Grant  Ulysses S.
-#&gt;     1997-Clinton   773   2436       111 1997    Clinton        Bill
-#&gt;   1933-Roosevelt   743   2057        85 1933  Roosevelt Franklin D.
-#&gt;       2017-Trump   582   1660        88 2017      Trump   Donald J.
-#&gt;       2009-Obama   938   2689       110 2009      Obama      Barack
-#&gt;                  Party century
-#&gt;             Federalist    18th
-#&gt;                   none    18th
-#&gt;  Democratic-Republican    19th
-#&gt;             Republican    19th
-#&gt;             Democratic    20th
-#&gt;             Democratic    20th
-#&gt;             Republican    21st
-#&gt;             Democratic    21st
-#&gt; </div><div class='input'><span class='co'># needs drop = TRUE to avoid empty interactions</span>
-<span class='fu'>corpus_sample</span><span class='op'>(</span><span class='va'>corp</span>, size <span class='op'>=</span> <span class='fl'>1</span>, by <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/interaction.html'>interaction</a></span><span class='op'>(</span><span class='va'>Party</span>, <span class='va'>century</span>, drop <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>, replace <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Corpus consisting of 10 documents, showing 10 documents:
-#&gt; 
-#&gt;             Text Types Tokens Sentences Year  President   FirstName
-#&gt;       1797-Adams   826   2577        37 1797      Adams        John
-#&gt;  1793-Washington    96    147         4 1793 Washington      George
-#&gt;   1893-Cleveland   821   2125        58 1893  Cleveland      Grover
-#&gt;   1805-Jefferson   804   2380        45 1805  Jefferson      Thomas
-#&gt;     1861-Lincoln  1075   3999       135 1861    Lincoln     Abraham
-#&gt;        1845-Polk  1334   5186       153 1845       Polk  James Knox
-#&gt;   1933-Roosevelt   743   2057        85 1933  Roosevelt Franklin D.
-#&gt;     1921-Harding  1169   3719       148 1921    Harding   Warren G.
-#&gt;       2013-Obama   814   2317        88 2013      Obama      Barack
-#&gt;        2001-Bush   621   1806        97 2001       Bush   George W.
-#&gt;                  Party century
-#&gt;             Federalist    18th
-#&gt;                   none    18th
-#&gt;             Democratic    19th
-#&gt;  Democratic-Republican    19th
-#&gt;             Republican    19th
-#&gt;                   Whig    19th
-#&gt;             Democratic    20th
-#&gt;             Republican    20th
-#&gt;             Democratic    21st
-#&gt;             Republican    21st
-#&gt; </div><div class='input'>
-<span class='co'># sampling sentences by document</span>
-<span class='va'>corp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='corpus.html'>corpus</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>one <span class='op'>=</span> <span class='st'>"Sentence one.  Sentence two.  Third sentence."</span>,
-                 two <span class='op'>=</span> <span class='st'>"First sentence, doc2.  Second sentence, doc2."</span><span class='op'>)</span>,
-               docvars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>var1 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"a"</span>, <span class='st'>"a"</span><span class='op'>)</span>, var2 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'><a href='corpus_reshape.html'>corpus_reshape</a></span><span class='op'>(</span><span class='va'>corp</span>, to <span class='op'>=</span> <span class='st'>"sentences"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-    <span class='fu'>corpus_sample</span><span class='op'>(</span>replace <span class='op'>=</span> <span class='cn'>TRUE</span>, by <span class='op'>=</span> <span class='fu'><a href='docnames.html'>docid</a></span><span class='op'>(</span><span class='va'>.</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Corpus consisting of 5 documents and 2 docvars.
-#&gt; one.2 :
-#&gt; "Third sentence."
-#&gt; 
-#&gt; one.3 :
-#&gt; "Third sentence."
-#&gt; 
-#&gt; one.1 :
-#&gt; "Sentence one."
-#&gt; 
-#&gt; two.2 :
-#&gt; "Second sentence, doc2."
-#&gt; 
-#&gt; two.1 :
-#&gt; "First sentence, doc2."
-#&gt; </div><div class='input'>
-<span class='co'># oversampling</span>
-<span class='fu'>corpus_sample</span><span class='op'>(</span><span class='va'>corp</span>, size <span class='op'>=</span> <span class='fl'>5</span>, replace <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Corpus consisting of 5 documents and 2 docvars.
-#&gt; two.1 :
-#&gt; "First sentence, doc2.  Second sentence, doc2."
-#&gt; 
-#&gt; two.2 :
-#&gt; "First sentence, doc2.  Second sentence, doc2."
-#&gt; 
-#&gt; one.1 :
-#&gt; "Sentence one.  Sentence two.  Third sentence."
-#&gt; 
-#&gt; one.2 :
-#&gt; "Sentence one.  Sentence two.  Third sentence."
-#&gt; 
-#&gt; one.3 :
-#&gt; "Sentence one.  Sentence two.  Third sentence."
-#&gt; </div></pre>
+    <pre class="examples"><span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>123</span><span class='op'>)</span></span>
+<span class='r-in'><span class='co'># sampling from a corpus</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='fu'>corpus_sample</span><span class='op'>(</span><span class='va'>data_corpus_inaugural</span>, size <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Corpus consisting of 5 documents, showing 5 documents:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>           Text Types Tokens Sentences Year President      FirstName      Party</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      1909-Taft  1437   5821       158 1909      Taft William Howard Republican</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      1845-Polk  1334   5186       153 1845      Polk     James Knox       Whig</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      1989-Bush   795   2673       141 1989      Bush         George Republican</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  1841-Harrison  1898   9123       210 1841  Harrison  William Henry       Whig</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     1797-Adams   826   2577        37 1797     Adams           John Federalist</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='fu'>corpus_sample</span><span class='op'>(</span><span class='va'>data_corpus_inaugural</span>, size <span class='op'>=</span> <span class='fl'>10</span>, replace <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Corpus consisting of 10 documents, showing 10 documents:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>               Text Types Tokens Sentences Year  President     FirstName</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  1953-Eisenhower.1   900   2743       119 1953 Eisenhower     Dwight D.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      1985-Reagan.1   925   2909       123 1985     Reagan        Ronald</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        2001-Bush.1   621   1806        97 2001       Bush     George W.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  1957-Eisenhower.1   621   1907        92 1957 Eisenhower     Dwight D.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1933-Roosevelt.1   743   2057        85 1933  Roosevelt   Franklin D.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     1993-Clinton.1   642   1833        81 1993    Clinton          Bill</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    1841-Harrison.1  1898   9123       210 1841   Harrison William Henry</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        2001-Bush.2   621   1806        97 2001       Bush     George W.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1885-Cleveland.1   676   1816        44 1885  Cleveland        Grover</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    1889-Harrison.1  1352   4721       157 1889   Harrison      Benjamin</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       Party</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Republican</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Republican</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Republican</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Republican</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Democratic</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Democratic</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        Whig</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Republican</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Democratic</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Republican</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># sampling with by</span></span>
+<span class='r-in'><span class='va'>corp</span> <span class='op'>&lt;-</span> <span class='va'>data_corpus_inaugural</span></span>
+<span class='r-in'><span class='va'>corp</span><span class='op'>$</span><span class='va'>century</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Round.html'>floor</a></span><span class='op'>(</span><span class='va'>corp</span><span class='op'>$</span><span class='va'>Year</span> <span class='op'>/</span> <span class='fl'>100</span><span class='op'>)</span> <span class='op'>+</span> <span class='fl'>1</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>corp</span><span class='op'>$</span><span class='va'>century</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='va'>corp</span><span class='op'>$</span><span class='va'>century</span>, <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>corp</span><span class='op'>$</span><span class='va'>century</span> <span class='op'>&lt;</span> <span class='fl'>21</span>, <span class='st'>"th"</span>, <span class='st'>"st"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>corpus_sample</span><span class='op'>(</span><span class='va'>corp</span>, size <span class='op'>=</span> <span class='fl'>2</span>, by <span class='op'>=</span> <span class='va'>century</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span> <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Corpus consisting of 8 documents, showing 8 documents:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             Text Types Tokens Sentences Year  President   FirstName</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       1797-Adams   826   2577        37 1797      Adams        John</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  1793-Washington    96    147         4 1793 Washington      George</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      1817-Monroe  1040   3677       121 1817     Monroe       James</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       1873-Grant   552   1472        43 1873      Grant  Ulysses S.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     1997-Clinton   773   2436       111 1997    Clinton        Bill</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1933-Roosevelt   743   2057        85 1933  Roosevelt Franklin D.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       2017-Trump   582   1660        88 2017      Trump   Donald J.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       2009-Obama   938   2689       110 2009      Obama      Barack</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                  Party century</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             Federalist    18th</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                   none    18th</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Democratic-Republican    19th</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             Republican    19th</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             Democratic    20th</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             Democratic    20th</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             Republican    21st</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             Democratic    21st</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='co'># needs drop = TRUE to avoid empty interactions</span></span>
+<span class='r-in'><span class='fu'>corpus_sample</span><span class='op'>(</span><span class='va'>corp</span>, size <span class='op'>=</span> <span class='fl'>1</span>, by <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/interaction.html'>interaction</a></span><span class='op'>(</span><span class='va'>Party</span>, <span class='va'>century</span>, drop <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>, replace <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>    <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Corpus consisting of 10 documents, showing 10 documents:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             Text Types Tokens Sentences Year  President   FirstName</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       1797-Adams   826   2577        37 1797      Adams        John</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  1793-Washington    96    147         4 1793 Washington      George</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1893-Cleveland   821   2125        58 1893  Cleveland      Grover</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1805-Jefferson   804   2380        45 1805  Jefferson      Thomas</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     1861-Lincoln  1075   3999       135 1861    Lincoln     Abraham</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        1845-Polk  1334   5186       153 1845       Polk  James Knox</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1933-Roosevelt   743   2057        85 1933  Roosevelt Franklin D.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     1921-Harding  1169   3719       148 1921    Harding   Warren G.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       2013-Obama   814   2317        88 2013      Obama      Barack</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        2001-Bush   621   1806        97 2001       Bush   George W.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                  Party century</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             Federalist    18th</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                   none    18th</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             Democratic    19th</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Democratic-Republican    19th</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             Republican    19th</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                   Whig    19th</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             Democratic    20th</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             Republican    20th</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             Democratic    21st</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             Republican    21st</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># sampling sentences by document</span></span>
+<span class='r-in'><span class='va'>corp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='corpus.html'>corpus</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>one <span class='op'>=</span> <span class='st'>"Sentence one.  Sentence two.  Third sentence."</span>,</span>
+<span class='r-in'>                 two <span class='op'>=</span> <span class='st'>"First sentence, doc2.  Second sentence, doc2."</span><span class='op'>)</span>,</span>
+<span class='r-in'>               docvars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>var1 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"a"</span>, <span class='st'>"a"</span><span class='op'>)</span>, var2 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='corpus_reshape.html'>corpus_reshape</a></span><span class='op'>(</span><span class='va'>corp</span>, to <span class='op'>=</span> <span class='st'>"sentences"</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>    <span class='fu'>corpus_sample</span><span class='op'>(</span>replace <span class='op'>=</span> <span class='cn'>TRUE</span>, by <span class='op'>=</span> <span class='fu'><a href='docnames.html'>docid</a></span><span class='op'>(</span><span class='va'>.</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Corpus consisting of 5 documents and 2 docvars.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> one.2 :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> "Third sentence."</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> one.3 :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> "Third sentence."</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> one.1 :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> "Sentence one."</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> two.2 :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> "Second sentence, doc2."</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> two.1 :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> "First sentence, doc2."</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># oversampling</span></span>
+<span class='r-in'><span class='fu'>corpus_sample</span><span class='op'>(</span><span class='va'>corp</span>, size <span class='op'>=</span> <span class='fl'>5</span>, replace <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Corpus consisting of 5 documents and 2 docvars.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> two.1 :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> "First sentence, doc2.  Second sentence, doc2."</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> two.2 :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> "First sentence, doc2.  Second sentence, doc2."</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> one.1 :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> "Sentence one.  Sentence two.  Third sentence."</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> one.2 :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> "Sentence one.  Sentence two.  Third sentence."</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> one.3 :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> "Sentence one.  Sentence two.  Third sentence."</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -90,7 +90,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.2.0</span>
       </span>
     </div>
 
@@ -262,16 +262,16 @@ print(x, ...)</pre>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The <code><a href='https://rdrr.io/r/base/Arithmetic.html'>+</a></code> and <code><a href='https://rdrr.io/r/base/c.html'>c()</a></code> operators return a <code><a href='corpus.html'>corpus()</a></code> object.</p>
+    <p>The <code>+</code> and <code><a href='https://rdrr.io/r/base/c.html'>c()</a></code> operators return a <code><a href='corpus.html'>corpus()</a></code> object.</p>
 <p>Indexing a corpus works in three ways, as of v2.x.x:</p><ul>
-<li><p><code><a href='https://rdrr.io/r/base/Extract.html'>[</a></code> returns a subsetted corpus</p></li>
-<li><p><code><a href='https://rdrr.io/r/base/Extract.html'>[[</a></code> returns the textual contents of a subsetted corpus (similar to <code><a href='https://rdrr.io/r/base/character.html'>as.character()</a></code>)</p></li>
-<li><p><code><a href='https://rdrr.io/r/base/Extract.html'>$</a></code> returns a vector containing the single named <a href='docvars.html'>docvars</a></p></li>
+<li><p><code>[</code> returns a subsetted corpus</p></li>
+<li><p><code>[[</code> returns the textual contents of a subsetted corpus (similar to <code><a href='https://rdrr.io/r/base/character.html'>as.character()</a></code>)</p></li>
+<li><p><code>$</code> returns a vector containing the single named <a href='docvars.html'>docvars</a></p></li>
 </ul>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The <code><a href='https://rdrr.io/r/base/Arithmetic.html'>+</a></code> operator for a corpus object will combine two corpus
+    <p>The <code>+</code> operator for a corpus object will combine two corpus
 objects, resolving any non-matching <code><a href='docvars.html'>docvars()</a></code> by making them
 into <code>NA</code> values for the corpus lacking that field. Corpus-level meta
 data is concatenated, except for <code>source</code> and <code>notes</code>, which are
@@ -291,34 +291,38 @@ character vectors and never as factors.</p>
     <div class='dont-index'><p><code><a href='summary.corpus.html'>summary.corpus()</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># concatenate corpus objects</span>
-<span class='va'>corp1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='corpus.html'>corpus</a></span><span class='op'>(</span><span class='va'>data_char_ukimmig2010</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span><span class='op'>]</span><span class='op'>)</span>
-<span class='va'>corp2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='corpus.html'>corpus</a></span><span class='op'>(</span><span class='va'>data_char_ukimmig2010</span><span class='op'>[</span><span class='fl'>3</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>]</span><span class='op'>)</span>
-<span class='va'>corp3</span> <span class='op'>&lt;-</span> <span class='fu'><a href='corpus.html'>corpus</a></span><span class='op'>(</span><span class='va'>data_char_ukimmig2010</span><span class='op'>[</span><span class='fl'>5</span><span class='op'>:</span><span class='fl'>6</span><span class='op'>]</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='va'>corp1</span>, <span class='va'>corp2</span>, <span class='va'>corp3</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Corpus consisting of 6 documents, showing 6 documents:
-#&gt; 
-#&gt;          Text Types Tokens Sentences
-#&gt;           BNP  1125   3280        88
-#&gt;     Coalition   142    260         4
-#&gt;  Conservative   251    499        15
-#&gt;        Greens   322    677        21
-#&gt;        Labour   298    680        29
-#&gt;        LibDem   251    483        14
-#&gt; </div><div class='input'>
-<span class='co'># two ways to index corpus elements</span>
-<span class='va'>data_corpus_inaugural</span><span class='op'>[</span><span class='st'>"1793-Washington"</span><span class='op'>]</span>
-</div><div class='output co'>#&gt; Corpus consisting of 1 document and 4 docvars.
-#&gt; 1793-Washington :
-#&gt; "Fellow citizens, I am again called upon by the voice of my c..."
-#&gt; </div><div class='input'><span class='va'>data_corpus_inaugural</span><span class='op'>[</span><span class='fl'>2</span><span class='op'>]</span>
-</div><div class='output co'>#&gt; Corpus consisting of 1 document and 4 docvars.
-#&gt; 1793-Washington :
-#&gt; "Fellow citizens, I am again called upon by the voice of my c..."
-#&gt; </div><div class='input'>
-<span class='co'># return the text itself</span>
-<span class='va'>data_corpus_inaugural</span><span class='op'>[[</span><span class='st'>"1793-Washington"</span><span class='op'>]</span><span class='op'>]</span>
-</div><div class='output co'>#&gt; [1] "Fellow citizens, I am again called upon by the voice of my country to execute the functions of its Chief Magistrate. When the occasion proper for it shall arrive, I shall endeavor to express the high sense I entertain of this distinguished honor, and of the confidence which has been reposed in me by the people of united America.\n\nPrevious to the execution of any official act of the President the Constitution requires an oath of office. This oath I am now about to take, and in your presence: That if it shall be found during my administration of the Government I have in any instance violated willingly or knowingly the injunctions thereof, I may (besides incurring constitutional punishment) be subject to the upbraidings of all who are now witnesses of the present solemn ceremony.\n\n "</div></pre>
+    <pre class="examples"><span class='r-in'><span class='co'># concatenate corpus objects</span></span>
+<span class='r-in'><span class='va'>corp1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='corpus.html'>corpus</a></span><span class='op'>(</span><span class='va'>data_char_ukimmig2010</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span><span class='op'>]</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>corp2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='corpus.html'>corpus</a></span><span class='op'>(</span><span class='va'>data_char_ukimmig2010</span><span class='op'>[</span><span class='fl'>3</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>]</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>corp3</span> <span class='op'>&lt;-</span> <span class='fu'><a href='corpus.html'>corpus</a></span><span class='op'>(</span><span class='va'>data_char_ukimmig2010</span><span class='op'>[</span><span class='fl'>5</span><span class='op'>:</span><span class='fl'>6</span><span class='op'>]</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='va'>corp1</span>, <span class='va'>corp2</span>, <span class='va'>corp3</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Corpus consisting of 6 documents, showing 6 documents:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          Text Types Tokens Sentences</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>           BNP  1125   3280        88</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     Coalition   142    260         4</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Conservative   251    499        15</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        Greens   322    677        21</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        Labour   298    680        29</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        LibDem   251    483        14</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># two ways to index corpus elements</span></span>
+<span class='r-in'><span class='va'>data_corpus_inaugural</span><span class='op'>[</span><span class='st'>"1793-Washington"</span><span class='op'>]</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Corpus consisting of 1 document and 4 docvars.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1793-Washington :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> "Fellow citizens, I am again called upon by the voice of my c..."</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='va'>data_corpus_inaugural</span><span class='op'>[</span><span class='fl'>2</span><span class='op'>]</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Corpus consisting of 1 document and 4 docvars.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1793-Washington :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> "Fellow citizens, I am again called upon by the voice of my c..."</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># return the text itself</span></span>
+<span class='r-in'><span class='va'>data_corpus_inaugural</span><span class='op'>[[</span><span class='st'>"1793-Washington"</span><span class='op'>]</span><span class='op'>]</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Fellow citizens, I am again called upon by the voice of my country to execute the functions of its Chief Magistrate. When the occasion proper for it shall arrive, I shall endeavor to express the high sense I entertain of this distinguished honor, and of the confidence which has been reposed in me by the people of united America.\n\nPrevious to the execution of any official act of the President the Constitution requires an oath of office. This oath I am now about to take, and in your presence: That if it shall be found during my administration of the Government I have in any instance violated willingly or knowingly the injunctions thereof, I may (besides incurring constitutional punishment) be subject to the upbraidings of all who are now witnesses of the present solemn ceremony.\n\n "</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

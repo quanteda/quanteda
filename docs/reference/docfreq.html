@@ -94,7 +94,7 @@ be counted.)" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.2.0</span>
       </span>
     </div>
 
@@ -290,43 +290,52 @@ documents in which it occurs greater than zero times.</p></td>
 <a href='https://nlp.stanford.edu/IR-book/pdf/irbookonlinereading.pdf'>https://nlp.stanford.edu/IR-book/pdf/irbookonlinereading.pdf</a></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>dfmat1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span><span class='op'>(</span><span class='va'>data_corpus_inaugural</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span><span class='op'>]</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: 'dfm.corpus()' is deprecated. Use 'tokens()' first.</span></div><div class='input'><span class='fu'>docfreq</span><span class='op'>(</span><span class='va'>dfmat1</span><span class='op'>[</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>20</span><span class='op'>]</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; fellow-citizens              of             the          senate             and 
-#&gt;               1               2               2               1               2 
-#&gt;           house representatives               :           among    vicissitudes 
-#&gt;               1               1               2               1               1 
-#&gt;        incident              to            life              no           event 
-#&gt;               1               2               1               1               1 
-#&gt;           could            have          filled              me            with 
-#&gt;               1               2               1               2               1 </div><div class='input'>
-<span class='co'># replication of worked example from</span>
-<span class='co'># https://en.wikipedia.org/wiki/Tf-idf#Example_of_tf.E2.80.93idf</span>
-<span class='va'>dfmat2</span> <span class='op'>&lt;-</span>
-    <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>0</span>, <span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>2</span>,<span class='fl'>3</span><span class='op'>)</span>,
-           byrow <span class='op'>=</span> <span class='cn'>TRUE</span>, nrow <span class='op'>=</span> <span class='fl'>2</span>,
-           dimnames <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>docs <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"document1"</span>, <span class='st'>"document2"</span><span class='op'>)</span>,
-                           features <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"this"</span>, <span class='st'>"is"</span>, <span class='st'>"a"</span>, <span class='st'>"sample"</span>,
-                                        <span class='st'>"another"</span>, <span class='st'>"example"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='as.dfm.html'>as.dfm</a></span><span class='op'>(</span><span class='op'>)</span>
-<span class='va'>dfmat2</span>
-</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (33.33% sparse) and 0 docvars.
-#&gt;            features
-#&gt; docs        this is a sample another example
-#&gt;   document1    1  1 2      1       0       0
-#&gt;   document2    1  1 0      0       2       3</div><div class='input'><span class='fu'>docfreq</span><span class='op'>(</span><span class='va'>dfmat2</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;    this      is       a  sample another example 
-#&gt;       2       2       1       1       1       1 </div><div class='input'><span class='fu'>docfreq</span><span class='op'>(</span><span class='va'>dfmat2</span>, scheme <span class='op'>=</span> <span class='st'>"inverse"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;    this      is       a  sample another example 
-#&gt; 0.00000 0.00000 0.30103 0.30103 0.30103 0.30103 </div><div class='input'><span class='fu'>docfreq</span><span class='op'>(</span><span class='va'>dfmat2</span>, scheme <span class='op'>=</span> <span class='st'>"inverse"</span>, k <span class='op'>=</span> <span class='fl'>1</span>, smoothing <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;      this        is         a    sample   another   example 
-#&gt; 0.2218487 0.2218487 0.3010300 0.3010300 0.3010300 0.3010300 </div><div class='input'><span class='fu'>docfreq</span><span class='op'>(</span><span class='va'>dfmat2</span>, scheme <span class='op'>=</span> <span class='st'>"unary"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;    this      is       a  sample another example 
-#&gt;       1       1       1       1       1       1 </div><div class='input'><span class='fu'>docfreq</span><span class='op'>(</span><span class='va'>dfmat2</span>, scheme <span class='op'>=</span> <span class='st'>"inversemax"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;    this      is       a  sample another example 
-#&gt; 0.00000 0.00000 0.30103 0.30103 0.30103 0.30103 </div><div class='input'><span class='fu'>docfreq</span><span class='op'>(</span><span class='va'>dfmat2</span>, scheme <span class='op'>=</span> <span class='st'>"inverseprob"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;    this      is       a  sample another example 
-#&gt;       0       0       0       0       0       0 </div></pre>
+    <pre class="examples"><span class='r-in'><span class='va'>dfmat1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span><span class='op'>(</span><span class='va'>data_corpus_inaugural</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span><span class='op'>]</span><span class='op'>)</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>'dfm.corpus()' is deprecated. Use 'tokens()' first.</span>
+<span class='r-in'><span class='fu'>docfreq</span><span class='op'>(</span><span class='va'>dfmat1</span><span class='op'>[</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>20</span><span class='op'>]</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> fellow-citizens              of             the          senate             and </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>               1               2               2               1               2 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>           house representatives               :           among    vicissitudes </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>               1               1               2               1               1 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        incident              to            life              no           event </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>               1               2               1               1               1 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>           could            have          filled              me            with </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>               1               2               1               2               1 </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># replication of worked example from</span></span>
+<span class='r-in'><span class='co'># https://en.wikipedia.org/wiki/Tf-idf#Example_of_tf.E2.80.93idf</span></span>
+<span class='r-in'><span class='va'>dfmat2</span> <span class='op'>&lt;-</span></span>
+<span class='r-in'>    <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>0</span>, <span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>2</span>,<span class='fl'>3</span><span class='op'>)</span>,</span>
+<span class='r-in'>           byrow <span class='op'>=</span> <span class='cn'>TRUE</span>, nrow <span class='op'>=</span> <span class='fl'>2</span>,</span>
+<span class='r-in'>           dimnames <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>docs <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"document1"</span>, <span class='st'>"document2"</span><span class='op'>)</span>,</span>
+<span class='r-in'>                           features <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"this"</span>, <span class='st'>"is"</span>, <span class='st'>"a"</span>, <span class='st'>"sample"</span>,</span>
+<span class='r-in'>                                        <span class='st'>"another"</span>, <span class='st'>"example"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>    <span class='fu'><a href='as.dfm.html'>as.dfm</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>dfmat2</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Document-feature matrix of: 2 documents, 6 features (33.33% sparse) and 0 docvars.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>            features</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> docs        this is a sample another example</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   document1    1  1 2      1       0       0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   document2    1  1 0      0       2       3</span>
+<span class='r-in'><span class='fu'>docfreq</span><span class='op'>(</span><span class='va'>dfmat2</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    this      is       a  sample another example </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       2       2       1       1       1       1 </span>
+<span class='r-in'><span class='fu'>docfreq</span><span class='op'>(</span><span class='va'>dfmat2</span>, scheme <span class='op'>=</span> <span class='st'>"inverse"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    this      is       a  sample another example </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 0.00000 0.00000 0.30103 0.30103 0.30103 0.30103 </span>
+<span class='r-in'><span class='fu'>docfreq</span><span class='op'>(</span><span class='va'>dfmat2</span>, scheme <span class='op'>=</span> <span class='st'>"inverse"</span>, k <span class='op'>=</span> <span class='fl'>1</span>, smoothing <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      this        is         a    sample   another   example </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 0.2218487 0.2218487 0.3010300 0.3010300 0.3010300 0.3010300 </span>
+<span class='r-in'><span class='fu'>docfreq</span><span class='op'>(</span><span class='va'>dfmat2</span>, scheme <span class='op'>=</span> <span class='st'>"unary"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    this      is       a  sample another example </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       1       1       1       1       1       1 </span>
+<span class='r-in'><span class='fu'>docfreq</span><span class='op'>(</span><span class='va'>dfmat2</span>, scheme <span class='op'>=</span> <span class='st'>"inversemax"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    this      is       a  sample another example </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 0.00000 0.00000 0.30103 0.30103 0.30103 0.30103 </span>
+<span class='r-in'><span class='fu'>docfreq</span><span class='op'>(</span><span class='va'>dfmat2</span>, scheme <span class='op'>=</span> <span class='st'>"inverseprob"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    this      is       a  sample another example </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       0       0       0       0       0       0 </span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

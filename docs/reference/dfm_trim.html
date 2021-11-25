@@ -99,7 +99,7 @@ frequencies, or as a quantile of all frequencies." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.2.0</span>
       </span>
     </div>
 
@@ -318,104 +318,112 @@ removing features matching a stopword list, use <code><a href='dfm_select.html'>
     <div class='dont-index'><p><code><a href='dfm_select.html'>dfm_select()</a></code>, <code><a href='dfm_sample.html'>dfm_sample()</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='op'>(</span><span class='va'>dfmat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span><span class='op'>(</span><span class='va'>data_corpus_inaugural</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>]</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: 'dfm.corpus()' is deprecated. Use 'tokens()' first.</span></div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 1,948 features (69.54% sparse) and 4 docvars.
-#&gt;                  features
-#&gt; docs              fellow-citizens  of the senate and house representatives :
-#&gt;   1789-Washington               1  71 116      1  48     2               2 1
-#&gt;   1793-Washington               0  11  13      0   2     0               0 1
-#&gt;   1797-Adams                    3 140 163      1 130     0               2 0
-#&gt;   1801-Jefferson                2 104 130      0  81     0               0 1
-#&gt;   1805-Jefferson                0 101 143      0  93     0               0 0
-#&gt;                  features
-#&gt; docs              among vicissitudes
-#&gt;   1789-Washington     1            1
-#&gt;   1793-Washington     0            0
-#&gt;   1797-Adams          4            0
-#&gt;   1801-Jefferson      1            0
-#&gt;   1805-Jefferson      7            0
-#&gt; [ reached max_nfeat ... 1,938 more features ]</div><div class='input'>
-<span class='co'># keep only words occurring &gt;= 10 times and in &gt;= 2 documents</span>
-<span class='fu'>dfm_trim</span><span class='op'>(</span><span class='va'>dfmat</span>, min_termfreq <span class='op'>=</span> <span class='fl'>10</span>, min_docfreq <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 106 features (16.23% sparse) and 4 docvars.
-#&gt;                  features
-#&gt; docs               of the and among to no have me with than
-#&gt;   1789-Washington  71 116  48     1 48  8   12  8   17    6
-#&gt;   1793-Washington  11  13   2     0  5  0    1  1    0    0
-#&gt;   1797-Adams      140 163 130     4 72  6    7  5   16    7
-#&gt;   1801-Jefferson  104 130  81     1 61  1   10  4   20    0
-#&gt;   1805-Jefferson  101 143  93     7 83  7   24  8   28    2
-#&gt; [ reached max_nfeat ... 96 more features ]</div><div class='input'>
-<span class='co'># keep only words occurring &gt;= 10 times and in at least 0.4 of the documents</span>
-<span class='fu'>dfm_trim</span><span class='op'>(</span><span class='va'>dfmat</span>, min_termfreq <span class='op'>=</span> <span class='fl'>10</span>, min_docfreq <span class='op'>=</span> <span class='fl'>0.4</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 106 features (16.23% sparse) and 4 docvars.
-#&gt;                  features
-#&gt; docs               of the and among to no have me with than
-#&gt;   1789-Washington  71 116  48     1 48  8   12  8   17    6
-#&gt;   1793-Washington  11  13   2     0  5  0    1  1    0    0
-#&gt;   1797-Adams      140 163 130     4 72  6    7  5   16    7
-#&gt;   1801-Jefferson  104 130  81     1 61  1   10  4   20    0
-#&gt;   1805-Jefferson  101 143  93     7 83  7   24  8   28    2
-#&gt; [ reached max_nfeat ... 96 more features ]</div><div class='input'>
-<span class='co'># keep only words occurring &lt;= 10 times and in &lt;=2 documents</span>
-<span class='fu'>dfm_trim</span><span class='op'>(</span><span class='va'>dfmat</span>, max_termfreq <span class='op'>=</span> <span class='fl'>10</span>, max_docfreq <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 1,675 features (76.47% sparse) and 4 docvars.
-#&gt;                  features
-#&gt; docs              senate house representatives vicissitudes incident event
-#&gt;   1789-Washington      1     2               2            1        1     2
-#&gt;   1793-Washington      0     0               0            0        0     0
-#&gt;   1797-Adams           1     0               2            0        0     0
-#&gt;   1801-Jefferson       0     0               0            0        0     0
-#&gt;   1805-Jefferson       0     0               0            0        0     0
-#&gt;                  features
-#&gt; docs              filled greater anxieties notification
-#&gt;   1789-Washington      1       1         1            1
-#&gt;   1793-Washington      0       0         0            0
-#&gt;   1797-Adams           0       0         0            0
-#&gt;   1801-Jefferson       0       1         0            0
-#&gt;   1805-Jefferson       0       0         0            0
-#&gt; [ reached max_nfeat ... 1,665 more features ]</div><div class='input'>
-<span class='co'># keep only words occurring &lt;= 10 times and in at most 3/4 of the documents</span>
-<span class='fu'>dfm_trim</span><span class='op'>(</span><span class='va'>dfmat</span>, max_termfreq <span class='op'>=</span> <span class='fl'>10</span>, max_docfreq <span class='op'>=</span> <span class='fl'>0.75</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 0 features (0.00% sparse) and 4 docvars.</div><div class='input'>
-<span class='co'># keep only words occurring 5 times in 1000, and in 2 of 5 of documents</span>
-<span class='fu'>dfm_trim</span><span class='op'>(</span><span class='va'>dfmat</span>, min_docfreq <span class='op'>=</span> <span class='fl'>0.4</span>, min_termfreq <span class='op'>=</span> <span class='fl'>0.005</span>, termfreq_type <span class='op'>=</span> <span class='st'>"prop"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 30 features (7.33% sparse) and 4 docvars.
-#&gt;                  features
-#&gt; docs               of the and to have with that which by   ,
-#&gt;   1789-Washington  71 116  48 48   12   17   18    36 20  70
-#&gt;   1793-Washington  11  13   2  5    1    0    1     1  2   5
-#&gt;   1797-Adams      140 163 130 72    7   16   22    20 30 201
-#&gt;   1801-Jefferson  104 130  81 61   10   20   24    25 16 128
-#&gt;   1805-Jefferson  101 143  93 83   24   28   37    23 22 142
-#&gt; [ reached max_nfeat ... 20 more features ]</div><div class='input'>
-<span class='co'># keep only words occurring frequently (top 20%) and in &lt;=2 documents</span>
-<span class='fu'>dfm_trim</span><span class='op'>(</span><span class='va'>dfmat</span>, min_termfreq <span class='op'>=</span> <span class='fl'>0.2</span>, max_docfreq <span class='op'>=</span> <span class='fl'>2</span>, termfreq_type <span class='op'>=</span> <span class='st'>"quantile"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 1,676 features (76.46% sparse) and 4 docvars.
-#&gt;                  features
-#&gt; docs              senate house representatives vicissitudes incident event
-#&gt;   1789-Washington      1     2               2            1        1     2
-#&gt;   1793-Washington      0     0               0            0        0     0
-#&gt;   1797-Adams           1     0               2            0        0     0
-#&gt;   1801-Jefferson       0     0               0            0        0     0
-#&gt;   1805-Jefferson       0     0               0            0        0     0
-#&gt;                  features
-#&gt; docs              filled greater anxieties notification
-#&gt;   1789-Washington      1       1         1            1
-#&gt;   1793-Washington      0       0         0            0
-#&gt;   1797-Adams           0       0         0            0
-#&gt;   1801-Jefferson       0       1         0            0
-#&gt;   1805-Jefferson       0       0         0            0
-#&gt; [ reached max_nfeat ... 1,666 more features ]</div><div class='input'>
-<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
-<span class='co'># compare to removeSparseTerms from the tm package</span>
-<span class='op'>(</span><span class='va'>dfmattm</span> <span class='op'>&lt;-</span> <span class='fu'><a href='convert.html'>convert</a></span><span class='op'>(</span><span class='va'>dfmat</span>, <span class='st'>"tm"</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'>tm</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/tm/man/removeSparseTerms.html'>removeSparseTerms</a></span><span class='op'>(</span><span class='va'>dfmattm</span>, <span class='fl'>0.7</span><span class='op'>)</span>
-<span class='fu'>dfm_trim</span><span class='op'>(</span><span class='va'>dfmat</span>, min_docfreq <span class='op'>=</span> <span class='fl'>0.3</span><span class='op'>)</span>
-<span class='fu'>dfm_trim</span><span class='op'>(</span><span class='va'>dfmat</span>, sparsity <span class='op'>=</span> <span class='fl'>0.7</span><span class='op'>)</span>
-<span class='op'>}</span>
-
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='op'>(</span><span class='va'>dfmat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span><span class='op'>(</span><span class='va'>data_corpus_inaugural</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>]</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>'dfm.corpus()' is deprecated. Use 'tokens()' first.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Document-feature matrix of: 5 documents, 1,948 features (69.54% sparse) and 4 docvars.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                  features</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> docs              fellow-citizens  of the senate and house representatives :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1789-Washington               1  71 116      1  48     2               2 1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1793-Washington               0  11  13      0   2     0               0 1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1797-Adams                    3 140 163      1 130     0               2 0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1801-Jefferson                2 104 130      0  81     0               0 1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1805-Jefferson                0 101 143      0  93     0               0 0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                  features</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> docs              among vicissitudes</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1789-Washington     1            1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1793-Washington     0            0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1797-Adams          4            0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1801-Jefferson      1            0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1805-Jefferson      7            0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [ reached max_nfeat ... 1,938 more features ]</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># keep only words occurring &gt;= 10 times and in &gt;= 2 documents</span></span>
+<span class='r-in'><span class='fu'>dfm_trim</span><span class='op'>(</span><span class='va'>dfmat</span>, min_termfreq <span class='op'>=</span> <span class='fl'>10</span>, min_docfreq <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Document-feature matrix of: 5 documents, 106 features (16.23% sparse) and 4 docvars.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                  features</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> docs               of the and among to no have me with than</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1789-Washington  71 116  48     1 48  8   12  8   17    6</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1793-Washington  11  13   2     0  5  0    1  1    0    0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1797-Adams      140 163 130     4 72  6    7  5   16    7</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1801-Jefferson  104 130  81     1 61  1   10  4   20    0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1805-Jefferson  101 143  93     7 83  7   24  8   28    2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [ reached max_nfeat ... 96 more features ]</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># keep only words occurring &gt;= 10 times and in at least 0.4 of the documents</span></span>
+<span class='r-in'><span class='fu'>dfm_trim</span><span class='op'>(</span><span class='va'>dfmat</span>, min_termfreq <span class='op'>=</span> <span class='fl'>10</span>, min_docfreq <span class='op'>=</span> <span class='fl'>0.4</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Document-feature matrix of: 5 documents, 106 features (16.23% sparse) and 4 docvars.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                  features</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> docs               of the and among to no have me with than</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1789-Washington  71 116  48     1 48  8   12  8   17    6</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1793-Washington  11  13   2     0  5  0    1  1    0    0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1797-Adams      140 163 130     4 72  6    7  5   16    7</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1801-Jefferson  104 130  81     1 61  1   10  4   20    0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1805-Jefferson  101 143  93     7 83  7   24  8   28    2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [ reached max_nfeat ... 96 more features ]</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># keep only words occurring &lt;= 10 times and in &lt;=2 documents</span></span>
+<span class='r-in'><span class='fu'>dfm_trim</span><span class='op'>(</span><span class='va'>dfmat</span>, max_termfreq <span class='op'>=</span> <span class='fl'>10</span>, max_docfreq <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Document-feature matrix of: 5 documents, 1,675 features (76.47% sparse) and 4 docvars.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                  features</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> docs              senate house representatives vicissitudes incident event</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1789-Washington      1     2               2            1        1     2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1793-Washington      0     0               0            0        0     0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1797-Adams           1     0               2            0        0     0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1801-Jefferson       0     0               0            0        0     0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1805-Jefferson       0     0               0            0        0     0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                  features</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> docs              filled greater anxieties notification</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1789-Washington      1       1         1            1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1793-Washington      0       0         0            0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1797-Adams           0       0         0            0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1801-Jefferson       0       1         0            0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1805-Jefferson       0       0         0            0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [ reached max_nfeat ... 1,665 more features ]</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># keep only words occurring &lt;= 10 times and in at most 3/4 of the documents</span></span>
+<span class='r-in'><span class='fu'>dfm_trim</span><span class='op'>(</span><span class='va'>dfmat</span>, max_termfreq <span class='op'>=</span> <span class='fl'>10</span>, max_docfreq <span class='op'>=</span> <span class='fl'>0.75</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Document-feature matrix of: 5 documents, 0 features (0.00% sparse) and 4 docvars.</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># keep only words occurring 5 times in 1000, and in 2 of 5 of documents</span></span>
+<span class='r-in'><span class='fu'>dfm_trim</span><span class='op'>(</span><span class='va'>dfmat</span>, min_docfreq <span class='op'>=</span> <span class='fl'>0.4</span>, min_termfreq <span class='op'>=</span> <span class='fl'>0.005</span>, termfreq_type <span class='op'>=</span> <span class='st'>"prop"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Document-feature matrix of: 5 documents, 30 features (7.33% sparse) and 4 docvars.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                  features</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> docs               of the and to have with that which by   ,</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1789-Washington  71 116  48 48   12   17   18    36 20  70</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1793-Washington  11  13   2  5    1    0    1     1  2   5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1797-Adams      140 163 130 72    7   16   22    20 30 201</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1801-Jefferson  104 130  81 61   10   20   24    25 16 128</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1805-Jefferson  101 143  93 83   24   28   37    23 22 142</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [ reached max_nfeat ... 20 more features ]</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># keep only words occurring frequently (top 20%) and in &lt;=2 documents</span></span>
+<span class='r-in'><span class='fu'>dfm_trim</span><span class='op'>(</span><span class='va'>dfmat</span>, min_termfreq <span class='op'>=</span> <span class='fl'>0.2</span>, max_docfreq <span class='op'>=</span> <span class='fl'>2</span>, termfreq_type <span class='op'>=</span> <span class='st'>"quantile"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Document-feature matrix of: 5 documents, 1,676 features (76.46% sparse) and 4 docvars.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                  features</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> docs              senate house representatives vicissitudes incident event</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1789-Washington      1     2               2            1        1     2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1793-Washington      0     0               0            0        0     0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1797-Adams           1     0               2            0        0     0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1801-Jefferson       0     0               0            0        0     0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1805-Jefferson       0     0               0            0        0     0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                  features</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> docs              filled greater anxieties notification</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1789-Washington      1       1         1            1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1793-Washington      0       0         0            0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1797-Adams           0       0         0            0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1801-Jefferson       0       1         0            0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1805-Jefferson       0       0         0            0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [ reached max_nfeat ... 1,666 more features ]</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span></span>
+<span class='r-in'><span class='co'># compare to removeSparseTerms from the tm package</span></span>
+<span class='r-in'><span class='op'>(</span><span class='va'>dfmattm</span> <span class='op'>&lt;-</span> <span class='fu'><a href='convert.html'>convert</a></span><span class='op'>(</span><span class='va'>dfmat</span>, <span class='st'>"tm"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>tm</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/tm/man/removeSparseTerms.html'>removeSparseTerms</a></span><span class='op'>(</span><span class='va'>dfmattm</span>, <span class='fl'>0.7</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>dfm_trim</span><span class='op'>(</span><span class='va'>dfmat</span>, min_docfreq <span class='op'>=</span> <span class='fl'>0.3</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>dfm_trim</span><span class='op'>(</span><span class='va'>dfmat</span>, sparsity <span class='op'>=</span> <span class='fl'>0.7</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>}</span></span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -92,7 +92,7 @@ weights." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.2.0</span>
       </span>
     </div>
 
@@ -267,90 +267,96 @@ variables for the documents sampled.</p>
     <div class='dont-index'><p><a href='https://rdrr.io/r/base/sample.html'>sample</a></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>123</span><span class='op'>)</span>
-<span class='va'>toks</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span><span class='op'>(</span><span class='va'>data_corpus_inaugural</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span><span class='op'>]</span><span class='op'>)</span>
-<span class='va'>toks</span>
-</div><div class='output co'>#&gt; Tokens consisting of 6 documents and 4 docvars.
-#&gt; 1789-Washington :
-#&gt;  [1] "Fellow-Citizens" "of"              "the"             "Senate"         
-#&gt;  [5] "and"             "of"              "the"             "House"          
-#&gt;  [9] "of"              "Representatives" ":"               "Among"          
-#&gt; [ ... and 1,525 more ]
-#&gt; 
-#&gt; 1793-Washington :
-#&gt;  [1] "Fellow"   "citizens" ","        "I"        "am"       "again"   
-#&gt;  [7] "called"   "upon"     "by"       "the"      "voice"    "of"      
-#&gt; [ ... and 135 more ]
-#&gt; 
-#&gt; 1797-Adams :
-#&gt;  [1] "When"      "it"        "was"       "first"     "perceived" ","        
-#&gt;  [7] "in"        "early"     "times"     ","         "that"      "no"       
-#&gt; [ ... and 2,565 more ]
-#&gt; 
-#&gt; 1801-Jefferson :
-#&gt;  [1] "Friends"   "and"       "Fellow"    "Citizens"  ":"         "Called"   
-#&gt;  [7] "upon"      "to"        "undertake" "the"       "duties"    "of"       
-#&gt; [ ... and 1,911 more ]
-#&gt; 
-#&gt; 1805-Jefferson :
-#&gt;  [1] "Proceeding"    ","             "fellow"        "citizens"     
-#&gt;  [5] ","             "to"            "that"          "qualification"
-#&gt;  [9] "which"         "the"           "Constitution"  "requires"     
-#&gt; [ ... and 2,368 more ]
-#&gt; 
-#&gt; 1809-Madison :
-#&gt;  [1] "Unwilling" "to"        "depart"    "from"      "examples"  "of"       
-#&gt;  [7] "the"       "most"      "revered"   "authority" ","         "I"        
-#&gt; [ ... and 1,249 more ]
-#&gt; </div><div class='input'><span class='fu'>tokens_sample</span><span class='op'>(</span><span class='va'>toks</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Tokens consisting of 6 documents and 4 docvars.
-#&gt; 1797-Adams :
-#&gt;  [1] "When"      "it"        "was"       "first"     "perceived" ","        
-#&gt;  [7] "in"        "early"     "times"     ","         "that"      "no"       
-#&gt; [ ... and 2,565 more ]
-#&gt; 
-#&gt; 1809-Madison :
-#&gt;  [1] "Unwilling" "to"        "depart"    "from"      "examples"  "of"       
-#&gt;  [7] "the"       "most"      "revered"   "authority" ","         "I"        
-#&gt; [ ... and 1,249 more ]
-#&gt; 
-#&gt; 1793-Washington :
-#&gt;  [1] "Fellow"   "citizens" ","        "I"        "am"       "again"   
-#&gt;  [7] "called"   "upon"     "by"       "the"      "voice"    "of"      
-#&gt; [ ... and 135 more ]
-#&gt; 
-#&gt; 1801-Jefferson :
-#&gt;  [1] "Friends"   "and"       "Fellow"    "Citizens"  ":"         "Called"   
-#&gt;  [7] "upon"      "to"        "undertake" "the"       "duties"    "of"       
-#&gt; [ ... and 1,911 more ]
-#&gt; 
-#&gt; 1805-Jefferson :
-#&gt;  [1] "Proceeding"    ","             "fellow"        "citizens"     
-#&gt;  [5] ","             "to"            "that"          "qualification"
-#&gt;  [9] "which"         "the"           "Constitution"  "requires"     
-#&gt; [ ... and 2,368 more ]
-#&gt; 
-#&gt; 1789-Washington :
-#&gt;  [1] "Fellow-Citizens" "of"              "the"             "Senate"         
-#&gt;  [5] "and"             "of"              "the"             "House"          
-#&gt;  [9] "of"              "Representatives" ":"               "Among"          
-#&gt; [ ... and 1,525 more ]
-#&gt; </div><div class='input'><span class='fu'>tokens_sample</span><span class='op'>(</span><span class='va'>toks</span>, replace <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='docnames.html'>docnames</a></span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "1805-Jefferson.1"  "1801-Jefferson.1"  "1809-Madison.1"   
-#&gt; [4] "1809-Madison.2"    "1789-Washington.1" "1793-Washington.1"</div><div class='input'><span class='fu'>tokens_sample</span><span class='op'>(</span><span class='va'>toks</span>, size <span class='op'>=</span> <span class='fl'>3</span>, replace <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='docnames.html'>docnames</a></span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "1797-Adams.1"     "1805-Jefferson.1" "1797-Adams.2"    </div><div class='input'>
-<span class='co'># sampling using by</span>
-<span class='fu'><a href='docvars.html'>docvars</a></span><span class='op'>(</span><span class='va'>toks</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;   Year  President FirstName                 Party
-#&gt; 1 1789 Washington    George                  none
-#&gt; 2 1793 Washington    George                  none
-#&gt; 3 1797      Adams      John            Federalist
-#&gt; 4 1801  Jefferson    Thomas Democratic-Republican
-#&gt; 5 1805  Jefferson    Thomas Democratic-Republican
-#&gt; 6 1809    Madison     James Democratic-Republican</div><div class='input'><span class='fu'>tokens_sample</span><span class='op'>(</span><span class='va'>toks</span>, size <span class='op'>=</span> <span class='fl'>2</span>, replace <span class='op'>=</span> <span class='cn'>TRUE</span>, by <span class='op'>=</span> <span class='va'>Party</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='docnames.html'>docnames</a></span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "1809-Madison.1"    "1801-Jefferson.1"  "1797-Adams.1"     
-#&gt; [4] "1797-Adams.2"      "1789-Washington.1" "1789-Washington.2"</div><div class='input'>
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>123</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>toks</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span><span class='op'>(</span><span class='va'>data_corpus_inaugural</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span><span class='op'>]</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>toks</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Tokens consisting of 6 documents and 4 docvars.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1789-Washington :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] "Fellow-Citizens" "of"              "the"             "Senate"         </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [5] "and"             "of"              "the"             "House"          </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [9] "of"              "Representatives" ":"               "Among"          </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [ ... and 1,525 more ]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1793-Washington :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] "Fellow"   "citizens" ","        "I"        "am"       "again"   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [7] "called"   "upon"     "by"       "the"      "voice"    "of"      </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [ ... and 135 more ]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1797-Adams :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] "When"      "it"        "was"       "first"     "perceived" ","        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [7] "in"        "early"     "times"     ","         "that"      "no"       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [ ... and 2,565 more ]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1801-Jefferson :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] "Friends"   "and"       "Fellow"    "Citizens"  ":"         "Called"   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [7] "upon"      "to"        "undertake" "the"       "duties"    "of"       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [ ... and 1,911 more ]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1805-Jefferson :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] "Proceeding"    ","             "fellow"        "citizens"     </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [5] ","             "to"            "that"          "qualification"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [9] "which"         "the"           "Constitution"  "requires"     </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [ ... and 2,368 more ]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1809-Madison :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] "Unwilling" "to"        "depart"    "from"      "examples"  "of"       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [7] "the"       "most"      "revered"   "authority" ","         "I"        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [ ... and 1,249 more ]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='fu'>tokens_sample</span><span class='op'>(</span><span class='va'>toks</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Tokens consisting of 6 documents and 4 docvars.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1797-Adams :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] "When"      "it"        "was"       "first"     "perceived" ","        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [7] "in"        "early"     "times"     ","         "that"      "no"       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [ ... and 2,565 more ]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1809-Madison :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] "Unwilling" "to"        "depart"    "from"      "examples"  "of"       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [7] "the"       "most"      "revered"   "authority" ","         "I"        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [ ... and 1,249 more ]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1793-Washington :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] "Fellow"   "citizens" ","        "I"        "am"       "again"   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [7] "called"   "upon"     "by"       "the"      "voice"    "of"      </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [ ... and 135 more ]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1801-Jefferson :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] "Friends"   "and"       "Fellow"    "Citizens"  ":"         "Called"   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [7] "upon"      "to"        "undertake" "the"       "duties"    "of"       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [ ... and 1,911 more ]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1805-Jefferson :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] "Proceeding"    ","             "fellow"        "citizens"     </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [5] ","             "to"            "that"          "qualification"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [9] "which"         "the"           "Constitution"  "requires"     </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [ ... and 2,368 more ]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1789-Washington :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] "Fellow-Citizens" "of"              "the"             "Senate"         </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [5] "and"             "of"              "the"             "House"          </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [9] "of"              "Representatives" ":"               "Among"          </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [ ... and 1,525 more ]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='fu'>tokens_sample</span><span class='op'>(</span><span class='va'>toks</span>, replace <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span> <span class='fu'><a href='docnames.html'>docnames</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "1805-Jefferson.1"  "1801-Jefferson.1"  "1809-Madison.1"   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [4] "1809-Madison.2"    "1789-Washington.1" "1793-Washington.1"</span>
+<span class='r-in'><span class='fu'>tokens_sample</span><span class='op'>(</span><span class='va'>toks</span>, size <span class='op'>=</span> <span class='fl'>3</span>, replace <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span> <span class='fu'><a href='docnames.html'>docnames</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "1797-Adams.1"     "1805-Jefferson.1" "1797-Adams.2"    </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># sampling using by</span></span>
+<span class='r-in'><span class='fu'><a href='docvars.html'>docvars</a></span><span class='op'>(</span><span class='va'>toks</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Year  President FirstName                 Party</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1 1789 Washington    George                  none</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2 1793 Washington    George                  none</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3 1797      Adams      John            Federalist</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4 1801  Jefferson    Thomas Democratic-Republican</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5 1805  Jefferson    Thomas Democratic-Republican</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 6 1809    Madison     James Democratic-Republican</span>
+<span class='r-in'><span class='fu'>tokens_sample</span><span class='op'>(</span><span class='va'>toks</span>, size <span class='op'>=</span> <span class='fl'>2</span>, replace <span class='op'>=</span> <span class='cn'>TRUE</span>, by <span class='op'>=</span> <span class='va'>Party</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span> <span class='fu'><a href='docnames.html'>docnames</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "1809-Madison.1"    "1801-Jefferson.1"  "1797-Adams.1"     </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [4] "1797-Adams.2"      "1789-Washington.1" "1789-Washington.2"</span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

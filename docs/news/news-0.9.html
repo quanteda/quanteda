@@ -89,7 +89,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.2.0</span>
       </span>
     </div>
 
@@ -256,7 +256,7 @@
 <a href="#bug-fixes-8" class="anchor"></a>Bug fixes</h2>
 <ul>
 <li><p>Fixed a bug in textfile() preventing encodingFrom and encodingTo from working properly.</p></li>
-<li><p>Fixed a nasty bug problem in <code><a href="../reference/convert.html">convert(x, to = "stm")</a></code> that mixed up the word indexes. Thanks Felix Haass for spotting this!</p></li>
+<li><p>Fixed a nasty bug problem in <code>convert(x, to = "stm")</code> that mixed up the word indexes. Thanks Felix Haass for spotting this!</p></li>
 <li><p>Fixed a problem where wordstem was not working on ngram=1 tokenized objects</p></li>
 <li><p>Fixed toLower(x, keepAcronyms = TRUE) that caused an error when x contained no acronyms.</p></li>
 <li><p>Creating a corpus from a tm VCorpus now works if a “document” is a vector of texts rather than a single text</p></li>
@@ -290,7 +290,7 @@
 <li><p>dfm() on a text or tokenized text containing an NA element now returns a row with 0 feature counts. Previously it returned a count of 1 for an NA feature.</p></li>
 <li><p>Fix issue <a href='https://github.com/quanteda/quanteda/issues/91'>#91</a> removeHyphens = FALSE not working in tokenise for some multiple intra-word hyphens, such as “one-of-a-kind”</p></li>
 <li><p>Fixed a bug in <code>as.matrix.similMatrix()</code> that caused scrambled conversion when feature sets compared were unequal, which normally occurs when setting <code>similarity(x, n = &lt;something&gt;)</code> when n &lt; nfeature(x)</p></li>
-<li><p>Fixed a bug in which a corpusSource object (from <code>textfile()</code>) with empty docvars prevented this argument from being supplied to <code><a href="../reference/corpus.html">corpus(corpusSourceObject, docvars = something)</a></code>.</p></li>
+<li><p>Fixed a bug in which a corpusSource object (from <code>textfile()</code>) with empty docvars prevented this argument from being supplied to <code>corpus(corpusSourceObject, docvars = something)</code>.</p></li>
 <li><p>Fixed inaccurate documentation for <code>weight()</code>, which previously listed unavailable options.</p></li>
 <li><p>More accurate and complete documentation for <code><a href="../reference/tokenize_internal.html">tokenize()</a></code>.</p></li>
 <li><p>traps an exception when calling wordstem.tokenizedTexts(x) where x was not word tokenized.</p></li>
@@ -329,7 +329,7 @@ rbind.dfm() also knits together dfms with different features, which can be usefu
 <li><p><code>as.data.frame</code> for dfms now passes <code>...</code> to <code>as.data.frame.matrix</code>.</p></li>
 <li><p>Fixed bug in <code>predict.fitted_textmodel_NB()</code> that caused a failure with k &gt; 2 classes (<a href='https://github.com/quanteda/quanteda/issues/129'>#129</a>)</p></li>
 <li><p>Improved <code>dfm.tokenizedTexts()</code> performance by taking care of zero-token documents more efficiently.</p></li>
-<li><p><code><a href="../reference/dictionary.html">dictionary(file = "liwc_formatted_dict.dic", format = "LIWC")</a></code> now handles poorly formatted dictionary files better, such as the Moral Foundations Dictionary in the examples for <code><a href="../reference/dictionary.html">?dictionary</a></code>.</p></li>
+<li><p><code>dictionary(file = "liwc_formatted_dict.dic", format = "LIWC")</code> now handles poorly formatted dictionary files better, such as the Moral Foundations Dictionary in the examples for <code><a href="../reference/dictionary.html">?dictionary</a></code>.</p></li>
 <li><p>added <code>as.tokenizedTexts</code> to coerce any list of characters to a tokenizedTexts object.</p></li>
 </ul>
 <div id="bug-fixes--096-3" class="section level2">
@@ -377,7 +377,7 @@ rbind.dfm() also knits together dfms with different features, which can be usefu
 </li>
 <li>Added a corpus constructor method for kwic objects.<br>
 </li>
-<li>Substantially improved the performance of <code><a href="../reference/convert.html">convert(x, to = "stm")</a></code> for dfm export, including adding an argument for meta-data (docvars, in quanteda parlance). (<a href='https://github.com/quanteda/quanteda/issues/209'>#209</a>)<br>
+<li>Substantially improved the performance of <code>convert(x, to = "stm")</code> for dfm export, including adding an argument for meta-data (docvars, in quanteda parlance). (<a href='https://github.com/quanteda/quanteda/issues/209'>#209</a>)<br>
 </li>
 <li>Internal rewrite of <code>textfile()</code>, now supports more file types, more wildcard patterns, and is far more robust generally.<br>
 </li>
@@ -401,7 +401,7 @@ rbind.dfm() also knits together dfms with different features, which can be usefu
 <h2 class="hasAnchor">
 <a href="#bug-fixes-5" class="anchor"></a>Bug fixes</h2>
 <ul>
-<li>(0.9.8.7) Solved <a href='https://github.com/quanteda/quanteda/issues/267'>#267</a> in which <code><a href="../reference/fcm.html">fcm(x, tri = TRUE)</a></code> temporarily created a dense logical matrix.</li>
+<li>(0.9.8.7) Solved <a href='https://github.com/quanteda/quanteda/issues/267'>#267</a> in which <code>fcm(x, tri = TRUE)</code> temporarily created a dense logical matrix.</li>
 <li>(0.9.8.7) Added feature co-occurrence matrix functions (<code>fcm</code>).</li>
 <li>(0.9.8.5) Fixed an incompatibility in sequences.cpp with Solaris x86 (<a href='https://github.com/quanteda/quanteda/issues/257'>#257</a>)</li>
 <li>(0.9.8.4) Fix bug in verbose output of dfm that causes misreporting of number of features (<a href='https://github.com/quanteda/quanteda/issues/250'>#250</a>)</li>
@@ -409,7 +409,7 @@ rbind.dfm() also knits together dfms with different features, which can be usefu
 <li>(0.9.8.3) Fix a bug in <code>tf(x, scheme = "propmax")</code> that returned a wrong computation; correct the documentation for this function.</li>
 <li>(0.9.8.2) Fixed a bug in textfile() causing all texts to have the same name, for types using the “textField” argument (a single file containing multiple documents).<br>
 </li>
-<li>Fixed bug in <code>phrasetotoken()</code> where if pattern included a <code><a href="https://rdrr.io/r/base/Arithmetic.html">+</a></code> for <code>valuetype = c("glob", "fixed")</code> it threw a regex error. <a href='https://github.com/quanteda/quanteda/issues/239'>#239</a><br>
+<li>Fixed bug in <code>phrasetotoken()</code> where if pattern included a <code>+</code> for <code>valuetype = c("glob", "fixed")</code> it threw a regex error. <a href='https://github.com/quanteda/quanteda/issues/239'>#239</a><br>
 </li>
 <li>Fixed bug in <code>textfile()</code> where source is a remote .zip set. (<a href='https://github.com/quanteda/quanteda/issues/172'>#172</a>)<br>
 </li>

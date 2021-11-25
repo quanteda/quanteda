@@ -90,7 +90,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.2.0</span>
       </span>
     </div>
 
@@ -312,82 +312,94 @@ depending on the size of your input matrix.</p>
     <div class='dont-index'><p><code><a href='docfreq.html'>docfreq()</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>dfmat1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span><span class='op'>(</span><span class='va'>data_corpus_inaugural</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: 'dfm.corpus()' is deprecated. Use 'tokens()' first.</span></div><div class='input'>
-<span class='va'>dfmat2</span> <span class='op'>&lt;-</span> <span class='fu'>dfm_weight</span><span class='op'>(</span><span class='va'>dfmat1</span>, scheme <span class='op'>=</span> <span class='st'>"prop"</span><span class='op'>)</span>
-<span class='fu'><a href='topfeatures.html'>topfeatures</a></span><span class='op'>(</span><span class='va'>dfmat2</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;       the         ,        of       and         .        to        in       our 
-#&gt; 3.8381701 2.8260570 2.7179413 2.1189165 2.0425725 1.7929599 1.0882747 0.8917136 
-#&gt;         a        we 
-#&gt; 0.8790494 0.8082196 </div><div class='input'><span class='va'>dfmat3</span> <span class='op'>&lt;-</span> <span class='fu'>dfm_weight</span><span class='op'>(</span><span class='va'>dfmat1</span><span class='op'>)</span>
-<span class='fu'><a href='topfeatures.html'>topfeatures</a></span><span class='op'>(</span><span class='va'>dfmat3</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;   the    of     ,   and     .    to    in     a   our    we 
-#&gt; 10183  7180  7173  5406  5155  4591  2827  2292  2224  1827 </div><div class='input'><span class='va'>dfmat4</span> <span class='op'>&lt;-</span> <span class='fu'>dfm_weight</span><span class='op'>(</span><span class='va'>dfmat1</span>, scheme <span class='op'>=</span> <span class='st'>"logcount"</span><span class='op'>)</span>
-<span class='fu'><a href='topfeatures.html'>topfeatures</a></span><span class='op'>(</span><span class='va'>dfmat4</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;      the        ,       of      and        .       to       in        a 
-#&gt; 185.1899 177.4855 176.2702 170.1605 168.3167 166.0280 153.0303 146.2659 
-#&gt;      our     that 
-#&gt; 143.3759 141.3741 </div><div class='input'><span class='va'>dfmat5</span> <span class='op'>&lt;-</span> <span class='fu'>dfm_weight</span><span class='op'>(</span><span class='va'>dfmat1</span>, scheme <span class='op'>=</span> <span class='st'>"logave"</span><span class='op'>)</span>
-<span class='fu'><a href='topfeatures.html'>topfeatures</a></span><span class='op'>(</span><span class='va'>dfmat5</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;       the         ,        of       and         .        to        in         a 
-#&gt; 124.00625 118.76377 118.00973 113.83079 112.55748 111.14070 102.32000  97.53466 
-#&gt;       our      that 
-#&gt;  95.57679  94.48593 </div><div class='input'>
-<span class='co'># combine these methods for more complex dfm_weightings, e.g. as in Section 6.4</span>
-<span class='co'># of Introduction to Information Retrieval</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fu'><a href='dfm_tfidf.html'>dfm_tfidf</a></span><span class='op'>(</span><span class='va'>dfmat1</span>, scheme_tf <span class='op'>=</span> <span class='st'>"logcount"</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Document-feature matrix of: 6 documents, 9,439 features (93.84% sparse) and 4 docvars.
-#&gt;                  features
-#&gt; docs              fellow-citizens of the    senate and    house representatives
-#&gt;   1789-Washington       0.4920984  0   0 0.8166095   0 1.128984       0.8127846
-#&gt;   1793-Washington       0          0   0 0           0 0              0        
-#&gt;   1797-Adams            0.7268890  0   0 0.8166095   0 0              0.8127846
-#&gt;   1801-Jefferson        0.6402348  0   0 0           0 0              0        
-#&gt;   1805-Jefferson        0          0   0 0           0 0              0        
-#&gt;   1809-Madison          0.4920984  0   0 0           0 0              0        
-#&gt;                  features
-#&gt; docs                      :     among vicissitudes
-#&gt;   1789-Washington 0.2026503 0.1373836     1.071882
-#&gt;   1793-Washington 0.2026503 0             0       
-#&gt;   1797-Adams      0         0.2200967     0       
-#&gt;   1801-Jefferson  0.2026503 0.1373836     0       
-#&gt;   1805-Jefferson  0         0.2534861     0       
-#&gt;   1809-Madison    0         0             0       
-#&gt; [ reached max_nfeat ... 9,429 more features ]</div><div class='input'>
-<span class='co'># apply numeric weights</span>
-<span class='va'>str</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"apple is better than banana"</span>, <span class='st'>"banana banana apple much better"</span><span class='op'>)</span>
-<span class='op'>(</span><span class='va'>dfmat6</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span><span class='op'>(</span><span class='va'>str</span>, remove <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/stopwords/man/stopwords.html'>stopwords</a></span><span class='op'>(</span><span class='st'>"english"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: 'dfm.character()' is deprecated. Use 'tokens()' first.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'remove' is deprecated; use dfm_remove() instead</span></div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 4 features (12.50% sparse) and 0 docvars.
-#&gt;        features
-#&gt; docs    apple better banana much
-#&gt;   text1     1      1      1    0
-#&gt;   text2     1      1      2    1</div><div class='input'><span class='fu'>dfm_weight</span><span class='op'>(</span><span class='va'>dfmat6</span>, weights <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>apple <span class='op'>=</span> <span class='fl'>5</span>, banana <span class='op'>=</span> <span class='fl'>3</span>, much <span class='op'>=</span> <span class='fl'>0.5</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 4 features (12.50% sparse) and 0 docvars.
-#&gt;        features
-#&gt; docs    apple better banana much
-#&gt;   text1     5      1      3  0  
-#&gt;   text2     5      1      6  0.5</div><div class='input'>
-<span class='co'># smooth the dfm</span>
-<span class='va'>dfmat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span><span class='op'>(</span><span class='va'>data_corpus_inaugural</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: 'dfm.corpus()' is deprecated. Use 'tokens()' first.</span></div><div class='input'><span class='fu'>dfm_smooth</span><span class='op'>(</span><span class='va'>dfmat</span>, <span class='fl'>0.5</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Document-feature matrix of: 59 documents, 9,439 features (0.00% sparse) and 4 docvars.
-#&gt;                  features
-#&gt; docs              fellow-citizens    of   the senate   and house
-#&gt;   1789-Washington             1.5  71.5 116.5    1.5  48.5   2.5
-#&gt;   1793-Washington             0.5  11.5  13.5    0.5   2.5   0.5
-#&gt;   1797-Adams                  3.5 140.5 163.5    1.5 130.5   0.5
-#&gt;   1801-Jefferson              2.5 104.5 130.5    0.5  81.5   0.5
-#&gt;   1805-Jefferson              0.5 101.5 143.5    0.5  93.5   0.5
-#&gt;   1809-Madison                1.5  69.5 104.5    0.5  43.5   0.5
-#&gt;                  features
-#&gt; docs              representatives   : among vicissitudes
-#&gt;   1789-Washington             2.5 1.5   1.5          1.5
-#&gt;   1793-Washington             0.5 1.5   0.5          0.5
-#&gt;   1797-Adams                  2.5 0.5   4.5          0.5
-#&gt;   1801-Jefferson              0.5 1.5   1.5          0.5
-#&gt;   1805-Jefferson              0.5 0.5   7.5          0.5
-#&gt;   1809-Madison                0.5 0.5   0.5          0.5
-#&gt; [ reached max_ndoc ... 53 more documents, reached max_nfeat ... 9,429 more features ]</div></pre>
+    <pre class="examples"><span class='r-in'><span class='va'>dfmat1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span><span class='op'>(</span><span class='va'>data_corpus_inaugural</span><span class='op'>)</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>'dfm.corpus()' is deprecated. Use 'tokens()' first.</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>dfmat2</span> <span class='op'>&lt;-</span> <span class='fu'>dfm_weight</span><span class='op'>(</span><span class='va'>dfmat1</span>, scheme <span class='op'>=</span> <span class='st'>"prop"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='topfeatures.html'>topfeatures</a></span><span class='op'>(</span><span class='va'>dfmat2</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       the         ,        of       and         .        to        in       our </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3.8381701 2.8260570 2.7179413 2.1189165 2.0425725 1.7929599 1.0882747 0.8917136 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         a        we </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 0.8790494 0.8082196 </span>
+<span class='r-in'><span class='va'>dfmat3</span> <span class='op'>&lt;-</span> <span class='fu'>dfm_weight</span><span class='op'>(</span><span class='va'>dfmat1</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='topfeatures.html'>topfeatures</a></span><span class='op'>(</span><span class='va'>dfmat3</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   the    of     ,   and     .    to    in     a   our    we </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 10183  7180  7173  5406  5155  4591  2827  2292  2224  1827 </span>
+<span class='r-in'><span class='va'>dfmat4</span> <span class='op'>&lt;-</span> <span class='fu'>dfm_weight</span><span class='op'>(</span><span class='va'>dfmat1</span>, scheme <span class='op'>=</span> <span class='st'>"logcount"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='topfeatures.html'>topfeatures</a></span><span class='op'>(</span><span class='va'>dfmat4</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      the        ,       of      and        .       to       in        a </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 185.1899 177.4855 176.2702 170.1605 168.3167 166.0280 153.0303 146.2659 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      our     that </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 143.3759 141.3741 </span>
+<span class='r-in'><span class='va'>dfmat5</span> <span class='op'>&lt;-</span> <span class='fu'>dfm_weight</span><span class='op'>(</span><span class='va'>dfmat1</span>, scheme <span class='op'>=</span> <span class='st'>"logave"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='topfeatures.html'>topfeatures</a></span><span class='op'>(</span><span class='va'>dfmat5</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       the         ,        of       and         .        to        in         a </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 124.00625 118.76377 118.00973 113.83079 112.55748 111.14070 102.32000  97.53466 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       our      that </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  95.57679  94.48593 </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># combine these methods for more complex dfm_weightings, e.g. as in Section 6.4</span></span>
+<span class='r-in'><span class='co'># of Introduction to Information Retrieval</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fu'><a href='dfm_tfidf.html'>dfm_tfidf</a></span><span class='op'>(</span><span class='va'>dfmat1</span>, scheme_tf <span class='op'>=</span> <span class='st'>"logcount"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Document-feature matrix of: 6 documents, 9,439 features (93.84% sparse) and 4 docvars.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                  features</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> docs              fellow-citizens of the    senate and    house representatives</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1789-Washington       0.4920984  0   0 0.8166095   0 1.128984       0.8127846</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1793-Washington       0          0   0 0           0 0              0        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1797-Adams            0.7268890  0   0 0.8166095   0 0              0.8127846</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1801-Jefferson        0.6402348  0   0 0           0 0              0        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1805-Jefferson        0          0   0 0           0 0              0        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1809-Madison          0.4920984  0   0 0           0 0              0        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                  features</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> docs                      :     among vicissitudes</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1789-Washington 0.2026503 0.1373836     1.071882</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1793-Washington 0.2026503 0             0       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1797-Adams      0         0.2200967     0       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1801-Jefferson  0.2026503 0.1373836     0       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1805-Jefferson  0         0.2534861     0       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1809-Madison    0         0             0       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [ reached max_nfeat ... 9,429 more features ]</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># apply numeric weights</span></span>
+<span class='r-in'><span class='va'>str</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"apple is better than banana"</span>, <span class='st'>"banana banana apple much better"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>(</span><span class='va'>dfmat6</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span><span class='op'>(</span><span class='va'>str</span>, remove <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/stopwords/man/stopwords.html'>stopwords</a></span><span class='op'>(</span><span class='st'>"english"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>'dfm.character()' is deprecated. Use 'tokens()' first.</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>'remove' is deprecated; use dfm_remove() instead</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Document-feature matrix of: 2 documents, 4 features (12.50% sparse) and 0 docvars.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        features</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> docs    apple better banana much</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   text1     1      1      1    0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   text2     1      1      2    1</span>
+<span class='r-in'><span class='fu'>dfm_weight</span><span class='op'>(</span><span class='va'>dfmat6</span>, weights <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>apple <span class='op'>=</span> <span class='fl'>5</span>, banana <span class='op'>=</span> <span class='fl'>3</span>, much <span class='op'>=</span> <span class='fl'>0.5</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Document-feature matrix of: 2 documents, 4 features (12.50% sparse) and 0 docvars.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        features</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> docs    apple better banana much</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   text1     5      1      3  0  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   text2     5      1      6  0.5</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># smooth the dfm</span></span>
+<span class='r-in'><span class='va'>dfmat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span><span class='op'>(</span><span class='va'>data_corpus_inaugural</span><span class='op'>)</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>'dfm.corpus()' is deprecated. Use 'tokens()' first.</span>
+<span class='r-in'><span class='fu'>dfm_smooth</span><span class='op'>(</span><span class='va'>dfmat</span>, <span class='fl'>0.5</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Document-feature matrix of: 59 documents, 9,439 features (0.00% sparse) and 4 docvars.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                  features</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> docs              fellow-citizens    of   the senate   and house</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1789-Washington             1.5  71.5 116.5    1.5  48.5   2.5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1793-Washington             0.5  11.5  13.5    0.5   2.5   0.5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1797-Adams                  3.5 140.5 163.5    1.5 130.5   0.5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1801-Jefferson              2.5 104.5 130.5    0.5  81.5   0.5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1805-Jefferson              0.5 101.5 143.5    0.5  93.5   0.5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1809-Madison                1.5  69.5 104.5    0.5  43.5   0.5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                  features</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> docs              representatives   : among vicissitudes</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1789-Washington             2.5 1.5   1.5          1.5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1793-Washington             0.5 1.5   0.5          0.5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1797-Adams                  2.5 0.5   4.5          0.5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1801-Jefferson              0.5 1.5   1.5          0.5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1805-Jefferson              0.5 0.5   7.5          0.5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1809-Madison                0.5 0.5   0.5          0.5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [ reached max_ndoc ... 53 more documents, reached max_nfeat ... 9,429 more features ]</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

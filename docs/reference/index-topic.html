@@ -91,7 +91,7 @@ the beginning and ending tokens in the pattern." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.2.0</span>
       </span>
     </div>
 
@@ -264,22 +264,24 @@ matched.</p>
 <code>index()</code>; <code>FALSE</code> otherwise.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>toks</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span><span class='op'>(</span><span class='va'>data_corpus_inaugural</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>8</span><span class='op'>]</span><span class='op'>)</span>
-<span class='fu'>index</span><span class='op'>(</span><span class='va'>toks</span>, pattern <span class='op'>=</span> <span class='st'>"secure*"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;          docname from   to pattern
-#&gt; 1     1797-Adams  478  478 secure*
-#&gt; 2     1797-Adams 1512 1512 secure*
-#&gt; 3 1805-Jefferson 2367 2367 secure*
-#&gt; 4    1817-Monroe 1754 1754 secure*
-#&gt; 5    1817-Monroe 1814 1814 secure*
-#&gt; 6    1817-Monroe 3009 3009 secure*</div><div class='input'><span class='fu'>index</span><span class='op'>(</span><span class='va'>toks</span>, pattern <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"secure*"</span>, <span class='fu'><a href='phrase.html'>phrase</a></span><span class='op'>(</span><span class='st'>"united states"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;           docname from   to       pattern
-#&gt; 1 1789-Washington  433  434 united states
-#&gt; 2 1789-Washington  529  530 united states
-#&gt; 3      1797-Adams  478  478       secure*
-#&gt; 4      1797-Adams  524  525 united states
-#&gt; 5      1797-Adams 1512 1512       secure*
-#&gt; 6      1797-Adams 1716 1717 united states</div></pre>
+    <pre class="examples"><span class='r-in'><span class='va'>toks</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span><span class='op'>(</span><span class='va'>data_corpus_inaugural</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>8</span><span class='op'>]</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>index</span><span class='op'>(</span><span class='va'>toks</span>, pattern <span class='op'>=</span> <span class='st'>"secure*"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          docname from   to pattern</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1     1797-Adams  478  478 secure*</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2     1797-Adams 1512 1512 secure*</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3 1805-Jefferson 2367 2367 secure*</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4    1817-Monroe 1754 1754 secure*</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5    1817-Monroe 1814 1814 secure*</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 6    1817-Monroe 3009 3009 secure*</span>
+<span class='r-in'><span class='fu'>index</span><span class='op'>(</span><span class='va'>toks</span>, pattern <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"secure*"</span>, <span class='fu'><a href='phrase.html'>phrase</a></span><span class='op'>(</span><span class='st'>"united states"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span> <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>           docname from   to       pattern</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1 1789-Washington  433  434 united states</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2 1789-Washington  529  530 united states</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3      1797-Adams  478  478       secure*</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4      1797-Adams  524  525 united states</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5      1797-Adams 1512 1512       secure*</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 6      1797-Adams 1716 1717 united states</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

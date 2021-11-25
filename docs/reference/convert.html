@@ -94,7 +94,7 @@ an easy way to make a corpus and its document variables into a data.frame." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.2.0</span>
       </span>
     </div>
 
@@ -298,7 +298,8 @@ documents with non-zero counts.  Only affects the "stm" format.</p></td>
       <td><p>logical; if <code>TRUE</code>, omit empty documents and features
 from the converted dfm. This is required for some formats (such as STM)
 that do not accept empty documents.  Only used when <code>to = "lda"</code> or
-<code>to = "topicmodels"</code>.  For <code>to = "stm"</code> format, <code>omit_empty`` is always </code>TRUE`.</p></td>
+<code>to = "topicmodels"</code>.  For <code>to = "stm"</code> format, <code>omit_empty</code> is
+always <code>TRUE</code>.</p></td>
     </tr>
     <tr>
       <th>docid_field</th>
@@ -318,68 +319,73 @@ See conversion target package documentation for more detailed descriptions
 of the return formats.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>## convert a dfm</span>
-
-<span class='va'>toks</span> <span class='op'>&lt;-</span> <span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span><span class='op'>(</span><span class='va'>data_corpus_inaugural</span>, <span class='va'>Year</span> <span class='op'>&gt;</span> <span class='fl'>1970</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='tokens.html'>tokens</a></span><span class='op'>(</span><span class='op'>)</span>
-<span class='va'>dfmat1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span><span class='op'>(</span><span class='va'>toks</span><span class='op'>)</span>
-
-<span class='co'># austin's wfm format</span>
-<span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/dim.html'>dim</a></span><span class='op'>(</span><span class='va'>dfmat1</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/dim.html'>dim</a></span><span class='op'>(</span><span class='fu'>convert</span><span class='op'>(</span><span class='va'>dfmat1</span>, to <span class='op'>=</span> <span class='st'>"austin"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
-<span class='co'># stm package format</span>
-<span class='va'>stmmat</span> <span class='op'>&lt;-</span> <span class='fu'>convert</span><span class='op'>(</span><span class='va'>dfmat1</span>, to <span class='op'>=</span> <span class='st'>"stm"</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='va'>stmmat</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; List of 3
-#&gt;  $ documents:List of 13
-#&gt;   ..$ 1973-Nixon  : int [1:2, 1:515] 1 17 2 96 3 1 4 5 6 3 ...
-#&gt;   ..$ 1977-Carter : int [1:2, 1:501] 1 11 2 65 3 7 4 4 7 52 ...
-#&gt;   ..$ 1981-Reagan : int [1:2, 1:850] 1 9 2 174 3 7 4 3 6 5 ...
-#&gt;   ..$ 1985-Reagan : int [1:2, 1:876] 1 12 2 177 3 13 4 7 6 3 ...
-#&gt;   ..$ 1989-Bush   : int [1:2, 1:756] 1 7 2 166 3 14 4 16 6 5 ...
-#&gt;   ..$ 1993-Clinton: int [1:2, 1:605] 2 139 3 6 4 5 7 81 10 4 ...
-#&gt;   ..$ 1997-Clinton: int [1:2, 1:726] 1 13 2 131 3 13 4 7 6 3 ...
-#&gt;   ..$ 2001-Bush   : int [1:2, 1:592] 1 2 2 110 3 4 4 7 6 1 ...
-#&gt;   ..$ 2005-Bush   : int [1:2, 1:734] 1 2 2 120 3 3 4 8 6 2 ...
-#&gt;   ..$ 2009-Obama  : int [1:2, 1:900] 1 22 2 130 3 22 4 4 5 1 ...
-#&gt;   ..$ 2013-Obama  : int [1:2, 1:786] 1 13 2 99 3 14 4 5 7 89 ...
-#&gt;   ..$ 2017-Trump  : int [1:2, 1:547] 1 11 2 96 3 9 4 8 7 88 ...
-#&gt;   ..$ 2021-Biden  : int [1:2, 1:743] 1 9 2 147 4 10 6 6 7 210 ...
-#&gt;  $ vocab    : chr [1:3616] "-" "," ";" ":" ...
-#&gt;  $ meta     :'data.frame':	13 obs. of  4 variables:
-#&gt;   ..$ Year     : int [1:13] 1973 1977 1981 1985 1989 1993 1997 2001 2005 2009 ...
-#&gt;   ..$ President: chr [1:13] "Nixon" "Carter" "Reagan" "Reagan" ...
-#&gt;   ..$ FirstName: chr [1:13] "Richard Milhous" "Jimmy" "Ronald" "Ronald" ...
-#&gt;   ..$ Party    : Factor w/ 6 levels "Democratic","Democratic-Republican",..: 5 1 5 5 5 1 1 5 5 1 ...</div><div class='input'>
-<span class='co'># triplet</span>
-<span class='va'>tripletmat</span> <span class='op'>&lt;-</span> <span class='fu'>convert</span><span class='op'>(</span><span class='va'>dfmat1</span>, to <span class='op'>=</span> <span class='st'>"tripletlist"</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='va'>tripletmat</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; List of 3
-#&gt;  $ document : chr [1:9131] "1973-Nixon" "1981-Reagan" "1989-Bush" "2005-Bush" ...
-#&gt;  $ feature  : chr [1:9131] "mr" "mr" "mr" "mr" ...
-#&gt;  $ frequency: num [1:9131] 3 3 6 1 1 69 52 130 124 142 ...</div><div class='input'>
-<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
-<span class='co'># tm's DocumentTermMatrix format</span>
-<span class='va'>tmdfm</span> <span class='op'>&lt;-</span> <span class='fu'>convert</span><span class='op'>(</span><span class='va'>dfmat1</span>, to <span class='op'>=</span> <span class='st'>"tm"</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='va'>tmdfm</span><span class='op'>)</span>
-
-<span class='co'># topicmodels package format</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='fu'>convert</span><span class='op'>(</span><span class='va'>dfmat1</span>, to <span class='op'>=</span> <span class='st'>"topicmodels"</span><span class='op'>)</span><span class='op'>)</span>
-
-<span class='co'># lda package format</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='fu'>convert</span><span class='op'>(</span><span class='va'>dfmat1</span>, to <span class='op'>=</span> <span class='st'>"lda"</span><span class='op'>)</span><span class='op'>)</span>
-<span class='op'>}</span>
-
-<span class='co'>## convert a corpus into a data.frame</span>
-
-<span class='va'>corp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='corpus.html'>corpus</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>d1 <span class='op'>=</span> <span class='st'>"Text one."</span>, d2 <span class='op'>=</span> <span class='st'>"Text two."</span><span class='op'>)</span>,
-               docvars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>dvar1 <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span>, dvar2 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"one"</span>, <span class='st'>"two"</span><span class='op'>)</span>,
-                                    stringsAsFactors <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'>convert</span><span class='op'>(</span><span class='va'>corp</span>, to <span class='op'>=</span> <span class='st'>"data.frame"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;   doc_id      text dvar1 dvar2
-#&gt; 1     d1 Text one.     1   one
-#&gt; 2     d2 Text two.     2   two</div><div class='input'><span class='fu'>convert</span><span class='op'>(</span><span class='va'>corp</span>, to <span class='op'>=</span> <span class='st'>"json"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [{"doc_id":"d1","text":"Text one.","dvar1":1,"dvar2":"one"},{"doc_id":"d2","text":"Text two.","dvar1":2,"dvar2":"two"}] </div></pre>
+    <pre class="examples"><span class='r-in'><span class='co'>## convert a dfm</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>toks</span> <span class='op'>&lt;-</span> <span class='fu'><a href='corpus_subset.html'>corpus_subset</a></span><span class='op'>(</span><span class='va'>data_corpus_inaugural</span>, <span class='va'>Year</span> <span class='op'>&gt;</span> <span class='fl'>1970</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>    <span class='fu'><a href='tokens.html'>tokens</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>dfmat1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span><span class='op'>(</span><span class='va'>toks</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># austin's wfm format</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/dim.html'>dim</a></span><span class='op'>(</span><span class='va'>dfmat1</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/dim.html'>dim</a></span><span class='op'>(</span><span class='fu'>convert</span><span class='op'>(</span><span class='va'>dfmat1</span>, to <span class='op'>=</span> <span class='st'>"austin"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># stm package format</span></span>
+<span class='r-in'><span class='va'>stmmat</span> <span class='op'>&lt;-</span> <span class='fu'>convert</span><span class='op'>(</span><span class='va'>dfmat1</span>, to <span class='op'>=</span> <span class='st'>"stm"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='va'>stmmat</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> List of 3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  $ documents:List of 13</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   ..$ 1973-Nixon  : int [1:2, 1:515] 1 17 2 96 3 1 4 5 6 3 ...</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   ..$ 1977-Carter : int [1:2, 1:501] 1 11 2 65 3 7 4 4 7 52 ...</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   ..$ 1981-Reagan : int [1:2, 1:850] 1 9 2 174 3 7 4 3 6 5 ...</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   ..$ 1985-Reagan : int [1:2, 1:876] 1 12 2 177 3 13 4 7 6 3 ...</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   ..$ 1989-Bush   : int [1:2, 1:756] 1 7 2 166 3 14 4 16 6 5 ...</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   ..$ 1993-Clinton: int [1:2, 1:605] 2 139 3 6 4 5 7 81 10 4 ...</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   ..$ 1997-Clinton: int [1:2, 1:726] 1 13 2 131 3 13 4 7 6 3 ...</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   ..$ 2001-Bush   : int [1:2, 1:592] 1 2 2 110 3 4 4 7 6 1 ...</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   ..$ 2005-Bush   : int [1:2, 1:734] 1 2 2 120 3 3 4 8 6 2 ...</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   ..$ 2009-Obama  : int [1:2, 1:900] 1 22 2 130 3 22 4 4 5 1 ...</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   ..$ 2013-Obama  : int [1:2, 1:786] 1 13 2 99 3 14 4 5 7 89 ...</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   ..$ 2017-Trump  : int [1:2, 1:547] 1 11 2 96 3 9 4 8 7 88 ...</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   ..$ 2021-Biden  : int [1:2, 1:743] 1 9 2 147 4 10 6 6 7 210 ...</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  $ vocab    : chr [1:3616] "-" "," ";" ":" ...</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  $ meta     :'data.frame':	13 obs. of  4 variables:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   ..$ Year     : int [1:13] 1973 1977 1981 1985 1989 1993 1997 2001 2005 2009 ...</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   ..$ President: chr [1:13] "Nixon" "Carter" "Reagan" "Reagan" ...</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   ..$ FirstName: chr [1:13] "Richard Milhous" "Jimmy" "Ronald" "Ronald" ...</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   ..$ Party    : Factor w/ 6 levels "Democratic","Democratic-Republican",..: 5 1 5 5 5 1 1 5 5 1 ...</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># triplet</span></span>
+<span class='r-in'><span class='va'>tripletmat</span> <span class='op'>&lt;-</span> <span class='fu'>convert</span><span class='op'>(</span><span class='va'>dfmat1</span>, to <span class='op'>=</span> <span class='st'>"tripletlist"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='va'>tripletmat</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> List of 3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  $ document : chr [1:9131] "1973-Nixon" "1981-Reagan" "1989-Bush" "2005-Bush" ...</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  $ feature  : chr [1:9131] "mr" "mr" "mr" "mr" ...</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  $ frequency: num [1:9131] 3 3 6 1 1 69 52 130 124 142 ...</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span></span>
+<span class='r-in'><span class='co'># tm's DocumentTermMatrix format</span></span>
+<span class='r-in'><span class='va'>tmdfm</span> <span class='op'>&lt;-</span> <span class='fu'>convert</span><span class='op'>(</span><span class='va'>dfmat1</span>, to <span class='op'>=</span> <span class='st'>"tm"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='va'>tmdfm</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># topicmodels package format</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='fu'>convert</span><span class='op'>(</span><span class='va'>dfmat1</span>, to <span class='op'>=</span> <span class='st'>"topicmodels"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># lda package format</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='fu'>convert</span><span class='op'>(</span><span class='va'>dfmat1</span>, to <span class='op'>=</span> <span class='st'>"lda"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>}</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## convert a corpus into a data.frame</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>corp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='corpus.html'>corpus</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>d1 <span class='op'>=</span> <span class='st'>"Text one."</span>, d2 <span class='op'>=</span> <span class='st'>"Text two."</span><span class='op'>)</span>,</span>
+<span class='r-in'>               docvars <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>dvar1 <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span>, dvar2 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"one"</span>, <span class='st'>"two"</span><span class='op'>)</span>,</span>
+<span class='r-in'>                                    stringsAsFactors <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>convert</span><span class='op'>(</span><span class='va'>corp</span>, to <span class='op'>=</span> <span class='st'>"data.frame"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   doc_id      text dvar1 dvar2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1     d1 Text one.     1   one</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2     d2 Text two.     2   two</span>
+<span class='r-in'><span class='fu'>convert</span><span class='op'>(</span><span class='va'>corp</span>, to <span class='op'>=</span> <span class='st'>"json"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [{"doc_id":"d1","text":"Text one.","dvar1":1,"dvar2":"one"},{"doc_id":"d2","text":"Text two.","dvar1":2,"dvar2":"two"}] </span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

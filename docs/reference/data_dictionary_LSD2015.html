@@ -91,7 +91,7 @@ format." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.2.0</span>
       </span>
     </div>
 
@@ -269,48 +269,54 @@ Sentiment in Political Texts]. doi: <a href='https://doi.org/10.1080/10584609.20
 <em>Political Communication</em>, 29(2), 205--231.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># simple example</span>
-<span class='va'>txt</span> <span class='op'>&lt;-</span> <span class='st'>"This aggressive policy will not win friends."</span>
-
-<span class='fu'><a href='tokens_lookup.html'>tokens_lookup</a></span><span class='op'>(</span><span class='fu'><a href='tokens.html'>tokens</a></span><span class='op'>(</span><span class='va'>txt</span><span class='op'>)</span>, dictionary <span class='op'>=</span> <span class='va'>data_dictionary_LSD2015</span>, exclusive <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Tokens consisting of 1 document.
-#&gt; text1 :
-#&gt; [1] "This"         "NEGATIVE"     "policy"       "will"         "NEG_POSITIVE"
-#&gt; [6] "POSITIVE"     "POSITIVE"     "."           
-#&gt; </div><div class='input'><span class='co'>## tokens from 1 document.</span>
-<span class='co'>## text1 :</span>
-<span class='co'>## [1] "This"   "NEGATIVE"   "policy"   "will"   "NEG_POSITIVE"   "POSITIVE"   "POSITIVE" "."</span>
-
-<span class='co'># notice that double-counting of negated and non-negated terms is avoided </span>
-<span class='co'># when using nested_scope = "dictionary"</span>
-<span class='fu'><a href='tokens_lookup.html'>tokens_lookup</a></span><span class='op'>(</span><span class='fu'><a href='tokens.html'>tokens</a></span><span class='op'>(</span><span class='va'>txt</span><span class='op'>)</span>, dictionary <span class='op'>=</span> <span class='va'>data_dictionary_LSD2015</span>, 
-              exclusive <span class='op'>=</span> <span class='cn'>FALSE</span>, nested_scope <span class='op'>=</span> <span class='st'>"dictionary"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Tokens consisting of 1 document.
-#&gt; text1 :
-#&gt; [1] "This"         "NEGATIVE"     "policy"       "will"         "NEG_POSITIVE"
-#&gt; [6] "POSITIVE"     "."           
-#&gt; </div><div class='input'><span class='co'>## tokens from 1 document.</span>
-<span class='co'>## text1 :</span>
-<span class='co'>## [1] "This"   "NEGATIVE"   "policy"   "will"   "NEG_POSITIVE" "POSITIVE."   </span>
-
-<span class='co'># on larger examples - notice that few negations are used</span>
-<span class='fu'><a href='dfm.html'>dfm</a></span><span class='op'>(</span><span class='va'>data_char_ukimmig2010</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>]</span>, dictionary <span class='op'>=</span> <span class='va'>data_dictionary_LSD2015</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: 'dfm.character()' is deprecated. Use 'tokens()' first.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'dictionary' and 'thesaurus' are deprecated; use dfm_lookup() instead</span></div><div class='output co'>#&gt; Document-feature matrix of: 5 documents, 4 features (45.00% sparse) and 0 docvars.
-#&gt;               features
-#&gt; docs           negative positive neg_positive neg_negative
-#&gt;   BNP               146      107            0            0
-#&gt;   Coalition           6       15            0            0
-#&gt;   Conservative       11       31            0            0
-#&gt;   Greens             23       37            2            0
-#&gt;   Labour             14       31            0            0</div><div class='input'>
-<span class='co'># compound neg_negative and neg_positive tokens before creating a dfm object</span>
-<span class='va'>toks</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tokens_compound.html'>tokens_compound</a></span><span class='op'>(</span><span class='fu'><a href='tokens.html'>tokens</a></span><span class='op'>(</span><span class='va'>txt</span><span class='op'>)</span>, <span class='va'>data_dictionary_LSD2015</span><span class='op'>)</span>
-
-<span class='fu'><a href='dfm_lookup.html'>dfm_lookup</a></span><span class='op'>(</span><span class='fu'><a href='dfm.html'>dfm</a></span><span class='op'>(</span><span class='va'>toks</span><span class='op'>)</span>, <span class='va'>data_dictionary_LSD2015</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Document-feature matrix of: 1 document, 4 features (25.00% sparse) and 0 docvars.
-#&gt;        features
-#&gt; docs    negative positive neg_positive neg_negative
-#&gt;   text1        2        1            1            0</div></pre>
+    <pre class="examples"><span class='r-in'><span class='co'># simple example</span></span>
+<span class='r-in'><span class='va'>txt</span> <span class='op'>&lt;-</span> <span class='st'>"This aggressive policy will not win friends."</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'><a href='tokens_lookup.html'>tokens_lookup</a></span><span class='op'>(</span><span class='fu'><a href='tokens.html'>tokens</a></span><span class='op'>(</span><span class='va'>txt</span><span class='op'>)</span>, dictionary <span class='op'>=</span> <span class='va'>data_dictionary_LSD2015</span>, exclusive <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Tokens consisting of 1 document.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> text1 :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "This"         "NEGATIVE"     "policy"       "will"         "NEG_POSITIVE"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [6] "POSITIVE"     "POSITIVE"     "."           </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='co'>## tokens from 1 document.</span></span>
+<span class='r-in'><span class='co'>## text1 :</span></span>
+<span class='r-in'><span class='co'>## [1] "This"   "NEGATIVE"   "policy"   "will"   "NEG_POSITIVE"   "POSITIVE"   "POSITIVE" "."</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># notice that double-counting of negated and non-negated terms is avoided </span></span>
+<span class='r-in'><span class='co'># when using nested_scope = "dictionary"</span></span>
+<span class='r-in'><span class='fu'><a href='tokens_lookup.html'>tokens_lookup</a></span><span class='op'>(</span><span class='fu'><a href='tokens.html'>tokens</a></span><span class='op'>(</span><span class='va'>txt</span><span class='op'>)</span>, dictionary <span class='op'>=</span> <span class='va'>data_dictionary_LSD2015</span>, </span>
+<span class='r-in'>              exclusive <span class='op'>=</span> <span class='cn'>FALSE</span>, nested_scope <span class='op'>=</span> <span class='st'>"dictionary"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Tokens consisting of 1 document.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> text1 :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "This"         "NEGATIVE"     "policy"       "will"         "NEG_POSITIVE"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [6] "POSITIVE"     "."           </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='co'>## tokens from 1 document.</span></span>
+<span class='r-in'><span class='co'>## text1 :</span></span>
+<span class='r-in'><span class='co'>## [1] "This"   "NEGATIVE"   "policy"   "will"   "NEG_POSITIVE" "POSITIVE."   </span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># on larger examples - notice that few negations are used</span></span>
+<span class='r-in'><span class='fu'><a href='dfm.html'>dfm</a></span><span class='op'>(</span><span class='va'>data_char_ukimmig2010</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>]</span>, dictionary <span class='op'>=</span> <span class='va'>data_dictionary_LSD2015</span><span class='op'>)</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>'dfm.character()' is deprecated. Use 'tokens()' first.</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>'dictionary' and 'thesaurus' are deprecated; use dfm_lookup() instead</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Document-feature matrix of: 5 documents, 4 features (45.00% sparse) and 0 docvars.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>               features</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> docs           negative positive neg_positive neg_negative</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   BNP               146      107            0            0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Coalition           6       15            0            0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Conservative       11       31            0            0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Greens             23       37            2            0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Labour             14       31            0            0</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># compound neg_negative and neg_positive tokens before creating a dfm object</span></span>
+<span class='r-in'><span class='va'>toks</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tokens_compound.html'>tokens_compound</a></span><span class='op'>(</span><span class='fu'><a href='tokens.html'>tokens</a></span><span class='op'>(</span><span class='va'>txt</span><span class='op'>)</span>, <span class='va'>data_dictionary_LSD2015</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'><a href='dfm_lookup.html'>dfm_lookup</a></span><span class='op'>(</span><span class='fu'><a href='dfm.html'>dfm</a></span><span class='op'>(</span><span class='va'>toks</span><span class='op'>)</span>, <span class='va'>data_dictionary_LSD2015</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Document-feature matrix of: 1 document, 4 features (25.00% sparse) and 0 docvars.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        features</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> docs    negative positive neg_positive neg_negative</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   text1        2        1            1            0</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

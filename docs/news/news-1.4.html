@@ -89,7 +89,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.2.0</span>
       </span>
     </div>
 
@@ -217,15 +217,15 @@
 <h1 class="page-header" data-toc-text="1.4.0">
 <a href="#quanteda-140" class="anchor"></a>quanteda 1.4.0<small> 2019-01-30 </small>
 </h1>
-<div id="bug-fixes-and-stability-enhancements-10" class="section level2">
+<div id="bug-fixes-and-stability-enhancements-11" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-and-stability-enhancements-10" class="anchor"></a>Bug fixes and stability enhancements</h2>
+<a href="#bug-fixes-and-stability-enhancements-11" class="anchor"></a>Bug fixes and stability enhancements</h2>
 <ul>
 <li>Fixed bug in <code><a href="../reference/dfm_compress.html">dfm_compress()</a></code> and <code><a href="../reference/dfm_group.html">dfm_group()</a></code> that changed or deleted docvars attributes of dfm objects (<a href='https://github.com/quanteda/quanteda/issues/1506'>#1506</a>).</li>
-<li>Fixed a bug in <code>textplot_xray()</code> that caused incorrect facet labels when a pattern contained multiple list elements or values (<a href='https://github.com/quanteda/quanteda/issues/1514'>#1514</a>).</li>
+<li>Fixed a bug in <code><a href="https://rdrr.io/pkg/quanteda.textplots/man/textplot_xray.html">textplot_xray()</a></code> that caused incorrect facet labels when a pattern contained multiple list elements or values (<a href='https://github.com/quanteda/quanteda/issues/1514'>#1514</a>).</li>
 <li>
 <code><a href="../reference/kwic.html">kwic()</a></code> now correctly returns the pattern associated with each match as the <code>"keywords"</code> attribute, for all <code>pattern</code> types (<a href='https://github.com/quanteda/quanteda/issues/1515'>#1515</a>)</li>
-<li>Implemented some improvements in efficiency and computation of unusual edge cases for <code>textstat_simil()</code> and <code>textstat_dist()</code>.</li>
+<li>Implemented some improvements in efficiency and computation of unusual edge cases for <code><a href="https://quanteda.io/reference/textstat_simil.html">textstat_simil()</a></code> and <code><a href="https://quanteda.io/reference/textstat_simil.html">textstat_dist()</a></code>.</li>
 </ul>
 </div>
 <div id="new-features-4" class="section level2">
@@ -233,13 +233,13 @@
 <a href="#new-features-4" class="anchor"></a>New features</h2>
 <ul>
 <li>
-<code>textstat_lexdiv()</code> now works on tokens objects, not just dfm objects. New methods of lexical diversity now include MATTR (the Moving-Average Type-Token Ratio, Covington &amp; McFall 2010) and MSTTR (Mean Segmental Type-Token Ratio).</li>
+<code><a href="https://quanteda.io/reference/textstat_lexdiv.html">textstat_lexdiv()</a></code> now works on tokens objects, not just dfm objects. New methods of lexical diversity now include MATTR (the Moving-Average Type-Token Ratio, Covington &amp; McFall 2010) and MSTTR (Mean Segmental Type-Token Ratio).</li>
 <li>New function <code><a href="../reference/tokens_split.html">tokens_split()</a></code> allows splitting single into multiple tokens based on a pattern match. (<a href='https://github.com/quanteda/quanteda/issues/1500'>#1500</a>)</li>
 <li>New function <code><a href="../reference/tokens_chunk.html">tokens_chunk()</a></code> allows splitting tokens into new documents of equally-sized “chunks”. (<a href='https://github.com/quanteda/quanteda/issues/1520'>#1520</a>)</li>
-<li>New function <code>textstat_entropy()</code> now computes entropy for a dfm across feature or document margins.</li>
-<li>The documentation for <code>textstat_readability()</code> is vastly improved, now providing detailing all formulas and providing full references.</li>
-<li>New function <code><a href="../reference/dfm_match.html">dfm_match()</a></code> allows a user to specify the features in a dfm according to a fixed vector of feature names, including those of another dfm. Replaces <code><a href="../reference/dfm_select.html">dfm_select(x, pattern)</a></code> where <code>pattern</code> was a dfm.</li>
-<li>A new argument <code>vertex_labelsize</code> added to <code>textplot_network()</code> to allow more precise control of label sizes, either globally or individually.</li>
+<li>New function <code><a href="https://quanteda.io/reference/textstat_entropy.html">textstat_entropy()</a></code> now computes entropy for a dfm across feature or document margins.</li>
+<li>The documentation for <code><a href="https://quanteda.io/reference/textstat_readability.html">textstat_readability()</a></code> is vastly improved, now providing detailing all formulas and providing full references.</li>
+<li>New function <code><a href="../reference/dfm_match.html">dfm_match()</a></code> allows a user to specify the features in a dfm according to a fixed vector of feature names, including those of another dfm. Replaces <code>dfm_select(x, pattern)</code> where <code>pattern</code> was a dfm.</li>
+<li>A new argument <code>vertex_labelsize</code> added to <code><a href="https://rdrr.io/pkg/quanteda.textplots/man/textplot_network.html">textplot_network()</a></code> to allow more precise control of label sizes, either globally or individually.</li>
 </ul>
 </div>
 <div id="behaviour-changes-2" class="section level2">
@@ -255,9 +255,9 @@
 <h1 class="page-header" data-toc-text="1.4.1">
 <a href="#quanteda-141" class="anchor"></a>quanteda 1.4.1<small> 2019-02-26 </small>
 </h1>
-<div id="bug-fixes-and-stability-enhancements-9" class="section level2">
+<div id="bug-fixes-and-stability-enhancements-10" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-and-stability-enhancements-9" class="anchor"></a>Bug fixes and stability enhancements</h2>
+<a href="#bug-fixes-and-stability-enhancements-10" class="anchor"></a>Bug fixes and stability enhancements</h2>
 <ul>
 <li>Fixed an issue with special handling of whitespace variants that caused a test to fail when running Ubuntu 18.10 system with libicu-dev version 63.1 (<a href='https://github.com/quanteda/quanteda/issues/1604'>#1604</a>).</li>
 <li>Fixed the operation of <code>docvars&lt;-.corpus()</code> in a way that solves <a href='https://github.com/quanteda/quanteda/issues/1603'>#1603</a> (reassignment of docvar names).</li>

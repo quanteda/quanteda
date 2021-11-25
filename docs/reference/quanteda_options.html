@@ -90,7 +90,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.2.0</span>
       </span>
     </div>
 
@@ -286,89 +286,91 @@ tokenization and corpus reshaping. See <code><a href='https://rdrr.io/pkg/string
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='op'>(</span><span class='va'>opt</span> <span class='op'>&lt;-</span> <span class='fu'>quanteda_options</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $threads
-#&gt; [1] 12
-#&gt; 
-#&gt; $verbose
-#&gt; [1] FALSE
-#&gt; 
-#&gt; $print_dfm_max_ndoc
-#&gt; [1] 6
-#&gt; 
-#&gt; $print_dfm_max_nfeat
-#&gt; [1] 10
-#&gt; 
-#&gt; $print_dfm_summary
-#&gt; [1] TRUE
-#&gt; 
-#&gt; $print_corpus_max_ndoc
-#&gt; [1] 6
-#&gt; 
-#&gt; $print_corpus_max_nchar
-#&gt; [1] 60
-#&gt; 
-#&gt; $print_corpus_summary
-#&gt; [1] TRUE
-#&gt; 
-#&gt; $print_tokens_max_ndoc
-#&gt; [1] 6
-#&gt; 
-#&gt; $print_tokens_max_ntoken
-#&gt; [1] 12
-#&gt; 
-#&gt; $print_tokens_summary
-#&gt; [1] TRUE
-#&gt; 
-#&gt; $print_dictionary_max_nkey
-#&gt; [1] 6
-#&gt; 
-#&gt; $print_dictionary_max_nval
-#&gt; [1] 20
-#&gt; 
-#&gt; $print_dictionary_summary
-#&gt; [1] TRUE
-#&gt; 
-#&gt; $print_kwic_max_nrow
-#&gt; [1] 1000
-#&gt; 
-#&gt; $print_kwic_summary
-#&gt; [1] TRUE
-#&gt; 
-#&gt; $base_docname
-#&gt; [1] "text"
-#&gt; 
-#&gt; $base_featname
-#&gt; [1] "feat"
-#&gt; 
-#&gt; $base_compname
-#&gt; [1] "comp"
-#&gt; 
-#&gt; $language_stemmer
-#&gt; [1] "english"
-#&gt; 
-#&gt; $pattern_hashtag
-#&gt; [1] "#\\w+#?"
-#&gt; 
-#&gt; $pattern_username
-#&gt; [1] "@[a-zA-Z0-9_]+"
-#&gt; 
-#&gt; $tokens_block_size
-#&gt; [1] 10000
-#&gt; 
-#&gt; $tokens_locale
-#&gt; [1] "en_US@ss=standard"
-#&gt; </div><div class='input'><span class='co'># \donttest{</span>
-<span class='fu'>quanteda_options</span><span class='op'>(</span>verbose <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-<span class='fu'>quanteda_options</span><span class='op'>(</span><span class='st'>"verbose"</span> <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
-<span class='fu'>quanteda_options</span><span class='op'>(</span><span class='st'>"threads"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] 12</div><div class='input'><span class='fu'>quanteda_options</span><span class='op'>(</span>print_dfm_max_ndoc <span class='op'>=</span> <span class='fl'>50L</span><span class='op'>)</span>
-<span class='co'># reset to defaults</span>
-<span class='fu'>quanteda_options</span><span class='op'>(</span>reset <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-<span class='co'># reset to saved options</span>
-<span class='fu'>quanteda_options</span><span class='op'>(</span><span class='va'>opt</span><span class='op'>)</span>
-<span class='co'># }</span>
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='op'>(</span><span class='va'>opt</span> <span class='op'>&lt;-</span> <span class='fu'>quanteda_options</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $threads</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 12</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $verbose</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] FALSE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $print_dfm_max_ndoc</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 6</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $print_dfm_max_nfeat</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 10</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $print_dfm_summary</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $print_corpus_max_ndoc</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 6</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $print_corpus_max_nchar</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 60</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $print_corpus_summary</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $print_tokens_max_ndoc</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 6</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $print_tokens_max_ntoken</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 12</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $print_tokens_summary</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $print_dictionary_max_nkey</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 6</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $print_dictionary_max_nval</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 20</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $print_dictionary_summary</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $print_kwic_max_nrow</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1000</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $print_kwic_summary</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $base_docname</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "text"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $base_featname</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "feat"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $base_compname</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "comp"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $language_stemmer</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "english"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $pattern_hashtag</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "#\\w+#?"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $pattern_username</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "@[a-zA-Z0-9_]+"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $tokens_block_size</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 10000</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $tokens_locale</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "en_US@ss=standard"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='co'># \donttest{</span></span>
+<span class='r-in'><span class='fu'>quanteda_options</span><span class='op'>(</span>verbose <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>quanteda_options</span><span class='op'>(</span><span class='st'>"verbose"</span> <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>quanteda_options</span><span class='op'>(</span><span class='st'>"threads"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 12</span>
+<span class='r-in'><span class='fu'>quanteda_options</span><span class='op'>(</span>print_dfm_max_ndoc <span class='op'>=</span> <span class='fl'>50L</span><span class='op'>)</span></span>
+<span class='r-in'><span class='co'># reset to defaults</span></span>
+<span class='r-in'><span class='fu'>quanteda_options</span><span class='op'>(</span>reset <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-in'><span class='co'># reset to saved options</span></span>
+<span class='r-in'><span class='fu'>quanteda_options</span><span class='op'>(</span><span class='va'>opt</span><span class='op'>)</span></span>
+<span class='r-in'><span class='co'># }</span></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

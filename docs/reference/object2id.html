@@ -90,7 +90,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.2.0</span>
       </span>
     </div>
 
@@ -295,67 +295,71 @@ below the first (see examples).</p></td>
     <div class='dont-index'><p><code><a href='pattern2id.html'>pattern2id()</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>types</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"A"</span>, <span class='st'>"AA"</span>, <span class='st'>"B"</span>, <span class='st'>"BB"</span>, <span class='st'>"B_B"</span>, <span class='st'>"C"</span>, <span class='st'>"C-C"</span><span class='op'>)</span>
-
-<span class='co'># dictionary</span>
-<span class='va'>dict</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dictionary.html'>dictionary</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>A <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"a"</span>, <span class='st'>"aa"</span><span class='op'>)</span>, 
-                        B <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"BB"</span>, <span class='st'>"B B"</span><span class='op'>)</span>,
-                        C <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"C"</span>, <span class='st'>"C-C"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'>object2fixed</span><span class='op'>(</span><span class='va'>dict</span>, <span class='va'>types</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $A
-#&gt; [1] "A"
-#&gt; 
-#&gt; $A
-#&gt; [1] "AA"
-#&gt; 
-#&gt; $B
-#&gt; [1] "BB"
-#&gt; 
-#&gt; $B
-#&gt; [1] "B" "B"
-#&gt; 
-#&gt; $B
-#&gt; [1] "B_B"
-#&gt; 
-#&gt; $C
-#&gt; [1] "C"
-#&gt; 
-#&gt; $C
-#&gt; [1] "C-C"
-#&gt; </div><div class='input'><span class='fu'>object2fixed</span><span class='op'>(</span><span class='va'>dict</span>, <span class='va'>types</span>, remove_unigram <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $B
-#&gt; [1] "B" "B"
-#&gt; </div><div class='input'>
-<span class='co'># phrase</span>
-<span class='va'>pats</span> <span class='op'>&lt;-</span> <span class='fu'><a href='phrase.html'>phrase</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"a"</span>, <span class='st'>"aa"</span>, <span class='st'>"zz"</span>, <span class='st'>"bb"</span>, <span class='st'>"b b"</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'>object2fixed</span><span class='op'>(</span><span class='va'>pats</span>, <span class='va'>types</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $a
-#&gt; [1] "A"
-#&gt; 
-#&gt; $aa
-#&gt; [1] "AA"
-#&gt; 
-#&gt; $bb
-#&gt; [1] "BB"
-#&gt; 
-#&gt; $`b b`
-#&gt; [1] "B" "B"
-#&gt; </div><div class='input'><span class='fu'>object2fixed</span><span class='op'>(</span><span class='va'>pats</span>, <span class='va'>types</span>, keep_nomatch <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; $a
-#&gt; [1] "A"
-#&gt; 
-#&gt; $aa
-#&gt; [1] "AA"
-#&gt; 
-#&gt; $zz
-#&gt; character(0)
-#&gt; 
-#&gt; $bb
-#&gt; [1] "BB"
-#&gt; 
-#&gt; $`b b`
-#&gt; [1] "B" "B"
-#&gt; </div></pre>
+    <pre class="examples"><span class='r-in'><span class='va'>types</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"A"</span>, <span class='st'>"AA"</span>, <span class='st'>"B"</span>, <span class='st'>"BB"</span>, <span class='st'>"B_B"</span>, <span class='st'>"C"</span>, <span class='st'>"C-C"</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># dictionary</span></span>
+<span class='r-in'><span class='va'>dict</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dictionary.html'>dictionary</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>A <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"a"</span>, <span class='st'>"aa"</span><span class='op'>)</span>, </span>
+<span class='r-in'>                        B <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"BB"</span>, <span class='st'>"B B"</span><span class='op'>)</span>,</span>
+<span class='r-in'>                        C <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"C"</span>, <span class='st'>"C-C"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>object2fixed</span><span class='op'>(</span><span class='va'>dict</span>, <span class='va'>types</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $A</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "A"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $A</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "AA"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $B</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "BB"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $B</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "B" "B"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $B</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "B_B"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $C</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "C"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $C</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "C-C"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='fu'>object2fixed</span><span class='op'>(</span><span class='va'>dict</span>, <span class='va'>types</span>, remove_unigram <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $B</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "B" "B"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># phrase</span></span>
+<span class='r-in'><span class='va'>pats</span> <span class='op'>&lt;-</span> <span class='fu'><a href='phrase.html'>phrase</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"a"</span>, <span class='st'>"aa"</span>, <span class='st'>"zz"</span>, <span class='st'>"bb"</span>, <span class='st'>"b b"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>object2fixed</span><span class='op'>(</span><span class='va'>pats</span>, <span class='va'>types</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $a</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "A"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $aa</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "AA"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $bb</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "BB"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $`b b`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "B" "B"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='fu'>object2fixed</span><span class='op'>(</span><span class='va'>pats</span>, <span class='va'>types</span>, keep_nomatch <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $a</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "A"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $aa</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "AA"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $zz</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> character(0)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $bb</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "BB"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $`b b`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "B" "B"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

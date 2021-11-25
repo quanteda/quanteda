@@ -99,7 +99,7 @@ expanded by window." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.2.0</span>
       </span>
     </div>
 
@@ -340,124 +340,136 @@ or removed</p></td>
 match to <code>pattern</code></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>## tokens_select with simple examples</span>
-<span class='va'>toks</span> <span class='op'>&lt;-</span> <span class='fu'><a href='as.list.tokens.html'>as.tokens</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='va'>letters</span>, <span class='va'>LETTERS</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'>tokens_select</span><span class='op'>(</span><span class='va'>toks</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"b"</span>, <span class='st'>"e"</span>, <span class='st'>"f"</span><span class='op'>)</span>, selection <span class='op'>=</span> <span class='st'>"keep"</span>, padding <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Tokens consisting of 2 documents.
-#&gt; text1 :
-#&gt; [1] "b" "e" "f"
-#&gt; 
-#&gt; text2 :
-#&gt; [1] "B" "E" "F"
-#&gt; </div><div class='input'><span class='fu'>tokens_select</span><span class='op'>(</span><span class='va'>toks</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"b"</span>, <span class='st'>"e"</span>, <span class='st'>"f"</span><span class='op'>)</span>, selection <span class='op'>=</span> <span class='st'>"keep"</span>, padding <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Tokens consisting of 2 documents.
-#&gt; text1 :
-#&gt;  [1] ""  "b" ""  ""  "e" "f" ""  ""  ""  ""  ""  "" 
-#&gt; [ ... and 14 more ]
-#&gt; 
-#&gt; text2 :
-#&gt;  [1] ""  "B" ""  ""  "E" "F" ""  ""  ""  ""  ""  "" 
-#&gt; [ ... and 14 more ]
-#&gt; </div><div class='input'><span class='fu'>tokens_select</span><span class='op'>(</span><span class='va'>toks</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"b"</span>, <span class='st'>"e"</span>, <span class='st'>"f"</span><span class='op'>)</span>, selection <span class='op'>=</span> <span class='st'>"remove"</span>, padding <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Tokens consisting of 2 documents.
-#&gt; text1 :
-#&gt;  [1] "a" "c" "d" "g" "h" "i" "j" "k" "l" "m" "n" "o"
-#&gt; [ ... and 11 more ]
-#&gt; 
-#&gt; text2 :
-#&gt;  [1] "A" "C" "D" "G" "H" "I" "J" "K" "L" "M" "N" "O"
-#&gt; [ ... and 11 more ]
-#&gt; </div><div class='input'><span class='fu'>tokens_select</span><span class='op'>(</span><span class='va'>toks</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"b"</span>, <span class='st'>"e"</span>, <span class='st'>"f"</span><span class='op'>)</span>, selection <span class='op'>=</span> <span class='st'>"remove"</span>, padding <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Tokens consisting of 2 documents.
-#&gt; text1 :
-#&gt;  [1] "a" ""  "c" "d" ""  ""  "g" "h" "i" "j" "k" "l"
-#&gt; [ ... and 14 more ]
-#&gt; 
-#&gt; text2 :
-#&gt;  [1] "A" ""  "C" "D" ""  ""  "G" "H" "I" "J" "K" "L"
-#&gt; [ ... and 14 more ]
-#&gt; </div><div class='input'>
-<span class='co'># how case_insensitive works</span>
-<span class='fu'>tokens_select</span><span class='op'>(</span><span class='va'>toks</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"b"</span>, <span class='st'>"e"</span>, <span class='st'>"f"</span><span class='op'>)</span>, selection <span class='op'>=</span> <span class='st'>"remove"</span>, case_insensitive <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Tokens consisting of 2 documents.
-#&gt; text1 :
-#&gt;  [1] "a" "c" "d" "g" "h" "i" "j" "k" "l" "m" "n" "o"
-#&gt; [ ... and 11 more ]
-#&gt; 
-#&gt; text2 :
-#&gt;  [1] "A" "C" "D" "G" "H" "I" "J" "K" "L" "M" "N" "O"
-#&gt; [ ... and 11 more ]
-#&gt; </div><div class='input'><span class='fu'>tokens_select</span><span class='op'>(</span><span class='va'>toks</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"b"</span>, <span class='st'>"e"</span>, <span class='st'>"f"</span><span class='op'>)</span>, selection <span class='op'>=</span> <span class='st'>"remove"</span>, case_insensitive <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Tokens consisting of 2 documents.
-#&gt; text1 :
-#&gt;  [1] "a" "c" "d" "g" "h" "i" "j" "k" "l" "m" "n" "o"
-#&gt; [ ... and 11 more ]
-#&gt; 
-#&gt; text2 :
-#&gt;  [1] "A" "B" "C" "D" "E" "F" "G" "H" "I" "J" "K" "L"
-#&gt; [ ... and 14 more ]
-#&gt; </div><div class='input'>
-<span class='co'># use window</span>
-<span class='fu'>tokens_select</span><span class='op'>(</span><span class='va'>toks</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"b"</span>, <span class='st'>"f"</span><span class='op'>)</span>, selection <span class='op'>=</span> <span class='st'>"keep"</span>, window <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Tokens consisting of 2 documents.
-#&gt; text1 :
-#&gt; [1] "a" "b" "c" "e" "f" "g"
-#&gt; 
-#&gt; text2 :
-#&gt; [1] "A" "B" "C" "E" "F" "G"
-#&gt; </div><div class='input'><span class='fu'>tokens_select</span><span class='op'>(</span><span class='va'>toks</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"b"</span>, <span class='st'>"f"</span><span class='op'>)</span>, selection <span class='op'>=</span> <span class='st'>"remove"</span>, window <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Tokens consisting of 2 documents.
-#&gt; text1 :
-#&gt;  [1] "d" "h" "i" "j" "k" "l" "m" "n" "o" "p" "q" "r"
-#&gt; [ ... and 8 more ]
-#&gt; 
-#&gt; text2 :
-#&gt;  [1] "D" "H" "I" "J" "K" "L" "M" "N" "O" "P" "Q" "R"
-#&gt; [ ... and 8 more ]
-#&gt; </div><div class='input'><span class='fu'>tokens_remove</span><span class='op'>(</span><span class='va'>toks</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"b"</span>, <span class='st'>"f"</span><span class='op'>)</span>, window <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Tokens consisting of 2 documents.
-#&gt; text1 :
-#&gt;  [1] "a" "d" "e" "h" "i" "j" "k" "l" "m" "n" "o" "p"
-#&gt; [ ... and 10 more ]
-#&gt; 
-#&gt; text2 :
-#&gt;  [1] "A" "D" "E" "H" "I" "J" "K" "L" "M" "N" "O" "P"
-#&gt; [ ... and 10 more ]
-#&gt; </div><div class='input'><span class='fu'>tokens_select</span><span class='op'>(</span><span class='va'>toks</span>, pattern <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"e"</span>, <span class='st'>"g"</span><span class='op'>)</span>, window <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Tokens consisting of 2 documents.
-#&gt; text1 :
-#&gt; [1] "d" "e" "f" "g" "h" "i"
-#&gt; 
-#&gt; text2 :
-#&gt; [1] "D" "E" "F" "G" "H" "I"
-#&gt; </div><div class='input'>
-<span class='co'># tokens_remove example: remove stopwords</span>
-<span class='va'>txt</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='va'>wash1</span> <span class='op'>&lt;-</span> <span class='st'>"Fellow citizens, I am again called upon by the voice of my
-                   country to execute the functions of its Chief Magistrate."</span>,
-         <span class='va'>wash2</span> <span class='op'>&lt;-</span> <span class='st'>"When the occasion proper for it shall arrive, I shall
-                   endeavor to express the high sense I entertain of this
-                   distinguished honor."</span><span class='op'>)</span>
-<span class='fu'>tokens_remove</span><span class='op'>(</span><span class='fu'><a href='tokens.html'>tokens</a></span><span class='op'>(</span><span class='va'>txt</span>, remove_punct <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/pkg/stopwords/man/stopwords.html'>stopwords</a></span><span class='op'>(</span><span class='st'>"english"</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Tokens consisting of 2 documents.
-#&gt; text1 :
-#&gt;  [1] "Fellow"     "citizens"   "called"     "upon"       "voice"     
-#&gt;  [6] "country"    "execute"    "functions"  "Chief"      "Magistrate"
-#&gt; 
-#&gt; text2 :
-#&gt;  [1] "occasion"      "proper"        "shall"         "arrive"       
-#&gt;  [5] "shall"         "endeavor"      "express"       "high"         
-#&gt;  [9] "sense"         "entertain"     "distinguished" "honor"        
-#&gt; </div><div class='input'>
-<span class='co'># token_keep example: keep two-letter words</span>
-<span class='fu'>tokens_keep</span><span class='op'>(</span><span class='fu'><a href='tokens.html'>tokens</a></span><span class='op'>(</span><span class='va'>txt</span>, remove_punct <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>, <span class='st'>"??"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Tokens consisting of 2 documents.
-#&gt; text1 :
-#&gt; [1] "am" "by" "of" "my" "to" "of"
-#&gt; 
-#&gt; text2 :
-#&gt; [1] "it" "to" "of"
-#&gt; </div><div class='input'>
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='co'>## tokens_select with simple examples</span></span>
+<span class='r-in'><span class='va'>toks</span> <span class='op'>&lt;-</span> <span class='fu'><a href='as.list.tokens.html'>as.tokens</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='va'>letters</span>, <span class='va'>LETTERS</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>tokens_select</span><span class='op'>(</span><span class='va'>toks</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"b"</span>, <span class='st'>"e"</span>, <span class='st'>"f"</span><span class='op'>)</span>, selection <span class='op'>=</span> <span class='st'>"keep"</span>, padding <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Tokens consisting of 2 documents.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> text1 :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "b" "e" "f"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> text2 :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "B" "E" "F"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='fu'>tokens_select</span><span class='op'>(</span><span class='va'>toks</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"b"</span>, <span class='st'>"e"</span>, <span class='st'>"f"</span><span class='op'>)</span>, selection <span class='op'>=</span> <span class='st'>"keep"</span>, padding <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Tokens consisting of 2 documents.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> text1 :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] ""  "b" ""  ""  "e" "f" ""  ""  ""  ""  ""  "" </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [ ... and 14 more ]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> text2 :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] ""  "B" ""  ""  "E" "F" ""  ""  ""  ""  ""  "" </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [ ... and 14 more ]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='fu'>tokens_select</span><span class='op'>(</span><span class='va'>toks</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"b"</span>, <span class='st'>"e"</span>, <span class='st'>"f"</span><span class='op'>)</span>, selection <span class='op'>=</span> <span class='st'>"remove"</span>, padding <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Tokens consisting of 2 documents.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> text1 :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] "a" "c" "d" "g" "h" "i" "j" "k" "l" "m" "n" "o"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [ ... and 11 more ]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> text2 :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] "A" "C" "D" "G" "H" "I" "J" "K" "L" "M" "N" "O"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [ ... and 11 more ]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='fu'>tokens_select</span><span class='op'>(</span><span class='va'>toks</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"b"</span>, <span class='st'>"e"</span>, <span class='st'>"f"</span><span class='op'>)</span>, selection <span class='op'>=</span> <span class='st'>"remove"</span>, padding <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Tokens consisting of 2 documents.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> text1 :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] "a" ""  "c" "d" ""  ""  "g" "h" "i" "j" "k" "l"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [ ... and 14 more ]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> text2 :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] "A" ""  "C" "D" ""  ""  "G" "H" "I" "J" "K" "L"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [ ... and 14 more ]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># how case_insensitive works</span></span>
+<span class='r-in'><span class='fu'>tokens_select</span><span class='op'>(</span><span class='va'>toks</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"b"</span>, <span class='st'>"e"</span>, <span class='st'>"f"</span><span class='op'>)</span>, selection <span class='op'>=</span> <span class='st'>"remove"</span>, case_insensitive <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Tokens consisting of 2 documents.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> text1 :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] "a" "c" "d" "g" "h" "i" "j" "k" "l" "m" "n" "o"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [ ... and 11 more ]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> text2 :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] "A" "C" "D" "G" "H" "I" "J" "K" "L" "M" "N" "O"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [ ... and 11 more ]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='fu'>tokens_select</span><span class='op'>(</span><span class='va'>toks</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"b"</span>, <span class='st'>"e"</span>, <span class='st'>"f"</span><span class='op'>)</span>, selection <span class='op'>=</span> <span class='st'>"remove"</span>, case_insensitive <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Tokens consisting of 2 documents.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> text1 :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] "a" "c" "d" "g" "h" "i" "j" "k" "l" "m" "n" "o"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [ ... and 11 more ]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> text2 :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] "A" "B" "C" "D" "E" "F" "G" "H" "I" "J" "K" "L"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [ ... and 14 more ]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># use window</span></span>
+<span class='r-in'><span class='fu'>tokens_select</span><span class='op'>(</span><span class='va'>toks</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"b"</span>, <span class='st'>"f"</span><span class='op'>)</span>, selection <span class='op'>=</span> <span class='st'>"keep"</span>, window <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Tokens consisting of 2 documents.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> text1 :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "a" "b" "c" "e" "f" "g"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> text2 :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "A" "B" "C" "E" "F" "G"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='fu'>tokens_select</span><span class='op'>(</span><span class='va'>toks</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"b"</span>, <span class='st'>"f"</span><span class='op'>)</span>, selection <span class='op'>=</span> <span class='st'>"remove"</span>, window <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Tokens consisting of 2 documents.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> text1 :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] "d" "h" "i" "j" "k" "l" "m" "n" "o" "p" "q" "r"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [ ... and 8 more ]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> text2 :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] "D" "H" "I" "J" "K" "L" "M" "N" "O" "P" "Q" "R"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [ ... and 8 more ]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='fu'>tokens_remove</span><span class='op'>(</span><span class='va'>toks</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"b"</span>, <span class='st'>"f"</span><span class='op'>)</span>, window <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Tokens consisting of 2 documents.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> text1 :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] "a" "d" "e" "h" "i" "j" "k" "l" "m" "n" "o" "p"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [ ... and 10 more ]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> text2 :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] "A" "D" "E" "H" "I" "J" "K" "L" "M" "N" "O" "P"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [ ... and 10 more ]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='fu'>tokens_select</span><span class='op'>(</span><span class='va'>toks</span>, pattern <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"e"</span>, <span class='st'>"g"</span><span class='op'>)</span>, window <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Tokens consisting of 2 documents.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> text1 :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "d" "e" "f" "g" "h" "i"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> text2 :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "D" "E" "F" "G" "H" "I"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># tokens_remove example: remove stopwords</span></span>
+<span class='r-in'><span class='va'>txt</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='va'>wash1</span> <span class='op'>&lt;-</span> <span class='st'>"Fellow citizens, I am again called upon by the voice of my</span>
+<span class='r-in'>                   country to execute the functions of its Chief Magistrate."</span>,</span>
+<span class='r-in'>         <span class='va'>wash2</span> <span class='op'>&lt;-</span> <span class='st'>"When the occasion proper for it shall arrive, I shall</span>
+<span class='r-in'>                   endeavor to express the high sense I entertain of this</span>
+<span class='r-in'>                   distinguished honor."</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>tokens_remove</span><span class='op'>(</span><span class='fu'><a href='tokens.html'>tokens</a></span><span class='op'>(</span><span class='va'>txt</span>, remove_punct <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/pkg/stopwords/man/stopwords.html'>stopwords</a></span><span class='op'>(</span><span class='st'>"english"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Tokens consisting of 2 documents.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> text1 :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] "Fellow"     "citizens"   "called"     "upon"       "voice"     </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [6] "country"    "execute"    "functions"  "Chief"      "Magistrate"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> text2 :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] "occasion"      "proper"        "shall"         "arrive"       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [5] "shall"         "endeavor"      "express"       "high"         </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [9] "sense"         "entertain"     "distinguished" "honor"        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># token_keep example: keep two-letter words</span></span>
+<span class='r-in'><span class='fu'>tokens_keep</span><span class='op'>(</span><span class='fu'><a href='tokens.html'>tokens</a></span><span class='op'>(</span><span class='va'>txt</span>, remove_punct <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>, <span class='st'>"??"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Tokens consisting of 2 documents.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> text1 :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "am" "by" "of" "my" "to" "of"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> text2 :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "it" "to" "of"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

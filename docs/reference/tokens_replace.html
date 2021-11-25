@@ -96,7 +96,7 @@ to replace dictionary values." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.2.0</span>
       </span>
     </div>
 
@@ -279,56 +279,61 @@ exact matching. See <a href='valuetype.html'>valuetype</a> for details.</p></td>
     <div class='dont-index'><p>tokens_lookup</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>toks1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span><span class='op'>(</span><span class='va'>data_corpus_inaugural</span>, remove_punct <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-
-<span class='co'># lemmatization</span>
-<span class='va'>taxwords</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"tax"</span>, <span class='st'>"taxing"</span>, <span class='st'>"taxed"</span>, <span class='st'>"taxed"</span>, <span class='st'>"taxation"</span><span class='op'>)</span>
-<span class='va'>lemma</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='st'>"TAX"</span>, <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>taxwords</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>toks2</span> <span class='op'>&lt;-</span> <span class='fu'>tokens_replace</span><span class='op'>(</span><span class='va'>toks1</span>, <span class='va'>taxwords</span>, <span class='va'>lemma</span>, valuetype <span class='op'>=</span> <span class='st'>"fixed"</span><span class='op'>)</span>
-<span class='fu'><a href='kwic.html'>kwic</a></span><span class='op'>(</span><span class='va'>toks2</span>, <span class='st'>"TAX"</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
-    <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>tail</a></span><span class='op'>(</span><span class='fl'>10</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Keyword-in-context with 10 matches.                                                                        
-#&gt;  [1925-Coolidge, 3004]                     a living we must have | TAX |
-#&gt;  [1925-Coolidge, 3116]               correct course to follow in | TAX |
-#&gt;     [1981-Reagan, 273]                      for their labor by a | TAX |
-#&gt;     [1981-Reagan, 290]             productivity But great as our | TAX |
-#&gt;    [1981-Reagan, 1521]               and to lighten our punitive | TAX |
-#&gt;     [1985-Reagan, 496]                were right to believe that | TAX |
-#&gt;    [1985-Reagan, 1106]                lives We must simplify our | TAX |
-#&gt;    [1985-Reagan, 1418] permanently control Government's power to | TAX |
-#&gt;    [1985-Reagan, 1438]              spend its citizens money and | TAX |
-#&gt;      [2013-Obama, 739]          remake our government revamp our | TAX |
-#&gt;                                               
-#&gt;  reform The method of raising                 
-#&gt;  and all other economic legislation           
-#&gt;  system which penalizes successful achievement
-#&gt;  burden is it has not                         
-#&gt;  burden And these will be                     
-#&gt;  rates have been reduced inflation            
-#&gt;  system make it more fair                     
-#&gt;  and spend We must act                        
-#&gt;  them into servitude when the                 
-#&gt;  Code reform our schools and                  </div><div class='input'>
-<span class='co'># stemming</span>
-<span class='va'>type</span> <span class='op'>&lt;-</span> <span class='fu'><a href='types.html'>types</a></span><span class='op'>(</span><span class='va'>toks1</span><span class='op'>)</span>
-<span class='va'>stem</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tokens_wordstem.html'>char_wordstem</a></span><span class='op'>(</span><span class='va'>type</span>, <span class='st'>"porter"</span><span class='op'>)</span>
-<span class='va'>toks3</span> <span class='op'>&lt;-</span> <span class='fu'>tokens_replace</span><span class='op'>(</span><span class='va'>toks1</span>, <span class='va'>type</span>, <span class='va'>stem</span>, valuetype <span class='op'>=</span> <span class='st'>"fixed"</span>, case_insensitive <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span><span class='op'>(</span><span class='va'>toks3</span>, <span class='fu'><a href='tokens_wordstem.html'>tokens_wordstem</a></span><span class='op'>(</span><span class='va'>toks1</span>, <span class='st'>"porter"</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
-<span class='co'># multi-multi substitution</span>
-<span class='va'>toks4</span> <span class='op'>&lt;-</span> <span class='fu'>tokens_replace</span><span class='op'>(</span><span class='va'>toks1</span>, <span class='fu'><a href='phrase.html'>phrase</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Supreme Court"</span><span class='op'>)</span><span class='op'>)</span>,
-                        <span class='fu'><a href='phrase.html'>phrase</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Supreme Court of the United States"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'><a href='kwic.html'>kwic</a></span><span class='op'>(</span><span class='va'>toks4</span>, <span class='fu'><a href='phrase.html'>phrase</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Supreme Court of the United States"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Keyword-in-context with 4 matches.                                                              
-#&gt;   [1857-Buchanan, 441:446] which legitimately belongs to the |
-#&gt;  [1861-Lincoln, 2323:2328]              to be decided by the |
-#&gt;  [1861-Lincoln, 2465:2470]         fixed by decisions of the |
-#&gt;   [1889-Harrison, 408:413]        by the organization of the |
-#&gt;                                                                        
-#&gt;  Supreme Court of the United States | of the United States before      
-#&gt;  Supreme Court of the United States | nor do I deny that               
-#&gt;  Supreme Court of the United States | the instant they are made        
-#&gt;  Supreme Court of the United States | shall have been suitably observed</div></pre>
+    <pre class="examples"><span class='r-in'><span class='va'>toks1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tokens.html'>tokens</a></span><span class='op'>(</span><span class='va'>data_corpus_inaugural</span>, remove_punct <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># lemmatization</span></span>
+<span class='r-in'><span class='va'>taxwords</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"tax"</span>, <span class='st'>"taxing"</span>, <span class='st'>"taxed"</span>, <span class='st'>"taxed"</span>, <span class='st'>"taxation"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>lemma</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='st'>"TAX"</span>, <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>taxwords</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>toks2</span> <span class='op'>&lt;-</span> <span class='fu'>tokens_replace</span><span class='op'>(</span><span class='va'>toks1</span>, <span class='va'>taxwords</span>, <span class='va'>lemma</span>, valuetype <span class='op'>=</span> <span class='st'>"fixed"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='kwic.html'>kwic</a></span><span class='op'>(</span><span class='va'>toks2</span>, <span class='st'>"TAX"</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span> </span>
+<span class='r-in'>    <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>tail</a></span><span class='op'>(</span><span class='fl'>10</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Keyword-in-context with 10 matches.                                                                        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1925-Coolidge, 3004]                     a living we must have | TAX |</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1925-Coolidge, 3116]               correct course to follow in | TAX |</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     [1981-Reagan, 273]                      for their labor by a | TAX |</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     [1981-Reagan, 290]             productivity But great as our | TAX |</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    [1981-Reagan, 1521]               and to lighten our punitive | TAX |</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     [1985-Reagan, 496]                were right to believe that | TAX |</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    [1985-Reagan, 1106]                lives We must simplify our | TAX |</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    [1985-Reagan, 1418] permanently control Government's power to | TAX |</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    [1985-Reagan, 1438]              spend its citizens money and | TAX |</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      [2013-Obama, 739]          remake our government revamp our | TAX |</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                               </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  reform The method of raising                 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  and all other economic legislation           </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  system which penalizes successful achievement</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  burden is it has not                         </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  burden And these will be                     </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  rates have been reduced inflation            </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  system make it more fair                     </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  and spend We must act                        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  them into servitude when the                 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Code reform our schools and                  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># stemming</span></span>
+<span class='r-in'><span class='va'>type</span> <span class='op'>&lt;-</span> <span class='fu'><a href='types.html'>types</a></span><span class='op'>(</span><span class='va'>toks1</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>stem</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tokens_wordstem.html'>char_wordstem</a></span><span class='op'>(</span><span class='va'>type</span>, <span class='st'>"porter"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>toks3</span> <span class='op'>&lt;-</span> <span class='fu'>tokens_replace</span><span class='op'>(</span><span class='va'>toks1</span>, <span class='va'>type</span>, <span class='va'>stem</span>, valuetype <span class='op'>=</span> <span class='st'>"fixed"</span>, case_insensitive <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span><span class='op'>(</span><span class='va'>toks3</span>, <span class='fu'><a href='tokens_wordstem.html'>tokens_wordstem</a></span><span class='op'>(</span><span class='va'>toks1</span>, <span class='st'>"porter"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># multi-multi substitution</span></span>
+<span class='r-in'><span class='va'>toks4</span> <span class='op'>&lt;-</span> <span class='fu'>tokens_replace</span><span class='op'>(</span><span class='va'>toks1</span>, <span class='fu'><a href='phrase.html'>phrase</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Supreme Court"</span><span class='op'>)</span><span class='op'>)</span>,</span>
+<span class='r-in'>                        <span class='fu'><a href='phrase.html'>phrase</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Supreme Court of the United States"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='kwic.html'>kwic</a></span><span class='op'>(</span><span class='va'>toks4</span>, <span class='fu'><a href='phrase.html'>phrase</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Supreme Court of the United States"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Keyword-in-context with 4 matches.                                                              </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   [1857-Buchanan, 441:446] which legitimately belongs to the |</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1861-Lincoln, 2323:2328]              to be decided by the |</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1861-Lincoln, 2465:2470]         fixed by decisions of the |</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   [1889-Harrison, 408:413]        by the organization of the |</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                                        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Supreme Court of the United States | of the United States before      </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Supreme Court of the United States | nor do I deny that               </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Supreme Court of the United States | the instant they are made        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Supreme Court of the United States | shall have been suitably observed</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

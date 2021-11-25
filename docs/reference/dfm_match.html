@@ -94,7 +94,7 @@ features but not found in x will be added with all zero counts." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.2.0</span>
       </span>
     </div>
 
@@ -263,49 +263,57 @@ case-sensitive matches.  For more flexible feature selection, see
     <div class='dont-index'><p><code><a href='dfm_select.html'>dfm_select()</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># matching a dfm to a feature vector</span>
-<span class='fu'>dfm_match</span><span class='op'>(</span><span class='fu'><a href='dfm.html'>dfm</a></span><span class='op'>(</span><span class='st'>""</span><span class='op'>)</span>, <span class='va'>letters</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>]</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: 'dfm.character()' is deprecated. Use 'tokens()' first.</span></div><div class='output co'>#&gt; Document-feature matrix of: 1 document, 5 features (100.00% sparse) and 0 docvars.
-#&gt;        features
-#&gt; docs    a b c d e
-#&gt;   text1 0 0 0 0 0</div><div class='input'><span class='fu'>dfm_match</span><span class='op'>(</span><span class='va'>data_dfm_lbgexample</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"A"</span>, <span class='st'>"B"</span>, <span class='st'>"Z"</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Document-feature matrix of: 6 documents, 3 features (72.22% sparse) and 0 docvars.
-#&gt;     features
-#&gt; docs A B   Z
-#&gt;   R1 2 3   0
-#&gt;   R2 0 0   0
-#&gt;   R3 0 0   3
-#&gt;   R4 0 0 115
-#&gt;   R5 0 0  78
-#&gt;   V1 0 0   0</div><div class='input'><span class='fu'>dfm_match</span><span class='op'>(</span><span class='va'>data_dfm_lbgexample</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"B"</span>, <span class='st'>"newfeat1"</span>, <span class='st'>"A"</span>, <span class='st'>"newfeat2"</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Document-feature matrix of: 6 documents, 4 features (91.67% sparse) and 0 docvars.
-#&gt;     features
-#&gt; docs B newfeat1 A newfeat2
-#&gt;   R1 3        0 2        0
-#&gt;   R2 0        0 0        0
-#&gt;   R3 0        0 0        0
-#&gt;   R4 0        0 0        0
-#&gt;   R5 0        0 0        0
-#&gt;   V1 0        0 0        0</div><div class='input'>
-<span class='co'># matching one dfm to another</span>
-<span class='va'>txt</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"This is text one"</span>, <span class='st'>"The second text"</span>, <span class='st'>"This is text three"</span><span class='op'>)</span>
-<span class='op'>(</span><span class='va'>dfmat1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span><span class='op'>(</span><span class='fu'><a href='tokens.html'>tokens</a></span><span class='op'>(</span><span class='va'>txt</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span><span class='op'>]</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (41.67% sparse) and 0 docvars.
-#&gt;        features
-#&gt; docs    this is text one the second
-#&gt;   text1    1  1    1   1   0      0
-#&gt;   text2    0  0    1   0   1      1</div><div class='input'><span class='op'>(</span><span class='va'>dfmat2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span><span class='op'>(</span><span class='fu'><a href='tokens.html'>tokens</a></span><span class='op'>(</span><span class='va'>txt</span><span class='op'>[</span><span class='fl'>2</span><span class='op'>:</span><span class='fl'>3</span><span class='op'>]</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (41.67% sparse) and 0 docvars.
-#&gt;        features
-#&gt; docs    the second text this is three
-#&gt;   text1   1      1    1    0  0     0
-#&gt;   text2   0      0    1    1  1     1</div><div class='input'><span class='op'>(</span><span class='va'>dfmat3</span> <span class='op'>&lt;-</span> <span class='fu'>dfm_match</span><span class='op'>(</span><span class='va'>dfmat1</span>, <span class='fu'><a href='featnames.html'>featnames</a></span><span class='op'>(</span><span class='va'>dfmat2</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Document-feature matrix of: 2 documents, 6 features (50.00% sparse) and 0 docvars.
-#&gt;        features
-#&gt; docs    the second text this is three
-#&gt;   text1   0      0    1    1  1     0
-#&gt;   text2   1      1    1    0  0     0</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/sets.html'>setequal</a></span><span class='op'>(</span><span class='fu'><a href='featnames.html'>featnames</a></span><span class='op'>(</span><span class='va'>dfmat2</span><span class='op'>)</span>, <span class='fu'><a href='featnames.html'>featnames</a></span><span class='op'>(</span><span class='va'>dfmat3</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] TRUE</div></pre>
+    <pre class="examples"><span class='r-in'><span class='co'># matching a dfm to a feature vector</span></span>
+<span class='r-in'><span class='fu'>dfm_match</span><span class='op'>(</span><span class='fu'><a href='dfm.html'>dfm</a></span><span class='op'>(</span><span class='st'>""</span><span class='op'>)</span>, <span class='va'>letters</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>]</span><span class='op'>)</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>'dfm.character()' is deprecated. Use 'tokens()' first.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Document-feature matrix of: 1 document, 5 features (100.00% sparse) and 0 docvars.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        features</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> docs    a b c d e</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   text1 0 0 0 0 0</span>
+<span class='r-in'><span class='fu'>dfm_match</span><span class='op'>(</span><span class='va'>data_dfm_lbgexample</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"A"</span>, <span class='st'>"B"</span>, <span class='st'>"Z"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Document-feature matrix of: 6 documents, 3 features (72.22% sparse) and 0 docvars.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     features</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> docs A B   Z</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   R1 2 3   0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   R2 0 0   0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   R3 0 0   3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   R4 0 0 115</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   R5 0 0  78</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   V1 0 0   0</span>
+<span class='r-in'><span class='fu'>dfm_match</span><span class='op'>(</span><span class='va'>data_dfm_lbgexample</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"B"</span>, <span class='st'>"newfeat1"</span>, <span class='st'>"A"</span>, <span class='st'>"newfeat2"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Document-feature matrix of: 6 documents, 4 features (91.67% sparse) and 0 docvars.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     features</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> docs B newfeat1 A newfeat2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   R1 3        0 2        0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   R2 0        0 0        0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   R3 0        0 0        0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   R4 0        0 0        0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   R5 0        0 0        0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   V1 0        0 0        0</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># matching one dfm to another</span></span>
+<span class='r-in'><span class='va'>txt</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"This is text one"</span>, <span class='st'>"The second text"</span>, <span class='st'>"This is text three"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>(</span><span class='va'>dfmat1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span><span class='op'>(</span><span class='fu'><a href='tokens.html'>tokens</a></span><span class='op'>(</span><span class='va'>txt</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span><span class='op'>]</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Document-feature matrix of: 2 documents, 6 features (41.67% sparse) and 0 docvars.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        features</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> docs    this is text one the second</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   text1    1  1    1   1   0      0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   text2    0  0    1   0   1      1</span>
+<span class='r-in'><span class='op'>(</span><span class='va'>dfmat2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='dfm.html'>dfm</a></span><span class='op'>(</span><span class='fu'><a href='tokens.html'>tokens</a></span><span class='op'>(</span><span class='va'>txt</span><span class='op'>[</span><span class='fl'>2</span><span class='op'>:</span><span class='fl'>3</span><span class='op'>]</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Document-feature matrix of: 2 documents, 6 features (41.67% sparse) and 0 docvars.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        features</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> docs    the second text this is three</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   text1   1      1    1    0  0     0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   text2   0      0    1    1  1     1</span>
+<span class='r-in'><span class='op'>(</span><span class='va'>dfmat3</span> <span class='op'>&lt;-</span> <span class='fu'>dfm_match</span><span class='op'>(</span><span class='va'>dfmat1</span>, <span class='fu'><a href='featnames.html'>featnames</a></span><span class='op'>(</span><span class='va'>dfmat2</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Document-feature matrix of: 2 documents, 6 features (50.00% sparse) and 0 docvars.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        features</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> docs    the second text this is three</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   text1   0      0    1    1  1     0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   text2   1      1    1    0  0     0</span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/sets.html'>setequal</a></span><span class='op'>(</span><span class='fu'><a href='featnames.html'>featnames</a></span><span class='op'>(</span><span class='va'>dfmat2</span><span class='op'>)</span>, <span class='fu'><a href='featnames.html'>featnames</a></span><span class='op'>(</span><span class='va'>dfmat3</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] TRUE</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

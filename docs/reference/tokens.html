@@ -92,7 +92,7 @@ tokenizer." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.2.0</span>
       </span>
     </div>
 
@@ -284,7 +284,7 @@ characters (Unicode "Separator" <code>[Z]</code> and "Control" <code>[C]</code> 
       <th>split_hyphens</th>
       <td><p>logical; if <code>TRUE</code>, split words that are connected by
 hyphenation and hyphenation-like characters in between words, e.g.
-<code>"self-aware"</code> becomes <code><a href='https://rdrr.io/r/base/c.html'>c("self", "-", "aware")</a></code></p></td>
+<code>"self-aware"</code> becomes <code>c("self", "-", "aware")</code></p></td>
     </tr>
     <tr>
       <th>include_docvars</th>
@@ -365,9 +365,9 @@ supported through <code>what</code>:</p><dl>
 <code>what = "word"</code> found in pre-version 2.  (It preserves social media tags
 and infix hyphens, but splits URLs.)  "word1" is also slower than "word".</p></dd>
 <dt><code>"fasterword"</code></dt><dd><p>(legacy) splits on whitespace and control characters,
-using <code><a href='https://rdrr.io/pkg/stringi/man/stri_split.html'>stringi::stri_split_charclass(x, "[\\p{Z}\\p{C}]+")</a></code></p></dd>
+using <code>stringi::stri_split_charclass(x, "[\\p{Z}\\p{C}]+")</code></p></dd>
 <dt><code>"fastestword"</code></dt><dd><p>(legacy) splits on the space character, using
-<code><a href='https://rdrr.io/pkg/stringi/man/stri_split.html'>stringi::stri_split_fixed(x, " ")</a></code></p></dd>
+<code>stringi::stri_split_fixed(x, " ")</code></p></dd>
 <dt><code>"character"</code></dt><dd><p>tokenization into individual characters</p></dd>
 <dt><code>"sentence"</code></dt><dd><p>sentence segmenter based on
 <a href='https://rdrr.io/pkg/stringi/man/stri_split_boundaries.html'>stri_split_boundaries</a>, but with
@@ -382,117 +382,128 @@ tokenization, consider using <span class="pkg">spacyr</span>.</p></dd>
 <code><a href='as.list.tokens.html'>as.tokens()</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>txt</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>doc1 <span class='op'>=</span> <span class='st'>"A sentence, showing how tokens() works."</span>,
-         doc2 <span class='op'>=</span> <span class='st'>"@quantedainit and #textanalysis https://example.com?p=123."</span>,
-         doc3 <span class='op'>=</span> <span class='st'>"Self-documenting code??"</span>,
-         doc4 <span class='op'>=</span> <span class='st'>"£1,000,000 for 50¢ is gr8 4ever \U0001f600"</span><span class='op'>)</span>
-<span class='fu'>tokens</span><span class='op'>(</span><span class='va'>txt</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Tokens consisting of 4 documents.
-#&gt; doc1 :
-#&gt;  [1] "A"        "sentence" ","        "showing"  "how"      "tokens"  
-#&gt;  [7] "("        ")"        "works"    "."       
-#&gt; 
-#&gt; doc2 :
-#&gt; [1] "@quantedainit"              "and"                       
-#&gt; [3] "#textanalysis"              "https://example.com?p=123."
-#&gt; 
-#&gt; doc3 :
-#&gt; [1] "Self-documenting" "code"             "?"                "?"               
-#&gt; 
-#&gt; doc4 :
-#&gt; [1] "£"         "1,000,000" "for"       "50"        "¢"         "is"       
-#&gt; [7] "gr8"       "4ever"     "😀"       
-#&gt; </div><div class='input'><span class='fu'>tokens</span><span class='op'>(</span><span class='va'>txt</span>, what <span class='op'>=</span> <span class='st'>"word1"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Tokens consisting of 4 documents.
-#&gt; doc1 :
-#&gt;  [1] "A"        "sentence" ","        "showing"  "how"      "tokens"  
-#&gt;  [7] "("        ")"        "works"    "."       
-#&gt; 
-#&gt; doc2 :
-#&gt;  [1] "@"            "quantedainit" "and"          "#"            "textanalysis"
-#&gt;  [6] "https"        ":"            "/"            "/"            "example.com" 
-#&gt; [11] "?"            "p"           
-#&gt; [ ... and 3 more ]
-#&gt; 
-#&gt; doc3 :
-#&gt; [1] "Self-documenting" "code"             "?"                "?"               
-#&gt; 
-#&gt; doc4 :
-#&gt; [1] "£"         "1,000,000" "for"       "50"        "¢"         "is"       
-#&gt; [7] "gr8"       "4ever"     "😀"       
-#&gt; </div><div class='input'>
-<span class='co'># removing punctuation marks but keeping tags and URLs</span>
-<span class='fu'>tokens</span><span class='op'>(</span><span class='va'>txt</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span><span class='op'>]</span>, remove_punct <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Tokens consisting of 2 documents.
-#&gt; doc1 :
-#&gt; [1] "A"        "sentence" "showing"  "how"      "tokens"   "works"   
-#&gt; 
-#&gt; doc2 :
-#&gt; [1] "@quantedainit"              "and"                       
-#&gt; [3] "#textanalysis"              "https://example.com?p=123."
-#&gt; </div><div class='input'>
-<span class='co'># splitting hyphenated words</span>
-<span class='fu'>tokens</span><span class='op'>(</span><span class='va'>txt</span><span class='op'>[</span><span class='fl'>3</span><span class='op'>]</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Tokens consisting of 1 document.
-#&gt; doc3 :
-#&gt; [1] "Self-documenting" "code"             "?"                "?"               
-#&gt; </div><div class='input'><span class='fu'>tokens</span><span class='op'>(</span><span class='va'>txt</span><span class='op'>[</span><span class='fl'>3</span><span class='op'>]</span>, split_hyphens <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Tokens consisting of 1 document.
-#&gt; doc3 :
-#&gt; [1] "Self"        "-"           "documenting" "code"        "?"          
-#&gt; [6] "?"          
-#&gt; </div><div class='input'>
-<span class='co'># symbols and numbers</span>
-<span class='fu'>tokens</span><span class='op'>(</span><span class='va'>txt</span><span class='op'>[</span><span class='fl'>4</span><span class='op'>]</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Tokens consisting of 1 document.
-#&gt; doc4 :
-#&gt; [1] "£"         "1,000,000" "for"       "50"        "¢"         "is"       
-#&gt; [7] "gr8"       "4ever"     "😀"       
-#&gt; </div><div class='input'><span class='fu'>tokens</span><span class='op'>(</span><span class='va'>txt</span><span class='op'>[</span><span class='fl'>4</span><span class='op'>]</span>, remove_numbers <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Tokens consisting of 1 document.
-#&gt; doc4 :
-#&gt; [1] "£"     "for"   "¢"     "is"    "gr8"   "4ever" "😀"   
-#&gt; </div><div class='input'><span class='fu'>tokens</span><span class='op'>(</span><span class='va'>txt</span><span class='op'>[</span><span class='fl'>4</span><span class='op'>]</span>, remove_numbers <span class='op'>=</span> <span class='cn'>TRUE</span>, remove_symbols <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Tokens consisting of 1 document.
-#&gt; doc4 :
-#&gt; [1] "for"   "is"    "gr8"   "4ever"
-#&gt; </div><div class='input'>
-<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='co'># using other tokenizers</span>
-<span class='fu'>tokens</span><span class='op'>(</span><span class='fu'>tokenizers</span><span class='fu'>::</span><span class='fu'><a href='https://lincolnmullen.com/software/tokenizers/reference/basic-tokenizers.html'>tokenize_words</a></span><span class='op'>(</span><span class='va'>txt</span><span class='op'>[</span><span class='fl'>4</span><span class='op'>]</span><span class='op'>)</span>, remove_symbols <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-<span class='fu'>tokenizers</span><span class='fu'>::</span><span class='fu'><a href='https://lincolnmullen.com/software/tokenizers/reference/basic-tokenizers.html'>tokenize_words</a></span><span class='op'>(</span><span class='va'>txt</span>, lowercase <span class='op'>=</span> <span class='cn'>FALSE</span>, strip_punct <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-    <span class='fu'>tokens</span><span class='op'>(</span>remove_symbols <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Tokens consisting of 4 documents.
-#&gt; doc1 :
-#&gt;  [1] "A"        "sentence" ","        "showing"  "how"      "tokens"  
-#&gt;  [7] "("        ")"        "works"    "."       
-#&gt; 
-#&gt; doc2 :
-#&gt;  [1] "@"            "quantedainit" "and"          "#"            "textanalysis"
-#&gt;  [6] "https"        ":"            "/"            "/"            "example.com" 
-#&gt; [11] "?"            "p"           
-#&gt; [ ... and 2 more ]
-#&gt; 
-#&gt; doc3 :
-#&gt; [1] "Self"        "-"           "documenting" "code"        "?"          
-#&gt; [6] "?"          
-#&gt; 
-#&gt; doc4 :
-#&gt; [1] "1,000,000" "for"       "50"        "is"        "gr8"       "4ever"    
-#&gt; </div><div class='input'><span class='fu'>tokenizers</span><span class='fu'>::</span><span class='fu'><a href='https://lincolnmullen.com/software/tokenizers/reference/basic-tokenizers.html'>tokenize_characters</a></span><span class='op'>(</span><span class='va'>txt</span><span class='op'>[</span><span class='fl'>3</span><span class='op'>]</span>, strip_non_alphanum <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-    <span class='fu'>tokens</span><span class='op'>(</span>remove_punct <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Tokens consisting of 1 document.
-#&gt; doc3 :
-#&gt;  [1] "s" "e" "l" "f" "d" "o" "c" "u" "m" "e" "n" "t"
-#&gt; [ ... and 7 more ]
-#&gt; </div><div class='input'><span class='fu'>tokenizers</span><span class='fu'>::</span><span class='fu'><a href='https://lincolnmullen.com/software/tokenizers/reference/basic-tokenizers.html'>tokenize_sentences</a></span><span class='op'>(</span>
-    <span class='st'>"The quick brown fox.  It jumped over the lazy dog."</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-    <span class='fu'>tokens</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Tokens consisting of 1 document.
-#&gt; text1 :
-#&gt; [1] "The quick brown fox."         "It jumped over the lazy dog."
-#&gt; </div><div class='input'>
-
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='va'>txt</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>doc1 <span class='op'>=</span> <span class='st'>"A sentence, showing how tokens() works."</span>,</span>
+<span class='r-in'>         doc2 <span class='op'>=</span> <span class='st'>"@quantedainit and #textanalysis https://example.com?p=123."</span>,</span>
+<span class='r-in'>         doc3 <span class='op'>=</span> <span class='st'>"Self-documenting code??"</span>,</span>
+<span class='r-in'>         doc4 <span class='op'>=</span> <span class='st'>"£1,000,000 for 50¢ is gr8 4ever \U0001f600"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>tokens</span><span class='op'>(</span><span class='va'>txt</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Tokens consisting of 4 documents.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> doc1 :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] "A"        "sentence" ","        "showing"  "how"      "tokens"  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [7] "("        ")"        "works"    "."       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> doc2 :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "@quantedainit"              "and"                       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [3] "#textanalysis"              "https://example.com?p=123."</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> doc3 :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Self-documenting" "code"             "?"                "?"               </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> doc4 :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "£"         "1,000,000" "for"       "50"        "¢"         "is"       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [7] "gr8"       "4ever"     "😀"       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='fu'>tokens</span><span class='op'>(</span><span class='va'>txt</span>, what <span class='op'>=</span> <span class='st'>"word1"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Tokens consisting of 4 documents.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> doc1 :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] "A"        "sentence" ","        "showing"  "how"      "tokens"  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [7] "("        ")"        "works"    "."       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> doc2 :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] "@"            "quantedainit" "and"          "#"            "textanalysis"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [6] "https"        ":"            "/"            "/"            "example.com" </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [11] "?"            "p"           </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [ ... and 3 more ]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> doc3 :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Self-documenting" "code"             "?"                "?"               </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> doc4 :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "£"         "1,000,000" "for"       "50"        "¢"         "is"       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [7] "gr8"       "4ever"     "😀"       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># removing punctuation marks but keeping tags and URLs</span></span>
+<span class='r-in'><span class='fu'>tokens</span><span class='op'>(</span><span class='va'>txt</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span><span class='op'>]</span>, remove_punct <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Tokens consisting of 2 documents.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> doc1 :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "A"        "sentence" "showing"  "how"      "tokens"   "works"   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> doc2 :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "@quantedainit"              "and"                       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [3] "#textanalysis"              "https://example.com?p=123."</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># splitting hyphenated words</span></span>
+<span class='r-in'><span class='fu'>tokens</span><span class='op'>(</span><span class='va'>txt</span><span class='op'>[</span><span class='fl'>3</span><span class='op'>]</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Tokens consisting of 1 document.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> doc3 :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Self-documenting" "code"             "?"                "?"               </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='fu'>tokens</span><span class='op'>(</span><span class='va'>txt</span><span class='op'>[</span><span class='fl'>3</span><span class='op'>]</span>, split_hyphens <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Tokens consisting of 1 document.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> doc3 :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Self"        "-"           "documenting" "code"        "?"          </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [6] "?"          </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># symbols and numbers</span></span>
+<span class='r-in'><span class='fu'>tokens</span><span class='op'>(</span><span class='va'>txt</span><span class='op'>[</span><span class='fl'>4</span><span class='op'>]</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Tokens consisting of 1 document.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> doc4 :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "£"         "1,000,000" "for"       "50"        "¢"         "is"       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [7] "gr8"       "4ever"     "😀"       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='fu'>tokens</span><span class='op'>(</span><span class='va'>txt</span><span class='op'>[</span><span class='fl'>4</span><span class='op'>]</span>, remove_numbers <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Tokens consisting of 1 document.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> doc4 :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "£"     "for"   "¢"     "is"    "gr8"   "4ever" "😀"   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='fu'>tokens</span><span class='op'>(</span><span class='va'>txt</span><span class='op'>[</span><span class='fl'>4</span><span class='op'>]</span>, remove_numbers <span class='op'>=</span> <span class='cn'>TRUE</span>, remove_symbols <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Tokens consisting of 1 document.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> doc4 :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "for"   "is"    "gr8"   "4ever"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='co'># using other tokenizers</span></span>
+<span class='r-in'><span class='fu'>tokens</span><span class='op'>(</span><span class='fu'>tokenizers</span><span class='fu'>::</span><span class='fu'><a href='https://lincolnmullen.com/software/tokenizers/reference/basic-tokenizers.html'>tokenize_words</a></span><span class='op'>(</span><span class='va'>txt</span><span class='op'>[</span><span class='fl'>4</span><span class='op'>]</span><span class='op'>)</span>, remove_symbols <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>tokenizers</span><span class='fu'>::</span><span class='fu'><a href='https://lincolnmullen.com/software/tokenizers/reference/basic-tokenizers.html'>tokenize_words</a></span><span class='op'>(</span><span class='va'>txt</span>, lowercase <span class='op'>=</span> <span class='cn'>FALSE</span>, strip_punct <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>    <span class='fu'>tokens</span><span class='op'>(</span>remove_symbols <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Tokens consisting of 4 documents.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> doc1 :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] "A"        "sentence" ","        "showing"  "how"      "tokens"  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [7] "("        ")"        "works"    "."       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> doc2 :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] "@"            "quantedainit" "and"          "#"            "textanalysis"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [6] "https"        ":"            "/"            "/"            "example.com" </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [11] "?"            "p"           </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [ ... and 2 more ]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> doc3 :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "Self"        "-"           "documenting" "code"        "?"          </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [6] "?"          </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> doc4 :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "1,000,000" "for"       "50"        "is"        "gr8"       "4ever"    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='fu'>tokenizers</span><span class='fu'>::</span><span class='fu'><a href='https://lincolnmullen.com/software/tokenizers/reference/basic-tokenizers.html'>tokenize_characters</a></span><span class='op'>(</span><span class='va'>txt</span><span class='op'>[</span><span class='fl'>3</span><span class='op'>]</span>, strip_non_alphanum <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>    <span class='fu'>tokens</span><span class='op'>(</span>remove_punct <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Tokens consisting of 1 document.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> doc3 :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] "s" "e" "l" "f" "d" "o" "c" "u" "m" "e" "n" "t"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [ ... and 7 more ]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='fu'>tokenizers</span><span class='fu'>::</span><span class='fu'><a href='https://lincolnmullen.com/software/tokenizers/reference/basic-tokenizers.html'>tokenize_sentences</a></span><span class='op'>(</span></span>
+<span class='r-in'>    <span class='st'>"The quick brown fox.  It jumped over the lazy dog."</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>    <span class='fu'>tokens</span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Tokens consisting of 1 document.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> text1 :</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "The quick brown fox."         "It jumped over the lazy dog."</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
