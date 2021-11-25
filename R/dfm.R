@@ -213,10 +213,10 @@ dfm.tokens <- function(x,
     type <- types(x)
     attrs <- attributes(x)
     temp <- unclass(x)
-
+    
     # shift index for padding, if any
     index <- unlist_integer(temp, use.names = FALSE)
-    if (attr(temp, "padding")) {
+    if (attrs$padding) {
         type <- c("", type)
         index <- index + 1L
     }
@@ -226,14 +226,21 @@ dfm.tokens <- function(x,
                           x = 1L,
                           dims = c(length(x),
                                    length(type)))
-    dfm.dfm(
-        build_dfm(
-            temp, type,
-            docvars = get_docvars(x, user = TRUE, system = TRUE),
-            meta = attrs[["meta"]]),
-        tolower = FALSE, verbose = verbose
-    )
+
+    temp <- build_dfm(
+        temp, type,
+        docvars = get_docvars(x, user = TRUE, system = TRUE),
+        meta = attrs[["meta"]])
     
+    if (attrs$meta$object$what != "dictionary") {
+        # sort the columns in order of the occurrences of tokens
+        id <- unique(index)
+        if (attrs$padding)
+            id <- c(1L, setdiff(id, 1L)) # padding must come first
+        temp <- temp[,id]
+    }
+    
+    dfm.dfm(temp, tolower = FALSE, verbose = verbose)
 }
 
 

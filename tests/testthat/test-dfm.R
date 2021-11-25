@@ -304,9 +304,10 @@ test_that("dfm(x, dictionary = mwvdict) works with multi-word values", {
              d2 = "a c d x z",
              d3 = "x y",
              d4 = "f g")
-
+    toks <- tokens(txt)
+    
     # as dictionary
-    dfm1 <- suppressWarnings(dfm(tokens(txt), dictionary = mwvdict, verbose = TRUE))
+    dfm1 <- suppressWarnings(dfm(toks, dictionary = mwvdict, verbose = TRUE))
     expect_identical(
         as.matrix(dfm1),
         matrix(c(1, 0, 0, 0, 1, 0, 1, 0, 2, 1, 0, 0),
@@ -316,15 +317,15 @@ test_that("dfm(x, dictionary = mwvdict) works with multi-word values", {
     )
 
     # as thesaurus
-    dfm2 <- suppressWarnings(dfm(tokens(txt), thesaurus = mwvdict, verbose = TRUE))
+    dfm2 <- suppressWarnings(dfm(toks, thesaurus = mwvdict, verbose = TRUE))
     expect_identical(
         as.matrix(dfm2),
-        matrix(c(1, 0, 0, 0, 1, 0, 1, 0, 2, 1, 0, 0,
-                 0, 1, 0, 0,  1, 1, 0, 0,  1, 0, 0, 1,  1, 0, 0, 1,  0, 1, 0, 0, 1, 1, 0, 0),
+        matrix(c(1, 0, 0, 0,  1, 1, 0, 0,  2, 1, 0, 0,  1, 0, 0, 1,  
+                 1, 0, 0, 1,  1, 0, 1, 0,  1, 1, 0, 0,  0, 1, 0, 0,  0, 1, 0, 0),
                nrow = 4,
                dimnames = list(docs = paste0("d", 1:4),
-                               features = c("SEQUENCE1", "SEQUENCE2", "NOTSEQ",
-                                            "a", "c", "f", "g", "x", "z")))
+                               features = c("SEQUENCE1", "c", "NOTSEQ", "f", "g", 
+                                            "SEQUENCE2", "z", "a", "x")))
     )
 })
 
@@ -1326,4 +1327,26 @@ test_that("remove_padding argument works", {
         featnames(dfm(dfmat, remove_padding = FALSE)),
         c("", "a", "c", "d")
     )
+})
+
+
+test_that("features of DFM are always in the same order (#2100)", {
+    
+    toks1 <- quanteda:::build_tokens(list(c(1, 0, 2, 3, 4)), types = c("a", "b", "c", "d"),
+                                     padding = TRUE,
+                                     docvars = quanteda:::make_docvars(1L))
+    toks2 <- quanteda:::build_tokens(list(c(1, 0, 3, 2, 4)), types = c("a", "c", "b", "d"),
+                                     padding = TRUE,
+                                     docvars = quanteda:::make_docvars(1L))
+    toks3 <- quanteda:::build_tokens(list(c(1, 2, 3, 4)), types = c("a", "b", "c", "d"),
+                                     padding = FALSE,
+                                     docvars = quanteda:::make_docvars(1L))
+    dfmat1 <- dfm(toks1)
+    dfmat2 <- dfm(toks2)
+    dfmat3 <- dfm(toks3)
+    
+    expect_identical(c("", "a", "b", "c", "d"), featnames(dfmat1))
+    expect_identical(c("", "a", "b", "c", "d"), featnames(dfmat2))
+    expect_identical(c("a", "b", "c", "d"), featnames(dfmat3))
+    
 })

@@ -355,7 +355,7 @@ test_that("tokens_lookup with nomatch works", {
     )
 })
 
-test_that("dfm_lookup works with exclusive = TRUE, #958", {
+test_that("tokens_lookup works with exclusive = TRUE, #958", {
     
     txt <- c("word word2 document documents documenting",
                  "use using word word2")
@@ -377,15 +377,19 @@ test_that("dfm_lookup works with exclusive = TRUE, #958", {
     )
 })
 
-test_that("dfm_lookup match the same words in exclusive = TRUE and FALSE, #970", {
+test_that("tokens_lookup works in exclusive = TRUE and FALSE, #970", {
     
     toks <- tokens("say good bye to Hollywood")
     dict <- dictionary(list(pos = "good", farewell = "good bye"))
     
-    expect_equal(as.list(tokens_lookup(toks, dict, exclusive = TRUE)),
+    toks_ex <- tokens_lookup(toks, dict, exclusive = TRUE)
+    expect_true(attr(toks_ex, "meta")$object$what == "dictionary")
+    expect_equal(as.list(toks_ex),
                  list(text1 = c("pos", "farewell")))
     
-    expect_equal(as.list(tokens_lookup(toks, dict, exclusive = FALSE)),
+    toks_ne <- tokens_lookup(toks, dict, exclusive = FALSE)
+    expect_true(attr(toks, "meta")$object$what == "word")
+    expect_equal(as.list(toks_ne),
                  list(text1 = c("say", "POS", "FAREWELL", "to", "Hollywood")))
 
 })
