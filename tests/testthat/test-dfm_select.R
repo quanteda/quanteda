@@ -284,6 +284,19 @@ test_that("padding in dfm_select works in the same way as tokens_select (#2152)"
     toks1 <- tokens(corp) 
     dfmt1 <- dfm(toks1)
     
+    expect_equal(
+        as.vector(dfm_remove(dfmt1, c("a", "b"), padding = TRUE)[,1]),
+        c(2, 3)
+    )
+    expect_equal(
+        dim(dfm_remove(dfmt1, c("a", "b"), padding = TRUE)),
+        c(2, 3)
+    )
+    expect_equal(
+        dim(dfm_remove(dfmt1, c("z"), padding = TRUE)),
+        c(2, 4)
+    )
+    
     expect_equal(dfm(tokens_select(toks1, "d", padding = TRUE)),
                  dfm_select(dfmt1, "d", padding = TRUE))
     expect_equal(dfm(tokens_select(toks1, "z", padding = TRUE)),
@@ -296,6 +309,19 @@ test_that("padding in dfm_select works in the same way as tokens_select (#2152)"
     # objects that already have padding
     toks2 <- tokens_remove(toks1, "c", padding = TRUE)
     dfmt2 <- dfm(toks2, remove_padding = FALSE)
+    
+    expect_equal(
+        as.vector(dfm_remove(dfmt2, c("a", "b"), padding = TRUE)[,1]),
+        c(3, 4)
+    )
+    expect_equal(
+        dim(dfm_remove(dfmt2, c("a", "b"), padding = TRUE)),
+        c(2, 2)
+    )
+    expect_equal(
+        dim(dfm_remove(dfmt2, c("z"), padding = TRUE)),
+        c(2, 4)
+    )
     
     expect_equal(dfm(tokens_select(toks2, "d", padding = TRUE)),
                  dfm_select(dfmt2, "d", padding = TRUE))
