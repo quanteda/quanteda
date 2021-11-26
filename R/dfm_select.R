@@ -13,7 +13,8 @@
 #'   maximum length in characters for tokens to be removed or kept; defaults are
 #'   `NULL` for no limits.  These are applied after (and hence, in addition
 #'   to) any selection based on pattern matches.
-#' @param verbose if `TRUE` print message about how many pattern were
+#' @param padding if `TRUE`, record the number of removed tokens in the first column.
+#' @param verbose if `TRUE`, print message about how many pattern were
 #'   removed
 #' @details `dfm_remove` and `fcm_remove` are simply a convenience
 #'   wrappers to calling `dfm_select` and `fcm_select` with
