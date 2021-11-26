@@ -130,16 +130,17 @@ dfm_select.dfm <-  function(x, pattern = NULL,
             if (!is.null(max_nchar))
                 is_long <- max_nchar < len
             id_out <- which(is_short | is_long)
-        } else {
-            id_out <- integer()
+            id <- setdiff(id, id_out)
         }
-        if (padding && "" %in% feat)
-            id_out <- unique(c(1L, id_out))
-        id <- setdiff(id, id_out)
         if (padding) {
-            x <- cbind(rowSums(x[, id_out]), x[, id])
-            colnames(x)[1] <- ""
-            #x@padding <- TRUE TODO: add padding slot
+            n <- rowSums(x)
+            x <- x[, id]
+            if (!nfeat(x) || "" != featnames(x)[1])
+                x <- cbind(make_null_dfm("", docnames(x)), x)
+            if (!ndoc(x))
+                x[,1] <- x[,1] + (n - rowSums(x))
+            x <- rebuild_dfm(as.dfm(x), attrs)
+            # x@padding <- TRUE TODO: add padding slot
         } else {
             x <- x[, id]
         }
