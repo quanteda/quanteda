@@ -1,7 +1,8 @@
 txt <- c(doc1 = "a B c D e",
          doc2 = "a BBB c D e",
          doc3 = "Aaaa BBB cc")
-testdfm <- dfm(tokens(txt), tolower = FALSE)
+toks <- tokens(txt)
+testdfm <- dfm(toks, tolower = FALSE)
 
 test_that("test dfm_select, fixed", {
     expect_equal(
@@ -249,7 +250,7 @@ test_that("shortcut functions works", {
 })
 
 test_that("dfm_remove/keep fail if selection argument is used", {
-    dfmt <- tokens(c("a b c d d", "a a b c d"))
+    dfmt <- dfm(tokens(c("a b c d d", "a a b c d")))
     expect_error(
         dfm_remove(dfmt, c("b", "c"), selection = "remove"),
         "dfm_remove cannot include selection argument"
@@ -275,3 +276,64 @@ test_that("really long words are not removed in tokens() (#1713)", {
     dfmat <- dfm(tokens("one two DonaudampfschiffahrtselektrizittenhauptbetriebswerkbauunterbeamtengesellschaftXXX"))
     expect_equivalent(nfeat(dfmat), 3)
 })
+
+test_that("padding in dfm_select works in the same way as tokens_select (#2152)", {
+    
+    corp <- corpus(c("a b c d d", "a a b c d"),
+                   docvars = data.frame(var1 = c(1, 2), var2 = c(TRUE, FALSE)))
+    toks1 <- tokens(corp) 
+    dfmt1 <- dfm(toks1)
+    
+    expect_equal(
+        as.vector(dfm_remove(dfmt1, c("a", "b"), padding = TRUE)[,1]),
+        c(2, 3)
+    )
+    expect_equal(
+        dim(dfm_remove(dfmt1, c("a", "b"), padding = TRUE)),
+        c(2, 3)
+    )
+    expect_equal(
+        dim(dfm_remove(dfmt1, c("z"), padding = TRUE)),
+        c(2, 4)
+    )
+    
+    expect_equal(dfm(tokens_select(toks1, "d", padding = TRUE)),
+                 dfm_select(dfmt1, "d", padding = TRUE))
+    expect_equal(dfm(tokens_select(toks1, "z", padding = TRUE)),
+                 dfm_select(dfmt1, "z", padding = TRUE))
+    expect_equal(dfm(tokens_remove(toks1, "d", padding = TRUE)),
+                 dfm_remove(dfmt1, "d", padding = TRUE))
+    expect_equal(dfm(tokens_remove(toks1, "z", padding = TRUE)),
+                 dfm_remove(dfmt1, "z", padding = TRUE))
+    
+    # objects that already have padding
+    toks2 <- tokens_remove(toks1, "c", padding = TRUE)
+    dfmt2 <- dfm(toks2, remove_padding = FALSE)
+    
+    expect_equal(
+        as.vector(dfm_remove(dfmt2, c("a", "b"), padding = TRUE)[,1]),
+        c(3, 4)
+    )
+    expect_equal(
+        dim(dfm_remove(dfmt2, c("a", "b"), padding = TRUE)),
+        c(2, 2)
+    )
+    expect_equal(
+        dim(dfm_remove(dfmt2, c("z"), padding = TRUE)),
+        c(2, 4)
+    )
+    
+    expect_equal(dfm(tokens_select(toks2, "d", padding = TRUE)),
+                 dfm_select(dfmt2, "d", padding = TRUE))
+    expect_equal(dfm(tokens_select(toks2, "z", padding = TRUE)),
+                 dfm_select(dfmt2, "z", padding = TRUE))
+    expect_equal(dfm(tokens_remove(toks2, "d", padding = TRUE)),
+                 dfm_remove(dfmt2, "d", padding = TRUE))
+    expect_equal(dfm(tokens_remove(toks2, "z", padding = TRUE)),
+                 dfm_remove(dfmt2, "z", padding = TRUE))
+    
+})
+
+
+
+

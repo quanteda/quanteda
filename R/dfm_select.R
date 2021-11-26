@@ -13,7 +13,8 @@
 #'   maximum length in characters for tokens to be removed or kept; defaults are
 #'   `NULL` for no limits.  These are applied after (and hence, in addition
 #'   to) any selection based on pattern matches.
-#' @param verbose if `TRUE` print message about how many pattern were
+#' @param padding if `TRUE`, record the number of removed tokens in the first column.
+#' @param verbose if `TRUE`, print message about how many pattern were
 #'   removed
 #' @details `dfm_remove` and `fcm_remove` are simply a convenience
 #'   wrappers to calling `dfm_select` and `fcm_select` with
@@ -60,6 +61,7 @@ dfm_select <- function(x, pattern = NULL,
                        valuetype = c("glob", "regex", "fixed"),
                        case_insensitive = TRUE,
                        min_nchar = NULL, max_nchar = NULL,
+                       padding = FALSE,
                        verbose = quanteda_options("verbose")) {
     UseMethod("dfm_select")
 }
@@ -70,6 +72,7 @@ dfm_select.default <-  function(x, pattern = NULL,
                             valuetype = c("glob", "regex", "fixed"),
                             case_insensitive = TRUE,
                             min_nchar = NULL, max_nchar = NULL,
+                            padding = FALSE,
                             verbose = quanteda_options("verbose")) {
     check_class(class(x), "dfm_select")
 }
@@ -80,6 +83,7 @@ dfm_select.dfm <-  function(x, pattern = NULL,
                             valuetype = c("glob", "regex", "fixed"),
                             case_insensitive = TRUE,
                             min_nchar = NULL, max_nchar = NULL,
+                            padding = FALSE,
                             verbose = quanteda_options("verbose")) {
 
     x <- as.dfm(x)
@@ -88,7 +92,7 @@ dfm_select.dfm <-  function(x, pattern = NULL,
     is_dfm <- FALSE
     attrs <- attributes(x)
     feat <- featnames(x)
-
+        
     id <- seq_len(nfeat(x))
     if (is.null(pattern)) {
         if (selection == "keep") {
@@ -129,7 +133,20 @@ dfm_select.dfm <-  function(x, pattern = NULL,
             id_out <- which(is_short | is_long)
             id <- setdiff(id, id_out)
         }
-        x <- x[, id]
+        if (padding) {
+            n <- rowSums(x)
+            x <- x[, id]
+            m <- n - rowSums(x)
+            if (sum(m)) {
+                if (!nfeat(x) || "" != featnames(x)[1])
+                    x <- cbind(make_null_dfm("", docnames(x)), x)
+                x[,1] <- x[,1] + m
+                x <- rebuild_dfm(as.dfm(x), attrs)
+                # x@padding <- TRUE TODO: add padding slot
+            }
+        } else {
+            x <- x[, id]
+        }
     }
     if (verbose) {
         if ("keep" == selection) {

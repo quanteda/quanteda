@@ -17,6 +17,7 @@ dfm_select(
   case_insensitive = TRUE,
   min_nchar = NULL,
   max_nchar = NULL,
+  padding = FALSE,
   verbose = quanteda_options("verbose")
 )
 
@@ -58,7 +59,9 @@ maximum length in characters for tokens to be removed or kept; defaults are
 \code{NULL} for no limits.  These are applied after (and hence, in addition
 to) any selection based on pattern matches.}
 
-\item{verbose}{if \code{TRUE} print message about how many pattern were
+\item{padding}{if \code{TRUE}, record the number of removed tokens in the first column.}
+
+\item{verbose}{if \code{TRUE}, print message about how many pattern were
 removed}
 
 \item{...}{used only for passing arguments from \code{dfm_remove} or
