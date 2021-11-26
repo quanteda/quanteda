@@ -135,12 +135,14 @@ dfm_select.dfm <-  function(x, pattern = NULL,
         if (padding) {
             n <- rowSums(x)
             x <- x[, id]
-            if (!nfeat(x) || "" != featnames(x)[1])
-                x <- cbind(make_null_dfm("", docnames(x)), x)
-            if (!ndoc(x))
-                x[,1] <- x[,1] + (n - rowSums(x))
-            x <- rebuild_dfm(as.dfm(x), attrs)
-            # x@padding <- TRUE TODO: add padding slot
+            m <- n - rowSums(x)
+            if (sum(m)) {
+                if (!nfeat(x) || "" != featnames(x)[1])
+                    x <- cbind(make_null_dfm("", docnames(x)), x)
+                x[,1] <- x[,1] + m
+                x <- rebuild_dfm(as.dfm(x), attrs)
+                # x@padding <- TRUE TODO: add padding slot
+            }
         } else {
             x <- x[, id]
         }
