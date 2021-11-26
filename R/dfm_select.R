@@ -60,6 +60,7 @@ dfm_select <- function(x, pattern = NULL,
                        valuetype = c("glob", "regex", "fixed"),
                        case_insensitive = TRUE,
                        min_nchar = NULL, max_nchar = NULL,
+                       padding = FALSE,
                        verbose = quanteda_options("verbose")) {
     UseMethod("dfm_select")
 }
@@ -70,6 +71,7 @@ dfm_select.default <-  function(x, pattern = NULL,
                             valuetype = c("glob", "regex", "fixed"),
                             case_insensitive = TRUE,
                             min_nchar = NULL, max_nchar = NULL,
+                            padding = FALSE,
                             verbose = quanteda_options("verbose")) {
     check_class(class(x), "dfm_select")
 }
@@ -80,6 +82,7 @@ dfm_select.dfm <-  function(x, pattern = NULL,
                             valuetype = c("glob", "regex", "fixed"),
                             case_insensitive = TRUE,
                             min_nchar = NULL, max_nchar = NULL,
+                            padding = FALSE,
                             verbose = quanteda_options("verbose")) {
 
     x <- as.dfm(x)
@@ -88,7 +91,7 @@ dfm_select.dfm <-  function(x, pattern = NULL,
     is_dfm <- FALSE
     attrs <- attributes(x)
     feat <- featnames(x)
-
+        
     id <- seq_len(nfeat(x))
     if (is.null(pattern)) {
         if (selection == "keep") {
@@ -127,9 +130,19 @@ dfm_select.dfm <-  function(x, pattern = NULL,
             if (!is.null(max_nchar))
                 is_long <- max_nchar < len
             id_out <- which(is_short | is_long)
-            id <- setdiff(id, id_out)
+        } else {
+            id_out <- integer()
         }
-        x <- x[, id]
+        if (padding && "" %in% feat)
+            id_out <- unique(c(1L, id_out))
+        id <- setdiff(id, id_out)
+        if (padding) {
+            x <- cbind(rowSums(x[, id_out]), x[, id])
+            colnames(x)[1] <- ""
+            #x@padding <- TRUE TODO: add padding slot
+        } else {
+            x <- x[, id]
+        }
     }
     if (verbose) {
         if ("keep" == selection) {
