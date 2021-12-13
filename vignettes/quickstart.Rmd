@@ -28,7 +28,7 @@ The following packages contain modularised functions that were formerly part of 
 
 *  [**quanteda.textmodels**](https://github.com/quanteda/quanteda.textmodels): Functions for scaling and classifying textual data.  
 *  [**quanteda.textstats**](https://github.com/quanteda/quanteda.textstats): Statistics for textual data.  
-*  [**quanteda.textplot**](https://github.com/quanteda/quanteda.textplots): Statistics for textual data.  
+*  [**quanteda.textplots**](https://github.com/quanteda/quanteda.textplots): Statistics for textual data.  
 
 The following packages work well with or extend **quanteda** and we recommend that you also install them:
 
