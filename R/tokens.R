@@ -230,6 +230,7 @@ tokens.corpus <- function(x,
                           remove_url = FALSE,
                           remove_separators = TRUE,
                           split_hyphens = FALSE,
+                          split_tags = FALSE,
                           include_docvars = TRUE,
                           padding = FALSE,
                           verbose = quanteda_options("verbose"),
@@ -276,7 +277,7 @@ tokens.corpus <- function(x,
         y <- normalize_characters(y)
         if (what == "word") {
             y <- preserve_special(y, split_hyphens = split_hyphens,
-                                  split_tags = FALSE, verbose = verbose)
+                                  split_tags = split_tags, verbose = verbose)
             special <- attr(y, "special")
         }
         y <- serialize_tokens(tokenizer_fn(y, split_hyphens = split_hyphens, verbose = verbose))
