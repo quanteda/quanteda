@@ -1064,19 +1064,26 @@ test_that("emails address is preserved", {
     )
 })
 
-test_that("username is preserved", {
-    txt <- c(d1 = "@quanteda @koheiw7 @QUANEDA_INITIATIVE")
+test_that("split_tags works", {
+    
+    txt1 <- c(d1 = "@quanteda @koheiw7 @QUANEDA_INITIATIVE")
     expect_identical(
-        as.list(tokens(txt, what = "word")),
+        as.list(tokens(txt1, what = "word")),
         list(d1 = c("@quanteda", "@koheiw7", "@QUANEDA_INITIATIVE"))
     )
-})
-
-test_that("tags are preserved", {
-    txt <- c(d1 = "#quanteda #q-x #q_y #q100 #q")
     expect_identical(
-        as.list(tokens(txt, what = "word")),
+        as.list(tokens(txt1, what = "word", split_tags = TRUE)),
+        list(d1 = c("@", "quanteda", "@", "koheiw7", "@", "QUANEDA_INITIATIVE"))
+    )
+    
+    txt2 <- c(d1 = "#quanteda #q-x #q_y #q100 #q")
+    expect_identical(
+        as.list(tokens(txt2, what = "word")),
         list(d1 = c("#quanteda", "#q-x", "#q_y", "#q100", "#q"))
+    )
+    expect_identical(
+        as.list(tokens(txt2, what = "word", split_tags = TRUE)),
+        list(d1 = c("#", "quanteda", "#", "q-x", "#", "q_y", "#", "q100", "#", "q"))
     )
 })
 
