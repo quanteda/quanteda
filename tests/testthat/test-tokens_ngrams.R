@@ -74,12 +74,23 @@ test_that("test `tokens_ngrams` on characters", {
 
 test_that("token_skipgrams works", {
     toks <- tokens("insurgents killed in ongoing fighting")
-    ngms <- tokens_skipgrams(toks, n = 2, skip = 0:1, concatenator = " ") 
+    # ASCII concatenator
+    ngms1 <- tokens_skipgrams(toks, n = 2, skip = 0:1, concatenator = " ") 
     expect_equivalent(
-        as.list(ngms)[[1]],
+        as.list(ngms1)[[1]],
         c('insurgents killed', "insurgents in",     "killed in" ,        "killed ongoing" , 
           "in ongoing",        "in fighting",       "ongoing fighting")
     )
+    expect_equal(Encoding(types(ngms1)), rep("unknown", 7))
+    
+    # Unicode concatenator
+    ngms2 <- tokens_skipgrams(toks, n = 2, skip = 0:1, concatenator = "\u00a0") 
+    expect_equivalent(
+      as.list(ngms2)[[1]],
+      c('insurgents\u00a0killed', "insurgents\u00a0in",     "killed\u00a0in" ,        "killed\u00a0ongoing" , 
+        "in\u00a0ongoing",        "in\u00a0fighting",       "ongoing\u00a0fighting")
+    )
+    expect_equal(Encoding(types(ngms2)), rep("UTF-8", 7))
 })
 
 test_that("raises error for invalid inputs", {
