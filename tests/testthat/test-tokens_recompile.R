@@ -57,7 +57,7 @@ test_that("tokens_recompile: tokens_select w/gaps", {
 
 
 test_that("tokens_recompile: preserves encoding", {
-    skip_on_appveyor()  
+    
     txt <- c(French = "Pêcheur pêcheur Français")
     Encoding(txt) <- "UTF-8"
     toks <- tokens(txt)

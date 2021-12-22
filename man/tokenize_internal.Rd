@@ -26,9 +26,9 @@ tokenize_fastestword(x, ...)
 \arguments{
 \item{x}{(named) character; input texts}
 
-\item{split_hyphens}{logical; if \code{TRUE}, split words that are connected by
-hyphenation and hyphenation-like characters in between words, e.g.
-\code{"self-aware"} becomes \code{c("self", "-", "aware")}}
+\item{split_hyphens}{logical; if \code{FALSE}, do not split words that are
+connected by hyphenation and hyphenation-like characters in between words,
+e.g. \code{"self-aware"} becomes \code{c("self", "-", "aware")}}
 
 \item{verbose}{if \code{TRUE}, print timing messages to the console}
 
