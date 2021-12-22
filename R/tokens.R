@@ -11,13 +11,13 @@
 #' not be possible to remove things that are not present.  For instance, if the
 #' `tokens` object has already had punctuation removed, then `tokens(x,
 #' remove_punct = TRUE)` will have no additional effect.
-#' @param x the input object to the tokens constructor, one of:
-#'   a (uniquely) named **list** of characters; a [tokens] object; or a
-#'   [corpus] or [character] object that will be tokenized
+#' @param x the input object to the tokens constructor, one of: a (uniquely)
+#'   named **list** of characters; a [tokens] object; or a [corpus] or
+#'   [character] object that will be tokenized
 #' @param what character; which tokenizer to use.  The default `what = "word"`
 #'   is the version 2 \pkg{quanteda} tokenizer.  Legacy tokenizers (version < 2)
-#'   are also supported, including the default `what = "word1"`.
-#'   See the Details and quanteda Tokenizers below.
+#'   are also supported, including the default `what = "word1"`. See the Details
+#'   and quanteda Tokenizers below.
 #' @param remove_punct logical; if `TRUE` remove all characters in the Unicode
 #'   "Punctuation" `[P]` class, with exceptions for those used as prefixes for
 #'   valid social media tags if `preserve_tags = TRUE`
@@ -29,22 +29,29 @@
 #'   http(s)
 #' @param remove_separators logical; if `TRUE` remove separators and separator
 #'   characters (Unicode "Separator" `[Z]` and "Control" `[C]` categories)
-#' @param split_hyphens logical; if `TRUE`, split words that are connected by
-#'   hyphenation and hyphenation-like characters in between words, e.g.
-#'   `"self-aware"` becomes `c("self", "-", "aware")`
+#' @param split_hyphens logical; if `FALSE`, do not split words that are
+#'   connected by hyphenation and hyphenation-like characters in between words,
+#'   e.g. `"self-aware"` becomes `c("self", "-", "aware")`
+#' @param split_tags logical; if `FALSE`, do not split social media tags defined
+#'   in `quanteda_options()`. The default patterns are `pattern_hashtag =
+#'   "#\\w+#?"` and `pattern_username = "@[a-zA-Z0-9_]+"`.
 #' @param include_docvars if `TRUE`, pass docvars through to the tokens object.
 #'   Does not apply when the input is a character data or a list of characters.
 #' @inheritParams tokens_select
 #' @param verbose if `TRUE`, print timing messages to the console
 #' @param ... used to pass arguments among the functions
-#' @section Details:
-#'   As of version 2, the choice of tokenizer is left more to the user,
-#'   and `tokens()` is treated more as a constructor (from a named list) than a
-#'   tokenizer. This allows users to use any other tokenizer that returns a
-#'   named list, and to use this as an input to `tokens()`, with removal and
-#'   splitting rules applied after this has been constructed (passed as
-#'   arguments).  These removal and splitting rules are conservative and will
+#' @section Details: As of version 2, the choice of tokenizer is left more to
+#'   the user, and `tokens()` is treated more as a constructor (from a named
+#'   list) than a tokenizer. This allows users to use any other tokenizer that
+#'   returns a named list, and to use this as an input to `tokens()`, with
+#'   removal and splitting rules applied after this has been constructed (passed
+#'   as arguments).  These removal and splitting rules are conservative and will
 #'   not remove or split anything, however, unless the user requests it.
+#'
+#'   You usually do not want to split hyphenated words or social media tags, but
+#'   extra steps required to preserve such special tokens. If there are many
+#'   random characters in your texts, you should `split_hyphens = TRUE` and
+#'   `split_tags = TRUE` to avoid a slowdown in tokenization.
 #'
 #'   Using external tokenizers is best done by piping the output from these
 #'   other tokenizers into the `tokens()` constructor, with additional removal
@@ -54,46 +61,45 @@
 #'   punctuation if the input list to `tokens()` already had its punctuation
 #'   tokens removed at the external tokenization stage.
 #'
-#'   To construct a tokens object from a list with no additional processing, call
-#'   [as.tokens()] instead of `tokens()`.
+#'   To construct a tokens object from a list with no additional processing,
+#'   call [as.tokens()] instead of `tokens()`.
 #'
 #'   Recommended tokenizers are those from the \pkg{tokenizers} package, which
 #'   are generally faster than the default (built-in) tokenizer but always
 #'   splits infix hyphens, or \pkg{spacyr}.
 #'
-#' @section quanteda Tokenizers:
-#'   The default word tokenizer `what = "word"` splits tokens using
-#'   [stri_split_boundaries(x, type = "word")][stringi::stri_split_boundaries]
-#'   but by default preserves infix hyphens (e.g. "self-funding"), URLs, and
-#'   social media "tag" characters (#hashtags and @usernames), and email
-#'   addresses.  The rules defining a valid "tag" can be found at
+#' @section quanteda Tokenizers: The default word tokenizer `what = "word"`
+#'   splits tokens using [stri_split_boundaries(x, type =
+#'   "word")][stringi::stri_split_boundaries] but by default preserves infix
+#'   hyphens (e.g. "self-funding"), URLs, and social media "tag" characters
+#'   (#hashtags and @usernames), and email addresses.  The rules defining a
+#'   valid "tag" can be found at
 #'   https://www.hashtags.org/featured/what-characters-can-a-hashtag-include/
 #'   for hashtags and at
 #'   https://help.twitter.com/en/managing-your-account/twitter-username-rules
 #'   for usernames.
 #'
 #'   In versions < 2, the argument `remove_twitter` controlled whether social
-#'   media tags were preserved or removed, even when `remove_punct = TRUE`.
-#'   This argument is not longer functional in versions >= 2.  If greater
-#'   control over social media tags is desired, you should user an alternative
+#'   media tags were preserved or removed, even when `remove_punct = TRUE`. This
+#'   argument is not longer functional in versions >= 2.  If greater control
+#'   over social media tags is desired, you should user an alternative
 #'   tokenizer, including non-\pkg{quanteda} options.
 #'
 #'   For backward compatibility, the following older tokenizers are also
-#'   supported through `what`:
-#'   \describe{
-#'   \item{`"word1"`}{(legacy) implements similar behaviour to the version of
-#'   `what = "word"` found in pre-version 2.  (It preserves social media tags
-#'   and infix hyphens, but splits URLs.)  "word1" is also slower than "word".}
-#'   \item{`"fasterword"`}{(legacy) splits on whitespace and control characters,
-#'   using `stringi::stri_split_charclass(x, "[\\p{Z}\\p{C}]+")`}
+#'   supported through `what`: \describe{ \item{`"word1"`}{(legacy) implements
+#'   similar behaviour to the version of `what = "word"` found in pre-version 2.
+#'   (It preserves social media tags and infix hyphens, but splits URLs.)
+#'   "word1" is also slower than "word".} \item{`"fasterword"`}{(legacy) splits
+#'   on whitespace and control characters, using
+#'   `stringi::stri_split_charclass(x, "[\\p{Z}\\p{C}]+")`}
 #'   \item{`"fastestword"`}{(legacy) splits on the space character, using
-#'   `stringi::stri_split_fixed(x, " ")`}
-#'   \item{`"character"`}{tokenization into individual characters}
-#'   \item{`"sentence"`}{sentence segmenter based on
+#'   `stringi::stri_split_fixed(x, " ")`} \item{`"character"`}{tokenization into
+#'   individual characters} \item{`"sentence"`}{sentence segmenter based on
 #'   [stri_split_boundaries][stringi::stri_split_boundaries], but with
 #'   additional rules to avoid splits on words like "Mr." that would otherwise
 #'   incorrectly be detected as sentence boundaries.  For better sentence
 #'   tokenization, consider using \pkg{spacyr}.} }
+#'
 #'
 #' @return \pkg{quanteda} `tokens` class object, by default a serialized list of
 #'   integers corresponding to a vector of types.
@@ -131,7 +137,7 @@
 #'     "The quick brown fox.  It jumped over the lazy dog.") %>%
 #'     tokens()
 #' }
-#'
+#' 
 tokens <-  function(x,
                     what = "word",
                     remove_punct = FALSE,
@@ -140,6 +146,7 @@ tokens <-  function(x,
                     remove_url = FALSE,
                     remove_separators = TRUE,
                     split_hyphens = FALSE,
+                    split_tags = FALSE,
                     include_docvars = TRUE,
                     padding = FALSE,
                     verbose = quanteda_options("verbose"),
@@ -174,6 +181,7 @@ tokens.list <- function(x,
                         remove_url = FALSE,
                         remove_separators = TRUE,
                         split_hyphens = FALSE,
+                        split_tags = FALSE,
                         include_docvars = TRUE,
                         padding = FALSE,
                         verbose = quanteda_options("verbose"),
@@ -185,6 +193,7 @@ tokens.list <- function(x,
            remove_url = remove_url,
            remove_separators = remove_separators,
            split_hyphens = split_hyphens,
+           split_tags = split_tags,
            verbose = quanteda_options("verbose"),
            ...)
 }
@@ -200,6 +209,7 @@ tokens.character <- function(x,
                              remove_url = FALSE,
                              remove_separators = TRUE,
                              split_hyphens = FALSE,
+                             split_tags = FALSE,
                              include_docvars = TRUE,
                              padding = FALSE,
                              verbose = quanteda_options("verbose"),
@@ -212,6 +222,7 @@ tokens.character <- function(x,
            remove_url = remove_url,
            remove_separators = remove_separators,
            split_hyphens = split_hyphens,
+           split_tags = split_tags,
            include_docvars = include_docvars,
            padding = padding,
            verbose = verbose,
@@ -230,6 +241,7 @@ tokens.corpus <- function(x,
                           remove_url = FALSE,
                           remove_separators = TRUE,
                           split_hyphens = FALSE,
+                          split_tags = FALSE,
                           include_docvars = TRUE,
                           padding = FALSE,
                           verbose = quanteda_options("verbose"),
@@ -243,6 +255,7 @@ tokens.corpus <- function(x,
     remove_url <- check_logical(remove_url)
     remove_separators <- check_logical(remove_separators)
     split_hyphens <- check_logical(split_hyphens)
+    split_tags <- check_logical(split_tags)
     include_docvars <- check_logical(include_docvars)
     padding <- check_logical(padding)
     verbose <- check_logical(verbose)
@@ -276,7 +289,7 @@ tokens.corpus <- function(x,
         y <- normalize_characters(y)
         if (what == "word") {
             y <- preserve_special(y, split_hyphens = split_hyphens,
-                                  split_tags = FALSE, verbose = verbose)
+                                  split_tags = split_tags, verbose = verbose)
             special <- attr(y, "special")
         }
         y <- serialize_tokens(tokenizer_fn(y, split_hyphens = split_hyphens, verbose = verbose))
@@ -311,6 +324,7 @@ tokens.corpus <- function(x,
                             remove_url = remove_url,
                             remove_separators = remove_separators,
                             split_hyphens = FALSE,
+                            split_tags = FALSE,
                             include_docvars = TRUE,
                             padding = padding,
                             verbose = verbose)
@@ -329,6 +343,7 @@ tokens.tokens <-  function(x,
                            remove_url = FALSE,
                            remove_separators = FALSE,
                            split_hyphens = FALSE,
+                           split_tags = FALSE,
                            include_docvars = TRUE,
                            padding = FALSE,
                            verbose = quanteda_options("verbose"),
@@ -340,6 +355,7 @@ tokens.tokens <-  function(x,
     remove_url <- check_logical(remove_url)
     remove_separators <- check_logical(remove_separators)
     split_hyphens <- check_logical(split_hyphens)
+    split_tags <- check_logical(split_tags)
     include_docvars <- check_logical(include_docvars)
     padding <- check_logical(padding)
     verbose <- check_logical(verbose)
@@ -349,6 +365,9 @@ tokens.tokens <-  function(x,
     if (split_hyphens) {
         if (verbose) catm(" ...splitting hyphens\n")
         x <- tokens_split(x, "\\p{Pd}", valuetype = "regex", remove_separator = FALSE)
+    }
+    if (split_tags) {
+        warning("split_tags argument is not used")
     }
 
     # removals
