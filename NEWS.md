@@ -1,3 +1,13 @@
+# quanteda 3.2.1
+
+## Bug fixes and stability enhancements
+
+
+## Changes and additions
+
+* A new `split_tags` argument has been added to `tokens()`, to provide the user with an option not to preserve social media tags (addresses #2156).
+
+
 # quanteda 3.2
 
 ## Bug fixes and stability enhancements
