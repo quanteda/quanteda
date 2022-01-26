@@ -106,7 +106,13 @@ dfm_lookup.dfm <- function(x, dictionary, levels = 1:5,
     ids <- object2id(dictionary, type, valuetype, case_insensitive,
                         field_object(attrs, "concatenator"), levels)
     key <- attr(ids, "key")
-    ids <- ids[lengths(ids) == 1]
+    
+    # detect nested matches
+    dup <- logical(length(ids))
+    g <- factor(names(ids), levels = unique(names(ids)))
+    split(dup, g) <- lapply(split(ids, g), duplicated)
+    
+    ids <- ids[lengths(ids) == 1 & !dup] # drop ngrams and nested
     id_key <- match(names(ids), key)
     id <- unlist(ids, use.names = FALSE)
     if (capkeys)
