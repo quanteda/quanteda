@@ -106,7 +106,7 @@ dfm_lookup.dfm <- function(x, dictionary, levels = 1:5,
     ids <- object2id(dictionary, type, valuetype, case_insensitive,
                         field_object(attrs, "concatenator"), levels)
     
-    # flag nested matches
+    # flag nested patterns
     if (length(ids)) {
         m <- factor(names(ids), levels = unique(names(ids)))
         dup <- unlist(lapply(split(ids, m), duplicated), use.names = FALSE)
@@ -115,7 +115,7 @@ dfm_lookup.dfm <- function(x, dictionary, levels = 1:5,
     }
     
     key <- attr(ids, "key")
-    ids <- ids[lengths(ids) == 1 & !dup] # drop ngrams and nested
+    ids <- ids[lengths(ids) == 1 & !dup] # drop phrasal and nested patterns
     id_key <- match(names(ids), key)
     id <- unlist(ids, use.names = FALSE)
     if (capkeys)
