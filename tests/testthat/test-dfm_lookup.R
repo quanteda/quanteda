@@ -263,8 +263,8 @@ test_that("dfm_lookup handle nested patterns correctly, #2159", {
     
     expect_equal(
         as.matrix(dfm_lookup(dfmat, dict, exclusive = FALSE)),
-        matrix(c(1, 1, 1, 1, 2), nrow = 1,
+        matrix(c(1, 1, 1, 2, 1), nrow = 1,
                dimnames = list(docs = "text1",
-                               features = c("i", "am", "IRISH", "about", "ANGER")))
+                               features = c("i", "am", "IRISH", "ANGER", "about")))
     )
 })

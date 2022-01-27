@@ -140,8 +140,13 @@ dfm_lookup.dfm <- function(x, dictionary, levels = 1:5,
             col_new <- type
             
             # repeat columns for multiple keys
-            id_rep <- setdiff(seq_len(nfeat(x)), id)
-            id_rep <- sort(c(id_rep, id))
+            if (any(duplicated(id))) {
+                ids_rep <- as.list(seq_len(nfeat(x)))
+                ids_rep[unique(id)] <- split(id, id)
+                id_rep <- unlist(ids_rep, use.names = FALSE)
+            } else {
+                id_rep <- seq_len(nfeat(x))
+            }
             col_new <- col_new[id_rep]
             col_new[id_rep %in% id] <- key[id_key] 
             x <- x[,id_rep]
