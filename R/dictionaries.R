@@ -634,9 +634,8 @@ replace_dictionary_values <- function(dict, from, to) {
 merge_dictionary_values <- function(dict) {
     
     if (is.null(names(dict))) return(dict)
-    #dict_unique <- list()
     if (any(duplicated(names(dict)))) {
-        dict <- lapply(split(lis, names(dict)), function(x) {
+        dict <- lapply(split(dict, names(dict)), function(x) {
             names(x) <- NULL
             unlist(x, recursive = FALSE)
         })
@@ -647,35 +646,16 @@ merge_dictionary_values <- function(dict) {
             dict[[i]] <- list(unlist(dict_temp, use.names = FALSE))
         } else {
             is_value <- names(dict_temp) == ""
-            dict[[i]] <- c(
-                merge_dictionary_values(dict_temp[!is_value]),
-                list(unlist(dict_temp[is_value], use.names = FALSE))
-            )
+            dict[[i]] <- merge_dictionary_values(dict_temp[!is_value])
+            if (any(is_value)) {
+                dict[[i]] <- c(
+                    dict[[i]], 
+                    list(unlist(dict_temp[is_value], use.names = FALSE))
+                )
+            }
         }
     }
     return(dict)
-    # 
-    # name <- names(dict)
-    # if (is.null(name)) return(dict)
-    # dict_unique <- dict[!duplicated(name)]
-    # for (n in unique(name)) {
-    #     for (i in which(n == name & duplicated(name))) {
-    #         dict_unique[[n]] <- c(dict_unique[[n]], dict[[i]])
-    #     }
-    #     name_sub <- names(dict_unique[[n]])
-    #     if (is.null(name_sub)) {
-    #         is_value <- rep(TRUE, length(dict_unique[[n]]))
-    #     } else {
-    #         is_value <- name_sub == ""
-    #     }
-    #     if (any(is_value)) {
-    #         value <- unlist(dict_unique[[n]][is_value], use.names = FALSE)
-    #         dict_unique[[n]][is_value] <- NULL
-    #         dict_unique[[n]] <- c(dict_unique[[n]], list(value))
-    #     }
-    #     dict_unique[[n]] <- merge_dictionary_values(dict_unique[[n]])
-    # }
-    # return(dict_unique)
 }
 
 #' Internal function to convert a list to a dictionary
