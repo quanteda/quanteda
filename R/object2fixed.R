@@ -9,7 +9,11 @@
 #'   expression in `types`
 #' @inheritParams tokens_lookup
 #' @param remove_unigram  if `TRUE`, ignores single-word patterns
-#' @return a list of integer vectors containing indices of matched types
+#' @return `object2fixed()` returns a list of character vectors of matched
+#'   types. `object2id()` returns a list of indices of matched types with
+#'   attributes. The "pattern" attribute records the indices of the matched patterns
+#'   in `x`; the "key" attribute records the keys of the matched patterns when `x` is
+#'   [dictionary].
 #' @seealso [pattern2id()]
 #' @keywords development internal
 #' @export
