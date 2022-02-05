@@ -54,7 +54,11 @@ below the first (see examples).}
 \item{keep_nomatch}{keep patterns that did not match}
 }
 \value{
-a list of integer vectors containing indices of matched types
+\code{object2fixed()} returns a list of character vectors of matched
+types. \code{object2id()} returns a list of indices of matched types with
+attributes. The "pattern" attribute records the indices of the matched patterns
+in \code{x}; the "key" attribute records the keys of the matched patterns when \code{x} is
+\link{dictionary}.
 }
 \description{
 Developer function to match patterns in quanteda objects against token types.

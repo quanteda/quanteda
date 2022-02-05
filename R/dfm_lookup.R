@@ -105,8 +105,17 @@ dfm_lookup.dfm <- function(x, dictionary, levels = 1:5,
 
     ids <- object2id(dictionary, type, valuetype, case_insensitive,
                         field_object(attrs, "concatenator"), levels)
+    
+    # flag nested patterns
+    if (length(ids)) {
+        m <- factor(names(ids), levels = unique(names(ids)))
+        dup <- unlist(lapply(split(ids, m), duplicated), use.names = FALSE)
+    } else {
+        dup <- logical()
+    }
+    
     key <- attr(ids, "key")
-    ids <- ids[lengths(ids) == 1]
+    ids <- ids[lengths(ids) == 1 & !dup] # drop phrasal and nested patterns
     id_key <- match(names(ids), key)
     id <- unlist(ids, use.names = FALSE)
     if (capkeys)
@@ -120,8 +129,8 @@ dfm_lookup.dfm <- function(x, dictionary, levels = 1:5,
                                         length(id_nomatch)))
                 key <- c(key, nomatch[1])
             }
-            x <- x[, id]
             col_new <- key[id_key]
+            x <- x[, id]
             set_dfm_featnames(x) <- col_new
             # merge identical keys and add non-existent keys
             result <- dfm_match(dfm_compress(x, margin = "features"), key)
@@ -129,7 +138,19 @@ dfm_lookup.dfm <- function(x, dictionary, levels = 1:5,
             if (!is.null(nomatch))
                 warning("nomatch only applies if exclusive = TRUE")
             col_new <- type
-            col_new[id] <- key[id_key]
+            
+            # repeat columns for multiple keys
+            if (any(duplicated(id))) {
+                ids_rep <- as.list(seq_len(nfeat(x)))
+                ids_rep[unique(id)] <- split(id, id)
+                id_rep <- unlist(ids_rep, use.names = FALSE)
+            } else {
+                id_rep <- seq_len(nfeat(x))
+            }
+            col_new <- col_new[id_rep]
+            col_new[id_rep %in% id] <- key[id_key] 
+            x <- x[,id_rep]
+            
             set_dfm_featnames(x) <- col_new
             result <- dfm_compress(x, margin = "features")
         }

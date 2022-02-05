@@ -249,3 +249,22 @@ test_that("dfm_lookup works exclusive = TRUE and FALSE, #970", {
     expect_equal(featnames(dfmat_ne), c("say", "POS", "FAREWELL", "to", "Hollywood"))
     
 })
+
+test_that("dfm_lookup handle nested patterns correctly, #2159", {
+
+    dict <- dictionary(list(irish = c("ire*", "ireland", "irish"),
+                            anger = c("ire*", "mad")))
+    toks <- tokens("I am mad about Ireland")
+    dfmat <- dfm(toks)
+    expect_equal(
+        as.matrix(dfm_lookup(dfmat, dict, exclusive = TRUE)),
+        matrix(c(1, 2), nrow = 1, dimnames = list(docs = "text1", features = c("irish", "anger")))
+    )
+    
+    expect_equal(
+        as.matrix(dfm_lookup(dfmat, dict, exclusive = FALSE)),
+        matrix(c(1, 1, 1, 2, 1), nrow = 1,
+               dimnames = list(docs = "text1",
+                               features = c("i", "am", "IRISH", "ANGER", "about")))
+    )
+})
