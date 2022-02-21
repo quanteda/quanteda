@@ -68,7 +68,7 @@ always \code{TRUE}.}
 \item{docid_field}{character; the name of the column containing document
 names used when \code{to = "data.frame"}.  Unused for other conversions.}
 
-\item{pretty}{adds indentation whitespace to JSON output. Can be TRUE/FALSE or a number specifying the number of spaces to indent. See \code{\link[jsonlite]{prettify}}}
+\item{pretty}{adds indentation whitespace to JSON output. Can be TRUE/FALSE or a number specifying the number of spaces to indent. See \code{\link[jsonlite:prettify]{prettify()}}}
 }
 \value{
 A converted object determined by the value of \code{to} (see above).

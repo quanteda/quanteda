@@ -324,7 +324,7 @@ as.dictionary.data.frame <- function(x, format = c("tidytext"), separator = " ",
             stop("sentiment values are missing")
     }
 
-    dictionary(with(x, split(as.character(word), as.character(sentiment))),
+    dictionary(split(as.character(x$word), factor(x$sentiment)),
                separator = separator, tolower = tolower)
 }
 
