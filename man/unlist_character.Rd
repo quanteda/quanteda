@@ -9,7 +9,7 @@ unlist_character(x, unique = FALSE, ...)
 \arguments{
 \item{x}{a list of integers}
 
-\item{unique}{if \code{TURE} remove duplicated elements}
+\item{unique}{if \code{TRUE} remove duplicated elements}
 
 \item{...}{passed to \code{unlist}}
 }
