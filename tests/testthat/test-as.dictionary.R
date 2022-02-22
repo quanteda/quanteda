@@ -84,6 +84,6 @@ test_that("options for tidytext only currently supported", {
     )
     expect_error(
         as.dictionary(df, format = "koRpus"),
-        "'arg' should be (one of )?\"tidytext\""
+        "'arg' should be (one of )?[“\"]tidytext[”\"]"
     )
 })
