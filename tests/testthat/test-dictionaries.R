@@ -474,6 +474,14 @@ test_that("dictionary merge values in duplicate keys", {
 
 })
 
+test_that("dictionary allows empty keys", {
+  dict <- dictionary(list(A = "a", 
+                          B = list(), 
+                          C = character()))
+  expect_equal(names(dict),
+               c("A", "B", "C"))
+})
+
 test_that("object2id() preserves the order of keys and values", {
 
   type <- stopwords()

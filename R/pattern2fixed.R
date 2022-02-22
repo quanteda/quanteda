@@ -356,7 +356,7 @@ unlist_integer <- function(x, unique = FALSE, ...) {
 
 #' Unlist a list of character vectors safely
 #' @param x a list of integers
-#' @param unique if `TURE` remove duplicated elements
+#' @param unique if `TRUE` remove duplicated elements
 #' @param ... passed to `unlist`
 #' @keywords internal
 #' @return character vector

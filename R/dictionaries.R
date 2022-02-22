@@ -324,7 +324,7 @@ as.dictionary.data.frame <- function(x, format = c("tidytext"), separator = " ",
             stop("sentiment values are missing")
     }
 
-    dictionary(with(x, split(as.character(word), as.character(sentiment))),
+    dictionary(split(as.character(x$word), factor(x$sentiment)),
                separator = separator, tolower = tolower)
 }
 
@@ -643,14 +643,14 @@ merge_dictionary_values <- function(dict) {
     for (i in seq_along(dict)) {
         dict_temp <- dict[[i]]
         if (is.null(names(dict_temp))) { # NULL if only values
-            dict[[i]] <- list(unlist(dict_temp, use.names = FALSE))
+            dict[[i]] <- list(unlist_character(dict_temp, use.names = FALSE))
         } else {
             is_value <- names(dict_temp) == ""
             dict[[i]] <- merge_dictionary_values(dict_temp[!is_value])
             if (any(is_value)) {
                 dict[[i]] <- c(
                     dict[[i]], 
-                    list(unlist(dict_temp[is_value], use.names = FALSE))
+                    list(unlist_character(dict_temp[is_value], use.names = FALSE))
                 )
             }
         }
