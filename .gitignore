@@ -30,3 +30,5 @@ inst/doc
 vignettes/quickstart.R
 vignettes/quickstart.html
 revdep/
+/doc/
+/Meta/
