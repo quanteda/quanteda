@@ -1,6 +1,8 @@
 # Submission notes
 
-Minor updates to v3.1 consisting of bug fixes and minor feature additions.
+Minor updates to v3.2 consisting of bug fixes and minor feature additions.
+
+Fixes a problem on CRAN due to forthcoming changes in `match.arg()` output.
 
 ## Test environments
 
@@ -9,7 +11,6 @@ Minor updates to v3.1 consisting of bug fixes and minor feature additions.
 * Windows release via devtools::check_win_release()
 * Windows devel via devtools::check_win_devel()
 * Windows oldrelease via devtools::check_win_oldrelease()
-
 
 ## R CMD check results
 
