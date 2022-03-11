@@ -127,6 +127,96 @@ restore_special <- function(x, special, recompile = TRUE) {
 }
 
 
+# customized tokeniser -------
+
+
+#' Customized ICU tokenizers
+#'
+#' Helper defining a custom quanteda/stringi tokenizer by defining a set of
+#' rules for the ICU Rule-based Break Iterator (RBBI).
+#'
+#' @param base the base rules for the ICU RBBI
+#' @param split_hyphens ignored if `base = "word"`. Define the split (or not) of
+#'   hyphenated words in the customized tokenizer.
+#' @param split_tags ignored if `base = "word"`. Define the split (or not) of
+#'   hashtags (#) and usernames (@).
+#' @param custom_rules a character of length one specifying rules to be appended
+#'   at the end of the base rules.
+#' @return a function usable as the `"what"` argument of the `tokens()`
+#'   function.
+#' @details The base rules were obtained from
+#'   [icu/icu4c/source/data/brkitr/rules/](https://github.com/unicode-org/icu/tree/main/icu4c/source/data/brkitr/rules),
+#'    slightly modified for compatibility with quanteda. The `"word"` rule is
+#'   equivalent to the regular `what = "word"` tokenization of the `tokens()`
+#'   function. In contrast, `"ICU_word"` is the real baseline for the word rules
+#'   and skips some internals of quanteda normally used to retain special
+#'   character, related for example to URLs and hyphens.
+#'   
+#'   Ressources about rules of the Rule-based Break Iterator:
+#'   https://unicode-org.github.io/icu/userguide/boundaryanalysis/break-rules.html
+#' @keywords tokens
+#' @seealso tokens
+#' @export
+#' @examples
+#' txt <- c(doc = "I've been sick today, I may go to the hospital",
+#'          doc_fr = "J'ai été malade aujourd'hui, je vais aller à l'hôpital")
+#' tokens(txt, what = customized_tokenizer())
+#' 
+#' ## Implement custom elision rule for french
+#' Elision_french <- "
+#' $Elision = ([lLmMtTnNsSjJdDcC]|([jJ][u][s]|[qQ][u][o][i]|[lL][o][r][s]|[pP][u][i][s])?[qQ][u])[\u0027\u2019];
+#' # Disable chaining so it only matches beginning of word.
+#' ^$Elision / $ALetterPlus;
+#' "
+#' 
+#' tokens(txt, what = customized_tokenizer(custom_rules = Elision_french))
+customized_tokenizer <- function(base = c("ICU_word", "word",
+                                          "sentence", "none"),
+                                 split_hyphens = FALSE,
+                                 split_tags = FALSE,
+                                 custom_rules = "") {
+  base <- match.arg(base)
+  check_character(custom_rules)
+  base_rules <- switch(base,
+                       ICU_word = base_word_rules,
+                       word = base_word_rules,
+                       sentence = base_sentence_rules,
+                       none = "")
+  
+  verbose <- quanteda_options("verbose")
+
+  # Add others rules whenever the base is not "word", to keep consistency with
+  # standard "word" tokenizer.
+  if (base != "word") {
+    
+    # preserve URLS
+    base_rules <- paste(base_rules, url_rule, sep = "\n")
+    
+    # create username and hashtag rules
+    username <- gsub("@", "\\\\@", paste0(quanteda_options("pattern_username"), ";"))
+    hashtag <- gsub("#", "\\\\#", paste0(quanteda_options("pattern_hashtag"), ";"))
+    if (!split_tags) {
+      if (verbose) catm(" ...preserving social media tags (#, @)\n")
+      base_rules <- paste(base_rules, username, hashtag, sep = "\n")
+    }
+    if (!split_hyphens) {
+      if (verbose) catm(" ...preserving hyphens\n")
+      base_rules <- paste(base_rules, hyphen_rule, sep = "\n")
+    }
+  }
+  rules <- paste(base_rules, custom_rules, sep = "\n")
+  
+  res <- function(x, split_hyphens = FALSE, verbose = quanteda_options("verbose")) {
+    if (verbose) catm(sprintf(" ...segmenting into customized %ss\n", base))
+    m <- names(x)
+    x[is.na(x)] <- "" # make NAs ""
+    
+    structure(stri_split_boundaries(x, type = rules), names = m)
+  }
+  structure(res, base = base, class = "customized_tokenizer")
+}
+
+
 # legacy tokenizers ----------
 
 #' @rdname tokenize_internal

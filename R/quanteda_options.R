@@ -167,7 +167,7 @@ get_options_default <- function() {
                  base_featname = "feat",
                  base_compname = "comp",
                  language_stemmer = "english",
-                 pattern_hashtag = "#\\w+#?",
+                 pattern_hashtag = "#[a-zA-Z0-9_]+#?",
                  pattern_username = "@[a-zA-Z0-9_]+",
                  tokens_block_size = 10000L,
                  tokens_locale = "en_US@ss=standard")

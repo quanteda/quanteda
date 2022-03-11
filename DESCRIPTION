@@ -135,6 +135,7 @@ Collate:
     'texts.R'
     'textstat.R'
     'tokenizers.R'
+    'tokenizers_ICU_rules.R'
     'tokens-methods.R'
     'tokens.R'
     'tokens_chunk.R'

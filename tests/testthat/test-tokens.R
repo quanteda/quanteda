@@ -1141,3 +1141,60 @@ test_that("edge case usernames are correctly recognized", {
         c("Valid", "username", "@_")
     )
 })
+
+
+test_that("customized tokenizer works correctly", {
+  
+  txt <- c("a b c 12345 ! @ # $ % ^ & * ( ) _ + { } | : \' \" < > ? ! , . \t \n \u2028 \u00A0 \u2003 \uFE0F",
+           "#tag @user", "abc be-fg hi 100kg 2017", "https://github.com/kbenoit/quanteda", "a b c d e",
+           "The URL was http://t.co/something.", "sci- fi every-4-year",
+           "The URL was http://quanteda.io", "https://cran.r-project.org/incoming/",
+           "https://github.com/quanteda/quanteda/issue/1 is another URL",
+           unname(as.character(data_corpus_inaugural[1])))
+  
+  
+  # With default parameters
+  vanilla <- tokens(txt)
+  customized <- tokens(txt,
+                       customized_tokenizer("word"))
+  attr(customized, "meta")$object$what <- "word"
+  expect_equal(vanilla, customized)
+  
+  # With customized ICU -- skipping preserve/restore_special
+  customized <- tokens(txt,
+                       customized_tokenizer("ICU_word", split_hyphens = TRUE,
+                                            custom_rules = hyphen_rule_lax))
+  attr(customized, "meta")$object$what <- "word"
+  expect_equal(vanilla, customized)
+  
+  # With splitting hyphens & tags
+  vanilla <- tokens(txt, split_hyphens = TRUE, split_tags = TRUE)
+  customized <- tokens(txt, split_hyphens = TRUE,
+                       split_tags = TRUE,
+                       customized_tokenizer("word"))
+  attr(customized, "meta")$object$what <- "word"
+  expect_equal(vanilla, customized)
+  
+  # Splitting hyphens -- skipping preserve/restore_special
+  customized <- tokens(txt,
+                        customized_tokenizer("ICU_word", split_hyphens = TRUE,
+                                             split_tags = TRUE))
+  attr(customized, "meta")$object$what <- "word"
+  expect_equal(vanilla, customized)
+  
+  # DIFFERENCES
+  expect_false(isTRUE(all.equal(
+    tokens("www.r-project.org/about.html"),
+    tokens("www.r-project.org/about.html", customized_tokenizer("ICU_word")),
+    check.attributes = FALSE
+  )))
+  expect_false(isTRUE(all.equal(
+    tokens("sci- fi"),
+    tokens("sci- fi", customized_tokenizer("ICU_word")),
+    check.attributes = FALSE
+  )))
+  
+  tokens("www.r-project.org/about.html")
+  tokens("www.r-project.org/about.html", customized_tokenizer("word"))
+  tokens("www.r-project.org/about.html", customized_tokenizer("ICU_word"))
+})

@@ -247,8 +247,14 @@ tokens.corpus <- function(x,
                           verbose = quanteda_options("verbose"),
                           ...)  {
     x <- as.corpus(x)
-    what <- match.arg(what, c("word", "word1", "sentence", "character",
-                              "fasterword", "fastestword"))
+    if (is.function(what) & inherits(what, "customized_tokenizer")) {
+      customized_fn <- what
+      base <- attr(what, "base")
+      what <- "customized"
+    } else {
+      what <- match.arg(what, c("word", "word1", "sentence", "character",
+                                "fasterword", "fastestword"))
+    }
     remove_punct <- check_logical(remove_punct)
     remove_symbols <- check_logical(remove_symbols)
     remove_numbers <- check_logical(remove_numbers)
@@ -271,7 +277,8 @@ tokens.corpus <- function(x,
                            sentence = tokenize_sentence,
                            character = tokenize_character,
                            fasterword = tokenize_fasterword,
-                           fastestword = tokenize_fastestword)
+                           fastestword = tokenize_fastestword,
+                           customized = customized_fn)
 
 
     if (!remove_separators && !what %in% c("word", "word1", "character"))
@@ -292,11 +299,22 @@ tokens.corpus <- function(x,
                                   split_tags = split_tags, verbose = verbose)
             special <- attr(y, "special")
         }
+        if (what == "customized") {
+          if (base == "word") {
+            y <- preserve_special(y, split_hyphens = split_hyphens,
+                                  split_tags = split_tags, verbose = verbose)
+            special <- attr(y, "special")
+          }
+        }
         y <- serialize_tokens(tokenizer_fn(y, split_hyphens = split_hyphens, verbose = verbose))
         if (what == "word")
             y <- restore_special(y, special)
         if (what == "word1" && !split_hyphens)
             y <- restore_special1(y, split_hyphens = FALSE, split_tags = TRUE)
+        if (what == "customized") {
+          if (base == "word")
+            y <- restore_special(y, special)
+        }
         return(y)
     })
     type <- unique(unlist_character(lapply(x, attr, "types"), use.names = FALSE))
@@ -505,7 +523,7 @@ removals_regex <- function(separators = FALSE,
                            url = FALSE) {
     regex <- list()
     if (separators)
-        regex[["separators"]] <- "^[\\p{Z}\\p{C}]+$"
+        regex[["separators"]] <- "^[\\p{Z}\\p{C}\uFE00-\uFE0F]+$"
     if (punct)
         regex[["punct"]] <- "^\\p{P}$"
     if (symbols)
