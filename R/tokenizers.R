@@ -196,7 +196,7 @@ customized_tokenizer <- function(base = c("ICU_word", "word",
     
         # create username and hashtag rules
         username <- gsub("@", "\\\\@", paste0(quanteda_options("pattern_username"), ";"))
-        hashtag <- gsub("#", "\\\\#", paste0(quanteda_options("pattern_hashtag"), ";"))
+        hashtag <- gsub("#", "\\\\#", paste0("#[a-zA-Z0-9_]+", ";"))
         if (!split_tags) {
             if (verbose) catm(" ...preserving social media tags (#, @)\n")
             base_rules <- paste(base_rules, username, hashtag, sep = "\n")
