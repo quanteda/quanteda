@@ -1199,3 +1199,15 @@ test_that("customized tokenizer works correctly", {
     )))
     
 })
+
+test_that("customized sentence tokenizer works correctly", {
+  
+    txt <- "This is a sentence about Mr. Smith. This is another sentence."
+    customized <- tokens(txt, customized_tokenizer("sentence"))
+    expect_identical(
+        as.list(customized),
+        list(text1 = c("This is a sentence about Mr. ", "Smith. ", "This is another sentence."))
+  )
+
+})
+

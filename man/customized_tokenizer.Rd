@@ -14,11 +14,13 @@ customized_tokenizer(
 \arguments{
 \item{base}{the base rules for the ICU RBBI}
 
-\item{split_hyphens}{ignored if \code{base = "word"}. Define the split (or not) of
-hyphenated words in the customized tokenizer. Override the behavior of \code{tokens()}.}
+\item{split_hyphens}{only relevant if \code{base = "ICU_word"}. Define the split
+(or not) of hyphenated words in the customized tokenizer. Override the
+behavior of \code{tokens()}.}
 
-\item{split_tags}{ignored if \code{base = "word"}. Define the split (or not) of
-hashtags (#) and usernames (@). Override the behavior of \code{tokens()}.}
+\item{split_tags}{only relevant if \code{base = "ICU_word"}. Define the split (or
+not) of hashtags (#) and usernames (@). Override the behavior of
+\code{tokens()}.}
 
 \item{custom_rules}{a character of length one specifying rules to be appended
 at the end of the base rules.}
@@ -39,6 +41,10 @@ equivalent to the regular \code{what = "word"} tokenization of the \code{tokens(
 function. In contrast, \code{"ICU_word"} is the real baseline for the word rules
 and skips some internals of quanteda normally used to retain special
 character, related for example to URLs and hyphens.
+
+Note that the \code{"sentence"} base does not include additional rules to
+prevent splits caused by abbreviations such as "Mr.". Consider importing as
+well the \href{https://github.com/unicode-org/icu/tree/main/icu4c/source/data/brkitr}{language-specific abbreviations}.
 }
 \section{Resources about the Rule-based Break Iterator}{
 

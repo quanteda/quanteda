@@ -136,10 +136,12 @@ restore_special <- function(x, special, recompile = TRUE) {
 #' rules for the ICU Rule-based Break Iterator (RBBI).
 #'
 #' @param base the base rules for the ICU RBBI
-#' @param split_hyphens ignored if `base = "word"`. Define the split (or not) of
-#'   hyphenated words in the customized tokenizer. Override the behavior of `tokens()`.
-#' @param split_tags ignored if `base = "word"`. Define the split (or not) of
-#'   hashtags (#) and usernames (@). Override the behavior of `tokens()`.
+#' @param split_hyphens only relevant if `base = "ICU_word"`. Define the split
+#'   (or not) of hyphenated words in the customized tokenizer. Override the
+#'   behavior of `tokens()`.
+#' @param split_tags only relevant if `base = "ICU_word"`. Define the split (or
+#'   not) of hashtags (#) and usernames (@). Override the behavior of
+#'   `tokens()`.
 #' @param custom_rules a character of length one specifying rules to be appended
 #'   at the end of the base rules.
 #' @return a function usable as the `"what"` argument of the `tokens()`
@@ -152,9 +154,14 @@ restore_special <- function(x, special, recompile = TRUE) {
 #'   and skips some internals of quanteda normally used to retain special
 #'   character, related for example to URLs and hyphens.
 #'
+#'   Note that the `"sentence"` base does not include additional rules to
+#'   prevent splits caused by abbreviations such as "Mr.". Consider importing as
+#'   well the [language-specific
+#'   abbreviations](https://github.com/unicode-org/icu/tree/main/icu4c/source/data/brkitr).
+#'
 #' @section Resources about the Rule-based Break Iterator:
 #'   <https://unicode-org.github.io/icu/userguide/boundaryanalysis/break-rules.html>
-#'   <http://sujitpal.blogspot.com/2008/05/tokenizing-text-with-icu4js.html>
+#'    <http://sujitpal.blogspot.com/2008/05/tokenizing-text-with-icu4js.html>
 #' @keywords tokens
 #' @seealso tokens
 #' @export
@@ -189,24 +196,25 @@ customized_tokenizer <- function(base = c("ICU_word", "word",
     
     # Add others rules whenever the base is not "word", to keep consistency with
     # standard "word" tokenizer.
-    if (base != "word") {
+    append_rules = ""
+    if (base == "ICU_word") {
     
         # preserve URLS
-        base_rules <- paste(base_rules, url_rule, sep = "\n")
+        append_rules <- paste(append_rules, url_rule, sep = "\n")
     
         # create username and hashtag rules
         username <- gsub("@", "\\\\@", paste0(quanteda_options("pattern_username"), ";"))
         hashtag <- gsub("#", "\\\\#", paste0("#[a-zA-Z0-9_]+", ";"))
         if (!split_tags) {
             if (verbose) catm(" ...preserving social media tags (#, @)\n")
-            base_rules <- paste(base_rules, username, hashtag, sep = "\n")
+          append_rules <- paste(append_rules, username, hashtag, sep = "\n")
         }
         if (!split_hyphens) {
             if (verbose) catm(" ...preserving hyphens\n")
-            base_rules <- paste(base_rules, hyphen_rule, sep = "\n")
+          append_rules <- paste(append_rules, hyphen_rule, sep = "\n")
         }
     }
-    rules <- paste(base_rules, custom_rules, sep = "\n")
+    rules <- paste(base_rules, custom_rules, append_rules, sep = "\n")
   
     res <- function(x, split_hyphens = FALSE, verbose = quanteda_options("verbose")) {
         if (verbose) catm(sprintf(" ...segmenting into customized %ss\n", base))
