@@ -151,10 +151,10 @@ restore_special <- function(x, special, recompile = TRUE) {
 #'   function. In contrast, `"ICU_word"` is the real baseline for the word rules
 #'   and skips some internals of quanteda normally used to retain special
 #'   character, related for example to URLs and hyphens.
-#'   
-#'   Resources about rules of the Rule-based Break Iterator:
-#'   - https://unicode-org.github.io/icu/userguide/boundaryanalysis/break-rules.html
-#'   - http://sujitpal.blogspot.com/2008/05/tokenizing-text-with-icu4js.html
+#'
+#' @section Resources about the Rule-based Break Iterator:
+#'   <https://unicode-org.github.io/icu/userguide/boundaryanalysis/break-rules.html>
+#'   <http://sujitpal.blogspot.com/2008/05/tokenizing-text-with-icu4js.html>
 #' @keywords tokens
 #' @seealso tokens
 #' @export
@@ -162,14 +162,14 @@ restore_special <- function(x, special, recompile = TRUE) {
 #' txt <- c(doc = "I've been sick today, I may go to the hospital",
 #'          doc_fr = "J'ai été malade aujourd'hui, je vais aller à l'hôpital")
 #' tokens(txt, what = customized_tokenizer())
-#' 
+#'
 #' ## Implement custom elision rule for french
 #' Elision_french <- "
 #' $Elision = ([lLmMtTnNsSjJdDcC]|([jJ][u][s]|[qQ][u][o][i]|[lL][o][r][s]|[pP][u][i][s])?[qQ][u])[\u0027\u2019];
 #' # Disable chaining so it only matches beginning of word.
 #' ^$Elision / $ALetterPlus;
 #' "
-#' 
+#'
 #' tokens(txt, what = customized_tokenizer(custom_rules = Elision_french))
 customized_tokenizer <- function(base = c("ICU_word", "word",
                                           "sentence", "none"),

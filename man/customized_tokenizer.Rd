@@ -39,13 +39,13 @@ equivalent to the regular \code{what = "word"} tokenization of the \code{tokens(
 function. In contrast, \code{"ICU_word"} is the real baseline for the word rules
 and skips some internals of quanteda normally used to retain special
 character, related for example to URLs and hyphens.
+}
+\section{Resources about the Rule-based Break Iterator}{
 
-Resources about rules of the Rule-based Break Iterator:
-\itemize{
-\item https://unicode-org.github.io/icu/userguide/boundaryanalysis/break-rules.html
-\item http://sujitpal.blogspot.com/2008/05/tokenizing-text-with-icu4js.html
+\url{https://unicode-org.github.io/icu/userguide/boundaryanalysis/break-rules.html}
+\url{http://sujitpal.blogspot.com/2008/05/tokenizing-text-with-icu4js.html}
 }
-}
+
 \examples{
 txt <- c(doc = "I've been sick today, I may go to the hospital",
          doc_fr = "J'ai été malade aujourd'hui, je vais aller à l'hôpital")
