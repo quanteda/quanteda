@@ -248,12 +248,12 @@ tokens.corpus <- function(x,
                           ...)  {
     x <- as.corpus(x)
     if (is.function(what) & inherits(what, "customized_tokenizer")) {
-      customized_fn <- what
-      base <- attr(what, "base")
-      what <- "customized"
+        customized_fn <- what
+        base <- attr(what, "base")
+        what <- "customized"
     } else {
-      what <- match.arg(what, c("word", "word1", "sentence", "character",
-                                "fasterword", "fastestword"))
+        what <- match.arg(what, c("word", "word1", "sentence", "character",
+                                  "fasterword", "fastestword"))
     }
     remove_punct <- check_logical(remove_punct)
     remove_symbols <- check_logical(remove_symbols)
@@ -300,11 +300,11 @@ tokens.corpus <- function(x,
             special <- attr(y, "special")
         }
         if (what == "customized") {
-          if (base == "word") {
-            y <- preserve_special(y, split_hyphens = split_hyphens,
-                                  split_tags = split_tags, verbose = verbose)
-            special <- attr(y, "special")
-          }
+            if (base == "word") {
+                y <- preserve_special(y, split_hyphens = split_hyphens,
+                                      split_tags = split_tags, verbose = verbose)
+                special <- attr(y, "special")
+            }
         }
         y <- serialize_tokens(tokenizer_fn(y, split_hyphens = split_hyphens, verbose = verbose))
         if (what == "word")
@@ -312,8 +312,8 @@ tokens.corpus <- function(x,
         if (what == "word1" && !split_hyphens)
             y <- restore_special1(y, split_hyphens = FALSE, split_tags = TRUE)
         if (what == "customized") {
-          if (base == "word")
-            y <- restore_special(y, special)
+            if (base == "word")
+                y <- restore_special(y, special)
         }
         return(y)
     })

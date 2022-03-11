@@ -152,8 +152,9 @@ restore_special <- function(x, special, recompile = TRUE) {
 #'   and skips some internals of quanteda normally used to retain special
 #'   character, related for example to URLs and hyphens.
 #'   
-#'   Ressources about rules of the Rule-based Break Iterator:
-#'   https://unicode-org.github.io/icu/userguide/boundaryanalysis/break-rules.html
+#'   Resources about rules of the Rule-based Break Iterator:
+#'   - https://unicode-org.github.io/icu/userguide/boundaryanalysis/break-rules.html
+#'   - http://sujitpal.blogspot.com/2008/05/tokenizing-text-with-icu4js.html
 #' @keywords tokens
 #' @seealso tokens
 #' @export
@@ -175,45 +176,46 @@ customized_tokenizer <- function(base = c("ICU_word", "word",
                                  split_hyphens = FALSE,
                                  split_tags = FALSE,
                                  custom_rules = "") {
-  base <- match.arg(base)
-  check_character(custom_rules)
-  base_rules <- switch(base,
-                       ICU_word = base_word_rules,
-                       word = base_word_rules,
-                       sentence = base_sentence_rules,
-                       none = "")
-  
-  verbose <- quanteda_options("verbose")
-
-  # Add others rules whenever the base is not "word", to keep consistency with
-  # standard "word" tokenizer.
-  if (base != "word") {
+    base <- match.arg(base)
+    check_logical(split_hyphens)
+    check_logical(split_tags)
+    check_character(custom_rules)
+    verbose <- quanteda_options("verbose")
+    base_rules <- switch(base,
+                         ICU_word = base_word_rules,
+                         word = base_word_rules,
+                         sentence = base_sentence_rules,
+                         none = "")
     
-    # preserve URLS
-    base_rules <- paste(base_rules, url_rule, sep = "\n")
+    # Add others rules whenever the base is not "word", to keep consistency with
+    # standard "word" tokenizer.
+    if (base != "word") {
     
-    # create username and hashtag rules
-    username <- gsub("@", "\\\\@", paste0(quanteda_options("pattern_username"), ";"))
-    hashtag <- gsub("#", "\\\\#", paste0(quanteda_options("pattern_hashtag"), ";"))
-    if (!split_tags) {
-      if (verbose) catm(" ...preserving social media tags (#, @)\n")
-      base_rules <- paste(base_rules, username, hashtag, sep = "\n")
+        # preserve URLS
+        base_rules <- paste(base_rules, url_rule, sep = "\n")
+    
+        # create username and hashtag rules
+        username <- gsub("@", "\\\\@", paste0(quanteda_options("pattern_username"), ";"))
+        hashtag <- gsub("#", "\\\\#", paste0(quanteda_options("pattern_hashtag"), ";"))
+        if (!split_tags) {
+            if (verbose) catm(" ...preserving social media tags (#, @)\n")
+            base_rules <- paste(base_rules, username, hashtag, sep = "\n")
+        }
+        if (!split_hyphens) {
+            if (verbose) catm(" ...preserving hyphens\n")
+            base_rules <- paste(base_rules, hyphen_rule, sep = "\n")
+        }
     }
-    if (!split_hyphens) {
-      if (verbose) catm(" ...preserving hyphens\n")
-      base_rules <- paste(base_rules, hyphen_rule, sep = "\n")
-    }
-  }
-  rules <- paste(base_rules, custom_rules, sep = "\n")
+    rules <- paste(base_rules, custom_rules, sep = "\n")
   
-  res <- function(x, split_hyphens = FALSE, verbose = quanteda_options("verbose")) {
-    if (verbose) catm(sprintf(" ...segmenting into customized %ss\n", base))
-    m <- names(x)
-    x[is.na(x)] <- "" # make NAs ""
+    res <- function(x, split_hyphens = FALSE, verbose = quanteda_options("verbose")) {
+        if (verbose) catm(sprintf(" ...segmenting into customized %ss\n", base))
+        m <- names(x)
+        x[is.na(x)] <- "" # make NAs ""
     
-    structure(stri_split_boundaries(x, type = rules), names = m)
-  }
-  structure(res, base = base, class = "customized_tokenizer")
+        structure(stri_split_boundaries(x, type = rules), names = m)
+    }
+    structure(res, base = base, class = "customized_tokenizer")
 }
 
 
