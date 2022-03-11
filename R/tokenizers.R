@@ -137,9 +137,9 @@ restore_special <- function(x, special, recompile = TRUE) {
 #'
 #' @param base the base rules for the ICU RBBI
 #' @param split_hyphens ignored if `base = "word"`. Define the split (or not) of
-#'   hyphenated words in the customized tokenizer.
+#'   hyphenated words in the customized tokenizer. Override the behavior of `tokens()`.
 #' @param split_tags ignored if `base = "word"`. Define the split (or not) of
-#'   hashtags (#) and usernames (@).
+#'   hashtags (#) and usernames (@). Override the behavior of `tokens()`.
 #' @param custom_rules a character of length one specifying rules to be appended
 #'   at the end of the base rules.
 #' @return a function usable as the `"what"` argument of the `tokens()`
@@ -159,8 +159,8 @@ restore_special <- function(x, special, recompile = TRUE) {
 #' @seealso tokens
 #' @export
 #' @examples
-#' txt <- c(doc = "I've been sick today, I may go to the hospital",
-#'          doc_fr = "J'ai été malade aujourd'hui, je vais aller à l'hôpital")
+#' txt <- c(doc = "I've been sick today, I may go to the hospital.",
+#'          doc_fr = "J'ai été malade aujourd'hui, je vais aller à l'hôpital.")
 #' tokens(txt, what = customized_tokenizer())
 #'
 #' ## Implement custom elision rule for french

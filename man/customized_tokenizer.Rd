@@ -15,10 +15,10 @@ customized_tokenizer(
 \item{base}{the base rules for the ICU RBBI}
 
 \item{split_hyphens}{ignored if \code{base = "word"}. Define the split (or not) of
-hyphenated words in the customized tokenizer.}
+hyphenated words in the customized tokenizer. Override the behavior of \code{tokens()}.}
 
 \item{split_tags}{ignored if \code{base = "word"}. Define the split (or not) of
-hashtags (#) and usernames (@).}
+hashtags (#) and usernames (@). Override the behavior of \code{tokens()}.}
 
 \item{custom_rules}{a character of length one specifying rules to be appended
 at the end of the base rules.}
@@ -47,8 +47,8 @@ character, related for example to URLs and hyphens.
 }
 
 \examples{
-txt <- c(doc = "I've been sick today, I may go to the hospital",
-         doc_fr = "J'ai été malade aujourd'hui, je vais aller à l'hôpital")
+txt <- c(doc = "I've been sick today, I may go to the hospital.",
+         doc_fr = "J'ai été malade aujourd'hui, je vais aller à l'hôpital.")
 tokens(txt, what = customized_tokenizer())
 
 ## Implement custom elision rule for french
