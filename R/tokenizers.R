@@ -138,9 +138,9 @@ restore_special <- function(x, special, recompile = TRUE) {
 #' @param base the base rules for the ICU RBBI
 #' @param split_hyphens only relevant if `base = "ICU_word"`. Define the split
 #'   (or not) of hyphenated words in the customized tokenizer. Override the
-#'   behavior of `tokens()`.
+#'   behaviour of `tokens()`.
 #' @param split_tags only relevant if `base = "ICU_word"`. Define the split (or
-#'   not) of hashtags (#) and usernames (@). Override the behavior of
+#'   not) of hashtags (#) and usernames (@). Override the behaviour of
 #'   `tokens()`.
 #' @param custom_rules a character of length one specifying rules to be appended
 #'   at the end of the base rules.

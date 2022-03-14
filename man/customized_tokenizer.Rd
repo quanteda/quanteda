@@ -16,10 +16,10 @@ customized_tokenizer(
 
 \item{split_hyphens}{only relevant if \code{base = "ICU_word"}. Define the split
 (or not) of hyphenated words in the customized tokenizer. Override the
-behavior of \code{tokens()}.}
+behaviour of \code{tokens()}.}
 
 \item{split_tags}{only relevant if \code{base = "ICU_word"}. Define the split (or
-not) of hashtags (#) and usernames (@). Override the behavior of
+not) of hashtags (#) and usernames (@). Override the behaviour of
 \code{tokens()}.}
 
 \item{custom_rules}{a character of length one specifying rules to be appended
