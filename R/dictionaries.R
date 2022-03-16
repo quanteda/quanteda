@@ -548,7 +548,7 @@ flatten_dictionary <- function(dictionary, levels = 1:100) {
     levels <- check_integer(levels, max_len = 100, min = 1, max = 100)
     attrs <- attributes(dictionary)
     
-    temp <- flatten_list(dictionary, levels)
+    temp <- flatten_list(unclass(dictionary), levels)
     m <- names(temp)
     g <- factor(m, unique(m))
     result <- lapply(split(temp, g), unlist, use.names = FALSE)
