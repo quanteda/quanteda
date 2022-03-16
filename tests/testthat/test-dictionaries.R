@@ -537,13 +537,23 @@ test_that("flatten_dictionary() is working", {
                  "dictionary must be a dictionary object")
     
     dict <- dictionary(lis, tolower = FALSE)
-    lis_flat <- flatten_dictionary(dict)
-    expect_equivalent(lis_flat, 
+    lis_flat1 <- flatten_dictionary(dict)
+    expect_equivalent(lis_flat1, 
                       list("Z" = "z",
                            "A.B" = c("b", "B"),
                            "A" = c("a", "A", "aa"),
                            "C" = c("c", "C"), 
                            "D" = character()))
+    
+    lis_flat2 <- flatten_dictionary(dict, levels = 1)
+    expect_equivalent(lis_flat2, 
+                      list("Z" = "z",
+                           "A" = c("b", "B", "a", "A", "aa"),
+                           "C" = c("c", "C"), 
+                           "D" = character()))
+    lis_flat3 <- flatten_dictionary(dict, levels = 2)
+    expect_equivalent(lis_flat3, 
+                      list("B" = c("b", "B")))
     
     expect_error(flatten_dictionary(dict, levels = -1:2),
                  "The value of levels must be between 1 and 100")
