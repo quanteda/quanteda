@@ -526,58 +526,62 @@ split_values <- function(dict, concatenator_dictionary, concatenator_tokens) {
 #' @author Kohei Watanabe
 #' @export
 #' @examples
-#' dict1 <-
-#'     dictionary(list(populism=c("elit*", "consensus*", "undemocratic*", "referend*",
-#'                                "corrupt*", "propagand", "politici*", "*deceit*",
-#'                                "*deceiv*", "*betray*", "shame*", "scandal*", "truth*",
-#'                                "dishonest*", "establishm*", "ruling*")))
+#' dict1 <- dictionary(
+#'     list(populism=c("elit*", "consensus*", "undemocratic*", "referend*",
+#'                     "corrupt*", "propagand", "politici*", "*deceit*",
+#'                     "*deceiv*", "*betray*", "shame*", "scandal*", "truth*",
+#'                     "dishonest*", "establishm*", "ruling*"))
+#'      )
 #' flatten_dictionary(dict1)
 #'
-#' dict2 <- list(level1a = list(level1a1 = c("l1a11", "l1a12"),
-#'                              level1a2 = c("l1a21", "l1a22")),
-#'               level1b = list(level1b1 = c("l1b11", "l1b12"),
-#'                              level1b2 = c("l1b21", "l1b22", "l1b23")),
-#'               level1c = list(level1c1a = list(level1c1a1 = c("lowest1", "lowest2")),
-#'                              level1c1b = list(level1c1b1 = c("lowestalone"))))
+#' dict2 <- dictionary(
+#'     list(level1a = list(level1a1 = c("l1a11", "l1a12"),
+#'          level1a2 = c("l1a21", "l1a22")),
+#'          level1b = list(level1b1 = c("l1b11", "l1b12"),
+#'          level1b2 = c("l1b21", "l1b22", "l1b23")),
+#'          level1c = list(level1c1a = list(level1c1a1 = c("lowest1", "lowest2")),
+#'          level1c1b = list(level1c1b1 = c("lowestalone"))))
+#'      )
 #' flatten_dictionary(dict2)
 #' flatten_dictionary(dict2, 2)
 #' flatten_dictionary(dict2, 1:2)
 flatten_dictionary <- function(dict, levels = 1:100, level = 1,
                                key_parent = "", dict_flat = list()) {
     attrs <- attributes(dict)
+    
     dict <- unclass(dict)
     key <- names(dict)
     if (is.null(key))
         key <- rep("", length(dict))
+    is_value <- key == ""
     
-    is_value <- key == ""    
-    if (level %in% levels) {
-        if (key_parent == "") {
-            key_entry <- key # level == 1 or level > 1 when not in levels
-        } else {
-            key_entry <- paste0(key_parent, ifelse(is_value, "", "."), key)
-        }
-    } else {
-        key_entry <- rep(key_parent, length(dict))
-    }
-    if (key_parent == "level1a.level1a2")
-        browser()
     temp <- list()
     for (i in seq_along(dict)) {
-        if (!is_value[i]) {
-            temp[[i]] <- flatten_dictionary(dict[[i]], levels,
-                                            level + 1, key_entry[i], dict_flat)
+        entry <- dict[[i]]
+        if (!length(entry)) next
+        if (level %in% levels) {
+            if (key_parent == "") {
+                key_entry <- key[i]
+            } else if (key[i] == "") {
+                key_entry <- key_parent
+            } else {
+                key_entry <- paste0(key_parent, ".", key[i])
+            }
         } else {
-            temp[[i]] <- list(dict[[i]])
+            key_entry <- key_parent
+        }
+        if (is_value[i]) {
+            temp[[i]] <- list(unlist(entry, use.names = FALSE))
+            names(temp[[i]]) <- key_entry
+        } else {
+            temp[[i]] <- flatten_dictionary(entry, levels,
+                                            level + 1, key_entry, dict_flat)
         }
     }
-    temp <- unlist(temp, recursive = FALSE)
-    if (level > 1)
-        names(temp) <- key_entry
-    print(temp)
-    temp <- temp[names(temp) != ""]
     
-    dict_flat <- c(dict_flat, temp) 
+    temp <- unlist(temp, recursive = FALSE)
+    temp <- temp[names(temp) != ""] # no names for out-of-level
+    dict_flat <- c(dict_flat, temp)
     attributes(dict_flat, FALSE) <- attrs # will be set_attrs()
     return(dict_flat)
 }
