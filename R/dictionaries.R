@@ -517,9 +517,6 @@ split_values <- function(dict, concatenator_dictionary, concatenator_tokens) {
 #'
 #' @param dictionary a [dictionary]-class object to be flattened
 #' @param levels an integer vector indicating levels in the dictionary
-#' @param level an internal argument to pass current levels
-#' @param key_parent an internal argument to pass for parent keys
-#' @param dict_flat an internal argument to pass a flattened dictionary
 #' @return A named list of character vectors  
 #' @keywords dictionary
 #' @export
@@ -544,47 +541,49 @@ split_values <- function(dict, concatenator_dictionary, concatenator_tokens) {
 #' flatten_dictionary(dict2, 2)
 #' flatten_dictionary(dict2, 1:2)
 #' 
-flatten_dictionary <- function(dictionary, levels = 1:100, level = 1,
-                               key_parent = "", dict_flat = list()) {
+flatten_dictionary <- function(dictionary, levels = 1:100) {
     
-    if (level == 1) {
-        if (!is.dictionary(dictionary))
-            stop("dictionary must be a dictionary object")
-        levels <- check_integer(levels, max_len = 100, min = 1, max = 100)
-    }
-    
+    if (!is.dictionary(dictionary))
+        stop("dictionary must be a dictionary object")
+    levels <- check_integer(levels, max_len = 100, min = 1, max = 100)
     attrs <- attributes(dictionary)
-    temp <- mapply(function(entry, key) {
-        if (level %in% levels) {
-            if (key_parent == "") {
-                key_entry <- key
-            } else if (key == "") {
-                key_entry <- key_parent
-            } else {
-                key_entry <- paste0(key_parent, ".", key)
-            }
-        } else {
-            key_entry <- key_parent
-        }
-        is_value <- is.null(names(entry))
-        if (is_value) {
-            result <- list(unlist(entry, use.names = FALSE))
-            names(result) <- key_entry
-        } else {
-            result <- flatten_dictionary(entry, levels, level + 1, key_entry, dict_flat)
-        }
-        return(result)
-    }, unclass(dictionary), names(dictionary), SIMPLIFY = FALSE, USE.NAMES = FALSE)
     
-    temp <- unlist(temp, recursive = FALSE)
-    temp <- temp[names(temp) != ""] # no names for out-of-level
-    dict_flat <- c(dict_flat, temp)
-    if (level == 1) {
-        m <- names(dict_flat)
-        g <- factor(m, unique(m))
-        dict_flat <- lapply(split(dict_flat, g), unlist, use.names = FALSE)
-        attributes(dict_flat, FALSE) <- attrs # TODO: will be set_attrs()
+    flatten_dict <- function(dict, levels, level = 1, key_parent = "", 
+                             dict_flat = list()) {
+        
+        temp <- mapply(function(entry, key) {
+            if (level %in% levels) {
+                if (key_parent == "") {
+                    key_entry <- key
+                } else if (key == "") {
+                    key_entry <- key_parent
+                } else {
+                    key_entry <- paste0(key_parent, ".", key)
+                }
+            } else {
+                key_entry <- key_parent
+            }
+            is_value <- is.null(names(entry))
+            if (is_value) {
+                result <- list(unlist(entry, use.names = FALSE))
+                names(result) <- key_entry
+            } else {
+                result <- flatten_dict(entry, levels, level + 1, key_entry, dict_flat)
+            }
+            return(result)
+        }, unclass(dict), names(dict), SIMPLIFY = FALSE, USE.NAMES = FALSE)
+        
+        temp <- unlist(temp, recursive = FALSE)
+        temp <- temp[names(temp) != ""] # no names for out-of-level
+        return(c(dict_flat, temp))
     }
+    
+    dict_flat <- flatten_dict(dictionary, levels)
+    m <- names(dict_flat)
+    g <- factor(m, unique(m))
+    dict_flat <- lapply(split(dict_flat, g), unlist, use.names = FALSE)
+    attributes(dict_flat, FALSE) <- attrs # TODO: will be set_attrs()
+
     return(dict_flat)
 }
 
