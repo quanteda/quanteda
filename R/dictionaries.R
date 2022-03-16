@@ -563,7 +563,7 @@ flatten_dictionary <- function(dict, levels = 1:100, level = 1,
         } else {
             key_entry <- key_parent
         }
-        is_value <- names(entry) == "" || is.null(names(entry))
+        is_value <- is.null(names(entry)) || names(entry) == ""
         if (is_value) {
             result <- list(unlist(entry, use.names = FALSE))
             names(result) <- key_entry
