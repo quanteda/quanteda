@@ -5,7 +5,7 @@
 \title{Flatten a hierarchical dictionary into a list of character vectors}
 \usage{
 flatten_dictionary(
-  dict,
+  dictionary,
   levels = 1:100,
   level = 1,
   key_parent = "",
@@ -13,7 +13,7 @@ flatten_dictionary(
 )
 }
 \arguments{
-\item{dict}{list to be flattened}
+\item{dictionary}{a \link{dictionary}-class object to be flattened}
 
 \item{levels}{integer vector indicating levels in the dictionary}
 
@@ -21,7 +21,7 @@ flatten_dictionary(
 
 \item{key_parent}{internal argument to pass for parent keys}
 
-\item{dict_flat}{internal argument to pass flattened dictionary}
+\item{dict_flat}{internal argument to pass a flattened dictionary}
 }
 \value{
 A dictionary flattened to variable levels

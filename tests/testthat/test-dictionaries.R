@@ -524,3 +524,25 @@ test_that("split_values() handle concatenators correctly", {
     )
 
 })
+
+test_that("flatten_dictionary() is working", {
+    
+    lis <- list("Z" = "z", 
+                "A" = list("B" = c("b", "B"), 
+                           c("a", "A", "aa")),
+                "C" = c("c", "C"), 
+                "D" = NULL)
+    expect_error(flatten_dictionary(lis), 
+                 "dictionary must be a dictionary object")
+    
+    dict <- dictionary(lis, tolower = FALSE)
+    lis_flat <- flatten_dictionary(dict)
+    expect_equivalent(lis_flat, 
+                      list("Z" = "z",
+                           "A.B" = c("b", "B"),
+                           "A" = c("a", "A", "aa"),
+                           "C" = c("c", "C"), 
+                           "D" = character()))
+})
+
+
