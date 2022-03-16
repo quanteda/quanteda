@@ -548,7 +548,7 @@ flatten_dictionary <- function(dictionary, levels = 1:100) {
     levels <- check_integer(levels, max_len = 100, min = 1, max = 100)
     attrs <- attributes(dictionary)
     
-    flatten_dict <- function(dict, levels, level = 1, key_parent = "", 
+    flatten__ <- function(dict, levels, level = 1, key_parent = "", 
                              dict_flat = list()) {
         
         temp <- mapply(function(entry, key) {
@@ -568,7 +568,7 @@ flatten_dictionary <- function(dictionary, levels = 1:100) {
                 result <- list(unlist(entry, use.names = FALSE))
                 names(result) <- key_entry
             } else {
-                result <- flatten_dict(entry, levels, level + 1, key_entry, dict_flat)
+                result <- flatten__(entry, levels, level + 1, key_entry, dict_flat)
             }
             return(result)
         }, unclass(dict), names(dict), SIMPLIFY = FALSE, USE.NAMES = FALSE)
@@ -578,7 +578,7 @@ flatten_dictionary <- function(dictionary, levels = 1:100) {
         return(c(dict_flat, temp))
     }
     
-    dict_flat <- flatten_dict(dictionary, levels)
+    dict_flat <- flatten__(dictionary, levels)
     m <- names(dict_flat)
     g <- factor(m, unique(m))
     dict_flat <- lapply(split(dict_flat, g), unlist, use.names = FALSE)
