@@ -532,6 +532,7 @@ test_that("flatten_dictionary() is working", {
                            c("a", "A", "aa")),
                 "C" = c("c", "C"), 
                 "D" = NULL)
+    
     expect_error(flatten_dictionary(lis), 
                  "dictionary must be a dictionary object")
     
@@ -543,6 +544,9 @@ test_that("flatten_dictionary() is working", {
                            "A" = c("a", "A", "aa"),
                            "C" = c("c", "C"), 
                            "D" = character()))
+    
+    expect_error(flatten_dictionary(dict, levels = -1:2),
+                 "The value of levels must be between 1 and 100")
 })
 
 
