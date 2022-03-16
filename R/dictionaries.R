@@ -548,43 +548,53 @@ flatten_dictionary <- function(dictionary, levels = 1:100) {
     levels <- check_integer(levels, max_len = 100, min = 1, max = 100)
     attrs <- attributes(dictionary)
     
-    flatten__ <- function(dict, levels, level = 1, key_parent = "", 
-                             dict_flat = list()) {
-        
-        temp <- mapply(function(entry, key) {
-            if (level %in% levels) {
-                if (key_parent == "") {
-                    key_entry <- key
-                } else if (key == "") {
-                    key_entry <- key_parent
-                } else {
-                    key_entry <- paste0(key_parent, ".", key)
-                }
-            } else {
-                key_entry <- key_parent
-            }
-            is_value <- is.null(names(entry))
-            if (is_value) {
-                result <- list(unlist(entry, use.names = FALSE))
-                names(result) <- key_entry
-            } else {
-                result <- flatten__(entry, levels, level + 1, key_entry, dict_flat)
-            }
-            return(result)
-        }, unclass(dict), names(dict), SIMPLIFY = FALSE, USE.NAMES = FALSE)
-        
-        temp <- unlist(temp, recursive = FALSE)
-        temp <- temp[names(temp) != ""] # no names for out-of-level
-        return(c(dict_flat, temp))
-    }
-    
-    dict_flat <- flatten__(dictionary, levels)
-    m <- names(dict_flat)
+    temp <- flatten_list(dictionary, levels)
+    m <- names(temp)
     g <- factor(m, unique(m))
-    dict_flat <- lapply(split(dict_flat, g), unlist, use.names = FALSE)
-    attributes(dict_flat, FALSE) <- attrs # TODO: will be set_attrs()
+    result <- lapply(split(temp, g), unlist, use.names = FALSE)
+    attributes(result, FALSE) <- attrs # TODO: will be set_attrs()
+    return(result)
+}
 
-    return(dict_flat)
+#' Internal function to flatten a nested list
+#' @param lis a nested list
+#' @param levels an integer vector indicating levels in the list
+#' @param level an internal argument to pass current levels
+#' @param key_parent an internal argument to pass for parent keys
+#' @param lis_flat an internal argument to pass the flattened list
+#' @keywords internal
+#' @examples
+#' lis <- list("A" = list("B" = c("b", "B"), c("a", "A", "aa")))
+#' quanteda:::flatten_list(lis, 1:2)
+#' quanteda:::flatten_list(lis, 1)
+flatten_list <- function(lis, levels = 1:100, level = 1, key_parent = "", 
+                         lis_flat = list()) {
+    
+    temp <- mapply(function(elem, key) {
+        if (level %in% levels) {
+            if (key_parent == "") {
+                key_self <- key
+            } else if (key == "") {
+                key_self <- key_parent
+            } else {
+                key_self <- paste0(key_parent, ".", key)
+            }
+        } else {
+            key_self <- key_parent
+        }
+        is_value <- is.null(names(elem))
+        if (is_value) {
+            result <- list(unlist(elem, use.names = FALSE))
+            names(result) <- key_self
+        } else {
+            result <- flatten_list(elem, levels, level + 1, key_self, lis_flat)
+        }
+        return(result)
+    }, unclass(lis), names(lis), SIMPLIFY = FALSE, USE.NAMES = FALSE)
+    
+    temp <- unlist(temp, recursive = FALSE)
+    temp <- temp[names(temp) != ""] # no names for out-of-level
+    return(c(lis_flat, temp))
 }
 
 #' Internal function to lowercase dictionary values
