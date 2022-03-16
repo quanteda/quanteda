@@ -518,7 +518,7 @@ split_values <- function(dict, concatenator_dictionary, concatenator_tokens) {
 #' @param dictionary a [dictionary]-class object to be flattened
 #' @param levels an integer vector indicating levels in the dictionary
 #' @return A named list of character vectors  
-#' @keywords dictionary
+#' @keywords dictionary development internal
 #' @export
 #' @examples
 #' dict1 <- dictionary(
