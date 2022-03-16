@@ -544,29 +544,41 @@ split_values <- function(dict, concatenator_dictionary, concatenator_tokens) {
 #' flatten_dictionary(dict2, 1:2)
 flatten_dictionary <- function(dict, levels = 1:100, level = 1,
                                key_parent = "", dict_flat = list()) {
+    attrs <- attributes(dict)
     dict <- unclass(dict)
-    for (i in seq_along(dict)) {
-        key <- names(dict[i])
-        entry <- dict[[i]]
-        if (key == "" || !length(entry)) next
-        if (level %in% levels) {
-            if (key_parent != "") {
-                key_entry <- paste(key_parent, key, sep = ".")
-            } else {
-                key_entry <- key
-            }
+    key <- names(dict)
+    if (is.null(key))
+        key <- rep("", length(dict))
+    
+    is_value <- key == ""    
+    if (level %in% levels) {
+        if (key_parent == "") {
+            key_entry <- key # level == 1 or level > 1 when not in levels
         } else {
-            key_entry <- key_parent
+            key_entry <- paste0(key_parent, ifelse(is_value, "", "."), key)
         }
-        is_category <- vapply(entry, is.list, logical(1))
-        dict_flat[[key_entry]] <-
-            c(dict_flat[[key_entry]],
-              unlist(entry[!is_category], use.names = FALSE))
-        dict_flat <- flatten_dictionary(entry[is_category], levels,
-                                        level + 1, key_entry, dict_flat)
+    } else {
+        key_entry <- rep(key_parent, length(dict))
     }
-    dict_flat <- dict_flat[names(dict_flat) != ""]
-    attributes(dict_flat, FALSE) <- attributes(dict) # will be set_attrs()
+    if (key_parent == "level1a.level1a2")
+        browser()
+    temp <- list()
+    for (i in seq_along(dict)) {
+        if (!is_value[i]) {
+            temp[[i]] <- flatten_dictionary(dict[[i]], levels,
+                                            level + 1, key_entry[i], dict_flat)
+        } else {
+            temp[[i]] <- list(dict[[i]])
+        }
+    }
+    temp <- unlist(temp, recursive = FALSE)
+    if (level > 1)
+        names(temp) <- key_entry
+    print(temp)
+    temp <- temp[names(temp) != ""]
+    
+    dict_flat <- c(dict_flat, temp) 
+    attributes(dict_flat, FALSE) <- attrs # will be set_attrs()
     return(dict_flat)
 }
 
