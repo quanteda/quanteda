@@ -621,7 +621,8 @@ flatten_dictionary <- function(dict, levels = 1:100, level = 1,
     temp <- temp[names(temp) != ""] # no names for out-of-level
     dict_flat <- c(dict_flat, temp)
     if (level == 1) {
-        dict_flat <- lapply(split(dict_flat, names(dict_flat)), unlist, use.names = FALSE)
+        g <- factor(names(dict_flat), unique(names(dict_flat)))
+        dict_flat <- lapply(split(dict_flat, g), unlist, use.names = FALSE)
         attributes(dict_flat, FALSE) <- attrs # TODO: will be set_attrs()
     }
     return(dict_flat)
