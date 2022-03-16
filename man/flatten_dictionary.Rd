@@ -15,22 +15,21 @@ flatten_dictionary(
 \arguments{
 \item{dictionary}{a \link{dictionary}-class object to be flattened}
 
-\item{levels}{integer vector indicating levels in the dictionary}
+\item{levels}{an integer vector indicating levels in the dictionary}
 
-\item{level}{internal argument to pass current levels}
+\item{level}{an internal argument to pass current levels}
 
-\item{key_parent}{internal argument to pass for parent keys}
+\item{key_parent}{an internal argument to pass for parent keys}
 
-\item{dict_flat}{internal argument to pass a flattened dictionary}
+\item{dict_flat}{an internal argument to pass a flattened dictionary}
 }
 \value{
-A dictionary flattened to variable levels
+A named list of character vectors
 }
 \description{
 Converts a hierarchical dictionary (a named list of named lists, ending in
 character vectors at the lowest level) into a flat list of character
-vectors. Works like \code{unlist(dictionary, recursive = TRUE)} except that
-the recursion does not go to the bottom level.  Called by \code{\link[=dfm]{dfm()}}.
+vectors.
 }
 \examples{
 dict1 <- dictionary(
@@ -54,8 +53,4 @@ flatten_dictionary(dict2, 2)
 flatten_dictionary(dict2, 1:2)
 
 }
-\author{
-Kohei Watanabe
-}
 \keyword{dictionary}
-\keyword{internal}

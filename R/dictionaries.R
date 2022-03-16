@@ -513,17 +513,15 @@ split_values <- function(dict, concatenator_dictionary, concatenator_tokens) {
 #'
 #' Converts a hierarchical dictionary (a named list of named lists, ending in
 #' character vectors at the lowest level) into a flat list of character
-#' vectors. Works like `unlist(dictionary, recursive = TRUE)` except that
-#' the recursion does not go to the bottom level.  Called by [dfm()].
+#' vectors.
 #'
-#' @param dict list to be flattened
-#' @param levels integer vector indicating levels in the dictionary
-#' @param level internal argument to pass current levels
-#' @param key_parent internal argument to pass for parent keys
-#' @param dict_flat internal argument to pass flattened dictionary
-#' @return A dictionary flattened to variable levels
-#' @keywords internal dictionary
-#' @author Kohei Watanabe
+#' @param dictionary a [dictionary]-class object to be flattened
+#' @param levels an integer vector indicating levels in the dictionary
+#' @param level an internal argument to pass current levels
+#' @param key_parent an internal argument to pass for parent keys
+#' @param dict_flat an internal argument to pass a flattened dictionary
+#' @return A named list of character vectors  
+#' @keywords dictionary
 #' @export
 #' @examples
 #' dict1 <- dictionary(
@@ -546,9 +544,16 @@ split_values <- function(dict, concatenator_dictionary, concatenator_tokens) {
 #' flatten_dictionary(dict2, 2)
 #' flatten_dictionary(dict2, 1:2)
 #' 
-flatten_dictionary <- function(dict, levels = 1:100, level = 1,
+flatten_dictionary <- function(dictionary, levels = 1:100, level = 1,
                                key_parent = "", dict_flat = list()) {
-    attrs <- attributes(dict)
+    
+    if (level == 1) {
+        if (!is.dictionary(dictionary))
+            stop("dictionary must be a dictionary object")
+        levels <- check_integer(levels, max_len = 100, min = 1, max = 100)
+    }
+    
+    attrs <- attributes(dictionary)
     temp <- mapply(function(entry, key) {
         if (!length(entry)) 
             return(NULL)
@@ -571,13 +576,14 @@ flatten_dictionary <- function(dict, levels = 1:100, level = 1,
             result <- flatten_dictionary(entry, levels, level + 1, key_entry, dict_flat)
         }
         return(result)
-    }, unclass(dict), names(dict), SIMPLIFY = FALSE, USE.NAMES = FALSE)
+    }, unclass(dictionary), names(dictionary), SIMPLIFY = FALSE, USE.NAMES = FALSE)
     
     temp <- unlist(temp, recursive = FALSE)
     temp <- temp[names(temp) != ""] # no names for out-of-level
     dict_flat <- c(dict_flat, temp)
     if (level == 1) {
-        g <- factor(names(dict_flat), unique(names(dict_flat)))
+        m <- names(dict_flat)
+        g <- factor(m, unique(m))
         dict_flat <- lapply(split(dict_flat, g), unlist, use.names = FALSE)
         attributes(dict_flat, FALSE) <- attrs # TODO: will be set_attrs()
     }
