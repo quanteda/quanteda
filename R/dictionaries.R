@@ -555,8 +555,6 @@ flatten_dictionary <- function(dictionary, levels = 1:100, level = 1,
     
     attrs <- attributes(dictionary)
     temp <- mapply(function(entry, key) {
-        if (!length(entry)) 
-            return(NULL)
         if (level %in% levels) {
             if (key_parent == "") {
                 key_entry <- key
