@@ -549,8 +549,10 @@ flatten_dictionary <- function(dictionary, levels = 1:100) {
     attrs <- attributes(dictionary)
     
     result <- flatten_list(unclass(dictionary), levels)
-    attributes(result, FALSE) <- attrs # TODO: will be set_attrs()
-    return(result)
+    if (!length(result))
+        names(result) <- character
+    
+    rebuild_dictionary2(result, attrs)
 }
 
 #' Internal function to flatten a nested list
@@ -591,8 +593,11 @@ flatten_list <- function(lis, levels = 1:100, level = 1, key_parent = "",
     
     temp <- unlist(temp, recursive = FALSE)
     temp <- temp[names(temp) != ""] # no names for out-of-level
-    g <- factor(names(temp), unique(names(temp)))
-    temp <- lapply(split(temp, g), unlist, use.names = FALSE)
+    m <- names(temp)
+    if (any(duplicated(m))) {
+        g <- factor(m, unique(m))
+        temp <- lapply(split(temp, g), unlist, use.names = FALSE)
+    }
     return(c(lis_flat, temp))
 }
 
