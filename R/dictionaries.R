@@ -549,9 +549,6 @@ flatten_dictionary <- function(dictionary, levels = 1:100) {
     attrs <- attributes(dictionary)
     
     result <- flatten_list(unclass(dictionary), levels)
-    if (!length(result))
-        names(result) <- character()
-    
     rebuild_dictionary2(result, attrs)
 }
 
@@ -592,13 +589,13 @@ flatten_list <- function(lis, levels = 1:100, level = 1, key_parent = "",
     }, unclass(lis), names(lis), SIMPLIFY = FALSE, USE.NAMES = FALSE)
     
     temp <- unlist(temp, recursive = FALSE)
-    temp <- temp[names(temp) != ""] # no names for out-of-level
+    temp <- temp[names(temp) != ""] # out-of-level value have no names
+    temp <- c(lis_flat, temp)
+    
     m <- names(temp)
-    if (any(duplicated(m))) {
-        g <- factor(m, unique(m))
-        temp <- lapply(split(temp, g), unlist, use.names = FALSE)
-    }
-    return(c(lis_flat, temp))
+    g <- factor(m, unique(m))
+    result <- lapply(split(temp, g), unlist, use.names = FALSE)
+    return(result)
 }
 
 #' Internal function to lowercase dictionary values

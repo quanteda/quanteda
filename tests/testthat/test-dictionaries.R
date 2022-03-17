@@ -556,9 +556,15 @@ test_that("flatten_dictionary() is working", {
                       list("B" = c("b", "B")))
     
     expect_equal(names(flatten_dictionary(dict, levels = 10)),
-                 character(0))
+                 character())
     expect_error(flatten_dictionary(dict, levels = -1:2),
                  "The value of levels must be between 1 and 100")
+    
+    expect_equal(names(quanteda:::flatten_list(lis, levels = 10)), 
+                 character())
+    expect_equal(names(quanteda:::flatten_list(list())),
+                 character())
+    
 })
 
 
