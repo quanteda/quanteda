@@ -550,7 +550,7 @@ flatten_dictionary <- function(dictionary, levels = 1:100) {
     
     result <- flatten_list(unclass(dictionary), levels)
     if (!length(result))
-        names(result) <- character
+        names(result) <- character()
     
     rebuild_dictionary2(result, attrs)
 }
