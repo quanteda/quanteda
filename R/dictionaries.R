@@ -548,9 +548,7 @@ flatten_dictionary <- function(dictionary, levels = 1:100) {
     levels <- check_integer(levels, max_len = 100, min = 1, max = 100)
     attrs <- attributes(dictionary)
     temp <- flatten_list(unclass(dictionary), levels)
-    build_dictionary2(list2dictionary(temp), 
-                      valuetype = field_object(attrs, "valuetype"),
-                      separator = field_object(attrs, "separator"))
+    rebuild_dictionary2(list2dictionary(temp), attrs)
 }
 
 #' Internal function to flatten a nested list
