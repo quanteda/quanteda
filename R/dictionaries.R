@@ -242,7 +242,7 @@ setMethod("as.list",
           function(x, flatten = FALSE, levels = 1:100) {
               x <- as.dictionary(x)
               if (flatten) {
-                  result <- flatten_dictionary(x, levels)
+                  result <- flatten_list(x, levels)
                   # remove added attributes
                   attributes(result)[setdiff(names(attributes(result)), "names")] <- NULL
                   return(result)
@@ -547,9 +547,10 @@ flatten_dictionary <- function(dictionary, levels = 1:100) {
         stop("dictionary must be a dictionary object")
     levels <- check_integer(levels, max_len = 100, min = 1, max = 100)
     attrs <- attributes(dictionary)
-    
-    result <- flatten_list(unclass(dictionary), levels)
-    rebuild_dictionary2(result, attrs)
+    temp <- flatten_list(unclass(dictionary), levels)
+    build_dictionary2(list2dictionary(temp), 
+                      valuetype = field_object(attrs, "valuetype"),
+                      separator = field_object(attrs, "separator"))
 }
 
 #' Internal function to flatten a nested list
