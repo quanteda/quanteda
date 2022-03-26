@@ -95,4 +95,12 @@ test_that("object rebuilder keeps attributes", {
     fcmat2 <- quanteda:::rebuild_fcm(fcmat1, attributes(fcmat1))
     expect_identical(attributes(fcmat1),
                      attributes(fcmat2))
+    
+    lis <- list(A = list(c("a", "aa", "AA")))
+    dict1 <- quanteda:::build_dictionary2(lis, 
+                                          valuetype = "regex", 
+                                          separator = "+")
+    dict2 <- quanteda:::rebuild_dictionary2(dict1, attributes(dict1))
+    expect_identical(attributes(dict1),
+                     attributes(dict2))
 })
