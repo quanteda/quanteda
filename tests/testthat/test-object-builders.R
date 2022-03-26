@@ -87,7 +87,7 @@ test_that("object rebuilder keeps attributes", {
                                    docvars = quanteda:::make_docvars(2L))
     dfmat2 <- quanteda:::rebuild_dfm(dfmat1, attributes(dfmat1))
     expect_identical(attributes(dfmat1),
-                     attributes(dfmat1))
+                     attributes(dfmat2))
     
     mat2 <- matrix(c(1, 2, 3, 0, 0, 1, 1, 2, 1), nrow = 3)
     fcmat1 <- quanteda:::build_fcm(mat2,
