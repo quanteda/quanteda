@@ -538,6 +538,7 @@ test_that("flatten_dictionary() is working", {
     
     dict <- dictionary(lis, tolower = FALSE)
     dict_flat1 <- flatten_dictionary(dict)
+    expect_true(is.dictionary(dict_flat1))
     expect_equivalent(dict_flat1, 
                       list("Z" = list("z"),
                            "A.B" = list(c("b", "B")),
@@ -546,12 +547,14 @@ test_that("flatten_dictionary() is working", {
                            "D" = list(character())))
     
     dict_flat2 <- flatten_dictionary(dict, levels = 1)
+    expect_true(is.dictionary(dict_flat2))
     expect_equivalent(dict_flat2, 
                       list("Z" = list("z"),
                            "A" = list(c("b", "B", "a", "A", "aa")),
                            "C" = list(c("c", "C")), 
                            "D" = list(character())))
     dict_flat3 <- flatten_dictionary(dict, levels = 2)
+    expect_true(is.dictionary(dict_flat3))
     expect_equivalent(dict_flat3, 
                       list("B" = list(c("b", "B"))))
     
