@@ -22,19 +22,17 @@ test_that("test phrase for character", {
 })
 
 test_that("test phrase for dictionaries", {
-    dict <- dictionary(list(country = c("United States"),
+    dict1 <- dictionary(list(country = c("United States"),
                             institution = c("Congress", "feder* gov*")))
     expect_equivalent(
-        phrase(dict),
+        phrase(dict1),
         list(c("united", "states"), c("congress"), c("feder*", "gov*"))
     )
-})
-
-test_that("test phrase for dictionaries", {
-    dict <- dictionary(list(country = c("United States"),
-                            institution = c("Congress", "feder* gov*")))
+    dict2 <- dictionary(list(country = c("United+States"),
+                            institution = c("Congress", "feder*+gov*")),
+                        separator = "+")
     expect_equivalent(
-        phrase(dict),
+        phrase(dict2),
         list(c("united", "states"), c("congress"), c("feder*", "gov*"))
     )
 })
@@ -62,6 +60,13 @@ test_that("test as.phrase", {
     expect_equivalent(
         suppressWarnings(phrase(col)),
         list(c("a", "b"), c("b", "c"), c("c", "d"), c("a", "b", "c"))
+    )
+    dict <- dictionary(list(country = c("United+States"),
+                            institution = c("Congress", "feder*+gov*")),
+                        separator = "+")
+    expect_equivalent(
+      phrase(dict),
+      list(c("united", "states"), c("congress"), c("feder*", "gov*"))
     )
 })
 

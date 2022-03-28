@@ -162,7 +162,7 @@ matrix2dfm <- function(x, docvars = NULL, meta = NULL) {
 #' `is.dfm` returns `TRUE` if and only if its argument is a [dfm].
 #' @export
 is.dfm <- function(x) {
-    is(x, "dfm")
+    is(x, "dfm") && isS4(x)
 }
 
 # topfeatures -----------

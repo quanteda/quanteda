@@ -338,7 +338,7 @@ as.dictionary.data.frame <- function(x, format = c("tidytext"), separator = " ",
 #' is.dictionary(list(key1 = c("val1", "val2"), key2 = "val3"))
 #' # [1] FALSE
 is.dictionary <- function(x) {
-    is(x, "dictionary2")
+    is(x, "dictionary2") && isS4(x)
 }
 
 #' @rdname print-methods
