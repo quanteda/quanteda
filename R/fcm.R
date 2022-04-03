@@ -242,5 +242,5 @@ fcm.tokens <- function(x, context = c("document", "window"),
 #' @rdname as.fcm
 #' @export
 is.fcm <- function(x) {
-    is(x, "fcm")
+    is(x, "fcm") && isS4(x)
 }

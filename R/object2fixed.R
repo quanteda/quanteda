@@ -48,7 +48,7 @@ object2id <- function(x, types, valuetype = c("glob", "fixed", "regex"),
         if (length(x) == 0) return(list())
         if (is.dictionary(x)) {
             x <- as.dictionary(x)
-            temp <- flatten_dictionary(x, levels)
+            temp <- flatten_list(x, levels)
             key <- names(temp)
             temp <- split_values(temp, " ", concatenator)
         } else if (is.list(x)) {

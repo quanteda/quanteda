@@ -226,7 +226,6 @@ build_dictionary2 <- function(x, meta = list(), class = "dictionary2", ...) {
 #' @rdname object-builders
 rebuild_dictionary2 <- function(x, attrs) {
     attr(x, "meta") <- attrs[["meta"]]
-    attr(x, "class") <- union(attrs[["class"]], "dictionary2")
     return(x)
 }
 

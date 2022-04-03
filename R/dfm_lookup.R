@@ -8,7 +8,7 @@
 #' are easily distinguished from features that were terms found originally in
 #' the document).
 #' @param x the dfm to which the dictionary will be applied
-#' @param dictionary a [dictionary] class object
+#' @param dictionary a [dictionary]-class object
 #' @param levels levels of entries in a hierarchical dictionary that will be
 #'   applied
 #' @param exclusive if `TRUE`, remove all features not in dictionary,

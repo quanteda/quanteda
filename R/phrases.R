@@ -79,6 +79,12 @@ phrase.collocations <- function(x, separator = " ") {
 
 #' @noRd
 #' @export
+as.phrase.dictionary2 <- function(x) {
+  phrase(unlist(x, use.names = TRUE), separator = " ")
+}
+
+#' @noRd
+#' @export
 as.phrase.list <- function(x) {
     if (!all(unlist(lapply(x, is.character), use.names = FALSE)))
         stop("all list elements must be character")
