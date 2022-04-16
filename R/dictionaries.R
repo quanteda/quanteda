@@ -664,7 +664,8 @@ merge_dictionary_values <- function(dict) {
     
     if (is.null(names(dict))) return(dict)
     if (any(duplicated(names(dict)))) {
-        dict <- lapply(split(dict, names(dict)), function(x) {
+        m <- names(dict)
+        dict <- lapply(split(dict, factor(m, unique(m))), function(x) {
             names(x) <- NULL
             unlist(x, recursive = FALSE)
         })
