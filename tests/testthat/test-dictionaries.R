@@ -471,6 +471,19 @@ test_that("dictionary merge values in duplicate keys", {
                  dictionary(list(A = c("a", "aa", "aaa"),
                                  B = list(BB = c("bb", "bbb")),
                                  C = "c")))
+    expect_equal(rev(dict),
+                 dictionary(list(C = "c",
+                                 B = list(BB = c("bb", "bbb")),
+                                 A = c("a", "aa", "aaa"))))
+    
+    dict_join1 <- c(dictionary(list("Z" = "z", "X" = "x")), 
+                    dictionary(list("A" = "a", "Z" = "z")))
+    expect_equal(names(dict_join1), c("Z", "X", "A"))
+    
+    dict_join2 <- c(dictionary(list("D" = "d", "X" = "x")), 
+                    dictionary(list("D" = "d", "Z" = "z")))
+    expect_equal(names(dict_join2), c("D", "X", "Z"))
+        
 
 })
 
