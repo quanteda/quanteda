@@ -68,8 +68,8 @@ matching starts and ends, where 1 is the first token in a document.  For
 negative indexes, counting starts at the ending token of the document, so
 that -1 denotes the last token in the document, -2 the second to last, etc.
 When the length of the vector is equal to \code{ndoc}, tokens in corresponding
-positions will be selected. Otherwise, only the first element in the vector
-is used.}
+positions will be selected; when it is less than \code{ndoc}, values are
+repeated to make them equal in length.}
 
 \item{verbose}{if \code{TRUE} print messages about how many tokens were selected
 or removed}
@@ -91,8 +91,8 @@ common usage for \code{tokens_remove} will be to eliminate stop words from a tex
 or text-based object, while the most common use of \code{tokens_select} will be to
 select tokens with only positive pattern matches from a list of regular
 expressions, including a dictionary. \code{startpos} and \code{endpos} determine the
-positions of tokens searched for \code{pattern} and areas affected are
-expanded by \code{window}.
+positions of tokens searched for \code{pattern} and areas affected are expanded by
+\code{window}.
 }
 \examples{
 ## tokens_select with simple examples
