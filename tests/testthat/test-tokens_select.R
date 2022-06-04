@@ -575,6 +575,7 @@ test_that("position arguments are working", {
              doc2 = c("b"),
              doc3 = character())
     )
+    
     expect_identical(
         as.list(tokens_remove(toks, "*", startpos = 1, endpos = 3)),
         list(doc1 = c("d", "e"),
@@ -692,13 +693,22 @@ test_that("position arguments are working", {
              doc2 = character(),
              doc3 = character())
     )
+    
+    expect_error(
+        tokens_select(toks, "*", startpos = rep(1, 4), endpos = -1),
+        "The length of startpos must be between 1 and 3"
+    )
+    expect_error(
+        tokens_select(toks, "*", startpos = 1, endpos = rep(-1, 4)),
+        "The length of endpos must be between 1 and 3"
+    )
     expect_error(
         tokens_remove(toks, "*", startpos = numeric()),
-        "The length of startpos must be between 1 and Inf"
+        "The length of startpos must be between 1 and 3"
     )
     expect_error(
         tokens_remove(toks, "*", endpos = numeric()),
-        "The length of endpos must be between 1 and Inf"
+        "The length of endpos must be between 1 and 3"
     )
 
 })
