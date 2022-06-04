@@ -2,6 +2,7 @@
 
 ## Bug fixes and stability enhancements
 
+* `tokens_select()` recycles values when the length of `startpos` or `endpos` is less than `ndoc(x)`.
 * `dfm_lookup()` ignores matches of multiple dictionary values in the same key in a similar way as `tokens_lookup()` (#2159).
 
 ## Changes and additions
