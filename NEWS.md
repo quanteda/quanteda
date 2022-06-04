@@ -1,8 +1,14 @@
-# quanteda 3.2.1
+# quanteda 3.2.2
 
 ## Bug fixes and stability enhancements
 
 * `tokens_select()` recycles values when the length of `startpos` or `endpos` is less than `ndoc(x)`.
+* `tokens_lookup()` and `dfm_lookup()` can apply very large dictionaries (more than 100,000 keys).
+
+# quanteda 3.2.1
+
+## Bug fixes and stability enhancements
+
 * `dfm_lookup()` ignores matches of multiple dictionary values in the same key in a similar way as `tokens_lookup()` (#2159).
 
 ## Changes and additions
