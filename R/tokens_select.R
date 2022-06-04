@@ -141,8 +141,8 @@ tokens_select.tokens <- function(x, pattern = NULL,
     valuetype <- match.arg(valuetype)
     padding <- check_logical(padding)
     window <- check_integer(window, min_len = 1, max_len = 2, min = 0)
-    startpos <- check_integer(startpos, max_len = ndoc(x))
-    endpos <- check_integer(endpos, max_len = ndoc(x))
+    startpos <- check_integer(startpos, max_len = pmax(1, ndoc(x)))
+    endpos <- check_integer(endpos, max_len = pmax(1, ndoc(x)))
     verbose <- check_logical(verbose)
     
     attrs <- attributes(x)
