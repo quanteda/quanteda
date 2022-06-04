@@ -189,10 +189,10 @@ tokens_select.tokens <- function(x, pattern = NULL,
 
     if (verbose) message_select(selection, length(ids), 0)
     if (length(window) == 1) window <- rep(window, 2)
-    if (length(startpos) > 1 || length(endpos) > 1) {
-        startpos <- rep(startpos, length.out = ndoc(x))
-        endpos <- rep(endpos, length.out = ndoc(x))
-    }
+    
+    startpos <- rep(startpos, length.out = ndoc(x))
+    endpos <- rep(endpos, length.out = ndoc(x))
+    
     if (selection == "keep") {
         result <- qatd_cpp_tokens_select(x, type, ids, 1, padding, window[1], window[2], startpos, endpos)
     } else {
