@@ -1,3 +1,9 @@
+# quanteda 3.2.2
+
+## Bug fixes and stability enhancements
+
+* `tokens_chunk()` keeps all the docid, including those of empty documents, in the original object. 
+
 # quanteda 3.2.1
 
 ## Bug fixes and stability enhancements
