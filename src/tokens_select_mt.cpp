@@ -192,16 +192,13 @@ List qatd_cpp_tokens_select(const List &texts_,
     SetNgrams set_words;
     std::vector<std::size_t> spans = register_ngrams(words_, set_words);
     
-    size_t len = std::min(pos_from_.size(), pos_to_.size());
+    if (pos_from_.size() != texts.size())
+        throw std::range_error("Invalid pos_from");
+    if (pos_to_.size() != texts.size())
+        throw std::range_error("Invalid pos_to");
     Positions pos(texts.size());
-    for (size_t g = 0; g < pos.size(); g++) {
-        if (len == pos.size()) {
-            pos[g] = std::make_pair(pos_from_[g], pos_to_[g]);
-        } else if (len == 1) {
-            pos[g] = std::make_pair(pos_from_[0], pos_to_[0]);
-        } else {
-            pos[g] = std::make_pair(1, -1);
-        }
+    for (size_t g = 0; g < texts.size(); g++) {
+        pos[g] = std::make_pair(pos_from_[g], pos_to_[g]);
     }
     
     // dev::Timer timer;
