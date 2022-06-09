@@ -4,6 +4,8 @@ Minor updates to v3.2 consisting of bug fixes and minor feature additions.
 
 Fixes a problem on CRAN due to forthcoming changes in `match.arg()` output.
 
+Resubmitted to fix a potentially invalid URL (one that was redirected).
+
 ## Test environments
 
 * local macOS 11.6, R 4.1.2

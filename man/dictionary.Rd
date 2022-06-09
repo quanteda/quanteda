@@ -100,7 +100,7 @@ WordStat dictionaries page, from Provalis Research
 
 Pennebaker, J.W., Chung, C.K., Ireland, M., Gonzales, A., & Booth, R.J.
 (2007). The development and psychometric properties of LIWC2007. [Software
-manual]. Austin, TX (\url{https://liwc.net}).
+manual]. Austin, TX (\url{https://www.liwc.app/}).
 
 Yoshikoder page, from Will Lowe
 \url{https://conjugateprior.org/software/yoshikoder/}.
