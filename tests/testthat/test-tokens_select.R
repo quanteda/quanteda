@@ -560,8 +560,14 @@ test_that("position arguments are working", {
     expect_identical(
         as.list(tokens_select(toks, "*", startpos = c(1, 2), endpos = c(3))),
         list(doc1 = c("a", "b", "c"),
-             doc2 = c("a", "b", "c"),
+             doc2 = c("b", "c"),
              doc3 = c("a"))
+    )
+    expect_identical(
+        as.list(tokens_select(toks, "*", startpos = c(2), endpos = c(3, 2, 1))),
+        list(doc1 = c("b", "c"),
+             doc2 = c("b"),
+             doc3 = character())
     )
     expect_identical(
         as.list(tokens_select(toks, "*", startpos = c(1, 2, 2), endpos = c(3, 2, 1))),
@@ -569,6 +575,7 @@ test_that("position arguments are working", {
              doc2 = c("b"),
              doc3 = character())
     )
+    
     expect_identical(
         as.list(tokens_remove(toks, "*", startpos = 1, endpos = 3)),
         list(doc1 = c("d", "e"),
@@ -584,8 +591,14 @@ test_that("position arguments are working", {
     expect_identical(
         as.list(tokens_remove(toks, "*", startpos = c(1, 2), endpos = c(3))),
         list(doc1 = c("d", "e"),
-             doc2 = character(),
+             doc2 = c("a"),
              doc3 = character())
+    )
+    expect_identical(
+        as.list(tokens_remove(toks, "*", startpos = c(2), endpos = c(3, 2, 1))),
+        list(doc1 = c("a", "d", "e"),
+             doc2 = c("a", "c"),
+             doc3 = c("a"))
     )
     expect_identical(
         as.list(tokens_remove(toks, "*", startpos = c(1, 2, 2), endpos = c(3, 2, 1))),
@@ -680,13 +693,38 @@ test_that("position arguments are working", {
              doc2 = character(),
              doc3 = character())
     )
+    
+    expect_error(
+        tokens_select(toks, "*", startpos = rep(1, 4), endpos = -1),
+        "The length of startpos must be between 1 and 3"
+    )
+    expect_error(
+        tokens_select(toks, "*", startpos = 1, endpos = rep(-1, 4)),
+        "The length of endpos must be between 1 and 3"
+    )
     expect_error(
         tokens_remove(toks, "*", startpos = numeric()),
-        "The length of startpos must be between 1 and Inf"
+        "The length of startpos must be between 1 and 3"
     )
     expect_error(
         tokens_remove(toks, "*", endpos = numeric()),
-        "The length of endpos must be between 1 and Inf"
+        "The length of endpos must be between 1 and 3"
     )
-
+    
+    expect_error(
+        quanteda:::qatd_cpp_tokens_select(toks, types(toks), as.list(1:3), 1, TRUE, 0, 0, integer(), 1:3),
+        "Invalid pos_from"
+    )
+    expect_error(
+        quanteda:::qatd_cpp_tokens_select(toks, types(toks), as.list(1:3), 1, TRUE, 0, 0, 1, 1:3),
+        "Invalid pos_from"
+    )
+    expect_error(
+        quanteda:::qatd_cpp_tokens_select(toks, types(toks), as.list(1:3), 1, TRUE, 0, 0, 1:3, integer()),
+        "Invalid pos_to"
+    )
+    expect_error(
+        quanteda:::qatd_cpp_tokens_select(toks, types(toks), as.list(1:3), 1, TRUE, 0, 0, 1:3, 1),
+        "Invalid pos_to"
+    )
 })

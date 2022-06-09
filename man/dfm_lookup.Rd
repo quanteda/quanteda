@@ -19,7 +19,7 @@ dfm_lookup(
 \arguments{
 \item{x}{the dfm to which the dictionary will be applied}
 
-\item{dictionary}{a \link{dictionary} class object}
+\item{dictionary}{a \link{dictionary}-class object}
 
 \item{levels}{levels of entries in a hierarchical dictionary that will be
 applied}

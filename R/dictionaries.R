@@ -242,7 +242,7 @@ setMethod("as.list",
           function(x, flatten = FALSE, levels = 1:100) {
               x <- as.dictionary(x)
               if (flatten) {
-                  result <- flatten_dictionary(x, levels)
+                  result <- flatten_list(x, levels)
                   # remove added attributes
                   attributes(result)[setdiff(names(attributes(result)), "names")] <- NULL
                   return(result)
@@ -338,7 +338,7 @@ as.dictionary.data.frame <- function(x, format = c("tidytext"), separator = " ",
 #' is.dictionary(list(key1 = c("val1", "val2"), key2 = "val3"))
 #' # [1] FALSE
 is.dictionary <- function(x) {
-    is(x, "dictionary2")
+    is(x, "dictionary2") && isS4(x)
 }
 
 #' @rdname print-methods
@@ -513,61 +513,90 @@ split_values <- function(dict, concatenator_dictionary, concatenator_tokens) {
 #'
 #' Converts a hierarchical dictionary (a named list of named lists, ending in
 #' character vectors at the lowest level) into a flat list of character
-#' vectors. Works like `unlist(dictionary, recursive = TRUE)` except that
-#' the recursion does not go to the bottom level.  Called by [dfm()].
+#' vectors.
 #'
-#' @param dict list to be flattened
-#' @param levels integer vector indicating levels in the dictionary
-#' @param level internal argument to pass current levels
-#' @param key_parent internal argument to pass for parent keys
-#' @param dict_flat internal argument to pass flattened dictionary
-#' @return A dictionary flattened to variable levels
-#' @keywords internal dictionary
-#' @author Kohei Watanabe
+#' @param dictionary a [dictionary]-class object to be flattened
+#' @param levels an integer vector indicating levels in the dictionary
+#' @return A named list of character vectors  
+#' @keywords dictionary development internal
 #' @export
 #' @examples
-#' dict1 <-
-#'     dictionary(list(populism=c("elit*", "consensus*", "undemocratic*", "referend*",
-#'                                "corrupt*", "propagand", "politici*", "*deceit*",
-#'                                "*deceiv*", "*betray*", "shame*", "scandal*", "truth*",
-#'                                "dishonest*", "establishm*", "ruling*")))
+#' dict1 <- dictionary(
+#'     list(populism=c("elit*", "consensus*", "undemocratic*", "referend*",
+#'                     "corrupt*", "propagand", "politici*", "*deceit*",
+#'                     "*deceiv*", "*betray*", "shame*", "scandal*", "truth*",
+#'                     "dishonest*", "establishm*", "ruling*"))
+#'      )
 #' flatten_dictionary(dict1)
 #'
-#' dict2 <- list(level1a = list(level1a1 = c("l1a11", "l1a12"),
-#'                              level1a2 = c("l1a21", "l1a22")),
-#'               level1b = list(level1b1 = c("l1b11", "l1b12"),
-#'                              level1b2 = c("l1b21", "l1b22", "l1b23")),
-#'               level1c = list(level1c1a = list(level1c1a1 = c("lowest1", "lowest2")),
-#'                              level1c1b = list(level1c1b1 = c("lowestalone"))))
+#' dict2 <- dictionary(
+#'     list(level1a = list(level1a1 = c("l1a11", "l1a12"),
+#'          level1a2 = c("l1a21", "l1a22")),
+#'          level1b = list(level1b1 = c("l1b11", "l1b12"),
+#'          level1b2 = c("l1b21", "l1b22", "l1b23")),
+#'          level1c = list(level1c1a = list(level1c1a1 = c("lowest1", "lowest2")),
+#'          level1c1b = list(level1c1b1 = c("lowestalone"))))
+#'      )
 #' flatten_dictionary(dict2)
 #' flatten_dictionary(dict2, 2)
 #' flatten_dictionary(dict2, 1:2)
-flatten_dictionary <- function(dict, levels = 1:100, level = 1,
-                               key_parent = "", dict_flat = list()) {
-    dict <- unclass(dict)
-    for (i in seq_along(dict)) {
-        key <- names(dict[i])
-        entry <- dict[[i]]
-        if (key == "" || !length(entry)) next
+#' 
+flatten_dictionary <- function(dictionary, levels = 1:100) {
+    
+    if (!is.dictionary(dictionary))
+        stop("dictionary must be a dictionary object")
+    levels <- check_integer(levels, max_len = 100, min = 1, max = 100)
+    attrs <- attributes(dictionary)
+    temp <- flatten_list(unclass(dictionary), levels)
+    build_dictionary2(list2dictionary(temp),
+                      separator = field_object(attrs, "separator"),
+                      valuetype = field_object(attrs, "valuetype"))
+}
+
+#' Internal function to flatten a nested list
+#' @param lis a nested list
+#' @param levels an integer vector indicating levels in the list
+#' @param level an internal argument to pass current levels
+#' @param key_parent an internal argument to pass for parent keys
+#' @param lis_flat an internal argument to pass the flattened list
+#' @keywords internal
+#' @examples
+#' lis <- list("A" = list("B" = c("b", "B"), c("a", "A", "aa")))
+#' quanteda:::flatten_list(lis, 1:2)
+#' quanteda:::flatten_list(lis, 1)
+flatten_list <- function(lis, levels = 1:100, level = 1, key_parent = "", 
+                         lis_flat = list()) {
+    
+    temp <- mapply(function(elem, key) {
         if (level %in% levels) {
-            if (key_parent != "") {
-                key_entry <- paste(key_parent, key, sep = ".")
+            if (key_parent == "") {
+                key_self <- key
+            } else if (key == "") {
+                key_self <- key_parent
             } else {
-                key_entry <- key
+                key_self <- paste0(key_parent, ".", key)
             }
         } else {
-            key_entry <- key_parent
+            key_self <- key_parent
         }
-        is_category <- vapply(entry, is.list, logical(1))
-        dict_flat[[key_entry]] <-
-            c(dict_flat[[key_entry]],
-              unlist(entry[!is_category], use.names = FALSE))
-        dict_flat <- flatten_dictionary(entry[is_category], levels,
-                                        level + 1, key_entry, dict_flat)
-    }
-    dict_flat <- dict_flat[names(dict_flat) != ""]
-    attributes(dict_flat, FALSE) <- attributes(dict) # will be set_attrs()
-    return(dict_flat)
+        is_value <- is.null(names(elem))
+        if (is_value) {
+            result <- list(unlist(elem, use.names = FALSE))
+            names(result) <- key_self
+        } else {
+            result <- flatten_list(elem, levels, level + 1, key_self, lis_flat)
+        }
+        return(result)
+    }, unclass(lis), names(lis), SIMPLIFY = FALSE, USE.NAMES = FALSE)
+    
+    temp <- unlist(temp, recursive = FALSE)
+    temp <- temp[names(temp) != ""] # out-of-level value have no names
+    temp <- c(lis_flat, temp)
+    
+    m <- names(temp)
+    g <- factor(m, unique(m))
+    result <- lapply(split(temp, g), unlist, use.names = FALSE)
+    return(result)
 }
 
 #' Internal function to lowercase dictionary values
@@ -635,7 +664,8 @@ merge_dictionary_values <- function(dict) {
     
     if (is.null(names(dict))) return(dict)
     if (any(duplicated(names(dict)))) {
-        dict <- lapply(split(dict, names(dict)), function(x) {
+        m <- names(dict)
+        dict <- lapply(split(dict, factor(m, unique(m))), function(x) {
             names(x) <- NULL
             unlist(x, recursive = FALSE)
         })
