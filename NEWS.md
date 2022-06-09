@@ -2,6 +2,7 @@
 
 ## Bug fixes and stability enhancements
 
+* `fcm()` computes the marginal frequency of upper-case tokens correctly (#2176).
 * `tokens_chunk()` keeps all the docid, including those of empty documents, in the original object. 
 * `tokens_select()` recycles values when the length of `startpos` or `endpos` is less than `ndoc(x)`.
 * `tokens_lookup()` and `dfm_lookup()` can apply very large dictionaries (more than 100,000 keys).
