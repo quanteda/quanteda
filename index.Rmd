@@ -60,7 +60,7 @@ install.packages("quanteda")
 Or for the latest development version:
 ```{r eval = FALSE}
 # devtools package required to install quanteda from Github 
-devtools::install_github("quanteda/quanteda") 
+remotes::install_github("quanteda/quanteda") 
 ```
 
 Because this compiles some C++ and Fortran source code, you will need to have installed the appropriate compilers to build the development version.

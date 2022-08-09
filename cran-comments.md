@@ -1,15 +1,11 @@
 # Submission notes
 
-Minor updates to v3.2 consisting of bug fixes and minor feature additions.
-
-Fixes a problem on CRAN due to forthcoming changes in `match.arg()` output.
-
-Resubmitted to fix a potentially invalid URL (one that was redirected).
+Minor updates to v3.2.1 consisting of bug fixes and minor feature additions.
 
 ## Test environments
 
-* local macOS 11.6, R 4.1.2
-* Ubuntu 20.04 LTS, R 4.1.2
+* local macOS 12.5, R 4.2.1
+* Ubuntu 20.04 LTS, R 4.2.1
 * Windows release via devtools::check_win_release()
 * Windows devel via devtools::check_win_devel()
 * Windows oldrelease via devtools::check_win_oldrelease()
