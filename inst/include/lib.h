@@ -164,6 +164,7 @@ namespace quanteda{
         
         std::size_t l = tri.size();
         IntegerVector dim_ = IntegerVector::create(nrow, ncol);
+        List dimnames_ = List::create(R_NilValue, R_NilValue);
         IntegerVector i_(l), j_(l);
         NumericVector x_(l);
         
@@ -178,6 +179,7 @@ namespace quanteda{
             simil_.slot("j") = j_;
             simil_.slot("x") = x_;
             simil_.slot("Dim") = dim_;
+            simil_.slot("Dimnames") = dimnames_;
             simil_.slot("uplo") = "U";
             return simil_;
         } else {
@@ -186,6 +188,7 @@ namespace quanteda{
             simil_.slot("j") = j_;
             simil_.slot("x") = x_;
             simil_.slot("Dim") = dim_;
+            simil_.slot("Dimnames") = dimnames_;
             return simil_;
         }
     }
