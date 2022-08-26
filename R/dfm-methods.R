@@ -293,5 +293,5 @@ NULL
 #' @export
 #' @seealso [Comparison] operators
 setMethod("Compare", c("dfm", "numeric"), function(e1, e2) {
-    as(callGeneric(as(e1, "dgCMatrix"), e2), "lgCMatrix")
+    as(callGeneric(as(as(as(e1, "CsparseMatrix"), "generalMatrix"), "dMatrix"), e2), "CsparseMatrix")
 })
