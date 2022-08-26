@@ -144,13 +144,13 @@ matrix2dfm <- function(x, docvars = NULL, meta = NULL) {
     
     if (nrow(x) == 0 && ncol(x) == 0) {
         # avoid coercion to ldiMatrix
-        x <- as(matrix(nrow = 0, ncol = 0), "dgeMatrix")
+        x <- as(as(as(matrix(nrow = 0, ncol = 0), "dMatrix"), "generalMatrix"), "unpackedMatrix")
     } else {
         x <- Matrix(x, sparse = TRUE)
     }
     
     build_dfm(
-        as(x, "dgCMatrix"),
+        as(as(as(x, "CsparseMatrix"), "generalMatrix"), "dMatrix"),
         featname,
         docvars = docvars,
         meta = meta

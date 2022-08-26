@@ -144,7 +144,8 @@ fcm.dfm <- function(x, context = c("document", "window"),
     attrs <- attributes(x)
     if (!nfeat(x)) {
         result <- build_fcm(
-            as(make_null_dfm(), "dgCMatrix"), featnames(x), 
+            make_null_dfm(),
+            featnames(x), 
             count = count, context = context, margin = featfreq(x), 
             weights = 1, tri = tri,
             meta = attrs[["meta"]])
@@ -175,7 +176,8 @@ fcm.dfm <- function(x, context = c("document", "window"),
         temp <- Matrix::triu(temp)
 
     result <- build_fcm(
-        as(temp, "dgCMatrix"), featnames(x), 
+        as(as(temp, "generalMatrix"), "dMatrix"),
+        featnames(x), 
         count = count, context = context, margin = featfreq(x), 
         weights = 1, tri = tri,
         meta = attrs[["meta"]])
@@ -221,7 +223,7 @@ fcm.tokens <- function(x, context = c("document", "window"),
         type <- types(x)
         boolean <- count == "boolean"
         temp <- qatd_cpp_fcm(x, length(type), weights, boolean, ordered)
-        temp <- as(temp, "dgCMatrix")
+        temp <- as(as(as(temp, "CsparseMatrix"), "generalMatrix"), "dMatrix")
         if (!ordered) {
             if (tri) {
                 temp <- Matrix::triu(temp)
@@ -230,7 +232,8 @@ fcm.tokens <- function(x, context = c("document", "window"),
             }
         }
         result <- build_fcm(
-            as(temp, "dgCMatrix"), type,
+            as(as(as(temp, "CsparseMatrix"), "generalMatrix"), "dMatrix"), 
+            type,
             count = count, context = context, margin = featfreq(dfm(x, tolower = FALSE)), 
             weights = weights, ordered = ordered, tri = tri, 
             meta = attrs[["meta"]])

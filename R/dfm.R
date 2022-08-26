@@ -34,7 +34,8 @@
 #'     tokens_remove("b", padding = TRUE)
 #' toks
 #' dfm(toks)
-#' dfm(toks, remove = "") # remove "pads"
+#' dfm(toks) %>%
+#'  dfm_remove(pattern = "") # remove "pads"
 #'
 #' # preserving case
 #' dfm(toks, tolower = FALSE)
@@ -383,7 +384,9 @@ make_null_dfm <- function(feature = NULL, document = NULL) {
         i = NULL,
         j = NULL,
         dims = c(length(document), length(feature))
-    ), "dgCMatrix")
+    ), "CsparseMatrix") %>%
+        as("generalMatrix") %>%
+        as("dMatrix")
 
     build_dfm(temp, feature,
               docvars = make_docvars(length(document), document))

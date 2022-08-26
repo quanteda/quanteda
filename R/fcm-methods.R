@@ -72,7 +72,7 @@ fcm_sort.default <- function(x) {
 fcm_sort.fcm <- function(x) {
     x <- as.fcm(x)
     attrs <- attributes(x)
-    x <- as(x, "dgTMatrix")
+    x <- as(x, "TsparseMatrix")
     x <- x[order(rownames(x)), order(colnames(x))]
     if (field_object(attrs, "tri")) {
         swap <- x@i > x@j
@@ -142,7 +142,7 @@ matrix2fcm <- function(x, meta = NULL) {
     if (is.null(meta))
         meta <- make_meta("fcm")
     
-    build_fcm(as(Matrix(x, sparse = TRUE), "dgCMatrix"),
+    build_fcm(as(as(Matrix(x, sparse = TRUE), "generalMatrix"), "dMatrix"),
               rowname, colname,
               meta = meta)
 }
