@@ -184,10 +184,10 @@ test_that("as.fcm is working", {
                  nrow = 5, ncol = 5, byrow = TRUE)
 
     expect_true(is.fcm(as.fcm(mt1)))
-    expect_true(is.fcm(as.fcm(as(as(as(mt1, "dMatrix"), "triangularMatrix"), "CsparseMatrix") )))
+    expect_true(is.fcm(as.fcm(as(as(mt1, "CsparseMatrix"), "triangularMatrix"))))
     expect_true(is.fcm(as.fcm(as(mt1, "dgCMatrix"))))
-    expect_true(is.fcm(as.fcm(as(as(as(mt1, "dMatrix"), "generalMatrix"), "TsparseMatrix") )))
-    expect_true(is.fcm(as.fcm(as(as(as(mt1, "dMatrix"), "generalMatrix"), "unpackedMatrix") )))
+    expect_true(is.fcm(as.fcm(as(mt1, "TsparseMatrix"))))
+    expect_true(is.fcm(as.fcm(Matrix(mt1, sparse = FALSE))))
 
     mt2 <- matrix(c(1, 3, 1, 2, 2,
                     0, 1, 2, 0, 1,
@@ -199,7 +199,6 @@ test_that("as.fcm is working", {
 
     expect_error(as.fcm(mt2),
                 "matrix must have the same rownames and colnames")
-    expect_error(as.fcm(as(as(as(mt2, "dMatrix"), "generalMatrix"), "unpackedMatrix")),
+    expect_error(as.fcm(Matrix(mt2, sparse = FALSE)),
                 "matrix must have the same rownames and colnames")
-
 })

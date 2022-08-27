@@ -144,7 +144,8 @@ matrix2dfm <- function(x, docvars = NULL, meta = NULL) {
     
     if (nrow(x) == 0 && ncol(x) == 0) {
         # avoid coercion to ldiMatrix
-        x <- as(as(as(matrix(nrow = 0, ncol = 0), "dMatrix"), "generalMatrix"), "unpackedMatrix")
+        x <- Matrix(x, sparse = TRUE)
+        x <- as(as(as(x, "CsparseMatrix"), "generalMatrix"), "dMatrix")
     } else {
         x <- Matrix(x, sparse = TRUE)
     }

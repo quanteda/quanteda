@@ -205,7 +205,7 @@ NULL
 
 #' @rdname convert-wrappers
 dfm2austin <- function(x) {
-    result <- as.matrix(as(x, "unpackedMatrix"))
+    result <- as.matrix(as(x, "dMatrix"))
     names(dimnames(result))[2] <- "words"
     class(result) <- c("wfm", "matrix")
     return(result)
