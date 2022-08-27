@@ -143,9 +143,7 @@ matrix2dfm <- function(x, docvars = NULL, meta = NULL) {
         meta <- make_meta("dfm")
     
     if (nrow(x) == 0 && ncol(x) == 0) {
-        # avoid coercion to ldiMatrix
-        x <- Matrix(x, sparse = TRUE)
-        x <- as(as(as(x, "CsparseMatrix"), "generalMatrix"), "dMatrix")
+        x <- make_null_dfm()
     } else {
         x <- Matrix(x, sparse = TRUE)
     }
