@@ -143,14 +143,13 @@ matrix2dfm <- function(x, docvars = NULL, meta = NULL) {
         meta <- make_meta("dfm")
     
     if (nrow(x) == 0 && ncol(x) == 0) {
-        # avoid coercion to ldiMatrix
-        x <- as(matrix(nrow = 0, ncol = 0), "dgeMatrix")
+        x <- make_null_dfm()
     } else {
         x <- Matrix(x, sparse = TRUE)
     }
     
     build_dfm(
-        as(x, "dgCMatrix"),
+        as(as(as(x, "CsparseMatrix"), "generalMatrix"), "dMatrix"),
         featname,
         docvars = docvars,
         meta = meta
@@ -286,12 +285,12 @@ NULL
 
 #' The `Compare` methods enable relational operators to be use with dfm.
 #' Relational operations on a dfm with a numeric will return a
-#' [dgCMatrix-class][Matrix::dgCMatrix-class] object.
+#' [lgCMatrix-class][Matrix::lgCMatrix-class] object.
 #' @rdname dfm-internal
 #' @param e1 a [dfm]
 #' @param e2 a numeric value to compare with values in a dfm
 #' @export
 #' @seealso [Comparison] operators
 setMethod("Compare", c("dfm", "numeric"), function(e1, e2) {
-    as(callGeneric(as(e1, "dgCMatrix"), e2), "lgCMatrix")
+    as(callGeneric(as(e1, "CsparseMatrix"), e2), "CsparseMatrix")
 })

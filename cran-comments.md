@@ -1,6 +1,7 @@
 # Submission notes
 
-Minor updates to v3.2.1 consisting of bug fixes and minor feature additions.
+Changes to Matrix package coercions required to avoid warnings in forthcoming
+Matrix 1.4-2 release.
 
 ## Test environments
 

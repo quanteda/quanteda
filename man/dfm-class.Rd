@@ -60,9 +60,9 @@ the calculations}
 
 \item{...}{additional arguments not used here}
 
-\item{e1}{first quantity in "+" operation for dfm}
+\item{e1}{first quantity in an \link[methods:S4groupGeneric]{Arith} operation for dfm}
 
-\item{e2}{second quantity in "+" operation for dfm}
+\item{e2}{second quantity in an \link[methods:S4groupGeneric]{Arith} operation for dfm}
 
 \item{i}{document names or indices for documents to extract.}
 
