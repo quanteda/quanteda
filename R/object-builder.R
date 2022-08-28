@@ -27,7 +27,7 @@ build_dfm <- function(x, features,
                       docvars = data.frame(), meta = list(), 
                       class = "dfm", ...) {
     result <- new(class,
-                  as(as(as(x, "CsparseMatrix"), "generalMatrix"), "dMatrix"),
+                  as(x, "CsparseMatrix"),
                   docvars = docvars,
                   meta = make_meta("dfm", inherit = meta, ...)
     )

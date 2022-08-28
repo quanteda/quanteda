@@ -380,13 +380,11 @@ dfm.dfm <- function(x,
 make_null_dfm <- function(feature = NULL, document = NULL) {
     if (is.null(feature)) feature <- character()
     if (is.null(document)) document <- character()
-    temp <- as(sparseMatrix(
+    temp <- as(as(as(sparseMatrix(
         i = NULL,
         j = NULL,
         dims = c(length(document), length(feature))
-    ), "CsparseMatrix") %>%
-        as("generalMatrix") %>%
-        as("dMatrix")
+    ), "CsparseMatrix"), "generalMatrix"), "dMatrix")
 
     build_dfm(temp, feature,
               docvars = make_docvars(length(document), document))
