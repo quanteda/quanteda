@@ -4,7 +4,7 @@ Sys.setenv("_R_CHECK_LENGTH_1_CONDITION_" = TRUE)
 library(testthat)
 library(quanteda)
 
-# for strong texts for Matrix deprecations
+# for strong tests for Matrix deprecations
 options(Matrix.warnDeprecatedCoerce = 2)
 
 ops <- quanteda_options()
