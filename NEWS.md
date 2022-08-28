@@ -1,3 +1,10 @@
+# quanteda 3.2.3
+
+## Bug fixes and stability enhancements
+
+* **Matrix** package calls updated for compatibility with **Matrix** 1.4.2. (#2182)
+* Changes to C++ code for `fcm()` to prevent some (chance) errors downstream in **LSX**. (#2181)
+
 # quanteda 3.2.2
 
 ## Bug fixes and stability enhancements
