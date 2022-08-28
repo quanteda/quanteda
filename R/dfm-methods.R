@@ -285,12 +285,12 @@ NULL
 
 #' The `Compare` methods enable relational operators to be use with dfm.
 #' Relational operations on a dfm with a numeric will return a
-#' [dgCMatrix-class][Matrix::dgCMatrix-class] object.
+#' [lgCMatrix-class][Matrix::lgCMatrix-class] object.
 #' @rdname dfm-internal
 #' @param e1 a [dfm]
 #' @param e2 a numeric value to compare with values in a dfm
 #' @export
 #' @seealso [Comparison] operators
 setMethod("Compare", c("dfm", "numeric"), function(e1, e2) {
-    as(callGeneric(as(as(as(e1, "CsparseMatrix"), "generalMatrix"), "dMatrix"), e2), "CsparseMatrix")
+    as(callGeneric(as(e1, "CsparseMatrix"), e2), "CsparseMatrix")
 })

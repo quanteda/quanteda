@@ -176,7 +176,7 @@ fcm.dfm <- function(x, context = c("document", "window"),
         temp <- Matrix::triu(temp)
 
     result <- build_fcm(
-        as(temp, "CsparseMatrix"),
+        temp,
         featnames(x),
         count = count, context = context, margin = featfreq(x),
         weights = 1, tri = tri,
@@ -232,7 +232,7 @@ fcm.tokens <- function(x, context = c("document", "window"),
             }
         }
         result <- build_fcm(
-            as(temp, "CsparseMatrix"),
+            temp,
             type,
             count = count, context = context, margin = featfreq(dfm(x, tolower = FALSE)),
             weights = weights, ordered = ordered, tri = tri,

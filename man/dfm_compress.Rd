@@ -53,7 +53,7 @@ dim(dfmatsubset)
 dim(dfm_compress(dfmatsubset))
 
 # compress an fcm
-fcmat1 <- fcm(tokens("A D a C E a d F e B A C E D"), 
+fcmat1 <- fcm(tokens("A D a C E a d F e B A C E D"),
              context = "window", window = 3)
 ## this will produce an error:
 # fcm_compress(fcmat1)
