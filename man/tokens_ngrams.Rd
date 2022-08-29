@@ -4,7 +4,7 @@
 \alias{tokens_ngrams}
 \alias{char_ngrams}
 \alias{tokens_skipgrams}
-\title{Create ngrams and skipgrams from tokens}
+\title{Create n-grams and skip-grams from tokens}
 \usage{
 tokens_ngrams(x, n = 2L, skip = 0L, concatenator = "_")
 
@@ -16,11 +16,11 @@ tokens_skipgrams(x, n, skip, concatenator = "_")
 \item{x}{a tokens object, or a character vector, or a list of characters}
 
 \item{n}{integer vector specifying the number of elements to be concatenated
-in each ngram.  Each element of this vector will define a \eqn{n} in the
+in each n-gram.  Each element of this vector will define a \eqn{n} in the
 \eqn{n}-gram(s) that are produced.}
 
 \item{skip}{integer vector specifying the adjacency skip size for tokens
-forming the ngrams, default is 0 for only immediately neighbouring words.
+forming the n-grams, default is 0 for only immediately neighbouring words.
 For \code{skipgrams}, \code{skip} can be a vector of integers, as the
 "classic" approach to forming skip-grams is to set skip = \eqn{k} where
 \eqn{k} is the distance for which \eqn{k} or fewer skips are used to
@@ -32,28 +32,28 @@ Guthrie et al (2006).}
 (underscore) character}
 }
 \value{
-a tokens object consisting a list of character vectors of ngrams, one
+a tokens object consisting a list of character vectors of n-grams, one
 list element per text, or a character vector if called on a simple
 character vector
 }
 \description{
-Create a set of ngrams (tokens in sequence) from already tokenized text
-objects, with an optional skip argument to form skipgrams. Both the ngram
+Create a set of n-grams (tokens in sequence) from already tokenized text
+objects, with an optional skip argument to form skip-grams. Both the n-gram
 length and the skip lengths take vectors of arguments to form multiple
 lengths or skips in one pass.  Implemented in C++ for efficiency.
 }
 \details{
 Normally, these functions will be called through
 \verb{[tokens](x, ngrams = , ...)}, but these functions are provided
-in case a user wants to perform lower-level ngram construction on tokenized
+in case a user wants to perform lower-level n-gram construction on tokenized
 texts.
 
-\code{\link[=tokens_skipgrams]{tokens_skipgrams()}} is a wrapper to \code{\link[=tokens_ngrams]{tokens_ngrams()}}
-that requires arguments to be supplied for both \code{n} and \code{skip}.
-For \eqn{k}-skip skipgrams, set \code{skip} to \verb{0:}\eqn{k}, in order
-to conform to the definition of skip-grams found in Guthrie et al (2006): A
-\eqn{k} skip-gram is an ngram which is a superset of all ngrams and each
-\eqn{(k-i)} skipgram until \eqn{(k-i)==0} (which includes 0 skip-grams).
+\code{\link[=tokens_skipgrams]{tokens_skipgrams()}} is a wrapper to \code{\link[=tokens_ngrams]{tokens_ngrams()}} that requires
+arguments to be supplied for both \code{n} and \code{skip}. For \eqn{k}-skip
+skip-grams, set \code{skip} to \verb{0:}\eqn{k}, in order to conform to the
+definition of skip-grams found in Guthrie et al (2006): A \eqn{k} skip-gram
+is an n-gram which is a superset of all n-grams and each \eqn{(k-i)}
+skip-gram until \eqn{(k-i)==0} (which includes 0 skip-grams).
 }
 \note{
 \code{char_ngrams} is a convenience wrapper for a (non-list)
@@ -79,5 +79,5 @@ tokens_skipgrams(toks, n = 3, skip = 0:2, concatenator = " ")
 }
 \references{
 Guthrie, David, Ben Allison, Wei Liu, Louise Guthrie, and Yorick Wilks. 2006.
-"\href{https://aclanthology.org/L06-1210/}{A Closer Look at Skip-Gram Modelling}."
+"A Closer Look at Skip-Gram Modelling." \verb{https://aclanthology.org/L06-1210/}
 }
