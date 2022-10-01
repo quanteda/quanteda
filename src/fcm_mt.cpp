@@ -7,7 +7,7 @@ struct hash_pair {
     
     unsigned int seed = 0;
     seed = p.first;
-    seed += p.second << 16;
+    seed += p.second * 256;
     return std::hash<unsigned int>()(seed);
   }
 };
@@ -49,7 +49,7 @@ void count_col(const Text &text,
         if (text[i] == 0) continue; // skip padding
         j_ini = std::min((int)(i + 1), (int)text.size());
         j_lim = std::min((int)(i + window + 1), (int)text.size());
-        for(unsigned int j = j_ini; j < j_lim; j++) {
+        for (unsigned int j = j_ini; j < j_lim; j++) {
             if (text[j] == 0) continue; // skip padding
             weight = weights[std::abs((int)j - (int)i) - 1];
             if (ordered) {
