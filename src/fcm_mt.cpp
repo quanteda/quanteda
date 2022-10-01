@@ -4,10 +4,7 @@ using namespace quanteda;
 
 struct hash_pair {
   size_t operator()(const std::pair<unsigned int, unsigned int> &p) const {
-    
-    unsigned int seed = 0;
-    seed = p.first;
-    seed += p.second * 256;
+    unsigned int seed = p.first + (p.second * 65536); // shift 16 bit
     return std::hash<unsigned int>()(seed);
   }
 };
