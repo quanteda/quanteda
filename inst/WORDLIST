@@ -1,3 +1,4 @@
+aclanthology
 ACL
 Biden
 Biden's
@@ -23,6 +24,7 @@ Khudanpur
 Klakow
 LBG
 LIWC
+LSX
 Lexicoder
 MATTR
 MSTTR
@@ -160,6 +162,8 @@ naivebayes
 nfeature
 ngram
 ngrams
+n-gram
+n-grams
 nsentence
 ntoken
 nuls

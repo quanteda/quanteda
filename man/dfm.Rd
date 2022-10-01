@@ -54,7 +54,8 @@ toks <- tokens(c("a b c", "A B C D")) \%>\%
     tokens_remove("b", padding = TRUE)
 toks
 dfm(toks)
-dfm(toks, remove = "") # remove "pads"
+dfm(toks) \%>\%
+ dfm_remove(pattern = "") # remove "pads"
 
 # preserving case
 dfm(toks, tolower = FALSE)

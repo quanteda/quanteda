@@ -98,7 +98,7 @@ group_matrix <- function(x, documents = NULL, features = NULL, fill = FALSE) {
     if (!length(features) && !length(documents))
         return(x)
     attrs <- attributes(x)
-    x <- as(x, "dgTMatrix")
+    x <- as(x, "TsparseMatrix")
     if (is.null(features)) {
         featname <- x@Dimnames[[2]]
         j <- x@j + 1L

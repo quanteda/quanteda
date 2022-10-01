@@ -63,18 +63,18 @@
 #'
 #'   `is.fcm(x)` returns `TRUE` if and only if its x is an object of
 #'   type [fcm].
-#' @references 
-#'   Momtazi, S., Khudanpur, S., & Klakow, D. (2010). "[A comparative study of
+#' @references
+#'   Momtazi, S., Khudanpur, S., & Klakow, D. (2010). "A comparative study of
 #'   word co-occurrence for term clustering in language model-based sentence
-#'   retrieval.](https://aclanthology.org/N10-1046/)" *Human Language
-#'   Technologies: The 2010 Annual Conference of the North American Chapter of
-#'   the ACL*, Los Angeles, California, June 2010, 325-328.
-#'   
+#'   retrieval. *Human Language Technologies: The 2010 Annual Conference of the
+#'   North American Chapter of the ACL*, Los Angeles, California, June 2010,
+#'   325-328.  https://aclanthology.org/N10-1046/
+#'
 #'   Jurafsky, D. & Martin, J.H. (2018). From *Speech and Language Processing:
 #'   An Introduction to Natural Language Processing, Computational Linguistics,
 #'   and Speech Recognition*. Draft of September 23, 2018 (Chapter 6, Vector
 #'   Semantics). Available at <https://web.stanford.edu/~jurafsky/slp3/>.
-#'   
+#'
 #'  Church, K. W. & P. Hanks (1990). [Word association norms, mutual
 #'  information, and lexicography](https://dl.acm.org/doi/10.5555/89086.89095).
 #'  *Computational Linguistics*, 16(1), 22-29.
@@ -133,28 +133,29 @@ fcm.dfm <- function(x, context = c("document", "window"),
                        weights = NULL,
                        ordered = FALSE,
                        tri = TRUE, ...) {
-    
+
     x <- as.dfm(x)
     context <- match.arg(context)
     count <- match.arg(count)
     window <- check_integer(window, min = 1)
     ordered <- check_logical(ordered)
     tri <- check_logical(tri)
-    
+
     attrs <- attributes(x)
     if (!nfeat(x)) {
         result <- build_fcm(
-            as(make_null_dfm(), "dgCMatrix"), featnames(x), 
-            count = count, context = context, margin = featfreq(x), 
+            make_null_dfm(),
+            featnames(x),
+            count = count, context = context, margin = featfreq(x),
             weights = 1, tri = tri,
             meta = attrs[["meta"]])
-        
+
         return(result)
     }
 
     if (context != "document")
         stop("fcm.dfm only works on context = \"document\"")
-    
+
     if (count == "weighted")
         stop("Cannot have weighted counts with context = \"document\"")
     if (count == "boolean") {
@@ -164,22 +165,23 @@ fcm.dfm <- function(x, context = c("document", "window"),
         m <- Matrix::colSums(x)
     }
     temp <- Matrix::crossprod(x)
-    
-    # correct self-cooccuerrace
+
+    # correct self-co-occurrence
     if (count == "boolean") {
         Matrix::diag(temp) <- m
     } else {
-        Matrix::diag(temp) <- (Matrix::diag(temp) - m) / 2    
+        Matrix::diag(temp) <- (Matrix::diag(temp) - m) / 2
     }
-    if (tri) 
+    if (tri)
         temp <- Matrix::triu(temp)
 
     result <- build_fcm(
-        as(temp, "dgCMatrix"), featnames(x), 
-        count = count, context = context, margin = featfreq(x), 
+        temp,
+        featnames(x),
+        count = count, context = context, margin = featfreq(x),
         weights = 1, tri = tri,
         meta = attrs[["meta"]])
-    
+
     return(result)
 }
 
@@ -200,7 +202,7 @@ fcm.tokens <- function(x, context = c("document", "window"),
     window <- check_integer(window, min = 1)
     ordered <- check_logical(ordered)
     tri <- check_logical(tri)
-    
+
     attrs <- attributes(x)
     if (ordered)
         tri <- FALSE
@@ -221,7 +223,7 @@ fcm.tokens <- function(x, context = c("document", "window"),
         type <- types(x)
         boolean <- count == "boolean"
         temp <- qatd_cpp_fcm(x, length(type), weights, boolean, ordered)
-        temp <- as(temp, "dgCMatrix")
+        temp <- as(temp, "CsparseMatrix")
         if (!ordered) {
             if (tri) {
                 temp <- Matrix::triu(temp)
@@ -230,9 +232,10 @@ fcm.tokens <- function(x, context = c("document", "window"),
             }
         }
         result <- build_fcm(
-            as(temp, "dgCMatrix"), type,
-            count = count, context = context, margin = featfreq(dfm(x, tolower = FALSE)), 
-            weights = weights, ordered = ordered, tri = tri, 
+            temp,
+            type,
+            count = count, context = context, margin = featfreq(dfm(x, tolower = FALSE)),
+            weights = weights, ordered = ordered, tri = tri,
             meta = attrs[["meta"]])
     }
     return(result)

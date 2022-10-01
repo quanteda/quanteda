@@ -205,7 +205,7 @@ NULL
 
 #' @rdname convert-wrappers
 dfm2austin <- function(x) {
-    result <- as.matrix(as(x, "dgeMatrix"))
+    result <- as.matrix(as(x, "dMatrix"))
     names(dimnames(result))[2] <- "words"
     class(result) <- c("wfm", "matrix")
     return(result)
@@ -302,7 +302,7 @@ dfm2dtm <- function(x, omit_empty = TRUE) {
         stop("You must install the slam package for this conversion.")
 
     x <- as.dfm(x)
-    x <- as(x, "dgTMatrix")
+    x <- as(x, "TsparseMatrix")
     if (omit_empty)
         x <- x[rowSums(x) > 0, ]
     tm::as.DocumentTermMatrix(slam::as.simple_triplet_matrix(x), tm::weightTf)
@@ -336,7 +336,7 @@ dfm2stm <- function(x, docvars = NULL, omit_empty = TRUE) {
     }
 
     # convert counts to STM documents format
-    x <- as(x, "dgTMatrix")
+    x <- as(x, "TsparseMatrix")
     docs <- ijv.to.doc(x@i + 1, x@j + 1, x@x)
     names(docs) <- rownames(x)
     list(documents = docs, vocab = colnames(x), meta = docvars)
@@ -373,7 +373,7 @@ dfm2lsa <- function(x) {
 dfm2tripletlist <- function(x) {
     feat <- featnames(x)
     doc <- docnames(x)
-    x <- as(x, "dgTMatrix")
+    x <- as(x, "TsparseMatrix")
     list(
         document = doc[x@i + 1],
         feature = feat[x@j + 1],

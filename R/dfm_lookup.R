@@ -24,7 +24,7 @@
 #' @export
 #' @note If using `dfm_lookup` with dictionaries containing multi-word
 #'   values, matches will only occur if the features themselves are multi-word
-#'   or formed from ngrams. A better way to match dictionary values that include
+#'   or formed from n-grams. A better way to match dictionary values that include
 #'   multi-word patterns is to apply [tokens_lookup()] to the tokens,
 #'   and then construct the dfm.
 #' @keywords dfm

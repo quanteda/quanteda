@@ -2,33 +2,33 @@ toks_test <- tokens(c("b A A d", "C C a b B e"))
 fcmt_test <- fcm(toks_test, context = "document")
 
 test_that("fcm_compress works as expected, not working for 'window' context", {
-    fcmt <- fcm(toks_test, 
+    fcmt <- fcm(toks_test,
                 context = "window", window = 3)
-    expect_error(fcm_compress(fcmt), 
+    expect_error(fcm_compress(fcmt),
                  "fcm must be created with a document context")
 })
 
 test_that("fcm_tolower and fcm_compress work as expected", {
     fcmt_lc <- fcm_tolower(fcmt_test)
-    expect_equivalent(rownames(fcmt_lc), 
+    expect_equivalent(rownames(fcmt_lc),
                       c("b", "a", "d", "c", "e"))
-    mt <- matrix(c(1, 3, 1, 2, 2, 
-                     0, 1, 2, 0, 1, 
-                     0, 0, 0, 0, 0, 
-                     0, 0, 0, 1, 2, 
+    mt <- matrix(c(1, 3, 1, 2, 2,
+                     0, 1, 2, 0, 1,
+                     0, 0, 0, 0, 0,
+                     0, 0, 0, 1, 2,
                      0, 0, 0, 0, 0),
                    nrow = 5, ncol = 5, byrow = TRUE)
     expect_true(all(as.vector(Matrix::triu(fcmt_lc)) == as.vector(mt)))
 })
 
-test_that("fcm_toupper and fcm_compress work as expected",{
+test_that("fcm_toupper and fcm_compress work as expected", {
     fcmt_uc <- fcm_toupper(fcmt_test)
-    expect_equivalent(rownames(fcmt_uc), 
+    expect_equivalent(rownames(fcmt_uc),
                       c("B", "A", "D", "C", "E"))
-    mt <- matrix(c(1, 3, 1, 2, 2, 
-                     0, 1, 2, 0, 1, 
-                     0, 0, 0, 0, 0, 
-                     0, 0, 0, 1, 2, 
+    mt <- matrix(c(1, 3, 1, 2, 2,
+                     0, 1, 2, 0, 1,
+                     0, 0, 0, 0, 0,
+                     0, 0, 0, 1, 2,
                      0, 0, 0, 0, 0),
                    nrow = 5, ncol = 5, byrow = TRUE)
     expect_true(all(as.vector(Matrix::triu(fcmt_uc)) == as.vector(mt)))
@@ -46,15 +46,18 @@ test_that("test fcm_select, fixed", {
         c("a", "B", "c")
     )
     expect_equal(
-        featnames(fcm_select(fcmt_test2, c("a", "b", "c"), selection = "remove", valuetype = "fixed", verbose = FALSE)),
+        featnames(fcm_select(fcmt_test2, c("a", "b", "c"), selection = "remove",
+                             valuetype = "fixed", verbose = FALSE)),
         setdiff(featnames(fcmt_test2), c("a", "B", "c"))
     )
     expect_equal(
-        featnames(fcm_select(fcmt_test2, c("a", "b", "c"), selection = "keep", valuetype = "fixed", case_insensitive = FALSE, verbose = FALSE)),
+        featnames(fcm_select(fcmt_test2, c("a", "b", "c"), selection = "keep",
+                             valuetype = "fixed", case_insensitive = FALSE, verbose = FALSE)),
         c("a", "c")
     )
     expect_equal(
-        featnames(fcm_select(fcmt_test2, c("a", "b", "c"), selection = "remove", valuetype = "fixed", case_insensitive = FALSE, verbose = FALSE)),
+        featnames(fcm_select(fcmt_test2, c("a", "b", "c"), selection = "remove",
+                             valuetype = "fixed", case_insensitive = FALSE, verbose = FALSE)),
         setdiff(featnames(fcmt_test2), c("a", "c"))
     )
 #     expect_equal(
@@ -128,8 +131,8 @@ test_that("glob works if results in no features", {
 })
 
 test_that("longer selection than longer than features that exist (related to #447)", {
-    fcmt_test2 <- fcm(tokens(c(d1 = 'a b', d2 = 'a b c d e')))
-    feat <- c('b', 'c', 'd', 'e', 'f', 'g')
+    fcmt_test2 <- fcm(tokens(c(d1 = "a b", d2 = "a b c d e")))
+    feat <- c("b", "c", "d", "e", "f", "g")
     # bugs in C++ needs repeated tests
     expect_message(fcm_select(fcmt_test2, feat, verbose = TRUE),
                    "kept 4 features")
@@ -161,42 +164,41 @@ test_that("test fcm_compress retains class", {
 
 test_that("shortcut functions works", {
     fcmt_test2 <- fcm(tokens(data_corpus_inaugural[1:5]))
-    expect_equal(fcm_select(fcmt_test2, stopwords('english'), selection = 'keep'),
-                 fcm_keep(fcmt_test2, stopwords('english')))
-    expect_equal(fcm_select(fcmt_test2, stopwords('english'), selection = 'remove'),
-                 fcm_remove(fcmt_test2, stopwords('english')))
+    expect_equal(fcm_select(fcmt_test2, stopwords("english"), selection = "keep"),
+                 fcm_keep(fcmt_test2, stopwords("english")))
+    expect_equal(fcm_select(fcmt_test2, stopwords("english"), selection = "remove"),
+                 fcm_remove(fcmt_test2, stopwords("english")))
 })
 
 test_that("as.fcm is working", {
-    
+
     feat1 <- c("B", "A", "D", "C", "E")
     feat2 <- c("Z", "X", "N", "M", "K")
-    
-    mt1 <- matrix(c(1, 3, 1, 2, 2, 
-                   0, 1, 2, 0, 1, 
-                   0, 0, 0, 0, 0, 
-                   0, 0, 0, 1, 2, 
+
+    mt1 <- matrix(c(1, 3, 1, 2, 2,
+                   0, 1, 2, 0, 1,
+                   0, 0, 0, 0, 0,
+                   0, 0, 0, 1, 2,
                    0, 0, 0, 0, 0),
                  dimnames = list(feat1, feat1),
                  nrow = 5, ncol = 5, byrow = TRUE)
-    
+
     expect_true(is.fcm(as.fcm(mt1)))
-    expect_true(is.fcm(as.fcm(as(mt1, "dtCMatrix"))))
+    expect_true(is.fcm(as.fcm(as(as(mt1, "CsparseMatrix"), "triangularMatrix"))))
     expect_true(is.fcm(as.fcm(as(mt1, "dgCMatrix"))))
-    expect_true(is.fcm(as.fcm(as(mt1, "dgTMatrix"))))
-    expect_true(is.fcm(as.fcm(as(mt1, "dgeMatrix"))))
-    
-    mt2 <- matrix(c(1, 3, 1, 2, 2, 
-                    0, 1, 2, 0, 1, 
-                    0, 0, 0, 0, 0, 
-                    0, 0, 0, 1, 2, 
+    expect_true(is.fcm(as.fcm(as(mt1, "TsparseMatrix"))))
+    expect_true(is.fcm(as.fcm(Matrix(mt1, sparse = FALSE))))
+
+    mt2 <- matrix(c(1, 3, 1, 2, 2,
+                    0, 1, 2, 0, 1,
+                    0, 0, 0, 0, 0,
+                    0, 0, 0, 1, 2,
                     0, 0, 0, 0, 0),
                   dimnames = list(feat1, feat2),
                   nrow = 5, ncol = 5, byrow = TRUE)
-    
-    expect_error(as.fcm(mt2), 
-                "matrix must have the same rownames and colnames")
-    expect_error(as.fcm(as(mt2, "dgeMatrix")),
-                "matrix must have the same rownames and colnames")
 
+    expect_error(as.fcm(mt2),
+                "matrix must have the same rownames and colnames")
+    expect_error(as.fcm(Matrix(mt2, sparse = FALSE)),
+                "matrix must have the same rownames and colnames")
 })
