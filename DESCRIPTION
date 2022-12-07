@@ -1,5 +1,5 @@
 Package: quanteda
-Version: 3.2.3
+Version: 3.2.4
 Title: Quantitative Analysis of Textual Data
 Description: A fast, flexible, and comprehensive framework for 
     quantitative text analysis in R.  Provides functionality for corpus management,
@@ -27,7 +27,7 @@ Depends:
 Imports:
     fastmatch,
     magrittr,
-    Matrix (>= 1.2),
+    Matrix (>= 1.5-0),
     Rcpp (>= 0.12.12),
     RcppParallel,
     SnowballC,
