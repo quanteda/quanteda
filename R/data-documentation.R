@@ -82,7 +82,7 @@
 #' Young and Soroka (2012) also suggest the use of a pre-processing script to
 #' remove specific cases of some words (i.e., "good bye", or "nobody better",
 #' which should not be counted as positive). Pre-processing scripts are
-#' available at <http://www.snsoroka.com/data-lexicoder/>.
+#' available at <https://www.snsoroka.com/data-lexicoder/>.
 #' @section License and Conditions: 
 #'   The LSD is available for non-commercial academic purposes only. By using
 #'   `data_dictionary_LSD2015`, you accept these terms.
@@ -102,7 +102,7 @@
 #'   Lexicoder Sentiment Dictionary and related resources.
 #
 #'   Young, L. & Soroka, S. (2012). *Lexicoder Sentiment
-#'   Dictionary*. Available at <http://www.snsoroka.com/data-lexicoder/>.
+#'   Dictionary*. Available at <https://www.snsoroka.com/data-lexicoder/>.
 #'   
 #'   Young, L. & Soroka, S. (2012). Affective News: The Automated Coding of
 #'   Sentiment in Political Texts]. \doi{10.1080/10584609.2012.671234}.
