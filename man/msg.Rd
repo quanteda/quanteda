@@ -7,7 +7,7 @@
 msg(x, values = NULL, indices = NULL, pretty = TRUE, ...)
 }
 \arguments{
-\item{x}{message template to be passed to \code{\link[=sprintf]{sprintf()}}.}
+\item{x}{message template to be passed to \code{\link[=stri_sprintf]{stri_sprintf()}}.}
 
 \item{values}{list of values to be used in the template. Coerced to list if vector is given.}
 
