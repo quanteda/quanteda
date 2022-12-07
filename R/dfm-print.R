@@ -93,8 +93,8 @@ format_sparsity <- function(x) {
     x <- check_double(x, min = 0, max = 1.0)
     level <- c(0, 0.0001, 0.9999, 1)
     if (any(x == level))
-        return(sprintf("%.2f%%", x * 100))
-    v <- c("<0.01%", sprintf("%.2f%%", x * 100), ">99.99%")
+        return(stringi::stri_sprintf("%.2f%%", x * 100))
+    v <- c("<0.01%", stringi::stri_sprintf("%.2f%%", x * 100), ">99.99%")
     return(v[as.integer(cut(x, level))])
 }
 

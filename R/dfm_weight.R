@@ -117,7 +117,9 @@ dfm_weight.dfm <- function(x,
 
         weight <- Diagonal(x = weight)
         colnames(weight) <- colnames(x)
-        return(as.dfm(x %*% weight))
+        result <- x %*% weight
+        dimnames(result) <- dimnames(x)
+        return(result)
 
     } else {
         ### for scheme weights
