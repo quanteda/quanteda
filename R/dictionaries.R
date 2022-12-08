@@ -109,7 +109,7 @@ check_entries <- function(dict) {
 #'   Yoshikoder page, from Will Lowe
 #'   <https://conjugateprior.org/software/yoshikoder/>.
 #'
-#'   Lexicoder format, <http://www.snsoroka.com/data-lexicoder/>
+#'   Lexicoder format, <https://www.snsoroka.com/data-lexicoder/>
 #'
 #' @seealso [dfm], [as.dictionary()],
 #'   [`as.list()`][dictionary2-class], [is.dictionary()]
