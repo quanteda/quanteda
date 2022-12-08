@@ -27,9 +27,9 @@ build_dfm <- function(x, features,
                       docvars = data.frame(), meta = list(), 
                       class = "dfm", ...) {
     result <- new(class,
-        as(x, "dgCMatrix"),
-        docvars = docvars,
-        meta = make_meta("dfm", inherit = meta, ...)
+                  as(as(as(x, "CsparseMatrix"), "generalMatrix"), "dMatrix"),
+                  docvars = docvars,
+                  meta = make_meta("dfm", inherit = meta, ...)
     )
     # set names directly to avoid NULL
     result@Dimnames <- list(
@@ -226,7 +226,6 @@ build_dictionary2 <- function(x, meta = list(), class = "dictionary2", ...) {
 #' @rdname object-builders
 rebuild_dictionary2 <- function(x, attrs) {
     attr(x, "meta") <- attrs[["meta"]]
-    attr(x, "class") <- union(attrs[["class"]], "dictionary2")
     return(x)
 }
 
@@ -251,7 +250,7 @@ build_fcm <- function(x, features1, features2 = NULL,
                       meta = list(), 
                       class = "fcm", ...) {
     result <- new(class,
-                  as(x, "dgCMatrix"),
+                  as(as(as(x, "CsparseMatrix"), "generalMatrix"), "dMatrix"),
                   meta = make_meta("fcm", inherit = meta, ...)
     )
     # set names directly to avoid NULL

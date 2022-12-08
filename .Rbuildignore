@@ -31,3 +31,4 @@ quanteda.pdf
 ^\.lintr$
 ^tests/data_creation$
 ^\.github$
+^CRAN-SUBMISSION$

@@ -80,8 +80,8 @@ setMethod("rowMeans",
           signature = (x = "dfm"),
           function(x, ...) Matrix::rowMeans(as(x, "dgCMatrix"), ...))
 
-#' @param e1 first quantity in "+" operation for dfm
-#' @param e2 second quantity in "+" operation for dfm
+#' @param e1 first quantity in an \link[methods:S4groupGeneric]{Arith} operation for dfm
+#' @param e2 second quantity in an \link[methods:S4groupGeneric]{Arith} operation for dfm
 #' @rdname dfm-class
 setMethod("Arith", signature(e1 = "dfm", e2 = "numeric"),
           function(e1, e2) {
@@ -104,7 +104,6 @@ setMethod("Arith", signature(e1 = "numeric", e2 = "dfm"),
                      `^` = matrix2dfm(e1 ^ as(e2, "dgCMatrix"), e2@docvars, e2@meta)
               )
           })
-
 
 #' Coerce a dfm to a matrix or data.frame
 #'

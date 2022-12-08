@@ -1,7 +1,7 @@
 
 #' Conditionally format messages
 #' 
-#' @param x message template to be passed to [`sprintf()`].
+#' @param x message template to be passed to [`stri_sprintf()`].
 #' @param values list of values to be used in the template. Coerced to list if vector is given.
 #' @param indices list of integer to specify which value to be used.
 #' @param pretty if `TRUE`, message is passed to [`prettyNum()`].
@@ -36,7 +36,7 @@ msg <- function(x, values = NULL, indices = NULL, pretty = TRUE, ...) {
                 return(x[y])
             }, values, indices, SIMPLIFY = FALSE)
         }
-        msg <- do.call(sprintf, c(list(x), values))
+        msg <- do.call(stringi::stri_sprintf, c(list(x), values))
     } else {
         msg <- x
     }

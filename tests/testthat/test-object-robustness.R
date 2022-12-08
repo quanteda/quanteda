@@ -1,3 +1,19 @@
+test_that("check if objects are S4", {
+  
+  mat1 <- matrix(0)
+  class(mat1) <- "dfm"
+  expect_false(is.dfm(mat1))
+  
+  mat2 <- matrix(0)
+  class(mat2) <- "fcm"
+  expect_false(is.fcm(mat2))
+  
+  ls <- list()
+  class(ls) <- "dictionary2"
+  expect_false(is.dictionary(ls))
+  
+})
+
 test_that("corpus is/as methods work with old and new formats", {
     load("../data/pre_v2_objects/data_corpus_pre2.rda")
 

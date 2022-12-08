@@ -66,7 +66,7 @@ The normal way from CRAN, using your R GUI or
 Or for the latest development version:
 
     # devtools package required to install quanteda from Github 
-    devtools::install_github("quanteda/quanteda") 
+    remotes::install_github("quanteda/quanteda") 
 
 Because this compiles some C++ and Fortran source code, you will need to
 have installed the appropriate compilers to build the development

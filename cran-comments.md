@@ -1,13 +1,11 @@
 # Submission notes
 
-Minor updates to v3.2 consisting of bug fixes and minor feature additions.
-
-Fixes a problem on CRAN due to forthcoming changes in `match.arg()` output.
+Fixes test failures caused by recent changes to Matrix package behaviours.
 
 ## Test environments
 
-* local macOS 11.6, R 4.1.2
-* Ubuntu 20.04 LTS, R 4.1.2
+* local macOS 12.6.1, R 4.2.2
+* Ubuntu 20.04 LTS, R 4.2.2
 * Windows release via devtools::check_win_release()
 * Windows devel via devtools::check_win_devel()
 * Windows oldrelease via devtools::check_win_oldrelease()

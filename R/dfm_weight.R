@@ -117,7 +117,9 @@ dfm_weight.dfm <- function(x,
 
         weight <- Diagonal(x = weight)
         colnames(weight) <- colnames(x)
-        return(as.dfm(x %*% weight))
+        result <- x %*% weight
+        dimnames(result) <- dimnames(x)
+        return(result)
 
     } else {
         ### for scheme weights
@@ -413,7 +415,7 @@ dfm_tfidf.dfm <- function(x, scheme_tf = "count", scheme_df = "inverse",
 
     x <- dfm_weight(x, scheme = scheme_tf, base = base, force = force)
     v <- docfreq(x, scheme = scheme_df, base = base, ...)
-    j <- as(x, "dgTMatrix")@j + 1L
+    j <- as(x, "TsparseMatrix")@j + 1L
     x@x <- x@x * v[j]
     attrs <- attributes(x)
     field_object(attrs, "weight_df") <- c(

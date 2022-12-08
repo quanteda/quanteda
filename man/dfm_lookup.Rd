@@ -19,7 +19,7 @@ dfm_lookup(
 \arguments{
 \item{x}{the dfm to which the dictionary will be applied}
 
-\item{dictionary}{a \link{dictionary} class object}
+\item{dictionary}{a \link{dictionary}-class object}
 
 \item{levels}{levels of entries in a hierarchical dictionary that will be
 applied}
@@ -56,7 +56,7 @@ the document).
 \note{
 If using \code{dfm_lookup} with dictionaries containing multi-word
 values, matches will only occur if the features themselves are multi-word
-or formed from ngrams. A better way to match dictionary values that include
+or formed from n-grams. A better way to match dictionary values that include
 multi-word patterns is to apply \code{\link[=tokens_lookup]{tokens_lookup()}} to the tokens,
 and then construct the dfm.
 }

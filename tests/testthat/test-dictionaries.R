@@ -471,6 +471,19 @@ test_that("dictionary merge values in duplicate keys", {
                  dictionary(list(A = c("a", "aa", "aaa"),
                                  B = list(BB = c("bb", "bbb")),
                                  C = "c")))
+    expect_equal(rev(dict),
+                 dictionary(list(C = "c",
+                                 B = list(BB = c("bb", "bbb")),
+                                 A = c("a", "aa", "aaa"))))
+    
+    dict_join1 <- c(dictionary(list("Z" = "z", "X" = "x")), 
+                    dictionary(list("A" = "a", "Z" = "z")))
+    expect_equal(names(dict_join1), c("Z", "X", "A"))
+    
+    dict_join2 <- c(dictionary(list("D" = "d", "X" = "x")), 
+                    dictionary(list("D" = "d", "Z" = "z")))
+    expect_equal(names(dict_join2), c("D", "X", "Z"))
+        
 
 })
 
@@ -524,3 +537,50 @@ test_that("split_values() handle concatenators correctly", {
     )
 
 })
+
+test_that("flatten_dictionary() is working", {
+    
+    lis <- list("Z" = "z", 
+                "A" = list("B" = c("b", "B"), 
+                           c("a", "A", "aa")),
+                "C" = c("c", "C"), 
+                "D" = NULL)
+    
+    expect_error(flatten_dictionary(lis), 
+                 "dictionary must be a dictionary object")
+    
+    dict <- dictionary(lis, tolower = FALSE)
+    dict_flat1 <- flatten_dictionary(dict)
+    expect_true(is.dictionary(dict_flat1))
+    expect_equivalent(dict_flat1, 
+                      list("Z" = list("z"),
+                           "A.B" = list(c("b", "B")),
+                           "A" = list(c("a", "A", "aa")),
+                           "C" = list(c("c", "C")), 
+                           "D" = list(character())))
+    
+    dict_flat2 <- flatten_dictionary(dict, levels = 1)
+    expect_true(is.dictionary(dict_flat2))
+    expect_equivalent(dict_flat2, 
+                      list("Z" = list("z"),
+                           "A" = list(c("b", "B", "a", "A", "aa")),
+                           "C" = list(c("c", "C")), 
+                           "D" = list(character())))
+    dict_flat3 <- flatten_dictionary(dict, levels = 2)
+    expect_true(is.dictionary(dict_flat3))
+    expect_equivalent(dict_flat3, 
+                      list("B" = list(c("b", "B"))))
+    
+    expect_equal(names(flatten_dictionary(dict, levels = 10)),
+                 character())
+    expect_error(flatten_dictionary(dict, levels = -1:2),
+                 "The value of levels must be between 1 and 100")
+    
+    expect_equal(names(quanteda:::flatten_list(lis, levels = 10)), 
+                 character())
+    expect_equal(names(quanteda:::flatten_list(list())),
+                 character())
+    
+})
+
+

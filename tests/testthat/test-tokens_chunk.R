@@ -1,7 +1,7 @@
 test_that("tokens_chunk works", {
-    txt <- c(d1 = "a b c d", d2 = "e f g")
+    txt <- c(d1 = "a b c d", d2 = "e f g", d3 = "")
 
-    corp <- corpus(txt, docvars = data.frame(title = c("title1", "title2"),
+    corp <- corpus(txt, docvars = data.frame(title = c("title1", "title2", "title3"),
                                              stringsAsFactors = FALSE))
     toks <- tokens(corp)
 
@@ -11,7 +11,8 @@ test_that("tokens_chunk works", {
                           d2 = c("e", "f", "g")))
     expect_identical(attr(toks_chunk1, "docvars"),
                      data.frame("docname_" = c("d1", "d2"),
-                                "docid_" = factor(c("d1", "d2")),
+                                "docid_" = factor(c("d1", "d2"), 
+                                                  levels = c("d1", "d2", "d3")),
                                 "segid_" = c(1L, 1L),
                                 "title" = c("title1", "title2"),
                                 stringsAsFactors = FALSE))
@@ -24,7 +25,8 @@ test_that("tokens_chunk works", {
                           d2.2 = c("g")))
     expect_identical(attr(toks_chunk2, "docvars"),
                      data.frame("docname_" = c("d1.1", "d1.2", "d2.1", "d2.2"),
-                                "docid_" = factor(c("d1", "d1", "d2", "d2")),
+                                "docid_" = factor(c("d1", "d1", "d2", "d2"),
+                                                  levels = c("d1", "d2", "d3")),
                                 "segid_" = c(1L, 2L, 1L, 2L),
                                 "title" = c("title1", "title1", "title2", "title2"),
                                 stringsAsFactors = FALSE,
@@ -38,7 +40,8 @@ test_that("tokens_chunk works", {
                           d2.2 = c("g")))
     expect_identical(attr(toks_chunk3, "docvars"),
                      data.frame("docname_" = c("d1.1", "d1.2", "d2.1", "d2.2"),
-                                "docid_" = factor(c("d1", "d1", "d2", "d2")),
+                                "docid_" = factor(c("d1", "d1", "d2", "d2"),
+                                                  levels = c("d1", "d2", "d3")),
                                 "segid_" = c(1L, 2L, 1L, 2L),
                                 stringsAsFactors = FALSE,
                                 check.names = FALSE))
@@ -54,7 +57,8 @@ test_that("tokens_chunk works", {
                           d2.3 = c("g")))
     expect_identical(attr(toks_chunk4, "docvars"),
                      data.frame("docname_" = c("d1.1", "d1.2", "d1.3", "d1.4", "d2.1", "d2.2", "d2.3"),
-                                "docid_" = factor(c("d1", "d1", "d1", "d1", "d2", "d2", "d2")),
+                                "docid_" = factor(c("d1", "d1", "d1", "d1", "d2", "d2", "d2"),
+                                                  levels = c("d1", "d2", "d3")),
                                 "segid_" = c(1L, 2L, 3L, 4L, 1L, 2L, 3L),
                                 "title" = c("title1", "title1", "title1", "title1", "title2",
                                             "title2", "title2"),
@@ -91,7 +95,8 @@ test_that("tokens_chunk works", {
     expect_identical(
         attr(tokens_chunk(toks, 3), "docvars"),
         data.frame("docname_" = c("text1.1", "text1.2", "text2.1", "text2.2"),
-                   "docid_" = factor(c("text1", "text1", "text2", "text2")),
+                   "docid_" = factor(c("text1", "text1", "text2", "text2"),
+                                     levels = c("text1", "text2")),
                    "segid_" = c(1L, 2L, 1L, 2L),
                    stringsAsFactors = FALSE,
                    check.names = FALSE)

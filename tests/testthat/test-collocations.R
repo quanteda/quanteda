@@ -165,27 +165,26 @@ test_that("kwic works as expected with and without collocations phrases", {
                            stringsAsFactors = FALSE)
     class(coll_tri) <- c("collocations", "data.frame")
 
-    suppressWarnings({
+    
     expect_equal(
-        as.data.frame(kwic(txt, coll_bi))$keyword,
+        as.data.frame(kwic(toks_uni, coll_bi))$keyword,
         c("a b", "e g", "g h",
           "a b", "e g", "g h")
     )
     expect_equal(
-        as.data.frame(kwic(txt, coll_tri))$keyword,
+        as.data.frame(kwic(toks_uni, coll_tri))$keyword,
         c("e g h", "e g h")
     )
 
     expect_equal(
-        as.data.frame(kwic(txt, as.phrase(coll_bi)))$keyword,
+        as.data.frame(kwic(toks_uni, as.phrase(coll_bi)))$keyword,
         c("a b", "e g", "g h",
           "a b", "e g", "g h")
     )
     expect_equal(
-        as.data.frame(kwic(txt, as.phrase(dict_bi)))$keyword,
+        as.data.frame(kwic(toks_uni, as.phrase(dict_bi)))$keyword,
         c("a b", "a b")
     )
-    })
 
     expect_equal(nrow(kwic(toks_uni, coll_bi)), 6)
     expect_equal(nrow(kwic(toks_uni, coll_tri)), 2)

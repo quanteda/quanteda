@@ -1,3 +1,19 @@
+# quanteda 3.2.3
+
+## Bug fixes and stability enhancements
+
+* **Matrix** package calls updated for compatibility with **Matrix** 1.4.2. (#2182)
+* Changes to C++ code for `fcm()` to prevent some (chance) errors downstream in **LSX**. (#2181)
+
+# quanteda 3.2.2
+
+## Bug fixes and stability enhancements
+
+* `fcm()` computes the marginal frequency of upper-case tokens correctly (#2176).
+* `tokens_chunk()` keeps all the docid, including those of empty documents, in the original object. 
+* `tokens_select()` recycles values when the length of `startpos` or `endpos` is less than `ndoc(x)`.
+* `tokens_lookup()` and `dfm_lookup()` can apply very large dictionaries (more than 100,000 keys).
+
 # quanteda 3.2.1
 
 ## Bug fixes and stability enhancements

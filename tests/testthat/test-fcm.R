@@ -409,3 +409,34 @@ test_that("fcm raise nicer error message, #1267", {
     expect_error(mx[4, 5, TRUE], "Subscript out of bounds")
     expect_error(mx[1:4, 1:5, TRUE], "Subscript out of bounds")
 })
+
+test_that("margin is correct (#2176)" , {
+  
+  txt <- "A D a C e A D f E b A C E D"
+
+  toks <- tokens(txt)
+  fcmt <- fcm(toks)
+  expect_identical(
+    fcmt@meta$object$margin,
+    featfreq(dfm(toks, tolower = FALSE))
+  )
+  
+  expect_identical(
+    fcm(dfm(toks, tolower = TRUE))@meta$object$margin,
+    featfreq(dfm(toks, tolower = TRUE))
+  )
+  
+  expect_identical(
+    fcm(dfm(toks, tolower = FALSE))@meta$object$margin,
+    featfreq(dfm(toks, tolower = FALSE))
+  )
+  
+  toks2 <- tokens_tolower(toks)
+  fcmt2 <- fcm(toks2)
+  expect_identical(
+    fcmt2@meta$object$margin,
+    featfreq(dfm(toks2, tolower = FALSE))
+  )
+  
+})
+

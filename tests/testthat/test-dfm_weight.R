@@ -270,3 +270,4 @@ test_that("featfreq() works", {
         c(a = 4, b = 2, c = 1)
     )
 })
+

@@ -8,8 +8,8 @@
 #' or text-based object, while the most common use of `tokens_select` will be to
 #' select tokens with only positive pattern matches from a list of regular
 #' expressions, including a dictionary. `startpos` and `endpos` determine the
-#' positions of tokens searched for `pattern` and areas affected are 
-#' expanded by `window`.
+#' positions of tokens searched for `pattern` and areas affected are expanded by
+#' `window`.
 #' @param x [tokens] object whose token elements will be removed or kept
 #' @inheritParams pattern
 #' @param selection whether to `"keep"` or `"remove"` the tokens matching
@@ -37,8 +37,8 @@
 #'   negative indexes, counting starts at the ending token of the document, so
 #'   that -1 denotes the last token in the document, -2 the second to last, etc.
 #'   When the length of the vector is equal to `ndoc`, tokens in corresponding
-#'   positions will be selected. Otherwise, only the first element in the vector
-#'   is used.
+#'   positions will be selected; when it is less than `ndoc`, values are
+#'   repeated to make them equal in length.
 #' @param min_nchar,max_nchar optional numerics specifying the minimum and
 #'   maximum length in characters for tokens to be removed or kept; defaults are
 #'   `NULL` for no limits.  These are applied after (and hence, in addition to)
@@ -141,8 +141,8 @@ tokens_select.tokens <- function(x, pattern = NULL,
     valuetype <- match.arg(valuetype)
     padding <- check_logical(padding)
     window <- check_integer(window, min_len = 1, max_len = 2, min = 0)
-    startpos <- check_integer(startpos, max_len = Inf)
-    endpos <- check_integer(endpos, max_len = Inf)
+    startpos <- check_integer(startpos, max_len = pmax(1, ndoc(x)))
+    endpos <- check_integer(endpos, max_len = pmax(1, ndoc(x)))
     verbose <- check_logical(verbose)
     
     attrs <- attributes(x)
@@ -189,6 +189,10 @@ tokens_select.tokens <- function(x, pattern = NULL,
 
     if (verbose) message_select(selection, length(ids), 0)
     if (length(window) == 1) window <- rep(window, 2)
+    
+    startpos <- rep(startpos, length.out = ndoc(x))
+    endpos <- rep(endpos, length.out = ndoc(x))
+    
     if (selection == "keep") {
         result <- qatd_cpp_tokens_select(x, type, ids, 1, padding, window[1], window[2], startpos, endpos)
     } else {

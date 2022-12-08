@@ -50,7 +50,7 @@ for (year in 1947:2017) {
   cat(as.character(Sys.time()), year, committee, "\n")
   temp <- get_meeting(meetingName = committee, year = year)
   if (is.null(temp)) next
-  saveRDS(temp, file = sprintf("%s/%s_%s.rds", folder_download, year, committee))
+  saveRDS(temp, file = stringi::stri_sprintf("%s/%s_%s.rds", folder_download, year, committee))
   Sys.sleep(10)
 }
 

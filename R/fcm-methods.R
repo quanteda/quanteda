@@ -6,11 +6,11 @@
 #' @export
 #' @examples
 #' # compress an fcm
-#' fcmat1 <- fcm(tokens("A D a C E a d F e B A C E D"), 
+#' fcmat1 <- fcm(tokens("A D a C E a d F e B A C E D"),
 #'              context = "window", window = 3)
 #' ## this will produce an error:
 #' # fcm_compress(fcmat1)
-#' 
+#'
 #' txt <- c("The fox JUMPED over the dog.",
 #'          "The dog jumped over the fox.")
 #' toks <- tokens(txt, remove_punct = TRUE)
@@ -38,11 +38,11 @@ fcm_compress.fcm <- function(x) {
 }
 
 #' Sort an fcm in alphabetical order of the features
-#' 
+#'
 #' Sorts an [fcm] in alphabetical order of the features.
-#' 
+#'
 #' @param x [fcm] object
-#' @return A [fcm] object whose features have been alphabetically sorted. 
+#' @return A [fcm] object whose features have been alphabetically sorted.
 #'   Differs from [fcm_sort()] in that this function sorts the fcm by
 #'   the feature labels, not the counts of the features.
 #' @export
@@ -53,14 +53,14 @@ fcm_compress.fcm <- function(x) {
 #' rownames(fcmat1)[3] <- colnames(fcmat1)[3] <- "Z"
 #' fcmat1
 #' fcm_sort(fcmat1)
-#' 
+#'
 #' # with tri = TRUE
 #' fcmat2 <- fcm(tokens(c("A X Y C B A", "X Y C A B B")), tri = TRUE)
 #' rownames(fcmat2)[3] <- colnames(fcmat2)[3] <- "Z"
 #' fcmat2
 #' fcm_sort(fcmat2)
 fcm_sort <- function(x) {
-    UseMethod("fcm_sort")    
+    UseMethod("fcm_sort")
 }
 
 #' @export
@@ -72,7 +72,7 @@ fcm_sort.default <- function(x) {
 fcm_sort.fcm <- function(x) {
     x <- as.fcm(x)
     attrs <- attributes(x)
-    x <- as(x, "dgTMatrix")
+    x <- as(x, "TsparseMatrix")
     x <- x[order(rownames(x)), order(colnames(x))]
     if (field_object(attrs, "tri")) {
         swap <- x@i > x@j
@@ -84,7 +84,7 @@ fcm_sort.fcm <- function(x) {
 }
 
 #' Coercion and checking functions for fcm objects
-#' 
+#'
 #' Convert an eligible input object into a fcm, or check whether an object is a
 #' fcm.  Current eligible inputs for coercion to a dfm are: [matrix],
 #' (sparse) [Matrix][Matrix::Matrix] and other [fcm] objects.
@@ -130,19 +130,16 @@ as.fcm.Matrix <- function(x) {
 #' @param slots slots a list of values to be assigned to slots
 #' @keywords internal
 matrix2fcm <- function(x, meta = NULL) {
-    
     rowname <- rownames(x)
     if (nrow(x) > length(rowname))
         rowname <- paste0(quanteda_options("base_featname"), seq_len(nrow(x)))
-    
+
     colname <- colnames(x)
     if (ncol(x) > length(colname))
         colname <- paste0(quanteda_options("base_featname"), seq_len(ncol(x)))
-    
+
     if (is.null(meta))
         meta <- make_meta("fcm")
-    
-    build_fcm(as(Matrix(x, sparse = TRUE), "dgCMatrix"),
-              rowname, colname,
-              meta = meta)
+
+    build_fcm(x, rowname, colname, meta = meta)
 }
