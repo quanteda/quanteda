@@ -1,3 +1,9 @@
+# quanteda 3.2.4
+
+## Bug fixes and stability enhancements
+
+Fixes test failures caused by recent changes to **Matrix** package behaviours on some operating systems.
+
 # quanteda 3.2.3
 
 ## Bug fixes and stability enhancements
