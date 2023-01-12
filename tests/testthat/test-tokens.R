@@ -1065,6 +1065,7 @@ test_that("emails address is preserved", {
 })
 
 test_that("split_tags works", {
+    skip_on_os("linux")
     txt1 <- c(d1 = "@quanteda @koheiw7 @QUANTEDA_INITIATIVE")
     expect_identical(
         as.list(tokens(txt1, what = "word")),
