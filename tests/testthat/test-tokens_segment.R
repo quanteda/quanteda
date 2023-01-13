@@ -153,7 +153,11 @@ test_that("tokens_segment works with tags", {
     expect_equal(vars3$pattern, c("__TEST__", "__TEST2__", "__TEST3__"))
     expect_equal(as.list(toks_seg3),
                  list(d1.1 = c("One", "two"), d1.2 = "Three", d2.1 = "Four"))
-
+    expect_equal(docid(toks_seg3), 
+                 factor(c("d1", "d1", "d2"), levels = c("d1", "d2")))
+    expect_equal(segid(toks_seg3), 
+                 c(1L, 2L, 1L))
+    
     toks_seg4 <- tokens_segment(toks, "__[A-Z0-9]+__", valuetype = "regex",
                                 pattern_position = "before", extract_pattern = FALSE, use_docvars = FALSE)
     vars4 <- docvars(toks_seg4)
@@ -163,4 +167,8 @@ test_that("tokens_segment works with tags", {
                  list(d1.1 = c("__TEST__", "One", "two"), 
                       d1.2 = c("__TEST2__", "Three"), 
                       d2.1 = c("__TEST3__", "Four")))
+    expect_equal(docid(toks_seg4), 
+                 factor(c("d1", "d1", "d2"), levels = c("d1", "d2")))
+    expect_equal(segid(toks_seg4), 
+                 c(1L, 2L, 1L))
 })

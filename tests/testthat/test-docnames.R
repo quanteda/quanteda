@@ -123,30 +123,42 @@ test_that("docnames are the same after subsetting (#2127)", {
     expect_identical(docnames(corp[c("doc1.2", "doc2.1", "doc2.2")]), c("doc1.2", "doc2.1", "doc2.2"))
     expect_identical(docnames(corp[c(2, 4, 5)]), c("doc1.2", "doc2.1", "doc2.2"))
     expect_identical(docnames(corp[c(FALSE, TRUE, FALSE, TRUE, TRUE)]), c("doc1.2", "doc2.1", "doc2.2"))
+    expect_identical(docid(corp[c(2, 4, 5)]), factor(c("doc1", "doc2", "doc2")))
+    expect_identical(segid(corp[c(2, 4, 5)]), c(2L, 1L, 2L))
     
     expect_identical(docnames(toks[c("doc1.2", "doc2.1", "doc2.2")]), c("doc1.2", "doc2.1", "doc2.2"))
     expect_identical(docnames(toks[c(2, 4, 5)]), c("doc1.2", "doc2.1", "doc2.2"))
     expect_identical(docnames(toks[c(FALSE, TRUE, FALSE, TRUE, TRUE)]), c("doc1.2", "doc2.1", "doc2.2"))
-    
+    expect_identical(docid(toks[c(2, 4, 5)]), factor(c("doc1", "doc2", "doc2")))
+    expect_identical(segid(toks[c(2, 4, 5)]), c(2L, 1L, 2L))
+
     expect_identical(docnames(dfmat[c("doc1.2", "doc2.1", "doc2.2"),]), c("doc1.2", "doc2.1", "doc2.2"))
     expect_identical(docnames(dfmat[c(2, 4, 5),]), c("doc1.2", "doc2.1", "doc2.2"))
     expect_identical(docnames(dfmat[c(FALSE, TRUE, FALSE, TRUE, TRUE),]), c("doc1.2", "doc2.1", "doc2.2"))
+    expect_identical(docid(dfmat[c(2, 4, 5),]), factor(c("doc1", "doc2", "doc2")))
+    expect_identical(segid(dfmat[c(2, 4, 5),]), c(2L, 1L, 2L))
     
     # preserve order of segid 
     expect_identical(docnames(corp[c("doc1.1", "doc1.3", "doc1.1")]), c("doc1.1", "doc1.3", "doc1.2"))
     expect_identical(docnames(corp[c(1, 3, 1)]), c("doc1.1", "doc1.3", "doc1.2"))
     expect_identical(docnames(corp[c("doc2.1", "doc1.2", "doc2.1")]), c("doc2.1", "doc1.1", "doc2.2"))
     expect_identical(docnames(corp[c(4, 2, 4)]), c("doc2.1", "doc1.1", "doc2.2"))
+    expect_identical(docid(corp[c(4, 2, 4)]), factor(c("doc2", "doc1", "doc2"), levels = c("doc1", "doc2")))
+    expect_identical(segid(corp[c(4, 2, 4)]), c(1L, 1L, 2L))
     
     expect_identical(docnames(toks[c("doc1.1", "doc1.3", "doc1.1")]), c("doc1.1", "doc1.3", "doc1.2"))
     expect_identical(docnames(toks[c(1, 3, 1)]), c("doc1.1", "doc1.3", "doc1.2"))
     expect_identical(docnames(toks[c("doc2.1", "doc1.2", "doc2.1")]), c("doc2.1", "doc1.1", "doc2.2"))
     expect_identical(docnames(toks[c(4, 2, 4)]), c("doc2.1", "doc1.1", "doc2.2"))
+    expect_identical(docid(toks[c(4, 2, 4)]), factor(c("doc2", "doc1", "doc2"), levels = c("doc1", "doc2")))
+    expect_identical(segid(toks[c(4, 2, 4)]), c(1L, 1L, 2L))
     
     expect_identical(docnames(dfmat[c("doc1.1", "doc1.3", "doc1.1"),]), c("doc1.1", "doc1.3", "doc1.2"))
     expect_identical(docnames(dfmat[c(1, 3, 1),]), c("doc1.1", "doc1.3", "doc1.2"))
     expect_identical(docnames(dfmat[c("doc2.1", "doc1.2", "doc2.1"),]), c("doc2.1", "doc1.1", "doc2.2"))
     expect_identical(docnames(dfmat[c(4, 2, 4),]), c("doc2.1", "doc1.1", "doc2.2"))
+    expect_identical(docid(dfmat[c(4, 2, 4),]), factor(c("doc2", "doc1", "doc2"), levels = c("doc1", "doc2")))
+    expect_identical(segid(dfmat[c(4, 2, 4),]), c(1L, 1L, 2L))
 })
 
     
