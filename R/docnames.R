@@ -212,37 +212,25 @@ docid.dfm <- function(x) {
 #' @rdname docnames
 #' @export
 segid <- function(x) {
-  UseMethod("segid")
+    UseMethod("segid")
 }
 
 #' @export
 segid.default <- function(x) {
-  check_class(class(x), "segid")
+    check_class(class(x), "segid")
 }
 
 #' @export
 segid.corpus <- function(x) {
-  tryCatch({
-    return(get_docvars(x, "segid_", system = TRUE, drop = TRUE))
-  }, error = function(e) {
-    return(NULL)
-  })
+    get_docvars(x, "segid_", system = TRUE, drop = TRUE)
 }
 
 #' @export
 segid.tokens <- function(x) {
-  tryCatch({
-    return(get_docvars(x, "segid_", system = TRUE, drop = TRUE))
-  }, error = function(e) {
-    return(NULL)
-  })
+    get_docvars(x, "segid_", system = TRUE, drop = TRUE)
 }
 
 #' @export
 segid.dfm <- function(x) {
-  tryCatch({
-    return(get_docvars(x, "segid_", system = TRUE, drop = TRUE))
-  }, error = function(e) {
-    return(NULL)
-  })
+    get_docvars(x, "segid_", system = TRUE, drop = TRUE)
 }
