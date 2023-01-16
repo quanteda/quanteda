@@ -372,6 +372,13 @@ test_that("test docid methods", {
     )
 })
 
+test_that("test segid methods", {
+  expect_error(
+    segid(0),
+    "segid() only works on corpus, dfm, tokens objects.", fixed = TRUE
+  )
+})
+
 test_that("friendly_class_undefined_message for featfreq()", {
     expect_error(
         featfreq(tokens(data_char_sampletext)),

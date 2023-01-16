@@ -66,12 +66,16 @@ test_that("corpus_segment works with use_docvars TRUE or FALSE", {
     expect_equal(docvars(corp_seg1, "test"), c("A", "A", "B"))
     expect_equal(docid(corp_seg1), 
                  factor(c("d1", "d1", "d2"), levels = c("d1", "d2", "d3")))
+    expect_equal(segid(corp_seg1), 
+                 c(1L, 2L, 1L))
     
     corp_seg2 <- corpus_segment(corp, "##[A-Z0-9]+", valuetype = "regex", 
                                 pattern_position = "before", extract_pattern = TRUE, use_docvars = FALSE)
     expect_error(docvars(corp_seg2, "test"))
     expect_equal(docid(corp_seg2), 
                  factor(c("d1", "d1", "d2"), levels = c("d1", "d2", "d3")))
+    expect_equal(segid(corp_seg2), 
+                 c(1L, 2L, 1L))
 })
 
 test_that("char_segment works with Japanese texts", {

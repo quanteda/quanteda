@@ -145,26 +145,34 @@ setMethod("rownames<-",
 
 #' @rdname docnames
 #' @return `docid` returns an internal variable denoting the original "docname"
-#'   from which a document came.  Unless an object has been reshaped (e.g.
-#'   [corpus_reshape()], split (e.g.[tokens_split()]), or segmented (e.g.
-#'   [corpus_segment()]), `docid(x)` will return the docnames.
-#' @note `docid` is designed primarily for developers, not for end users.  In
+#'   from which a document came.  If an object has been reshaped (e.g.
+#'   [corpus_reshape()] or segmented (e.g. [corpus_segment()]), `docid(x)` returns 
+#'   the original docnames but `segid(x)` does the serial number of those segments 
+#'   within the original document. 
+#' @note `docid` and `segid` are designed primarily for developers, not for end users.  In
 #'   most cases, you will want `docnames` instead.  It is, however, the
 #'   default for [groups], so that documents that have been previously reshaped
-#'   (e.g. [corpus_reshape()], split (e.g.[tokens_split()]), or segmented (e.g.
+#'   (e.g. [corpus_reshape()] or segmented (e.g.
 #'   [corpus_segment()]) will be regrouped into their original `docnames` when
 #'   `groups = docid(x)`.
 #' @export
 #' @examples 
-#' # docid
+#' 
 #' corp <- corpus(c(textone = "This is a sentence.  Another sentence.  Yet another.",
 #'                  textwo = "Sentence 1. Sentence 2."))
 #' corpsent <- corp %>%
 #'     corpus_reshape(to = "sentences")
 #' docnames(corpsent)
+#' 
+#' # docid
 #' docid(corpsent)
 #' docid(tokens(corpsent))
 #' docid(dfm(tokens(corpsent)))
+#' 
+#' # segid
+#' segid(corpsent)
+#' segid(tokens(corpsent))
+#' segid(dfm(tokens(corpsent)))
 docid <- function(x) {
     UseMethod("docid")
 }
@@ -199,4 +207,30 @@ docid.dfm <- function(x) {
     }, error = function(e) {
         return(NULL)
     })
+}
+
+#' @rdname docnames
+#' @export
+segid <- function(x) {
+    UseMethod("segid")
+}
+
+#' @export
+segid.default <- function(x) {
+    check_class(class(x), "segid")
+}
+
+#' @export
+segid.corpus <- function(x) {
+    get_docvars(x, "segid_", system = TRUE, drop = TRUE)
+}
+
+#' @export
+segid.tokens <- function(x) {
+    get_docvars(x, "segid_", system = TRUE, drop = TRUE)
+}
+
+#' @export
+segid.dfm <- function(x) {
+    get_docvars(x, "segid_", system = TRUE, drop = TRUE)
 }
