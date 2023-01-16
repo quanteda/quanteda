@@ -6,11 +6,11 @@ data](https://cdn.rawgit.com/quanteda/quanteda/master/images/quanteda_logo.svg)]
 
 [![CRAN
 Version](https://www.r-pkg.org/badges/version/quanteda)](https://CRAN.R-project.org/package=quanteda)
-[![](https://img.shields.io/badge/devel%20version-3.2.4-royalblue.svg)](https://github.com/quanteda/quanteda)
+[![](https://img.shields.io/badge/devel%20version-3.2.5-royalblue.svg)](https://github.com/quanteda/quanteda)
 [![Downloads](https://cranlogs.r-pkg.org/badges/quanteda)](https://CRAN.R-project.org/package=quanteda)
 [![Total
 Downloads](https://cranlogs.r-pkg.org/badges/grand-total/quanteda?color=orange)](https://CRAN.R-project.org/package=quanteda)
-[![R-CMD-check](https://github.com/quanteda/quanteda/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/quanteda/quanteda/actions/workflows/R-CMD-check.yaml)
+[![R-CMD-check](https://github.com/quanteda/quanteda/actions/workflows/check-standard.yaml/badge.svg)](https://github.com/quanteda/quanteda/actions/workflows/check-standard.yaml)
 [![codecov](https://codecov.io/gh/quanteda/quanteda/branch/master/graph/badge.svg)](https://app.codecov.io/gh/quanteda/quanteda)
 [![DOI](https://zenodo.org/badge/5424649.svg)](https://zenodo.org/badge/latestdoi/5424649)
 [![DOI](http://joss.theoj.org/papers/10.21105/joss.00774/status.svg)](https://doi.org/10.21105/joss.00774)
