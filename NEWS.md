@@ -1,3 +1,9 @@
+# quanteda 3.2.5
+
+## Changes and additions
+
+* `segid()` is added to extract document serial numbers from corpus, tokens or dfm objects.
+
 # quanteda 3.2.4
 
 ## Bug fixes and stability enhancements
