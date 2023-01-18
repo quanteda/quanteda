@@ -77,7 +77,7 @@ inline Tokens recompile(Texts texts,
     std::vector<bool> flags_unique(ids_new.size(), false);
     //Rcout << setw(10) << "" << ": " << 0 << " -> " << ids_new[0] << "\n";
     
-    /// dev::Timer timer;
+    //dev::Timer timer;
     
     // Check if IDs are all used
     bool all_used;
@@ -181,9 +181,9 @@ inline Tokens recompile(Texts texts,
     }
     //dev::stop_timer("Convert IDs", timer);
     
-    dev::start_timer("Wrap", timer);
+    //dev::start_timer("Wrap", timer);
     Tokens texts_ = Rcpp::wrap(texts);
-    dev::stop_timer("Wrap", timer);
+    //dev::stop_timer("Wrap", timer);
     CharacterVector types_new_;
     if (flag_encode) {
         // dev::start_timer("Encode", timer);

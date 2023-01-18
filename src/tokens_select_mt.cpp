@@ -222,12 +222,16 @@ List qatd_cpp_tokens_select(const List &texts_,
         }
     }
 #endif
-    // dev::stop_timer("Token select", timer);
+    dev::Timer timer;
+    dev::start_timer("Recompile", timer);
+    List out;
     if (rec) {
-        return recompile(texts, types, true, false, is_encoded(types_));
+        out = recompile(texts, types, true, false, is_encoded(types_));
     } else {
-        return recompile0(texts, types, is_encoded(types_));
+        out = recompile0(texts, types, is_encoded(types_));
     }
+    dev::stop_timer("Recompile", timer);
+    return(out);
 }
 
 /***R
