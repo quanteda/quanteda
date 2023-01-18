@@ -11,7 +11,9 @@ NULL
 #'   [tokens] object.
 #' @method as.list tokens
 #' @export
-as.list.tokens <- function(x, ...) {
+as.list.tokens <- function(x, ..., recompile = FALSE) {
+    if (recompile)
+      x <- recompile(x)
     types <- c("", types(x))
     result <- lapply(unclass(x), function(y) types[y + 1]) # shift index to show padding
     attributes(result) <- NULL

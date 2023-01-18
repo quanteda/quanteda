@@ -181,9 +181,9 @@ inline Tokens recompile(Texts texts,
     }
     //dev::stop_timer("Convert IDs", timer);
     
-    //dev::start_timer("Wrap", timer);
+    dev::start_timer("Wrap", timer);
     Tokens texts_ = Rcpp::wrap(texts);
-    //dev::stop_timer("Wrap", timer);
+    dev::stop_timer("Wrap", timer);
     CharacterVector types_new_;
     if (flag_encode) {
         // dev::start_timer("Encode", timer);
@@ -198,3 +198,23 @@ inline Tokens recompile(Texts texts,
     return texts_;
     
 }
+
+
+inline Tokens recompile0(Texts texts, 
+                        Types types, 
+                        const bool flag_encode = true){
+  
+    Tokens texts_ = Rcpp::wrap(texts);
+    CharacterVector types_;
+    if (flag_encode) {
+      types_ = encode(types);
+    } else {
+      types_ = Rcpp::wrap(types);
+    }
+    texts_.attr("padding") = true;
+    texts_.attr("types") = types_;
+    texts_.attr("class") = "tokens";
+    return texts_;
+  
+}
+

@@ -69,7 +69,8 @@ tokens_select <- function(x, pattern, selection = c("keep", "remove"),
                           case_insensitive = TRUE, padding = FALSE, window = 0,
                           min_nchar = NULL, max_nchar = NULL,
                           startpos = 1L, endpos = -1L,
-                          verbose = quanteda_options("verbose")) {
+                          verbose = quanteda_options("verbose"),
+                          ...) {
     UseMethod("tokens_select")
 }
 
@@ -80,7 +81,8 @@ tokens_select.default <- function(x, pattern = NULL,
                                   case_insensitive = TRUE, padding = FALSE, window = 0,
                                   min_nchar = NULL, max_nchar = NULL,
                                   startpos = 1L, endpos = -1L,
-                                  verbose = quanteda_options("verbose")) {
+                                  verbose = quanteda_options("verbose"),
+                                  ...) {
     check_class(class(x), "tokens_select")
 }
 
@@ -134,7 +136,8 @@ tokens_select.tokens <- function(x, pattern = NULL,
                                  case_insensitive = TRUE, padding = FALSE, window = 0,
                                  min_nchar = NULL, max_nchar = NULL,
                                  startpos = 1L, endpos = -1L,
-                                 verbose = quanteda_options("verbose")) {
+                                 verbose = quanteda_options("verbose"), 
+                                 recompile = TRUE) {
 
     x <- as.tokens(x)
     selection <- match.arg(selection)
@@ -194,9 +197,9 @@ tokens_select.tokens <- function(x, pattern = NULL,
     endpos <- rep(endpos, length.out = ndoc(x))
     
     if (selection == "keep") {
-        result <- qatd_cpp_tokens_select(x, type, ids, 1, padding, window[1], window[2], startpos, endpos)
+        result <- qatd_cpp_tokens_select(x, type, ids, 1, padding, window[1], window[2], startpos, endpos, recompile)
     } else {
-        result <- qatd_cpp_tokens_select(x, type, ids, 2, padding, window[1], window[2], startpos, endpos)
+        result <- qatd_cpp_tokens_select(x, type, ids, 2, padding, window[1], window[2], startpos, endpos, recompile)
     }
     rebuild_tokens(result, attrs)
 }

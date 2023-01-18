@@ -183,7 +183,8 @@ List qatd_cpp_tokens_select(const List &texts_,
                             int window_left,
                             int window_right,
                             const IntegerVector pos_from_,
-                            const IntegerVector pos_to_){
+                            const IntegerVector pos_to_,
+                            bool rec = true){
     
     Texts texts = Rcpp::as<Texts>(texts_);
     Types types = Rcpp::as<Types>(types_);
@@ -222,7 +223,11 @@ List qatd_cpp_tokens_select(const List &texts_,
     }
 #endif
     // dev::stop_timer("Token select", timer);
-    return recompile(texts, types, true, false, is_encoded(types_));
+    if (rec) {
+        return recompile(texts, types, true, false, is_encoded(types_));
+    } else {
+        return recompile0(texts, types, is_encoded(types_));
+    }
 }
 
 /***R
