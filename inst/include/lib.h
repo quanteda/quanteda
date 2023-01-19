@@ -147,17 +147,13 @@ namespace quanteda{
         return false;
     }
     
-    /* 
-     * This function is faster than Rcpp::wrap() but the stability need to be evaluated.
-     */
-    inline List as_list(Texts &texts, bool sort = false){
-        List list(texts.size());
-        for (std::size_t h = 0; h < texts.size(); h++) {
-            Text text = texts[h];
-            IntegerVector temp = Rcpp::wrap(text);
-            list[h] = temp;
-        }
-        return list;
+    inline List as_list(Texts &texts){
+      List texts_(texts.size());
+      for (std::size_t h = 0; h < texts.size(); h++) {
+        IntegerVector text_ = IntegerVector(std::begin(texts[h]), std::end(texts[h]));
+        texts_[h] = text_;
+      }
+      return texts_;
     }
     
     inline S4 to_matrix(Triplets& tri, int nrow, int ncol, bool symmetric) {
