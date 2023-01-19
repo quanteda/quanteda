@@ -228,7 +228,7 @@ List qatd_cpp_tokens_select(const List &texts_,
     if (rec) {
         out = recompile(texts, types, true, false, is_encoded(types_));
     } else {
-        out = recompile0(texts, types, is_encoded(types_));
+        out = recompile2(texts, types, is_encoded(types_));
     }
     dev::stop_timer("Recompile", timer);
     return(out);
