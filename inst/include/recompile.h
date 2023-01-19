@@ -77,7 +77,7 @@ inline Tokens recompile(Texts texts,
     std::vector<bool> flags_unique(ids_new.size(), false);
     //Rcout << setw(10) << "" << ": " << 0 << " -> " << ids_new[0] << "\n";
     
-    /// dev::Timer timer;
+    //dev::Timer timer;
     
     // Check if IDs are all used
     bool all_used;
@@ -198,3 +198,49 @@ inline Tokens recompile(Texts texts,
     return texts_;
     
 }
+
+
+inline Tokens recompile1(Texts texts, 
+                        Types types, 
+                        const bool flag_encode = true){
+  
+    Tokens texts_ = Rcpp::wrap(texts);
+    CharacterVector types_;
+    if (flag_encode) {
+        types_ = encode(types);
+    } else {
+        types_ = Rcpp::wrap(types);
+    }
+    texts_.attr("padding") = true;
+    texts_.attr("types") = types_;
+    texts_.attr("class") = "tokens";
+    return texts_;
+  
+}
+
+inline Tokens recompile2(Texts texts, 
+                         Types types, 
+                         const bool flag_encode = true){
+  
+  List texts_(texts.size());
+  for (std::size_t h = 0; h < texts.size(); h++) {
+      //Text text = texts[h]; 
+      std::vector<int> text(std::begin(texts[h]), std::end(texts[h]));
+      IntegerVector text_ = Rcpp::wrap(text);
+      texts_[h] = text_;
+  }
+  //Tokens texts_ = Rcpp::wrap(texts);
+  CharacterVector types_;
+  if (flag_encode) {
+    types_ = encode(types);
+  } else {
+    types_ = Rcpp::wrap(types);
+  }
+  texts_.attr("padding") = true;
+  texts_.attr("types") = types_;
+  texts_.attr("class") = "tokens";
+  return texts_;
+  
+}
+
+

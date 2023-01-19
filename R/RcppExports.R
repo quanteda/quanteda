@@ -37,8 +37,8 @@ qatd_cpp_tokens_segment <- function(texts_, types_, patterns_, remove, position)
     .Call(`_quanteda_qatd_cpp_tokens_segment`, texts_, types_, patterns_, remove, position)
 }
 
-qatd_cpp_tokens_select <- function(texts_, types_, words_, mode, padding, window_left, window_right, pos_from_, pos_to_) {
-    .Call(`_quanteda_qatd_cpp_tokens_select`, texts_, types_, words_, mode, padding, window_left, window_right, pos_from_, pos_to_)
+qatd_cpp_tokens_select <- function(texts_, types_, words_, mode, padding, window_left, window_right, pos_from_, pos_to_, rec = TRUE) {
+    .Call(`_quanteda_qatd_cpp_tokens_select`, texts_, types_, words_, mode, padding, window_left, window_right, pos_from_, pos_to_, rec)
 }
 
 qatd_cpp_is_grouped_numeric <- function(values_, groups_) {
