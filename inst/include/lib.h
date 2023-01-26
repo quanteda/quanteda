@@ -31,6 +31,7 @@ namespace quanteda{
     typedef ListOf<IntegerVector> Tokens;
     typedef std::vector<unsigned int> Text;
     typedef std::vector<Text> Texts;
+    typedef XPtr<quanteda::Texts> Xtokens;
     
 #if QUANTEDA_USE_TBB
     typedef tbb::atomic<int> IntParam;
