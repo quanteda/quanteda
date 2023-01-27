@@ -8,47 +8,59 @@ using namespace quanteda;
  * The number of threads is set by RcppParallel::setThreadOptions()
  * @used tokens_select()
  * @creator Kohei Watanabe
- * @param texts_ tokens ojbect
+ * @param text_ tokens ojbect
  * @param words_ list of features to remove or keep 
  * @param mode_ 1: keep; 2: remove
  * @param padding_ fill places where features are removed with zero
  * 
  */
 
+
+
+// // [[Rcpp::export]]
+// Xtokens qatd_cpp_nothing(Xtokens xptr,
+//                             const CharacterVector types_
+// ){
+//     
+//     Texts texts = *xptr;
+//     //text text = &xptr;
+//     
+//     // for (std::size_t h = 0; h < text.size(); h++) {
+//     //     dev::print_ngram(text[h]);
+//     // }
+//     
+//     // dev::stop_timer("Token select", timer);
+//     //return recompile(text, types, true, false, is_encoded(types_));
+//     return Xtokens(&text);
+// }
+
 // [[Rcpp::export]]
-Xtokens qatd_cpp_nothing(Xtokens &xptr,
-                            const CharacterVector types_
-){
+Xtokens qatd_cpp_as_xtokens(const List text_) {
     
-    Texts texts = *xptr;
-    //Texts texts = &xptr;
-    
+    Texts texts = Rcpp::as<Texts>(text_);
+    //std::vector<int> *text = &temp;
+    Texts *ptr = new Texts(texts.size()) ;
     for (std::size_t h = 0; h < texts.size(); h++) {
-        dev::print_ngram(texts[h]);
+      ptr->at(h) = texts[h];
     }
-    
-    // dev::stop_timer("Token select", timer);
-    //return recompile(texts, types, true, false, is_encoded(types_));
-    return Xtokens(&texts);
+    //texts->push_back({1, 2, 3}) ;
+    //texts->push_back({4, 5, 6}) ;
+    //texts->at(0) = {7, 8};
+    //Xtokens p(texts, true);
+    return Xtokens(ptr, true);
 }
 
 // [[Rcpp::export]]
-Xtokens qatd_cpp_as_xtokens(const List &texts_) {
-    Texts texts = Rcpp::as<Texts>(texts_);
-    return Xtokens(&texts);
-}
-
-// [[Rcpp::export]]
-List qatd_cpp_as_tokens(Xtokens &xptr) {
+List qatd_cpp_as_tokens(Xtokens xptr) {
     Texts texts = *xptr;
-    Tokens texts_ = Rcpp::wrap(texts);
+    List texts_ = Rcpp::wrap(texts);
     return texts_;
 }
 
 /***R
-toks <- list(rep(1:10, 1))
+toks <- rep(list(sample(100)), 100)
 xtoks <- qatd_cpp_as_xtokens(toks)
-qatd_cpp_nothing(xtoks, letters)
+#qatd_cpp_nothing(xtoks, letters)
 qatd_cpp_as_tokens(xtoks)
 
 */

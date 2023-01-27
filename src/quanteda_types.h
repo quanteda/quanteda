@@ -1,2 +1,2 @@
 #include "lib.h"
-typedef XPtr<quanteda::Texts> Xtokens;
+typedef XPtr< std::vector<int> > Xtokens;
