@@ -17,22 +17,17 @@ using namespace quanteda;
 
 
 
-// // [[Rcpp::export]]
-// Xtokens qatd_cpp_nothing(Xtokens xptr,
-//                             const CharacterVector types_
-// ){
-//     
-//     Texts texts = *xptr;
-//     //text text = &xptr;
-//     
-//     // for (std::size_t h = 0; h < text.size(); h++) {
-//     //     dev::print_ngram(text[h]);
-//     // }
-//     
-//     // dev::stop_timer("Token select", timer);
-//     //return recompile(text, types, true, false, is_encoded(types_));
-//     return Xtokens(&text);
-// }
+// [[Rcpp::export]]
+Xtokens qatd_cpp_nothing(Xtokens ptr,
+                         const CharacterVector types_
+){
+    Texts texts = *ptr;
+    for (std::size_t h = 0; h < ptr->size(); h++) {
+        texts[h].push_back(0);
+        ptr->at(h) =  texts[h];
+    }
+    return Xtokens(ptr, true);
+}
 
 // [[Rcpp::export]]
 Xtokens qatd_cpp_as_xtokens(const List text_) {
@@ -60,7 +55,7 @@ List qatd_cpp_as_tokens(Xtokens xptr) {
 /***R
 toks <- rep(list(sample(100)), 100)
 xtoks <- qatd_cpp_as_xtokens(toks)
-#qatd_cpp_nothing(xtoks, letters)
+xtoks <- qatd_cpp_nothing(xtoks, letters)
 qatd_cpp_as_tokens(xtoks)
 
 */
