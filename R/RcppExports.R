@@ -25,6 +25,18 @@ qatd_cpp_tokens_ngrams <- function(texts_, types_, delim_, ns_, skips_) {
     .Call(`_quanteda_qatd_cpp_tokens_ngrams`, texts_, types_, delim_, ns_, skips_)
 }
 
+qatd_cpp_nothing <- function(xptr) {
+    .Call(`_quanteda_qatd_cpp_nothing`, xptr)
+}
+
+qatd_cpp_as_xptr <- function(text_, types_) {
+    .Call(`_quanteda_qatd_cpp_as_xptr`, text_, types_)
+}
+
+qatd_cpp_as_list <- function(xptr) {
+    .Call(`_quanteda_qatd_cpp_as_list`, xptr)
+}
+
 qatd_cpp_tokens_recompile <- function(texts_, types_, gap = TRUE, dup = TRUE) {
     .Call(`_quanteda_qatd_cpp_tokens_recompile`, texts_, types_, gap, dup)
 }
@@ -39,6 +51,10 @@ qatd_cpp_tokens_segment <- function(texts_, types_, patterns_, remove, position)
 
 qatd_cpp_tokens_select <- function(texts_, types_, words_, mode, padding, window_left, window_right, pos_from_, pos_to_) {
     .Call(`_quanteda_qatd_cpp_tokens_select`, texts_, types_, words_, mode, padding, window_left, window_right, pos_from_, pos_to_)
+}
+
+qatd_cpp_tokens_select_xptr <- function(xptr, words_, mode, padding, window_left, window_right, pos_from_, pos_to_) {
+    .Call(`_quanteda_qatd_cpp_tokens_select_xptr`, xptr, words_, mode, padding, window_left, window_right, pos_from_, pos_to_)
 }
 
 qatd_cpp_is_grouped_numeric <- function(values_, groups_) {
