@@ -37,6 +37,14 @@ qatd_cpp_as_list <- function(xptr) {
     .Call(`_quanteda_qatd_cpp_as_list`, xptr)
 }
 
+qatd_cpp_ndoc <- function(xptr) {
+    .Call(`_quanteda_qatd_cpp_ndoc`, xptr)
+}
+
+qatd_cpp_types <- function(xptr) {
+    .Call(`_quanteda_qatd_cpp_types`, xptr)
+}
+
 qatd_cpp_tokens_recompile <- function(texts_, types_, gap = TRUE, dup = TRUE) {
     .Call(`_quanteda_qatd_cpp_tokens_recompile`, texts_, types_, gap, dup)
 }

@@ -32,6 +32,16 @@ List qatd_cpp_as_list(TokensPtr xptr) {
     return recompile(xptr->texts, xptr->types, true, true, true);
 }
 
+// [[Rcpp::export]]
+int qatd_cpp_ndoc(TokensPtr xptr) {
+    return xptr->texts.size();
+}
+
+// [[Rcpp::export]]
+CharacterVector qatd_cpp_types(TokensPtr xptr) {
+    return encode(xptr->types);
+}
+
 /***R
 toks <- rep(list(sample(100)), 100)
 xtoks <- qatd_cpp_as_xptr(toks, letters)

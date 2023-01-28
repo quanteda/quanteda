@@ -136,6 +136,28 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// qatd_cpp_ndoc
+int qatd_cpp_ndoc(TokensPtr xptr);
+RcppExport SEXP _quanteda_qatd_cpp_ndoc(SEXP xptrSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< TokensPtr >::type xptr(xptrSEXP);
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_ndoc(xptr));
+    return rcpp_result_gen;
+END_RCPP
+}
+// qatd_cpp_types
+CharacterVector qatd_cpp_types(TokensPtr xptr);
+RcppExport SEXP _quanteda_qatd_cpp_types(SEXP xptrSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< TokensPtr >::type xptr(xptrSEXP);
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_types(xptr));
+    return rcpp_result_gen;
+END_RCPP
+}
 // qatd_cpp_tokens_recompile
 List qatd_cpp_tokens_recompile(const List& texts_, const CharacterVector types_, const bool gap, const bool dup);
 RcppExport SEXP _quanteda_qatd_cpp_tokens_recompile(SEXP texts_SEXP, SEXP types_SEXP, SEXP gapSEXP, SEXP dupSEXP) {
@@ -293,6 +315,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_quanteda_qatd_cpp_nothing", (DL_FUNC) &_quanteda_qatd_cpp_nothing, 1},
     {"_quanteda_qatd_cpp_as_xptr", (DL_FUNC) &_quanteda_qatd_cpp_as_xptr, 2},
     {"_quanteda_qatd_cpp_as_list", (DL_FUNC) &_quanteda_qatd_cpp_as_list, 1},
+    {"_quanteda_qatd_cpp_ndoc", (DL_FUNC) &_quanteda_qatd_cpp_ndoc, 1},
+    {"_quanteda_qatd_cpp_types", (DL_FUNC) &_quanteda_qatd_cpp_types, 1},
     {"_quanteda_qatd_cpp_tokens_recompile", (DL_FUNC) &_quanteda_qatd_cpp_tokens_recompile, 4},
     {"_quanteda_qatd_cpp_tokens_replace", (DL_FUNC) &_quanteda_qatd_cpp_tokens_replace, 4},
     {"_quanteda_qatd_cpp_tokens_segment", (DL_FUNC) &_quanteda_qatd_cpp_tokens_segment, 5},
