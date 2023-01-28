@@ -3,18 +3,6 @@
 #include "recompile.h"
 using namespace quanteda;
 
-/* 
- * This function selects features in tokens object with multiple threads. 
- * The number of threads is set by RcppParallel::setThreadOptions()
- * @used tokens_select()
- * @creator Kohei Watanabe
- * @param text_ tokens ojbect
- * @param words_ list of features to remove or keep 
- * @param mode_ 1: keep; 2: remove
- * @param padding_ fill places where features are removed with zero
- * 
- */
-
 // [[Rcpp::export]]
 TokensPtr qatd_cpp_nothing(TokensPtr xptr){
     Texts texts = xptr->texts;
@@ -39,8 +27,9 @@ TokensPtr qatd_cpp_as_xptr(const List text_,
 // [[Rcpp::export]]
 List qatd_cpp_as_list(TokensPtr xptr) {
     //Texts texts = xptr->texts;
-    List texts_ = Rcpp::wrap(xptr->texts);
-    return texts_;
+    //List texts_ = Rcpp::wrap(xptr->texts);
+    //return texts_;
+    return recompile(xptr->texts, xptr->types, true, true, true);
 }
 
 /***R
