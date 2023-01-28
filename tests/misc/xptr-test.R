@@ -44,3 +44,10 @@ microbenchmark::microbenchmark(
     times = 10
 )
 
+microbenchmark::microbenchmark(
+    toks %>% tokens_select_old() %>% tokens_select_old() %>% tokens_select_old(),
+    toks %>% tokens_select_new() %>% tokens_select_new() %>% tokens_select_new(),
+    xtoks %>% tokens_select_new() %>% tokens_select_new() %>% tokens_select_new(),
+    times = 10
+)
+
