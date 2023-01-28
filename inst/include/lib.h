@@ -31,9 +31,7 @@ namespace quanteda{
     typedef ListOf<IntegerVector> Tokens;
     typedef std::vector<unsigned int> Text;
     typedef std::vector<Text> Texts;
-    //typedef XPtr< std::vector<int> > Xtokens;
-    typedef XPtr<Texts> Xtokens;
-    
+
 #if QUANTEDA_USE_TBB
     typedef tbb::atomic<int> IntParam;
     typedef tbb::atomic<unsigned int> UintParam;
@@ -98,6 +96,16 @@ namespace quanteda{
     typedef std::vector<Triplet> Triplets; // for fcm_mt, ca_mt, wordfish_mt
 #endif    
     
+    // XPtr objects -------------------------------------------------------
+    
+    class TokensObj {
+    public:
+      TokensObj(Texts texts_, Types types_): texts(texts_), types(types_){}
+      //TokensObj(Texts texts_): texts(texts_){}
+      Texts texts;
+      Types types;
+    };
+    typedef XPtr<TokensObj> TokensPtr;
     
     inline String join_strings(CharacterVector &tokens_, 
                        const String delim_ = " "){

@@ -15,47 +15,38 @@ using namespace quanteda;
  * 
  */
 
-
-
 // [[Rcpp::export]]
-Xtokens qatd_cpp_nothing(Xtokens ptr,
-                         const CharacterVector types_
-){
-    Texts texts = *ptr;
-    for (std::size_t h = 0; h < ptr->size(); h++) {
+TokensPtr qatd_cpp_nothing(TokensPtr xptr){
+    Texts texts = xptr->texts;
+    for (std::size_t h = 0; h < xptr->texts.size(); h++) {
         texts[h].push_back(0);
-        ptr->at(h) =  texts[h];
+        xptr->texts[h] =  texts[h];
     }
-    return Xtokens(ptr, true);
+    return xptr;
+    //return TokensPtr(xptr, true);
 }
 
 // [[Rcpp::export]]
-Xtokens qatd_cpp_as_xtokens(const List text_) {
+TokensPtr qatd_cpp_as_xptr(const List text_, 
+                              const CharacterVector types_) {
     
     Texts texts = Rcpp::as<Texts>(text_);
-    //std::vector<int> *text = &temp;
-    Texts *ptr = new Texts(texts.size()) ;
-    for (std::size_t h = 0; h < texts.size(); h++) {
-      ptr->at(h) = texts[h];
-    }
-    //texts->push_back({1, 2, 3}) ;
-    //texts->push_back({4, 5, 6}) ;
-    //texts->at(0) = {7, 8};
-    //Xtokens p(texts, true);
-    return Xtokens(ptr, true);
+    Types types = Rcpp::as<Types>(types_);
+    TokensObj *ptr = new TokensObj(texts, types);
+    return TokensPtr(ptr, true);
 }
 
 // [[Rcpp::export]]
-List qatd_cpp_as_tokens(Xtokens xptr) {
-    Texts texts = *xptr;
-    List texts_ = Rcpp::wrap(texts);
+List qatd_cpp_as_list(TokensPtr xptr) {
+    //Texts texts = xptr->texts;
+    List texts_ = Rcpp::wrap(xptr->texts);
     return texts_;
 }
 
 /***R
 toks <- rep(list(sample(100)), 100)
-xtoks <- qatd_cpp_as_xtokens(toks)
-xtoks <- qatd_cpp_nothing(xtoks, letters)
-qatd_cpp_as_tokens(xtoks)
+xtoks <- qatd_cpp_as_xptr(toks, letters)
+toks <- qatd_cpp_nothing(xtoks)
+qatd_cpp_as_list(xtoks)
 
 */
