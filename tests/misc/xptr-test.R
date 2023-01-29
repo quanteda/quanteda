@@ -2,6 +2,21 @@ require(quanteda)
 data(data_corpus_sotu, package = "quanteda.corpora")
 corp <- as.corpus(data_corpus_sotu)
 toks <- tokens(corp)
+xtoks <- as.externalptr(toks)
+class(toks)
+
+toks2 <- tokens_select(toks, data_dictionary_LSD2015)
+xtoks2 <- tokens_select(xtoks, data_dictionary_LSD2015)
+
+identical(toks2, as.tokens(xtoks2))
+
+microbenchmark::microbenchmark(
+    tokens_select(toks, data_dictionary_LSD2015),
+    tokens_select(xtoks, data_dictionary_LSD2015),
+    times = 10
+)
+
+#--------------------------
 
 type <- types(toks)
 ids <- object2id(data_dictionary_LSD2015, type)
@@ -10,6 +25,8 @@ endpos <- rep(-1, length.out = ndoc(toks))
 
 xtoks <- quanteda:::qatd_cpp_as_xptr(toks, type)
 class(xtoks)
+
+tokens_select(xtoks, data_dictionary_LSD2015)
 
 tokens_select_old <- function(x) {
     quanteda:::qatd_cpp_tokens_select(x, type, ids, 1, TRUE, 0, 0, startpos, endpos)

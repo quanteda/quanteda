@@ -105,10 +105,15 @@ build_tokens <- function(x, types, padding = FALSE,
 
 #' @rdname object-builders
 rebuild_tokens <- function(x, attrs) {
-    attr(x, "names") <- attrs[["docvars"]][["docname_"]]
+    
     attr(x, "docvars") <- attrs[["docvars"]]
     attr(x, "meta") <- attrs[["meta"]]
-    attr(x, "class") <- union(attrs[["class"]], "tokens")
+    if (is.list(x)) {
+        # NOTE: externalptr have no element names
+        attr(x, "names") <- attrs[["docvars"]][["docname_"]]
+        # NOTE: externalptr needs different class name
+        attr(x, "class") <- union(attrs[["class"]], "tokens") 
+    }
 
     # drop extra attributes from tokens_segment
     try({attr(x, "docnum") <- NULL}, silent = TRUE)

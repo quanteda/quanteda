@@ -128,7 +128,7 @@ tokens_select.default <- function(x, pattern = NULL,
 #' # combining positional selection with pattern matching
 #' tokens_select(toks, "t*", endpos = 3)
 #'
-tokens_select.tokens <- function(x, pattern = NULL,
+tokens_select.externalptr <- function(x, pattern = NULL,
                                  selection = c("keep", "remove"),
                                  valuetype = c("glob", "regex", "fixed"),
                                  case_insensitive = TRUE, padding = FALSE, window = 0,
@@ -136,7 +136,6 @@ tokens_select.tokens <- function(x, pattern = NULL,
                                  startpos = 1L, endpos = -1L,
                                  verbose = quanteda_options("verbose")) {
 
-    x <- as.tokens(x)
     selection <- match.arg(selection)
     valuetype <- match.arg(valuetype)
     padding <- check_logical(padding)
@@ -194,11 +193,40 @@ tokens_select.tokens <- function(x, pattern = NULL,
     endpos <- rep(endpos, length.out = ndoc(x))
     
     if (selection == "keep") {
-        result <- qatd_cpp_tokens_select(x, type, ids, 1, padding, window[1], window[2], startpos, endpos)
+        result <- qatd_cpp_tokens_select_xptr(x, ids, 1, padding, window[1], window[2], startpos, endpos)
     } else {
-        result <- qatd_cpp_tokens_select(x, type, ids, 2, padding, window[1], window[2], startpos, endpos)
+        result <- qatd_cpp_tokens_select_xptr(x, ids, 2, padding, window[1], window[2], startpos, endpos)
     }
     rebuild_tokens(result, attrs)
+}
+
+#' @export
+as.externalptr <- function(x) {
+    attrs <- attributes(x)
+    result <- qatd_cpp_as_xptr(x, attrs$types)
+    rebuild_tokens(result, attrs)
+}
+
+#' @export
+ndoc.externalptr <- function(x) {
+    qatd_cpp_ndoc(x)
+}
+
+#' @export
+types.externalptr <- function(x) {
+    qatd_cpp_types(x)
+}
+
+#' @export
+as.tokens.externalptr <- function(x) {
+    attrs <- attributes(x)
+    result <- qatd_cpp_as_list(x)
+    rebuild_tokens(result, attrs)
+}
+
+#' @export
+tokens_select.tokens <- function(x, ...) {
+    as.tokens(tokens_select(as.externalptr(x), ...))
 }
 
 #' @rdname tokens_select
