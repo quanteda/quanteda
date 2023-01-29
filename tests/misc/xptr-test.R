@@ -4,17 +4,62 @@ corp <- as.corpus(data_corpus_sotu)
 toks <- tokens(corp)
 xtoks <- as.externalptr(toks)
 class(toks)
+class(xtoks)
+identical(types(toks), types(xtoks))
 
-toks2 <- tokens_select(toks, data_dictionary_LSD2015)
-xtoks2 <- tokens_select(xtoks, data_dictionary_LSD2015)
+toks2 <- tokens_remove(toks, stopwords(), padding = TRUE) %>% 
+    tokens_select(data_dictionary_LSD2015, padding = TRUE)
+xtoks2 <- tokens_remove(xtoks, stopwords(), padding = TRUE) %>% 
+    tokens_select(data_dictionary_LSD2015, padding = TRUE)
 
-identical(toks2, as.tokens(xtoks2))
+identical(as.list(toks2), as.list(as.tokens(xtoks2)))
 
 microbenchmark::microbenchmark(
-    tokens_select(toks, data_dictionary_LSD2015),
-    tokens_select(xtoks, data_dictionary_LSD2015),
+    tokens_remove(toks, stopwords(), padding = TRUE),
+    tokens_remove(as.externalptr(toks), stopwords(), padding = TRUE),
     times = 10
 )
+
+microbenchmark::microbenchmark(
+    tokens_select(toks, data_dictionary_LSD2015, padding = TRUE),
+    tokens_select(as.externalptr(toks), data_dictionary_LSD2015, padding = TRUE),
+    times = 10
+)
+
+microbenchmark::microbenchmark(
+    tokens_remove(toks, stopwords(), padding = TRUE),
+    tokens_remove(xtoks, stopwords(), padding = TRUE),
+    times = 10
+)
+
+# simulate tokens internal -----------------------------
+toks_raw <- tokens(corp, remove_separators = FALSE, remove_punct = FALSE, 
+                   remove_symbols = FALSE, remove_numbers = FALSE, remove_url = FALSE)
+removals <- quanteda:::removals_regex(separators = TRUE, punct = TRUE,
+                                      symbols = TRUE, numbers = TRUE, url = TRUE)
+microbenchmark::microbenchmark(
+    lis0 = tokens_remove(toks_raw, paste(unlist(removals), collapse = "|"),
+                         valuetype = "regex",  padding = TRUE),
+    lis5 = toks_raw %>% 
+        tokens_remove(removals[[1]], valuetype = "regex", padding = TRUE) %>% 
+        tokens_remove(removals[[2]], valuetype = "regex", padding = TRUE) %>% 
+        tokens_remove(removals[[3]], valuetype = "regex", padding = TRUE) %>% 
+        tokens_remove(removals[[4]], valuetype = "regex", padding = TRUE) %>% 
+        tokens_remove(removals[[5]], valuetype = "regex", padding = TRUE),
+    xptr0 = tokens_remove(as.externalptr(toks_raw), paste(unlist(removals), collapse = "|"),
+                         valuetype = "regex",  padding = TRUE),
+    xptr1 = tokens_remove(as.externalptr(toks_raw), paste(unlist(removals), collapse = "|"),
+                          valuetype = "regex",  padding = TRUE) %>% 
+        as.tokens(),
+    xptr5 = as.externalptr(toks_raw) %>% 
+        tokens_remove(removals[[1]], valuetype = "regex", padding = TRUE) %>% 
+        tokens_remove(removals[[2]], valuetype = "regex", padding = TRUE) %>% 
+        tokens_remove(removals[[3]], valuetype = "regex", padding = TRUE) %>% 
+        tokens_remove(removals[[4]], valuetype = "regex", padding = TRUE) %>% 
+        tokens_remove(removals[[5]], valuetype = "regex", padding = TRUE),
+    times = 10
+)
+
 
 #--------------------------
 
