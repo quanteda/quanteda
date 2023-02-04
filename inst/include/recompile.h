@@ -150,7 +150,7 @@ inline Tokens recompile(Texts texts,
         } else {
             types_ = Rcpp::wrap(types);
         }
-        Tokens texts_ = Rcpp::wrap(texts);
+        Tokens texts_ = as_list(texts);
         texts_.attr("padding") = (bool)flags_used[0];
         texts_.attr("types") = types_;
         texts_.attr("class") = "tokens";
@@ -182,7 +182,7 @@ inline Tokens recompile(Texts texts,
     //dev::stop_timer("Convert IDs", timer);
     
     //dev::start_timer("Wrap", timer);
-    Tokens texts_ = Rcpp::wrap(texts);
+    Tokens texts_ = as_list(texts);
     //dev::stop_timer("Wrap", timer);
     CharacterVector types_new_;
     if (flag_encode) {
