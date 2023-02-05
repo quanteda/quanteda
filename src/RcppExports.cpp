@@ -102,62 +102,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// qatd_cpp_nothing
-TokensPtr qatd_cpp_nothing(TokensPtr xptr);
-RcppExport SEXP _quanteda_qatd_cpp_nothing(SEXP xptrSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< TokensPtr >::type xptr(xptrSEXP);
-    rcpp_result_gen = Rcpp::wrap(qatd_cpp_nothing(xptr));
-    return rcpp_result_gen;
-END_RCPP
-}
-// qatd_cpp_as_xptr
-TokensPtr qatd_cpp_as_xptr(const List text_, const CharacterVector types_);
-RcppExport SEXP _quanteda_qatd_cpp_as_xptr(SEXP text_SEXP, SEXP types_SEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const List >::type text_(text_SEXP);
-    Rcpp::traits::input_parameter< const CharacterVector >::type types_(types_SEXP);
-    rcpp_result_gen = Rcpp::wrap(qatd_cpp_as_xptr(text_, types_));
-    return rcpp_result_gen;
-END_RCPP
-}
-// qatd_cpp_as_list
-List qatd_cpp_as_list(TokensPtr xptr);
-RcppExport SEXP _quanteda_qatd_cpp_as_list(SEXP xptrSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< TokensPtr >::type xptr(xptrSEXP);
-    rcpp_result_gen = Rcpp::wrap(qatd_cpp_as_list(xptr));
-    return rcpp_result_gen;
-END_RCPP
-}
-// qatd_cpp_ndoc
-int qatd_cpp_ndoc(TokensPtr xptr);
-RcppExport SEXP _quanteda_qatd_cpp_ndoc(SEXP xptrSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< TokensPtr >::type xptr(xptrSEXP);
-    rcpp_result_gen = Rcpp::wrap(qatd_cpp_ndoc(xptr));
-    return rcpp_result_gen;
-END_RCPP
-}
-// qatd_cpp_types
-CharacterVector qatd_cpp_types(TokensPtr xptr);
-RcppExport SEXP _quanteda_qatd_cpp_types(SEXP xptrSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< TokensPtr >::type xptr(xptrSEXP);
-    rcpp_result_gen = Rcpp::wrap(qatd_cpp_types(xptr));
-    return rcpp_result_gen;
-END_RCPP
-}
 // qatd_cpp_tokens_recompile
 List qatd_cpp_tokens_recompile(const List& texts_, const CharacterVector types_, const bool gap, const bool dup);
 RcppExport SEXP _quanteda_qatd_cpp_tokens_recompile(SEXP texts_SEXP, SEXP types_SEXP, SEXP gapSEXP, SEXP dupSEXP) {
@@ -238,6 +182,73 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// qatd_cpp_nothing
+TokensPtr qatd_cpp_nothing(TokensPtr xptr);
+RcppExport SEXP _quanteda_qatd_cpp_nothing(SEXP xptrSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< TokensPtr >::type xptr(xptrSEXP);
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_nothing(xptr));
+    return rcpp_result_gen;
+END_RCPP
+}
+// qatd_cpp_as_xptr
+TokensPtr qatd_cpp_as_xptr(const List text_, const CharacterVector types_);
+RcppExport SEXP _quanteda_qatd_cpp_as_xptr(SEXP text_SEXP, SEXP types_SEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const List >::type text_(text_SEXP);
+    Rcpp::traits::input_parameter< const CharacterVector >::type types_(types_SEXP);
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_as_xptr(text_, types_));
+    return rcpp_result_gen;
+END_RCPP
+}
+// qatd_cpp_copy_xptr
+TokensPtr qatd_cpp_copy_xptr(TokensPtr xptr);
+RcppExport SEXP _quanteda_qatd_cpp_copy_xptr(SEXP xptrSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< TokensPtr >::type xptr(xptrSEXP);
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_copy_xptr(xptr));
+    return rcpp_result_gen;
+END_RCPP
+}
+// qatd_cpp_as_list
+List qatd_cpp_as_list(TokensPtr xptr);
+RcppExport SEXP _quanteda_qatd_cpp_as_list(SEXP xptrSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< TokensPtr >::type xptr(xptrSEXP);
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_as_list(xptr));
+    return rcpp_result_gen;
+END_RCPP
+}
+// qatd_cpp_ndoc
+int qatd_cpp_ndoc(TokensPtr xptr);
+RcppExport SEXP _quanteda_qatd_cpp_ndoc(SEXP xptrSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< TokensPtr >::type xptr(xptrSEXP);
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_ndoc(xptr));
+    return rcpp_result_gen;
+END_RCPP
+}
+// qatd_cpp_types
+CharacterVector qatd_cpp_types(TokensPtr xptr);
+RcppExport SEXP _quanteda_qatd_cpp_types(SEXP xptrSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< TokensPtr >::type xptr(xptrSEXP);
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_types(xptr));
+    return rcpp_result_gen;
+END_RCPP
+}
 // qatd_cpp_is_grouped_numeric
 bool qatd_cpp_is_grouped_numeric(NumericVector values_, IntegerVector groups_);
 RcppExport SEXP _quanteda_qatd_cpp_is_grouped_numeric(SEXP values_SEXP, SEXP groups_SEXP) {
@@ -312,16 +323,17 @@ static const R_CallMethodDef CallEntries[] = {
     {"_quanteda_qatd_cpp_tokens_compound", (DL_FUNC) &_quanteda_qatd_cpp_tokens_compound, 7},
     {"_quanteda_qatd_cpp_tokens_lookup", (DL_FUNC) &_quanteda_qatd_cpp_tokens_lookup, 6},
     {"_quanteda_qatd_cpp_tokens_ngrams", (DL_FUNC) &_quanteda_qatd_cpp_tokens_ngrams, 5},
-    {"_quanteda_qatd_cpp_nothing", (DL_FUNC) &_quanteda_qatd_cpp_nothing, 1},
-    {"_quanteda_qatd_cpp_as_xptr", (DL_FUNC) &_quanteda_qatd_cpp_as_xptr, 2},
-    {"_quanteda_qatd_cpp_as_list", (DL_FUNC) &_quanteda_qatd_cpp_as_list, 1},
-    {"_quanteda_qatd_cpp_ndoc", (DL_FUNC) &_quanteda_qatd_cpp_ndoc, 1},
-    {"_quanteda_qatd_cpp_types", (DL_FUNC) &_quanteda_qatd_cpp_types, 1},
     {"_quanteda_qatd_cpp_tokens_recompile", (DL_FUNC) &_quanteda_qatd_cpp_tokens_recompile, 4},
     {"_quanteda_qatd_cpp_tokens_replace", (DL_FUNC) &_quanteda_qatd_cpp_tokens_replace, 4},
     {"_quanteda_qatd_cpp_tokens_segment", (DL_FUNC) &_quanteda_qatd_cpp_tokens_segment, 5},
     {"_quanteda_qatd_cpp_tokens_select", (DL_FUNC) &_quanteda_qatd_cpp_tokens_select, 9},
     {"_quanteda_qatd_cpp_tokens_select_xptr", (DL_FUNC) &_quanteda_qatd_cpp_tokens_select_xptr, 8},
+    {"_quanteda_qatd_cpp_nothing", (DL_FUNC) &_quanteda_qatd_cpp_nothing, 1},
+    {"_quanteda_qatd_cpp_as_xptr", (DL_FUNC) &_quanteda_qatd_cpp_as_xptr, 2},
+    {"_quanteda_qatd_cpp_copy_xptr", (DL_FUNC) &_quanteda_qatd_cpp_copy_xptr, 1},
+    {"_quanteda_qatd_cpp_as_list", (DL_FUNC) &_quanteda_qatd_cpp_as_list, 1},
+    {"_quanteda_qatd_cpp_ndoc", (DL_FUNC) &_quanteda_qatd_cpp_ndoc, 1},
+    {"_quanteda_qatd_cpp_types", (DL_FUNC) &_quanteda_qatd_cpp_types, 1},
     {"_quanteda_qatd_cpp_is_grouped_numeric", (DL_FUNC) &_quanteda_qatd_cpp_is_grouped_numeric, 2},
     {"_quanteda_qatd_cpp_is_grouped_character", (DL_FUNC) &_quanteda_qatd_cpp_is_grouped_character, 2},
     {"_quanteda_qatd_cpp_set_load_factor", (DL_FUNC) &_quanteda_qatd_cpp_set_load_factor, 2},

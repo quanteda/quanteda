@@ -148,6 +148,7 @@ Collate:
     'tokens_select.R'
     'tokens_split.R'
     'tokens_subset.R'
+    'tokens_xpointer.R'
     'utils.R'
     'validator.R'
     'wordstem.R'
