@@ -200,29 +200,6 @@ tokens_select.externalptr <- function(x, pattern = NULL,
     rebuild_tokens(result, attrs)
 }
 
-#' @export
-as.externalptr <- function(x) {
-    attrs <- attributes(x)
-    result <- qatd_cpp_as_xptr(x, attrs$types)
-    rebuild_tokens(result, attrs)
-}
-
-#' @export
-ndoc.externalptr <- function(x) {
-    qatd_cpp_ndoc(x)
-}
-
-#' @export
-types.externalptr <- function(x) {
-    qatd_cpp_types(x)
-}
-
-#' @export
-as.tokens.externalptr <- function(x) {
-    attrs <- attributes(x)
-    result <- qatd_cpp_as_list(x)
-    rebuild_tokens(result, attrs)
-}
 
 #' @export
 tokens_select.tokens <- function(x, ...) {
