@@ -25,6 +25,12 @@ TokensPtr qatd_cpp_as_xptr(const List text_,
 }
 
 // [[Rcpp::export]]
+TokensPtr qatd_cpp_copy_xptr(TokensPtr xptr) {
+    TokensObj *ptr_copy = new TokensObj(xptr->texts, xptr->types);
+    return TokensPtr(ptr_copy, true);
+}
+
+// [[Rcpp::export]]
 List qatd_cpp_as_list(TokensPtr xptr) {
     //Texts texts = xptr->texts;
     //List texts_ = Rcpp::wrap(xptr->texts);
