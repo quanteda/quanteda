@@ -8,37 +8,82 @@ as.externalptr <- function(x) {
 as.externalptr.tokens <- function(x) {
     attrs <- attributes(x)
     result <- qatd_cpp_as_xptr(x, attrs$types)
-    rebuild_tokens(result, attrs)
+    build_tokens(result, 
+                 types = NULL, 
+                 padding = TRUE, 
+                 docvars = attrs[["docvars"]], 
+                 meta = attrs[["meta"]], 
+                 class = "tokens_xptr")
 }
 
-#' @method as.externalptr externalptr
+#' @method as.externalptr tokens_xptr
 #' @export
-as.externalptr.externalptr <- function(x) {
+as.externalptr.tokens_xptr <- function(x) {
     attrs <- attributes(x)
     result <- qatd_cpp_copy_xptr(x)
     rebuild_tokens(result, attrs)
 }
 
 #' @export
-ndoc.externalptr <- function(x) {
+ndoc.tokens_xptr <- function(x) {
     qatd_cpp_ndoc(x)
 }
 
 #' @export
-types.externalptr <- function(x) {
+types.tokens_xptr <- function(x) {
     qatd_cpp_types(x)
 }
 
-#' @method as.tokens externalptr
 #' @export
-as.tokens.externalptr <- function(x) {
-    attrs <- attributes(x)
-    result <- qatd_cpp_as_list(x)
-    rebuild_tokens(result, attrs)
+docnames.tokens_xptr <- function(x) {
+    get_docvars(x, "docname_", FALSE, TRUE, TRUE)
 }
 
-#' @method as.list externalptr
+#' @method as.tokens tokens_xptr
 #' @export
-as.list.externalptr <- function(x) {
+as.tokens.tokens_xptr <- function(x) {
+    attrs <- attributes(x)
+    result <- qatd_cpp_as_list(x)
+    build_tokens(result, 
+                 types = attr(result, "types"), 
+                 padding = attr(result, "padding"), 
+                 docvars = attrs[["docvars"]], 
+                 meta = attrs[["meta"]])
+}
+
+#' @method as.list tokens_xptr
+#' @export
+as.list.tokens_xptr <- function(x) {
     as.list(as.tokens(x))
 }
+
+#' @method [ tokens_xptr
+#' @export
+"[.tokens_xptr" <- function(x, i, drop_docid = TRUE) {
+    if (missing(i)) return(x)
+    attrs <- attributes(x)
+    
+    index <- seq_along(docnames(x))
+    names(index) <- docnames(x)
+    index <- index[i]
+    
+    if (any(is.na(index)))
+        stop("Subscript out of bounds")
+    
+    result <- build_tokens(
+        qatd_cpp_subset(x, index),
+        attrs[["types"]],
+        docvars = reshape_docvars(attrs[["docvars"]], index, drop_docid = drop_docid),
+        meta = attrs[["meta"]],
+        class = attrs[["class"]]
+    )
+    
+}
+
+# internal functions ----------------------------------------
+
+#' @method get_docvars tokens_xptr
+get_docvars.tokens_xptr <- function(x, field = NULL, user = TRUE, system = FALSE, drop = FALSE) {
+    select_docvars(attr(x, "docvars"), field, user, system, drop)
+}
+

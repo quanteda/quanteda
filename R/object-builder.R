@@ -92,10 +92,13 @@ upgrade_dfm <- function(x) {
 build_tokens <- function(x, types, padding = FALSE,
                          docvars = data.frame(), meta = list(), 
                          class = "tokens", ...) {
-    stopifnot(length(x) == length(docvars[["docname_"]]))
+    
     attributes(x) <- NULL
+    if (is.list(x)) {
+        stopifnot(length(x) == length(docvars[["docname_"]]))
+        names(x) <- docvars[["docname_"]]
+    }
     structure(x,
-              names = docvars[["docname_"]],
               class = union(class, "tokens"),
               types = types,
               padding = padding,
@@ -108,12 +111,9 @@ rebuild_tokens <- function(x, attrs) {
     
     attr(x, "docvars") <- attrs[["docvars"]]
     attr(x, "meta") <- attrs[["meta"]]
-    if (is.list(x)) {
-        # NOTE: externalptr have no element names
+    attr(x, "class") <- union(attrs[["class"]], "tokens") 
+    if (is.list(x))
         attr(x, "names") <- attrs[["docvars"]][["docname_"]]
-        # NOTE: externalptr needs different class name
-        attr(x, "class") <- union(attrs[["class"]], "tokens") 
-    }
 
     # drop extra attributes from tokens_segment
     try({attr(x, "docnum") <- NULL}, silent = TRUE)

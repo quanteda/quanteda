@@ -128,7 +128,7 @@ tokens_select.default <- function(x, pattern = NULL,
 #' # combining positional selection with pattern matching
 #' tokens_select(toks, "t*", endpos = 3)
 #'
-tokens_select.externalptr <- function(x, pattern = NULL,
+tokens_select.tokens_xptr <- function(x, pattern = NULL,
                                  selection = c("keep", "remove"),
                                  valuetype = c("glob", "regex", "fixed"),
                                  case_insensitive = TRUE, padding = FALSE, window = 0,
