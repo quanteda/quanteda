@@ -96,7 +96,7 @@ build_tokens <- function(x, types, padding = FALSE,
     attributes(x) <- NULL
     if (is.list(x)) {
         stopifnot(length(x) == length(docvars[["docname_"]]))
-        names(x) <- docvars[["docname_"]]
+        attr(x, "names") <- docvars[["docname_"]]
     }
     structure(x,
               class = union(class, "tokens"),
@@ -106,20 +106,34 @@ build_tokens <- function(x, types, padding = FALSE,
               meta = make_meta("tokens", inherit = meta, ...))
 }
 
+#' #' @rdname object-builders
+# rebuild_tokens <- function(x, attrs) {
+# 
+#     attr(x, "docvars") <- attrs[["docvars"]]
+#     attr(x, "meta") <- attrs[["meta"]]
+#     attr(x, "class") <- union(attrs[["class"]], "tokens")
+#     if (is.list(x))
+#         attr(x, "names") <- attrs[["docvars"]][["docname_"]]
+# 
+#     # drop extra attributes from tokens_segment
+#     try({attr(x, "docnum") <- NULL}, silent = TRUE)
+#     try({attr(x, "pattern") <- NULL}, silent = TRUE)
+# 
+#     return(x)
+# }
+
 #' @rdname object-builders
 rebuild_tokens <- function(x, attrs) {
-    
-    attr(x, "docvars") <- attrs[["docvars"]]
-    attr(x, "meta") <- attrs[["meta"]]
-    attr(x, "class") <- union(attrs[["class"]], "tokens") 
+
     if (is.list(x))
-        attr(x, "names") <- attrs[["docvars"]][["docname_"]]
-
-    # drop extra attributes from tokens_segment
-    try({attr(x, "docnum") <- NULL}, silent = TRUE)
-    try({attr(x, "pattern") <- NULL}, silent = TRUE)
-
-    return(x)
+         attr(x, "names") <- attrs[["docvars"]][["docname_"]]
+    structure(x,
+              docvars = attrs[["docvars"]],
+              meta = attrs[["meta"]],
+              class = union(attrs[["class"]], "tokens"),
+              # drop extra attributes from tokens_segment
+              docnum = NULL,
+              pattern = NULL)
 }
 
 #' @rdname object-builders
