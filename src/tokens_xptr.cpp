@@ -39,6 +39,19 @@ List qatd_cpp_as_list(TokensPtr xptr) {
 }
 
 // [[Rcpp::export]]
+TokensPtr qatd_cpp_subset(TokensPtr xptr, IntegerVector index_) {
+    Texts texts(index_.size());
+    for (unsigned int i = 0; i < (unsigned int)index_.size(); i++) {
+        if (index_[i] < 1 || index_[i] - 1 >= xptr->texts.size()) {
+            throw std::range_error("Invalid document index");
+        }
+        texts[i] = xptr->texts[index_[i] - 1];
+    }
+    xptr->texts = texts;
+    return xptr;
+}
+
+// [[Rcpp::export]]
 int qatd_cpp_ndoc(TokensPtr xptr) {
     return xptr->texts.size();
 }
