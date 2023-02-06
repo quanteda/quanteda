@@ -138,6 +138,7 @@ ntoken.character <- function(x, ...) {
 
 #' @export
 ntoken.tokens <- function(x, ...) {
+    x <- as.tokens(x)
     if (length(list(...))) {
         lengths(tokens(x, ...))
     } else {
