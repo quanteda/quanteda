@@ -8,7 +8,19 @@ typedef tbb::concurrent_vector<unsigned int> VecIds;
 typedef std::vector<unsigned int> VecIds;
 #endif
 
-inline bool is_duplicated(Types types){
+class TokensObj {
+    public:
+        TokensObj(Texts texts_, Types types_): texts(texts_), types(types_){}
+        //TokensObj(Texts texts_): texts(texts_){}
+        Texts texts;
+        Types types;
+        bool padding = true;
+        
+        bool is_duplicated();
+        void recompile(bool flag_gap, bool flag_dup, bool flag_encode);
+};
+
+bool TokensObj::is_duplicated(){
     std::sort(types.begin(), types.end());
     if (types.size() <= 1) return false;
     for (std::size_t i = 0; i < types.size() - 1; i++) {
@@ -19,28 +31,9 @@ inline bool is_duplicated(Types types){
     return false;
 }
 
-struct recompile_mt : public Worker{
-    
-    Texts &texts;
-    VecIds &ids_new;
-    
-    recompile_mt(Texts &texts_, VecIds &ids_new_):
-        texts(texts_), ids_new(ids_new_) {}
-    
-    void operator()(std::size_t begin, std::size_t end){
-        for (std::size_t h = begin; h < end; h++) {
-            for (std::size_t i = 0; i < texts[h].size(); i++) {
-                texts[h][i] = ids_new[texts[h][i]];
-            }
-        }
-    }
-};
-
-inline Tokens recompile(Texts texts, 
-                        Types types, 
-                        const bool flag_gap = true, 
-                        const bool flag_dup = true,
-                        const bool flag_encode = true){
+void TokensObj::recompile(bool flag_gap = true, 
+                          bool flag_dup = true,
+                          bool flag_encode = true) {
 
     VecIds ids_new(types.size() + 1);
     ids_new[0] = 0; // reserved for padding
@@ -85,7 +78,7 @@ inline Tokens recompile(Texts texts,
     
     // Check if types are duplicated
     bool all_unique;
-    if (flag_dup && is_duplicated(types)) {
+    if (flag_dup && is_duplicated()) {
         // dev::start_timer("Check duplication", timer);
         std::unordered_map<std::string, unsigned int> types_unique;
         flags_unique[0] = true; // padding is always unique
@@ -116,25 +109,35 @@ inline Tokens recompile(Texts texts,
     // Do nothing if all used and unique
     //Rcout << all_used << " " << all_unique << "\n";
     if (all_used && all_unique) {
-        CharacterVector types_;
-        if (flag_encode) {
-            types_ = encode(types);
-        } else {
-            types_ = Rcpp::wrap(types);
-        }
-        Tokens texts_ = as_list(texts);
-        texts_.attr("padding") = (bool)flags_used[0];
-        texts_.attr("types") = types_;
-        texts_.attr("class") = "tokens";
-        return texts_;
+        // CharacterVector types_;
+        // if (flag_encode) {
+        //     types_ = encode(types);
+        // } else {
+        //     types_ = Rcpp::wrap(types);
+        // }
+        // Tokens texts_ = as_list(texts);
+        // texts_.attr("padding") = (bool)flags_used[0];
+        // texts_.attr("types") = types_;
+        // texts_.attr("class") = "tokens";
+        // return texts_;
+        return;
     }
     
     //dev::start_timer("Convert IDs", timer);
     
     // Convert old IDs to new IDs
 #if QUANTEDA_USE_TBB
-    recompile_mt recompile_mt(texts, ids_new);
-    parallelFor(0, texts.size(), recompile_mt);
+    //recompile_mt recompile_mt(texts, ids_new);
+    //parallelFor(0, texts.size(), recompile_mt);
+    std::size_t H = texts.size();
+    int g = std::ceil(H / tbb::this_task_arena::max_concurrency());
+    tbb::parallel_for(tbb::blocked_range<int>(0, H, g), [&](tbb::blocked_range<int> r) {
+        for (int h = r.begin(); h < r.end(); ++h) {
+            for (std::size_t i = 0; i < texts[h].size(); i++) {
+                texts[h][i] = ids_new[texts[h][i]];
+            }
+        }
+    }, tbb::auto_partitioner());
 #else
     for (std::size_t h = 0; h < texts.size(); h++) {
         for (std::size_t i = 0; i < texts[h].size(); i++) {
@@ -144,29 +147,15 @@ inline Tokens recompile(Texts texts,
     }
 #endif
 
-    std::vector<std::string> types_new;
+    Types types_new;
     types_new.reserve(ids_new.size());
     for (std::size_t j = 0; j < ids_new.size() - 1; j++) {
         if (flags_used[j + 1] && flags_unique[j + 1]) {
             types_new.push_back(types[j]);
         }
     }
-    //dev::stop_timer("Convert IDs", timer);
-    
-    //dev::start_timer("Wrap", timer);
-    Tokens texts_ = as_list(texts);
-    //dev::stop_timer("Wrap", timer);
-    CharacterVector types_new_;
-    if (flag_encode) {
-        // dev::start_timer("Encode", timer);
-        types_new_ = encode(types_new);
-        // dev::stop_timer("Encode", timer);
-    } else {
-        types_new_ = Rcpp::wrap(types_new);
-    }
-    texts_.attr("types") = types_new_;
-    texts_.attr("padding") = (bool)flags_used[0];
-    texts_.attr("class") = "tokens";
-    return texts_;
-    
+    types = types_new;
+    padding = (bool)flags_used[0];
 }
+
+typedef XPtr<TokensObj> TokensPtr;

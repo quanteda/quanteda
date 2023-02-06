@@ -98,14 +98,15 @@ namespace quanteda{
     
     // XPtr objects -------------------------------------------------------
     
-    class TokensObj {
-    public:
-      TokensObj(Texts texts_, Types types_): texts(texts_), types(types_){}
-      //TokensObj(Texts texts_): texts(texts_){}
-      Texts texts;
-      Types types;
-    };
-    typedef XPtr<TokensObj> TokensPtr;
+    // class TokensObj {
+    // public:
+    //   TokensObj(Texts texts_, Types types_): texts(texts_), types(types_){}
+    //   //TokensObj(Texts texts_): texts(texts_){}
+    //   Texts texts;
+    //   Types types;
+    //   bool padding = true;
+    // };
+    // typedef XPtr<TokensObj> TokensPtr;
     
     inline String join_strings(CharacterVector &tokens_, 
                        const String delim_ = " "){
@@ -148,6 +149,34 @@ namespace quanteda{
             token_.set_encoding(CE_UTF8);
         }
         return token_;
+    }
+    
+    
+    inline bool is_encoded(String delim_){
+        if (delim_.get_encoding() > 0) {
+            return true;
+        }
+        return false;
+    }
+    
+    inline bool is_encoded(CharacterVector types_){
+        for (unsigned int i = 0; i < (unsigned int)types_.size(); i++) {
+            String type_ = types_[i];
+            if (type_.get_encoding() > 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    inline CharacterVector encode(Types types){
+        CharacterVector types_(types.size());
+        for (std::size_t i = 0; i < types.size(); i++) {
+            String type_ = types[i];
+            type_.set_encoding(CE_UTF8);
+            types_[i] = type_;
+        }
+        return(types_);
     }
     
     inline bool has_na(IntegerVector vec_) {
