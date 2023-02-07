@@ -1,5 +1,4 @@
-#include "lib.h"
-#include "recompile.h"
+#include "tokens.h"
 //#include "dev.h"
 using namespace quanteda;
 
@@ -119,16 +118,14 @@ struct segment_mt : public Worker{
  */
 
 // [[Rcpp::export]]
-List qatd_cpp_tokens_segment(const List &texts_,
-                             const CharacterVector types_,
+TokensPtr qatd_cpp_tokens_segment(TokensPtr xptr,
                              const List &patterns_,
                              const bool &remove,
                              const int &position){
     
-    Texts texts = Rcpp::as<Texts>(texts_);
-    Types types = Rcpp::as< Types >(types_);
-    CharacterVector names_ = texts_.attr("names");
-    
+    Texts texts = xptr->texts;
+    Types types = xptr->types;
+
     SetNgrams set_patterns;
     std::vector<std::size_t> spans = register_ngrams(patterns_, set_patterns);
     
@@ -152,9 +149,8 @@ List qatd_cpp_tokens_segment(const List &texts_,
     }
     
     Texts segments(len);
-    IntegerVector ids_document_(len);
-    //CharacterVector names_document_(len), matches_(len);
-    CharacterVector matches_(len);
+    std::vector<int> documents(len);
+    std::vector<std::string> matches(len);
     
     std::size_t j = 0;
     for (std::size_t h = 0; h < temp.size(); h++) {
@@ -175,33 +171,38 @@ List qatd_cpp_tokens_segment(const List &texts_,
             // extract matched patterns
             if (remove && 0 <= std::get<2>(target) && 0 <= std::get<3>(target)) {
                 Text match(tokens.begin() + std::get<2>(target), tokens.begin() + std::get<3>(target) + 1);
-                matches_[j] = join_strings(match, types_, " ");
+                matches[j] = join_strings(match, types, " ");
             } else {
-                matches_[j] = "";
+                matches[j] = "";
             }
-            
-            ids_document_[j] = (int)h + 1;
-            //names_document_[j] = names_[h];
+            documents[j] = (int)h + 1;
             j++;
         }
     }
     
-    Tokens segments_ = recompile(segments, types, remove, false, is_encoded(types_));
-    segments_.attr("pattern") = matches_;
-    //segments_.attr("docid") = names_document_;
-    segments_.attr("docnum") = ids_document_;
-    return(segments_);
+    CharacterVector matches_ = encode(matches);
+    IntegerVector documents_ = Rcpp::wrap(documents);
+    xptr.attr("matches") = matches_;
+    xptr.attr("documents") = documents_;
+
+    xptr->texts = segments;
+    xptr->types = types;
+    return xptr;
 }
+
+
+
 
 /***R
 
-toks <- list(text1=1:10, text2=5:15)
+toks <- tokens("aa bb cc")
+xtoks <- as.tokens_xptr(toks)
 #toks <- rep(list(rep(1:10, 1), rep(5:15, 1)), 1)
 #dict <- list(c(1, 2), c(5, 6), 10, 15, 20)
 #qatd_cpp_tokens_contexts(toks, dict, 2)
 #qatd_cpp_tokens_segment(toks, letters, list(c(5, 6), 10), TRUE, 2)
-qatd_cpp_tokens_segment(toks, letters, list(c(5, 6), 10), FALSE, 1)
-
+out <- qatd_cpp_tokens_segment(xtoks, list(2), FALSE, 1)
+attributes(out)
 #qatd_cpp_tokens_segment(toks, letters, list(c(5, 6), 10), FALSE, 2)
 
 # 
