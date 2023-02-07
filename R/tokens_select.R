@@ -145,7 +145,7 @@ tokens_select.tokens_xptr <- function(x, pattern = NULL,
     verbose <- check_logical(verbose)
     
     attrs <- attributes(x)
-    type <- types(x)
+    type <- get_types(x)
 
     # selection by pattern
     if (is.null(pattern)) {

@@ -60,9 +60,10 @@ IntegerVector qatd_cpp_ntoken(TokensPtr xptr) {
 }
 
 // [[Rcpp::export]]
-CharacterVector qatd_cpp_types(TokensPtr xptr) {
+CharacterVector qatd_cpp_types(TokensPtr xptr, bool recompile = false) {
     Rcout << "qatd_cpp_types()\n";
-    xptr->recompile();
+    if (recompile)
+        xptr->recompile();
     return encode(xptr->types);
 }
 

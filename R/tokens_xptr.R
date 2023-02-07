@@ -31,7 +31,7 @@ ndoc.tokens_xptr <- function(x) {
 
 #' @export
 types.tokens_xptr <- function(x) {
-    qatd_cpp_types(x)
+    qatd_cpp_types(x, TRUE)
 }
 
 #' @export
@@ -110,3 +110,14 @@ get_docvars.tokens_xptr <- function(x, field = NULL, user = TRUE, system = FALSE
     select_docvars(attr(x, "docvars"), field, user, system, drop)
 }
 
+get_types <- function(x) {
+    UseMethod("get_types")
+}
+
+get_types.tokens_xptr <- function(x) {
+    qatd_cpp_types(x)
+}
+
+get_types.tokens <- function(x) {
+    attr(x, "types")
+}
