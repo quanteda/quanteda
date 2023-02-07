@@ -97,9 +97,8 @@ char_ngrams.character <- function(x, n = 2L, skip = 0L, concatenator = "_") {
 #' tokens_ngrams(toks, n = 2:3)
 #' @importFrom RcppParallel RcppParallelLibs
 #' @export
-tokens_ngrams.tokens <- function(x, n = 2L, skip = 0L, concatenator = "_") {
+tokens_ngrams.tokens_xptr <- function(x, n = 2L, skip = 0L, concatenator = "_") {
 
-    x <- as.tokens(x)
     n <- check_integer(n, min = 1, max_len = Inf)
     skip <- check_integer(skip, min_len = 1, max_len = Inf, min = 0)
     concatenator <- check_character(concatenator)
@@ -107,11 +106,16 @@ tokens_ngrams.tokens <- function(x, n = 2L, skip = 0L, concatenator = "_") {
     attrs <- attributes(x)
     if (identical(n, 1L) && identical(skip, 0L))
         return(x)
-    result <- qatd_cpp_tokens_ngrams(x, types(x), concatenator, n, skip)
+    result <- qatd_cpp_tokens_ngrams(x, concatenator, n, skip)
     field_object(attrs, "ngram") <- n
     field_object(attrs, "skip") <- skip
     field_object(attrs, "concatenator") <- concatenator
     rebuild_tokens(result, attrs)
+}
+
+#' @export
+tokens_ngrams.tokens <- function(x, ...) {
+    as.tokens(tokens_ngrams(as.tokens_xptr(x), ...))
 }
 
 #' @rdname tokens_ngrams
