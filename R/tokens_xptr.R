@@ -85,6 +85,24 @@ as.list.tokens_xptr <- function(x) {
     
 }
 
+#' @export
+tokens_subset.tokens_xptr <- function(x, subset, drop_docid = TRUE, ...) {
+    
+    check_dots(...)
+    
+    attrs <- attributes(x)
+    docvar <- get_docvars(x, user = TRUE, system = TRUE)
+    r <- if (missing(subset)) {
+        rep_len(TRUE, ndoc(x))
+    } else {
+        e <- substitute(subset)
+        r <- eval(e, docvar, parent.frame())
+        r & !is.na(r)
+    }
+    return(x[r, drop_docid = drop_docid])
+}
+
+
 # internal functions ----------------------------------------
 
 #' @method get_docvars tokens_xptr
