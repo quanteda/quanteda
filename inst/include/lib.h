@@ -96,17 +96,6 @@ namespace quanteda{
     typedef std::vector<Triplet> Triplets; // for fcm_mt, ca_mt, wordfish_mt
 #endif    
     
-    // XPtr objects -------------------------------------------------------
-    
-    // class TokensObj {
-    // public:
-    //   TokensObj(Texts texts_, Types types_): texts(texts_), types(types_){}
-    //   //TokensObj(Texts texts_): texts(texts_){}
-    //   Texts texts;
-    //   Types types;
-    //   bool padding = true;
-    // };
-    // typedef XPtr<TokensObj> TokensPtr;
     
     inline String join_strings(CharacterVector &tokens_, 
                        const String delim_ = " "){

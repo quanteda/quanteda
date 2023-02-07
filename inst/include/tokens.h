@@ -1,5 +1,5 @@
 #include "lib.h"
-#include "dev.h"
+//#include "dev.h"
 using namespace quanteda;
 
 #if QUANTEDA_USE_TBB
@@ -11,16 +11,18 @@ typedef std::vector<unsigned int> VecIds;
 class TokensObj {
     public:
         TokensObj(Texts texts_, Types types_): texts(texts_), types(types_){}
-        //TokensObj(Texts texts_): texts(texts_){}
         Texts texts;
         Types types;
         bool padding = true;
         
+        void recompile(bool flag_gap, bool flag_dup);
+        // length();
+        // lengths();
+    private:
         bool is_duplicated();
-        void recompile(bool flag_gap, bool flag_dup, bool flag_encode);
 };
 
-bool TokensObj::is_duplicated(){
+inline bool TokensObj::is_duplicated() {
     std::sort(types.begin(), types.end());
     if (types.size() <= 1) return false;
     for (std::size_t i = 0; i < types.size() - 1; i++) {
@@ -31,19 +33,16 @@ bool TokensObj::is_duplicated(){
     return false;
 }
 
-void TokensObj::recompile(bool flag_gap = true, 
-                          bool flag_dup = true,
-                          bool flag_encode = true) {
+inline void TokensObj::recompile(bool flag_gap = true, bool flag_dup = true) {
 
     VecIds ids_new(types.size() + 1);
     ids_new[0] = 0; // reserved for padding
     unsigned int id_new = 1;
     std::vector<bool> flags_used(ids_new.size(), false);
     std::vector<bool> flags_unique(ids_new.size(), false);
-    //Rcout << setw(10) << "" << ": " << 0 << " -> " << ids_new[0] << "\n";
-    
+
     /// dev::Timer timer;
-    
+  
     // Check if IDs are all used
     bool all_used;
     if (flag_gap) {
@@ -56,7 +55,6 @@ void TokensObj::recompile(bool flag_gap = true,
                     throw std::range_error("Invalid tokens object");
                 }
                 flags_used[id] = true;
-                // Rcout << setw(10) << id << ": used" << "\n";
             }
         }
         all_used = std::all_of(flags_used.begin(), flags_used.end(), [](bool v) { return v; });
@@ -79,7 +77,6 @@ void TokensObj::recompile(bool flag_gap = true,
     // Check if types are duplicated
     bool all_unique;
     if (flag_dup && is_duplicated()) {
-        // dev::start_timer("Check duplication", timer);
         std::unordered_map<std::string, unsigned int> types_unique;
         flags_unique[0] = true; // padding is always unique
         for (std::size_t g = 1; g < ids_new.size(); g++) {
@@ -91,10 +88,8 @@ void TokensObj::recompile(bool flag_gap = true,
                 flags_unique[g] = true;
                 id_new++; // increment iff there is no gap
             }
-            // Rcout << setw(10) << types[g - 1] << ": " << g << " -> " << ids_new[g] << "\n";
         }
         all_unique = std::all_of(flags_unique.begin(), flags_unique.end(), [](bool v) { return v; });
-        // dev::stop_timer("Check duplication", timer);
     } else {
         unsigned int id_new = 1;
         for (std::size_t g = 1; g < ids_new.size(); g++) {
@@ -107,28 +102,12 @@ void TokensObj::recompile(bool flag_gap = true,
     }
     
     // Do nothing if all used and unique
-    //Rcout << all_used << " " << all_unique << "\n";
     if (all_used && all_unique) {
-        // CharacterVector types_;
-        // if (flag_encode) {
-        //     types_ = encode(types);
-        // } else {
-        //     types_ = Rcpp::wrap(types);
-        // }
-        // Tokens texts_ = as_list(texts);
-        // texts_.attr("padding") = (bool)flags_used[0];
-        // texts_.attr("types") = types_;
-        // texts_.attr("class") = "tokens";
-        // return texts_;
         return;
     }
-    
-    //dev::start_timer("Convert IDs", timer);
-    
+
     // Convert old IDs to new IDs
 #if QUANTEDA_USE_TBB
-    //recompile_mt recompile_mt(texts, ids_new);
-    //parallelFor(0, texts.size(), recompile_mt);
     std::size_t H = texts.size();
     int g = std::ceil(H / tbb::this_task_arena::max_concurrency());
     tbb::parallel_for(tbb::blocked_range<int>(0, H, g), [&](tbb::blocked_range<int> r) {
@@ -157,5 +136,7 @@ void TokensObj::recompile(bool flag_gap = true,
     types = types_new;
     padding = (bool)flags_used[0];
 }
+
+// XPtr objects -------------------------------------------------------
 
 typedef XPtr<TokensObj> TokensPtr;
