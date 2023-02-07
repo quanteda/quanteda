@@ -1,6 +1,5 @@
 #include "tokens.h"
 //#include "dev.h"
-#include "recompile.h"
 using namespace quanteda;
 
 typedef std::pair<int, int> Position;
@@ -174,68 +173,17 @@ struct select_mt : public Worker{
  * 
  */
 
-// [[Rcpp::export]]
-List qatd_cpp_tokens_select(const List &texts_,
-                            const CharacterVector types_,
-                            const List &words_,
-                            int mode,
-                            bool padding,
-                            int window_left,
-                            int window_right,
-                            const IntegerVector pos_from_,
-                            const IntegerVector pos_to_){
-    
-    Texts texts = Rcpp::as<Texts>(texts_);
-    Types types = Rcpp::as<Types>(types_);
-    std::pair<int, int> window(window_left, window_right);
-    
-    SetNgrams set_words;
-    std::vector<std::size_t> spans = register_ngrams(words_, set_words);
-    
-    if (pos_from_.size() != texts.size())
-        throw std::range_error("Invalid pos_from");
-    if (pos_to_.size() != texts.size())
-        throw std::range_error("Invalid pos_to");
-    Positions pos(texts.size());
-    for (size_t g = 0; g < texts.size(); g++) {
-        pos[g] = std::make_pair(pos_from_[g], pos_to_[g]);
-    }
-    
-    // dev::Timer timer;
-    // dev::start_timer("Token select", timer);
-#if QUANTEDA_USE_TBB
-    select_mt select_mt(texts, spans, set_words, mode, padding, window, pos);
-    parallelFor(0, texts.size(), select_mt);
-#else
-    if (mode == 1) {
-        for (std::size_t h = 0; h < texts.size(); h++) {
-            texts[h] = keep_token(texts[h], spans, set_words, padding, window, pos[h]);
-        }
-    } else if(mode == 2) {
-        for (std::size_t h = 0; h < texts.size(); h++) {
-            texts[h] = remove_token(texts[h], spans, set_words, padding, window, pos[h]);
-        }
-    } else {
-        for (std::size_t h = 0; h < texts.size(); h++){
-            texts[h] = texts[h];
-        }
-    }
-#endif
-    // dev::stop_timer("Token select", timer);
-    return recompile(texts, types, true, false, is_encoded(types_));
-}
-
 
 // [[Rcpp::export]]
-TokensPtr qatd_cpp_tokens_select_xptr(TokensPtr xptr,
-                                      const List &words_,
-                                      int mode,
-                                      bool padding,
-                                      int window_left,
-                                      int window_right,
-                                      const IntegerVector pos_from_,
-                                      const IntegerVector pos_to_){
-    
+TokensPtr qatd_cpp_tokens_select(TokensPtr xptr,
+                                 const List &words_,
+                                 int mode,
+                                 bool padding,
+                                 int window_left,
+                                 int window_right,
+                                 const IntegerVector pos_from_,
+                                 const IntegerVector pos_to_){
+
     Texts texts = xptr->texts;
     Types types = xptr->types;
     std::pair<int, int> window(window_left, window_right);
