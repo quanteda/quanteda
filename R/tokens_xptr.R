@@ -1,11 +1,11 @@
 #' @export
-as.externalptr <- function(x) {
-    UseMethod("as.externalptr")
+as.tokens_xptr <- function(x) {
+    UseMethod("as.tokens_xptr")
 }
 
-#' @method as.externalptr tokens
+#' @method as.tokens_xptr tokens
 #' @export
-as.externalptr.tokens <- function(x) {
+as.tokens_xptr.tokens <- function(x) {
     attrs <- attributes(x)
     result <- qatd_cpp_as_xptr(x, attrs$types)
     build_tokens(result, 
@@ -16,9 +16,9 @@ as.externalptr.tokens <- function(x) {
                  class = "tokens_xptr")
 }
 
-#' @method as.externalptr tokens_xptr
+#' @method as.tokens_xptr tokens_xptr
 #' @export
-as.externalptr.tokens_xptr <- function(x) {
+as.tokens_xptr.tokens_xptr <- function(x) {
     attrs <- attributes(x)
     result <- qatd_cpp_copy_xptr(x)
     rebuild_tokens(result, attrs)
@@ -32,6 +32,11 @@ ndoc.tokens_xptr <- function(x) {
 #' @export
 types.tokens_xptr <- function(x) {
     qatd_cpp_types(x)
+}
+
+#' @export
+ntoken.tokens_xptr <- function(x) {
+    structure(qatd_cpp_ntoken(x), names = docnames(x))
 }
 
 #' @export

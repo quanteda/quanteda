@@ -203,7 +203,7 @@ tokens_select.tokens_xptr <- function(x, pattern = NULL,
 
 #' @export
 tokens_select.tokens <- function(x, ...) {
-    as.tokens(tokens_select(as.externalptr(x), ...))
+    as.tokens(tokens_select(as.tokens_xptr(x), ...))
 }
 
 #' @rdname tokens_select
