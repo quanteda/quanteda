@@ -19,10 +19,10 @@ class TokensObj {
         // length();
         // lengths();
     private:
-        bool is_duplicated();
+        bool is_duplicated(Types types);
 };
 
-inline bool TokensObj::is_duplicated() {
+inline bool TokensObj::is_duplicated(Types types) {
     std::sort(types.begin(), types.end());
     if (types.size() <= 1) return false;
     for (std::size_t i = 0; i < types.size() - 1; i++) {
@@ -76,7 +76,7 @@ inline void TokensObj::recompile(bool flag_gap = true, bool flag_dup = true) {
     
     // Check if types are duplicated
     bool all_unique;
-    if (flag_dup && is_duplicated()) {
+    if (flag_dup && is_duplicated(types)) {
         std::unordered_map<std::string, unsigned int> types_unique;
         flags_unique[0] = true; // padding is always unique
         for (std::size_t g = 1; g < ids_new.size(); g++) {
