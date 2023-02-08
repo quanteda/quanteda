@@ -114,7 +114,7 @@ tokens_subset.tokens_xptr <- function(x, subset, drop_docid = TRUE, ...) {
     return(x[r, drop_docid = drop_docid])
 }
 
-#' @method head tokens_xptr
+#' @method dfm tokens_xptr
 #' @export
 dfm.tokens_xptr <- function(x, ...) {
     attrs <- attributes(x)
