@@ -4,31 +4,30 @@ require(testthat)
 toks <- tokens(data_corpus_inaugural)
 xtoks <- as.tokens_xptr(toks)
 xtoks_copy <- as.tokens_xptr(xtoks)
-head(as.tokens_xptr(toks))
-
-
-expect_identical(
-    as.tokens(tokens_subset(as.tokens_xptr(toks), Party == "Republican")),
-    tokens_subset(toks, Party == "Republican")
-)
-
-# native support
-expect_identical(ndoc(toks), ndoc(xtoks))
-expect_identical(ntoken(toks), ntoken(xtoks))
-expect_identical(types(toks), types(xtoks))
-
-tokens_subset(xtoks, )
-
-as.tokens_xptr(toks)
 
 ndoc(as.tokens_xptr(toks)[2:6])
 ndoc(as.tokens_xptr(toks)[10])
 
-# compatibility
-
 test_that("attributes are the same", {
     expect_identical(attr(toks, "docvars"), attr(xtoks, "docvars"))
     expect_identical(attr(toks, "meta"), attr(xtoks, "meta"))
+})
+
+test_that("subsetting work", {
+    expect_identical(docnames(as.tokens_xptr(toks)[2:6]),
+                     docnames(toks)[2:6])
+    expect_identical(docnames(as.tokens_xptr(toks)[2:6 * -1]),
+                     docnames(toks)[2:6 * -1])
+    
+    ## does not work
+    # head(xtoks)
+    # tail(xtoks)
+})
+
+test_that("R-like functions work", {
+    expect_identical(ndoc(toks), ndoc(xtoks))
+    expect_identical(ntoken(toks), ntoken(xtoks))
+    expect_identical(types(toks), types(xtoks))
 })
 
 test_that("deep copy xtokens", {
@@ -36,9 +35,20 @@ test_that("deep copy xtokens", {
                      as.tokens(xtoks))
 })
 
-## does not work
-head(xtoks)
-tail(xtoks)
+test_that("operations on copied xtokens do not affect the original xtokens", {
+    expect_identical(
+        as.tokens(tokens_subset(as.tokens_xptr(toks), Party == "Republican")),
+        tokens_subset(toks, Party == "Republican")
+    )
+    expect_identical(
+        as.tokens(tokens_select(as.tokens_xptr(toks), stopwords("en"))),
+        tokens_select(toks, stopwords("en"))
+    )
+    expect_identical(
+        as.list(as.tokens(tokens_ngrams(as.tokens_xptr(toks)))),
+        as.list(tokens_ngrams(toks))
+    )
+})
 
 test_that("operations on copied xtokens do not affect the original xtokens", {
     xtoks_copy <- tokens_remove(xtoks_copy, stopwords(), padding = TRUE)
