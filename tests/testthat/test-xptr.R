@@ -3,8 +3,6 @@ require(testthat)
 
 toks <- tokens(data_corpus_inaugural)
 xtoks <- as.tokens_xptr(toks)
-xtoks_copy <- as.tokens_xptr(xtoks)
-
 
 test_that("attributes are the same", {
     expect_identical(attr(toks, "docvars"), attr(xtoks, "docvars"))
@@ -36,6 +34,7 @@ test_that("R-like functions work", {
 })
 
 test_that("deep copy xtokens", {
+    xtoks_copy <- as.tokens_xptr(xtoks)
     expect_identical(as.tokens(xtoks_copy), 
                      as.tokens(xtoks))
 })
@@ -56,6 +55,7 @@ test_that("operations on copied xtokens do not affect the original xtokens", {
 })
 
 test_that("operations on copied xtokens do not affect the original xtokens", {
+    xtoks_copy <- as.tokens_xptr(xtoks)
     xtoks_copy <- tokens_remove(xtoks_copy, stopwords(), padding = TRUE)
     expect_false(identical(as.list(xtoks_copy), 
                            as.list(xtoks)))
