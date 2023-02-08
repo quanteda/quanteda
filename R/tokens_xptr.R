@@ -114,6 +114,15 @@ tokens_subset.tokens_xptr <- function(x, subset, drop_docid = TRUE, ...) {
     return(x[r, drop_docid = drop_docid])
 }
 
+#' @method head tokens_xptr
+#' @export
+dfm.tokens_xptr <- function(x, ...) {
+    attrs <- attributes(x)
+    temp <- t(qatd_cpp_dfm(x))
+    build_dfm(temp, colnames(temp),
+              docvars = get_docvars(x, user = TRUE, system = TRUE),
+              meta = attrs[["meta"]])
+}
 
 # internal functions ----------------------------------------
 

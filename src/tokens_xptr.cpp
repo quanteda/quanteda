@@ -47,6 +47,11 @@ int qatd_cpp_ndoc(TokensPtr xptr) {
     return xptr->texts.size();
 }
 
+// // [[Rcpp::export]]
+// bool qatd_cpp_has_padding(TokensPtr xptr) {
+//     return xptr->padding;
+// }
+
 // [[Rcpp::export]]
 IntegerVector qatd_cpp_ntoken(TokensPtr xptr) {
     //Rcout << "qatd_cpp_ntoken()\n";
@@ -67,11 +72,70 @@ CharacterVector qatd_cpp_types(TokensPtr xptr, bool recompile = false) {
     return encode(xptr->types);
 }
 
+// [[Rcpp::export]]
+S4 qatd_cpp_dfm(TokensPtr xptr) {
+    
+    xptr->recompile();
+    std::size_t H = xptr->texts.size();
+    int N = 0;
+    for (std::size_t h = 0; h < H; h++)
+        N += xptr->texts[h].size();
+    std::vector<double> slot_x;
+    std::vector<int> slot_i, slot_p;
+    slot_i.reserve(N);
+    slot_x.reserve(N);
+    slot_p.reserve(H + 1);
+    int p = 0;
+    
+    slot_p.push_back(p);
+    for (std::size_t h = 0; h < H; h++) {
+        Text text = xptr->texts[h];
+        std::sort(text.begin(), text.end()); // rows must be sorted in dgCMatrix
+        int n = 1;
+        for (std::size_t i = 0; i < text.size(); i++) {
+            if (i + 1 == text.size() || text[i] != text[i + 1]) {
+                slot_i.push_back(text[i]);
+                slot_x.push_back(n);
+                p++;
+                n = 1;
+            } else {
+                n++;
+            }
+        }
+        slot_p.push_back(p);
+        //count.erase(std::remove(count.begin(), count.end(), 0), count.end());
+        //i.insert(i.end(), text.begin(), text.end());
+    }
+    IntegerVector slot_p_ = Rcpp::wrap(slot_p);
+    //Rcout << "p: " << p_ << "\n";
+    DoubleVector slot_x_ = Rcpp::wrap(slot_x);
+    //Rcout << "x: " << x_ << "\n";
+    IntegerVector slot_i_ = Rcpp::wrap(slot_i);
+    //Rcout << "i: " << i_ << "\n";
+    
+    size_t G = xptr->types.size();
+    CharacterVector types_ = encode(xptr->types);
+    if (xptr->padding) {
+        G++;
+        types_.push_front("");
+    } else {
+        slot_i_ = slot_i_ - 1; // use zero fro other tokens
+    }
+    IntegerVector dim_ = IntegerVector::create(G, H);
+    List dimnames_ = List::create(types_, R_NilValue);
+    
+    S4 dfm_("dgCMatrix");
+    dfm_.slot("p") = slot_p_;
+    dfm_.slot("i") = slot_i_;
+    dfm_.slot("x") = slot_x_;
+    dfm_.slot("Dim") = dim_;
+    dfm_.slot("Dimnames") = dimnames_;
+    return(dfm_);
+}
+
 
 /***R
-toks <- rep(list(sample(100)), 100)
-xtoks <- qatd_cpp_as_xptr(toks, letters)
-toks <- qatd_cpp_nothing(xtoks)
-qatd_cpp_as_list(xtoks)
-
+toks <- quanteda::tokens(c("a b a c.", "b c b a,"), remove_punct = TRUE, padding = FALSE)
+xtoks <- quanteda::as.tokens_xptr(toks)
+str(qatd_cpp_dfm(xtoks))
 */
