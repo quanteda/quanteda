@@ -49,7 +49,7 @@ int qatd_cpp_ndoc(TokensPtr xptr) {
 
 // [[Rcpp::export]]
 IntegerVector qatd_cpp_ntoken(TokensPtr xptr) {
-    Rcout << "qatd_cpp_ntoken()\n";
+    //Rcout << "qatd_cpp_ntoken()\n";
     xptr->recompile();
     std::size_t H = xptr->texts.size();
     IntegerVector ls_(H);
@@ -61,7 +61,7 @@ IntegerVector qatd_cpp_ntoken(TokensPtr xptr) {
 
 // [[Rcpp::export]]
 CharacterVector qatd_cpp_types(TokensPtr xptr, bool recompile = false) {
-    Rcout << "qatd_cpp_types()\n";
+    //Rcout << "qatd_cpp_types()\n";
     if (recompile)
         xptr->recompile();
     return encode(xptr->types);

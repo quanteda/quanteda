@@ -132,8 +132,8 @@ rebuild_tokens <- function(x, attrs) {
               meta = attrs[["meta"]],
               class = union(attrs[["class"]], "tokens"),
               # drop extra attributes from tokens_segment
-              docnum = NULL,
-              pattern = NULL)
+              documents = NULL,
+              matches = NULL)
 }
 
 #' @rdname object-builders
