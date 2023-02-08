@@ -5,8 +5,6 @@ toks <- tokens(data_corpus_inaugural)
 xtoks <- as.tokens_xptr(toks)
 xtoks_copy <- as.tokens_xptr(xtoks)
 
-ndoc(as.tokens_xptr(toks)[2:6])
-ndoc(as.tokens_xptr(toks)[10])
 
 test_that("attributes are the same", {
     expect_identical(attr(toks, "docvars"), attr(xtoks, "docvars"))
@@ -19,9 +17,16 @@ test_that("subsetting work", {
     expect_identical(docnames(as.tokens_xptr(toks)[2:6 * -1]),
                      docnames(toks)[2:6 * -1])
     
-    ## does not work
-    # head(xtoks)
-    # tail(xtoks)
+    expect_identical(docnames(head(as.tokens_xptr(toks))), 
+                     docnames(head(toks)))
+    expect_identical(docnames(head(as.tokens_xptr(toks), 0)), 
+                     docnames(head(toks, 0)))
+    expect_identical(docnames(head(as.tokens_xptr(toks), 100)), 
+                     docnames(head(toks, 100)))
+    expect_identical(docnames(tail(as.tokens_xptr(toks))), 
+                     docnames(tail(toks)))
+    expect_identical(docnames(tail(as.tokens_xptr(toks), -10)), 
+                     docnames(tail(toks, -10)))
 })
 
 test_that("R-like functions work", {

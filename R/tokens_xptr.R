@@ -75,15 +75,27 @@ as.list.tokens_xptr <- function(x) {
     if (any(is.na(index)))
         stop("Subscript out of bounds")
     
-    result <- build_tokens(
+    build_tokens(
         qatd_cpp_subset(x, index),
         attrs[["types"]],
         docvars = reshape_docvars(attrs[["docvars"]], index, drop_docid = drop_docid),
         meta = attrs[["meta"]],
         class = attrs[["class"]]
     )
-    
 }
+
+#' @method head tokens_xptr
+#' @export
+head.tokens_xptr <- function(x, n = 6L, ...) {
+    x[head(seq_len(ndoc(x), ...), n)]
+}
+
+#' @method tail tokens_xptr
+#' @export
+tail.tokens_xptr <- function(x, n = 6L, ...) {
+    x[tail(seq_len(ndoc(x), ...), n)]
+}
+
 
 #' @export
 tokens_subset.tokens_xptr <- function(x, subset, drop_docid = TRUE, ...) {
