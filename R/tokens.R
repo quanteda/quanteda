@@ -672,8 +672,10 @@ types.tokens <- function(x) {
 }
 
 "types<-.tokens" <- function(x, value) {
-    if (!is.character(value))
-        stop("replacement value must be character")
-    attr(x, "types") <- value
-    return(x)
+    set_types(x) <- value
 }
+
+"types<-.tokens_xptr" <- function(x, value) {
+    set_types(x) <- value
+}
+
