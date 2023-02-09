@@ -1,6 +1,5 @@
+#include "tokens.h"
 //#include "dev.h"
-#include "lib.h"
-#include "recompile.h"
 
 using namespace quanteda;
 
@@ -158,14 +157,14 @@ struct lookup_mt : public Worker{
 
 
 // [[Rcpp::export]]
-List qatd_cpp_tokens_lookup(const List &texts_,
-                            const CharacterVector types_,
-                            const List &words_,
-                            const IntegerVector &keys_,
-                            const int overlap,
-                            const int nomatch){
+TokensPtr qatd_cpp_tokens_lookup(TokensPtr xptr,
+                                 const CharacterVector types_,
+                                 const List &words_,
+                                 const IntegerVector &keys_,
+                                 const int overlap,
+                                 const int nomatch){
     
-    Texts texts = Rcpp::as<Texts>(texts_);
+    Texts texts = xptr->texts;
     Types types = Rcpp::as<Types>(types_);
     unsigned int id_max(0);
     if (nomatch == 2) {
@@ -208,12 +207,15 @@ List qatd_cpp_tokens_lookup(const List &texts_,
     }
 #endif
     //dev::stop_timer("Dictionary lookup", timer);
-    if (nomatch == 2) {
-        return recompile(texts, types, true, true, is_encoded(types_));
-    } else {
-        return recompile(texts, types, false, false, is_encoded(types_));
+    //TokensObj *ptr = new TokensObj(texts, types);
+    //return TokensPtr(ptr, true);
+    if (nomatch != 2) {
+        xptr->has_gap = false;
+        xptr->has_dup = false;
     }
-    
+    xptr->texts = texts;
+    xptr->types = types;
+    return xptr;
 }
 
 /***R
@@ -224,10 +226,10 @@ dict <- list(c(1, 2), c(5, 6), 10, 15, 20)
 #keys <- rep(2, length(dict))
 keys <- seq_along(dict) + 1
 #qatd_cpp_tokens_lookup(toks, letters, dict, integer(0), 0)
-qatd_cpp_tokens_lookup(toks, letters, dict, keys, FALSE, 0)
-qatd_cpp_tokens_lookup(toks, letters, dict, keys, TRUE, 0)
-qatd_cpp_tokens_lookup(toks, letters, dict, keys, FALSE, 0)
-qatd_cpp_tokens_lookup(toks, letters, dict, keys, FALSE, 1)
-qatd_cpp_tokens_lookup(toks, letters, dict, keys, FALSE, 2)
+qatd_cpp_tokens_lookup(toks, dict, keys, FALSE, 0)
+qatd_cpp_tokens_lookup(toks, dict, keys, TRUE, 0)
+qatd_cpp_tokens_lookup(toks, dict, keys, FALSE, 0)
+qatd_cpp_tokens_lookup(toks, dict, keys, FALSE, 1)
+qatd_cpp_tokens_lookup(toks, dict, keys, FALSE, 2)
 
 */

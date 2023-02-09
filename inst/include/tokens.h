@@ -13,9 +13,11 @@ class TokensObj {
         TokensObj(Texts texts_, Types types_): texts(texts_), types(types_){}
         Texts texts;
         Types types;
-        bool padding = true;
+        bool has_pad = false;
+        bool has_gap = true;
+        bool has_dup = true;
         
-        void recompile(bool flag_gap, bool flag_dup);
+        void recompile();
         // length();
         // lengths();
     private:
@@ -33,7 +35,7 @@ inline bool TokensObj::is_duplicated(Types types) {
     return false;
 }
 
-inline void TokensObj::recompile(bool flag_gap = true, bool flag_dup = true) {
+inline void TokensObj::recompile() {
 
     VecIds ids_new(types.size() + 1);
     ids_new[0] = 0; // reserved for padding
@@ -45,7 +47,7 @@ inline void TokensObj::recompile(bool flag_gap = true, bool flag_dup = true) {
   
     // Check if IDs are all used
     bool all_used;
-    if (flag_gap) {
+    if (has_gap) {
         // dev::start_timer("Check gaps", timer);
         unsigned int id_limit = ids_new.size();
         for (std::size_t h = 0; h < texts.size(); h++) {
@@ -76,7 +78,7 @@ inline void TokensObj::recompile(bool flag_gap = true, bool flag_dup = true) {
     
     // Check if types are duplicated
     bool all_unique;
-    if (flag_dup && is_duplicated(types)) {
+    if (has_dup && is_duplicated(types)) {
         std::unordered_map<std::string, unsigned int> types_unique;
         flags_unique[0] = true; // padding is always unique
         for (std::size_t g = 1; g < ids_new.size(); g++) {
@@ -134,7 +136,7 @@ inline void TokensObj::recompile(bool flag_gap = true, bool flag_dup = true) {
         }
     }
     types = types_new;
-    padding = (bool)flags_used[0];
+    has_pad = (bool)flags_used[0];
 }
 
 // XPtr objects -------------------------------------------------------

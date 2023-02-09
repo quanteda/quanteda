@@ -24,7 +24,7 @@ List cpp_as_list(TokensPtr xptr) {
     xptr->recompile();
     Tokens texts_ = as_list(xptr->texts);
     texts_.attr("types") = encode(xptr->types);;
-    texts_.attr("padding") = xptr->padding;
+    texts_.attr("padding") = xptr->has_pad;
     texts_.attr("class") = "tokens";
     return texts_;
 }
@@ -122,7 +122,7 @@ S4 cpp_dfm(TokensPtr xptr) {
     
     size_t G = xptr->types.size();
     CharacterVector types_ = encode(xptr->types);
-    if (xptr->padding) {
+    if (xptr->has_pad) {
         G++;
         types_.push_front("");
     } else {
