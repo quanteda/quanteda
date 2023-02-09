@@ -83,20 +83,19 @@ tokens_compound.default <- function(x, pattern,
 
 #' @importFrom RcppParallel RcppParallelLibs
 #' @export
-tokens_compound.tokens <- function(x, pattern,
+tokens_compound.tokens_xptr <- function(x, pattern,
                    valuetype = c("glob", "regex", "fixed"),
                    concatenator = "_", 
                    window = 0L,
                    case_insensitive = TRUE, join = TRUE) {
 
-    x <- as.tokens(x)
     valuetype <- match.arg(valuetype)
     concatenator <- check_character(concatenator)
     window <- check_integer(window, min_len = 1, max_len = 2, min = 0)
     join <- check_logical(join)
     
     attrs <- attributes(x)
-    type <- types(x)
+    type <- get_types(x)
 
     ids <- object2id(pattern, type, valuetype, case_insensitive, remove_unigram = all(window == 0))
     if (length(ids) == 0) return(x) # do nothing
@@ -104,4 +103,9 @@ tokens_compound.tokens <- function(x, pattern,
     result <- qatd_cpp_tokens_compound(x, ids, type, concatenator, join, window[1], window[2])
     field_object(attrs, "concatenator") <- concatenator
     rebuild_tokens(result, attrs)
+}
+
+#' @export
+tokens_compound.tokens <- function(x, ...) {
+    as.tokens(tokens_compound(as.tokens_xptr(x), ...))
 }
