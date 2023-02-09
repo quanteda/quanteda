@@ -144,15 +144,15 @@ tokens_lookup.tokens_xptr <- function(x, dictionary, levels = 1:5,
     if (exclusive) {
         if (!is.null(nomatch)) {
             nomatch <- check_character(nomatch)
-            result <- qatd_cpp_tokens_lookup(x, c(key, nomatch), ids, id_key, overlap, 1)
+            result <- qatd_cpp_tokens_lookup(x, ids, id_key, c(key, nomatch), overlap, 1)
         } else {
-            result <- qatd_cpp_tokens_lookup(x, key, ids, id_key, overlap, 0)
+            result <- qatd_cpp_tokens_lookup(x, ids, id_key, key, overlap, 0)
         }
     } else {
         if (!is.null(nomatch))
             warning("nomatch only applies if exclusive = TRUE")
         id_used <- unique(id_key)
-        result <- qatd_cpp_tokens_lookup(x, c(key[id_used], type), ids, match(id_key, id_used), overlap, 2)
+        result <- qatd_cpp_tokens_lookup(x, ids, match(id_key, id_used), key[id_used], overlap, 2)
     }
     if (exclusive)
         field_object(attrs, "what") <- "dictionary"

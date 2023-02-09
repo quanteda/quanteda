@@ -155,37 +155,36 @@ struct lookup_mt : public Worker{
 * @param nomatch determine how to treat unmached words: 0=remove, 1=pad; 2=keep
 */
 
-
 // [[Rcpp::export]]
 TokensPtr qatd_cpp_tokens_lookup(TokensPtr xptr,
-                                 const CharacterVector types_,
                                  const List &words_,
                                  const IntegerVector &keys_,
+                                 const CharacterVector &types_,
                                  const int overlap,
                                  const int nomatch){
     
     Texts texts = xptr->texts;
     Types types = Rcpp::as<Types>(types_);
+    std::vector<unsigned int> keys = Rcpp::as< std::vector<unsigned int> >(keys_);
+    
     unsigned int id_max(0);
     if (nomatch == 2) {
-        id_max = keys_.size() > 0 ? Rcpp::max(keys_) : 0;
+        types.insert(types.end(), xptr->types.begin(), xptr->types.end());
+        if (keys_.size() > 0)
+            id_max = *max_element(keys.begin(), keys.end());
     } else {
-        id_max = types_.size();
+        id_max = types.size();
     }
-    //Rcout << id_max << "\n";
-    
-    //dev::Timer timer;
-    
-    //dev::start_timer("Map construction", timer);
-
     MultiMapNgrams map_keys;
     map_keys.max_load_factor(GLOBAL_PATTERN_MAX_LOAD_FACTOR);
     Ngrams words = Rcpp::as<Ngrams>(words_);
-    std::vector<unsigned int> keys = Rcpp::as< std::vector<unsigned int> >(keys_);
     
-    size_t len = std::min(words.size(), keys.size());
-    std::vector<std::size_t> spans(len);
-    for (size_t g = 0; g < len; g++) {
+    if (words.size() != keys.size())
+        throw std::range_error("Invalid words and keys");
+    
+    size_t G = words.size();
+    std::vector<std::size_t> spans(G);
+    for (size_t g = 0; g < G; g++) {
         Ngram value = words[g];
         unsigned int key = keys[g];
         map_keys.insert(std::pair<Ngram, unsigned int>(value, key));
@@ -210,6 +209,7 @@ TokensPtr qatd_cpp_tokens_lookup(TokensPtr xptr,
     //TokensObj *ptr = new TokensObj(texts, types);
     //return TokensPtr(ptr, true);
     if (nomatch != 2) {
+        // NOTE: values might need to be reset
         xptr->has_gap = false;
         xptr->has_dup = false;
     }
