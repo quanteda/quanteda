@@ -15,8 +15,16 @@ TokensPtr cpp_as_xptr(const List text_,
 
 // [[Rcpp::export]]
 TokensPtr cpp_copy_xptr(TokensPtr xptr) {
-    TokensObj *ptr_copy = new TokensObj(xptr->texts, xptr->types);
+    TokensObj *ptr_copy = new TokensObj(xptr->texts, xptr->types, xptr->has_gap, xptr->has_dup);
     return TokensPtr(ptr_copy, true);
+}
+
+// [[Rcpp::export]]
+List cpp_get_attributes(TokensPtr xptr) {
+    List list_ = List::create(_["has_dup"] = xptr->has_dup,
+                              _["has_gap"] = xptr->has_gap,
+                              _["has_pad"] = xptr->has_pad);
+    return list_;
 }
 
 // [[Rcpp::export]]
@@ -100,7 +108,7 @@ S4 cpp_dfm(TokensPtr xptr) {
         std::sort(text.begin(), text.end()); // rows must be sorted in dgCMatrix
         int n = 1;
         for (std::size_t i = 0; i < text.size(); i++) {
-            if (i + 1 == text.size() || text[i] != text[i + 1]) {
+            if (i + (size_t)1 == text.size() || text[i] != text[i + 1]) {
                 slot_i.push_back(text[i]);
                 slot_x.push_back(n);
                 p++;

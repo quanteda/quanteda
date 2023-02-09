@@ -55,6 +55,7 @@ test_that("operations on copied xtokens do not affect the original xtokens", {
 })
 
 test_that("operations on copied xtokens do not affect the original xtokens", {
+    xtoks <- as.tokens_xptr(toks)
     xtoks_copy <- as.tokens_xptr(xtoks)
     xtoks_copy <- tokens_remove(xtoks_copy, stopwords(), padding = TRUE)
     expect_false(identical(as.list(xtoks_copy), 
@@ -67,7 +68,7 @@ test_that("tokens_select and tokens_remove work", {
     
     toks2 <- tokens_remove(toks, stopwords(), padding = TRUE) %>% 
         tokens_select(data_dictionary_LSD2015, padding = TRUE)
-    xtoks2 <- as.tokens_xptr(xtoks) %>% 
+    xtoks2 <- as.tokens_xptr(toks) %>% 
         tokens_remove(stopwords(), padding = TRUE) %>% 
         tokens_select(data_dictionary_LSD2015, padding = TRUE)
     expect_identical(as.list(xtoks2), as.list(toks2))
@@ -81,8 +82,27 @@ test_that("tokens_tolower and tokens_toupper work", {
                      as.tokens(tokens_toupper(xtoks)))
 })
 
+test_that("tokens_tolower and tokens_toupper work", {
+    dict <- data_dictionary_LSD2015[1:2]
+    expect_identical(as.tokens(tokens_lookup(as.tokens_xptr(toks), dict)),
+                     tokens_lookup(toks, dict))
+    
+    xtoks1 <- tokens_lookup(as.tokens_xptr(toks), dict, exclusive = FALSE)
+    expect_identical(quanteda:::cpp_get_attributes(xtoks1),
+                     list(has_dup = TRUE, has_gap = TRUE, has_pad = FALSE))
+    
+    xtoks2 <- tokens_lookup(as.tokens_xptr(toks), dict, nomatch = "nomatch")
+    expect_identical(quanteda:::cpp_get_attributes(xtoks2),
+                     list(has_dup = FALSE, has_gap = FALSE, has_pad = FALSE))
+    
+    # attributes are copied
+    xtoks3 <- as.tokens_xptr(xtoks2)
+    expect_identical(quanteda:::cpp_get_attributes(xtoks3),
+                     list(has_dup = FALSE, has_gap = FALSE, has_pad = FALSE))
+})
+
 test_that("dfm works", {
-    expect_identical(dfm(xtoks), dfm(toks))
-    expect_identical(dfm(xtoks, tolower = FALSE), 
+    expect_identical(dfm(as.tokens_xptr(toks)), dfm(toks))
+    expect_identical(dfm(as.tokens_xptr(toks), tolower = FALSE), 
                      dfm(toks, tolower = FALSE))
 })

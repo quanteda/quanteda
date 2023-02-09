@@ -10,12 +10,13 @@ typedef std::vector<unsigned int> VecIds;
 
 class TokensObj {
     public:
-        TokensObj(Texts texts_, Types types_): texts(texts_), types(types_){}
+        TokensObj(Texts texts_, Types types_, bool has_gap_ = true, bool has_dup_ = true): 
+                  texts(texts_), types(types_), has_gap(has_gap_), has_dup(has_dup_){}
         Texts texts;
         Types types;
-        bool has_pad = false;
         bool has_gap = true;
         bool has_dup = true;
+        bool has_pad = false; // set by recompile()
         
         void recompile();
         // length();
