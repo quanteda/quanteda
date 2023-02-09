@@ -111,7 +111,7 @@ tokens_lookup.default <- function(x, dictionary, levels = 1:5,
 }
 
 #' @export
-tokens_lookup.tokens <- function(x, dictionary, levels = 1:5,
+tokens_lookup.tokens_xptr <- function(x, dictionary, levels = 1:5,
                           valuetype = c("glob", "regex", "fixed"),
                           case_insensitive = TRUE,
                           capkeys = !exclusive,
@@ -120,7 +120,6 @@ tokens_lookup.tokens <- function(x, dictionary, levels = 1:5,
                           nested_scope = c("key", "dictionary"),
                           verbose = quanteda_options("verbose")) {
 
-    x <- as.tokens(x)
     if (!is.dictionary(dictionary))
         stop("dictionary must be a dictionary object")
     levels <- check_integer(levels, min = 1, max_len = Inf)
@@ -131,12 +130,12 @@ tokens_lookup.tokens <- function(x, dictionary, levels = 1:5,
     verbose <- check_logical(verbose)
         
     attrs <- attributes(x)
-    type <- types(x)
+    type <- get_types(x)
     if (verbose)
         catm("applying a dictionary consisting of ", length(dictionary), " key",
              if (length(dictionary) > 1L) "s" else "", "\n", sep = "")
     ids <- object2id(dictionary, type, valuetype, case_insensitive,
-                        field_object(attrs, "concatenator"), levels)
+                     field_object(attrs, "concatenator"), levels)
     key <- attr(ids, "key")
     id_key <- match(names(ids), key)
     overlap <- match(nested_scope, c("key", "dictionary"))
@@ -159,3 +158,10 @@ tokens_lookup.tokens <- function(x, dictionary, levels = 1:5,
         field_object(attrs, "what") <- "dictionary"
     rebuild_tokens(result, attrs)
 }
+
+#' @export
+tokens_lookup.tokens <- function(x, ...) {
+    as.tokens(tokens_lookup(as.tokens_xptr(x), ...))
+}
+
+
