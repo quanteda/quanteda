@@ -63,13 +63,26 @@ test_that("operations on copied xtokens do not affect the original xtokens", {
                      as.list(xtoks))
 })
 
-test_that("tokens_select modify tokens and xtokens in the same way", {
+test_that("tokens_select and tokens_remove work", {
     
     toks2 <- tokens_remove(toks, stopwords(), padding = TRUE) %>% 
         tokens_select(data_dictionary_LSD2015, padding = TRUE)
     xtoks2 <- as.tokens_xptr(xtoks) %>% 
         tokens_remove(stopwords(), padding = TRUE) %>% 
         tokens_select(data_dictionary_LSD2015, padding = TRUE)
-    expect_identical(as.list(toks2), as.list(xtoks2))
+    expect_identical(as.list(xtoks2), as.list(toks2))
     
+})
+
+test_that("tokens_tolower and tokens_toupper work", {
+    expect_identical(as.tokens(tokens_tolower(as.tokens_xptr(toks))),
+                     as.tokens(tokens_tolower(xtoks)))
+    expect_identical(as.tokens(tokens_toupper(as.tokens_xptr(toks))),
+                     as.tokens(tokens_toupper(xtoks)))
+})
+
+test_that("dfm works", {
+    expect_identical(dfm(xtoks), dfm(toks))
+    expect_identical(dfm(xtoks, tolower = FALSE), 
+                     dfm(toks, tolower = FALSE))
 })
