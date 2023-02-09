@@ -23,7 +23,7 @@ NULL
 #'   [make_docvars()]. Names of documents are extracted from the
 #'   `docname_` column.
 #' @keywords internal
-build_dfm <- function(x, features,
+build_dfm <- function(x, features, # NOTE: consider removing feature
                       docvars = data.frame(), meta = list(), 
                       class = "dfm", ...) {
     result <- new(class,

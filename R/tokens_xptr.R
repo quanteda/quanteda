@@ -7,7 +7,7 @@ as.tokens_xptr <- function(x) {
 #' @export
 as.tokens_xptr.tokens <- function(x) {
     attrs <- attributes(x)
-    result <- qatd_cpp_as_xptr(x, attrs$types)
+    result <- cpp_as_xptr(x, attrs$types)
     build_tokens(result, 
                  types = NULL, 
                  padding = TRUE, 
@@ -20,23 +20,23 @@ as.tokens_xptr.tokens <- function(x) {
 #' @export
 as.tokens_xptr.tokens_xptr <- function(x) {
     attrs <- attributes(x)
-    result <- qatd_cpp_copy_xptr(x)
+    result <- cpp_copy_xptr(x)
     rebuild_tokens(result, attrs)
 }
 
 #' @export
 ndoc.tokens_xptr <- function(x) {
-    qatd_cpp_ndoc(x)
+    cpp_ndoc(x)
 }
 
 #' @export
 types.tokens_xptr <- function(x) {
-    qatd_cpp_types(x, TRUE)
+    cpp_get_types(x, TRUE)
 }
 
 #' @export
 ntoken.tokens_xptr <- function(x) {
-    structure(qatd_cpp_ntoken(x), names = docnames(x))
+    structure(cpp_ntoken(x), names = docnames(x))
 }
 
 #' @export
@@ -48,7 +48,7 @@ docnames.tokens_xptr <- function(x) {
 #' @export
 as.tokens.tokens_xptr <- function(x) {
     attrs <- attributes(x)
-    result <- qatd_cpp_as_list(x)
+    result <- cpp_as_list(x)
     build_tokens(result, 
                  types = attr(result, "types"), 
                  padding = attr(result, "padding"), 
@@ -76,7 +76,7 @@ as.list.tokens_xptr <- function(x) {
         stop("Subscript out of bounds")
     
     build_tokens(
-        qatd_cpp_subset(x, index),
+        cpp_subset(x, index),
         attrs[["types"]],
         docvars = reshape_docvars(attrs[["docvars"]], index, drop_docid = drop_docid),
         meta = attrs[["meta"]],
@@ -116,12 +116,32 @@ tokens_subset.tokens_xptr <- function(x, subset, drop_docid = TRUE, ...) {
 
 #' @method dfm tokens_xptr
 #' @export
-dfm.tokens_xptr <- function(x, ...) {
+dfm.tokens_xptr <- function(x, tolower = TRUE, remove_padding = FALSE, ...) {
+    x <- as.tokens_xptr(x) # avoid modifying original tokens
+    if (tolower)
+        x <- tokens_tolower(x)
+    if (remove_padding)
+        x <- tokens_remove(x, "", valuetype = "fixed")
     attrs <- attributes(x)
-    temp <- t(qatd_cpp_dfm(x))
+    temp <- t(cpp_dfm(x))
     build_dfm(temp, colnames(temp),
               docvars = get_docvars(x, user = TRUE, system = TRUE),
               meta = attrs[["meta"]])
+}
+
+#' @export
+tokens_tolower.tokens_xptr <- function(x, keep_acronyms = FALSE) {
+    keep_acronyms <- check_logical(keep_acronyms)
+    # NOTE: consider removing keep_acronyms
+    set_types(x) <- lowercase_types(get_types(x), keep_acronyms) 
+    return(x)
+}
+
+#' @noRd
+#' @export
+tokens_toupper.tokens_xptr <- function(x) {
+    set_types(x) <- char_toupper(types(x))
+    return(x)
 }
 
 # internal functions ----------------------------------------
@@ -135,10 +155,29 @@ get_types <- function(x) {
     UseMethod("get_types")
 }
 
-get_types.tokens_xptr <- function(x) {
-    qatd_cpp_types(x)
-}
-
+#' @method get_types tokens
 get_types.tokens <- function(x) {
     attr(x, "types")
+}
+
+#' @method get_types tokens_xptr
+get_types.tokens_xptr <- function(x) {
+    cpp_get_types(x)
+}
+
+"set_types<-" <- function(x, value) {
+    if (!is.character(value))
+        stop("replacement value must be character")
+    UseMethod("set_types<-")
+}
+
+#' @method set_types tokens
+"set_types<-.tokens" <- function(x, value) { # TODO: remove types<-.tokens
+    attr(x, "types") <- value
+    return(x)
+}
+
+#' @method set_types tokens_xptr
+"set_types<-.tokens_xptr" <- function(x, value) {
+    cpp_set_types(x, value)
 }

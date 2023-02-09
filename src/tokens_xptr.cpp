@@ -4,7 +4,7 @@
 using namespace quanteda;
 
 // [[Rcpp::export]]
-TokensPtr qatd_cpp_as_xptr(const List text_, 
+TokensPtr cpp_as_xptr(const List text_, 
                               const CharacterVector types_) {
     
     Texts texts = Rcpp::as<Texts>(text_);
@@ -14,13 +14,13 @@ TokensPtr qatd_cpp_as_xptr(const List text_,
 }
 
 // [[Rcpp::export]]
-TokensPtr qatd_cpp_copy_xptr(TokensPtr xptr) {
+TokensPtr cpp_copy_xptr(TokensPtr xptr) {
     TokensObj *ptr_copy = new TokensObj(xptr->texts, xptr->types);
     return TokensPtr(ptr_copy, true);
 }
 
 // [[Rcpp::export]]
-List qatd_cpp_as_list(TokensPtr xptr) {
+List cpp_as_list(TokensPtr xptr) {
     xptr->recompile();
     Tokens texts_ = as_list(xptr->texts);
     texts_.attr("types") = encode(xptr->types);;
@@ -30,7 +30,7 @@ List qatd_cpp_as_list(TokensPtr xptr) {
 }
 
 // [[Rcpp::export]]
-TokensPtr qatd_cpp_subset(TokensPtr xptr, IntegerVector index_) {
+TokensPtr cpp_subset(TokensPtr xptr, IntegerVector index_) {
     Texts texts(index_.size());
     for (unsigned int i = 0; i < (unsigned int)index_.size(); i++) {
         if (index_[i] < 1 || index_[i] - 1 >= xptr->texts.size()) {
@@ -43,18 +43,18 @@ TokensPtr qatd_cpp_subset(TokensPtr xptr, IntegerVector index_) {
 }
 
 // [[Rcpp::export]]
-int qatd_cpp_ndoc(TokensPtr xptr) {
+int cpp_ndoc(TokensPtr xptr) {
     return xptr->texts.size();
 }
 
 // // [[Rcpp::export]]
-// bool qatd_cpp_has_padding(TokensPtr xptr) {
+// bool cpp_has_padding(TokensPtr xptr) {
 //     return xptr->padding;
 // }
 
 // [[Rcpp::export]]
-IntegerVector qatd_cpp_ntoken(TokensPtr xptr) {
-    //Rcout << "qatd_cpp_ntoken()\n";
+IntegerVector cpp_ntoken(TokensPtr xptr) {
+    //Rcout << "cpp_ntoken()\n";
     xptr->recompile();
     std::size_t H = xptr->texts.size();
     IntegerVector ls_(H);
@@ -65,15 +65,22 @@ IntegerVector qatd_cpp_ntoken(TokensPtr xptr) {
 }
 
 // [[Rcpp::export]]
-CharacterVector qatd_cpp_types(TokensPtr xptr, bool recompile = false) {
-    //Rcout << "qatd_cpp_types()\n";
+CharacterVector cpp_get_types(TokensPtr xptr, bool recompile = false) {
+    //Rcout << "cpp_types()\n";
     if (recompile)
         xptr->recompile();
     return encode(xptr->types);
 }
 
 // [[Rcpp::export]]
-S4 qatd_cpp_dfm(TokensPtr xptr) {
+TokensPtr cpp_set_types(TokensPtr xptr, const CharacterVector types_) {
+    Types types = Rcpp::as<Types>(types_);
+    xptr->types = types;
+    return xptr;
+}
+
+// [[Rcpp::export]]
+S4 cpp_dfm(TokensPtr xptr) {
     
     xptr->recompile();
     std::size_t H = xptr->texts.size();
@@ -135,7 +142,7 @@ S4 qatd_cpp_dfm(TokensPtr xptr) {
 
 
 /***R
-toks <- quanteda::tokens(c("a b a c.", "b c b a,"), remove_punct = TRUE, padding = FALSE)
+toks <- quanteda::tokens(c("a b a c.", "b c b a,"), remove_punct = FALSE, padding = TRUE)
 xtoks <- quanteda::as.tokens_xptr(toks)
-str(qatd_cpp_dfm(xtoks))
+cpp_dfm(xtoks)
 */
