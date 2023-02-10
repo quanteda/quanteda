@@ -9,16 +9,16 @@ qatd_cpp_index <- function(texts_, types_, words_) {
     .Call(`_quanteda_qatd_cpp_index`, texts_, types_, words_)
 }
 
-qatd_cpp_tokens_chunk <- function(texts_, types_, size, overlap) {
-    .Call(`_quanteda_qatd_cpp_tokens_chunk`, texts_, types_, size, overlap)
+qatd_cpp_tokens_chunk <- function(xptr, size, overlap) {
+    .Call(`_quanteda_qatd_cpp_tokens_chunk`, xptr, size, overlap)
 }
 
-qatd_cpp_tokens_compound <- function(texts_, compounds_, types_, delim_, join, window_left, window_right) {
-    .Call(`_quanteda_qatd_cpp_tokens_compound`, texts_, compounds_, types_, delim_, join, window_left, window_right)
+qatd_cpp_tokens_compound <- function(xptr, compounds_, types_, delim_, join, window_left, window_right) {
+    .Call(`_quanteda_qatd_cpp_tokens_compound`, xptr, compounds_, types_, delim_, join, window_left, window_right)
 }
 
-qatd_cpp_tokens_lookup <- function(texts_, types_, words_, keys_, overlap, nomatch) {
-    .Call(`_quanteda_qatd_cpp_tokens_lookup`, texts_, types_, words_, keys_, overlap, nomatch)
+qatd_cpp_tokens_lookup <- function(xptr, words_, keys_, types_, overlap, nomatch) {
+    .Call(`_quanteda_qatd_cpp_tokens_lookup`, xptr, words_, keys_, types_, overlap, nomatch)
 }
 
 qatd_cpp_tokens_ngrams <- function(xptr, delim_, ns_, skips_) {
@@ -41,32 +41,44 @@ qatd_cpp_tokens_select <- function(xptr, words_, mode, padding, window_left, win
     .Call(`_quanteda_qatd_cpp_tokens_select`, xptr, words_, mode, padding, window_left, window_right, pos_from_, pos_to_)
 }
 
-qatd_cpp_as_xptr <- function(text_, types_) {
-    .Call(`_quanteda_qatd_cpp_as_xptr`, text_, types_)
+cpp_as_xptr <- function(text_, types_) {
+    .Call(`_quanteda_cpp_as_xptr`, text_, types_)
 }
 
-qatd_cpp_copy_xptr <- function(xptr) {
-    .Call(`_quanteda_qatd_cpp_copy_xptr`, xptr)
+cpp_copy_xptr <- function(xptr) {
+    .Call(`_quanteda_cpp_copy_xptr`, xptr)
 }
 
-qatd_cpp_as_list <- function(xptr) {
-    .Call(`_quanteda_qatd_cpp_as_list`, xptr)
+cpp_get_attributes <- function(xptr) {
+    .Call(`_quanteda_cpp_get_attributes`, xptr)
 }
 
-qatd_cpp_subset <- function(xptr, index_) {
-    .Call(`_quanteda_qatd_cpp_subset`, xptr, index_)
+cpp_as_list <- function(xptr) {
+    .Call(`_quanteda_cpp_as_list`, xptr)
 }
 
-qatd_cpp_ndoc <- function(xptr) {
-    .Call(`_quanteda_qatd_cpp_ndoc`, xptr)
+cpp_subset <- function(xptr, index_) {
+    .Call(`_quanteda_cpp_subset`, xptr, index_)
 }
 
-qatd_cpp_ntoken <- function(xptr) {
-    .Call(`_quanteda_qatd_cpp_ntoken`, xptr)
+cpp_ndoc <- function(xptr) {
+    .Call(`_quanteda_cpp_ndoc`, xptr)
 }
 
-qatd_cpp_types <- function(xptr, recompile = FALSE) {
-    .Call(`_quanteda_qatd_cpp_types`, xptr, recompile)
+cpp_ntoken <- function(xptr) {
+    .Call(`_quanteda_cpp_ntoken`, xptr)
+}
+
+cpp_get_types <- function(xptr, recompile = FALSE) {
+    .Call(`_quanteda_cpp_get_types`, xptr, recompile)
+}
+
+cpp_set_types <- function(xptr, types_) {
+    .Call(`_quanteda_cpp_set_types`, xptr, types_)
+}
+
+cpp_dfm <- function(xptr) {
+    .Call(`_quanteda_cpp_dfm`, xptr)
 }
 
 qatd_cpp_is_grouped_numeric <- function(values_, groups_) {

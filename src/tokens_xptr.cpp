@@ -118,8 +118,6 @@ S4 cpp_dfm(TokensPtr xptr) {
             }
         }
         slot_p.push_back(p);
-        //count.erase(std::remove(count.begin(), count.end(), 0), count.end());
-        //i.insert(i.end(), text.begin(), text.end());
     }
     IntegerVector slot_p_ = Rcpp::wrap(slot_p);
     //Rcout << "p: " << p_ << "\n";
@@ -134,7 +132,7 @@ S4 cpp_dfm(TokensPtr xptr) {
         G++;
         types_.push_front("");
     } else {
-        slot_i_ = slot_i_ - 1; // use zero fro other tokens
+        slot_i_ = slot_i_ - 1; // use zero for other tokens
     }
     IntegerVector dim_ = IntegerVector::create(G, H);
     List dimnames_ = List::create(types_, R_NilValue);
