@@ -222,7 +222,6 @@ TokensPtr qatd_cpp_tokens_select(TokensPtr xptr,
 #endif
     // dev::stop_timer("Token select", timer);
     xptr->texts = texts;
-    xptr->types = types;
     return xptr;
 }
 

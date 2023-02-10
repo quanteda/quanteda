@@ -143,7 +143,8 @@ TokensPtr qatd_cpp_tokens_segment(TokensPtr xptr,
 #endif
     
     // Get total number of matches
-    std::size_t len = 0;
+    // TODO: count the element in the same way as tokens_chunk()
+    std::size_t len = 0; 
     for (std::size_t h = 0; h < temp.size(); h++) {
         len += temp[h].size();
     }
@@ -184,9 +185,7 @@ TokensPtr qatd_cpp_tokens_segment(TokensPtr xptr,
     IntegerVector documents_ = Rcpp::wrap(documents);
     xptr.attr("matches") = matches_;
     xptr.attr("documents") = documents_;
-
     xptr->texts = segments;
-    xptr->types = types;
     return xptr;
 }
 
