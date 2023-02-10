@@ -1,5 +1,4 @@
-#include "lib.h"
-#include "recompile.h"
+#include "tokens.h"
 //#include "dev.h"
 using namespace quanteda;
 
@@ -55,13 +54,12 @@ struct chunk_mt : public Worker{
  */
 
 // [[Rcpp::export]]
-List qatd_cpp_tokens_chunk(const List &texts_,
-                           const CharacterVector types_,
-                           const int size,
-                           const int overlap){
+TokensPtr qatd_cpp_tokens_chunk(TokensPtr xptr,
+                                const int size,
+                                const int overlap){
     
-    Texts texts = Rcpp::as<Texts>(texts_);
-    Types types = Rcpp::as< Types >(types_);
+    Texts texts = xptr->texts;
+    Types types = xptr->types;
     UintParam count = 0;
     // dev::Timer timer;
     std::vector<Texts> temp(texts.size());
@@ -77,23 +75,21 @@ List qatd_cpp_tokens_chunk(const List &texts_,
 #endif
     
     Texts chunks(count);
-    IntegerVector docnum_(count), segnum_(count);
-
+    std::vector<int> documents(count);
+    
     std::size_t j = 0;
     for (std::size_t h = 0; h < temp.size(); h++) {
         for (size_t i = 0; i < temp[h].size(); i++) {
             chunks[j] = temp[h][i];
-            docnum_[j] = (int)h + 1;
-            segnum_[j] = (int)i + 1;
+            documents[j] = (int)h + 1;
             j++;
         }
     }
     
-    Tokens chunks_ = recompile(chunks, types, false, false, is_encoded(types_));
-    chunks_.attr("docnum") = docnum_;
-    chunks_.attr("segnum") = segnum_;
-    
-    return(chunks_);
+    IntegerVector documents_ = Rcpp::wrap(documents);
+    xptr.attr("documents") = documents_;
+    xptr->texts = chunks;
+    return xptr;
 }
 
 /***R
