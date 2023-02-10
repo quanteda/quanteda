@@ -39,12 +39,13 @@ List cpp_as_list(TokensPtr xptr) {
 
 // [[Rcpp::export]]
 TokensPtr cpp_subset(TokensPtr xptr, IntegerVector index_) {
-    Texts texts(index_.size());
-    for (unsigned int i = 0; i < (unsigned int)index_.size(); i++) {
-        if (index_[i] < 1 || index_[i] - 1 >= xptr->texts.size()) {
+    std::vector<int> index = Rcpp::as< std::vector<int> >(index_);
+    Texts texts(index.size());
+    for (std::size_t i = 0; i < index.size(); i++) {
+        if (index[i] < 1 || index[i] - 1 >= (int)xptr->texts.size()) {
             throw std::range_error("Invalid document index");
         }
-        texts[i] = xptr->texts[index_[i] - 1];
+        texts[i] = xptr->texts[index[i] - 1];
     }
     xptr->texts = texts;
     return xptr;
@@ -108,7 +109,7 @@ S4 cpp_dfm(TokensPtr xptr) {
         std::sort(text.begin(), text.end()); // rows must be sorted in dgCMatrix
         int n = 1;
         for (std::size_t i = 0; i < text.size(); i++) {
-            if (i + (size_t)1 == text.size() || text[i] != text[i + 1]) {
+            if (i + 1 == text.size() || text[i] != text[i + 1]) {
                 slot_i.push_back(text[i]);
                 slot_x.push_back(n);
                 p++;
