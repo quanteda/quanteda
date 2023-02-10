@@ -16,12 +16,26 @@ microbenchmark::microbenchmark(
     old = tokens_remove(toks, stopwords("en"), padding = TRUE) %>% 
         tokens_remove("[\\p{N}]", valuetype = "regex", padding = TRUE) %>% 
         tokens_remove("[\\p{P}]", valuetype = "regex", padding = TRUE) %>% 
-        tokens_remove("[\\p{S}]", valuetype = "regex", padding = TRUE),
-    new = tokens_remove(as.tokens_xptr(xtoks), stopwords("en"), padding = TRUE) %>% 
+        tokens_remove("[\\p{S}]", valuetype = "regex", padding = TRUE) %>% 
+        dfm(),
+    new = as.tokens_xptr(xtoks) %>% 
+        tokens_remove(stopwords("en"), padding = TRUE) %>% 
         tokens_remove("[\\p{N}]", valuetype = "regex", padding = TRUE) %>% 
         tokens_remove("[\\p{P}]", valuetype = "regex", padding = TRUE) %>% 
-        tokens_remove("[\\p{S}]", valuetype = "regex", padding = TRUE),
+        tokens_remove("[\\p{S}]", valuetype = "regex", padding = TRUE) %>% 
+        dfm(),
     times = 10
+)
+
+microbenchmark::microbenchmark(
+    dfm(toks),
+    dfm(xtoks),
+    times = 10
+)
+identical(dfm(xtoks), dfm(toks))
+
+profvis::profvis(
+    dfm(xtoks)
 )
 
 profvis::profvis(

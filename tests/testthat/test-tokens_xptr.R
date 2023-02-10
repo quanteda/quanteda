@@ -101,6 +101,21 @@ test_that("tokens_tolower and tokens_toupper work", {
                      list(has_dup = FALSE, has_gap = FALSE, has_pad = FALSE))
 })
 
+test_that("tokens_compound works", {
+    dict <- data_dictionary_LSD2015[3:4]
+    expect_identical(as.list(tokens_compound(as.tokens_xptr(toks), dict)),
+                     as.list(tokens_compound(toks, dict)))
+    expect_identical(as.list(tokens_compound(as.tokens_xptr(toks), phrase("of the"))),
+                     as.list(tokens_compound(toks, phrase("of the"))))
+})
+
+test_that("tokens_chunk() works", {
+    
+    expect_identical(as.tokens(tokens_chunk(as.tokens_xptr(toks), 10)),
+                     tokens_chunk(toks, 10))
+})
+
+
 test_that("dfm works", {
     expect_identical(dfm(as.tokens_xptr(toks)), dfm(toks))
     expect_identical(dfm(as.tokens_xptr(toks), tolower = FALSE), 
