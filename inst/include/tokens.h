@@ -106,6 +106,9 @@ inline void TokensObj::recompile() {
     
     // Do nothing if all used and unique
     if (all_used && all_unique) {
+        has_gap = false;
+        has_dup = false;
+        has_pad = true;
         return;
     }
 
@@ -137,7 +140,9 @@ inline void TokensObj::recompile() {
         }
     }
     types = types_new;
-    has_pad = (bool)flags_used[0];
+    has_gap = false;
+    has_dup = false;
+    has_pad = flags_used[0];
 }
 
 // XPtr objects -------------------------------------------------------
