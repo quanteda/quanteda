@@ -165,8 +165,11 @@ TokensPtr qatd_cpp_tokens_lookup(TokensPtr xptr,
     
     Texts texts = xptr->texts;
     Types types = Rcpp::as<Types>(types_);
-    std::vector<unsigned int> keys = Rcpp::as< std::vector<unsigned int> >(keys_);
     
+    if (words_.size() != keys_.size())
+        throw std::range_error("Invalid words and keys");
+    
+    std::vector<unsigned int> keys = Rcpp::as< std::vector<unsigned int> >(keys_);
     unsigned int id_max(0);
     if (nomatch == 2) {
         types.insert(types.end(), xptr->types.begin(), xptr->types.end());
@@ -178,9 +181,6 @@ TokensPtr qatd_cpp_tokens_lookup(TokensPtr xptr,
     MultiMapNgrams map_keys;
     map_keys.max_load_factor(GLOBAL_PATTERN_MAX_LOAD_FACTOR);
     Ngrams words = Rcpp::as<Ngrams>(words_);
-    
-    if (words.size() != keys.size())
-        throw std::range_error("Invalid words and keys");
     
     size_t G = words.size();
     std::vector<std::size_t> spans(G);
