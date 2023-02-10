@@ -13,30 +13,29 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
 // qatd_cpp_fcm
-S4 qatd_cpp_fcm(const Rcpp::List& texts_, const int n_types, const NumericVector& weights_, const bool boolean, const bool ordered);
-RcppExport SEXP _quanteda_qatd_cpp_fcm(SEXP texts_SEXP, SEXP n_typesSEXP, SEXP weights_SEXP, SEXP booleanSEXP, SEXP orderedSEXP) {
+S4 qatd_cpp_fcm(TokensPtr xptr, const int n_types, const NumericVector& weights_, const bool boolean, const bool ordered);
+RcppExport SEXP _quanteda_qatd_cpp_fcm(SEXP xptrSEXP, SEXP n_typesSEXP, SEXP weights_SEXP, SEXP booleanSEXP, SEXP orderedSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const Rcpp::List& >::type texts_(texts_SEXP);
+    Rcpp::traits::input_parameter< TokensPtr >::type xptr(xptrSEXP);
     Rcpp::traits::input_parameter< const int >::type n_types(n_typesSEXP);
     Rcpp::traits::input_parameter< const NumericVector& >::type weights_(weights_SEXP);
     Rcpp::traits::input_parameter< const bool >::type boolean(booleanSEXP);
     Rcpp::traits::input_parameter< const bool >::type ordered(orderedSEXP);
-    rcpp_result_gen = Rcpp::wrap(qatd_cpp_fcm(texts_, n_types, weights_, boolean, ordered));
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_fcm(xptr, n_types, weights_, boolean, ordered));
     return rcpp_result_gen;
 END_RCPP
 }
 // qatd_cpp_index
-DataFrame qatd_cpp_index(const List& texts_, const CharacterVector types_, const List& words_);
-RcppExport SEXP _quanteda_qatd_cpp_index(SEXP texts_SEXP, SEXP types_SEXP, SEXP words_SEXP) {
+DataFrame qatd_cpp_index(TokensPtr xptr, const List& words_);
+RcppExport SEXP _quanteda_qatd_cpp_index(SEXP xptrSEXP, SEXP words_SEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const List& >::type texts_(texts_SEXP);
-    Rcpp::traits::input_parameter< const CharacterVector >::type types_(types_SEXP);
+    Rcpp::traits::input_parameter< TokensPtr >::type xptr(xptrSEXP);
     Rcpp::traits::input_parameter< const List& >::type words_(words_SEXP);
-    rcpp_result_gen = Rcpp::wrap(qatd_cpp_index(texts_, types_, words_));
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_index(xptr, words_));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -332,7 +331,7 @@ END_RCPP
 
 static const R_CallMethodDef CallEntries[] = {
     {"_quanteda_qatd_cpp_fcm", (DL_FUNC) &_quanteda_qatd_cpp_fcm, 5},
-    {"_quanteda_qatd_cpp_index", (DL_FUNC) &_quanteda_qatd_cpp_index, 3},
+    {"_quanteda_qatd_cpp_index", (DL_FUNC) &_quanteda_qatd_cpp_index, 2},
     {"_quanteda_qatd_cpp_tokens_chunk", (DL_FUNC) &_quanteda_qatd_cpp_tokens_chunk, 3},
     {"_quanteda_qatd_cpp_tokens_compound", (DL_FUNC) &_quanteda_qatd_cpp_tokens_compound, 7},
     {"_quanteda_qatd_cpp_tokens_lookup", (DL_FUNC) &_quanteda_qatd_cpp_tokens_lookup, 6},
