@@ -5,7 +5,7 @@ using namespace quanteda;
 
 // [[Rcpp::export]]
 TokensPtr cpp_as_xptr(const List text_, 
-                              const CharacterVector types_) {
+                      const CharacterVector types_) {
     
     Texts texts = Rcpp::as<Texts>(text_);
     Types types = Rcpp::as<Types>(types_);
@@ -121,11 +121,11 @@ S4 cpp_dfm(TokensPtr xptr) {
         slot_p.push_back(p);
     }
     IntegerVector slot_p_ = Rcpp::wrap(slot_p);
-    //Rcout << "p: " << p_ << "\n";
+    //Rcout << "p: " << slot_p_ << "\n";
     DoubleVector slot_x_ = Rcpp::wrap(slot_x);
-    //Rcout << "x: " << x_ << "\n";
+    //Rcout << "x: " << slot_x_ << "\n";
     IntegerVector slot_i_ = Rcpp::wrap(slot_i);
-    //Rcout << "i: " << i_ << "\n";
+    //Rcout << "i: " << slot_i_ << "\n";
     
     size_t G = xptr->types.size();
     CharacterVector types_ = encode(xptr->types);

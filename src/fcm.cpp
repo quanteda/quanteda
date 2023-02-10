@@ -1,4 +1,4 @@
-#include "lib.h"
+#include "tokens.h"
 #include "dev.h"
 using namespace quanteda;
 
@@ -104,14 +104,16 @@ struct count_col_mt : public Worker{
 
 
 // [[Rcpp::export]]
-S4 qatd_cpp_fcm(const Rcpp::List &texts_,
+S4 qatd_cpp_fcm(TokensPtr xptr,
                 const int n_types,
                 const NumericVector &weights_,
                 const bool boolean,
                 const bool ordered){
     
     // triplets are constructed according to tri & ordered settings to be efficient
-    Texts texts = Rcpp::as<Texts>(texts_);
+    xptr->recompile();
+    Texts texts = xptr->texts;
+    Types types = xptr->types;
     std::vector<double> weights = Rcpp::as< std::vector<double> >(weights_);
     unsigned int window = weights.size();
 

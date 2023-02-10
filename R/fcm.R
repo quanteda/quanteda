@@ -189,14 +189,14 @@ fcm.dfm <- function(x, context = c("document", "window"),
 #' @noRd
 #' @import Matrix
 #' @export
-fcm.tokens <- function(x, context = c("document", "window"),
-                       count = c("frequency", "boolean", "weighted"),
-                       window = 5L,
-                       weights = NULL,
-                       ordered = FALSE,
-                       tri = TRUE, ...) {
+fcm.tokens_xptr <- function(x, context = c("document", "window"),
+                            count = c("frequency", "boolean", "weighted"),
+                            window = 5L,
+                            weights = NULL,
+                            ordered = FALSE,
+                            tri = TRUE, ...) {
 
-    x <- as.tokens(x)
+    
     context <- match.arg(context)
     count <- match.arg(count)
     window <- check_integer(window, min = 1)
@@ -220,7 +220,7 @@ fcm.tokens <- function(x, context = c("document", "window"),
         } else {
             weights <- rep(1, window)
         }
-        type <- types(x)
+        type <- get_types(x)
         boolean <- count == "boolean"
         temp <- qatd_cpp_fcm(x, length(type), weights, boolean, ordered)
         temp <- as(temp, "CsparseMatrix")
@@ -239,6 +239,11 @@ fcm.tokens <- function(x, context = c("document", "window"),
             meta = attrs[["meta"]])
     }
     return(result)
+}
+
+#' @export
+fcm.tokens <- function(x, ...) {
+    fcm(as.tokens_xptr(x), ...)
 }
 
 #' @noRd
