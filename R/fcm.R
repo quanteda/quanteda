@@ -189,14 +189,14 @@ fcm.dfm <- function(x, context = c("document", "window"),
 #' @noRd
 #' @import Matrix
 #' @export
-fcm.tokens_xptr <- function(x, context = c("document", "window"),
-                            count = c("frequency", "boolean", "weighted"),
-                            window = 5L,
-                            weights = NULL,
-                            ordered = FALSE,
-                            tri = TRUE, ...) {
+fcm.tokens <- function(x, context = c("document", "window"),
+                       count = c("frequency", "boolean", "weighted"),
+                       window = 5L,
+                       weights = NULL,
+                       ordered = FALSE,
+                       tri = TRUE, ...) {
 
-    
+    x <- as.tokens(x)
     context <- match.arg(context)
     count <- match.arg(count)
     window <- check_integer(window, min = 1)
@@ -239,11 +239,6 @@ fcm.tokens_xptr <- function(x, context = c("document", "window"),
             meta = attrs[["meta"]])
     }
     return(result)
-}
-
-#' @export
-fcm.tokens <- function(x, ...) {
-    fcm(as.tokens_xptr(x), ...)
 }
 
 #' @noRd

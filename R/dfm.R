@@ -125,9 +125,9 @@ dfm.tokens <- function(x,
                  ifelse(length(x) > 1, "s", ""),
                  ", ",
                  # TODO: replace with: ntype()
-                 format(length(types(x)), big.mark = ","),
+                 format(length(get_types(x)), big.mark = ","),
                  " feature",
-                 ifelse(length(types(x)) > 1, "s", ""),
+                 ifelse(length(get_types(x)) > 1, "s", ""),
                  "\n", sep = "")
         }
         
@@ -211,7 +211,7 @@ dfm.tokens <- function(x,
         x <- tokens_remove(x, "", valuetype = "fixed")
 
     # compile the dfm
-    type <- types(x)
+    type <- get_types(x)
     attrs <- attributes(x)
     temp <- unclass(x)
     

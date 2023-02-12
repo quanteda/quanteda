@@ -41,10 +41,10 @@ tokens_wordstem.tokens <- function(x, language = quanteda_options("language_stem
     x <- as.tokens(x)
     attrs <- attributes(x)
     if (identical(field_object(attrs, "ngram"), 1L)) {
-        types(x) <- char_wordstem(types(x), language = language, check_whitespace = FALSE)
+        set_types(x) <- char_wordstem(get_types(x), language = language, check_whitespace = FALSE)
     } else {
-        types(x) <- wordstem_ngrams(
-            types(x),
+        set_types(x) <- wordstem_ngrams(
+            get_types(x),
             concatenator = field_object(attrs, "concatenator"),
             language = language
             )

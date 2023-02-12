@@ -12,7 +12,7 @@ NULL
 #' @method as.list tokens
 #' @export
 as.list.tokens <- function(x, ...) {
-    types <- c("", types(x))
+    types <- c("", get_types(x))
     result <- lapply(unclass(x), function(y) types[y + 1]) # shift index to show padding
     attributes(result) <- NULL
     names(result) <- names(x)
@@ -83,7 +83,7 @@ print.tokens <- function(x, max_ndoc = quanteda_options("print_tokens_max_ndoc")
     if (max_ndoc > 0 && ndoc(x) > 0) {
         x <- head(x, max_ndoc)
         label <- paste0(names(x), " :")
-        types <- c("", types(x))
+        types <- c("", get_types(x))
         len <- lengths(x)
         if (max_ntoken < 0)
             max_ntoken <- max(len)
@@ -144,7 +144,7 @@ print.tokens <- function(x, max_ndoc = quanteda_options("print_tokens_max_ndoc")
 #' str(toks)
 #' toks[[2]]
 "[[.tokens" <- function(x, i) {
-    types <- c("", types(x))
+    types <- c("", get_types(x))
     types[unclass(x)[[i]] + 1] # shift index to show padding
 }
 

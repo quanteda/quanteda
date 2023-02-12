@@ -56,7 +56,7 @@ tokens_replace.tokens <- function(x, pattern, replacement, valuetype = "glob",
         stop("The length of pattern and replacement must be the same", call. = FALSE)
     if (!length(pattern)) return(x)
 
-    type <- types(x)
+    type <- get_types(x)
     if (valuetype == "fixed" && !is.list(pattern) && !is.list(replacement)) {
         
         pattern <- check_character(pattern, min_len = 0, max_len = Inf, strict = TRUE)
