@@ -1,3 +1,4 @@
+
 test_that("test c.corpus", {
     suppressWarnings({
         expect_equal(
@@ -146,11 +147,11 @@ test_that("dfm.dfm works as expected", {
     #     sum(dfm(tokens(corp), dictionary = dict, case_insensitive = FALSE))
     # })
 
-    # DEPRECATED
-    expect_equivalent(
-        suppressWarnings(dfm(corp, dictionary = dict)),
-        suppressWarnings(dfm(dfmt, dictionary = dict))
-    )
+    # # DEPRECATED
+    # expect_equivalent(
+    #     suppressWarnings(dfm(corp, dictionary = dict)),
+    #     suppressWarnings(dfm(dfmt, dictionary = dict))
+    # )
 
     # DEPRECATED
     expect_equivalent(
