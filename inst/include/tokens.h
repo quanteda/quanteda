@@ -108,7 +108,6 @@ inline void TokensObj::recompile() {
     if (all_used && all_unique) {
         has_gap = false;
         has_dup = false;
-        has_pad = true;
         return;
     }
 
