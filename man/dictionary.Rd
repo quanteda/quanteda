@@ -108,6 +108,6 @@ Yoshikoder page, from Will Lowe
 Lexicoder format, \url{https://www.snsoroka.com/data-lexicoder/}
 }
 \seealso{
-\link{dfm}, \code{\link[=as.dictionary]{as.dictionary()}},
+\code{\link[=as.dictionary]{as.dictionary()}},
 \code{\link[=dictionary2-class]{as.list()}}, \code{\link[=is.dictionary]{is.dictionary()}}
 }
