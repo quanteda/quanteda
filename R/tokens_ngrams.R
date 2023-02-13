@@ -150,3 +150,9 @@ tokens_skipgrams.default <- function(x, n, skip, concatenator = "_") {
 tokens_skipgrams.tokens <- function(x, n, skip, concatenator = "_") {
     tokens_ngrams(x, n = n, skip = skip, concatenator = concatenator)
 }
+
+#' @export
+tokens_skipgrams.tokens_xptr <- function(x, n, skip, concatenator = "_") {
+    tokens_ngrams(x, n = n, skip = skip, concatenator = concatenator)
+}
+
