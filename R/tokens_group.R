@@ -32,8 +32,8 @@ tokens_group.default <- function(x, groups = docid(x), fill = FALSE) {
 }
 
 #' @export
-tokens_group.tokens <- function(x, groups = docid(x), fill = FALSE) {
-    x <- as.tokens(x)
+tokens_group.tokens_xptr <- function(x, groups = docid(x), fill = FALSE) {
+    
     if (missing(groups)) {
         field <- NULL
         groups <- docid(x)
@@ -55,16 +55,27 @@ tokens_group.tokens <- function(x, groups = docid(x), fill = FALSE) {
     attrs <- attributes(x)
     groups <- groups[!is.na(groups)]
 
-    result <- group_tokens(x, groups)
+    result <- cpp_tokens_group(x, groups)
     attrs[["docvars"]] <- group_docvars(attrs[["docvars"]], groups, field)
 
     rebuild_tokens(result, attrs)
 }
 
-group_tokens <- function(x, groups) {
-    result <- split(unlist_integer(unclass(x), use.names = FALSE), rep(groups, lengths(x)))
-    attr(result, "class") <- "tokens"
-    attr(result, "types") <- attr(x, "types")
-    attr(result, "padding") <- attr(x, "padding")
-    return(result)
+#' @export
+#tokens_group.tokens <- function(x, groups = docid(x), fill = FALSE) {
+tokens_group.tokens <- function(x, ...) {
+    
+    # if (missing(groups)) {
+    #     field <- NULL
+    #     groups <- docid(x)
+    # } else {
+    #     field <- deparse(substitute(groups))
+    #     groups <- eval(substitute(groups), get_docvars(x, user = TRUE, system = TRUE), parent.frame())
+    #     if (!field %in% names(get_docvars(x)) || !is.factor(groups))
+    #         field <- NULL
+    #     groups <- as.factor(groups)
+    # }
+    
+    #as.tokens(tokens_group(as.tokens_xptr(x), groups, fill))
+    as.tokens(tokens_group(as.tokens_xptr(x), ...))
 }
