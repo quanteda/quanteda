@@ -44,7 +44,7 @@ tokens_chunk.tokens_xptr <- function(x, size, overlap = 0, use_docvars = TRUE) {
 
     attrs <- attributes(x)
     result <- cpp_tokens_chunk(x, size, overlap)
-    if (any(duplicated(attr(result, "docnum")))) {
+    if (any(duplicated(attr(result, "documents")))) {
         field_object(attrs, "unit") <- "segments"
     } else {
         field_object(attrs, "unit") <- "documents"
