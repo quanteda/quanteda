@@ -28,6 +28,20 @@ microbenchmark::microbenchmark(
 )
 
 microbenchmark::microbenchmark(
+    old = tokens_compound(toks, data_dictionary_LSD2015),
+    new = as.tokens_xptr(xtoks) %>% 
+        tokens_compound(data_dictionary_LSD2015),
+    times = 10
+)
+
+microbenchmark::microbenchmark(
+    old = tokens_compound(toks, "&", window = 1),
+    new = as.tokens_xptr(xtoks) %>% 
+        tokens_compound("&", window = 1),
+    times = 10
+)
+
+microbenchmark::microbenchmark(
     dfm(toks),
     dfm(xtoks),
     times = 10
