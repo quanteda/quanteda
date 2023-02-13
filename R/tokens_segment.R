@@ -71,9 +71,9 @@ tokens_segment.tokens_xptr <- function(x, pattern,
     if ("" %in% pattern) ids <- c(ids, list(0)) # append padding index
     
     if (pattern_position == "before") {
-        result <- qatd_cpp_tokens_segment(x, ids, extract_pattern, 1)
+        result <- cpp_tokens_segment(x, ids, extract_pattern, 1)
     } else {
-        result <- qatd_cpp_tokens_segment(x, ids, extract_pattern, 2)
+        result <- cpp_tokens_segment(x, ids, extract_pattern, 2)
     }
     attrs[["docvars"]] <- reshape_docvars(attrs[["docvars"]], attr(result, "documents"))
     field_object(attrs, "unit") <- "segments"

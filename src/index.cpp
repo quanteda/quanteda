@@ -72,7 +72,7 @@ struct index_mt : public Worker{
  */
 
 // [[Rcpp::export]]
-DataFrame qatd_cpp_index(TokensPtr xptr,
+DataFrame cpp_index(TokensPtr xptr,
                         const List &words_){
     
     Texts texts = xptr->texts;
@@ -147,13 +147,13 @@ DataFrame qatd_cpp_index(TokensPtr xptr,
 toks <- list(text1=1:10, text2=5:15)
 #toks <- rep(list(rep(1:10, 1), rep(5:15, 1)), 1)
 #dict <- list(c(1, 2), c(5, 6), 10, 15, 20)
-#qatd_cpp_tokens_contexts(toks, dict, 2)
-qatd_cpp_index(toks, letters, list(10), 1, "_")
-qatd_cpp_index(toks, letters, list(10), 1, "_")
-qatd_cpp_index(toks, letters, list(c(3, 4), 7), 2, "_")
-qatd_cpp_index(toks, letters, list(c(3, 4), 7), 2, "_")
-qatd_cpp_index(toks, letters, c(3, 4, 7), 2, "_")
-qatd_cpp_index(toks, letters, c(3, 4, 7), 2, "_")
+#cpp_tokens_contexts(toks, dict, 2)
+cpp_index(toks, letters, list(10), 1, "_")
+cpp_index(toks, letters, list(10), 1, "_")
+cpp_index(toks, letters, list(c(3, 4), 7), 2, "_")
+cpp_index(toks, letters, list(c(3, 4), 7), 2, "_")
+cpp_index(toks, letters, c(3, 4, 7), 2, "_")
+cpp_index(toks, letters, c(3, 4, 7), 2, "_")
 
 
 */

@@ -125,7 +125,7 @@ struct segment_mt : public Worker{
  */
 
 // [[Rcpp::export]]
-TokensPtr qatd_cpp_tokens_segment(TokensPtr xptr,
+TokensPtr cpp_tokens_segment(TokensPtr xptr,
                              const List &patterns_,
                              const bool &remove,
                              const int &position){
@@ -198,18 +198,18 @@ toks <- tokens("aa bb cc")
 xtoks <- as.tokens_xptr(toks)
 #toks <- rep(list(rep(1:10, 1), rep(5:15, 1)), 1)
 #dict <- list(c(1, 2), c(5, 6), 10, 15, 20)
-#qatd_cpp_tokens_contexts(toks, dict, 2)
-#qatd_cpp_tokens_segment(toks, letters, list(c(5, 6), 10), TRUE, 2)
-out <- qatd_cpp_tokens_segment(xtoks, list(2), FALSE, 1)
+#cpp_tokens_contexts(toks, dict, 2)
+#cpp_tokens_segment(toks, letters, list(c(5, 6), 10), TRUE, 2)
+out <- cpp_tokens_segment(xtoks, list(2), FALSE, 1)
 attributes(out)
-#qatd_cpp_tokens_segment(toks, letters, list(c(5, 6), 10), FALSE, 2)
+#cpp_tokens_segment(toks, letters, list(c(5, 6), 10), FALSE, 2)
 
 # 
-# qatd_cpp_tokens_segment(toks, letters, list(10))
-# qatd_cpp_tokens_segment(toks, letters, list(c(3, 4), 7))
-# qatd_cpp_tokens_segment(toks, letters, list(c(3, 4), 7))
-# qatd_cpp_tokens_segment(toks, letters, c(3, 4, 7))
-# qatd_cpp_tokens_segment(toks, letters, c(3, 4, 7))
+# cpp_tokens_segment(toks, letters, list(10))
+# cpp_tokens_segment(toks, letters, list(c(3, 4), 7))
+# cpp_tokens_segment(toks, letters, list(c(3, 4), 7))
+# cpp_tokens_segment(toks, letters, c(3, 4, 7))
+# cpp_tokens_segment(toks, letters, c(3, 4, 7))
 
 
 */

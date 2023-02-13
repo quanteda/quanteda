@@ -54,7 +54,7 @@ struct chunk_mt : public Worker{
  */
 
 // [[Rcpp::export]]
-TokensPtr qatd_cpp_tokens_chunk(TokensPtr xptr,
+TokensPtr cpp_tokens_chunk(TokensPtr xptr,
                                 const int size,
                                 const int overlap){
     
@@ -97,11 +97,11 @@ TokensPtr qatd_cpp_tokens_chunk(TokensPtr xptr,
 toks <- list(text1=1:10, text2=5:15)
 #toks <- rep(list(rep(1:10, 1), rep(5:15, 1)), 100)
 #dict <- list(c(1, 2), c(5, 6), 10, 15, 20)
-out1 <- qatd_cpp_tokens_chunk(toks, letters, 2, 0)
-out2 <- qatd_cpp_tokens_chunk(toks, letters, 2, 1)
+out1 <- cpp_tokens_chunk(toks, letters, 2, 0)
+out2 <- cpp_tokens_chunk(toks, letters, 2, 1)
 
-out3 <- qatd_cpp_tokens_chunk(toks, letters, 2, 0)
-out4 <- qatd_cpp_tokens_chunk(toks, letters, 2, 1)
+out3 <- cpp_tokens_chunk(toks, letters, 2, 0)
+out4 <- cpp_tokens_chunk(toks, letters, 2, 1)
 
 
 */

@@ -12,7 +12,7 @@ using namespace arma;
 
 /*
 // [[Rcpp::export]]
-List qatd_cpp_chars_remove(List input_, String char_remove) {
+List cpp_chars_remove(List input_, String char_remove) {
     List output_ = clone(input_);
     for (unsigned int h = 0; h < (unsigned int)output_.size(); h++) {
         CharacterVector elems_ = output_[h];
@@ -43,7 +43,7 @@ List qatd_cpp_chars_remove(List input_, String char_remove) {
  */
 
 // [[Rcpp::export]]
-bool qatd_cpp_is_grouped_numeric(NumericVector values_, IntegerVector groups_) {
+bool cpp_is_grouped_numeric(NumericVector values_, IntegerVector groups_) {
     
     if (values_.size() == 0) return(true);
     if (min(groups_) < 1 || values_.size() != groups_.size())
@@ -67,7 +67,7 @@ bool qatd_cpp_is_grouped_numeric(NumericVector values_, IntegerVector groups_) {
 }
 
 // [[Rcpp::export]]
-bool qatd_cpp_is_grouped_character(CharacterVector values_, IntegerVector groups_) {
+bool cpp_is_grouped_character(CharacterVector values_, IntegerVector groups_) {
     
     if (values_.size() == 0) return(true);
     if (min(groups_) < 1 || values_.size() != groups_.size())
@@ -101,7 +101,7 @@ bool qatd_cpp_is_grouped_character(CharacterVector values_, IntegerVector groups
  */
 //
 // [[Rcpp::export]]
-List qatd_cpp_get_load_factor() {
+List cpp_get_load_factor() {
     return List::create(
          _["pattern"] = GLOBAL_PATTERN_MAX_LOAD_FACTOR,
          _["ngrams"] = GLOBAL_NGRAMS_MAX_LOAD_FACTOR
@@ -109,12 +109,12 @@ List qatd_cpp_get_load_factor() {
 }
 
 // [[Rcpp::export]]
-void qatd_cpp_set_meta(RObject object_, RObject meta_) {
+void cpp_set_meta(RObject object_, RObject meta_) {
     object_.attr("meta") = meta_;
 }
 
 // [[Rcpp::export]]
-bool qatd_cpp_tbb_enabled(){
+bool cpp_tbb_enabled(){
 #if QUANTEDA_USE_TBB
     return true;
 #else

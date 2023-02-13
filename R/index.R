@@ -37,7 +37,7 @@ index.tokens_xptr <- function(x, pattern,
         names(pattern) <- pattern
     ids <- object2id(pattern, type, valuetype,
                      case_insensitive, field_object(attrs, "concatenator"))
-    result <- qatd_cpp_index(x, ids)
+    result <- cpp_index(x, ids)
     result$docname <- docnames(x)[result$docname]
     result$pattern <- factor(names(ids)[result$pattern], levels = unique(names(ids)))
     if (nrow(result)) {

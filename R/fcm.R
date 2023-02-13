@@ -222,7 +222,7 @@ fcm.tokens <- function(x, context = c("document", "window"),
         }
         type <- get_types(x)
         boolean <- count == "boolean"
-        temp <- qatd_cpp_fcm(x, length(type), weights, boolean, ordered)
+        temp <- cpp_fcm(x, length(type), weights, boolean, ordered)
         temp <- as(temp, "CsparseMatrix")
         if (!ordered) {
             if (tri) {

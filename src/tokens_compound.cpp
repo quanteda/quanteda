@@ -168,7 +168,7 @@ struct compound_mt : public Worker{
  */
 
 // [[Rcpp::export]]
-TokensPtr qatd_cpp_tokens_compound(TokensPtr xptr,
+TokensPtr cpp_tokens_compound(TokensPtr xptr,
                               const List &compounds_,
                               const CharacterVector &types_,
                               const String &delim_,
@@ -257,10 +257,10 @@ toks <- list(rep(1:10, 1), rep(5:15, 1))
 #dict <- list(c(1, 2), c(2, 3), c(4, 5))
 dict <- list(6, 4)
 types <- letters[seq_along(unique(unlist(toks)))]
-#qatd_cpp_tokens_compound(toks, dict, types, "_", FALSE)
-qatd_cpp_tokens_compound(toks, dict, types, "_", TRUE, 0, 0)
-qatd_cpp_tokens_compound(toks, dict, types, "_", TRUE, 1, 1)
-qatd_cpp_tokens_compound(toks, dict, types, "_", FALSE, 1, 1)
+#cpp_tokens_compound(toks, dict, types, "_", FALSE)
+cpp_tokens_compound(toks, dict, types, "_", TRUE, 0, 0)
+cpp_tokens_compound(toks, dict, types, "_", TRUE, 1, 1)
+cpp_tokens_compound(toks, dict, types, "_", FALSE, 1, 1)
 
 
 

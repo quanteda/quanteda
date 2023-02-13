@@ -156,7 +156,7 @@ struct lookup_mt : public Worker{
 */
 
 // [[Rcpp::export]]
-TokensPtr qatd_cpp_tokens_lookup(TokensPtr xptr,
+TokensPtr cpp_tokens_lookup(TokensPtr xptr,
                                  const List &words_,
                                  const IntegerVector &keys_,
                                  const CharacterVector &types_,
@@ -225,11 +225,11 @@ dict <- list(c(1, 2), c(5, 6), 10, 15, 20)
 #dict <- list(1:10, c(5, 6) , 4)
 #keys <- rep(2, length(dict))
 keys <- seq_along(dict) + 1
-#qatd_cpp_tokens_lookup(toks, letters, dict, integer(0), 0)
-qatd_cpp_tokens_lookup(toks, dict, keys, FALSE, 0)
-qatd_cpp_tokens_lookup(toks, dict, keys, TRUE, 0)
-qatd_cpp_tokens_lookup(toks, dict, keys, FALSE, 0)
-qatd_cpp_tokens_lookup(toks, dict, keys, FALSE, 1)
-qatd_cpp_tokens_lookup(toks, dict, keys, FALSE, 2)
+#cpp_tokens_lookup(toks, letters, dict, integer(0), 0)
+cpp_tokens_lookup(toks, dict, keys, FALSE, 0)
+cpp_tokens_lookup(toks, dict, keys, TRUE, 0)
+cpp_tokens_lookup(toks, dict, keys, FALSE, 0)
+cpp_tokens_lookup(toks, dict, keys, FALSE, 1)
+cpp_tokens_lookup(toks, dict, keys, FALSE, 2)
 
 */

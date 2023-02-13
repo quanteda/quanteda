@@ -601,7 +601,7 @@ tokens_recompile <- function(x, method = c("C++", "R"), gap = TRUE, dup = TRUE) 
     attrs <- attributes(x)
     type <- attr(x, "types")
     if (method == "C++") {
-        x <- qatd_cpp_tokens_recompile(x, type, gap, dup)
+        x <- cpp_tokens_recompile(x, type, gap, dup)
         x <- rebuild_tokens(x, attrs)
     } else {
 

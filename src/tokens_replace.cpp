@@ -87,7 +87,7 @@ struct replace_mt : public Worker{
 
 
 // [[Rcpp::export]]
-TokensPtr qatd_cpp_tokens_replace(TokensPtr xptr,
+TokensPtr cpp_tokens_replace(TokensPtr xptr,
                              const List &patterns_,
                              const List &replacements_){
     
@@ -134,8 +134,8 @@ toks <- list(rep(1:10, 1), rep(5:15, 1))
 from <- list(c(9, 10))
 to <- list(0)
 
-#qatd_cpp_tokens_replace(toks, letters, dict, integer(0), 0)
-qatd_cpp_tokens_replace(toks, letters, from, to)
-#qatd_cpp_tokens_replace(toks, letters, from, to)
+#cpp_tokens_replace(toks, letters, dict, integer(0), 0)
+cpp_tokens_replace(toks, letters, from, to)
+#cpp_tokens_replace(toks, letters, from, to)
 
 */

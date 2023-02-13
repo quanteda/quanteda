@@ -85,9 +85,9 @@ is_grouped <- function(x, group) {
     if (is.list(x)) {
         FALSE
     } else if (is.character(x)) {
-        qatd_cpp_is_grouped_character(x, group)
+        cpp_is_grouped_character(x, group)
     } else {
-        qatd_cpp_is_grouped_numeric(as.numeric(x), group)
+        cpp_is_grouped_numeric(as.numeric(x), group)
     }
 }
 

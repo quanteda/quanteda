@@ -110,7 +110,7 @@ struct type_mt : public Worker{
 */
 
 // [[Rcpp::export]]
-TokensPtr qatd_cpp_tokens_ngrams(TokensPtr xptr,
+TokensPtr cpp_tokens_ngrams(TokensPtr xptr,
                             const String delim_,
                             const IntegerVector ns_,
                             const IntegerVector skips_) {
@@ -172,12 +172,12 @@ library(quanteda)
 #txt <- c('a b c d e')
 txt <- c('a b c d e', 'c d e f g')
 tok <- quanteda::tokens(txt)
-out <- qatd_cpp_tokens_ngrams(tok, attr(tok, 'types'), "-", 2, 1)
+out <- cpp_tokens_ngrams(tok, attr(tok, 'types'), "-", 2, 1)
 str(out)
 
 tok2 <- quanteda::tokens(data_corpus_inaugural)
 microbenchmark::microbenchmark(
-    qatd_cpp_tokens_ngrams(tok2, attr(tok2, 'types'), "-", 2, 1),
+    cpp_tokens_ngrams(tok2, attr(tok2, 'types'), "-", 2, 1),
     tokenizers::tokenize_ngrams(texts(data_corpus_inaugural))
 )
 

@@ -175,7 +175,7 @@ struct select_mt : public Worker{
 
 
 // [[Rcpp::export]]
-TokensPtr qatd_cpp_tokens_select(TokensPtr xptr,
+TokensPtr cpp_tokens_select(TokensPtr xptr,
                                  const List &words_,
                                  int mode,
                                  bool padding,
@@ -231,16 +231,16 @@ toks <- list(rep(1:10, 1))
 #dict <- as.list(1:100000)
 dict <- list(c(1, 2), c(5, 6), 10, 15, 20)
 #dict <- list(c(99))
-#qatd_cpp_tokens_select(toks, letters, dict, 1, TRUE, 1, 1)
-qatd_cpp_tokens_select(toks, letters, dict, 1, TRUE, 0, 0, 1, 100)
-qatd_cpp_tokens_select(toks, letters, dict, 1, TRUE, 0, 1, 1, 100)
-qatd_cpp_tokens_select(toks, letters, dict, 1, FALSE, 0, 0, 1, 2)
-qatd_cpp_tokens_select(toks, letters, dict, 2, TRUE, 0, 0, 1, 5)
-qatd_cpp_tokens_select(toks, letters, dict, 2, TRUE, 0, 1, 1, 2)
-qatd_cpp_tokens_select(toks, letters, dict, 2, TRUE, 0, 2, 1, 3)
-qatd_cpp_tokens_select(toks, letters, as.list(1:10), 1, FALSE, 0, 0, 1, 2)
-qatd_cpp_tokens_select(toks, letters, as.list(1:10), 1, TRUE, 0, 0, 1, 2)
-qatd_cpp_tokens_select(toks, letters, as.list(1:10), 2, FALSE, 0, 0, 1, 1)
-qatd_cpp_tokens_select(toks, letters, as.list(1:10), 2, TRUE, 0, 0, 1, 1)
+#cpp_tokens_select(toks, letters, dict, 1, TRUE, 1, 1)
+cpp_tokens_select(toks, letters, dict, 1, TRUE, 0, 0, 1, 100)
+cpp_tokens_select(toks, letters, dict, 1, TRUE, 0, 1, 1, 100)
+cpp_tokens_select(toks, letters, dict, 1, FALSE, 0, 0, 1, 2)
+cpp_tokens_select(toks, letters, dict, 2, TRUE, 0, 0, 1, 5)
+cpp_tokens_select(toks, letters, dict, 2, TRUE, 0, 1, 1, 2)
+cpp_tokens_select(toks, letters, dict, 2, TRUE, 0, 2, 1, 3)
+cpp_tokens_select(toks, letters, as.list(1:10), 1, FALSE, 0, 0, 1, 2)
+cpp_tokens_select(toks, letters, as.list(1:10), 1, TRUE, 0, 0, 1, 2)
+cpp_tokens_select(toks, letters, as.list(1:10), 2, FALSE, 0, 0, 1, 1)
+cpp_tokens_select(toks, letters, as.list(1:10), 2, TRUE, 0, 0, 1, 1)
 
 */
