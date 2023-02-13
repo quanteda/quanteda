@@ -39,10 +39,20 @@ ntoken.tokens_xptr <- function(x) {
     structure(cpp_ntoken(x), names = docnames(x))
 }
 
-#' @export
-docnames.tokens_xptr <- function(x) {
-    get_docvars(x, "docname_", FALSE, TRUE, TRUE)
-}
+# #' @export
+# docnames.tokens_xptr <- function(x) {
+#     get_docvars(x, "docname_", FALSE, TRUE, TRUE)
+# }
+# 
+# #' @export
+# docid.tokens_xptr <- function(x) {
+#     get_docvars(x, "docid_", FALSE, TRUE, TRUE)
+# }
+# 
+# #' @export
+# segid.tokens_xptr <- function(x) {
+#     get_docvars(x, "segid_", FALSE, TRUE, TRUE)
+# }
 
 #' @method as.tokens tokens_xptr
 #' @export

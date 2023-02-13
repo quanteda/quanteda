@@ -4,6 +4,16 @@ require(testthat)
 toks <- tokens(data_corpus_inaugural)
 xtoks <- as.tokens_xptr(toks)
 
+test_that("Basic functions work", {
+    expect_identical(docnames(toks), docnames(xtoks))
+    expect_identical(docid(toks), docid(xtoks))
+    expect_identical(segid(toks), segid(xtoks))
+    
+    expect_identical(ndoc(toks), ndoc(xtoks))
+    expect_identical(ntoken(toks), ntoken(xtoks))
+    expect_identical(types(toks), types(xtoks))
+})
+
 test_that("attributes are the same", {
     expect_identical(attr(toks, "docvars"), attr(xtoks, "docvars"))
     expect_identical(attr(toks, "meta"), attr(xtoks, "meta"))
@@ -25,12 +35,6 @@ test_that("subsetting work", {
                      docnames(tail(toks)))
     expect_identical(docnames(tail(as.tokens_xptr(toks), -10)), 
                      docnames(tail(toks, -10)))
-})
-
-test_that("R-like functions work", {
-    expect_identical(ndoc(toks), ndoc(xtoks))
-    expect_identical(ntoken(toks), ntoken(xtoks))
-    expect_identical(types(toks), types(xtoks))
 })
 
 test_that("deep copy xtokens", {
@@ -76,10 +80,10 @@ test_that("tokens_select and tokens_remove work", {
 })
 
 test_that("tokens_tolower and tokens_toupper work", {
-    expect_identical(as.tokens(tokens_tolower(as.tokens_xptr(toks))),
-                     as.tokens(tokens_tolower(xtoks)))
-    expect_identical(as.tokens(tokens_toupper(as.tokens_xptr(toks))),
-                     as.tokens(tokens_toupper(xtoks)))
+    expect_identical(as.list(as.tokens(tokens_tolower(as.tokens_xptr(toks)))),
+                     as.list(as.tokens(tokens_tolower(xtoks))))
+    expect_identical(as.list(as.tokens(tokens_toupper(as.tokens_xptr(toks)))),
+                     as.list(as.tokens(tokens_toupper(xtoks))))
 })
 
 test_that("tokens_tolower and tokens_toupper work", {
@@ -125,6 +129,15 @@ test_that("tokens_replace() and tokens_split() work", {
     
     expect_identical(as.tokens(tokens_split(as.tokens_xptr(toks), "-")),
                      tokens_split(toks, "-"))
+})
+
+test_that("tokens_sample() works", {
+    
+    set.seed(1234)
+    toks1 <- as.tokens(tokens_sample(as.tokens_xptr(toks), 10))
+    set.seed(1234)
+    toks2 <- tokens_sample(toks, 10)
+    expect_identical(toks1, toks2)
 })
 
 
