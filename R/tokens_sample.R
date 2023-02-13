@@ -32,8 +32,7 @@ tokens_sample.default <- function(x, size = NULL, replace = FALSE, prob = NULL, 
 }
     
 #' @export
-tokens_sample.tokens <- function(x, size = NULL, replace = FALSE, prob = NULL, by = NULL) {
-    x <- as.tokens(x)
+tokens_sample.tokens_xptr <- function(x, size = NULL, replace = FALSE, prob = NULL, by = NULL) {
 
     if (!missing(by)) {
         by <- eval(substitute(by), get_docvars(x, user = TRUE, system = TRUE), parent.frame())
@@ -42,4 +41,9 @@ tokens_sample.tokens <- function(x, size = NULL, replace = FALSE, prob = NULL, b
 
     i <- resample(seq_len(ndoc(x)), size = size, replace = replace, prob = prob, by = by)
     return(x[i])
+}
+
+#' @export
+tokens_sample.tokens <- function(x, ...) {
+    as.tokens(tokens_sample(as.tokens_xptr(x), ...))
 }

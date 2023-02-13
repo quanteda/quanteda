@@ -114,16 +114,15 @@ BEGIN_RCPP
 END_RCPP
 }
 // qatd_cpp_tokens_replace
-List qatd_cpp_tokens_replace(const List& texts_, const CharacterVector types_, const List& patterns_, const List& replacements_);
-RcppExport SEXP _quanteda_qatd_cpp_tokens_replace(SEXP texts_SEXP, SEXP types_SEXP, SEXP patterns_SEXP, SEXP replacements_SEXP) {
+TokensPtr qatd_cpp_tokens_replace(TokensPtr xptr, const List& patterns_, const List& replacements_);
+RcppExport SEXP _quanteda_qatd_cpp_tokens_replace(SEXP xptrSEXP, SEXP patterns_SEXP, SEXP replacements_SEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const List& >::type texts_(texts_SEXP);
-    Rcpp::traits::input_parameter< const CharacterVector >::type types_(types_SEXP);
+    Rcpp::traits::input_parameter< TokensPtr >::type xptr(xptrSEXP);
     Rcpp::traits::input_parameter< const List& >::type patterns_(patterns_SEXP);
     Rcpp::traits::input_parameter< const List& >::type replacements_(replacements_SEXP);
-    rcpp_result_gen = Rcpp::wrap(qatd_cpp_tokens_replace(texts_, types_, patterns_, replacements_));
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_tokens_replace(xptr, patterns_, replacements_));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -337,7 +336,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_quanteda_qatd_cpp_tokens_lookup", (DL_FUNC) &_quanteda_qatd_cpp_tokens_lookup, 6},
     {"_quanteda_qatd_cpp_tokens_ngrams", (DL_FUNC) &_quanteda_qatd_cpp_tokens_ngrams, 4},
     {"_quanteda_qatd_cpp_tokens_recompile", (DL_FUNC) &_quanteda_qatd_cpp_tokens_recompile, 4},
-    {"_quanteda_qatd_cpp_tokens_replace", (DL_FUNC) &_quanteda_qatd_cpp_tokens_replace, 4},
+    {"_quanteda_qatd_cpp_tokens_replace", (DL_FUNC) &_quanteda_qatd_cpp_tokens_replace, 3},
     {"_quanteda_qatd_cpp_tokens_segment", (DL_FUNC) &_quanteda_qatd_cpp_tokens_segment, 4},
     {"_quanteda_qatd_cpp_tokens_select", (DL_FUNC) &_quanteda_qatd_cpp_tokens_select, 8},
     {"_quanteda_cpp_as_xptr", (DL_FUNC) &_quanteda_cpp_as_xptr, 2},
