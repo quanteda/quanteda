@@ -9,7 +9,7 @@ class(toks)
 class(xtoks)
 
 toks2 <- tokens_select(toks, data_dictionary_LSD2015)
-xtoks2 <- tokens_select(xtoks, data_dictionary_LSD2015)
+xtoks2 <- tokens_select(as.tokens_xptr(xtoks), data_dictionary_LSD2015)
 identical(toks2, as.tokens(xtoks2))
 
 microbenchmark::microbenchmark(
