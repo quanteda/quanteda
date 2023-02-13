@@ -52,9 +52,11 @@ object2id <- function(x, types, valuetype = c("glob", "fixed", "regex"),
             key <- names(temp)
             temp <- split_values(temp, " ", concatenator)
         } else if (is.list(x)) {
+            x <- lapply(x, function(x) check_character(x, min_len = 0, max_len = Inf, strict = TRUE))
             temp <- x
             names(temp) <- stri_c_list(x, " ")
         } else {
+            x <- check_character(x, min_len = 0, max_len = Inf, strict = TRUE)
             temp <- as.list(x)
             names(temp) <- x
         }
