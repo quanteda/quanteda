@@ -44,27 +44,6 @@ tokens_ngrams.default <- function(x, n = 2L, skip = 0L, concatenator = "_") {
     check_class(class(x), "tokens_ngrams")
 }
 
-## this function is not exported because it should not exist - it violates
-## the grammatical rules of quanteda (inputs character, outputs tokens),
-## but starts with "tokens_"
-#' @importFrom stats complete.cases
-tokens_ngrams.character <- function(x, n = 2L, skip = 0L, concatenator = "_") {
-
-    # trap condition where a "text" is a single NA
-    if (is.na(x[1]) && length(x) == 1) return(NULL)
-    if (any(stringi::stri_detect_charclass(x, "\\p{Z}")) & concatenator != " ")
-        warning("whitespace detected: you may need to run tokens() first")
-    if (length(x) < min(n)) return(NULL)
-    if (identical(as.integer(n), 1L)) {
-        if (!identical(as.integer(skip), 0L))
-            warning("skip argument ignored for n = 1")
-        return(x)
-    }
-    # converts the character to a tokens object, and returns just the first "document"
-    # as a character vector
-    tokens_ngrams(as.tokens(list(x)), n = n, skip = skip, concatenator = concatenator)[[1]]
-}
-
 #' @rdname tokens_ngrams
 #' @note `char_ngrams` is a convenience wrapper for a (non-list)
 #'   vector of characters, so named to be consistent with \pkg{quanteda}'s naming
@@ -85,7 +64,11 @@ char_ngrams.default <- function(x, n = 2L, skip = 0L, concatenator = "_") {
 
 #' @export
 char_ngrams.character <- function(x, n = 2L, skip = 0L, concatenator = "_") {
-    as.character(tokens_ngrams(x, n, skip, concatenator))
+    
+    if (any(stringi::stri_detect_charclass(x, "\\p{Z}")) & concatenator != " ")
+        warning("whitespace detected: you may need to run tokens() first")
+    x <- as.tokens(list(x))
+    as.list(tokens_ngrams(x, n = n, skip = skip, concatenator = concatenator))[[1]]
 }
 
 
