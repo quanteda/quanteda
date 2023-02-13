@@ -1,6 +1,5 @@
+#include "tokens.h"
 //#include "dev.h"
-#include "lib.h"
-#include "recompile.h"
 
 using namespace quanteda;
 
@@ -88,13 +87,11 @@ struct replace_mt : public Worker{
 
 
 // [[Rcpp::export]]
-List qatd_cpp_tokens_replace(const List &texts_,
-                             const CharacterVector types_,
+TokensPtr qatd_cpp_tokens_replace(TokensPtr xptr,
                              const List &patterns_,
                              const List &replacements_){
     
-    Texts texts = Rcpp::as<Texts>(texts_);
-    Types types = Rcpp::as<Types>(types_);
+    Texts texts = xptr->texts;
     Ngrams ids_repls = Rcpp::as<Ngrams>(replacements_);
     //dev::Timer timer;
     //dev::start_timer("Map construction", timer);
@@ -124,8 +121,8 @@ List qatd_cpp_tokens_replace(const List &texts_,
         texts[h] = replace(texts[h], spans, map_pat, ids_repls);
     }
 #endif
-    //dev::stop_timer("Pattern replace", timer);
-    return recompile(texts, types, true, true, is_encoded(types_));
+    xptr->texts = texts;
+    return xptr;
 }
 
 /***R

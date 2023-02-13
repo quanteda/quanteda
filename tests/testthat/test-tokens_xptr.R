@@ -115,6 +115,18 @@ test_that("tokens_chunk() works", {
                      tokens_chunk(toks, 10))
 })
 
+test_that("tokens_replace() and tokens_split() work", {
+    
+    pat <- phrase(c("Supreme Court"))
+    rep <- phrase(c("Supreme Court of the United States"))
+    
+    expect_identical(as.tokens(tokens_replace(as.tokens_xptr(toks), pat, rep)),
+                     tokens_replace(toks, pat, rep))
+    
+    expect_identical(as.tokens(tokens_split(as.tokens_xptr(toks), "-")),
+                     tokens_split(toks, "-"))
+})
+
 
 test_that("dfm works", {
     expect_identical(dfm(as.tokens_xptr(toks)), dfm(toks))

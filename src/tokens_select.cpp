@@ -185,7 +185,6 @@ TokensPtr qatd_cpp_tokens_select(TokensPtr xptr,
                                  const IntegerVector pos_to_){
 
     Texts texts = xptr->texts;
-    Types types = xptr->types;
     std::pair<int, int> window(window_left, window_right);
     
     SetNgrams set_words;
