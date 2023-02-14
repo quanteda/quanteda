@@ -5,6 +5,10 @@ toks <- tokens(data_corpus_inaugural)
 xtoks <- as.tokens_xptr(toks)
 
 test_that("Basic functions work", {
+    
+    expect_false(is.tokens_xptr(toks))
+    expect_true(is.tokens_xptr(xtoks))
+    
     expect_identical(docnames(toks), docnames(xtoks))
     expect_identical(docid(toks), docid(xtoks))
     expect_identical(segid(toks), segid(xtoks))
@@ -44,12 +48,17 @@ test_that("deep copy xtokens", {
 })
 
 test_that("c words on xtokens", {
-    xtoks_pad <- tokens_remove(as.tokens_xptr(xtoks), stopwords(), padding = TRUE)
+    xtoks_pad <- tokens_remove(as.tokens_xptr(toks), stopwords(), padding = TRUE)
     xtoks1 <- as.tokens_xptr(xtoks_pad)[1:10]
     xtoks2 <- as.tokens_xptr(xtoks_pad)[11:20]
     
     expect_identical(as.list(c(xtoks1, xtoks2)), 
                      as.list(as.tokens_xptr(xtoks_pad)[1:20]))
+    
+    expect_error(
+        c(xtoks_pad, list()),
+        "Cannot combine different types of objects"
+    )
 })
 
 test_that("operations on copied xtokens do not affect the original xtokens", {

@@ -192,7 +192,10 @@ lengths.tokens <- function(x, use.names = TRUE) {
 c.tokens_xptr <- function(...) {
     
     x <- list(...)
-
+    
+    if (!all(unlist(lapply(x, is.tokens_xptr)))) 
+        stop("Cannot combine different types of objects", call. = FALSE)
+    
     if (any(duplicated(unlist(lapply(x, docnames)))))
         stop("Cannot combine tokens with duplicated document names", call. = FALSE)
  
@@ -209,8 +212,11 @@ c.tokens_xptr <- function(...) {
     ngram <- unlist(lapply(attrs, field_object, "ngram"))
     skip <- unlist(lapply(attrs, field_object, "skip"))
     
+    temp <- combine_tokens(...)
+    cpp_recompile(temp)
+    
     build_tokens(
-        combine_tokens(...), types = NULL,
+        temp, types = NULL,
         what = field_object(attrs[[1]], "what"),
         ngram = sort(unique(ngram)),
         skip = sort(unique(skip)),
@@ -222,7 +228,13 @@ c.tokens_xptr <- function(...) {
 
 #' @export
 c.tokens <- function(...) {
-    as.tokens(do.call(c, lapply(list(...), as.tokens_xptr)))
+    
+    x <- list(...)
+    
+    if (!all(unlist(lapply(x, is.tokens)))) 
+        stop("Cannot combine different types of objects", call. = FALSE)
+    
+    as.tokens(do.call(c, lapply(x, as.tokens_xptr)))
 }
 
 combine_tokens <- function(...) {

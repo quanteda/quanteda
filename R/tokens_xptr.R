@@ -1,8 +1,16 @@
+#' @rdname tokens_xptr
+#' @export
+is.tokens_xptr <- function(x) {
+    identical(typeof(x), "externalptr") && "tokens_xptr" %in% class(x)
+}
+
+#' @rdname tokens_xptr
 #' @export
 as.tokens_xptr <- function(x) {
     UseMethod("as.tokens_xptr")
 }
 
+#' @rdname tokens_xptr
 #' @method as.tokens_xptr tokens
 #' @export
 as.tokens_xptr.tokens <- function(x) {
@@ -16,6 +24,7 @@ as.tokens_xptr.tokens <- function(x) {
                  class = "tokens_xptr")
 }
 
+#' @rdname tokens_xptr
 #' @method as.tokens_xptr tokens_xptr
 #' @export
 as.tokens_xptr.tokens_xptr <- function(x) {

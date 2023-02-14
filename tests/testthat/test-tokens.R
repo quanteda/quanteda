@@ -215,7 +215,12 @@ test_that("c() works with tokens", {
     toks2 <- tokens(c(d3 = "And the third document."))
     toks3 <- tokens(c(d4 = "This is sample document 4."))
     toks4 <- tokens(c(d1 = "This is sample document five!"))
-
+    
+    expect_error(
+        c(toks1, list()),
+        "Cannot combine different types of objects"
+    )
+    
     expect_equal(
         c(toks1),
         toks1
