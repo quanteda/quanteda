@@ -164,3 +164,11 @@ test_that("dfm works", {
     expect_identical(dfm(as.tokens_xptr(toks), tolower = FALSE), 
                      dfm(toks, tolower = FALSE))
 })
+
+test_that("fcm works", {
+    expect_identical(fcm(as.tokens_xptr(toks[1:10])), fcm(toks[1:10]))
+    expect_identical(fcm(as.tokens_xptr(toks), window = 5), 
+                     fcm(toks, window = 5))
+})
+
+
