@@ -20,20 +20,22 @@ TokensPtr cpp_tokens_combine(TokensPtr xptr1, TokensPtr xptr2){
     
     std::size_t V = xptr1->types.size();
     std::size_t H = xptr2->texts.size(); 
-    
     Texts texts = xptr2->texts;
+    
 #if QUANTEDA_USE_TBB
     tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
         for (int h = r.begin(); h < r.end(); ++h) {
-            for (std::size_t i = 0; i < xptr2->texts[h].size(); i++) {
-                texts[h][i] += V;
+            for (std::size_t i = 0; i < texts[h].size(); i++) {
+                if (texts[h][i] != 0)
+                    texts[h][i] += V;
             }
         }
     });
 #else
     for (std::size_t h = 0; h < H; h++) {
-        for (std::size_t i = 0; i < xptr2->texts[h].size(); i++) {
-            texts[h][i] += V;
+        for (std::size_t i = 0; i < texts[h].size(); i++) {
+            if (texts[h][i] != 0)
+                texts[h][i] += V;
         }
     }
 #endif
