@@ -165,19 +165,19 @@ test_that("keep gap and dupli argument works, #1278", {
     )
 
     toks2 <- quanteda:::tokens_recompile(toks, 'C++', gap = TRUE, dup = TRUE)
-    expect_equal(attr(toks2, 'padding'), FALSE)
+    expect_equal(attr(toks2, 'padding'), TRUE)
     expect_equal(attr(toks2, 'types'), c("b", "c"))
     
     toks3 <- quanteda:::tokens_recompile(toks, 'C++', gap = TRUE, dup = FALSE)
-    expect_equal(attr(toks3, 'padding'), FALSE)
+    expect_equal(attr(toks3, 'padding'), TRUE)
     expect_equal(attr(toks3, 'types'), c("b", "c", "c"))
     
     toks4 <- quanteda:::tokens_recompile(toks, 'C++', gap = FALSE, dup = TRUE)
-    expect_equal(attr(toks4, 'padding'), FALSE)
+    expect_equal(attr(toks4, 'padding'), TRUE)
     expect_equal(attr(toks4, 'types'), c("a", "b", "c", "d"))
     
     toks5 <- quanteda:::tokens_recompile(toks, 'C++', gap = FALSE, dup = FALSE)
-    expect_equal(attr(toks5, 'padding'), FALSE)
+    expect_equal(attr(toks5, 'padding'), TRUE)
     expect_equal(attr(toks5, 'types'), c("a", "b", "c", "c", "d"))
     
     expect_equal(quanteda:::tokens_recompile(toks, 'C++', gap = TRUE, dup = TRUE),

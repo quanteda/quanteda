@@ -4,6 +4,8 @@ is.tokens_xptr <- function(x) {
     identical(typeof(x), "externalptr") && "tokens_xptr" %in% class(x)
 }
 
+#' Tokens object based on a external pointer
+#' @param x a [tokens] object to convert to [tokens_xptr].
 #' @rdname tokens_xptr
 #' @export
 as.tokens_xptr <- function(x) {
@@ -70,7 +72,7 @@ as.tokens.tokens_xptr <- function(x) {
     result <- cpp_as_list(x)
     build_tokens(result, 
                  types = attr(result, "types"), 
-                 padding = attr(result, "padding"), 
+                 padding = TRUE, 
                  docvars = attrs[["docvars"]], 
                  meta = attrs[["meta"]])
 }
@@ -136,7 +138,7 @@ tokens_subset.tokens_xptr <- function(x, subset, drop_docid = TRUE, ...) {
 #' @method dfm tokens_xptr
 #' @export
 dfm.tokens_xptr <- function(x, tolower = TRUE, remove_padding = FALSE, ...) {
-    x <- as.tokens_xptr(x) # avoid modifying original tokens
+    x <- as.tokens_xptr(x) # avoid modifying the original tokens
     if (tolower)
         x <- tokens_tolower(x)
     if (remove_padding)

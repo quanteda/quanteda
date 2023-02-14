@@ -16,7 +16,6 @@ class TokensObj {
         Types types;
         bool has_gap = true;
         bool has_dup = true;
-        bool has_pad = false; // set by recompile()
         
         void recompile();
         // length();
@@ -141,7 +140,6 @@ inline void TokensObj::recompile() {
     types = types_new;
     has_gap = false;
     has_dup = false;
-    has_pad = flags_used[0];
 }
 
 // XPtr objects -------------------------------------------------------

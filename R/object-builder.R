@@ -89,7 +89,7 @@ upgrade_dfm <- function(x) {
 #'     types = c("a", "b", "c", "d", "e", "f"),
 #'     padding = FALSE
 #' )
-build_tokens <- function(x, types, padding = FALSE,
+build_tokens <- function(x, types, padding = TRUE,
                          docvars = data.frame(), meta = list(), 
                          class = "tokens", ...) {
     
@@ -101,7 +101,7 @@ build_tokens <- function(x, types, padding = FALSE,
     structure(x,
               class = union(class, "tokens"),
               types = types,
-              padding = padding,
+              padding = padding, # TODO: removed after v4
               docvars = docvars,
               meta = make_meta("tokens", inherit = meta, ...))
 }
@@ -128,6 +128,7 @@ rebuild_tokens <- function(x, attrs) {
     if (is.list(x))
          attr(x, "names") <- attrs[["docvars"]][["docname_"]]
     structure(x,
+              padding = TRUE, # TODO: removed after v4
               docvars = attrs[["docvars"]],
               meta = attrs[["meta"]],
               class = union(attrs[["class"]], "tokens"),

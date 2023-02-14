@@ -217,7 +217,8 @@ dfm.tokens <- function(x,
     
     # shift index for padding, if any
     index <- unlist_integer(temp, use.names = FALSE)
-    if (attrs$padding) {
+    padding <- 0L %in% index
+    if (padding) {
         type <- c("", type)
         index <- index + 1L
     }
@@ -236,7 +237,7 @@ dfm.tokens <- function(x,
     if (attrs$meta$object$what != "dictionary") {
         # sort the columns in order of the occurrences of tokens
         id <- unique(index)
-        if (attrs$padding)
+        if (padding)
             id <- c(1L, setdiff(id, 1L)) # padding must come first
         temp <- temp[,id]
     }

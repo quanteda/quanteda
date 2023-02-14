@@ -22,8 +22,7 @@ TokensPtr cpp_copy_xptr(TokensPtr xptr) {
 // [[Rcpp::export]]
 List cpp_get_attributes(TokensPtr xptr) {
     List list_ = List::create(_["has_dup"] = xptr->has_dup,
-                              _["has_gap"] = xptr->has_gap,
-                              _["has_pad"] = xptr->has_pad);
+                              _["has_gap"] = xptr->has_gap);
     return list_;
 }
 
@@ -56,10 +55,6 @@ int cpp_ndoc(TokensPtr xptr) {
     return xptr->texts.size();
 }
 
-// // [[Rcpp::export]]
-// bool cpp_has_padding(TokensPtr xptr) {
-//     return xptr->padding;
-// }
 
 // [[Rcpp::export]]
 IntegerVector cpp_ntoken(TokensPtr xptr) {
@@ -109,12 +104,15 @@ S4 cpp_dfm(TokensPtr xptr) {
     int p = 0;
     
     slot_p.push_back(p);
+    int count_pad = 0;
     for (std::size_t h = 0; h < H; h++) {
         Text text = xptr->texts[h];
         std::sort(text.begin(), text.end()); // rows must be sorted in dgCMatrix
         int n = 1;
         for (std::size_t i = 0; i < text.size(); i++) {
             if (i + 1 == text.size() || text[i] != text[i + 1]) {
+                if (text[i] == 0)
+                    count_pad++;
                 slot_i.push_back(text[i]);
                 slot_x.push_back(n);
                 p++;
@@ -134,11 +132,11 @@ S4 cpp_dfm(TokensPtr xptr) {
     
     size_t G = xptr->types.size();
     CharacterVector types_ = encode(xptr->types);
-    if (xptr->has_pad) {
+    if (count_pad == 0) {
+        slot_i_ = slot_i_ - 1; // use zero for other tokens
+    } else {
         G++;
         types_.push_front("");
-    } else {
-        slot_i_ = slot_i_ - 1; // use zero for other tokens
     }
     IntegerVector dim_ = IntegerVector::create(G, H);
     List dimnames_ = List::create(types_, R_NilValue);
