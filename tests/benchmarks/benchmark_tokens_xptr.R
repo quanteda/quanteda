@@ -48,6 +48,13 @@ microbenchmark::microbenchmark(
 )
 identical(dfm(xtoks), dfm(toks))
 
+microbenchmark::microbenchmark(
+    dfm(tokens_group(xtoks)),
+    dfm_group(dfm(xtoks)),
+    times = 10
+)
+identical(dfm_group(dfmt), dfm(tokens_group(xtoks)))
+
 profvis::profvis(
     dfm(xtoks)
 )
