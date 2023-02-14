@@ -89,6 +89,11 @@ TokensPtr cpp_set_types(TokensPtr xptr, const CharacterVector types_) {
 }
 
 // [[Rcpp::export]]
+void cpp_recompile(TokensPtr xptr) {
+    xptr->recompile();
+}
+
+// [[Rcpp::export]]
 S4 cpp_dfm(TokensPtr xptr) {
     
     xptr->recompile();
