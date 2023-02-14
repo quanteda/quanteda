@@ -4,6 +4,8 @@
 #' concatenating the tokens in the order of the documents within each grouping
 #' variable.
 #' @param x [tokens] object
+#' @param env an environment or a list object in which `x` is searched.
+#' Passed to [substitute] for non-standard evaluation.
 #' @inheritParams groups
 #' @return a [tokens] object whose documents are equal to the unique group
 #'   combinations, and whose tokens are the concatenations of the tokens by
@@ -22,24 +24,26 @@
 #' # with fill
 #' tokens_group(toks, groups = factor(c(1, 1, 2, 2), levels = 1:3))
 #' tokens_group(toks, groups = factor(c(1, 1, 2, 2), levels = 1:3), fill = TRUE)
-tokens_group <- function(x, groups = docid(x), fill = FALSE) {
+tokens_group <- function(x, groups = docid(x), fill = FALSE, env = NULL) {
     UseMethod("tokens_group")
 }
 
 #' @export
-tokens_group.default <- function(x, groups = docid(x), fill = FALSE) {
+tokens_group.default <- function(x, groups = docid(x), fill = FALSE, env = NULL) {
     check_class(class(x), "tokens_group")
 }
 
 #' @export
-tokens_group.tokens_xptr <- function(x, groups = docid(x), fill = FALSE) {
+tokens_group.tokens_xptr <- function(x, groups = docid(x), fill = FALSE, env = NULL) {
     
+    if (is.null(env))
+        env <- environment()
     if (missing(groups)) {
         field <- NULL
         groups <- docid(x)
     } else {
         field <- deparse(substitute(groups))
-        groups <- eval(substitute(groups), get_docvars(x, user = TRUE, system = TRUE), parent.frame())
+        groups <- eval(substitute(groups, env), get_docvars(x, user = TRUE, system = TRUE))
         if (!field %in% names(get_docvars(x)) || !is.factor(groups))
             field <- NULL
         groups <- as.factor(groups)
@@ -62,20 +66,6 @@ tokens_group.tokens_xptr <- function(x, groups = docid(x), fill = FALSE) {
 }
 
 #' @export
-#tokens_group.tokens <- function(x, groups = docid(x), fill = FALSE) {
 tokens_group.tokens <- function(x, ...) {
-    
-    # if (missing(groups)) {
-    #     field <- NULL
-    #     groups <- docid(x)
-    # } else {
-    #     field <- deparse(substitute(groups))
-    #     groups <- eval(substitute(groups), get_docvars(x, user = TRUE, system = TRUE), parent.frame())
-    #     if (!field %in% names(get_docvars(x)) || !is.factor(groups))
-    #         field <- NULL
-    #     groups <- as.factor(groups)
-    # }
-    
-    #as.tokens(tokens_group(as.tokens_xptr(x), groups, fill))
     as.tokens(tokens_group(as.tokens_xptr(x), ...))
 }
