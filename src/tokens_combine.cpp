@@ -4,14 +4,10 @@ using namespace quanteda;
 
 
 /* 
- * This function split tokens into segments by given patterns
+ * This function to combine tokens objects
  * The number of threads is set by RcppParallel::setThreadOptions()
  * @used tokens_segment()
  * @creator Kohei Watanabe
- * @param texts_ tokens ojbect
- * @param types_ types
- * @param size size of chunks
- * @param overlap number of tokens overlapping
  */
 
 // [[Rcpp::export]]
@@ -22,8 +18,8 @@ TokensPtr cpp_tokens_combine(TokensPtr xptr1, TokensPtr xptr2){
     types.insert(types.end(), xptr1->types.begin(), xptr1->types.end());
     types.insert(types.end(), xptr2->types.begin(), xptr2->types.end());
     
-    std::size_t H = xptr2->texts.size(); 
     std::size_t V = xptr1->types.size();
+    std::size_t H = xptr2->texts.size(); 
     
     Texts texts = xptr2->texts;
 #if QUANTEDA_USE_TBB
