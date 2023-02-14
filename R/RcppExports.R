@@ -17,6 +17,10 @@ cpp_tokens_compound <- function(xptr, compounds_, types_, delim_, join, window_l
     .Call(`_quanteda_cpp_tokens_compound`, xptr, compounds_, types_, delim_, join, window_left, window_right)
 }
 
+cpp_tokens_group <- function(xptr, groups_) {
+    .Call(`_quanteda_cpp_tokens_group`, xptr, groups_)
+}
+
 cpp_tokens_lookup <- function(xptr, words_, keys_, types_, overlap, nomatch) {
     .Call(`_quanteda_cpp_tokens_lookup`, xptr, words_, keys_, types_, overlap, nomatch)
 }
