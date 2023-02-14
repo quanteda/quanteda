@@ -156,10 +156,10 @@ tokens_toupper.tokens_xptr <- function(x) {
 
 # internal functions ----------------------------------------
 
-#' @method get_docvars tokens_xptr
-get_docvars.tokens_xptr <- function(x, field = NULL, user = TRUE, system = FALSE, drop = FALSE) {
-    select_docvars(attr(x, "docvars"), field, user, system, drop)
-}
+# #' @method get_docvars tokens_xptr
+# get_docvars.tokens_xptr <- function(x, field = NULL, user = TRUE, system = FALSE, drop = FALSE) {
+#    select_docvars(attr(x, "docvars"), field, user, system, drop)
+#}
 
 get_types <- function(x) {
     UseMethod("get_types")

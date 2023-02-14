@@ -5,7 +5,7 @@
 \alias{unlist.tokens}
 \alias{[.tokens}
 \alias{+.tokens}
-\alias{c.tokens}
+\alias{c.tokens_xptr}
 \title{Base method extensions for tokens objects}
 \usage{
 \method{unlist}{tokens}(x, recursive = FALSE, use.names = TRUE)
@@ -14,7 +14,7 @@
 
 \method{+}{tokens}(t1, t2)
 
-\method{c}{tokens}(...)
+\method{c}{tokens_xptr}(...)
 }
 \arguments{
 \item{x}{a tokens object}

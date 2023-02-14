@@ -13,6 +13,10 @@ cpp_tokens_chunk <- function(xptr, size, overlap) {
     .Call(`_quanteda_cpp_tokens_chunk`, xptr, size, overlap)
 }
 
+cpp_tokens_combine <- function(xptr1, xptr2) {
+    .Call(`_quanteda_cpp_tokens_combine`, xptr1, xptr2)
+}
+
 cpp_tokens_compound <- function(xptr, compounds_, types_, delim_, join, window_left, window_right) {
     .Call(`_quanteda_cpp_tokens_compound`, xptr, compounds_, types_, delim_, join, window_left, window_right)
 }
