@@ -29,13 +29,13 @@ test_that("test that tokens_group is working", {
 
     group <- factor(c("Z", "A", "Z", "A"), levels = c("A", "B", "Z"))
     expect_equal(
-        as.list(tokens_group(toks, group)),
+        as.list(tokens_group(toks, group, env = environment())),
         list("A" = c("e", "f", "g", "h", "X", "Y", "Z"),
              "Z" = c("a", "b", "c", "d", "A", "B", "C"))
     )
 
     expect_equal(
-        as.list(tokens_group(toks, group, fill = TRUE)),
+        as.list(tokens_group(toks, group, fill = TRUE, env = environment())),
         list("A" = c("e", "f", "g", "h", "X", "Y", "Z"),
              "B" = character(),
              "Z" = c("a", "b", "c", "d", "A", "B", "C"))
@@ -126,11 +126,12 @@ test_that("tokens_group save grouping variable (#2037)", {
     toks <- tokens(corp)
     grpvar <- factor(c("E", "E", "F", "G"), levels = c("E", "F", "G", "H"))
     toks_grp1 <- tokens_group(toks, grp)
-    toks_grp2 <- tokens_group(toks, grpvar)
+    toks_grp2 <- tokens_group(toks, grpvar, env = environment())
     toks_grp3 <- tokens_group(toks, var1)
     toks_grp4 <- tokens_group(toks, grp, fill = TRUE)
-    toks_grp5 <- tokens_group(toks, grpvar, fill = TRUE)
+    toks_grp5 <- tokens_group(toks, grpvar, fill = TRUE, env = environment())
     toks_grp6 <- tokens_group(toks, var1, fill = TRUE)
+    toks_grp7 <- tokens_group(toks, groups = interaction(var1, var3))
     
     expect_equal(
         docvars(toks_grp1, "grp"), 
@@ -148,6 +149,11 @@ test_that("tokens_group save grouping variable (#2037)", {
     expect_null(docvars(toks_grp5)$grpvar)
     expect_equal(docvars(toks_grp5)$var1, c(1, 2, 2, NA))
     expect_equal(docvars(toks_grp6)$var1, c(1, 2))
+    expect_equal(
+        docvars(toks_grp7, "grp"), 
+        factor(c("D", "A"), levels = c("A", "B", "C", "D"))
+    )
+    expect_equal(docvars(toks_grp7)$var1, c(1, 2))
 })
 
 test_that("tokens_group drop document for NA", {

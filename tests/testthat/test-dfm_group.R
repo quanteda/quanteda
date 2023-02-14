@@ -370,6 +370,7 @@ test_that("dfm_group save grouping variable (#2037)", {
     dfmat_grp4 <- dfm_group(dfmat, grp, fill = TRUE)
     dfmat_grp5 <- dfm_group(dfmat, grpvar, fill = TRUE)
     dfmat_grp6 <- dfm_group(dfmat, var1, fill = TRUE)
+    dfmat_grp7 <- dfm_group(dfmat, groups = interaction(var1, var3))
     
     expect_equal(
         docvars(dfmat_grp1, "grp"), 
@@ -387,6 +388,11 @@ test_that("dfm_group save grouping variable (#2037)", {
     expect_null(docvars(dfmat_grp5)$grpvar)
     expect_equal(docvars(dfmat_grp5)$var1, c(1, 2, 2, NA))
     expect_equal(docvars(dfmat_grp6)$var1, c(1, 2))
+    expect_equal(
+        docvars(dfmat_grp7, "grp"), 
+        factor(c("D", "A"), levels = c("A", "B", "C", "D"))
+    )
+    expect_equal(docvars(dfmat_grp7)$var1, c(1, 2))
 })
 
 
