@@ -43,6 +43,15 @@ test_that("deep copy xtokens", {
                      as.tokens(xtoks))
 })
 
+test_that("c words on xtokens", {
+    xtoks_pad <- tokens_remove(as.tokens_xptr(xtoks), stopwords(), padding = TRUE)
+    xtoks1 <- as.tokens_xptr(xtoks_pad)[1:10]
+    xtoks2 <- as.tokens_xptr(xtoks_pad)[11:20]
+    
+    expect_identical(as.list(c(xtoks1, xtoks2)), 
+                     as.list(as.tokens_xptr(xtoks_pad)[1:20]))
+})
+
 test_that("operations on copied xtokens do not affect the original xtokens", {
     expect_identical(
         as.tokens(tokens_subset(as.tokens_xptr(toks), Party == "Republican")),
