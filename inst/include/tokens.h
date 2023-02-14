@@ -114,14 +114,14 @@ inline void TokensObj::recompile() {
     // Convert old IDs to new IDs
 #if QUANTEDA_USE_TBB
     std::size_t H = texts.size();
-    int g = std::ceil(H / tbb::this_task_arena::max_concurrency());
-    tbb::parallel_for(tbb::blocked_range<int>(0, H, g), [&](tbb::blocked_range<int> r) {
+    //int e = std::ceil(H / tbb::this_task_arena::max_concurrency());
+    tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
         for (int h = r.begin(); h < r.end(); ++h) {
             for (std::size_t i = 0; i < texts[h].size(); i++) {
                 texts[h][i] = ids_new[texts[h][i]];
             }
         }
-    }, tbb::auto_partitioner());
+    });//, tbb::auto_partitioner());
 #else
     for (std::size_t h = 0; h < texts.size(); h++) {
         for (std::size_t i = 0; i < texts[h].size(); i++) {
