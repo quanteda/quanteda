@@ -223,6 +223,8 @@ textplot
 textplots
 textstat
 textstats
+tokens
+tokens_xptr
 tf
 tfidf
 th

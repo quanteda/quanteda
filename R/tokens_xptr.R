@@ -4,8 +4,12 @@ is.tokens_xptr <- function(x) {
     identical(typeof(x), "externalptr") && "tokens_xptr" %in% class(x)
 }
 
-#' Tokens object based on a external pointer
-#' @param x a [tokens] object to convert to [tokens_xptr].
+#' Convert a tokens object to a tokenx_xptr object
+#'
+#' [tokenx_xptr] is a external pointer object to process a large number of
+#' documents efficiently.
+#' @param x a [tokens] object to convert to [tokens_xptr] or a [tokens_xptr] to
+#'   to deep-copy.
 #' @rdname tokens_xptr
 #' @export
 as.tokens_xptr <- function(x) {

@@ -17,8 +17,8 @@ cpp_tokens_combine <- function(xptr1, xptr2) {
     .Call(`_quanteda_cpp_tokens_combine`, xptr1, xptr2)
 }
 
-cpp_tokens_compound <- function(xptr, compounds_, types_, delim_, join, window_left, window_right) {
-    .Call(`_quanteda_cpp_tokens_compound`, xptr, compounds_, types_, delim_, join, window_left, window_right)
+cpp_tokens_compound <- function(xptr, compounds_, delim_, join, window_left, window_right) {
+    .Call(`_quanteda_cpp_tokens_compound`, xptr, compounds_, delim_, join, window_left, window_right)
 }
 
 cpp_tokens_group <- function(xptr, groups_) {
@@ -83,6 +83,10 @@ cpp_get_types <- function(xptr, recompile = FALSE) {
 
 cpp_set_types <- function(xptr, types_) {
     .Call(`_quanteda_cpp_set_types`, xptr, types_)
+}
+
+cpp_recompile <- function(xptr) {
+    invisible(.Call(`_quanteda_cpp_recompile`, xptr))
 }
 
 cpp_dfm <- function(xptr) {
