@@ -45,8 +45,8 @@ TokensPtr cpp_subset(TokensPtr xptr, IntegerVector index_) {
         }
         texts[i] = xptr->texts[index[i] - 1];
     }
-    xptr->texts = texts;
-    return xptr;
+    TokensObj *ptr_new = new TokensObj(texts, xptr->types, xptr->has_gap, xptr->has_dup);
+    return TokensPtr(ptr_new, true);
 }
 
 // [[Rcpp::export]]
