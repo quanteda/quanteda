@@ -251,11 +251,11 @@ test_that("test new dfm methods", {
 test_that("test token default methods", {
     expect_error(
         as.tokens(c(1, 2, 3)),
-        "as.tokens\\(\\) only works on.*list"
+        "as.tokens\\(\\) only works on list, spacyr_parsed, tokens, tokens_xptr objects"
     )
     expect_error(
         tokens(TRUE),
-        "tokens\\(\\) only works on character, corpus, list, tokens objects"
+        "tokens\\(\\) only works on character, corpus, list, tokens, tokens_xptr objects"
     )
     expect_error(
         tokens_group(TRUE),

@@ -317,7 +317,7 @@ tokens.corpus <- function(x,
         meta = attrs[["meta"]]
     )
 
-    result <- tokens.tokens(result,
+    result <- tokens.tokens(as.tokens_xptr(result),
                             remove_punct = remove_punct,
                             remove_symbols = remove_symbols,
                             remove_numbers = remove_numbers,
@@ -328,14 +328,14 @@ tokens.corpus <- function(x,
                             include_docvars = TRUE,
                             padding = padding,
                             verbose = verbose)
-    return(result)
+    return(as.tokens(result))
 }
 
 #' @rdname tokens
 #' @noRd
 #' @importFrom stringi stri_startswith_fixed
 #' @export
-tokens.tokens <-  function(x,
+tokens.tokens_xptr <-  function(x,
                            what = "word",
                            remove_punct = FALSE,
                            remove_symbols = FALSE,
@@ -348,7 +348,7 @@ tokens.tokens <-  function(x,
                            padding = FALSE,
                            verbose = quanteda_options("verbose"),
                            ...) {
-    x <- as.tokens(x)
+    
     remove_punct <- check_logical(remove_punct)
     remove_symbols <- check_logical(remove_symbols)
     remove_numbers <- check_logical(remove_numbers)
@@ -403,10 +403,15 @@ tokens.tokens <-  function(x,
     if (verbose) {
         catm(" ...complete, elapsed time:",
              format((proc.time() - tokens_env$START_TIME)[3], digits = 3), "seconds.\n")
-        catm("Finished constructing tokens from ", format(length(x), big.mark = ","), " document",
-             if (length(x) > 1) "s", ".\n", sep = "")
+        catm("Finished constructing tokens from ", format(ndoc(x), big.mark = ","), " document",
+             if (ndoc(x) > 1) "s", ".\n", sep = "")
     }
     return(x)
+}
+
+#' @export
+tokens.tokens <- function(x, ...) {
+    as.tokens(tokens(as.tokens_xptr(x), ...))
 }
 
 # coercion and checking functions -----------

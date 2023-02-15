@@ -8,6 +8,14 @@ xtoks <- as.tokens_xptr(toks)
 class(toks)
 class(xtoks)
 
+microbenchmark::microbenchmark(
+    old = tokens(toks, remove_punct = TRUE, remove_numbers = TRUE, 
+                 remove_symbols = TRUE),
+    new = tokens(xtoks, remove_punct = TRUE, remove_numbers = TRUE, 
+       remove_symbols = TRUE),
+    times = 10
+)
+
 toks2 <- tokens_select(toks, data_dictionary_LSD2015)
 xtoks2 <- tokens_select(as.tokens_xptr(xtoks), data_dictionary_LSD2015)
 identical(toks2, as.tokens(xtoks2))

@@ -144,7 +144,7 @@ test_that("check_class works", {
     )
     expect_error(
         quanteda:::check_class("dfm", "tokens"), 
-        "tokens() only works on character, corpus, list, tokens objects.", fixed = TRUE
+        "tokens() only works on character, corpus, list, tokens, tokens_xptr objects.", fixed = TRUE
     )
 })
 
