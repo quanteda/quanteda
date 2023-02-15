@@ -27,7 +27,11 @@ data.frame, defaults \code{docnames(x)}.  Set to \code{NULL} to exclude.}
 \item{docid_field}{character; the name of the column containing document
 names used when \code{to = "data.frame"}.  Unused for other conversions.}
 
-\item{check.names}{logical; passed to the \code{\link[base]{data.frame}()} call.}
+\item{check.names}{logical.  If \code{TRUE} then the names of the
+    variables in the data frame are checked to ensure that they are
+    syntactically valid variable names and are not duplicated.
+    If necessary they are adjusted (by \code{\link[base]{make.names}})
+    so that they are.}
 }
 \description{
 Deprecated function to convert a dfm into a data.frame.
