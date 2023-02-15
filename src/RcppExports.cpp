@@ -65,19 +65,18 @@ BEGIN_RCPP
 END_RCPP
 }
 // cpp_tokens_compound
-TokensPtr cpp_tokens_compound(TokensPtr xptr, const List& compounds_, const CharacterVector& types_, const String& delim_, const bool& join, int window_left, int window_right);
-RcppExport SEXP _quanteda_cpp_tokens_compound(SEXP xptrSEXP, SEXP compounds_SEXP, SEXP types_SEXP, SEXP delim_SEXP, SEXP joinSEXP, SEXP window_leftSEXP, SEXP window_rightSEXP) {
+TokensPtr cpp_tokens_compound(TokensPtr xptr, const List& compounds_, const String& delim_, const bool& join, int window_left, int window_right);
+RcppExport SEXP _quanteda_cpp_tokens_compound(SEXP xptrSEXP, SEXP compounds_SEXP, SEXP delim_SEXP, SEXP joinSEXP, SEXP window_leftSEXP, SEXP window_rightSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< TokensPtr >::type xptr(xptrSEXP);
     Rcpp::traits::input_parameter< const List& >::type compounds_(compounds_SEXP);
-    Rcpp::traits::input_parameter< const CharacterVector& >::type types_(types_SEXP);
     Rcpp::traits::input_parameter< const String& >::type delim_(delim_SEXP);
     Rcpp::traits::input_parameter< const bool& >::type join(joinSEXP);
     Rcpp::traits::input_parameter< int >::type window_left(window_leftSEXP);
     Rcpp::traits::input_parameter< int >::type window_right(window_rightSEXP);
-    rcpp_result_gen = Rcpp::wrap(cpp_tokens_compound(xptr, compounds_, types_, delim_, join, window_left, window_right));
+    rcpp_result_gen = Rcpp::wrap(cpp_tokens_compound(xptr, compounds_, delim_, join, window_left, window_right));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -285,6 +284,16 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// cpp_recompile
+void cpp_recompile(TokensPtr xptr);
+RcppExport SEXP _quanteda_cpp_recompile(SEXP xptrSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< TokensPtr >::type xptr(xptrSEXP);
+    cpp_recompile(xptr);
+    return R_NilValue;
+END_RCPP
+}
 // cpp_dfm
 S4 cpp_dfm(TokensPtr xptr);
 RcppExport SEXP _quanteda_cpp_dfm(SEXP xptrSEXP) {
@@ -357,7 +366,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_quanteda_cpp_index", (DL_FUNC) &_quanteda_cpp_index, 2},
     {"_quanteda_cpp_tokens_chunk", (DL_FUNC) &_quanteda_cpp_tokens_chunk, 3},
     {"_quanteda_cpp_tokens_combine", (DL_FUNC) &_quanteda_cpp_tokens_combine, 2},
-    {"_quanteda_cpp_tokens_compound", (DL_FUNC) &_quanteda_cpp_tokens_compound, 7},
+    {"_quanteda_cpp_tokens_compound", (DL_FUNC) &_quanteda_cpp_tokens_compound, 6},
     {"_quanteda_cpp_tokens_group", (DL_FUNC) &_quanteda_cpp_tokens_group, 2},
     {"_quanteda_cpp_tokens_lookup", (DL_FUNC) &_quanteda_cpp_tokens_lookup, 6},
     {"_quanteda_cpp_tokens_ngrams", (DL_FUNC) &_quanteda_cpp_tokens_ngrams, 4},
@@ -374,6 +383,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_quanteda_cpp_ntoken", (DL_FUNC) &_quanteda_cpp_ntoken, 1},
     {"_quanteda_cpp_get_types", (DL_FUNC) &_quanteda_cpp_get_types, 2},
     {"_quanteda_cpp_set_types", (DL_FUNC) &_quanteda_cpp_set_types, 2},
+    {"_quanteda_cpp_recompile", (DL_FUNC) &_quanteda_cpp_recompile, 1},
     {"_quanteda_cpp_dfm", (DL_FUNC) &_quanteda_cpp_dfm, 1},
     {"_quanteda_cpp_is_grouped_numeric", (DL_FUNC) &_quanteda_cpp_is_grouped_numeric, 2},
     {"_quanteda_cpp_is_grouped_character", (DL_FUNC) &_quanteda_cpp_is_grouped_character, 2},

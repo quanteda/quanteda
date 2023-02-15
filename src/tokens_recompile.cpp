@@ -4,7 +4,7 @@
 using namespace quanteda;
 
 /* 
-* This function recompiles tokens object.
+* Function to reassign tokens ids
 * @used tokens_lookup()
 * @creator Kohei Watanabe
 * @param texts_ tokens ojbect

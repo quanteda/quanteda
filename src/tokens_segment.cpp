@@ -113,7 +113,7 @@ struct segment_mt : public Worker{
 
 
 /* 
- * This function split tokens into segments by given patterns
+ * Function to segment documents
  * The number of threads is set by RcppParallel::setThreadOptions()
  * @used tokens_segment()
  * @creator Kohei Watanabe

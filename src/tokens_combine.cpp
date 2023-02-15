@@ -4,7 +4,7 @@ using namespace quanteda;
 
 
 /* 
- * This function to combine tokens objects
+ * Function to combine tokens objects
  * The number of threads is set by RcppParallel::setThreadOptions()
  * @used tokens_segment()
  * @creator Kohei Watanabe

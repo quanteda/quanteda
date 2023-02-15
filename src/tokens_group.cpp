@@ -4,14 +4,11 @@ using namespace quanteda;
 
 
 /* 
- * This function split tokens into segments by given patterns
+ * Function to group documents
  * The number of threads is set by RcppParallel::setThreadOptions()
- * @used tokens_segment()
+ * @used tokens_group()
  * @creator Kohei Watanabe
- * @param texts_ tokens ojbect
- * @param types_ types
- * @param size size of chunks
- * @param overlap number of tokens overlapping
+ * @param groups_ group index
  */
 
 // [[Rcpp::export]]

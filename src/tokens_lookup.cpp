@@ -143,12 +143,10 @@ struct lookup_mt : public Worker{
 };
 
 /* 
-* This function finds patterns in tokens object. This is similar to tokens_replace, 
-* but all overlapping or nested patterns are detected and recorded by IDs.
+* Function to find dictionary keywords
 * The number of threads is set by RcppParallel::setThreadOptions()
 * @used tokens_lookup()
 * @creator Kohei Watanabe
-* @param texts_ tokens ojbect
 * @param words_ list of dictionary values
 * @param keys_ IDs of dictionary keys
 * @param overlap ignore overlapped words: 1=local, 2=global, 3=none
@@ -205,16 +203,18 @@ TokensPtr cpp_tokens_lookup(TokensPtr xptr,
         texts[h] = lookup(texts[h], spans, id_max, overlap, nomatch, map_keys);
     }
 #endif
-    //dev::stop_timer("Dictionary lookup", timer);
-    //TokensObj *ptr = new TokensObj(texts, types);
-    //return TokensPtr(ptr, true);
+    
+    xptr->texts = texts;
+    xptr->types = types;
+    
     if (nomatch != 2) {
         // NOTE: values might need to be reset
         xptr->has_gap = false;
         xptr->has_dup = false;
+    } else {
+        xptr->has_gap = true;
+        xptr->has_dup = true;
     }
-    xptr->texts = texts;
-    xptr->types = types;
     return xptr;
 }
 

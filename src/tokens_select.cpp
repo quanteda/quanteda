@@ -162,11 +162,10 @@ struct select_mt : public Worker{
 };
 
 /* 
- * This function selects features in tokens object with multiple threads. 
+ * Function to selects tokens
  * The number of threads is set by RcppParallel::setThreadOptions()
  * @used tokens_select()
  * @creator Kohei Watanabe
- * @param texts_ tokens ojbect
  * @param words_ list of features to remove or keep 
  * @param mode_ 1: keep; 2: remove
  * @param padding_ fill places where features are removed with zero
@@ -221,6 +220,8 @@ TokensPtr cpp_tokens_select(TokensPtr xptr,
 #endif
     // dev::stop_timer("Token select", timer);
     xptr->texts = texts;
+    xptr->has_gap = true;
+    xptr->has_dup = true;
     return xptr;
 }
 

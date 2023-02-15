@@ -60,20 +60,16 @@ struct index_mt : public Worker{
 
 
 /* 
- * This function generate generates keyword-in-contexts. 
+ * Function to locates tokens for kwic() and index() 
  * The number of threads is set by RcppParallel::setThreadOptions()
  * @used index()
  * @creator Kohei Watanabe
- * @param texts_ tokens ojbect
- * @param types_ types
  * @param words_ list of target features
- * @param pats_ index for patterns
- * @param delim_ character to join tokens
  */
 
 // [[Rcpp::export]]
 DataFrame cpp_index(TokensPtr xptr,
-                        const List &words_){
+                    const List &words_){
     
     Texts texts = xptr->texts;
     Types types = xptr->types;

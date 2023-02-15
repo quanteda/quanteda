@@ -97,12 +97,10 @@ struct type_mt : public Worker{
 
 
 /* 
-* This function generates ngrams/skipgrams from tokens object. 
+* Function to generates ngrams/skipgrams
 * The number of threads is set by RcppParallel::setThreadOptions()
 * @used tokens_ngrams()
 * @creator Kohei Watanabe
-* @param types_ types of tokens
-* @param texts_ tokens ojbect
 * @param delim_ string to join words
 * @param ns_ size of ngramss
 * @param skips_ size of skip (this has to be 1 for ngrams)
@@ -159,6 +157,8 @@ TokensPtr cpp_tokens_ngrams(TokensPtr xptr,
     
     xptr->texts = texts;
     xptr->types = types_ngram;
+    xptr->has_gap = true;
+    xptr->has_dup = true;
     return xptr;
 
 }

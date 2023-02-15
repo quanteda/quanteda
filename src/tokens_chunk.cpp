@@ -43,20 +43,18 @@ struct chunk_mt : public Worker{
 
 
 /* 
- * This function split tokens into segments by given patterns
+ * Function to split documents
  * The number of threads is set by RcppParallel::setThreadOptions()
  * @used tokens_segment()
  * @creator Kohei Watanabe
- * @param texts_ tokens ojbect
- * @param types_ types
  * @param size size of chunks
  * @param overlap number of tokens overlapping
  */
 
 // [[Rcpp::export]]
 TokensPtr cpp_tokens_chunk(TokensPtr xptr,
-                                const int size,
-                                const int overlap){
+                           const int size,
+                           const int overlap){
     
     Texts texts = xptr->texts;
     Types types = xptr->types;

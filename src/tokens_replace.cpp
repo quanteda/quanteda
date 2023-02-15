@@ -76,11 +76,9 @@ struct replace_mt : public Worker{
 };
 
 /* 
-* This function replace patterns in tokens object.
+* Function to replace tokens
 * @used tokens_replace()
 * @creator Kohei Watanabe
-* @param texts_ tokens ojbect
-* @param types_ types of tokens
 * @param patterns_ IDs of patterns
 * @param replacements_ IDs to replace patterns. Must be the same length as patterns_
 */
@@ -122,6 +120,8 @@ TokensPtr cpp_tokens_replace(TokensPtr xptr,
     }
 #endif
     xptr->texts = texts;
+    xptr->has_gap = true;
+    xptr->has_dup = true;
     return xptr;
 }
 
