@@ -1,4 +1,4 @@
-#include "tokens.h"
+#include "lib.h"
 //#include "dev.h"
 using namespace quanteda;
 
@@ -189,9 +189,9 @@ TokensPtr cpp_tokens_select(TokensPtr xptr,
     SetNgrams set_words;
     std::vector<std::size_t> spans = register_ngrams(words_, set_words);
     
-    if (pos_from_.size() != texts.size())
+    if (pos_from_.size() != (int)texts.size())
         throw std::range_error("Invalid pos_from");
-    if (pos_to_.size() != texts.size())
+    if (pos_to_.size() != (int)texts.size())
         throw std::range_error("Invalid pos_to");
     Positions pos(texts.size());
     for (size_t g = 0; g < texts.size(); g++) {
