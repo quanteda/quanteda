@@ -25,8 +25,8 @@ NULL
 #' @keywords internal
 build_dfm <- function(x, features, # NOTE: consider removing feature
                       docvars = data.frame(), meta = list(), 
-                      class = "dfm", ...) {
-    result <- new(class,
+                      class = NULL, ...) {
+    result <- new("dfm",
                   as(as(as(x, "CsparseMatrix"), "generalMatrix"), "dMatrix"),
                   docvars = docvars,
                   meta = make_meta("dfm", inherit = meta, ...)
@@ -91,20 +91,26 @@ upgrade_dfm <- function(x) {
 #' )
 build_tokens <- function(x, types, padding = TRUE,
                          docvars = data.frame(), meta = list(), 
-                         class = "tokens", ...) {
+                         class = NULL, ...) {
     
     attributes(x) <- NULL
-    if (is.list(x)) {
+    class <- setdiff(class, c("tokens_xptr", "tokens")) 
+    if (identical(typeof(x), "externalptr")) {
+        class <- union(class, c("tokens_xptr", "tokens"))
+    } else {
         stopifnot(length(x) == length(docvars[["docname_"]]))
         attr(x, "names") <- docvars[["docname_"]]
+        class <- union(class, "tokens")
     }
     structure(x,
-              class = union(class, "tokens"),
+              class = class,
               types = types,
               padding = padding, # TODO: removed after v4
               docvars = docvars,
               meta = make_meta("tokens", inherit = meta, ...))
 }
+
+
 
 #' #' @rdname object-builders
 # rebuild_tokens <- function(x, attrs) {
@@ -178,8 +184,10 @@ upgrade_tokens <- function(x) {
 build_corpus <- function(x,
                          docvars = data.frame(),
                          meta = list(),
-                         class = "corpus",
+                         class = NULL,
                          ...) {
+    
+    class <- setdiff(class, c("corpus", "character"))
     stopifnot(length(x) == length(docvars[["docname_"]]))
     attributes(x) <- NULL
     structure(x,

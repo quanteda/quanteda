@@ -23,7 +23,7 @@ as.tokens_xptr.tokens <- function(x) {
                  padding = TRUE, 
                  docvars = attrs[["docvars"]], 
                  meta = attrs[["meta"]], 
-                 class = "tokens_xptr")
+                 class = attrs[["class"]])
 }
 
 #' @rdname tokens_xptr
@@ -74,7 +74,8 @@ as.tokens.tokens_xptr <- function(x) {
                  types = attr(result, "types"), 
                  padding = TRUE, 
                  docvars = attrs[["docvars"]], 
-                 meta = attrs[["meta"]])
+                 meta = attrs[["meta"]],
+                 class = attrs[["class"]])
 }
 
 #' @method as.list tokens_xptr
