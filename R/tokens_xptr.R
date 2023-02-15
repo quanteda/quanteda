@@ -4,7 +4,7 @@ is.tokens_xptr <- function(x) {
     identical(typeof(x), "externalptr") && "tokens_xptr" %in% class(x)
 }
 
-#' Convert a tokens object to a tokenx_xptr object
+#' Convert a tokens object to a tokens_xptr object
 #'
 #' [tokenx_xptr] is a external pointer object to process a large number of
 #' documents efficiently.
@@ -71,7 +71,7 @@ ntoken.tokens_xptr <- function(x) {
 
 #' @method as.tokens tokens_xptr
 #' @export
-as.tokens.tokens_xptr <- function(x) {
+as.tokens.tokens_xptr <- function(x, ...) {
     attrs <- attributes(x)
     result <- cpp_as_list(x)
     build_tokens(result, 
@@ -84,8 +84,8 @@ as.tokens.tokens_xptr <- function(x) {
 
 #' @method as.list tokens_xptr
 #' @export
-as.list.tokens_xptr <- function(x) {
-    as.list(as.tokens(x))
+as.list.tokens_xptr <- function(x, ...) {
+    as.list(as.tokens(x), ...)
 }
 
 #' @method [ tokens_xptr
