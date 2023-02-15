@@ -586,45 +586,45 @@ test_that("group_docvars() works", {
 test_that("docid works", {
     corp <- corpus(c(textone = "This is a sentence.  Another sentence.  Yet another.",
                      textwo = "Sentence 1. Sentence 2."))
-    corpsent <- corp %>%
+    corp_sent <- corp %>%
         corpus_reshape(to = "sentences")
     
     expect_identical(
-        docid(corpsent),
+        docid(corp_sent),
         factor(c("textone", "textone", "textone", "textwo", "textwo"))
     )
     expect_identical(
-        docid(tokens(corpsent)),
-        docid(corpsent)
+        docid(tokens(corp_sent)),
+        docid(corp_sent)
     )
     expect_identical(
-        docid(dfm(tokens(corpsent))),
-        docid(corpsent)
+        docid(dfm(tokens(corp_sent))),
+        docid(corp_sent)
     )
     
     # defaults for group functions
     expect_identical(
-        docid(corpus_group(corpsent)),
+        docid(corpus_group(corp_sent)),
         factor(docnames(corp))
     )
     expect_identical(
-        docid(tokens_group(tokens(corpsent))),
+        docid(tokens_group(tokens(corp_sent))),
         factor(docnames(corp))
     )
     expect_identical(
-        docid(dfm_group(dfm(tokens(corpsent)))),
+        docid(dfm_group(dfm(tokens(corp_sent)))),
         factor(docnames(corp))
     )
     expect_identical(
-        docid(corpus_group(corpsent, groups = docid(corpsent))),
+        docid(corpus_group(corp_sent, groups = docid(corp_sent))),
         factor(docnames(corp))
     )
     expect_identical(
-        docid(tokens_group(tokens(corpsent), groups = docid(corpsent))),
+        docid(tokens_group(tokens(corp_sent), groups = docid(corp_sent))),
         factor(docnames(corp))
     )
     expect_identical(
-        docid(dfm_group(dfm(tokens(corpsent)), groups = docid(corpsent))),
+        docid(dfm_group(dfm(tokens(corp_sent)), groups = docid(corp_sent))),
         factor(docnames(corp))
     )
 })
