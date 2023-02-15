@@ -1,25 +1,27 @@
-#include "lib.h"
-//#include "dev.h"
-using namespace quanteda;
+#include <RcppArmadillo.h>
+// [[Rcpp::plugins(cpp11)]]
+using namespace Rcpp;
 
-#if QUANTEDA_USE_TBB
-typedef tbb::concurrent_vector<unsigned int> VecIds;
-#else
-typedef std::vector<unsigned int> VecIds;
-#endif
+typedef std::vector<unsigned int> Text;
+typedef std::vector<Text> Texts;
+typedef std::string Type;
+typedef std::vector<Type> Types;
+typedef std::vector<unsigned int> Ids;
 
 class TokensObj {
     public:
         TokensObj(Texts texts_, Types types_, bool has_gap_ = true, bool has_dup_ = true): 
                   texts(texts_), types(types_), has_gap(has_gap_), has_dup(has_dup_){}
+        
+        // variables
         Texts texts;
         Types types;
         bool has_gap = true;
         bool has_dup = true;
         
+        // functions
         void recompile();
-        // length();
-        // lengths();
+
     private:
         bool is_duplicated(Types types);
 };
@@ -37,7 +39,7 @@ inline bool TokensObj::is_duplicated(Types types) {
 
 inline void TokensObj::recompile() {
 
-    VecIds ids_new(types.size() + 1);
+    Ids ids_new(types.size() + 1);
     ids_new[0] = 0; // reserved for padding
     unsigned int id_new = 1;
     std::vector<bool> flags_used(ids_new.size(), false);
@@ -110,25 +112,12 @@ inline void TokensObj::recompile() {
         return;
     }
 
-    // Convert old IDs to new IDs
-#if QUANTEDA_USE_TBB
-    std::size_t H = texts.size();
-    //int e = std::ceil(H / tbb::this_task_arena::max_concurrency());
-    tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
-        for (int h = r.begin(); h < r.end(); ++h) {
-            for (std::size_t i = 0; i < texts[h].size(); i++) {
-                texts[h][i] = ids_new[texts[h][i]];
-            }
-        }
-    });//, tbb::auto_partitioner());
-#else
     for (std::size_t h = 0; h < texts.size(); h++) {
         for (std::size_t i = 0; i < texts[h].size(); i++) {
             texts[h][i] = ids_new[texts[h][i]];
             //Rcout << texts[h][i] << " -> " << ids_new[texts[h][i]] << "\n";
         }
     }
-#endif
 
     Types types_new;
     types_new.reserve(ids_new.size());
@@ -142,6 +131,4 @@ inline void TokensObj::recompile() {
     has_dup = false;
 }
 
-// XPtr objects -------------------------------------------------------
 
-typedef XPtr<TokensObj> TokensPtr;

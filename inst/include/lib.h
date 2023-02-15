@@ -7,6 +7,7 @@
 #include <unordered_set>
 #include <limits>
 #include <algorithm>
+#include "tokens.h"
 
 // [[Rcpp::plugins(cpp11)]]
 using namespace Rcpp;
@@ -32,8 +33,11 @@ const float GLOBAL_NGRAMS_MAX_LOAD_FACTOR = 0.25;
 namespace quanteda{
     
     typedef ListOf<IntegerVector> Tokens;
-    typedef std::vector<unsigned int> Text;
-    typedef std::vector<Text> Texts;
+    typedef XPtr<TokensObj> TokensPtr;
+
+    // typedef ListOf<IntegerVector> Tokens;
+    // typedef std::vector<unsigned int> Text;
+    // typedef std::vector<Text> Texts;
 
 #if QUANTEDA_USE_TBB
     typedef tbb::atomic<int> IntParam;
@@ -60,8 +64,6 @@ namespace quanteda{
     
     typedef std::vector<unsigned int> Ngram;
     typedef std::vector<Ngram> Ngrams;
-    typedef std::string Type;
-    typedef std::vector<Type> Types;
     
     struct hash_ngram {
         std::size_t operator() (const Ngram &vec) const {
