@@ -50,7 +50,7 @@ types.tokens_xptr <- function(x) {
 }
 
 #' @export
-ntoken.tokens_xptr <- function(x) {
+ntoken.tokens_xptr <- function(x, ...) {
     structure(cpp_ntoken(x), names = docnames(x))
 }
 
