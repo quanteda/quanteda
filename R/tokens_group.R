@@ -37,7 +37,7 @@ tokens_group.default <- function(x, groups = docid(x), fill = FALSE, env = NULL)
 tokens_group.tokens_xptr <- function(x, groups = docid(x), fill = FALSE, env = NULL) {
     
     if (is.null(env))
-        env <- environment()
+        env <- parent.frame()
     if (missing(groups)) {
         field <- NULL
         groups <- docid(x)
@@ -66,6 +66,8 @@ tokens_group.tokens_xptr <- function(x, groups = docid(x), fill = FALSE, env = N
 }
 
 #' @export
-tokens_group.tokens <- function(x, ...) {
-    as.tokens(tokens_group(as.tokens_xptr(x), ...))
+tokens_group.tokens <- function(x, ..., env = NULL) {
+    if (is.null(env))
+        env <- parent.frame()
+    as.tokens(tokens_group(as.tokens_xptr(x), ..., env = env))
 }

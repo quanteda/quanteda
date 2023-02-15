@@ -39,7 +39,7 @@ tokens_sample.tokens_xptr <- function(x, size = NULL, replace = FALSE, prob = NU
                                       by = NULL, env = NULL) {
     
     if (is.null(env))
-        env <- environment()
+        env <- parent.frame()
     if (!missing(by)) {
         by <- eval(substitute(by), get_docvars(x, user = TRUE, system = TRUE), env)
         if (is.factor(by)) by <- droplevels(by)
@@ -50,6 +50,8 @@ tokens_sample.tokens_xptr <- function(x, size = NULL, replace = FALSE, prob = NU
 }
 
 #' @export
-tokens_sample.tokens <- function(x, ...) {
-    as.tokens(tokens_sample(as.tokens_xptr(x), ...))
+tokens_sample.tokens <- function(x, ..., env = NULL) {
+    if (is.null(env))
+        env <- parent.frame()
+    as.tokens(tokens_sample(as.tokens_xptr(x), ..., env = env))
 }

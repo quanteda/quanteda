@@ -620,7 +620,7 @@ test_that("docid works", {
         factor(docnames(corp))
     )
     expect_identical(
-        docid(tokens_group(tokens(corp_sent), groups = docid(corp_sent), env = environment())),
+        docid(tokens_group(tokens(corp_sent), groups = docid(corp_sent))),
         factor(docnames(corp))
     )
     expect_identical(

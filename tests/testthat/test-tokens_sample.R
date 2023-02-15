@@ -12,7 +12,7 @@ test_that("test tokens_sample to see if without grouping, documents can be overs
 
 test_that("test tokens_sample to see if with grouping, documents can be oversampled", {
     for (i in 1:10) {
-        toks_samp <- tokens_sample(toks_sent, replace = TRUE, by = docid(toks_sent), env = environment())
+        toks_samp <- tokens_sample(toks_sent, replace = TRUE, by = docid(toks_sent))
         expect_equal(
             sum(stringi::stri_detect_regex(docnames(tokens_sample(toks_samp, replace = TRUE, by = docid_)), "^one")),
             3
