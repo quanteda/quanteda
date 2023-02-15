@@ -154,13 +154,11 @@ struct compound_mt : public Worker{
 };
 
 /* 
- * This function substitutes features in tokens object with new IDs. 
+ * Function to compound tokens
  * The number of threads is set by RcppParallel::setThreadOptions()
  * @used tokens_compound()
  * @creator Kohei Watanabe
- * @param texts_ tokens ojbect
  * @param compounds_ list of patterns to substitute
- * @param types_ types in the tokens object
  * @param delim_ character to concatenate types
  * @param join join overlapped features if true
  * @param window_left numbers tokens on the left-hand side of pattern
@@ -170,7 +168,6 @@ struct compound_mt : public Worker{
 // [[Rcpp::export]]
 TokensPtr cpp_tokens_compound(TokensPtr xptr,
                               const List &compounds_,
-                              const CharacterVector &types_,
                               const String &delim_,
                               const bool &join,
                               int window_left,
@@ -246,6 +243,8 @@ TokensPtr cpp_tokens_compound(TokensPtr xptr,
     // dev::stop_timer("Token compound", timer);
     xptr->texts = texts;
     xptr->types = types;
+    xptr->has_gap = true;
+    xptr->has_dup = true;
     return xptr;
 }
 
