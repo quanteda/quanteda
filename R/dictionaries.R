@@ -111,7 +111,7 @@ check_entries <- function(dict) {
 #'
 #'   Lexicoder format, <https://www.snsoroka.com/data-lexicoder/>
 #'
-#' @seealso [dfm], [as.dictionary()],
+#' @seealso [as.dictionary()],
 #'   [`as.list()`][dictionary2-class], [is.dictionary()]
 #' @examples
 #' corp <- corpus_subset(data_corpus_inaugural, Year>1900)

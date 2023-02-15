@@ -22,7 +22,7 @@
 #'   features unaffected
 #' @param nested_scope how to treat matches from different dictionary keys that
 #'   are nested.  When one value is nested within another, such as "a b" being
-#'   nested within "a b c", `the `tokens_lookup()` will match the longer.  When
+#'   nested within "a b c", then `tokens_lookup()` will match the longer.  When
 #'   `nested_scope = "key"`, this longer-match priority is applied only
 #'   within the key, while `"dictionary"` applies it across keys, matching only
 #'   the key with the longer pattern, not the matches nested within that longer
@@ -43,7 +43,7 @@
 #'   *Overlapping values*, such as `"a b"` and `"b a"` are
 #'   currently always considered as separate matches if they are in different
 #'   keys, or as one match if the overlap is within the same key.
-#' *Overlapped*
+#' 
 #' @keywords tokens
 #' @seealso tokens_replace
 #' @examples

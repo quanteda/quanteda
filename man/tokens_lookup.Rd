@@ -50,7 +50,9 @@ unmatched tokens.}
 
 \item{nested_scope}{how to treat matches from different dictionary keys that
 are nested.  When one value is nested within another, such as "a b" being
-nested within "a b c", \code{the }tokens_lookup()\verb{will match the longer.  When}nested_scope = "key"\verb{, this longer-match priority is applied only within the key, while }"dictionary"` applies it across keys, matching only
+nested within "a b c", then \code{tokens_lookup()} will match the longer.  When
+\code{nested_scope = "key"}, this longer-match priority is applied only
+within the key, while \code{"dictionary"} applies it across keys, matching only
 the key with the longer pattern, not the matches nested within that longer
 pattern from other keys.  See Details.}
 
@@ -76,7 +78,6 @@ for these two different behaviours.
 \emph{Overlapping values}, such as \code{"a b"} and \code{"b a"} are
 currently always considered as separate matches if they are in different
 keys, or as one match if the overlap is within the same key.
-\emph{Overlapped}
 }
 \examples{
 toks1 <- tokens(data_corpus_inaugural)
