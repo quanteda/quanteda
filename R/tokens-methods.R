@@ -226,6 +226,7 @@ c.tokens_xptr <- function(...) {
     )
 }
 
+#' @rdname tokens-class
 #' @export
 c.tokens <- function(...) {
     

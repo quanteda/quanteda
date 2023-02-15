@@ -16,10 +16,10 @@ as.tokens_xptr(x)
 \method{as.tokens_xptr}{tokens_xptr}(x)
 }
 \arguments{
-\item{x}{a \link{tokens} object to convert to \link{tokens_xptr} or a \link{tokens_xptr} to
+\item{x}{a \link{tokens} object to convert or a tokens_xptr object to
 to deep-copy.}
 }
 \description{
-\link{tokens_xptr} is a external pointer object to process a large number of
+tokens_xptr is a external pointer object to process a large number of
 documents efficiently.
 }
