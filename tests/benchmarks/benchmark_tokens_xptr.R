@@ -17,13 +17,13 @@ microbenchmark::microbenchmark(
         tokens_remove("[\\p{N}]", valuetype = "regex", padding = TRUE) %>% 
         tokens_remove("[\\p{P}]", valuetype = "regex", padding = TRUE) %>% 
         tokens_remove("[\\p{S}]", valuetype = "regex", padding = TRUE) %>% 
-        dfm(),
+        dfm(remove_padding = TRUE),
     new = as.tokens_xptr(xtoks) %>% 
         tokens_remove(stopwords("en"), padding = TRUE) %>% 
         tokens_remove("[\\p{N}]", valuetype = "regex", padding = TRUE) %>% 
         tokens_remove("[\\p{P}]", valuetype = "regex", padding = TRUE) %>% 
         tokens_remove("[\\p{S}]", valuetype = "regex", padding = TRUE) %>% 
-        dfm(),
+        dfm(remove_padding = TRUE),
     times = 10
 )
 
