@@ -4,6 +4,8 @@
 #' or without replacement, optionally by grouping variables or with probability
 #' weights.
 #' @param x a [tokens] object whose documents will be sampled
+#' @param env an environment or a list object in which `x` is searched.
+#' Passed to [substitute] for non-standard evaluation.
 #' @inheritParams corpus_sample
 #' @export
 #' @return a [tokens] object (re)sampled on the documents, containing the document
@@ -22,20 +24,24 @@
 #' docvars(toks)
 #' tokens_sample(toks, size = 2, replace = TRUE, by = Party) %>% docnames()
 #'
-tokens_sample <- function(x, size = NULL, replace = FALSE, prob = NULL, by = NULL) {
+tokens_sample <- function(x, size = NULL, replace = FALSE, prob = NULL, by = NULL, env = NULL) {
     UseMethod("tokens_sample")
 }
 
 #' @export
-tokens_sample.default <- function(x, size = NULL, replace = FALSE, prob = NULL, by = NULL) {
+tokens_sample.default <- function(x, size = NULL, replace = FALSE, prob = NULL, 
+                                  by = NULL, env = NULL) {
     check_class(class(x), "tokens_sample")
 }
     
 #' @export
-tokens_sample.tokens_xptr <- function(x, size = NULL, replace = FALSE, prob = NULL, by = NULL) {
-
+tokens_sample.tokens_xptr <- function(x, size = NULL, replace = FALSE, prob = NULL, 
+                                      by = NULL, env = NULL) {
+    
+    if (is.null(env))
+        env <- environment()
     if (!missing(by)) {
-        by <- eval(substitute(by), get_docvars(x, user = TRUE, system = TRUE), parent.frame())
+        by <- eval(substitute(by), get_docvars(x, user = TRUE, system = TRUE), env)
         if (is.factor(by)) by <- droplevels(by)
     }
 

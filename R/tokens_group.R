@@ -43,7 +43,7 @@ tokens_group.tokens_xptr <- function(x, groups = docid(x), fill = FALSE, env = N
         groups <- docid(x)
     } else {
         field <- deparse(substitute(groups))
-        groups <- eval(substitute(groups, env), get_docvars(x, user = TRUE, system = TRUE))
+        groups <- eval(substitute(groups), get_docvars(x, user = TRUE, system = TRUE), env)
         if (!field %in% names(get_docvars(x)) || !is.factor(groups))
             field <- NULL
         groups <- as.factor(groups)
