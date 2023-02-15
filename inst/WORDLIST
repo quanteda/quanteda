@@ -224,7 +224,7 @@ textplots
 textstat
 textstats
 tokens
-tokens_xptr
+xptr
 tf
 tfidf
 th
