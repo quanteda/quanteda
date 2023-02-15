@@ -6,7 +6,7 @@ is.tokens_xptr <- function(x) {
 
 #' Convert a tokens object to a tokens_xptr object
 #'
-#' [tokenx_xptr] is a external pointer object to process a large number of
+#' [tokens_xptr] is a external pointer object to process a large number of
 #' documents efficiently.
 #' @param x a [tokens] object to convert to [tokens_xptr] or a [tokens_xptr] to
 #'   to deep-copy.

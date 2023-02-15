@@ -5,7 +5,7 @@
 \alias{as.tokens_xptr}
 \alias{as.tokens_xptr.tokens}
 \alias{as.tokens_xptr.tokens_xptr}
-\title{Convert a tokens object to a tokenx_xptr object}
+\title{Convert a tokens object to a tokens_xptr object}
 \usage{
 is.tokens_xptr(x)
 
@@ -20,6 +20,6 @@ as.tokens_xptr(x)
 to deep-copy.}
 }
 \description{
-\link{tokenx_xptr} is a external pointer object to process a large number of
+\link{tokens_xptr} is a external pointer object to process a large number of
 documents efficiently.
 }
