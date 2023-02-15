@@ -78,7 +78,7 @@ test_that("test detault char_* methods", {
 test_that("test detault fcm* methods", {
     expect_error(
         fcm(0),
-        "fcm\\(\\) only works on character.*tokens objects"
+        "fcm\\(\\) only works on character.*tokens_xptr objects"
     )
     expect_error(
         fcm_compress(1),
