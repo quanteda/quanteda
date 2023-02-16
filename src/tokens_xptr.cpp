@@ -109,6 +109,7 @@ S4 cpp_dfm(TokensPtr xptr) {
     int count_pad = 0;
     int id = 1;
     for (std::size_t h = 0; h < H; h++) {
+        // assign new token IDs in the order of their occurrence
         std::size_t I = xptr->texts[h].size();
         Text text(I);
         for (std::size_t i = 0; i < I; i++) {
@@ -123,6 +124,7 @@ S4 cpp_dfm(TokensPtr xptr) {
                 text[i] = ids[xptr->texts[h][i] - 1];
             }
         }
+        // aggregate the same token IDs
         std::sort(text.begin(), text.end()); // rows must be sorted in dgCMatrix
         int n = 1;
         for (std::size_t i = 0; i < I; i++) {
@@ -143,6 +145,8 @@ S4 cpp_dfm(TokensPtr xptr) {
     //Rcout << "x: " << slot_x_ << "\n";
     IntegerVector slot_i_ = Rcpp::wrap(slot_i);
     //Rcout << "i: " << slot_i_ << "\n";
+    
+    // sort types in the order of their occurrence
     
     //IntegerVector ids_ = Rcpp::wrap(ids);
     //Rcout << "id: " << ids_ << "\n";
