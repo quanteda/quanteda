@@ -6,8 +6,25 @@ corp <- readRDS('/home/kohei/Dropbox/Public/data_corpus_guardian2016-10k.rds') %
 toks <- tokens(corp, remove_punct = FALSE, remove_numbers = FALSE, 
                remove_symbols = FALSE)
 xtoks <- as.tokens_xptr(toks)
+
 class(toks)
 class(xtoks)
+
+identical(types(xtoks),
+          quanteda3::types(toks))
+
+identical(dfm(xtoks),
+          quanteda3::dfm(toks))
+
+identical(as.list(tokens_select(as.tokens_xptr(xtoks), data_dictionary_LSD2015)),
+          as.list(quanteda3::tokens_select(toks, data_dictionary_LSD2015)))
+
+identical(as.list(as.tokens(tokens_group(as.tokens_xptr(xtoks)))), 
+          as.list(quanteda3::tokens_group(toks)))
+
+# TODO: column order must be the same always
+identical(dfm(tokens_ngrams(as.tokens_xptr(xtoks))),
+          dfm(tokens_ngrams(as.tokens_xptr(xtoks))))
 
 microbenchmark::microbenchmark(
     old = quanteda3::tokens(corp, remove_punct = TRUE, remove_numbers = TRUE, 
@@ -20,14 +37,11 @@ microbenchmark::microbenchmark(
 microbenchmark::microbenchmark(
     old = quanteda3::tokens(toks, remove_punct = TRUE, remove_numbers = TRUE, 
                            remove_symbols = TRUE),
-    new = tokens(xtoks, remove_punct = TRUE, remove_numbers = TRUE, 
+    new = as.tokens_xptr(toks) %>% 
+          tokens(remove_punct = TRUE, remove_numbers = TRUE, 
                  remove_symbols = TRUE),
     times = 10
 )
-
-toks2 <- quanteda3::tokens_select(toks, data_dictionary_LSD2015)
-xtoks2 <- tokens_select(as.tokens_xptr(xtoks), data_dictionary_LSD2015)
-identical(as.list(toks2), as.list(xtoks2))
 
 microbenchmark::microbenchmark(
     old = quanteda3::tokens_remove(toks, stopwords("en"), padding = TRUE) %>% 
@@ -63,14 +77,12 @@ microbenchmark::microbenchmark(
     news = dfm(xtoks),
     times = 10
 )
-identical(dfm(xtoks), quanteda3::dfm(toks))
 
 microbenchmark::microbenchmark(
     old = quanteda3::tokens_group(toks),
     new = tokens_group(xtoks),
     times = 10
 )
-identical(as.tokens(tokens_group(xtoks)), quanteda3::tokens_group(toks))
 
 profvis::profvis(
     dfm(xtoks)
