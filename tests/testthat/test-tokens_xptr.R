@@ -163,6 +163,14 @@ test_that("dfm works", {
     expect_identical(dfm(as.tokens_xptr(toks)), dfm(toks))
     expect_identical(dfm(as.tokens_xptr(toks), tolower = FALSE), 
                      dfm(toks, tolower = FALSE))
+    
+})
+
+test_that("order of the feature is unique", {
+    
+    mat <- replicate(5, featnames(dfm(tokens_ngrams(as.tokens_xptr(toks)))))
+    expect_true(all(mat[,1] == mat))
+    
 })
 
 test_that("fcm works", {

@@ -92,6 +92,9 @@ S4 cpp_dfm(TokensPtr xptr) {
     
     xptr->recompile();
     std::size_t H = xptr->texts.size();
+    std::size_t G = xptr->types.size();
+    std::vector<int> ids(G, 0);
+    
     int N = 0;
     for (std::size_t h = 0; h < H; h++)
         N += xptr->texts[h].size();
@@ -104,14 +107,26 @@ S4 cpp_dfm(TokensPtr xptr) {
     
     slot_p.push_back(p);
     int count_pad = 0;
+    int id = 1;
     for (std::size_t h = 0; h < H; h++) {
-        Text text = xptr->texts[h];
+        std::size_t I = xptr->texts[h].size();
+        Text text(I);
+        for (std::size_t i = 0; i < I; i++) {
+            if (xptr->texts[h][i] == 0) {
+                text[i] = 0;
+                count_pad++;
+            } else {
+                if (ids[xptr->texts[h][i] - 1] == 0) {
+                    ids[xptr->texts[h][i] - 1] = id;
+                    id++;
+                }
+                text[i] = ids[xptr->texts[h][i] - 1];
+            }
+        }
         std::sort(text.begin(), text.end()); // rows must be sorted in dgCMatrix
         int n = 1;
-        for (std::size_t i = 0; i < text.size(); i++) {
+        for (std::size_t i = 0; i < I; i++) {
             if (i + 1 == text.size() || text[i] != text[i + 1]) {
-                if (text[i] == 0)
-                    count_pad++;
                 slot_i.push_back(text[i]);
                 slot_x.push_back(n);
                 p++;
@@ -129,14 +144,22 @@ S4 cpp_dfm(TokensPtr xptr) {
     IntegerVector slot_i_ = Rcpp::wrap(slot_i);
     //Rcout << "i: " << slot_i_ << "\n";
     
-    size_t G = xptr->types.size();
-    CharacterVector types_ = encode(xptr->types);
+    //IntegerVector ids_ = Rcpp::wrap(ids);
+    //Rcout << "id: " << ids_ << "\n";
+    Types types(G);
+    for (std::size_t g = 0; g < G; g++) {
+        types[ids[g] - 1] = xptr->types[g];
+    }
+    CharacterVector types_ = encode(types);
+    //Rcout << "types: " << types_ << "\n";
+    
     if (count_pad == 0) {
         slot_i_ = slot_i_ - 1; // use zero for other tokens
     } else {
         G++;
         types_.push_front("");
     }
+    
     IntegerVector dim_ = IntegerVector::create(G, H);
     List dimnames_ = List::create(types_, R_NilValue);
     
@@ -151,7 +174,10 @@ S4 cpp_dfm(TokensPtr xptr) {
 
 
 /***R
-toks <- quanteda::tokens(c("a b a c.", "b c b a,"), remove_punct = FALSE, padding = TRUE)
+toks <- quanteda::tokens(c("b c b a,", "a b a c."), remove_punct = FALSE, padding = TRUE)
 xtoks <- quanteda::as.tokens_xptr(toks)
-cpp_dfm(xtoks)
+xtoks2 <- xtoks[c(2:1)]
+print(xtoks2)
+cpp_dfm(xtoks2)
+
 */

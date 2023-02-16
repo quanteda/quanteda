@@ -22,7 +22,10 @@ identical(as.list(tokens_select(as.tokens_xptr(xtoks), data_dictionary_LSD2015))
 identical(as.list(as.tokens(tokens_group(as.tokens_xptr(xtoks)))), 
           as.list(quanteda3::tokens_group(toks)))
 
-# TODO: column order must be the same always
+# NOTE: column order must be unique
+identical(quanteda3::dfm(tokens_ngrams(toks)),
+          dfm(tokens_ngrams(as.tokens_xptr(xtoks))))
+
 identical(dfm(tokens_ngrams(as.tokens_xptr(xtoks))),
           dfm(tokens_ngrams(as.tokens_xptr(xtoks))))
 
