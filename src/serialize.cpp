@@ -4,7 +4,35 @@ using namespace quanteda;
 
 typedef std::vector<std::string> StringText;
 typedef std::vector<StringText> StringTexts;
+#if QUANTEDA_USE_TBB
+typedef tbb::concurrent_unordered_map<std::string, UintParam> MapTypes;
+#else
+typedef std::unordered_map<std::string, unsigned int> MapTypes;
+#endif
 
+Text serialize(const StringText &text, 
+               MapTypes &map, 
+               UintParam &id) {
+    std::size_t I = text.size();
+    Text temp(I);
+    for (size_t i = 0; i < I; i++) {
+        auto it1 = map.find(text[i]);
+        if (it1 != map.end()) {
+            temp[i] = it1->second;
+        } else {
+#if QUANTEDA_USE_TBB
+            auto it2 = map.insert(std::pair<std::string, UintParam>(text[i], id.fetch_and_increment()));
+#else
+            auto it2 = map.insert(std::pair<std::string, UintParam>(text[i], id++));
+#endif
+            temp[i] = it2.first->second;
+        }
+    }
+    return temp;
+}
+
+
+// NOTE: pass XPtr as the third argument
 // [[Rcpp::export]]
 List cpp_serialize(List texts_, CharacterVector types_){
     
@@ -14,8 +42,7 @@ List cpp_serialize(List texts_, CharacterVector types_){
     StringTexts texts = Rcpp::as<StringTexts>(texts_);
     
     dev::start_timer("Register", timer);
-    //std::unordered_map<std::string, unsigned int> map;
-    tbb::concurrent_unordered_map<std::string, UintParam> map;
+    MapTypes map;
     for (size_t g = 0; g < types.size(); g++) {
         std::string type = types[g];
         auto it = map.insert(std::pair<std::string, UintParam>(types[g], g + 1));
@@ -26,23 +53,17 @@ List cpp_serialize(List texts_, CharacterVector types_){
     UintParam id = types.size();
     std::size_t H = texts.size();
     Texts temp(H);
-    for (size_t h = 0; h < H; h++) {
-        std::size_t I = texts[h].size();
-        temp[h] = Text(I);
-        for (size_t i = 0; i < I; i++) {
-            auto it1 = map.find(texts[h][i]);
-            if (it1 != map.end()) {
-                temp[h][i] = it1->second;
-            } else {
-#if QUANTEDA_USE_TBB    
-                //auto it2 = map.insert(std::pair<std::string, UintParam>(texts[h][i], id.fetch_and_increment()));
+#if QUANTEDA_USE_TBB
+    tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
+        for (int h = r.begin(); h < r.end(); ++h) {
+            temp[h] = serialize(texts[h], map, id);
+        }    
+    });
 #else
-                //auto it2 = map.insert(std::pair<std::string, UintParam>(texts[h][i], id++));
-#endif
-                //temp[h][i] = it2.first->second;
-            }
-        }
+    for (size_t h = 0; h < H; h++) {
+        temp[h] = serialize(texts[h], map, id);
     }
+#endif
     dev::stop_timer("Serialize", timer);
     List result_ = as_list(temp);
     return(result_);
