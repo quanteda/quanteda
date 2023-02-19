@@ -16,16 +16,20 @@ Text serialize(const StringText &text,
     std::size_t I = text.size();
     Text temp(I);
     for (size_t i = 0; i < I; i++) {
-        auto it1 = map.find(text[i]);
-        if (it1 != map.end()) {
-            temp[i] = it1->second;
+        if (text[i] == "") {
+            temp[i] = 0;
         } else {
+            auto it1 = map.find(text[i]);
+            if (it1 != map.end()) {
+                temp[i] = it1->second;
+            } else {
 #if QUANTEDA_USE_TBB
-            auto it2 = map.insert(std::pair<std::string, UintParam>(text[i], id.fetch_and_increment()));
+                auto it2 = map.insert(std::pair<std::string, UintParam>(text[i], id.fetch_and_increment()));
 #else
-            auto it2 = map.insert(std::pair<std::string, UintParam>(text[i], id++));
+                auto it2 = map.insert(std::pair<std::string, UintParam>(text[i], id++));
 #endif
-            temp[i] = it2.first->second;
+                temp[i] = it2.first->second;
+            }
         }
     }
     return temp;
@@ -50,7 +54,7 @@ List cpp_serialize(List texts_, CharacterVector types_){
     dev::stop_timer("Register", timer);
     
     dev::start_timer("Serialize", timer);
-    UintParam id = types.size();
+    UintParam id = types.size() + 1;
     std::size_t H = texts.size();
     Texts temp(H);
 #if QUANTEDA_USE_TBB
@@ -64,15 +68,25 @@ List cpp_serialize(List texts_, CharacterVector types_){
         temp[h] = serialize(texts[h], map, id);
     }
 #endif
+    
+    Types types_new(id - 1);
+    for (std::pair<std::string, unsigned int> it : map) {
+        types_new[it.second - 1] = it.first;
+    }
+    
     dev::stop_timer("Serialize", timer);
+    CharacterVector types_new_ = Rcpp::wrap(types_new);
     List result_ = as_list(temp);
+    result_.attr("types") = types_new_;
+    result_.attr("padding") = true;
+    result_.attr("class") = "tokens";
     return(result_);
 }
 
 /***R
-lis <- replicate(10, sample(letters), simplify = FALSE)
-types <- rep(letters, 1000)
-out <- cpp_serialize(lis, types)
+lis <- replicate(10, sample(c("", letters)), simplify = FALSE)
+#types <- rep(letters, 1000)
+out <- cpp_serialize(lis, letters[1:10])
 
 
 */
