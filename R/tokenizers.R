@@ -237,7 +237,7 @@ tokenize_word4 <- function(x, preserve = c("hyphen", "url", "email", "username",
     if ("username" %in% preserve)
         rules[["username"]] <- paste0(stri_replace_all_fixed(quanteda_options("pattern_username"), "@", "\\@"), ";")
     if ("hashtag" %in% preserve)
-        rules[["hashtag"]] <- paste0(stri_replace_all_fixed(quanteda_options("pattern_hashtag"), ";"), "#", "\\#"), ";")
+        rules[["hashtag"]] <- paste0(stri_replace_all_fixed(quanteda_options("pattern_hashtag"), "#", "\\#"), ";")
     rule <- paste(unlist(rules[preserve]), collapse = "\n")
     
     m <- names(x)
