@@ -229,17 +229,22 @@ normalize_characters <- function(x) {
     return(x)
 }
 
+#' @examples
+#' quanteda:::tokenize_word4("message: #aaa# @bbb")
+#' quanteda:::tokenize_word4("message: #aaa# @bbb", c("username"))
+#' quanteda:::tokenize_word4("message: #aaa# http://example.com", c("hashtag"))
+#' quanteda:::tokenize_word4("message: #aaa# http://example.com", c("url"))
 tokenize_word4 <- function(x, preserve = c("hyphen", "url", "email", "username", "hashtag", "elision")) {
     
-    cat(" ...preserving", paste(preserve, collapse = ", "))
+    rules <- global$rules
+    cat(" ...preserving", paste(preserve, collapse = ", "), "\n")
     
-    preserve <- union("word", preserve)
     if ("username" %in% preserve)
         rules[["username"]] <- paste0(stri_replace_all_fixed(quanteda_options("pattern_username"), "@", "\\@"), ";")
     if ("hashtag" %in% preserve)
         rules[["hashtag"]] <- paste0(stri_replace_all_fixed(quanteda_options("pattern_hashtag"), "#", "\\#"), ";")
-    rule <- paste(unlist(rules[preserve]), collapse = "\n")
-    
+    rule <- paste(unlist(rules[union("word", preserve)]), collapse = "\n")
+
     m <- names(x)
     x[is.na(x)] <- "" # make NAs ""
     result <- structure(stri_split_boundaries(x, type = rule), names = m)
