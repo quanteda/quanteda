@@ -7,6 +7,12 @@ test_that("customized tokenizer works correctly", {
              "https://github.com/quanteda/quanteda/issue/1 is another URL")
     
     quanteda:::tokenize_word(txt)
+    quanteda:::tokenize_word("#aaa @bbb", character())
+    quanteda_options("pattern_hashtag" = "#[\\w]+#?")
+    quanteda_options("pattern_hashtag" = "#[\\p{L}]+#?")
+    quanteda:::tokenize_word4("#aaa# @bbb", c("hashtag", "username"))
+    quanteda:::tokenize_word4("#aaa# @bbb", c("username"))
+    quanteda:::tokenize_word4("#aaa# @bbb", c("hashtag"))
     quanteda:::tokenize_word4(txt)
     
     # # prevents test failing on Ubuntu 20.04 on GitHub Actions

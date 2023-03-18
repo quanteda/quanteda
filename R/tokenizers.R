@@ -230,26 +230,59 @@ normalize_characters <- function(x) {
 }
 
 #' @examples
-#' quanteda:::tokenize_word4("message: #aaa# @bbb")
-#' quanteda:::tokenize_word4("message: #aaa# @bbb", c("username"))
-#' quanteda:::tokenize_word4("message: #aaa# http://example.com", c("hashtag"))
-#' quanteda:::tokenize_word4("message: #aaa# http://example.com", c("url"))
-tokenize_word4 <- function(x, preserve = c("hyphen", "url", "email", "username", "hashtag", "elision")) {
+#' tokenize_word4("a well-known website http://example.com #hashtag")
+#' tokenize_word4("a well-known website http://example.com #hashtag", split_tags = TRUE)
+#' tokenize_word4("Qu'est-ce que c'est?", verbose = TRUE)
+#' tokenize_word4("Qu'est-ce que c'est?", split_elision = TRUE)
+#' @export
+tokenize_word4 <- function(x, split_hyphens = FALSE, split_tags = FALSE, split_elisions = FALSE,
+                           verbose = quanteda_options("verbose")) {
     
-    rules <- global$rules
-    cat(" ...preserving", paste(preserve, collapse = ", "), "\n")
-    
-    if ("username" %in% preserve)
+    rules <- data_breakrules
+    if (!split_hyphens) {
+        if (verbose) catm(" ...preserving hyphens\n")
+    } else {
+        rules[["hyphen"]] <- NULL
+    }
+    if (!split_elisions) {
+        if (verbose) catm(" ...preserving elisions\n")
+        rules[["elision"]] <- NULL
+    }
+    if (!split_tags) {
+        if (verbose) catm(" ...preserving social media tags (#, @)\n")
         rules[["username"]] <- paste0(stri_replace_all_fixed(quanteda_options("pattern_username"), "@", "\\@"), ";")
-    if ("hashtag" %in% preserve)
         rules[["hashtag"]] <- paste0(stri_replace_all_fixed(quanteda_options("pattern_hashtag"), "#", "\\#"), ";")
-    rule <- paste(unlist(rules[union("word", preserve)]), collapse = "\n")
-
-    m <- names(x)
-    x[is.na(x)] <- "" # make NAs ""
-    result <- structure(stri_split_boundaries(x, type = rule), names = m)
-    
-    return(result)
+    }
+    tokenize_custom(x, rules)
 }
 
+#' Customizable tokenizer
+#'
+#' Allows users to tokenize texts using customized boundary rules. See the [ICU
+#' website](https://unicode-org.github.io/icu/userguide/boundaryanalysis/break-rules.html)
+#' for how to define boundary rules.
+#' @export
+#' @examples
+#' tokenize_custom("a well-known website http://example.com", data_breakrules["word"])
+#' tokenize_custom("a well-known http://example.com", data_breakrules)
+tokenize_custom <- function(x, rules) {
+    x[is.na(x)] <- ""
+    rule <- paste(unlist(rules), collapse = "\n")
+    structure(stri_split_boundaries(x, type = rule), names = names(x))
+}
+
+#' @rdname tokenize_custom
+#' @format `data_breakrules` is a list of pre-define rules. `word` is copied
+#' from the ICU library. Other rules are created by the package maintainers.
+#' \describe{
+#' \item{`word`}{ICU libary's rules for tokenizing words}
+#' \item{`hyphens`}{quanteda's rule for preserving hyphens}
+#' \item{`url`}{quanteda's rule for preserving URLs}
+#' \item{`email`}{quanteda's rule for preserving emails}
+#' \item{`elision`}{quanteda's rule for splitting at elisions}
+#' }
+#' @source 
+#' <https://raw.githubusercontent.com/unicode-org/icu/main/icu4c/source/data/brkitr/rules/word.txt>
+#' @keywords data
+"data_breakrules"
 
