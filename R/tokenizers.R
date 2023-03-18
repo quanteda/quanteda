@@ -36,7 +36,7 @@ NULL
 #' @rdname tokenize_internal
 #' @importFrom stringi stri_replace_all_regex stri_detect_fixed stri_split_boundaries
 #' @export
-tokenize_word <- function(x, split_hyphens = FALSE, verbose = quanteda_options("verbose")) {
+tokenize_word <- function(x, split_hyphens = FALSE, verbose = quanteda_options("verbose"), ...) {
 
     if (verbose) catm(" ...segmenting into words\n")
     m <- names(x)
@@ -134,7 +134,7 @@ restore_special <- function(x, special, recompile = TRUE) {
 #' @importFrom stringi stri_detect_regex stri_detect_charclass
 #'   stri_replace_all_regex stri_detect_fixed stri_replace_all_fixed
 #' @export
-tokenize_word1 <- function(x, split_hyphens = FALSE, verbose = quanteda_options("verbose")) {
+tokenize_word1 <- function(x, split_hyphens = FALSE, verbose = quanteda_options("verbose"), ...) {
 
     m <- names(x)
     x[is.na(x)] <- "" # make NAs ""
@@ -188,7 +188,7 @@ tokenize_character <- function(x, ...) {
 #' @importFrom stringi stri_replace_all_regex stri_replace_all_fixed
 #'   stri_split_boundaries stri_trim_right
 #' @export
-tokenize_sentence <- function(x, ..., verbose = FALSE) {
+tokenize_sentence <- function(x, verbose = FALSE, ...) {
     if (verbose) catm(" ...segmenting into sentences.\n")
     m <- names(x)
     x <- stri_replace_all_fixed(x, "\n", " ") # TODO consider removing
@@ -236,7 +236,7 @@ normalize_characters <- function(x) {
 #' tokenize_word4("Qu'est-ce que c'est?", split_elision = TRUE)
 #' @export
 tokenize_word4 <- function(x, split_hyphens = FALSE, split_tags = FALSE, split_elisions = FALSE,
-                           verbose = quanteda_options("verbose")) {
+                           verbose = quanteda_options("verbose"), ...) {
     
     rules <- data_breakrules
     if (!split_hyphens) {
@@ -285,4 +285,3 @@ tokenize_custom <- function(x, rules) {
 #' <https://raw.githubusercontent.com/unicode-org/icu/main/icu4c/source/data/brkitr/rules/word.txt>
 #' @keywords data
 "data_breakrules"
-
