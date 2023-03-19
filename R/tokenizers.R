@@ -230,8 +230,8 @@ normalize_characters <- function(x) {
 }
 
 #' @examples
-#' tokenize_word4("a well-known website http://example.com #hashtag")
-#' tokenize_word4("a well-known website http://example.com #hashtag", split_tags = TRUE)
+#' tokenize_word4("a well-known website http://example.com #hashtag @username")
+#' tokenize_word4("a well-known website http://example.com #hashtag @username", split_tags = TRUE)
 #' tokenize_word4("Qu'est-ce que c'est?", verbose = TRUE)
 #' tokenize_word4("Qu'est-ce que c'est?", split_elision = TRUE)
 #' @export
