@@ -245,6 +245,7 @@ tokenize_word4 <- function(x, split_hyphens = FALSE, split_tags = FALSE, split_e
     names(x) <- m
 
     rules <- data_breakrules
+    rules[["sent"]] <- NULL
     if (!split_hyphens) {
         if (verbose) catm(" ...preserving hyphens\n")
     } else {
@@ -281,7 +282,8 @@ tokenize_custom <- function(x, rules) {
 #' @format `data_breakrules` is a list of pre-define rules. `word` is copied
 #' from the ICU library. Other rules are created by the package maintainers.
 #' \describe{
-#' \item{`word`}{ICU libary's rules for tokenizing words}
+#' \item{`word`}{ICU's rules for detecting word boundaries}
+#' \item{`sent`}{ICU's rules for detecting sentece boundaries}
 #' \item{`hyphen`}{quanteda's rule for preserving hyphens}
 #' \item{`url`}{quanteda's rule for preserving URLs}
 #' \item{`email`}{quanteda's rule for preserving emails}

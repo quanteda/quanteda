@@ -9,11 +9,12 @@
 \code{data_breakrules} is a list of pre-define rules. \code{word} is copied
 from the ICU library. Other rules are created by the package maintainers.
 \describe{
-\item{\code{word}}{default rules for tokenizing words}
-\item{\code{hyphens}}{custom rule for preserving hyphens}
-\item{\code{url}}{custom rule for preserving URLs}
-\item{\code{email}}{custom rule for preserving emails}
-\item{\code{elision}}{custom rule for splitting at elisions}
+\item{\code{word}}{ICU's rules for detecting word boundaries}
+\item{\code{sent}}{ICU's rules for detecting sentece boundaries}
+\item{\code{hyphen}}{quanteda's rule for preserving hyphens}
+\item{\code{url}}{quanteda's rule for preserving URLs}
+\item{\code{email}}{quanteda's rule for preserving emails}
+\item{\code{elision}}{quanteda's rule for splitting at elisions}
 }
 }
 \source{
@@ -29,7 +30,7 @@ Allows users to tokenize texts using customized boundary rules. See the \href{ht
 for how to define boundary rules.
 }
 \examples{
-tokenize_custom("a cool website #hashtag http://example.com", data_breakrules["word"])
-tokenize_custom("a cool website #hashtag http://example.com", data_breakrules)
+tokenize_custom("a well-known website http://example.com", data_breakrules["word"])
+tokenize_custom("a well-known http://example.com", data_breakrules)
 }
 \keyword{data}

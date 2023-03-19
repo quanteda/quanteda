@@ -11,13 +11,23 @@
 \alias{tokenize_fastestword}
 \title{quanteda tokenizers}
 \usage{
-tokenize_word(x, split_hyphens = FALSE, verbose = quanteda_options("verbose"))
+tokenize_word(
+  x,
+  split_hyphens = FALSE,
+  verbose = quanteda_options("verbose"),
+  ...
+)
 
-tokenize_word1(x, split_hyphens = FALSE, verbose = quanteda_options("verbose"))
+tokenize_word1(
+  x,
+  split_hyphens = FALSE,
+  verbose = quanteda_options("verbose"),
+  ...
+)
 
 tokenize_character(x, ...)
 
-tokenize_sentence(x, ..., verbose = FALSE)
+tokenize_sentence(x, verbose = FALSE, ...)
 
 tokenize_fasterword(x, ...)
 
