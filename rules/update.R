@@ -1,4 +1,4 @@
-# rules words
+# rules for words
 word <- readLines("https://raw.githubusercontent.com/unicode-org/icu/main/icu4c/source/data/brkitr/rules/word.txt") 
 writeLines(word, "rules/word.txt")
 

@@ -238,14 +238,13 @@ normalize_characters <- function(x) {
 tokenize_word4 <- function(x, split_hyphens = FALSE, split_tags = FALSE, split_elisions = FALSE,
                            verbose = quanteda_options("verbose"), ...) {
     
-    m <- names(x)
+    #m <- names(x)
     # remove variant selector & whitespace with diacritical marks
     #x <- stri_replace_all_regex(x, c("[\uFE00-\uFE0F]", "\\s[\u0300-\u036F]"), "",
     #                            vectorize_all = FALSE)
-    names(x) <- m
+    #names(x) <- m
 
-    rules <- data_breakrules
-    rules[["sent"]] <- NULL
+    rules <- data_breakrules_word
     if (!split_hyphens) {
         if (verbose) catm(" ...preserving hyphens\n")
     } else {
