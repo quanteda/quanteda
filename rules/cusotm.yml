@@ -13,7 +13,8 @@ url: |
 email: |
     [A-Za-z0-9_]+\@[A-Za-z][A-Za-z0-9_]+\.[a-z]+;
 
-# Break between a elision and a word
+# Break at an elision
 elision: |
-    $Elision = ([lLmMtTnNsSjJdDcC]|([jJ][u][s]|[qQ][u][o][i]|[lL][o][r][s]|[pP][u][i][s])?[qQ][u])[\u0027\u2019];
-    ^$Elision / $ALetterPlus;
+    $Elision = ([lLmMtTnNsSjJdDcC]|([jJ][u][s]|[qQ][u][o][i]|[lL][o][r][s]|[pP][u][i][s]|[qQ][u][e][l])?[qQ][u]);
+    $Apostrophe = [\u0027\u2019];
+    ^$Elision / $Apostrophe;

@@ -3,27 +3,34 @@
 \docType{data}
 \name{tokenize_custom}
 \alias{tokenize_custom}
-\alias{data_breakrules}
+\alias{data_breakrules_word}
+\alias{data_breakrules_sentence}
 \title{Customizable tokenizer}
 \format{
 \code{data_breakrules} is a list of pre-define rules. \code{word} is copied
 from the ICU library. Other rules are created by the package maintainers.
 \describe{
 \item{\code{word}}{ICU's rules for detecting word boundaries}
-\item{\code{sent}}{ICU's rules for detecting sentece boundaries}
+\item{\code{sentence}}{ICU's rules for detecting sentece boundaries}
 \item{\code{hyphen}}{quanteda's rule for preserving hyphens}
 \item{\code{url}}{quanteda's rule for preserving URLs}
 \item{\code{email}}{quanteda's rule for preserving emails}
 \item{\code{elision}}{quanteda's rule for splitting at elisions}
 }
+
+An object of class \code{list} of length 1.
 }
 \source{
 \url{https://raw.githubusercontent.com/unicode-org/icu/main/icu4c/source/data/brkitr/rules/word.txt}
+
+\url{https://raw.githubusercontent.com/unicode-org/icu/main/icu4c/source/data/brkitr/rules/sent.txt}
 }
 \usage{
 tokenize_custom(x, rules)
 
-data_breakrules
+data_breakrules_word
+
+data_breakrules_sentence
 }
 \description{
 Allows users to tokenize texts using customized boundary rules. See the \href{https://unicode-org.github.io/icu/userguide/boundaryanalysis/break-rules.html}{ICU website}

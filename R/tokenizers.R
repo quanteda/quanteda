@@ -240,8 +240,8 @@ tokenize_word4 <- function(x, split_hyphens = FALSE, split_tags = FALSE, split_e
     
     m <- names(x)
     # remove variant selector & whitespace with diacritical marks
-    x <- stri_replace_all_regex(x, c("[\uFE00-\uFE0F]", "\\s[\u0300-\u036F]"), "",
-                                vectorize_all = FALSE)
+    #x <- stri_replace_all_regex(x, c("[\uFE00-\uFE0F]", "\\s[\u0300-\u036F]"), "",
+    #                            vectorize_all = FALSE)
     names(x) <- m
 
     rules <- data_breakrules
@@ -274,7 +274,7 @@ tokenize_word4 <- function(x, split_hyphens = FALSE, split_tags = FALSE, split_e
 #' tokenize_custom("a well-known http://example.com", data_breakrules)
 tokenize_custom <- function(x, rules) {
     x[is.na(x)] <- ""
-    rule <- paste(unlist(rules), collapse = "\n")
+    rule <- paste0(unlist(rules), collapse = "\n")
     structure(stri_split_boundaries(x, type = rule), names = names(x))
 }
 
@@ -283,7 +283,7 @@ tokenize_custom <- function(x, rules) {
 #' from the ICU library. Other rules are created by the package maintainers.
 #' \describe{
 #' \item{`word`}{ICU's rules for detecting word boundaries}
-#' \item{`sent`}{ICU's rules for detecting sentece boundaries}
+#' \item{`sentence`}{ICU's rules for detecting sentece boundaries}
 #' \item{`hyphen`}{quanteda's rule for preserving hyphens}
 #' \item{`url`}{quanteda's rule for preserving URLs}
 #' \item{`email`}{quanteda's rule for preserving emails}
@@ -292,4 +292,10 @@ tokenize_custom <- function(x, rules) {
 #' @source 
 #' <https://raw.githubusercontent.com/unicode-org/icu/main/icu4c/source/data/brkitr/rules/word.txt>
 #' @keywords data
-"data_breakrules"
+"data_breakrules_word"
+
+#' @rdname tokenize_custom
+#' @source 
+#' <https://raw.githubusercontent.com/unicode-org/icu/main/icu4c/source/data/brkitr/rules/sent.txt>
+#' @keywords data
+"data_breakrules_sentence"
