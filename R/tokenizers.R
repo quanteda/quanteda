@@ -238,6 +238,12 @@ normalize_characters <- function(x) {
 tokenize_word4 <- function(x, split_hyphens = FALSE, split_tags = FALSE, split_elisions = FALSE,
                            verbose = quanteda_options("verbose"), ...) {
     
+    m <- names(x)
+    # remove variant selector & whitespace with diacritical marks
+    x <- stri_replace_all_regex(x, c("[\uFE00-\uFE0F]", "\\s[\u0300-\u036F]"), "",
+                                vectorize_all = FALSE)
+    names(x) <- m
+
     rules <- data_breakrules
     if (!split_hyphens) {
         if (verbose) catm(" ...preserving hyphens\n")
@@ -276,7 +282,7 @@ tokenize_custom <- function(x, rules) {
 #' from the ICU library. Other rules are created by the package maintainers.
 #' \describe{
 #' \item{`word`}{ICU libary's rules for tokenizing words}
-#' \item{`hyphens`}{quanteda's rule for preserving hyphens}
+#' \item{`hyphen`}{quanteda's rule for preserving hyphens}
 #' \item{`url`}{quanteda's rule for preserving URLs}
 #' \item{`email`}{quanteda's rule for preserving emails}
 #' \item{`elision`}{quanteda's rule for splitting at elisions}

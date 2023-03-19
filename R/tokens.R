@@ -247,7 +247,7 @@ tokens.corpus <- function(x,
                           verbose = quanteda_options("verbose"),
                           ...)  {
     x <- as.corpus(x)
-    what <- match.arg(what, c("word", "word1", "sentence", "character",
+    what <- match.arg(what, c("word", "word1", "word4", "sentence", "character",
                               "fasterword", "fastestword"))
     remove_punct <- check_logical(remove_punct)
     remove_symbols <- check_logical(remove_symbols)
@@ -268,6 +268,7 @@ tokens.corpus <- function(x,
     tokenizer_fn <- switch(what,
                            word = tokenize_word,
                            word1 = tokenize_word1,
+                           word4 = tokenize_word4,
                            sentence = tokenize_sentence,
                            character = tokenize_character,
                            fasterword = tokenize_fasterword,
@@ -292,7 +293,9 @@ tokens.corpus <- function(x,
                                   split_tags = split_tags, verbose = verbose)
             special <- attr(y, "special")
         }
-        y <- serialize_tokens(tokenizer_fn(y, split_hyphens = split_hyphens, verbose = verbose))
+        y <- serialize_tokens(tokenizer_fn(y, split_hyphens = split_hyphens,
+                                           split_tags = split_tags,
+                                           verbose = verbose))
         if (what == "word")
             y <- restore_special(y, special)
         if (what == "word1" && !split_hyphens)
