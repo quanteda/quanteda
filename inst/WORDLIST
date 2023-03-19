@@ -71,6 +71,7 @@ applyDictionary
 austin
 bn
 brkiter
+brkitr
 camelCase
 cbind
 cbinded
@@ -125,6 +126,7 @@ getTweets
 github
 ggplot
 httr
+icu
 idf
 ie
 ignoredFeature
@@ -176,6 +178,7 @@ pkgdown
 pmi
 proxyC
 quantedaData
+RBBI
 rOpenSci
 readLIWCdict
 readWStatDict
