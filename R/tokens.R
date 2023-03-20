@@ -262,18 +262,19 @@ tokens.corpus <- function(x,
     check_dots(..., method = "tokens")
     
     attrs <- attributes(x)
-
+    
     # call the appropriate tokenizer function
     if (verbose) catm(" ...starting tokenization\n")
+    
     tokenizer_fn <- switch(what,
-                           word = tokenize_word,
-                           word1 = tokenize_word1,
-                           word4 = tokenize_word4,
+                           word = get(quanteda_options("tokens_tokenizer_word")),
                            sentence = tokenize_sentence,
                            character = tokenize_character,
-                           fasterword = tokenize_fasterword,
+                           # only for backward compatibility
+                           word1 = tokenize_word1,
+                           fasterword = tokenize_fasterword, 
                            fastestword = tokenize_fastestword)
-
+    
 
     if (!remove_separators && !what %in% c("word", "word1", "character"))
         warning("remove_separators is always TRUE for this type")
