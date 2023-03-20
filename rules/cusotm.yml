@@ -1,26 +1,29 @@
 # https://unicode-org.github.io/icu/userguide/boundaryanalysis/break-rules.html
 
 # Keep hyphens
-hyphen: |
+keep_hyphens: |
     $Hyphen = [\p{Pd}];
     ($ALetterPlus | $Hebrew_Letter | $Numeric)  $ExFm* $Hyphen $ExFm* ($ALetterPlus | $Hebrew_Letter | $Numeric);
 
 # Keep URLs
-url: |
+keep_url: |
     ^(([h][t][t][p][s]?\:\/\/([w][w][w]\.)?)|([w][w][w]\.))[-a-zA-Z0-9@:%_\+\.~#=]+(\/[-a-zA-Z0-9@\:%_\+\.~#?\&=]+)*[\/]?;
 
 # Keep emails
-email: |
+keep_email: |
     [A-Za-z0-9_]+\@[A-Za-z][A-Za-z0-9_]+\.[a-z]+;
+    
+# Keep tags
+keep_tags: |
+    ^[#] [\p{L}\p{N}]+ [#]?; 
+    ^[@] [a-zA-Z0-9_]+;
 
 # Split elisions
-elision: |
+split_elisions: |
     $Elision = ([lLmMtTnNsSjJdDcC]|([jJ][u][s]|[qQ][u][o][i]|[lL][o][r][s]|[pP][u][i][s]|[qQ][u][e][l])?[qQ][u])[\u0027\u2019];
     ^$Elision / $ALetterPlus;
 
-
 # Split tags
-tag: |
-    [#] / [\\p{L}\\p{N}]+; 
-    [\\p{L}\\p{N}]+ / [#]; 
-    [@] / [a-zA-Z0-9_]+;
+split_tags: |
+    ^[#] / [\p{L}\p{N}]+ / [#]?; 
+    ^[@] / [a-zA-Z0-9_]+;

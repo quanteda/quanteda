@@ -12,11 +12,12 @@ rules for word/sentence boundary detection. \code{base} is copied from the ICU
 library. Other rules are created by the package maintainers.
 \describe{
 \item{\code{base}}{ICU's rules for detecting word/sentence boundaries}
-\item{\code{hyphen}}{quanteda's rule for preserving hyphens}
-\item{\code{url}}{quanteda's rule for preserving URLs}
-\item{\code{email}}{quanteda's rule for preserving emails}
-\item{\code{elision}}{quanteda's rule for splitting elisions}
-\item{\code{tag}}{quanteda's rule for splitting tags}
+\item{\code{keep_hyphens}}{quanteda's rule for preserving hyphens}
+\item{\code{keep_url}}{quanteda's rule for preserving URLs}
+\item{\code{keep_email}}{quanteda's rule for preserving emails}
+\item{\code{split_tags}}{quanteda's rule for preserving tags}
+\item{\code{split_elisions}}{quanteda's rule for splitting elisions}
+\item{\code{split_tags}}{quanteda's rule for splitting tags}
 }
 
 An object of class \code{list} of length 1.

@@ -239,16 +239,19 @@ tokenize_word4 <- function(x, split_hyphens = FALSE, split_tags = FALSE, split_e
     if (!split_hyphens) {
         if (verbose) catm(" ...preserving hyphens\n")
     } else {
-        rules[["hyphen"]] <- NULL
+        rules[["keep_hyphens"]] <- NULL
     }
     if (!split_elisions) {
         if (verbose) catm(" ...preserving elisions\n")
-        rules[["elision"]] <- NULL
+        rules[["split_elisions"]] <- NULL
     }
     if (!split_tags) {
         if (verbose) catm(" ...preserving social media tags (#, @)\n")
-        rules[["username"]] <- paste0(stri_replace_all_fixed(quanteda_options("pattern_username"), "@", "\\@"), ";")
-        rules[["hashtag"]] <- paste0(stri_replace_all_fixed(quanteda_options("pattern_hashtag"), "#", "\\#"), ";")
+        # NOTE: default patterns are protected by keep_tags
+        rules[["keep_usernames"]] <- paste0(stri_replace_all_fixed(quanteda_options("pattern_username"), "@", "\\@"), ";")
+        rules[["keep_hashtags"]] <- paste0(stri_replace_all_fixed(quanteda_options("pattern_hashtag"), "#", "\\#"), ";")
+    } else {
+        rules[["keep_tags"]] <- NULL
     }
     tokenize_custom(x, rules)
 }
@@ -277,11 +280,12 @@ tokenize_custom <- function(x, rules) {
 #'   library. Other rules are created by the package maintainers.
 #' \describe{
 #' \item{`base`}{ICU's rules for detecting word/sentence boundaries}
-#' \item{`hyphen`}{quanteda's rule for preserving hyphens}
-#' \item{`url`}{quanteda's rule for preserving URLs}
-#' \item{`email`}{quanteda's rule for preserving emails}
-#' \item{`elision`}{quanteda's rule for splitting elisions}
-#' \item{`tag`}{quanteda's rule for splitting tags}
+#' \item{`keep_hyphens`}{quanteda's rule for preserving hyphens}
+#' \item{`keep_url`}{quanteda's rule for preserving URLs}
+#' \item{`keep_email`}{quanteda's rule for preserving emails}
+#' \item{`split_tags`}{quanteda's rule for preserving tags}
+#' \item{`split_elisions`}{quanteda's rule for splitting elisions}
+#' \item{`split_tags`}{quanteda's rule for splitting tags}
 #' }
 #' @source
 #' <https://raw.githubusercontent.com/unicode-org/icu/main/icu4c/source/data/brkitr/rules/word.txt>
