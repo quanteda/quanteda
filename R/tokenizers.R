@@ -235,7 +235,7 @@ normalize_characters <- function(x) {
 tokenize_word4 <- function(x, split_hyphens = FALSE, split_tags = FALSE, split_elisions = FALSE,
                            verbose = quanteda_options("verbose"), ...) {
     
-    data("data_breakrules_word", package = "quanteda")
+    load(file = "./data/data_breakrules_word.rda")
     rules <- data_breakrules_word
     
     if (!split_hyphens) {
