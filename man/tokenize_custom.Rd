@@ -8,7 +8,7 @@
 \title{Customizable tokenizer}
 \format{
 \code{data_breakrules_word} and \code{data_breakrules_sentence} are lists of
-pre-define word/sentence break rules. \code{base} is copied from the ICU
+rules for word/sentence boundary detection. \code{base} is copied from the ICU
 library. Other rules are created by the package maintainers.
 \describe{
 \item{\code{base}}{ICU's rules for detecting word/sentence boundaries}
@@ -33,12 +33,17 @@ data_breakrules_word
 
 data_breakrules_sentence
 }
+\arguments{
+\item{x}{character vector for texts to tokenize}
+
+\item{rules}{a list of rules for rule-based boundary detection}
+}
 \description{
 Allows users to tokenize texts using customized boundary rules. See the \href{https://unicode-org.github.io/icu/userguide/boundaryanalysis/break-rules.html}{ICU website}
 for how to define boundary rules.
 }
 \examples{
-lis <- tokenize_custom("a well-known http://example.com", data_breakrules_word)
+lis <- tokenize_custom("a well-known http://example.com", rules = data_breakrules_word)
 toks <- tokens(as.tokens(lis), remove_separators = TRUE)
 }
 \keyword{data}

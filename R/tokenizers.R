@@ -258,11 +258,13 @@ tokenize_word4 <- function(x, split_hyphens = FALSE, split_tags = FALSE, split_e
 #' Allows users to tokenize texts using customized boundary rules. See the [ICU
 #' website](https://unicode-org.github.io/icu/userguide/boundaryanalysis/break-rules.html)
 #' for how to define boundary rules.
-#' @export
+#' @param x character vector for texts to tokenize
+#' @param rules a list of rules for rule-based boundary detection
 #' @importFrom stringi stri_split_boundaries
 #' @examples
-#' lis <- tokenize_custom("a well-known http://example.com", data_breakrules_word)
+#' lis <- tokenize_custom("a well-known http://example.com", rules = data_breakrules_word)
 #' toks <- tokens(as.tokens(lis), remove_separators = TRUE)
+#' @export
 tokenize_custom <- function(x, rules) {
     x[is.na(x)] <- ""
     rule <- paste0(unlist(rules), collapse = "\n")
@@ -271,7 +273,7 @@ tokenize_custom <- function(x, rules) {
 
 #' @rdname tokenize_custom
 #' @format `data_breakrules_word` and `data_breakrules_sentence` are lists of
-#'   pre-define word/sentence break rules. `base` is copied from the ICU
+#'   rules for word/sentence boundary detection. `base` is copied from the ICU
 #'   library. Other rules are created by the package maintainers.
 #' \describe{
 #' \item{`base`}{ICU's rules for detecting word/sentence boundaries}

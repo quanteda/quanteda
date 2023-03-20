@@ -11,9 +11,8 @@
 #' not be possible to remove things that are not present.  For instance, if the
 #' `tokens` object has already had punctuation removed, then `tokens(x,
 #' remove_punct = TRUE)` will have no additional effect.
-#' @param x the input object to the tokens constructor, one of: a (uniquely)
-#'   named **list** of characters; a [tokens] object; or a [corpus] or
-#'   [character] object that will be tokenized
+#' @param x the input object to the tokens constructor; a [tokens], [corpus] or
+#'   [character] object to tokenize.
 #' @param what character; which tokenizer to use.  The default `what = "word"`
 #'   is the version 2 \pkg{quanteda} tokenizer.  Legacy tokenizers (version < 2)
 #'   are also supported, including the default `what = "word1"`. See the Details

@@ -21,9 +21,8 @@ tokens(
 )
 }
 \arguments{
-\item{x}{the input object to the tokens constructor, one of: a (uniquely)
-named \strong{list} of characters; a \link{tokens} object; or a \link{corpus} or
-\link{character} object that will be tokenized}
+\item{x}{the input object to the tokens constructor; a \link{tokens}, \link{corpus} or
+\link{character} object to tokenize.}
 
 \item{what}{character; which tokenizer to use.  The default \code{what = "word"}
 is the version 2 \pkg{quanteda} tokenizer.  Legacy tokenizers (version < 2)
