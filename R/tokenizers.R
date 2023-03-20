@@ -205,7 +205,7 @@ tokenize_fasterword <- function(x, ...) {
     stri_split_regex(x, "[\\p{Z}\\p{C}]+")
 }
 
-c
+#' @rdname tokenize_internal
 #' @importFrom stringi stri_split_regex
 #' @export
 tokenize_fastestword <- function(x, ...) {

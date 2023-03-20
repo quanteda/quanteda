@@ -8,6 +8,7 @@
 \alias{tokenize_character}
 \alias{tokenize_sentence}
 \alias{tokenize_fasterword}
+\alias{tokenize_fastestword}
 \alias{tokenize_word4}
 \title{quanteda tokenizers}
 \usage{
@@ -30,6 +31,8 @@ tokenize_character(x, ...)
 tokenize_sentence(x, verbose = FALSE, ...)
 
 tokenize_fasterword(x, ...)
+
+tokenize_fastestword(x, ...)
 
 tokenize_word4(
   x,
