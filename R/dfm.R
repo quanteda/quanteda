@@ -44,7 +44,7 @@ dfm <- function(x,
                 remove_padding = FALSE,
                 verbose = quanteda_options("verbose"),
                 ...) {
-    dfm_env$START_TIME <- proc.time()
+    global$proc_time <- proc.time()
     object_class <- class(x)[1]
     if (verbose) message("Creating a dfm from a ", object_class, " input...")
     UseMethod("dfm")
@@ -54,10 +54,6 @@ dfm <- function(x,
 dfm.default <- function(x, ...) {
     check_class(class(x), "dfm")
 }
-
-# GLOBAL FOR dfm THAT FUNCTIONS CAN RESET AS NEEDED TO RECORD TIME ELAPSED
-dfm_env <- new.env()
-dfm_env$START_TIME <- NULL
 
 #' @export
 dfm.character <- function(x, ...) {
@@ -352,7 +348,7 @@ dfm.dfm <- function(x,
 
     if (verbose) {
         catm(" ...complete, elapsed time:",
-             format((proc.time() - dfm_env$START_TIME)[3], digits = 3), "seconds.\n")
+             format((proc.time() - global$proc_time)[3], digits = 3), "seconds.\n")
         catm("Finished constructing a", paste(format(dim(x), big.mark = ",", trim = TRUE), collapse = " x "),
              "sparse dfm.\n")
     }

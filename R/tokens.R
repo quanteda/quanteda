@@ -151,16 +151,12 @@ tokens <-  function(x,
                     verbose = quanteda_options("verbose"),
                     ...) {
 
-    tokens_env$START_TIME <- proc.time()
+    global$proc_time <- proc.time()
     object_class <- class(x)[1]
     if (verbose) catm("Creating a tokens object from a", object_class, "input...\n")
 
     UseMethod("tokens")
 }
-
-# GLOBAL FOR dfm THAT FUNCTIONS CAN RESET AS NEEDED TO RECORD TIME ELAPSED
-tokens_env <- new.env()
-tokens_env$START_TIME <- NULL
 
 #' @rdname tokens
 #' @noRd
@@ -407,7 +403,7 @@ tokens.tokens <-  function(x,
 
     if (verbose) {
         catm(" ...complete, elapsed time:",
-             format((proc.time() - tokens_env$START_TIME)[3], digits = 3), "seconds.\n")
+             format((proc.time() - global$proc_time)[3], digits = 3), "seconds.\n")
         catm("Finished constructing tokens from ", format(length(x), big.mark = ","), " document",
              if (length(x) > 1) "s", ".\n", sep = "")
     }
