@@ -508,7 +508,7 @@ removals_regex <- function(separators = FALSE,
                            url = FALSE) {
     regex <- list()
     if (separators)
-        regex[["separators"]] <- "^[\\p{Z}\\p{C}]+$"
+        regex[["separators"]] <- "^[\\p{Z}\\p{C}\\p{M}]+$"
     if (punct)
         regex[["punct"]] <- "^\\p{P}$"
     if (symbols)
