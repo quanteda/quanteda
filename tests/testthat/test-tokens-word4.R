@@ -981,4 +981,15 @@ test_that("edge case usernames are correctly recognized", {
     )
 })
 
+test_that("split_elisions is working", {
+    expect_equal(
+        tokenize_word4("Qu'est-ce que c'est?", split_elisions = FALSE)[[1]],
+        c("Qu'est-ce", " ", "que", " ", "c'est", "?")
+    )
+    expect_equal(
+        tokenize_word4("Qu'est-ce que c'est?", split_elisions = TRUE)[[1]],
+        c("Qu", "'", "est-ce", " ", "que", " ", "c", "'", "est", "?")
+    )
+})
+
 quanteda_options(reset = TRUE)
