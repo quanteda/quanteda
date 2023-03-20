@@ -286,7 +286,8 @@ tokenize_custom <- function(x, rules) {
 #' \item{`hyphen`}{quanteda's rule for preserving hyphens}
 #' \item{`url`}{quanteda's rule for preserving URLs}
 #' \item{`email`}{quanteda's rule for preserving emails}
-#' \item{`elision`}{quanteda's rule for splitting at elisions}
+#' \item{`elision`}{quanteda's rule for splitting elisions}
+#' \item{`tag`}{quanteda's rule for splitting tags}
 #' }
 #' @source 
 #' <https://raw.githubusercontent.com/unicode-org/icu/main/icu4c/source/data/brkitr/rules/word.txt>
