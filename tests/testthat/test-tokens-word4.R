@@ -988,7 +988,7 @@ test_that("split_elisions is working", {
     )
     expect_equal(
         tokenize_word4("Qu'est-ce que c'est?", split_elisions = TRUE)[[1]],
-        c("Qu", "'", "est-ce", " ", "que", " ", "c", "'", "est", "?")
+        c("Qu'", "est-ce", " ", "que", " ", "c'", "est", "?")
     )
 })
 
