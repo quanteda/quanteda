@@ -238,13 +238,9 @@ normalize_characters <- function(x) {
 tokenize_word4 <- function(x, split_hyphens = FALSE, split_tags = FALSE, split_elisions = FALSE,
                            verbose = quanteda_options("verbose"), ...) {
     
-    #m <- names(x)
-    # remove variant selector & whitespace with diacritical marks
-    #x <- stri_replace_all_regex(x, c("[\uFE00-\uFE0F]", "\\s[\u0300-\u036F]"), "",
-    #                            vectorize_all = FALSE)
-    #names(x) <- m
-
+    data("data_breakrules_word", package = "quanteda")
     rules <- data_breakrules_word
+    
     if (!split_hyphens) {
         if (verbose) catm(" ...preserving hyphens\n")
     } else {
@@ -269,8 +265,8 @@ tokenize_word4 <- function(x, split_hyphens = FALSE, split_tags = FALSE, split_e
 #' for how to define boundary rules.
 #' @export
 #' @examples
-#' tokenize_custom("a well-known website http://example.com", data_breakrules["word"])
-#' tokenize_custom("a well-known http://example.com", data_breakrules)
+#' tokenize_custom("a well-known website http://example.com", data_breakrules_word["base"])
+#' tokenize_custom("a well-known http://example.com", data_breakrules_word)
 tokenize_custom <- function(x, rules) {
     x[is.na(x)] <- ""
     rule <- paste0(unlist(rules), collapse = "\n")
@@ -278,18 +274,18 @@ tokenize_custom <- function(x, rules) {
 }
 
 #' @rdname tokenize_custom
-#' @format `data_breakrules` is a list of pre-define rules. `word` is copied
-#' from the ICU library. Other rules are created by the package maintainers.
+#' @format `data_breakrules_word` and `data_breakrules_sentence` are lists of
+#'   pre-define word/sentence break rules. `base` is copied from the ICU
+#'   library. Other rules are created by the package maintainers.
 #' \describe{
-#' \item{`word`}{ICU's rules for detecting word boundaries}
-#' \item{`sentence`}{ICU's rules for detecting sentece boundaries}
+#' \item{`base`}{ICU's rules for detecting word/sentence boundaries}
 #' \item{`hyphen`}{quanteda's rule for preserving hyphens}
 #' \item{`url`}{quanteda's rule for preserving URLs}
 #' \item{`email`}{quanteda's rule for preserving emails}
 #' \item{`elision`}{quanteda's rule for splitting elisions}
 #' \item{`tag`}{quanteda's rule for splitting tags}
 #' }
-#' @source 
+#' @source
 #' <https://raw.githubusercontent.com/unicode-org/icu/main/icu4c/source/data/brkitr/rules/word.txt>
 #' @keywords data
 "data_breakrules_word"

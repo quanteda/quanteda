@@ -9,7 +9,7 @@ test_that("stri_split_boundaries produces the same results", {
              "übër u\u0308be\u0308r \u0308ubër")
     
     lis_word <- stri_split_boundaries(txt, type = "word")
-    lis_rule <- stri_split_boundaries(txt, type = data_breakrules_word$word)
+    lis_rule <- stri_split_boundaries(txt, type = data_breakrules_word$base)
     
     expect_true(identical(lis_word[1], lis_rule[1]))
     expect_false(identical(lis_word[2], lis_rule[2])) # rules have been updated

@@ -7,15 +7,16 @@
 \alias{data_breakrules_sentence}
 \title{Customizable tokenizer}
 \format{
-\code{data_breakrules} is a list of pre-define rules. \code{word} is copied
-from the ICU library. Other rules are created by the package maintainers.
+\code{data_breakrules_word} and \code{data_breakrules_sentence} are lists of
+pre-define word/sentence break rules. \code{base} is copied from the ICU
+library. Other rules are created by the package maintainers.
 \describe{
-\item{\code{word}}{ICU's rules for detecting word boundaries}
-\item{\code{sentence}}{ICU's rules for detecting sentece boundaries}
+\item{\code{base}}{ICU's rules for detecting word/sentence boundaries}
 \item{\code{hyphen}}{quanteda's rule for preserving hyphens}
 \item{\code{url}}{quanteda's rule for preserving URLs}
 \item{\code{email}}{quanteda's rule for preserving emails}
-\item{\code{elision}}{quanteda's rule for splitting at elisions}
+\item{\code{elision}}{quanteda's rule for splitting elisions}
+\item{\code{tag}}{quanteda's rule for splitting tags}
 }
 
 An object of class \code{list} of length 1.
@@ -37,7 +38,7 @@ Allows users to tokenize texts using customized boundary rules. See the \href{ht
 for how to define boundary rules.
 }
 \examples{
-tokenize_custom("a well-known website http://example.com", data_breakrules["word"])
-tokenize_custom("a well-known http://example.com", data_breakrules)
+tokenize_custom("a well-known website http://example.com", data_breakrules_word["base"])
+tokenize_custom("a well-known http://example.com", data_breakrules_word)
 }
 \keyword{data}
