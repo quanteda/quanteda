@@ -258,7 +258,7 @@ tokens.corpus <- function(x,
     include_docvars <- check_logical(include_docvars)
     padding <- check_logical(padding)
     verbose <- check_logical(verbose)
-    check_dots(..., method = "tokens")
+    check_dots(..., method = c("tokens", "tokenize_word4"))
     
     attrs <- attributes(x)
     
@@ -296,7 +296,8 @@ tokens.corpus <- function(x,
         }
         y <- serialize_tokens(tokenizer_fn(y, split_hyphens = split_hyphens,
                                            split_tags = split_tags,
-                                           verbose = verbose))
+                                           verbose = verbose,
+                                           ...))
         if (what == "word")
             y <- restore_special(y, special)
         if (what == "word1" && !split_hyphens)
