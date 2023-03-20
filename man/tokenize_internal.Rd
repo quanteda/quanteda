@@ -8,7 +8,7 @@
 \alias{tokenize_character}
 \alias{tokenize_sentence}
 \alias{tokenize_fasterword}
-\alias{tokenize_fastestword}
+\alias{tokenize_word4}
 \title{quanteda tokenizers}
 \usage{
 tokenize_word(
@@ -31,7 +31,14 @@ tokenize_sentence(x, verbose = FALSE, ...)
 
 tokenize_fasterword(x, ...)
 
-tokenize_fastestword(x, ...)
+tokenize_word4(
+  x,
+  split_hyphens = FALSE,
+  split_tags = FALSE,
+  split_elisions = FALSE,
+  verbose = quanteda_options("verbose"),
+  ...
+)
 }
 \arguments{
 \item{x}{(named) character; input texts}
@@ -43,6 +50,9 @@ e.g. \code{"self-aware"} becomes \code{c("self", "-", "aware")}}
 \item{verbose}{if \code{TRUE}, print timing messages to the console}
 
 \item{...}{used to pass arguments among the functions}
+
+\item{split_tags}{logical; if \code{FALSE}, do not split social media tags defined
+in \code{quanteda_options()}. The default patterns are \code{pattern_hashtag = "#\\\\w+#?"} and \code{pattern_username = "@[a-zA-Z0-9_]+"}.}
 }
 \value{
 a list of characters corresponding to the (most conservative)
@@ -60,11 +70,12 @@ txt <- c(doc1 = "Tweet https://quanteda.io using @quantedainit and #rstats.",
          doc2 = "The £1,000,000 question.",
          doc4 = "Line 1.\nLine2\n\nLine3.",
          doc5 = "?",
-         doc6 = "Self-aware machines! \U0001f600")
+         doc6 = "Self-aware machines! \U0001f600",
+         doc7 = "Qu'est-ce que c'est?")
 tokenize_word(txt)
-tokenize_word(txt, split_hyphens = TRUE)
-tokenize_word2(txt, split_hyphens = FALSE)
-tokenize_word2(txt, split_hyphens = TRUE)
+tokenize_word(txt, split_hyphens = FALSE)
+tokenize_word1(txt, split_hyphens = FALSE)
+tokenize_word4(txt, split_hyphens = FALSE, split_elisions = TRUE)
 tokenize_fasterword(txt)
 tokenize_fastestword(txt)
 tokenize_sentence(txt)

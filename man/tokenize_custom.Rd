@@ -38,7 +38,7 @@ Allows users to tokenize texts using customized boundary rules. See the \href{ht
 for how to define boundary rules.
 }
 \examples{
-tokenize_custom("a well-known website http://example.com", data_breakrules_word["base"])
-tokenize_custom("a well-known http://example.com", data_breakrules_word)
+lis <- tokenize_custom("a well-known http://example.com", data_breakrules_word)
+toks <- tokens(as.tokens(lis), remove_separators = TRUE)
 }
 \keyword{data}

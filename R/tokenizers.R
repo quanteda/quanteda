@@ -19,11 +19,12 @@
 #'          doc2 = "The £1,000,000 question.",
 #'          doc4 = "Line 1.\nLine2\n\nLine3.",
 #'          doc5 = "?",
-#'          doc6 = "Self-aware machines! \U0001f600")
+#'          doc6 = "Self-aware machines! \U0001f600",
+#'          doc7 = "Qu'est-ce que c'est?")
 #' tokenize_word(txt)
-#' tokenize_word(txt, split_hyphens = TRUE)
-#' tokenize_word2(txt, split_hyphens = FALSE)
-#' tokenize_word2(txt, split_hyphens = TRUE)
+#' tokenize_word(txt, split_hyphens = FALSE)
+#' tokenize_word1(txt, split_hyphens = FALSE)
+#' tokenize_word4(txt, split_hyphens = FALSE, split_elisions = TRUE)
 #' tokenize_fasterword(txt)
 #' tokenize_fastestword(txt)
 #' tokenize_sentence(txt)
@@ -204,7 +205,7 @@ tokenize_fasterword <- function(x, ...) {
     stri_split_regex(x, "[\\p{Z}\\p{C}]+")
 }
 
-#' @rdname tokenize_internal
+c
 #' @importFrom stringi stri_split_regex
 #' @export
 tokenize_fastestword <- function(x, ...) {
@@ -229,11 +230,7 @@ normalize_characters <- function(x) {
     return(x)
 }
 
-#' @examples
-#' tokenize_word4("a well-known website http://example.com #hashtag @username")
-#' tokenize_word4("a well-known website http://example.com #hashtag @username", split_tags = TRUE)
-#' tokenize_word4("Qu'est-ce que c'est?", verbose = TRUE)
-#' tokenize_word4("Qu'est-ce que c'est?", split_elision = TRUE)
+#' @rdname tokenize_internal
 #' @export
 tokenize_word4 <- function(x, split_hyphens = FALSE, split_tags = FALSE, split_elisions = FALSE,
                            verbose = quanteda_options("verbose"), ...) {
@@ -264,9 +261,10 @@ tokenize_word4 <- function(x, split_hyphens = FALSE, split_tags = FALSE, split_e
 #' website](https://unicode-org.github.io/icu/userguide/boundaryanalysis/break-rules.html)
 #' for how to define boundary rules.
 #' @export
+#' @importFrom stringi stri_split_boundaries
 #' @examples
-#' tokenize_custom("a well-known website http://example.com", data_breakrules_word["base"])
-#' tokenize_custom("a well-known http://example.com", data_breakrules_word)
+#' lis <- tokenize_custom("a well-known http://example.com", data_breakrules_word)
+#' toks <- tokens(as.tokens(lis), remove_separators = TRUE)
 tokenize_custom <- function(x, rules) {
     x[is.na(x)] <- ""
     rule <- paste0(unlist(rules), collapse = "\n")
