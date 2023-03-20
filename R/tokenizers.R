@@ -283,7 +283,7 @@ tokenize_custom <- function(x, rules) {
 #' \item{`keep_hyphens`}{quanteda's rule for preserving hyphens}
 #' \item{`keep_url`}{quanteda's rule for preserving URLs}
 #' \item{`keep_email`}{quanteda's rule for preserving emails}
-#' \item{`split_tags`}{quanteda's rule for preserving tags}
+#' \item{`keep_tags`}{quanteda's rule for preserving tags}
 #' \item{`split_elisions`}{quanteda's rule for splitting elisions}
 #' \item{`split_tags`}{quanteda's rule for splitting tags}
 #' }

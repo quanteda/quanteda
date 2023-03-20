@@ -15,7 +15,7 @@ library. Other rules are created by the package maintainers.
 \item{\code{keep_hyphens}}{quanteda's rule for preserving hyphens}
 \item{\code{keep_url}}{quanteda's rule for preserving URLs}
 \item{\code{keep_email}}{quanteda's rule for preserving emails}
-\item{\code{split_tags}}{quanteda's rule for preserving tags}
+\item{\code{keep_tags}}{quanteda's rule for preserving tags}
 \item{\code{split_elisions}}{quanteda's rule for splitting elisions}
 \item{\code{split_tags}}{quanteda's rule for splitting tags}
 }
