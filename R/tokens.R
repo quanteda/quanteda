@@ -269,6 +269,7 @@ tokens.corpus <- function(x,
                            word = get(quanteda_options("tokens_tokenizer_word")),
                            sentence = tokenize_sentence,
                            character = tokenize_character,
+                           word4 = tokenize_word4,
                            # only for backward compatibility
                            word1 = tokenize_word1,
                            fasterword = tokenize_fasterword, 
