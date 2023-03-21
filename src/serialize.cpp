@@ -36,24 +36,54 @@ Text serialize(const StringText &text,
 }
 
 
-// NOTE: pass XPtr as the third argument
 // [[Rcpp::export]]
-TokensPtr cpp_serialize(List texts_, CharacterVector types_){
+TokensPtr cpp_serialize_new(List texts_){
     
-    dev::Timer timer;
+    //dev::Timer timer;
+    StringTexts texts = Rcpp::as<StringTexts>(texts_);
+    MapTypes map;
     
-    Types types = Rcpp::as<Types>(types_);
+    //dev::start_timer("Serialize", timer);
+    UintParam id = 1;
+    std::size_t H = texts.size();
+    Texts temp(H);
+#if QUANTEDA_USE_TBB
+    tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
+        for (int h = r.begin(); h < r.end(); ++h) {
+            temp[h] = serialize(texts[h], map, id);
+        }    
+    });
+#else
+    for (size_t h = 0; h < H; h++) {
+        temp[h] = serialize(texts[h], map, id);
+    }
+#endif
+    
+    Types types_new(id - 1);
+    for (std::pair<std::string, unsigned int> it : map) {
+        types_new[it.second - 1] = it.first;
+    }
+    //dev::stop_timer("Serialize", timer);
+    TokensObj *ptr = new TokensObj(temp, types_new);
+    return TokensPtr(ptr, true);
+}
+
+// [[Rcpp::export]]
+TokensPtr cpp_serialize_add(List texts_, TokensPtr xptr){
+    
+    //dev::Timer timer;
+    Types types = xptr->types;
     StringTexts texts = Rcpp::as<StringTexts>(texts_);
     
-    dev::start_timer("Register", timer);
+    //dev::start_timer("Register", timer);
     MapTypes map;
     for (size_t g = 0; g < types.size(); g++) {
         std::string type = types[g];
         auto it = map.insert(std::pair<std::string, UintParam>(types[g], g + 1));
     }
-    dev::stop_timer("Register", timer);
+    //dev::stop_timer("Register", timer);
     
-    dev::start_timer("Serialize", timer);
+    //dev::start_timer("Serialize", timer);
     UintParam id = types.size() + 1;
     std::size_t H = texts.size();
     Texts temp(H);
@@ -73,22 +103,21 @@ TokensPtr cpp_serialize(List texts_, CharacterVector types_){
     for (std::pair<std::string, unsigned int> it : map) {
         types_new[it.second - 1] = it.first;
     }
-    
-    dev::stop_timer("Serialize", timer);
-    // CharacterVector types_new_ = Rcpp::wrap(types_new);
-    // List result_ = as_list(temp);
-    // result_.attr("types") = types_new_;
-    // result_.attr("padding") = true;
-    // result_.attr("class") = "tokens";
-    // return(result_);
-    TokensObj *ptr = new TokensObj(temp, types_new);
-    return TokensPtr(ptr, true);
+    //dev::stop_timer("Serialize", timer);
+
+    xptr->texts.insert(xptr->texts.end(), temp.begin(), temp.end());
+    xptr->types = types_new;
+    return xptr;
 }
 
-/***R
-lis <- replicate(10, sample(c("", letters)), simplify = FALSE)
-#types <- rep(letters, 1000)
-out <- cpp_serialize(lis, letters[1:10])
 
+/***R
+lis1 <- replicate(10, sample(c("", letters)), simplify = FALSE)
+lis2 <- replicate(10, sample(c("", LETTERS)), simplify = FALSE)
+
+out1 <- cpp_serialize_new(lis1)
+unclass(quanteda:::cpp_as_list(out1))
+out2 <- cpp_serialize_add(lis2, out1)
+unclass(quanteda:::cpp_as_list(out2))
 
 */
