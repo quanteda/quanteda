@@ -26,7 +26,7 @@ test_that("the base rule produces the same results as type = 'word'", {
 
 })
 
-test_that("the base rule produces the same results as type = 'word'", {
+test_that("keep_tags and split_tags work", {
     
     lis_rule1 <- tokenize_custom(txt, rules[c("base", "keep_tags")])
     expect_identical(lis_rule1[[4]], 
