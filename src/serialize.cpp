@@ -1,4 +1,4 @@
-#include "lib.h"
+#include "tokens.h"
 #include "dev.h"
 using namespace quanteda;
 
@@ -38,7 +38,7 @@ Text serialize(const StringText &text,
 
 // NOTE: pass XPtr as the third argument
 // [[Rcpp::export]]
-List cpp_serialize(List texts_, CharacterVector types_){
+TokensPtr cpp_serialize(List texts_, CharacterVector types_){
     
     dev::Timer timer;
     
@@ -75,12 +75,14 @@ List cpp_serialize(List texts_, CharacterVector types_){
     }
     
     dev::stop_timer("Serialize", timer);
-    CharacterVector types_new_ = Rcpp::wrap(types_new);
-    List result_ = as_list(temp);
-    result_.attr("types") = types_new_;
-    result_.attr("padding") = true;
-    result_.attr("class") = "tokens";
-    return(result_);
+    // CharacterVector types_new_ = Rcpp::wrap(types_new);
+    // List result_ = as_list(temp);
+    // result_.attr("types") = types_new_;
+    // result_.attr("padding") = true;
+    // result_.attr("class") = "tokens";
+    // return(result_);
+    TokensObj *ptr = new TokensObj(temp, types_new);
+    return TokensPtr(ptr, true);
 }
 
 /***R
