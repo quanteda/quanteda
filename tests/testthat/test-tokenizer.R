@@ -42,4 +42,12 @@ test_that("the base rule produces the same results as type = 'word'", {
 
 })
 
-
+test_that("user-defined tokenizer works", {
+    quanteda_options("tokens_tokenizer_word" = "my_tokenizer")
+    my_tokenizer <- function(x, ...) {
+        tokenize_custom(x, ".;")
+    }
+    expect_identical(tokens("abc defg")[[1]],
+                     c("a", "b", "c", "d", "e", "f", "g"))
+    quanteda_options(reset = TRUE)
+})
