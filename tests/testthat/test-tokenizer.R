@@ -3,7 +3,7 @@ require(quanteda)
 
 rules <- data_breakrules_word
 #rules <- list(base = paste0(readLines("rules/word.txt"), collapse = "\n"))
-#rules <- c(rules, yaml::read_yaml("rules/cusotm.yml"))
+#rules <- c(rules, yaml::read_yaml("rules/custom.yml"))
 
 txt <- c("a b c 12345 ! @ # $ % ^ & * ( ) _ + { } | : \' \" < > ? ! , . \t \n \u2028 \u00A0 \u2003 \uFE0F",
          "abc be-fg hi 100kg 2017", "sci- fi every-4-year",
