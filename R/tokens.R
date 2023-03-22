@@ -285,7 +285,7 @@ tokens.corpus <- function(x,
             #     " by process ", Sys.getpid(), "\n", sep = "")
             
         y <- normalize_characters(y)
-        if (what == "word") {
+        if (what == "word" && quanteda_options("tokens_tokenizer_word") == "tokenize_word") {
             y <- preserve_special(y, split_hyphens = split_hyphens,
                                   split_tags = split_tags, verbose = verbose)
             special <- attr(y, "special")
@@ -294,7 +294,7 @@ tokens.corpus <- function(x,
                                            split_tags = split_tags,
                                            verbose = verbose,
                                            ...))
-        if (what == "word")
+        if (what == "word" && quanteda_options("tokens_tokenizer_word") == "tokenize_word")
             y <- restore_special(y, special)
         if (what == "word1" && !split_hyphens)
             y <- restore_special1(y, split_hyphens = FALSE, split_tags = TRUE)
