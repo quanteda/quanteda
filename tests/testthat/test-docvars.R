@@ -183,38 +183,48 @@ test_that("docvars with non-existent field names generate correct error messages
 })
 
 test_that("docvars works with corps, tokens and dfm", {
+    
     corp <- data_corpus_inaugural
-    toks <- tokens(corp, include_docvars = TRUE)
+    toks <- tokens(corp)
     dfmt <- dfm(toks)
     
+    # corpus
     expect_equal(rownames(docvars(corp)), as.character(1:59))
     expect_equal(colnames(docvars(corp)), 
                  c("Year", "President", "FirstName", "Party"))
     expect_equal(colnames(docvars(corp, system = TRUE)), 
                  c("docname_", "docid_", "segid_",
                    "Year", "President", "FirstName", "Party"))
+    expect_equal(colnames(docvars(corp, system = TRUE, user = FALSE)), 
+                 c("docname_", "docid_", "segid_"))
     expect_equal(docvars(corp, "Party"),
                  docvars(corp)$Party)
     expect_equal(docvars(corp, c("docid_", "Party"), system = TRUE),
                  docvars(corp, system = TRUE)[c("docid_", "Party")])
     
+    # tokens
     expect_equal(rownames(docvars(toks)), as.character(1:59))
     expect_equal(colnames(docvars(toks)), 
                  c("Year", "President", "FirstName", "Party"))
     expect_equal(colnames(docvars(toks, system = TRUE)), 
                  c("docname_", "docid_", "segid_",
                    "Year", "President", "FirstName", "Party"))
+    expect_equal(colnames(docvars(toks, system = TRUE, user = FALSE)), 
+                 c("docname_", "docid_", "segid_"))
     expect_equal(docvars(toks, "Party"),
                  docvars(toks)$Party)
     expect_equal(docvars(toks, c("docid_", "Party"), system = TRUE),
                  docvars(toks, system = TRUE)[c("docid_", "Party")])
     
+    # dfm 
     expect_equal(rownames(docvars(dfmt)), as.character(1:59))
     expect_equal(colnames(docvars(dfmt)), 
                  c("Year", "President", "FirstName", "Party"))
     expect_equal(colnames(docvars(dfmt, system = TRUE)), 
                  c("docname_", "docid_", "segid_",
                    "Year", "President", "FirstName", "Party"))
+    expect_equal(colnames(docvars(dfmt, system = TRUE, user = FALSE)), 
+                 c("docname_", "docid_", "segid_"))
     expect_equal(docvars(dfmt, "Party"),
                  docvars(dfmt)$Party)
     expect_equal(docvars(dfmt, c("docid_", "Party"), system = TRUE),
