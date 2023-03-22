@@ -69,7 +69,7 @@ profvis::profvis(
 
 lis <- as.list(toks)
 microbenchmark::microbenchmark(
-    quanteda:::cpp_serialize_new(lis),
+    quanteda:::cpp_serialize(lis),
     quanteda:::serialize_tokens(lis),
     times = 10
 )

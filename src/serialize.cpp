@@ -37,7 +37,7 @@ Text serialize(const StringText &text,
 
 
 // [[Rcpp::export]]
-TokensPtr cpp_serialize_new(List texts_){
+TokensPtr cpp_serialize(List texts_){
     
     //dev::Timer timer;
     StringTexts texts = Rcpp::as<StringTexts>(texts_);
@@ -59,12 +59,12 @@ TokensPtr cpp_serialize_new(List texts_){
     }
 #endif
     
-    Types types_new(id - 1);
+    Types types(id - 1);
     for (std::pair<std::string, unsigned int> it : map) {
-        types_new[it.second - 1] = it.first;
+        types[it.second - 1] = it.first;
     }
     //dev::stop_timer("Serialize", timer);
-    TokensObj *ptr = new TokensObj(temp, types_new);
+    TokensObj *ptr = new TokensObj(temp, types);
     return TokensPtr(ptr, true);
 }
 
@@ -115,7 +115,7 @@ TokensPtr cpp_serialize_add(List texts_, TokensPtr xptr){
 lis1 <- replicate(10, sample(c("", letters)), simplify = FALSE)
 lis2 <- replicate(10, sample(c("", LETTERS)), simplify = FALSE)
 
-out1 <- cpp_serialize_new(lis1)
+out1 <- cpp_serialize(lis1)
 unclass(quanteda:::cpp_as_list(out1))
 out2 <- cpp_serialize_add(lis2, out1)
 unclass(quanteda:::cpp_as_list(out2))

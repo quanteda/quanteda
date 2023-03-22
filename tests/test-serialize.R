@@ -6,7 +6,7 @@ test_that("cpp_serialize works", {
     
     for (h in seq_along(lis)) {
         if (h == 1) {
-            xtoks <- quanteda:::cpp_serialize_new(lis[h])
+            xtoks <- quanteda:::cpp_serialize(lis[h])
         } else {
             xtoks <- quanteda:::cpp_serialize_add(lis[h], xtoks)
         }

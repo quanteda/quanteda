@@ -9,8 +9,8 @@ cpp_index <- function(xptr, words_) {
     .Call(`_quanteda_cpp_index`, xptr, words_)
 }
 
-cpp_serialize_new <- function(texts_) {
-    .Call(`_quanteda_cpp_serialize_new`, texts_)
+cpp_serialize <- function(texts_) {
+    .Call(`_quanteda_cpp_serialize`, texts_)
 }
 
 cpp_serialize_add <- function(texts_, xptr) {

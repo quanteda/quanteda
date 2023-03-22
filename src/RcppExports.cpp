@@ -39,14 +39,14 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// cpp_serialize_new
-TokensPtr cpp_serialize_new(List texts_);
-RcppExport SEXP _quanteda_cpp_serialize_new(SEXP texts_SEXP) {
+// cpp_serialize
+TokensPtr cpp_serialize(List texts_);
+RcppExport SEXP _quanteda_cpp_serialize(SEXP texts_SEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< List >::type texts_(texts_SEXP);
-    rcpp_result_gen = Rcpp::wrap(cpp_serialize_new(texts_));
+    rcpp_result_gen = Rcpp::wrap(cpp_serialize(texts_));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -378,7 +378,7 @@ END_RCPP
 static const R_CallMethodDef CallEntries[] = {
     {"_quanteda_cpp_fcm", (DL_FUNC) &_quanteda_cpp_fcm, 5},
     {"_quanteda_cpp_index", (DL_FUNC) &_quanteda_cpp_index, 2},
-    {"_quanteda_cpp_serialize_new", (DL_FUNC) &_quanteda_cpp_serialize_new, 1},
+    {"_quanteda_cpp_serialize", (DL_FUNC) &_quanteda_cpp_serialize, 1},
     {"_quanteda_cpp_serialize_add", (DL_FUNC) &_quanteda_cpp_serialize_add, 2},
     {"_quanteda_cpp_tokens_chunk", (DL_FUNC) &_quanteda_cpp_tokens_chunk, 3},
     {"_quanteda_cpp_tokens_combine", (DL_FUNC) &_quanteda_cpp_tokens_combine, 2},
