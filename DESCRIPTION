@@ -18,6 +18,7 @@ Authors@R: c(
     person("Akitaka", "Matsuo", email = "a.matsuo@lse.ac.uk", role = "aut", comment = c(ORCID = "0000-0002-3323-6330")),
     person("William", "Lowe", email = "wlowe@princeton.edu", role = "aut", comment = c(ORCID = "0000-0002-1549-6163")),
     person("Christian", "Müller", email = "C.Mueller@lse.ac.uk", role = "ctb"),
+    person("Olivier", "Delmarcelle", email = "olivier.delmarcelle@ugent.be", role = "ctb", comment = c(ORCID = "0000-0003-4347-070X")),
     person("European Research Council", role = "fnd", comment = "ERC-2011-StG 283794-QUANTESS")
     )
 License: GPL-3
