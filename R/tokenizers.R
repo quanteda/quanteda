@@ -263,6 +263,7 @@ tokenize_word4 <- function(x, split_hyphens = FALSE, split_tags = FALSE, split_e
 #' for how to define boundary rules.
 #' @param x character vector for texts to tokenize
 #' @param rules a list of rules for rule-based boundary detection
+#' @return a list of characters containing tokens
 #' @importFrom stringi stri_split_boundaries
 #' @examples
 #' lis <- tokenize_custom("a well-known http://example.com", rules = data_breakrules_word)
