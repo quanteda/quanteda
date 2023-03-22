@@ -11,7 +11,7 @@
 \alias{$<-.dfm}
 \title{Get or set document-level variables}
 \usage{
-docvars(x, field = NULL)
+docvars(x, field = NULL, user = TRUE, system = FALSE)
 
 docvars(x, field = NULL) <- value
 
@@ -32,6 +32,10 @@ docvars(x, field = NULL) <- value
 document-level variables will be read or set}
 
 \item{field}{string containing the document-level variable name}
+
+\item{user}{if \code{TRUE}, returns user-defined fields.}
+
+\item{system}{if \code{TRUE}, returns system fields (\code{docid_}, \code{segid_}, \code{docname_}).}
 
 \item{value}{a vector of document variable values to be assigned to \code{name}}
 
