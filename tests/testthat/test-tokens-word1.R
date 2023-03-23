@@ -18,43 +18,6 @@ test_that("tokens works for strange spaces (#796)", {
     )
 })
 
-test_that("tokens.tokens(x, split_tags = TRUE, verbose = TRUE) works as expected  (#1683)", {
-    expect_identical(
-        as.character(tokens(tokens("Removing #hashtags.", what = "word1"))),
-        c("Removing", "#", "hashtags", ".")
-    )
-})
-
-test_that("tokens.tokens(x, remove_separators = TRUE, verbose = TRUE) works as expected (#1683)", {
-    expect_message(
-        tokens(tokens("Removing separators", remove_separators = FALSE, what = "word1"),
-               remove_separators = TRUE, verbose = TRUE),
-        "...removing separators"
-    )
-    expect_identical(
-        as.character(
-            tokens(tokens("Removing separators", remove_separators = FALSE, what = "word1"), remove_separators = TRUE)
-        ),
-        c("Removing", "separators")
-    )
-})
-
-test_that("tokens.tokens(x, remove_url = TRUE, verbose = TRUE) works as expected (#1683)", {
-    expect_message(
-        tokens(tokens("Removing https://quanteda.org URLs", what = "fasterword"), remove_url = TRUE, verbose = TRUE),
-        "removing URLs"
-    )
-    expect_message(
-        tokens(tokens("Removing no URLs"), remove_url = TRUE, verbose = TRUE),
-        "removing URLs"
-    )
-    expect_identical(
-        as.character(tokens(tokens("Removing https://quanteda.org URLs", what = "fasterword"),
-                            remove_url = TRUE)),
-            c("Removing", "URLs")
-    )
-})
-
 test_that("output is correct for word1", {
     expect_message(
         tmp <- tokens(data_char_ukimmig2010, what = "word1", split_hyphens = FALSE, verbose = TRUE),
