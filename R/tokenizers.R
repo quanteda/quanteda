@@ -21,8 +21,8 @@
 #'          doc5 = "?",
 #'          doc6 = "Self-aware machines! \U0001f600",
 #'          doc7 = "Qu'est-ce que c'est?")
-#' tokenize_word(txt)
-#' tokenize_word(txt, split_hyphens = FALSE)
+#' tokenize_word3(txt)
+#' tokenize_word3(txt, split_hyphens = FALSE)
 #' tokenize_word1(txt, split_hyphens = FALSE)
 #' tokenize_word4(txt, split_hyphens = FALSE, split_elisions = TRUE)
 #' tokenize_fasterword(txt)
@@ -37,7 +37,7 @@ NULL
 #' @rdname tokenize_internal
 #' @importFrom stringi stri_replace_all_regex stri_detect_fixed stri_split_boundaries
 #' @export
-tokenize_word <- function(x, split_hyphens = FALSE, verbose = quanteda_options("verbose"), ...) {
+tokenize_word3 <- function(x, split_hyphens = FALSE, verbose = quanteda_options("verbose"), ...) {
 
     if (verbose) catm(" ...segmenting into words\n")
     m <- names(x)

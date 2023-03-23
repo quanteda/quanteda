@@ -242,7 +242,8 @@ tokens.corpus <- function(x,
                           verbose = quanteda_options("verbose"),
                           ...)  {
     x <- as.corpus(x)
-    what <- match.arg(what, c("word", "word1", "word4", "sentence", "character",
+    what <- match.arg(what, c("word", "sentence", "character",
+                              "word1", "word3", "word4", 
                               "fasterword", "fastestword"))
     remove_punct <- check_logical(remove_punct)
     remove_symbols <- check_logical(remove_symbols)
@@ -261,20 +262,28 @@ tokens.corpus <- function(x,
     # call the appropriate tokenizer function
     if (verbose) catm(" ...starting tokenization\n")
     
-    tokenizer_fn <- switch(what,
-                           word = get(quanteda_options("tokens_tokenizer_word")),
-                           sentence = tokenize_sentence,
-                           character = tokenize_character,
-                           word4 = tokenize_word4,
-                           # only for backward compatibility
-                           word1 = tokenize_word1,
-                           fasterword = tokenize_fasterword, 
-                           fastestword = tokenize_fastestword)
+    tokenizer <- switch(what,
+                        word = quanteda_options("tokens_tokenizer_word"),
+                        sentence = "tokenize_sentence",
+                        character = "tokenize_character",
+                        # only for backward compatibility
+                        word4 = "tokenize_word4",
+                        word3 = "tokenize_word3",
+                        word1 = "tokenize_word1",
+                        fasterword = "tokenize_fasterword", 
+                        fastestword = "tokenize_fastestword")
     
-
-    if (!remove_separators && !what %in% c("word", "word1", "character"))
+    #fun <- search_tokenizer(tokenizer)
+    fun <- tryCatch(
+        get(tokenizer, envir = as.environment("package:quanteda")),
+        error = function(e) {
+        stop("Invalid value in tokens_tokenizer_word", call. = FALSE)
+    })
+    
+    # NOTE: consider removing
+    if (!remove_separators && !tokenizer %in% paste0("tokenize_", c("word3", "word1", "character")))
         warning("remove_separators is always TRUE for this type")
-
+    
     # split x into smaller blocks to reduce peak memory consumption
     x <- as.character(x)
     x <- split(x, factor(ceiling(seq_along(x) / quanteda_options("tokens_block_size"))))
@@ -285,19 +294,22 @@ tokens.corpus <- function(x,
             #     " by process ", Sys.getpid(), "\n", sep = "")
             
         y <- normalize_characters(y)
-        if (what == "word" && quanteda_options("tokens_tokenizer_word") == "tokenize_word") {
+        if (tokenizer == "tokenize_word3") {
             y <- preserve_special(y, split_hyphens = split_hyphens,
                                   split_tags = split_tags, verbose = verbose)
             special <- attr(y, "special")
-        }
-        y <- serialize_tokens(tokenizer_fn(y, split_hyphens = split_hyphens,
-                                           split_tags = split_tags,
-                                           verbose = verbose,
-                                           ...))
-        if (what == "word" && quanteda_options("tokens_tokenizer_word") == "tokenize_word")
+            y <- serialize_tokens(fun(y, split_hyphens = split_hyphens, 
+                                      verbose = verbose, ...))
             y <- restore_special(y, special)
-        if (what == "word1" && !split_hyphens)
-            y <- restore_special1(y, split_hyphens = FALSE, split_tags = TRUE)
+        } else if (tokenizer == "tokenize_word4") {
+            # y <- preserve_special4()
+            # special <- attr(y, "special")
+            y <- serialize_tokens(fun(y, split_hyphens = split_hyphens, split_tags = split_tags, 
+                                      verbose = verbose, ...))
+            #y <- restore_special4(y, special)
+        } else {
+            y <- serialize_tokens(fun(y, verbose = verbose, ...))
+        }
         return(y)
     })
     type <- unique(unlist_character(lapply(x, attr, "types"), use.names = FALSE))
@@ -409,6 +421,20 @@ tokens.tokens <-  function(x,
     }
     return(x)
 }
+
+# search_tokenizer <- function(x) {
+#     package <- as.environment("package:quanteda")
+#     if (x %in% objects(envir = package, pattern = "^tokenize_")) {
+#         result <- get(x, envir = package)
+#     } else {
+#         result <- tryCatch(
+#             get(x, envir = globalenv()),
+#             error = function(e) {
+#                 stop("Invalid value in tokens_tokenizer_word", call. = FALSE)
+#             })
+#     }
+#     return(result)
+# }
 
 # coercion and checking functions -----------
 
