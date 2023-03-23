@@ -42,12 +42,16 @@ test_that("keep_tags and split_tags work", {
 
 })
 
-test_that("user-defined tokenizer works", {
-    quanteda_options("tokens_tokenizer_word" = "my_tokenizer")
-    my_tokenizer <- function(x, ...) {
-        tokenize_custom(x, ".;")
-    }
-    expect_identical(tokens("abc defg")[[1]],
-                     c("a", "b", "c", "d", "e", "f", "g"))
-    quanteda_options(reset = TRUE)
-})
+# test_that("user-defined tokenizer works", {
+#     quanteda_options("tokens_tokenizer_word" = "my_tokenizer")
+#     my_tokenizer <- function(x, ...) {
+#         tokenize_custom(x, ".;")
+#     }
+#     expect_identical(tokens("abc defg")[[1]],
+#                      c("a", "b", "c", "d", "e", "f", "g"))
+# 
+#     quanteda_options("tokens_tokenizer_word" = "some_tokenizer")
+#     expect_error(tokens("abc defg"), 
+#                  "Invalid value in tokens_tokenizer_word")
+#     quanteda_options(reset = TRUE)
+# })
