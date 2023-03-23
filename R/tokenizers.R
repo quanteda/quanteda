@@ -143,8 +143,6 @@ tokenize_word1 <- function(x, split_hyphens = FALSE, verbose = quanteda_options(
     # remove variant selector & whitespace with diacritical marks
     x <- stri_replace_all_regex(x, c("[\uFE00-\uFE0F]", "\\s[\u0300-\u036F]"), "",
                                 vectorize_all = FALSE)
-    # substitute characters not to split
-    x <- preserve_special1(x, split_hyphens = split_hyphens, split_tags = TRUE, verbose = verbose)
 
     if (verbose) catm(" ...segmenting into words\n")
     x <- stri_split_boundaries(x, type = "word", locale = quanteda_options("tokens_locale"))

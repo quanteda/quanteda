@@ -294,7 +294,14 @@ tokens.corpus <- function(x,
             #     " by process ", Sys.getpid(), "\n", sep = "")
             
         y <- normalize_characters(y)
-        if (tokenizer == "tokenize_word3") {
+        if (tokenizer == "tokenize_word1") {
+            y <- preserve_special1(y, split_hyphens = split_hyphens,
+                                  split_tags = split_tags, verbose = verbose)
+            y <- serialize_tokens(fun(y, split_hyphens = split_hyphens, 
+                                      verbose = verbose, ...))
+            y <- restore_special1(y, split_hyphens = split_hyphens,
+                                  split_tags = split_tags, verbose = verbose)
+        } else if (tokenizer == "tokenize_word3") {
             y <- preserve_special(y, split_hyphens = split_hyphens,
                                   split_tags = split_tags, verbose = verbose)
             special <- attr(y, "special")
