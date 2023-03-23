@@ -39,6 +39,9 @@ data_breakrules_sentence
 
 \item{rules}{a list of rules for rule-based boundary detection}
 }
+\value{
+a list of characters containing tokens
+}
 \description{
 Allows users to tokenize texts using customized boundary rules. See the \href{https://unicode-org.github.io/icu/userguide/boundaryanalysis/break-rules.html}{ICU website}
 for how to define boundary rules.

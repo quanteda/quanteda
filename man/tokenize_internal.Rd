@@ -3,7 +3,7 @@
 \name{tokenize_internal}
 \alias{tokenize_internal}
 \alias{tokenize}
-\alias{tokenize_word}
+\alias{tokenize_word3}
 \alias{tokenize_word1}
 \alias{tokenize_character}
 \alias{tokenize_sentence}
@@ -12,7 +12,7 @@
 \alias{tokenize_word4}
 \title{quanteda tokenizers}
 \usage{
-tokenize_word(
+tokenize_word3(
   x,
   split_hyphens = FALSE,
   verbose = quanteda_options("verbose"),
@@ -75,8 +75,8 @@ txt <- c(doc1 = "Tweet https://quanteda.io using @quantedainit and #rstats.",
          doc5 = "?",
          doc6 = "Self-aware machines! \U0001f600",
          doc7 = "Qu'est-ce que c'est?")
-tokenize_word(txt)
-tokenize_word(txt, split_hyphens = FALSE)
+tokenize_word3(txt)
+tokenize_word3(txt, split_hyphens = FALSE)
 tokenize_word1(txt, split_hyphens = FALSE)
 tokenize_word4(txt, split_hyphens = FALSE, split_elisions = TRUE)
 tokenize_fasterword(txt)
