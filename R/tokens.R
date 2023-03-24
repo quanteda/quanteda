@@ -281,8 +281,8 @@ tokens.corpus <- function(x,
     })
     
     # NOTE: consider removing
-    if (!remove_separators && !tokenizer %in% paste0("tokenize_", c("word3", "word1", "character")))
-        warning("remove_separators is always TRUE for this type")
+    # if (!remove_separators && !tokenizer %in% paste0("tokenize_", c("word3", "word1", "character")))
+    #    warning("remove_separators is always TRUE for this type")
     
     # split x into smaller blocks to reduce peak memory consumption
     x <- as.character(x)
@@ -309,11 +309,8 @@ tokens.corpus <- function(x,
                                       verbose = verbose, ...))
             y <- restore_special(y, special)
         } else if (tokenizer == "tokenize_word4") {
-            # y <- preserve_special4()
-            # special <- attr(y, "special")
             y <- serialize_tokens(fun(y, split_hyphens = split_hyphens, split_tags = split_tags, 
                                       verbose = verbose, ...))
-            #y <- restore_special4(y, special)
         } else {
             y <- serialize_tokens(fun(y, verbose = verbose, ...))
         }
@@ -344,7 +341,7 @@ tokens.corpus <- function(x,
                             remove_url = remove_url,
                             remove_separators = remove_separators,
                             split_hyphens = FALSE,
-                            split_tags = FALSE,
+                            split_tags = split_tags,
                             include_docvars = TRUE,
                             padding = padding,
                             verbose = verbose)
@@ -386,9 +383,6 @@ tokens.tokens <-  function(x,
         if (verbose) catm(" ...splitting hyphens\n")
         x <- tokens_split(x, "\\p{Pd}", valuetype = "regex", remove_separator = FALSE)
     }
-    if (split_tags) {
-        warning("split_tags argument is not used")
-    }
 
     # removals
     removals <- removals_regex(separators = remove_separators,
@@ -407,10 +401,16 @@ tokens.tokens <-  function(x,
 
     if (length(removals[["separators"]])) {
         x <- tokens_remove(x, removals[["separators"]], valuetype = "regex",
-                           verbose = FALSE)
+                           verbose = FALSE, padding = TRUE)
+    }
+    if (!split_tags) {
+        # NOTE: use quanteda_options()
+        x <- tokens_compound(x, c("#", "@"), window = c(0, 10), concatenator = "")
+    }
+    if (length(removals[["separators"]])) {
+        x <- tokens_remove(x, "", verbose = FALSE)
         removals["separators"] <- NULL
     }
-
     if (length(removals)) {
         x <- tokens_remove(x, paste(unlist(removals), collapse = "|"),
                            valuetype = "regex",  padding = padding,

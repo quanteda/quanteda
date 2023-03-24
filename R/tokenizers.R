@@ -240,17 +240,22 @@ tokenize_word4 <- function(x, split_hyphens = FALSE, split_tags = FALSE, split_e
         rules[["keep_hyphens"]] <- NULL
     }
     if (!split_elisions) {
+        # NOTE: consider splitting in tokens.tokens()
         if (verbose) catm(" ...preserving elisions\n")
         rules[["split_elisions"]] <- NULL
     }
     if (!split_tags) {
         if (verbose) catm(" ...preserving social media tags (#, @)\n")
-        # NOTE: default patterns are protected by keep_tags
-        rules[["keep_usernames"]] <- paste0(stri_replace_all_fixed(quanteda_options("pattern_username"), "@", "\\@"), ";")
-        rules[["keep_hashtags"]] <- paste0(stri_replace_all_fixed(quanteda_options("pattern_hashtag"), "#", "\\#"), ";")
-    } else {
-        rules[["keep_tags"]] <- NULL
+        rules[["split_tags"]] <- NULL
     }
+    # if (!split_tags) {
+    #     if (verbose) catm(" ...preserving social media tags (#, @)\n")
+    #     # NOTE: default patterns are protected by keep_tags
+    #     rules[["keep_usernames"]] <- paste0(stri_replace_all_fixed(quanteda_options("pattern_username"), "@", "\\@"), ";")
+    #     rules[["keep_hashtags"]] <- paste0(stri_replace_all_fixed(quanteda_options("pattern_hashtag"), "#", "\\#"), ";")
+    # } else {
+    #     rules[["keep_tags"]] <- NULL
+    # }
     tokenize_custom(x, rules)
 }
 

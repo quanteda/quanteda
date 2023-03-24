@@ -14,9 +14,9 @@ keep_email: |
     [A-Za-z0-9_]+\@[A-Za-z][A-Za-z0-9_]+\.[a-z]+;
     
 # Keep tags
-keep_tags: |
-    ^[#] [\p{L}\p{N}]+ [#]?; 
-    ^[@] [a-zA-Z0-9_]+;
+# keep_tags: |
+#     ^[#] [\p{L}\p{N}]+ [#]?; 
+#     ^[@] [a-zA-Z0-9_]+;
 
 # Split elisions
 split_elisions: |
