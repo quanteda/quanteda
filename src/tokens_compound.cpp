@@ -89,6 +89,7 @@ Text match_comp(Text tokens,
         for (std::size_t i = 0; i < tokens.size() - (span - 1); i++) {
             //if (!nested && flags_link[i]) continue; // ignore matched tokens 
             Ngram ngram(tokens.begin() + i, tokens.begin() + i + span);
+            //Ngram ngram = {tokens[i], tokens[i + span]}; # skipped match
             auto it = set_comps.find(ngram);
             if (it != set_comps.end()) {
                 // Adjust window size to exclude padding
