@@ -1,5 +1,5 @@
 #include "lib.h"
-//#include "dev.h"
+#include "dev.h"
 #include "recompile.h"
 using namespace quanteda;
 
@@ -11,7 +11,8 @@ Text keep_token(Text tokens,
           const SetNgrams &set_words,
           const bool &padding,
           const std::pair<int, int> &window,
-          const std::pair<int, int> &pos){
+          const std::pair<int, int> &pos,
+          const bool &skip){
     
     if (tokens.size() == 0) return {}; // return empty vector for empty text
     
@@ -39,10 +40,20 @@ Text keep_token(Text tokens,
     } else {
         std::fill(tokens_copy.begin(), tokens_copy.end(), filler);
     }
+    Ngram ngram;
     for (std::size_t span : spans) { // substitution starts from the longest sequences
         if (tokens.size() < span) continue;
         for (std::size_t i = start; i < end - (span - 1); i++) {
-            Ngram ngram(tokens.begin() + i, tokens.begin() + i + span);
+            if (skip) {
+                if (span == 1) {
+                    ngram = {tokens[i]};
+                } else {
+                    ngram = {tokens[i], tokens[i + span - 1]};
+                }
+            } else {
+                ngram = {tokens.begin() + i, tokens.begin() + i + span};
+            }
+            dev::print_ngram(ngram);
             auto it = set_words.find(ngram);
             if (it != set_words.end()) {
                 match = true;
@@ -73,7 +84,8 @@ Text remove_token(Text tokens,
             const SetNgrams &set_words,
             const bool &padding,
             const std::pair<int, int> &window,
-            const std::pair<int, int> &pos){
+            const std::pair<int, int> &pos,
+            const bool &skip){
 
     if (tokens.size() == 0) return {}; // return empty vector for empty text
     
@@ -95,10 +107,20 @@ Text remove_token(Text tokens,
     } else {
         end = std::max(0, (int)tokens.size() + pos.second + 1);
     }
+    Ngram ngram;
     for (std::size_t span : spans) { // substitution starts from the longest sequences
         if (tokens.size() < span) continue;
         for (std::size_t i = start; i < end - (span - 1); i++) {
-            Ngram ngram(tokens.begin() + i, tokens.begin() + i + span);
+            if (skip) {
+                if (span == 1) {
+                    ngram = {tokens[i]};
+                } else {
+                    ngram = {tokens[i], tokens[i + span - 1]};
+                }
+            } else {
+                ngram = {tokens.begin() + i, tokens.begin() + i + span};
+            }
+            dev::print_ngram(ngram);
             auto it = set_words.find(ngram);
             if (it != set_words.end()) {
                 match = true;
@@ -135,24 +157,26 @@ struct select_mt : public Worker{
     const bool &padding;
     const std::pair<int, int> &window;
     const Positions &pos;
+    const bool &skip;
     
     // Constructor
     select_mt(Texts &texts_, const std::vector<std::size_t> &spans_, 
               const SetNgrams &set_words_, const int &mode_, const bool &padding_, 
-              const std::pair<int, int> &window_, const Positions &pos_):
+              const std::pair<int, int> &window_, const Positions &pos_,
+              const bool &skip_):
               texts(texts_), spans(spans_), set_words(set_words_), mode(mode_), padding(padding_), 
-              window(window_), pos(pos_){}
+              window(window_), pos(pos_), skip(skip_){}
     
     // parallelFor calles this function with std::size_t
     void operator()(std::size_t begin, std::size_t end){
         //Rcout << "Range " << begin << " " << end << "\n";
         if (mode == 1) {
             for (std::size_t h = begin; h < end; h++) {
-                texts[h] = keep_token(texts[h], spans, set_words, padding, window, pos[h]);
+                texts[h] = keep_token(texts[h], spans, set_words, padding, window, pos[h], skip);
             }
         } else if (mode == 2) {
             for (std::size_t h = begin; h < end; h++) {
-                texts[h] = remove_token(texts[h], spans, set_words, padding, window, pos[h]);
+                texts[h] = remove_token(texts[h], spans, set_words, padding, window, pos[h], skip);
             }
         } else {
             for (std::size_t h = begin; h < end; h++) {
@@ -183,14 +207,34 @@ List qatd_cpp_tokens_select(const List &texts_,
                             int window_left,
                             int window_right,
                             const IntegerVector pos_from_,
-                            const IntegerVector pos_to_){
+                            const IntegerVector pos_to_,
+                            const IntegerVector skips_){
     
     Texts texts = Rcpp::as<Texts>(texts_);
     Types types = Rcpp::as<Types>(types_);
     std::pair<int, int> window(window_left, window_right);
+    std::vector<std::size_t> skips = Rcpp::as< std::vector<std::size_t> >(skips_);
     
     SetNgrams set_words;
-    std::vector<std::size_t> spans = register_ngrams(words_, set_words);
+    std::vector<std::size_t> n = register_ngrams(words_, set_words);
+    
+    bool skip = false;
+    std::vector<std::size_t> spans;
+    for (std::size_t i = 0; i < skips.size(); i++) {
+        if (skips[i] == 0) {
+            spans.insert(spans.end(), n.begin(), n.end());
+        } else {
+            spans.push_back(skips[i] + 2);
+            skip = true;
+        }
+    }
+    sort(spans.begin(), spans.end());
+    spans.erase(unique(spans.begin(), spans.end()), spans.end());
+    std::reverse(std::begin(spans), std::end(spans));
+    
+    for (std::size_t i = 0; i < spans.size(); i++) {
+        Rcout << "span = " << spans[i] << "\n";
+    }
     
     if (pos_from_.size() != texts.size())
         throw std::range_error("Invalid pos_from");
@@ -204,16 +248,16 @@ List qatd_cpp_tokens_select(const List &texts_,
     // dev::Timer timer;
     // dev::start_timer("Token select", timer);
 #if QUANTEDA_USE_TBB
-    select_mt select_mt(texts, spans, set_words, mode, padding, window, pos);
+    select_mt select_mt(texts, spans, set_words, mode, padding, window, pos, skip);
     parallelFor(0, texts.size(), select_mt);
 #else
     if (mode == 1) {
         for (std::size_t h = 0; h < texts.size(); h++) {
-            texts[h] = keep_token(texts[h], spans, set_words, padding, window, pos[h]);
+            texts[h] = keep_token(texts[h], spans, set_words, padding, window, pos[h], skip);
         }
     } else if(mode == 2) {
         for (std::size_t h = 0; h < texts.size(); h++) {
-            texts[h] = remove_token(texts[h], spans, set_words, padding, window, pos[h]);
+            texts[h] = remove_token(texts[h], spans, set_words, padding, window, pos[h], skip);
         }
     } else {
         for (std::size_t h = 0; h < texts.size(); h++){
@@ -226,21 +270,15 @@ List qatd_cpp_tokens_select(const List &texts_,
 }
 
 /***R
+require(quanteda)
 toks <- list(rep(1:10, 1))
-#toks <- list(rep(1:10, 1), rep(5:15, 1))
-#dict <- as.list(1:100000)
-dict <- list(c(1, 2), c(5, 6), 10, 15, 20)
-#dict <- list(c(99))
-#qatd_cpp_tokens_select(toks, letters, dict, 1, TRUE, 1, 1)
-qatd_cpp_tokens_select(toks, letters, dict, 1, TRUE, 0, 0, 1, 100)
-qatd_cpp_tokens_select(toks, letters, dict, 1, TRUE, 0, 1, 1, 100)
-qatd_cpp_tokens_select(toks, letters, dict, 1, FALSE, 0, 0, 1, 2)
-qatd_cpp_tokens_select(toks, letters, dict, 2, TRUE, 0, 0, 1, 5)
-qatd_cpp_tokens_select(toks, letters, dict, 2, TRUE, 0, 1, 1, 2)
-qatd_cpp_tokens_select(toks, letters, dict, 2, TRUE, 0, 2, 1, 3)
-qatd_cpp_tokens_select(toks, letters, as.list(1:10), 1, FALSE, 0, 0, 1, 2)
-qatd_cpp_tokens_select(toks, letters, as.list(1:10), 1, TRUE, 0, 0, 1, 2)
-qatd_cpp_tokens_select(toks, letters, as.list(1:10), 2, FALSE, 0, 0, 1, 1)
-qatd_cpp_tokens_select(toks, letters, as.list(1:10), 2, TRUE, 0, 0, 1, 1)
-
+dict <- list(c(1, 2), c(4, 6), 10, 15, 20)
+out1 <- quanteda:::qatd_cpp_tokens_select(toks, letters, dict, 1, TRUE, 0, 0, 1, 100, 0)
+unclass(out1)
+out2 <- quanteda:::qatd_cpp_tokens_select(toks, letters, dict, 1, TRUE, 0, 0, 1, 100, c(1))
+unclass(out2)
+out3 <- quanteda:::qatd_cpp_tokens_select(toks, letters, dict, 1, TRUE, 0, 0, 1, 100, c(0, 1))
+unclass(out3)
+out4 <- quanteda:::qatd_cpp_tokens_select(toks, letters, dict, 2, TRUE, 0, 0, 1, 100, c(0, 1))
+unclass(out4)
 */
