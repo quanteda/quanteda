@@ -143,13 +143,21 @@ test_that("types attribute is a character vector", {
 test_that("remove_url works as expected", {
     txt <- c("The URL was http://t.co/something.",
              "The URL was http://quanteda.io",
-             "https://github.com/quanteda/quanteda/issue/1 is another URL")
+             "https://github.com/quanteda/quanteda/issue/1 is another URL",
+             "www.r-project.org/about.html is a specific page without protocol",
+             "https://www.google.com/search?q=quanteda+package is a google search",
+             "ftp://user@host/foo/bar.txt is a FTP-hosted file",
+             "koheiw@quanteda.org is not an url")
     toks <- tokens(txt, what = "word", remove_url = TRUE)
     expect_equal(
         as.list(toks),
         list(text1 = c("The", "URL", "was"),
              text2 = c("The", "URL", "was"),
-             text3 = c("is", "another", "URL"))
+             text3 = c("is", "another", "URL"),
+             text4 = c("is", "a", "specific", "page", "without", "protocol"),
+             text5 = c("is", "a", "google", "search"),
+             text6 = c("is", "a", "FTP-hosted", "file"),
+             text7 = c("koheiw@quanteda.org", "is", "not", "an", "url"))
     )
 })
 

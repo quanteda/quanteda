@@ -7,7 +7,8 @@ keep_hyphens: |
 
 # Keep URLs
 keep_url: |
-    ^(([h][t][t][p][s]?\:\/\/([w][w][w]\.)?)|([w][w][w]\.))[-a-zA-Z0-9@:%_\+\.~#=]+(\/[-a-zA-Z0-9@\:%_\+\.~#?\&=]+)*[\/]?;
+    ^[s]?'ftp://'[-+a-zA-Z0-9@#:.%~=_\&/]+;
+    ^('http'[s]?'://')?'www.'?[-a-zA-Z0-9]+([.][-a-zA-Z0-9]+)+([/?#][-+a-zA-Z0-9@#:.%~=_\&]+)*[/?#]?;
 
 # Keep emails
 keep_email: |
@@ -20,7 +21,7 @@ keep_email: |
 
 # Split elisions
 split_elisions: |
-    $Elision = ([lLmMtTnNsSjJdDcC]|([jJ][u][s]|[qQ][u][o][i]|[lL][o][r][s]|[pP][u][i][s]|[qQ][u][e][l])?[qQ][u])[\u0027\u2019];
+    $Elision = ([lLmMtTnNsSjJdDcC]|([jJ]'us'|[qQ]'uoi'|[lL]'ors'|[pP]'uis'|[qQ]'uel')?[qQ]'u')[\u0027\u2019];
     ^$Elision / $ALetterPlus;
 
 # Split tags
