@@ -1,5 +1,6 @@
 require(stringi)
-lis <- replicate(10, stri_rand_strings(10, sample(1:3, 10, replace = TRUE), "[A-Za-z0-9あ-ん]"),
+lis <- replicate(10, stri_rand_strings(10, sample(1:3, 10, replace = TRUE), 
+                                       "[A-Za-z0-9\u3042-\u3093]"),
                  simplify = FALSE)
 
 test_that("cpp_serialize works", {
