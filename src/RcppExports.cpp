@@ -129,6 +129,21 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// qatd_cpp_tokens_restore
+List qatd_cpp_tokens_restore(const List& texts_, const List& markers_left_, const List& markers_right_, const CharacterVector& types_, const String& delim_);
+RcppExport SEXP _quanteda_qatd_cpp_tokens_restore(SEXP texts_SEXP, SEXP markers_left_SEXP, SEXP markers_right_SEXP, SEXP types_SEXP, SEXP delim_SEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const List& >::type texts_(texts_SEXP);
+    Rcpp::traits::input_parameter< const List& >::type markers_left_(markers_left_SEXP);
+    Rcpp::traits::input_parameter< const List& >::type markers_right_(markers_right_SEXP);
+    Rcpp::traits::input_parameter< const CharacterVector& >::type types_(types_SEXP);
+    Rcpp::traits::input_parameter< const String& >::type delim_(delim_SEXP);
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_tokens_restore(texts_, markers_left_, markers_right_, types_, delim_));
+    return rcpp_result_gen;
+END_RCPP
+}
 // qatd_cpp_tokens_segment
 List qatd_cpp_tokens_segment(const List& texts_, const CharacterVector types_, const List& patterns_, const bool& remove, const int& position);
 RcppExport SEXP _quanteda_qatd_cpp_tokens_segment(SEXP texts_SEXP, SEXP types_SEXP, SEXP patterns_SEXP, SEXP removeSEXP, SEXP positionSEXP) {
@@ -239,6 +254,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_quanteda_qatd_cpp_tokens_ngrams", (DL_FUNC) &_quanteda_qatd_cpp_tokens_ngrams, 5},
     {"_quanteda_qatd_cpp_tokens_recompile", (DL_FUNC) &_quanteda_qatd_cpp_tokens_recompile, 4},
     {"_quanteda_qatd_cpp_tokens_replace", (DL_FUNC) &_quanteda_qatd_cpp_tokens_replace, 4},
+    {"_quanteda_qatd_cpp_tokens_restore", (DL_FUNC) &_quanteda_qatd_cpp_tokens_restore, 5},
     {"_quanteda_qatd_cpp_tokens_segment", (DL_FUNC) &_quanteda_qatd_cpp_tokens_segment, 5},
     {"_quanteda_qatd_cpp_tokens_select", (DL_FUNC) &_quanteda_qatd_cpp_tokens_select, 9},
     {"_quanteda_qatd_cpp_is_grouped_numeric", (DL_FUNC) &_quanteda_qatd_cpp_is_grouped_numeric, 2},
