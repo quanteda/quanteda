@@ -130,17 +130,17 @@ BEGIN_RCPP
 END_RCPP
 }
 // qatd_cpp_tokens_restore
-List qatd_cpp_tokens_restore(const List& texts_, const List& markers_left_, const List& markers_right_, const CharacterVector& types_, const String& delim_);
-RcppExport SEXP _quanteda_qatd_cpp_tokens_restore(SEXP texts_SEXP, SEXP markers_left_SEXP, SEXP markers_right_SEXP, SEXP types_SEXP, SEXP delim_SEXP) {
+List qatd_cpp_tokens_restore(const List& texts_, const List& marks_left_, const List& marks_right_, const CharacterVector& types_, const String& delim_);
+RcppExport SEXP _quanteda_qatd_cpp_tokens_restore(SEXP texts_SEXP, SEXP marks_left_SEXP, SEXP marks_right_SEXP, SEXP types_SEXP, SEXP delim_SEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const List& >::type texts_(texts_SEXP);
-    Rcpp::traits::input_parameter< const List& >::type markers_left_(markers_left_SEXP);
-    Rcpp::traits::input_parameter< const List& >::type markers_right_(markers_right_SEXP);
+    Rcpp::traits::input_parameter< const List& >::type marks_left_(marks_left_SEXP);
+    Rcpp::traits::input_parameter< const List& >::type marks_right_(marks_right_SEXP);
     Rcpp::traits::input_parameter< const CharacterVector& >::type types_(types_SEXP);
     Rcpp::traits::input_parameter< const String& >::type delim_(delim_SEXP);
-    rcpp_result_gen = Rcpp::wrap(qatd_cpp_tokens_restore(texts_, markers_left_, markers_right_, types_, delim_));
+    rcpp_result_gen = Rcpp::wrap(qatd_cpp_tokens_restore(texts_, marks_left_, marks_right_, types_, delim_));
     return rcpp_result_gen;
 END_RCPP
 }

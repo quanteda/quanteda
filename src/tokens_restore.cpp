@@ -5,9 +5,9 @@
 using namespace quanteda;
 
 Text join_mark(Text tokens, 
-                const MapNgrams &map_marks,
-                MapNgrams &map_comps,
-                IdNgram &id_comp){
+               const MapNgrams &map_marks,
+               MapNgrams &map_comps,
+               IdNgram &id_comp){
     
     if (tokens.size() == 0) return {}; // return empty vector for empty text
     
@@ -87,15 +87,15 @@ struct restore_mt : public Worker{
  * @used tokens_restore()
  * @creator Kohei Watanabe
  * @param texts_ tokens ojbect
- * @param markers_left_, markers_right_ patterns to mark tokens to restore
+ * @param marks_left_, marks_right_ patterns to mark tokens to restore
  * @param types_ types in the tokens object
  * @param delim_ character to concatenate types
  */
 
 // [[Rcpp::export]]
 List qatd_cpp_tokens_restore(const List &texts_, 
-                              const List &markers_left_,
-                              const List &markers_right_,
+                              const List &marks_left_,
+                              const List &marks_right_,
                               const CharacterVector &types_,
                               const String &delim_){
     
@@ -115,13 +115,13 @@ List qatd_cpp_tokens_restore(const List &texts_,
     MapNgrams map_comps; // for ID generation
     map_comps.max_load_factor(GLOBAL_NGRAMS_MAX_LOAD_FACTOR);
 
-    Ngrams marks_left = Rcpp::as<Ngrams>(markers_left_);
+    Ngrams marks_left = Rcpp::as<Ngrams>(marks_left_);
     for (size_t g = 0; g < marks_left.size(); g++) {
         Ngram value = marks_left[g];
         unsigned int key = 1; // 1 for left
         map_marks.insert(std::pair<Ngram, unsigned int>(value, key));
     }
-    Ngrams marks_right = Rcpp::as<Ngrams>(markers_right_);
+    Ngrams marks_right = Rcpp::as<Ngrams>(marks_right_);
     for (size_t g = 0; g < marks_right.size(); g++) {
         Ngram value = marks_right[g];
         unsigned int key = 2; // 2 for right
