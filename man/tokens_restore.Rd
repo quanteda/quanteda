@@ -2,9 +2,7 @@
 % Please edit documentation in R/tokens_restore.R
 \name{tokens_restore}
 \alias{tokens_restore}
-\title{Restore special tokens
-Compounds a segment of tokens marked by the private Unicode characters. The
-segment should start with uE001 and ends with uE002.}
+\title{Restore special tokens}
 \usage{
 tokens_restore(x)
 }
@@ -12,13 +10,12 @@ tokens_restore(x)
 \item{x}{tokens object}
 }
 \description{
-Restore special tokens
-Compounds a segment of tokens marked by the private Unicode characters. The
-segment should start with uE001 and ends with uE002.
+Compounds segments of tokens marked by special markers. The beginning and
+the end of the segments should be marked by U+E001 and U+E002 respectively.
 }
 \examples{
 txt <- c(d1 = "オリンピック延期決定！ #politics @abe #政治# #政治 #安部政権 @安部政権 ！")
 txt <- stri_replace_all_regex(txt, "@[a-zA-Z0-9_]+|#[\\\\p{L}\\\\p{N}]+#?", "\uE001$0\uE002")
 toks <- as.tokens(stri_split_boundaries(txt, type = "word"))
-tokens_restore(toks)
+quanteda:::tokens_restore(toks)
 }

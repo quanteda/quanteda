@@ -1,7 +1,7 @@
-#' Restore special tokens 
+#' Restore special tokens
 #'
-#' Compounds a segment of tokens marked by the private Unicode characters. The
-#' segment should start with uE001 and ends with uE002.
+#' Compounds segments of tokens marked by special markers. The beginning and
+#' the end of the segments should be marked by U+E001 and U+E002 respectively.
 #' @param x tokens object
 #' @examples
 #' txt <- c(d1 = "オリンピック延期決定！ #politics @abe #政治# #政治 #安部政権 @安部政権 ！")
