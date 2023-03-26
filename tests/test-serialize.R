@@ -15,7 +15,7 @@ test_that("cpp_serialize works", {
     
     type <- unique(unlist(lis, use.names = FALSE))
     out2 <- structure(lapply(lis, function(x) {match(x, type)}), 
-                      types = type, padding = FALSE)
+                      types = type)
     
     expect_identical(out1, out2)
 })
