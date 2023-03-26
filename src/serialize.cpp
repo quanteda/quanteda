@@ -1,5 +1,5 @@
-#include "tokens.h"
-#include "dev.h"
+#include "lib.h"
+//#include "dev.h"
 using namespace quanteda;
 
 typedef std::vector<std::string> StringText;
