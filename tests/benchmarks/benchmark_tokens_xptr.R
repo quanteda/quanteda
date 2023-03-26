@@ -99,3 +99,9 @@ profvis::profvis(
     tokens_select(toks, stopwords(), padding = TRUE)
 )
 
+lis <- as.list(toks)
+microbenchmark::microbenchmark(
+    quanteda:::cpp_serialize(lis),
+    quanteda:::serialize_tokens(lis),
+    times = 10
+)
