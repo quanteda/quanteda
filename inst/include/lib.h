@@ -16,10 +16,7 @@ using namespace RcppParallel;
 
 #define CLANG_VERSION (__clang_major__ * 10000 + __clang_minor__ * 100 + __clang_patchlevel__)
 
-// global setting for unordered_map and unordered_set 
-//extern float GLOBAL_PATTERN_MAX_LOAD_FACTOR;
-//extern float GLOBAL_NGRAMS_MAX_LOAD_FACTOR;
-
+// NOTE: used in textstats
 const float GLOBAL_PATTERN_MAX_LOAD_FACTOR = 0.05;
 const float GLOBAL_NGRAMS_MAX_LOAD_FACTOR = 0.25;
 
@@ -125,25 +122,26 @@ namespace quanteda{
         return token;
     }
     
-    // inline String join_strings(std::vector<unsigned int> &tokens, 
-    //                    CharacterVector types_, 
-    //                    const String delim_ = " ") {
-    //     
-    //     String token_("");
-    //     if (tokens.size() > 0) {
-    //         if (tokens[0] != 0) {
-    //             token_ += types_[tokens[0] - 1];
-    //         }
-    //         for (std::size_t j = 1; j < tokens.size(); j++) {
-    //             if (tokens[j] != 0) {
-    //                 token_ += delim_;
-    //                 token_ += types_[tokens[j] - 1];
-    //             }
-    //         }
-    //         token_.set_encoding(CE_UTF8);
-    //     }
-    //     return token_;
-    // }
+    // NOTE: used in textstats
+    inline String join_strings(std::vector<unsigned int> &tokens,
+                       CharacterVector types_,
+                       const String delim_ = " ") {
+
+        String token_("");
+        if (tokens.size() > 0) {
+            if (tokens[0] != 0) {
+                token_ += types_[tokens[0] - 1];
+            }
+            for (std::size_t j = 1; j < tokens.size(); j++) {
+                if (tokens[j] != 0) {
+                    token_ += delim_;
+                    token_ += types_[tokens[j] - 1];
+                }
+            }
+            token_.set_encoding(CE_UTF8);
+        }
+        return token_;
+    }
     
     inline std::string join_strings(std::vector<unsigned int> &tokens,
                                     Types types,
