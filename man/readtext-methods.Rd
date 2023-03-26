@@ -17,8 +17,5 @@ These functions provide \pkg{quanteda} methods for \pkg{readtext} objects.
 
 \code{docnames(x)} returns the document names from a readtext object
 
-\code{docvars(x, field = NULL)} returns a data.frame of the document variables
-from a readtext object
-
 \code{ndoc(x)} returns the number of documents from a readtext object
 }
