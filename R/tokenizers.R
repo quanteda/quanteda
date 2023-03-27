@@ -248,6 +248,13 @@ tokenize_word4 <- function(x, split_hyphens = FALSE, split_tags = FALSE, split_e
         if (verbose) catm(" ...preserving social media tags (#, @)\n")
         rules[["split_tags"]] <- NULL
     }
+    
+    if (!split_tags) {
+        if (verbose) catm(" ...preserving social media tags (#, @)\n")
+        pattern <- paste0(quanteda_options("pattern_username"), "|", 
+                          quanteda_options("pattern_hashtag"))
+        x <- stri_replace_all_regex(x, pattern, "\uE001$0\uE002")
+    }
     # if (!split_tags) {
     #     if (verbose) catm(" ...preserving social media tags (#, @)\n")
     #     # NOTE: default patterns are protected by keep_tags

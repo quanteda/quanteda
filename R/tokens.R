@@ -274,7 +274,7 @@ tokens.corpus <- function(x,
                         fastestword = "tokenize_fastestword")
     
     #fun <- search_tokenizer(tokenizer)
-    fun <- tryCatch(
+    tokenizer_fn <- tryCatch(
         get(tokenizer, envir = as.environment("package:quanteda")),
         error = function(e) {
         stop("Invalid value in tokens_tokenizer_word", call. = FALSE)
@@ -284,56 +284,88 @@ tokens.corpus <- function(x,
     # if (!remove_separators && !tokenizer %in% paste0("tokenize_", c("word3", "word1", "character")))
     #    warning("remove_separators is always TRUE for this type")
     
+    if (tokenizer == "tokenize_word1") {
+        x <- preserve_special1(x, split_hyphens = split_hyphens,
+                               split_tags = split_tags, verbose = verbose)
+    } else if (tokenizer == "tokenize_word3") {
+        x <- preserve_special(x, split_hyphens = split_hyphens,
+                              split_tags = split_tags, verbose = verbose)
+        special <- attr(x, "special")
+    }
+    
     # split x into smaller blocks to reduce peak memory consumption
     x <- as.character(x)
     x <- split(x, factor(ceiling(seq_along(x) / quanteda_options("tokens_block_size"))))
-    x <- lapply(x, function(y) {
-        if (verbose)
-            catm(" ...", head(names(y), 1), " to ", tail(names(y), 1), "\n", sep = "")
-            #catm(" ...", head(names(y), 1), " to ", tail(names(y), 1),
-            #     " by process ", Sys.getpid(), "\n", sep = "")
-            
-        y <- normalize_characters(y)
-        if (tokenizer == "tokenize_word1") {
-            y <- preserve_special1(y, split_hyphens = split_hyphens,
-                                  split_tags = split_tags, verbose = verbose)
-            y <- serialize_tokens(fun(y, split_hyphens = split_hyphens, 
-                                      verbose = verbose, ...))
-            y <- restore_special1(y, split_hyphens = split_hyphens,
-                                  split_tags = split_tags, verbose = verbose)
-        } else if (tokenizer == "tokenize_word3") {
-            y <- preserve_special(y, split_hyphens = split_hyphens,
-                                  split_tags = split_tags, verbose = verbose)
-            special <- attr(y, "special")
-            y <- serialize_tokens(fun(y, split_hyphens = split_hyphens, 
-                                      verbose = verbose, ...))
-            y <- restore_special(y, special)
-        } else if (tokenizer == "tokenize_word4") {
-            y <- serialize_tokens(fun(y, split_hyphens = split_hyphens, split_tags = split_tags, 
-                                      verbose = verbose, ...))
+    for (i in seq_along(x)) {
+        if (verbose) catm(" ...tokenizing", i, "of", length(x), "blocks\n")
+        temp <- tokenizer_fn(x[[i]], split_hyphens = split_hyphens, split_tags = split_tags, 
+                             verbose = verbose, ...)
+        if (verbose) catm(" ...serializing tokens, ")
+        if (i == 1) {
+            # TODO: repalced with cpp_serialize()
+            x[[i]] <- serialize_tokens(temp)
         } else {
-            y <- serialize_tokens(fun(y, verbose = verbose, ...))
+            # TODO: repalced with cpp_serialize_add()
+            x[[i]] <- serialize_tokens(temp, attr(x[[i - 1]], "types"))
         }
-        return(y)
-    })
-    type <- unique(unlist_character(lapply(x, attr, "types"), use.names = FALSE))
-    if (verbose)
-        catm(" ...", format(length(type), big.mark = ",", trim = TRUE),
-             " unique type", if (length(type) == 1) "" else "s",
-             "\n", sep = "")
-    x <- lapply(x, function(y) {
-        map <- fastmatch::fmatch(attr(y, "types"), type)
-        y <- lapply(y, function(z) map[z])
-        return(y)
-    })
-
+    }
+    
+    # x <- lapply(x, function(y) {
+    #     if (verbose)
+    #         catm(" ...", head(names(y), 1), " to ", tail(names(y), 1), "\n", sep = "")
+    #         #catm(" ...", head(names(y), 1), " to ", tail(names(y), 1),
+    #         #     " by process ", Sys.getpid(), "\n", sep = "")
+    #         
+    #     y <- normalize_characters(y)
+    #     if (tokenizer == "tokenize_word1") {
+    #         y <- preserve_special1(y, split_hyphens = split_hyphens,
+    #                               split_tags = split_tags, verbose = verbose)
+    #         y <- serialize_tokens(fun(y, split_hyphens = split_hyphens, 
+    #                                   verbose = verbose, ...))
+    #         y <- restore_special1(y, split_hyphens = split_hyphens,
+    #                               split_tags = split_tags, verbose = verbose)
+    #     } else if (tokenizer == "tokenize_word3") {
+    #         y <- preserve_special(y, split_hyphens = split_hyphens,
+    #                               split_tags = split_tags, verbose = verbose)
+    #         special <- attr(y, "special")
+    #         y <- serialize_tokens(fun(y, split_hyphens = split_hyphens, 
+    #                                   verbose = verbose, ...))
+    #         y <- restore_special(y, special)
+    #     } else if (tokenizer == "tokenize_word4") {
+    #         y <- serialize_tokens(fun(y, split_hyphens = split_hyphens, split_tags = split_tags, 
+    #                                   verbose = verbose, ...))
+    #     } else {
+    #         y <- serialize_tokens(fun(y, verbose = verbose, ...))
+    #     }
+    #     return(y)
+    # })
     result <- build_tokens(
-        unlist_integer(x, recursive = FALSE),
-        types = type, what = what,
+        unlist(x, recursive = FALSE), 
+        types = attr(x[[length(x)]], "types"),
+        what = what, 
         docvars = select_docvars(attrs[["docvars"]], user = include_docvars, system = TRUE),
         meta = attrs[["meta"]]
     )
-
+    if (verbose) {
+        n <- length(types(result))
+        catm(" ...", format(n, big.mark = ",", trim = TRUE),
+             " unique type", if (n == 1) "" else "s", "\n", sep = "")
+    }
+    # result <- build_tokens(
+    #     unlist_integer(x, recursive = FALSE),
+    #     types = type, what = what,
+    #     docvars = select_docvars(attrs[["docvars"]], user = include_docvars, system = TRUE),
+    #     meta = attrs[["meta"]]
+    # )
+    
+    if (tokenizer == "tokenize_word1") {
+        result <- restore_special1(result, split_hyphens = split_hyphens,
+                                   split_tags = split_tags, verbose = verbose)
+    } else if (tokenizer == "tokenize_word3") {
+        result <- restore_special(result, special)
+    } else if (tokenizer == "tokenize_word4") {
+        result <- tokens_restore(result)
+    }
     result <- tokens.tokens(result,
                             remove_punct = remove_punct,
                             remove_symbols = remove_symbols,
@@ -401,16 +433,10 @@ tokens.tokens <-  function(x,
 
     if (length(removals[["separators"]])) {
         x <- tokens_remove(x, removals[["separators"]], valuetype = "regex",
-                           verbose = FALSE, padding = TRUE)
-    }
-    if (!split_tags) {
-        # NOTE: use quanteda_options()
-        x <- tokens_compound(x, c("#", "@"), window = c(0, 10), concatenator = "")
-    }
-    if (length(removals[["separators"]])) {
-        x <- tokens_remove(x, "", verbose = FALSE)
+                           verbose = FALSE)
         removals["separators"] <- NULL
     }
+    
     if (length(removals)) {
         x <- tokens_remove(x, paste(unlist(removals), collapse = "|"),
                            valuetype = "regex",  padding = padding,
