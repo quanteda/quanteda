@@ -18,6 +18,8 @@ ERC
 fileset
 Haass
 Herdan's
+ICU
+ICU's
 Javascript
 Jurafsky
 Khudanpur
@@ -176,6 +178,7 @@ pkgdown
 pmi
 proxyC
 quantedaData
+quanteda's
 rOpenSci
 readLIWCdict
 readWStatDict
