@@ -143,6 +143,7 @@ Collate:
     'tokens_lookup.R'
     'tokens_ngrams.R'
     'tokens_replace.R'
+    'tokens_restore.R'
     'tokens_sample.R'
     'tokens_segment.R'
     'tokens_select.R'
