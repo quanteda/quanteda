@@ -273,7 +273,6 @@ tokens.corpus <- function(x,
                         fasterword = "tokenize_fasterword", 
                         fastestword = "tokenize_fastestword")
     
-    #fun <- search_tokenizer(tokenizer)
     tokenizer_fn <- tryCatch(
         get(tokenizer, envir = as.environment("package:quanteda")),
         error = function(e) {
@@ -422,20 +421,6 @@ tokens.tokens <-  function(x,
     }
     return(x)
 }
-
-# search_tokenizer <- function(x) {
-#     package <- as.environment("package:quanteda")
-#     if (x %in% objects(envir = package, pattern = "^tokenize_")) {
-#         result <- get(x, envir = package)
-#     } else {
-#         result <- tryCatch(
-#             get(x, envir = globalenv()),
-#             error = function(e) {
-#                 stop("Invalid value in tokens_tokenizer_word", call. = FALSE)
-#             })
-#     }
-#     return(result)
-# }
 
 # coercion and checking functions -----------
 
