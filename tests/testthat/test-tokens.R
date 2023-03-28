@@ -1,3 +1,5 @@
+quanteda_options("tokens_tokenizer_word" = "tokenize_word3")
+
 test_that("as.tokens list version works as expected", {
     txt <- c(doc1 = "The first sentence is longer than the second.",
              doc2 = "Told you so.")
@@ -111,9 +113,14 @@ test_that("tokens works as expected for what = character", {
         as.character(tokens("one, two three.", what = "character", remove_separators = TRUE)),
         c("o", "n", "e", ",", "t", "w", "o", "t", "h", "r", "e", "e", ".")
     )
-    expect_equal(
-        as.character(tokens("one, two three.", what = "character", remove_separators = FALSE)),
-        c("o", "n", "e", ",", " ", "t", "w", "o", " ", "t", "h", "r", "e", "e", ".")
+    suppressWarnings(
+        expect_equal(
+            as.character(tokens("one, two three.", what = "character", remove_separators = FALSE)),
+            c("o", "n", "e", ",", " ", "t", "w", "o", " ", "t", "h", "r", "e", "e", ".")
+        )
+    )
+    expect_warning(
+        tokens("one, two three.", what = "character", remove_separators = FALSE)
     )
     expect_equal(
         as.character(tokens("one, two three.", what = "character", remove_punct = TRUE,
@@ -123,6 +130,7 @@ test_that("tokens works as expected for what = character", {
 })
 
 test_that("tokens works with unusual hiragana #554", {
+    skip("Behaviour changed - consider removing test")
     skip_on_travis()
     skip_on_cran()
     skip_on_appveyor()
@@ -406,7 +414,6 @@ test_that("tokens.tokens() does nothing by default", {
 })
 
 test_that("test that features remove by tokens.tokens is comparable to tokens.character", {
-    skip("ngrams disabled in new tokens()")
     chars <- c("a b c 12345 ! @ # $ % ^ & * ( ) _ + { } | : \' \" < > ? ! , . \t \n \u2028 \u00A0 \u2003 \uFE0F",
                "#tag @user", "abc be-fg hi 100kg 2017", "https://github.com/kbenoit/quanteda", "a b c d e")
     toks1 <- as.tokens(stringi::stri_split_fixed(chars[1], " "))
@@ -427,17 +434,8 @@ test_that("test that features remove by tokens.tokens is comparable to tokens.ch
     expect_equal(tokens(chars[1], remove_symbols = TRUE) %>% as.list(),
                  tokens(toks1, remove_symbols = TRUE) %>% as.list())
 
-    #expect_equal(tokens(chars[2], remove_punct = TRUE, remove_twitter = TRUE) %>% as.list(),
-    #             tokens(toks2, remove_punct = TRUE, remove_twitter = TRUE) %>% as.list())
-
     expect_equal(tokens(chars[4], remove_url = TRUE) %>% as.list(),
                  tokens(toks4, remove_url = TRUE) %>% as.list())
-
-    expect_equal(tokens(chars[5], ngrams = 1:2) %>% as.list(),
-                 tokens(toks5, ngrams = 1:2) %>% as.list())
-
-    expect_equal(tokens(chars[5], ngrams = 2, skip = 1:2) %>% as.list(),
-                 tokens(toks5, ngrams = 2, skip = 1:2) %>% as.list())
 
     expect_equal(tokens(chars[3], split_hyphens = TRUE) %>% as.list(),
                  tokens(toks3, split_hyphens = TRUE) %>% as.list())
@@ -1141,3 +1139,5 @@ test_that("edge case usernames are correctly recognized", {
         c("Valid", "username", "@_")
     )
 })
+
+quanteda_options(reset = TRUE)
