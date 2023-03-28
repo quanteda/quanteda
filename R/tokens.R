@@ -294,28 +294,36 @@ tokens.corpus <- function(x,
     
     # split x into smaller blocks to reduce peak memory consumption
     x <- as.character(x)
-    x <- split(x, factor(ceiling(seq_along(x) / quanteda_options("tokens_block_size"))))
-    for (i in seq_along(x)) {
-        if (verbose) catm(" ...tokenizing", i, "of", length(x), "blocks\n")
-        temp <- tokenizer_fn(x[[i]], split_hyphens = split_hyphens, split_tags = split_tags, 
-                             verbose = verbose, ...)
-        if (verbose) catm(" ...serializing tokens, ")
-        if (i == 1) {
-            # TODO: repalced with cpp_serialize()
-            x[[i]] <- serialize_tokens(temp)
-        } else {
-            # TODO: repalced with cpp_serialize_add()
-            x[[i]] <- serialize_tokens(temp, attr(x[[i - 1]], "types"))
+    if (length(x) > 0) {
+        x <- split(x, factor(ceiling(seq_along(x) / quanteda_options("tokens_block_size"))))
+        for (i in seq_along(x)) {
+            if (verbose) catm(" ...tokenizing", i, "of", length(x), "blocks\n")
+            temp <- tokenizer_fn(x[[i]], split_hyphens = split_hyphens, split_tags = split_tags, 
+                                 verbose = verbose, ...)
+            if (verbose) catm(" ...serializing tokens, ")
+            if (i == 1) {
+                # TODO: repalced with cpp_serialize()
+                x[[i]] <- serialize_tokens(temp)
+            } else {
+                # TODO: repalced with cpp_serialize_add()
+                x[[i]] <- serialize_tokens(temp, attr(x[[i - 1]], "types"))
+            }
         }
+        result <- build_tokens(
+            unlist(x, recursive = FALSE), 
+            types = attr(x[[length(x)]], "types"),
+            what = what, 
+            docvars = select_docvars(attrs[["docvars"]], user = include_docvars, system = TRUE),
+            meta = attrs[["meta"]]
+        ) 
+    } else {
+        result <- build_tokens(
+            list(), types = character(),
+            what = what, 
+            docvars = select_docvars(attrs[["docvars"]], user = include_docvars, system = TRUE),
+            meta = attrs[["meta"]]
+        )
     }
-    
-    result <- build_tokens(
-        unlist(x, recursive = FALSE), 
-        types = attr(x[[length(x)]], "types"),
-        what = what, 
-        docvars = select_docvars(attrs[["docvars"]], user = include_docvars, system = TRUE),
-        meta = attrs[["meta"]]
-    )
     if (verbose) {
         n <- length(types(result))
         catm(" ...", format(n, big.mark = ",", trim = TRUE),
