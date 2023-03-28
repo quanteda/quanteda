@@ -6,13 +6,13 @@ keep_hyphens: |
     ($ALetterPlus | $Hebrew_Letter | $Numeric)  $ExFm* $Hyphen $ExFm* ($ALetterPlus | $Hebrew_Letter | $Numeric);
 
 # Keep URLs
-keep_url: |
-    ^[s]?'ftp://'[-+a-zA-Z0-9@#:.%~=_\&/]+;
-    ^('http'[s]?'://')?'www.'?[-a-zA-Z0-9]+([.][-a-zA-Z0-9]+)+([/?#][-+a-zA-Z0-9@#:.%~=_\&]+)*[/?#]?;
+# keep_url: |
+#     ^[s]?'ftp://'[-+a-zA-Z0-9@#:.%~=_\&/]+;
+#     ^('http'[s]?'://')?'www.'?[-a-zA-Z0-9]+([.][-a-zA-Z0-9]+)+([/?#][-+a-zA-Z0-9@#:.%~=_\&]+)*[/?#]?;
 
 # Keep emails
-keep_email: |
-    [A-Za-z0-9_]+\@[A-Za-z][A-Za-z0-9_]+\.[a-z]+;
+# keep_email: |
+#     [A-Za-z0-9_]+\@[A-Za-z][A-Za-z0-9_]+\.[a-z]+;
     
 # Keep tags
 # keep_tags: |

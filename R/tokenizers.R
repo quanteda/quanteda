@@ -248,12 +248,17 @@ tokenize_word4 <- function(x, split_hyphens = FALSE, split_tags = FALSE, split_e
         if (verbose) catm(" ...preserving social media tags (#, @)\n")
         rules[["split_tags"]] <- NULL
     }
+    username <- quanteda_options("pattern_username")
+    hashtag <- quanteda_options("pattern_hashtag")
     
+    ftp <- "s?ftp://[-+a-zA-Z0-9@#:.%~=_&/]+"
+    http <- "(https?://)?(www.)?[-a-zA-Z0-9]+(\\.[-a-zA-Z0-9]+)+([/?#][-+a-zA-Z0-9@#:.%~=_&]+)*[/?#]?"
+    email <- "[A-Za-z0-9_]+@[A-Za-z][A-Za-z0-9_]+\\.[a-z]+"
+    regex <- c(email, ftp, http)
     if (!split_tags) {
         if (verbose) catm(" ...preserving social media tags (#, @)\n")
-        pattern <- paste0(quanteda_options("pattern_username"), "|", 
-                          quanteda_options("pattern_hashtag"))
-        x <- stri_replace_all_regex(x, pattern, "\uE001$0\uE002")
+        regex <- c(regex, username, hashtag)
+        x <- stri_replace_all_regex(x, paste(regex, collapse = "|"), "\uE001$0\uE002")
     }
     # if (!split_tags) {
     #     if (verbose) catm(" ...preserving social media tags (#, @)\n")
