@@ -148,7 +148,8 @@ test_that("remove_url works as expected", {
              "https://www.google.com/search?q=quanteda+package is a google search",
              "ftp://user@host/foo/bar.txt is a FTP-hosted file",
              "koheiw@quanteda.org is not an url")
-    toks <- tokens(txt, what = "word", remove_url = TRUE)
+    toks <- tokens(txt) %>% 
+        tokens_remove(c("^https?:", "^ftp:", "^www"), valuetype = "regex")
     expect_equal(
         as.list(toks),
         list(text1 = c("The", "URL", "was"),
@@ -397,49 +398,6 @@ test_that("tokens.tokens() does nothing by default", {
     expect_equal(toks, tokens(toks))
 })
 
-test_that("test that features remove by tokens.tokens is comparable to tokens.character", {
-    skip("ngrams disabled in new tokens()")
-    chars <- c("a b c 12345 ! @ # $ % ^ & * ( ) _ + { } | : \' \" < > ? ! , . \t \n \u2028 \u00A0 \u2003 \uFE0F",
-               "#tag @user", "abc be-fg hi 100kg 2017", "https://github.com/kbenoit/quanteda", "a b c d e")
-    toks1 <- as.tokens(stringi::stri_split_fixed(chars[1], " "))
-    toks2 <- as.tokens(stringi::stri_split_fixed(chars[2], " "))
-    toks3 <- as.tokens(stringi::stri_split_fixed(chars[3], " "))
-    toks4 <- as.tokens(stringi::stri_split_fixed(chars[4], " "))
-    toks5 <- as.tokens(stringi::stri_split_fixed(chars[5], " "))
-
-    expect_equal(tokens(chars[1], remove_numbers = TRUE) %>% as.list(),
-                 tokens(toks1, remove_numbers = TRUE) %>% as.list())
-
-    expect_equal(tokens(chars[1], remove_punct = TRUE) %>% as.list(),
-                 tokens(toks1, remove_punct = TRUE) %>% as.list())
-
-    expect_equal(tokens(chars[1], remove_separator = TRUE) %>% as.list(),
-                 tokens(toks1, remove_separator = TRUE) %>% as.list())
-
-    expect_equal(tokens(chars[1], remove_symbols = TRUE) %>% as.list(),
-                 tokens(toks1, remove_symbols = TRUE) %>% as.list())
-
-    expect_equal(tokens(chars[2], remove_punct = TRUE, remove_twitter = TRUE) %>% as.list(),
-                 tokens(toks2, remove_punct = TRUE, remove_twitter = TRUE) %>% as.list())
-
-    expect_equal(tokens(chars[4], remove_url = TRUE) %>% as.list(),
-                 tokens(toks4, remove_url = TRUE) %>% as.list())
-
-    expect_equal(tokens(chars[5], ngrams = 1:2) %>% as.list(),
-                 tokens(toks5, ngrams = 1:2) %>% as.list())
-
-    expect_equal(tokens(chars[5], ngrams = 2, skip = 1:2) %>% as.list(),
-                 tokens(toks5, ngrams = 2, skip = 1:2) %>% as.list())
-
-    expect_equal(tokens(chars[3], split_hyphens = TRUE) %>% as.list(),
-                 tokens(toks3, split_hyphens = TRUE) %>% as.list())
-
-    # This fails because there is not separator in toks
-    # expect_equal(tokens(chars[1], remove_symbols = TRUE, remove_separator = FALSE),
-    #              tokens(toks1, remove_symbols = TRUE, remove_separator = FALSE))
-
-})
-
 test_that("split_hyphens is working correctly", {
     corp <- data_corpus_inaugural[1:2]
     toks <- tokens(corp)
@@ -631,11 +589,11 @@ test_that("tokens.tokens(x, split_tags = TRUE, verbose = TRUE) works as expected
 test_that("tokens.tokens(x, remove_numbers = TRUE, verbose = TRUE) works as expected (#1683)", {
     expect_message(
         tokens(tokens("Removing no number words."), remove_numbers = TRUE, verbose = TRUE),
-        "...removing numbers"
+        "...removing separators, numbers"
     )
     expect_message(
         tokens(tokens("Removing 1 number words."), remove_numbers = TRUE, verbose = TRUE),
-        "...removing numbers"
+        "...removing separators, numbers"
     )
     expect_identical(
         as.character(tokens(tokens("Removing 1 number words."), remove_numbers = TRUE)),
@@ -646,11 +604,11 @@ test_that("tokens.tokens(x, remove_numbers = TRUE, verbose = TRUE) works as expe
 test_that("tokens.tokens(x, remove_punct = TRUE, verbose = TRUE) works as expected (#1683)", {
     expect_message(
         tokens(tokens("Removing no £ punctuation"), remove_punct = TRUE, verbose = TRUE),
-        "...removing punctuation"
+        "...removing separators, punctuation"
     )
     expect_message(
         tokens(tokens("Removing £ punctuation."), remove_symbols = TRUE, verbose = TRUE),
-        "removing symbols"
+        "removing separators, symbols"
     )
     expect_message(
         tokens(tokens("Removing £ punctuation."), remove_symbols = TRUE, remove_separators = TRUE, verbose = TRUE),
@@ -666,11 +624,11 @@ test_that("tokens.tokens(x, remove_punct = TRUE, verbose = TRUE) works as expect
 test_that("tokens.tokens(x, remove_symbols = TRUE, verbose = TRUE) works as expected (#1683)", {
     expect_message(
         tokens(tokens("Removing no symbols."), remove_symbols = TRUE, verbose = TRUE),
-        "removing symbols"
+        "removing separators, symbols"
     )
     expect_message(
         tokens(tokens("Removing € symbols."), remove_symbols = TRUE, verbose = TRUE),
-        "removing symbols"
+        "removing separators, symbols"
     )
     expect_identical(
         as.character(tokens(tokens("Removing € symbols."), remove_symbols = TRUE)),
@@ -936,7 +894,7 @@ test_that("split_tags works", {
     txt2 <- c(d1 = "#quanteda #q-x #q_y #q100 #q")
     expect_identical(
         as.list(tokens(txt2, what = "word")),
-        list(d1 = c("#quanteda", "#q-x", "#q_y", "#q100", "#q"))
+        list(d1 = c("#quanteda", "#q", "-", "x", "#q_y", "#q100", "#q"))
     )
     expect_identical(
         as.list(tokens(txt2, what = "word", split_tags = TRUE)),
