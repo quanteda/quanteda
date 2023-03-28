@@ -113,14 +113,9 @@ test_that("tokens works as expected for what = character", {
         as.character(tokens("one, two three.", what = "character", remove_separators = TRUE)),
         c("o", "n", "e", ",", "t", "w", "o", "t", "h", "r", "e", "e", ".")
     )
-    suppressWarnings(
-        expect_equal(
-            as.character(tokens("one, two three.", what = "character", remove_separators = FALSE)),
-            c("o", "n", "e", ",", " ", "t", "w", "o", " ", "t", "h", "r", "e", "e", ".")
-        )
-    )
-    expect_warning(
-        tokens("one, two three.", what = "character", remove_separators = FALSE)
+    expect_equal(
+        as.character(tokens("one, two three.", what = "character", remove_separators = FALSE)),
+        c("o", "n", "e", ",", " ", "t", "w", "o", " ", "t", "h", "r", "e", "e", ".")
     )
     expect_equal(
         as.character(tokens("one, two three.", what = "character", remove_punct = TRUE,
