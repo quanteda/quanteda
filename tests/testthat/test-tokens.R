@@ -106,7 +106,7 @@ test_that("longer features longer than documents do not crash (#447)", {
     )
 })
 
-test_that("tokens works as expected for what = \"character\"", {
+test_that("tokens works as expected for what = character", {
     expect_equal(
         as.character(tokens("one, two three.", what = "character", remove_separators = TRUE)),
         c("o", "n", "e", ",", "t", "w", "o", "t", "h", "r", "e", "e", ".")
@@ -115,9 +115,10 @@ test_that("tokens works as expected for what = \"character\"", {
         as.character(tokens("one, two three.", what = "character", remove_separators = FALSE)),
         c("o", "n", "e", ",", " ", "t", "w", "o", " ", "t", "h", "r", "e", "e", ".")
     )
-    expect_warning(
-        tokens("one, two three.", what = "character", remove_separators = FALSE),
-        "remove_separators is always TRUE for this type"
+    expect_equal(
+        as.character(tokens("one, two three.", what = "character", remove_punct = TRUE,
+                            remove_separators = TRUE)),
+        c("o", "n", "e", "t", "w", "o", "t", "h", "r", "e", "e")
     )
 })
 

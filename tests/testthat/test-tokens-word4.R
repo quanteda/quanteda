@@ -108,7 +108,7 @@ test_that("longer features longer than documents do not crash (#447)", {
     )
 })
 
-test_that("tokens works as expected for what = \"character\"", {
+test_that("tokens works as expected for what = character, {
     expect_equal(
         as.character(tokens("one, two three.", what = "character", remove_separators = TRUE)),
         c("o", "n", "e", ",", "t", "w", "o", "t", "h", "r", "e", "e", ".")

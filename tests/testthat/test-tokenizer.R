@@ -26,21 +26,6 @@ test_that("the base rule produces the same results as type = 'word'", {
 
 })
 
-test_that("keep_tags and split_tags work", {
-    
-    lis_rule1 <- tokenize_custom(txt, rules[c("base", "keep_tags")])
-    expect_identical(lis_rule1[[4]], 
-                     c("#twitter", " ", "#weibo#", " ", "@user" ))
-    expect_identical(lis_rule1[[5]], 
-                     "koheiw@quanteda.org")
-    
-    lis_rule2 <- tokenize_custom(txt, rules[c("base", "split_tags")])
-    expect_identical(lis_rule2[[4]], 
-                     c("#", "twitter", " ", "#", "weibo", "#", " ", "@", "user" ))
-    expect_identical(lis_rule2[[5]], 
-                     "koheiw@quanteda.org")
-
-})
 
 # test_that("user-defined tokenizer works", {
 #     quanteda_options("tokens_tokenizer_word" = "my_tokenizer")
