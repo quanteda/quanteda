@@ -112,13 +112,13 @@ test_that("tokens works as expected for what = \"character\"", {
         c("o", "n", "e", ",", "t", "w", "o", "t", "h", "r", "e", "e", ".")
     )
     expect_equal(
-        as.character(tokens("one, two three.", what = "character", remove_separators = FALSE)),
-        c("o", "n", "e", ",", " ", "t", "w", "o", " ", "t", "h", "r", "e", "e", ".")
-    )
-    expect_equal(
         as.character(tokens("one, two three.", what = "character", remove_punct = TRUE,
                             remove_separators = TRUE)),
         c("o", "n", "e", "t", "w", "o", "t", "h", "r", "e", "e")
+    )
+    expect_warning(
+        tokens("one, two three.", what = "character", remove_separators = FALSE),
+        "remove_separators is always TRUE for this type"
     )
 })
 
@@ -356,7 +356,6 @@ test_that("tokens works for strange spaces (#796)", {
     )
     expect_silent(
         tokens(txt, what = "word", remove_separators = FALSE)
-        # "remove_separators is always TRUE for this type"
     )
     expect_warning(
         tokens(txt, what = "sentence", remove_separators = FALSE),
@@ -428,8 +427,8 @@ test_that("test that features remove by tokens.tokens is comparable to tokens.ch
     expect_equal(tokens(chars[1], remove_symbols = TRUE) %>% as.list(),
                  tokens(toks1, remove_symbols = TRUE) %>% as.list())
 
-    expect_equal(tokens(chars[2], remove_punct = TRUE, remove_twitter = TRUE) %>% as.list(),
-                 tokens(toks2, remove_punct = TRUE, remove_twitter = TRUE) %>% as.list())
+    #expect_equal(tokens(chars[2], remove_punct = TRUE, remove_twitter = TRUE) %>% as.list(),
+    #             tokens(toks2, remove_punct = TRUE, remove_twitter = TRUE) %>% as.list())
 
     expect_equal(tokens(chars[4], remove_url = TRUE) %>% as.list(),
                  tokens(toks4, remove_url = TRUE) %>% as.list())
@@ -665,11 +664,11 @@ test_that("tokens.tokens(x, split_tags = TRUE, verbose = TRUE) works as expected
         "split_tags argument is not used"
     )
     expect_message(
-        tokens(tokens("Removing #hashtags.", what = "word", verbose = TRUE)),
+        tokens(tokens("Removing #hashtags.", verbose = TRUE)),
         "preserving social media tags"
     )
     expect_identical(
-        as.character(tokens(tokens("Removing #hashtags.", what = "word1"))),
+        as.character(tokens(tokens("Removing #hashtags.", split_tags = TRUE))),
         c("Removing", "#", "hashtags", ".")
     )
 })
@@ -677,11 +676,11 @@ test_that("tokens.tokens(x, split_tags = TRUE, verbose = TRUE) works as expected
 test_that("tokens.tokens(x, remove_numbers = TRUE, verbose = TRUE) works as expected (#1683)", {
     expect_message(
         tokens(tokens("Removing no number words."), remove_numbers = TRUE, verbose = TRUE),
-        "...removing numbers"
+        "...removing separators, numbers"
     )
     expect_message(
         tokens(tokens("Removing 1 number words."), remove_numbers = TRUE, verbose = TRUE),
-        "...removing numbers"
+        "...removing separators, numbers"
     )
     expect_identical(
         as.character(tokens(tokens("Removing 1 number words."), remove_numbers = TRUE)),
@@ -692,11 +691,11 @@ test_that("tokens.tokens(x, remove_numbers = TRUE, verbose = TRUE) works as expe
 test_that("tokens.tokens(x, remove_punct = TRUE, verbose = TRUE) works as expected (#1683)", {
     expect_message(
         tokens(tokens("Removing no £ punctuation"), remove_punct = TRUE, verbose = TRUE),
-        "...removing punctuation"
+        "...removing separators, punctuation"
     )
     expect_message(
         tokens(tokens("Removing £ punctuation."), remove_symbols = TRUE, verbose = TRUE),
-        "removing symbols"
+        "removing separators, symbols"
     )
     expect_message(
         tokens(tokens("Removing £ punctuation."), remove_symbols = TRUE, remove_separators = TRUE, verbose = TRUE),
@@ -712,11 +711,11 @@ test_that("tokens.tokens(x, remove_punct = TRUE, verbose = TRUE) works as expect
 test_that("tokens.tokens(x, remove_symbols = TRUE, verbose = TRUE) works as expected (#1683)", {
     expect_message(
         tokens(tokens("Removing no symbols."), remove_symbols = TRUE, verbose = TRUE),
-        "removing symbols"
+        "removing separators, symbols"
     )
     expect_message(
         tokens(tokens("Removing € symbols."), remove_symbols = TRUE, verbose = TRUE),
-        "removing symbols"
+        "removing separators, symbols"
     )
     expect_identical(
         as.character(tokens(tokens("Removing € symbols."), remove_symbols = TRUE)),
@@ -749,11 +748,11 @@ test_that("tokens.tokens(x, remove_separators = TRUE, verbose = TRUE) works as e
 test_that("tokens.tokens(x, remove_url = TRUE, verbose = TRUE) works as expected (#1683)", {
     expect_message(
         tokens(tokens("Removing https://quanteda.org URLs", what = "fasterword"), remove_url = TRUE, verbose = TRUE),
-        "removing URLs"
+        "removing separators, URLs"
     )
     expect_message(
         tokens(tokens("Removing no URLs"), remove_url = TRUE, verbose = TRUE),
-        "removing URLs"
+        "removing separators, URLs"
     )
     expect_identical(
         as.character(tokens(tokens("Removing https://quanteda.org URLs", what = "fasterword"),

@@ -280,9 +280,9 @@ tokens.corpus <- function(x,
         stop("Invalid value in tokens_tokenizer_word", call. = FALSE)
     })
     
-    # NOTE: consider removing
-    # if (!remove_separators && !tokenizer %in% paste0("tokenize_", c("word3", "word1", "character")))
-    #    warning("remove_separators is always TRUE for this type")
+    if (!remove_separators && tokenizer %in% 
+        paste0("tokenize_", c("fasterword", "fastestword", "character", "sentence")))
+        warning("remove_separators is always TRUE for this type")
     
     if (tokenizer == "tokenize_word1") {
         x <- preserve_special1(x, split_hyphens = split_hyphens,
@@ -310,35 +310,6 @@ tokens.corpus <- function(x,
         }
     }
     
-    # x <- lapply(x, function(y) {
-    #     if (verbose)
-    #         catm(" ...", head(names(y), 1), " to ", tail(names(y), 1), "\n", sep = "")
-    #         #catm(" ...", head(names(y), 1), " to ", tail(names(y), 1),
-    #         #     " by process ", Sys.getpid(), "\n", sep = "")
-    #         
-    #     y <- normalize_characters(y)
-    #     if (tokenizer == "tokenize_word1") {
-    #         y <- preserve_special1(y, split_hyphens = split_hyphens,
-    #                               split_tags = split_tags, verbose = verbose)
-    #         y <- serialize_tokens(fun(y, split_hyphens = split_hyphens, 
-    #                                   verbose = verbose, ...))
-    #         y <- restore_special1(y, split_hyphens = split_hyphens,
-    #                               split_tags = split_tags, verbose = verbose)
-    #     } else if (tokenizer == "tokenize_word3") {
-    #         y <- preserve_special(y, split_hyphens = split_hyphens,
-    #                               split_tags = split_tags, verbose = verbose)
-    #         special <- attr(y, "special")
-    #         y <- serialize_tokens(fun(y, split_hyphens = split_hyphens, 
-    #                                   verbose = verbose, ...))
-    #         y <- restore_special(y, special)
-    #     } else if (tokenizer == "tokenize_word4") {
-    #         y <- serialize_tokens(fun(y, split_hyphens = split_hyphens, split_tags = split_tags, 
-    #                                   verbose = verbose, ...))
-    #     } else {
-    #         y <- serialize_tokens(fun(y, verbose = verbose, ...))
-    #     }
-    #     return(y)
-    # })
     result <- build_tokens(
         unlist(x, recursive = FALSE), 
         types = attr(x[[length(x)]], "types"),
@@ -351,16 +322,10 @@ tokens.corpus <- function(x,
         catm(" ...", format(n, big.mark = ",", trim = TRUE),
              " unique type", if (n == 1) "" else "s", "\n", sep = "")
     }
-    # result <- build_tokens(
-    #     unlist_integer(x, recursive = FALSE),
-    #     types = type, what = what,
-    #     docvars = select_docvars(attrs[["docvars"]], user = include_docvars, system = TRUE),
-    #     meta = attrs[["meta"]]
-    # )
     
     if (tokenizer == "tokenize_word1") {
         result <- restore_special1(result, split_hyphens = split_hyphens,
-                                   split_tags = split_tags, verbose = verbose)
+                                   split_tags = split_tags)
     } else if (tokenizer == "tokenize_word3") {
         result <- restore_special(result, special)
     } else if (tokenizer == "tokenize_word4") {
@@ -373,7 +338,7 @@ tokens.corpus <- function(x,
                             remove_url = remove_url,
                             remove_separators = remove_separators,
                             split_hyphens = FALSE,
-                            split_tags = split_tags,
+                            split_tags = FALSE,
                             include_docvars = TRUE,
                             padding = padding,
                             verbose = verbose)
@@ -390,7 +355,7 @@ tokens.tokens <-  function(x,
                            remove_symbols = FALSE,
                            remove_numbers = FALSE,
                            remove_url = FALSE,
-                           remove_separators = FALSE,
+                           remove_separators = TRUE,
                            split_hyphens = FALSE,
                            split_tags = FALSE,
                            include_docvars = TRUE,
@@ -415,7 +380,10 @@ tokens.tokens <-  function(x,
         if (verbose) catm(" ...splitting hyphens\n")
         x <- tokens_split(x, "\\p{Pd}", valuetype = "regex", remove_separator = FALSE)
     }
-
+    if (split_tags) {
+        warning("split_tags argument is not used")
+    }
+    
     # removals
     removals <- removals_regex(separators = remove_separators,
                                punct = remove_punct,
