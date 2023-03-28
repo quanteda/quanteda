@@ -280,7 +280,7 @@ tokens.corpus <- function(x,
     })
     
     if (!remove_separators && tokenizer %in% 
-        paste0("tokenize_", c("fasterword", "fastestword", "character", "sentence")))
+        paste0("tokenize_", c("fasterword", "fastestword", "sentence")))
         warning("remove_separators is always TRUE for this type")
     
     if (tokenizer == "tokenize_word1") {
