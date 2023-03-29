@@ -2,7 +2,7 @@
 
 ## Changes and additions
 
-*  Implements a `"word4"` tokeniser that is based on new RBBI (RuleBasedBreakIterator) rules, implemented in a new .yml file that can be edited and changed by users, but whose defaults represent a significant improvement in pattern handling for words, sentences, and other forms of patterns.
+*  Implements a `"word4"` tokeniser that is based on new RBBI (RuleBasedBreakIterator) rules, implemented in a new .yml file that can be edited and changed by users, but whose defaults represent a significant improvement in pattern handling for words, sentences, and other forms of patterns.  These rules are customised from the ICU rules for breaks, with the standard and customised rules found now in the `breakrules/` system folder, so that they could, in principle, be modified by the user.
 
 *  Other minor changes:
     

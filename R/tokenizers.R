@@ -143,7 +143,7 @@ restore_special <- function(x, special, recompile = TRUE) {
 tokenize_word4 <- function(x, split_hyphens = FALSE, split_tags = FALSE, split_elisions = FALSE,
                            verbose = quanteda_options("verbose"), ...) {
     
-    rules <- quanteda::data_breakrules_word
+    rules <- breakrules_get("word")
     if (!split_hyphens) {
         if (verbose) catm(" ...preserving hyphens\n")
     } else {
@@ -188,11 +188,38 @@ tokenize_word4 <- function(x, split_hyphens = FALSE, split_tags = FALSE, split_e
 #' for how to define boundary rules.
 #' @param x character vector for texts to tokenize
 #' @param rules a list of rules for rule-based boundary detection
+#' @details The package contains internal sets of rules for word and sentence 
+#' breaks, which are lists
+#'   of rules for word and sentence boundary detection. `base` is copied from
+#'   the ICU library. Other rules are created by the package maintainers in 
+#'   `system.file("breakrules/breakrules_custom.yml")`.
+#'   
+#'   This function allows modification of those rules, and applies them as a new
+#'   tokenizer.
+#'   
+#'   These can be retrieved from the package using `breakrules_get()`.
+#' 
+#'   Custom word rules:
+#'   \describe{
+#'   \item{`base`}{ICU's rules for detecting word/sentence boundaries}
+#'   \item{`keep_hyphens`}{quanteda's rule for preserving hyphens}
+#'   \item{`keep_url`}{quanteda's rule for preserving URLs}
+#'   \item{`keep_email`}{quanteda's rule for preserving emails}
+#'   \item{`keep_tags`}{quanteda's rule for preserving tags}
+#'   \item{`split_elisions`}{quanteda's rule for splitting elisions}
+#'   \item{`split_tags`}{quanteda's rule for splitting tags}
+#'   }
+#'
 #' @return a list of characters containing tokens
 #' @importFrom stringi stri_split_boundaries
+#' @source
+#' <https://raw.githubusercontent.com/unicode-org/icu/main/icu4c/source/data/brkitr/rules/word.txt>
+#' 
+#' <https://raw.githubusercontent.com/unicode-org/icu/main/icu4c/source/data/brkitr/rules/sent.txt>
 #' @examples
-#' lis <- tokenize_custom("a well-known http://example.com", rules = data_breakrules_word)
-#' toks <- tokens(as.tokens(lis), remove_separators = TRUE)
+#' lis <- tokenize_custom("a well-known http://example.com", rules = breakrules_get("word"))
+#' tokens(lis, remove_separators = TRUE)
+#' 
 #' @export
 tokenize_custom <- function(x, rules) {
     x[is.na(x)] <- ""
@@ -201,28 +228,20 @@ tokenize_custom <- function(x, rules) {
 }
 
 #' @rdname tokenize_custom
-#' @format `data_breakrules_word` and `data_breakrules_sentence` are lists of
-#'   rules for word/sentence boundary detection. `base` is copied from the ICU
-#'   library. Other rules are created by the package maintainers.
-#' \describe{
-#' \item{`base`}{ICU's rules for detecting word/sentence boundaries}
-#' \item{`keep_hyphens`}{quanteda's rule for preserving hyphens}
-#' \item{`keep_url`}{quanteda's rule for preserving URLs}
-#' \item{`keep_email`}{quanteda's rule for preserving emails}
-#' \item{`keep_tags`}{quanteda's rule for preserving tags}
-#' \item{`split_elisions`}{quanteda's rule for splitting elisions}
-#' \item{`split_tags`}{quanteda's rule for splitting tags}
-#' }
-#' @source
-#' <https://raw.githubusercontent.com/unicode-org/icu/main/icu4c/source/data/brkitr/rules/word.txt>
-#' @keywords data
-"data_breakrules_word"
-
-#' @rdname tokenize_custom
-#' @source 
-#' <https://raw.githubusercontent.com/unicode-org/icu/main/icu4c/source/data/brkitr/rules/sent.txt>
-#' @keywords data
-"data_breakrules_sentence"
+#' @keywords internal
+#' @export
+#' @param what which set of rules to return, one of `"word"` or `"sentence"`
+#' @examples
+#' breakrules_get("word")
+#' breakrules_get("sentence")
+breakrules_get <- function(what = c("word", "sentence")) {
+    what <- match.arg(what)
+    if (what == "word") {
+        global$breakrules_word
+    } else if (what == "sentence") {
+        global$breakrules_sentence
+    }
+}
 
 
 # legacy tokenizers ----------

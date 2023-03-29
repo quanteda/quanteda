@@ -10,7 +10,7 @@ txt <- c("a b c 12345 ! @ # $ % ^ & * ( ) _ + { } | : \' \" < > ? ! , . \t \n \u
 
 
 test_that("the base rule produces the same results as type = 'word'", {
-    rules <- data_breakrules_word
+    rules <- breakrules_get("word")
     #rules <- list(base = paste0(readLines("rules/word.txt"), collapse = "\n"))
     #rules <- c(rules, yaml::read_yaml("rules/custom.yml"))
 
