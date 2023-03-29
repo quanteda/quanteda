@@ -267,11 +267,11 @@ test_that("error if empty separator is given", {
     expect_error(dictionary(list(one = c("a", "b"), two = c("c", "d")), separator = ""),
                  "The value of separator must be between 1 and Inf character")
     expect_error(dictionary(list(one = c("a", "b"), two = c("c", "d")), separator = NULL),
-                 "The length of separator must be 1")
+                 "separator cannot be NULL")
     expect_error(dictionary(file = "../data/dictionaries/mary.yml", separator = ""),
                  "The value of separator must be between 1 and Inf character")
     expect_error(dictionary(file = "../data/dictionaries/mary.yml", separator = NULL),
-                 "The length of separator must be 1")
+                 "separator cannot be NULL")
 })
 
 test_that("dictionary woks with the Yoshicoder format", {
