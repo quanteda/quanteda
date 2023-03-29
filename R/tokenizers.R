@@ -143,7 +143,7 @@ restore_special <- function(x, special, recompile = TRUE) {
 tokenize_word4 <- function(x, split_hyphens = FALSE, split_tags = FALSE, split_elisions = FALSE,
                            verbose = quanteda_options("verbose"), ...) {
     
-    rules <- breakrules_get("word")
+    rules <- breakrules("word")
     if (!split_hyphens) {
         if (verbose) catm(" ...preserving hyphens\n")
     } else {
@@ -196,8 +196,6 @@ tokenize_word4 <- function(x, split_hyphens = FALSE, split_tags = FALSE, split_e
 #'   
 #'   This function allows modification of those rules, and applies them as a new
 #'   tokenizer.
-#'   
-#'   These can be retrieved from the package using `breakrules_get()`.
 #' 
 #'   Custom word rules:
 #'   \describe{
@@ -217,9 +215,8 @@ tokenize_word4 <- function(x, split_hyphens = FALSE, split_tags = FALSE, split_e
 #' 
 #' <https://raw.githubusercontent.com/unicode-org/icu/main/icu4c/source/data/brkitr/rules/sent.txt>
 #' @examples
-#' lis <- tokenize_custom("a well-known http://example.com", rules = breakrules_get("word"))
+#' lis <- tokenize_custom("a well-known http://example.com", rules = breakrules("word"))
 #' tokens(lis, remove_separators = TRUE)
-#' 
 #' @export
 tokenize_custom <- function(x, rules) {
     x[is.na(x)] <- ""
@@ -232,9 +229,9 @@ tokenize_custom <- function(x, rules) {
 #' @export
 #' @param what which set of rules to return, one of `"word"` or `"sentence"`
 #' @examples
-#' breakrules_get("word")
-#' breakrules_get("sentence")
-breakrules_get <- function(what = c("word", "sentence")) {
+#' breakrules("word")
+#' breakrules("sentence")
+breakrules <- function(what = c("word", "sentence")) {
     what <- match.arg(what)
     if (what == "word") {
         global$breakrules_word

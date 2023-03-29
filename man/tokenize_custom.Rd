@@ -2,7 +2,7 @@
 % Please edit documentation in R/tokenizers.R
 \name{tokenize_custom}
 \alias{tokenize_custom}
-\alias{breakrules_get}
+\alias{breakrules}
 \title{Customizable tokenizer}
 \source{
 \url{https://raw.githubusercontent.com/unicode-org/icu/main/icu4c/source/data/brkitr/rules/word.txt}
@@ -12,7 +12,7 @@
 \usage{
 tokenize_custom(x, rules)
 
-breakrules_get(what = c("word", "sentence"))
+breakrules(what = c("word", "sentence"))
 }
 \arguments{
 \item{x}{character vector for texts to tokenize}
@@ -38,8 +38,6 @@ the ICU library. Other rules are created by the package maintainers in
 This function allows modification of those rules, and applies them as a new
 tokenizer.
 
-These can be retrieved from the package using \code{breakrules_get()}.
-
 Custom word rules:
 \describe{
 \item{\code{base}}{ICU's rules for detecting word/sentence boundaries}
@@ -52,10 +50,9 @@ Custom word rules:
 }
 }
 \examples{
-lis <- tokenize_custom("a well-known http://example.com", rules = breakrules_get("word"))
+lis <- tokenize_custom("a well-known http://example.com", rules = breakrules("word"))
 tokens(lis, remove_separators = TRUE)
-
-breakrules_get("word")
-breakrules_get("sentence")
+breakrules("word")
+breakrules("sentence")
 }
 \keyword{internal}
