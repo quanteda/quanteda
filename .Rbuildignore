@@ -26,7 +26,6 @@ __MACOSX
 ^pkgdown$
 ^index.(html|md|Rmd)$
 ^paper
-^rules
 LICENSE
 quanteda.pdf
 ^\.lintr$
