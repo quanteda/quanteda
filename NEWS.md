@@ -1,3 +1,9 @@
+# quanteda 3.x
+
+## Changes and additions
+
+* The `user` and `system` arguments are added to `docvars()`.
+
 # quanteda 3.2.5
 
 ## Changes and additions
