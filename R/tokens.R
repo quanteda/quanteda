@@ -309,7 +309,6 @@ tokens.corpus <- function(x,
             if (verbose) catm(" ...tokenizing", i, "of", length(x), "blocks\n")
             temp <- tokenizer_fn(x[[i]], split_hyphens = split_hyphens, split_tags = split_tags, 
                                  verbose = verbose, ...)
-            if (verbose) catm(" ...serializing tokens, ")
             if (i == 1) {
                 # TODO: replace with cpp_serialize()
                 x[[i]] <- serialize_tokens(temp)
