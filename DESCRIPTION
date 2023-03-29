@@ -75,6 +75,7 @@ SystemRequirements: C++11
 Roxygen: list(markdown = TRUE)
 Collate: 
     'RcppExports.R'
+    'tokenizers.R'
     'meta.R'
     'quanteda-documentation.R'
     'aaa.R'
@@ -135,7 +136,6 @@ Collate:
     'textplot.R'
     'texts.R'
     'textstat.R'
-    'tokenizers.R'
     'tokens-methods.R'
     'tokens.R'
     'tokens_chunk.R'

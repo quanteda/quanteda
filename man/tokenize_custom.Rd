@@ -2,7 +2,9 @@
 % Please edit documentation in R/tokenizers.R
 \name{tokenize_custom}
 \alias{tokenize_custom}
-\alias{breakrules}
+\alias{breakrules_get}
+\alias{breakrules_set}
+\alias{breakrules_reset}
 \title{Customizable tokenizer}
 \source{
 \url{https://raw.githubusercontent.com/unicode-org/icu/main/icu4c/source/data/brkitr/rules/word.txt}
@@ -12,21 +14,38 @@
 \usage{
 tokenize_custom(x, rules)
 
-breakrules(what = c("word", "sentence"))
+breakrules_get(what = c("word", "sentence"))
+
+breakrules_set(x, what = c("word", "sentence"))
+
+breakrules_reset(what = c("word", "sentence"))
 }
 \arguments{
 \item{x}{character vector for texts to tokenize}
 
 \item{rules}{a list of rules for rule-based boundary detection}
 
-\item{what}{which set of rules to return, one of \code{"word"} or \code{"sentence"}}
+\item{what}{character; which set of rules to return, one of \code{"word"} or
+\code{"sentence"}}
 }
 \value{
-a list of characters containing tokens
+\code{tokenize_custom()} returns a list of characters containing tokens.
+
+\code{breakrules()} returns the existing break rules as a list.
+
+\code{breakrules_set()} returns nothing but reassigns the global
+breakrules to \code{x}.
+
+\code{breakrules_reset()} returns nothing but reassigns the global
+breakrules to the system defaults.  These rules are defined in
+\code{system.file("breakrules/")}.
 }
 \description{
 Allows users to tokenize texts using customized boundary rules. See the \href{https://unicode-org.github.io/icu/userguide/boundaryanalysis/break-rules.html}{ICU website}
 for how to define boundary rules.
+
+Tools for custom word and sentence breakrules, to retrieve, set, or reset
+them to package defaults.
 }
 \details{
 The package contains internal sets of rules for word and sentence
@@ -52,7 +71,13 @@ Custom word rules:
 \examples{
 lis <- tokenize_custom("a well-known http://example.com", rules = breakrules("word"))
 tokens(lis, remove_separators = TRUE)
-breakrules("word")
-breakrules("sentence")
+breakrules_get("word")
+breakrules_get("sentence")
+
+brw <- breakrules_get("word")
+brw$keep_email <- "@[a-zA-Z0-9_]+"
+breakrules_set(brw, what = "word")
+breakrules_reset("sentence")
+breakrules_reset("word")
 }
 \keyword{internal}

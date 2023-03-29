@@ -10,7 +10,7 @@ txt <- c("a b c 12345 ! @ # $ % ^ & * ( ) _ + { } | : \' \" < > ? ! , . \t \n \u
 
 
 test_that("the base rule produces the same results as type = 'word'", {
-    rules <- breakrules("word")
+    rules <- breakrules_get("word")
     #rules <- list(base = paste0(readLines("rules/word.txt"), collapse = "\n"))
     #rules <- c(rules, yaml::read_yaml("rules/custom.yml"))
 
@@ -37,3 +37,23 @@ test_that("the base rule produces the same results as type = 'word'", {
 #                  "Invalid value in tokens_tokenizer_word")
 #     quanteda_options(reset = TRUE)
 # })
+
+test_that("breakrules retrieval, assignment, and resetting work", {
+    brw <- breakrules_get("word")
+    brs <- breakrules_get("sentence")
+    
+    breakrules_set(list(lettsw = head(letters)), what = "word")
+    breakrules_set(list(lettss = tail(letters)), what = "sentence")
+    expect_identical(breakrules_get("word"), list(lettsw = head(letters)))
+    expect_identical(breakrules_get("sentence"), list(lettss = tail(letters)))
+    
+    breakrules_reset("word")
+    breakrules_reset("sentence")
+    
+    expect_identical(breakrules_get("word"), brw)
+    expect_identical(breakrules_get("sentence"), brs)
+})
+
+breakrules_reset("word")
+breakrules_reset("sentence")
+

@@ -143,7 +143,7 @@ restore_special <- function(x, special, recompile = TRUE) {
 tokenize_word4 <- function(x, split_hyphens = FALSE, split_tags = FALSE, split_elisions = FALSE,
                            verbose = quanteda_options("verbose"), ...) {
     
-    rules <- breakrules("word")
+    rules <- breakrules_get("word")
     if (!split_hyphens) {
         if (verbose) catm(" ...preserving hyphens\n")
     } else {
@@ -196,7 +196,7 @@ tokenize_word4 <- function(x, split_hyphens = FALSE, split_tags = FALSE, split_e
 #'   
 #'   This function allows modification of those rules, and applies them as a new
 #'   tokenizer.
-#' 
+#'   
 #'   Custom word rules:
 #'   \describe{
 #'   \item{`base`}{ICU's rules for detecting word/sentence boundaries}
@@ -208,7 +208,7 @@ tokenize_word4 <- function(x, split_hyphens = FALSE, split_tags = FALSE, split_e
 #'   \item{`split_tags`}{quanteda's rule for splitting tags}
 #'   }
 #'
-#' @return a list of characters containing tokens
+#' @return `tokenize_custom()` returns a list of characters containing tokens.
 #' @importFrom stringi stri_split_boundaries
 #' @source
 #' <https://raw.githubusercontent.com/unicode-org/icu/main/icu4c/source/data/brkitr/rules/word.txt>
@@ -225,18 +225,65 @@ tokenize_custom <- function(x, rules) {
 }
 
 #' @rdname tokenize_custom
+#' @description
+#' Tools for custom word and sentence breakrules, to retrieve, set, or reset
+#' them to package defaults.
 #' @keywords internal
 #' @export
-#' @param what which set of rules to return, one of `"word"` or `"sentence"`
+#' @param what character; which set of rules to return, one of `"word"` or
+#'   `"sentence"`
+#' @returns `breakrules()` returns the existing break rules as a list.
 #' @examples
-#' breakrules("word")
-#' breakrules("sentence")
-breakrules <- function(what = c("word", "sentence")) {
+#' breakrules_get("word")
+#' breakrules_get("sentence")
+#' 
+breakrules_get <- function(what = c("word", "sentence")) {
     what <- match.arg(what)
     if (what == "word") {
         global$breakrules_word
     } else if (what == "sentence") {
         global$breakrules_sentence
+    }
+}
+
+#' @rdname tokenize_custom
+#' @keywords internal
+#' @export
+#' @returns `breakrules_set()` returns nothing but reassigns the global
+#'   breakrules to `x`.
+#' @examples
+#' brw <- breakrules_get("word")
+#' brw$keep_email <- "@[a-zA-Z0-9_]+"
+#' breakrules_set(brw, what = "word")
+breakrules_set <- function(x, what = c("word", "sentence")) {
+    what <- match.arg(what)
+    if (what == "word") {
+        global$breakrules_word <- x
+    } else if (what == "sentence") {
+        global$breakrules_sentence <- x
+    }
+}
+
+#' @rdname tokenize_custom
+#' @keywords internal
+#' @export
+#' @returns `breakrules_reset()` returns nothing but reassigns the global
+#'   breakrules to the system defaults.  These rules are defined in
+#'   `system.file("breakrules/")`.
+#' @examples
+#' breakrules_reset("sentence")
+#' breakrules_reset("word")
+breakrules_reset <- function(what = c("word", "sentence")) {
+    what <- match.arg(what)
+    if (what == "word") {
+        global$breakrules_word <-
+            c(list(base = paste0(readLines(system.file("breakrules/word.txt", package = "quanteda")),
+                                 collapse = "\n")),
+              yaml::read_yaml(system.file("breakrules/custom.yml", package = "quanteda")))
+    } else if (what == "sentence") {
+        global$breakrules_sentence <-
+            list(base = paste0(readLines(system.file("breakrules/sent.txt", package = "quanteda")),
+                               collapse = "\n"))
     }
 }
 
