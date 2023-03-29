@@ -3,18 +3,35 @@
 \name{tokenize_internal}
 \alias{tokenize_internal}
 \alias{tokenize}
+\alias{tokenize_word2}
 \alias{tokenize_word3}
+\alias{tokenize_word4}
 \alias{tokenize_word1}
 \alias{tokenize_character}
 \alias{tokenize_sentence}
 \alias{tokenize_fasterword}
 \alias{tokenize_fastestword}
-\alias{tokenize_word4}
 \title{quanteda tokenizers}
 \usage{
+tokenize_word2(
+  x,
+  split_hyphens = FALSE,
+  verbose = quanteda_options("verbose"),
+  ...
+)
+
 tokenize_word3(
   x,
   split_hyphens = FALSE,
+  verbose = quanteda_options("verbose"),
+  ...
+)
+
+tokenize_word4(
+  x,
+  split_hyphens = FALSE,
+  split_tags = FALSE,
+  split_elisions = FALSE,
   verbose = quanteda_options("verbose"),
   ...
 )
@@ -33,15 +50,6 @@ tokenize_sentence(x, verbose = FALSE, ...)
 tokenize_fasterword(x, ...)
 
 tokenize_fastestword(x, ...)
-
-tokenize_word4(
-  x,
-  split_hyphens = FALSE,
-  split_tags = FALSE,
-  split_elisions = FALSE,
-  verbose = quanteda_options("verbose"),
-  ...
-)
 }
 \arguments{
 \item{x}{(named) character; input texts}
@@ -67,6 +75,11 @@ includes URLs, #hashtags, @usernames, and email addresses.
 Internal methods for tokenization providing default and legacy methods for
 text segmentation.
 }
+\details{
+Each of the word tokenizers corresponds to a major version of \pkg{quanteda},
+kept here for backward compatibility and comparison.  \code{tokenize_word3()} is
+identical to \code{tokenize_word2()}.
+}
 \examples{
 \dontrun{
 txt <- c(doc1 = "Tweet https://quanteda.io using @quantedainit and #rstats.",
@@ -75,8 +88,8 @@ txt <- c(doc1 = "Tweet https://quanteda.io using @quantedainit and #rstats.",
          doc5 = "?",
          doc6 = "Self-aware machines! \U0001f600",
          doc7 = "Qu'est-ce que c'est?")
-tokenize_word3(txt)
-tokenize_word3(txt, split_hyphens = FALSE)
+tokenize_word2(txt)
+tokenize_word2(txt, split_hyphens = FALSE)
 tokenize_word1(txt, split_hyphens = FALSE)
 tokenize_word4(txt, split_hyphens = FALSE, split_elisions = TRUE)
 tokenize_fasterword(txt)

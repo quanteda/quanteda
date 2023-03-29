@@ -1,4 +1,4 @@
-quanteda_options("tokens_tokenizer_word" = "tokenize_word4")
+quanteda_options("tokens_tokenizer_word" = "word4")
 
 test_that("as.tokens list version works as expected", {
     txt <- c(doc1 = "The first sentence is longer than the second.",

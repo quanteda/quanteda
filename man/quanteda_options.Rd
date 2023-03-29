@@ -40,13 +40,23 @@ for all functions with a \code{verbose} argument}
 \item{\code{threads}}{integer; specifies the number of threads to use in
 parallelized functions; defaults to \code{RcppParallel::defaultNumThreads()};
 the number of threads can be changed only once in a session}
-\item{\code{print_dfm_max_ndoc}}{integer; specifies the number of documents
+\item{\code{print_dfm_max_ndoc}, \code{print_corpus_max_ndoc}, \code{print_tokens_max_ndoc}}{integer;
+specify the number of documents to display when using the defaults for
+printing a dfm, corpus, or tokens object}
+\item{\code{print_dfm_max_nfeat}, \code{print_corpus_max_nchar}, \code{print_tokens_max_ntoken}}{integer;
+specifies the number of features to display when printing a dfm,
+the number of characters to display when printing corpus documents, or the
+number of tokens to display when printing tokens objects}
+\item{\code{print_dfm_summary}}{integer; specifies the number of documents
 to display when using the defaults for printing a dfm}
-\item{\code{print_dfm_max_nfeat}}{integer; specifies the number of
-features to display when using the defaults for printing a dfm}
+\item{\code{print_dictionary_max_nkey}, \code{print_dictionary_max_nval}}{the number of
+keys or values (respectively) to display when printing a dictionary}
+\item{\code{print_kwic_max_nrow}}{the number of rows to display when printing a
+kwic object}
 \item{\code{base_docname}}{character; stem name for documents that are
 unnamed when a corpus, tokens, or dfm are created or when a dfm is converted
-from another object} \item{\code{base_featname}}{character; stem name for
+from another object}
+\item{\code{base_featname}}{character; stem name for
 features that are unnamed when they are added, for whatever reason, to a dfm
 through an operation that adds features}
 \item{\code{base_compname}}{character; stem name for components that are
@@ -60,7 +70,11 @@ these in the default internal "word" tokenizer}
 number of documents to be tokenized at a time in blocked tokenization.
 When the number is large, tokenization becomes faster but also memory-intensive.}
 \item{\code{tokens_locale}}{character; specify locale in stringi boundary detection in
-tokenization and corpus reshaping. See \code{\link[stringi:stri_opts_brkiter]{stringi::stri_opts_brkiter()}}.}}
+tokenization and corpus reshaping. See \code{\link[stringi:stri_opts_brkiter]{stringi::stri_opts_brkiter()}}.}
+\item{\code{tokens_tokenizer_word}}{character; the current word tokenizer version
+used as a default for \code{what = "word"} in \code{\link[=tokens]{tokens()}}, one of \code{"word1"},
+\code{"word2"}, \code{"word3"} (same as \code{"word2"}), or \code{"word4"}.}
+}
 }
 \examples{
 (opt <- quanteda_options())

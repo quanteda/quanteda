@@ -65,7 +65,10 @@
 #'
 #'   Recommended tokenizers are those from the \pkg{tokenizers} package, which
 #'   are generally faster than the default (built-in) tokenizer but always
-#'   splits infix hyphens, or \pkg{spacyr}.
+#'   splits infix hyphens, or \pkg{spacyr}.  The default tokenizer in
+#'   **quanteda** is very smart, however, and if you do not have special
+#'   requirements, it works extremely well for most languages as well as text
+#'   from social media (including hashtags and usernames).
 #'
 #' @section quanteda Tokenizers: The default word tokenizer `what = "word"`
 #'   splits tokens using [stri_split_boundaries(x, type =
@@ -98,6 +101,11 @@
 #'   additional rules to avoid splits on words like "Mr." that would otherwise
 #'   incorrectly be detected as sentence boundaries.  For better sentence
 #'   tokenization, consider using \pkg{spacyr}.} }
+#'   
+#'   For forward compatibility including use of a more advanced tokenizer that
+#'   will be used in major version 4, there is also a "word4" tokenizer that is
+#'   even smarter than the default, which is also aliased as "word2" and "word3"
+#'   (these are identical).  See [tokenize_word4()] for full details.
 #'
 #'
 #' @return \pkg{quanteda} `tokens` class object, by default a serialized list of
@@ -242,8 +250,8 @@ tokens.corpus <- function(x,
                           verbose = quanteda_options("verbose"),
                           ...)  {
     x <- as.corpus(x)
-    what <- match.arg(what, c("word", "sentence", "character",
-                              "word1", "word3", "word4", 
+    what <- match.arg(what, c("word", paste0("word", 1:4), 
+                              "sentence", "character",
                               "fasterword", "fastestword"))
     remove_punct <- check_logical(remove_punct)
     remove_symbols <- check_logical(remove_symbols)
@@ -263,12 +271,13 @@ tokens.corpus <- function(x,
     if (verbose) catm(" ...starting tokenization\n")
     
     tokenizer <- switch(what,
-                        word = quanteda_options("tokens_tokenizer_word"),
+                        word = paste0("tokenize_", quanteda_options("tokens_tokenizer_word")),
                         sentence = "tokenize_sentence",
                         character = "tokenize_character",
                         # only for backward compatibility
                         word4 = "tokenize_word4",
-                        word3 = "tokenize_word3",
+                        word3 = "tokenize_word2",
+                        word2 = "tokenize_word2",
                         word1 = "tokenize_word1",
                         fasterword = "tokenize_fasterword", 
                         fastestword = "tokenize_fastestword")
@@ -286,7 +295,7 @@ tokens.corpus <- function(x,
     if (tokenizer == "tokenize_word1") {
         x <- preserve_special1(x, split_hyphens = split_hyphens,
                                split_tags = split_tags, verbose = verbose)
-    } else if (tokenizer == "tokenize_word3") {
+    } else if (tokenizer %in% c("tokenize_word2", "tokenize_word3")) {
         x <- preserve_special(x, split_hyphens = split_hyphens,
                               split_tags = split_tags, verbose = verbose)
         special <- attr(x, "special")
@@ -302,10 +311,10 @@ tokens.corpus <- function(x,
                                  verbose = verbose, ...)
             if (verbose) catm(" ...serializing tokens, ")
             if (i == 1) {
-                # TODO: repalced with cpp_serialize()
+                # TODO: replace with cpp_serialize()
                 x[[i]] <- serialize_tokens(temp)
             } else {
-                # TODO: repalced with cpp_serialize_add()
+                # TODO: replace with cpp_serialize_add()
                 x[[i]] <- serialize_tokens(temp, attr(x[[i - 1]], "types"))
             }
         }
@@ -333,7 +342,7 @@ tokens.corpus <- function(x,
     if (tokenizer == "tokenize_word1") {
         result <- restore_special1(result, split_hyphens = split_hyphens,
                                    split_tags = split_tags)
-    } else if (tokenizer == "tokenize_word3") {
+    } else if (tokenizer %in% c("tokenize_word2", "tokenize_word3")) {
         result <- restore_special(result, special)
     } else if (tokenizer == "tokenize_word4") {
         result <- tokens_restore(result)
