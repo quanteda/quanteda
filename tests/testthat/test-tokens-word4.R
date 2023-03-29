@@ -125,9 +125,7 @@ test_that("tokens works as expected for what = character", {
 })
 
 test_that("tokens works with unusual hiragana #554", {
-    skip_on_travis()
     skip_on_cran()
-    skip_on_appveyor()
     skip_on_os("windows")
     txts <- c("づいﾞ", "゛んﾞ", "たーﾟ")
     expect_equivalent(as.list(tokens(txts)),
