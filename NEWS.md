@@ -4,6 +4,10 @@
 
 * The `user` and `system` arguments are added to `docvars()`.
 
+## Bug fixes and stability enhancements
+
+* `dfm_group()` works correctly with an empty dfm (#2225).
+
 # quanteda 3.2.5
 
 ## Changes and additions
