@@ -7,6 +7,7 @@
 #' @param min minimum value in the vector
 #' @param max maximum value in the vector
 #' @param strict raise error when `x` is a different type
+#' @param allow_null if `TRUE`, returns `NULL` when `is.null(x)`
 #' @details Note that value checks are performed after coercion to expected input types. 
 #' @keywords internal development
 #' @export
@@ -23,8 +24,14 @@
 #' check_character("_", min_nchar = 1) # return "_"
 #' check_character("", min_nchar = 1) # error
 #' }
-check_integer <- function(x, min_len = 1, max_len = 1, min = -Inf, max = Inf, strict = FALSE) {
+check_integer <- function(x, min_len = 1, max_len = 1, min = -Inf, max = Inf, 
+                          strict = FALSE, allow_null = FALSE) {
     arg <- deparse(substitute(x))
+    if (allow_null) {
+        if (is.null(x)) return(NULL)
+    } else {
+        x <- check_null(x, arg)
+    }
     if (strict && !is.integer(x))
         stop("The type of ", arg, " must be integer", call. = FALSE)
     fun <- function(e) stop(arg, " must be coercible to integer", call. = FALSE)
@@ -39,8 +46,14 @@ check_integer <- function(x, min_len = 1, max_len = 1, min = -Inf, max = Inf, st
 
 #' @rdname check_integer
 #' @export
-check_double <- function(x, min_len = 1, max_len = 1, min = -Inf, max = Inf, strict = FALSE) {
+check_double <- function(x, min_len = 1, max_len = 1, min = -Inf, max = Inf, 
+                         strict = FALSE, allow_null = FALSE) {
     arg <- deparse(substitute(x))
+    if (allow_null) {
+        if (is.null(x)) return(NULL)
+    } else {
+        x <- check_null(x, arg)
+    }
     if (strict && !is.double(x))
         stop("The type of ", arg, " must be double", call. = FALSE)
     fun <- function(e) stop(arg, " must be coercible to double", call. = FALSE)
@@ -55,8 +68,14 @@ check_double <- function(x, min_len = 1, max_len = 1, min = -Inf, max = Inf, str
 
 #' @rdname check_integer
 #' @export
-check_logical <- function(x, min_len = 1, max_len = 1, strict = FALSE) {
+check_logical <- function(x, min_len = 1, max_len = 1, strict = FALSE, 
+                          allow_null = FALSE) {
     arg <- deparse(substitute(x))
+    if (allow_null) {
+        if (is.null(x)) return(NULL)
+    } else {
+        x <- check_null(x, arg)
+    }
     if (strict && !is.logical(x))
         stop("The type of ", arg, " must be logical", call. = FALSE)
     fun <- function(e) stop(arg, " must be coercible to logical", call. = FALSE)
@@ -72,8 +91,14 @@ check_logical <- function(x, min_len = 1, max_len = 1, strict = FALSE) {
 #' @param max_nchar maximum character length of values in the vector
 #' @rdname check_integer
 #' @export
-check_character <- function(x, min_len = 1, max_len = 1, min_nchar = 0, max_nchar = Inf, strict = FALSE) {
+check_character <- function(x, min_len = 1, max_len = 1, min_nchar = 0, max_nchar = Inf, 
+                            strict = FALSE, allow_null = FALSE) {
     arg <- deparse(substitute(x))
+    if (allow_null) {
+        if (is.null(x)) return(NULL)
+    } else {
+        x <- check_null(x, arg)
+    }
     if (strict && !is.character(x))
         stop("The type of ", arg, " must be character", call. = FALSE)
     fun <- function(e) stop(arg, " must be coercible to character", call. = FALSE)
@@ -96,6 +121,12 @@ check_character <- function(x, min_len = 1, max_len = 1, min_nchar = 0, max_ncha
 check_na <- function(x, arg) {
     if (any(is.na(x)))
         stop("The value of ", arg, " cannot be NA\n", call. = FALSE)
+    return(x)
+}
+
+check_null <- function(x, arg) {
+    if (is.null(x))
+        stop(arg, " cannot be NULL\n", call. = FALSE)
     return(x)
 }
 

@@ -19,6 +19,7 @@ l3 <- c(TRUE, FALSE, TRUE)
 l4 <- c(TRUE, NA)
 
 fun <- function(x){}
+x1 <- NULL
 
 test_that("check_integer works", {
 
@@ -46,6 +47,9 @@ test_that("check_integer works", {
                  "fun must be coercible to integer")
     expect_error(quanteda:::check_integer(n1, strict = TRUE), 
                  "The type of n1 must be integer")
+    expect_error(quanteda:::check_integer(x1), 
+                 "x1 cannot be NULL")
+    expect_true(is.null(quanteda:::check_integer(x1, allow_null = TRUE)))
 })
 
 test_that("check_double works", {
@@ -74,7 +78,9 @@ test_that("check_double works", {
                  "fun must be coercible to double")
     expect_error(quanteda:::check_double(i1, strict = TRUE), 
                  "The type of i1 must be double")
-    
+    expect_error(quanteda:::check_double(x1), 
+                 "x1 cannot be NULL")
+    expect_true(is.null(quanteda:::check_double(x1, allow_null = TRUE)))
 })
 
 
@@ -100,6 +106,9 @@ test_that("check_character works", {
                  "fun must be coercible to character")
     expect_error(quanteda:::check_character(n1, strict = TRUE), 
                  "The type of n1 must be character")
+    expect_error(quanteda:::check_character(x1), 
+                 "x1 cannot be NULL")
+    expect_true(is.null(quanteda:::check_character(x1, allow_null = TRUE)))
 })
 
 test_that("check_logical works", {
@@ -124,6 +133,9 @@ test_that("check_logical works", {
                  "fun must be coercible to logical")
     expect_error(quanteda:::check_logical(i1, strict = TRUE), 
                  "The type of i1 must be logical")
+    expect_error(quanteda:::check_logical(x1), 
+                 "x1 cannot be NULL")
+    expect_true(is.null(quanteda:::check_logical(x1, allow_null = TRUE)))
 })
 
 

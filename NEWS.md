@@ -1,3 +1,4 @@
+
 # quanteda 3.3.0
 
 ## Changes and additions
@@ -16,7 +17,9 @@
     
 * Updates tests
 
+## Bug fixes and stability enhancements
 
+* `dfm_group()` works correctly with an empty dfm (#2225).
 # quanteda 3.2.5
 
 ## Changes and additions
