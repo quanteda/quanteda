@@ -61,7 +61,7 @@ dfm_group.dfm <- function(x, groups = docid(x), fill = FALSE, force = FALSE) {
                  call. = FALSE)
         }
     }
-    if (!nfeat(x) || !ndoc(x)) return(x)
+    if (!ndoc(x)) return(x)
     if (!fill)
         groups <- droplevels(groups)
     if (ndoc(x) != length(groups))
