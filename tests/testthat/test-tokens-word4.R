@@ -889,10 +889,10 @@ test_that("split_tags works", {
     )
     
     txt2 <- c(d1 = "#quanteda #q-x #q_y #q100 #q")
-    # expect_identical(
-    #     as.list(tokens(txt2, what = "word")),
-    #     list(d1 = c("#quanteda", "#q", "-", "x", "#q_y", "#q100", "#q"))
-    # )
+    expect_identical(
+        as.list(tokens(txt2, what = "word")),
+        list(d1 = c("#quanteda", "#q", "-", "x", "#q_y", "#q100", "#q"))
+    )
     expect_identical(
         as.list(tokens(txt2, what = "word", split_tags = TRUE)),
         list(d1 = c("#", "quanteda", "#", "q-x", "#", "q_y", "#", "q100", "#", "q"))

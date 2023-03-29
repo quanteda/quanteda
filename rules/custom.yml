@@ -16,7 +16,7 @@ keep_hyphens: |
     
 # Keep tags
 # keep_tags: |
-#     ^[#] [\p{L}\p{N}]+ [#]?; 
+#     ^[#] [\p{L}\p{N}_]+ [#]?; 
 #     ^[@] [a-zA-Z0-9_]+;
 
 # Split elisions
@@ -26,5 +26,5 @@ split_elisions: |
 
 # Split tags
 split_tags: |
-    ^[#] / [\p{L}\p{N}]+ / [#]?; 
+    ^[#] / [\p{L}\p{N}_]+ / [#]?; 
     ^[@] / [a-zA-Z0-9_]+;
