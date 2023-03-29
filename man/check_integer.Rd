@@ -13,7 +13,8 @@ check_integer(
   max_len = 1,
   min = -Inf,
   max = Inf,
-  strict = FALSE
+  strict = FALSE,
+  allow_null = FALSE
 )
 
 check_double(
@@ -22,10 +23,11 @@ check_double(
   max_len = 1,
   min = -Inf,
   max = Inf,
-  strict = FALSE
+  strict = FALSE,
+  allow_null = FALSE
 )
 
-check_logical(x, min_len = 1, max_len = 1, strict = FALSE)
+check_logical(x, min_len = 1, max_len = 1, strict = FALSE, allow_null = FALSE)
 
 check_character(
   x,
@@ -33,7 +35,8 @@ check_character(
   max_len = 1,
   min_nchar = 0,
   max_nchar = Inf,
-  strict = FALSE
+  strict = FALSE,
+  allow_null = FALSE
 )
 }
 \arguments{
@@ -46,6 +49,8 @@ check_character(
 \item{max}{maximum value in the vector}
 
 \item{strict}{raise error when \code{x} is a different type}
+
+\item{allow_null}{if \code{TRUE}, returns \code{NULL} when \code{is.null(x)}}
 
 \item{min_nchar}{minimum character length of values in the vector}
 
