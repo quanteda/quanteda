@@ -215,7 +215,7 @@ tokenize_word4 <- function(x, split_hyphens = FALSE, split_tags = FALSE, split_e
 #' 
 #' <https://raw.githubusercontent.com/unicode-org/icu/main/icu4c/source/data/brkitr/rules/sent.txt>
 #' @examples
-#' lis <- tokenize_custom("a well-known http://example.com", rules = breakrules("word"))
+#' lis <- tokenize_custom("a well-known http://example.com", rules = breakrules_get("word"))
 #' tokens(lis, remove_separators = TRUE)
 #' @export
 tokenize_custom <- function(x, rules) {
@@ -232,7 +232,7 @@ tokenize_custom <- function(x, rules) {
 #' @export
 #' @param what character; which set of rules to return, one of `"word"` or
 #'   `"sentence"`
-#' @returns `breakrules()` returns the existing break rules as a list.
+#' @returns `breakrules_get()` returns the existing break rules as a list.
 #' @examples
 #' breakrules_get("word")
 #' breakrules_get("sentence")
