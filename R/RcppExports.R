@@ -33,8 +33,17 @@ cpp_tokens_group <- function(xptr, groups_) {
     .Call(`_quanteda_cpp_tokens_group`, xptr, groups_)
 }
 
+<<<<<<< HEAD
 cpp_tokens_lookup <- function(xptr, words_, keys_, types_, overlap, nomatch) {
     .Call(`_quanteda_cpp_tokens_lookup`, xptr, words_, keys_, types_, overlap, nomatch)
+=======
+qatd_cpp_tokens_restore <- function(texts_, marks_left_, marks_right_, types_, delim_) {
+    .Call(`_quanteda_qatd_cpp_tokens_restore`, texts_, marks_left_, marks_right_, types_, delim_)
+}
+
+qatd_cpp_tokens_segment <- function(texts_, types_, patterns_, remove, position) {
+    .Call(`_quanteda_qatd_cpp_tokens_segment`, texts_, types_, patterns_, remove, position)
+>>>>>>> v4
 }
 
 cpp_tokens_ngrams <- function(xptr, delim_, ns_, skips_) {

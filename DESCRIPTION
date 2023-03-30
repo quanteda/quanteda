@@ -1,5 +1,5 @@
 Package: quanteda
-Version: 3.2.5
+Version: 3.2.5.9000
 Title: Quantitative Analysis of Textual Data
 Description: A fast, flexible, and comprehensive framework for 
     quantitative text analysis in R.  Provides functionality for corpus management,
@@ -18,6 +18,7 @@ Authors@R: c(
     person("Akitaka", "Matsuo", email = "a.matsuo@lse.ac.uk", role = "aut", comment = c(ORCID = "0000-0002-3323-6330")),
     person("William", "Lowe", email = "wlowe@princeton.edu", role = "aut", comment = c(ORCID = "0000-0002-1549-6163")),
     person("Christian", "Müller", email = "C.Mueller@lse.ac.uk", role = "ctb"),
+    person("Olivier", "Delmarcelle", email = "olivier.delmarcelle@ugent.be", role = "ctb", comment = c(ORCID = "0000-0003-4347-070X")),
     person("European Research Council", role = "fnd", comment = "ERC-2011-StG 283794-QUANTESS")
     )
 License: GPL-3
@@ -74,6 +75,7 @@ SystemRequirements: C++11
 Roxygen: list(markdown = TRUE)
 Collate: 
     'RcppExports.R'
+    'tokenizers.R'
     'meta.R'
     'quanteda-documentation.R'
     'aaa.R'
@@ -134,7 +136,6 @@ Collate:
     'textplot.R'
     'texts.R'
     'textstat.R'
-    'tokenizers.R'
     'tokens-methods.R'
     'tokens.R'
     'tokens_chunk.R'
@@ -143,6 +144,7 @@ Collate:
     'tokens_lookup.R'
     'tokens_ngrams.R'
     'tokens_replace.R'
+    'tokens_restore.R'
     'tokens_sample.R'
     'tokens_segment.R'
     'tokens_select.R'

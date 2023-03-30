@@ -321,13 +321,13 @@ dfm2stm <- function(x, docvars = NULL, omit_empty = TRUE) {
     empty_docs <- rowSums(x) == 0
     if (omit_empty) {
         if (sum(empty_docs) > 0)
-            warning("Dropped empty document(s): ",
-                    paste0(docnames(x)[empty_docs], collapse = ", "))
+            warning("Dropped ", format(length(empty_docs), big.mark = ","), 
+                                       " empty document(s)")
 
         empty_feats <- colSums(x) == 0
         if (sum(empty_feats) > 0)
-            warning("zero-count features: ",
-                    paste0(featnames(x)[empty_feats], collapse = ", "))
+            warning("Dropped " , format(length(empty_feats), big.mark = ","), 
+                                       " zero-count feature(s)")
 
         x <- x[!empty_docs, !empty_feats]
         docvars <- docvars[!empty_docs, , drop = FALSE]

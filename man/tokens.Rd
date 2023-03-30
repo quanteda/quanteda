@@ -21,9 +21,8 @@ tokens(
 )
 }
 \arguments{
-\item{x}{the input object to the tokens constructor, one of: a (uniquely)
-named \strong{list} of characters; a \link{tokens} object; or a \link{corpus} or
-\link{character} object that will be tokenized}
+\item{x}{the input object to the tokens constructor; a \link{tokens}, \link{corpus} or
+\link{character} object to tokenize.}
 
 \item{what}{character; which tokenizer to use.  The default \code{what = "word"}
 is the version 2 \pkg{quanteda} tokenizer.  Legacy tokenizers (version < 2)
@@ -107,7 +106,10 @@ call \code{\link[=as.tokens]{as.tokens()}} instead of \code{tokens()}.
 
 Recommended tokenizers are those from the \pkg{tokenizers} package, which
 are generally faster than the default (built-in) tokenizer but always
-splits infix hyphens, or \pkg{spacyr}.
+splits infix hyphens, or \pkg{spacyr}.  The default tokenizer in
+\strong{quanteda} is very smart, however, and if you do not have special
+requirements, it works extremely well for most languages as well as text
+from social media (including hashtags and usernames).
 }
 
 \section{quanteda Tokenizers}{
@@ -141,6 +143,11 @@ individual characters} \item{\code{"sentence"}}{sentence segmenter based on
 additional rules to avoid splits on words like "Mr." that would otherwise
 incorrectly be detected as sentence boundaries.  For better sentence
 tokenization, consider using \pkg{spacyr}.} }
+
+For forward compatibility including use of a more advanced tokenizer that
+will be used in major version 4, there is also a "word4" tokenizer that is
+even smarter than the default, which is also aliased as "word2" and "word3"
+(these are identical).  See \code{\link[=tokenize_word4]{tokenize_word4()}} for full details.
 }
 
 \examples{

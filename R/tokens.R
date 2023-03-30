@@ -11,9 +11,8 @@
 #' not be possible to remove things that are not present.  For instance, if the
 #' `tokens` object has already had punctuation removed, then `tokens(x,
 #' remove_punct = TRUE)` will have no additional effect.
-#' @param x the input object to the tokens constructor, one of: a (uniquely)
-#'   named **list** of characters; a [tokens] object; or a [corpus] or
-#'   [character] object that will be tokenized
+#' @param x the input object to the tokens constructor; a [tokens], [corpus] or
+#'   [character] object to tokenize.
 #' @param what character; which tokenizer to use.  The default `what = "word"`
 #'   is the version 2 \pkg{quanteda} tokenizer.  Legacy tokenizers (version < 2)
 #'   are also supported, including the default `what = "word1"`. See the Details
@@ -66,7 +65,10 @@
 #'
 #'   Recommended tokenizers are those from the \pkg{tokenizers} package, which
 #'   are generally faster than the default (built-in) tokenizer but always
-#'   splits infix hyphens, or \pkg{spacyr}.
+#'   splits infix hyphens, or \pkg{spacyr}.  The default tokenizer in
+#'   **quanteda** is very smart, however, and if you do not have special
+#'   requirements, it works extremely well for most languages as well as text
+#'   from social media (including hashtags and usernames).
 #'
 #' @section quanteda Tokenizers: The default word tokenizer `what = "word"`
 #'   splits tokens using [stri_split_boundaries(x, type =
@@ -99,6 +101,11 @@
 #'   additional rules to avoid splits on words like "Mr." that would otherwise
 #'   incorrectly be detected as sentence boundaries.  For better sentence
 #'   tokenization, consider using \pkg{spacyr}.} }
+#'   
+#'   For forward compatibility including use of a more advanced tokenizer that
+#'   will be used in major version 4, there is also a "word4" tokenizer that is
+#'   even smarter than the default, which is also aliased as "word2" and "word3"
+#'   (these are identical).  See [tokenize_word4()] for full details.
 #'
 #'
 #' @return \pkg{quanteda} `tokens` class object, by default a serialized list of
@@ -152,16 +159,12 @@ tokens <-  function(x,
                     verbose = quanteda_options("verbose"),
                     ...) {
 
-    tokens_env$START_TIME <- proc.time()
+    global$proc_time <- proc.time()
     object_class <- class(x)[1]
     if (verbose) catm("Creating a tokens object from a", object_class, "input...\n")
 
     UseMethod("tokens")
 }
-
-# GLOBAL FOR dfm THAT FUNCTIONS CAN RESET AS NEEDED TO RECORD TIME ELAPSED
-tokens_env <- new.env()
-tokens_env$START_TIME <- NULL
 
 #' @rdname tokens
 #' @noRd
@@ -232,6 +235,7 @@ tokens.character <- function(x,
 #' @rdname tokens
 #' @noRd
 #' @importFrom stringi stri_startswith_fixed
+#' @importFrom utils getFromNamespace
 #' @export
 tokens.corpus <- function(x,
                           what = "word",
@@ -247,7 +251,8 @@ tokens.corpus <- function(x,
                           verbose = quanteda_options("verbose"),
                           ...)  {
     x <- as.corpus(x)
-    what <- match.arg(what, c("word", "word1", "sentence", "character",
+    what <- match.arg(what, c("word", paste0("word", 1:4), 
+                              "sentence", "character",
                               "fasterword", "fastestword"))
     remove_punct <- check_logical(remove_punct)
     remove_symbols <- check_logical(remove_symbols)
@@ -259,75 +264,86 @@ tokens.corpus <- function(x,
     include_docvars <- check_logical(include_docvars)
     padding <- check_logical(padding)
     verbose <- check_logical(verbose)
-    check_dots(..., method = "tokens")
+    check_dots(..., method = c("tokens", "tokenize_word4"))
     
     attrs <- attributes(x)
-
+    
     # call the appropriate tokenizer function
     if (verbose) catm(" ...starting tokenization\n")
-    tokenizer_fn <- switch(what,
-                           word = tokenize_word,
-                           word1 = tokenize_word1,
-                           sentence = tokenize_sentence,
-                           character = tokenize_character,
-                           fasterword = tokenize_fasterword,
-                           fastestword = tokenize_fastestword)
-
-
-    if (!remove_separators && !what %in% c("word", "word1", "character"))
+    
+    tokenizer <- switch(what,
+                        word = paste0("tokenize_", quanteda_options("tokens_tokenizer_word")),
+                        sentence = "tokenize_sentence",
+                        character = "tokenize_character",
+                        # only for backward compatibility
+                        word4 = "tokenize_word4",
+                        word3 = "tokenize_word2",
+                        word2 = "tokenize_word2",
+                        word1 = "tokenize_word1",
+                        fasterword = "tokenize_fasterword", 
+                        fastestword = "tokenize_fastestword")
+    
+    tokenizer_fn <- tryCatch(
+        getFromNamespace(tokenizer, ns = "quanteda"),
+        error = function(e) {
+        stop("Invalid value in tokens_tokenizer_word", call. = FALSE)
+    })
+    
+    if (!remove_separators && tokenizer %in% 
+        paste0("tokenize_", c("fasterword", "fastestword", "sentence")))
         warning("remove_separators is always TRUE for this type")
-
+    
+    if (tokenizer == "tokenize_word1") {
+        x <- preserve_special1(x, split_hyphens = split_hyphens,
+                               split_tags = split_tags, verbose = verbose)
+    } else if (tokenizer %in% c("tokenize_word2", "tokenize_word3")) {
+        x <- preserve_special(x, split_hyphens = split_hyphens,
+                              split_tags = split_tags, verbose = verbose)
+        special <- attr(x, "special")
+    }
+    
     # split x into smaller blocks to reduce peak memory consumption
     x <- as.character(x)
     x <- split(x, factor(ceiling(seq_along(x) / quanteda_options("tokens_block_size"))))
-    x <- lapply(x, function(y) {
-        if (verbose)
-            catm(" ...", head(names(y), 1), " to ", tail(names(y), 1), "\n", sep = "")
-            #catm(" ...", head(names(y), 1), " to ", tail(names(y), 1),
-            #     " by process ", Sys.getpid(), "\n", sep = "")
-            
-        y <- normalize_characters(y)
-        if (what == "word") {
-            y <- preserve_special(y, split_hyphens = split_hyphens,
-                                  split_tags = split_tags, verbose = verbose)
-            special <- attr(y, "special")
+    for (i in seq_along(x)) {
+        if (verbose) catm(" ...tokenizing", i, "of", length(x), "blocks\n")
+        temp <- tokenizer_fn(x[[i]], split_hyphens = split_hyphens, split_tags = split_tags, 
+                             verbose = verbose, ...)
+        if (i == 1) {
+            # TODO: replace with cpp_serialize()
+            x[[i]] <- serialize_tokens(temp)
+        } else {
+            # TODO: replace with cpp_serialize_add()
+            x[[i]] <- serialize_tokens(temp, attr(x[[i - 1]], "types"))
         }
-        y <- serialize_tokens(tokenizer_fn(y, split_hyphens = split_hyphens, verbose = verbose))
-        if (what == "word")
-            y <- restore_special(y, special)
-        if (what == "word1" && !split_hyphens)
-            y <- restore_special1(y, split_hyphens = FALSE, split_tags = TRUE)
-        return(y)
-    })
-    type <- unique(unlist_character(lapply(x, attr, "types"), use.names = FALSE))
-    if (verbose)
-        catm(" ...", format(length(type), big.mark = ",", trim = TRUE),
-             " unique type", if (length(type) == 1) "" else "s",
-             "\n", sep = "")
-    x <- lapply(x, function(y) {
-        map <- fastmatch::fmatch(attr(y, "types"), type)
-        y <- lapply(y, function(z) map[z])
-        return(y)
-    })
-
-    result <- build_tokens(
-        unlist_integer(x, recursive = FALSE),
-        types = type, what = what,
-        docvars = select_docvars(attrs[["docvars"]], user = include_docvars, system = TRUE),
-        meta = attrs[["meta"]]
-    )
-
-    result <- tokens.tokens(as.tokens_xptr(result),
-                            remove_punct = remove_punct,
-                            remove_symbols = remove_symbols,
-                            remove_numbers = remove_numbers,
-                            remove_url = remove_url,
-                            remove_separators = remove_separators,
-                            split_hyphens = FALSE,
-                            split_tags = FALSE,
-                            include_docvars = TRUE,
-                            padding = padding,
-                            verbose = verbose)
+    }
+    result <- as.tokens_xptr(result)
+    if (verbose) {
+        n <- length(types(result))
+        catm(" ...", format(n, big.mark = ",", trim = TRUE),
+             " unique type", if (n == 1) "" else "s", "\n", sep = "")
+    }
+    
+    if (tokenizer == "tokenize_word1") {
+        # TODO: use get_types() in restore_*
+        result <- restore_special1(result, split_hyphens = split_hyphens,
+                                   split_tags = split_tags)
+    } else if (tokenizer %in% c("tokenize_word2", "tokenize_word3")) {
+        result <- restore_special(result, special)
+    } else if (tokenizer == "tokenize_word4") {
+        result <- tokens_restore(result)
+    }
+    result <- tokens(result,
+                     remove_punct = remove_punct,
+                     remove_symbols = remove_symbols,
+                     remove_numbers = remove_numbers,
+                     remove_url = remove_url,
+                     remove_separators = remove_separators,
+                     split_hyphens = FALSE,
+                     split_tags = FALSE,
+                     include_docvars = TRUE,
+                     padding = padding,
+                     verbose = verbose)
     return(as.tokens(result))
 }
 
@@ -341,7 +357,7 @@ tokens.tokens_xptr <-  function(x,
                            remove_symbols = FALSE,
                            remove_numbers = FALSE,
                            remove_url = FALSE,
-                           remove_separators = FALSE,
+                           remove_separators = TRUE,
                            split_hyphens = FALSE,
                            split_tags = FALSE,
                            include_docvars = TRUE,
@@ -369,7 +385,7 @@ tokens.tokens_xptr <-  function(x,
     if (split_tags) {
         warning("split_tags argument is not used")
     }
-
+    
     # removals
     removals <- removals_regex(separators = remove_separators,
                                punct = remove_punct,
@@ -390,7 +406,7 @@ tokens.tokens_xptr <-  function(x,
                            verbose = FALSE)
         removals["separators"] <- NULL
     }
-
+    
     if (length(removals)) {
         x <- tokens_remove(x, paste(unlist(removals), collapse = "|"),
                            valuetype = "regex",  padding = padding,
@@ -402,9 +418,15 @@ tokens.tokens_xptr <-  function(x,
 
     if (verbose) {
         catm(" ...complete, elapsed time:",
+<<<<<<< HEAD
              format((proc.time() - tokens_env$START_TIME)[3], digits = 3), "seconds.\n")
         catm("Finished constructing tokens from ", format(ndoc(x), big.mark = ","), " document",
              if (ndoc(x) > 1) "s", ".\n", sep = "")
+=======
+             format((proc.time() - global$proc_time)[3], digits = 3), "seconds.\n")
+        catm("Finished constructing tokens from ", format(length(x), big.mark = ","), " document",
+             if (length(x) > 1) "s", ".\n", sep = "")
+>>>>>>> v4
     }
     return(x)
 }
@@ -510,7 +532,7 @@ removals_regex <- function(separators = FALSE,
                            url = FALSE) {
     regex <- list()
     if (separators)
-        regex[["separators"]] <- "^[\\p{Z}\\p{C}]+$"
+        regex[["separators"]] <- "^[\\p{Z}\\p{C}\\p{M}]+$"
     if (punct)
         regex[["punct"]] <- "^\\p{P}$"
     if (symbols)
@@ -518,7 +540,7 @@ removals_regex <- function(separators = FALSE,
     if (numbers) # includes currency amounts and those containing , or . digit separators, and 100bn
         regex[["numbers"]] <- "^\\p{Sc}{0,1}\\p{N}+([.,]*\\p{N})*\\p{Sc}{0,1}$"
     if (url)
-        regex[["url"]] <- "(^((https{0,1}|s{0,1}ftp)://)|(\\w+@\\w+))"
+        regex[["url"]] <- "(?:^(?:https?://)?(?:www\\.)?[-a-zA-Z0-9]+(?:\\.[-a-zA-Z0-9]+)+(?:[/?#][-+a-zA-Z0-9@#:.%\\~=_\\&]+)*[/?#]?)|(^((https{0,1}|s{0,1}ftp)://))"
     return(regex)
 }
 
