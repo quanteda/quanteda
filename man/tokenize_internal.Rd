@@ -3,7 +3,9 @@
 \name{tokenize_internal}
 \alias{tokenize_internal}
 \alias{tokenize}
-\alias{tokenize_word}
+\alias{tokenize_word2}
+\alias{tokenize_word3}
+\alias{tokenize_word4}
 \alias{tokenize_word1}
 \alias{tokenize_character}
 \alias{tokenize_sentence}
@@ -11,13 +13,39 @@
 \alias{tokenize_fastestword}
 \title{quanteda tokenizers}
 \usage{
-tokenize_word(x, split_hyphens = FALSE, verbose = quanteda_options("verbose"))
+tokenize_word2(
+  x,
+  split_hyphens = FALSE,
+  verbose = quanteda_options("verbose"),
+  ...
+)
 
-tokenize_word1(x, split_hyphens = FALSE, verbose = quanteda_options("verbose"))
+tokenize_word3(
+  x,
+  split_hyphens = FALSE,
+  verbose = quanteda_options("verbose"),
+  ...
+)
+
+tokenize_word4(
+  x,
+  split_hyphens = FALSE,
+  split_tags = FALSE,
+  split_elisions = FALSE,
+  verbose = quanteda_options("verbose"),
+  ...
+)
+
+tokenize_word1(
+  x,
+  split_hyphens = FALSE,
+  verbose = quanteda_options("verbose"),
+  ...
+)
 
 tokenize_character(x, ...)
 
-tokenize_sentence(x, ..., verbose = FALSE)
+tokenize_sentence(x, verbose = FALSE, ...)
 
 tokenize_fasterword(x, ...)
 
@@ -33,6 +61,9 @@ e.g. \code{"self-aware"} becomes \code{c("self", "-", "aware")}}
 \item{verbose}{if \code{TRUE}, print timing messages to the console}
 
 \item{...}{used to pass arguments among the functions}
+
+\item{split_tags}{logical; if \code{FALSE}, do not split social media tags defined
+in \code{quanteda_options()}. The default patterns are \code{pattern_hashtag = "#\\\\w+#?"} and \code{pattern_username = "@[a-zA-Z0-9_]+"}.}
 }
 \value{
 a list of characters corresponding to the (most conservative)
@@ -44,17 +75,23 @@ includes URLs, #hashtags, @usernames, and email addresses.
 Internal methods for tokenization providing default and legacy methods for
 text segmentation.
 }
+\details{
+Each of the word tokenizers corresponds to a major version of \pkg{quanteda},
+kept here for backward compatibility and comparison.  \code{tokenize_word3()} is
+identical to \code{tokenize_word2()}.
+}
 \examples{
 \dontrun{
 txt <- c(doc1 = "Tweet https://quanteda.io using @quantedainit and #rstats.",
          doc2 = "The £1,000,000 question.",
          doc4 = "Line 1.\nLine2\n\nLine3.",
          doc5 = "?",
-         doc6 = "Self-aware machines! \U0001f600")
-tokenize_word(txt)
-tokenize_word(txt, split_hyphens = TRUE)
+         doc6 = "Self-aware machines! \U0001f600",
+         doc7 = "Qu'est-ce que c'est?")
+tokenize_word2(txt)
 tokenize_word2(txt, split_hyphens = FALSE)
-tokenize_word2(txt, split_hyphens = TRUE)
+tokenize_word1(txt, split_hyphens = FALSE)
+tokenize_word4(txt, split_hyphens = FALSE, split_elisions = TRUE)
 tokenize_fasterword(txt)
 tokenize_fastestword(txt)
 tokenize_sentence(txt)

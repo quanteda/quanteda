@@ -1,9 +1,25 @@
-# quanteda 3.x
+
+# quanteda 3.3.0
+
+## Changes and additions
+
+*  Implements a `"word4"` tokeniser that is based on new RBBI (RuleBasedBreakIterator) rules, implemented in a new .yml file that can be edited and changed by users, but whose defaults represent a significant improvement in pattern handling for words, sentences, and other forms of patterns.  These rules are customised from the ICU rules for breaks, with the standard and customised rules found now in the `breakrules/` system folder, so that they could, in principle, be modified by the user.
+
+*  Other minor changes:
+    
+    - changes how elapsed time is recorded, by creating a global environment to record these in (aaa.R)
+    - improves several of the R-coded patterns that apply to `"word2"`:
+        - the hashtag pattern (`pattern_hashtag)
+        - the separator pattern (by adding `\\p{M}`). 
+        - the URL pattern
+    - creates a new tokens_restore(), implemented in C++, to replace the older `preserve_special()` that rejoined splits created by the default stringi tokeniser machinery.  
+    - makes some technical improvements to internal tokenisation functions, such as moving the ellipsis to the end of the function, to allow more modularity in developing future tokenisers.
+    
+* Updates tests
 
 ## Bug fixes and stability enhancements
 
 * `dfm_group()` works correctly with an empty dfm (#2225).
-
 # quanteda 3.2.5
 
 ## Changes and additions

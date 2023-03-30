@@ -15,13 +15,23 @@
 #' \item{`threads`}{integer; specifies the number of threads to use in
 #' parallelized functions; defaults to `RcppParallel::defaultNumThreads()`; 
 #' the number of threads can be changed only once in a session}
-#' \item{`print_dfm_max_ndoc`}{integer; specifies the number of documents
+#' \item{`print_dfm_max_ndoc`, `print_corpus_max_ndoc`, `print_tokens_max_ndoc`}{integer;
+#' specify the number of documents to display when using the defaults for 
+#' printing a dfm, corpus, or tokens object}
+#' \item{`print_dfm_max_nfeat`, `print_corpus_max_nchar`, `print_tokens_max_ntoken`}{integer; 
+#' specifies the number of features to display when printing a dfm, 
+#' the number of characters to display when printing corpus documents, or the 
+#' number of tokens to display when printing tokens objects}
+#' \item{`print_dfm_summary`}{integer; specifies the number of documents
 #' to display when using the defaults for printing a dfm}
-#' \item{`print_dfm_max_nfeat`}{integer; specifies the number of
-#' features to display when using the defaults for printing a dfm}
+#' \item{`print_dictionary_max_nkey`, `print_dictionary_max_nval`}{the number of
+#' keys or values (respectively) to display when printing a dictionary}
+#' \item{`print_kwic_max_nrow`}{the number of rows to display when printing a 
+#' kwic object}
 #' \item{`base_docname`}{character; stem name for documents that are
 #' unnamed when a corpus, tokens, or dfm are created or when a dfm is converted
-#' from another object} \item{`base_featname`}{character; stem name for
+#' from another object} 
+#' \item{`base_featname`}{character; stem name for
 #' features that are unnamed when they are added, for whatever reason, to a dfm
 #' through an operation that adds features}
 #' \item{`base_compname`}{character; stem name for components that are
@@ -35,7 +45,12 @@
 #'   number of documents to be tokenized at a time in blocked tokenization.
 #'   When the number is large, tokenization becomes faster but also memory-intensive.}
 #' \item{`tokens_locale`}{character; specify locale in stringi boundary detection in 
-#'   tokenization and corpus reshaping. See [stringi::stri_opts_brkiter()].}}
+#'   tokenization and corpus reshaping. See [stringi::stri_opts_brkiter()].}
+#' \item{`tokens_tokenizer_word`}{character; the current word tokenizer version
+#' used as a default for `what = "word"` in [tokens()], one of `"word1"`, 
+#' `"word2"`, `"word3"` (same as `"word2"`), or `"word4"`.}
+#' }
+#' 
 #' @return When called using a `key = value` pair (where `key` can be
 #' a label or quoted character name)), the option is set and `TRUE` is
 #' returned invisibly.
@@ -167,9 +182,10 @@ get_options_default <- function() {
                  base_featname = "feat",
                  base_compname = "comp",
                  language_stemmer = "english",
-                 pattern_hashtag = "#\\w+#?",
+                 pattern_hashtag = "#[\\p{L}\\p{N}_]+#?",
                  pattern_username = "@[a-zA-Z0-9_]+",
                  tokens_block_size = 10000L,
-                 tokens_locale = "en_US@ss=standard")
+                 tokens_locale = "en_US@ss=standard",
+                 tokens_tokenizer_word = "word3")
     return(opts)
 }
