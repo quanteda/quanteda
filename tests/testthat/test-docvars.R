@@ -182,51 +182,53 @@ test_that("docvars with non-existent field names generate correct error messages
     )
 })
 
-
-test_that("docvars is working with tokens", {
-    corp <- data_corpus_inaugural[1:58]
-    toks <- tokens(corp, include_docvars = TRUE)
-    expect_equal(docvars(toks), docvars(corp))
-    expect_equal(docvars(toks, "President"), docvars(corp, "President"))
-
-    # Subset
-    toks2 <- toks[docvars(toks, "Year") > 2000]
-    expect_equal(ndoc(toks2), nrow(docvars(toks2)))
-
-    # Add field to meta-data
-    expect_equal(
-        docvars(quanteda:::"docvars<-"(toks2, "Type", "Speech"), "Type"),
-        rep("Speech", 5)
-    )
-
-    # Remove meta-data
-    expect_output(
-        print(docvars(quanteda:::"docvars<-"(toks, field = NULL, NULL))),
-        "data frame with 0 columns and 58 rows"
-    )
-
-    # Add fresh meta-data
-    expect_equal(
-        docvars(quanteda:::"docvars<-"(toks, field = "ID", 1:58), "ID"),
-        1:58
-    )
-})
-
-test_that("docvars is working with dfm", {
+test_that("docvars works with corps, tokens and dfm", {
+    
     corp <- data_corpus_inaugural
-    toks <- tokens(corp, include_docvars = TRUE)
-    thedfm <- dfm(toks)
-
-    expect_equal(docvars(toks), docvars(thedfm))
-    expect_equal(docvars(toks, "Party"), docvars(corp, "Party"))
-
-    thedfm2 <- dfm(tokens(corp))
-    expect_equal(docvars(corp), docvars(thedfm2))
-    expect_equal(docvars(corp, "Party"), docvars(thedfm2, "Party"))
-
-    corp2 <- corpus_subset(corp, Party == "Democratic")
-    thedfm3 <- dfm(tokens(corp2))
-    expect_equal(docvars(corp2), docvars(thedfm3))
+    toks <- tokens(corp)
+    dfmt <- dfm(toks)
+    
+    # corpus
+    expect_equal(rownames(docvars(corp)), as.character(1:59))
+    expect_equal(colnames(docvars(corp)), 
+                 c("Year", "President", "FirstName", "Party"))
+    expect_equal(colnames(docvars(corp, system = TRUE)), 
+                 c("docname_", "docid_", "segid_",
+                   "Year", "President", "FirstName", "Party"))
+    expect_equal(colnames(docvars(corp, system = TRUE, user = FALSE)), 
+                 c("docname_", "docid_", "segid_"))
+    expect_equal(docvars(corp, "Party"),
+                 docvars(corp)$Party)
+    expect_equal(docvars(corp, c("docid_", "Party"), system = TRUE),
+                 docvars(corp, system = TRUE)[c("docid_", "Party")])
+    
+    # tokens
+    expect_equal(rownames(docvars(toks)), as.character(1:59))
+    expect_equal(colnames(docvars(toks)), 
+                 c("Year", "President", "FirstName", "Party"))
+    expect_equal(colnames(docvars(toks, system = TRUE)), 
+                 c("docname_", "docid_", "segid_",
+                   "Year", "President", "FirstName", "Party"))
+    expect_equal(colnames(docvars(toks, system = TRUE, user = FALSE)), 
+                 c("docname_", "docid_", "segid_"))
+    expect_equal(docvars(toks, "Party"),
+                 docvars(toks)$Party)
+    expect_equal(docvars(toks, c("docid_", "Party"), system = TRUE),
+                 docvars(toks, system = TRUE)[c("docid_", "Party")])
+    
+    # dfm 
+    expect_equal(rownames(docvars(dfmt)), as.character(1:59))
+    expect_equal(colnames(docvars(dfmt)), 
+                 c("Year", "President", "FirstName", "Party"))
+    expect_equal(colnames(docvars(dfmt, system = TRUE)), 
+                 c("docname_", "docid_", "segid_",
+                   "Year", "President", "FirstName", "Party"))
+    expect_equal(colnames(docvars(dfmt, system = TRUE, user = FALSE)), 
+                 c("docname_", "docid_", "segid_"))
+    expect_equal(docvars(dfmt, "Party"),
+                 docvars(dfmt)$Party)
+    expect_equal(docvars(dfmt, c("docid_", "Party"), system = TRUE),
+                 docvars(dfmt, system = TRUE)[c("docid_", "Party")])
 })
 
 test_that("$ returns docvars", {
