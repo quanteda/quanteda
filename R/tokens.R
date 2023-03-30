@@ -235,6 +235,7 @@ tokens.character <- function(x,
 #' @rdname tokens
 #' @noRd
 #' @importFrom stringi stri_startswith_fixed
+#' @importFrom utils getFromNamespace
 #' @export
 tokens.corpus <- function(x,
                           what = "word",
