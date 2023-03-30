@@ -125,10 +125,7 @@ test_that("tokens works as expected for what = character", {
 })
 
 test_that("tokens works with unusual hiragana #554", {
-    skip("Behaviour changed - consider removing test")
-    skip_on_travis()
     skip_on_cran()
-    skip_on_appveyor()
     skip_on_os("windows")
     txts <- c("づいﾞ", "゛んﾞ", "たーﾟ")
     expect_equivalent(as.list(tokens(txts)),
@@ -991,14 +988,12 @@ test_that("special1 functions are working", {
                                      split_hyphens = FALSE, split_tags = FALSE),
         "_ht_quanteda _ht_q_hy_x _ht_q_y _ht_q100 _ht_q"
     )
-    toks1 <- list(1:5)
-    attr(toks1, "types") <- c("_ht_quanteda", "_ht_q-x", "_ht_q_y", "_ht_q100", "_ht_q")
+    toks1 <- as.tokens(list(c("_ht_quanteda", "_ht_q-x", "_ht_q_y", "_ht_q100", "_ht_q")))
     expect_identical(
         attr(quanteda:::restore_special1(toks1, split_hyphens = TRUE, split_tags = FALSE), "types"),
         c("#quanteda", "#q-x", "#q_y", "#q100", "#q")
     )
-    toks2 <- list(1:5)
-    attr(toks2, "types") <- c("_ht_quanteda", "_ht_q_hy_x", "_ht_q_y", "_ht_q100", "_ht_q")
+    toks2 <- as.tokens(list(c("_ht_quanteda", "_ht_q_hy_x", "_ht_q_y", "_ht_q100", "_ht_q")))
     expect_identical(
         attr(quanteda:::restore_special1(toks2, split_hyphens = FALSE, split_tags = FALSE), "types"),
         c("#quanteda", "#q-x", "#q_y", "#q100", "#q")
@@ -1033,10 +1028,10 @@ test_that("tokenizing Japanese with URLs works", {
 })
 
 test_that("Non-ASCII hashtags are preserved", {
-    txt <- c(d1 = "オリンピック延期決定！ #政治 #安部政権")
+    txt <- c(d1 = "オリンピック延期決定！ #政治 #安倍政権")
     expect_identical(
         as.list(tokens(txt, what = "word")),
-        list(d1 = c("オリンピック", "延期", "決定", "！", "#政治", "#安部政権"))
+        list(d1 = c("オリンピック", "延期", "決定", "！", "#政治", "#安倍政権"))
     )
 })
 
@@ -1052,7 +1047,7 @@ test_that("emails address is preserved", {
     # prevents test failing on Ubuntu 20.04 on GitHub Actions
     skip_if(
         as.numeric(stringi::stri_info()$Unicode.version) > 10 &&
-            as.numeric(stringi::stri_info()$ICU.version) > 61.1
+        as.numeric(stringi::stri_info()$ICU.version) > 61.1
     )
     txt <- c(d1 = "support@quanteda.io K.Watanabe@qi1234.co.jp")
     expect_identical(

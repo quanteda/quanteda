@@ -310,14 +310,20 @@ tokens.corpus <- function(x,
         temp <- tokenizer_fn(x[[i]], split_hyphens = split_hyphens, split_tags = split_tags, 
                              verbose = verbose, ...)
         if (i == 1) {
-            # TODO: replace with cpp_serialize()
-            x[[i]] <- serialize_tokens(temp)
+            result <- cpp_serialize(temp)
         } else {
-            # TODO: replace with cpp_serialize_add()
-            x[[i]] <- serialize_tokens(temp, attr(x[[i - 1]], "types"))
+            result <- cpp_serialize_add(temp, result)
         }
     }
-    result <- as.tokens_xptr(result)
+
+    result <- build_tokens(
+        result, 
+        types = NULL,
+        padding = TRUE, 
+        docvars = select_docvars(attrs[["docvars"]], user = include_docvars, system = TRUE),
+        meta = attrs[["meta"]]
+    ) 
+    
     if (verbose) {
         n <- length(types(result))
         catm(" ...", format(n, big.mark = ",", trim = TRUE),
@@ -325,7 +331,6 @@ tokens.corpus <- function(x,
     }
     
     if (tokenizer == "tokenize_word1") {
-        # TODO: use get_types() in restore_*
         result <- restore_special1(result, split_hyphens = split_hyphens,
                                    split_tags = split_tags)
     } else if (tokenizer %in% c("tokenize_word2", "tokenize_word3")) {
@@ -418,15 +423,9 @@ tokens.tokens_xptr <-  function(x,
 
     if (verbose) {
         catm(" ...complete, elapsed time:",
-<<<<<<< HEAD
-             format((proc.time() - tokens_env$START_TIME)[3], digits = 3), "seconds.\n")
+             format((proc.time() - global$proc_time)[3], digits = 3), "seconds.\n")
         catm("Finished constructing tokens from ", format(ndoc(x), big.mark = ","), " document",
              if (ndoc(x) > 1) "s", ".\n", sep = "")
-=======
-             format((proc.time() - global$proc_time)[3], digits = 3), "seconds.\n")
-        catm("Finished constructing tokens from ", format(length(x), big.mark = ","), " document",
-             if (length(x) > 1) "s", ".\n", sep = "")
->>>>>>> v4
     }
     return(x)
 }
