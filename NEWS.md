@@ -19,7 +19,7 @@
 ## Bug fixes and stability enhancements
 
 * `dfm_group()` now works correctly with an empty dfm (#2225).
-
+* `convert(x, to = "stm")` no longer vulnerable to large numbers of removed features as in #2189.
 
 # quanteda 3.2.5
 
