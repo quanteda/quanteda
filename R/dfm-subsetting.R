@@ -8,24 +8,32 @@ subset_dfm <- function(x, i, j, ..., drop) {
     if (!missing(i)) {
         index_row <- seq_len(nrow(x))
         names(index_row) <- rownames(x)
-        index_row <- index_row[i]
+        index_row <- if (is.character(i)) {
+            index_row[match(i, names(index_row))]
+        } else {
+            index_row[i]    
+        }
         if (any(is.na(index_row)))
             stop("Subscript out of bounds")
     }
     if (!missing(j)) {
         index_col <- seq_len(ncol(x))
         names(index_col) <- colnames(x)
-        index_col <- index_col[j]
+        index_col <- if (is.character(j)) {
+            index_col[match(j, names(index_col))] 
+        } else {
+            index_col[j]    
+        }
         if (any(is.na(index_col)))
             stop("Subscript out of bounds")
     }
 
     if (!missing(i) && missing(j)) {
-        x <- "["(as(x, "Matrix"), i, , drop = FALSE)
+        x <- "["(as(x, "Matrix"), index_row, , drop = FALSE)
     } else if (missing(i) && !missing(j)) {
-        x <- "["(as(x, "Matrix"), , j, drop = FALSE)
+        x <- "["(as(x, "Matrix"), , index_col, drop = FALSE)
     } else {
-        x <- "["(as(x, "Matrix"), i, j, drop = FALSE)
+        x <- "["(as(x, "Matrix"), index_row, index_col, drop = FALSE)
     }
 
     if (!missing(i))

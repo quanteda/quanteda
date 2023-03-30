@@ -1350,3 +1350,34 @@ test_that("features of DFM are always in the same order (#2100)", {
     expect_identical(c("a", "b", "c", "d"), featnames(dfmat3))
     
 })
+
+test_that("dfm with empty feature names work for subsetting", {
+    txt <- c(d1 = "a b c !", d2 = "a a b")
+    dfmat <- tokens(txt, padding = TRUE, remove_punct = TRUE) |>
+        dfm()
+    
+    # empty feature names
+    expect_identical(
+        as.matrix(dfmat[, ""]),
+        structure(c(1, 0), dim = 2:1, 
+                  dimnames = list(docs = c("d1", "d2"), 
+                                  features = ""))
+    )
+
+    # empty doc names
+    # although - this really should not be permitted
+    docnames(dfmat)[1] <- ""
+    expect_identical(
+        as.matrix(dfmat["", ]),
+        structure(c(1, 1, 1, 1), dim = c(1L, 4L), 
+                  dimnames = list(docs = "", 
+                                  features = c("", "a", "b", "c")))
+    )
+    
+    # both empty indexing
+    expect_identical(
+        as.matrix(dfmat["", ""]),
+        structure(1, dim = c(1L, 1L), 
+                  dimnames = list(docs = "", features = ""))
+    )
+})

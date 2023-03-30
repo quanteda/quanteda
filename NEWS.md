@@ -16,6 +16,8 @@
     
 * Added `user` and `system` arguments to `docvars()`, where `system = TRUE` returns internal document-level variables.
 
+* Indexing a dfm with empty feature names (`""`) is now possible.  Fixes #1961.
+
 ## Bug fixes and stability enhancements
 
 * `dfm_group()` now works correctly with an empty dfm (#2225).
