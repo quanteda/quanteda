@@ -283,7 +283,7 @@ tokens.corpus <- function(x,
                         fastestword = "tokenize_fastestword")
     
     tokenizer_fn <- tryCatch(
-        get(tokenizer, envir = as.environment("package:quanteda")),
+        getFromNamespace(tokenizer, ns = "quanteda"),
         error = function(e) {
         stop("Invalid value in tokens_tokenizer_word", call. = FALSE)
     })
