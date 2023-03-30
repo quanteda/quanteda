@@ -31,7 +31,7 @@ breakrules_reset(what = c("word", "sentence"))
 \value{
 \code{tokenize_custom()} returns a list of characters containing tokens.
 
-\code{breakrules()} returns the existing break rules as a list.
+\code{breakrules_get()} returns the existing break rules as a list.
 
 \code{breakrules_set()} returns nothing but reassigns the global
 breakrules to \code{x}.
@@ -69,7 +69,7 @@ Custom word rules:
 }
 }
 \examples{
-lis <- tokenize_custom("a well-known http://example.com", rules = breakrules("word"))
+lis <- tokenize_custom("a well-known http://example.com", rules = breakrules_get("word"))
 tokens(lis, remove_separators = TRUE)
 breakrules_get("word")
 breakrules_get("sentence")
