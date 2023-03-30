@@ -174,7 +174,7 @@ TokensPtr cpp_tokens_compound(TokensPtr xptr,
                               int window_right){
     
     Texts texts = xptr->texts;
-    Types types = xptr->types;;
+    Types types = xptr->types;
     std::string delim = delim_;
     std::pair<int, int> window(window_left, window_right);
 
