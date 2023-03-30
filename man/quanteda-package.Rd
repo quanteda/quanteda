@@ -113,6 +113,7 @@ Authors:
 Other contributors:
 \itemize{
   \item Christian Müller \email{C.Mueller@lse.ac.uk} [contributor]
+  \item Olivier Delmarcelle \email{olivier.delmarcelle@ugent.be} (\href{https://orcid.org/0000-0003-4347-070X}{ORCID}) [contributor]
   \item European Research Council (ERC-2011-StG 283794-QUANTESS) [funder]
 }
 
