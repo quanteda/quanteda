@@ -305,17 +305,14 @@ tokens.corpus <- function(x,
     # split x into smaller blocks to reduce peak memory consumption
     x <- as.character(x)
     x <- split(x, factor(ceiling(seq_along(x) / quanteda_options("tokens_block_size"))))
+    
+    result <- cpp_serialize(list())
     for (i in seq_along(x)) {
         if (verbose) catm(" ...tokenizing", i, "of", length(x), "blocks\n")
         temp <- tokenizer_fn(x[[i]], split_hyphens = split_hyphens, split_tags = split_tags, 
                              verbose = verbose, ...)
-        if (i == 1) {
-            result <- cpp_serialize(temp)
-        } else {
-            result <- cpp_serialize_add(temp, result)
-        }
+        result <- cpp_serialize_add(temp, result)
     }
-
     result <- build_tokens(
         result, 
         types = NULL,
