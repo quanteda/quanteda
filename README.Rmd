@@ -32,9 +32,9 @@ An R package for managing and analyzing text, created by [Kenneth Benoit](https:
 
 For more details, see https://quanteda.io.
 
-## **quanteda** version 3: New major release
+## **quanteda** version 3
 
-**quanteda** 3.0 is a major release that improves functionality, completes the modularisation of the package begun in v2.0, further improves function consistency by removing previously deprecated functions, and enhances workflow stability and consistency by deprecating some shortcut steps built into some functions.
+The **quanteda** 3.0 major release improves functionality, completes the modularisation of the package begun in v2.0, further improves function consistency by removing previously deprecated functions, and enhances workflow stability and consistency by deprecating some shortcut steps built into some functions.
 
 See https://github.com/quanteda/quanteda/blob/master/NEWS.md#quanteda-30 for a full list of the changes.
 
