@@ -33,17 +33,8 @@ cpp_tokens_group <- function(xptr, groups_) {
     .Call(`_quanteda_cpp_tokens_group`, xptr, groups_)
 }
 
-<<<<<<< HEAD
 cpp_tokens_lookup <- function(xptr, words_, keys_, types_, overlap, nomatch) {
     .Call(`_quanteda_cpp_tokens_lookup`, xptr, words_, keys_, types_, overlap, nomatch)
-=======
-qatd_cpp_tokens_restore <- function(texts_, marks_left_, marks_right_, types_, delim_) {
-    .Call(`_quanteda_qatd_cpp_tokens_restore`, texts_, marks_left_, marks_right_, types_, delim_)
-}
-
-qatd_cpp_tokens_segment <- function(texts_, types_, patterns_, remove, position) {
-    .Call(`_quanteda_qatd_cpp_tokens_segment`, texts_, types_, patterns_, remove, position)
->>>>>>> v4
 }
 
 cpp_tokens_ngrams <- function(xptr, delim_, ns_, skips_) {
@@ -56,6 +47,10 @@ cpp_tokens_recompile <- function(texts_, types_, gap = TRUE, dup = TRUE) {
 
 cpp_tokens_replace <- function(xptr, patterns_, replacements_) {
     .Call(`_quanteda_cpp_tokens_replace`, xptr, patterns_, replacements_)
+}
+
+cpp_tokens_restore <- function(xptr, marks_left_, marks_right_, delim_) {
+    .Call(`_quanteda_cpp_tokens_restore`, xptr, marks_left_, marks_right_, delim_)
 }
 
 cpp_tokens_segment <- function(xptr, patterns_, remove, position) {
