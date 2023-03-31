@@ -20,7 +20,7 @@ test_that("tokens_restore works with ireqgular markers", {
 
 test_that("tokens_restore restore tags", {
     
-    txt <- "オリンピック延期決定！ #politics @abe #政治# #政治 #安部政権 @安部政権 ！"
+    txt <- "オリンピック延期決定！ #politics @abe #政治# #政治 #安倍政権 @安倍政権 ！"
     toks1 <- tokens(txt, remove_separators = FALSE)
     
     txt2 <- stri_replace_all_regex(txt, "@[a-zA-Z0-9_]+|#[\\p{L}\\p{N}]+#?", "\uE001$0\uE002")
@@ -28,16 +28,4 @@ test_that("tokens_restore restore tags", {
         quanteda:::tokens_restore() 
     
     expect_equal(as.list(toks1), as.list(toks2))
-})
-
-test_that("code formerly in example works here", {
-    # could not put in the example because it broke CRAN's non-unicode
-    # Rd policy
-    txt <- c(d1 = "オリンピック延期決定！#politics @abe #政治# #政治 #安部政権 @安部政権 ！")
-    txt <- stringi::stri_replace_all_regex(txt, "@[a-zA-Z0-9_]+|#[\\p{L}\\p{N}]+#?",
-                                  "\uE001$0\uE002")
-    toks <- as.tokens(stringi::stri_split_boundaries(txt, type = "word"))
-    expect_no_error(
-        quanteda:::tokens_restore(toks)
-    )
 })
