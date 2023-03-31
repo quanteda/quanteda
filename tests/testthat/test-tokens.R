@@ -1,13 +1,5 @@
 quanteda_options("tokens_tokenizer_word" = "word3")
 
-test_that("as.tokens list version works as expected", {
-    txt <- c(doc1 = "The first sentence is longer than the second.",
-             doc2 = "Told you so.")
-    toks_list <- as.list(tokens(txt))
-    toks <- tokens(txt)
-    expect_equivalent(as.tokens(toks_list), toks)
-})
-
 test_that("tokens indexing works as expected", {
     toks <- tokens(c(d1 = "one two three",
                      d2 = "four five six",
@@ -247,8 +239,8 @@ test_that("c() works with tokens", {
               tokens(data_corpus_inaugural[6:10]))
 
     expect_equivalent(
-         toks,
-         tokens(data_corpus_inaugural[1:10])
+         as.list(toks),
+         as.list(tokens(data_corpus_inaugural[1:10]))
     )
 
     expect_equal(
