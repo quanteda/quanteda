@@ -6,7 +6,7 @@ data](https://cdn.rawgit.com/quanteda/quanteda/master/images/quanteda_logo.svg)]
 
 [![CRAN
 Version](https://www.r-pkg.org/badges/version/quanteda)](https://CRAN.R-project.org/package=quanteda)
-[![](https://img.shields.io/badge/devel%20version-3.2.5-royalblue.svg)](https://github.com/quanteda/quanteda)
+[![](https://img.shields.io/badge/devel%20version-3.3.0-royalblue.svg)](https://github.com/quanteda/quanteda)
 [![Downloads](https://cranlogs.r-pkg.org/badges/quanteda)](https://CRAN.R-project.org/package=quanteda)
 [![Total
 Downloads](https://cranlogs.r-pkg.org/badges/grand-total/quanteda?color=orange)](https://CRAN.R-project.org/package=quanteda)
@@ -24,13 +24,13 @@ Council grant ERC-2011-StG 283794-QUANTESS.
 
 For more details, see <https://quanteda.io>.
 
-## **quanteda** version 3: New major release
+## **quanteda** version 3
 
-**quanteda** 3.0 is a major release that improves functionality,
-completes the modularisation of the package begun in v2.0, further
-improves function consistency by removing previously deprecated
-functions, and enhances workflow stability and consistency by
-deprecating some shortcut steps built into some functions.
+THe **quanteda** 3.0 major release improves functionality, completes the
+modularisation of the package begun in v2.0, further improves function
+consistency by removing previously deprecated functions, and enhances
+workflow stability and consistency by deprecating some shortcut steps
+built into some functions.
 
 See
 <https://github.com/quanteda/quanteda/blob/master/NEWS.md#quanteda-30>
