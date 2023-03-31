@@ -26,7 +26,7 @@ For more details, see <https://quanteda.io>.
 
 ## **quanteda** version 3
 
-THe **quanteda** 3.0 major release improves functionality, completes the
+The **quanteda** 3.0 major release improves functionality, completes the
 modularisation of the package begun in v2.0, further improves function
 consistency by removing previously deprecated functions, and enhances
 workflow stability and consistency by deprecating some shortcut steps
