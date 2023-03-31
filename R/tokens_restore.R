@@ -21,7 +21,7 @@ tokens_restore.tokens_xptr <- function(x) {
     result <- cpp_tokens_restore(x, 
                                  list(match("\uE001", type)), 
                                  list(match("\uE002", type)), 
-                                 delim = "")
+                                 "")
     rebuild_tokens(result, attrs)
 }
 
