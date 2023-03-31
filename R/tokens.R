@@ -319,10 +319,9 @@ tokens.corpus <- function(x,
     result <- build_tokens(
         result, 
         types = NULL,
-        padding = TRUE, 
         docvars = select_docvars(attrs[["docvars"]], user = include_docvars, system = TRUE),
         meta = attrs[["meta"]]
-    ) 
+    )
     
     if (verbose) {
         n <- length(types(result))
@@ -481,14 +480,13 @@ as.tokens.default <- function(x, concatenator = "", ...) {
 #' @importFrom stringi stri_trans_nfc
 #' @export
 as.tokens.list <- function(x, concatenator = "_", ...) {
-    x <- lapply(x, stri_trans_nfc)
-    x <- serialize_tokens(x)
-    build_tokens(
-        x,
-        types = attr(x, "types"),
+    result <- build_tokens(
+        cpp_serialize(lapply(x, as.character)),
+        types = NULL,
         concatenator = concatenator,
         docvars = make_docvars(length(x), names(x))
     )
+    as.tokens(result)
 }
 
 #' @export
