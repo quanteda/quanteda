@@ -39,10 +39,6 @@ test_that("test detault n-methods", {
         "nfeat\\(\\) only works on dfm.*objects"
     )
     expect_error(
-        nsentence(TRUE),
-        "nsentence\\(\\) only works on character.*tokens objects"
-    )
-    expect_error(
         ntoken(TRUE),
         "ntoken\\(\\) only works on character.*tokens_xptr objects"
     )

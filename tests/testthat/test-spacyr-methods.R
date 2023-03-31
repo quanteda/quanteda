@@ -6,14 +6,6 @@ test_that("test quanteda methods for spacy_parsed objects", {
     expect_identical(ntoken(data_spacy_parsed), c(text1 = 7L))
 })
 
-test_that("test nsentence for spacy_parsed objects", {
-    load("../data/data_spacy_parsed2.rda")
-    expect_identical(
-        nsentence(data_spacy_parsed2), 
-        c(text1 = 2L, text2 = 3L, text3 = 1L)
-    )
-})
-
 test_that("test as.tokens works for spacy_parsed objects", {
     load("../data/data_spacy_parsed.rda")
     expect_equal(
