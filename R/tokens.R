@@ -159,11 +159,7 @@ tokens <-  function(x,
                     verbose = quanteda_options("verbose"),
                     ...) {
 
-    global$proc_time <- proc.time()
-    object_class <- class(x)[1]
-    if (verbose) catm("Creating a tokens object from a", object_class, "input...\n")
-
-    UseMethod("tokens")
+     UseMethod("tokens")
 }
 
 #' @rdname tokens
@@ -251,6 +247,10 @@ tokens.corpus <- function(x,
                           verbose = quanteda_options("verbose"),
                           ...)  {
     x <- as.corpus(x)
+    
+    global$proc_time <- proc.time()
+    if (verbose) catm("Creating a tokens object from a corpus object...\n")
+    
     what <- match.arg(what, c("word", paste0("word", 1:4), 
                               "sentence", "character",
                               "fasterword", "fastestword"))
@@ -320,12 +320,6 @@ tokens.corpus <- function(x,
         meta = attrs[["meta"]]
     )
     
-    if (verbose) {
-        n <- length(types(result))
-        catm(" ...", format(n, big.mark = ",", trim = TRUE),
-             " unique type", if (n == 1) "" else "s", "\n", sep = "")
-    }
-    
     if (tokenizer == "tokenize_word1") {
         result <- restore_special1(result, split_hyphens = split_hyphens,
                                    split_tags = split_tags)
@@ -345,7 +339,20 @@ tokens.corpus <- function(x,
                      include_docvars = TRUE,
                      padding = padding,
                      verbose = verbose)
-    return(as.tokens(result))
+    
+    result <- as.tokens(result)
+    
+    if (verbose) {
+        n <- length(types(result))
+        catm(" ...", format(n, big.mark = ",", trim = TRUE),
+             " unique type", if (n == 1) "" else "s", "\n", sep = "")
+        catm(" ...complete, elapsed time:",
+             format((proc.time() - global$proc_time)[3], digits = 3), "seconds.\n")
+        catm("Finished constructing tokens from ", format(ndoc(result), big.mark = ","), " document",
+             if (ndoc(result) > 1) "s", ".\n", sep = "")
+    }
+    
+    return(result)
 }
 
 #' @rdname tokens
@@ -417,12 +424,6 @@ tokens.tokens_xptr <-  function(x,
     if (!include_docvars)
         docvars(x) <- NULL
 
-    if (verbose) {
-        catm(" ...complete, elapsed time:",
-             format((proc.time() - global$proc_time)[3], digits = 3), "seconds.\n")
-        catm("Finished constructing tokens from ", format(ndoc(x), big.mark = ","), " document",
-             if (ndoc(x) > 1) "s", ".\n", sep = "")
-    }
     return(x)
 }
 

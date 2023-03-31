@@ -44,9 +44,6 @@ dfm <- function(x,
                 remove_padding = FALSE,
                 verbose = quanteda_options("verbose"),
                 ...) {
-    global$proc_time <- proc.time()
-    object_class <- class(x)[1]
-    if (verbose) message("Creating a dfm from a ", object_class, " input...")
     UseMethod("dfm")
 }
 
@@ -91,6 +88,9 @@ dfm.tokens <- function(x,
                        verbose = quanteda_options("verbose"),
                        ...) {
     x <- as.tokens(x)
+    
+    global$proc_time <- proc.time()
+    if (verbose) message("Creating a dfm from a tokens object...")
     
     if (length(intersect(names(list(...)), names(formals("tokens"))))) {
         warning("'...' should not be used for tokens() arguments; use 'tokens()' first.", call. = FALSE)
@@ -238,7 +238,16 @@ dfm.tokens <- function(x,
         temp <- temp[,id]
     }
     
-    dfm.dfm(temp, tolower = FALSE, verbose = verbose)
+    result <- dfm(temp, tolower = FALSE, verbose = verbose)
+    
+    if (verbose) {
+        catm(" ...complete, elapsed time:",
+             format((proc.time() - global$proc_time)[3], digits = 3), "seconds.\n")
+        catm("Finished constructing a", paste(format(dim(result), big.mark = ",", trim = TRUE), collapse = " x "),
+             "sparse dfm.\n")
+    }
+    
+    return(result)
 }
 
 
@@ -346,13 +355,6 @@ dfm.dfm <- function(x,
     is_na <- is.na(featnames(x))
     if (any(is_na))
         x <- x[, !is_na, drop = FALSE]
-
-    if (verbose) {
-        catm(" ...complete, elapsed time:",
-             format((proc.time() - global$proc_time)[3], digits = 3), "seconds.\n")
-        catm("Finished constructing a", paste(format(dim(x), big.mark = ",", trim = TRUE), collapse = " x "),
-             "sparse dfm.\n")
-    }
 
     return(x)
 }
