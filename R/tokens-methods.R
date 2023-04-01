@@ -60,7 +60,6 @@ print.tokens <- function(x, max_ndoc = quanteda_options("print_tokens_max_ndoc")
                          show_summary = quanteda_options("print_tokens_summary"),
                          ...) {
     
-    x <- as.tokens(x)
     max_ndoc <- check_integer(max_ndoc, min = -1)
     max_ntoken <- check_integer(max_ntoken, min = -1)
     show_summary <- check_logical(show_summary)
@@ -77,11 +76,13 @@ print.tokens <- function(x, max_ndoc = quanteda_options("print_tokens_max_ndoc")
         if (ncol(docvars))
             cat(" and ", format(ncol(docvars), big.mark = ","), " docvar",
                 if (ncol(docvars) != 1L) "s" else "", sep = "")
+        if (is.tokens_xptr(x))
+            cat(" (pointer to ", address(x), ")", sep = "")
         cat(".\n")
     }
 
     if (max_ndoc > 0 && ndoc(x) > 0) {
-        x <- head(x, max_ndoc)
+        x <- head(as.tokens(x), max_ndoc)
         label <- paste0(names(x), " :")
         types <- c("", get_types(x))
         len <- lengths(x)

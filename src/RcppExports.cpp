@@ -376,6 +376,17 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// address
+std::string address(SEXP x);
+RcppExport SEXP _quanteda_address(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(address(x));
+    return rcpp_result_gen;
+END_RCPP
+}
 // cpp_set_meta
 void cpp_set_meta(RObject object_, RObject meta_);
 RcppExport SEXP _quanteda_cpp_set_meta(SEXP object_SEXP, SEXP meta_SEXP) {
@@ -428,6 +439,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_quanteda_cpp_is_grouped_numeric", (DL_FUNC) &_quanteda_cpp_is_grouped_numeric, 2},
     {"_quanteda_cpp_is_grouped_character", (DL_FUNC) &_quanteda_cpp_is_grouped_character, 2},
     {"_quanteda_cpp_get_load_factor", (DL_FUNC) &_quanteda_cpp_get_load_factor, 0},
+    {"_quanteda_address", (DL_FUNC) &_quanteda_address, 1},
     {"_quanteda_cpp_set_meta", (DL_FUNC) &_quanteda_cpp_set_meta, 2},
     {"_quanteda_cpp_tbb_enabled", (DL_FUNC) &_quanteda_cpp_tbb_enabled, 0},
     {NULL, NULL, 0}
