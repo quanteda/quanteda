@@ -117,6 +117,10 @@ cpp_get_load_factor <- function() {
     .Call(`_quanteda_cpp_get_load_factor`)
 }
 
+address <- function(x) {
+    .Call(`_quanteda_address`, x)
+}
+
 cpp_set_meta <- function(object_, meta_) {
     invisible(.Call(`_quanteda_cpp_set_meta`, object_, meta_))
 }
