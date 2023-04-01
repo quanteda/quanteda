@@ -85,7 +85,7 @@ TokensPtr cpp_serialize_add(List texts_, TokensPtr xptr){
     MapTypes map;
     for (size_t g = 0; g < types.size(); g++) {
         std::string type = types[g];
-        auto it = map.insert(std::pair<std::string, UintParam>(types[g], g + 1));
+        map.insert(std::pair<std::string, UintParam>(types[g], g + 1));
     }
     //dev::stop_timer("Register", timer);
     
