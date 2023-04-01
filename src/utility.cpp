@@ -108,6 +108,14 @@ List cpp_get_load_factor() {
     );
 }
 
+// Copied from the pryr package
+// [[Rcpp::export]]
+std::string address(SEXP x) {
+    std::ostringstream s;
+    s << x;
+    return s.str();
+}
+
 // [[Rcpp::export]]
 void cpp_set_meta(RObject object_, RObject meta_) {
     object_.attr("meta") = meta_;
