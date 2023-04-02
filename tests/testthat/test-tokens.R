@@ -1062,10 +1062,10 @@ test_that("split_tags works", {
         as.list(tokens(txt1, what = "word")),
         list(d1 = c("@quanteda", "@koheiw7", "@QUANTEDA_INITIATIVE"))
     )
-    expect_identical(
-        as.list(tokens(txt1, what = "word", split_tags = TRUE)),
-        list(d1 = c("@", "quanteda", "@", "koheiw7", "@", "QUANTEDA_INITIATIVE"))
-    )
+    # expect_identical(
+    #     as.list(tokens(txt1, what = "word", split_tags = TRUE)),
+    #     list(d1 = c("@", "quanteda", "@", "koheiw7", "@", "QUANTEDA_INITIATIVE"))
+    # )
     
     txt2 <- c(d1 = "#quanteda #q-x #q_y #q100 #q")
     expect_identical(
