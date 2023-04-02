@@ -66,3 +66,28 @@ test_that("dots are applied in ntokens.tokens, ntype.tokens", {
     expect_identical(ntype(txt, remove_punct = TRUE), c(d1 = 6L))
     expect_identical(ntype(txt), c(d1 = 7L))
 })
+
+test_that("test nsentence", {
+    txt <- c(doc1 = "This is Mr. Smith.  He is married to Mrs. Jones.",
+             doc2 = "Never, before: a colon!  Gimme a break.")
+    expect_identical(nsentence(txt), c(doc1 = 2L, doc2 = 2L))
+    expect_identical(nsentence(corpus(txt)), c(doc1 = 2L, doc2 = 2L))
+    expect_identical(
+        nsentence(tokens(txt, what = "sentence")),
+        c(doc1 = 2L, doc2 = 2L)
+    )
+})
+
+test_that("nsentence warnings work", {
+    txt <- c(d1 = "one two three")
+    expect_warning(
+        nsentence(txt),
+        "nsentence() does not correctly count sentences in all lower-cased text",
+        fixed = TRUE
+    )
+    expect_warning(
+        nsentence(corpus(txt)),
+        "nsentence() does not correctly count sentences in all lower-cased text",
+        fixed = TRUE
+    )
+})

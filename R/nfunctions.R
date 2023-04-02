@@ -189,3 +189,56 @@ ntype.tokens <- function(x, ...) {
         x <- tokens(x, ...)
     vapply(unclass(x), function(y) length(unique(y[y > 0])), integer(1))
 }
+
+
+#' Count the number of sentences
+#'
+#' Return the count of sentences in a corpus or character object.
+#' @param x a character or [corpus] whose sentences will be counted
+#' @note `nsentence()` relies on the boundaries definitions in the \pkg{stringi}
+#'   package (see [stri_opts_brkiter][stringi::stri_opts_brkiter]).  It does not
+#'   count sentences correctly if the text has been transformed to lower case,
+#'   and for this reason `nsentence()` will issue a warning if it detects all
+#'   lower-cased text.
+#' @return count(s) of the total sentences per text
+#' @examples
+#' # simple example
+#' txt <- c(text1 = "This is a sentence: second part of first sentence.",
+#'          text2 = "A word. Repeated repeated.",
+#'          text3 = "Mr. Jones has a PhD from the LSE.  Second sentence.")
+#' nsentence(txt)
+#' @export
+nsentence <- function(x) {
+    UseMethod("nsentence")
+}
+
+#' @export
+nsentence.default <- function(x) {
+    check_class(class(x), "nsentence")
+}
+
+#' @export
+#' @importFrom stringi stri_detect_charclass
+nsentence.character <- function(x) {
+    upcase <- try(any(stri_detect_charclass(x, "[A-Z]")), silent = TRUE)
+    if (!is.logical(upcase)) {
+        # warning("Input text contains non-UTF-8 characters.")
+    } else if (!upcase)
+        warning("nsentence() does not correctly count sentences in all lower-cased text")
+    ntoken(tokens(x, what = "sentence"))
+}
+
+#' @export
+nsentence.corpus <- function(x) {
+    x <- as.corpus(x)
+    nsentence(as.character(x))
+}
+
+#' @export
+nsentence.tokens <- function(x) {
+    x <- as.tokens(x)
+    attrs <- attributes(x)
+    if (field_object(attrs, "what") != "sentence")
+        stop("nsentence on a tokens object only works if what = \"sentence\"")
+    return(lengths(x))
+}
