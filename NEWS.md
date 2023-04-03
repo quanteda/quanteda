@@ -1,3 +1,9 @@
+# quanteda 4.0.0
+
+## Changes and additions
+
+* Introduces the `tokens_xptr` objects that extend the `tokens` objects with external pointers for a greater efficiency. Once `tokens` objects are converted to `tokens_xptr` objects using `as.tokens_xptr()`, `tokens_*.tokens_xptr()` methods are called automatically. 
+
 # quanteda 3.3.0
 
 ## Changes and additions
