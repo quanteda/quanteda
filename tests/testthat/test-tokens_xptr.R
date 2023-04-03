@@ -5,6 +5,10 @@ toks <- tokens(data_corpus_inaugural)
 xtoks <- as.tokens_xptr(toks)
 
 test_that("Basic functions work", {
+    expect_true(is.tokens_xptr(tokens("a b c d", xptr = TRUE)))
+})
+
+test_that("Basic functions work", {
     
     expect_false(is.tokens_xptr(toks))
     expect_true(is.tokens_xptr(xtoks))

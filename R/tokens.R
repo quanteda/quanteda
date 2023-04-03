@@ -37,6 +37,7 @@
 #' @param include_docvars if `TRUE`, pass docvars through to the tokens object.
 #'   Does not apply when the input is a character data or a list of characters.
 #' @inheritParams tokens_select
+#' @param xptr if `TRUE`, returns a `tokens_xptr` class object
 #' @param verbose if `TRUE`, print timing messages to the console
 #' @param ... used to pass arguments among the functions
 #' @section Details: As of version 2, the choice of tokenizer is left more to
@@ -245,7 +246,8 @@ tokens.corpus <- function(x,
                           include_docvars = TRUE,
                           padding = FALSE,
                           verbose = quanteda_options("verbose"),
-                          ...)  {
+                          ...,
+                          xptr = FALSE)  {
     x <- as.corpus(x)
     
     global$proc_time <- proc.time()
@@ -341,7 +343,8 @@ tokens.corpus <- function(x,
                      padding = padding,
                      verbose = verbose)
     
-    result <- as.tokens(result)
+    if (!xptr)
+        result <- as.tokens(result)
     
     if (verbose) {
         n <- length(types(result))
