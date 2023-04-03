@@ -101,8 +101,8 @@ cpp_recompile <- function(xptr) {
     invisible(.Call(`_quanteda_cpp_recompile`, xptr))
 }
 
-cpp_dfm <- function(xptr) {
-    .Call(`_quanteda_cpp_dfm`, xptr)
+cpp_dfm <- function(xptr, sort = TRUE) {
+    .Call(`_quanteda_cpp_dfm`, xptr, sort)
 }
 
 cpp_is_grouped_numeric <- function(values_, groups_) {

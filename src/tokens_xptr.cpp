@@ -88,7 +88,7 @@ void cpp_recompile(TokensPtr xptr) {
 }
 
 // [[Rcpp::export]]
-S4 cpp_dfm(TokensPtr xptr) {
+S4 cpp_dfm(TokensPtr xptr, bool sort = true) {
     
     xptr->recompile();
     std::size_t H = xptr->texts.size();
@@ -117,11 +117,15 @@ S4 cpp_dfm(TokensPtr xptr) {
                 text[i] = 0;
                 count_pad++;
             } else {
-                if (ids[xptr->texts[h][i] - 1] == 0) {
-                    ids[xptr->texts[h][i] - 1] = id;
-                    id++;
+                if (sort) {
+                    if (ids[xptr->texts[h][i] - 1] == 0) {
+                        ids[xptr->texts[h][i] - 1] = id;
+                        id++;
+                    }
+                    text[i] = ids[xptr->texts[h][i] - 1];
+                } else {
+                    text[i] = xptr->texts[h][i]; // for dictionary
                 }
-                text[i] = ids[xptr->texts[h][i] - 1];
             }
         }
         // aggregate the same token IDs
@@ -152,7 +156,11 @@ S4 cpp_dfm(TokensPtr xptr) {
     //Rcout << "id: " << ids_ << "\n";
     Types types(G);
     for (std::size_t g = 0; g < G; g++) {
-        types[ids[g] - 1] = xptr->types[g];
+        if (sort) {
+            types[ids[g] - 1] = xptr->types[g];
+        } else {
+            types[g] = xptr->types[g];
+        }
     }
     CharacterVector types_ = encode(types);
     //Rcout << "types: " << types_ << "\n";
@@ -183,5 +191,6 @@ xtoks <- quanteda::as.tokens_xptr(toks)
 xtoks2 <- xtoks[c(2:1)]
 print(xtoks2)
 cpp_dfm(xtoks2)
+cpp_dfm(xtoks2, FALSE)
 
 */

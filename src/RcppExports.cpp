@@ -332,13 +332,14 @@ BEGIN_RCPP
 END_RCPP
 }
 // cpp_dfm
-S4 cpp_dfm(TokensPtr xptr);
-RcppExport SEXP _quanteda_cpp_dfm(SEXP xptrSEXP) {
+S4 cpp_dfm(TokensPtr xptr, bool sort);
+RcppExport SEXP _quanteda_cpp_dfm(SEXP xptrSEXP, SEXP sortSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< TokensPtr >::type xptr(xptrSEXP);
-    rcpp_result_gen = Rcpp::wrap(cpp_dfm(xptr));
+    Rcpp::traits::input_parameter< bool >::type sort(sortSEXP);
+    rcpp_result_gen = Rcpp::wrap(cpp_dfm(xptr, sort));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -435,7 +436,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_quanteda_cpp_get_types", (DL_FUNC) &_quanteda_cpp_get_types, 2},
     {"_quanteda_cpp_set_types", (DL_FUNC) &_quanteda_cpp_set_types, 2},
     {"_quanteda_cpp_recompile", (DL_FUNC) &_quanteda_cpp_recompile, 1},
-    {"_quanteda_cpp_dfm", (DL_FUNC) &_quanteda_cpp_dfm, 1},
+    {"_quanteda_cpp_dfm", (DL_FUNC) &_quanteda_cpp_dfm, 2},
     {"_quanteda_cpp_is_grouped_numeric", (DL_FUNC) &_quanteda_cpp_is_grouped_numeric, 2},
     {"_quanteda_cpp_is_grouped_character", (DL_FUNC) &_quanteda_cpp_is_grouped_character, 2},
     {"_quanteda_cpp_get_load_factor", (DL_FUNC) &_quanteda_cpp_get_load_factor, 0},

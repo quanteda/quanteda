@@ -160,10 +160,27 @@ test_that("tokens_sample() works", {
 
 
 test_that("dfm works", {
+    
     expect_identical(dfm(as.tokens_xptr(toks)), dfm(toks))
     expect_identical(dfm(as.tokens_xptr(toks), tolower = FALSE), 
                      dfm(toks, tolower = FALSE))
     
+    # with padding
+    toks_pad <- tokens_remove(toks, stopwords(), padding = TRUE)
+    expect_identical(dfm(as.tokens_xptr(toks_pad)), dfm(toks_pad))
+    expect_identical(dfm(as.tokens_xptr(toks_pad), tolower = FALSE), 
+                     dfm(toks_pad, tolower = FALSE))
+    
+    # with dictionary keys
+    dict <- data_dictionary_LSD2015
+    expect_equal(
+        featnames(dfm(tokens_lookup(as.tokens_xptr(toks), dict))),
+        names(dict)
+    )
+    expect_equal(
+        featnames(dfm(tokens_lookup(as.tokens_xptr(toks), rev(dict)))),
+        rev(names(dict))
+    )
 })
 
 test_that("order of the feature is unique", {
