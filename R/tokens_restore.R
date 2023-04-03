@@ -24,14 +24,3 @@ tokens_restore.tokens_xptr <- function(x) {
                                  "")
     rebuild_tokens(result, attrs)
 }
-
-#' @export
-#' @examples
-#' require(stringi)
-#' txt <- c(d1 = "オリンピック延期決定！ #politics @abe #政治# #政治 #安倍政権 @安倍政権 ！")
-#' txt <- stri_replace_all_regex(txt, "@[a-zA-Z0-9_]+|#[\\p{L}\\p{N}]+#?", "\uE001$0\uE002")
-#' toks <- as.tokens(stri_split_boundaries(txt, type = "word"))
-#' tokens_restore(toks)
-tokens_restore.tokens <- function(x) {
-    as.tokens(tokens_restore(as.tokens_xptr(x)))
-}

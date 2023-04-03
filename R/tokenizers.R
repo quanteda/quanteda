@@ -154,6 +154,7 @@ tokenize_word4 <- function(x, split_hyphens = FALSE, split_tags = FALSE, split_e
         if (verbose) catm(" ...preserving elisions\n")
         rules[["split_elisions"]] <- NULL
     }
+
     username <- quanteda_options("pattern_username")
     hashtag <- quanteda_options("pattern_hashtag")
     
