@@ -63,6 +63,8 @@ needs to be computed.}
 \item{verbose}{if \code{TRUE}, print timing messages to the console}
 
 \item{...}{used to pass arguments among the functions}
+
+\item{xptr}{if \code{TRUE}, returns a \code{tokens_xptr} class object}
 }
 \value{
 \pkg{quanteda} \code{tokens} class object, by default a serialized list of

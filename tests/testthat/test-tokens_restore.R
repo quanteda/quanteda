@@ -4,13 +4,13 @@ test_that("tokens_restore works with ireqgular markers", {
     
     # remove stray marks
     toks1 <- as.tokens(stri_split_boundaries("\uE002aaa\uE001bbb\uE001", type = "word")) %>% 
-        quanteda:::tokens_restore()
+        tokens_restore()
     expect_equal(as.list(toks1), 
                  list("text1" = c("aaa", "bbb")))
     
     # only extract innermost pairs
     toks2 <- as.tokens(stri_split_boundaries("\uE001\uE001aaa bbb\uE002ccc\uE002", type = "word")) %>% 
-        quanteda:::tokens_restore()
+        tokens_restore()
     expect_equal(as.list(toks2), 
                  list("text1" = c("aaa bbb", "ccc")))
     
