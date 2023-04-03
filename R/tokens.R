@@ -315,7 +315,8 @@ tokens.corpus <- function(x,
     }
     result <- build_tokens(
         result, 
-        types = NULL,
+        types = NULL, 
+        what = what,
         docvars = select_docvars(attrs[["docvars"]], user = include_docvars, system = TRUE),
         meta = attrs[["meta"]]
     )
