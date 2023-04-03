@@ -23,13 +23,13 @@ test_that("tokens indexing works as expected", {
 })
 
 test_that("tokens_recompile combine duplicates is working", {
-    toksh <- tokens(c(one = "a b c d A B C D", two = "A B C d"))
-    expect_equivalent(attr(toksh, "types"),
+    toks <- tokens(c(one = "a b c d A B C D", two = "A B C d"))
+    expect_equivalent(attr(toks, "types"),
                       c("a", "b", "c", "d", "A", "B", "C", "D"))
-    expect_equivalent(attr(tokens_tolower(toksh), "types"),
+    expect_equivalent(attr(tokens_tolower(toks), "types"),
                       c("a", "b", "c", "d"))
-    attr(toksh, "types") <- char_tolower(attr(toksh, "types"))
-    expect_equivalent(attr(quanteda:::tokens_recompile(toksh), "types"),
+    attr(toks, "types") <- char_tolower(attr(toks, "types"))
+    expect_equivalent(attr(quanteda:::tokens_recompile(toks), "types"),
                       c("a", "b", "c", "d"))
 
 })
