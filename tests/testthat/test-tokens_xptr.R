@@ -165,9 +165,12 @@ test_that("tokens_sample() works", {
 
 test_that("dfm works", {
     
-    expect_identical(dfm(as.tokens_xptr(toks)), dfm(toks))
-    expect_identical(dfm(as.tokens_xptr(toks), tolower = FALSE), 
+    xtoks <- as.tokens_xptr(toks)
+    expect_identical(dfm(xtoks, tolower = TRUE), 
+                     dfm(toks, tolower = TRUE))
+    expect_identical(dfm(xtoks, tolower = FALSE), 
                      dfm(toks, tolower = FALSE))
+    expect_false(any(duplicated(colnames(dfm(xtoks)))))
     
     # with padding
     toks_pad <- tokens_remove(toks, stopwords(), padding = TRUE)
