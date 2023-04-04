@@ -1,4 +1,4 @@
-#' @rdname tokens_xptr
+#' @rdname as.tokens_xptr
 #' @export
 is.tokens_xptr <- function(x) {
     identical(typeof(x), "externalptr") && "tokens_xptr" %in% class(x)
@@ -10,13 +10,13 @@ is.tokens_xptr <- function(x) {
 #' documents efficiently.
 #' @param x a [tokens] object to convert or a tokens_xptr object to
 #'   to deep-copy.
-#' @rdname tokens_xptr
+#' @rdname as.tokens_xptr
 #' @export
 as.tokens_xptr <- function(x) {
     UseMethod("as.tokens_xptr")
 }
 
-#' @rdname tokens_xptr
+#' @rdname as.tokens_xptr
 #' @method as.tokens_xptr tokens
 #' @export
 as.tokens_xptr.tokens <- function(x) {
@@ -30,7 +30,7 @@ as.tokens_xptr.tokens <- function(x) {
                  class = attrs[["class"]])
 }
 
-#' @rdname tokens_xptr
+#' @rdname as.tokens_xptr
 #' @method as.tokens_xptr tokens_xptr
 #' @export
 as.tokens_xptr.tokens_xptr <- function(x) {
