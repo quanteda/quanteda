@@ -16,6 +16,7 @@ class TokensObj {
         // variables
         Texts texts;
         Types types;
+        // NOTE: consider combining has_gap and has_dup into single variable
         bool has_gap = true;
         bool has_dup = true;
         

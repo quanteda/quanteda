@@ -1,6 +1,7 @@
 #devtools::install_github("quanteda/quanteda3")
 require(quanteda)
-corp <- readRDS('/home/kohei/Dropbox/Public/data_corpus_guardian2016-10k.rds') %>% 
+corp <- #readRDS('/home/kohei/Dropbox/Public/data_corpus_guardian2016-10k.rds') %>% 
+    readRDS('C:/Users/watan/Dropbox/Public/data_corpus_guardian2016-10k.rds') %>% 
     corpus_reshape()
 
 toks <- tokens(corp, remove_punct = FALSE, remove_numbers = FALSE, 
@@ -30,6 +31,12 @@ identical(dfm(tokens_ngrams(as.tokens_xptr(xtoks))),
           dfm(tokens_ngrams(as.tokens_xptr(xtoks))))
 
 microbenchmark::microbenchmark(
+    old = quanteda3::dfm(toks),
+    new = dfm(xtoks),
+    times = 10
+)
+
+microbenchmark::microbenchmark(
     old = quanteda3::tokens(corp, remove_punct = TRUE, remove_numbers = TRUE, 
                             remove_symbols = TRUE),
     new = tokens(corp, remove_punct = TRUE, remove_numbers = TRUE, 
@@ -39,10 +46,10 @@ microbenchmark::microbenchmark(
 
 microbenchmark::microbenchmark(
     old = quanteda3::tokens(toks, remove_punct = TRUE, remove_numbers = TRUE, 
-                           remove_symbols = TRUE),
+                            remove_symbols = TRUE),
     new = as.tokens_xptr(toks) %>% 
-          tokens(remove_punct = TRUE, remove_numbers = TRUE, 
-                 remove_symbols = TRUE),
+        tokens(remove_punct = TRUE, remove_numbers = TRUE, 
+               remove_symbols = TRUE),
     times = 10
 )
 

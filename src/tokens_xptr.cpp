@@ -79,6 +79,8 @@ CharacterVector cpp_get_types(TokensPtr xptr, bool recompile = false) {
 TokensPtr cpp_set_types(TokensPtr xptr, const CharacterVector types_) {
     Types types = Rcpp::as<Types>(types_);
     xptr->types = types;
+    xptr->has_dup = true;
+    xptr->has_gap = true;
     return xptr;
 }
 
