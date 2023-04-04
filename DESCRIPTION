@@ -27,6 +27,7 @@ Depends:
     methods
 Imports:
     fastmatch,
+    jsonlite,
     magrittr,
     Matrix (>= 1.5-0),
     Rcpp (>= 0.12.12),
@@ -58,8 +59,6 @@ Suggests:
     stm,
     text2vec,
     topicmodels,
-    jsonlite,
-    quanteda,
     tibble,
     tidytext,
     xtable,
