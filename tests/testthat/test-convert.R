@@ -276,6 +276,7 @@ test_that("triplet converter works", {
 })
 
 test_that("omit_empty works as expected (#1600", {
+    skip_if_not_installed("tm")
     dfmat <- as.dfm(matrix(c(1, 0, 2, 0,
                              0, 0, 1, 2,
                              0, 0, 0, 0,
