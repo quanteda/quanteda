@@ -54,16 +54,11 @@ microbenchmark::microbenchmark(
 )
 
 microbenchmark::microbenchmark(
-    old = quanteda3::tokens_remove(toks, stopwords("en"), padding = TRUE) %>% 
-        quanteda3::tokens_remove("[\\p{N}]", valuetype = "regex", padding = TRUE) %>% 
-        quanteda3::tokens_remove("[\\p{P}]", valuetype = "regex", padding = TRUE) %>% 
-        quanteda3::tokens_remove("[\\p{S}]", valuetype = "regex", padding = TRUE) %>% 
+    old = quanteda3::tokens(corp) %>% 
+        quanteda3::tokens_remove(stopwords("en"), padding = TRUE) %>% 
         quanteda3::dfm(remove_padding = TRUE),
-    new = as.tokens_xptr(xtoks) %>% 
+    new = tokens(corp, xptr = TRUE) %>% 
         tokens_remove(stopwords("en"), padding = TRUE) %>% 
-        tokens_remove("[\\p{N}]", valuetype = "regex", padding = TRUE) %>% 
-        tokens_remove("[\\p{P}]", valuetype = "regex", padding = TRUE) %>% 
-        tokens_remove("[\\p{S}]", valuetype = "regex", padding = TRUE) %>% 
         dfm(remove_padding = TRUE),
     times = 10
 )
