@@ -440,3 +440,10 @@ test_that("margin is correct (#2176)" , {
   
 })
 
+test_that("unused arguments works for fcm (#2103)", {
+    toks <- tokens(c("a b c d e", "a a b n"))
+    expect_warning(
+        fcm(toks, notanargument = TRUE),
+        "notanargument argument is not used"
+    )
+})
