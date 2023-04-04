@@ -120,8 +120,7 @@ TokensPtr cpp_tokens_replace(TokensPtr xptr,
     }
 #endif
     xptr->texts = texts;
-    xptr->has_gap = true;
-    xptr->has_dup = true;
+    xptr->recompiled = false;
     return xptr;
 }
 

@@ -10,15 +10,13 @@ typedef std::vector<unsigned int> Ids;
 
 class TokensObj {
     public:
-        TokensObj(Texts texts_, Types types_, bool has_gap_ = true, bool has_dup_ = true): 
-                  texts(texts_), types(types_), has_gap(has_gap_), has_dup(has_dup_){}
+        TokensObj(Texts texts_, Types types_, bool recompiled_ = false): 
+                  texts(texts_), types(types_), recompiled(recompiled_){}
         
         // variables
         Texts texts;
         Types types;
-        // NOTE: consider combining has_gap and has_dup into single variable
-        bool has_gap = true;
-        bool has_dup = true;
+        bool recompiled;
         
         // functions
         void recompile();
@@ -48,9 +46,9 @@ inline void TokensObj::recompile() {
 
     /// dev::Timer timer;
   
-    // Check if IDs are all used
+    // Check if all IDs are used
     bool all_used;
-    if (has_gap) {
+    if (!recompiled) {
         // dev::start_timer("Check gaps", timer);
         unsigned int id_limit = ids_new.size();
         for (std::size_t h = 0; h < texts.size(); h++) {
@@ -81,7 +79,7 @@ inline void TokensObj::recompile() {
     
     // Check if types are duplicated
     bool all_unique;
-    if (has_dup && is_duplicated(types)) {
+    if (!recompiled && is_duplicated(types)) {
         std::unordered_map<std::string, unsigned int> types_unique;
         flags_unique[0] = true; // padding is always unique
         for (std::size_t g = 1; g < ids_new.size(); g++) {
@@ -108,8 +106,7 @@ inline void TokensObj::recompile() {
     
     // Do nothing if all used and unique
     if (all_used && all_unique) {
-        has_gap = false;
-        has_dup = false;
+        recompiled = true;
         return;
     }
 
@@ -128,8 +125,8 @@ inline void TokensObj::recompile() {
         }
     }
     types = types_new;
-    has_gap = false;
-    has_dup = false;
+    recompiled = true;
+    return;
 }
 
 

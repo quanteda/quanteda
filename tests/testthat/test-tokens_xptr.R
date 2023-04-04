@@ -115,16 +115,16 @@ test_that("tokens_tolower and tokens_toupper work", {
     
     xtoks1 <- tokens_lookup(as.tokens_xptr(toks), dict, exclusive = FALSE)
     expect_identical(quanteda:::cpp_get_attributes(xtoks1),
-                     list(has_dup = TRUE, has_gap = TRUE))
+                     list(recompiled = FALSE))
     
     xtoks2 <- tokens_lookup(as.tokens_xptr(toks), dict, nomatch = "nomatch")
     expect_identical(quanteda:::cpp_get_attributes(xtoks2),
-                     list(has_dup = FALSE, has_gap = FALSE))
+                     list(recompiled = TRUE))
     
     # attributes are copied
     xtoks3 <- as.tokens_xptr(xtoks2)
     expect_identical(quanteda:::cpp_get_attributes(xtoks3),
-                     list(has_dup = FALSE, has_gap = FALSE))
+                     list(recompiled = TRUE))
 })
 
 test_that("tokens_compound works", {

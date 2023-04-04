@@ -164,8 +164,7 @@ TokensPtr cpp_tokens_restore(TokensPtr xptr,
     // dev::stop_timer("Token compound", timer);
     xptr->texts = texts;
     xptr->types = types;
-    xptr->has_gap = true;
-    xptr->has_dup = true;
+    xptr->recompiled = false;
     return xptr;
 }
 

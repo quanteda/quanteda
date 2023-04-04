@@ -209,11 +209,9 @@ TokensPtr cpp_tokens_lookup(TokensPtr xptr,
     
     if (nomatch != 2) {
         // NOTE: values might need to be reset
-        xptr->has_gap = false;
-        xptr->has_dup = false;
+        xptr->recompiled = true;
     } else {
-        xptr->has_gap = true;
-        xptr->has_dup = true;
+        xptr->recompiled = false;
     }
     return xptr;
 }

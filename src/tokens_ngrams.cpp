@@ -157,8 +157,7 @@ TokensPtr cpp_tokens_ngrams(TokensPtr xptr,
     
     xptr->texts = texts;
     xptr->types = types_ngram;
-    xptr->has_gap = true;
-    xptr->has_dup = true;
+    xptr->recompiled = false;
     return xptr;
 
 }

@@ -45,7 +45,7 @@ TokensPtr cpp_tokens_combine(TokensPtr xptr1, TokensPtr xptr2){
     temp.insert(temp.end(), xptr1->texts.begin(), xptr1->texts.end());
     temp.insert(temp.end(), texts.begin(), texts.end());
     
-    TokensObj *ptr = new TokensObj(temp, types, true, true);
+    TokensObj *ptr = new TokensObj(temp, types, false);
     return TokensPtr(ptr, true);
 }
 

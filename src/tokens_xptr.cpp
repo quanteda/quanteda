@@ -15,14 +15,13 @@ TokensPtr cpp_as_xptr(const List text_,
 
 // [[Rcpp::export]]
 TokensPtr cpp_copy_xptr(TokensPtr xptr) {
-    TokensObj *ptr_copy = new TokensObj(xptr->texts, xptr->types, xptr->has_gap, xptr->has_dup);
+    TokensObj *ptr_copy = new TokensObj(xptr->texts, xptr->types, xptr->recompiled);
     return TokensPtr(ptr_copy, true);
 }
 
 // [[Rcpp::export]]
 List cpp_get_attributes(TokensPtr xptr) {
-    List list_ = List::create(_["has_dup"] = xptr->has_dup,
-                              _["has_gap"] = xptr->has_gap);
+    List list_ = List::create(_["recompiled"] = xptr->recompiled);
     return list_;
 }
 
@@ -45,7 +44,7 @@ TokensPtr cpp_subset(TokensPtr xptr, IntegerVector index_) {
         }
         texts[i] = xptr->texts[index[i] - 1];
     }
-    TokensObj *ptr_new = new TokensObj(texts, xptr->types, xptr->has_gap, xptr->has_dup);
+    TokensObj *ptr_new = new TokensObj(texts, xptr->types, xptr->recompiled);
     return TokensPtr(ptr_new, true);
 }
 
@@ -79,8 +78,7 @@ CharacterVector cpp_get_types(TokensPtr xptr, bool recompile = false) {
 TokensPtr cpp_set_types(TokensPtr xptr, const CharacterVector types_) {
     Types types = Rcpp::as<Types>(types_);
     xptr->types = types;
-    xptr->has_dup = true;
-    xptr->has_gap = true;
+    xptr->recompiled = false;
     return xptr;
 }
 

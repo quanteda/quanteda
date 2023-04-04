@@ -220,8 +220,7 @@ TokensPtr cpp_tokens_select(TokensPtr xptr,
 #endif
     // dev::stop_timer("Token select", timer);
     xptr->texts = texts;
-    xptr->has_gap = true;
-    xptr->has_dup = true;
+    xptr->recompiled = false;
     return xptr;
 }
 
