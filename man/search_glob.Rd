@@ -9,15 +9,15 @@
 \alias{search_fixed_multi}
 \title{Select types without performing slow regex search}
 \usage{
-search_glob(pattern, types_search, index)
+search_glob(pattern, types_search, case_insensitive, index = NULL)
 
-search_glob_multi(patterns, types_search, index)
+search_glob_multi(patterns, types_search, case_insensitive, index)
 
 search_regex(pattern, types_search, case_insensitive)
 
 search_regex_multi(patterns, types_search, case_insensitive)
 
-search_fixed(pattern, types_search, index)
+search_fixed(pattern, types_search, index = NULL)
 
 search_fixed_multi(patterns, types_search, index)
 }
@@ -27,12 +27,12 @@ search_fixed_multi(patterns, types_search, index)
 \item{types_search}{lowercased types when \code{case_insensitive=TRUE}, but
 not used in glob and fixed matching as types are in the index.}
 
+\item{case_insensitive}{logical; if \code{TRUE}, ignore case when matching a
+\code{pattern} or \link{dictionary} values}
+
 \item{index}{index object created by \code{index_types}}
 
 \item{patterns}{a list of "glob", "fixed" or "regex" patterns}
-
-\item{case_insensitive}{logical; if \code{TRUE}, ignore case when matching a
-\code{pattern} or \link{dictionary} values}
 }
 \description{
 This is an internal function for \code{pattern2id} that select types using
