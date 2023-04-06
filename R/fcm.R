@@ -103,6 +103,7 @@ fcm <- function(x, context = c("document", "window"),
                 weights = NULL,
                 ordered = FALSE,
                 tri = TRUE, ...) {
+    check_dots(...)
     UseMethod("fcm")
 }
 
