@@ -73,8 +73,6 @@ test_that("pattern2fixed converts regex patterns correctly", {
         list('A', 'AA', 'B', 'BB', 'C', 'CC', 'a', 'aa', 'b', 'bb', 'c', 'cc')
     ), list())
     
-    
-    
 })
 
 test_that("pattern2fixed converts complex regex patterns correctly", {
@@ -179,6 +177,43 @@ test_that("unlist_character() is working", {
   
 })
 
+test_that("used of index do not change the result", {
+    
+    expect_identical(
+        attr(index_types("aaa", "glob", match_any = TRUE, match_one = TRUE), "key"),
+        c("aaa", "a*", "aa*", "aaa*", "aa?")
+    )
+    expect_identical(
+        attr(index_types("aaa", "glob", match_any = TRUE, match_one = FALSE), "key"),
+        c("aaa", "a*", "aa*", "aaa*")
+    )
+    expect_identical(
+        attr(index_types("aaa", "glob", match_any = FALSE, match_one = TRUE), "key"),
+        c("aaa", "aa?")
+    )
+    expect_identical(
+        attr(index_types("aaa", "glob", match_any = FALSE, match_one = FALSE), "key"),
+        c("aaa")
+    )
+})
+
+test_that("used of index do not change the result", {
+
+    fixed <- list(c('a', 'BB'), c('CC'), c('*d*'), c('bb'), 'd*d')
+    glob <- list(c('a', 'B**'), c('*c*'), c('*d*'), c('*B'), 'ddd')
+    type <- c('A', 'AA', 'B', 'BB', 'C', 'CC', 'a', 'aa', 'b', 'bb', 'c', 'cc', 'ddd')
+    
+    expect_identical(
+        pattern2fixed(fixed, type, 'fixed', case_insensitive = FALSE, use_index = TRUE),
+        pattern2fixed(fixed, type, 'fixed', case_insensitive = FALSE, use_index = FALSE)
+    )
+    expect_identical(
+        pattern2fixed(glob, type, 'glob', case_insensitive = TRUE, use_index = TRUE),
+        pattern2fixed(glob, type, 'glob', case_insensitive = TRUE, use_index = FALSE)
+    )
+
+})
+
 # test_that("flatten_id() is working", {
 #   expect_identical(
 #     quanteda:::flatten_id(list(list(c(1, 2)), list(3), list(4))),
@@ -193,3 +228,4 @@ test_that("unlist_character() is working", {
 #     list(c(1, 2), 3, 4, integer())
 #   )
 # })
+

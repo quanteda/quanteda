@@ -8,6 +8,7 @@
 #' @inheritParams pattern
 #' @param types token types against which patterns are matched
 #' @param keep_nomatch keep patterns that did not match
+#' @param use_index construct index of types for quick search
 #' @inheritParams valuetype
 #' @return a list of integer vectors containing indices of matched types
 #' @keywords development
@@ -21,9 +22,10 @@
 #' pats_glob <- list(c("a*", "b*"), c("c"), c("d"))
 #' pattern2id(pats_glob, types, "glob", case_insensitive = TRUE)
 #' 
-#' @export
+#' @importFrom stringi stri_endswith_fixed
 pattern2id <- function(pattern, types, valuetype = c("glob", "fixed", "regex"),
-                       case_insensitive = TRUE, keep_nomatch = FALSE) {
+                       case_insensitive = TRUE, keep_nomatch = FALSE,
+                       use_index = TRUE) {
     
     types <- check_character(types, min_len = 0, max_len = Inf, strict = TRUE)
     valuetype <- match.arg(valuetype)
@@ -39,17 +41,21 @@ pattern2id <- function(pattern, types, valuetype = c("glob", "fixed", "regex"),
     if (valuetype == "glob" && !is_glob(pattern))
         valuetype <- "fixed"
     
-    len <- stri_length(unlist(pattern, use.names = FALSE))
-    if (length(len)) {
-        max_len <- max(len)    
-    } else {
-        max_len <- 0
-    }
-        
     # construct glob or fixed index for quick search
-    index <- index_types(types, valuetype, case_insensitive, max_len)
-    types_search <- attr(index, "types_search")
-
+    if (use_index) {
+        pat <- unlist(pattern, use.names = FALSE)
+        len <- stri_length(stri_trim_right(pat, "[^*?]"))
+        match_any <- any(stri_endswith_fixed(pat, "*"))
+        match_one <- any(stri_endswith_fixed(pat, "?"))
+        index <- index_types(types, valuetype, case_insensitive, 
+                             nchar = unique(len),
+                             match_any = match_any, match_one = match_one)
+        types_search <- attr(index, "types_search")
+    } else {
+        index <- NULL
+        types_search <- stri_trans_nfc(types)
+    }
+    
     # lowercases for case-insensitive search
     if (valuetype != "regex" && case_insensitive)
         pattern <- lapply(pattern, stri_trans_tolower)
@@ -60,7 +66,7 @@ pattern2id <- function(pattern, types, valuetype = c("glob", "fixed", "regex"),
             if (valuetype == "regex") {
                 temp[[i]] <- search_regex_multi(pattern[[i]], types_search, case_insensitive)
             } else if (valuetype == "glob") {
-                temp[[i]] <- search_glob_multi(pattern[[i]], types_search, index)
+                temp[[i]] <- search_glob_multi(pattern[[i]], types_search, case_insensitive, index)
             } else {
                 temp[[i]] <- search_fixed_multi(pattern[[i]], types_search, index)
             }
@@ -68,7 +74,7 @@ pattern2id <- function(pattern, types, valuetype = c("glob", "fixed", "regex"),
             if (valuetype == "regex") {
                 temp[[i]] <- as.list(search_regex(pattern[[i]], types_search, case_insensitive))
             } else if (valuetype == "glob") {
-                temp[[i]] <- as.list(search_glob(pattern[[i]], types_search, index))
+                temp[[i]] <- as.list(search_glob(pattern[[i]], types_search, case_insensitive, index))
             } else {
                 temp[[i]] <- as.list(search_fixed(pattern[[i]], types_search, index))
             }
@@ -93,9 +99,11 @@ pattern2id <- function(pattern, types, valuetype = c("glob", "fixed", "regex"),
 #' types <- c("A", "AA", "B", "BB", "BBB", "C", "CC")
 #' pattern2fixed(pattern, types, "regex", case_insensitive = TRUE)
 pattern2fixed <- function(pattern, types, valuetype = c("glob", "fixed", "regex"),
-                          case_insensitive = TRUE, keep_nomatch = FALSE) {
+                          case_insensitive = TRUE, keep_nomatch = FALSE,
+                          use_index = TRUE) {
     
-    temp <- pattern2id(pattern, types, valuetype, case_insensitive, keep_nomatch)
+    temp <- pattern2id(pattern, types, valuetype, case_insensitive, keep_nomatch,
+                       use_index = use_index)
     result <- lapply(temp, function(x) types[x])
     return(result)
 }
@@ -111,22 +119,25 @@ pattern2fixed <- function(pattern, types, valuetype = c("glob", "fixed", "regex"
 #' @inheritParams valuetype
 #' @param index index object created by `index_types`
 #' @keywords internal
-search_glob <- function(pattern, types_search, index) {
+search_glob <- function(pattern, types_search, case_insensitive, index = NULL) {
     if (length(pattern) == 0)  {
         return(integer())
     } else if (pattern == "") {
         return(0L)
     } else if (pattern == "*") {
         return(seq_along(types_search)) # return all types when glob is *
+    } else if (is.null(index)) {
+        return(which(stri_detect_regex(types_search, utils::glob2rx(pattern),
+                                       case_insensitive = case_insensitive)))
     } else {
         pos <- search_index(pattern, index)
-        if (length((pos))) {
+        if (length(pos)) {
             #cat("Index search", pattern, "\n")
             return(pos)
         } else if (!is_indexed(pattern)) {
             #cat("Regex search", pattern, "\n")
             return(which(stri_detect_regex(types_search, utils::glob2rx(pattern),
-                                           case_insensitive = FALSE)))
+                                           case_insensitive = case_insensitive)))
         } else {
             #cat("Not found\n")
             return(integer())
@@ -137,8 +148,8 @@ search_glob <- function(pattern, types_search, index) {
 #' @rdname search_glob
 #' @param patterns a list of "glob", "fixed" or "regex" patterns
 #' @keywords internal
-search_glob_multi <- function(patterns, types_search, index) {
-    expand(lapply(patterns, search_glob, types_search, index))
+search_glob_multi <- function(patterns, types_search, case_insensitive, index) {
+    expand(lapply(patterns, search_glob, types_search, case_insensitive, index))
 }
 
 #' @rdname search_glob
@@ -162,11 +173,13 @@ search_regex_multi <- function(patterns, types_search, case_insensitive) {
 
 #' @rdname search_glob
 #' @keywords internal
-search_fixed <- function(pattern, types_search, index) {
+search_fixed <- function(pattern, types_search, index = NULL) {
     if (length(pattern) == 0)  {
         return(integer())
     } else if (pattern == "") {
         return(0L)
+    } else if (is.null(index)) {
+        return(which(types_search %in% pattern))
     } else {
         return(search_index(pattern, index))
     }
@@ -186,19 +199,23 @@ search_fixed_multi <- function(patterns, types_search, index) {
 #' "car?", "c*", "ca*", "car*" and "cars*" when `valuetype="glob"`.
 #' @rdname pattern2id
 #' @inheritParams valuetype
-#' @param max_len maximum length of types to be indexed
+#' @param nchar character length of types to be indexed
+#' @param match_any index for "*" at the end of patterns
+#' @param match_one index for "?" at the end of patterns
 #' @return `index_types` returns a list of integer vectors containing type
 #'   IDs with index keys as an attribute
 #' @keywords internal
 #' @export
 #' @examples
-#' index <- index_types(c("xxx", "yyyy", "ZZZ"), "glob", FALSE, 3)
+#' index <- index_types(c("xxx", "yyyy", "ZZZ"), "glob", FALSE, 3:4)
 #' quanteda:::search_glob("yy*", attr(index, "type_search"), index)
-index_types <- function(types, valuetype, case_insensitive, max_len = NULL) {
+index_types <- function(types, valuetype = c("glob", "fixed", "regex"), 
+                        case_insensitive = TRUE, nchar = NULL,
+                        match_any = TRUE, match_one = TRUE) {
 
-    if (is.null(types)) stop("types cannot be NULL")
-    if (is.null(valuetype)) stop("valuetype cannot be NULL")
-    if (is.null(case_insensitive)) stop("case_insensitive cannot be NULL")
+    types <- check_character(types, min_len = 0, max_len = Inf, strict = TRUE)
+    nchar <- check_integer(nchar, min_len = 0, max_len = Inf, min = 0, allow_null = TRUE)
+    valuetype <- match.arg(valuetype)
 
     # normalize unicode
     types <- stri_trans_nfc(types)
@@ -230,28 +247,30 @@ index_types <- function(types, valuetype, case_insensitive, max_len = NULL) {
     if (valuetype == "glob") {
         len <- stri_length(types_search)
         id <- seq_along(types_search)
-        # index all the types if max_len is unknown
-        if (is.null(max_len)) max_len <- max(len)
-        for (i in seq(1, max_len)) {
-            k <- id[len >= i]
-            # index for patterns with * at the end
-            pos_tmp <- c(pos_tmp, list(k))
-            key_tmp <- c(key_tmp,
-                         list(stri_c(stri_sub(types_search[k], 1, i), "*")))
-            # # index for patterns with * at the top or end
-            #pos_tmp <- c(pos_tmp, list(rep(k, 2)))
-            #key_tmp <- c(key_tmp, list(stri_c(stri_sub(types_search[k], 1, i), "*")))
-            #key_tmp <- c(key_tmp, list(stri_c("*", stri_sub(types_search[k], i * -1, -1))))
+        # index all the types if nchar is unknown
+        if (is.null(nchar)) 
+            nchar <- seq(1, max(len))
+        # index for patterns with * at the end
+        if (match_any) {
+            for (n in sort(nchar)) {
+                k <- id[len >= n]
+                pos_tmp <- c(pos_tmp, list(k))
+                key_tmp <- c(key_tmp,
+                             list(stri_c(stri_sub(types_search[k], 1, n), "*")))
+            }
         }
-    
-        l <- id[len >= 2]
+        
         # index for patterns with ? at the end
-        pos_tmp <- c(pos_tmp, list(l))
-        key_tmp <- c(key_tmp, list(stri_c(stri_sub(types_search[l], 1, -2), "?")))
-        # # index for patterns with ? at the top or end
-        # pos_tmp <- c(pos_tmp, list(rep(l, 2)))
-        # key_tmp <- c(key_tmp, list(stri_c(stri_sub(types_search[l], 1, -2), "?")))
-        # key_tmp <- c(key_tmp, list(stri_c("?", stri_sub(types_search[l], 2, -1))))
+        if (match_one) {
+            l <- id[len >= 2]
+            pos_tmp <- c(pos_tmp, list(l))
+            key_tmp <- c(key_tmp, 
+                         list(stri_c(stri_sub(types_search[l], 1, -2), "?")))
+            # # index for patterns with ? at the top or end
+            # pos_tmp <- c(pos_tmp, list(rep(l, 2)))
+            # key_tmp <- c(key_tmp, list(stri_c(stri_sub(types_search[l], 1, -2), "?")))
+            # key_tmp <- c(key_tmp, list(stri_c("?", stri_sub(types_search[l], 2, -1))))
+        }
     }
 
     # faster to join vectors in the end
@@ -320,12 +339,8 @@ is_indexed <- function(pattern) {
     if (pattern == "") {
         return(FALSE)
     } else {
-        # check index for patterns with ? or * at the end
+        # check if patterns have ? or * other than the end
         return(!any(stri_detect_fixed(pattern, c("*", "?"))))
-    
-        # # check index for patterns with ? or * at the top or end
-        #return(!any(stri_detect_fixed(stri_sub(pattern, 1, -2), c("*", "?"))) ||
-        #       !any(stri_detect_fixed(stri_sub(pattern, 2, -1), c("*", "?"))))
     }
 }
 
