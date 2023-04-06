@@ -228,12 +228,12 @@ index_types <- function(pattern, types, valuetype = c("glob", "fixed", "regex"),
         pattern <- stri_trans_tolower(pattern) 
     }
     
-    pos_type <- seq_along(search)
-    key_type <- search
+    val_index <- seq_along(search) # index values
+    key_index <- search # index keys
     
     # index for fixed patterns
-    pos <- pos_type
-    key <- key_type
+    pos <- val_index
+    key <- key_index
     l <- key %in% pattern
     lis_pos <- list(pos[l])
     lis_key <- list(key[l])
@@ -241,19 +241,19 @@ index_types <- function(pattern, types, valuetype = c("glob", "fixed", "regex"),
     # index for glob patterns
     if (valuetype == "glob") {
         
-        len_type <- stri_length(key_type)
+        len_type <- stri_length(key_index)
         len_pat <- stri_length(stri_trim_right(pattern, "[^*?]"))
         for (n in sort(unique(len_pat))) {
-            pos <- pos_type[len_type >= n]
-            key <- stri_c(stri_sub(key_type[pos], 1, n), "*")
+            pos <- val_index[len_type >= n]
+            key <- stri_c(stri_sub(key_index[pos], 1, n), "*")
             l <- key %in% pattern
             lis_pos <- c(lis_pos, list(pos[l]))
             lis_key <- c(lis_key, list(key[l]))
         }
         
         # index for patterns with ? at the end
-        pos <- pos_type[len_type >= 2]
-        key <- stri_c(stri_sub(key_type[pos], 1, -2), "?")
+        pos <- val_index[len_type >= 2]
+        key <- stri_c(stri_sub(key_index[pos], 1, -2), "?")
         l <- key %in% pattern
         lis_pos <- c(lis_pos, list(pos[l]))
         lis_key <- c(lis_key, list(key[l]))
