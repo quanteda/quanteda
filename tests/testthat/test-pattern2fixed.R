@@ -112,9 +112,9 @@ test_that("pattern2fixed converts emoji correctly", {
 
 test_that("index_types works fine with empty types", {
 
-    expect_silent(index_types(character(), 'glob', FALSE))
-    expect_silent(index_types(character(), 'fixed', FALSE))
-    expect_silent(index_types(character(), 'regex', FALSE))
+    expect_silent(index_types("a*", character(), 'glob', FALSE))
+    expect_silent(index_types("a*", character(), 'fixed', FALSE))
+    expect_silent(index_types("a*", character(), 'regex', FALSE))
     
 })
 
@@ -175,26 +175,6 @@ test_that("unlist_character() is working", {
   expect_equal(quanteda:::unlist_character(list()),
                character())
   
-})
-
-test_that("used of index do not change the result", {
-    
-    expect_identical(
-        attr(index_types("aaa", "glob", match_any = TRUE, match_one = TRUE), "key"),
-        c("aaa", "a*", "aa*", "aaa*", "aa?")
-    )
-    expect_identical(
-        attr(index_types("aaa", "glob", match_any = TRUE, match_one = FALSE), "key"),
-        c("aaa", "a*", "aa*", "aaa*")
-    )
-    expect_identical(
-        attr(index_types("aaa", "glob", match_any = FALSE, match_one = TRUE), "key"),
-        c("aaa", "aa?")
-    )
-    expect_identical(
-        attr(index_types("aaa", "glob", match_any = FALSE, match_one = FALSE), "key"),
-        c("aaa")
-    )
 })
 
 test_that("used of index do not change the result", {
