@@ -478,17 +478,19 @@ if (require("quanteda.textmodels") && require("quanteda.textplots")) {
 **quanteda** makes it very easy to fit topic models as well, e.g.:
 
 ```{r}
-quant_dfm <- tokens(data_corpus_irishbudget2010, remove_punct = TRUE, remove_numbers = TRUE) %>%
-  tokens_remove(stopwords("en")) %>%
-  dfm()
-quant_dfm <- dfm_trim(quant_dfm, min_termfreq = 4, max_docfreq = 10)
-quant_dfm 
+if (require("quanteda.textmodels")) {
+    quant_dfm <- tokens(data_corpus_irishbudget2010, remove_punct = TRUE, remove_numbers = TRUE) %>%
+        tokens_remove(stopwords("en")) %>%
+        dfm()
+    quant_dfm <- dfm_trim(quant_dfm, min_termfreq = 4, max_docfreq = 10)
+    quant_dfm 
+}
 ```
 
 Now we can fit the topic model and plot it:
 ```{r fig.width = 7, fig.height = 5}
-set.seed(100)
-if (require("stm")) {
+if (require("stm") && require("quanteda.textmodels")) {
+    set.seed(100)
     my_lda_fit20 <- stm(quant_dfm, K = 20, verbose = FALSE)
     plot(my_lda_fit20)    
 }
