@@ -1,7 +1,7 @@
 test_that("test kwic general", {
-    txt <- tokens(paste(LETTERS, collapse = " "))
+    toks <- tokens(paste(LETTERS, collapse = " "))
     expect_equal(
-        as.data.frame(kwic(txt, "D")),
+        as.data.frame(kwic(toks, "D")),
         data.frame(
             docname = c("text1"),
             from = 4L,
@@ -14,7 +14,7 @@ test_that("test kwic general", {
     )
     
     expect_equal(
-        as.data.frame(kwic(txt, "D", window = 2)),
+        as.data.frame(kwic(toks, "D", window = 2)),
         data.frame(
             docname = c("text1"),
             from = 4L,
@@ -26,7 +26,7 @@ test_that("test kwic general", {
             stringsAsFactors = FALSE))
     
     expect_equal(
-        as.data.frame(kwic(txt, "D", window = 2, separator = "_")),
+        as.data.frame(kwic(toks, "D", window = 2, separator = "_")),
         data.frame(
             docname = c("text1"),
             from = 4L,
@@ -38,7 +38,7 @@ test_that("test kwic general", {
             stringsAsFactors = FALSE))
 
     expect_equal(
-        as.data.frame(kwic(txt, "D", separator = "")),
+        as.data.frame(kwic(toks, "D", separator = "")),
         data.frame(
             docname = c("text1"),
             from = 4L,
