@@ -2,6 +2,10 @@
 
 * Fixes a noSuggests caused by archived (and a week later restored) Suggested kage quanteda.textmodels
 
+* Adds testing under conditions of `_R_CHECK_DEPENDS_ONLY_=true`
+
+* Limits threads to the CRAN maximum.
+
 * Removes the C++ requirement.
 
 * Implements a new experimental tokenizer.
