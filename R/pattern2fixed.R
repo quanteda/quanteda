@@ -208,13 +208,13 @@ index_types <- function(pattern, types, valuetype = c("glob", "fixed", "regex"),
     valuetype <- match.arg(valuetype)
 
     # normalize unicode
-    types <- search <- stri_trans_nfc(types)
+    types <- types_search <- stri_trans_nfc(types)
 
     if (!valuetype %in% c("glob", "fixed", "regex"))
         stop('valuetype should be "glob", "fixed" or "regex"')
     if (valuetype == "regex" || length(types) == 0) {
         index <- list()
-        attr(index, "types_search") <- search
+        attr(index, "types_search") <- types_search
         attr(index, "types") <- types
         attr(index, "valuetype") <- valuetype
         attr(index, "case_insensitive") <- case_insensitive
@@ -222,61 +222,90 @@ index_types <- function(pattern, types, valuetype = c("glob", "fixed", "regex"),
         return(index)
     }
     
-    # lowercases for case-insensitive search
+    # lowercase for case-insensitive search
     if (case_insensitive) {
-        search <- stri_trans_tolower(search)
+        types_search <- stri_trans_tolower(types_search)
         pattern <- stri_trans_tolower(pattern) 
     }
     
-    val_index <- seq_along(search) # index values
-    key_index <- search # index keys
-    
     # index for fixed patterns
-    pos <- val_index
-    key <- key_index
-    l <- key %in% pattern
-    lis_pos <- list(pos[l])
-    lis_key <- list(key[l])
+    index <- index_fixed(pattern, types_search)
     
     # index for glob patterns
     if (valuetype == "glob") {
-        
-        len_type <- stri_length(key_index)
-        len_pat <- stri_length(stri_trim_right(pattern, "[^*?]"))
-        for (n in sort(unique(len_pat))) {
-            pos <- val_index[len_type >= n]
-            key <- stri_c(stri_sub(key_index[pos], 1, n), "*")
-            l <- key %in% pattern
-            lis_pos <- c(lis_pos, list(pos[l]))
-            lis_key <- c(lis_key, list(key[l]))
-        }
-        
-        # index for patterns with ? at the end
-        pos <- val_index[len_type >= 2]
-        key <- stri_c(stri_sub(key_index[pos], 1, -2), "?")
-        l <- key %in% pattern
-        lis_pos <- c(lis_pos, list(pos[l]))
-        lis_key <- c(lis_key, list(key[l]))
-    
+        index <- c(
+            index, 
+            index_glob(pattern, types_search, "*", "right"),
+            index_glob(pattern, types_search, "*", "left"),
+            index_glob(pattern, types_search, "?", "right"),
+            index_glob(pattern, types_search, "?", "left")
+        )
     }
     
-    # faster to join vectors in the end
-    pos <- unlist(lis_pos, use.names = FALSE)
-    key <- unlist(lis_key, use.names = FALSE)
-    # set factor for quick split
-    index <- split(pos, factor(key, ordered = FALSE, levels = unique(key)))
-    key <- names(index)
-    
-    attr(index, "names") <- NULL # names attribute slows down
-    attr(index, "types_search") <- search
+    attr(index, "types_search") <- types_search
     attr(index, "types") <- types
     attr(index, "valuetype") <- valuetype
     attr(index, "case_insensitive") <- case_insensitive
-    attr(index, "key") <- key
+    attr(index, "key") <- attr(index, "names")
+    attr(index, "names") <- NULL # names attribute slows down
     
     return(index)
 }
 
+index_fixed <- function(pattern, type) {
+    l <- type %in% pattern
+    pos <- seq_along(type)[l]
+    key <- type[l]
+    split(pos, factor(key, ordered = FALSE, levels = unique(key)))
+}
+#' @importFrom stringi stri_trim
+index_glob <- function(pattern, type, wildcard = c("*", "?"), 
+                       side = c("left", "right")) {
+    
+    wildcard <- match.arg(wildcard)
+    side <- match.arg(side)
+    
+    if (side == "left") {
+        pattern <- pattern[stri_startswith_fixed(pattern, wildcard)]
+    } else {
+        pattern <- pattern[stri_endswith_fixed(pattern, wildcard)]
+    }
+    len <- stri_length(type)
+    pat <- stri_trim(pattern, paste0("[", wildcard ,"]"), side = side, negate = TRUE)
+    val <- seq_along(type)
+    
+    key <- character()
+    pos <- integer()
+    if (wildcard == "*") {
+        for (n in sort(unique(stri_length(pat)))) {
+            p <- val[len >= n]
+            if (side == "left") {
+                k <- stri_sub(type[p], n * -1, -1)
+            } else {
+                k <- stri_sub(type[p], 1, n)
+            }
+            l <- k %in% pat
+            pos <- c(pos, p[l])
+            key <- c(key, k[l])
+        }
+    } else {
+        p <- val[len >= 2]
+        if (side == "left") {
+            k <- stri_sub(type[p], 2, -1)
+        } else {
+            k <- stri_sub(type[p], 1, -2)
+        }
+        l <- k %in% pat
+        pos <- p[l]
+        key <- k[l]
+    }
+    if (side == "left") {
+        key <- stri_c(wildcard, key)
+    } else {
+        key <- stri_c(key, wildcard)
+    }
+    split(pos, factor(key, ordered = FALSE, levels = unique(key)))
+}
 
 #' Internal function for `select_types` to search the index using
 #' fastmatch.
@@ -323,13 +352,22 @@ expand <- function(elem){
 #' @param pattern a glob pattern to be tested
 #' @keywords internal
 is_indexed <- function(pattern) {
-    pat <- stri_sub(pattern, 1, -2)
-    if (pattern == "") {
-        return(FALSE)
-    } else {
-        # check if patterns have ? or * other than the end
-        return(!any(stri_detect_fixed(pat, c("*", "?"))))
-    }
+    
+    # without wildcard
+    if (!any(stri_detect_fixed(pattern, c("*", "?"))))
+        return(TRUE)
+    
+    # wildcard only on the right
+    if (any(stri_sub(pattern, -1, -1) == c("*", "?")) && 
+        !any(stri_detect_fixed(stri_sub(pattern, 1, -2), c("*", "?"))))
+        return(TRUE)
+    
+    # wildcard only on the left
+    if (any(stri_sub(pattern, 1, 1) == c("*", "?")) && 
+        !any(stri_detect_fixed(stri_sub(pattern, 2, -1), c("*", "?"))))
+        return(TRUE)
+    
+    return(FALSE)
 }
 
 #' Check if patterns contains glob wildcard
