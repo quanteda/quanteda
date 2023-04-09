@@ -44,9 +44,6 @@ dfm <- function(x,
                 remove_padding = FALSE,
                 verbose = quanteda_options("verbose"),
                 ...) {
-    global$proc_time <- proc.time()
-    object_class <- class(x)[1]
-    if (verbose) message("Creating a dfm from a ", object_class, " input...")
     UseMethod("dfm")
 }
 
@@ -92,6 +89,9 @@ dfm.tokens <- function(x,
                        ...) {
     x <- as.tokens(x)
     
+    global$proc_time <- proc.time()
+    if (verbose) message("Creating a dfm from a tokens object...")
+    
     if (length(intersect(names(list(...)), names(formals("tokens"))))) {
         warning("'...' should not be used for tokens() arguments; use 'tokens()' first.", call. = FALSE)
         x <- (function(x, tolower = TRUE, remove_padding = FALSE, 
@@ -121,9 +121,9 @@ dfm.tokens <- function(x,
                  ifelse(length(x) > 1, "s", ""),
                  ", ",
                  # TODO: replace with: ntype()
-                 format(length(types(x)), big.mark = ","),
+                 format(length(get_types(x)), big.mark = ","),
                  " feature",
-                 ifelse(length(types(x)) > 1, "s", ""),
+                 ifelse(length(get_types(x)) > 1, "s", ""),
                  "\n", sep = "")
         }
         
@@ -207,13 +207,14 @@ dfm.tokens <- function(x,
         x <- tokens_remove(x, "", valuetype = "fixed")
 
     # compile the dfm
-    type <- types(x)
+    type <- get_types(x)
     attrs <- attributes(x)
     temp <- unclass(x)
     
     # shift index for padding, if any
     index <- unlist_integer(temp, use.names = FALSE)
-    if (attrs$padding) {
+    padding <- 0L %in% index
+    if (padding) {
         type <- c("", type)
         index <- index + 1L
     }
@@ -232,12 +233,21 @@ dfm.tokens <- function(x,
     if (attrs$meta$object$what != "dictionary") {
         # sort the columns in order of the occurrences of tokens
         id <- unique(index)
-        if (attrs$padding)
+        if (padding)
             id <- c(1L, setdiff(id, 1L)) # padding must come first
         temp <- temp[,id]
     }
     
-    dfm.dfm(temp, tolower = FALSE, verbose = verbose)
+    result <- dfm(temp, tolower = FALSE, verbose = verbose)
+    
+    if (verbose) {
+        catm(" ...complete, elapsed time:",
+             format((proc.time() - global$proc_time)[3], digits = 3), "seconds.\n")
+        catm("Finished constructing a", paste(format(dim(result), big.mark = ",", trim = TRUE), collapse = " x "),
+             "sparse dfm.\n")
+    }
+    
+    return(result)
 }
 
 
@@ -345,13 +355,6 @@ dfm.dfm <- function(x,
     is_na <- is.na(featnames(x))
     if (any(is_na))
         x <- x[, !is_na, drop = FALSE]
-
-    if (verbose) {
-        catm(" ...complete, elapsed time:",
-             format((proc.time() - global$proc_time)[3], digits = 3), "seconds.\n")
-        catm("Finished constructing a", paste(format(dim(x), big.mark = ",", trim = TRUE), collapse = " x "),
-             "sparse dfm.\n")
-    }
 
     return(x)
 }

@@ -1,6 +1,5 @@
 //#include "dev.h"
 #include "lib.h"
-#include "recompile.h"
 #include "skipgram.h"
 using namespace quanteda;
 
@@ -88,19 +87,17 @@ struct restore_mt : public Worker{
  * @creator Kohei Watanabe
  * @param texts_ tokens ojbect
  * @param marks_left_, marks_right_ patterns to mark tokens to restore
- * @param types_ types in the tokens object
  * @param delim_ character to concatenate types
  */
 
 // [[Rcpp::export]]
-List qatd_cpp_tokens_restore(const List &texts_, 
-                              const List &marks_left_,
-                              const List &marks_right_,
-                              const CharacterVector &types_,
-                              const String &delim_){
+TokensPtr cpp_tokens_restore(TokensPtr xptr,
+                        const List &marks_left_,
+                        const List &marks_right_,
+                        const String &delim_){
     
-    Texts texts = Rcpp::as<Texts>(texts_);
-    Types types = Rcpp::as<Types>(types_);
+    Texts texts = xptr->texts;
+    Types types = xptr->types;
     std::string delim = delim_;
 
     unsigned int id_last = types.size();
@@ -165,7 +162,10 @@ List qatd_cpp_tokens_restore(const List &texts_,
     types.insert(types.end(), types_comp.begin(), types_comp.end());
     
     // dev::stop_timer("Token compound", timer);
-    return recompile(texts, types, true, true, is_encoded(delim_) || is_encoded(types_));
+    xptr->texts = texts;
+    xptr->types = types;
+    xptr->recompiled = false;
+    return xptr;
 }
 
 /***R
@@ -175,7 +175,7 @@ left <- list(1)
 right <- list(4)
 types <- letters
 #qatd_cpp_tokens_compound(toks, dict, types, "_", FALSE)
-out <- quanteda:::qatd_cpp_tokens_restore(toks, left, right, types, "_")
+out <- cpp_tokens_restore(toks, left, right, "_")
 unclass(out)
 
 */

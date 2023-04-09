@@ -138,6 +138,7 @@ ntoken.character <- function(x, ...) {
 
 #' @export
 ntoken.tokens <- function(x, ...) {
+    x <- as.tokens(x)
     if (length(list(...))) {
         lengths(tokens(x, ...))
     } else {
@@ -188,6 +189,7 @@ ntype.tokens <- function(x, ...) {
         x <- tokens(x, ...)
     vapply(unclass(x), function(y) length(unique(y[y > 0])), integer(1))
 }
+
 
 #' Count the number of sentences
 #'

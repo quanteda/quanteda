@@ -23,8 +23,8 @@ tokens_tolower.default <- function(x, keep_acronyms = FALSE) {
 tokens_tolower.tokens <- function(x, keep_acronyms = FALSE) {
     x <- as.tokens(x)
     keep_acronyms <- check_logical(keep_acronyms)
-    if (!length(types(x))) return(x)
-    types(x) <- lowercase_types(types(x), keep_acronyms)
+    if (!length(get_types(x))) return(x)
+    set_types(x) <- lowercase_types(get_types(x), keep_acronyms)
     tokens_recompile(x, gap = FALSE, dup = TRUE)
 }
 
@@ -54,8 +54,8 @@ tokens_toupper.default <- function(x) {
 #' @export
 tokens_toupper.tokens <- function(x) {
     x <- as.tokens(x)
-    if (!length(types(x))) return(x)
-    types(x) <- char_toupper(types(x))
+    if (!length(get_types(x))) return(x)
+    set_types(x) <- char_toupper(get_types(x))
     tokens_recompile(x, gap = FALSE, dup = TRUE)
 }
 

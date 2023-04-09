@@ -100,23 +100,29 @@ test_that("tokens_compound works with padded tokens", {
 
 test_that("tokens_compound works with different concatenators", {
   toks <- tokens(c(doc1 = "a b c d e f g"))
+  
   toks1 <- tokens_compound(toks, phrase("c d"), concatenator = "+")
   expect_equal(sort(attr(toks1, "types")),
                sort(c("a", "b", "c+d", "e", "f", "g")))
-  expect_equal(meta(toks1, field = "concatenator", type = "object"),
-               "+")
+  expect_equal(meta(toks1, field = "concatenator", type = "object"), "+")
+  
   toks2 <- tokens_compound(toks, phrase("c d"), concatenator = "&&")
-  expect_equal(meta(toks2, field = "concatenator", type = "object"),
-               "&&")
+  expect_equal(meta(toks2, field = "concatenator", type = "object"), "&&")
   expect_equal(sort(attr(toks2, "types")),
                sort(c("a", "b", "c&&d", "e", "f", "g")))
+  
   toks3 <- tokens_compound(toks, phrase("c d"), concatenator = "")
-  expect_equal(meta(toks3, field = "concatenator", type = "object"),
-               "")
+  expect_equal(meta(toks3, field = "concatenator", type = "object"), "")
   expect_equal(sort(attr(toks3, "types")),
                sort(c("a", "b", "cd", "e", "f", "g")))
   expect_error(tokens_compound(toks, phrase("c d"), concatenator = character()),
                "The length of concatenator must be 1")
+  
+  # update concatenator even without matches
+  toks4 <- tokens_compound(toks, phrase("xxxx yyy"), concatenator = "++")
+  expect_equal(sort(attr(toks4, "types")),
+               sort(c("a", "b", "c", "d", "e", "f", "g")))
+  expect_equal(meta(toks4, field = "concatenator", type = "object"), "++")
 })
 
 test_that("tokens_compound works as expected with nested tokens", {

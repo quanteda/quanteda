@@ -68,13 +68,13 @@ kwic.corpus <- function(x, ...) {
 }
 
 #' @export
-kwic.tokens <- function(x, pattern = NULL, window = 5,
+kwic.tokens_xptr <- function(x, pattern = NULL, window = 5,
                         valuetype = c("glob", "regex", "fixed"),
                         separator = " ",
                         case_insensitive = TRUE, 
                         index = NULL,
                         ...) {
-    x <- as.tokens(x)
+    
     check_dots(..., "kwic")
     
     window <- check_integer(window, 1, 1, 0)
@@ -100,9 +100,12 @@ kwic.tokens <- function(x, pattern = NULL, window = 5,
     if (nrow(result)) {
         n <- n[unique(result$docname)]
         x <- x[result$docname]
-        lis_pre <- as.list(tokens_select(x, startpos = pmax(result$from - window, 1), endpos = result$from - 1))
-        lis_key <- as.list(tokens_select(x, startpos = result$from, endpos = result$to))
-        lis_post <- as.list(tokens_select(x, startpos = result$to + 1, endpos = result$to + window))
+        lis_pre <- as.list(tokens_select(as.tokens_xptr(x), 
+                                         startpos = pmax(result$from - window, 1), endpos = result$from - 1))
+        lis_key <- as.list(tokens_select(as.tokens_xptr(x), 
+                                         startpos = result$from, endpos = result$to))
+        lis_post <- as.list(tokens_select(as.tokens_xptr(x),
+                                          startpos = result$to + 1, endpos = result$to + window))
         
         result$pre[lengths(lis_pre) > 0] <- stri_c_list(lis_pre, sep = separator)
         result$keyword[lengths(lis_key) > 0] <- stri_c_list(lis_key, sep = separator)
@@ -115,6 +118,11 @@ kwic.tokens <- function(x, pattern = NULL, window = 5,
     attr(result, "ntoken") <- n
     
     return(result)
+}
+
+#' @export
+kwic.tokens <- function(x, ...) {
+    kwic(as.tokens_xptr(x), ...)
 }
 
 #' @rdname kwic

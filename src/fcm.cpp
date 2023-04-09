@@ -1,5 +1,5 @@
 #include "lib.h"
-#include "dev.h"
+//#include "dev.h"
 using namespace quanteda;
 
 struct hash_pair {
@@ -104,14 +104,16 @@ struct count_col_mt : public Worker{
 
 
 // [[Rcpp::export]]
-S4 qatd_cpp_fcm(const Rcpp::List &texts_,
+S4 cpp_fcm(TokensPtr xptr,
                 const int n_types,
                 const NumericVector &weights_,
                 const bool boolean,
                 const bool ordered){
     
     // triplets are constructed according to tri & ordered settings to be efficient
-    Texts texts = Rcpp::as<Texts>(texts_);
+    xptr->recompile();
+    Texts texts = xptr->texts;
+    Types types = xptr->types;
     std::vector<double> weights = Rcpp::as< std::vector<double> >(weights_);
     unsigned int window = weights.size();
 
@@ -141,8 +143,8 @@ RcppParallel::setThreadOptions(1)
 toks <- list(rep(1:10, 10), rep(5:15, 10))
 toks <- list(c(1, 4, 2, 3))
 types <- unique(unlist(toks))
-qatd_cpp_fcm(toks, max(types), c(1, 1), FALSE, TRUE)
-qatd_cpp_fcm(toks, max(types), c(1, 1), FALSE, FALSE)
+cpp_fcm(toks, max(types), c(1, 1), FALSE, TRUE)
+cpp_fcm(toks, max(types), c(1, 1), FALSE, FALSE)
 
 # for c(1, 2, 2, 3), window = 2
 # 0 2 0

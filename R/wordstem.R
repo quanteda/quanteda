@@ -37,21 +37,25 @@ tokens_wordstem.default <- function(x, language = quanteda_options("language_ste
 
 #' @importFrom stringi stri_split_fixed stri_paste_list
 #' @export
-tokens_wordstem.tokens <- function(x, language = quanteda_options("language_stemmer")) {
-    x <- as.tokens(x)
+tokens_wordstem.tokens_xptr <- function(x, language = quanteda_options("language_stemmer")) {
+    
     attrs <- attributes(x)
     if (identical(field_object(attrs, "ngram"), 1L)) {
-        types(x) <- char_wordstem(types(x), language = language, check_whitespace = FALSE)
+        set_types(x) <- char_wordstem(get_types(x), language = language, check_whitespace = FALSE)
     } else {
-        types(x) <- wordstem_ngrams(
-            types(x),
+        set_types(x) <- wordstem_ngrams(
+            get_types(x),
             concatenator = field_object(attrs, "concatenator"),
             language = language
             )
     }
-    tokens_recompile(x)
+    rebuild_tokens(x, attrs)
 }
 
+#' @export
+tokens_wordstem.tokens <- function(x, ...) {
+    as.tokens(tokens_wordstem(as.tokens_xptr(x), ...))
+}
 
 #' @rdname tokens_wordstem
 #' @param check_whitespace logical; if `TRUE`, stop with a warning when trying

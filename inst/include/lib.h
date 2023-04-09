@@ -7,6 +7,7 @@
 #include <unordered_set>
 #include <limits>
 #include <algorithm>
+#include "tokens.h"
 
 // [[Rcpp::plugins(cpp11)]]
 using namespace Rcpp;
@@ -15,9 +16,9 @@ using namespace RcppParallel;
 
 #define CLANG_VERSION (__clang_major__ * 10000 + __clang_minor__ * 100 + __clang_patchlevel__)
 
-// global setting for unordered_map and unordered_set 
-extern float GLOBAL_PATTERN_MAX_LOAD_FACTOR;
-extern float GLOBAL_NGRAMS_MAX_LOAD_FACTOR;
+// NOTE: used in textstats
+const float GLOBAL_PATTERN_MAX_LOAD_FACTOR = 0.05;
+const float GLOBAL_NGRAMS_MAX_LOAD_FACTOR = 0.25;
 
 // compiler has to be newer than clang 3.30 or gcc 4.8.1
 #if RCPP_PARALLEL_USE_TBB && (CLANG_VERSION >= 30300 || GCC_VERSION >= 40801) 
@@ -29,9 +30,12 @@ extern float GLOBAL_NGRAMS_MAX_LOAD_FACTOR;
 namespace quanteda{
     
     typedef ListOf<IntegerVector> Tokens;
-    typedef std::vector<unsigned int> Text;
-    typedef std::vector<Text> Texts;
-    
+    typedef XPtr<TokensObj> TokensPtr;
+
+    // typedef ListOf<IntegerVector> Tokens;
+    // typedef std::vector<unsigned int> Text;
+    // typedef std::vector<Text> Texts;
+
 #if QUANTEDA_USE_TBB
     typedef tbb::atomic<int> IntParam;
     typedef tbb::atomic<unsigned int> UintParam;
@@ -57,8 +61,6 @@ namespace quanteda{
     
     typedef std::vector<unsigned int> Ngram;
     typedef std::vector<Ngram> Ngrams;
-    typedef std::string Type;
-    typedef std::vector<Type> Types;
     
     struct hash_ngram {
         std::size_t operator() (const Ngram &vec) const {
@@ -111,7 +113,7 @@ namespace quanteda{
     }
     
     inline std::string join_strings(std::vector<std::string> &tokens, 
-                            const std::string delim = " "){
+                                    const std::string delim = " "){
         if (tokens.size() == 0) return "";
         std::string token = tokens[0];
         for (std::size_t i = 1; i < tokens.size(); i++) {
@@ -120,10 +122,11 @@ namespace quanteda{
         return token;
     }
     
-    inline String join_strings(std::vector<unsigned int> &tokens, 
-                       CharacterVector types_, 
+    // NOTE: used in textstats
+    inline String join_strings(std::vector<unsigned int> &tokens,
+                       CharacterVector types_,
                        const String delim_ = " ") {
-        
+
         String token_("");
         if (tokens.size() > 0) {
             if (tokens[0] != 0) {
@@ -138,6 +141,52 @@ namespace quanteda{
             token_.set_encoding(CE_UTF8);
         }
         return token_;
+    }
+    
+    inline std::string join_strings(std::vector<unsigned int> &tokens,
+                                    Types types,
+                                    const std::string delim = " ") {
+
+        std::string token("");
+        if (tokens.size() > 0) {
+            if (tokens[0] != 0) {
+                token += types[tokens[0] - 1];
+            }
+            for (std::size_t j = 1; j < tokens.size(); j++) {
+                if (tokens[j] != 0) {
+                    token += delim;
+                    token += types[tokens[j] - 1];
+                }
+            }
+        }
+        return token;
+    }
+    
+    inline bool is_encoded(String delim_){
+        if (delim_.get_encoding() > 0) {
+            return true;
+        }
+        return false;
+    }
+    
+    inline bool is_encoded(CharacterVector types_){
+        for (unsigned int i = 0; i < (unsigned int)types_.size(); i++) {
+            String type_ = types_[i];
+            if (type_.get_encoding() > 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    inline CharacterVector encode(Types types){
+        CharacterVector types_(types.size());
+        for (std::size_t i = 0; i < types.size(); i++) {
+            String type_ = types[i];
+            type_.set_encoding(CE_UTF8);
+            types_[i] = type_;
+        }
+        return(types_);
     }
     
     inline bool has_na(IntegerVector vec_) {

@@ -49,14 +49,13 @@ tokens_segment <- function(x, pattern,
 #' @noRd
 #' @importFrom RcppParallel RcppParallelLibs
 #' @export
-tokens_segment.tokens <- function(x, pattern,
+tokens_segment.tokens_xptr <- function(x, pattern,
                                   valuetype = c("glob", "regex", "fixed"),
                                   case_insensitive = TRUE,
                                   extract_pattern = FALSE,
                                   pattern_position = c("before", "after"),
                                   use_docvars = TRUE) {
 
-    x <- as.tokens(x)
     valuetype <- match.arg(valuetype)
     extract_pattern <- check_logical(extract_pattern)
     pattern_position <- match.arg(pattern_position)
@@ -65,20 +64,27 @@ tokens_segment.tokens <- function(x, pattern,
     if (!use_docvars)
         docvars(x) <- NULL
     attrs <- attributes(x)
-    type <- types(x)
+    type <- get_types(x)
 
     ids <- object2id(pattern, type, valuetype, case_insensitive,
                         field_object(attrs, "concatenator"))
     if ("" %in% pattern) ids <- c(ids, list(0)) # append padding index
-
+    
     if (pattern_position == "before") {
-        result <- qatd_cpp_tokens_segment(x, type, ids, extract_pattern, 1)
+        result <- cpp_tokens_segment(x, ids, extract_pattern, 1)
     } else {
-        result <- qatd_cpp_tokens_segment(x, type, ids, extract_pattern, 2)
+        result <- cpp_tokens_segment(x, ids, extract_pattern, 2)
     }
-    attrs[["docvars"]] <- reshape_docvars(attrs[["docvars"]], attr(result, "docnum"))
+    attrs[["docvars"]] <- reshape_docvars(attrs[["docvars"]], attr(result, "documents"))
     field_object(attrs, "unit") <- "segments"
     if (extract_pattern)
-        attrs[["docvars"]][["pattern"]] <- attr(result, "pattern")
+        attrs[["docvars"]][["pattern"]] <- attr(result, "matches")
     rebuild_tokens(result, attrs)
 }
+
+
+#' @export
+tokens_segment.tokens <- function(x, ...) {
+    as.tokens(tokens_segment(as.tokens_xptr(x), ...))
+}
+

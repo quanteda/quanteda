@@ -12,7 +12,7 @@ NULL
 #' @method as.list tokens
 #' @export
 as.list.tokens <- function(x, ...) {
-    types <- c("", types(x))
+    types <- c("", get_types(x))
     result <- lapply(unclass(x), function(y) types[y + 1]) # shift index to show padding
     attributes(result) <- NULL
     names(result) <- names(x)
@@ -60,7 +60,6 @@ print.tokens <- function(x, max_ndoc = quanteda_options("print_tokens_max_ndoc")
                          show_summary = quanteda_options("print_tokens_summary"),
                          ...) {
     
-    x <- as.tokens(x)
     max_ndoc <- check_integer(max_ndoc, min = -1)
     max_ntoken <- check_integer(max_ntoken, min = -1)
     show_summary <- check_logical(show_summary)
@@ -77,13 +76,15 @@ print.tokens <- function(x, max_ndoc = quanteda_options("print_tokens_max_ndoc")
         if (ncol(docvars))
             cat(" and ", format(ncol(docvars), big.mark = ","), " docvar",
                 if (ncol(docvars) != 1L) "s" else "", sep = "")
+        if (is.tokens_xptr(x))
+            cat(" (pointer to ", address(x), ")", sep = "")
         cat(".\n")
     }
 
     if (max_ndoc > 0 && ndoc(x) > 0) {
-        x <- head(x, max_ndoc)
+        x <- head(as.tokens(x), max_ndoc)
         label <- paste0(names(x), " :")
-        types <- c("", types(x))
+        types <- c("", get_types(x))
         len <- lengths(x)
         if (max_ntoken < 0)
             max_ntoken <- max(len)
@@ -144,7 +145,7 @@ print.tokens <- function(x, max_ndoc = quanteda_options("print_tokens_max_ndoc")
 #' str(toks)
 #' toks[[2]]
 "[[.tokens" <- function(x, i) {
-    types <- c("", types(x))
+    types <- c("", get_types(x))
     types[unclass(x)[[i]] + 1] # shift index to show padding
 }
 
@@ -183,52 +184,77 @@ lengths.tokens <- function(x, use.names = TRUE) {
 #'
 #' @export
 `+.tokens` <- function(t1, t2) {
+    # NOTE: consider deprecating
+    c(t1, t2)
+}
 
-    t2 <- as.tokens(t2)
-    t1 <- as.tokens(t1)
-    attrs2 <- attributes(t2)
-    attrs1 <- attributes(t1)
-
-    if (length(intersect(docnames(t1), docnames(t2))))
+#' @rdname tokens-class
+#' @export
+c.tokens_xptr <- function(...) {
+    
+    x <- list(...)
+    
+    if (!all(unlist(lapply(x, is.tokens_xptr)))) 
+        stop("Cannot combine different types of objects", call. = FALSE)
+    
+    if (any(duplicated(unlist(lapply(x, docnames)))))
         stop("Cannot combine tokens with duplicated document names", call. = FALSE)
-    if (!identical(field_object(attrs1, "what"), field_object(attrs2, "what")))
+ 
+    docvars <- lapply(x, function(x) get_docvars(x, user = TRUE, system = TRUE))
+    attrs <- lapply(x, attributes)
+    what <- unlist(lapply(attrs, field_object, "what"))
+    conct <- unlist(lapply(attrs, field_object, "concatenator"))
+    
+    if (length(unique(what))> 1)
         stop("Cannot combine tokens in different tokenization units", call. = FALSE)
-    if (!identical(field_object(attrs1, "concatenator"), field_object(attrs2, "concatenator")))
+    if (length(unique(conct))> 1)
         stop("Cannot combine tokens with different concatenators", call. = FALSE)
-
-    docvars <- rbind_fill(get_docvars(t1, user = TRUE, system = TRUE),
-                          get_docvars(t2, user = TRUE, system = TRUE))
-    t2 <- unclass(t2)
-    t1 <- unclass(t1)
-    t2 <- lapply(t2, function(x, y) x + (y * (x != 0)),
-                 length(attrs1[["types"]])) # shift non-zero IDs
-    result <- build_tokens(
-        c(t1, t2),
-        c(attrs1[["types"]], attrs2[["types"]]),
-        what = field_object(attrs1, "what"),
-        ngram = sort(unique(c(
-            field_object(attrs1, "ngram"),
-            field_object(attrs2, "ngram")))
-            ),
-        skip = sort(unique(c(
-            field_object(attrs1, "skip"),
-            field_object(attrs2, "skip")))
-            ),
-        concatenator = field_object(attrs1, "concatenator"),
-        docvars = docvars,
-        class = attrs1[["class"]]
+    
+    ngram <- unlist(lapply(attrs, field_object, "ngram"))
+    skip <- unlist(lapply(attrs, field_object, "skip"))
+    
+    temp <- combine_tokens(...)
+    cpp_recompile(temp)
+    
+    build_tokens(
+        temp, types = NULL,
+        what = field_object(attrs[[1]], "what"),
+        ngram = sort(unique(ngram)),
+        skip = sort(unique(skip)),
+        concatenator = field_object(attrs[[1]], "concatenator"),
+        docvars = do.call(combine_docvars, docvars),
+        class = attrs[[1]][["class"]]
     )
-    tokens_recompile(result)
 }
 
 #' @rdname tokens-class
 #' @export
 c.tokens <- function(...) {
+    
     x <- list(...)
-    if (length(x) == 1) return(x[[1]])
-    result <- x[[1]] + x[[2]]
-    if (length(x) == 2) return(result)
-    for (i in seq(3, length(x)))
-        result <- result + x[[i]]
+    
+    if (!all(unlist(lapply(x, is.tokens)))) 
+        stop("Cannot combine different types of objects", call. = FALSE)
+    
+    as.tokens(do.call(c, lapply(x, as.tokens_xptr)))
+}
+
+combine_tokens <- function(...) {
+    x <- list(...)
+    if (length(x) == 1) 
+        return(x[[1]])
+    result <- cpp_tokens_combine(x[[1]], x[[2]])
+    if (length(x) > 2)
+        result <- combine_tokens(result, x[[seq(3, length(x))]])
+    return(result)
+}
+
+combine_docvars <- function(...) {
+    x <- list(...)
+    if (length(x) == 1) 
+        return(x[[1]])
+    result <- rbind_fill(x[[1]], x[[2]])
+    if (length(x) > 2)
+        result <- combine_docvars(result, x[[seq(3, length(x))]])
     return(result)
 }

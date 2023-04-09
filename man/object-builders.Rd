@@ -24,7 +24,7 @@ build_dfm(
   features,
   docvars = data.frame(),
   meta = list(),
-  class = "dfm",
+  class = NULL,
   ...
 )
 
@@ -35,10 +35,10 @@ upgrade_dfm(x)
 build_tokens(
   x,
   types,
-  padding = FALSE,
+  padding = TRUE,
   docvars = data.frame(),
   meta = list(),
-  class = "tokens",
+  class = NULL,
   ...
 )
 
@@ -46,7 +46,7 @@ rebuild_tokens(x, attrs)
 
 upgrade_tokens(x)
 
-build_corpus(x, docvars = data.frame(), meta = list(), class = "corpus", ...)
+build_corpus(x, docvars = data.frame(), meta = list(), class = NULL, ...)
 
 rebuild_corpus(x, attrs)
 
