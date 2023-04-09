@@ -19,9 +19,8 @@
         - the URL pattern
     - creates a new tokens_restore(), implemented in C++, to replace the older `preserve_special()` that rejoined splits created by the default stringi tokeniser machinery.  
     - makes some technical improvements to internal tokenisation functions, such as moving the ellipsis to the end of the function, to allow more modularity in developing future tokenisers.
-    
-* Added `user` and `system` arguments to `docvars()`, where `system = TRUE` returns internal document-level variables.
 
+    
 ## Bug fixes and stability enhancements
 
 * `dfm_group()` now works correctly with an empty dfm (#2225).

@@ -156,6 +156,7 @@ set_option_value <- function(key, value) {
 # returns thread settings
 get_threads <- function() {
     c("tbb" = as.integer(Sys.getenv("RCPP_PARALLEL_NUM_THREADS")),
+      "omp" = as.integer(Sys.getenv("OMP_THREAD_LIMIT")),
       "max" = RcppParallel::defaultNumThreads())
 }
 

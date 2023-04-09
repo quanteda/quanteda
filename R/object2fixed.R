@@ -38,7 +38,8 @@ object2id <- function(x, types, valuetype = c("glob", "fixed", "regex"),
         temp <- stri_split_charclass(x$collocation, "\\p{Z}")
         names(temp) <- x$collocation
         if (case_insensitive) {
-            result <- pattern2id(temp, types, valuetype = "fixed", TRUE)
+            result <- pattern2id(temp, types, valuetype = "fixed", 
+                                 case_insensitive = TRUE)
         } else {
             temp <- lapply(temp, function(x) fastmatch::fmatch(x, types))
             result <- temp[unlist(lapply(temp, function(x) all(!is.na(x))), use.names = FALSE)]
