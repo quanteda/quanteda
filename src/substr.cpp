@@ -2,7 +2,7 @@
 //#include "dev.h"
 using namespace quanteda;
 
-std::string substr_left(std::string text, int len = 0) {
+std::string substr_left(std::string &text, int len = 0) {
     int n = 0;
     size_t i = 0;
     while (i < text.length()) {
@@ -27,7 +27,7 @@ std::string substr_left(std::string text, int len = 0) {
     return text;
 }
 
-std::string substr_right(std::string text, int len = 0) {
+std::string substr_right(std::string &text, int len = 0) {
     int n = 0;
     size_t i = text.length();
     while (0 <= i) {
@@ -59,6 +59,7 @@ CharacterVector cpp_substr(CharacterVector texts_,
     Types texts = Rcpp::as<Types>(texts_);
     std::size_t H = texts.size();
     Types temp(H);
+    
 #if QUANTEDA_USE_TBB
     tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
         for (int h = r.begin(); h < r.end(); ++h) {
