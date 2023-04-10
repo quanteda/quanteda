@@ -17,6 +17,10 @@ cpp_serialize_add <- function(texts_, xptr) {
     .Call(`_quanteda_cpp_serialize_add`, texts_, xptr)
 }
 
+cpp_substr <- function(texts_, len = 0L, side = 1L) {
+    .Call(`_quanteda_cpp_substr`, texts_, len, side)
+}
+
 cpp_tokens_chunk <- function(xptr, size, overlap) {
     .Call(`_quanteda_cpp_tokens_chunk`, xptr, size, overlap)
 }

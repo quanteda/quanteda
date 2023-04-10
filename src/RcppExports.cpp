@@ -62,6 +62,19 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// cpp_substr
+CharacterVector cpp_substr(CharacterVector texts_, int len, int side);
+RcppExport SEXP _quanteda_cpp_substr(SEXP texts_SEXP, SEXP lenSEXP, SEXP sideSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< CharacterVector >::type texts_(texts_SEXP);
+    Rcpp::traits::input_parameter< int >::type len(lenSEXP);
+    Rcpp::traits::input_parameter< int >::type side(sideSEXP);
+    rcpp_result_gen = Rcpp::wrap(cpp_substr(texts_, len, side));
+    return rcpp_result_gen;
+END_RCPP
+}
 // cpp_tokens_chunk
 TokensPtr cpp_tokens_chunk(TokensPtr xptr, const int size, const int overlap);
 RcppExport SEXP _quanteda_cpp_tokens_chunk(SEXP xptrSEXP, SEXP sizeSEXP, SEXP overlapSEXP) {
@@ -415,6 +428,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_quanteda_cpp_index", (DL_FUNC) &_quanteda_cpp_index, 2},
     {"_quanteda_cpp_serialize", (DL_FUNC) &_quanteda_cpp_serialize, 1},
     {"_quanteda_cpp_serialize_add", (DL_FUNC) &_quanteda_cpp_serialize_add, 2},
+    {"_quanteda_cpp_substr", (DL_FUNC) &_quanteda_cpp_substr, 3},
     {"_quanteda_cpp_tokens_chunk", (DL_FUNC) &_quanteda_cpp_tokens_chunk, 3},
     {"_quanteda_cpp_tokens_combine", (DL_FUNC) &_quanteda_cpp_tokens_combine, 2},
     {"_quanteda_cpp_tokens_compound", (DL_FUNC) &_quanteda_cpp_tokens_compound, 6},
