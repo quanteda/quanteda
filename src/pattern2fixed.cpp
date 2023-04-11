@@ -3,11 +3,15 @@
 #include "utf8.h"
 using namespace quanteda;
 
-typedef tbb::concurrent_unordered_multimap<Type, int> MultiMapIndex;
+#if QUANTEDA_USE_TBB
+typedef tbb::concurrent_unordered_map<Type, tbb::concurrent_vector<int> > MapIndex;
+#else 
+typedef tbb::concurrent_unordered_map<Type, std::vector<int> > MapIndex;
+#endif
 typedef std::string Pattern;
 typedef std::vector<Pattern> Patterns;
 
-void index_glob(Types &types, MultiMapIndex &index,
+void index_glob(Types &types, MapIndex &index,
                 std::string wildcard, int side, int len) {
     
     std::size_t H = types.size();
@@ -22,8 +26,11 @@ void index_glob(Types &types, MultiMapIndex &index,
                 value = utf8_sub_left(types[h], utf8_length(types[h]) + len);
             }
             if (value != "") {
-                index.insert(std::pair<Type, int>(value + wildcard, h));
-                //Rcout << "Insert: " << value + wildcard << " " << h << "\n";
+                auto it = index.find(value + wildcard);
+                if (it != index.end()) {
+                    it->second.push_back(h);
+                    //Rcout << "Insert: " << value + wildcard << " " << h << "\n";
+                }
             }
         } else if (side == 2) {
             if (len > 0) {
@@ -32,8 +39,11 @@ void index_glob(Types &types, MultiMapIndex &index,
                 value = utf8_sub_right(types[h], utf8_length(types[h]) + len);
             }
             if (value != "") {
-                index.insert(std::pair<Type, int>(wildcard + value, h));
-                //Rcout << "Insert: " << wildcard + value << " " << h << "\n";
+                auto it = index.find(wildcard + value);
+                if (it != index.end()) {
+                    it->second.push_back(h);
+                    //Rcout << "Insert: " << wildcard + value << " " << h << "\n";
+                }
             }
         }
     }
@@ -50,10 +60,12 @@ List cpp_index_types(const CharacterVector &patterns_,
     Patterns patterns = Rcpp::as<Patterns>(patterns_);
     Types types = Rcpp::as<Types>(types_);
     
+    MapIndex index;
     std::vector<int> len;
     len.reserve(patterns.size());
     for (size_t i = 0; i < patterns.size(); i++) {
         std::string pattern = patterns[i];
+        index[pattern].reserve(types.size());
         //Rcout << "Pattern: " << pattern << "\n";
         //Rcout << utf8_sub_left(pattern, 1) << "\n";
         //Rcout << utf8_sub_right(pattern, 1) << "\n";
@@ -69,7 +81,6 @@ List cpp_index_types(const CharacterVector &patterns_,
     
     dev::start_timer("Index", timer);
     
-    MultiMapIndex index;
     std::size_t H = len.size();
     Texts temp(H);
 #if QUANTEDA_USE_TBB
@@ -93,15 +104,8 @@ List cpp_index_types(const CharacterVector &patterns_,
     List result_(patterns.size());
     for (size_t i = 0; i < patterns.size(); i++) {
         std::string pattern = patterns[i];
-        auto range = index.equal_range(pattern);
-        //Rcout << pattern << ": " << index.count(pattern) << "\n";
-        int j = 0;
-        IntegerVector value_(index.count(pattern));
-        for (auto it = range.first; it != range.second; ++it) {
-            value_[j] = it->second + 1;
-            j++;
-        }
-        result_[i] = unique(value_);
+        IntegerVector value_ = Rcpp::wrap(index[pattern]);
+        result_[i] = sort_unique(value_) + 1; // R is 1 base
     }
     result_.attr("key") = encode(patterns);
     dev::stop_timer("List", timer);
