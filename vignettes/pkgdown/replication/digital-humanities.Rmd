@@ -26,20 +26,19 @@ But if you are reading this vignette, than chances are that you have already com
 ## 2.1 Loading the first text file
 
 ```{r message=FALSE}
-library(quanteda)
+library("quanteda")
 ```
 
 We can load the text from _Moby Dick_ using the **readtext** package, directly from the [Project Gutenberg website](https://www.gutenberg.org/ebooks/2701).  
 ```{r}
-library(readtext)
-data_char_mobydick <- texts(readtext("http://www.gutenberg.org/cache/epub/2701/pg2701.txt"))
+data_char_mobydick <- as.character(readtext::readtext("http://www.gutenberg.org/cache/epub/2701/pg2701.txt"))
 names(data_char_mobydick) <- "Moby Dick"
 ```
 
 The `readtext()` function from the **readtext** package loads the text files into a `data.frame` object. We can access the text from a `data.frame` object (and also, as we will see, a `corpus` class object), using the `texts()` or the `View()` method. Here we will display just the first 75 characters, to prevent a massive dump of the text of the entire novel.  We do this using the `stri_sub()` function from the **stringi** package, which shows the 1st through the 75th characters of the texts of our new object `data_char_mobydick`. Because we have not assigned the return from this command to any object, it invokes a print method for character objects, and is displayed on the screen.
 
 ```{r}
-library(stringi)
+library("stringi")
 stri_sub(data_char_mobydick, 1, 75)
 ```
 
@@ -79,25 +78,28 @@ stri_sub(novel_v, 1, 94) %>% cat()
 
 ## 2.3 Reprocessing the content
 
-We begin processing the text by converting to lower case. **quanteda**'s `*_tolower()` functions work like the built-in `tolower()`, with an extra option to preserve upper-case acronyms when detected.  For `character` objects, we use `char_tolower()`:
+We begin processing the text by converting to lower case. **quanteda**'s `*_tolower()` functions work like the built-in `tolower()`, with an extra option to preserve upper-case acronyms when detected.  To work with the novel efficiently, however, we will first tokenise it.  Then, we can manipulate it using functions such as `tokens_tolower()`.
 
 ```{r}
+novel_v_toks <- tokens(novel_v)
+
 # lowercase text
-novel_lower_v <- char_tolower(novel_v)
+novel_v_toks_lower <- tokens_tolower(novel_v_toks)
 ```
 
 **quanteda**'s `tokens()` function splits the text into words, with many options available for which characters should be preserved, and which should be used to define word boundaries.  The default behaviour works similarly to splitting on the regular expression for non-word characters (`\W` as in the book), but it much smarter.  For instance, it does not treat apostrophes as word boundaries, meaning that `'s` and `'t` are not treated as whole words from possessive forms and contractions. 
 
-We will skip straight to getting the character vector of tokens:
+To remove punctuation, we can re-process the existing tokens:
 ```{r}
-moby_word_v <- tokens(novel_lower_v, remove_punct = TRUE) %>% as.character()
-(total_length <- length(moby_word_v))
-moby_word_v[1:10]
-moby_word_v[99986] 
-moby_word_v[c(4,5,6)]
+moby_word_v <- tokens(novel_v_toks_lower, remove_punct = TRUE)
+(total_length <- ntoken(moby_word_v))
+moby_word_v[["text1"]][1:10]
+moby_word_v[["text1"]][99986] 
+moby_word_v[["text1"]][c(4, 5, 6)]
 
 # check positions of "whale"
-which(moby_word_v == "whale") %>% head()
+which(moby_word_v[["text1"]] == "whale") %>%
+    head()
 ```
 
 ## 2.4 Beginning the analysis
@@ -106,20 +108,20 @@ The code below uses the tokenized text to the occurrence of the word *whale*. To
 
 Note that the counts below do not match those in the book, due to differences in how the book has split on any non-word character, while **quanteda**'s tokenizer splits on a more comprehensive set of "word boundaries".  **quanteda**'s `tokens()` function by default does not remove punctuation or numbers (both defined as "non-word" characters) by default.  To more closely match the counts in the book, we have removed punctuation. 
 ```{r}
-length(moby_word_v[which(moby_word_v == "whale")])
+lengths(tokens_select(moby_word_v, "whale"))
 
 # total occurrences of "whale" including possessive
-length(moby_word_v[which(moby_word_v == "whale")]) + length(moby_word_v[which(moby_word_v == "whale's")])
+lengths(tokens_select(moby_word_v, c("whale", "whale's")))
 
 # same thing using kwic()
-nrow(kwic(novel_lower_v, pattern = "whale"))
-nrow(kwic(novel_lower_v, pattern = "whale*")) # includes words like "whalemen"
-(total_whale_hits <- nrow(kwic(novel_lower_v, pattern = "^whale('s){0,1}$", valuetype = "regex")))
+nrow(kwic(novel_v_toks_lower, pattern = "whale"))
+nrow(kwic(novel_v_toks_lower, pattern = "whale*")) # includes words like "whalemen"
+(total_whale_hits <- nrow(kwic(novel_v_toks_lower, pattern = "^whale('s){0,1}$", valuetype = "regex")))
 ```
 
 What fraction of the total words (excluding punctuation) in the novel are "whale"?
 ```{r}
-total_whale_hits / ntoken(novel_lower_v, remove_punct = TRUE)  
+total_whale_hits / ntoken(novel_v_toks_lower, remove_punct = TRUE)  
 ```
 
 
@@ -127,14 +129,14 @@ With `ntype()` we can calculate the size of the vocabulary -- includes possessiv
 ```{r}
 # total unique words
 length(unique(moby_word_v))
-ntype(char_tolower(novel_v), remove_punct = TRUE)
+ntype(novel_v_toks_lower, remove_punct = TRUE)
 ```
 
 To quickly sort the word types by their frequency, we can use the `dfm()` command to create a matrix of counts of each word type -- a document-frequency matrix. In this case there is only one document, the entire book. 
 ```{r eval=TRUE}
 # ten most frequent words
-moby_dfm <- dfm(novel_lower_v, remove_punct = TRUE)
-head(moby_dfm, nf = 10)
+moby_dfm <- dfm(moby_word_v)
+moby_dfm
 ```
 Getting the list of the most frequent 10 terms is easy, using `textstat_frequency()`.  
 ```{r}
@@ -145,7 +147,7 @@ textstat_frequency(moby_dfm, n = 10)
 Finally, if we wish to plot the most frequent (50) terms, we can supply the results of `textstat_frequency()` to `ggplot()` to plot their frequency by their rank:
 ```{r fig.width = 8}
 # plot frequency of 50 most frequent terms 
-library(ggplot2)
+library("ggplot2")
 theme_set(theme_minimal())
 textstat_frequency(moby_dfm, n = 50) %>% 
   ggplot(aes(x = rank, y = frequency)) +
@@ -220,15 +222,15 @@ A dispersion plot allows us to visualize the occurrences of particular terms thr
 ```{r eval=TRUE, fig.width=8, fig.height=1.5}
 # using words from tokenized corpus for dispersion
 library("quanteda.textplots")
-textplot_xray(kwic(novel_v, pattern = "whale")) + 
+textplot_xray(kwic(novel_v_toks, pattern = "whale")) + 
     ggtitle("Lexical dispersion")
 ```
 
 To produce multiple dispersion plots for comparison, you can simply send more than one `kwic()` output to `textplot_xray()`:
 ```{r eval=TRUE, fig.width=8, fig.height=2.5}
 textplot_xray(
-    kwic(novel_v, pattern = "whale"),
-    kwic(novel_v, pattern = "Ahab")) + 
+    kwic(novel_v_toks, pattern = "whale"),
+    kwic(novel_v_toks, pattern = "Ahab")) + 
     ggtitle("Lexical dispersion")
 ```
 
@@ -236,7 +238,7 @@ textplot_xray(
 
 ```{r}
 # identify the chapter break locations
-chap_positions_v <- kwic(novel_v, phrase(c("CHAPTER \\d")), valuetype = "regex")$from
+chap_positions_v <- kwic(novel_v_toks, phrase(c("CHAPTER \\d")), valuetype = "regex")$from
 head(chap_positions_v)
 ```
 
@@ -252,13 +254,13 @@ summary(chapters_corp, 10)
 ```
 The titles are automatically extracted into the `pattern` document variables, and the text of each chapter becomes the text of each new document unit.  To tidy this up, we can remove the trailing `\n` character, using `stri_trim_right()`, since the `\n` is a member of the "whitespace" group.
 ```{r}
-docvars(chapters_corp, "pattern") <- stringi::stri_trim_right(docvars(chapters_corp, "pattern"))
+chapters_corp$pattern <- stringi::stri_trim_right(chapters_corp$pattern)
 summary(chapters_corp, n = 3)
 ```
 
 For better reference, let's also rename the document labels with these chapter headings:
 ```{r}
-docnames(chapters_corp) <- docvars(chapters_corp, "pattern")
+docnames(chapters_corp) <- chapters_corp$pattern
 ```
 
 ### 4.4.5 barplots of whale and ahab
@@ -322,7 +324,7 @@ ggplot(data = rel_chap_freq, aes(x = chapter, y = ahab)) +
 Correlation analysis (and many other similarity measures) can be constructed using fast, sparse means through the `textstat_simil()` function.  Here, we select feature comparisons for just "whale" and "ahab", and convert this into a matrix as in the book.  Because correlations are sensitive to document length, we first convert this into a relative frequency using `dfm_weight()`.
 ```{r}
 dfm_weight(chap_dfm, scheme = "prop") %>% 
-    textstat_simil(selection = c("whale", "ahab"), method = "correlation", margin = "features") %>%
+    textstat_simil(y = chap_dfm[, c("whale", "ahab")], method = "correlation", margin = "features") %>%
     as.matrix() %>%
     head(2)
 ```
@@ -344,7 +346,7 @@ samples <- data.frame(
 )
 
 # plot distribution of resampled correlations
-ggplot(data = samples, aes(x = cor_sample, y = ..density..)) +
+ggplot(data = samples, aes(x = cor_sample, y = after_stat(density))) +
     geom_histogram(colour = "black", binwidth = 0.01) +
     geom_density(colour = "red") +
     labs(x = "Correlation Coefficient", y = NULL,
@@ -428,7 +430,8 @@ barplot(hapax_proportion, beside = TRUE, col = "grey", names.arg = seq_len(ndoc(
 
 For this, and the next chapter, we simply use **quanteda**'s excellent `kwic()` function.  To find the indexes of the token positions for "gutenberg", for instance, we use the following, which returns a data.frame with the name `from` indicating the index position of the start of the token match:
 ```{r}
-gutenberg_kwic <- kwic(data_char_mobydick, pattern = "gutenberg")
+data_tokens_mobydick <- tokens(data_char_mobydick)
+gutenberg_kwic <- kwic(data_tokens_mobydick, pattern = "gutenberg")
 head(gutenberg_kwic$from, 10)
 ```
 
@@ -438,7 +441,7 @@ This is going to be super easy since we don't need to reinvent the wheel here, s
 
 Let's create a corpus containing _Moby Dick_ but also Jane Austen's _Sense and Sensibility_.
 ```{r}
-data_char_senseandsensibility <- texts(readtext("http://www.gutenberg.org/files/161/161-0.txt"))
+data_char_senseandsensibility <- texts(readtext::readtext("http://www.gutenberg.org/files/161/161-0.txt"))
 names(data_char_senseandsensibility) <- "Sense and Sensibility"
 
 litcorpus <- corpus(c(data_char_mobydick, data_char_senseandsensibility))
