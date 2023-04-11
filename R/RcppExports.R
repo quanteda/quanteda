@@ -9,16 +9,16 @@ cpp_index <- function(xptr, words_) {
     .Call(`_quanteda_cpp_index`, xptr, words_)
 }
 
+cpp_index_types <- function(patterns_, types_) {
+    .Call(`_quanteda_cpp_index_types`, patterns_, types_)
+}
+
 cpp_serialize <- function(texts_) {
     .Call(`_quanteda_cpp_serialize`, texts_)
 }
 
 cpp_serialize_add <- function(texts_, xptr) {
     .Call(`_quanteda_cpp_serialize_add`, texts_, xptr)
-}
-
-cpp_substr <- function(texts_, len = 0L, side = 1L) {
-    .Call(`_quanteda_cpp_substr`, texts_, len, side)
 }
 
 cpp_tokens_chunk <- function(xptr, size, overlap) {

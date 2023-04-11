@@ -98,7 +98,7 @@ List cpp_index_types(const CharacterVector &patterns_,
         int j = 0;
         IntegerVector value_(index.count(pattern));
         for (auto it = range.first; it != range.second; ++it) {
-            value_[j] = it->second;
+            value_[j] = it->second + 1;
             j++;
         }
         result_[i] = unique(value_);
