@@ -10,9 +10,16 @@ typedef tbb::concurrent_unordered_map<Type, std::vector<int> > MapIndex;
 #endif
 typedef std::string Pattern;
 typedef std::vector<Pattern> Patterns;
+typedef std::tuple<int, std::string, int> Config;
+typedef std::vector<Config> Configs;
 
-void index_glob(Types &types, MapIndex &index,
-                std::string wildcard, int side, int len) {
+void index_types(Types &types, MapIndex &index, Config conf) {
+                //std::string wildcard, int side, int len) {
+    
+    int len, side;
+    std::string wildcard;
+    std::tie(side, wildcard, len) = conf;
+    Rcout << "Side: " << side << " wildcard: " << wildcard << " len: " << len << "\n";
     
     std::size_t H = types.size();
     Types temp(H);
@@ -29,7 +36,7 @@ void index_glob(Types &types, MapIndex &index,
                 auto it = index.find(value + wildcard);
                 if (it != index.end()) {
                     it->second.push_back(h);
-                    //Rcout << "Insert: " << value + wildcard << " " << h << "\n";
+                    Rcout << "Insert: " << value + wildcard << " " << h << "\n";
                 }
             }
         } else if (side == 2) {
@@ -42,13 +49,70 @@ void index_glob(Types &types, MapIndex &index,
                 auto it = index.find(wildcard + value);
                 if (it != index.end()) {
                     it->second.push_back(h);
-                    //Rcout << "Insert: " << wildcard + value << " " << h << "\n";
+                    Rcout << "Insert: " << wildcard + value << " " << h << "\n";
                 }
+            }
+        } else {
+            auto it = index.find(types[h]);
+            if (it != index.end()) {
+                it->second.push_back(h);
+                Rcout << "Insert: " << types[h] << " " << h << "\n";
             }
         }
     }
 }
 
+
+Configs parse_patterns(Patterns patterns) {
+    
+    Configs confs;
+    confs.reserve(patterns.size());
+    std::unordered_set<std::string> set_unique; 
+    
+    // for fixed
+    confs.push_back({0, "", 0});
+    
+    // for glob
+    for (size_t i = 0; i < patterns.size(); i++) {
+        
+        Config conf;
+        std::string pattern = patterns[i];
+        std::string left = utf8_sub_left(pattern, 1);
+        std::string right = utf8_sub_right(pattern, 1);
+        std::string key = ""; // for deduplication
+        int len;
+        
+        
+        if ((left == "*" || left == "!") && (right == "*" || right == "!"))
+            continue;
+        if (left == "*") {
+            len = utf8_length(pattern) - 1;
+            key = "L*" + std::to_string(len);
+            conf = {1, "*", len};
+        } else if (right == "*") {
+            len = utf8_length(pattern) - 1;
+            key = "R*" + std::to_string(len);
+            conf = {2, "*", len};
+        } else if (left == "?") {
+            key = "L?";
+            conf = {1, "?", -1};
+        } else if (right == "?") {
+            key = "R?";
+            conf = {2, "?", -1};
+        }
+        
+        if (key != "") {
+            auto it = set_unique.find(key);
+            if (it == set_unique.end()) {
+                Rcout << "Add: " << key << "\n";
+                set_unique.insert(key);
+                confs.push_back(conf);
+            }
+        }
+    }
+    
+    return confs;
+}
 
 // [[Rcpp::export]]
 List cpp_index_types(const CharacterVector &patterns_, 
@@ -61,43 +125,28 @@ List cpp_index_types(const CharacterVector &patterns_,
     Types types = Rcpp::as<Types>(types_);
     
     MapIndex index;
-    std::vector<int> len;
-    len.reserve(patterns.size());
-    for (size_t i = 0; i < patterns.size(); i++) {
-        std::string pattern = patterns[i];
-        index[pattern].reserve(types.size());
-        //Rcout << "Pattern: " << pattern << "\n";
-        //Rcout << utf8_sub_left(pattern, 1) << "\n";
-        //Rcout << utf8_sub_right(pattern, 1) << "\n";
-        if ((utf8_sub_left(pattern, 1) == "*") != (utf8_sub_right(pattern, 1) == "*")) {
-            len.push_back(utf8_length(pattern) - 1);
-        }
+    for (size_t j = 0; j < patterns.size(); j++) {
+        index[patterns[j]].reserve(types.size());
     }
-    sort(len.begin(), len.end());
-    len.erase(unique(len.begin(), len.end()), len.end());
-    
+    Configs confs = parse_patterns(patterns);
 
     dev::stop_timer("Convert", timer);
     
     dev::start_timer("Index", timer);
     
-    std::size_t H = len.size();
+    std::size_t H = confs.size();
     Texts temp(H);
 #if QUANTEDA_USE_TBB
     tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
         for (int h = r.begin(); h < r.end(); ++h) {
-            index_glob(types, index, "*", 1, len[h]);
-            index_glob(types, index, "*", 2, len[h]);
+            index_types(types, index, confs[h]);
         }
     });
 #else
     for (size_t h = 0; h < H; h++) {
-        index_glob(types, index, "*", 1, len[h]);
-        index_glob(types, index, "*", 2, len[h]);
+        index_types(types, index, confs[h]);
     }
 #endif
-    index_glob(types, index, "?", 1, -1);
-    index_glob(types, index, "?", 2, -1);
     dev::stop_timer("Index", timer);
 
     dev::start_timer("List", timer);
@@ -116,5 +165,5 @@ List cpp_index_types(const CharacterVector &patterns_,
 /*** R
 #out <- cpp_index_types(c("a*", "*b", "*c*", "跩*"), 
 #                       c("bbb", "aaa", "跩购鹇", "ccc", "aa", "bb"))
-cpp_index_types("跩*", c("跩购鹇", "跩"))
+cpp_index_types(c("跩", "跩*"), c("跩购鹇", "跩"))
 */
