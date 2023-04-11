@@ -28,19 +28,6 @@ void index_types(Types &types, MapIndex &index, Config conf) {
         std::string value;
         if (side == 1) {
             if (len > 0) {
-                value = utf8_sub_left(types[h], len);
-            } else {
-                value = utf8_sub_left(types[h], utf8_length(types[h]) + len);
-            }
-            if (value != "") {
-                auto it = index.find(value + wildcard);
-                if (it != index.end()) {
-                    it->second.push_back(h);
-                    Rcout << "Insert: " << value + wildcard << " " << h << "\n";
-                }
-            }
-        } else if (side == 2) {
-            if (len > 0) {
                 value = utf8_sub_right(types[h], len);
             } else {
                 value = utf8_sub_right(types[h], utf8_length(types[h]) + len);
@@ -49,14 +36,27 @@ void index_types(Types &types, MapIndex &index, Config conf) {
                 auto it = index.find(wildcard + value);
                 if (it != index.end()) {
                     it->second.push_back(h);
-                    Rcout << "Insert: " << wildcard + value << " " << h << "\n";
+                    //Rcout << "Insert: " << wildcard + value << " " << h << "\n";
+                }
+            } 
+        } else if (side == 2) {
+            if (len > 0) {
+                value = utf8_sub_left(types[h], len);
+            } else {
+                value = utf8_sub_left(types[h], utf8_length(types[h]) + len);
+            }
+            if (value != "") {
+                auto it = index.find(value + wildcard);
+                if (it != index.end()) {
+                    it->second.push_back(h);
+                    //Rcout << "Insert: " << value + wildcard << " " << h << "\n";
                 }
             }
         } else {
             auto it = index.find(types[h]);
             if (it != index.end()) {
                 it->second.push_back(h);
-                Rcout << "Insert: " << types[h] << " " << h << "\n";
+                //Rcout << "Insert: " << types[h] << " " << h << "\n";
             }
         }
     }
@@ -127,6 +127,7 @@ List cpp_index_types(const CharacterVector &patterns_,
     MapIndex index;
     for (size_t j = 0; j < patterns.size(); j++) {
         index[patterns[j]].reserve(types.size());
+        //Rcout << "Register: " << patterns[j] << "\n";
     }
     Configs confs = parse_patterns(patterns);
 
