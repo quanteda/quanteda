@@ -1,56 +1,7 @@
 #include "lib.h"
 #include "dev.h"
+#include "utf8.h"
 using namespace quanteda;
-
-std::string substr_left(std::string &text, int len = 0) {
-    int n = 0;
-    size_t i = 0;
-    while (i < text.length()) {
-        int cplen = 0;
-        if ((text[i] & 0xf8) == 0xf0) {
-            cplen = 4;   
-        } else if ((text[i] & 0xf0) == 0xe0) {
-            cplen = 3;   
-        } else if ((text[i] & 0xe0) == 0xc0) {
-            cplen = 2;
-        } else if ((text[i] & 0x80) == 0) {
-            cplen = 1;
-        }
-        if (cplen > 0) {
-            n++;
-            //Rcout << i << " " << n << " " << cplen << ": "<< text.substr(i, cplen) << "\n";
-        }
-        if (n > len)
-            return text.substr(0, i);
-        i += cplen;
-    }
-    return text;
-}
-
-std::string substr_right(std::string &text, int len = 0) {
-    int n = 0;
-    size_t i = text.length();
-    while (0 <= i) {
-        int cplen = 0;
-        if ((text[i] & 0xf8) == 0xf0) {
-            cplen = 4;   
-        } else if ((text[i] & 0xf0) == 0xe0) {
-            cplen = 3;   
-        } else if ((text[i] & 0xe0) == 0xc0) {
-            cplen = 2;
-        } else if ((text[i] & 0x80) == 0) {
-            cplen = 1;
-        }
-        if (cplen > 0) {
-            n++;
-            //Rcout << i << " " << n << " " << cplen << ": "<< text.substr(i, cplen) << "\n";
-        }
-        if (n > len)
-            return text.substr(i, text.length());
-        i -= 1;
-    }
-    return text;
-}
 
 typedef tbb::concurrent_unordered_map<Type, int> MultiMapIndex;
 typedef std::string Pattern;
@@ -63,19 +14,35 @@ void index_glob(Types &types, MultiMapIndex &index,
     Types temp(H);
     
     for (size_t h = 0; h < H; h++) {
+        std::string value;
         if (side == 1) {
-            std::string value = substr_left(types[h], len) + wildcard;
+            if (len > 0) {
+                value = utf8_sub_left(types[h], len);
+            } else {
+                value = utf8_sub_left(types[h], utf8_length(types[h]) + len);
+            }
+            if (value != "") {
+                index.insert(std::pair<Type, int>(value + wildcard, h));
+                Rcout << "Insert: " << value + wildcard << " " << h << "\n";
+            }
         } else if (side == 2) {
-            std::string value = wildcard + substr_right(types[h], len);
+            if (len > 0) {
+                value = utf8_sub_right(types[h], len);
+            } else {
+                value = utf8_sub_right(types[h], utf8_length(types[h]) + len);
+            }
+            if (value != "") {
+                index.insert(std::pair<Type, int>(wildcard + value, h));
+                Rcout << "Insert: " << wildcard + value << " " << h << "\n";
+            }
         }
-        map_keys.insert(std::pair<Type, int>(value, h));
     }
 }
 
 
 // [[Rcpp::export]]
-CharacterVector cpp_index_types(const CharacterVector &patterns_, 
-                                const CharacterVector &types_) {
+List cpp_index_types(const CharacterVector &patterns_, 
+                     const CharacterVector &types_) {
     
     dev::Timer timer;
     dev::start_timer("Convert", timer);
@@ -87,8 +54,9 @@ CharacterVector cpp_index_types(const CharacterVector &patterns_,
     len.reserve(patterns.size());
     for (size_t i = 0; i < patterns.size(); i++) {
         std::string pattern = patterns[i];
-        if (pattern[0] == "*") != (pattern[patten.length()] == "*") {
-            len.push_back(patten.length() - 1);
+        if ((utf8_sub_left(pattern, 1) == "*") != (utf8_sub_right(pattern, 1) == "*")) {
+            len.push_back(utf8_length(pattern) - 1);
+            Rcout << "Length: " << utf8_length(pattern) << "\n";
         }
     }
 
@@ -118,10 +86,12 @@ CharacterVector cpp_index_types(const CharacterVector &patterns_,
     for (size_t i = 0; i < patterns.size(); i++) {
         std::string pattern = patterns[i];
         auto range = index.equal_range(pattern);
-        Rcout << "size:" <<   range.secod - range.first << "\n"
+        Rcout << "Key: "<< pattern << " ";
         for (auto it = range.first; it != range.second; ++it) {
             int pos = it->second;
+            Rcout << pos << ", ";
         }
+        Rcout << "\n";
     }
     dev::stop_timer("List", timer);
     
@@ -129,6 +99,7 @@ CharacterVector cpp_index_types(const CharacterVector &patterns_,
 }
 
 /*** R
-cpp_substr("今天周五123", 3, 1)
-cpp_substr("今天周五123", 5, 2)
+#out <- cpp_index_types(c("a*", "*b", "*c*", "跩*"), 
+#                       c("bbb", "aaa", "跩购鹇", "ccc", "aa", "bb"))
+cpp_index_types("跩*", "跩购鹇") 
 */
