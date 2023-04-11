@@ -1,5 +1,5 @@
 #include "lib.h"
-//#include "dev.h"
+#include "dev.h"
 using namespace quanteda;
 
 std::string substr_left(std::string &text, int len = 0) {
@@ -53,13 +53,23 @@ std::string substr_right(std::string &text, int len = 0) {
 }
 
 // [[Rcpp::export]]
-CharacterVector cpp_substr(CharacterVector texts_, 
+CharacterVector cpp_substr(const CharacterVector texts_, 
                            int len = 0, int side = 1) {
     
-    Types texts = Rcpp::as<Types>(texts_);
+    dev::Timer timer;
+    dev::start_timer("Convert", timer);
+    
+    int G = texts_.size();
+    Types texts(G);
+    for (int g = 0; g < texts_.size(); g++) {
+        texts[g] = Rcpp::as<Type>(texts_[g]);
+    }
+    //Types texts = Rcpp::as<Types>(texts_);
     std::size_t H = texts.size();
     Types temp(H);
+    dev::stop_timer("Convert", timer);
     
+    dev::start_timer("Substring", timer);
 #if QUANTEDA_USE_TBB
     tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
         for (int h = r.begin(); h < r.end(); ++h) {
@@ -83,7 +93,12 @@ CharacterVector cpp_substr(CharacterVector texts_,
         }
     }
 #endif
-    return encode(temp);    
+    dev::stop_timer("Substring", timer);
+    
+    dev::start_timer("Encode", timer);
+    CharacterVector result = encode(temp);
+    dev::stop_timer("Encode", timer);
+    return result;
 }
 
 /*** R

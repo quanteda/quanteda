@@ -63,12 +63,12 @@ BEGIN_RCPP
 END_RCPP
 }
 // cpp_substr
-CharacterVector cpp_substr(CharacterVector texts_, int len, int side);
+CharacterVector cpp_substr(const CharacterVector texts_, int len, int side);
 RcppExport SEXP _quanteda_cpp_substr(SEXP texts_SEXP, SEXP lenSEXP, SEXP sideSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< CharacterVector >::type texts_(texts_SEXP);
+    Rcpp::traits::input_parameter< const CharacterVector >::type texts_(texts_SEXP);
     Rcpp::traits::input_parameter< int >::type len(lenSEXP);
     Rcpp::traits::input_parameter< int >::type side(sideSEXP);
     rcpp_result_gen = Rcpp::wrap(cpp_substr(texts_, len, side));
