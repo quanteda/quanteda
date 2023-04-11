@@ -54,33 +54,41 @@ List cpp_index_types(const CharacterVector &patterns_,
     len.reserve(patterns.size());
     for (size_t i = 0; i < patterns.size(); i++) {
         std::string pattern = patterns[i];
+        //Rcout << "Pattern: " << pattern << "\n";
+        //Rcout << utf8_sub_left(pattern, 1) << "\n";
+        //Rcout << utf8_sub_right(pattern, 1) << "\n";
         if ((utf8_sub_left(pattern, 1) == "*") != (utf8_sub_right(pattern, 1) == "*")) {
             len.push_back(utf8_length(pattern) - 1);
-            //Rcout << "Length: " << utf8_length(pattern) << "\n";
         }
     }
+    sort(len.begin(), len.end());
+    len.erase(unique(len.begin(), len.end()), len.end());
+    
 
     dev::stop_timer("Convert", timer);
     
-    dev::start_timer("Indexing", timer);
+    dev::start_timer("Index", timer);
     
     MultiMapIndex index;
-    
     std::size_t H = len.size();
     Texts temp(H);
-// #if QUANTEDA_USE_TBB
-//     tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
-//     
-//     });
-// #else
+#if QUANTEDA_USE_TBB
+    tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
+        for (int h = r.begin(); h < r.end(); ++h) {
+            index_glob(types, index, "*", 1, len[h]);
+            index_glob(types, index, "*", 2, len[h]);
+        }
+    });
+#else
     for (size_t h = 0; h < H; h++) {
         index_glob(types, index, "*", 1, len[h]);
         index_glob(types, index, "*", 2, len[h]);
     }
+#endif
     index_glob(types, index, "?", 1, -1);
     index_glob(types, index, "?", 2, -1);
-// #endif
-    
+    dev::stop_timer("Index", timer);
+
     dev::start_timer("List", timer);
     List result_(patterns.size());
     for (size_t i = 0; i < patterns.size(); i++) {
@@ -102,7 +110,7 @@ List cpp_index_types(const CharacterVector &patterns_,
 }
 
 /*** R
-out <- cpp_index_types(c("a*", "*b", "*c*", "跩*"), 
-                       c("bbb", "aaa", "跩购鹇", "ccc", "aa", "bb"))
-#cpp_index_types("跩*", c("跩购鹇", "跩"))
+#out <- cpp_index_types(c("a*", "*b", "*c*", "跩*"), 
+#                       c("bbb", "aaa", "跩购鹇", "ccc", "aa", "bb"))
+cpp_index_types("跩*", c("跩购鹇", "跩"))
 */

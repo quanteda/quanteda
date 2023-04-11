@@ -49,7 +49,7 @@ std::string utf8_sub_left(std::string &text, int len = 0) {
 std::string utf8_sub_right(std::string &text, int len = 0) {
     int n = 0;
     size_t i = text.length();
-    while (0 <= i) {
+    while (0 < i) {
         int cplen = 0;
         if ((text[i] & 0xf8) == 0xf0) {
             cplen = 4;   
@@ -62,7 +62,7 @@ std::string utf8_sub_right(std::string &text, int len = 0) {
         }
         if (cplen > 0) {
             n++;
-            //Rcout << i << " " << n << " " << cplen << ": "<< text.substr(i, cplen) << "\n";
+            //Rcout << i << " " << n << " / " << len << " " << ": "<< text.substr(i, cplen) << "\n";
         }
         if (n > len)
             return text.substr(i, text.length());
