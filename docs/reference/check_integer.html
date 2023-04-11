@@ -24,7 +24,7 @@ before used in control flow or passed to C++ functions."><!-- mathjax --><script
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.2.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.3.0</span>
       </span>
     </div>
 
@@ -145,7 +145,8 @@ before used in control flow or passed to C++ functions.</p>
 <span>  max_len <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  min <span class="op">=</span> <span class="op">-</span><span class="cn">Inf</span>,</span>
 <span>  max <span class="op">=</span> <span class="cn">Inf</span>,</span>
-<span>  strict <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  strict <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  allow_null <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">check_double</span><span class="op">(</span></span>
@@ -154,10 +155,11 @@ before used in control flow or passed to C++ functions.</p>
 <span>  max_len <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  min <span class="op">=</span> <span class="op">-</span><span class="cn">Inf</span>,</span>
 <span>  max <span class="op">=</span> <span class="cn">Inf</span>,</span>
-<span>  strict <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  strict <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  allow_null <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">check_logical</span><span class="op">(</span><span class="va">x</span>, min_len <span class="op">=</span> <span class="fl">1</span>, max_len <span class="op">=</span> <span class="fl">1</span>, strict <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="fu">check_logical</span><span class="op">(</span><span class="va">x</span>, min_len <span class="op">=</span> <span class="fl">1</span>, max_len <span class="op">=</span> <span class="fl">1</span>, strict <span class="op">=</span> <span class="cn">FALSE</span>, allow_null <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">check_character</span><span class="op">(</span></span>
 <span>  <span class="va">x</span>,</span>
@@ -165,7 +167,8 @@ before used in control flow or passed to C++ functions.</p>
 <span>  max_len <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  min_nchar <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  max_nchar <span class="op">=</span> <span class="cn">Inf</span>,</span>
-<span>  strict <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  strict <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  allow_null <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -189,6 +192,10 @@ before used in control flow or passed to C++ functions.</p>
 
 <dt>strict</dt>
 <dd><p>raise error when <code>x</code> is a different type</p></dd>
+
+
+<dt>allow_null</dt>
+<dd><p>if <code>TRUE</code>, returns <code>NULL</code> when <code>is.null(x)</code></p></dd>
 
 
 <dt>min_nchar</dt>
@@ -232,7 +239,7 @@ before used in control flow or passed to C++ functions.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

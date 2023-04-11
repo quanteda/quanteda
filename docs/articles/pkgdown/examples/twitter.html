@@ -42,14 +42,14 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.3.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Quick Start
      
     <span class="caret"></span>
@@ -76,7 +76,7 @@
   <a href="../../../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Features
      
     <span class="caret"></span>
@@ -94,7 +94,7 @@
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Examples
      
     <span class="caret"></span>
@@ -118,7 +118,7 @@
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Replications
      
     <span class="caret"></span>
@@ -139,7 +139,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/quanteda/quanteda" class="external-link">
-    <span class="fas fa-github fa-lg"></span>
+    <span class="fa fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -159,147 +159,153 @@
 
       
 
-      </header><script src="twitter_files/header-attrs-2.7/header-attrs.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Example: Social media analysis (Twitter)</h1>
-                        <h4 data-toc-skip class="author">Kohei Watanabe</h4>
+                        <h4 data-toc-skip class="author">Kohei
+Watanabe</h4>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/quanteda/quanteda/blob/master/vignettes/pkgdown/examples/twitter.Rmd" class="external-link"><code>vignettes/pkgdown/examples/twitter.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/quanteda/quanteda/blob/HEAD/vignettes/pkgdown/examples/twitter.Rmd" class="external-link"><code>vignettes/pkgdown/examples/twitter.Rmd</code></a></small>
       <div class="hidden name"><code>twitter.Rmd</code></div>
 
     </div>
 
     
     
-<p>Using <strong>quanteda</strong>’s <code><a href="../../../reference/fcm.html">fcm()</a></code> and <code><a href="https://rdrr.io/pkg/quanteda.textplots/man/textplot_network.html" class="external-link">textplot_network()</a></code>, you can perform visual analysis of social media posts in terms of co-occurrences of hashtags or usernames in a few steps. The dataset for this example contains only 10,000 Twitter posts, but you can easily analyse more than one million posts on your laptop computer.</p>
+<p>Using <strong>quanteda</strong>’s <code><a href="../../../reference/fcm.html">fcm()</a></code> and
+<code><a href="https://rdrr.io/pkg/quanteda.textplots/man/textplot_network.html" class="external-link">textplot_network()</a></code>, you can perform visual analysis of
+social media posts in terms of co-occurrences of hashtags or usernames
+in a few steps. The dataset for this example contains only 10,000
+Twitter posts, but you can easily analyse more than one million posts on
+your laptop computer.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://quanteda.io">quanteda</a></span><span class="op">)</span></code></pre></div>
-<div id="load-sample-data" class="section level2">
-<h2 class="hasAnchor">
-<a href="#load-sample-data" class="anchor"></a>Load sample data</h2>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://quanteda.io">quanteda</a></span><span class="op">)</span></span></code></pre></div>
+<div class="section level3">
+<h3 id="load-sample-data">Load sample data<a class="anchor" aria-label="anchor" href="#load-sample-data"></a>
+</h3>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/load.html" class="external-link">load</a></span><span class="op">(</span><span class="st">"data/data_corpus_tweets.rda"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/load.html" class="external-link">load</a></span><span class="op">(</span><span class="st">"data/data_corpus_tweets.rda"</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div id="construct-a-document-feature-matrix-of-twitter-posts" class="section level2">
-<h2 class="hasAnchor">
-<a href="#construct-a-document-feature-matrix-of-twitter-posts" class="anchor"></a>Construct a document-feature matrix of Twitter posts</h2>
+<div class="section level3">
+<h3 id="construct-a-document-feature-matrix-of-twitter-posts">Construct a document-feature matrix of Twitter posts<a class="anchor" aria-label="anchor" href="#construct-a-document-feature-matrix-of-twitter-posts"></a>
+</h3>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">tweet_dfm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/tokens.html">tokens</a></span><span class="op">(</span><span class="va">data_corpus_tweets</span>, remove_punct <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="../../../reference/dfm.html">dfm</a></span><span class="op">(</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">tweet_dfm</span><span class="op">)</span></code></pre></div>
-<pre><code>## Document-feature matrix of: 6 documents, 42,398 features (99.97% sparse) and 34 docvars.
-##         features
-## docs     oggi pomeriggio a partire dalle 18.00 interverrò #pomeriggio5 su
-##   tweet1    1          1 2       1     1     1          1            1  1
-##   tweet2    0          0 1       0     0     0          0            0  0
-##   tweet3    0          0 0       0     0     0          0            0  0
-##   tweet4    0          0 0       0     0     0          0            0  0
-##   tweet5    0          0 0       0     0     0          0            0  0
-##   tweet6    0          0 0       0     0     0          0            0  0
-##         features
-## docs     #canale5
-##   tweet1        1
-##   tweet2        0
-##   tweet3        0
-##   tweet4        0
-##   tweet5        0
-##   tweet6        0
-## [ reached max_nfeat ... 42,388 more features ]</code></pre>
+<code class="sourceCode R"><span><span class="va">tweet_dfm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/tokens.html">tokens</a></span><span class="op">(</span><span class="va">data_corpus_tweets</span>, remove_punct <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="../../../reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="../../../reference/dfm.html">dfm</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">tweet_dfm</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Document-feature matrix of: 6 documents, 42,401 features (99.97% sparse) and 34 docvars.</span></span>
+<span><span class="co">##         features</span></span>
+<span><span class="co">## docs     oggi pomeriggio a partire dalle 18.00 interverrò #pomeriggio5 su</span></span>
+<span><span class="co">##   tweet1    1          1 2       1     1     1          1            1  1</span></span>
+<span><span class="co">##   tweet2    0          0 1       0     0     0          0            0  0</span></span>
+<span><span class="co">##   tweet3    0          0 0       0     0     0          0            0  0</span></span>
+<span><span class="co">##   tweet4    0          0 0       0     0     0          0            0  0</span></span>
+<span><span class="co">##   tweet5    0          0 0       0     0     0          0            0  0</span></span>
+<span><span class="co">##   tweet6    0          0 0       0     0     0          0            0  0</span></span>
+<span><span class="co">##         features</span></span>
+<span><span class="co">## docs     #canale5</span></span>
+<span><span class="co">##   tweet1        1</span></span>
+<span><span class="co">##   tweet2        0</span></span>
+<span><span class="co">##   tweet3        0</span></span>
+<span><span class="co">##   tweet4        0</span></span>
+<span><span class="co">##   tweet5        0</span></span>
+<span><span class="co">##   tweet6        0</span></span>
+<span><span class="co">## [ reached max_nfeat ... 42,391 more features ]</span></span></code></pre>
 </div>
-<div id="hashtags" class="section level1">
-<h1 class="hasAnchor">
-<a href="#hashtags" class="anchor"></a>Hashtags</h1>
-<div id="extract-most-common-hashtags" class="section level2">
-<h2 class="hasAnchor">
-<a href="#extract-most-common-hashtags" class="anchor"></a>Extract most common hashtags</h2>
+<div class="section level2">
+<h2 id="hashtags">Hashtags<a class="anchor" aria-label="anchor" href="#hashtags"></a>
+</h2>
+<div class="section level3">
+<h3 id="extract-most-common-hashtags">Extract most common hashtags<a class="anchor" aria-label="anchor" href="#extract-most-common-hashtags"></a>
+</h3>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">tag_dfm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/dfm_select.html">dfm_select</a></span><span class="op">(</span><span class="va">tweet_dfm</span>, pattern <span class="op">=</span> <span class="st">"#*"</span><span class="op">)</span>
-<span class="va">toptag</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="fu"><a href="../../../reference/topfeatures.html">topfeatures</a></span><span class="op">(</span><span class="va">tag_dfm</span>, <span class="fl">50</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">toptag</span><span class="op">)</span></code></pre></div>
-<pre><code>## [1] "#ep2014"       "#salvini"      "#fdian"        "#ukip"        
-## [5] "#caraacaratve" "#alzalatesta"</code></pre>
+<code class="sourceCode R"><span><span class="va">tag_dfm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/dfm_select.html">dfm_select</a></span><span class="op">(</span><span class="va">tweet_dfm</span>, pattern <span class="op">=</span> <span class="st">"#*"</span><span class="op">)</span></span>
+<span><span class="va">toptag</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="fu"><a href="../../../reference/topfeatures.html">topfeatures</a></span><span class="op">(</span><span class="va">tag_dfm</span>, <span class="fl">50</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">toptag</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] "#ep2014"       "#salvini"      "#fdian"        "#ukip"        </span></span>
+<span><span class="co">## [5] "#caraacaratve" "#alzalatesta"</span></span></code></pre>
 </div>
-<div id="construct-feature-occurrence-matrix-of-hashtags" class="section level2">
-<h2 class="hasAnchor">
-<a href="#construct-feature-occurrence-matrix-of-hashtags" class="anchor"></a>Construct feature-occurrence matrix of hashtags</h2>
+<div class="section level3">
+<h3 id="construct-feature-occurrence-matrix-of-hashtags">Construct feature-occurrence matrix of hashtags<a class="anchor" aria-label="anchor" href="#construct-feature-occurrence-matrix-of-hashtags"></a>
+</h3>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">"quanteda.textplots"</span><span class="op">)</span>
-<span class="va">tag_fcm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/fcm.html">fcm</a></span><span class="op">(</span><span class="va">tag_dfm</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">tag_fcm</span><span class="op">)</span></code></pre></div>
-<pre><code>## Feature co-occurrence matrix of: 6 by 2,755 features.
-##                  features
-## features          #pomeriggio5 #canale5 #miaou #iovotoitaliano #fdian #bravo
-##   #pomeriggio5               0        2      0               0      0      0
-##   #canale5                   0        0      0               0      1      0
-##   #miaou                     0        0      0               0      0      0
-##   #iovotoitaliano            0        0      0               0     60      0
-##   #fdian                     0        0      0               0      0      0
-##   #bravo                     0        0      0               0      0      0
-##                  features
-## features          #primaveraeuropea #dpdabayrou #umps #pesticides
-##   #pomeriggio5                    0           0     0           0
-##   #canale5                        0           0     0           0
-##   #miaou                          0           0     0           0
-##   #iovotoitaliano                 0           0     0           0
-##   #fdian                          0           0     0           0
-##   #bravo                          0           0     0           0
-## [ reached max_nfeat ... 2,745 more features ]</code></pre>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">"quanteda.textplots"</span><span class="op">)</span></span>
+<span><span class="va">tag_fcm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/fcm.html">fcm</a></span><span class="op">(</span><span class="va">tag_dfm</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">tag_fcm</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Feature co-occurrence matrix of: 6 by 2,755 features.</span></span>
+<span><span class="co">##                  features</span></span>
+<span><span class="co">## features          #pomeriggio5 #canale5 #miaou #iovotoitaliano #fdian #bravo</span></span>
+<span><span class="co">##   #pomeriggio5               0        2      0               0      0      0</span></span>
+<span><span class="co">##   #canale5                   0        0      0               0      1      0</span></span>
+<span><span class="co">##   #miaou                     0        0      0               0      0      0</span></span>
+<span><span class="co">##   #iovotoitaliano            0        0      0               0     60      0</span></span>
+<span><span class="co">##   #fdian                     0        0      0               0      0      0</span></span>
+<span><span class="co">##   #bravo                     0        0      0               0      0      0</span></span>
+<span><span class="co">##                  features</span></span>
+<span><span class="co">## features          #primaveraeuropea #dpdabayrou #umps #pesticides</span></span>
+<span><span class="co">##   #pomeriggio5                    0           0     0           0</span></span>
+<span><span class="co">##   #canale5                        0           0     0           0</span></span>
+<span><span class="co">##   #miaou                          0           0     0           0</span></span>
+<span><span class="co">##   #iovotoitaliano                 0           0     0           0</span></span>
+<span><span class="co">##   #fdian                          0           0     0           0</span></span>
+<span><span class="co">##   #bravo                          0           0     0           0</span></span>
+<span><span class="co">## [ reached max_nfeat ... 2,745 more features ]</span></span></code></pre>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">topgat_fcm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/dfm_select.html">fcm_select</a></span><span class="op">(</span><span class="va">tag_fcm</span>, pattern <span class="op">=</span> <span class="va">toptag</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/quanteda.textplots/man/textplot_network.html" class="external-link">textplot_network</a></span><span class="op">(</span><span class="va">topgat_fcm</span>, min_freq <span class="op">=</span> <span class="fl">0.1</span>, edge_alpha <span class="op">=</span> <span class="fl">0.8</span>, edge_size <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">topgat_fcm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/dfm_select.html">fcm_select</a></span><span class="op">(</span><span class="va">tag_fcm</span>, pattern <span class="op">=</span> <span class="va">toptag</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/quanteda.textplots/man/textplot_network.html" class="external-link">textplot_network</a></span><span class="op">(</span><span class="va">topgat_fcm</span>, min_freq <span class="op">=</span> <span class="fl">0.1</span>, edge_alpha <span class="op">=</span> <span class="fl">0.8</span>, edge_size <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></code></pre></div>
 <p><img src="twitter_files/figure-html/unnamed-chunk-6-1.png" width="700"></p>
 </div>
 </div>
-<div id="usernames" class="section level1">
-<h1 class="hasAnchor">
-<a href="#usernames" class="anchor"></a>Usernames</h1>
-<div id="extract-most-frequently-mentioned-usernames" class="section level2">
-<h2 class="hasAnchor">
-<a href="#extract-most-frequently-mentioned-usernames" class="anchor"></a>Extract most frequently mentioned usernames</h2>
+<div class="section level2">
+<h2 id="usernames">Usernames<a class="anchor" aria-label="anchor" href="#usernames"></a>
+</h2>
+<div class="section level3">
+<h3 id="extract-most-frequently-mentioned-usernames">Extract most frequently mentioned usernames<a class="anchor" aria-label="anchor" href="#extract-most-frequently-mentioned-usernames"></a>
+</h3>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">user_dfm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/dfm_select.html">dfm_select</a></span><span class="op">(</span><span class="va">tweet_dfm</span>, pattern <span class="op">=</span> <span class="st">"@*"</span><span class="op">)</span>
-<span class="va">topuser</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="fu"><a href="../../../reference/topfeatures.html">topfeatures</a></span><span class="op">(</span><span class="va">user_dfm</span>, <span class="fl">50</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">topuser</span><span class="op">)</span></code></pre></div>
-<pre><code>## [1] "@pablo_iglesias_" "@elenavalenciano" "@canete2014_"     "@nigel_farage"   
-## [5] "@martinschulz"    "@giorgiameloni"</code></pre>
+<code class="sourceCode R"><span><span class="va">user_dfm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/dfm_select.html">dfm_select</a></span><span class="op">(</span><span class="va">tweet_dfm</span>, pattern <span class="op">=</span> <span class="st">"@*"</span><span class="op">)</span></span>
+<span><span class="va">topuser</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="fu"><a href="../../../reference/topfeatures.html">topfeatures</a></span><span class="op">(</span><span class="va">user_dfm</span>, <span class="fl">50</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">topuser</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] "@pablo_iglesias_" "@elenavalenciano" "@canete2014_"     "@nigel_farage"   </span></span>
+<span><span class="co">## [5] "@martinschulz"    "@giorgiameloni"</span></span></code></pre>
 </div>
-<div id="construct-feature-occurrence-matrix-of-usernames" class="section level2">
-<h2 class="hasAnchor">
-<a href="#construct-feature-occurrence-matrix-of-usernames" class="anchor"></a>Construct feature-occurrence matrix of usernames</h2>
+<div class="section level3">
+<h3 id="construct-feature-occurrence-matrix-of-usernames">Construct feature-occurrence matrix of usernames<a class="anchor" aria-label="anchor" href="#construct-feature-occurrence-matrix-of-usernames"></a>
+</h3>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">user_fcm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/fcm.html">fcm</a></span><span class="op">(</span><span class="va">user_dfm</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">user_fcm</span><span class="op">)</span></code></pre></div>
-<pre><code>## Feature co-occurrence matrix of: 6 by 5,951 features.
-##                   features
-## features           @pacomarhuenda @pablo_iglesias_ @kopriths @gapatzhs
-##   @pacomarhuenda                0                1         0         0
-##   @pablo_iglesias_              0                0         0         0
-##   @kopriths                     0                0         0         1
-##   @gapatzhs                     0                0         0         0
-##   @mariaspyraki                 0                0         0         0
-##   @ernesturtasun                0                0         0         0
-##                   features
-## features           @mariaspyraki @ernesturtasun @gabrielamard @nigel_farage
-##   @pacomarhuenda               0              0             0             0
-##   @pablo_iglesias_             0              1             0             0
-##   @kopriths                    1              0             0             0
-##   @gapatzhs                    1              0             0             0
-##   @mariaspyraki                0              0             0             0
-##   @ernesturtasun               0              0             0             0
-##                   features
-## features           @ukip @youtube
-##   @pacomarhuenda       0        0
-##   @pablo_iglesias_     0        0
-##   @kopriths            0        0
-##   @gapatzhs            0        0
-##   @mariaspyraki        0        0
-##   @ernesturtasun       0        0
-## [ reached max_nfeat ... 5,941 more features ]</code></pre>
+<code class="sourceCode R"><span><span class="va">user_fcm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/fcm.html">fcm</a></span><span class="op">(</span><span class="va">user_dfm</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">user_fcm</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Feature co-occurrence matrix of: 6 by 5,951 features.</span></span>
+<span><span class="co">##                   features</span></span>
+<span><span class="co">## features           @pacomarhuenda @pablo_iglesias_ @kopriths @gapatzhs</span></span>
+<span><span class="co">##   @pacomarhuenda                0                1         0         0</span></span>
+<span><span class="co">##   @pablo_iglesias_              0                0         0         0</span></span>
+<span><span class="co">##   @kopriths                     0                0         0         1</span></span>
+<span><span class="co">##   @gapatzhs                     0                0         0         0</span></span>
+<span><span class="co">##   @mariaspyraki                 0                0         0         0</span></span>
+<span><span class="co">##   @ernesturtasun                0                0         0         0</span></span>
+<span><span class="co">##                   features</span></span>
+<span><span class="co">## features           @mariaspyraki @ernesturtasun @gabrielamard @nigel_farage</span></span>
+<span><span class="co">##   @pacomarhuenda               0              0             0             0</span></span>
+<span><span class="co">##   @pablo_iglesias_             0              1             0             0</span></span>
+<span><span class="co">##   @kopriths                    1              0             0             0</span></span>
+<span><span class="co">##   @gapatzhs                    1              0             0             0</span></span>
+<span><span class="co">##   @mariaspyraki                0              0             0             0</span></span>
+<span><span class="co">##   @ernesturtasun               0              0             0             0</span></span>
+<span><span class="co">##                   features</span></span>
+<span><span class="co">## features           @ukip @youtube</span></span>
+<span><span class="co">##   @pacomarhuenda       0        0</span></span>
+<span><span class="co">##   @pablo_iglesias_     0        0</span></span>
+<span><span class="co">##   @kopriths            0        0</span></span>
+<span><span class="co">##   @gapatzhs            0        0</span></span>
+<span><span class="co">##   @mariaspyraki        0        0</span></span>
+<span><span class="co">##   @ernesturtasun       0        0</span></span>
+<span><span class="co">## [ reached max_nfeat ... 5,941 more features ]</span></span></code></pre>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">user_fcm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/dfm_select.html">fcm_select</a></span><span class="op">(</span><span class="va">user_fcm</span>, pattern <span class="op">=</span> <span class="va">topuser</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/quanteda.textplots/man/textplot_network.html" class="external-link">textplot_network</a></span><span class="op">(</span><span class="va">user_fcm</span>, min_freq <span class="op">=</span> <span class="fl">0.1</span>, edge_color <span class="op">=</span> <span class="st">"orange"</span>, edge_alpha <span class="op">=</span> <span class="fl">0.8</span>, edge_size <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">user_fcm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/dfm_select.html">fcm_select</a></span><span class="op">(</span><span class="va">user_fcm</span>, pattern <span class="op">=</span> <span class="va">topuser</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/quanteda.textplots/man/textplot_network.html" class="external-link">textplot_network</a></span><span class="op">(</span><span class="va">user_fcm</span>, min_freq <span class="op">=</span> <span class="fl">0.1</span>, edge_color <span class="op">=</span> <span class="st">"orange"</span>, edge_alpha <span class="op">=</span> <span class="fl">0.8</span>, edge_size <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></code></pre></div>
 <p><img src="twitter_files/figure-html/unnamed-chunk-8-1.png" width="700"></p>
 </div>
 </div>
@@ -322,7 +328,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link external-link">pkgdown</a> 1.6.1.9000.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>

@@ -24,7 +24,7 @@ text segmentation."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/aj
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.2.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.3.0</span>
       </span>
     </div>
 
@@ -139,13 +139,39 @@ text segmentation.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">tokenize_word</span><span class="op">(</span><span class="va">x</span>, split_hyphens <span class="op">=</span> <span class="cn">FALSE</span>, verbose <span class="op">=</span> <span class="fu"><a href="quanteda_options.html">quanteda_options</a></span><span class="op">(</span><span class="st">"verbose"</span><span class="op">)</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">tokenize_word2</span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  split_hyphens <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="fu"><a href="quanteda_options.html">quanteda_options</a></span><span class="op">(</span><span class="st">"verbose"</span><span class="op">)</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">tokenize_word1</span><span class="op">(</span><span class="va">x</span>, split_hyphens <span class="op">=</span> <span class="cn">FALSE</span>, verbose <span class="op">=</span> <span class="fu"><a href="quanteda_options.html">quanteda_options</a></span><span class="op">(</span><span class="st">"verbose"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu">tokenize_word3</span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  split_hyphens <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="fu"><a href="quanteda_options.html">quanteda_options</a></span><span class="op">(</span><span class="st">"verbose"</span><span class="op">)</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">tokenize_word4</span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  split_hyphens <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  split_tags <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  split_elisions <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="fu"><a href="quanteda_options.html">quanteda_options</a></span><span class="op">(</span><span class="st">"verbose"</span><span class="op">)</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">tokenize_word1</span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  split_hyphens <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="fu"><a href="quanteda_options.html">quanteda_options</a></span><span class="op">(</span><span class="st">"verbose"</span><span class="op">)</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">tokenize_character</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">tokenize_sentence</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="fu">tokenize_sentence</span><span class="op">(</span><span class="va">x</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">tokenize_fasterword</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
@@ -171,6 +197,11 @@ e.g. <code>"self-aware"</code> becomes <code>c("self", "-", "aware")</code></p><
 <dt>...</dt>
 <dd><p>used to pass arguments among the functions</p></dd>
 
+
+<dt>split_tags</dt>
+<dd><p>logical; if <code>FALSE</code>, do not split social media tags defined
+in <code><a href="quanteda_options.html">quanteda_options()</a></code>. The default patterns are <code>pattern_hashtag = "#\\w+#?"</code> and <code>pattern_username = "@[a-zA-Z0-9_]+"</code>.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
@@ -181,6 +212,12 @@ tokenization, including whitespace where applicable; except for
 <code>tokenize_word1()</code>, which is a special tokenizer for Internet language that
 includes URLs, #hashtags, @usernames, and email addresses.</p>
     </div>
+    <div id="details">
+    <h2>Details</h2>
+    <p>Each of the word tokenizers corresponds to a major version of <span class="pkg">quanteda</span>,
+kept here for backward compatibility and comparison.  <code>tokenize_word3()</code> is
+identical to <code>tokenize_word2()</code>.</p>
+    </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
@@ -189,11 +226,12 @@ includes URLs, #hashtags, @usernames, and email addresses.</p>
 <span class="r-in"><span>         doc2 <span class="op">=</span> <span class="st">"The £1,000,000 question."</span>,</span></span>
 <span class="r-in"><span>         doc4 <span class="op">=</span> <span class="st">"Line 1.\nLine2\n\nLine3."</span>,</span></span>
 <span class="r-in"><span>         doc5 <span class="op">=</span> <span class="st">"?"</span>,</span></span>
-<span class="r-in"><span>         doc6 <span class="op">=</span> <span class="st">"Self-aware machines! \U0001f600"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">tokenize_word</span><span class="op">(</span><span class="va">txt</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">tokenize_word</span><span class="op">(</span><span class="va">txt</span>, split_hyphens <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span>         doc6 <span class="op">=</span> <span class="st">"Self-aware machines! \U0001f600"</span>,</span></span>
+<span class="r-in"><span>         doc7 <span class="op">=</span> <span class="st">"Qu'est-ce que c'est?"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">tokenize_word2</span><span class="op">(</span><span class="va">txt</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">tokenize_word2</span><span class="op">(</span><span class="va">txt</span>, split_hyphens <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">tokenize_word2</span><span class="op">(</span><span class="va">txt</span>, split_hyphens <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">tokenize_word1</span><span class="op">(</span><span class="va">txt</span>, split_hyphens <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">tokenize_word4</span><span class="op">(</span><span class="va">txt</span>, split_hyphens <span class="op">=</span> <span class="cn">FALSE</span>, split_elisions <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">tokenize_fasterword</span><span class="op">(</span><span class="va">txt</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">tokenize_fastestword</span><span class="op">(</span><span class="va">txt</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">tokenize_sentence</span><span class="op">(</span><span class="va">txt</span><span class="op">)</span></span></span>
@@ -213,7 +251,7 @@ includes URLs, #hashtags, @usernames, and email addresses.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>
