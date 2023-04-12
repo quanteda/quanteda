@@ -185,20 +185,18 @@ search_fixed_multi <- function(patterns, types_search, index) {
     expand(lapply(patterns, search_fixed, types_search, index))
 }
 
-#' Index types for fastest "glob" or "fixed" pattern matches
-#'
-#' `index_types` is an auxiliary function for `pattern2id` that
+#' @description
+#' `index_types` is an internal function for `pattern2id` that
 #' constructs an index of "glob" or "fixed" patterns to avoid expensive
 #' sequential search. For example, a type "cars" is index by keys "cars",
 #' "car?", "c*", "ca*", "car*" and "cars*" when `valuetype="glob"`.
-#' @rdname pattern2id
+#' @rdname search_glob
 #' @inheritParams valuetype
 #' @return `index_types` returns a list of integer vectors containing type
 #'   IDs with index keys as an attribute
 #' @keywords internal
-#' @export
 #' @examples
-#' index <- index_types("yy*", c("xxx", "yyyy", "ZZZ"), "glob", FALSE)
+#' index <- quanteda:::index_types("yy*", c("xxx", "yyyy", "ZZZ"), "glob", FALSE)
 #' quanteda:::search_glob("yy*", attr(index, "types_search"), index)
 index_types <- function(pattern, types, valuetype = c("glob", "fixed", "regex"), 
                         case_insensitive = TRUE) {
@@ -206,9 +204,6 @@ index_types <- function(pattern, types, valuetype = c("glob", "fixed", "regex"),
     pattern <- unlist_character(pattern, use.names = FALSE)
     types <- check_character(types, min_len = 0, max_len = Inf, strict = TRUE)
     valuetype <- match.arg(valuetype)
-
-    # normalize unicode
-    types <- types_search <- stri_trans_nfc(types)
     
     # lowercase for case-insensitive search
     if (case_insensitive) {
