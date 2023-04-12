@@ -14,12 +14,11 @@ typedef std::tuple<int, std::string, int> Config;
 typedef std::vector<Config> Configs;
 
 void index_types(Types &types, MapIndex &index, Config conf) {
-                //std::string wildcard, int side, int len) {
     
     int len, side;
     std::string wildcard;
     std::tie(side, wildcard, len) = conf;
-    Rcout << "Side: " << side << " wildcard: " << wildcard << " len: " << len << "\n";
+    //Rcout << "Side: " << side << " wildcard: " << wildcard << " len: " << len << "\n";
     
     std::size_t H = types.size();
     Types temp(H);
@@ -63,7 +62,7 @@ void index_types(Types &types, MapIndex &index, Config conf) {
 }
 
 
-Configs parse_patterns(Patterns patterns) {
+Configs parse_patterns(Patterns patterns, bool glob = true) {
     
     Configs confs;
     confs.reserve(patterns.size());
@@ -71,7 +70,9 @@ Configs parse_patterns(Patterns patterns) {
     
     // for fixed
     confs.push_back({0, "", 0});
-    
+    if (!glob)
+        return confs;
+        
     // for glob
     for (size_t i = 0; i < patterns.size(); i++) {
         
@@ -81,7 +82,6 @@ Configs parse_patterns(Patterns patterns) {
         std::string right = utf8_sub_right(pattern, 1);
         std::string key = ""; // for deduplication
         int len;
-        
         
         if ((left == "*" || left == "!") && (right == "*" || right == "!"))
             continue;
@@ -104,7 +104,7 @@ Configs parse_patterns(Patterns patterns) {
         if (key != "") {
             auto it = set_unique.find(key);
             if (it == set_unique.end()) {
-                Rcout << "Add: " << key << "\n";
+                //Rcout << "Add: " << key << "\n";
                 set_unique.insert(key);
                 confs.push_back(conf);
             }
@@ -116,7 +116,7 @@ Configs parse_patterns(Patterns patterns) {
 
 // [[Rcpp::export]]
 List cpp_index_types(const CharacterVector &patterns_, 
-                     const CharacterVector &types_) {
+                     const CharacterVector &types_, bool glob = true) {
     
     dev::Timer timer;
     dev::start_timer("Convert", timer);
@@ -129,7 +129,7 @@ List cpp_index_types(const CharacterVector &patterns_,
         index[patterns[j]].reserve(types.size());
         //Rcout << "Register: " << patterns[j] << "\n";
     }
-    Configs confs = parse_patterns(patterns);
+    Configs confs = parse_patterns(patterns, glob);
 
     dev::stop_timer("Convert", timer);
     
@@ -157,7 +157,7 @@ List cpp_index_types(const CharacterVector &patterns_,
         IntegerVector value_ = Rcpp::wrap(index[pattern]);
         result_[i] = sort_unique(value_) + 1; // R is 1 base
     }
-    result_.attr("key") = encode(patterns);
+    result_.attr("names") = encode(patterns);
     dev::stop_timer("List", timer);
     
     return result_;
