@@ -39,6 +39,19 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// cpp_index_types
+List cpp_index_types(const CharacterVector& patterns_, const CharacterVector& types_, bool glob);
+RcppExport SEXP _quanteda_cpp_index_types(SEXP patterns_SEXP, SEXP types_SEXP, SEXP globSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const CharacterVector& >::type patterns_(patterns_SEXP);
+    Rcpp::traits::input_parameter< const CharacterVector& >::type types_(types_SEXP);
+    Rcpp::traits::input_parameter< bool >::type glob(globSEXP);
+    rcpp_result_gen = Rcpp::wrap(cpp_index_types(patterns_, types_, glob));
+    return rcpp_result_gen;
+END_RCPP
+}
 // cpp_serialize
 TokensPtr cpp_serialize(List texts_);
 RcppExport SEXP _quanteda_cpp_serialize(SEXP texts_SEXP) {
@@ -413,6 +426,7 @@ END_RCPP
 static const R_CallMethodDef CallEntries[] = {
     {"_quanteda_cpp_fcm", (DL_FUNC) &_quanteda_cpp_fcm, 5},
     {"_quanteda_cpp_index", (DL_FUNC) &_quanteda_cpp_index, 2},
+    {"_quanteda_cpp_index_types", (DL_FUNC) &_quanteda_cpp_index_types, 3},
     {"_quanteda_cpp_serialize", (DL_FUNC) &_quanteda_cpp_serialize, 1},
     {"_quanteda_cpp_serialize_add", (DL_FUNC) &_quanteda_cpp_serialize_add, 2},
     {"_quanteda_cpp_tokens_chunk", (DL_FUNC) &_quanteda_cpp_tokens_chunk, 3},

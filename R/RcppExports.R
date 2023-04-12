@@ -9,6 +9,10 @@ cpp_index <- function(xptr, words_) {
     .Call(`_quanteda_cpp_index`, xptr, words_)
 }
 
+cpp_index_types <- function(patterns_, types_, glob = TRUE) {
+    .Call(`_quanteda_cpp_index_types`, patterns_, types_, glob)
+}
+
 cpp_serialize <- function(texts_) {
     .Call(`_quanteda_cpp_serialize`, texts_)
 }
