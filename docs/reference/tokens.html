@@ -25,7 +25,7 @@ tokenizer."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.2.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.3.0</span>
       </span>
     </div>
 
@@ -161,9 +161,8 @@ tokenizer.</p>
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>x</dt>
-<dd><p>the input object to the tokens constructor, one of: a (uniquely)
-named <strong>list</strong> of characters; a tokens object; or a <a href="corpus.html">corpus</a> or
-<a href="https://rdrr.io/r/base/character.html" class="external-link">character</a> object that will be tokenized</p></dd>
+<dd><p>the input object to the tokens constructor; a tokens, <a href="corpus.html">corpus</a> or
+<a href="https://rdrr.io/r/base/character.html" class="external-link">character</a> object to tokenize.</p></dd>
 
 
 <dt>what</dt>
@@ -270,7 +269,10 @@ tokens removed at the external tokenization stage.</p>
 call <code><a href="as.tokens.html">as.tokens()</a></code> instead of <code>tokens()</code>.</p>
 <p>Recommended tokenizers are those from the <span class="pkg">tokenizers</span> package, which
 are generally faster than the default (built-in) tokenizer but always
-splits infix hyphens, or <span class="pkg">spacyr</span>.</p>
+splits infix hyphens, or <span class="pkg">spacyr</span>.  The default tokenizer in
+<strong>quanteda</strong> is very smart, however, and if you do not have special
+requirements, it works extremely well for most languages as well as text
+from social media (including hashtags and usernames).</p>
     </div>
     <div id="quanteda-tokenizers">
     <h2>quanteda Tokenizers</h2>
@@ -312,7 +314,11 @@ additional rules to avoid splits on words like "Mr." that would otherwise
 incorrectly be detected as sentence boundaries.  For better sentence
 tokenization, consider using <span class="pkg">spacyr</span>.</p></dd>
  
-</dl></div>
+</dl><p>For forward compatibility including use of a more advanced tokenizer that
+will be used in major version 4, there is also a "word4" tokenizer that is
+even smarter than the default, which is also aliased as "word2" and "word3"
+(these are identical).  See <code><a href="tokenize_internal.html">tokenize_word4()</a></code> for full details.</p>
+    </div>
     <div id="see-also">
     <h2>See also</h2>
     <div class="dont-index"><p><code><a href="tokens_ngrams.html">tokens_ngrams()</a></code>, <code><a href="tokens_ngrams.html">tokens_skipgrams()</a></code>, <code><a href="as.tokens.html">as.list.tokens()</a></code>,
@@ -349,10 +355,10 @@ tokenization, consider using <span class="pkg">spacyr</span>.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [7] "("        ")"        "works"    "."       </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> doc2 :</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "@"            "quantedainit" "and"          "#"            "textanalysis"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [6] "https"        ":"            "/"            "/"            "example.com" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [11] "?"            "p"           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [ ... and 3 more ]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "@quantedainit" "and"           "#textanalysis" "https"        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [5] ":"             "/"             "/"             "example.com"  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [9] "?"             "p"             "="             "123"          </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [ ... and 1 more ]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> doc3 :</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Self-documenting" "code"             "?"                "?"               </span>
@@ -405,17 +411,41 @@ tokenization, consider using <span class="pkg">spacyr</span>.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="co"># using other tokenizers</span></span></span>
-<span class="r-in"><span><span class="fu">tokens</span><span class="op">(</span><span class="fu">tokenizers</span><span class="fu">::</span><span class="fu">tokenize_words</span><span class="op">(</span><span class="va">txt</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span><span class="op">)</span>, remove_symbols <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">tokenizers</span><span class="fu">::</span><span class="fu">tokenize_words</span><span class="op">(</span><span class="va">txt</span>, lowercase <span class="op">=</span> <span class="cn">FALSE</span>, strip_punct <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span><span class="fu">tokens</span><span class="op">(</span><span class="fu">tokenizers</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/tokenizers/reference/basic-tokenizers.html" class="external-link">tokenize_words</a></span><span class="op">(</span><span class="va">txt</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span><span class="op">)</span>, remove_symbols <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">tokenizers</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/tokenizers/reference/basic-tokenizers.html" class="external-link">tokenize_words</a></span><span class="op">(</span><span class="va">txt</span>, lowercase <span class="op">=</span> <span class="cn">FALSE</span>, strip_punct <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
 <span class="r-in"><span>    <span class="fu">tokens</span><span class="op">(</span>remove_symbols <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in loadNamespace(x):</span> there is no package called ‘tokenizers’</span>
-<span class="r-in"><span><span class="fu">tokenizers</span><span class="fu">::</span><span class="fu">tokenize_characters</span><span class="op">(</span><span class="va">txt</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span>, strip_non_alphanum <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Tokens consisting of 4 documents.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> doc1 :</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "A"        "sentence" ","        "showing"  "how"      "tokens"  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [7] "("        ")"        "works"    "."       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> doc2 :</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "@"            "quantedainit" "and"          "#"            "textanalysis"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [6] "https"        ":"            "/"            "/"            "example.com" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [11] "?"            "p"           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [ ... and 2 more ]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> doc3 :</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Self"        "-"           "documenting" "code"        "?"          </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [6] "?"          </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> doc4 :</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "1,000,000" "for"       "50"        "is"        "gr8"       "4ever"    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span><span class="fu">tokenizers</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/tokenizers/reference/basic-tokenizers.html" class="external-link">tokenize_characters</a></span><span class="op">(</span><span class="va">txt</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span>, strip_non_alphanum <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
 <span class="r-in"><span>    <span class="fu">tokens</span><span class="op">(</span>remove_punct <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in loadNamespace(x):</span> there is no package called ‘tokenizers’</span>
-<span class="r-in"><span><span class="fu">tokenizers</span><span class="fu">::</span><span class="fu">tokenize_sentences</span><span class="op">(</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Tokens consisting of 1 document.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> doc3 :</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "s" "e" "l" "f" "d" "o" "c" "u" "m" "e" "n" "t"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [ ... and 7 more ]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span><span class="fu">tokenizers</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/tokenizers/reference/basic-tokenizers.html" class="external-link">tokenize_sentences</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>    <span class="st">"The quick brown fox.  It jumped over the lazy dog."</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
 <span class="r-in"><span>    <span class="fu">tokens</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in loadNamespace(x):</span> there is no package called ‘tokenizers’</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Tokens consisting of 1 document.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> text1 :</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "The quick brown fox."         "It jumped over the lazy dog."</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
@@ -432,7 +462,7 @@ tokenization, consider using <span class="pkg">spacyr</span>.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

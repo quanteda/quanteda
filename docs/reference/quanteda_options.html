@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.2.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.3.0</span>
       </span>
     </div>
 
@@ -187,19 +187,35 @@ for all functions with a <code>verbose</code> argument</p></dd>
 parallelized functions; defaults to <code><a href="https://rdrr.io/pkg/RcppParallel/man/setThreadOptions.html" class="external-link">RcppParallel::defaultNumThreads()</a></code>;
 the number of threads can be changed only once in a session</p></dd>
 
-<dt><code>print_dfm_max_ndoc</code></dt>
+<dt><code>print_dfm_max_ndoc</code>, <code>print_corpus_max_ndoc</code>, <code>print_tokens_max_ndoc</code></dt>
+<dd><p>integer;
+specify the number of documents to display when using the defaults for
+printing a dfm, corpus, or tokens object</p></dd>
+
+<dt><code>print_dfm_max_nfeat</code>, <code>print_corpus_max_nchar</code>, <code>print_tokens_max_ntoken</code></dt>
+<dd><p>integer;
+specifies the number of features to display when printing a dfm,
+the number of characters to display when printing corpus documents, or the
+number of tokens to display when printing tokens objects</p></dd>
+
+<dt><code>print_dfm_summary</code></dt>
 <dd><p>integer; specifies the number of documents
 to display when using the defaults for printing a dfm</p></dd>
 
-<dt><code>print_dfm_max_nfeat</code></dt>
-<dd><p>integer; specifies the number of
-features to display when using the defaults for printing a dfm</p></dd>
+<dt><code>print_dictionary_max_nkey</code>, <code>print_dictionary_max_nval</code></dt>
+<dd><p>the number of
+keys or values (respectively) to display when printing a dictionary</p></dd>
+
+<dt><code>print_kwic_max_nrow</code></dt>
+<dd><p>the number of rows to display when printing a
+kwic object</p></dd>
 
 <dt><code>base_docname</code></dt>
 <dd><p>character; stem name for documents that are
 unnamed when a corpus, tokens, or dfm are created or when a dfm is converted
 from another object</p></dd>
- <dt><code>base_featname</code></dt>
+
+<dt><code>base_featname</code></dt>
 <dd><p>character; stem name for
 features that are unnamed when they are added, for whatever reason, to a dfm
 through an operation that adds features</p></dd>
@@ -226,13 +242,19 @@ When the number is large, tokenization becomes faster but also memory-intensive.
 <dd><p>character; specify locale in stringi boundary detection in
 tokenization and corpus reshaping. See <code><a href="https://rdrr.io/pkg/stringi/man/stri_opts_brkiter.html" class="external-link">stringi::stri_opts_brkiter()</a></code>.</p></dd>
 
+<dt><code>tokens_tokenizer_word</code></dt>
+<dd><p>character; the current word tokenizer version
+used as a default for <code>what = "word"</code> in <code><a href="tokens.html">tokens()</a></code>, one of <code>"word1"</code>,
+<code>"word2"</code>, <code>"word3"</code> (same as <code>"word2"</code>), or <code>"word4"</code>.</p></dd>
+
+
 </dl></div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="op">(</span><span class="va">opt</span> <span class="op">&lt;-</span> <span class="fu">quanteda_options</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $threads</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 10</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $verbose</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
@@ -292,7 +314,7 @@ tokenization and corpus reshaping. See <code><a href="https://rdrr.io/pkg/string
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "english"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $pattern_hashtag</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "#\\w+#?"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "#[\\p{L}\\p{N}_]+#?"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $pattern_username</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "@[a-zA-Z0-9_]+"</span>
@@ -303,11 +325,14 @@ tokenization and corpus reshaping. See <code><a href="https://rdrr.io/pkg/string
 <span class="r-out co"><span class="r-pr">#&gt;</span> $tokens_locale</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "en_US@ss=standard"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $tokens_tokenizer_word</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "word3"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="fu">quanteda_options</span><span class="op">(</span>verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">quanteda_options</span><span class="op">(</span><span class="st">"verbose"</span> <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">quanteda_options</span><span class="op">(</span><span class="st">"threads"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 10</span>
 <span class="r-in"><span><span class="fu">quanteda_options</span><span class="op">(</span>print_dfm_max_ndoc <span class="op">=</span> <span class="fl">50L</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># reset to defaults</span></span></span>
 <span class="r-in"><span><span class="fu">quanteda_options</span><span class="op">(</span>reset <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
@@ -328,7 +353,7 @@ tokenization and corpus reshaping. See <code><a href="https://rdrr.io/pkg/string
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

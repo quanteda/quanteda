@@ -27,7 +27,7 @@ an easy way to make a corpus and its document variables into a data.frame."><!--
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.2.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.3.0</span>
       </span>
     </div>
 
@@ -172,7 +172,7 @@ an easy way to make a corpus and its document variables into a data.frame.</p>
 <dd><p>target conversion format, one of:</p><dl><dt><code>"lda"</code></dt>
 <dd><p>a list with components "documents" and "vocab" as
 needed by the function
-lda.collapsed.gibbs.sampler from the
+<a href="https://rdrr.io/pkg/lda/man/lda.collapsed.gibbs.sampler.html" class="external-link">lda.collapsed.gibbs.sampler</a> from the
 <span class="pkg">lda</span> package</p></dd>
 
 <dt><code>"tm"</code></dt>
@@ -283,8 +283,8 @@ of the return formats.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ 2009-Obama  : int [1:2, 1:900] 1 1 2 2 6 130 7 22 8 118 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ 2013-Obama  : int [1:2, 1:786] 6 99 7 13 8 89 13 1 25 1 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ 2017-Trump  : int [1:2, 1:547] 2 2 3 1 6 96 7 11 8 88 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ 2021-Biden  : int [1:2, 1:743] 2 10 6 147 7 9 8 210 9 1 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ vocab    : chr [1:3616] "!" "\"" "'" "(" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ 2021-Biden  : int [1:2, 1:744] 2 10 6 147 8 210 9 1 10 1 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ vocab    : chr [1:3618] "!" "\"" "'" "(" ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ meta     :'data.frame':	13 obs. of  4 variables:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ Year     : int [1:13] 1973 1977 1981 1985 1989 1993 1997 2001 2005 2009 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ President: chr [1:13] "Nixon" "Carter" "Reagan" "Reagan" ...</span>
@@ -295,9 +295,9 @@ of the return formats.</p>
 <span class="r-in"><span><span class="va">tripletmat</span> <span class="op">&lt;-</span> <span class="fu">convert</span><span class="op">(</span><span class="va">dfmat1</span>, to <span class="op">=</span> <span class="st">"tripletlist"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">tripletmat</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> List of 3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ document : chr [1:9131] "1973-Nixon" "1981-Reagan" "1989-Bush" "2005-Bush" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ feature  : chr [1:9131] "mr" "mr" "mr" "mr" ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ frequency: num [1:9131] 3 3 6 1 1 69 52 130 124 142 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ document : chr [1:9132] "1973-Nixon" "1981-Reagan" "1989-Bush" "2005-Bush" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ feature  : chr [1:9132] "mr" "mr" "mr" "mr" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ frequency: num [1:9132] 3 3 6 1 1 69 52 130 124 142 ...</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span><span class="co"># tm's DocumentTermMatrix format</span></span></span>
@@ -336,7 +336,7 @@ of the return formats.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

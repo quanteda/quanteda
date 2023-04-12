@@ -24,7 +24,7 @@ object."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mat
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.2.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.3.0</span>
       </span>
     </div>
 
@@ -204,7 +204,9 @@ unmatched tokens.</p></dd>
 <dt>nested_scope</dt>
 <dd><p>how to treat matches from different dictionary keys that
 are nested.  When one value is nested within another, such as "a b" being
-nested within "a b c", <code>the </code>tokens_lookup()<code>will match the longer.  When</code>nested_scope = "key"<code>, this longer-match priority is applied only within the key, while </code>"dictionary"` applies it across keys, matching only
+nested within "a b c", then <code>tokens_lookup()</code> will match the longer.  When
+<code>nested_scope = "key"</code>, this longer-match priority is applied only
+within the key, while <code>"dictionary"</code> applies it across keys, matching only
 the key with the longer pattern, not the matches nested within that longer
 pattern from other keys.  See Details.</p></dd>
 
@@ -227,8 +229,7 @@ last example below comparing the <em>New York</em> and <em>New York Times</em>
 for these two different behaviours.</p>
 <p><em>Overlapping values</em>, such as <code>"a b"</code> and <code>"b a"</code> are
 currently always considered as separate matches if they are in different
-keys, or as one match if the overlap is within the same key.
-<em>Overlapped</em></p>
+keys, or as one match if the overlap is within the same key.</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
@@ -383,7 +384,7 @@ keys, or as one match if the overlap is within the same key.
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

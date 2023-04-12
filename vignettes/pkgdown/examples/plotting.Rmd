@@ -132,7 +132,7 @@ If you wanted to compare the frequency of a single term across different texts, 
 ```{r eval=TRUE, fig.width=8, fig.height=4}
 # Get frequency grouped by president
 freq_grouped <- textstat_frequency(dfm(tokens(data_corpus_inaugural_subset)), 
-                                   groups = data_corpus_inaugural_subset$President)
+                                   groups = President)
 
 # Filter the term "american"
 freq_american <- subset(freq_grouped, freq_grouped$feature %in% "american")  
@@ -244,14 +244,14 @@ pred <- predict(ws, se.fit = TRUE)
 
 # Plot estimated document positions and group by "party" variable
 textplot_scale1d(pred, margin = "documents",
-                 groups = docvars(data_corpus_irishbudget2010, "party"))
+                 groups = data_corpus_irishbudget2010$party)
 
 # Plot estimated document positions using the LBG transformation and group by "party" variable
 
 pred_lbg <- predict(ws, se.fit = TRUE, rescaling = "lbg")
 
 textplot_scale1d(pred_lbg, margin = "documents",
-                 groups = docvars(data_corpus_irishbudget2010, "party"))
+                 groups = data_corpus_irishbudget2010$party)
 ```
 
 ## Wordfish
@@ -287,7 +287,7 @@ ca <- textmodel_ca(ie_dfm)
 
 # Plot estimated positions and group by party
 textplot_scale1d(ca, margin = "documents",
-                 groups = docvars(data_corpus_irishbudget2010, "party"))
+                 groups = data_corpus_irishbudget2010$party)
 ```
 
 # References
