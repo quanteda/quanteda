@@ -6,7 +6,7 @@ using namespace quanteda;
 #if QUANTEDA_USE_TBB
 typedef tbb::concurrent_unordered_map<Type, tbb::concurrent_vector<int> > MapIndex;
 #else 
-typedef tbb::concurrent_unordered_map<Type, std::vector<int> > MapIndex;
+typedef std::unordered_map<Type, std::vector<int> > MapIndex;
 #endif
 typedef std::string Pattern;
 typedef std::vector<Pattern> Patterns;
