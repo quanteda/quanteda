@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.2.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.3.0</span>
       </span>
     </div>
 
@@ -141,7 +141,9 @@
 <span></span>
 <span><span class="fu">docnames</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span></span>
 <span></span>
-<span><span class="fu">docid</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">docid</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">segid</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -167,16 +169,17 @@ docname will be coerced to mode <code>character</code>.</p>
 
 
 <p><code>docid</code> returns an internal variable denoting the original "docname"
-from which a document came.  Unless an object has been reshaped (e.g.
-<code><a href="corpus_reshape.html">corpus_reshape()</a></code>, split (e.g.<code><a href="tokens_split.html">tokens_split()</a></code>), or segmented (e.g.
-<code><a href="corpus_segment.html">corpus_segment()</a></code>), <code>docid(x)</code> will return the docnames.</p>
+from which a document came.  If an object has been reshaped (e.g.
+<code><a href="corpus_reshape.html">corpus_reshape()</a></code> or segmented (e.g. <code><a href="corpus_segment.html">corpus_segment()</a></code>), <code>docid(x)</code> returns
+the original docnames but <code>segid(x)</code> does the serial number of those segments
+within the original document.</p>
     </div>
     <div id="note">
     <h2>Note</h2>
-    <p><code>docid</code> is designed primarily for developers, not for end users.  In
+    <p><code>docid</code> and <code>segid</code> are designed primarily for developers, not for end users.  In
 most cases, you will want <code>docnames</code> instead.  It is, however, the
 default for <a href="groups.html">groups</a>, so that documents that have been previously reshaped
-(e.g. <code><a href="corpus_reshape.html">corpus_reshape()</a></code>, split (e.g.<code><a href="tokens_split.html">tokens_split()</a></code>), or segmented (e.g.
+(e.g. <code><a href="corpus_reshape.html">corpus_reshape()</a></code> or segmented (e.g.
 <code><a href="corpus_segment.html">corpus_segment()</a></code>) will be regrouped into their original <code>docnames</code> when
 <code>groups = docid(x)</code>.</p>
     </div>
@@ -203,13 +206,15 @@ default for <a href="groups.html">groups</a>, so that documents that have been p
 <span class="r-in"><span><span class="co"># reassign the document names of the inaugural speech corpus</span></span></span>
 <span class="r-in"><span><span class="fu">docnames</span><span class="op">(</span><span class="va">data_corpus_inaugural</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"Speech"</span>, <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="ndoc.html">ndoc</a></span><span class="op">(</span><span class="va">data_corpus_inaugural</span><span class="op">)</span>, sep<span class="op">=</span><span class="st">""</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># docid</span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">corp</span> <span class="op">&lt;-</span> <span class="fu"><a href="corpus.html">corpus</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>textone <span class="op">=</span> <span class="st">"This is a sentence.  Another sentence.  Yet another."</span>,</span></span>
 <span class="r-in"><span>                 textwo <span class="op">=</span> <span class="st">"Sentence 1. Sentence 2."</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">corpsent</span> <span class="op">&lt;-</span> <span class="va">corp</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
 <span class="r-in"><span>    <span class="fu"><a href="corpus_reshape.html">corpus_reshape</a></span><span class="op">(</span>to <span class="op">=</span> <span class="st">"sentences"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">docnames</span><span class="op">(</span><span class="va">corpsent</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "textone.1" "textone.2" "textone.3" "textwo.1"  "textwo.2" </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># docid</span></span></span>
 <span class="r-in"><span><span class="fu">docid</span><span class="op">(</span><span class="va">corpsent</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] textone textone textone textwo  textwo </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Levels: textone textwo</span>
@@ -219,6 +224,14 @@ default for <a href="groups.html">groups</a>, so that documents that have been p
 <span class="r-in"><span><span class="fu">docid</span><span class="op">(</span><span class="fu"><a href="dfm.html">dfm</a></span><span class="op">(</span><span class="fu"><a href="tokens.html">tokens</a></span><span class="op">(</span><span class="va">corpsent</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] textone textone textone textwo  textwo </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Levels: textone textwo</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># segid</span></span></span>
+<span class="r-in"><span><span class="fu">segid</span><span class="op">(</span><span class="va">corpsent</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1 2 3 1 2</span>
+<span class="r-in"><span><span class="fu">segid</span><span class="op">(</span><span class="fu"><a href="tokens.html">tokens</a></span><span class="op">(</span><span class="va">corpsent</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1 2 3 1 2</span>
+<span class="r-in"><span><span class="fu">segid</span><span class="op">(</span><span class="fu"><a href="dfm.html">dfm</a></span><span class="op">(</span><span class="fu"><a href="tokens.html">tokens</a></span><span class="op">(</span><span class="va">corpsent</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1 2 3 1 2</span>
 </code></pre></div>
     </div>
   </div>
@@ -233,7 +246,7 @@ default for <a href="groups.html">groups</a>, so that documents that have been p
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>
