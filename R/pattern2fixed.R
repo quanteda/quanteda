@@ -209,9 +209,13 @@ index_types <- function(pattern, types, valuetype = c("glob", "fixed", "regex"),
 
     # normalize unicode
     types <- types_search <- stri_trans_nfc(types)
-
-    if (!valuetype %in% c("glob", "fixed", "regex"))
-        stop('valuetype should be "glob", "fixed" or "regex"')
+    
+    # lowercase for case-insensitive search
+    if (case_insensitive) {
+        types_search <- stri_trans_tolower(types_search)
+        pattern <- stri_trans_tolower(pattern)
+    }
+    
     if (valuetype == "regex" || length(types) == 0) {
         index <- list()
         attr(index, "types_search") <- types_search
@@ -221,26 +225,9 @@ index_types <- function(pattern, types, valuetype = c("glob", "fixed", "regex"),
         attr(index, "key") <- character()
         return(index)
     }
-    
-    # lowercase for case-insensitive search
-    if (case_insensitive) {
-        types_search <- stri_trans_tolower(types_search)
-        pattern <- stri_trans_tolower(pattern) 
-    }
-    
-    # index for fixed patterns
-    index <- index_fixed(pattern, types_search)
-    
-    # index for glob patterns
-    if (valuetype == "glob") {
-        index <- c(
-            index, 
-            index_glob(pattern, types_search, "*", "right"),
-            index_glob(pattern, types_search, "*", "left"),
-            index_glob(pattern, types_search, "?", "right"),
-            index_glob(pattern, types_search, "?", "left")
-        )
-    }
+
+    index <- cpp_index_types(pattern, types_search, valuetype == "glob")
+    index <- index[lengths(index) > 0]
     
     attr(index, "types_search") <- types_search
     attr(index, "types") <- types
