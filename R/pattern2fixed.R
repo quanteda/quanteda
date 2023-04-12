@@ -239,61 +239,6 @@ index_types <- function(pattern, types, valuetype = c("glob", "fixed", "regex"),
     return(index)
 }
 
-index_fixed <- function(pattern, type) {
-    l <- type %in% pattern
-    pos <- seq_along(type)[l]
-    key <- type[l]
-    split(pos, factor(key, ordered = FALSE, levels = unique(key)))
-}
-#' @importFrom stringi stri_trim
-index_glob <- function(pattern, type, wildcard = c("*", "?"), 
-                       side = c("left", "right")) {
-    
-    wildcard <- match.arg(wildcard)
-    side <- match.arg(side)
-    
-    if (side == "left") {
-        pattern <- pattern[stri_startswith_fixed(pattern, wildcard)]
-    } else {
-        pattern <- pattern[stri_endswith_fixed(pattern, wildcard)]
-    }
-    len <- stri_length(type)
-    pat <- stri_trim(pattern, paste0("[", wildcard ,"]"), side = side, negate = TRUE)
-    val <- seq_along(type)
-    
-    key <- character()
-    pos <- integer()
-    if (wildcard == "*") {
-        for (n in sort(unique(stri_length(pat)))) {
-            p <- val[len >= n]
-            if (side == "left") {
-                k <- stri_sub(type[p], n * -1, -1)
-            } else {
-                k <- stri_sub(type[p], 1, n)
-            }
-            l <- k %in% pat
-            pos <- c(pos, p[l])
-            key <- c(key, k[l])
-        }
-    } else {
-        p <- val[len >= 2]
-        if (side == "left") {
-            k <- stri_sub(type[p], 2, -1)
-        } else {
-            k <- stri_sub(type[p], 1, -2)
-        }
-        l <- k %in% pat
-        pos <- p[l]
-        key <- k[l]
-    }
-    if (side == "left") {
-        key <- stri_c(wildcard, key)
-    } else {
-        key <- stri_c(key, wildcard)
-    }
-    split(pos, factor(key, ordered = FALSE, levels = unique(key)))
-}
-
 #' Internal function for `select_types` to search the index using
 #' fastmatch.
 #' @param regex a glob expression to search
