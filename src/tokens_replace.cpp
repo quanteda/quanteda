@@ -1,6 +1,5 @@
-//#include "dev.h"
 #include "lib.h"
-#include "recompile.h"
+//#include "dev.h"
 
 using namespace quanteda;
 
@@ -77,24 +76,20 @@ struct replace_mt : public Worker{
 };
 
 /* 
-* This function replace patterns in tokens object.
+* Function to replace tokens
 * @used tokens_replace()
 * @creator Kohei Watanabe
-* @param texts_ tokens ojbect
-* @param types_ types of tokens
 * @param patterns_ IDs of patterns
 * @param replacements_ IDs to replace patterns. Must be the same length as patterns_
 */
 
 
 // [[Rcpp::export]]
-List qatd_cpp_tokens_replace(const List &texts_,
-                             const CharacterVector types_,
+TokensPtr cpp_tokens_replace(TokensPtr xptr,
                              const List &patterns_,
                              const List &replacements_){
     
-    Texts texts = Rcpp::as<Texts>(texts_);
-    Types types = Rcpp::as<Types>(types_);
+    Texts texts = xptr->texts;
     Ngrams ids_repls = Rcpp::as<Ngrams>(replacements_);
     //dev::Timer timer;
     //dev::start_timer("Map construction", timer);
@@ -124,8 +119,9 @@ List qatd_cpp_tokens_replace(const List &texts_,
         texts[h] = replace(texts[h], spans, map_pat, ids_repls);
     }
 #endif
-    //dev::stop_timer("Pattern replace", timer);
-    return recompile(texts, types, true, true, is_encoded(types_));
+    xptr->texts = texts;
+    xptr->recompiled = false;
+    return xptr;
 }
 
 /***R
@@ -137,8 +133,8 @@ toks <- list(rep(1:10, 1), rep(5:15, 1))
 from <- list(c(9, 10))
 to <- list(0)
 
-#qatd_cpp_tokens_replace(toks, letters, dict, integer(0), 0)
-qatd_cpp_tokens_replace(toks, letters, from, to)
-#qatd_cpp_tokens_replace(toks, letters, from, to)
+#cpp_tokens_replace(toks, letters, dict, integer(0), 0)
+cpp_tokens_replace(toks, letters, from, to)
+#cpp_tokens_replace(toks, letters, from, to)
 
 */

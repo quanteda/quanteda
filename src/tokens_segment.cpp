@@ -1,5 +1,4 @@
 #include "lib.h"
-#include "recompile.h"
 //#include "dev.h"
 using namespace quanteda;
 
@@ -10,6 +9,7 @@ typedef std::tuple<int, int, int, int> Segment;
 typedef std::vector<Segment> Segments;
 
 Segments segment(Text tokens,
+                 UintParam &N,
                 const std::vector<std::size_t> &spans,
                 const SetNgrams &set_patterns,
                 const bool &remove,
@@ -32,6 +32,7 @@ Segments segment(Text tokens,
     Segments segments;
     if (targets.size() == 0) {
         segments.push_back(std::make_tuple(0, tokens.size() - 1, -1, -1));
+        N++;
         return segments;
     }
     
@@ -44,6 +45,7 @@ Segments segment(Text tokens,
         // preceeded by delimiter
         if (0 < targets.front().first) {
             segments.push_back(std::make_tuple(0, targets.front().first - 1, -1, -1));
+            N++;
         }
         for (size_t i = 0; i < targets.size(); i++) {
             int from = targets[i].first;
@@ -55,6 +57,7 @@ Segments segment(Text tokens,
                 to = targets[i + 1].first - 1;
             }
             segments.push_back(std::make_tuple(from, to, targets[i].first, targets[i].second));
+            N++;
             //Rcout << "segment " << i << ": " << from << " " << to << "\n";
         }
         
@@ -71,10 +74,12 @@ Segments segment(Text tokens,
                 to = targets[i].first - 1;
             }
             segments.push_back(std::make_tuple(from, to, targets[i].first, targets[i].second));
+            N++;
             //Rcout << "segment " << i << ": " << from << " " << to << "\n";
         }
         if (targets.back().second < tokens.size() - 1) {
             segments.push_back(std::make_tuple(targets.back().second + 1, tokens.size() - 1, -1, -1));
+            N++;
         }
     }
     
@@ -85,29 +90,30 @@ struct segment_mt : public Worker{
     
     Texts &texts;
     std::vector<Segments> &temp;
+    UintParam &N;
     const std::vector<std::size_t> &spans;
     const SetNgrams &set_patterns;
     const bool &remove;
     const int &position;
     
     // Constructor
-    segment_mt(Texts &texts_, std::vector<Segments> &temp_,
+    segment_mt(Texts &texts_, std::vector<Segments> &temp_, UintParam &N_,
             const std::vector<std::size_t> &spans_, const SetNgrams &set_patterns_, const bool &remove_, 
             const int &position_):
-            texts(texts_), temp(temp_), spans(spans_), set_patterns(set_patterns_), remove(remove_), position(position_){}
+            texts(texts_), temp(temp_), N(N_), spans(spans_), set_patterns(set_patterns_), remove(remove_), position(position_){}
     
     // parallelFor calles this function with size_t
     void operator()(std::size_t begin, std::size_t end){
         //Rcout << "Range " << begin << " " << end << "\n";
         for (std::size_t h = begin; h < end; h++){
-            temp[h] = segment(texts[h], spans, set_patterns, remove, position);
+            temp[h] = segment(texts[h], N, spans, set_patterns, remove, position);
         }
     }
 };
 
 
 /* 
- * This function split tokens into segments by given patterns
+ * Function to segment documents
  * The number of threads is set by RcppParallel::setThreadOptions()
  * @used tokens_segment()
  * @creator Kohei Watanabe
@@ -119,16 +125,14 @@ struct segment_mt : public Worker{
  */
 
 // [[Rcpp::export]]
-List qatd_cpp_tokens_segment(const List &texts_,
-                             const CharacterVector types_,
+TokensPtr cpp_tokens_segment(TokensPtr xptr,
                              const List &patterns_,
                              const bool &remove,
                              const int &position){
     
-    Texts texts = Rcpp::as<Texts>(texts_);
-    Types types = Rcpp::as< Types >(types_);
-    CharacterVector names_ = texts_.attr("names");
-    
+    Texts texts = xptr->texts;
+    Types types = xptr->types;
+    UintParam N = 0;
     SetNgrams set_patterns;
     std::vector<std::size_t> spans = register_ngrams(patterns_, set_patterns);
     
@@ -137,24 +141,17 @@ List qatd_cpp_tokens_segment(const List &texts_,
     
     // dev::start_timer("Dictionary detect", timer);
 #if QUANTEDA_USE_TBB
-     segment_mt segment_mt(texts, temp, spans, set_patterns, remove, position);
+     segment_mt segment_mt(texts, temp, N, spans, set_patterns, remove, position);
      parallelFor(0, texts.size(), segment_mt);
 #else
     for (std::size_t h = 0; h < texts.size(); h++) {
-        temp[h] = segment(texts[h], spans, set_patterns, remove, position);
+        temp[h] = segment(texts[h], N, spans, set_patterns, remove, position);
     }
 #endif
     
-    // Get total number of matches
-    std::size_t len = 0;
-    for (std::size_t h = 0; h < temp.size(); h++) {
-        len += temp[h].size();
-    }
-    
-    Texts segments(len);
-    IntegerVector ids_document_(len);
-    //CharacterVector names_document_(len), matches_(len);
-    CharacterVector matches_(len);
+    Texts segments(N);
+    std::vector<int> documents(N);
+    std::vector<std::string> matches(N);
     
     std::size_t j = 0;
     for (std::size_t h = 0; h < temp.size(); h++) {
@@ -175,41 +172,44 @@ List qatd_cpp_tokens_segment(const List &texts_,
             // extract matched patterns
             if (remove && 0 <= std::get<2>(target) && 0 <= std::get<3>(target)) {
                 Text match(tokens.begin() + std::get<2>(target), tokens.begin() + std::get<3>(target) + 1);
-                matches_[j] = join_strings(match, types_, " ");
+                matches[j] = join_strings(match, types, " ");
             } else {
-                matches_[j] = "";
+                matches[j] = "";
             }
-            
-            ids_document_[j] = (int)h + 1;
-            //names_document_[j] = names_[h];
+            documents[j] = (int)h + 1;
             j++;
         }
     }
     
-    Tokens segments_ = recompile(segments, types, remove, false, is_encoded(types_));
-    segments_.attr("pattern") = matches_;
-    //segments_.attr("docid") = names_document_;
-    segments_.attr("docnum") = ids_document_;
-    return(segments_);
+    CharacterVector matches_ = encode(matches);
+    IntegerVector documents_ = Rcpp::wrap(documents);
+    xptr.attr("matches") = matches_;
+    xptr.attr("documents") = documents_;
+    xptr->texts = segments;
+    return xptr;
 }
+
+
+
 
 /***R
 
-toks <- list(text1=1:10, text2=5:15)
+toks <- tokens("aa bb cc")
+xtoks <- as.tokens_xptr(toks)
 #toks <- rep(list(rep(1:10, 1), rep(5:15, 1)), 1)
 #dict <- list(c(1, 2), c(5, 6), 10, 15, 20)
-#qatd_cpp_tokens_contexts(toks, dict, 2)
-#qatd_cpp_tokens_segment(toks, letters, list(c(5, 6), 10), TRUE, 2)
-qatd_cpp_tokens_segment(toks, letters, list(c(5, 6), 10), FALSE, 1)
-
-#qatd_cpp_tokens_segment(toks, letters, list(c(5, 6), 10), FALSE, 2)
+#cpp_tokens_contexts(toks, dict, 2)
+#cpp_tokens_segment(toks, letters, list(c(5, 6), 10), TRUE, 2)
+out <- cpp_tokens_segment(xtoks, list(2), FALSE, 1)
+attributes(out)
+#cpp_tokens_segment(toks, letters, list(c(5, 6), 10), FALSE, 2)
 
 # 
-# qatd_cpp_tokens_segment(toks, letters, list(10))
-# qatd_cpp_tokens_segment(toks, letters, list(c(3, 4), 7))
-# qatd_cpp_tokens_segment(toks, letters, list(c(3, 4), 7))
-# qatd_cpp_tokens_segment(toks, letters, c(3, 4, 7))
-# qatd_cpp_tokens_segment(toks, letters, c(3, 4, 7))
+# cpp_tokens_segment(toks, letters, list(10))
+# cpp_tokens_segment(toks, letters, list(c(3, 4), 7))
+# cpp_tokens_segment(toks, letters, list(c(3, 4), 7))
+# cpp_tokens_segment(toks, letters, c(3, 4, 7))
+# cpp_tokens_segment(toks, letters, c(3, 4, 7))
 
 
 */

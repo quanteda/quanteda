@@ -1,7 +1,6 @@
-//#include "dev.h"
 #include "lib.h"
-#include "recompile.h"
 #include "skipgram.h"
+//#include "dev.h"
 using namespace quanteda;
 
 Text skipgram(const Text &tokens,
@@ -98,12 +97,10 @@ struct type_mt : public Worker{
 
 
 /* 
-* This function generates ngrams/skipgrams from tokens object. 
+* Function to generates ngrams/skipgrams
 * The number of threads is set by RcppParallel::setThreadOptions()
 * @used tokens_ngrams()
 * @creator Kohei Watanabe
-* @param types_ types of tokens
-* @param texts_ tokens ojbect
 * @param delim_ string to join words
 * @param ns_ size of ngramss
 * @param skips_ size of skip (this has to be 1 for ngrams)
@@ -111,14 +108,13 @@ struct type_mt : public Worker{
 */
 
 // [[Rcpp::export]]
-List qatd_cpp_tokens_ngrams(const List &texts_,
-                            const CharacterVector types_,
+TokensPtr cpp_tokens_ngrams(TokensPtr xptr,
                             const String delim_,
                             const IntegerVector ns_,
                             const IntegerVector skips_) {
     
-    Texts texts = Rcpp::as< Texts >(texts_);
-    Types types = Rcpp::as< Types >(types_);
+    Texts texts = xptr->texts;
+    Types types = xptr->types;
     std::string delim = delim_;
     std::vector<unsigned int> ns = Rcpp::as< std::vector<unsigned int> >(ns_);
     std::vector<unsigned int> skips = Rcpp::as< std::vector<unsigned int> >(skips_);
@@ -158,10 +154,15 @@ List qatd_cpp_tokens_ngrams(const List &texts_,
         type(i, keys_ngram, types_ngram, map_ngram, delim, types);
     }
 #endif
-    //dev::stop_timer("Token generation", timer);
-    return recompile(texts, types_ngram, true, false, is_encoded(delim_) || is_encoded(types_));
-    //return recompile(texts, types_ngram, false, false, false);
+    
+    xptr->texts = texts;
+    xptr->types = types_ngram;
+    xptr->recompiled = false;
+    return xptr;
+
 }
+
+
 
 
 /*** R
@@ -170,12 +171,12 @@ library(quanteda)
 #txt <- c('a b c d e')
 txt <- c('a b c d e', 'c d e f g')
 tok <- quanteda::tokens(txt)
-out <- qatd_cpp_tokens_ngrams(tok, attr(tok, 'types'), "-", 2, 1)
+out <- cpp_tokens_ngrams(tok, attr(tok, 'types'), "-", 2, 1)
 str(out)
 
 tok2 <- quanteda::tokens(data_corpus_inaugural)
 microbenchmark::microbenchmark(
-    qatd_cpp_tokens_ngrams(tok2, attr(tok2, 'types'), "-", 2, 1),
+    cpp_tokens_ngrams(tok2, attr(tok2, 'types'), "-", 2, 1),
     tokenizers::tokenize_ngrams(texts(data_corpus_inaugural))
 )
 

@@ -31,15 +31,14 @@ tokens_split.default <- function(x, separator = " ", valuetype = c("fixed", "reg
 }
 
 #' @export
-tokens_split.tokens <- function(x, separator = " ", valuetype = c("fixed", "regex"),
+tokens_split.tokens_xptr <- function(x, separator = " ", valuetype = c("fixed", "regex"),
                                 remove_separator = TRUE) {
     
-    x <- as.tokens(x)
     separator <- check_character(separator)
     valuetype <- match.arg(valuetype)
     remove_separator <- check_logical(remove_separator)
 
-    type <- types(x)
+    type <- get_types(x)
     if (valuetype == "regex") {
         type <- type[stri_detect_regex(type, separator)]
     } else {
@@ -65,4 +64,9 @@ tokens_split.tokens <- function(x, separator = " ", valuetype = c("fixed", "rege
 
     replacement <- stri_split_fixed(type, "\uE000", omit_empty = TRUE)
     tokens_replace(x, pattern, replacement, "fixed", case_insensitive = FALSE)
+}
+
+#' @export
+tokens_split.tokens <- function(x, ...) {
+    as.tokens(tokens_split(as.tokens_xptr(x), ...))
 }

@@ -111,7 +111,7 @@ restore_special <- function(x, special, recompile = TRUE) {
     if (!length(special))
         return(x)
 
-    type <- attr(x, "types")
+    type <- get_types(x)
     # extract all placeholders
     d <- stri_extract_all_regex(type, "\u100000\\d+\u100001", omit_no_match = TRUE)
     r <- lengths(d)
@@ -130,8 +130,8 @@ restore_special <- function(x, special, recompile = TRUE) {
             )
         }
     }
-    if (!identical(type, attr(x, "types"))) {
-        attr(x, "types") <- type
+    if (!identical(type, get_types(x))) {
+        set_types(x) <- type
     }
     return(x)
 }
@@ -322,14 +322,14 @@ preserve_special1 <- function(x, split_hyphens = TRUE, split_tags = TRUE, verbos
 
 # re-substitute the replacement hyphens and tags
 restore_special1 <- function(x, split_hyphens = TRUE, split_tags = TRUE) {
-    type <- attr(x, "types")
+    type <- get_types(x)
     if (!split_hyphens)
         type <- stri_replace_all_fixed(type, "_hy_", "-")
     if (!split_tags)
         type <- stri_replace_all_fixed(type, c("_ht_", "_as_"), c("#", "@"),
                                        vectorize_all = FALSE)
-    if (!identical(type, attr(x, "types"))) {
-        attr(x, "types") <- type
+    if (!identical(type, get_types(x))) {
+        set_types(x) <- type
     }
     return(x)
 }

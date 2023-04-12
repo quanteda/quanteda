@@ -5,6 +5,7 @@
 \alias{unlist.tokens}
 \alias{[.tokens}
 \alias{+.tokens}
+\alias{c.tokens_xptr}
 \alias{c.tokens}
 \title{Base method extensions for tokens objects}
 \usage{
@@ -13,6 +14,8 @@
 \method{[}{tokens}(x, i, drop_docid = TRUE)
 
 \method{+}{tokens}(t1, t2)
+
+\method{c}{tokens_xptr}(...)
 
 \method{c}{tokens}(...)
 }
