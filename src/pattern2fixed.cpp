@@ -118,8 +118,8 @@ Configs parse_patterns(Patterns patterns, bool glob = true) {
 List cpp_index_types(const CharacterVector &patterns_, 
                      const CharacterVector &types_, bool glob = true) {
     
-    dev::Timer timer;
-    dev::start_timer("Convert", timer);
+    //dev::Timer timer;
+    //dev::start_timer("Convert", timer);
     
     Patterns patterns = Rcpp::as<Patterns>(patterns_);
     Types types = Rcpp::as<Types>(types_);
@@ -131,9 +131,9 @@ List cpp_index_types(const CharacterVector &patterns_,
     }
     Configs confs = parse_patterns(patterns, glob);
 
-    dev::stop_timer("Convert", timer);
+    //dev::stop_timer("Convert", timer);
     
-    dev::start_timer("Index", timer);
+    //dev::start_timer("Index", timer);
     
     std::size_t H = confs.size();
     Texts temp(H);
@@ -148,9 +148,9 @@ List cpp_index_types(const CharacterVector &patterns_,
         index_types(types, index, confs[h]);
     }
 #endif
-    dev::stop_timer("Index", timer);
+    //dev::stop_timer("Index", timer);
 
-    dev::start_timer("List", timer);
+    //dev::start_timer("List", timer);
     List result_(patterns.size());
     for (size_t i = 0; i < patterns.size(); i++) {
         std::string pattern = patterns[i];
@@ -158,7 +158,7 @@ List cpp_index_types(const CharacterVector &patterns_,
         result_[i] = sort_unique(value_) + 1; // R is 1 base
     }
     result_.attr("names") = encode(patterns);
-    dev::stop_timer("List", timer);
+    //dev::stop_timer("List", timer);
     
     return result_;
 }
