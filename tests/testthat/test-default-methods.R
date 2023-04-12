@@ -150,7 +150,7 @@ test_that("types defaults work", {
 test_that("test new bootstrap_dfm methods", {
     expect_error(
         bootstrap_dfm(TRUE),
-        "bootstrap_dfm\\(\\) only works on character.*dfm.*objects"
+        "bootstrap_dfm\\(\\) only works on dfm objects"
     )
 })
 
@@ -164,7 +164,7 @@ test_that("test new convert methods", {
 test_that("test new dfm methods", {
     expect_error(
         dfm(TRUE),
-        "dfm\\(\\) only works on character.*corpus.*tokens.*objects"
+        "dfm\\(\\) only works on dfm, tokens, tokens_xptr objects"
     )
     expect_error(
         dfm_compress(TRUE),

@@ -7,7 +7,7 @@
 bootstrap_dfm(x, n = 10, ..., verbose = quanteda_options("verbose"))
 }
 \arguments{
-\item{x}{a character or \link{corpus} object}
+\item{x}{a \link{dfm} object}
 
 \item{n}{number of resamples}
 
