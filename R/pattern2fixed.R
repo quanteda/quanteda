@@ -36,6 +36,7 @@ pattern2id <- function(pattern, types, valuetype = c("glob", "fixed", "regex"),
     
     # normalize unicode
     pattern <- lapply(pattern, stri_trans_nfc) 
+    types <- stri_trans_nfc(types)
     
     # glob is treated as fixed if neither * or ? is found
     if (valuetype == "glob" && !any(is_glob(pattern)))
@@ -51,7 +52,7 @@ pattern2id <- function(pattern, types, valuetype = c("glob", "fixed", "regex"),
         types_search <- attr(index, "types_search")
     } else {
         index <- NULL
-        types_search <- stri_trans_nfc(types)
+        types_search <- types
     }
 
     temp <- vector("list", length(pattern)) 
