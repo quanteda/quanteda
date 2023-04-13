@@ -47,21 +47,21 @@ bootstrap_dfm.dfm <- function(x, n = 10, ..., verbose = quanteda_options("verbos
     verbose <- check_logical(verbose)
 
     if (verbose) {
-        message("Bootstrapping the sentences to create multiple dfm objects...")
-        message("   ...resampling and forming dfms: 0", appendLF = FALSE)
+        catm("Bootstrapping the sentences to create multiple dfm objects...")
+        catm("   ...resampling and forming dfms: 0", appendLF = FALSE)
     }
     result <- list()
     result[[1]] <- dfm_group(x, groups = docid(x), fill = TRUE)
     for (i in seq_len(n)) {
         if (verbose)
-            message(", ", i, appendLF = FALSE)
+            catm(", ", i, appendLF = FALSE)
         temp <- dfm_sample(x, size = NULL, replace = TRUE, by = docid(x))
         temp <- dfm_group(temp)
         result[[i + 1]] <- temp
     }
     names(result) <- paste0("dfm_", seq(0, n))
     if (verbose)
-        message("\n   ...complete.\n")
+        catm("\n   ...complete.\n")
     class(result) <- c("dfm_bootstrap")
     return(result)
 }
