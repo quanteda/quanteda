@@ -75,6 +75,24 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// fun1
+void fun1();
+RcppExport SEXP _quanteda_fun1() {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    fun1();
+    return R_NilValue;
+END_RCPP
+}
+// fun2
+void fun2();
+RcppExport SEXP _quanteda_fun2() {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    fun2();
+    return R_NilValue;
+END_RCPP
+}
 // cpp_tokens_chunk
 TokensPtr cpp_tokens_chunk(TokensPtr xptr, const int size, const int overlap);
 RcppExport SEXP _quanteda_cpp_tokens_chunk(SEXP xptrSEXP, SEXP sizeSEXP, SEXP overlapSEXP) {
@@ -429,6 +447,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_quanteda_cpp_index_types", (DL_FUNC) &_quanteda_cpp_index_types, 3},
     {"_quanteda_cpp_serialize", (DL_FUNC) &_quanteda_cpp_serialize, 1},
     {"_quanteda_cpp_serialize_add", (DL_FUNC) &_quanteda_cpp_serialize_add, 2},
+    {"_quanteda_fun1", (DL_FUNC) &_quanteda_fun1, 0},
+    {"_quanteda_fun2", (DL_FUNC) &_quanteda_fun2, 0},
     {"_quanteda_cpp_tokens_chunk", (DL_FUNC) &_quanteda_cpp_tokens_chunk, 3},
     {"_quanteda_cpp_tokens_combine", (DL_FUNC) &_quanteda_cpp_tokens_combine, 2},
     {"_quanteda_cpp_tokens_compound", (DL_FUNC) &_quanteda_cpp_tokens_compound, 6},
