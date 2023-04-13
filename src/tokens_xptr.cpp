@@ -91,10 +91,10 @@ void cpp_recompile(TokensPtr xptr) {
 S4 cpp_dfm(TokensPtr xptr, bool asis = false) {
     
     xptr->recompiled = asis;
-    xptr->recompile();
+    xptr->recompile(); // remove unused types
     std::size_t H = xptr->texts.size();
     std::size_t G = xptr->types.size();
-    std::vector<int> ids(G, 0);
+    std::vector<unsigned int> ids(G, 0);
     
     int N = 0;
     for (std::size_t h = 0; h < H; h++)
@@ -108,7 +108,7 @@ S4 cpp_dfm(TokensPtr xptr, bool asis = false) {
     
     slot_p.push_back(p);
     int count_pad = 0;
-    int id = 1;
+    unsigned int id = 1;
     for (std::size_t h = 0; h < H; h++) {
         // assign new token IDs in the order of their occurrence
         std::size_t I = xptr->texts[h].size();
@@ -194,7 +194,7 @@ S4 cpp_dfm(TokensPtr xptr, bool asis = false) {
 require(quanteda)
 toks <- tokens(c("b c b a,", "a b a c."), remove_punct = FALSE, padding = TRUE)
 xtoks <- as.tokens_xptr(toks)
-xtoks_dict <- tokens_lookup(xtoks, dictionary(list(A = "a", B = "b", Z = "z")))
+xtoks_dict <- tokens_lookup(xtoks, dictionary(list(A = "a", Z = "z", B = "b")))
 #xtoks_dict <- tokens_lookup(xtoks, dictionary(list(A = "a", B = "b")))
 quanteda:::cpp_get_attributes(xtoks_dict)
 quanteda:::cpp_get_types(xtoks_dict)
