@@ -127,6 +127,29 @@ test_that("tokens_tolower and tokens_toupper work", {
                      list(recompiled = TRUE))
 })
 
+test_that("all the meta fields are copied", {
+    
+    toks_dict <- tokens_lookup(toks, data_dictionary_LSD2015[1:2])
+    xtoks_dict <- as.tokens_xptr(toks_dict)
+    expect_identical(attr(toks_dict, "meta"), attr(xtoks_dict, "meta"))
+    
+    toks_ngram <- tokens_ngrams(toks)
+    xtoks_ngram <- as.tokens_xptr(toks_ngram)
+    expect_identical(attr(toks_ngram, "meta"), attr(xtoks_ngram, "meta"))
+    
+})
+
+test_that("recompile flag is correct", {
+    dict <- data_dictionary_LSD2015[1:2]
+    xtoks_dict1 <- tokens_lookup(as.tokens_xptr(toks), 
+                                 dict, exclusive = TRUE)
+    expect_true(quanteda:::cpp_get_attributes(xtoks_dict1)$recompiled)
+
+    xtoks_dict2 <- tokens_lookup(as.tokens_xptr(toks), 
+                                 dict, exclusive = FALSE)
+    expect_false(quanteda:::cpp_get_attributes(xtoks_dict2)$recompiled)
+})
+
 test_that("tokens_compound works", {
     dict <- data_dictionary_LSD2015[3:4]
     expect_identical(as.list(tokens_compound(as.tokens_xptr(toks), dict)),
