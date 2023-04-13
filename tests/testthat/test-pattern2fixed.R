@@ -203,7 +203,7 @@ test_that("index_types works correctly", {
     
     type <- c("abcd", "abc", "ab", "ABCD", "ABC", "AB")
     
-    index1 <- quanteda::index_types("a*", type)
+    index1 <- quanteda:::index_types("a*", type)
     expect_null(names(index1))
     expect_equal(
         attributes(index1),
@@ -212,7 +212,7 @@ test_that("index_types works correctly", {
              case_insensitive = TRUE, key = "a*")
     )
     
-    index2 <- quanteda::index_types("a*", type, case_insensitive = FALSE)
+    index2 <- quanteda:::index_types("a*", type, case_insensitive = FALSE)
     expect_null(names(index2))
     expect_equal(
         attributes(index2),
@@ -221,7 +221,7 @@ test_that("index_types works correctly", {
     )
     
     # do not index for regex
-    index3 <- quanteda::index_types("a*", type, valuetype = "regex")
+    index3 <- quanteda:::index_types("a*", type, valuetype = "regex")
     expect_null(names(index3))
     expect_equivalent(index3, list())
     expect_equal(

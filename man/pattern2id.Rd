@@ -3,7 +3,6 @@
 \name{pattern2id}
 \alias{pattern2id}
 \alias{pattern2fixed}
-\alias{index_types}
 \title{Match patterns against token types}
 \usage{
 pattern2id(
@@ -22,13 +21,6 @@ pattern2fixed(
   case_insensitive = TRUE,
   keep_nomatch = FALSE,
   use_index = TRUE
-)
-
-index_types(
-  pattern,
-  types,
-  valuetype = c("glob", "fixed", "regex"),
-  case_insensitive = TRUE
 )
 }
 \arguments{
@@ -53,9 +45,6 @@ a list of integer vectors containing indices of matched types
 
 \code{pattern2fixed} returns a list of character vectors containing
 types
-
-\code{index_types} returns a list of integer vectors containing type
-IDs with index keys as an attribute
 }
 \description{
 Developer function to match regex, fixed or glob patterns against token
@@ -65,11 +54,6 @@ sub-vectors of tokens object are matched. This function constructs an index
 of glob patterns for faster matching.
 
 \code{pattern2fixed} converts regex and glob patterns to fixed patterns.
-
-\code{index_types} is an auxiliary function for \code{pattern2id} that
-constructs an index of "glob" or "fixed" patterns to avoid expensive
-sequential search. For example, a type "cars" is index by keys "cars",
-"car?", "c*", "ca*", "car*" and "cars*" when \code{valuetype="glob"}.
 }
 \examples{
 types <- c("A", "AA", "B", "BB", "BBB", "C", "CC")
@@ -83,8 +67,6 @@ pattern2id(pats_glob, types, "glob", case_insensitive = TRUE)
 pattern <- list(c("^a$", "^b"), c("c"), c("d"))
 types <- c("A", "AA", "B", "BB", "BBB", "C", "CC")
 pattern2fixed(pattern, types, "regex", case_insensitive = TRUE)
-index <- index_types("yy*", c("xxx", "yyyy", "ZZZ"), "glob", FALSE)
-quanteda:::search_glob("yy*", attr(index, "types_search"), index)
 }
 \keyword{development}
 \keyword{internal}
