@@ -34,31 +34,6 @@ Matches index(Text tokens,
     return matches;
 }
 
-struct index_mt : public Worker{
-    
-    Texts &texts;
-    std::vector<Matches> &temp;
-    const std::vector<std::size_t> &spans;
-    const MultiMapNgrams &map_pats;
-    UintParam &N;
-    
-    // Constructor
-    index_mt(Texts &texts_, std::vector<Matches> &temp_,
-            const std::vector<std::size_t> &spans_, const MultiMapNgrams &map_pats_,
-            UintParam &N_):
-            texts(texts_), temp(temp_), spans(spans_), map_pats(map_pats_), 
-            N(N_) {}
-    
-    // parallelFor calles this function with size_t
-    void operator()(std::size_t begin, std::size_t end){
-        //Rcout << "Range " << begin << " " << end << "\n";
-        for (std::size_t h = begin; h < end; h++){
-            temp[h] = index(texts[h], spans, map_pats, N);
-        }
-    }
-};
-
-
 /* 
  * Function to locates tokens for kwic() and index() 
  * The number of threads is set by RcppParallel::setThreadOptions()
@@ -99,12 +74,16 @@ DataFrame cpp_index(TokensPtr xptr,
     std::vector<Matches> temp(texts.size());
     
     //dev::start_timer("Search keywords", timer);
+    std::size_t H = texts.size();
     UintParam N = 0;
 #if QUANTEDA_USE_TBB
-    index_mt index_mt(texts, temp, spans, map_pats, N);
-    parallelFor(0, texts.size(), index_mt);
+    tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
+        for (int h = r.begin(); h < r.end(); ++h) {
+            temp[h] = index(texts[h], spans, map_pats, N);
+        }    
+    });
 #else
-    for (std::size_t h = 0; h < texts.size(); h++) {
+    for (std::size_t h = 0; h < H; h++) {
         temp[h] = index(texts[h], spans, map_pats, N);
     }
 #endif

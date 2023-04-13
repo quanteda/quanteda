@@ -82,34 +82,8 @@ Segments segment(Text tokens,
             N++;
         }
     }
-    
     return segments;
 }
-
-struct segment_mt : public Worker{
-    
-    Texts &texts;
-    std::vector<Segments> &temp;
-    UintParam &N;
-    const std::vector<std::size_t> &spans;
-    const SetNgrams &set_patterns;
-    const bool &remove;
-    const int &position;
-    
-    // Constructor
-    segment_mt(Texts &texts_, std::vector<Segments> &temp_, UintParam &N_,
-            const std::vector<std::size_t> &spans_, const SetNgrams &set_patterns_, const bool &remove_, 
-            const int &position_):
-            texts(texts_), temp(temp_), N(N_), spans(spans_), set_patterns(set_patterns_), remove(remove_), position(position_){}
-    
-    // parallelFor calles this function with size_t
-    void operator()(std::size_t begin, std::size_t end){
-        //Rcout << "Range " << begin << " " << end << "\n";
-        for (std::size_t h = begin; h < end; h++){
-            temp[h] = segment(texts[h], N, spans, set_patterns, remove, position);
-        }
-    }
-};
 
 
 /* 
@@ -137,12 +111,16 @@ TokensPtr cpp_tokens_segment(TokensPtr xptr,
     std::vector<std::size_t> spans = register_ngrams(patterns_, set_patterns);
     
     // dev::Timer timer;
-    std::vector<Segments> temp(texts.size());
-    
+
     // dev::start_timer("Dictionary detect", timer);
+    std::size_t H = texts.size();
+    std::vector<Segments> temp(H);
 #if QUANTEDA_USE_TBB
-     segment_mt segment_mt(texts, temp, N, spans, set_patterns, remove, position);
-     parallelFor(0, texts.size(), segment_mt);
+    tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
+        for (int h = r.begin(); h < r.end(); ++h) {
+            temp[h] = segment(texts[h], N, spans, set_patterns, remove, position);
+        }    
+    });
 #else
     for (std::size_t h = 0; h < texts.size(); h++) {
         temp[h] = segment(texts[h], N, spans, set_patterns, remove, position);

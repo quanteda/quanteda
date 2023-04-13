@@ -21,27 +21,6 @@ Texts chunk(Text &tokens,
     return chunks;
 }
 
-struct chunk_mt : public Worker{
-    
-    Texts &texts;
-    std::vector<Texts> &temp;
-    UintParam &N;
-    const int size;
-    const int overlap;
-    
-    chunk_mt(Texts &texts_, std::vector<Texts> &temp_, UintParam &N_, const int size_, 
-             const int overlap_):
-             texts(texts_), temp(temp_), N(N_), size(size_), 
-             overlap(overlap_) {}
-    
-    void operator()(std::size_t begin, std::size_t end){
-        for (std::size_t h = begin; h < end; h++){
-            temp[h] = chunk(texts[h], N, size, overlap);
-        }
-    }
-};
-
-
 /* 
  * Function to split documents
  * The number of threads is set by RcppParallel::setThreadOptions()
@@ -60,14 +39,16 @@ TokensPtr cpp_tokens_chunk(TokensPtr xptr,
     Types types = xptr->types;
     UintParam N = 0;
     // dev::Timer timer;
+    std::size_t H = texts.size();
     std::vector<Texts> temp(texts.size());
-    
-    // dev::start_timer("Dictionary detect", timer);
 #if QUANTEDA_USE_TBB
-     chunk_mt chunk_mt(texts, temp, N, size, overlap);
-     parallelFor(0, texts.size(), chunk_mt);
+     tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
+         for (int h = r.begin(); h < r.end(); ++h) {
+             temp[h] = chunk(texts[h], N, size, overlap);
+         }    
+     });
 #else
-    for (std::size_t h = 0; h < texts.size(); h++) {
+    for (std::size_t h = 0; h < H; h++) {
         temp[h] = chunk(texts[h], N, size, overlap);
     }
 #endif

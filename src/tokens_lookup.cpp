@@ -117,31 +117,6 @@ Text lookup(Text tokens,
     return keys_flat;
 }
 
-
-struct lookup_mt : public Worker{
-    
-    Texts &texts;
-    const std::vector<std::size_t> &spans;
-    const unsigned int &id_max;
-    const int &overlap;
-    const int &nomatch;
-    const MultiMapNgrams &map_keys;
-    
-    // Constructor
-    lookup_mt(Texts &texts_, const std::vector<std::size_t> &spans_, const unsigned int &id_max_,
-              const int &overlap_, const int &nomatch_, const MultiMapNgrams &map_keys_):
-              texts(texts_), spans(spans_), id_max(id_max_), overlap(overlap_), nomatch(nomatch_),
-              map_keys(map_keys_){}
-    
-    // parallelFor calles this function with std::size_t
-    void operator()(std::size_t begin, std::size_t end){
-        //Rcout << "Range " << begin << " " << end << "\n";
-        for (std::size_t h = begin; h < end; h++) {
-            texts[h] = lookup(texts[h], spans, id_max, overlap, nomatch, map_keys);
-        }
-    }
-};
-
 /* 
 * Function to find dictionary keywords
 * The number of threads is set by RcppParallel::setThreadOptions()
@@ -195,11 +170,15 @@ TokensPtr cpp_tokens_lookup(TokensPtr xptr,
     //dev::stop_timer("Map construction", timer);
     
     //dev::start_timer("Dictionary lookup", timer);
+    std::size_t H = texts.size();
 #if QUANTEDA_USE_TBB
-    lookup_mt lookup_mt(texts, spans, id_max, overlap, nomatch, map_keys);
-    parallelFor(0, texts.size(), lookup_mt);
+    tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
+        for (int h = r.begin(); h < r.end(); ++h) {
+            texts[h] = lookup(texts[h], spans, id_max, overlap, nomatch, map_keys);
+        }    
+    });
 #else
-    for (std::size_t h = 0; h < texts.size(); h++) {
+    for (std::size_t h = 0; h < H; h++) {
         texts[h] = lookup(texts[h], spans, id_max, overlap, nomatch, map_keys);
     }
 #endif

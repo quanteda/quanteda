@@ -125,42 +125,6 @@ Text remove_token(Text tokens,
     return tokens_copy;
 }
 
-struct select_mt : public Worker{
-    
-    Texts &texts;
-    const std::vector<std::size_t> &spans;
-    const SetNgrams &set_words;
-    const int &mode;
-    const bool &padding;
-    const std::pair<int, int> &window;
-    const Positions &pos;
-    
-    // Constructor
-    select_mt(Texts &texts_, const std::vector<std::size_t> &spans_, 
-              const SetNgrams &set_words_, const int &mode_, const bool &padding_, 
-              const std::pair<int, int> &window_, const Positions &pos_):
-              texts(texts_), spans(spans_), set_words(set_words_), mode(mode_), padding(padding_), 
-              window(window_), pos(pos_){}
-    
-    // parallelFor calles this function with std::size_t
-    void operator()(std::size_t begin, std::size_t end){
-        //Rcout << "Range " << begin << " " << end << "\n";
-        if (mode == 1) {
-            for (std::size_t h = begin; h < end; h++) {
-                texts[h] = keep_token(texts[h], spans, set_words, padding, window, pos[h]);
-            }
-        } else if (mode == 2) {
-            for (std::size_t h = begin; h < end; h++) {
-                texts[h] = remove_token(texts[h], spans, set_words, padding, window, pos[h]);
-            }
-        } else {
-            for (std::size_t h = begin; h < end; h++) {
-                texts[h] = texts[h];
-            }
-        }
-    }
-};
-
 /* 
  * Function to selects tokens
  * The number of threads is set by RcppParallel::setThreadOptions()
@@ -200,20 +164,26 @@ TokensPtr cpp_tokens_select(TokensPtr xptr,
     
     // dev::Timer timer;
     // dev::start_timer("Token select", timer);
+    std::size_t H = texts.size();
 #if QUANTEDA_USE_TBB
-    select_mt select_mt(texts, spans, set_words, mode, padding, window, pos);
-    parallelFor(0, texts.size(), select_mt);
+    tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
+        for (int h = r.begin(); h < r.end(); ++h) {
+            if (mode == 1) {
+                texts[h] = keep_token(texts[h], spans, set_words, padding, window, pos[h]);
+            } else if(mode == 2) {
+                texts[h] = remove_token(texts[h], spans, set_words, padding, window, pos[h]);
+            } else {
+                texts[h] = texts[h];
+            }
+        }    
+    });
 #else
-    if (mode == 1) {
-        for (std::size_t h = 0; h < texts.size(); h++) {
+    for (std::size_t h = 0; h < texts.size(); h++) {
+        if (mode == 1) {
             texts[h] = keep_token(texts[h], spans, set_words, padding, window, pos[h]);
-        }
-    } else if(mode == 2) {
-        for (std::size_t h = 0; h < texts.size(); h++) {
+        } else if(mode == 2) {
             texts[h] = remove_token(texts[h], spans, set_words, padding, window, pos[h]);
-        }
-    } else {
-        for (std::size_t h = 0; h < texts.size(); h++){
+        } else {
             texts[h] = texts[h];
         }
     }

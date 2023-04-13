@@ -54,27 +54,6 @@ Text replace(Text tokens,
     return tokens_flat;
 }
 
-
-struct replace_mt : public Worker{
-    
-    Texts &texts;
-    const std::vector<std::size_t> &spans;
-    MapNgrams &map_pat;
-    Ngrams &ids_repls;
-    
-    // Constructor
-    replace_mt(Texts &texts_, const std::vector<std::size_t> &spans_, MapNgrams &map_pat_, Ngrams &ids_repls_):
-               texts(texts_), spans(spans_), map_pat(map_pat_), ids_repls(ids_repls_){}
-    
-    // parallelFor calles this function with std::size_t
-    void operator()(std::size_t begin, std::size_t end){
-        //Rcout << "Range " << begin << " " << end << "\n";
-        for (std::size_t h = begin; h < end; h++) {
-            texts[h] = replace(texts[h], spans, map_pat, ids_repls);
-        }
-    }
-};
-
 /* 
 * Function to replace tokens
 * @used tokens_replace()
@@ -111,11 +90,15 @@ TokensPtr cpp_tokens_replace(TokensPtr xptr,
     //dev::stop_timer("Map construction", timer);
     
     //dev::start_timer("Pattern replace", timer);
+    std::size_t H = texts.size();
 #if QUANTEDA_USE_TBB
-    replace_mt replace_mt(texts, spans, map_pat, ids_repls);
-    parallelFor(0, texts.size(), replace_mt);
+    tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
+        for (int h = r.begin(); h < r.end(); ++h) {
+            texts[h] = replace(texts[h], spans, map_pat, ids_repls);
+        }    
+    });
 #else
-    for (std::size_t h = 0; h < texts.size(); h++) {
+    for (std::size_t h = 0; h < H; h++) {
         texts[h] = replace(texts[h], spans, map_pat, ids_repls);
     }
 #endif

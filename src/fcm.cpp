@@ -80,29 +80,6 @@ void count_col(const Text &text,
     }
 }
 
-struct count_col_mt : public Worker{
-    const Texts &texts;
-    const std::vector<double> &weights;    
-    const unsigned int window;
-    const bool ordered;
-    const bool boolean;
-    Triplets &fcm_tri; // output vector to write to, each Triplet contains i, j, x for the sparse matrix fcm.
-
-    //initialization
-    count_col_mt(const Texts &texts_, const std::vector<double> &weights_, const unsigned int window_, 
-             const bool ordered_, const bool boolean_, Triplets &fcm_tri_): 
-             texts(texts_),  weights(weights_),
-             window(window_), ordered(ordered_), boolean(boolean_), fcm_tri(fcm_tri_) {}
-
-    // function call operator that work for the specified range (begin/end)
-    void operator()(std::size_t begin, std::size_t end) {
-        for (std::size_t h = begin; h < end; h++) {
-            count_col(texts[h], weights, window, ordered, boolean, fcm_tri);
-        }
-    }
-};
-
-
 // [[Rcpp::export]]
 S4 cpp_fcm(TokensPtr xptr,
                 const int n_types,
@@ -122,12 +99,15 @@ S4 cpp_fcm(TokensPtr xptr,
 
     //dev::Timer timer;
     //dev::start_timer("Count", timer);
-    
+    std::size_t H = texts.size();
 #if QUANTEDA_USE_TBB
-    count_col_mt count_col_mt(texts, weights, window, ordered, boolean, fcm_tri);
-    parallelFor(0, texts.size(), count_col_mt);
+    tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
+        for (int h = r.begin(); h < r.end(); ++h) {
+            count_col(texts[h], weights, window, ordered, boolean, fcm_tri);
+        }    
+    });
 #else        
-    for (std::size_t h = 0; h < texts.size(); h++) {
+    for (std::size_t h = 0; h < H; h++) {
         count_col(texts[h], weights, window, ordered, boolean, fcm_tri);
     }
 #endif
