@@ -108,6 +108,7 @@ test_that("tokens_tolower and tokens_toupper work", {
                      as.list(as.tokens(tokens_toupper(xtoks))))
 })
 
+
 test_that("tokens_tolower and tokens_toupper work", {
     dict <- data_dictionary_LSD2015[1:2]
     expect_identical(as.tokens(tokens_lookup(as.tokens_xptr(toks), dict)),
@@ -226,4 +227,14 @@ test_that("fcm works", {
                      fcm(toks, window = 5))
 })
 
-
+test_that("cpp_serialize is working", {
+    lis <- as.list(toks)
+    
+    out1 <- quanteda:::cpp_as_list(quanteda:::cpp_serialize(lis))
+    out2 <- quanteda:::serialize_tokens(lis)
+    
+    expect_equal(
+        lapply(unclass(out1), function(x) attr(out1, "types")[x]),
+        lapply(unname(out2), function(x) attr(out2, "types")[x])
+    )
+})

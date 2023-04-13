@@ -599,7 +599,11 @@ test_that("types are encoded when necessarly", {
 test_that("tokens verbose = TRUE produces expected messages", {
     expect_message(
         tokens(c("one two three", "four five."), verbose = TRUE),
-        "starting tokenization"
+        "^Creating a tokens from a character object"
+    )
+    expect_message(
+        tokens(corpus(c("one two three", "four five.")), xptr = TRUE, verbose = TRUE),
+        "^Creating a tokens_xptr from a corpus object"
     )
 })
 
