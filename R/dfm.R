@@ -38,6 +38,10 @@ dfm <- function(x,
                 remove_padding = FALSE,
                 verbose = quanteda_options("verbose"),
                 ...) {
+    
+    global$proc_time <- proc.time()
+    if (is.null(global$object_class))
+        global$object_class <- class(x)[1]
     UseMethod("dfm")
 }
 
@@ -58,6 +62,40 @@ dfm.tokens <- function(x,
     
 }
 
+#' @method dfm tokens_xptr
+#' @export
+dfm.tokens_xptr <- function(x,
+                            tolower = TRUE,
+                            remove_padding = FALSE,
+                            verbose = quanteda_options("verbose"),
+                            ...) {
+    
+    check_dots(...)
+    if (verbose) 
+        catm("Creating a dfm from a", global$object_class, "object...\n")
+    
+    x <- as.tokens_xptr(x) # avoid modifying the original tokens
+    if (tolower)
+        x <- tokens_tolower(x)
+    if (remove_padding)
+        x <- tokens_remove(x, "", valuetype = "fixed")
+    attrs <- attributes(x)
+    temp <- t(cpp_dfm(x, attrs$meta$object$what == "dictionary"))
+    result <- build_dfm(temp, colnames(temp),
+                        docvars = get_docvars(x, user = TRUE, system = TRUE),
+                        meta = attrs[["meta"]])
+    
+    if (verbose) {
+        catm(" ...complete, elapsed time:",
+             format((proc.time() - global$proc_time)[3], digits = 3), "seconds.\n")
+        catm("Finished constructing a", paste(format(dim(result), big.mark = ",", trim = TRUE), collapse = " x "),
+             "sparse dfm.\n")
+    }
+    global$object_class <- NULL
+    return(result)
+}
+
+
 
 #' @importFrom stringi stri_trans_totitle
 #' @export
@@ -66,16 +104,17 @@ dfm.dfm <- function(x,
                     remove_padding = FALSE,
                     verbose = quanteda_options("verbose"),
                     ...) {
+    
+    check_dots(...)
     x <- as.dfm(x)
+    
+    if (verbose) 
+        catm("Creating a dfm from a dfm object...\n")
     
     if (tolower) {
         if (verbose) catm(" ...lowercasing\n", sep = "")
         x <- dfm_tolower(x)
     }
-    
-    # if "remove" was matched to "remove_padding"
-    if (!is.logical(remove_padding))
-        remove_padding <- FALSE
     
     remove_padding <- check_logical(remove_padding)
     if (remove_padding)
@@ -85,6 +124,13 @@ dfm.dfm <- function(x,
     is_na <- is.na(featnames(x))
     if (any(is_na))
         x <- x[, !is_na, drop = FALSE]
+    
+    if (verbose) {
+        catm(" ...complete, elapsed time:",
+             format((proc.time() - global$proc_time)[3], digits = 3), "seconds.\n")
+        catm("Finished constructing a", paste(format(dim(x), big.mark = ",", trim = TRUE), collapse = " x "),
+             "sparse dfm.\n")
+    }
 
     return(x)
 }

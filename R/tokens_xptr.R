@@ -140,20 +140,6 @@ tokens_subset.tokens_xptr <- function(x, subset, drop_docid = TRUE, ...) {
     return(x[r, drop_docid = drop_docid])
 }
 
-#' @method dfm tokens_xptr
-#' @export
-dfm.tokens_xptr <- function(x, tolower = TRUE, remove_padding = FALSE, ...) {
-    x <- as.tokens_xptr(x) # avoid modifying the original tokens
-    if (tolower)
-        x <- tokens_tolower(x)
-    if (remove_padding)
-        x <- tokens_remove(x, "", valuetype = "fixed")
-    attrs <- attributes(x)
-    temp <- t(cpp_dfm(x, attrs$meta$object$what != "dictionary"))
-    build_dfm(temp, colnames(temp),
-              docvars = get_docvars(x, user = TRUE, system = TRUE),
-              meta = attrs[["meta"]])
-}
 
 #' @export
 tokens_tolower.tokens_xptr <- function(x, keep_acronyms = FALSE) {
