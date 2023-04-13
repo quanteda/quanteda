@@ -75,7 +75,7 @@ depending on the size of your input matrix.
 Weight the feature frequencies in a dfm
 }
 \examples{
-dfmat1 <- dfm(data_corpus_inaugural)
+dfmat1 <- dfm(tokens(data_corpus_inaugural))
 
 dfmat2 <- dfm_weight(dfmat1, scheme = "prop")
 topfeatures(dfmat2)
@@ -90,13 +90,8 @@ topfeatures(dfmat5)
 # of Introduction to Information Retrieval
 head(dfm_tfidf(dfmat1, scheme_tf = "logcount"))
 
-# apply numeric weights
-str <- c("apple is better than banana", "banana banana apple much better")
-(dfmat6 <- dfm(str, remove = stopwords("english")))
-dfm_weight(dfmat6, weights = c(apple = 5, banana = 3, much = 0.5))
-
 # smooth the dfm
-dfmat <- dfm(data_corpus_inaugural)
+dfmat <- dfm(tokens(data_corpus_inaugural))
 dfm_smooth(dfmat, 0.5)
 }
 \references{

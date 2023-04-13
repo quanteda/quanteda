@@ -36,7 +36,7 @@ case-sensitive matches.  For more flexible feature selection, see
 }
 \examples{
 # matching a dfm to a feature vector
-dfm_match(dfm(""), letters[1:5])
+dfm_match(dfm(tokens("")), letters[1:5])
 dfm_match(data_dfm_lbgexample, c("A", "B", "Z"))
 dfm_match(data_dfm_lbgexample, c("B", "newfeat1", "A", "newfeat2"))
 
