@@ -36,10 +36,15 @@ pattern2id <- function(pattern, types, valuetype = c("glob", "fixed", "regex"),
     
     # normalize unicode
     pattern <- lapply(pattern, stri_trans_nfc) 
+    types <- stri_trans_nfc(types)
     
     # glob is treated as fixed if neither * or ? is found
     if (valuetype == "glob" && !any(is_glob(pattern)))
         valuetype <- "fixed"
+    
+    # lowercases for case-insensitive search
+    if (valuetype != "regex" && case_insensitive)
+        pattern <- lapply(pattern, stri_trans_tolower)
     
     # construct glob or fixed index for quick search
     if (use_index) {
@@ -47,12 +52,8 @@ pattern2id <- function(pattern, types, valuetype = c("glob", "fixed", "regex"),
         types_search <- attr(index, "types_search")
     } else {
         index <- NULL
-        types_search <- stri_trans_nfc(types)
+        types_search <- types
     }
-    
-    # lowercases for case-insensitive search
-    if (valuetype != "regex" && case_insensitive)
-        pattern <- lapply(pattern, stri_trans_tolower)
 
     temp <- vector("list", length(pattern)) 
     for (i in seq_along(pattern)) {
@@ -188,8 +189,7 @@ search_fixed_multi <- function(patterns, types_search, index) {
 #' @description
 #' `index_types` is an internal function for `pattern2id` that
 #' constructs an index of "glob" or "fixed" patterns to avoid expensive
-#' sequential search. For example, a type "cars" is index by keys "cars",
-#' "car?", "c*", "ca*", "car*" and "cars*" when `valuetype="glob"`.
+#' sequential search.
 #' @rdname search_glob
 #' @inheritParams valuetype
 #' @return `index_types` returns a list of integer vectors containing type
@@ -207,8 +207,9 @@ index_types <- function(pattern, types, valuetype = c("glob", "fixed", "regex"),
     
     # lowercase for case-insensitive search
     if (case_insensitive) {
-        types_search <- stri_trans_tolower(types_search)
-        pattern <- stri_trans_tolower(pattern)
+        types_search <- stri_trans_tolower(types)
+    } else {
+        types_search <- types
     }
     
     if (valuetype == "regex" || length(types) == 0) {
