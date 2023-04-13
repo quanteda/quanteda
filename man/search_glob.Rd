@@ -56,8 +56,7 @@ keys in index when available.
 
 \code{index_types} is an internal function for \code{pattern2id} that
 constructs an index of "glob" or "fixed" patterns to avoid expensive
-sequential search. For example, a type "cars" is index by keys "cars",
-"car?", "c*", "ca*", "car*" and "cars*" when \code{valuetype="glob"}.
+sequential search.
 }
 \examples{
 index <- quanteda:::index_types("yy*", c("xxx", "yyyy", "ZZZ"), "glob", FALSE)
