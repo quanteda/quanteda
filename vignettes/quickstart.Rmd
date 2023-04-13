@@ -283,15 +283,6 @@ dfmat_inaug_post1990 <- tokens(corp_inaug_post1990) %>%
 dfmat_inaug_post1990[, 1:5]
 ```
 
-Other options for a `dfm()` include removing stopwords, and stemming the tokens.
-```{r}
-# make a dfm, removing stopwords and applying stemming
-dfmat_inaug_post1990 <- dfm(dfmat_inaug_post1990,
-                            remove = stopwords("english"),
-                            stem = TRUE, remove_punct = TRUE)
-dfmat_inaug_post1990[, 1:5]
-```
-
 The option `remove` provides a list of tokens to be ignored.  Most users will 
 supply a list of pre-defined "stop words", defined for numerous languages, accessed through 
 the `stopwords()` function:
@@ -373,7 +364,9 @@ The constructor function `dictionary()` also works with two common "foreign" dic
 LIWC and Provalis Research's Wordstat format. For instance, we can load the LIWC and apply this to the Presidential inaugural speech corpus:
 ```{r, eval = FALSE}
 dictliwc <- dictionary(file = "LIWC2001_English.dic", format = "LIWC")
-dfmat_inaug_subset <- dfm(tokens(data_corpus_inaugural[52:58]), dictionary = dictliwc)
+dfmat_inaug_subset <- tokens(data_corpus_inaugural[52:58]) %>% 
+                      dfm() %>% 
+                      dfm_lookup(dictionary = dictliwc)
 dfmat_inaug_subset[, 1:10]
 ```
 ```
@@ -465,7 +458,8 @@ lapply(as.list(tstat_sim), head, 10)
 Here is a demonstration of unsupervised document scaling comparing the "Wordfish" model: 
 ```{r fig.width = 7, fig.height = 5}
 if (require("quanteda.textmodels") && require("quanteda.textplots")) {
-  dfmat_ire <- dfm(tokens(data_corpus_irishbudget2010))
+  dfmat_ire <- tokens(data_corpus_irishbudget2010) %>% 
+      dfm()
   tmod_wf <- textmodel_wordfish(dfmat_ire, dir = c(2, 1))
   
   # plot the Wordfish estimates by party
