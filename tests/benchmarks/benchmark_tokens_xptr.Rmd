@@ -20,6 +20,11 @@ toks <- tokens(corp, remove_punct = FALSE, remove_numbers = FALSE,
                remove_symbols = FALSE)
 xtoks <- as.tokens_xptr(toks)
 
+ndoc(toks)
+sum(ntoken(toks))
+```
+
+```{r}
 class(toks)
 class(xtoks)
 
@@ -40,7 +45,9 @@ identical(quanteda3::dfm(tokens_lookup(toks, newsmap::data_dictionary_newsmap_en
 
 identical(quanteda3::dfm(tokens_ngrams(toks)),
           dfm(tokens_ngrams(as.tokens_xptr(xtoks))))
+```
 
+```{r}
 microbenchmark::microbenchmark(
     old = quanteda3::dfm(toks),
     new = dfm(xtoks),
@@ -78,6 +85,13 @@ microbenchmark::microbenchmark(
     old = quanteda3::tokens_compound(toks, data_dictionary_LSD2015),
     new = as.tokens_xptr(xtoks) %>% 
         tokens_compound(data_dictionary_LSD2015),
+    times = 10
+)
+
+microbenchmark::microbenchmark(
+    old = quanteda3::tokens_select(toks, data_dictionary_LSD2015, padding = TRUE),
+    new = as.tokens_xptr(xtoks) %>% 
+        tokens_select(data_dictionary_LSD2015, padding = TRUE),
     times = 10
 )
 
