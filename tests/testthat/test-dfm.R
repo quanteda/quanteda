@@ -1,12 +1,12 @@
 
 test_that("test c.corpus", {
-    suppressWarnings({
-        expect_equal(
-        matrix(dfm(corpus(c("What does the fox say?", "What does the fox say?", "")),
-                   remove_punct = TRUE)),
+    
+    toks <- tokens(c("What does the fox say?", "What does the fox say?", ""),
+                   remove_punct = TRUE)
+    expect_equal(
+        matrix(dfm(toks)),
         matrix(rep(c(1, 1, 0), 5), nrow = 15, ncol = 1)
     )
-    })
 })
 
 ## rbind.dfm
@@ -250,37 +250,6 @@ test_that("rbind.dfm works as expected", {
                  c("docs", "features"))
 })
 
-test_that("dfm(x, dictionary = mwvdict) works with multi-word values", {
-    mwvdict <- dictionary(list(sequence1 = "a b", sequence2 = "x y", notseq = c("d", "e")))
-    txt <- c(d1 = "a b c d e f g x y z",
-             d2 = "a c d x z",
-             d3 = "x y",
-             d4 = "f g")
-    toks <- tokens(txt)
-    
-    # as dictionary
-    dfm1 <- suppressWarnings(dfm(toks, dictionary = mwvdict, verbose = TRUE))
-    expect_identical(
-        as.matrix(dfm1),
-        matrix(c(1, 0, 0, 0, 1, 0, 1, 0, 2, 1, 0, 0),
-               nrow = 4,
-               dimnames = list(docs = paste0("d", 1:4),
-                               features = c("sequence1", "sequence2", "notseq")))
-    )
-
-    # as thesaurus
-    dfm2 <- suppressWarnings(dfm(toks, thesaurus = mwvdict, verbose = TRUE))
-    expect_identical(
-        as.matrix(dfm2),
-        matrix(c(1, 0, 0, 0,  1, 1, 0, 0,  2, 1, 0, 0,  1, 0, 0, 1,  
-                 1, 0, 0, 1,  1, 0, 1, 0,  1, 1, 0, 0,  0, 1, 0, 0,  0, 1, 0, 0),
-               nrow = 4,
-               dimnames = list(docs = paste0("d", 1:4),
-                               features = c("SEQUENCE1", "c", "NOTSEQ", "f", "g", 
-                                            "SEQUENCE2", "z", "a", "x")))
-    )
-})
-
 test_that("dfm works with relational operators", {
     testdfm <- dfm(tokens(c("This is an example.", "This is a second example.")))
     expect_is(testdfm == 0, "lgCMatrix")
@@ -399,16 +368,6 @@ test_that("dfm addition (+) keeps attributes #1279", {
     )
 })
 
-test_that("dfm's document counts in verbose message is correct", {
-    txt <- c(d1 = "a b c d e f g x y z",
-             d2 = "a c d x z",
-             d3 = "x y",
-             d4 = "f g")
-    expect_message(suppressWarnings(dfm(tokens(txt), remove = c("a", "f"), verbose = TRUE)),
-                   "removed 2 features")
-    expect_message(suppressWarnings(dfm(tokens(txt), select = c("a", "f"), verbose = TRUE)),
-                   "kept 2 features")
-})
 
 test_that("dfm print works with options as expected", {
     dfmt <- dfm(tokens(data_corpus_inaugural[1:14],
@@ -453,115 +412,32 @@ test_that("dfm print works with options as expected", {
                  "The value of max_nfeat must be between -1 and Inf")
 })
 
-test_that("cannot supply remove and select in one call (#793)", {
-    txt <- c(d1 = "one two three", d2 = "two three four", d3 = "one three four")
-    corp <- corpus(txt, docvars = data.frame(grp = c(1, 1, 2)))
-    toks <- tokens(corp)
-    expect_error(
-        suppressWarnings(dfm(txt, select = "one", remove = "two")),
-        "only one of select and remove may be supplied at once"
-    )
-    expect_error(
-        suppressWarnings(dfm(corp, select = "one", remove = "two")),
-        "only one of select and remove may be supplied at once"
-    )
-    expect_error(
-        dfm(toks, select = "one", remove = "two"),
-        "only one of select and remove may be supplied at once"
-    )
-    expect_error(
-        dfm(dfm(toks), select = "one", remove = "two"),
-        "only one of select and remove may be supplied at once"
-    )
-})
-
-test_that("dfm with selection options produces correct output", {
-    txt <- c(d1 = "a b", d2 = "a b c d e")
-    toks <- tokens(txt)
-    dfmt <- dfm(toks)
-    feat <- c("b", "c", "d", "e", "f", "g")
-    expect_message(
-        suppressWarnings(dfm(txt, remove = feat, verbose = TRUE)),
-        "removed 4 features"
-    )
-    expect_message(
-        suppressWarnings(dfm(toks, remove = feat, verbose = TRUE)),
-        "removed 4 features"
-    )
-    expect_message(
-        suppressWarnings(dfm(dfmt, remove = feat, verbose = TRUE)),
-        "removed 4 features"
-    )
-})
-
-test_that("dfm works with stem options", {
-    txt_english <- "running ran runs"
-    txt_french <- "courant courir cours"
-
-    quanteda_options(language_stemmer = "english")
-    expect_equal(
-        as.character(tokens_wordstem(tokens(txt_english))),
-        c("run", "ran", "run")
-    )
-    expect_equal(
-        featnames(dfm(tokens(txt_english))),
-        c("running", "ran", "runs")
-    )
-    expect_equal(
-        featnames(suppressWarnings(dfm(tokens(txt_english), stem = TRUE))),
-        c("run", "ran")
-    )
-    expect_error(
-        suppressWarnings(dfm(tokens(txt_english), stem = c(TRUE, FALSE))),
-        "The length of stem must be 1"
-    )
-
-    quanteda_options(language_stemmer = "french")
-    expect_equal(
-        as.character(tokens_wordstem(tokens(txt_french))),
-        rep("cour", 3)
-    )
-    expect_equal(
-        featnames(dfm(tokens(txt_french))),
-        c("courant", "courir", "cours")
-    )
-    expect_equal(
-        featnames(suppressWarnings(dfm(tokens(txt_french), stem = TRUE))),
-        "cour"
-    )
-    quanteda_options(reset = TRUE)
-})
 
 test_that("dfm verbose option prints correctly", {
-    skip("the verbose message has been changed")
+    
     txt <- c(d1 = "a b c d e", d2 = "a a b c c c")
     corp <- corpus(txt)
     toks <- tokens(txt)
-    mydfm <- dfm(toks)
-    expect_message(suppressWarnings(dfm(txt, verbose = TRUE)), "Creating a dfm from a character input")
-    expect_message(suppressWarnings(dfm(corp, verbose = TRUE)), "Creating a dfm from a corpus input")
-    expect_message(dfm(toks, verbose = TRUE), "Creating a dfm from a tokens input")
-    expect_message(dfm(mydfm, verbose = TRUE), "Creating a dfm from a dfm input")
+    xtoks <- as.tokens_xptr(toks)
+    dfmat <- dfm(toks)
+    expect_message(dfm(toks, verbose = TRUE), 
+                   "Creating a dfm from a tokens object")
+    expect_message(dfm(xtoks, verbose = TRUE), 
+                   "Creating a dfm from a tokens_xptr object")
+    expect_message(dfm(dfmat, verbose = TRUE), 
+                   "Creating a dfm from a dfm object")
 })
 
 test_that("dfm works with purrr::map (#928)", {
     skip_if_not_installed("purrr")
-    a <- "a b"
-    b <- "a a a b b"
+    toks1 <- tokens("a b")
+    toks2 <- tokens("a a a b b")
     suppressWarnings(expect_identical(
-        vapply(purrr::map(list(a, b), dfm), is.dfm, logical(1)),
-        c(TRUE, TRUE)
-    ))
-    suppressWarnings(expect_identical(
-        vapply(purrr::map(list(corpus(a), corpus(b)), dfm), is.dfm, logical(1)),
+        vapply(purrr::map(list(toks1, toks2), dfm), is.dfm, logical(1)),
         c(TRUE, TRUE)
     ))
     expect_identical(
-        vapply(purrr::map(list(tokens(a), tokens(b)), dfm), is.dfm, logical(1)),
-        c(TRUE, TRUE)
-    )
-    expect_identical(
-        vapply(purrr::map(list(dfm(tokens(a)), dfm(tokens(b))), dfm), is.dfm, logical(1)),
+        vapply(purrr::map(list(dfm(toks1), dfm(toks2)), dfm), is.dfm, logical(1)),
         c(TRUE, TRUE)
     )
 })
@@ -585,56 +461,20 @@ test_that("dfm works when features are created (#946", {
 })
 
 test_that("dfm warns of argument not used", {
+    
     txt <- c(d1 = "a b c d e", d2 = "a a b c c c")
-    corp <- corpus(txt)
     toks <- tokens(txt)
-    mx <- dfm(toks)
+    xtoks <- as.tokens_xptr(toks)
+    dfmat <- dfm(toks)
 
-    expect_warning(dfm(txt, xxxxx = "something", yyyyy = "else"),
-                   "^xxxxx, yyyyy arguments are not used")
-    expect_warning(dfm(corp, xxxxx = "something", yyyyy = "else"),
-                   "^xxxxx, yyyyy arguments are not used")
     expect_warning(dfm(toks, xxxxx = "something", yyyyy = "else"),
                    "^xxxxx, yyyyy arguments are not used")
-    expect_warning(dfm(mx, xxxxx = "something", yyyyy = "else"),
+    expect_warning(dfm(xtoks, xxxxx = "something", yyyyy = "else"),
+                   "^xxxxx, yyyyy arguments are not used")
+    expect_warning(dfm(dfmat, xxxxx = "something", yyyyy = "else"),
                    "^xxxxx, yyyyy arguments are not used")
 })
 
-test_that("dfm pass arguments to tokens, issue #1121", {
-    txt <- data_char_sampletext
-    corp <- corpus(txt)
-
-    suppressWarnings({
-    expect_equal(dfm(txt, what = "character"),
-                 dfm(tokens(corp, what = "character")))
-
-    expect_equivalent(dfm(txt, what = "character"),
-                      dfm(tokens(txt, what = "character")))
-
-    expect_equal(dfm(txt, remove_punct = TRUE),
-                 dfm(tokens(corp, remove_punct = TRUE)))
-
-    expect_equivalent(dfm(txt, remove_punct = TRUE),
-                      dfm(tokens(txt, remove_punct = TRUE)))
-    })
-})
-
-test_that("dfm error when a dfm is given to for feature selection when x is not a dfm, #1067", {
-    txt <- c(d1 = "a b c d e", d2 = "a a b c c c")
-    corp <- corpus(txt)
-    toks <- tokens(txt)
-    mx <- dfm(toks)
-    mx2 <- dfm(tokens(c("a b", "c")))
-
-    expect_error(suppressWarnings(dfm(txt, select = mx2)),
-                "dfm cannot be used as pattern")
-    expect_error(suppressWarnings(dfm(corp, select = mx2)),
-                "dfm cannot be used as pattern")
-    expect_error(suppressWarnings(dfm(toks, select = mx2)),
-                "dfm cannot be used as pattern")
-    expect_error(suppressWarnings(dfm(mx, select = mx2)),
-                "dfm cannot be used as pattern; use 'dfm_match' instead")
-})
 
 test_that("test topfeatures", {
     expect_identical(
@@ -884,10 +724,6 @@ test_that("unused argument warning only happens only once (#1509)", {
         "^NOTARG argument is not used\\.$"
     )
     expect_warning(
-        dfm(corpus("some text"), NOTARG = TRUE),
-        "^NOTARG argument is not used\\.$"
-    )
-    expect_warning(
         dfm(tokens("some text"), NOTARG = TRUE),
         "^NOTARG argument is not used\\.$"
     )
@@ -895,15 +731,6 @@ test_that("unused argument warning only happens only once (#1509)", {
         dfm(tokens("some text"), NOTARG = TRUE, NOTARG2 = FALSE),
         "^NOTARG, NOTARG2 arguments are not used\\.$"
     )
-})
-
-test_that("dfm.tokens() with groups works as expected", {
-    x <- tokens(data_corpus_inaugural)
-    groupeddfm <- suppressWarnings(dfm(tokens(x),
-                                       groups = c("FF", "FF", rep("non-FF", ndoc(x) - 2))))
-    expect_equal(ndoc(groupeddfm), 2)
-    expect_equal(docnames(groupeddfm), c("FF", "non-FF"))
-    expect_equal(featnames(groupeddfm), featnames(dfm(x)))
 })
 
 test_that("dimnames are always character vectors", {
@@ -1048,15 +875,6 @@ test_that("remove_padding argument works", {
     txt <- c("a a b b c", "a a b c c d d")
     toks <- tokens(txt) %>% tokens_remove("b", padding = TRUE)
     dfmat <- dfm(toks)
-    
-    expect_identical(
-        featnames(suppressWarnings(dfm(txt, remove_padding = TRUE))),
-        c("a", "b", "c", "d")
-    )
-    expect_identical(
-        featnames(suppressWarnings(dfm(txt, remove_padding = FALSE))),
-        c("a", "b", "c", "d")
-    )
     expect_identical(
         featnames(dfm(toks, remove_padding = FALSE)),
         c("", "a", "c", "d")
