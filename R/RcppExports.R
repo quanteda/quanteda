@@ -21,14 +21,6 @@ cpp_serialize_add <- function(texts_, xptr) {
     .Call(`_quanteda_cpp_serialize_add`, texts_, xptr)
 }
 
-fun1 <- function() {
-    invisible(.Call(`_quanteda_fun1`))
-}
-
-fun2 <- function() {
-    invisible(.Call(`_quanteda_fun2`))
-}
-
 cpp_tokens_chunk <- function(xptr, size, overlap) {
     .Call(`_quanteda_cpp_tokens_chunk`, xptr, size, overlap)
 }
