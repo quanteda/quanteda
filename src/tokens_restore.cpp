@@ -58,28 +58,6 @@ Text join_mark(Text tokens,
     return tokens_flat;
 }
 
-struct restore_mt : public Worker{
-    
-    Texts &texts;
-    MapNgrams &map_marks;
-    MapNgrams &map_comps;
-    IdNgram &id_comp;
-    
-    // Constructor
-    restore_mt(Texts &texts_, 
-               MapNgrams &map_marks_, MapNgrams &map_comps_, IdNgram &id_comp_):
-               texts(texts_), 
-               map_marks(map_marks_), map_comps(map_comps_), id_comp(id_comp_) {}
-    
-    // parallelFor calles this function with std::size_t
-    void operator()(std::size_t begin, std::size_t end){
-        //Rcout << "Range " << begin << " " << end << "\n";
-        for (std::size_t h = begin; h < end; h++) {
-            texts[h] = join_mark(texts[h], map_marks, map_comps, id_comp);
-        }
-    }
-};
-
 /* 
  * This function substitutes features in tokens object with new IDs. 
  * The number of threads is set by RcppParallel::setThreadOptions()
@@ -127,11 +105,15 @@ TokensPtr cpp_tokens_restore(TokensPtr xptr,
      
     // dev::Timer timer;
     // dev::start_timer("Token compound", timer);
+    std::size_t H = texts.size();
 #if QUANTEDA_USE_TBB
-    restore_mt restore_mt(texts, map_marks, map_comps, id_comp);
-    parallelFor(0, texts.size(), restore_mt);
+    tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
+        for (int h = r.begin(); h < r.end(); ++h) {
+            texts[h] = join_mark(texts[h], map_marks, map_comps, id_comp);
+        }    
+    });
 #else
-    for (std::size_t h = 0; h < texts.size(); h++) {
+    for (std::size_t h = 0; h < H; h++) {
         texts[h] = join_mark(texts[h], map_marks, map_comps, id_comp);
     }
 #endif

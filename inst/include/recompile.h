@@ -19,23 +19,6 @@ inline bool is_duplicated(Types types){
     return false;
 }
 
-struct recompile_mt : public Worker{
-    
-    Texts &texts;
-    VecIds &ids_new;
-    
-    recompile_mt(Texts &texts_, VecIds &ids_new_):
-        texts(texts_), ids_new(ids_new_) {}
-    
-    void operator()(std::size_t begin, std::size_t end){
-        for (std::size_t h = begin; h < end; h++) {
-            for (std::size_t i = 0; i < texts[h].size(); i++) {
-                texts[h][i] = ids_new[texts[h][i]];
-            }
-        }
-    }
-};
-
 inline Tokens recompile(Texts texts, 
                         Types types, 
                         const bool flag_gap = true, 
@@ -132,11 +115,17 @@ inline Tokens recompile(Texts texts,
     //dev::start_timer("Convert IDs", timer);
     
     // Convert old IDs to new IDs
+    std::size_t H = texts.size();
 #if QUANTEDA_USE_TBB
-    recompile_mt recompile_mt(texts, ids_new);
-    parallelFor(0, texts.size(), recompile_mt);
+    tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
+        for (int h = r.begin(); h < r.end(); ++h) {
+            for (std::size_t i = 0; i < texts[h].size(); i++) {
+                texts[h][i] = ids_new[texts[h][i]];
+            }
+        }    
+    });
 #else
-    for (std::size_t h = 0; h < texts.size(); h++) {
+    for (std::size_t h = 0; h < H; h++) {
         for (std::size_t i = 0; i < texts[h].size(); i++) {
             texts[h][i] = ids_new[texts[h][i]];
             //Rcout << texts[h][i] << " -> " << ids_new[texts[h][i]] << "\n";

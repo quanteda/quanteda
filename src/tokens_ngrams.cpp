@@ -34,27 +34,6 @@ Text skipgram(const Text &tokens,
     return tokens_ng;
 }
 
-struct skipgram_mt : public Worker{
-    
-    Texts &texts;
-    const std::vector<unsigned int> &ns;
-    const std::vector<unsigned int> &skips;
-    MapNgrams &map_ngram;
-    IdNgram &id_ngram;
-    
-    skipgram_mt(Texts &texts_, const std::vector<unsigned int> &ns_, const std::vector<unsigned int> &skips_, 
-                MapNgrams &map_ngram_, IdNgram &id_ngram_):
-                texts(texts_), ns(ns_), skips(skips_), map_ngram(map_ngram_), id_ngram(id_ngram_){}
-    
-    void operator()(std::size_t begin, std::size_t end){
-        //Rcout << "Range " << begin << " " << end << "\n";
-        for (std::size_t h = begin; h < end; h++) {
-            texts[h] = skipgram(texts[h], ns, skips, map_ngram, id_ngram);
-        }
-    }
-};
-
-
 void type(std::size_t i,
           const VecNgrams &keys_ngram,
           Types &types_ngram,
@@ -73,27 +52,6 @@ void type(std::size_t i,
         types_ngram[i] = type_ngram;
     }
 }
-
-struct type_mt : public Worker{
-    
-    const VecNgrams &keys_ngram;
-    Types &types_ngram;
-    const MapNgrams &map_ngram;
-    const std::string &delim;
-    const Types &types;
-    
-    type_mt(VecNgrams &keys_ngram_, Types &types_ngram_, MapNgrams &map_ngram_, 
-            std::string &delim_, Types &types_):
-            keys_ngram(keys_ngram_), types_ngram(types_ngram_), map_ngram(map_ngram_), 
-            delim(delim_), types(types_) {}
-    
-    void operator()(std::size_t begin, std::size_t end){
-        //Rcout << "Range " << begin << " " << end << "\n";
-        for (std::size_t i = begin; i < end; i++) {
-            type(i, keys_ngram, types_ngram, map_ngram, delim, types);
-        }
-    }
-};
 
 
 /* 
@@ -125,13 +83,17 @@ TokensPtr cpp_tokens_ngrams(TokensPtr xptr,
     
     //dev::Timer timer;
     //dev::start_timer("Ngram generation", timer);
+    std::size_t H = texts.size();
 #if QUANTEDA_USE_TBB
     IdNgram id_ngram(1);
-    skipgram_mt skipgram_mt(texts, ns, skips, map_ngram, id_ngram);
-    parallelFor(0, texts.size(), skipgram_mt);
+    tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
+        for (int h = r.begin(); h < r.end(); ++h) {
+            texts[h] = skipgram(texts[h], ns, skips, map_ngram, id_ngram);
+        }    
+    });
 #else
     IdNgram id_ngram = 1;
-    for (std::size_t h = 0; h < texts.size(); h++) {
+    for (std::size_t h = 0; h < H; h++) {
         texts[h] = skipgram(texts[h], ns, skips, map_ngram, id_ngram);
     }
 #endif
@@ -145,12 +107,16 @@ TokensPtr cpp_tokens_ngrams(TokensPtr xptr,
     
     //dev::start_timer("Token generation", timer);
     // Create ngram types
-    Types types_ngram(keys_ngram.size());
+    std::size_t I = keys_ngram.size();
+    Types types_ngram(I);
 #if QUANTEDA_USE_TBB
-        type_mt type_mt(keys_ngram, types_ngram, map_ngram, delim, types);
-        parallelFor(0, types_ngram.size(), type_mt);
+    tbb::parallel_for(tbb::blocked_range<int>(0, I), [&](tbb::blocked_range<int> r) {
+        for (int i = r.begin(); i < r.end(); ++i) {
+            type(i, keys_ngram, types_ngram, map_ngram, delim, types);
+        }    
+    });
 #else
-    for (std::size_t i = 0; i < types_ngram.size(); i++) {
+    for (std::size_t i = 0; i < I; i++) {
         type(i, keys_ngram, types_ngram, map_ngram, delim, types);
     }
 #endif
