@@ -1,3 +1,10 @@
+# quanteda 3.3.1
+
+## Bug fixes and stability enhancements
+
+* Fixed a potential crash when calling `tokens_compound()` with patterns containing paddings (#2254).
+
+
 # quanteda 3.3.0
 
 ## Changes and additions
