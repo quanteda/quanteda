@@ -74,8 +74,8 @@ DataFrame cpp_index(TokensPtr xptr,
     std::vector<Matches> temp(texts.size());
     
     //dev::start_timer("Search keywords", timer);
-    std::size_t H = texts.size();
     UintParam N = 0;
+    std::size_t H = texts.size();
 #if QUANTEDA_USE_TBB
     tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
         for (int h = r.begin(); h < r.end(); ++h) {
