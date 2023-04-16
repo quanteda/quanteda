@@ -60,7 +60,7 @@ TokensPtr cpp_serialize(List texts_){
         }    
     });
 #else
-    for (size_t h = 0; h < H; h++) {
+    for (std::size_t h = 0; h < H; h++) {
         temp[h] = serialize(texts[h], map, id, false);
     }
 #endif
@@ -83,7 +83,7 @@ TokensPtr cpp_serialize_add(List texts_, TokensPtr xptr){
     
     //dev::start_timer("Register", timer);
     MapTypes map;
-    for (size_t g = 0; g < types.size(); g++) {
+    for (std::size_t g = 0; g < types.size(); g++) {
         std::string type = types[g];
         map.insert(std::pair<std::string, UintParam>(types[g], g + 1));
     }
