@@ -15,11 +15,11 @@ knitr::opts_chunk$set(
 )
 ```
 
-In **quanteda** v4.0, we introduced a new type of tokens object, `tokens_xptr`, to make the efficiency of operations on a large corpus. Its `tokens` object has been a list of vectors that record integer IDs of token. Every time, `tokens_*` functions are applied, a tokens object is converted to a C++ object, modified and converted back to R. As the corpus become larger, the conversion of tokens between R and C++ becomes very expensive, taking much of the execution time. However, the `tokens_xptr` object is based on a external-pointer object that keeps the data as the C++ object, making the cost of conversion close to zero. This is beneficial especially for users who preprocess large tokens objects through a long pipeline. 
+In **quanteda** version 4.0, we introduced a new class of tokens object, `tokens_xptr`, to make the efficiency of operations on a large corpus. The package's `tokens` object has been a list of vectors that record integer IDs of tokens. Therefore, a `tokens` object is converted to a C++ object, modified and converted back to R every time `tokens_*` functions are applied. As the size of the object becomes larger, the conversion between R and C++ takes much of the execution time. However, the `tokens_xptr` object is based on a external-pointer object that keeps the data as the C++ object, eliminating the cost of such conversion. This is beneficial especially when large tokens objects are processed through a long pipeline. 
 
 ## Creating tokens_xptr object
 
-You can create a `tokens_xptr` from `tokens` using `as.tokens_xptr()`. If `xtoks` is printed, the address of its underlying data is shown in the first line. As an external pointer object, the underlying data of the copy of the object `xtoks_copy` is the same. This means operations on `xtoks` uisng `tokens_*` functions also affect `xtoks_copy` even after the copying (shallow copy). If you want to copy the underlying data (deep copy), `as.tokens_xptr()` should be applied again.
+You can create a `tokens_xptr` from `tokens` using the `as.tokens_xptr()` method. If `xtoks` is printed, the address of its underlying data is shown in the first line. As an external pointer object, the underlying data of the copy of the object `xtoks_copy` is the same. This means that operations on `xtoks` using `tokens_*` functions also affect `xtoks_copy` even after the copying (shallow copy). If you want to copy the underlying data of `xtoks_copy` objects (deep copy), `as.tokens_xptr()` should be applied to `xtoks`.
 
 ```{r, echo=FALSE, include=FALSE}
 #data_corpus_guardian <- readRDS('/home/kohei/Dropbox/Public/data_corpus_guardian2016.rds') 
@@ -30,7 +30,6 @@ data_corpus_guardian <- readRDS('C:/Users/watan/Dropbox/Public/data_corpus_guard
 require(quanteda)
 
 corp <- corpus_reshape(data_corpus_guardian)
-
 toks <- tokens(corp)
 xtoks <- as.tokens_xptr(toks)
 print(xtoks, max_ndoc = 1)
@@ -46,7 +45,7 @@ print(xtoks_deepcopy, max_ndoc = 1)
 
 ## Saving tokens_xptr objects
 
-You should also note that you cannot save the underlying data of `tokens_xptr` objects. Thus, you should apply `as.tokens(xtoks)` before passing it to `save()` or `saveRDS()`.
+You should also note that you cannot save the underlying data of `tokens_xptr` objects. Thus, you should apply the `as.tokens()` method before passing it to `save()` or `saveRDS()`.
 
 ```{r, eval=FALSE}
 saveRDS(as.tokens(xtoks), file = "tokens_guardian.rds")
@@ -54,7 +53,7 @@ saveRDS(as.tokens(xtoks), file = "tokens_guardian.rds")
 
 ## Benchmarking
 
-We apply the same `tokens_*` functions to `tokens` and `tokens_xptr` objects and construct a dfm in this mock pipeline. The execution time of the pipeline for the latter is significantly shorter due to the cost saved by passing the data without expensive conversion from one function to another.
+We apply the same `tokens_*` functions to `tokens` and `tokens_xptr` objects and construct a `dfm` in this mock pipeline. The execution time for latter is significantly shorter than for the former thanks to the cost saved by passing the data without expensive conversion.
 
 ```{r}
 microbenchmark::microbenchmark(
