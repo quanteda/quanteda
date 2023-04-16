@@ -2,7 +2,7 @@ url: https://quanteda.io
 template:
   params:
     bootswatch: readable
-    ganalytics: UA-144616-24
+    ganalytics: G-0F398Z98L1
     docsearch:
       api_key: 9b4ef7fd791dc6075154d3ebd7b12acf
       index_name: quanteda
