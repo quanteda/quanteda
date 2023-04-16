@@ -249,13 +249,17 @@ test_that("objects are deep copied when ndoc changes", {
   expect_false(identical(quanteda:::address(xtoks), 
                          quanteda:::address(xtoks3)))
   
-  xtoks4 <- tokens_segment(xtoks, "\\p{P}", valuetype = "regex")
+  xtoks4 <- xtoks[]
   expect_false(identical(quanteda:::address(xtoks), 
                          quanteda:::address(xtoks4)))
   
-  xtoks5 <- tokens_chunk(xtoks, size = 1000)
+  xtoks5 <- tokens_segment(xtoks, "\\p{P}", valuetype = "regex")
   expect_false(identical(quanteda:::address(xtoks), 
                          quanteda:::address(xtoks5)))
+  
+  xtoks6 <- tokens_chunk(xtoks, size = 1000)
+  expect_false(identical(quanteda:::address(xtoks), 
+                         quanteda:::address(xtoks6)))
   
 })
 
