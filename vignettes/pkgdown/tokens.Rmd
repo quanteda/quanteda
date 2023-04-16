@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
 
 In **quanteda** version 4.0, we introduced a new class of tokens object, `tokens_xptr`, to make the efficiency of operations on a large corpus. The package's `tokens` object has been a list of vectors that record integer IDs of tokens. Therefore, a `tokens` object is converted to a C++ object, modified and converted back to R every time `tokens_*` functions are applied. As the size of the object becomes larger, the conversion between R and C++ takes much of the execution time. However, the `tokens_xptr` object is based on a external-pointer object that keeps the data as the C++ object, eliminating the cost of such conversion. This is beneficial especially when large tokens objects are processed through a long pipeline. 
 
-## Creating tokens_xptr object
+## Creating tokens_xptr objects
 
 You can create a `tokens_xptr` from `tokens` using the `as.tokens_xptr()` method. If `xtoks` is printed, the address of its underlying data is shown in the first line. As an external pointer object, the underlying data of the copy of the object `xtoks_copy` is the same. This means that operations on `xtoks` using `tokens_*` functions also affect `xtoks_copy` even after the copying (shallow copy). If you want to copy the underlying data of `xtoks_copy` objects (deep copy), `as.tokens_xptr()` should be applied to `xtoks`.
 
