@@ -238,3 +238,25 @@ test_that("cpp_serialize is working", {
         lapply(unname(out2), function(x) attr(out2, "types")[x])
     )
 })
+
+test_that("objects are deep copied when ndoc changes", {
+  
+  xtoks2 <- tokens_group(xtoks)
+  expect_false(identical(quanteda:::address(xtoks), 
+                         quanteda:::address(xtoks2)))
+  
+  xtoks3 <- tokens_subset(xtoks)
+  expect_false(identical(quanteda:::address(xtoks), 
+                         quanteda:::address(xtoks3)))
+  
+  xtoks4 <- tokens_segment(xtoks, "\\p{P}", valuetype = "regex")
+  expect_false(identical(quanteda:::address(xtoks), 
+                         quanteda:::address(xtoks4)))
+  
+  xtoks5 <- tokens_chunk(xtoks, size = 1000)
+  expect_false(identical(quanteda:::address(xtoks), 
+                         quanteda:::address(xtoks5)))
+  
+})
+
+

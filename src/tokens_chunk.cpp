@@ -65,10 +65,13 @@ TokensPtr cpp_tokens_chunk(TokensPtr xptr,
         }
     }
     
+    TokensObj *ptr_new = new TokensObj(chunks, xptr->types, xptr->recompiled);
+    TokensPtr xptr_new = TokensPtr(ptr_new, true);
+    
     IntegerVector documents_ = Rcpp::wrap(documents);
-    xptr.attr("documents") = documents_;
-    xptr->texts = chunks;
-    return xptr;
+    xptr_new.attr("documents") = documents_;
+    
+    return xptr_new;
 }
 
 /***R

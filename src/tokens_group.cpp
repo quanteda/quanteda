@@ -55,8 +55,10 @@ TokensPtr cpp_tokens_group(TokensPtr xptr,
     }
 #endif
     
-    xptr->texts = temp;
-    return xptr;
+    TokensObj *ptr_new = new TokensObj(temp, xptr->types, xptr->recompiled);
+    TokensPtr xptr_new = TokensPtr(ptr_new, true);
+    
+    return xptr_new;
 }
 
 /***R
