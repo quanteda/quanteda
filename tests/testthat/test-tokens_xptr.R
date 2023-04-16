@@ -228,8 +228,8 @@ test_that("fcm works", {
 })
 
 test_that("cpp_serialize is working", {
-    lis <- as.list(toks)
     
+    lis <- as.list(toks)
     out1 <- quanteda:::cpp_as_list(quanteda:::cpp_serialize(lis))
     out2 <- quanteda:::serialize_tokens(lis)
     
@@ -239,27 +239,65 @@ test_that("cpp_serialize is working", {
     )
 })
 
-test_that("objects are deep copied when ndoc changes", {
+test_that("returns shallow or deep copy x", {
   
-  xtoks2 <- tokens_group(xtoks)
-  expect_false(identical(quanteda:::address(xtoks), 
-                         quanteda:::address(xtoks2)))
+  # shallow copy
+  xtoks <- as.tokens_xptr(toks[1:10])
+  xtoks10 <- tokens_select(xtoks, stopwords("en"))
+  expect_true(identical(quanteda:::address(xtoks), 
+                        quanteda:::address(xtoks10)))
   
-  xtoks3 <- tokens_subset(xtoks)
-  expect_false(identical(quanteda:::address(xtoks), 
-                         quanteda:::address(xtoks3)))
+  xtoks <- as.tokens_xptr(toks[1:10])
+  xtoks11 <- tokens_compound(xtoks, "and", window = 1)
+  expect_true(identical(quanteda:::address(xtoks), 
+                        quanteda:::address(xtoks11)))
   
-  xtoks4 <- xtoks[]
-  expect_false(identical(quanteda:::address(xtoks), 
-                         quanteda:::address(xtoks4)))
+  xtoks <- as.tokens_xptr(toks[1:10])
+  xtoks12 <- tokens_lookup(xtoks, data_dictionary_LSD2015)
+  expect_true(identical(quanteda:::address(xtoks), 
+                        quanteda:::address(xtoks12)))
   
-  xtoks5 <- tokens_segment(xtoks, "\\p{P}", valuetype = "regex")
-  expect_false(identical(quanteda:::address(xtoks), 
-                         quanteda:::address(xtoks5)))
+  xtoks <- as.tokens_xptr(toks[1:10])
+  xtoks13 <- tokens_ngrams(xtoks)
+  expect_true(identical(quanteda:::address(xtoks), 
+                        quanteda:::address(xtoks13)))
   
-  xtoks6 <- tokens_chunk(xtoks, size = 1000)
+  xtoks <- as.tokens_xptr(toks[1:10])
+  xtoks14 <- tokens_replace(xtoks, phrase("fellow citizens"), phrase("fellow Americans"))
+  expect_true(identical(quanteda:::address(xtoks), 
+                        quanteda:::address(xtoks14)))
+  
+  xtoks <- as.tokens_xptr(toks[1:10])
+  xtoks15 <- tokens_restore(xtoks)
+  expect_true(identical(quanteda:::address(xtoks), 
+                        quanteda:::address(xtoks15)))
+  
+  # deep copy
+  xtoks <- as.tokens_xptr(toks[1:10])
+  xtoks20 <- tokens_group(xtoks)
   expect_false(identical(quanteda:::address(xtoks), 
-                         quanteda:::address(xtoks6)))
+                         quanteda:::address(xtoks20)))
+  
+  xtoks <- as.tokens_xptr(toks[1:10])
+  xtoks21 <- tokens_subset(xtoks)
+  expect_false(identical(quanteda:::address(xtoks), 
+                         quanteda:::address(xtoks21)))
+  
+  xtoks <- as.tokens_xptr(toks[1:10])
+  xtoks22 <- xtoks[]
+  expect_false(identical(quanteda:::address(xtoks), 
+                         quanteda:::address(xtoks22)))
+  
+  xtoks <- as.tokens_xptr(toks[1:10])
+  xtoks23 <- tokens_segment(xtoks, "\\p{P}", valuetype = "regex")
+  expect_false(identical(quanteda:::address(xtoks), 
+                         quanteda:::address(xtoks23)))
+  
+  xtoks <- as.tokens_xptr(toks[1:10])
+  xtoks24 <- tokens_chunk(xtoks, size = 1000)
+  expect_false(identical(quanteda:::address(xtoks), 
+                         quanteda:::address(xtoks24)))
+  
   
 })
 
