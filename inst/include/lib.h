@@ -100,7 +100,7 @@ namespace quanteda{
     
     
     inline String join_strings(CharacterVector &tokens_, 
-                       const String delim_ = " "){
+                               const String delim_ = " "){
         
         if (tokens_.size() == 0) return "";
         String token_ = tokens_[0];
@@ -124,8 +124,8 @@ namespace quanteda{
     
     // NOTE: used in textstats
     inline String join_strings(std::vector<unsigned int> &tokens,
-                       CharacterVector types_,
-                       const String delim_ = " ") {
+                               CharacterVector types_,
+                               const String delim_ = " ") {
 
         String token_("");
         if (tokens.size() > 0) {
