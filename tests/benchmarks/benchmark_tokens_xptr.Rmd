@@ -49,12 +49,6 @@ identical(quanteda3::dfm(tokens_ngrams(toks)),
 
 ```{r}
 microbenchmark::microbenchmark(
-    old = quanteda3::dfm(toks),
-    new = dfm(xtoks),
-    times = 10
-)
-
-microbenchmark::microbenchmark(
     old = quanteda3::tokens(corp, remove_punct = TRUE, remove_numbers = TRUE, 
                             remove_symbols = TRUE),
     new = tokens(corp, remove_punct = TRUE, remove_numbers = TRUE, 
@@ -78,6 +72,13 @@ microbenchmark::microbenchmark(
     new = tokens(corp, xptr = TRUE) %>% 
         tokens_remove(stopwords("en"), padding = TRUE) %>% 
         dfm(remove_padding = TRUE),
+    times = 10
+)
+
+microbenchmark::microbenchmark(
+    old = tokens_ngrams(toks),
+    new = as.tokens_xptr(xtoks) %>% 
+        tokens_ngrams(),
     times = 10
 )
 
