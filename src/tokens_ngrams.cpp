@@ -116,16 +116,9 @@ TokensPtr cpp_tokens_ngrams(TokensPtr xptr,
 library(quanteda)
 #txt <- c('a b c d e')
 txt <- c('a b c d e', 'c d e f g')
-tok <- quanteda::tokens(txt)
-out <- cpp_tokens_ngrams(tok, attr(tok, 'types'), "-", 2, 1)
-str(out)
-
-tok2 <- quanteda::tokens(data_corpus_inaugural)
-microbenchmark::microbenchmark(
-    cpp_tokens_ngrams(tok2, attr(tok2, 'types'), "-", 2, 1),
-    tokenizers::tokenize_ngrams(texts(data_corpus_inaugural))
-)
-
+xtoks <- quanteda::tokens(txt, xptr = TRUE)
+xtoks_ng <- cpp_tokens_ngrams(xtoks, "-", 2, 1)
+as.list(xtoks_ng)
 
 
 
