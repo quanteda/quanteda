@@ -57,15 +57,6 @@ microbenchmark::microbenchmark(
 )
 
 microbenchmark::microbenchmark(
-    old = quanteda3::tokens(toks, remove_punct = TRUE, remove_numbers = TRUE, 
-                            remove_symbols = TRUE),
-    new = as.tokens_xptr(toks) %>% 
-        tokens(remove_punct = TRUE, remove_numbers = TRUE, 
-               remove_symbols = TRUE),
-    times = 10
-)
-
-microbenchmark::microbenchmark(
     old = quanteda3::tokens(corp) %>% 
         quanteda3::tokens_remove(stopwords("en"), padding = TRUE) %>% 
         quanteda3::dfm(remove_padding = TRUE),
@@ -104,14 +95,27 @@ microbenchmark::microbenchmark(
 )
 
 microbenchmark::microbenchmark(
-    old = quanteda3::dfm(toks),
-    news = dfm(xtoks),
+    old = quanteda3::tokens_group(toks),
+    new = tokens_group(xtoks),
     times = 10
 )
 
 microbenchmark::microbenchmark(
-    old = quanteda3::tokens_group(toks),
-    new = tokens_group(xtoks),
+    old = quanteda3::dfm(toks),
+    news = dfm(xtoks),
+    times = 10
+)
+```
+
+```{r}
+toks1 <- head(toks, 5000)
+toks2 <- tail(toks, 5000)
+xtoks1 <- as.tokens_xptr(toks1)
+xtoks2 <- as.tokens_xptr(toks2)
+
+microbenchmark::microbenchmark(
+    old = quanteda3:::c.tokens(toks1, toks2),
+    new = quanteda:::c.tokens_xptr(xtoks1, xtoks2),
     times = 10
 )
 ```
