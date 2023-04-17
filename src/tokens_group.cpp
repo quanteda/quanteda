@@ -17,37 +17,48 @@ TokensPtr cpp_tokens_group(TokensPtr xptr,
     
     Texts texts = xptr->texts;
     std::vector<int> groups = Rcpp::as< std::vector<int> >(groups_);
+    Types levels = Rcpp::as<Types>(groups_.attr("levels"));
     
     if (texts.size() != groups.size())
         throw std::range_error("Invalid groups");
     
-    CharacterVector levels_ = groups_.attr("levels");
-    int G = levels_.size();
+    // pre-allocate memory
+    std::size_t G = levels.size();
+    std::size_t H = texts.size();
+    std::vector<size_t> sizes(G);
+    for (std::size_t h = 0; h < H; h++) {
+        sizes[groups[h] - 1] =+ texts[h].size();
+    }
     Texts temp(G);
+    for (std::size_t g = 0; g < G; g++) {
+        temp[g].reserve(sizes[g]);  
+    }
+    
 
 #if QUANTEDA_USE_TBB
-    //int e = std::ceil(G / tbb::this_task_arena::max_concurrency());
     tbb::parallel_for(tbb::blocked_range<int>(0, G), [&](tbb::blocked_range<int> r) {
         for (int g = r.begin(); g < r.end(); ++g) {
-            for (std::size_t h = 0; h < texts.size(); h++) {
-                if (g + 1 == groups[h]) {
+            for (std::size_t h = 0; h < H; h++) {
+                if (g == groups[h] - 1) {
                     temp[g].insert(temp[g].end(), texts[h].begin(), texts[h].end());
                 }
             }
         }
-    });//, tbb::auto_partitioner());
+    });
 #else
     for (std::size_t g = 0; g < G; g++) {
-        for (std::size_t h = 0; h < texts.size(); h++) {
-            if (g + 1 == groups[h]) {
+        for (std::size_t h = 0; h < H; h++) {
+            if (g == groups[h] - 1) {
                 temp[g].insert(temp[g].end(), texts[h].begin(), texts[h].end());
             }
         }
     }
 #endif
     
-    xptr->texts = temp;
-    return xptr;
+    TokensObj *ptr_new = new TokensObj(temp, xptr->types, xptr->recompiled);
+    TokensPtr xptr_new = TokensPtr(ptr_new, true);
+    
+    return xptr_new;
 }
 
 /***R

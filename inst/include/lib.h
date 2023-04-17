@@ -100,7 +100,7 @@ namespace quanteda{
     
     
     inline String join_strings(CharacterVector &tokens_, 
-                       const String delim_ = " "){
+                               const String &delim_ = " "){
         
         if (tokens_.size() == 0) return "";
         String token_ = tokens_[0];
@@ -113,7 +113,7 @@ namespace quanteda{
     }
     
     inline std::string join_strings(std::vector<std::string> &tokens, 
-                                    const std::string delim = " "){
+                                    const std::string &delim = " "){
         if (tokens.size() == 0) return "";
         std::string token = tokens[0];
         for (std::size_t i = 1; i < tokens.size(); i++) {
@@ -124,8 +124,8 @@ namespace quanteda{
     
     // NOTE: used in textstats
     inline String join_strings(std::vector<unsigned int> &tokens,
-                       CharacterVector types_,
-                       const String delim_ = " ") {
+                               const CharacterVector &types_,
+                               const String &delim_ = " ") {
 
         String token_("");
         if (tokens.size() > 0) {
@@ -144,8 +144,8 @@ namespace quanteda{
     }
     
     inline std::string join_strings(std::vector<unsigned int> &tokens,
-                                    Types types,
-                                    const std::string delim = " ") {
+                                    const Types &types,
+                                    const std::string &delim = " ") {
 
         std::string token("");
         if (tokens.size() > 0) {
@@ -162,14 +162,14 @@ namespace quanteda{
         return token;
     }
     
-    inline bool is_encoded(String delim_){
+    inline bool is_encoded(String &delim_){
         if (delim_.get_encoding() > 0) {
             return true;
         }
         return false;
     }
     
-    inline bool is_encoded(CharacterVector types_){
+    inline bool is_encoded(CharacterVector &types_){
         for (unsigned int i = 0; i < (unsigned int)types_.size(); i++) {
             String type_ = types_[i];
             if (type_.get_encoding() > 0) {
@@ -179,7 +179,7 @@ namespace quanteda{
         return false;
     }
     
-    inline CharacterVector encode(Types types){
+    inline CharacterVector encode(Types &types){
         CharacterVector types_(types.size());
         for (std::size_t i = 0; i < types.size(); i++) {
             String type_ = types[i];

@@ -1077,21 +1077,21 @@ test_that("old preserve_special works", {
 })
 
 test_that("output is correct for word1", {
-    skip("the verbose message has been changed")
+    
     expect_message(
-        tmp <- tokens(data_char_ukimmig2010, what = "word1", split_hyphens = FALSE, verbose = TRUE),
+        toks <- tokens(data_char_ukimmig2010, what = "word1", split_hyphens = FALSE, verbose = TRUE),
         "preserving hyphens"
     )
     expect_message(
-        tmp <- tokens(data_char_ukimmig2010, what = "word1", split_hyphens = FALSE, verbose = TRUE),
+        toks <- tokens(data_char_ukimmig2010, what = "word1", split_hyphens = FALSE, verbose = TRUE),
         "Finished constructing tokens from 9 documents"
     )
     expect_message(
-        tmp <- tokens(data_char_ukimmig2010, what = "word1", split_hyphens = FALSE, verbose = TRUE),
-        "^Creating a tokens object from a character input"
+        toks <- tokens(data_char_ukimmig2010, what = "word1", split_hyphens = FALSE, verbose = TRUE),
+        "^Creating a tokens from a character object"
     )
     expect_message(
-        tmp <- tokens(data_char_ukimmig2010, what = "sentence", verbose = TRUE),
+        toks <- tokens(data_char_ukimmig2010, what = "sentence", verbose = TRUE),
         "segmenting into sentences"
     )
 })

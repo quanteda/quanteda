@@ -15,40 +15,34 @@ test_that("test that ngrams produces the results from Guthrie 2006", {
           'killed_in_fighting', 'killed_ongoing_fighting', 
           'in_ongoing_fighting')
       
-      expect_equivalent(setdiff(
+      expect_setequal(
           as.list(tokens_ngrams(toks, n=2, skip=0))[[1]],
           bi_grams
-          ), character(0)
       )
       
-      expect_equivalent(setdiff(
+      expect_setequal(
           as.list(tokens_ngrams(toks, n=2, skip=0:2))[[1]],
           two_skip_bi_grams
-          ), character(0)
       )
       
-      expect_equivalent(setdiff(
+      expect_setequal(
           as.list(tokens_ngrams(toks, n=3, skip=0))[[1]],
           tri_grams
-          ), character(0)
       )
       
-      expect_equivalent(setdiff(
+      expect_setequal(
           as.list(tokens_ngrams(toks, n=3, skip=0:2))[[1]],
           two_skip_tri_grams
-          ), character(0)
       )
       
-      expect_equivalent(setdiff(
+      expect_setequal(
         as.list(tokens_ngrams(toks, n = 2:3))[[1]],
         c(bi_grams, tri_grams)
-        ), character(0)
       )
 
-      expect_equivalent(setdiff(
+      expect_setequal(
           as.list(suppressWarnings(tokens_ngrams(toks, n = 2:3)))[[1]],
           c(bi_grams, tri_grams)
-      ), character(0)
       )
 })
 
@@ -122,10 +116,10 @@ test_that("test there is no competition between threads", {
                        "insurgents_killed_in", "killed_in_ongoing", "in_ongoing_fighting")), 10)
     names(ngrs) <- names(toks)
     
-    # needs to be repeated becasue thread compeition happen at low chance 
-    for(k in 1:1000) {
-        expect_identical(as.list(tokens_ngrams(toks, n = 2:3)), ngrs)
-    }
+    # needs to be repeated because thread competition happen at low chance 
+    expect_true(
+        all(replicate(1000, identical(as.list(tokens_ngrams(toks, n = 2:3)), ngrs)))
+    )
 })
     
 test_that("tokens_ngrams(x, n = ...) works when ntokens(x) < n", {

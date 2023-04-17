@@ -91,7 +91,7 @@ as.list.tokens_xptr <- function(x, ...) {
 #' @method [ tokens_xptr
 #' @export
 "[.tokens_xptr" <- function(x, i, drop_docid = TRUE) {
-    if (missing(i)) return(x)
+    if (missing(i)) return(as.tokens_xptr(x))
     attrs <- attributes(x)
     
     index <- seq_along(docnames(x))
