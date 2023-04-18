@@ -86,6 +86,8 @@ reference:
     - as.list.tokens
     - as.tokens
     - is.tokens
+    - as.tokens_xptr
+    - is.tokens_xptr
 - title: Character functions
   desc: Functions for constructing and manipulating character objects.
   contents:
