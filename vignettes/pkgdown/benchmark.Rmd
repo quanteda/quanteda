@@ -49,7 +49,7 @@ sum(ntoken(toks)) # the total number of tokens
 
 ## Tokenize a corpus
 
-Although v4.0 tokenizer is more flexible, its speed is roughly the same that of the v3.2 tokenizer. The shorter execution time of the version 4.0 is due to the faster removal of punctuation marks, numbers and symbols. We compare the performance by tokenizing the corpus with the `tokens()` function from **quanteda**  version 3.2 (upper part of figure below) and version 4.0 (lower part). 
+Although the v4.0 tokenizer is more flexible, its speed is roughly the same as v3.2 tokenizer. The shorter execution time of the version 4.0 is due to the faster removal of punctuation marks, numbers and symbols. We compare the performance by tokenizing the corpus with the `tokens()` function from **quanteda** version version 4.0 and 3.2 ("v4" and "v3" in the plots, respectively). 
 
 ```{r}
 microbenchmark::microbenchmark(
