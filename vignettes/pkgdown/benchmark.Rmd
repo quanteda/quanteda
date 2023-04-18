@@ -1,5 +1,5 @@
 ---
-title: "Performance improvement in verson 4.0"
+title: "Performance improvement in version 4.0"
 author: Kohei Watanabe
 output:  
   html_document:
@@ -33,9 +33,14 @@ The result shows that the execution time of many v4.0 functions is about the hal
 require(quanteda)
 require(ggplot2)
 
+# create text corpus
 corp <- corpus_reshape(data_corpus_guardian)
+
+# tokenize corpus
 toks <- tokens(corp, remove_punct = FALSE, remove_numbers = FALSE, 
                remove_symbols = FALSE)
+
+# transform tokens object to tokens_xptr object
 xtoks <- as.tokens_xptr(toks)
 
 ndoc(toks) # the number of sentences
@@ -44,14 +49,15 @@ sum(ntoken(toks)) # the total number of tokens
 
 ## Tokenize a corpus
 
-Although v4.0 tokenizer is more flexible, its speed is roughly the same that of the v3.2 tokenizer. The shorter execution time of the version 4.0 is due to the faster removal of punctuation marks, numbers and symbols.
+Although v4.0 tokenizer is more flexible, its speed is roughly the same that of the v3.2 tokenizer. The shorter execution time of the version 4.0 is due to the faster removal of punctuation marks, numbers and symbols. We compare the performance by tokenizing the corpus with the `tokens()` function from **quanteda**  version 3.2 (upper part of figure below) and version 4.0 (lower part). We repeat the tokenization for each procedure ten times.
 
 ```{r}
+# compare default tokenization of quanteda version 4.0 with version 3.2
 microbenchmark::microbenchmark(
     v3 = quanteda3::tokens(corp, remove_punct = TRUE, remove_numbers = TRUE, 
-                            remove_symbols = TRUE),
+                           remove_symbols = TRUE),
     v4 = tokens(corp, remove_punct = TRUE, remove_numbers = TRUE, 
-                 remove_symbols = TRUE),
+                remove_symbols = TRUE),
     times = 10
 ) %>% autoplot()
 ```
@@ -99,11 +105,17 @@ microbenchmark::microbenchmark(
 ## Combine tokens objects
 
 ```{r}
+# get first 5000 documents
 toks1 <- head(toks, 5000)
+
+# get last 5000 documents
 toks2 <- tail(toks, 5000)
+
+# transform both objects to tokens_xptr objects
 xtoks1 <- as.tokens_xptr(toks1)
 xtoks2 <- as.tokens_xptr(toks2)
 
+# combine tokens objects
 microbenchmark::microbenchmark(
     v3 = quanteda3:::c.tokens(toks1, toks2),
     v4 = quanteda:::c.tokens_xptr(xtoks1, xtoks2),
@@ -112,6 +124,8 @@ microbenchmark::microbenchmark(
 ```
 
 ## Construct a DFM
+
+We also compare the speed of creating a document-feature matrix based on the tokens object from **quanteda** version 3.2 and the new `as.tokens_xptr()` function implemented in version 4.0.
 
 ```{r}
 microbenchmark::microbenchmark(
