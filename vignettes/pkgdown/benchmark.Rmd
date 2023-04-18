@@ -1,5 +1,5 @@
 ---
-title: "Performance improvement in v4"
+title: "Performance improvement in verson 4.0"
 author: Kohei Watanabe
 output:  
   html_document:
