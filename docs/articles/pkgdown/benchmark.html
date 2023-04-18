@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Performance improvement in verson 4.0 • quanteda</title>
+<title>Performance improvement in version 4.0 • quanteda</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../../bootstrap-toc.css">
 <script src="../../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
@@ -14,7 +14,7 @@
 <script src="../../pkgdown.js"></script><!-- docsearch --><script src="../../docsearch.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.3/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous">
 <link href="../../docsearch.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script><link href="../../extra.css" rel="stylesheet">
-<script src="../../extra.js"></script><meta property="og:title" content="Performance improvement in verson 4.0">
+<script src="../../extra.js"></script><meta property="og:title" content="Performance improvement in version 4.0">
 <meta property="og:description" content="quanteda">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -162,7 +162,7 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Performance improvement in verson 4.0</h1>
+      <h1 data-toc-skip>Performance improvement in version 4.0</h1>
                         <h4 data-toc-skip class="author">Kohei
 Watanabe</h4>
             
@@ -175,22 +175,29 @@ Watanabe</h4>
     
     
 <p><strong>quanteda</strong> version 4.0 can process textual data
-significantly faster than its earlier versions thanks to the
-<code>tokens_xptr</code> object and a new glob pattern matching
-mechanism. We created the <strong>quanteda3</strong> package from the
-version 3.2 and compared the version 4.0 with it on a Windows laptop
-with AMD Ryzen 7 PRO processor (8 cores). We used sentences from 10,000
-English-language news articles in this benchmarking.</p>
-<p>The result shows that the execution time of many v4.0 functions is
-about the half of the version 3.2 functions.</p>
+significantly faster than its earlier versions thanks to the <a href="./articles/tokens.html">tokens_xptr object</a> and a new glob
+pattern matching mechanism. We created the <strong>quanteda3</strong>
+package from the version 3.2 and compared the version 4.0 with it on a
+Windows laptop with AMD Ryzen 7 PRO processor (8 cores). We used
+sentences from 10,000 English-language news articles in this
+benchmarking.</p>
+<p>We repeat the same operation using the different versions of the same
+function to get the distribution of execution time. The result shows
+that the execution time of many v4.0 functions is about the half of the
+version 3.2 functions.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#devtools::install_github("quanteda/quanteda3")</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://quanteda.io">quanteda</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span></span>
+<span><span class="co"># create text corpus</span></span>
 <span><span class="va">corp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/corpus_reshape.html">corpus_reshape</a></span><span class="op">(</span><span class="va">data_corpus_guardian</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># tokenize corpus</span></span>
 <span><span class="va">toks</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/tokens.html">tokens</a></span><span class="op">(</span><span class="va">corp</span>, remove_punct <span class="op">=</span> <span class="cn">FALSE</span>, remove_numbers <span class="op">=</span> <span class="cn">FALSE</span>, </span>
 <span>               remove_symbols <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># transform tokens object to tokens_xptr object</span></span>
 <span><span class="va">xtoks</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/as.tokens_xptr.html">as.tokens_xptr</a></span><span class="op">(</span><span class="va">toks</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="../../reference/ndoc.html">ndoc</a></span><span class="op">(</span><span class="va">toks</span><span class="op">)</span> <span class="co"># the number of sentences</span></span>
@@ -200,16 +207,18 @@ about the half of the version 3.2 functions.</p>
 <div class="section level2">
 <h2 id="tokenize-a-corpus">Tokenize a corpus<a class="anchor" aria-label="anchor" href="#tokenize-a-corpus"></a>
 </h2>
-<p>Although v4.0 tokenizer is more flexible, its speed is roughly the
-same that of the v3.2 tokenizer. The shorter execution time of the
-version 4.0 is due to the faster removal of punctuation marks, numbers
-and symbols.</p>
+<p>Although the v4.0 tokenizer is more flexible, its speed is roughly
+the same as v3.2 tokenizer. The shorter execution time of the version
+4.0 is due to the faster removal of punctuation marks, numbers and
+symbols. We compare the performance by tokenizing the corpus with the
+<code><a href="../../reference/tokens.html">tokens()</a></code> function from <strong>quanteda</strong> version
+version 4.0 and 3.2 (“v4” and “v3” in the plots, respectively).</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">microbenchmark</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/microbenchmark/man/microbenchmark.html" class="external-link">microbenchmark</a></span><span class="op">(</span></span>
 <span>    v3 <span class="op">=</span> <span class="fu">quanteda3</span><span class="fu">::</span><span class="fu"><a href="https://quanteda.io/reference/tokens.html">tokens</a></span><span class="op">(</span><span class="va">corp</span>, remove_punct <span class="op">=</span> <span class="cn">TRUE</span>, remove_numbers <span class="op">=</span> <span class="cn">TRUE</span>, </span>
-<span>                            remove_symbols <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>                           remove_symbols <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
 <span>    v4 <span class="op">=</span> <span class="fu"><a href="../../reference/tokens.html">tokens</a></span><span class="op">(</span><span class="va">corp</span>, remove_punct <span class="op">=</span> <span class="cn">TRUE</span>, remove_numbers <span class="op">=</span> <span class="cn">TRUE</span>, </span>
-<span>                 remove_symbols <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>                remove_symbols <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
 <span>    times <span class="op">=</span> <span class="fl">10</span></span>
 <span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="benchmark_files/figure-html/unnamed-chunk-3-1.png" width="1200"></p>
@@ -220,7 +229,8 @@ and symbols.</p>
 <p><code><a href="../../reference/as.tokens_xptr.html">as.tokens_xptr()</a></code> is inserted before the v4 functions to
 keep the original <code>tokens_xptr</code> object intact.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">microbenchmark</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/microbenchmark/man/microbenchmark.html" class="external-link">microbenchmark</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="co"># generate n-grams</span></span>
+<span><span class="fu">microbenchmark</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/microbenchmark/man/microbenchmark.html" class="external-link">microbenchmark</a></span><span class="op">(</span></span>
 <span>    v3 <span class="op">=</span> <span class="fu"><a href="../../reference/tokens_ngrams.html">tokens_ngrams</a></span><span class="op">(</span><span class="va">toks</span><span class="op">)</span>,</span>
 <span>    v4 <span class="op">=</span> <span class="fu"><a href="../../reference/as.tokens_xptr.html">as.tokens_xptr</a></span><span class="op">(</span><span class="va">xtoks</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
 <span>        <span class="fu"><a href="../../reference/tokens_ngrams.html">tokens_ngrams</a></span><span class="op">(</span><span class="op">)</span>,</span>
@@ -229,6 +239,7 @@ keep the original <code>tokens_xptr</code> object intact.</p>
 <p><img src="benchmark_files/figure-html/unnamed-chunk-4-1.png" width="1200"></p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
+<span><span class="co"># lookup dictionary keywords</span></span>
 <span><span class="fu">microbenchmark</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/microbenchmark/man/microbenchmark.html" class="external-link">microbenchmark</a></span><span class="op">(</span></span>
 <span>    v3 <span class="op">=</span> <span class="fu">quanteda3</span><span class="fu">::</span><span class="fu"><a href="https://quanteda.io/reference/tokens_compound.html">tokens_compound</a></span><span class="op">(</span><span class="va">toks</span>, <span class="va">data_dictionary_LSD2015</span><span class="op">)</span>,</span>
 <span>    v4 <span class="op">=</span> <span class="fu"><a href="../../reference/as.tokens_xptr.html">as.tokens_xptr</a></span><span class="op">(</span><span class="va">xtoks</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
@@ -238,15 +249,18 @@ keep the original <code>tokens_xptr</code> object intact.</p>
 <p><img src="benchmark_files/figure-html/unnamed-chunk-4-2.png" width="1200"></p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
+<span></span>
+<span><span class="co"># remove stop words</span></span>
 <span><span class="fu">microbenchmark</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/microbenchmark/man/microbenchmark.html" class="external-link">microbenchmark</a></span><span class="op">(</span></span>
-<span>    v3 <span class="op">=</span> <span class="fu">quanteda3</span><span class="fu">::</span><span class="fu"><a href="https://quanteda.io/reference/tokens_select.html">tokens_select</a></span><span class="op">(</span><span class="va">toks</span>, <span class="va">data_dictionary_LSD2015</span>, padding <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>    v3 <span class="op">=</span> <span class="fu">quanteda3</span><span class="fu">::</span><span class="fu"><a href="https://quanteda.io/reference/tokens_select.html">tokens_remove</a></span><span class="op">(</span><span class="va">toks</span>, <span class="fu"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html" class="external-link">stopwords</a></span><span class="op">(</span><span class="st">"en"</span><span class="op">)</span>, padding <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
 <span>    v4 <span class="op">=</span> <span class="fu"><a href="../../reference/as.tokens_xptr.html">as.tokens_xptr</a></span><span class="op">(</span><span class="va">xtoks</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
-<span>        <span class="fu"><a href="../../reference/tokens_select.html">tokens_select</a></span><span class="op">(</span><span class="va">data_dictionary_LSD2015</span>, padding <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>        <span class="fu"><a href="../../reference/tokens_select.html">tokens_remove</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html" class="external-link">stopwords</a></span><span class="op">(</span><span class="st">"en"</span><span class="op">)</span>, padding <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
 <span>    times <span class="op">=</span> <span class="fl">10</span></span>
 <span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="benchmark_files/figure-html/unnamed-chunk-4-3.png" width="1200"></p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
+<span><span class="co"># compound tokens</span></span>
 <span><span class="fu">microbenchmark</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/microbenchmark/man/microbenchmark.html" class="external-link">microbenchmark</a></span><span class="op">(</span></span>
 <span>    v3 <span class="op">=</span> <span class="fu">quanteda3</span><span class="fu">::</span><span class="fu"><a href="https://quanteda.io/reference/tokens_compound.html">tokens_compound</a></span><span class="op">(</span><span class="va">toks</span>, <span class="st">"&amp;"</span>, window <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>,</span>
 <span>    v4 <span class="op">=</span> <span class="fu"><a href="../../reference/as.tokens_xptr.html">as.tokens_xptr</a></span><span class="op">(</span><span class="va">xtoks</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
@@ -256,6 +270,7 @@ keep the original <code>tokens_xptr</code> object intact.</p>
 <p><img src="benchmark_files/figure-html/unnamed-chunk-4-4.png" width="1200"></p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
+<span><span class="co"># group sentences to articles</span></span>
 <span><span class="fu">microbenchmark</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/microbenchmark/man/microbenchmark.html" class="external-link">microbenchmark</a></span><span class="op">(</span></span>
 <span>    v3 <span class="op">=</span> <span class="fu">quanteda3</span><span class="fu">::</span><span class="fu"><a href="https://quanteda.io/reference/tokens_group.html">tokens_group</a></span><span class="op">(</span><span class="va">toks</span><span class="op">)</span>,</span>
 <span>    v4 <span class="op">=</span> <span class="fu"><a href="../../reference/tokens_group.html">tokens_group</a></span><span class="op">(</span><span class="va">xtoks</span><span class="op">)</span>,</span>
@@ -267,11 +282,17 @@ keep the original <code>tokens_xptr</code> object intact.</p>
 <h2 id="combine-tokens-objects">Combine tokens objects<a class="anchor" aria-label="anchor" href="#combine-tokens-objects"></a>
 </h2>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">toks1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">toks</span>, <span class="fl">5000</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="co"># get first 5000 documents</span></span>
+<span><span class="va">toks1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">toks</span>, <span class="fl">5000</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># get last 5000 documents</span></span>
 <span><span class="va">toks2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail</a></span><span class="op">(</span><span class="va">toks</span>, <span class="fl">5000</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># transform both objects to tokens_xptr objects</span></span>
 <span><span class="va">xtoks1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/as.tokens_xptr.html">as.tokens_xptr</a></span><span class="op">(</span><span class="va">toks1</span><span class="op">)</span></span>
 <span><span class="va">xtoks2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/as.tokens_xptr.html">as.tokens_xptr</a></span><span class="op">(</span><span class="va">toks2</span><span class="op">)</span></span>
 <span></span>
+<span><span class="co"># combine tokens objects</span></span>
 <span><span class="fu">microbenchmark</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/microbenchmark/man/microbenchmark.html" class="external-link">microbenchmark</a></span><span class="op">(</span></span>
 <span>    v3 <span class="op">=</span> <span class="fu">quanteda3</span><span class="fu">:::</span><span class="fu"><a href="https://quanteda.io/reference/tokens-class.html">c.tokens</a></span><span class="op">(</span><span class="va">toks1</span>, <span class="va">toks2</span><span class="op">)</span>,</span>
 <span>    v4 <span class="op">=</span> <span class="fu">quanteda</span><span class="fu">:::</span><span class="fu"><a href="../../reference/tokens-class.html">c.tokens_xptr</a></span><span class="op">(</span><span class="va">xtoks1</span>, <span class="va">xtoks2</span><span class="op">)</span>,</span>
@@ -282,6 +303,8 @@ keep the original <code>tokens_xptr</code> object intact.</p>
 <div class="section level2">
 <h2 id="construct-a-dfm">Construct a DFM<a class="anchor" aria-label="anchor" href="#construct-a-dfm"></a>
 </h2>
+<p>We also compare the speed of constructing a document-feature matrix
+(DFM) using tokens objects.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">microbenchmark</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/microbenchmark/man/microbenchmark.html" class="external-link">microbenchmark</a></span><span class="op">(</span></span>
 <span>    v3 <span class="op">=</span> <span class="fu">quanteda3</span><span class="fu">::</span><span class="fu"><a href="https://quanteda.io/reference/dfm.html">dfm</a></span><span class="op">(</span><span class="va">toks</span><span class="op">)</span>,</span>
