@@ -1,0 +1,137 @@
+---
+title: "Performance improvement in v4"
+author: Kohei Watanabe
+output:  
+  html_document:
+    toc: true
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+    collapse = TRUE,
+    message = FALSE,
+    comment = "##",
+    fig.width = 8, 
+    fig.height = 2, 
+    dpi = 150
+)
+```
+
+```{r, echo=FALSE, include=FALSE}
+#data_corpus_guardian <- readRDS('/home/kohei/Dropbox/Public/data_corpus_guardian2016-10k.rds') 
+data_corpus_guardian <- readRDS('C:/Users/watan/Dropbox/Public/data_corpus_guardian2016-10k.rds')
+```
+
+**quanteda** version 4.0 can process textual data significantly faster than its earlier versions thanks to the `tokens_xptr` object and a new glob pattern matching mechanism. We created the **quanteda3** package from the version 3.2 and compared the version 4.0 with it on a Windows laptop with AMD Ryzen 7 PRO processor (8 cores). We used sentences from 10,000 English-language news articles in this benchmarking.
+
+The result shows that the execution time of many v4.0 functions is about the half of the version 3.2 functions.
+
+```{r}
+#devtools::install_github("quanteda/quanteda3")
+require(quanteda)
+require(ggplot2)
+
+corp <- corpus_reshape(data_corpus_guardian)
+toks <- tokens(corp, remove_punct = FALSE, remove_numbers = FALSE, 
+               remove_symbols = FALSE)
+xtoks <- as.tokens_xptr(toks)
+
+ndoc(toks) # the number of sentences
+sum(ntoken(toks)) # the total number of tokens
+```
+
+## Tokenize a corpus
+
+Although v4.0 tokenizer is more flexible, its speed is roughly the same that of the v3.2 tokenizer. The shorter execution time of the version 4.0 is due to the faster removal of punctuation marks, numbers and symbols.
+
+```{r}
+microbenchmark::microbenchmark(
+    v3 = quanteda3::tokens(corp, remove_punct = TRUE, remove_numbers = TRUE, 
+                            remove_symbols = TRUE),
+    v4 = tokens(corp, remove_punct = TRUE, remove_numbers = TRUE, 
+                 remove_symbols = TRUE),
+    times = 10
+) %>% autoplot()
+```
+
+## Modify tokens objects
+
+`as.tokens_xptr()` is inserted before the v4 functions to keep the original `tokens_xptr` object intact.
+
+```{r}
+microbenchmark::microbenchmark(
+    v3 = tokens_ngrams(toks),
+    v4 = as.tokens_xptr(xtoks) %>% 
+        tokens_ngrams(),
+    times = 10
+) %>% autoplot()
+
+microbenchmark::microbenchmark(
+    v3 = quanteda3::tokens_compound(toks, data_dictionary_LSD2015),
+    v4 = as.tokens_xptr(xtoks) %>% 
+        tokens_compound(data_dictionary_LSD2015),
+    times = 10
+) %>% autoplot()
+
+microbenchmark::microbenchmark(
+    v3 = quanteda3::tokens_select(toks, data_dictionary_LSD2015, padding = TRUE),
+    v4 = as.tokens_xptr(xtoks) %>% 
+        tokens_select(data_dictionary_LSD2015, padding = TRUE),
+    times = 10
+) %>% autoplot()
+
+microbenchmark::microbenchmark(
+    v3 = quanteda3::tokens_compound(toks, "&", window = 1),
+    v4 = as.tokens_xptr(xtoks) %>% 
+        tokens_compound("&", window = 1),
+    times = 10
+) %>% autoplot()
+
+microbenchmark::microbenchmark(
+    v3 = quanteda3::tokens_group(toks),
+    v4 = tokens_group(xtoks),
+    times = 10
+) %>% autoplot()
+```
+
+## Combine tokens objects
+
+```{r}
+toks1 <- head(toks, 5000)
+toks2 <- tail(toks, 5000)
+xtoks1 <- as.tokens_xptr(toks1)
+xtoks2 <- as.tokens_xptr(toks2)
+
+microbenchmark::microbenchmark(
+    v3 = quanteda3:::c.tokens(toks1, toks2),
+    v4 = quanteda:::c.tokens_xptr(xtoks1, xtoks2),
+    times = 10
+) %>% autoplot()
+```
+
+## Construct a DFM
+
+```{r}
+microbenchmark::microbenchmark(
+    v3 = quanteda3::dfm(toks),
+    v4 = dfm(xtoks),
+    times = 10
+) %>% autoplot()
+```
+
+## Simple pipeline
+
+```{r}
+microbenchmark::microbenchmark(
+    v3 = quanteda3::tokens(corp) %>% 
+        quanteda3::tokens_remove(stopwords("en"), padding = TRUE) %>% 
+        quanteda3::dfm(remove_padding = TRUE),
+    v4 = tokens(corp, xptr = TRUE) %>% 
+        tokens_remove(stopwords("en"), padding = TRUE) %>% 
+        dfm(remove_padding = TRUE),
+    times = 10
+) %>% autoplot()
+```
+
