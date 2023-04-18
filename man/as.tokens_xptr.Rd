@@ -16,10 +16,9 @@ as.tokens_xptr(x)
 \method{as.tokens_xptr}{tokens_xptr}(x)
 }
 \arguments{
-\item{x}{a \link{tokens} object to convert or a tokens_xptr object to
-to deep-copy.}
+\item{x}{a \link{tokens} object to convert or a \code{tokens_xptr} object to deep copy.}
 }
 \description{
-tokens_xptr is a external pointer object to process a large number of
-documents efficiently.
+\code{tokens_xptr} is a external pointer-based tokens object designed to process a
+large corpus efficiently.
 }
