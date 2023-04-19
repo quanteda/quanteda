@@ -10,8 +10,12 @@ editor_options:
 
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "##"
+    collapse = TRUE,
+    message = FALSE,
+    comment = "##",
+    fig.width = 8, 
+    fig.height = 2, 
+    dpi = 150
 )
 ```
 
@@ -19,7 +23,7 @@ In **quanteda** version 4.0, we introduced a new class of tokens object, `tokens
 
 ## Creating tokens_xptr objects
 
-You can create a `tokens_xptr` from `tokens` using the `as.tokens_xptr()` method. If `xtoks` is printed, the address of its underlying data is shown in the first line. As an external pointer object, the underlying data of the copy of the object `xtoks_copy` is the same. This means that operations on `xtoks` using `tokens_*` functions also affect `xtoks_copy` even after the copying (shallow copy). If you want to copy the underlying data of `xtoks_copy` objects (deep copy), `as.tokens_xptr()` should be applied to `xtoks`.
+You can create a `tokens_xptr` from `tokens` using the `as.tokens_xptr()` method. If `xtoks` is printed, the address of its underlying data is shown in the first line `(pointer to xxxx)`. As an external pointer object, the underlying data of the copy of the object `xtoks_copy` is the same. This means that operations on `xtoks` using `tokens_*` functions also affect `xtoks_copy` even after the copying (shallow copy). If you want to copy the underlying data of `xtoks_copy` objects (deep copy), `as.tokens_xptr()` should be applied to `xtoks`.
 
 ```{r, echo=FALSE, include=FALSE}
 #data_corpus_guardian <- readRDS('/home/kohei/Dropbox/Public/data_corpus_guardian2016.rds') 
@@ -28,6 +32,7 @@ data_corpus_guardian <- readRDS('C:/Users/watan/Dropbox/Public/data_corpus_guard
 
 ```{r}
 require(quanteda)
+require(ggplot2)
 
 corp <- corpus_reshape(data_corpus_guardian)
 toks <- tokens(corp)
@@ -41,6 +46,20 @@ print(xtoks_copy, max_ndoc = 1)
 ## deep copy 
 xtoks_deepcopy <- as.tokens_xptr(xtoks)
 print(xtoks_deepcopy, max_ndoc = 1)
+```
+
+## Modifying tokens_xptr objects
+
+You can use `tokens_*` functions to modify `tokens_xptr` objects in the same way as `tokens` objects. `tokens_select()`, `tokens_compound()`, `tokens_lookup()`, `tokens_ngrams()` and `tokens_replace()` return a shallow copy of the input object for efficiency. However, `tokens_subset()`, `[]`, `tokens_group()`, `tokens_segment()` and `tokens_chunk()` return a deep copy because they can change the number of the order of the documents. Please pay attention to the address of the pointer `(pointer to xxxx)` when you use `tokens_xptr` objects.
+
+```{r}
+# shallow copy
+xtoks2 <- tokens_remove(xtoks, stopwords("en"))
+print(xtoks2, max_ndoc = 1)
+
+ # deep copy
+xtoks3 <- tokens_subset(xtoks, len > 500)
+print(xtoks3, max_ndoc = 1)
 ```
 
 ## Saving tokens_xptr objects
@@ -68,6 +87,6 @@ microbenchmark::microbenchmark(
         tokens_compound(newsmap::data_dictionary_newsmap_en) %>% 
         dfm(remove_padding = TRUE),
     times = 10
-)
+) %>% autoplot()
 ```
 
