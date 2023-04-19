@@ -82,9 +82,9 @@ microbenchmark::microbenchmark(
 
 # lookup dictionary keywords
 microbenchmark::microbenchmark(
-    v3 = quanteda3::tokens_compound(toks, dictionary =  data_dictionary_LSD2015),
+    v3 = quanteda3::tokens_lookup(toks, dictionary =  data_dictionary_LSD2015),
     v4 = as.tokens_xptr(xtoks) %>% 
-        tokens_compound(dictionary = data_dictionary_LSD2015),
+        tokens_lookup(dictionary = data_dictionary_LSD2015),
     times = 10
 ) %>% autoplot(log = FALSE)
 
