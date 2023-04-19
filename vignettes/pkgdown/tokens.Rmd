@@ -19,7 +19,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-In **quanteda** version 4.0, we introduced a new class of tokens object, `tokens_xptr`, to make the efficiency of operations on a large corpus. The package's `tokens` object has been a list of vectors that record integer IDs of tokens. Therefore, a `tokens` object is converted to a C++ object, modified and converted back to R every time `tokens_*` functions are applied. As the size of the object becomes larger, the conversion between R and C++ takes much of the execution time. However, the `tokens_xptr` object is based on a external-pointer object that keeps the data as the C++ object, eliminating the cost of such conversion. This is beneficial especially when large tokens objects (more than one million tokens) are processed through a long pipeline. 
+In **quanteda** version 4.0, we introduced a new class of tokens object, `tokens_xptr`. This object enhances the efficiency of adjusting tokens objects based on large text corpora. The package's `tokens` object has been a list of vectors that record integer IDs of tokens. Therefore, a `tokens` object is converted to a C++ object, modified and converted back to R every time `tokens_*` functions are applied. As the size of the object increases, the conversion between R and C++ takes much of the execution time. However, the `tokens_xptr` object is based on an external-pointer object that keeps the data as the C++ object, eliminating the cost of such conversions. Using the new `tokens_xptr`object can speed up the execution time substantively when working with large tokens objects (more than one million tokens) processed through a long pipeline. 
 
 ## Creating tokens_xptr objects
 
@@ -34,30 +34,35 @@ data_corpus_guardian <- readRDS('C:/Users/watan/Dropbox/Public/data_corpus_guard
 require(quanteda)
 require(ggplot2)
 
+# reshape corpus to sentence-level
 corp <- corpus_reshape(data_corpus_guardian)
+
+# tokenize text corpus
 toks <- tokens(corp)
+
+# convert to tokens_xptr object
 xtoks <- as.tokens_xptr(toks)
 print(xtoks, max_ndoc = 1)
 
-## shallow copy
+# shallow copy
 xtoks_copy <- xtoks
 print(xtoks_copy, max_ndoc = 1)
 
-## deep copy 
+# deep copy 
 xtoks_deepcopy <- as.tokens_xptr(xtoks)
 print(xtoks_deepcopy, max_ndoc = 1)
 ```
 
 ## Modifying tokens_xptr objects
 
-You can use `tokens_*` functions to modify `tokens_xptr` objects in the same way as `tokens` objects. `tokens_select()`, `tokens_compound()`, `tokens_lookup()`, `tokens_ngrams()` and `tokens_replace()` return a shallow copy of the input object for efficiency. However, `tokens_subset()`, `[]`, `tokens_group()`, `tokens_segment()` and `tokens_chunk()` return a deep copy because they can change the number of the order of the documents. Please pay attention to the address of the pointer `(pointer to xxxx)` when you use `tokens_xptr` objects.
+You can use `tokens_*` functions to modify `tokens_xptr` objects in the same way as `tokens` objects. `tokens_select()`, `tokens_compound()`, `tokens_lookup()`, `tokens_ngrams()` and `tokens_replace()` will return a shallow copy of the input object for efficiency. However, `tokens_subset()`, `[]`, `tokens_group()`, `tokens_segment()` and `tokens_chunk()` return a deep copy because they can change the number of the order of the documents. Please pay attention to the address of the pointer `(pointer to xxxx)` when you use `tokens_xptr` objects.
 
 ```{r}
 # shallow copy
 xtoks2 <- tokens_remove(xtoks, stopwords("en"))
 print(xtoks2, max_ndoc = 1)
 
- # deep copy
+# deep copy
 xtoks3 <- tokens_subset(xtoks, len > 500)
 print(xtoks3, max_ndoc = 1)
 ```
@@ -72,7 +77,12 @@ saveRDS(as.tokens(xtoks), file = "tokens_guardian.rds")
 
 ## Benchmarking
 
-We apply the same `tokens_*` functions to `tokens` and `tokens_xptr` objects and construct a `dfm` in this mock pipeline. The execution time for latter is significantly shorter than for the former thanks to the cost saved by passing the data without expensive conversion.
+We apply the same `tokens_*` functions to `tokens` and `tokens_xptr` objects and construct a `dfm` in this mock pipeline. The execution time for the latter is significantly shorter than for the former thanks to the cost saved by passing the data without expensive conversion.
+
+```{r, echo=FALSE, include=FALSE}
+# adjust custom ggplot2 theme to make it consistent with other vignettes
+ggplot2::theme_set(ggplot2::theme_bw())
+```
 
 ```{r}
 microbenchmark::microbenchmark(
@@ -87,6 +97,6 @@ microbenchmark::microbenchmark(
         tokens_compound(newsmap::data_dictionary_newsmap_en) %>% 
         dfm(remove_padding = TRUE),
     times = 10
-) %>% autoplot()
+) %>% autoplot(log = FALSE)
 ```
 
