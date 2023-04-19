@@ -24,9 +24,9 @@ knitr::opts_chunk$set(
 data_corpus_guardian <- readRDS('C:/Users/watan/Dropbox/Public/data_corpus_guardian2016-10k.rds')
 ```
 
-**quanteda** version 4.0 can process textual data significantly faster than its earlier versions thanks to the [tokens_xptr object](./articles/tokens.html) and a new glob pattern matching mechanism. We created the **quanteda3** package from the version 3.2 and compared the version 4.0 with it on a Windows laptop with AMD Ryzen 7 PRO processor (8 cores). We used sentences from 10,000 English-language news articles in this benchmarking.
+**quanteda** version 4.0 can process textual data significantly faster than its earlier versions thanks to the [tokens_xptr object](./articles/tokens.html) and a new glob pattern matching mechanism. We created the **quanteda3** package from version 3.2 and compared it with version 4.0 on a Windows laptop with AMD Ryzen 7 PRO processor (8 cores). We used sentences from 10,000 English-language news articles in this benchmarking.
 
-We repeat the same operation using the different versions of the same function to get the distribution of execution time. The result shows that the execution time of many v4.0 functions is about the half of the version 3.2 functions. 
+We repeat the same operation using different versions of the same function to get the distribution of execution time. The result shows that the execution time of many v4.0 functions is about half of the version 3.2 functions.
 
 ```{r}
 #devtools::install_github("quanteda/quanteda3")
@@ -51,6 +51,12 @@ sum(ntoken(toks)) # the total number of tokens
 
 Although the v4.0 tokenizer is more flexible, its speed is roughly the same as v3.2 tokenizer. The shorter execution time of the version 4.0 is due to the faster removal of punctuation marks, numbers and symbols. We compare the performance by tokenizing the corpus with the `tokens()` function from **quanteda** version version 4.0 and 3.2 ("v4" and "v3" in the plots, respectively). 
 
+
+```{r}
+# adjust custom ggplot2 theme to make it consistent with other vignettes
+ggplot2::theme_set(ggplot2::theme_bw())
+```
+
 ```{r}
 microbenchmark::microbenchmark(
     v3 = quanteda3::tokens(corp, remove_punct = TRUE, remove_numbers = TRUE, 
@@ -58,7 +64,7 @@ microbenchmark::microbenchmark(
     v4 = tokens(corp, remove_punct = TRUE, remove_numbers = TRUE, 
                 remove_symbols = TRUE),
     times = 10
-) %>% autoplot()
+) %>% autoplot(log = FALSE)
 ```
 
 ## Modify tokens objects
@@ -72,30 +78,30 @@ microbenchmark::microbenchmark(
     v4 = as.tokens_xptr(xtoks) %>% 
         tokens_ngrams(),
     times = 10
-) %>% autoplot()
+) %>% autoplot(log = FALSE)
 
 # lookup dictionary keywords
 microbenchmark::microbenchmark(
-    v3 = quanteda3::tokens_compound(toks, data_dictionary_LSD2015),
+    v3 = quanteda3::tokens_compound(toks, dictionary =  data_dictionary_LSD2015),
     v4 = as.tokens_xptr(xtoks) %>% 
-        tokens_compound(data_dictionary_LSD2015),
+        tokens_compound(dictionary = data_dictionary_LSD2015),
     times = 10
-) %>% autoplot()
+) %>% autoplot(log = FALSE)
 
 
 # remove stop words
 microbenchmark::microbenchmark(
-    v3 = quanteda3::tokens_remove(toks, stopwords("en"), padding = TRUE),
+    v3 = quanteda3::tokens_remove(toks, pattern = stopwords("en"), padding = TRUE),
     v4 = as.tokens_xptr(xtoks) %>% 
-        tokens_remove(stopwords("en"), padding = TRUE),
+        tokens_remove(pattern = stopwords("en"), padding = TRUE),
     times = 10
 ) %>% autoplot()
 
 # compound tokens
 microbenchmark::microbenchmark(
-    v3 = quanteda3::tokens_compound(toks, "&", window = 1),
+    v3 = quanteda3::tokens_compound(toks,  pattern = "&", window = 1),
     v4 = as.tokens_xptr(xtoks) %>% 
-        tokens_compound("&", window = 1),
+        tokens_compound(pattern = "&", window = 1),
     times = 10
 ) %>% autoplot()
 
@@ -128,7 +134,7 @@ microbenchmark::microbenchmark(
 ) %>% autoplot()
 ```
 
-## Construct a DFM
+## Construct a document-feature matrix
 
 We also compare the speed of constructing a document-feature matrix (DFM) using tokens objects.
 
@@ -140,7 +146,7 @@ microbenchmark::microbenchmark(
 ) %>% autoplot()
 ```
 
-## Simple pipeline
+## Simple pipeline: tokenize corpus and create document-feature matrix
 
 ```{r}
 microbenchmark::microbenchmark(
