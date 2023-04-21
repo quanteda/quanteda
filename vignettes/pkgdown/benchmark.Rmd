@@ -1,6 +1,6 @@
 ---
 title: "Performance improvement in version 4.0"
-author: Kohei Watanabe
+author: Kohei Watanabe and Stefan Müller
 output:  
   html_document:
     toc: true
@@ -24,7 +24,9 @@ knitr::opts_chunk$set(
 data_corpus_guardian <- readRDS('C:/Users/watan/Dropbox/Public/data_corpus_guardian2016-10k.rds')
 ```
 
-**quanteda** version 4.0 can process textual data significantly faster than its earlier versions thanks to the [tokens_xptr object](./articles/tokens.html) and a new glob pattern matching mechanism. We created the **quanteda3** package from version 3.2 and compared it with version 4.0 on a Windows laptop with AMD Ryzen 7 PRO processor (8 cores). We used sentences from 10,000 English-language news articles in this benchmarking.
+**quanteda** version 4.0 can process textual data significantly faster than its earlier versions thanks to the `tokens_xptr object` and a new glob pattern matching mechanism. More information on the features and advantages of the new xptr object are available in a [separate vignette](./articles/tokens.html).
+
+We created the **quanteda3** package from version 3.2 and compared it with version 4.0 on a Windows laptop with AMD Ryzen 7 PRO processor (8 cores). We used sentences from 10,000 English-language news articles in this benchmarking.
 
 We repeat the same operation using different versions of the same function to get the distribution of execution time. The result shows that the execution time of many v4.0 functions is about half of the version 3.2 functions.
 
@@ -95,7 +97,7 @@ microbenchmark::microbenchmark(
     v4 = as.tokens_xptr(xtoks) %>% 
         tokens_remove(pattern = stopwords("en"), padding = TRUE),
     times = 10
-) %>% autoplot()
+) %>% autoplot(log = FALSE)
 
 # compound tokens
 microbenchmark::microbenchmark(
@@ -103,14 +105,14 @@ microbenchmark::microbenchmark(
     v4 = as.tokens_xptr(xtoks) %>% 
         tokens_compound(pattern = "&", window = 1),
     times = 10
-) %>% autoplot()
+) %>% autoplot(log = FALSE)
 
 # group sentences to articles
 microbenchmark::microbenchmark(
     v3 = quanteda3::tokens_group(toks),
     v4 = tokens_group(xtoks),
     times = 10
-) %>% autoplot()
+) %>% autoplot(log = FALSE)
 ```
 
 ## Combine tokens objects

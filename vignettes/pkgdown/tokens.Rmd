@@ -1,6 +1,6 @@
 ---
 title: "The external pointer-based tokens object"
-author: Kohei Watanabe
+author: Kohei Watanabe and Stefan Müller
 output:  
   html_document:
     toc: true
@@ -19,7 +19,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-In **quanteda** version 4.0, we introduced a new class of tokens object, `tokens_xptr`. This object enhances the efficiency of adjusting tokens objects based on large text corpora. The package's `tokens` object has been a list of vectors that record integer IDs of tokens. Therefore, a `tokens` object is converted to a C++ object, modified and converted back to R every time `tokens_*` functions are applied. As the size of the object increases, the conversion between R and C++ takes much of the execution time. However, the `tokens_xptr` object is based on an external-pointer object that keeps the data as the C++ object, eliminating the cost of such conversions. Using the new `tokens_xptr`object can speed up the execution time substantively when working with large tokens objects (more than one million tokens) processed through a long pipeline. 
+In **quanteda** version 4.0, we introduced a new class of tokens object, `tokens_xptr`. This object enhances the efficiency of adjusting tokens objects based on large text corpora. The package's `tokens` object has been a list of vectors that record integer IDs of tokens. Therefore, a `tokens` object is converted to a C++ object, modified and converted back to R every time `tokens_*` functions are applied. As the size of the object increases, the conversion between R and C++ takes much of the execution time. However, the `tokens_xptr` object is based on an external-pointer object that keeps the data as the C++ object, eliminating the cost of such conversions. Using the new `tokens_xptr`object can speed up the execution time substantively when working with large tokens objects (more than one million tokens) processed through a long pipeline. A detailed comparison of performance gains and execution times for `tokens` and `tokens_xptr` objects is available in a [separate vignette](./articles/tokens.html). 
 
 ## Creating tokens_xptr objects
 
