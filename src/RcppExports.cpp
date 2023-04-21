@@ -426,6 +426,16 @@ BEGIN_RCPP
     return R_NilValue;
 END_RCPP
 }
+// cpp_get_max_thread
+int cpp_get_max_thread();
+RcppExport SEXP _quanteda_cpp_get_max_thread() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(cpp_get_max_thread());
+    return rcpp_result_gen;
+END_RCPP
+}
 // cpp_tbb_enabled
 bool cpp_tbb_enabled();
 RcppExport SEXP _quanteda_cpp_tbb_enabled() {
@@ -470,6 +480,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_quanteda_cpp_get_load_factor", (DL_FUNC) &_quanteda_cpp_get_load_factor, 0},
     {"_quanteda_address", (DL_FUNC) &_quanteda_address, 1},
     {"_quanteda_cpp_set_meta", (DL_FUNC) &_quanteda_cpp_set_meta, 2},
+    {"_quanteda_cpp_get_max_thread", (DL_FUNC) &_quanteda_cpp_get_max_thread, 0},
     {"_quanteda_cpp_tbb_enabled", (DL_FUNC) &_quanteda_cpp_tbb_enabled, 0},
     {NULL, NULL, 0}
 };

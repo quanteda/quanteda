@@ -129,6 +129,10 @@ cpp_set_meta <- function(object_, meta_) {
     invisible(.Call(`_quanteda_cpp_set_meta`, object_, meta_))
 }
 
+cpp_get_max_thread <- function() {
+    .Call(`_quanteda_cpp_get_max_thread`)
+}
+
 cpp_tbb_enabled <- function() {
     .Call(`_quanteda_cpp_tbb_enabled`)
 }
