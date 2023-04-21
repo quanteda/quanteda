@@ -116,22 +116,12 @@ inline Tokens recompile(Texts texts,
     
     // Convert old IDs to new IDs
     std::size_t H = texts.size();
-#if QUANTEDA_USE_TBB
-    tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
-        for (int h = r.begin(); h < r.end(); ++h) {
-            for (std::size_t i = 0; i < texts[h].size(); i++) {
-                texts[h][i] = ids_new[texts[h][i]];
-            }
-        }    
-    });
-#else
     for (std::size_t h = 0; h < H; h++) {
         for (std::size_t i = 0; i < texts[h].size(); i++) {
             texts[h][i] = ids_new[texts[h][i]];
             //Rcout << texts[h][i] << " -> " << ids_new[texts[h][i]] << "\n";
         }
     }
-#endif
 
     std::vector<std::string> types_new;
     types_new.reserve(ids_new.size());

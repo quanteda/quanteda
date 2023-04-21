@@ -144,15 +144,18 @@ tokens_lookup.tokens_xptr <- function(x, dictionary, levels = 1:5,
     if (exclusive) {
         if (!is.null(nomatch)) {
             nomatch <- check_character(nomatch)
-            result <- cpp_tokens_lookup(x, ids, id_key, c(key, nomatch), overlap, 1)
+            result <- cpp_tokens_lookup(x, ids, id_key, c(key, nomatch), overlap, 1,
+                                        get_threads())
         } else {
-            result <- cpp_tokens_lookup(x, ids, id_key, key, overlap, 0)
+            result <- cpp_tokens_lookup(x, ids, id_key, key, overlap, 0,
+                                        get_threads())
         }
     } else {
         if (!is.null(nomatch))
             warning("nomatch only applies if exclusive = TRUE")
         id_used <- unique(id_key)
-        result <- cpp_tokens_lookup(x, ids, match(id_key, id_used), key[id_used], overlap, 2)
+        result <- cpp_tokens_lookup(x, ids, match(id_key, id_used), key[id_used], overlap, 2,
+                                    get_threads())
     }
     if (exclusive)
         field_object(attrs, "what") <- "dictionary"

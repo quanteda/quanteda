@@ -134,7 +134,8 @@ TokensPtr cpp_tokens_lookup(TokensPtr xptr,
                                  const IntegerVector &keys_,
                                  const CharacterVector &types_,
                                  const int overlap,
-                                 const int nomatch){
+                                 const int nomatch,
+                                 const int thread = 1) {
     
     Texts texts = xptr->texts;
     Types types = Rcpp::as<Types>(types_);
@@ -172,10 +173,13 @@ TokensPtr cpp_tokens_lookup(TokensPtr xptr,
     //dev::start_timer("Dictionary lookup", timer);
     std::size_t H = texts.size();
 #if QUANTEDA_USE_TBB
-    tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
-        for (int h = r.begin(); h < r.end(); ++h) {
-            texts[h] = lookup(texts[h], spans, id_max, overlap, nomatch, map_keys);
-        }    
+    tbb::task_arena arena(thread);
+    arena.execute([&]{
+        tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
+            for (int h = r.begin(); h < r.end(); ++h) {
+                texts[h] = lookup(texts[h], spans, id_max, overlap, nomatch, map_keys);
+            }    
+        });
     });
 #else
     for (std::size_t h = 0; h < H; h++) {
