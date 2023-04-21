@@ -39,7 +39,7 @@ TokensPtr cpp_tokens_group(TokensPtr xptr,
 #if QUANTEDA_USE_TBB
     tbb::task_arena arena(thread);
     arena.execute([&]{
-      tbb::parallel_for(tbb::blocked_range<int>(0, G), [&](tbb::blocked_range<int> r) {
+       tbb::parallel_for(tbb::blocked_range<int>(0, G), [&](tbb::blocked_range<int> r) {
           for (int g = r.begin(); g < r.end(); ++g) {
               for (std::size_t h = 0; h < H; h++) {
                   if (g == groups[h] - 1) {
@@ -47,7 +47,7 @@ TokensPtr cpp_tokens_group(TokensPtr xptr,
                   }
               }
           }
-      });
+       });
     });
 #else
     for (std::size_t g = 0; g < G; g++) {

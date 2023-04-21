@@ -9,7 +9,7 @@
 #' @param ... not used.
 #' @section Changes in version 3:
 #' In \pkg{quanteda} v4, many convenience functions formerly available in
-#' `dfm()` were removed. 
+#' `dfm()` were removed.
 #' @return a [dfm-class] object
 #' @import Matrix
 #' @export
@@ -38,7 +38,7 @@ dfm <- function(x,
                 remove_padding = FALSE,
                 verbose = quanteda_options("verbose"),
                 ...) {
-    
+
     global$proc_time <- proc.time()
     if (is.null(global$object_class))
         global$object_class <- class(x)[1]
@@ -47,7 +47,7 @@ dfm <- function(x,
 
 #' @export
 dfm.default <- function(x, ...) {
-    check_class(class(x), "dfm")
+    check_class(class(x), "dfm", defunct_methods = c("corpus", "character"))
 }
 
 #' @export
@@ -56,10 +56,10 @@ dfm.tokens <- function(x,
                        remove_padding = FALSE,
                        verbose = quanteda_options("verbose"),
                        ...) {
-    
-    dfm(as.tokens_xptr(x), tolower = tolower, 
+
+    dfm(as.tokens_xptr(x), tolower = tolower,
         remove_padding = remove_padding, verbose = verbose, ...)
-    
+
 }
 
 #' @method dfm tokens_xptr
@@ -69,11 +69,11 @@ dfm.tokens_xptr <- function(x,
                             remove_padding = FALSE,
                             verbose = quanteda_options("verbose"),
                             ...) {
-    
+
     check_dots(...)
-    if (verbose) 
+    if (verbose)
         catm("Creating a dfm from a", global$object_class, "object...\n")
-    
+
     x <- as.tokens_xptr(x) # avoid modifying the original tokens
     if (tolower)
         x <- tokens_tolower(x)
@@ -84,7 +84,7 @@ dfm.tokens_xptr <- function(x,
     result <- build_dfm(temp, colnames(temp),
                         docvars = get_docvars(x, user = TRUE, system = TRUE),
                         meta = attrs[["meta"]])
-    
+
     if (verbose) {
         catm(" ...complete, elapsed time:",
              format((proc.time() - global$proc_time)[3], digits = 3), "seconds.\n")
@@ -104,18 +104,18 @@ dfm.dfm <- function(x,
                     remove_padding = FALSE,
                     verbose = quanteda_options("verbose"),
                     ...) {
-    
+
     check_dots(...)
     x <- as.dfm(x)
-    
-    if (verbose) 
+
+    if (verbose)
         catm("Creating a dfm from a dfm object...\n")
-    
+
     if (tolower) {
         if (verbose) catm(" ...lowercasing\n", sep = "")
         x <- dfm_tolower(x)
     }
-    
+
     remove_padding <- check_logical(remove_padding)
     if (remove_padding)
         x <- dfm_remove(x, "", valuetype = "fixed")
@@ -124,7 +124,7 @@ dfm.dfm <- function(x,
     is_na <- is.na(featnames(x))
     if (any(is_na))
         x <- x[, !is_na, drop = FALSE]
-    
+
     if (verbose) {
         catm(" ...complete, elapsed time:",
              format((proc.time() - global$proc_time)[3], digits = 3), "seconds.\n")
@@ -135,6 +135,7 @@ dfm.dfm <- function(x,
     return(x)
 }
 
+# utility functions -----------
 
 # create an empty dfm for given features and documents
 make_null_dfm <- function(feature = NULL, document = NULL) {
@@ -160,4 +161,16 @@ pad_dfm <- function(x, feature) {
     }
     x <- x[, match(feature, featnames(x))]
     return(x)
+}
+
+# defunct methods -------------
+
+#' @export
+dfm.character <- function(x, ...) {
+    .Defunct(msg = "'dfm.character()' was removed in v4. Use 'tokens()' first.")
+}
+
+#' @export
+dfm.corpus <- function(x, ...) {
+    .Defunct(msg = "'dfm.corpus()' was removed in v4. Use 'tokens()' first.")
 }

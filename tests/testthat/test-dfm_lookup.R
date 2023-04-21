@@ -1,4 +1,24 @@
-
+test_that("test dfm_lookup, issue #389", {
+    toks <- tokens(data_corpus_inaugural[1:5])
+    dict <- dictionary(list(Country = "united states",
+                            HOR = c("House of Re*"),
+                            law = c("law*", "constitution"),
+                            freedom = c("free*", "libert*")))
+    expect_equal(featnames(dfm(tokens_lookup(toks, dictionary = dict), tolower = FALSE)),
+                 c("Country", "HOR", "law", "freedom"))
+    # expect_error(dfm_lookup(dfm(toks), dictionary = dict),
+    #               "dfm_lookup not implemented for ngrams > 1 and multi-word dictionary values")
+    
+    dict2 <- dictionary(list(Country = "united",
+                             HOR = c("House"),
+                             law = c("law*", "constitution"),
+                             freedom = c("free*", "libert*")))
+    expect_equal(
+        as.numeric(dfm_lookup(dfm(toks), dictionary = dict2)[, "Country"]),
+        c(4, 1, 3, 0, 1)
+    )
+})
+                 
 test_that("#459 apply a hierarchical dictionary to a dfm", {
     txt <- c(d1 = "The United States is bordered by the Atlantic Ocean and the Pacific Ocean.",
              d2 = "The Supreme Court of the United States is seldom in a united state.")
