@@ -11,7 +11,7 @@
     # threads message
     if (cpp_tbb_enabled()) {
         packageStartupMessage("Parallel computing: ", quanteda_options("threads"), " of ", 
-                              RcppParallel::defaultNumThreads(), " threads used.")
+                              cpp_get_max_thread(), " threads used.")
     } else {
         packageStartupMessage("Parallel computing: disabled") 
     }
