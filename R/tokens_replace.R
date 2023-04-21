@@ -65,7 +65,7 @@ tokens_replace.tokens_xptr <- function(x, pattern, replacement, valuetype = "glo
     
     set_types(x) <- type
     result <- cpp_tokens_replace(x, ids_pat, ids_rep[attr(ids_pat, "pattern")],
-                                 quanteda_options("threads"))
+                                 get_threads())
     
     rebuild_tokens(result, attrs)
 }

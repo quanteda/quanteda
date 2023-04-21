@@ -167,6 +167,13 @@ get_custom_threads <- function(value) {
     return(value)
 }
 
+get_threads <- function() {
+    value <- getOption("quanteda_threads", -1L)
+    if (!is.integer(value) || length(value) != 1)
+        stop("Invalid value of threads in quanteda options")
+    return(value)
+}
+
 # returns default options
 get_options_default <- function() {
     

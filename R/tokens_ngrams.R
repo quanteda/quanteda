@@ -89,7 +89,7 @@ tokens_ngrams.tokens_xptr <- function(x, n = 2L, skip = 0L, concatenator = "_") 
     attrs <- attributes(x)
     if (identical(n, 1L) && identical(skip, 0L))
         return(x)
-    result <- cpp_tokens_ngrams(x, concatenator, n, skip, quanteda_options("threads"))
+    result <- cpp_tokens_ngrams(x, concatenator, n, skip, get_threads())
     field_object(attrs, "ngram") <- n
     field_object(attrs, "skip") <- skip
     field_object(attrs, "concatenator") <- concatenator

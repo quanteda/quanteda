@@ -19,7 +19,7 @@ tokens_restore.tokens_xptr <- function(x) {
     type <- get_types(x)
     attrs <- attributes(x)
     result <- cpp_tokens_restore(x, list(match("\uE001", type)), list(match("\uE002", type)), 
-                                 "", quanteda_options("threads"))
+                                 "", get_threads())
     rebuild_tokens(result, attrs)
 }
 

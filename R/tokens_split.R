@@ -64,7 +64,7 @@ tokens_split.tokens_xptr <- function(x, separator = " ", valuetype = c("fixed", 
 
     replacement <- stri_split_fixed(type, "\uE000", omit_empty = TRUE)
     tokens_replace(x, pattern, replacement, "fixed", case_insensitive = FALSE, 
-                   quanteda_options("threads"))
+                   get_threads())
 }
 
 #' @export

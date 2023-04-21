@@ -81,4 +81,21 @@ test_that("quanteda_options works with threads", {
                  "Number of threads must be greater or equal to 1")
     expect_warning(quanteda_options(threads = 100),
                   "Setting threads instead to maximum available (\\d+)")
+    
+    options(quanteda_threads = NULL)
+    expect_identical(quanteda:::get_threads(), -1L)
+    
+    options(quanteda_threads = 100L)
+    expect_identical(quanteda:::get_threads(), 100L)
+    
+    options(quanteda_threads = 1L:2L)
+    expect_error(
+        quanteda:::get_threads(),
+        "Invalid value of threads in quanteda options"
+    )
+    expect_error(
+        quanteda:::get_threads(),
+        "Invalid value of threads in quanteda options"
+    )
+    quanteda_options(reset = TRUE)
 })
