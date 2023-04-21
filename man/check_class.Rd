@@ -4,7 +4,7 @@
 \alias{check_class}
 \title{Check object class for functions}
 \usage{
-check_class(class, method)
+check_class(class, method, defunct_methods = NULL)
 }
 \arguments{
 \item{class}{the object class to check}

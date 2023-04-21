@@ -437,20 +437,6 @@ test_that("test that features remove by tokens.tokens is comparable to tokens.ch
 
 })
 
-test_that("split_hyphens is working correctly", {
-    corp <- data_corpus_inaugural[1:2]
-    toks <- tokens(corp)
-
-    suppressWarnings({
-    expect_equal(dfm(corp), dfm(toks))
-    expect_equal(dfm(corp, remove_punct = TRUE), dfm(toks, remove_punct = TRUE))
-    expect_equal(
-        setdiff(featnames(dfm(corp)), featnames(dfm(toks))),
-        character()
-    )
-    })
-})
-
 test_that("tokens works as expected with NA, and blanks", {
     expect_equal(
         as.list(tokens(c("one", "two", ""))),
@@ -613,7 +599,11 @@ test_that("types are encoded when necessarly", {
 test_that("tokens verbose = TRUE produces expected messages", {
     expect_message(
         tokens(c("one two three", "four five."), verbose = TRUE),
-        "starting tokenization"
+        "^Creating a tokens from a character object"
+    )
+    expect_message(
+        tokens(corpus(c("one two three", "four five.")), xptr = TRUE, verbose = TRUE),
+        "^Creating a tokens_xptr from a corpus object"
     )
 })
 
@@ -1087,21 +1077,21 @@ test_that("old preserve_special works", {
 })
 
 test_that("output is correct for word1", {
-    skip("the verbose message has been changed")
+    
     expect_message(
-        tmp <- tokens(data_char_ukimmig2010, what = "word1", split_hyphens = FALSE, verbose = TRUE),
+        toks <- tokens(data_char_ukimmig2010, what = "word1", split_hyphens = FALSE, verbose = TRUE),
         "preserving hyphens"
     )
     expect_message(
-        tmp <- tokens(data_char_ukimmig2010, what = "word1", split_hyphens = FALSE, verbose = TRUE),
+        toks <- tokens(data_char_ukimmig2010, what = "word1", split_hyphens = FALSE, verbose = TRUE),
         "Finished constructing tokens from 9 documents"
     )
     expect_message(
-        tmp <- tokens(data_char_ukimmig2010, what = "word1", split_hyphens = FALSE, verbose = TRUE),
-        "^Creating a tokens object from a character input"
+        toks <- tokens(data_char_ukimmig2010, what = "word1", split_hyphens = FALSE, verbose = TRUE),
+        "^Creating a tokens from a character object"
     )
     expect_message(
-        tmp <- tokens(data_char_ukimmig2010, what = "sentence", verbose = TRUE),
+        toks <- tokens(data_char_ukimmig2010, what = "sentence", verbose = TRUE),
         "segmenting into sentences"
     )
 })

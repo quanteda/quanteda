@@ -377,20 +377,6 @@ test_that("tokens.tokens() does nothing by default", {
     expect_equal(toks, tokens(toks))
 })
 
-test_that("split_hyphens is working correctly", {
-    corp <- data_corpus_inaugural[1:2]
-    toks <- tokens(corp)
-
-    suppressWarnings({
-    expect_equal(dfm(corp), dfm(toks))
-    expect_equal(dfm(corp, remove_punct = TRUE), dfm(toks, remove_punct = TRUE))
-    expect_equal(
-        setdiff(featnames(dfm(corp)), featnames(dfm(toks))),
-        character()
-    )
-    })
-})
-
 test_that("tokens works as expected with NA, and blanks", {
     expect_equal(
         as.list(tokens(c("one", "two", ""))),

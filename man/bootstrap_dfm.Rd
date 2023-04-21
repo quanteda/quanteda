@@ -7,7 +7,7 @@
 bootstrap_dfm(x, n = 10, ..., verbose = quanteda_options("verbose"))
 }
 \arguments{
-\item{x}{a character or \link{corpus} object}
+\item{x}{a \link{dfm} object}
 
 \item{n}{number of resamples}
 
@@ -35,7 +35,8 @@ document will contain at least some of its original tokens.
 set.seed(10)
 txt <- c(textone = "This is a sentence.  Another sentence.  Yet another.",
          texttwo = "Premiere phrase.  Deuxieme phrase.")
-bootstrap_dfm(txt, n = 3, verbose = TRUE)
+dfmat <- dfm(tokens(txt))
+bootstrap_dfm(dfmat, n = 3, verbose = TRUE)
 
 }
 \author{

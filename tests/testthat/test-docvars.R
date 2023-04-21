@@ -238,16 +238,6 @@ test_that("$ returns docvars", {
     expect_equal(docvars(dfmat, "Party"), dfmat$Party)
 })
 
-
-test_that("creating tokens and dfms with empty docvars", {
-    expect_equal(
-        length(docvars(tokens(data_corpus_inaugural, include_docvars = FALSE))), 0
-    )
-    expect_equal(
-        length(docvars(suppressWarnings(dfm(tokens(data_corpus_inaugural), include_docvars = FALSE)))), 0
-    )
-})
-
 test_that("tokens works works with one docvar", {
     docv1 <- data.frame(dvar1 = c("A", "B"))
     mycorpus1 <- corpus(c(d1 = "This is sample document one.",

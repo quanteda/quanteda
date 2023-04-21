@@ -32,7 +32,7 @@ Substitute features based on vectorized one-to-one matching for lemmatization
 or user-defined stemming.
 }
 \examples{
-dfmat1 <- dfm(data_corpus_inaugural)
+dfmat1 <- dfm(tokens(data_corpus_inaugural))
 
 # lemmatization
 taxwords <- c("tax", "taxing", "taxed", "taxed", "taxation")

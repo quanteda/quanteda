@@ -88,12 +88,13 @@ void cpp_recompile(TokensPtr xptr) {
 }
 
 // [[Rcpp::export]]
-S4 cpp_dfm(TokensPtr xptr, bool sort = true) {
+S4 cpp_dfm(TokensPtr xptr, bool asis = false) {
     
-    xptr->recompile();
+    xptr->recompiled = asis;
+    xptr->recompile(); // remove unused types
     std::size_t H = xptr->texts.size();
     std::size_t G = xptr->types.size();
-    std::vector<int> ids(G, 0);
+    std::vector<unsigned int> ids(G, 0);
     
     int N = 0;
     for (std::size_t h = 0; h < H; h++)
@@ -107,7 +108,7 @@ S4 cpp_dfm(TokensPtr xptr, bool sort = true) {
     
     slot_p.push_back(p);
     int count_pad = 0;
-    int id = 1;
+    unsigned int id = 1;
     for (std::size_t h = 0; h < H; h++) {
         // assign new token IDs in the order of their occurrence
         std::size_t I = xptr->texts[h].size();
@@ -117,14 +118,14 @@ S4 cpp_dfm(TokensPtr xptr, bool sort = true) {
                 text[i] = 0;
                 count_pad++;
             } else {
-                if (sort) {
+                if (asis) {
+                    text[i] = xptr->texts[h][i]; // for dictionary
+                } else {
                     if (ids[xptr->texts[h][i] - 1] == 0) {
                         ids[xptr->texts[h][i] - 1] = id;
                         id++;
                     }
                     text[i] = ids[xptr->texts[h][i] - 1];
-                } else {
-                    text[i] = xptr->texts[h][i]; // for dictionary
                 }
             }
         }
@@ -152,17 +153,21 @@ S4 cpp_dfm(TokensPtr xptr, bool sort = true) {
     
     // sort types in the order of their occurrence
     
-    //IntegerVector ids_ = Rcpp::wrap(ids);
-    //Rcout << "id: " << ids_ << "\n";
+    // Rcout << "G: " << G << "\n";
+    // Rcout << "ids: " << ids.size() << "\n";
+    // Rcout << "xptr->types: " << xptr->types.size() << "\n";
+    
     Types types(G);
-    for (std::size_t g = 0; g < G; g++) {
-        if (sort) {
-            types[ids[g] - 1] = xptr->types[g];
-        } else {
-            types[g] = xptr->types[g];
+    if (asis) {
+        types = xptr->types;
+    } else {
+        for (std::size_t g = 0; g < G; g++) {
+            if (ids[g] != 0) // zero if the types are not used
+                types[ids[g] - 1] = xptr->types[g];
         }
     }
     CharacterVector types_ = encode(types);
+    
     //Rcout << "types: " << types_ << "\n";
     
     if (count_pad == 0) {
@@ -186,11 +191,16 @@ S4 cpp_dfm(TokensPtr xptr, bool sort = true) {
 
 
 /***R
-toks <- quanteda::tokens(c("b c b a,", "a b a c."), remove_punct = FALSE, padding = TRUE)
-xtoks <- quanteda::as.tokens_xptr(toks)
-xtoks2 <- xtoks[c(2:1)]
-print(xtoks2)
-cpp_dfm(xtoks2)
-cpp_dfm(xtoks2, FALSE)
+require(quanteda)
+toks <- tokens(c("b c b a,", "a b a c."), remove_punct = FALSE, padding = TRUE)
+xtoks <- as.tokens_xptr(toks)
+xtoks_dict <- tokens_lookup(xtoks, dictionary(list(A = "a", Z = "z", B = "b")))
+#xtoks_dict <- tokens_lookup(xtoks, dictionary(list(A = "a", B = "b")))
+quanteda:::cpp_get_attributes(xtoks_dict)
+quanteda:::cpp_get_types(xtoks_dict)
+print(xtoks_dict)
+cpp_dfm(as.tokens_xptr(xtoks_dict), FALSE)
+cpp_dfm(as.tokens_xptr(xtoks_dict), TRUE)
+
 
 */

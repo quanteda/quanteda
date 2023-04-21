@@ -17,7 +17,7 @@ For a \link{dfm} object, returns a frequency for each feature, computed
 across all documents in the dfm. This is equivalent to \code{colSums(x)}.
 }
 \examples{
-dfmat <- dfm(data_char_sampletext)
+dfmat <- dfm(tokens(data_char_sampletext))
 featfreq(dfmat)
 }
 \seealso{

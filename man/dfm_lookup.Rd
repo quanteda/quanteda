@@ -67,8 +67,7 @@ dict <- dictionary(list(christmas = c("Christmas", "Santa", "holiday"),
                           taxregex = "tax.+$",
                           country = c("United_States", "Sweden")))
 dfmat <- dfm(tokens(c("My Christmas was ruined by your opposition tax plan.",
-                      "Does the United_States or Sweden have more progressive taxation?")),
-             remove = stopwords("english"))
+                      "Does the United_States or Sweden have more progressive taxation?")))
 dfmat
 
 # glob format

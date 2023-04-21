@@ -24,7 +24,7 @@ Sorts a \link{dfm} by descending frequency of total features, total features
 in documents, or both.
 }
 \examples{
-dfmat <- dfm(data_corpus_inaugural)
+dfmat <- dfm(tokens(data_corpus_inaugural))
 head(dfmat)
 head(dfm_sort(dfmat))
 head(dfm_sort(dfmat, decreasing = FALSE, "both"))

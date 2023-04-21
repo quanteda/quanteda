@@ -163,12 +163,16 @@ TokensPtr cpp_tokens_segment(TokensPtr xptr,
         }
     }
     
+  
+    TokensObj *ptr_new = new TokensObj(segments, xptr->types, xptr->recompiled);
+    TokensPtr xptr_new = TokensPtr(ptr_new, true);
+    
     CharacterVector matches_ = encode(matches);
     IntegerVector documents_ = Rcpp::wrap(documents);
-    xptr.attr("matches") = matches_;
-    xptr.attr("documents") = documents_;
-    xptr->texts = segments;
-    return xptr;
+    xptr_new.attr("matches") = matches_;
+    xptr_new.attr("documents") = documents_;
+    
+    return xptr_new;
 }
 
 

@@ -190,7 +190,7 @@ TokensPtr cpp_tokens_lookup(TokensPtr xptr,
     xptr->texts = texts;
     xptr->types = types;
     
-    if (nomatch != 2) {
+    if (nomatch != 2) { // exclusive mode
         // NOTE: values might need to be reset
         xptr->recompiled = true;
     } else {

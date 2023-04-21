@@ -34,26 +34,6 @@ Text skipgram(const Text &tokens,
     return tokens_ng;
 }
 
-void type(std::size_t i,
-          const VecNgrams &keys_ngram,
-          Types &types_ngram,
-          const MapNgrams &map_ngram,
-          const std::string &delim,
-          const Types &types){
-    
-    Ngram key = keys_ngram[i];
-    if (key.size() == 0) {
-        types_ngram[i] = "";
-    } else {
-        std::string type_ngram = types[key[0] - 1];
-        for (std::size_t j = 1; j < key.size(); j++) {
-            type_ngram += delim + types[key[j] - 1];
-        }
-        types_ngram[i] = type_ngram;
-    }
-}
-
-
 /* 
 * Function to generates ngrams/skipgrams
 * The number of threads is set by RcppParallel::setThreadOptions()
@@ -112,23 +92,23 @@ TokensPtr cpp_tokens_ngrams(TokensPtr xptr,
     //dev::start_timer("Token generation", timer);
     // Create ngram types
     std::size_t I = keys_ngram.size();
-    Types types_ngram(I);
+    Types types_new(I);
 #if QUANTEDA_USE_TBB
     arena.execute([&]{
         tbb::parallel_for(tbb::blocked_range<int>(0, I), [&](tbb::blocked_range<int> r) {
-            for (int i = r.begin(); i < r.end(); ++i) {
-                type(i, keys_ngram, types_ngram, map_ngram, delim, types);
-            }    
+          for (int i = r.begin(); i < r.end(); ++i) {
+              types_new[i] = join_strings(keys_ngram[i], types, delim);
+          }
         });
     });
 #else
     for (std::size_t i = 0; i < I; i++) {
-        type(i, keys_ngram, types_ngram, map_ngram, delim, types);
+        types_new[i] = join_strings(keys_ngram[i], types, delim);
     }
 #endif
     
     xptr->texts = texts;
-    xptr->types = types_ngram;
+    xptr->types = types_new;
     xptr->recompiled = false;
     return xptr;
 
@@ -142,16 +122,9 @@ TokensPtr cpp_tokens_ngrams(TokensPtr xptr,
 library(quanteda)
 #txt <- c('a b c d e')
 txt <- c('a b c d e', 'c d e f g')
-tok <- quanteda::tokens(txt)
-out <- cpp_tokens_ngrams(tok, attr(tok, 'types'), "-", 2, 1)
-str(out)
-
-tok2 <- quanteda::tokens(data_corpus_inaugural)
-microbenchmark::microbenchmark(
-    cpp_tokens_ngrams(tok2, attr(tok2, 'types'), "-", 2, 1),
-    tokenizers::tokenize_ngrams(texts(data_corpus_inaugural))
-)
-
+xtoks <- quanteda::tokens(txt, xptr = TRUE)
+xtoks_ng <- cpp_tokens_ngrams(xtoks, "-", 2, 1)
+as.list(xtoks_ng)
 
 
 

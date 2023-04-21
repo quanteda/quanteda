@@ -134,16 +134,7 @@ TokensPtr cpp_tokens_restore(TokensPtr xptr,
     // Create compound types
     Types types_comp(ids_comp.size());
     for (std::size_t i = 0; i < ids_comp.size(); i++) {
-        Ngram key = ids_comp[i];
-        if (key.size() == 0) {
-            types_comp[i] = "";
-        } else {
-            std::string type_ngram = types[key[0] - 1];
-            for (std::size_t j = 1; j < key.size(); j++) {
-                type_ngram += delim + types[key[j] - 1];
-            }
-            types_comp[i] = type_ngram;
-        }
+        types_comp[i] = join_strings(ids_comp[i], types, delim);
     }
     types.insert(types.end(), types_comp.begin(), types_comp.end());
     

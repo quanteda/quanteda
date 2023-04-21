@@ -160,8 +160,12 @@ tokens <-  function(x,
                     verbose = quanteda_options("verbose"),
                     ...,
                     xptr = FALSE) {
-
-     UseMethod("tokens")
+    
+    check_dots(...)
+    global$proc_time <- proc.time()
+    if (is.null(global$object_class))
+        global$object_class <- class(x)[1]
+    UseMethod("tokens")
 }
 
 #' @rdname tokens
@@ -253,8 +257,14 @@ tokens.corpus <- function(x,
                           xptr = FALSE)  {
     x <- as.corpus(x)
     
-    global$proc_time <- proc.time()
-    if (verbose) catm("Creating a tokens object from a corpus object...\n")
+    if (verbose) {
+        if (xptr) {
+            catm("Creating a tokens_xptr from a", global$object_class, "object...\n")
+        } else {
+            catm("Creating a tokens from a", global$object_class, "object...\n")
+        }
+    }
+        
     
     what <- match.arg(what, c("word", paste0("word", 1:4), 
                               "sentence", "character",
@@ -355,10 +365,16 @@ tokens.corpus <- function(x,
              " unique type", if (n == 1) "" else "s", "\n", sep = "")
         catm(" ...complete, elapsed time:",
              format((proc.time() - global$proc_time)[3], digits = 3), "seconds.\n")
-        catm("Finished constructing tokens from ", format(ndoc(result), big.mark = ","), " document",
-             if (ndoc(result) > 1) "s", ".\n", sep = "")
+        
+        if (xptr) {
+            catm("Finished constructing tokens_xptr from ", format(ndoc(result), big.mark = ","), " document",
+                 if (ndoc(result) > 1) "s", ".\n", sep = "")
+        } else {
+            catm("Finished constructing tokens from ", format(ndoc(result), big.mark = ","), " document",
+                 if (ndoc(result) > 1) "s", ".\n", sep = "")
+        }
     }
-    
+    global$object_class <- NULL
     return(result)
 }
 
