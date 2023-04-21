@@ -222,7 +222,8 @@ fcm.tokens_xptr <- function(x, context = c("document", "window"),
         }
         type <- get_types(x)
         boolean <- count == "boolean"
-        temp <- cpp_fcm(x, length(type), weights, boolean, ordered)
+        temp <- cpp_fcm(x, length(type), weights, boolean, ordered,
+                        quanteda_options("threads"))
         temp <- as(temp, "CsparseMatrix")
         if (!ordered) {
             if (tri) {

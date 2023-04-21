@@ -59,7 +59,7 @@ tokens_group.tokens_xptr <- function(x, groups = docid(x), fill = FALSE, env = N
     attrs <- attributes(x)
     groups <- groups[!is.na(groups)]
 
-    result <- cpp_tokens_group(x, groups)
+    result <- cpp_tokens_group(x, groups, quanteda_options("threads"))
     attrs[["docvars"]] <- group_docvars(attrs[["docvars"]], groups, field)
 
     rebuild_tokens(result, attrs)

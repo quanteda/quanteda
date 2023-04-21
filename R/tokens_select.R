@@ -193,9 +193,11 @@ tokens_select.tokens_xptr <- function(x, pattern = NULL,
     endpos <- rep(endpos, length.out = ndoc(x))
     
     if (selection == "keep") {
-        result <- cpp_tokens_select(x, ids, 1, padding, window[1], window[2], startpos, endpos)
+        result <- cpp_tokens_select(x, ids, 1, padding, window[1], window[2], startpos, endpos,
+                                    quanteda_options("threads"))
     } else {
-        result <- cpp_tokens_select(x, ids, 2, padding, window[1], window[2], startpos, endpos)
+        result <- cpp_tokens_select(x, ids, 2, padding, window[1], window[2], startpos, endpos,
+                                    quanteda_options("threads"))
     }
     rebuild_tokens(result, attrs)
 }

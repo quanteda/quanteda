@@ -99,7 +99,8 @@ tokens_compound.tokens_xptr <- function(x, pattern,
 
     ids <- object2id(pattern, type, valuetype, case_insensitive, remove_unigram = all(window == 0))
     if (length(window) == 1) window <- rep(window, 2)
-    result <- cpp_tokens_compound(x, ids, concatenator, join, window[1], window[2])
+    result <- cpp_tokens_compound(x, ids, concatenator, join, window[1], window[2],
+                                  quanteda_options("threads"))
     field_object(attrs, "concatenator") <- concatenator
     rebuild_tokens(result, attrs)
 }

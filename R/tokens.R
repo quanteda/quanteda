@@ -316,7 +316,7 @@ tokens.corpus <- function(x,
         if (verbose) catm(" ...tokenizing", i, "of", length(x), "blocks\n")
         temp <- tokenizer_fn(x[[i]], split_hyphens = split_hyphens, split_tags = split_tags, 
                              verbose = verbose, ...)
-        result <- cpp_serialize_add(temp, result)
+        result <- cpp_serialize_add(temp, result, quanteda_options("threads"))
     }
     result <- build_tokens(
         result, 
@@ -486,7 +486,7 @@ as.tokens.default <- function(x, concatenator = "", ...) {
 #' @export
 as.tokens.list <- function(x, concatenator = "_", ...) {
     result <- build_tokens(
-        cpp_serialize(lapply(x, as.character)),
+        cpp_serialize(lapply(x, as.character), quanteda_options("threads")),
         types = NULL,
         concatenator = concatenator,
         docvars = make_docvars(length(x), names(x))
