@@ -11,7 +11,9 @@ using namespace quanteda;
  */
 
 // [[Rcpp::export]]
-TokensPtr cpp_tokens_combine(TokensPtr xptr1, TokensPtr xptr2){
+TokensPtr cpp_tokens_combine(TokensPtr xptr1, 
+                             TokensPtr xptr2,
+                             const int thread = -1) {
     
     Types types;
     types.reserve(xptr1->types.size() + xptr2->types.size());
@@ -23,13 +25,16 @@ TokensPtr cpp_tokens_combine(TokensPtr xptr1, TokensPtr xptr2){
     Texts texts = xptr2->texts;
     
 #if QUANTEDA_USE_TBB
-    tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
-        for (int h = r.begin(); h < r.end(); ++h) {
-            for (std::size_t i = 0; i < texts[h].size(); i++) {
-                if (texts[h][i] != 0)
-                    texts[h][i] += V;
+    tbb::task_arena arena(thread);
+    arena.execute([&]{
+        tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
+            for (int h = r.begin(); h < r.end(); ++h) {
+                for (std::size_t i = 0; i < texts[h].size(); i++) {
+                    if (texts[h][i] != 0)
+                        texts[h][i] += V;
+                }
             }
-        }
+        });
     });
 #else
     for (std::size_t h = 0; h < H; h++) {

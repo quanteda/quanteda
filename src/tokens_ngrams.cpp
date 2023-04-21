@@ -69,7 +69,8 @@ void type(std::size_t i,
 TokensPtr cpp_tokens_ngrams(TokensPtr xptr,
                             const String delim_,
                             const IntegerVector ns_,
-                            const IntegerVector skips_) {
+                            const IntegerVector skips_,
+                            const int thread = -1) {
     
     Texts texts = xptr->texts;
     Types types = xptr->types;
@@ -86,10 +87,13 @@ TokensPtr cpp_tokens_ngrams(TokensPtr xptr,
     std::size_t H = texts.size();
 #if QUANTEDA_USE_TBB
     IdNgram id_ngram(1);
-    tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
-        for (int h = r.begin(); h < r.end(); ++h) {
-            texts[h] = skipgram(texts[h], ns, skips, map_ngram, id_ngram);
-        }    
+    tbb::task_arena arena(thread);
+    arena.execute([&]{
+        tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
+            for (int h = r.begin(); h < r.end(); ++h) {
+                texts[h] = skipgram(texts[h], ns, skips, map_ngram, id_ngram);
+            }    
+        });
     });
 #else
     IdNgram id_ngram = 1;
@@ -110,10 +114,12 @@ TokensPtr cpp_tokens_ngrams(TokensPtr xptr,
     std::size_t I = keys_ngram.size();
     Types types_ngram(I);
 #if QUANTEDA_USE_TBB
-    tbb::parallel_for(tbb::blocked_range<int>(0, I), [&](tbb::blocked_range<int> r) {
-        for (int i = r.begin(); i < r.end(); ++i) {
-            type(i, keys_ngram, types_ngram, map_ngram, delim, types);
-        }    
+    arena.execute([&]{
+        tbb::parallel_for(tbb::blocked_range<int>(0, I), [&](tbb::blocked_range<int> r) {
+            for (int i = r.begin(); i < r.end(); ++i) {
+                type(i, keys_ngram, types_ngram, map_ngram, delim, types);
+            }    
+        });
     });
 #else
     for (std::size_t i = 0; i < I; i++) {

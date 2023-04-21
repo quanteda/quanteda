@@ -43,7 +43,8 @@ Text serialize(const StringText &text,
 
 
 // [[Rcpp::export]]
-TokensPtr cpp_serialize(List texts_){
+TokensPtr cpp_serialize(List texts_, 
+                        const int thread = -1) {
     
     //dev::Timer timer;
     StringTexts texts = Rcpp::as<StringTexts>(texts_);
@@ -54,10 +55,13 @@ TokensPtr cpp_serialize(List texts_){
     std::size_t H = texts.size();
     Texts temp(H);
 #if QUANTEDA_USE_TBB
-    tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
-        for (int h = r.begin(); h < r.end(); ++h) {
-            temp[h] = serialize(texts[h], map, id, false);
-        }    
+    tbb::task_arena arena(thread);
+    arena.execute([&]{
+        tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
+            for (int h = r.begin(); h < r.end(); ++h) {
+                temp[h] = serialize(texts[h], map, id, false);
+            }    
+        });
     });
 #else
     for (size_t h = 0; h < H; h++) {
@@ -75,7 +79,9 @@ TokensPtr cpp_serialize(List texts_){
 }
 
 // [[Rcpp::export]]
-TokensPtr cpp_serialize_add(List texts_, TokensPtr xptr){
+TokensPtr cpp_serialize_add(List texts_, 
+                            TokensPtr xptr,
+                            const int thread = -1) {
     
     //dev::Timer timer;
     Types types = xptr->types;
@@ -94,10 +100,13 @@ TokensPtr cpp_serialize_add(List texts_, TokensPtr xptr){
     std::size_t H = texts.size();
     Texts temp(H);
 #if QUANTEDA_USE_TBB
-    tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
-        for (int h = r.begin(); h < r.end(); ++h) {
-            temp[h] = serialize(texts[h], map, id, false);
-        }    
+    tbb::task_arena arena(thread);
+    arena.execute([&]{
+        tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
+            for (int h = r.begin(); h < r.end(); ++h) {
+                temp[h] = serialize(texts[h], map, id, false);
+            }    
+        });
     });
 #else
     for (size_t h = 0; h < H; h++) {

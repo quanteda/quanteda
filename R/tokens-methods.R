@@ -243,7 +243,7 @@ combine_tokens <- function(...) {
     x <- list(...)
     if (length(x) == 1) 
         return(x[[1]])
-    result <- cpp_tokens_combine(x[[1]], x[[2]])
+    result <- cpp_tokens_combine(x[[1]], x[[2]], get_threads())
     if (length(x) > 2)
         result <- combine_tokens(result, x[[seq(3, length(x))]])
     return(result)
