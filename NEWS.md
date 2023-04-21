@@ -4,6 +4,21 @@
 
 * Introduces the `tokens_xptr` objects that extend the `tokens` objects with external pointers for a greater efficiency. Once `tokens` objects are converted to `tokens_xptr` objects using `as.tokens_xptr()`, `tokens_*.tokens_xptr()` methods are called automatically. 
 
+## Removals
+
+* `bootstrap_dfm()` was removed for character and corpus objects.  The correct way to bootstrap sentences is not to tokenize them as sentences and then bootstrap them from the dfm.  This is consistent with requiring the user to tokenise objects prior to forming dfms or other "downstream" objects.
+
+* `dfm()` no longer works on character or corpus objects, only on tokens or other dfm objects.  This was deprecated in v4 and removed in v4. 
+
+* Deprecated or renamed arguments formerly passed in `tokens()` that formerly mapped to the v3 arguments with a warning are removed.
+
+## Deprecations
+
+
+## Bug fixes and stability enhancements
+
+
+
 # quanteda 3.3.0
 
 ## Changes and additions
