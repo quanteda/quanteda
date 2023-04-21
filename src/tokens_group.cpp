@@ -47,6 +47,7 @@ TokensPtr cpp_tokens_group(TokensPtr xptr,
                   }
               }
           }
+      });
     });
 #else
     for (std::size_t g = 0; g < G; g++) {
