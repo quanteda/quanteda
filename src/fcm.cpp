@@ -85,7 +85,8 @@ S4 cpp_fcm(TokensPtr xptr,
                 const int n_types,
                 const NumericVector &weights_,
                 const bool boolean,
-                const bool ordered){
+                const bool ordered,
+                const int thread = -1) {
     
     // triplets are constructed according to tri & ordered settings to be efficient
     xptr->recompile();
@@ -101,10 +102,13 @@ S4 cpp_fcm(TokensPtr xptr,
     //dev::start_timer("Count", timer);
     std::size_t H = texts.size();
 #if QUANTEDA_USE_TBB
-    tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
-        for (int h = r.begin(); h < r.end(); ++h) {
-            count_col(texts[h], weights, window, ordered, boolean, fcm_tri);
-        }    
+    tbb::task_arena arena(thread);
+        arena.execute([&]{
+        tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
+            for (int h = r.begin(); h < r.end(); ++h) {
+                count_col(texts[h], weights, window, ordered, boolean, fcm_tri);
+            }    
+        });
     });
 #else        
     for (std::size_t h = 0; h < H; h++) {

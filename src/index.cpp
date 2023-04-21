@@ -44,7 +44,8 @@ Matches index(Text tokens,
 
 // [[Rcpp::export]]
 DataFrame cpp_index(TokensPtr xptr,
-                    const List &words_){
+                    const List &words_,
+                    const int thread = -1) {
     
     Texts texts = xptr->texts;
     Types types = xptr->types;
@@ -77,10 +78,13 @@ DataFrame cpp_index(TokensPtr xptr,
     UintParam N = 0;
     std::size_t H = texts.size();
 #if QUANTEDA_USE_TBB
-    tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
-        for (int h = r.begin(); h < r.end(); ++h) {
-            temp[h] = index(texts[h], spans, map_pats, N);
-        }    
+    tbb::task_arena arena(thread);
+    arena.execute([&]{
+        tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
+            for (int h = r.begin(); h < r.end(); ++h) {
+                temp[h] = index(texts[h], spans, map_pats, N);
+            }    
+        });
     });
 #else
     for (std::size_t h = 0; h < H; h++) {

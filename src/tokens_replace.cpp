@@ -66,7 +66,8 @@ Text replace(Text tokens,
 // [[Rcpp::export]]
 TokensPtr cpp_tokens_replace(TokensPtr xptr,
                              const List &patterns_,
-                             const List &replacements_){
+                             const List &replacements_,
+                             const int thread = -1) {
     
     Texts texts = xptr->texts;
     Ngrams ids_repls = Rcpp::as<Ngrams>(replacements_);
@@ -92,10 +93,13 @@ TokensPtr cpp_tokens_replace(TokensPtr xptr,
     //dev::start_timer("Pattern replace", timer);
     std::size_t H = texts.size();
 #if QUANTEDA_USE_TBB
-    tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
-        for (int h = r.begin(); h < r.end(); ++h) {
-            texts[h] = replace(texts[h], spans, map_pat, ids_repls);
-        }    
+    tbb::task_arena arena(thread);
+    arena.execute([&]{
+        tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
+            for (int h = r.begin(); h < r.end(); ++h) {
+                texts[h] = replace(texts[h], spans, map_pat, ids_repls);
+            }    
+        });
     });
 #else
     for (std::size_t h = 0; h < H; h++) {

@@ -140,7 +140,8 @@ TokensPtr cpp_tokens_compound(TokensPtr xptr,
                               const String &delim_,
                               const bool &join,
                               int window_left,
-                              int window_right){
+                              int window_right,
+                              const int thread = -1) {
     
     Texts texts = xptr->texts;
     Types types = xptr->types;
@@ -177,14 +178,17 @@ TokensPtr cpp_tokens_compound(TokensPtr xptr,
     // dev::start_timer("Token compound", timer);
     std::size_t H = texts.size();
 #if QUANTEDA_USE_TBB
-    tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
-        for (int h = r.begin(); h < r.end(); ++h) {
-            if (join) {
-                texts[h] = join_comp(texts[h], spans, set_comps, map_comps, id_comp, window);
-            } else {
-                texts[h] = match_comp(texts[h], spans, set_comps, map_comps, id_comp, window);
-            }
-        }    
+    tbb::task_arena arena(thread);
+    arena.execute([&]{
+        tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
+            for (int h = r.begin(); h < r.end(); ++h) {
+                if (join) {
+                    texts[h] = join_comp(texts[h], spans, set_comps, map_comps, id_comp, window);
+                } else {
+                    texts[h] = match_comp(texts[h], spans, set_comps, map_comps, id_comp, window);
+                }
+            }    
+        });
     });
 #else
     for (std::size_t h = 0; h < H; h++) {
