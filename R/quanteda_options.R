@@ -133,7 +133,7 @@ set_option_value <- function(key, value) {
     
     # special setting for threads
     if (key == "threads")
-        value <- get_custom_threads(value)
+        value <- check_threads(value)
 
     # assign the key-value
     opts <- list(value)
@@ -149,7 +149,7 @@ get_default_threads <- function() {
     unname(min(value, na.rm = TRUE))
 }
 
-get_custom_threads <- function(value) {
+check_threads <- function(value) {
     
     fun <- function(e) stop("Number of threads must be coercible to integer", call. = FALSE)
     tryCatch({
@@ -169,7 +169,7 @@ get_custom_threads <- function(value) {
 
 get_threads <- function() {
     value <- getOption("quanteda_threads", -1L)
-    if (!is.integer(value) || length(value) != 1)
+    if (!is.integer(value) || length(value) != 1L)
         stop("Invalid value of threads in quanteda options")
     return(value)
 }
