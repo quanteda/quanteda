@@ -72,7 +72,8 @@ Text join_mark(Text tokens,
 TokensPtr cpp_tokens_restore(TokensPtr xptr,
                         const List &marks_left_,
                         const List &marks_right_,
-                        const String &delim_){
+                        const String &delim_,
+                        const int thread = -1) {
     
     Texts texts = xptr->texts;
     Types types = xptr->types;
@@ -107,10 +108,13 @@ TokensPtr cpp_tokens_restore(TokensPtr xptr,
     // dev::start_timer("Token compound", timer);
     std::size_t H = texts.size();
 #if QUANTEDA_USE_TBB
-    tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
-        for (int h = r.begin(); h < r.end(); ++h) {
-            texts[h] = join_mark(texts[h], map_marks, map_comps, id_comp);
-        }    
+    tbb::task_arena arena(thread);
+        arena.execute([&]{
+        tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
+            for (int h = r.begin(); h < r.end(); ++h) {
+                texts[h] = join_mark(texts[h], map_marks, map_comps, id_comp);
+            }    
+        });
     });
 #else
     for (std::size_t h = 0; h < H; h++) {

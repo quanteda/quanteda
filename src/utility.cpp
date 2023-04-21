@@ -122,6 +122,11 @@ void cpp_set_meta(RObject object_, RObject meta_) {
 }
 
 // [[Rcpp::export]]
+int cpp_get_max_thread() {
+    return tbb::this_task_arena::max_concurrency();
+}
+
+// [[Rcpp::export]]
 bool cpp_tbb_enabled(){
 #if QUANTEDA_USE_TBB
     return true;

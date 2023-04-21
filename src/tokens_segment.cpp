@@ -102,7 +102,8 @@ Segments segment(Text tokens,
 TokensPtr cpp_tokens_segment(TokensPtr xptr,
                              const List &patterns_,
                              const bool &remove,
-                             const int &position){
+                             const int &position,
+                             const int thread = -1) {
     
     Texts texts = xptr->texts;
     Types types = xptr->types;
@@ -116,10 +117,13 @@ TokensPtr cpp_tokens_segment(TokensPtr xptr,
     std::size_t H = texts.size();
     std::vector<Segments> temp(H);
 #if QUANTEDA_USE_TBB
-    tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
-        for (int h = r.begin(); h < r.end(); ++h) {
-            temp[h] = segment(texts[h], N, spans, set_patterns, remove, position);
-        }    
+    tbb::task_arena arena(thread);
+    arena.execute([&]{
+        tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
+            for (int h = r.begin(); h < r.end(); ++h) {
+                temp[h] = segment(texts[h], N, spans, set_patterns, remove, position);
+            }    
+        });
     });
 #else
     for (std::size_t h = 0; h < texts.size(); h++) {

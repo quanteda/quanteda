@@ -145,7 +145,8 @@ TokensPtr cpp_tokens_select(TokensPtr xptr,
                                  int window_left,
                                  int window_right,
                                  const IntegerVector pos_from_,
-                                 const IntegerVector pos_to_){
+                                 const IntegerVector pos_to_,
+                                 const int thread = -1) {
 
     Texts texts = xptr->texts;
     std::pair<int, int> window(window_left, window_right);
@@ -166,16 +167,19 @@ TokensPtr cpp_tokens_select(TokensPtr xptr,
     // dev::start_timer("Token select", timer);
     std::size_t H = texts.size();
 #if QUANTEDA_USE_TBB
-    tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
-        for (int h = r.begin(); h < r.end(); ++h) {
-            if (mode == 1) {
-                texts[h] = keep_token(texts[h], spans, set_words, padding, window, pos[h]);
-            } else if(mode == 2) {
-                texts[h] = remove_token(texts[h], spans, set_words, padding, window, pos[h]);
-            } else {
-                texts[h] = texts[h];
-            }
-        }    
+    tbb::task_arena arena(thread);
+    arena.execute([&]{
+        tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
+            for (int h = r.begin(); h < r.end(); ++h) {
+                if (mode == 1) {
+                    texts[h] = keep_token(texts[h], spans, set_words, padding, window, pos[h]);
+                } else if(mode == 2) {
+                    texts[h] = remove_token(texts[h], spans, set_words, padding, window, pos[h]);
+                } else {
+                    texts[h] = texts[h];
+                }
+            }    
+        });
     });
 #else
     for (std::size_t h = 0; h < texts.size(); h++) {

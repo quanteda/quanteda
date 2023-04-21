@@ -13,7 +13,8 @@ using namespace quanteda;
 
 // [[Rcpp::export]]
 TokensPtr cpp_tokens_group(TokensPtr xptr,
-                           IntegerVector groups_){
+                           IntegerVector groups_,
+                           const int thread = -1) {
     
     Texts texts = xptr->texts;
     std::vector<int> groups = Rcpp::as< std::vector<int> >(groups_);
@@ -36,14 +37,17 @@ TokensPtr cpp_tokens_group(TokensPtr xptr,
     
 
 #if QUANTEDA_USE_TBB
-    tbb::parallel_for(tbb::blocked_range<int>(0, G), [&](tbb::blocked_range<int> r) {
-        for (int g = r.begin(); g < r.end(); ++g) {
-            for (std::size_t h = 0; h < H; h++) {
-                if (g == groups[h] - 1) {
-                    temp[g].insert(temp[g].end(), texts[h].begin(), texts[h].end());
-                }
-            }
-        }
+    tbb::task_arena arena(thread);
+    arena.execute([&]{
+        tbb::parallel_for(tbb::blocked_range<int>(0, G), [&](tbb::blocked_range<int> r) {
+          for (int g = r.begin(); g < r.end(); ++g) {
+              for (std::size_t h = 0; h < H; h++) {
+                  if (g == groups[h] - 1) {
+                      temp[g].insert(temp[g].end(), texts[h].begin(), texts[h].end());
+                  }
+              }
+          }
+        });
     });
 #else
     for (std::size_t g = 0; g < G; g++) {
