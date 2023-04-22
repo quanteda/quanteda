@@ -163,8 +163,8 @@
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>The external pointer-based tokens object</h1>
-                        <h4 data-toc-skip class="author">Kohei
-Watanabe</h4>
+                        <h4 data-toc-skip class="author">Kohei Watanabe
+and Stefan Müller</h4>
             
       
       <small class="dont-index">Source: <a href="https://github.com/quanteda/quanteda/blob/HEAD/vignettes/pkgdown/tokens.Rmd" class="external-link"><code>vignettes/pkgdown/tokens.Rmd</code></a></small>
@@ -175,18 +175,21 @@ Watanabe</h4>
     
     
 <p>In <strong>quanteda</strong> version 4.0, we introduced a new class
-of tokens object, <code>tokens_xptr</code>, to make the efficiency of
-operations on a large corpus. The package’s <code>tokens</code> object
-has been a list of vectors that record integer IDs of tokens. Therefore,
-a <code>tokens</code> object is converted to a C++ object, modified and
-converted back to R every time <code>tokens_*</code> functions are
-applied. As the size of the object becomes larger, the conversion
-between R and C++ takes much of the execution time. However, the
-<code>tokens_xptr</code> object is based on a external-pointer object
-that keeps the data as the C++ object, eliminating the cost of such
-conversion. This is beneficial especially when large tokens objects
-(more than one million tokens) are processed through a long
-pipeline.</p>
+of tokens object, <code>tokens_xptr</code>. This object enhances the
+efficiency of adjusting tokens objects based on large text corpora. It
+is a sub-class of <code>tokens</code> object that is developed based on
+the external-pointer object <code>Rcpp::XPtr</code>.</p>
+<p>The package’s <code>tokens</code> object has been a list of vectors
+that record integer IDs of tokens, which is converted to a C++ object,
+modified and converted back to R every time <code>tokens_*</code>
+functions are applied. Such conversion between R and C++ takes much of
+the execution time as the size of the object increases.</p>
+<p>However, the <code>tokens_xptr</code> object keeps the data as the
+C++ object, eliminating the transaction cost. If the new object is used,
+large tokens objects (more than one million tokens) can be processed
+through a complex pipeline very fast. A detailed comparison of
+performance gains and execution times for <code>tokens</code> and
+<code>tokens_xptr</code> objects is available in a <a href="./articles/tokens.html">separate vignette</a>.</p>
 <div class="section level2">
 <h2 id="creating-tokens_xptr-objects">Creating tokens_xptr objects<a class="anchor" aria-label="anchor" href="#creating-tokens_xptr-objects"></a>
 </h2>
@@ -205,11 +208,16 @@ data of <code>xtoks_copy</code> objects (deep copy),
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://quanteda.io">quanteda</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span></span>
+<span><span class="co"># reshape corpus to sentence-level</span></span>
 <span><span class="va">corp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/corpus_reshape.html">corpus_reshape</a></span><span class="op">(</span><span class="va">data_corpus_guardian</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># tokenize text corpus</span></span>
 <span><span class="va">toks</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/tokens.html">tokens</a></span><span class="op">(</span><span class="va">corp</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># convert to tokens_xptr object</span></span>
 <span><span class="va">xtoks</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/as.tokens_xptr.html">as.tokens_xptr</a></span><span class="op">(</span><span class="va">toks</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">xtoks</span>, max_ndoc <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
-<span><span class="co">## Tokens consisting of 2,512,887 documents and 9 docvars (pointer to 0x251313ec540).</span></span>
+<span><span class="co">## Tokens consisting of 2,512,887 documents and 9 docvars (pointer to 0x200e67685b0).</span></span>
 <span><span class="co">## text123896.1 :</span></span>
 <span><span class="co">##  [1] "Democratic"   "presidential" "candidate"    "Bernie"       "Sanders"     </span></span>
 <span><span class="co">##  [6] "raised"       "more"         "than"         "$"            "33m"         </span></span>
@@ -218,10 +226,10 @@ data of <code>xtoks_copy</code> objects (deep copy),
 <span><span class="co">## </span></span>
 <span><span class="co">## [ reached max_ndoc ... 2,512,886 more documents ]</span></span>
 <span></span>
-<span><span class="co">## shallow copy</span></span>
+<span><span class="co"># shallow copy</span></span>
 <span><span class="va">xtoks_copy</span> <span class="op">&lt;-</span> <span class="va">xtoks</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">xtoks_copy</span>, max_ndoc <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
-<span><span class="co">## Tokens consisting of 2,512,887 documents and 9 docvars (pointer to 0x251313ec540).</span></span>
+<span><span class="co">## Tokens consisting of 2,512,887 documents and 9 docvars (pointer to 0x200e67685b0).</span></span>
 <span><span class="co">## text123896.1 :</span></span>
 <span><span class="co">##  [1] "Democratic"   "presidential" "candidate"    "Bernie"       "Sanders"     </span></span>
 <span><span class="co">##  [6] "raised"       "more"         "than"         "$"            "33m"         </span></span>
@@ -230,10 +238,10 @@ data of <code>xtoks_copy</code> objects (deep copy),
 <span><span class="co">## </span></span>
 <span><span class="co">## [ reached max_ndoc ... 2,512,886 more documents ]</span></span>
 <span></span>
-<span><span class="co">## deep copy </span></span>
+<span><span class="co"># deep copy </span></span>
 <span><span class="va">xtoks_deepcopy</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/as.tokens_xptr.html">as.tokens_xptr</a></span><span class="op">(</span><span class="va">xtoks</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">xtoks_deepcopy</span>, max_ndoc <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
-<span><span class="co">## Tokens consisting of 2,512,887 documents and 9 docvars (pointer to 0x251f848cc68).</span></span>
+<span><span class="co">## Tokens consisting of 2,512,887 documents and 9 docvars (pointer to 0x200f7f50f68).</span></span>
 <span><span class="co">## text123896.1 :</span></span>
 <span><span class="co">##  [1] "Democratic"   "presidential" "candidate"    "Bernie"       "Sanders"     </span></span>
 <span><span class="co">##  [6] "raised"       "more"         "than"         "$"            "33m"         </span></span>
@@ -249,18 +257,19 @@ data of <code>xtoks_copy</code> objects (deep copy),
 <code>tokens_xptr</code> objects in the same way as <code>tokens</code>
 objects. <code><a href="../../reference/tokens_select.html">tokens_select()</a></code>, <code><a href="../../reference/tokens_compound.html">tokens_compound()</a></code>,
 <code><a href="../../reference/tokens_lookup.html">tokens_lookup()</a></code>, <code><a href="../../reference/tokens_ngrams.html">tokens_ngrams()</a></code> and
-<code><a href="../../reference/tokens_replace.html">tokens_replace()</a></code> return a shallow copy of the input object
-for efficiency. However, <code><a href="../../reference/tokens_subset.html">tokens_subset()</a></code>, <code>[]</code>,
-<code><a href="../../reference/tokens_group.html">tokens_group()</a></code>, <code><a href="../../reference/tokens_segment.html">tokens_segment()</a></code> and
-<code><a href="../../reference/tokens_chunk.html">tokens_chunk()</a></code> return a deep copy because they can change
-the number of the order of the documents. Please pay attention to the
-address of the pointer <code>(pointer to xxxx)</code> when you use
-<code>tokens_xptr</code> objects.</p>
+<code><a href="../../reference/tokens_replace.html">tokens_replace()</a></code> will return a shallow copy of the input
+object for efficiency. However, <code><a href="../../reference/tokens_subset.html">tokens_subset()</a></code>,
+<code>[]</code>, <code><a href="../../reference/tokens_group.html">tokens_group()</a></code>,
+<code><a href="../../reference/tokens_segment.html">tokens_segment()</a></code> and <code><a href="../../reference/tokens_chunk.html">tokens_chunk()</a></code> return a
+deep copy because they can change the number of the order of the
+documents. Please pay attention to the address of the pointer
+<code>(pointer to xxxx)</code> when you use <code>tokens_xptr</code>
+objects.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># shallow copy</span></span>
 <span><span class="va">xtoks2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/tokens_select.html">tokens_remove</a></span><span class="op">(</span><span class="va">xtoks</span>, <span class="fu"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html" class="external-link">stopwords</a></span><span class="op">(</span><span class="st">"en"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">xtoks2</span>, max_ndoc <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
-<span><span class="co">## Tokens consisting of 2,512,887 documents and 9 docvars (pointer to 0x251313ec540).</span></span>
+<span><span class="co">## Tokens consisting of 2,512,887 documents and 9 docvars (pointer to 0x200e67685b0).</span></span>
 <span><span class="co">## text123896.1 :</span></span>
 <span><span class="co">##  [1] "Democratic"   "presidential" "candidate"    "Bernie"       "Sanders"     </span></span>
 <span><span class="co">##  [6] "raised"       "$"            "33m"          "last"         "three"       </span></span>
@@ -269,10 +278,10 @@ address of the pointer <code>(pointer to xxxx)</code> when you use
 <span><span class="co">## </span></span>
 <span><span class="co">## [ reached max_ndoc ... 2,512,886 more documents ]</span></span>
 <span></span>
-<span> <span class="co"># deep copy</span></span>
+<span><span class="co"># deep copy</span></span>
 <span><span class="va">xtoks3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/tokens_subset.html">tokens_subset</a></span><span class="op">(</span><span class="va">xtoks</span>, <span class="va">len</span> <span class="op">&gt;</span> <span class="fl">500</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">xtoks3</span>, max_ndoc <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
-<span><span class="co">## Tokens consisting of 2,274,748 documents and 9 docvars (pointer to 0x2513026d648).</span></span>
+<span><span class="co">## Tokens consisting of 2,274,748 documents and 9 docvars (pointer to 0x2007b09d8a0).</span></span>
 <span><span class="co">## text123897.1 :</span></span>
 <span><span class="co">##  [1] "anti-tax"    "activist"    "Grover"      "Norquist"    "waded"      </span></span>
 <span><span class="co">##  [6] "controversy" "President"   "Obama's"     "attempt"     "bypass"     </span></span>
@@ -296,9 +305,9 @@ or <code><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">sav
 </h2>
 <p>We apply the same <code>tokens_*</code> functions to
 <code>tokens</code> and <code>tokens_xptr</code> objects and construct a
-<code>dfm</code> in this mock pipeline. The execution time for latter is
-significantly shorter than for the former thanks to the cost saved by
-passing the data without expensive conversion.</p>
+<code>dfm</code> in this mock pipeline. The execution time for the
+latter is significantly shorter than for the former thanks to the cost
+saved by passing the data without expensive conversion.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">microbenchmark</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/microbenchmark/man/microbenchmark.html" class="external-link">microbenchmark</a></span><span class="op">(</span></span>
 <span>    tokens <span class="op">=</span> <span class="va">toks</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
@@ -312,8 +321,8 @@ passing the data without expensive conversion.</p>
 <span>        <span class="fu"><a href="../../reference/tokens_compound.html">tokens_compound</a></span><span class="op">(</span><span class="fu">newsmap</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/newsmap/man/data_dictionary_newsmap_en.html" class="external-link">data_dictionary_newsmap_en</a></span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
 <span>        <span class="fu"><a href="../../reference/dfm.html">dfm</a></span><span class="op">(</span>remove_padding <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
 <span>    times <span class="op">=</span> <span class="fl">10</span></span>
-<span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="tokens_files/figure-html/unnamed-chunk-5-1.png" width="1200"></p>
+<span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span>log <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<p><img src="tokens_files/figure-html/unnamed-chunk-6-1.png" width="1200"></p>
 </div>
   </div>
 
