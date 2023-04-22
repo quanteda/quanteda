@@ -163,8 +163,8 @@
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Performance improvement in version 4.0</h1>
-                        <h4 data-toc-skip class="author">Kohei
-Watanabe</h4>
+                        <h4 data-toc-skip class="author">Kohei Watanabe
+and Stefan Müller</h4>
             
       
       <small class="dont-index">Source: <a href="https://github.com/quanteda/quanteda/blob/HEAD/vignettes/pkgdown/benchmark.Rmd" class="external-link"><code>vignettes/pkgdown/benchmark.Rmd</code></a></small>
@@ -175,15 +175,18 @@ Watanabe</h4>
     
     
 <p><strong>quanteda</strong> version 4.0 can process textual data
-significantly faster than its earlier versions thanks to the <a href="./articles/tokens.html">tokens_xptr object</a> and a new glob
-pattern matching mechanism. We created the <strong>quanteda3</strong>
-package from the version 3.2 and compared the version 4.0 with it on a
-Windows laptop with AMD Ryzen 7 PRO processor (8 cores). We used
-sentences from 10,000 English-language news articles in this
-benchmarking.</p>
-<p>We repeat the same operation using the different versions of the same
+significantly faster than its earlier versions thanks to the
+<code>tokens_xptr object</code> and a new glob pattern matching
+mechanism. More information on the features and advantages of the new
+xptr object are available in a <a href="./articles/tokens.html">separate
+vignette</a>.</p>
+<p>We created the <strong>quanteda3</strong> package from version 3.2
+and compared it with version 4.0 on a Windows laptop with AMD Ryzen 7
+PRO processor (8 cores). We used sentences from 10,000 English-language
+news articles in this benchmarking.</p>
+<p>We repeat the same operation using different versions of the same
 function to get the distribution of execution time. The result shows
-that the execution time of many v4.0 functions is about the half of the
+that the execution time of many v4.0 functions is about half of the
 version 3.2 functions.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#devtools::install_github("quanteda/quanteda3")</span></span>
@@ -220,8 +223,8 @@ version 4.0 and 3.2 (“v4” and “v3” in the plots, respectively).</p>
 <span>    v4 <span class="op">=</span> <span class="fu"><a href="../../reference/tokens.html">tokens</a></span><span class="op">(</span><span class="va">corp</span>, remove_punct <span class="op">=</span> <span class="cn">TRUE</span>, remove_numbers <span class="op">=</span> <span class="cn">TRUE</span>, </span>
 <span>                remove_symbols <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
 <span>    times <span class="op">=</span> <span class="fl">10</span></span>
-<span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="benchmark_files/figure-html/unnamed-chunk-3-1.png" width="1200"></p>
+<span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span>log <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<p><img src="benchmark_files/figure-html/unnamed-chunk-4-1.png" width="1200"></p>
 </div>
 <div class="section level2">
 <h2 id="modify-tokens-objects">Modify tokens objects<a class="anchor" aria-label="anchor" href="#modify-tokens-objects"></a>
@@ -231,43 +234,43 @@ keep the original <code>tokens_xptr</code> object intact.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># generate n-grams</span></span>
 <span><span class="fu">microbenchmark</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/microbenchmark/man/microbenchmark.html" class="external-link">microbenchmark</a></span><span class="op">(</span></span>
-<span>    v3 <span class="op">=</span> <span class="fu"><a href="../../reference/tokens_ngrams.html">tokens_ngrams</a></span><span class="op">(</span><span class="va">toks</span><span class="op">)</span>,</span>
+<span>    v3 <span class="op">=</span> <span class="fu">quanteda3</span><span class="fu">::</span><span class="fu"><a href="https://quanteda.io/reference/tokens_ngrams.html">tokens_ngrams</a></span><span class="op">(</span><span class="va">toks</span><span class="op">)</span>,</span>
 <span>    v4 <span class="op">=</span> <span class="fu"><a href="../../reference/as.tokens_xptr.html">as.tokens_xptr</a></span><span class="op">(</span><span class="va">xtoks</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
 <span>        <span class="fu"><a href="../../reference/tokens_ngrams.html">tokens_ngrams</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>    times <span class="op">=</span> <span class="fl">10</span></span>
-<span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="benchmark_files/figure-html/unnamed-chunk-4-1.png" width="1200"></p>
+<span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span>log <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<p><img src="benchmark_files/figure-html/unnamed-chunk-5-1.png" width="1200"></p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># lookup dictionary keywords</span></span>
 <span><span class="fu">microbenchmark</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/microbenchmark/man/microbenchmark.html" class="external-link">microbenchmark</a></span><span class="op">(</span></span>
-<span>    v3 <span class="op">=</span> <span class="fu">quanteda3</span><span class="fu">::</span><span class="fu"><a href="https://quanteda.io/reference/tokens_compound.html">tokens_compound</a></span><span class="op">(</span><span class="va">toks</span>, <span class="va">data_dictionary_LSD2015</span><span class="op">)</span>,</span>
+<span>    v3 <span class="op">=</span> <span class="fu">quanteda3</span><span class="fu">::</span><span class="fu"><a href="https://quanteda.io/reference/tokens_lookup.html">tokens_lookup</a></span><span class="op">(</span><span class="va">toks</span>, dictionary <span class="op">=</span>  <span class="va">data_dictionary_LSD2015</span><span class="op">)</span>,</span>
 <span>    v4 <span class="op">=</span> <span class="fu"><a href="../../reference/as.tokens_xptr.html">as.tokens_xptr</a></span><span class="op">(</span><span class="va">xtoks</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
-<span>        <span class="fu"><a href="../../reference/tokens_compound.html">tokens_compound</a></span><span class="op">(</span><span class="va">data_dictionary_LSD2015</span><span class="op">)</span>,</span>
+<span>        <span class="fu"><a href="../../reference/tokens_lookup.html">tokens_lookup</a></span><span class="op">(</span>dictionary <span class="op">=</span> <span class="va">data_dictionary_LSD2015</span><span class="op">)</span>,</span>
 <span>    times <span class="op">=</span> <span class="fl">10</span></span>
-<span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="benchmark_files/figure-html/unnamed-chunk-4-2.png" width="1200"></p>
+<span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span>log <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<p><img src="benchmark_files/figure-html/unnamed-chunk-5-2.png" width="1200"></p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span></span>
 <span><span class="co"># remove stop words</span></span>
 <span><span class="fu">microbenchmark</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/microbenchmark/man/microbenchmark.html" class="external-link">microbenchmark</a></span><span class="op">(</span></span>
-<span>    v3 <span class="op">=</span> <span class="fu">quanteda3</span><span class="fu">::</span><span class="fu"><a href="https://quanteda.io/reference/tokens_select.html">tokens_remove</a></span><span class="op">(</span><span class="va">toks</span>, <span class="fu"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html" class="external-link">stopwords</a></span><span class="op">(</span><span class="st">"en"</span><span class="op">)</span>, padding <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>    v3 <span class="op">=</span> <span class="fu">quanteda3</span><span class="fu">::</span><span class="fu"><a href="https://quanteda.io/reference/tokens_select.html">tokens_remove</a></span><span class="op">(</span><span class="va">toks</span>, pattern <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html" class="external-link">stopwords</a></span><span class="op">(</span><span class="st">"en"</span><span class="op">)</span>, padding <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
 <span>    v4 <span class="op">=</span> <span class="fu"><a href="../../reference/as.tokens_xptr.html">as.tokens_xptr</a></span><span class="op">(</span><span class="va">xtoks</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
-<span>        <span class="fu"><a href="../../reference/tokens_select.html">tokens_remove</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html" class="external-link">stopwords</a></span><span class="op">(</span><span class="st">"en"</span><span class="op">)</span>, padding <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>        <span class="fu"><a href="../../reference/tokens_select.html">tokens_remove</a></span><span class="op">(</span>pattern <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html" class="external-link">stopwords</a></span><span class="op">(</span><span class="st">"en"</span><span class="op">)</span>, padding <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
 <span>    times <span class="op">=</span> <span class="fl">10</span></span>
-<span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="benchmark_files/figure-html/unnamed-chunk-4-3.png" width="1200"></p>
+<span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span>log <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<p><img src="benchmark_files/figure-html/unnamed-chunk-5-3.png" width="1200"></p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># compound tokens</span></span>
 <span><span class="fu">microbenchmark</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/microbenchmark/man/microbenchmark.html" class="external-link">microbenchmark</a></span><span class="op">(</span></span>
-<span>    v3 <span class="op">=</span> <span class="fu">quanteda3</span><span class="fu">::</span><span class="fu"><a href="https://quanteda.io/reference/tokens_compound.html">tokens_compound</a></span><span class="op">(</span><span class="va">toks</span>, <span class="st">"&amp;"</span>, window <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>,</span>
+<span>    v3 <span class="op">=</span> <span class="fu">quanteda3</span><span class="fu">::</span><span class="fu"><a href="https://quanteda.io/reference/tokens_compound.html">tokens_compound</a></span><span class="op">(</span><span class="va">toks</span>,  pattern <span class="op">=</span> <span class="st">"&amp;"</span>, window <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>,</span>
 <span>    v4 <span class="op">=</span> <span class="fu"><a href="../../reference/as.tokens_xptr.html">as.tokens_xptr</a></span><span class="op">(</span><span class="va">xtoks</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
-<span>        <span class="fu"><a href="../../reference/tokens_compound.html">tokens_compound</a></span><span class="op">(</span><span class="st">"&amp;"</span>, window <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>,</span>
+<span>        <span class="fu"><a href="../../reference/tokens_compound.html">tokens_compound</a></span><span class="op">(</span>pattern <span class="op">=</span> <span class="st">"&amp;"</span>, window <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>,</span>
 <span>    times <span class="op">=</span> <span class="fl">10</span></span>
-<span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="benchmark_files/figure-html/unnamed-chunk-4-4.png" width="1200"></p>
+<span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span>log <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<p><img src="benchmark_files/figure-html/unnamed-chunk-5-4.png" width="1200"></p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># group sentences to articles</span></span>
@@ -275,8 +278,8 @@ keep the original <code>tokens_xptr</code> object intact.</p>
 <span>    v3 <span class="op">=</span> <span class="fu">quanteda3</span><span class="fu">::</span><span class="fu"><a href="https://quanteda.io/reference/tokens_group.html">tokens_group</a></span><span class="op">(</span><span class="va">toks</span><span class="op">)</span>,</span>
 <span>    v4 <span class="op">=</span> <span class="fu"><a href="../../reference/tokens_group.html">tokens_group</a></span><span class="op">(</span><span class="va">xtoks</span><span class="op">)</span>,</span>
 <span>    times <span class="op">=</span> <span class="fl">10</span></span>
-<span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="benchmark_files/figure-html/unnamed-chunk-4-5.png" width="1200"></p>
+<span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span>log <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<p><img src="benchmark_files/figure-html/unnamed-chunk-5-5.png" width="1200"></p>
 </div>
 <div class="section level2">
 <h2 id="combine-tokens-objects">Combine tokens objects<a class="anchor" aria-label="anchor" href="#combine-tokens-objects"></a>
@@ -297,11 +300,11 @@ keep the original <code>tokens_xptr</code> object intact.</p>
 <span>    v3 <span class="op">=</span> <span class="fu">quanteda3</span><span class="fu">:::</span><span class="fu"><a href="https://quanteda.io/reference/tokens-class.html">c.tokens</a></span><span class="op">(</span><span class="va">toks1</span>, <span class="va">toks2</span><span class="op">)</span>,</span>
 <span>    v4 <span class="op">=</span> <span class="fu">quanteda</span><span class="fu">:::</span><span class="fu"><a href="../../reference/tokens-class.html">c.tokens_xptr</a></span><span class="op">(</span><span class="va">xtoks1</span>, <span class="va">xtoks2</span><span class="op">)</span>,</span>
 <span>    times <span class="op">=</span> <span class="fl">10</span></span>
-<span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="benchmark_files/figure-html/unnamed-chunk-5-1.png" width="1200"></p>
+<span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span>log <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<p><img src="benchmark_files/figure-html/unnamed-chunk-6-1.png" width="1200"></p>
 </div>
 <div class="section level2">
-<h2 id="construct-a-dfm">Construct a DFM<a class="anchor" aria-label="anchor" href="#construct-a-dfm"></a>
+<h2 id="construct-a-document-feature-matrix">Construct a document-feature matrix<a class="anchor" aria-label="anchor" href="#construct-a-document-feature-matrix"></a>
 </h2>
 <p>We also compare the speed of constructing a document-feature matrix
 (DFM) using tokens objects.</p>
@@ -310,11 +313,12 @@ keep the original <code>tokens_xptr</code> object intact.</p>
 <span>    v3 <span class="op">=</span> <span class="fu">quanteda3</span><span class="fu">::</span><span class="fu"><a href="https://quanteda.io/reference/dfm.html">dfm</a></span><span class="op">(</span><span class="va">toks</span><span class="op">)</span>,</span>
 <span>    v4 <span class="op">=</span> <span class="fu"><a href="../../reference/dfm.html">dfm</a></span><span class="op">(</span><span class="va">xtoks</span><span class="op">)</span>,</span>
 <span>    times <span class="op">=</span> <span class="fl">10</span></span>
-<span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="benchmark_files/figure-html/unnamed-chunk-6-1.png" width="1200"></p>
+<span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span>log <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<p><img src="benchmark_files/figure-html/unnamed-chunk-7-1.png" width="1200"></p>
 </div>
 <div class="section level2">
-<h2 id="simple-pipeline">Simple pipeline<a class="anchor" aria-label="anchor" href="#simple-pipeline"></a>
+<h2 id="simple-pipeline-tokenize-corpus-and-create-document-feature-matrix">Simple pipeline: tokenize corpus and create document-feature
+matrix<a class="anchor" aria-label="anchor" href="#simple-pipeline-tokenize-corpus-and-create-document-feature-matrix"></a>
 </h2>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">microbenchmark</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/microbenchmark/man/microbenchmark.html" class="external-link">microbenchmark</a></span><span class="op">(</span></span>
@@ -325,8 +329,8 @@ keep the original <code>tokens_xptr</code> object intact.</p>
 <span>        <span class="fu"><a href="../../reference/tokens_select.html">tokens_remove</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html" class="external-link">stopwords</a></span><span class="op">(</span><span class="st">"en"</span><span class="op">)</span>, padding <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> </span>
 <span>        <span class="fu"><a href="../../reference/dfm.html">dfm</a></span><span class="op">(</span>remove_padding <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
 <span>    times <span class="op">=</span> <span class="fl">10</span></span>
-<span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="benchmark_files/figure-html/unnamed-chunk-7-1.png" width="1200"></p>
+<span><span class="op">)</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span>log <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<p><img src="benchmark_files/figure-html/unnamed-chunk-8-1.png" width="1200"></p>
 </div>
   </div>
 

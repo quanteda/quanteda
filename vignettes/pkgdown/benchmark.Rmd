@@ -76,7 +76,7 @@ microbenchmark::microbenchmark(
 ```{r}
 # generate n-grams
 microbenchmark::microbenchmark(
-    v3 = tokens_ngrams(toks),
+    v3 = quanteda3::tokens_ngrams(toks),
     v4 = as.tokens_xptr(xtoks) %>% 
         tokens_ngrams(),
     times = 10
@@ -133,7 +133,7 @@ microbenchmark::microbenchmark(
     v3 = quanteda3:::c.tokens(toks1, toks2),
     v4 = quanteda:::c.tokens_xptr(xtoks1, xtoks2),
     times = 10
-) %>% autoplot()
+) %>% autoplot(log = FALSE)
 ```
 
 ## Construct a document-feature matrix
@@ -145,7 +145,7 @@ microbenchmark::microbenchmark(
     v3 = quanteda3::dfm(toks),
     v4 = dfm(xtoks),
     times = 10
-) %>% autoplot()
+) %>% autoplot(log = FALSE)
 ```
 
 ## Simple pipeline: tokenize corpus and create document-feature matrix
@@ -159,6 +159,6 @@ microbenchmark::microbenchmark(
         tokens_remove(stopwords("en"), padding = TRUE) %>% 
         dfm(remove_padding = TRUE),
     times = 10
-) %>% autoplot()
+) %>% autoplot(log = FALSE)
 ```
 
