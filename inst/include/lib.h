@@ -1,5 +1,5 @@
-#ifndef QUANTEDA // prevent redefining
-#define QUANTEDA
+#ifndef QUANTEDA4 // prevent redefining
+#define QUANTEDA4
 
 #include <RcppArmadillo.h>
 #include <RcppParallel.h>
