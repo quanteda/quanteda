@@ -28,7 +28,7 @@ TokensPtr cpp_tokens_group(TokensPtr xptr,
     std::size_t H = texts.size();
     std::vector<size_t> sizes(G);
     for (std::size_t h = 0; h < H; h++) {
-        sizes[groups[h] - 1] =+ texts[h].size();
+        sizes[groups[h] - 1] += texts[h].size();
     }
     Texts temp(G);
     for (std::size_t g = 0; g < G; g++) {
