@@ -32,12 +32,13 @@ You can create a `tokens_xptr` from `tokens` using the `as.tokens_xptr()` method
 
 ```{r, echo=FALSE, include=FALSE}
 #data_corpus_guardian <- readRDS('/home/kohei/Dropbox/Public/data_corpus_guardian2016.rds') 
-data_corpus_guardian <- readRDS('C:/Users/watan/Dropbox/Public/data_corpus_guardian2016.rds')
+# data_corpus_guardian <- readRDS('C:/Users/watan/Dropbox/Public/data_corpus_guardian2016.rds')
+data_corpus_guardian <- quanteda.corpora::download("data_corpus_guardian")
 ```
 
 ```{r}
-require(quanteda)
-require(ggplot2)
+library("quanteda")
+library("ggplot2")
 
 # reshape corpus to sentence-level
 corp <- corpus_reshape(data_corpus_guardian)
@@ -104,4 +105,3 @@ microbenchmark::microbenchmark(
     times = 10
 ) %>% autoplot(log = FALSE)
 ```
-
