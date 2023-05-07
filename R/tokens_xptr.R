@@ -15,6 +15,11 @@ as.tokens_xptr <- function(x) {
     UseMethod("as.tokens_xptr")
 }
 
+#' @export
+as.tokens_xptr.default <- function(x) {
+    check_class(class(x), "as.tokens_xptr")
+}
+
 #' @rdname as.tokens_xptr
 #' @method as.tokens_xptr tokens
 #' @export
