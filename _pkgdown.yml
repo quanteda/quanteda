@@ -28,6 +28,10 @@ navbar:
       href: reference/index.html
     - text: "Features"
       menu:
+        - text: "External pointer tokens objects"
+          href: articles/pkgdown/tokens_xptr.html
+        - text: "Performance benchmarks for v4"
+          href: articles/pkgdown/benchmarks_xptr.html
         - text: "Feature comparison"
           href: articles/pkgdown/comparison.html
         - text: "Package design"
@@ -139,6 +143,7 @@ reference:
     - featnames
 - title: Miscellaneous functions
   contents:
+    - copy
     - phrase
     - convert
     - bootstrap_dfm

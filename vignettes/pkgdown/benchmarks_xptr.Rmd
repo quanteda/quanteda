@@ -25,14 +25,16 @@ knitr::opts_chunk$set(
 data_corpus_guardian <- quanteda.corpora::download("data_corpus_guardian")
 ```
 
-**quanteda** version 4.0 can process textual data significantly faster than its earlier versions thanks to the `tokens_xptr object` and a new glob pattern matching mechanism. More information on the features and advantages of the new xptr object are available in a [separate vignette](./articles/tokens.html).
+## Overview and benchmarking approach
 
-We created the **quanteda3** package from **quanteda** version 3.3 and compared it with version 4.0 on a Windows laptop with AMD Ryzen 7 PRO processor (8 cores). We used sentences from 10,000 English-language news articles in this benchmarking.
+**quanteda** version 4.0 can process textual data significantly faster than its earlier versions thanks to the `tokens_xptr object` and a new glob pattern matching mechanism. More information on the features and advantages of the new xptr object are available in a [separate vignette](./articles/tokens_xptr.html).
 
-We repeat the same operation using different versions of the same function to get the distribution of execution time. The result shows that the execution time of many v4.0 functions is about half of the version 3.2 functions.
+How we performed the comparison: We created the **quanteda3** package from **quanteda** version 3.3 and compared it with version 4.0 on a Windows laptop with AMD Ryzen 7 PRO processor (8 cores). We used sentences from 10,000 English-language news articles in this benchmarking.
+
+We repeated the same operation using different versions of the same functions to get the distribution of execution time. The result shows that the execution time of many v4.0 functions is about half of their version 3.3 counterparts.
 
 ```{r}
-#devtools::install_github("quanteda/quanteda3")
+# remotes::install_github("quanteda/quanteda3")
 library("quanteda")
 library("ggplot2")
 
@@ -50,9 +52,9 @@ ndoc(toks) # the number of sentences
 sum(ntoken(toks)) # the total number of tokens
 ```
 
-## Tokenize a corpus
+## Tokenising a corpus
 
-Although the v4.0 tokenizer is more flexible, its speed is roughly the same as v3.2 tokenizer. The shorter execution time of the version 4.0 is due to the faster removal of punctuation marks, numbers and symbols. We compare the performance by tokenizing the corpus with the `tokens()` function from **quanteda** version version 4.0 and 3.2 ("v4" and "v3" in the plots, respectively). 
+Although the v4 tokenizer is more flexible, its speed is roughly the same as v3 tokenizer. The shorter execution time of the version 4 is due to the faster removal of punctuation marks, numbers and symbols. We compare the performance by tokenizing the corpus with the `tokens()` function from **quanteda** version version 4.0 and 3.3 ("v4" and "v3" in the plots, respectively). 
 
 
 ```{r, echo=FALSE, include=FALSE}
@@ -70,7 +72,7 @@ microbenchmark::microbenchmark(
 ) %>% autoplot(log = FALSE)
 ```
 
-## Modify tokens objects
+## Modifying tokens objects
 
 `as.tokens_xptr()` is inserted before the v4 functions to keep the original `tokens_xptr` object intact.
 
@@ -116,7 +118,9 @@ microbenchmark::microbenchmark(
 ) %>% autoplot(log = FALSE)
 ```
 
-## Combine tokens objects
+## Combining tokens objects
+
+Combining tokens objects using `c()` is also substantially faster.
 
 ```{r}
 # get first 5000 documents
@@ -137,7 +141,7 @@ microbenchmark::microbenchmark(
 ) %>% autoplot(log = FALSE)
 ```
 
-## Construct a document-feature matrix
+## Constructing a document-feature matrix
 
 We also compare the speed of constructing a document-feature matrix (DFM) using tokens objects.
 
@@ -149,7 +153,7 @@ microbenchmark::microbenchmark(
 ) %>% autoplot(log = FALSE)
 ```
 
-## Simple pipeline: tokenize corpus and create document-feature matrix
+## Simple pipeline: tokenising a corpus and creating a document-feature matrix
 
 ```{r}
 microbenchmark::microbenchmark(
@@ -162,4 +166,3 @@ microbenchmark::microbenchmark(
     times = 10
 ) %>% autoplot(log = FALSE)
 ```
-
