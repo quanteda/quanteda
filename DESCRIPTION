@@ -81,6 +81,7 @@ Collate:
     'casechange-functions.R'
     'char_select.R'
     'convert.R'
+    'copy.R'
     'corpus-addsummary-metadata.R'
     'corpus-methods.R'
     'corpus.R'

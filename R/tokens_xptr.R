@@ -1,15 +1,32 @@
-#' @rdname as.tokens_xptr
+#' Methods for tokens_xptr objects
+#'
+#' Methods for creating and testing for `tokens_xptr` objects, which are
+#' [tokens] objects containing pointers to memory locations that can be passed
+#' by reference for efficient processing in `tokens_*()` functions that modify
+#' them, or for constructing a document-feature matrix without requiring a deep
+#' copy to be passed to [dfm()].
+#' @name tokens_xptr
+#' @keywords tokens
+#' @param x a [tokens] object to convert or a `tokens_xptr` class object to deep
+#'   copy.
+NULL
+
+#' @rdname tokens_xptr
+#' @description `is.tokens_xptr()` tests whether an object is of class
+#'   `tokens_xtpr`.
+#' @returns `is.tokens_xptr()` returns `TRUE` if the object is a external
+#'   pointer-based tokens object, `FALSE` otherwise.
 #' @export
 is.tokens_xptr <- function(x) {
     identical(typeof(x), "externalptr") && "tokens_xptr" %in% class(x)
 }
 
-#' Convert a tokens object to a tokens_xptr object
-#'
-#' `tokens_xptr` is a external pointer-based tokens object designed to process a
-#' large corpus efficiently.
-#' @param x a [tokens] object to convert or a `tokens_xptr` object to deep copy.
-#' @rdname as.tokens_xptr
+#' @rdname tokens_xptr
+#' @description `as.tokens_xptr()` coerces a `tokens` object to an external
+#'   pointer-based tokens object, or returns a deep copy of a `tokens_xtpr` when
+#'   `x` is already a `tokens_xtpr` object.
+#' @returns `as.tokens_xptr()` returns a (deep copy of a) `tokens_xtpr` class
+#'   object.
 #' @export
 as.tokens_xptr <- function(x) {
     UseMethod("as.tokens_xptr")
@@ -20,7 +37,7 @@ as.tokens_xptr.default <- function(x) {
     check_class(class(x), "as.tokens_xptr")
 }
 
-#' @rdname as.tokens_xptr
+#' @rdname tokens_xptr
 #' @method as.tokens_xptr tokens
 #' @export
 as.tokens_xptr.tokens <- function(x) {
@@ -34,13 +51,20 @@ as.tokens_xptr.tokens <- function(x) {
                  class = attrs[["class"]])
 }
 
-#' @rdname as.tokens_xptr
+#' @rdname tokens_xptr
 #' @method as.tokens_xptr tokens_xptr
 #' @export
 as.tokens_xptr.tokens_xptr <- function(x) {
     attrs <- attributes(x)
     result <- cpp_copy_xptr(x)
     rebuild_tokens(result, attrs)
+}
+
+#' @method lengths tokens_xptr
+#' @noRd
+#' @export
+lengths.tokens_xptr <- function(x, use.names = TRUE) {
+    lengths(as.tokens(x))
 }
 
 #' @export
