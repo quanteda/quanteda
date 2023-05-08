@@ -4,6 +4,8 @@
 
 * Fixed a potential crash when calling `tokens_compound()` with patterns containing paddings (#2254).
 
+* restores `readtext` object class method extensions, to work better with the **readtext** package.
+
 
 # quanteda 3.3.0
 
