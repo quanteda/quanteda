@@ -64,7 +64,8 @@ as.tokens_xptr.tokens_xptr <- function(x) {
 #' @noRd
 #' @export
 lengths.tokens_xptr <- function(x, use.names = TRUE) {
-    lengths(as.tokens(x))
+    structure(cpp_ntoken(x), 
+              names = if (use.names) docnames(x) else NULL)
 }
 
 #' @export

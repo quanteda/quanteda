@@ -302,4 +302,13 @@ test_that("lengths works on tokens xptr objects", {
         lengths(toks),
         lengths(xtoks)
     )
+    expect_identical(
+        lengths(toks, use.names = FALSE),
+        lengths(xtoks, use.names = FALSE)
+    )
+    expect_identical(
+        names(lengths(xtoks, use.names = FALSE)),
+        names(1:5),
+        NULL
+    )
 })
