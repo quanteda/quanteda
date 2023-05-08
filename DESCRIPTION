@@ -1,5 +1,5 @@
 Package: quanteda
-Version: 3.2.5.9001
+Version: 3.3.0.9002
 Title: Quantitative Analysis of Textual Data
 Description: A fast, flexible, and comprehensive framework for 
     quantitative text analysis in R.  Provides functionality for corpus management,
@@ -14,9 +14,9 @@ Authors@R: c(
     person("Haiyan", "Wang", email = "whyinsa@yahoo.com", role = "aut", comment = c(ORCID = "0000-0003-4992-4311")),
     person("Paul", "Nulty", email = "paul.nulty@gmail.com", role = "aut", comment = c(ORCID = "0000-0002-7214-4666")), 
     person("Adam", "Obeng", email = "quanteda@binaryeagle.com", role = "aut", comment = c(ORCID = "0000-0002-2906-4775")),
-    person("Stefan", "Müller", email = "mullers@tcd.ie", role = "aut", comment = c(ORCID = "0000-0002-6315-4125")),
-    person("Akitaka", "Matsuo", email = "a.matsuo@lse.ac.uk", role = "aut", comment = c(ORCID = "0000-0002-3323-6330")),
-    person("William", "Lowe", email = "wlowe@princeton.edu", role = "aut", comment = c(ORCID = "0000-0002-1549-6163")),
+    person("Stefan", "Müller", email = "stefan.mueller@ucd.ie", role = "aut", comment = c(ORCID = "0000-0002-6315-4125")),
+    person("Akitaka", "Matsuo", email = "a.matsuo@essex.ac.uk", role = "aut", comment = c(ORCID = "0000-0002-3323-6330")),
+    person("William", "Lowe", email = "lowe@hertie-school.org", role = "aut", comment = c(ORCID = "0000-0002-1549-6163")),
     person("Christian", "Müller", email = "C.Mueller@lse.ac.uk", role = "ctb"),
     person("Olivier", "Delmarcelle", email = "olivier.delmarcelle@ugent.be", role = "ctb", comment = c(ORCID = "0000-0003-4347-070X")),
     person("European Research Council", role = "fnd", comment = "ERC-2011-StG 283794-QUANTESS")
@@ -27,6 +27,7 @@ Depends:
     methods
 Imports:
     fastmatch,
+    jsonlite,
     magrittr,
     Matrix (>= 1.5-0),
     Rcpp (>= 0.12.12),
@@ -58,8 +59,6 @@ Suggests:
     stm,
     text2vec,
     topicmodels,
-    jsonlite,
-    quanteda,
     tibble,
     tidytext,
     xtable,
@@ -71,7 +70,6 @@ LazyData: TRUE
 VignetteBuilder: knitr
 Language: en-GB
 RoxygenNote: 7.2.3
-SystemRequirements: C++11
 Roxygen: list(markdown = TRUE)
 Collate: 
     'RcppExports.R'

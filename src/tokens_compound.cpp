@@ -197,8 +197,12 @@ List qatd_cpp_tokens_compound(const List &texts_,
     Ngrams comps = Rcpp::as<Ngrams>(compounds_);
     std::vector<std::size_t> spans(comps.size());
     for (size_t g = 0; g < comps.size(); g++) {
-        set_comps.insert(comps[g]);
-        spans[g] = comps[g].size();
+        Ngram comp = comps[g];
+        // ignore patterns with paddings
+        if (std::find(comp.begin(), comp.end(), 0) == comp.end()) {
+            set_comps.insert(comp);
+            spans[g] = comp.size();
+        }
     }
     sort(spans.begin(), spans.end());
     spans.erase(unique(spans.begin(), spans.end()), spans.end());

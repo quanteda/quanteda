@@ -270,3 +270,24 @@ test_that("tokens_compound window is working", {
   )
 
 })
+
+
+test_that("tokens_compound ignores padding", {
+    
+    toks <- tokens("a b c d e")
+    toks <- tokens_remove(toks, "b", padding = TRUE)
+    
+    toks_comp1 <- tokens_compound(toks, list(c("", "c"), c("d", "e")))
+    expect_equal(
+        as.character(toks_comp1),
+        c("a", "", "c", "d_e")
+    )
+    
+    col <- data.frame(collocation = c(" c", "d e"))
+    class(col) <- c("collocations", "textstat", "data.frame")
+    toks_comp2 <- tokens_compound(toks, col)
+    expect_equal(
+        as.character(toks_comp2),
+        c("a", "", "c", "d_e")
+    )
+})

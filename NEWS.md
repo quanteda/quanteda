@@ -1,3 +1,11 @@
+# quanteda 3.3.1
+
+## Bug fixes and stability enhancements
+
+* Fixed a potential crash when calling `tokens_compound()` with patterns containing paddings (#2254).
+
+* Indexing a dfm with empty feature names (`""`) is now possible.  Fixes #1961.
+
 # quanteda 3.3.0
 
 ## Changes and additions
@@ -13,15 +21,11 @@
         - the URL pattern
     - creates a new tokens_restore(), implemented in C++, to replace the older `preserve_special()` that rejoined splits created by the default stringi tokeniser machinery.  
     - makes some technical improvements to internal tokenisation functions, such as moving the ellipsis to the end of the function, to allow more modularity in developing future tokenisers.
-    
-* Added `user` and `system` arguments to `docvars()`, where `system = TRUE` returns internal document-level variables.
-
-* Indexing a dfm with empty feature names (`""`) is now possible.  Fixes #1961.
 
 ## Bug fixes and stability enhancements
 
 * `dfm_group()` now works correctly with an empty dfm (#2225).
-
+* `convert(x, to = "stm")` no longer vulnerable to large numbers of removed features as in #2189.
 
 # quanteda 3.2.5
 

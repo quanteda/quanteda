@@ -208,8 +208,6 @@ is_system_old <- function(x) {
 #' @param x [corpus], [tokens], or [dfm] object whose
 #'   document-level variables will be read or set
 #' @param field string containing the document-level variable name
-#' @param user if `TRUE`, returns user-defined fields.
-#' @param system if `TRUE`, returns system fields (`docid_`, `segid_`, `docname_`).
 #' @return `docvars` returns a data.frame of the document-level variables,
 #'   dropping the second dimension to form a vector if a single docvar is
 #'   returned.
@@ -224,34 +222,34 @@ is_system_old <- function(x) {
 #'
 #' @export
 #' @keywords corpus
-docvars <- function(x, field = NULL, user = TRUE, system = FALSE) {
+docvars <- function(x, field = NULL) {
     UseMethod("docvars")
 }
 
 #' @export
-docvars.default <- function(x, field = NULL, user = TRUE, system = FALSE) {
+docvars.default <- function(x, field = NULL) {
     check_class(class(x), "docvars")
 }
 
 #' @noRd
 #' @export
-docvars.corpus <- function(x, field = NULL, user = TRUE, system = FALSE) {
+docvars.corpus <- function(x, field = NULL) {
     x <- as.corpus(x)
-    select_docvars(attr(x, "docvars"), field, user = user, system = system, drop = TRUE)
+    select_docvars(attr(x, "docvars"), field, user = TRUE, system = FALSE, drop = TRUE)
 }
 
 #' @noRd
 #' @export
-docvars.tokens <- function(x, field = NULL, user = TRUE, system = FALSE) {
+docvars.tokens <- function(x, field = NULL) {
     x <- as.tokens(x)
-    select_docvars(attr(x, "docvars"), field, user = user, system = system, drop = TRUE)
+    select_docvars(attr(x, "docvars"), field, user = TRUE, system = FALSE, drop = TRUE)
 }
 
 #' @noRd
 #' @export
-docvars.dfm <- function(x, field = NULL, user = TRUE, system = FALSE) {
+docvars.dfm <- function(x, field = NULL) {
     x <- as.dfm(x)
-    select_docvars(x@docvars, field, user = user, system = system, drop = TRUE)
+    select_docvars(x@docvars, field, user = TRUE, system = FALSE, drop = TRUE)
 }
 
 #' @noRd

@@ -28,6 +28,8 @@
 </script>
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container">
@@ -40,14 +42,14 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.3.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Quick Start
      
     <span class="caret"></span>
@@ -74,7 +76,7 @@
   <a href="../../../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Features
      
     <span class="caret"></span>
@@ -92,7 +94,7 @@
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Examples
      
     <span class="caret"></span>
@@ -116,7 +118,7 @@
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Replications
      
     <span class="caret"></span>
@@ -136,7 +138,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/quanteda/quanteda">
+  <a href="https://github.com/quanteda/quanteda" class="external-link">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -157,14 +159,15 @@
 
       
 
-      </header><script src="japanese_twitter_ja_files/header-attrs-2.11/header-attrs.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>事例: 2017年総選挙に関するツイート</h1>
-                        <h4 class="author">Kohei Watanabe and Akitaka Matsuo</h4>
+                        <h4 data-toc-skip class="author">Kohei Watanabe
+and Akitaka Matsuo</h4>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/quanteda/quanteda/blob/master/vignettes/pkgdown/examples/japanese_twitter_ja.Rmd"><code>vignettes/pkgdown/examples/japanese_twitter_ja.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/quanteda/quanteda/blob/HEAD/vignettes/pkgdown/examples/japanese_twitter_ja.Rmd" class="external-link"><code>vignettes/pkgdown/examples/japanese_twitter_ja.Rmd</code></a></small>
       <div class="hidden name"><code>japanese_twitter_ja.Rmd</code></div>
 
     </div>
@@ -172,101 +175,102 @@
     
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://quanteda.io">quanteda</a></span><span class="op">)</span></code></pre></div>
-<div id="download" class="section level2">
-<h2 class="hasAnchor">
-<a href="#download" class="anchor"></a>コーパスのダウンロード</h2>
-<p>本コーパスは，2017年総選挙の際に収集されたツイートから構成されている．ツイートは，TwitterのStrem APIから、キーワード”選挙”を使い，10月20日から10月31日の期間にダウンロードした．インターネット上で収集されたテキストは，英数字の全半角が統一されていないので，<code>stri_trans_nfkc()</code>によって表記を標準化すると良い．</p>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://quanteda.io">quanteda</a></span><span class="op">)</span></span></code></pre></div>
+<div class="section level3">
+<h3 id="download">コーパスのダウンロード<a class="anchor" aria-label="anchor" href="#download"></a>
+</h3>
+<p>本コーパスは，2017年総選挙の際に収集されたツイートから構成されている．ツイートは，TwitterのStrem
+APIから、キーワード”選挙”を使い，10月20日から10月31日の期間にダウンロードした．インターネット上で収集されたテキストは，英数字の全半角が統一されていないので，<code>stri_trans_nfkc()</code>によって表記を標準化すると良い．</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"quanteda/quanteda.corpora"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"quanteda/quanteda.corpora"</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">corp</span> <span class="op">&lt;-</span> <span class="fu">quanteda.corpora</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/quanteda.corpora/man/download.html">download</a></span><span class="op">(</span>url <span class="op">=</span> <span class="st">"https://www.dropbox.com/s/co12wpj08pzqz71/data_corpus_election2017tweets.rds?dl=1"</span><span class="op">)</span>
-<span class="va">corp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/as.character.corpus.html">as.corpus</a></span><span class="op">(</span><span class="va">corp</span><span class="op">)</span>
-<span class="va">corp</span><span class="op">[</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu">stringi</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/stringi/man/stri_trans_nf.html">stri_trans_nfkc</a></span><span class="op">(</span><span class="va">corp</span><span class="op">)</span> <span class="co"># 表記を標準化</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">corp</span> <span class="op">&lt;-</span> <span class="fu">quanteda.corpora</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/quanteda.corpora/man/download.html" class="external-link">download</a></span><span class="op">(</span>url <span class="op">=</span> <span class="st">"https://www.dropbox.com/s/co12wpj08pzqz71/data_corpus_election2017tweets.rds?dl=1"</span><span class="op">)</span></span>
+<span><span class="va">corp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/as.character.corpus.html">as.corpus</a></span><span class="op">(</span><span class="va">corp</span><span class="op">)</span></span>
+<span><span class="va">corp</span><span class="op">[</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu">stringi</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/stringi/man/stri_trans_nf.html" class="external-link">stri_trans_nfkc</a></span><span class="op">(</span><span class="va">corp</span><span class="op">)</span> <span class="co"># 表記を標準化</span></span></code></pre></div>
 </div>
-<div id="number-of-tweets" class="section level2">
-<h2 class="hasAnchor">
-<a href="#number-of-tweets" class="anchor"></a>投稿の数と期間を取得</h2>
+<div class="section level3">
+<h3 id="number-of-tweets">投稿の数と期間を取得<a class="anchor" aria-label="anchor" href="#number-of-tweets"></a>
+</h3>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../../../reference/ndoc.html">ndoc</a></span><span class="op">(</span><span class="va">corp</span><span class="op">)</span></code></pre></div>
-<pre><code>## [1] 132346</code></pre>
+<code class="sourceCode R"><span><span class="fu"><a href="../../../reference/ndoc.html">ndoc</a></span><span class="op">(</span><span class="va">corp</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 132346</span></span></code></pre>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/range.html">range</a></span><span class="op">(</span><span class="fu"><a href="../../../reference/docvars.html">docvars</a></span><span class="op">(</span><span class="va">corp</span>, <span class="st">"created_at"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<pre><code>## [1] "2017-10-19 16:55:25 GMT" "2017-10-31 15:09:19 GMT"</code></pre>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/range.html" class="external-link">range</a></span><span class="op">(</span><span class="fu"><a href="../../../reference/docvars.html">docvars</a></span><span class="op">(</span><span class="va">corp</span>, <span class="st">"created_at"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] "2017-10-19 16:55:25 GMT" "2017-10-31 15:09:19 GMT"</span></span></code></pre>
 </div>
-<div id="pre-processing" class="section level1">
-<h1 class="hasAnchor">
-<a href="#pre-processing" class="anchor"></a>前処理</h1>
-<div id="tokenization" class="section level2">
-<h2 class="hasAnchor">
-<a href="#tokenization" class="anchor"></a>トークン化</h2>
+<div class="section level2">
+<h2 id="pre-processing">前処理<a class="anchor" aria-label="anchor" href="#pre-processing"></a>
+</h2>
+<div class="section level3">
+<h3 id="tokenization">トークン化<a class="anchor" aria-label="anchor" href="#tokenization"></a>
+</h3>
 <p>ツイートのトークン化では，ハッシュタグの後に続く改行を保持するために<code>remove_separator = FALSE</code>とし，次の<code><a href="../../../reference/tokens_select.html">tokens_remove()</a></code>で，語の位置関係を維持しながら，改行，空白，‘#’と’@‘以外の記号を削除する．日本語のハッシュタグは，’#’とそれの続く語が分離されてしまうので，それらを<code><a href="../../../reference/tokens_compound.html">tokens_compound()</a></code>で文書行列を作成する前に結合する．</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">toks</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/tokens.html">tokens</a></span><span class="op">(</span><span class="va">corp</span>, remove_separator <span class="op">=</span> <span class="cn">FALSE</span>, remove_url <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="va">toks</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/tokens_select.html">tokens_select</a></span><span class="op">(</span><span class="va">toks</span>, pattern <span class="op">=</span> <span class="st">"^[\\w#@]+$"</span>, valuetype <span class="op">=</span> <span class="st">"regex"</span>, padding <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-
-<span class="va">min_count</span> <span class="op">&lt;-</span> <span class="fl">10</span>
-
-<span class="co"># 漢字</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://quanteda.io">"quanteda.textstats"</a></span><span class="op">)</span>
-<span class="va">kanji_col</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/tokens_select.html">tokens_keep</a></span><span class="op">(</span><span class="va">toks</span>, pattern <span class="op">=</span> <span class="st">"^[一-龠]+$"</span>, valuetype <span class="op">=</span> <span class="st">"regex"</span>, padding <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="../../../reference/%&gt;%.html">%&gt;%</a></span> 
-             <span class="fu"><a href="https://quanteda.io/reference/textstat_collocations.html">textstat_collocations</a></span><span class="op">(</span>min_count <span class="op">=</span> <span class="va">min_count</span><span class="op">)</span>
-<span class="va">toks</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/tokens_compound.html">tokens_compound</a></span><span class="op">(</span><span class="va">toks</span>, <span class="va">kanji_col</span><span class="op">[</span><span class="va">kanji_col</span><span class="op">$</span><span class="va">z</span> <span class="op">&gt;</span> <span class="fl">3</span>,<span class="op">]</span>, concatenator <span class="op">=</span> <span class="st">""</span><span class="op">)</span>
-
-<span class="co"># カタカナ</span>
-<span class="va">kana_col</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/tokens_select.html">tokens_keep</a></span><span class="op">(</span><span class="va">toks</span>, pattern <span class="op">=</span> <span class="st">"^[ァ-ヶー]+$"</span>, valuetype <span class="op">=</span> <span class="st">"regex"</span>, padding <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="../../../reference/%&gt;%.html">%&gt;%</a></span> 
-            <span class="fu"><a href="https://quanteda.io/reference/textstat_collocations.html">textstat_collocations</a></span><span class="op">(</span>min_count <span class="op">=</span> <span class="va">min_count</span><span class="op">)</span>
-<span class="va">toks</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/tokens_compound.html">tokens_compound</a></span><span class="op">(</span><span class="va">toks</span>, <span class="va">kana_col</span><span class="op">[</span><span class="va">kana_col</span><span class="op">$</span><span class="va">z</span> <span class="op">&gt;</span> <span class="fl">3</span>,<span class="op">]</span>, concatenator <span class="op">=</span> <span class="st">""</span><span class="op">)</span>
-
-<span class="co"># 漢字，カタカナおよび数字</span>
-<span class="va">any_col</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/tokens_select.html">tokens_select</a></span><span class="op">(</span><span class="va">toks</span>, pattern <span class="op">=</span> <span class="st">"^[0-9ァ-ヶー一-龠]+$"</span>, valuetype <span class="op">=</span> <span class="st">"regex"</span>, padding <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="../../../reference/%&gt;%.html">%&gt;%</a></span> 
-           <span class="fu"><a href="https://quanteda.io/reference/textstat_collocations.html">textstat_collocations</a></span><span class="op">(</span>min_count <span class="op">=</span> <span class="va">min_count</span><span class="op">)</span>
-<span class="va">toks</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/tokens_compound.html">tokens_compound</a></span><span class="op">(</span><span class="va">toks</span>, pattern <span class="op">=</span> <span class="va">any_col</span><span class="op">[</span><span class="va">any_col</span><span class="op">$</span><span class="va">z</span> <span class="op">&gt;</span> <span class="fl">3</span>,<span class="op">]</span>, concatenator <span class="op">=</span> <span class="st">""</span><span class="op">)</span>
-
-<span class="co"># ハッシュと語の結合</span>
-<span class="va">toks</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/tokens_compound.html">tokens_compound</a></span><span class="op">(</span><span class="va">toks</span>, pattern <span class="op">=</span> <span class="fu"><a href="../../../reference/phrase.html">phrase</a></span><span class="op">(</span><span class="st">"# *"</span><span class="op">)</span>, concatenator <span class="op">=</span> <span class="st">""</span><span class="op">)</span> 
-
-<span class="va">tweet_dfm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/dfm.html">dfm</a></span><span class="op">(</span><span class="va">toks</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">toks</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/tokens.html">tokens</a></span><span class="op">(</span><span class="va">corp</span>, remove_separator <span class="op">=</span> <span class="cn">FALSE</span>, remove_url <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">toks</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/tokens_select.html">tokens_select</a></span><span class="op">(</span><span class="va">toks</span>, pattern <span class="op">=</span> <span class="st">"^[\\w#@]+$"</span>, valuetype <span class="op">=</span> <span class="st">"regex"</span>, padding <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">min_count</span> <span class="op">&lt;-</span> <span class="fl">10</span></span>
+<span></span>
+<span><span class="co"># 漢字</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://quanteda.io">"quanteda.textstats"</a></span><span class="op">)</span></span>
+<span><span class="va">kanji_col</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/tokens_select.html">tokens_keep</a></span><span class="op">(</span><span class="va">toks</span>, pattern <span class="op">=</span> <span class="st">"^[一-龠]+$"</span>, valuetype <span class="op">=</span> <span class="st">"regex"</span>, padding <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="../../../reference/pipe.html">%&gt;%</a></span> </span>
+<span>             <span class="fu"><a href="https://quanteda.io/reference/textstat_collocations.html">textstat_collocations</a></span><span class="op">(</span>min_count <span class="op">=</span> <span class="va">min_count</span><span class="op">)</span></span>
+<span><span class="va">toks</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/tokens_compound.html">tokens_compound</a></span><span class="op">(</span><span class="va">toks</span>, <span class="va">kanji_col</span><span class="op">[</span><span class="va">kanji_col</span><span class="op">$</span><span class="va">z</span> <span class="op">&gt;</span> <span class="fl">3</span>,<span class="op">]</span>, concatenator <span class="op">=</span> <span class="st">""</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># カタカナ</span></span>
+<span><span class="va">kana_col</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/tokens_select.html">tokens_keep</a></span><span class="op">(</span><span class="va">toks</span>, pattern <span class="op">=</span> <span class="st">"^[ァ-ヶー]+$"</span>, valuetype <span class="op">=</span> <span class="st">"regex"</span>, padding <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="../../../reference/pipe.html">%&gt;%</a></span> </span>
+<span>            <span class="fu"><a href="https://quanteda.io/reference/textstat_collocations.html">textstat_collocations</a></span><span class="op">(</span>min_count <span class="op">=</span> <span class="va">min_count</span><span class="op">)</span></span>
+<span><span class="va">toks</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/tokens_compound.html">tokens_compound</a></span><span class="op">(</span><span class="va">toks</span>, <span class="va">kana_col</span><span class="op">[</span><span class="va">kana_col</span><span class="op">$</span><span class="va">z</span> <span class="op">&gt;</span> <span class="fl">3</span>,<span class="op">]</span>, concatenator <span class="op">=</span> <span class="st">""</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># 漢字，カタカナおよび数字</span></span>
+<span><span class="va">any_col</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/tokens_select.html">tokens_select</a></span><span class="op">(</span><span class="va">toks</span>, pattern <span class="op">=</span> <span class="st">"^[0-9ァ-ヶー一-龠]+$"</span>, valuetype <span class="op">=</span> <span class="st">"regex"</span>, padding <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="../../../reference/pipe.html">%&gt;%</a></span> </span>
+<span>           <span class="fu"><a href="https://quanteda.io/reference/textstat_collocations.html">textstat_collocations</a></span><span class="op">(</span>min_count <span class="op">=</span> <span class="va">min_count</span><span class="op">)</span></span>
+<span><span class="va">toks</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/tokens_compound.html">tokens_compound</a></span><span class="op">(</span><span class="va">toks</span>, pattern <span class="op">=</span> <span class="va">any_col</span><span class="op">[</span><span class="va">any_col</span><span class="op">$</span><span class="va">z</span> <span class="op">&gt;</span> <span class="fl">3</span>,<span class="op">]</span>, concatenator <span class="op">=</span> <span class="st">""</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># ハッシュと語の結合</span></span>
+<span><span class="va">toks</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/tokens_compound.html">tokens_compound</a></span><span class="op">(</span><span class="va">toks</span>, pattern <span class="op">=</span> <span class="fu"><a href="../../../reference/phrase.html">phrase</a></span><span class="op">(</span><span class="st">"# *"</span><span class="op">)</span>, concatenator <span class="op">=</span> <span class="st">""</span><span class="op">)</span> </span>
+<span></span>
+<span><span class="va">tweet_dfm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/dfm.html">dfm</a></span><span class="op">(</span><span class="va">toks</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
-<div id="analysis" class="section level1">
-<h1 class="hasAnchor">
-<a href="#analysis" class="anchor"></a>分析</h1>
-<div id="network-tag" class="section level2">
-<h2 class="hasAnchor">
-<a href="#network-tag" class="anchor"></a>タグの共起ネットワーク</h2>
+<div class="section level2">
+<h2 id="analysis">分析<a class="anchor" aria-label="anchor" href="#analysis"></a>
+</h2>
+<div class="section level3">
+<h3 id="network-tag">タグの共起ネットワーク<a class="anchor" aria-label="anchor" href="#network-tag"></a>
+</h3>
 <p>ここでは，<code><a href="../../../reference/dfm_select.html">dfm_select()</a></code>によってハッシュタグを選択しているが，そこに多くに含まれる’#選挙’や’#衆院選’などのハッシュタグは，クラスターを明確にするために削除している．</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st">"quanteda.textplots"</span><span class="op">)</span>
-<span class="va">tag_fcm</span> <span class="op">&lt;-</span> 
-    <span class="va">tweet_dfm</span> <span class="op"><a href="../../../reference/%&gt;%.html">%&gt;%</a></span> 
-    <span class="fu"><a href="../../../reference/dfm_select.html">dfm_select</a></span><span class="op">(</span>pattern <span class="op">=</span> <span class="st">"#*"</span><span class="op">)</span> <span class="op"><a href="../../../reference/%&gt;%.html">%&gt;%</a></span> 
-    <span class="fu"><a href="../../../reference/dfm_select.html">dfm_remove</a></span><span class="op">(</span>pattern <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"*選挙*"</span>, <span class="st">"*衆院選*"</span>, <span class="st">"*衆議院*"</span>, <span class="st">"*投票*"</span><span class="op">)</span>, min_nchar <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op"><a href="../../../reference/%&gt;%.html">%&gt;%</a></span> 
-    <span class="fu"><a href="../../../reference/dfm_trim.html">dfm_trim</a></span><span class="op">(</span>min_termfreq <span class="op">=</span> <span class="fl">10</span><span class="op">)</span> <span class="op"><a href="../../../reference/%&gt;%.html">%&gt;%</a></span> 
-    <span class="fu"><a href="../../../reference/fcm.html">fcm</a></span><span class="op">(</span><span class="op">)</span>
-<span class="va">feat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="fu"><a href="../../../reference/topfeatures.html">topfeatures</a></span><span class="op">(</span><span class="va">tag_fcm</span>, <span class="fl">100</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/quanteda.textplots/man/textplot_network.html">textplot_network</a></span><span class="op">(</span><span class="fu"><a href="../../../reference/dfm_select.html">fcm_select</a></span><span class="op">(</span><span class="va">tag_fcm</span>, pattern <span class="op">=</span> <span class="va">feat</span><span class="op">)</span>, 
-                 min_freq <span class="op">=</span> <span class="fl">0.8</span>,
-                 vertex_labelfont <span class="op">=</span> <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.info.html">Sys.info</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="st">"sysname"</span><span class="op">]</span> <span class="op">==</span> <span class="st">"Darwin"</span><span class="op">)</span> <span class="st">"SimHei"</span> <span class="kw">else</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
-<pre><code>## Warning: ggrepel: 1 unlabeled data points (too many overlaps). Consider
-## increasing max.overlaps</code></pre>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">"quanteda.textplots"</span><span class="op">)</span></span>
+<span><span class="va">tag_fcm</span> <span class="op">&lt;-</span> </span>
+<span>    <span class="va">tweet_dfm</span> <span class="op"><a href="../../../reference/pipe.html">%&gt;%</a></span> </span>
+<span>    <span class="fu"><a href="../../../reference/dfm_select.html">dfm_select</a></span><span class="op">(</span>pattern <span class="op">=</span> <span class="st">"#*"</span><span class="op">)</span> <span class="op"><a href="../../../reference/pipe.html">%&gt;%</a></span> </span>
+<span>    <span class="fu"><a href="../../../reference/dfm_select.html">dfm_remove</a></span><span class="op">(</span>pattern <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"*選挙*"</span>, <span class="st">"*衆院選*"</span>, <span class="st">"*衆議院*"</span>, <span class="st">"*投票*"</span><span class="op">)</span>, min_nchar <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op"><a href="../../../reference/pipe.html">%&gt;%</a></span> </span>
+<span>    <span class="fu"><a href="../../../reference/dfm_trim.html">dfm_trim</a></span><span class="op">(</span>min_termfreq <span class="op">=</span> <span class="fl">10</span><span class="op">)</span> <span class="op"><a href="../../../reference/pipe.html">%&gt;%</a></span> </span>
+<span>    <span class="fu"><a href="../../../reference/fcm.html">fcm</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">feat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="fu"><a href="../../../reference/topfeatures.html">topfeatures</a></span><span class="op">(</span><span class="va">tag_fcm</span>, <span class="fl">100</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/quanteda.textplots/man/textplot_network.html" class="external-link">textplot_network</a></span><span class="op">(</span><span class="fu"><a href="../../../reference/dfm_select.html">fcm_select</a></span><span class="op">(</span><span class="va">tag_fcm</span>, pattern <span class="op">=</span> <span class="va">feat</span><span class="op">)</span>, </span>
+<span>                 min_freq <span class="op">=</span> <span class="fl">0.8</span>,</span>
+<span>                 vertex_labelfont <span class="op">=</span> <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.info.html" class="external-link">Sys.info</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="st">"sysname"</span><span class="op">]</span> <span class="op">==</span> <span class="st">"Darwin"</span><span class="op">)</span> <span class="st">"SimHei"</span> <span class="kw">else</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
 <p><img src="japanese_twitter_ja_files/figure-html/unnamed-chunk-7-1.png" width="700"></p>
 </div>
-<div id="network-word" class="section level2">
-<h2 class="hasAnchor">
-<a href="#network-word" class="anchor"></a>語の共起ネットワーク</h2>
+<div class="section level3">
+<h3 id="network-word">語の共起ネットワーク<a class="anchor" aria-label="anchor" href="#network-word"></a>
+</h3>
 <p>ツイートのメッセージを分析するためには，<code><a href="../../../reference/dfm_select.html">dfm_remove()</a></code>でハッシュタグやユーザー名を削除する．ここでは，平仮名だけからなる特徴は文法的な要素であることが多く，話題を理解するのに役に立たないので削除している．</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://quanteda.io">"quanteda.textstats"</a></span><span class="op">)</span>
-<span class="va">msg_fcm</span> <span class="op">&lt;-</span> <span class="va">tweet_dfm</span> <span class="op"><a href="../../../reference/%&gt;%.html">%&gt;%</a></span> 
-    <span class="fu"><a href="../../../reference/dfm_select.html">dfm_remove</a></span><span class="op">(</span>pattern <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"#*"</span>, <span class="st">"@*"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../../../reference/%&gt;%.html">%&gt;%</a></span> 
-    <span class="fu"><a href="../../../reference/dfm_select.html">dfm_remove</a></span><span class="op">(</span>pattern <span class="op">=</span> <span class="st">"^[ぁ-ん]+$"</span>, valuetype <span class="op">=</span> <span class="st">"regex"</span>, min_nchar <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op"><a href="../../../reference/%&gt;%.html">%&gt;%</a></span> 
-    <span class="fu"><a href="../../../reference/dfm_trim.html">dfm_trim</a></span><span class="op">(</span>min_termfreq <span class="op">=</span> <span class="fl">10</span><span class="op">)</span> <span class="op"><a href="../../../reference/%&gt;%.html">%&gt;%</a></span> 
-    <span class="fu"><a href="../../../reference/dfm_tolower.html">dfm_toupper</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../../../reference/%&gt;%.html">%&gt;%</a></span> 
-    <span class="fu"><a href="../../../reference/fcm.html">fcm</a></span><span class="op">(</span><span class="op">)</span>
-<span class="va">feat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="fu"><a href="../../../reference/topfeatures.html">topfeatures</a></span><span class="op">(</span><span class="va">msg_fcm</span>, <span class="fl">50</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/quanteda.textplots/man/textplot_network.html">textplot_network</a></span><span class="op">(</span><span class="fu"><a href="../../../reference/dfm_select.html">fcm_select</a></span><span class="op">(</span><span class="va">msg_fcm</span>, pattern <span class="op">=</span> <span class="va">feat</span><span class="op">)</span>, min_freq <span class="op">=</span> <span class="fl">0.3</span>,
-                 vertex_labelfont <span class="op">=</span> <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.info.html">Sys.info</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="st">"sysname"</span><span class="op">]</span> <span class="op">==</span> <span class="st">"Darwin"</span><span class="op">)</span> <span class="st">"SimHei"</span> <span class="kw">else</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://quanteda.io">"quanteda.textstats"</a></span><span class="op">)</span></span>
+<span><span class="va">msg_fcm</span> <span class="op">&lt;-</span> <span class="va">tweet_dfm</span> <span class="op"><a href="../../../reference/pipe.html">%&gt;%</a></span> </span>
+<span>    <span class="fu"><a href="../../../reference/dfm_select.html">dfm_remove</a></span><span class="op">(</span>pattern <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#*"</span>, <span class="st">"@*"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../../../reference/pipe.html">%&gt;%</a></span> </span>
+<span>    <span class="fu"><a href="../../../reference/dfm_select.html">dfm_remove</a></span><span class="op">(</span>pattern <span class="op">=</span> <span class="st">"^[ぁ-ん]+$"</span>, valuetype <span class="op">=</span> <span class="st">"regex"</span>, min_nchar <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op"><a href="../../../reference/pipe.html">%&gt;%</a></span> </span>
+<span>    <span class="fu"><a href="../../../reference/dfm_trim.html">dfm_trim</a></span><span class="op">(</span>min_termfreq <span class="op">=</span> <span class="fl">10</span><span class="op">)</span> <span class="op"><a href="../../../reference/pipe.html">%&gt;%</a></span> </span>
+<span>    <span class="fu"><a href="../../../reference/dfm_tolower.html">dfm_toupper</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../../../reference/pipe.html">%&gt;%</a></span> </span>
+<span>    <span class="fu"><a href="../../../reference/fcm.html">fcm</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">feat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="fu"><a href="../../../reference/topfeatures.html">topfeatures</a></span><span class="op">(</span><span class="va">msg_fcm</span>, <span class="fl">50</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/quanteda.textplots/man/textplot_network.html" class="external-link">textplot_network</a></span><span class="op">(</span><span class="fu"><a href="../../../reference/dfm_select.html">fcm_select</a></span><span class="op">(</span><span class="va">msg_fcm</span>, pattern <span class="op">=</span> <span class="va">feat</span><span class="op">)</span>, min_freq <span class="op">=</span> <span class="fl">0.3</span>,</span>
+<span>                 vertex_labelfont <span class="op">=</span> <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.info.html" class="external-link">Sys.info</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="st">"sysname"</span><span class="op">]</span> <span class="op">==</span> <span class="st">"Darwin"</span><span class="op">)</span> <span class="st">"SimHei"</span> <span class="kw">else</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Warning: ggrepel: 2 unlabeled data points (too many overlaps). Consider</span></span>
+<span><span class="co">## increasing max.overlaps</span></span></code></pre>
 <p><img src="japanese_twitter_ja_files/figure-html/unnamed-chunk-8-1.png" width="700"></p>
 </div>
 </div>
@@ -283,11 +287,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p>
+  <p></p>
+<p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>

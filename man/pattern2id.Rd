@@ -11,7 +11,8 @@ pattern2id(
   types,
   valuetype = c("glob", "fixed", "regex"),
   case_insensitive = TRUE,
-  keep_nomatch = FALSE
+  keep_nomatch = FALSE,
+  use_index = TRUE
 )
 
 pattern2fixed(
@@ -19,10 +20,16 @@ pattern2fixed(
   types,
   valuetype = c("glob", "fixed", "regex"),
   case_insensitive = TRUE,
-  keep_nomatch = FALSE
+  keep_nomatch = FALSE,
+  use_index = TRUE
 )
 
-index_types(types, valuetype, case_insensitive, max_len = NULL)
+index_types(
+  pattern,
+  types,
+  valuetype = c("glob", "fixed", "regex"),
+  case_insensitive = TRUE
+)
 }
 \arguments{
 \item{pattern}{a character vector, list of character vectors, \link{dictionary},
@@ -39,7 +46,7 @@ exact matching. See \link{valuetype} for details.}
 
 \item{keep_nomatch}{keep patterns that did not match}
 
-\item{max_len}{maximum length of types to be indexed}
+\item{use_index}{construct index of types for quick search}
 }
 \value{
 a list of integer vectors containing indices of matched types
@@ -76,8 +83,8 @@ pattern2id(pats_glob, types, "glob", case_insensitive = TRUE)
 pattern <- list(c("^a$", "^b"), c("c"), c("d"))
 types <- c("A", "AA", "B", "BB", "BBB", "C", "CC")
 pattern2fixed(pattern, types, "regex", case_insensitive = TRUE)
-index <- index_types(c("xxx", "yyyy", "ZZZ"), "glob", FALSE, 3)
-quanteda:::search_glob("yy*", attr(index, "type_search"), index)
+index <- index_types("yy*", c("xxx", "yyyy", "ZZZ"), "glob", FALSE)
+quanteda:::search_glob("yy*", attr(index, "types_search"), index)
 }
 \keyword{development}
 \keyword{internal}

@@ -32,9 +32,8 @@ devtools::install_github("kosukeimai/qss-package", build_vignettes = TRUE)
 First, we use the **readtext** package to import the Federalist Papers as a data frame and create a **quanteda** corpus. 
 
 ```{r}
-library("readtext")
 # use readtext package to import all documents as a dataframe
-corpus_texts <- readtext(system.file("extdata/federalist/", package = "qss"))
+corpus_texts <- readtext::readtext(system.file("extdata/federalist/", package = "qss"))
 
 # create docvar with number of paper
 corpus_texts$paper_number <- paste("No.", seq_len(nrow(corpus_texts)), sep = " ")

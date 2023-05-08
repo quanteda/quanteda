@@ -105,9 +105,9 @@ Authors:
   \item Haiyan Wang \email{whyinsa@yahoo.com} (\href{https://orcid.org/0000-0003-4992-4311}{ORCID})
   \item Paul Nulty \email{paul.nulty@gmail.com} (\href{https://orcid.org/0000-0002-7214-4666}{ORCID})
   \item Adam Obeng \email{quanteda@binaryeagle.com} (\href{https://orcid.org/0000-0002-2906-4775}{ORCID})
-  \item Stefan Müller \email{mullers@tcd.ie} (\href{https://orcid.org/0000-0002-6315-4125}{ORCID})
-  \item Akitaka Matsuo \email{a.matsuo@lse.ac.uk} (\href{https://orcid.org/0000-0002-3323-6330}{ORCID})
-  \item William Lowe \email{wlowe@princeton.edu} (\href{https://orcid.org/0000-0002-1549-6163}{ORCID})
+  \item Stefan Müller \email{stefan.mueller@ucd.ie} (\href{https://orcid.org/0000-0002-6315-4125}{ORCID})
+  \item Akitaka Matsuo \email{a.matsuo@essex.ac.uk} (\href{https://orcid.org/0000-0002-3323-6330}{ORCID})
+  \item William Lowe \email{lowe@hertie-school.org} (\href{https://orcid.org/0000-0002-1549-6163}{ORCID})
 }
 
 Other contributors:

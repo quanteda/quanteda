@@ -24,7 +24,7 @@ keys in index when available."><!-- mathjax --><script src="https://cdnjs.cloudf
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.2.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.3.0</span>
       </span>
     </div>
 
@@ -139,15 +139,15 @@ keys in index when available.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">search_glob</span><span class="op">(</span><span class="va">pattern</span>, <span class="va">types_search</span>, <span class="va">index</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">search_glob</span><span class="op">(</span><span class="va">pattern</span>, <span class="va">types_search</span>, <span class="va">case_insensitive</span>, index <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">search_glob_multi</span><span class="op">(</span><span class="va">patterns</span>, <span class="va">types_search</span>, <span class="va">index</span><span class="op">)</span></span>
+<span><span class="fu">search_glob_multi</span><span class="op">(</span><span class="va">patterns</span>, <span class="va">types_search</span>, <span class="va">case_insensitive</span>, <span class="va">index</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">search_regex</span><span class="op">(</span><span class="va">pattern</span>, <span class="va">types_search</span>, <span class="va">case_insensitive</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">search_regex_multi</span><span class="op">(</span><span class="va">patterns</span>, <span class="va">types_search</span>, <span class="va">case_insensitive</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">search_fixed</span><span class="op">(</span><span class="va">pattern</span>, <span class="va">types_search</span>, <span class="va">index</span><span class="op">)</span></span>
+<span><span class="fu">search_fixed</span><span class="op">(</span><span class="va">pattern</span>, <span class="va">types_search</span>, index <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">search_fixed_multi</span><span class="op">(</span><span class="va">patterns</span>, <span class="va">types_search</span>, <span class="va">index</span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -163,17 +163,17 @@ keys in index when available.</p>
 not used in glob and fixed matching as types are in the index.</p></dd>
 
 
+<dt>case_insensitive</dt>
+<dd><p>logical; if <code>TRUE</code>, ignore case when matching a
+<code>pattern</code> or <a href="dictionary.html">dictionary</a> values</p></dd>
+
+
 <dt>index</dt>
 <dd><p>index object created by <code>index_types</code></p></dd>
 
 
 <dt>patterns</dt>
 <dd><p>a list of "glob", "fixed" or "regex" patterns</p></dd>
-
-
-<dt>case_insensitive</dt>
-<dd><p>logical; if <code>TRUE</code>, ignore case when matching a
-<code>pattern</code> or <a href="dictionary.html">dictionary</a> values</p></dd>
 
 </dl></div>
 
@@ -189,7 +189,7 @@ not used in glob and fixed matching as types are in the index.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

@@ -1,11 +1,19 @@
 # Submission notes
 
-Fixes test failures caused by recent changes to Matrix package behaviours.
+* Fixes a noSuggests caused by archived (and a week later restored) Suggested kage quanteda.textmodels
+
+* Adds testing under conditions of `_R_CHECK_DEPENDS_ONLY_=true`
+
+* Limits threads to the CRAN maximum.
+
+* Removes the C++ requirement.
+
+* Implements a new experimental tokenizer.
 
 ## Test environments
 
-* local macOS 12.6.1, R 4.2.2
-* Ubuntu 20.04 LTS, R 4.2.2
+* local macOS 13.2.1, R 4.2.3
+* Ubuntu 22.04 LTS, R 4.2.3
 * Windows release via devtools::check_win_release()
 * Windows devel via devtools::check_win_devel()
 * Windows oldrelease via devtools::check_win_oldrelease()
@@ -13,3 +21,7 @@ Fixes test failures caused by recent changes to Matrix package behaviours.
 ## R CMD check results
 
 No ERRORs, NOTEs, or WARNINGs produced.
+
+## Reverse dependency and other package conflicts
+
+None, according to revdepcheck::revdep_check().

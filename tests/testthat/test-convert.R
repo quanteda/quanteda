@@ -121,22 +121,24 @@ test_that("test stm converter: under extreme situations ", {
                              0, 0, 1, 2,
                              0, 0, 0, 0,
                              1, 2, 3, 4), byrow = TRUE, nrow = 4))
-    expect_warning(convert(dfmat1, to = "stm"), "Dropped empty document\\(s\\): text3")
+    expect_warning(
+        convert(dfmat1, to = "stm"), 
+        "Dropped 4 empty document(s)",
+        fixed = TRUE
+    )
 
     #zero-count feature
     dfmat2 <- as.dfm(matrix(c(1, 0, 2, 0,
                              0, 0, 1, 2,
                              1, 0, 0, 0,
                              1, 0, 3, 4), byrow = TRUE, nrow = 4))
-    expect_warning(convert(dfmat2, to = "stm"), "zero-count features: feat2")
+    expect_warning(
+        convert(dfmat2, to = "stm"), 
+        "Dropped 4 zero-count feature(s)",
+        fixed = TRUE
+    )
 
-    # FAILING
-    # skip_if_not_installed("stm")
-    # require(stm)
-    # stm_model <- stm(documents = stmdfm$documents, vocab = stmdfm$vocab, K=3)
-    # expect_output(print(stm_model), "A topic model with 3 topics")
-
-    #when dfm is 0% sparse
+    # when dfm is 0% sparse
     stmdfm <- convert(as.dfm(matrix(c(1, 2, 3, 4, 5, 6, 7, 8, 9), ncol = 3)), to = "stm")
     expect_equal(length(stmdfm$documents), 3)
 })
@@ -274,6 +276,7 @@ test_that("triplet converter works", {
 })
 
 test_that("omit_empty works as expected (#1600", {
+    skip_if_not_installed("tm")
     dfmat <- as.dfm(matrix(c(1, 0, 2, 0,
                              0, 0, 1, 2,
                              0, 0, 0, 0,

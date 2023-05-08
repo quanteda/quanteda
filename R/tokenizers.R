@@ -154,10 +154,7 @@ tokenize_word4 <- function(x, split_hyphens = FALSE, split_tags = FALSE, split_e
         if (verbose) catm(" ...preserving elisions\n")
         rules[["split_elisions"]] <- NULL
     }
-    if (!split_tags) {
-        if (verbose) catm(" ...preserving social media tags (#, @)\n")
-        rules[["split_tags"]] <- NULL
-    }
+
     username <- quanteda_options("pattern_username")
     hashtag <- quanteda_options("pattern_hashtag")
     
@@ -169,6 +166,7 @@ tokenize_word4 <- function(x, split_hyphens = FALSE, split_tags = FALSE, split_e
         if (verbose) catm(" ...preserving social media tags (#, @)\n")
         regex <- c(regex, username, hashtag)
         x <- stri_replace_all_regex(x, paste(regex, collapse = "|"), "\uE001$0\uE002")
+        rules[["split_tags"]] <- NULL
     }
     # if (!split_tags) {
     #     if (verbose) catm(" ...preserving social media tags (#, @)\n")
