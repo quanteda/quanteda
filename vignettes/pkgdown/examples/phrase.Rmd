@@ -67,14 +67,14 @@ head(tokens_select(comp_toks, pattern = c("United_States", "New_York")))
 Elements of multi-word expressions should be separately by whitespaces in a dictionary, but you do not use `phrase()` here.
 
 ```{r}
-multiword_dict <- dictionary(list(country = "United States", 
+dict_multiword <- dictionary(list(country = "United States", 
                                   city = "New York"))
 ```
 
 ### Lookup dictionary
 
 ```{r}
-head(tokens_lookup(toks, dictionary = multiword_dict))
+head(tokens_lookup(toks, dictionary = dict_multiword))
 ```
 
 ## Collocations
@@ -87,11 +87,11 @@ If `textstat_collocations()` is applied to a tokens object comprised only of cap
 
 ```{r}
 library("quanteda.textstats")
-col <- toks %>% 
-       tokens_remove(stopwords("en")) %>% 
-       tokens_select(pattern = "^[A-Z]", valuetype = "regex", 
-                     case_insensitive = FALSE, padding = TRUE) %>% 
-       textstat_collocations(min_count = 5, tolower = FALSE)
+col <- toks |> 
+    tokens_remove(stopwords("en")) |> 
+    tokens_select(pattern = "^[A-Z]", valuetype = "regex", 
+                  case_insensitive = FALSE, padding = TRUE) |>
+    textstat_collocations(min_count = 5, tolower = FALSE)
 head(col)
 ```
 
