@@ -36,6 +36,7 @@ For more details, see https://quanteda.io.
 The **quanteda** 4.0 is a major release that improves functionality and performance and further improves function consistency by removing previously deprecated functions. It also includes significant new tokeniser rules that makes the default tokeniser smarter than ever before, with new Unicode and ICU-compliant rules that enable it to work more consistently with even more languages.
 
 We describe more fully these significant changes in:
+
 * an [article about the new external pointer tokens objects](https://quanteda.io/articles/pkgdown/tokens_xptr.html);
 * an [article showing performance benchmarks](https://quanteda.io/articles/pkgdown/benchmarks_xptr.html) for the new external pointer tokens objects, as well as some of the tokeniser improvements in v4; and
 * the [changelog for v4](https://github.com/quanteda/quanteda/blob/master/NEWS.md#quanteda-40) a full listing of the changes, improvements, and deprecations in v4.
