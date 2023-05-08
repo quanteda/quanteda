@@ -73,6 +73,9 @@ ndoc.tokens_xptr <- function(x) {
     cpp_ndoc(x)
 }
 
+# -------------------------------------------------------------------------
+
+
 #' @export
 types.tokens_xptr <- function(x) {
     cpp_get_types(x, TRUE)
