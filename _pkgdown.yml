@@ -32,8 +32,6 @@ navbar:
           href: articles/pkgdown/tokens_xptr.html
         - text: "Performance benchmarks for v4"
           href: articles/pkgdown/benchmarks_xptr.html
-        - text: "Feature comparison"
-          href: articles/pkgdown/comparison.html
         - text: "Package design"
           href: articles/pkgdown/design.html
         - text: "Changelog"
