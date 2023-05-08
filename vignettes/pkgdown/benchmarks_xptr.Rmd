@@ -27,7 +27,7 @@ data_corpus_guardian <- quanteda.corpora::download("data_corpus_guardian")
 
 ## Overview and benchmarking approach
 
-**quanteda** version 4.0 can process textual data significantly faster than its earlier versions thanks to the `tokens_xptr object` and a new glob pattern matching mechanism. More information on the features and advantages of the new xptr object are available in a [separate vignette](./articles/tokens_xptr.html).
+**quanteda** version 4.0 can process textual data significantly faster than its earlier versions thanks to the `tokens_xptr object` and a new glob pattern matching mechanism. More information on the features and advantages of the new xptr object are available in a [separate vignette](./articles/pkgdown/tokens_xptr.html).
 
 How we performed the comparison: We created the **quanteda3** package from **quanteda** version 3.3 and compared it with version 4.0 on a Windows laptop with AMD Ryzen 7 PRO processor (8 cores). We used sentences from 10,000 English-language news articles in this benchmarking.
 
@@ -92,7 +92,6 @@ microbenchmark::microbenchmark(
         tokens_lookup(dictionary = data_dictionary_LSD2015),
     times = 10
 ) %>% autoplot(log = FALSE)
-
 
 # remove stop words
 microbenchmark::microbenchmark(
