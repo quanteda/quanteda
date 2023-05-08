@@ -166,8 +166,7 @@ as.list.tokens_xptr <- function(x, ...) {
 #' @method [[ tokens_xptr
 #' @export
 "[[.tokens_xptr" <- function(x, i) {
-    types <- c("", get_types(x))
-    types[unclass(as.tokens(x))[[i]] + 1] # shift index to show padding
+    as.list(as.tokens(x[i]))[[1]]
 }
 
 #' @method head tokens_xptr
