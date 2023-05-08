@@ -98,7 +98,7 @@ TokensPtr cpp_tokens_ngrams(TokensPtr xptr,
         tbb::parallel_for(tbb::blocked_range<int>(0, I), [&](tbb::blocked_range<int> r) {
           for (int i = r.begin(); i < r.end(); ++i) {
               types_new[i] = join_strings(keys_ngram[i], types, delim);
-          }
+          }    
         });
     });
 #else

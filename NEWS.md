@@ -19,7 +19,6 @@
 ## Bug fixes and stability enhancements
 
 
-
 # quanteda 3.3.0
 
 ## Changes and additions

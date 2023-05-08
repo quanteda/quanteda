@@ -23,7 +23,7 @@ Download corpus constructed from *Report on the Work of the Government* publishe
 
 ```{r, message=FALSE,eval=FALSE}
 # read text files
-devtools::install_github("quanteda/quanteda.corpora")
+remotes::install_github("quanteda/quanteda.corpora")
 ```
 
 ```{r}
