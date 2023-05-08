@@ -332,6 +332,14 @@ test_that("test token default methods", {
     )
 })
 
+test_that("test token_xptr default methods", {
+    expect_error(
+        as.tokens_xptr(c(1, 2, 3)),
+        "as.tokens_xptr() only works on tokens, tokens_xptr objects.",
+        fixed = TRUE
+    )
+})
+
 test_that("test new as.dfm methods", {
     expect_error(
         as.dfm(TRUE),

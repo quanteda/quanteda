@@ -1,6 +1,3 @@
-require(quanteda)
-require(testthat)
-
 toks <- tokens(data_corpus_inaugural)
 xtoks <- as.tokens_xptr(toks)
 
@@ -46,9 +43,10 @@ test_that("subsetting work", {
 })
 
 test_that("deep copy xtokens", {
-    xtoks_copy <- as.tokens_xptr(xtoks)
-    expect_identical(as.tokens(xtoks_copy), 
-                     as.tokens(xtoks))
+    expect_identical(
+        as.tokens(as.tokens_xptr(xtoks)),
+        as.tokens(xtoks)
+    )
 })
 
 test_that("c words on xtokens", {
@@ -297,8 +295,22 @@ test_that("returns shallow or deep copy x", {
   xtoks24 <- tokens_chunk(xtoks, size = 1000)
   expect_false(identical(quanteda:::address(xtoks), 
                          quanteda:::address(xtoks24)))
-  
-  
+})
+
+test_that("lengths works on tokens xptr objects", {
+    expect_identical(
+        lengths(toks),
+        lengths(xtoks)
+    )
+    expect_identical(
+        lengths(toks, use.names = FALSE),
+        lengths(xtoks, use.names = FALSE)
+    )
+    expect_identical(
+        names(lengths(xtoks, use.names = FALSE)),
+        names(1:5),
+        NULL
+    )
 })
 
 test_that("[[ indexing works on tokens_xptr", {
