@@ -24,8 +24,8 @@ txt <- c(d1 = "Shipment of gold damaged in a fire",
          d2 = "Delivery of silver arrived in a silver truck",
          d3 = "Shipment of gold arrived in a truck" )
 
-dfmat <- txt %>%
-    tokens() %>%
+dfmat <- txt |> 
+    tokens() |> 
     dfm()
 dfmat
 ```
@@ -46,7 +46,7 @@ Now the new unseen document can be represented in the reduced 2-dimensional spac
 The unseen query document:
 ```{r}
 dfmat_test <- tokens("gold silver truck") |> 
-    dfm() %>%
+    dfm() |> 
     dfm_match(features = featnames(dfmat))
 dfmat_test
 

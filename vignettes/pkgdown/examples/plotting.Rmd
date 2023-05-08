@@ -18,10 +18,10 @@ This vignette walks through various plot options available in **quanteda.textplo
 The frequency of features can be plotted as a wordcloud using `textplot_wordcloud()`.
 
 ```{r eval=TRUE, fig.width=8, fig.height=8}
-dfmat_inaug <- corpus_subset(data_corpus_inaugural, Year <= 1826) %>% 
-    tokens(remove_punct = TRUE) %>%
-    tokens_remove(pattern = stopwords('english')) %>%
-    dfm() %>%
+dfmat_inaug <- corpus_subset(data_corpus_inaugural, Year <= 1826) |> 
+    tokens(remove_punct = TRUE) |>
+    tokens_remove(pattern = stopwords('english')) |>
+    dfm() |>
     dfm_trim(min_termfreq = 10, verbose = FALSE)
 
 set.seed(100)
@@ -32,12 +32,12 @@ You can also plot a "comparison cloud", but this can only be done with fewer tha
 
 ```{r eval=TRUE, fig.width=10, fig.height=8}
 corpus_subset(data_corpus_inaugural, 
-              President %in% c("Washington", "Jefferson", "Madison")) %>%
-    tokens(remove_punct = TRUE) %>%
-    tokens_remove(stopwords("english")) %>%
-    dfm() %>%
-    dfm_group(groups = President) %>%
-    dfm_trim(min_termfreq = 5, verbose = FALSE) %>%
+              President %in% c("Washington", "Jefferson", "Madison")) |>
+    tokens(remove_punct = TRUE) |>
+    tokens_remove(stopwords("english")) |>
+    dfm() |>
+    dfm_group(groups = President) |>
+    dfm_trim(min_termfreq = 5, verbose = FALSE) |>
     textplot_wordcloud(comparison = TRUE)
 ```
 
@@ -54,7 +54,7 @@ Plotting a `kwic` object produces a lexical dispersion plot which allows us to v
 ```{r eval=TRUE, fig.width=8, fig.height=4}
 data_corpus_inaugural_subset <- 
     corpus_subset(data_corpus_inaugural, Year > 1949)
-kwic(tokens(data_corpus_inaugural_subset), pattern = "american") %>%
+kwic(tokens(data_corpus_inaugural_subset), pattern = "american") |>
     textplot_xray()
 ```
 
@@ -135,9 +135,9 @@ data_corpus_inaugural_subset$Year_President <- paste(
     data_corpus_inaugural_subset$President, sep = " ")
 
 # Get frequency grouped by speech
-tstat_freq_grouped <- data_corpus_inaugural_subset %>% 
-    tokens() %>% 
-    dfm() %>% 
+tstat_freq_grouped <- data_corpus_inaugural_subset |> 
+    tokens() |> 
+    dfm() |> 
     textstat_frequency(groups = Year_President)
 
 # Filter the term "american"
@@ -153,9 +153,9 @@ ggplot(freq_american, aes(x = frequency, y = group)) +
 The above plots are raw frequency plots. For relative frequency plots, (word count divided by the length of the chapter) we need to weight the document-frequency matrix first. To obtain expected word frequency per 100 words, we multiply by 100. 
 
 ```{r eval=TRUE, fig.width=8, fig.height=4}
-dfmat_rel_freq <- data_corpus_inaugural_subset %>% 
-    tokens() %>% 
-    dfm() %>% 
+dfmat_rel_freq <- data_corpus_inaugural_subset |> 
+    tokens() |> 
+    dfm() |> 
     dfm_weight(scheme = "prop") * 100
 print(dfmat_rel_freq)
 
@@ -174,11 +174,11 @@ ggplot(dat_rel_freq_american, aes(x = frequency, y = group)) +
 Finally, `texstat_frequency` allows to plot the most frequent words in terms of relative frequency by group.
 
 ```{r eval=TRUE, fig.width=8, fig.height=6}
-dfmat_weight_pres <- data_corpus_inaugural %>%
-  corpus_subset(Year > 2000) %>%
-  tokens(remove_punct = TRUE) %>%
-  tokens_remove(stopwords("english")) %>%
-  dfm() %>%
+dfmat_weight_pres <- data_corpus_inaugural |>
+  corpus_subset(Year > 2000) |>
+  tokens(remove_punct = TRUE) |>
+  tokens_remove(stopwords("english")) |>
+  dfm() |>
   dfm_weight(scheme = "prop")
 
 # Calculate relative frequency by president
@@ -205,9 +205,9 @@ corp_pres <- corpus_subset(data_corpus_inaugural,
                             President %in% c("Obama", "Trump"))
 
 # Create a dfm grouped by president
-dfmat_pres <- tokens(corp_pres, remove_punct = TRUE) %>%
-  tokens_remove(stopwords("english")) %>%
-  tokens_group(groups = President) %>%
+dfmat_pres <- tokens(corp_pres, remove_punct = TRUE) |>
+  tokens_remove(stopwords("english")) |>
+  tokens_group(groups = President) |>
   dfm()
 
 # Calculate keyness and determine Trump as target group
@@ -232,8 +232,8 @@ Wordscores is a scaling procedure for estimating policy positions or scores (Lav
 library("quanteda.textmodels")
 
 # Transform corpus to dfm
-dfmat_ie <- data_corpus_irishbudget2010 %>% 
-    tokens() %>% 
+dfmat_ie <- data_corpus_irishbudget2010 |> 
+    tokens() |> 
     dfm()
 
 # Set reference scores
