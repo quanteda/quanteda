@@ -71,8 +71,12 @@
 #'   requirements, it works extremely well for most languages as well as text
 #'   from social media (including hashtags and usernames).
 #'
-#' @section quanteda Tokenizers: The default word tokenizer `what = "word"`
-#'   splits tokens using [stri_split_boundaries(x, type =
+#' @section quanteda Tokenizers: The default word tokenizer `what = "word"` is
+#'   updated in major version 4.  It is even smarter than the v3 and v4
+#'   versions, with additional options for customization.  See
+#'   [tokenize_word4()] for full details.
+#' 
+#'   The default tokenizer splits tokens using [stri_split_boundaries(x, type =
 #'   "word")][stringi::stri_split_boundaries] but by default preserves infix
 #'   hyphens (e.g. "self-funding"), URLs, and social media "tag" characters
 #'   (#hashtags and @usernames), and email addresses.  The rules defining a
@@ -82,17 +86,21 @@
 #'   https://help.twitter.com/en/managing-your-account/twitter-username-rules
 #'   for usernames.
 #'
-#'   In versions < 2, the argument `remove_twitter` controlled whether social
-#'   media tags were preserved or removed, even when `remove_punct = TRUE`. This
-#'   argument is not longer functional in versions >= 2.  If greater control
-#'   over social media tags is desired, you should user an alternative
-#'   tokenizer, including non-\pkg{quanteda} options.
-#'
 #'   For backward compatibility, the following older tokenizers are also
-#'   supported through `what`: \describe{ \item{`"word1"`}{(legacy) implements
+#'   supported through `what`: 
+#'   \describe{ 
+#'   \item{`"word1"`}{(legacy) implements
 #'   similar behaviour to the version of `what = "word"` found in pre-version 2.
 #'   (It preserves social media tags and infix hyphens, but splits URLs.)
-#'   "word1" is also slower than "word".} \item{`"fasterword"`}{(legacy) splits
+#'   "word1" is also slower than "word2" and "word4".  In "word1",
+#'   the argument `remove_twitter` controlled whether social
+#'   media tags were preserved or removed, even when `remove_punct = TRUE`. This
+#'   argument is not longer functional in versions >= 2, but equivalent control
+#'   can be had using the `split_tags` argument and selective tokens removals.}
+#'   \item{`"word2", "word3"`}{(legacy) implements
+#'   similar behaviour to the versions of "word" found in \pkg{quanteda} versions
+#'   3 and 4.} 
+#'   \item{`"fasterword"`}{(legacy) splits
 #'   on whitespace and control characters, using
 #'   `stringi::stri_split_charclass(x, "[\\p{Z}\\p{C}]+")`}
 #'   \item{`"fastestword"`}{(legacy) splits on the space character, using
@@ -102,13 +110,6 @@
 #'   additional rules to avoid splits on words like "Mr." that would otherwise
 #'   incorrectly be detected as sentence boundaries.  For better sentence
 #'   tokenization, consider using \pkg{spacyr}.} }
-#'   
-#'   For forward compatibility including use of a more advanced tokenizer that
-#'   will be used in major version 4, there is also a "word4" tokenizer that is
-#'   even smarter than the default, which is also aliased as "word2" and "word3"
-#'   (these are identical).  See [tokenize_word4()] for full details.
-#'
-#'
 #' @return \pkg{quanteda} `tokens` class object, by default a serialized list of
 #'   integers corresponding to a vector of types.
 #' @seealso [tokens_ngrams()], [tokens_skipgrams()], [as.list.tokens()],
@@ -160,8 +161,6 @@ tokens <-  function(x,
                     verbose = quanteda_options("verbose"),
                     ...,
                     xptr = FALSE) {
-    
-    check_dots(...)
     global$proc_time <- proc.time()
     if (is.null(global$object_class))
         global$object_class <- class(x)[1]
@@ -406,7 +405,7 @@ tokens.tokens_xptr <-  function(x,
     include_docvars <- check_logical(include_docvars)
     padding <- check_logical(padding)
     verbose <- check_logical(verbose)
-    check_dots(..., method = "tokens")
+    check_dots(..., method = c("tokens", "tokenize_word4"))
     
     # splits
     if (split_hyphens) {
