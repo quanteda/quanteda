@@ -202,3 +202,16 @@ test_that("as.fcm is working", {
     expect_error(as.fcm(Matrix(mt2, sparse = FALSE)),
                 "matrix must have the same rownames and colnames")
 })
+
+test_that("Compatible with Matrix 1.5-5 changes in dimnames", {
+    dfmat <- dfm(tokens(c("a aa a", "a aaa aa aa")))
+    fcmat <- fcm(dfmat)
+    expect_equal(
+        featnames(dfm_remove(dfmat, "a*")),
+        character(0)
+    )
+    expect_equal(
+        featnames(fcm_remove(fcmat, "a*")),
+        character(0)
+    )
+})
