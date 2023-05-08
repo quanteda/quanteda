@@ -2,20 +2,31 @@
 % Please edit documentation in R/readtext-methods.R
 \name{readtext-methods}
 \alias{readtext-methods}
+\alias{docnames.readtext}
+\alias{docvars.readtext}
+\alias{ndoc.readtext}
 \title{Extensions for readtext objects}
-\arguments{
-\item{x}{an object returned by \code{spacy_parse}, or (for
-\code{spacy_parse}) a \link{corpus} object}
+\usage{
+\method{docnames}{readtext}(x)
 
-\item{...}{not used for these functions}
+\method{docvars}{readtext}(x, field = NULL)
+
+\method{ndoc}{readtext}(x)
+}
+\arguments{
+\item{x}{an object read by \code{readtext()} from the \pkg{readtext} package}
+
+\item{field}{string containing the document-level variable name}
+}
+\value{
+\code{docnames(x)} returns a character vector of the document names from a
+readtext object
+
+\code{docvars(x, field = NULL)} returns a data.frame of the document
+variables from a readtext object or a vector if \code{field} is a single value
+
+\code{ndoc(x)} returns the number of documents from a readtext object
 }
 \description{
 These functions provide \pkg{quanteda} methods for \pkg{readtext} objects.
-}
-\details{
-\code{texts(x)} returns the texts from a readtext object
-
-\code{docnames(x)} returns the document names from a readtext object
-
-\code{ndoc(x)} returns the number of documents from a readtext object
 }
