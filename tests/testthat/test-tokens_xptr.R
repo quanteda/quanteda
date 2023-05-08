@@ -301,4 +301,42 @@ test_that("returns shallow or deep copy x", {
   
 })
 
-
+test_that("[[ indexing works on tokens_xptr", {
+    toks <- tokens(c("A a a, b.", "A b c c c?"))
+    xtoks <- as.tokens_xptr(toks)
+    expect_identical(
+        toks[[2]],
+        xtoks[[2]]
+    )
+})
+    
+test_that("n functions works the same on both tokens and tokens_xptr", {
+    toks <- tokens(c("A a a, b.", "A b c c c?"))
+    xtoks <- as.tokens_xptr(toks)
+    expect_identical(
+        ntoken(toks), 
+        ntoken(xtoks)
+    )
+    expect_identical(
+        ntoken(toks, remove_punct = TRUE), 
+        ntoken(xtoks, remove_punct = TRUE)
+    )
+    # check that the former removals did not modify xtoks
+    expect_identical(
+        ntoken(toks),
+        ntoken(xtoks)
+    )
+    expect_identical(
+        ntype(toks),
+        ntype(xtoks)
+    )
+    expect_identical(
+        ntype(toks, remove_punct = TRUE), 
+        ntype(xtoks, remove_punct = TRUE)
+    )
+    # check that the former removals did not modify xtoks
+    expect_identical(
+        ntype(toks), 
+        ntype(xtoks)
+    )
+})

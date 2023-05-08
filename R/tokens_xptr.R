@@ -51,7 +51,28 @@ types.tokens_xptr <- function(x) {
 
 #' @export
 ntoken.tokens_xptr <- function(x, ...) {
-    structure(cpp_ntoken(x), names = docnames(x))
+    if (length(list(...))) {
+        x2 <- as.tokens_xptr(x)
+        x2 <- tokens(x2, ...)
+    } else {
+        x2 <- x
+    }
+    ret <- structure(cpp_ntoken(x2), names = docnames(x2))
+    rm(x2)
+    ret
+}
+
+#' @export
+ntype.tokens_xptr <- function(x, ...) {
+    if (length(list(...))) {
+        x2 <- as.tokens_xptr(x)
+        x2 <- tokens(x2, ...)
+    } else {
+        x2 <- x
+    }
+    ret <- vapply(x2, function(y) length(unique(y)), integer(1))
+    rm(x2)
+    ret
 }
 
 # #' @export
@@ -108,6 +129,13 @@ as.list.tokens_xptr <- function(x, ...) {
         meta = attrs[["meta"]],
         class = attrs[["class"]]
     )
+}
+
+#' @method [[ tokens_xptr
+#' @export
+"[[.tokens_xptr" <- function(x, i) {
+    types <- c("", get_types(x))
+    types[unclass(as.tokens(x))[[i]] + 1] # shift index to show padding
 }
 
 #' @method head tokens_xptr
