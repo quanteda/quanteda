@@ -3,7 +3,11 @@
 ## Changes and additions
 
 * Introduces the `tokens_xptr` objects that extend the `tokens` objects with external pointers for a greater efficiency. Once `tokens` objects are converted to `tokens_xptr` objects using `as.tokens_xptr()`, `tokens_*.tokens_xptr()` methods are called automatically. 
+
 * Improved C++ functions to allow the users to change the number of threads for parallel computing in more flexible manner using `quanteda_options()`. The value of `threads` can be changed in the middle of analysis pipeline.
+
+* Makes `"word4"` the default (word) tokeniser, with improved efficiency,
+language handling, and customisation options.
 
 ## Removals
 

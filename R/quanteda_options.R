@@ -201,6 +201,6 @@ get_options_default <- function() {
                  pattern_username = "@[a-zA-Z0-9_]+",
                  tokens_block_size = 100000L,
                  tokens_locale = "en_US@ss=standard",
-                 tokens_tokenizer_word = "word3")
+                 tokens_tokenizer_word = "word4")
     return(opts)
 }
