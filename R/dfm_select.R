@@ -145,7 +145,11 @@ dfm_select.dfm <-  function(x, pattern = NULL,
                 # x@padding <- TRUE TODO: add padding slot
             }
         } else {
-            x <- x[, id]
+            if (is.fcm(x) && !length(id)) {
+                x <- suppressWarnings(fcm(dfm(x)[, id]))
+            } else {
+                x <- x[, id]
+            }
         }
     }
     if (verbose) {

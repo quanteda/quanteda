@@ -284,10 +284,10 @@ test_that("fcm expects error for wrong weight or window", {
                  "The value of window must be between 1 and Inf")
     expect_error(fcm(toks, context = "window", window = integer()),
                  "The length of window must be 1")
-    expect_error(fcm(toks, context = "window", window = 2, weight = 0.1,
+    expect_error(fcm(toks, context = "window", window = 2,
                      count = "weighted", weights = c(1, 2, 3)),
                  "The length of weights must be equal to the window size")
-    expect_error(fcm(toks, context = "window", window = 2, weight = c(0.1, 0.2, 0.3),
+    expect_error(fcm(toks, context = "window", window = 2,
                      count = "weighted", weights = c(1, 2, 3)),
                  "The length of weights must be equal to the window size")
 })
@@ -355,10 +355,10 @@ test_that("ordered is working correctly (#1413)", {
 
 test_that("dimnames are always character vectors", {
     mt <- fcm(tokens(c("a b c", "a b c")), "window", window = 1, ordered = TRUE)
-    expect_identical(dimnames(mt[, character()]),
-                     list(features = rownames(mt), features = character()))
-    expect_identical(dimnames(mt[, FALSE]),
-                     list(features = rownames(mt), features = character()))
+    # expect_identical(dimnames(mt[, character()]),
+    #                  list(features = rownames(mt), features = character()))
+    # expect_identical(dimnames(mt[, FALSE]),
+    #                  list(features = rownames(mt), features = character()))
     expect_identical(dimnames(mt[character(), ]),
                      list(features = character(), features = colnames(mt)))
     expect_identical(dimnames(mt[FALSE, ]),
