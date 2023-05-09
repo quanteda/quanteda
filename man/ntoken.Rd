@@ -13,10 +13,16 @@ ntype(x, ...)
 \item{x}{a \pkg{quanteda} object: a character, \link{corpus},
 \link{tokens}, or \link{dfm} object}
 
-\item{...}{additional arguments passed to \code{\link[=tokens]{tokens()}}}
+\item{...}{additional arguments passed to \code{\link[=tokens]{tokens()}}; not functional when \code{x}
+is a \link{tokens_xptr} object}
 }
 \value{
-named integer vector of the counts of the total tokens or types
+\code{ntoken()} returns a named integer vector of the counts of the total
+tokens
+
+\code{ntypes()} returns a named integer vector of the counts of the types (unique
+tokens) per document.  For \link{dfm} objects, \code{ntype()} will only return the
+count of features that occur more than zero times in the dfm.
 }
 \description{
 Get the count of tokens (total features) or types (unique tokens).
@@ -25,9 +31,6 @@ Get the count of tokens (total features) or types (unique tokens).
 The precise definition of "tokens" for objects not yet tokenized (e.g.
 \link{character} or \link{corpus} objects) can be controlled through optional
 arguments passed to \code{\link[=tokens]{tokens()}} through \code{...}.
-
-For \link{dfm} objects, \code{ntype} will only return the count of features
-that occur more than zero times in the dfm.
 }
 \note{
 Due to differences between raw text tokens and features that have been
