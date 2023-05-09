@@ -4,6 +4,9 @@
 
 * Fixed a potential crash when calling `tokens_compound()` with patterns containing paddings (#2254).
 
+* Updated for compatibility with (forthcoming) Matrix 1.5.5 handling of dimnames() 
+for empty dimensions.
+
 
 # quanteda 3.3.0
 
