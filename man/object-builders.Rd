@@ -58,7 +58,14 @@ rebuild_dictionary2(x, attrs)
 
 upgrade_dictionary2(x)
 
-build_fcm(x, features1, features2 = NULL, meta = list(), class = "fcm", ...)
+build_fcm(
+  x,
+  features1,
+  features2 = features1,
+  meta = list(),
+  class = "fcm",
+  ...
+)
 
 rebuild_fcm(x, attrs)
 
