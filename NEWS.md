@@ -7,6 +7,8 @@
 * Updated for compatibility with (forthcoming) Matrix 1.5.5 handling of dimnames() 
 for empty dimensions.
 
+* restores `readtext` object class method extensions, to work better with the **readtext** package.
+
 
 # quanteda 3.3.0
 
