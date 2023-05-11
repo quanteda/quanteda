@@ -246,16 +246,13 @@ upgrade_dictionary2 <- function(x) {
 #'   different from `feature1`
 #' @param meta list for meta fields
 #' @keywords internal
-build_fcm <- function(x, features1, features2 = NULL,
+build_fcm <- function(x, features1, features2 = features1,
                       meta = list(), 
                       class = "fcm", ...) {
     result <- new(class,
                   as(as(as(x, "CsparseMatrix"), "generalMatrix"), "dMatrix"),
                   meta = make_meta("fcm", inherit = meta, ...)
     )
-    # set names directly to avoid NULL
-    if (is.null(features2))
-        features2 <- features1
     result@Dimnames <- list(
         features = as.character(features1),
         features = as.character(features2)
