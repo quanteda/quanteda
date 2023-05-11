@@ -17,6 +17,8 @@ language handling, and customisation options.
 
 * Deprecated or renamed arguments formerly passed in `tokens()` that formerly mapped to the v3 arguments with a warning are removed.
 
+* Methods for **readtext** objects are removed, since these are data.frame objects that be straightforward to convert into a `corpus` object.
+
 ## Deprecations
 
 

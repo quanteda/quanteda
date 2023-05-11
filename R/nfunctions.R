@@ -3,11 +3,10 @@
 #' Get the number of documents or features in an object.
 #' @details `ndoc` returns the number of documents in an object
 #'   whose texts are organized as "documents" (a [corpus],
-#'   [dfm], or [tokens] object, a readtext object from the
-#'   \pkg{readtext} package).
+#'   [dfm], or a [tokens] object.
 #'
-#' @param x a \pkg{quanteda} object: a [corpus], [dfm], or
-#'   [tokens] object, or a readtext object from the \pkg{readtext} package.
+#' @param x a \pkg{quanteda} object: a [corpus], [dfm], or a
+#'   [tokens] object.
 #' @return an integer (count) of the number of documents or features
 #' @export
 #' @examples

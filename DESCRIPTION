@@ -126,7 +126,6 @@ Collate:
     'pattern2fixed.R'
     'phrases.R'
     'quanteda_options.R'
-    'readtext-methods.R'
     'spacyr-methods.R'
     'stopwords.R'
     'summary.R'
