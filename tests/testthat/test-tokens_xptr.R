@@ -57,15 +57,11 @@ test_that("subsetting works", {
 })
 
 test_that("extractor works", {
+    
+    expect_identical(xtoks[[integer()]], toks[[integer()]])
     expect_identical(xtoks[[10]], toks[[10]])
-    expect_error(
-        xtoks[[1:10]],
-        "recursive indexing failed at level 2"
-    )
-    expect_error(
-        xtoks[[integer()]],
-        "attempt to select less than one element in get1index"
-    )
+    expect_identical(xtoks[[10:20]], toks[[10:20]])
+    
 })
 
 test_that("deep copy xtokens", {

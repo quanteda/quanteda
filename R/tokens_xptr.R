@@ -151,7 +151,7 @@ as.list.tokens_xptr <- function(x, ...) {
 
 #' @export
 "[[.tokens_xptr" <- function(x, i) {
-    as.tokens(x[i])[[seq_along(i)]]
+    unlist_character(as.list(as.tokens(x[head(i, 1)])), use.names = FALSE)
 }
 
 #' @method head tokens_xptr
