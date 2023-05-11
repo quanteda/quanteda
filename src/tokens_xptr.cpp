@@ -67,6 +67,24 @@ IntegerVector cpp_ntoken(TokensPtr xptr) {
 }
 
 // [[Rcpp::export]]
+IntegerVector cpp_ntype(TokensPtr xptr) {
+    xptr->recompile();
+    std::size_t H = xptr->texts.size();
+    IntegerVector ns_(H);
+    for (std::size_t h = 0; h < H; h++) {
+        Text text = xptr->texts[h];
+        std::sort(text.begin(), text.end());
+        text.erase(unique(text.begin(), text.end()), text.end());
+        int n = text.size();
+        if (text[0] == 0)
+            n--;    
+        ns_[h] = n;
+    }
+    return ns_;
+}
+
+
+// [[Rcpp::export]]
 CharacterVector cpp_get_types(TokensPtr xptr, bool recompile = false) {
     //Rcout << "cpp_types()\n";
     if (recompile)

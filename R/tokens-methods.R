@@ -145,8 +145,7 @@ print.tokens <- function(x, max_ndoc = quanteda_options("print_tokens_max_ndoc")
 #' str(toks)
 #' toks[[2]]
 "[[.tokens" <- function(x, i) {
-    types <- c("", get_types(x))
-    types[unclass(x)[[i]] + 1] # shift index to show padding
+    unlist_character(as.list(x[head(i, 1)]), use.names = FALSE)
 }
 
 #' @method "[<-" tokens
