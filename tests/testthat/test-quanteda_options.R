@@ -68,22 +68,34 @@ test_that("quanteda_options reset works correctly", {
 })
 
 test_that("quanteda_options works with threads", {
-#    skip_on_cran()
-    if (RcppParallel::defaultNumThreads() == 2) {
-        quanteda_options(threads = 1)
-    } else {
-        quanteda_options(threads = 2)
-    }
+    
+    quanteda_options(threads = 2)
+    Sys.setenv('RCPP_PARALLEL_NUM_THREADS' = 1)
+    quanteda_options(reset = TRUE)
     expect_equal(
-        as.numeric(Sys.getenv('RCPP_PARALLEL_NUM_THREADS')),
-        quanteda_options("threads")
+        quanteda_options("threads"), 1
     )
-    # expect_warning(
-    #     quanteda_options(threads = 4),
-    #     "Number of threads can be changed only once"
-    # )
+    expect_error(quanteda_options(threads = "abc"),
+                 "Number of threads must be coercible to integer")
     expect_error(quanteda_options(threads = 0),
-                 "^Number of threads must be greater or equal to 1")
+                 "Number of threads must be greater or equal to 1")
     expect_warning(quanteda_options(threads = 100),
-                 "^Setting threads instead to maximum available.*")
+                  "Setting threads instead to maximum available (\\d+)")
+    
+    options(quanteda_threads = NULL)
+    expect_identical(quanteda:::get_threads(), -1L)
+    
+    options(quanteda_threads = 100L)
+    expect_identical(quanteda:::get_threads(), 100L)
+    
+    options(quanteda_threads = 1L:2L)
+    expect_error(
+        quanteda:::get_threads(),
+        "Invalid value of threads in quanteda options"
+    )
+    expect_error(
+        quanteda:::get_threads(),
+        "Invalid value of threads in quanteda options"
+    )
+    quanteda_options(reset = TRUE)
 })

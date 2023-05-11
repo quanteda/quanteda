@@ -9,12 +9,8 @@ tokens_restore(x)
 \arguments{
 \item{x}{tokens object}
 }
-\value{
-a modified tokens object
-}
 \description{
-Compounds segments of tokens marked by special markers. The beginning and
-the end of the segments should be marked by U+E001 and U+E002 respectively.
+Compounds a sequence of tokens marked by special markers. The beginning and
+the end of the sequence should be marked by U+E001 and U+E002 respectively.
 }
 \keyword{internal}
-\keyword{tokens}

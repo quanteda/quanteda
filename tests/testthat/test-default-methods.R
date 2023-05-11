@@ -32,19 +32,15 @@ test_that("test default corpus* methods", {
 test_that("test detault n-methods", {
     expect_error(
         ndoc(TRUE),
-        "ndoc\\(\\) only works on.*corpus.*tokens.*objects"
+        "ndoc\\(\\) only works on corpus.*tokens_xptr objects"
     )
     expect_error(
         nfeat(TRUE),
         "nfeat\\(\\) only works on dfm.*objects"
     )
     expect_error(
-        nsentence(TRUE),
-        "nsentence\\(\\) only works on.*corpus.*tokens objects"
-    )
-    expect_error(
         ntoken(TRUE),
-        "ntoken\\(\\) only works on character.*tokens objects"
+        "ntoken\\(\\) only works on character.*tokens_xptr objects"
     )
     expect_error(
         ntype(TRUE),
@@ -78,7 +74,7 @@ test_that("test detault char_* methods", {
 test_that("test detault fcm* methods", {
     expect_error(
         fcm(0),
-        "fcm\\(\\) only works on character.*tokens objects"
+        "fcm\\(\\) only works on character.*tokens_xptr objects"
     )
     expect_error(
         fcm_compress(1),
@@ -113,18 +109,18 @@ test_that("test detault fcm* methods", {
 test_that("test default docvars methods", {
     expect_error(
         docvars(0),
-        "docvars\\(\\) only works on.*corpus.*tokens objects"
+        "docvars\\(\\) only works on corpus.*tokens objects"
     )
     expect_error(
         docvars(data_char_sampletext) <- "X",
-        "docvars<-\\(\\) only works on.*corpus.*tokens objects"
+        "docvars<-\\(\\) only works on corpus.*tokens objects"
     )
 })
 
 test_that("kwic default works", {
     expect_error(
         kwic(TRUE),
-        "kwic\\(\\) only works on character, corpus, tokens objects"
+        "kwic\\(\\) only works on character, corpus, tokens, tokens_xptr objects"
     )
 })
 
@@ -143,7 +139,7 @@ test_that("phrase default works", {
 test_that("types defaults work", {
     expect_error(
         types(TRUE),
-        "types\\(\\) only works on tokens objects"
+        "types\\(\\) only works on tokens, tokens_xptr objects"
     )
     # expect_error(
     #     quanteda:::types(data_char_sampletext) <- c("a", "b"),
@@ -154,7 +150,7 @@ test_that("types defaults work", {
 test_that("test new bootstrap_dfm methods", {
     expect_error(
         bootstrap_dfm(TRUE),
-        "bootstrap_dfm\\(\\) only works on character.*dfm.*objects"
+        "bootstrap_dfm\\(\\) only works on dfm objects"
     )
 })
 
@@ -168,7 +164,7 @@ test_that("test new convert methods", {
 test_that("test new dfm methods", {
     expect_error(
         dfm(TRUE),
-        "dfm\\(\\) only works on character.*corpus.*tokens.*objects"
+        "dfm\\(\\) only works on dfm, tokens, tokens_xptr objects"
     )
     expect_error(
         dfm_compress(TRUE),
@@ -248,78 +244,99 @@ test_that("test new dfm methods", {
     )
 })
 
+test_that("dfm message works correctly on defunct methods", {
+    expect_error(
+        dfm("dfm.character was defuncted in v4"),
+        "'dfm.character()' was removed in v4. Use 'tokens()' first.",
+        fixed = TRUE
+    )
+    expect_error(
+        dfm(corpus("dfm.corpus was defuncted in v4")),
+        "'dfm.corpus()' was removed in v4. Use 'tokens()' first.",
+        fixed = TRUE
+    )
+})
+
 test_that("test token default methods", {
     expect_error(
         as.tokens(c(1, 2, 3)),
-        "as.tokens\\(\\) only works on.*list"
+        "as.tokens\\(\\) only works on list, spacyr_parsed, tokens, tokens_xptr objects"
     )
     expect_error(
         tokens(TRUE),
-        "tokens\\(\\) only works on character, corpus, list, tokens objects"
+        "tokens\\(\\) only works on character, corpus, list, tokens, tokens_xptr objects"
     )
     expect_error(
         tokens_group(TRUE),
-        "tokens_group\\(\\) only works on tokens objects"
+        "tokens_group\\(\\) only works on tokens, tokens_xptr objects"
     )
     expect_error(
         tokens_subset(TRUE),
-        "tokens_subset\\(\\) only works on tokens objects"
+        "tokens_subset\\(\\) only works on tokens, tokens_xptr objects"
     )
     expect_error(
         tokens_compound(TRUE),
-        "tokens_compound\\(\\) only works on tokens objects"
+        "tokens_compound\\(\\) only works on tokens, tokens_xptr objects"
     )
     expect_error(
         tokens_split(TRUE),
-        "tokens_split\\(\\) only works on tokens objects"
+        "tokens_split\\(\\) only works on tokens, tokens_xptr objects"
     )
     expect_error(
         tokens_keep(TRUE),
-        "tokens_select\\(\\) only works on tokens objects"
+        "tokens_select\\(\\) only works on tokens, tokens_xptr objects"
     )
     expect_error(
         tokens_lookup(TRUE),
-        "tokens_lookup\\(\\) only works on tokens objects"
+        "tokens_lookup\\(\\) only works on tokens, tokens_xptr objects"
     )
     expect_error(
         tokens_sample(TRUE),
-        "tokens_sample\\(\\) only works on tokens objects"
+        "tokens_sample\\(\\) only works on tokens, tokens_xptr objects"
     )
     expect_error(
         tokens_ngrams(TRUE),
-        "tokens_ngrams\\(\\) only works on.*tokens objects"
+        "tokens_ngrams\\(\\) only works on tokens, tokens_xptr objects"
     )
     expect_error(
         tokens_remove(TRUE),
-        "tokens_select\\(\\) only works on tokens objects"
+        "tokens_select\\(\\) only works on tokens, tokens_xptr objects"
     )
     expect_error(
         tokens_replace(TRUE),
-        "tokens_replace\\(\\) only works on tokens objects"
+        "tokens_replace\\(\\) only works on tokens, tokens_xptr objects"
     )
     expect_error(
         tokens_select(TRUE),
-        "tokens_select\\(\\) only works on tokens objects"
+        "tokens_select\\(\\) only works on tokens, tokens_xptr objects"
     )
     expect_error(
         tokens_skipgrams(TRUE),
-        "tokens_skipgrams\\(\\) only works on tokens objects"
+        "tokens_skipgrams\\(\\) only works on tokens, tokens_xptr objects"
     )
     expect_error(
         tokens_tolower(TRUE),
-        "tokens_tolower\\(\\) only works on tokens objects"
+        "tokens_tolower\\(\\) only works on tokens, tokens_xptr objects"
     )
     expect_error(
         tokens_toupper(TRUE),
-        "tokens_toupper\\(\\) only works on tokens objects"
+        "tokens_toupper\\(\\) only works on tokens, tokens_xptr objects"
     )
     expect_error(
         tokens_wordstem(TRUE),
-        "tokens_wordstem\\(\\) only works on tokens objects"
+        "tokens_wordstem\\(\\) only works on tokens, tokens_xptr objects"
     )
     expect_error(
         tokens_group(TRUE),
-        "tokens_group\\(\\) only works on tokens objects"
+        "tokens_group\\(\\) only works on tokens, tokens_xptr objects"
+    )
+})
+
+test_that("test token_xptr default methods", {
+    expect_error(
+        as.tokens_xptr(c(1, 2, 3)),
+        "as.tokens_xptr() only works on tokens, tokens_xptr objects.",
+        fixed = TRUE
     )
 })
 

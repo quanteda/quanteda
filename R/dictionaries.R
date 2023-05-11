@@ -132,18 +132,20 @@ check_entries <- function(dict) {
 #' c(dict["christmas"], dict["country"])
 #'
 #' \dontrun{
+#' dfmat <- dfm(tokens(data_corpus_inaugural))
+#' 
 #' # import the Laver-Garry dictionary from Provalis Research
 #' dictfile <- tempfile()
 #' download.file("https://provalisresearch.com/Download/LaverGarry.zip",
 #'               dictfile, mode = "wb")
 #' unzip(dictfile, exdir = (td <- tempdir()))
 #' dictlg <- dictionary(file = paste(td, "LaverGarry.cat", sep = "/"))
-#' head(dfm(data_corpus_inaugural, dictionary = dictlg))
+#' head(dfm_lookup(dfmat), dictlg)
 #'
 #' # import a LIWC formatted dictionary from http://www.moralfoundations.org
 #' download.file("http://bit.ly/37cV95h", tf <- tempfile())
 #' dictliwc <- dictionary(file = tf, format = "LIWC")
-#' head(dfm(data_corpus_inaugural, dictionary = dictliwc))
+#' head(dfm_lookup(dfmat), dictliwc)
 #' }
 #' @export
 dictionary <- function(x, file = NULL, format = NULL,

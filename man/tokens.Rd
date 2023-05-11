@@ -17,7 +17,8 @@ tokens(
   include_docvars = TRUE,
   padding = FALSE,
   verbose = quanteda_options("verbose"),
-  ...
+  ...,
+  xptr = FALSE
 )
 }
 \arguments{
@@ -63,6 +64,8 @@ needs to be computed.}
 \item{verbose}{if \code{TRUE}, print timing messages to the console}
 
 \item{...}{used to pass arguments among the functions}
+
+\item{xptr}{if \code{TRUE}, returns a \code{tokens_xptr} class object}
 }
 \value{
 \pkg{quanteda} \code{tokens} class object, by default a serialized list of
@@ -113,8 +116,12 @@ from social media (including hashtags and usernames).
 }
 
 \section{quanteda Tokenizers}{
- The default word tokenizer \code{what = "word"}
-splits tokens using \link[stringi:stri_split_boundaries]{stri_split_boundaries(x, type = "word")} but by default preserves infix
+ The default word tokenizer \code{what = "word"} is
+updated in major version 4.  It is even smarter than the v3 and v4
+versions, with additional options for customization.  See
+\code{\link[=tokenize_word4]{tokenize_word4()}} for full details.
+
+The default tokenizer splits tokens using \link[stringi:stri_split_boundaries]{stri_split_boundaries(x, type = "word")} but by default preserves infix
 hyphens (e.g. "self-funding"), URLs, and social media "tag" characters
 (#hashtags and @usernames), and email addresses.  The rules defining a
 valid "tag" can be found at
@@ -123,17 +130,21 @@ for hashtags and at
 https://help.twitter.com/en/managing-your-account/twitter-username-rules
 for usernames.
 
-In versions < 2, the argument \code{remove_twitter} controlled whether social
-media tags were preserved or removed, even when \code{remove_punct = TRUE}. This
-argument is not longer functional in versions >= 2.  If greater control
-over social media tags is desired, you should user an alternative
-tokenizer, including non-\pkg{quanteda} options.
-
 For backward compatibility, the following older tokenizers are also
-supported through \code{what}: \describe{ \item{\code{"word1"}}{(legacy) implements
+supported through \code{what}:
+\describe{
+\item{\code{"word1"}}{(legacy) implements
 similar behaviour to the version of \code{what = "word"} found in pre-version 2.
 (It preserves social media tags and infix hyphens, but splits URLs.)
-"word1" is also slower than "word".} \item{\code{"fasterword"}}{(legacy) splits
+"word1" is also slower than "word2" and "word4".  In "word1",
+the argument \code{remove_twitter} controlled whether social
+media tags were preserved or removed, even when \code{remove_punct = TRUE}. This
+argument is not longer functional in versions >= 2, but equivalent control
+can be had using the \code{split_tags} argument and selective tokens removals.}
+\item{\verb{"word2", "word3"}}{(legacy) implements
+similar behaviour to the versions of "word" found in \pkg{quanteda} versions
+3 and 4.}
+\item{\code{"fasterword"}}{(legacy) splits
 on whitespace and control characters, using
 \code{stringi::stri_split_charclass(x, "[\\\\p{Z}\\\\p{C}]+")}}
 \item{\code{"fastestword"}}{(legacy) splits on the space character, using
@@ -143,11 +154,6 @@ individual characters} \item{\code{"sentence"}}{sentence segmenter based on
 additional rules to avoid splits on words like "Mr." that would otherwise
 incorrectly be detected as sentence boundaries.  For better sentence
 tokenization, consider using \pkg{spacyr}.} }
-
-For forward compatibility including use of a more advanced tokenizer that
-will be used in major version 4, there is also a "word4" tokenizer that is
-even smarter than the default, which is also aliased as "word2" and "word3"
-(these are identical).  See \code{\link[=tokenize_word4]{tokenize_word4()}} for full details.
 }
 
 \examples{

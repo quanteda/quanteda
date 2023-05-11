@@ -12,7 +12,7 @@
 #' @param verbose print status messages if `TRUE`
 #' @export
 #' @examples
-#' dfmat1 <- dfm(data_corpus_inaugural)
+#' dfmat1 <- dfm(tokens(data_corpus_inaugural))
 #'
 #' # lemmatization
 #' taxwords <- c("tax", "taxing", "taxed", "taxed", "taxation")

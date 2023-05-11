@@ -19,51 +19,6 @@ inline bool is_duplicated(Types types){
     return false;
 }
 
-inline bool is_encoded(String delim_){
-    if (delim_.get_encoding() > 0) {
-        return true;
-    }
-    return false;
-}
-
-inline bool is_encoded(CharacterVector types_){
-    for (unsigned int i = 0; i < (unsigned int)types_.size(); i++) {
-        String type_ = types_[i];
-        if (type_.get_encoding() > 0) {
-            return true;
-        }
-    }
-    return false;
-}
-
-inline CharacterVector encode(Types types){
-    CharacterVector types_(types.size());
-    for (std::size_t i = 0; i < types.size(); i++) {
-        String type_ = types[i];
-        type_.set_encoding(CE_UTF8);
-        types_[i] = type_;
-    }
-    return(types_);
-}
-
-
-struct recompile_mt : public Worker{
-    
-    Texts &texts;
-    VecIds &ids_new;
-    
-    recompile_mt(Texts &texts_, VecIds &ids_new_):
-        texts(texts_), ids_new(ids_new_) {}
-    
-    void operator()(std::size_t begin, std::size_t end){
-        for (std::size_t h = begin; h < end; h++) {
-            for (std::size_t i = 0; i < texts[h].size(); i++) {
-                texts[h][i] = ids_new[texts[h][i]];
-            }
-        }
-    }
-};
-
 inline Tokens recompile(Texts texts, 
                         Types types, 
                         const bool flag_gap = true, 
@@ -160,17 +115,13 @@ inline Tokens recompile(Texts texts,
     //dev::start_timer("Convert IDs", timer);
     
     // Convert old IDs to new IDs
-#if QUANTEDA_USE_TBB
-    recompile_mt recompile_mt(texts, ids_new);
-    parallelFor(0, texts.size(), recompile_mt);
-#else
-    for (std::size_t h = 0; h < texts.size(); h++) {
+    std::size_t H = texts.size();
+    for (std::size_t h = 0; h < H; h++) {
         for (std::size_t i = 0; i < texts[h].size(); i++) {
             texts[h][i] = ids_new[texts[h][i]];
             //Rcout << texts[h][i] << " -> " << ids_new[texts[h][i]] << "\n";
         }
     }
-#endif
 
     std::vector<std::string> types_new;
     types_new.reserve(ids_new.size());

@@ -4,7 +4,7 @@
 \alias{tokens_group}
 \title{Combine documents in a tokens object by a grouping variable}
 \usage{
-tokens_group(x, groups = docid(x), fill = FALSE)
+tokens_group(x, groups = docid(x), fill = FALSE, env = NULL)
 }
 \arguments{
 \item{x}{\link{tokens} object}
@@ -22,6 +22,9 @@ dates, for instance, then \code{fill = TRUE} ensures that the new object will
 consist of one new "document" by date, regardless of whether any documents
 previously existed with that date.  Has no effect if the \code{groups}
 variable(s) are not factors.}
+
+\item{env}{an environment or a list object in which \code{x} is searched.
+Passed to \link{substitute} for non-standard evaluation.}
 }
 \value{
 a \link{tokens} object whose documents are equal to the unique group

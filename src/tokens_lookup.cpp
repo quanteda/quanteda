@@ -1,6 +1,5 @@
-//#include "dev.h"
 #include "lib.h"
-#include "recompile.h"
+//#include "dev.h"
 
 using namespace quanteda;
 
@@ -118,75 +117,48 @@ Text lookup(Text tokens,
     return keys_flat;
 }
 
-
-struct lookup_mt : public Worker{
-    
-    Texts &texts;
-    const std::vector<std::size_t> &spans;
-    const unsigned int &id_max;
-    const int &overlap;
-    const int &nomatch;
-    const MultiMapNgrams &map_keys;
-    
-    // Constructor
-    lookup_mt(Texts &texts_, const std::vector<std::size_t> &spans_, const unsigned int &id_max_,
-              const int &overlap_, const int &nomatch_, const MultiMapNgrams &map_keys_):
-              texts(texts_), spans(spans_), id_max(id_max_), overlap(overlap_), nomatch(nomatch_),
-              map_keys(map_keys_){}
-    
-    // parallelFor calles this function with std::size_t
-    void operator()(std::size_t begin, std::size_t end){
-        //Rcout << "Range " << begin << " " << end << "\n";
-        for (std::size_t h = begin; h < end; h++) {
-            texts[h] = lookup(texts[h], spans, id_max, overlap, nomatch, map_keys);
-        }
-    }
-};
-
 /* 
-* This function finds patterns in tokens object. This is similar to tokens_replace, 
-* but all overlapping or nested patterns are detected and recorded by IDs.
+* Function to find dictionary keywords
 * The number of threads is set by RcppParallel::setThreadOptions()
 * @used tokens_lookup()
 * @creator Kohei Watanabe
-* @param texts_ tokens ojbect
 * @param words_ list of dictionary values
 * @param keys_ IDs of dictionary keys
 * @param overlap ignore overlapped words: 1=local, 2=global, 3=none
 * @param nomatch determine how to treat unmached words: 0=remove, 1=pad; 2=keep
 */
 
-
 // [[Rcpp::export]]
-List qatd_cpp_tokens_lookup(const List &texts_,
-                            const CharacterVector types_,
-                            const List &words_,
-                            const IntegerVector &keys_,
-                            const int overlap,
-                            const int nomatch){
+TokensPtr cpp_tokens_lookup(TokensPtr xptr,
+                                 const List &words_,
+                                 const IntegerVector &keys_,
+                                 const CharacterVector &types_,
+                                 const int overlap,
+                                 const int nomatch,
+                                 const int thread = 1) {
     
-    Texts texts = Rcpp::as<Texts>(texts_);
+    Texts texts = xptr->texts;
     Types types = Rcpp::as<Types>(types_);
+    
+    if (words_.size() != keys_.size())
+        throw std::range_error("Invalid words and keys");
+    
+    std::vector<unsigned int> keys = Rcpp::as< std::vector<unsigned int> >(keys_);
     unsigned int id_max(0);
     if (nomatch == 2) {
-        id_max = keys_.size() > 0 ? Rcpp::max(keys_) : 0;
+        types.insert(types.end(), xptr->types.begin(), xptr->types.end());
+        if (keys_.size() > 0)
+            id_max = *max_element(keys.begin(), keys.end());
     } else {
-        id_max = types_.size();
+        id_max = types.size();
     }
-    //Rcout << id_max << "\n";
-    
-    //dev::Timer timer;
-    
-    //dev::start_timer("Map construction", timer);
-
     MultiMapNgrams map_keys;
     map_keys.max_load_factor(GLOBAL_PATTERN_MAX_LOAD_FACTOR);
     Ngrams words = Rcpp::as<Ngrams>(words_);
-    std::vector<unsigned int> keys = Rcpp::as< std::vector<unsigned int> >(keys_);
     
-    size_t len = std::min(words.size(), keys.size());
-    std::vector<std::size_t> spans(len);
-    for (size_t g = 0; g < len; g++) {
+    size_t G = words.size();
+    std::vector<std::size_t> spans(G);
+    for (size_t g = 0; g < G; g++) {
         Ngram value = words[g];
         unsigned int key = keys[g];
         map_keys.insert(std::pair<Ngram, unsigned int>(value, key));
@@ -199,21 +171,32 @@ List qatd_cpp_tokens_lookup(const List &texts_,
     //dev::stop_timer("Map construction", timer);
     
     //dev::start_timer("Dictionary lookup", timer);
+    std::size_t H = texts.size();
 #if QUANTEDA_USE_TBB
-    lookup_mt lookup_mt(texts, spans, id_max, overlap, nomatch, map_keys);
-    parallelFor(0, texts.size(), lookup_mt);
+    tbb::task_arena arena(thread);
+    arena.execute([&]{
+        tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
+            for (int h = r.begin(); h < r.end(); ++h) {
+                texts[h] = lookup(texts[h], spans, id_max, overlap, nomatch, map_keys);
+            }    
+        });
+    });
 #else
-    for (std::size_t h = 0; h < texts.size(); h++) {
+    for (std::size_t h = 0; h < H; h++) {
         texts[h] = lookup(texts[h], spans, id_max, overlap, nomatch, map_keys);
     }
 #endif
-    //dev::stop_timer("Dictionary lookup", timer);
-    if (nomatch == 2) {
-        return recompile(texts, types, true, true, is_encoded(types_));
-    } else {
-        return recompile(texts, types, false, false, is_encoded(types_));
-    }
     
+    xptr->texts = texts;
+    xptr->types = types;
+    
+    if (nomatch != 2) { // exclusive mode
+        // NOTE: values might need to be reset
+        xptr->recompiled = true;
+    } else {
+        xptr->recompiled = false;
+    }
+    return xptr;
 }
 
 /***R
@@ -223,11 +206,11 @@ dict <- list(c(1, 2), c(5, 6), 10, 15, 20)
 #dict <- list(1:10, c(5, 6) , 4)
 #keys <- rep(2, length(dict))
 keys <- seq_along(dict) + 1
-#qatd_cpp_tokens_lookup(toks, letters, dict, integer(0), 0)
-qatd_cpp_tokens_lookup(toks, letters, dict, keys, FALSE, 0)
-qatd_cpp_tokens_lookup(toks, letters, dict, keys, TRUE, 0)
-qatd_cpp_tokens_lookup(toks, letters, dict, keys, FALSE, 0)
-qatd_cpp_tokens_lookup(toks, letters, dict, keys, FALSE, 1)
-qatd_cpp_tokens_lookup(toks, letters, dict, keys, FALSE, 2)
+#cpp_tokens_lookup(toks, letters, dict, integer(0), 0)
+cpp_tokens_lookup(toks, dict, keys, FALSE, 0)
+cpp_tokens_lookup(toks, dict, keys, TRUE, 0)
+cpp_tokens_lookup(toks, dict, keys, FALSE, 0)
+cpp_tokens_lookup(toks, dict, keys, FALSE, 1)
+cpp_tokens_lookup(toks, dict, keys, FALSE, 2)
 
 */

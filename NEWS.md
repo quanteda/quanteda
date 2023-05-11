@@ -1,3 +1,28 @@
+# quanteda 4.0.0
+
+## Changes and additions
+
+* Introduces the `tokens_xptr` objects that extend the `tokens` objects with external pointers for a greater efficiency. Once `tokens` objects are converted to `tokens_xptr` objects using `as.tokens_xptr()`, `tokens_*.tokens_xptr()` methods are called automatically. 
+
+* Improved C++ functions to allow the users to change the number of threads for parallel computing in more flexible manner using `quanteda_options()`. The value of `threads` can be changed in the middle of analysis pipeline.
+
+* Makes `"word4"` the default (word) tokeniser, with improved efficiency,
+language handling, and customisation options.
+
+## Removals
+
+* `bootstrap_dfm()` was removed for character and corpus objects.  The correct way to bootstrap sentences is not to tokenize them as sentences and then bootstrap them from the dfm.  This is consistent with requiring the user to tokenise objects prior to forming dfms or other "downstream" objects.
+
+* `dfm()` no longer works on character or corpus objects, only on tokens or other dfm objects.  This was deprecated in v4 and removed in v4. 
+
+* Deprecated or renamed arguments formerly passed in `tokens()` that formerly mapped to the v3 arguments with a warning are removed.
+
+## Deprecations
+
+
+## Bug fixes and stability enhancements
+
+
 # quanteda 3.3.1
 
 ## Bug fixes and stability enhancements
@@ -8,7 +33,6 @@
 for empty dimensions.
 
 * restores `readtext` object class method extensions, to work better with the **readtext** package.
-
 
 # quanteda 3.3.0
 

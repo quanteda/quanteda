@@ -52,7 +52,7 @@ is  zero, meaning that any feature occurring at least once in a document will
 be counted.)
 }
 \examples{
-dfmat1 <- dfm(data_corpus_inaugural[1:2])
+dfmat1 <- dfm(tokens(data_corpus_inaugural))
 docfreq(dfmat1[, 1:20])
 
 # replication of worked example from

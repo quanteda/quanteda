@@ -7,7 +7,7 @@
 #' @param x the dfm whose features will be extracted
 #' @return character vector of the feature labels
 #' @examples
-#' dfmat <- dfm(data_corpus_inaugural)
+#' dfmat <- dfm(tokens(data_corpus_inaugural))
 #'
 #' # first 50 features (in original text order)
 #' head(featnames(dfmat), 50)
@@ -256,7 +256,7 @@ topfeatures.dfm <- function(x, n = 10, decreasing = TRUE,
 #' to the proportion of cells that have zero counts.
 #' @param x the document-feature matrix
 #' @examples
-#' dfmat <- dfm(data_corpus_inaugural)
+#' dfmat <- dfm(tokens(data_corpus_inaugural))
 #' sparsity(dfmat)
 #' sparsity(dfm_trim(dfmat, min_termfreq = 5))
 #' @export

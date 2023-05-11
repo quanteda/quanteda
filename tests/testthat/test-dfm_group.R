@@ -34,21 +34,6 @@ test_that("dfm_group works with empty documents", {
     )
 })
 
-test_that("dfm.character groups works (#794)", {
-    grp <- c(1, 1, 2)
-    txt <- c(d1 = "one two three", d2 = "two three four", d3 = "one three four")
-    corp <- corpus(txt)
-    toks <- tokens(corp)
-    expect_equal(
-        suppressWarnings(dfm(txt, groups = grp)),
-        suppressWarnings(dfm(toks, groups = grp))
-    )
-    expect_equal(
-        suppressWarnings(dfm(txt, groups = grp)),
-        suppressWarnings(dfm(tokens(corp), groups = grp))
-    )
-})
-
 test_that("test dfm_group with factor levels, fill = TRUE and FALSE, #854", {
     corp <- corpus(c("a b c c", "b c d", "a"),
                    docvars = data.frame(grp = factor(c("A", "A", "B"), levels = LETTERS[1:4])))
@@ -319,34 +304,6 @@ test_that("restore original unit when groups = NULL", {
     expect_equal(as.matrix(dfmt), as.matrix(dfm(tokens(corp))))
 })
 
-test_that("dfm_group works with NA group labels", {
-    corp <- corpus(c("Doc 1", "Doc 1b", "Doc2", "Doc 3 with NA", "Doc 4, more NA"),
-                   docvars = data.frame(factorvar = c("Yes", "Yes", "No", NA, NA)))
-    expect_identical(
-        suppressWarnings(dfm(tokens(corp), groups = corp$factorvar)),
-        suppressWarnings(dfm(tokens(corp[1:3]), groups = corp$factorvar[1:3]))
-    )
-    # expect_identical(
-    #     dfm(tokens(corp)) %>% dfm_group(groups = "factorvar"),
-    #     dfm(tokens(corp[1:3])) %>% dfm_group(groups = "factorvar")
-    # )
-})
-
-test_that("displayed matrix rownames are correct after dfm_group (#1949)", {
-    expect_identical(
-        docnames(suppressWarnings(dfm(tokens(letters[1:3]), groups = c("x", "x", "y")))),
-        c("x", "y")
-    )
-    expect_output(
-        print(suppressWarnings(dfm(tokens(letters[1:3]), groups = c("x", "x", "y")))),
-        paste0("Document-feature matrix of: 2 documents, 3 features (50.00% sparse) and 0 docvars.\n",
-               "    features\n",
-               "docs a b c\n",
-               "   x 1 1 0\n",
-               "   y 0 0 1", collapse = ""), fixed = TRUE
-    )
-})
-
 test_that("dfm_group save grouping variable (#2037)", {
     corp <- corpus(c("a b c c", "b c d", "a", "b d d"),
                    docvars = data.frame(grp = factor(c("D", "D", "A", "C"), levels = c("A", "B", "C", "D")), 
@@ -366,6 +323,7 @@ test_that("dfm_group save grouping variable (#2037)", {
     dfmat_grp4 <- dfm_group(dfmat, grp, fill = TRUE)
     dfmat_grp5 <- dfm_group(dfmat, grpvar, fill = TRUE)
     dfmat_grp6 <- dfm_group(dfmat, var1, fill = TRUE)
+    dfmat_grp7 <- dfm_group(dfmat, groups = interaction(var1, var3))
     
     expect_equal(
         docvars(dfmat_grp1, "grp"), 
@@ -383,6 +341,11 @@ test_that("dfm_group save grouping variable (#2037)", {
     expect_null(docvars(dfmat_grp5)$grpvar)
     expect_equal(docvars(dfmat_grp5)$var1, c(1, 2, 2, NA))
     expect_equal(docvars(dfmat_grp6)$var1, c(1, 2))
+    expect_equal(
+        docvars(dfmat_grp7, "grp"), 
+        factor(c("D", "A"), levels = c("A", "B", "C", "D"))
+    )
+    expect_equal(docvars(dfmat_grp7)$var1, c(1, 2))
 })
 
 

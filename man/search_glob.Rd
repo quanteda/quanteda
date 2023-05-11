@@ -7,6 +7,7 @@
 \alias{search_regex_multi}
 \alias{search_fixed}
 \alias{search_fixed_multi}
+\alias{index_types}
 \title{Select types without performing slow regex search}
 \usage{
 search_glob(pattern, types_search, case_insensitive, index = NULL)
@@ -20,6 +21,13 @@ search_regex_multi(patterns, types_search, case_insensitive)
 search_fixed(pattern, types_search, index = NULL)
 
 search_fixed_multi(patterns, types_search, index)
+
+index_types(
+  pattern,
+  types,
+  valuetype = c("glob", "fixed", "regex"),
+  case_insensitive = TRUE
+)
 }
 \arguments{
 \item{pattern}{a "glob", "fixed" or "regex" pattern}
@@ -33,9 +41,25 @@ not used in glob and fixed matching as types are in the index.}
 \item{index}{index object created by \code{index_types}}
 
 \item{patterns}{a list of "glob", "fixed" or "regex" patterns}
+
+\item{valuetype}{the type of pattern matching: \code{"glob"} for "glob"-style
+wildcard expressions; \code{"regex"} for regular expressions; or \code{"fixed"} for
+exact matching. See \link{valuetype} for details.}
+}
+\value{
+\code{index_types} returns a list of integer vectors containing type
+IDs with index keys as an attribute
 }
 \description{
 This is an internal function for \code{pattern2id} that select types using
 keys in index when available.
+
+\code{index_types} is an internal function for \code{pattern2id} that
+constructs an index of "glob" or "fixed" patterns to avoid expensive
+sequential search.
+}
+\examples{
+index <- quanteda:::index_types("yy*", c("xxx", "yyyy", "ZZZ"), "glob", FALSE)
+quanteda:::search_glob("yy*", attr(index, "types_search"), index)
 }
 \keyword{internal}

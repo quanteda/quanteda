@@ -1,7 +1,6 @@
-//#include "dev.h"
 #include "lib.h"
-#include "recompile.h"
 #include "skipgram.h"
+//#include "dev.h"
 using namespace quanteda;
 
 Text skipgram(const Text &tokens,
@@ -35,75 +34,11 @@ Text skipgram(const Text &tokens,
     return tokens_ng;
 }
 
-struct skipgram_mt : public Worker{
-    
-    Texts &texts;
-    const std::vector<unsigned int> &ns;
-    const std::vector<unsigned int> &skips;
-    MapNgrams &map_ngram;
-    IdNgram &id_ngram;
-    
-    skipgram_mt(Texts &texts_, const std::vector<unsigned int> &ns_, const std::vector<unsigned int> &skips_, 
-                MapNgrams &map_ngram_, IdNgram &id_ngram_):
-                texts(texts_), ns(ns_), skips(skips_), map_ngram(map_ngram_), id_ngram(id_ngram_){}
-    
-    void operator()(std::size_t begin, std::size_t end){
-        //Rcout << "Range " << begin << " " << end << "\n";
-        for (std::size_t h = begin; h < end; h++) {
-            texts[h] = skipgram(texts[h], ns, skips, map_ngram, id_ngram);
-        }
-    }
-};
-
-
-void type(std::size_t i,
-          const VecNgrams &keys_ngram,
-          Types &types_ngram,
-          const MapNgrams &map_ngram,
-          const std::string &delim,
-          const Types &types){
-    
-    Ngram key = keys_ngram[i];
-    if (key.size() == 0) {
-        types_ngram[i] = "";
-    } else {
-        std::string type_ngram = types[key[0] - 1];
-        for (std::size_t j = 1; j < key.size(); j++) {
-            type_ngram += delim + types[key[j] - 1];
-        }
-        types_ngram[i] = type_ngram;
-    }
-}
-
-struct type_mt : public Worker{
-    
-    const VecNgrams &keys_ngram;
-    Types &types_ngram;
-    const MapNgrams &map_ngram;
-    const std::string &delim;
-    const Types &types;
-    
-    type_mt(VecNgrams &keys_ngram_, Types &types_ngram_, MapNgrams &map_ngram_, 
-            std::string &delim_, Types &types_):
-            keys_ngram(keys_ngram_), types_ngram(types_ngram_), map_ngram(map_ngram_), 
-            delim(delim_), types(types_) {}
-    
-    void operator()(std::size_t begin, std::size_t end){
-        //Rcout << "Range " << begin << " " << end << "\n";
-        for (std::size_t i = begin; i < end; i++) {
-            type(i, keys_ngram, types_ngram, map_ngram, delim, types);
-        }
-    }
-};
-
-
 /* 
-* This function generates ngrams/skipgrams from tokens object. 
+* Function to generates ngrams/skipgrams
 * The number of threads is set by RcppParallel::setThreadOptions()
 * @used tokens_ngrams()
 * @creator Kohei Watanabe
-* @param types_ types of tokens
-* @param texts_ tokens ojbect
 * @param delim_ string to join words
 * @param ns_ size of ngramss
 * @param skips_ size of skip (this has to be 1 for ngrams)
@@ -111,14 +46,14 @@ struct type_mt : public Worker{
 */
 
 // [[Rcpp::export]]
-List qatd_cpp_tokens_ngrams(const List &texts_,
-                            const CharacterVector types_,
+TokensPtr cpp_tokens_ngrams(TokensPtr xptr,
                             const String delim_,
                             const IntegerVector ns_,
-                            const IntegerVector skips_) {
+                            const IntegerVector skips_,
+                            const int thread = -1) {
     
-    Texts texts = Rcpp::as< Texts >(texts_);
-    Types types = Rcpp::as< Types >(types_);
+    Texts texts = xptr->texts;
+    Types types = xptr->types;
     std::string delim = delim_;
     std::vector<unsigned int> ns = Rcpp::as< std::vector<unsigned int> >(ns_);
     std::vector<unsigned int> skips = Rcpp::as< std::vector<unsigned int> >(skips_);
@@ -129,13 +64,20 @@ List qatd_cpp_tokens_ngrams(const List &texts_,
     
     //dev::Timer timer;
     //dev::start_timer("Ngram generation", timer);
+    std::size_t H = texts.size();
 #if QUANTEDA_USE_TBB
     IdNgram id_ngram(1);
-    skipgram_mt skipgram_mt(texts, ns, skips, map_ngram, id_ngram);
-    parallelFor(0, texts.size(), skipgram_mt);
+    tbb::task_arena arena(thread);
+    arena.execute([&]{
+        tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
+            for (int h = r.begin(); h < r.end(); ++h) {
+                texts[h] = skipgram(texts[h], ns, skips, map_ngram, id_ngram);
+            }    
+        });
+    });
 #else
     IdNgram id_ngram = 1;
-    for (std::size_t h = 0; h < texts.size(); h++) {
+    for (std::size_t h = 0; h < H; h++) {
         texts[h] = skipgram(texts[h], ns, skips, map_ngram, id_ngram);
     }
 #endif
@@ -149,19 +91,30 @@ List qatd_cpp_tokens_ngrams(const List &texts_,
     
     //dev::start_timer("Token generation", timer);
     // Create ngram types
-    Types types_ngram(keys_ngram.size());
+    std::size_t I = keys_ngram.size();
+    Types types_new(I);
 #if QUANTEDA_USE_TBB
-        type_mt type_mt(keys_ngram, types_ngram, map_ngram, delim, types);
-        parallelFor(0, types_ngram.size(), type_mt);
+    arena.execute([&]{
+        tbb::parallel_for(tbb::blocked_range<int>(0, I), [&](tbb::blocked_range<int> r) {
+          for (int i = r.begin(); i < r.end(); ++i) {
+              types_new[i] = join_strings(keys_ngram[i], types, delim);
+          }    
+        });
+    });
 #else
-    for (std::size_t i = 0; i < types_ngram.size(); i++) {
-        type(i, keys_ngram, types_ngram, map_ngram, delim, types);
+    for (std::size_t i = 0; i < I; i++) {
+        types_new[i] = join_strings(keys_ngram[i], types, delim);
     }
 #endif
-    //dev::stop_timer("Token generation", timer);
-    return recompile(texts, types_ngram, true, false, is_encoded(delim_) || is_encoded(types_));
-    //return recompile(texts, types_ngram, false, false, false);
+    
+    xptr->texts = texts;
+    xptr->types = types_new;
+    xptr->recompiled = false;
+    return xptr;
+
 }
+
+
 
 
 /*** R
@@ -169,16 +122,9 @@ List qatd_cpp_tokens_ngrams(const List &texts_,
 library(quanteda)
 #txt <- c('a b c d e')
 txt <- c('a b c d e', 'c d e f g')
-tok <- quanteda::tokens(txt)
-out <- qatd_cpp_tokens_ngrams(tok, attr(tok, 'types'), "-", 2, 1)
-str(out)
-
-tok2 <- quanteda::tokens(data_corpus_inaugural)
-microbenchmark::microbenchmark(
-    qatd_cpp_tokens_ngrams(tok2, attr(tok2, 'types'), "-", 2, 1),
-    tokenizers::tokenize_ngrams(texts(data_corpus_inaugural))
-)
-
+xtoks <- quanteda::tokens(txt, xptr = TRUE)
+xtoks_ng <- cpp_tokens_ngrams(xtoks, "-", 2, 1)
+as.list(xtoks_ng)
 
 
 

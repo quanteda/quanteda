@@ -5,31 +5,26 @@ test_that("bootstrap_dfm works with character and corpus objects", {
     corp <- corpus(txt,
                    docvars = data.frame(country = c("UK", "USA", "UK"), 
                                         year = c(1990, 2000, 2005)))
-    set.seed(10)
-    bs1 <- bootstrap_dfm(corp, n = 10)
-    # print(bs1[[1]], -1, -1)
-    # print(dfm(corp), -1, -1)
-    expect_equal(bs1[[1]], dfm(tokens(corp)))
+    toks <- tokens(corp)
+    dfmt <- dfm(toks)
     
-    bs2 <- bootstrap_dfm(txt, n = 10, verbose = TRUE)
-    expect_identical(bs2[[1]],
-                     dfm(tokens(corp, include_docvars = FALSE)))
+    set.seed(10)
+    bs <- bootstrap_dfm(dfmt, n = 10)
+    expect_equal(bs[[1]], dfmt)
     
     # are feature names of resamples identical?
     expect_identical(
-        featnames(bs2[[1]]),
-        featnames(bs2[[2]])
+        featnames(bs[[1]]),
+        featnames(bs[[2]])
     )
 
     # are document names of resamples identical?
     expect_identical(
-        docnames(bs2[[1]]),
-        docnames(bs2[[2]])
+        docnames(bs[[1]]),
+        docnames(bs[[2]])
     )
     
-    expect_error(bootstrap_dfm(txt, n = -1), 
-                 "The value of n must be between 0 and Inf")
-    expect_error(bootstrap_dfm(corp, n = -1), 
+    expect_error(bootstrap_dfm(dfmt, n = -1), 
                  "The value of n must be between 0 and Inf")
 })
 
@@ -41,23 +36,19 @@ test_that("bootstrap_dfm works as planned with dfm", {
     dfmt <- dfm(tokens(corpus_reshape(corp, to = "sentences")))
     
     set.seed(10)
-    bs1 <- bootstrap_dfm(dfmt, n = 3, verbose = FALSE)
-    expect_equivalent(bs1[[1]], 
-                      dfm(tokens(corp)))
+    bs <- bootstrap_dfm(dfmt, n = 3, verbose = FALSE)
+    expect_equivalent(bs[[1]], 
+                      dfm_group(dfmt))
     
-    bs2 <- bootstrap_dfm(txt, n = 3, verbose = FALSE)
-    expect_identical(bs2[[1]], 
-                     dfm(tokens(corp, include_docvars = FALSE)))
-
     # are feature names of resamples identical?
     expect_identical(
-        featnames(bs2[[1]]),
-        featnames(bs2[[2]])
+        featnames(bs[[1]]),
+        featnames(bs[[2]])
     )
     # are document names of resamples identical?
     expect_identical(
-        docnames(bs2[[1]]),
-        docnames(bs2[[2]])
+        docnames(bs[[1]]),
+        docnames(bs[[2]])
     )
 })
 
@@ -65,12 +56,10 @@ test_that("verbose messages work", {
     txt <- c(textone = "This is a sentence.  Another sentence.  Yet another.",
              texttwo = "Premiere phrase.  Deuxieme phrase.",
              textthree = "Sentence three is really short.")
+    toks <- tokens(txt)
+    dfmt <- dfm(toks)
     expect_message(
-        bootstrap_dfm(txt, n = 1, verbose = TRUE),
-        "Segmenting the .+ into sentences"
-    )
-    expect_message(
-        bootstrap_dfm(txt, n = 1, verbose = TRUE),
+        bootstrap_dfm(dfmt, n = 1, verbose = TRUE),
         "resampling and forming dfms: 0"
     )
 })

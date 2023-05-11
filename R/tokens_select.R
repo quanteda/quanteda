@@ -128,7 +128,7 @@ tokens_select.default <- function(x, pattern = NULL,
 #' # combining positional selection with pattern matching
 #' tokens_select(toks, "t*", endpos = 3)
 #'
-tokens_select.tokens <- function(x, pattern = NULL,
+tokens_select.tokens_xptr <- function(x, pattern = NULL,
                                  selection = c("keep", "remove"),
                                  valuetype = c("glob", "regex", "fixed"),
                                  case_insensitive = TRUE, padding = FALSE, window = 0,
@@ -136,7 +136,6 @@ tokens_select.tokens <- function(x, pattern = NULL,
                                  startpos = 1L, endpos = -1L,
                                  verbose = quanteda_options("verbose")) {
 
-    x <- as.tokens(x)
     selection <- match.arg(selection)
     valuetype <- match.arg(valuetype)
     padding <- check_logical(padding)
@@ -146,7 +145,7 @@ tokens_select.tokens <- function(x, pattern = NULL,
     verbose <- check_logical(verbose)
     
     attrs <- attributes(x)
-    type <- types(x)
+    type <- get_types(x)
 
     # selection by pattern
     if (is.null(pattern)) {
@@ -194,11 +193,19 @@ tokens_select.tokens <- function(x, pattern = NULL,
     endpos <- rep(endpos, length.out = ndoc(x))
     
     if (selection == "keep") {
-        result <- qatd_cpp_tokens_select(x, type, ids, 1, padding, window[1], window[2], startpos, endpos)
+        result <- cpp_tokens_select(x, ids, 1, padding, window[1], window[2], startpos, endpos,
+                                    get_threads())
     } else {
-        result <- qatd_cpp_tokens_select(x, type, ids, 2, padding, window[1], window[2], startpos, endpos)
+        result <- cpp_tokens_select(x, ids, 2, padding, window[1], window[2], startpos, endpos,
+                                    get_threads())
     }
     rebuild_tokens(result, attrs)
+}
+
+
+#' @export
+tokens_select.tokens <- function(x, ...) {
+    as.tokens(tokens_select(as.tokens_xptr(x), ...))
 }
 
 #' @rdname tokens_select

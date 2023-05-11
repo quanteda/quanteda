@@ -1,6 +1,5 @@
 //#include "dev.h"
 #include "lib.h"
-#include "recompile.h"
 #include "skipgram.h"
 using namespace quanteda;
 
@@ -59,28 +58,6 @@ Text join_mark(Text tokens,
     return tokens_flat;
 }
 
-struct restore_mt : public Worker{
-    
-    Texts &texts;
-    MapNgrams &map_marks;
-    MapNgrams &map_comps;
-    IdNgram &id_comp;
-    
-    // Constructor
-    restore_mt(Texts &texts_, 
-               MapNgrams &map_marks_, MapNgrams &map_comps_, IdNgram &id_comp_):
-               texts(texts_), 
-               map_marks(map_marks_), map_comps(map_comps_), id_comp(id_comp_) {}
-    
-    // parallelFor calles this function with std::size_t
-    void operator()(std::size_t begin, std::size_t end){
-        //Rcout << "Range " << begin << " " << end << "\n";
-        for (std::size_t h = begin; h < end; h++) {
-            texts[h] = join_mark(texts[h], map_marks, map_comps, id_comp);
-        }
-    }
-};
-
 /* 
  * This function substitutes features in tokens object with new IDs. 
  * The number of threads is set by RcppParallel::setThreadOptions()
@@ -88,19 +65,18 @@ struct restore_mt : public Worker{
  * @creator Kohei Watanabe
  * @param texts_ tokens ojbect
  * @param marks_left_, marks_right_ patterns to mark tokens to restore
- * @param types_ types in the tokens object
  * @param delim_ character to concatenate types
  */
 
 // [[Rcpp::export]]
-List qatd_cpp_tokens_restore(const List &texts_, 
-                              const List &marks_left_,
-                              const List &marks_right_,
-                              const CharacterVector &types_,
-                              const String &delim_){
+TokensPtr cpp_tokens_restore(TokensPtr xptr,
+                        const List &marks_left_,
+                        const List &marks_right_,
+                        const String &delim_,
+                        const int thread = -1) {
     
-    Texts texts = Rcpp::as<Texts>(texts_);
-    Types types = Rcpp::as<Types>(types_);
+    Texts texts = xptr->texts;
+    Types types = xptr->types;
     std::string delim = delim_;
 
     unsigned int id_last = types.size();
@@ -130,11 +106,18 @@ List qatd_cpp_tokens_restore(const List &texts_,
      
     // dev::Timer timer;
     // dev::start_timer("Token compound", timer);
+    std::size_t H = texts.size();
 #if QUANTEDA_USE_TBB
-    restore_mt restore_mt(texts, map_marks, map_comps, id_comp);
-    parallelFor(0, texts.size(), restore_mt);
+    tbb::task_arena arena(thread);
+        arena.execute([&]{
+        tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
+            for (int h = r.begin(); h < r.end(); ++h) {
+                texts[h] = join_mark(texts[h], map_marks, map_comps, id_comp);
+            }    
+        });
+    });
 #else
-    for (std::size_t h = 0; h < texts.size(); h++) {
+    for (std::size_t h = 0; h < H; h++) {
         texts[h] = join_mark(texts[h], map_marks, map_comps, id_comp);
     }
 #endif
@@ -151,21 +134,15 @@ List qatd_cpp_tokens_restore(const List &texts_,
     // Create compound types
     Types types_comp(ids_comp.size());
     for (std::size_t i = 0; i < ids_comp.size(); i++) {
-        Ngram key = ids_comp[i];
-        if (key.size() == 0) {
-            types_comp[i] = "";
-        } else {
-            std::string type_ngram = types[key[0] - 1];
-            for (std::size_t j = 1; j < key.size(); j++) {
-                type_ngram += delim + types[key[j] - 1];
-            }
-            types_comp[i] = type_ngram;
-        }
+        types_comp[i] = join_strings(ids_comp[i], types, delim);
     }
     types.insert(types.end(), types_comp.begin(), types_comp.end());
     
     // dev::stop_timer("Token compound", timer);
-    return recompile(texts, types, true, true, is_encoded(delim_) || is_encoded(types_));
+    xptr->texts = texts;
+    xptr->types = types;
+    xptr->recompiled = false;
+    return xptr;
 }
 
 /***R
@@ -175,7 +152,7 @@ left <- list(1)
 right <- list(4)
 types <- letters
 #qatd_cpp_tokens_compound(toks, dict, types, "_", FALSE)
-out <- quanteda:::qatd_cpp_tokens_restore(toks, left, right, types, "_")
+out <- cpp_tokens_restore(toks, left, right, "_")
 unclass(out)
 
 */

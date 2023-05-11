@@ -2,7 +2,7 @@ url: https://quanteda.io
 template:
   params:
     bootswatch: readable
-    ganalytics: UA-144616-24
+    ganalytics: G-0F398Z98L1
     docsearch:
       api_key: 9b4ef7fd791dc6075154d3ebd7b12acf
       index_name: quanteda
@@ -28,6 +28,10 @@ navbar:
       href: reference/index.html
     - text: "Features"
       menu:
+        - text: "External pointer tokens objects"
+          href: articles/pkgdown/tokens_xptr.html
+        - text: "Performance benchmarks for v4"
+          href: articles/pkgdown/benchmarks_xptr.html
         - text: "Feature comparison"
           href: articles/pkgdown/comparison.html
         - text: "Package design"
@@ -86,6 +90,8 @@ reference:
     - as.list.tokens
     - as.tokens
     - is.tokens
+    - as.tokens_xptr
+    - is.tokens_xptr
 - title: Character functions
   desc: Functions for constructing and manipulating character objects.
   contents:
@@ -137,6 +143,7 @@ reference:
     - featnames
 - title: Miscellaneous functions
   contents:
+    - copy
     - phrase
     - convert
     - bootstrap_dfm

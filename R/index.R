@@ -25,20 +25,21 @@ index.default <- function(x, ...) {
 }
 
 #' @export
-index.tokens <- function(x, pattern, 
-                           valuetype = c("glob", "regex", "fixed"),
-                           case_insensitive = TRUE) {
-    x <- as.tokens(x)
+index.tokens_xptr <- function(x, pattern, 
+                              valuetype = c("glob", "regex", "fixed"),
+                              case_insensitive = TRUE) {
+    
     valuetype <- match.arg(valuetype)
     
     attrs <- attributes(x)
-    type <- types(x)
+    type <- get_types(x)
     if (is.list(pattern) && is.null(names(pattern)))
         names(pattern) <- pattern
-    ids <- object2id(pattern, attrs[["types"]], valuetype,
+    ids <- object2id(pattern, type, valuetype,
                      case_insensitive, field_object(attrs, "concatenator"))
-    result <- qatd_cpp_index(x, type, ids)
-    result$pattern <- factor(result$pattern, levels = unique(names(ids)))
+    result <- cpp_index(x, ids, get_threads())
+    result$docname <- docnames(x)[result$docname]
+    result$pattern <- factor(names(ids)[result$pattern], levels = unique(names(ids)))
     if (nrow(result)) {
         r <- order(match(result$docname, docnames(x)),
                    result$from, result$to, result$pattern)
@@ -47,6 +48,11 @@ index.tokens <- function(x, pattern,
     rownames(result) <- NULL
     class(result) <- c("index", "data.frame")
     return(result)
+}
+
+#' @export
+index.tokens <- function(x, ...) {
+    index(as.tokens_xptr(x), ...)
 }
 
 #' @rdname index

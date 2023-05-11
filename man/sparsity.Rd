@@ -14,7 +14,7 @@ Return the proportion of sparseness of a document-feature matrix, equal
 to the proportion of cells that have zero counts.
 }
 \examples{
-dfmat <- dfm(data_corpus_inaugural)
+dfmat <- dfm(tokens(data_corpus_inaugural))
 sparsity(dfmat)
 sparsity(dfm_trim(dfmat, min_termfreq = 5))
 }

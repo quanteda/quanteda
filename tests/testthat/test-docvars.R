@@ -238,16 +238,6 @@ test_that("$ returns docvars", {
     expect_equal(docvars(dfmat, "Party"), dfmat$Party)
 })
 
-
-test_that("creating tokens and dfms with empty docvars", {
-    expect_equal(
-        length(docvars(tokens(data_corpus_inaugural, include_docvars = FALSE))), 0
-    )
-    expect_equal(
-        length(docvars(suppressWarnings(dfm(tokens(data_corpus_inaugural), include_docvars = FALSE)))), 0
-    )
-})
-
 test_that("tokens works works with one docvar", {
     docv1 <- data.frame(dvar1 = c("A", "B"))
     mycorpus1 <- corpus(c(d1 = "This is sample document one.",
@@ -585,45 +575,45 @@ test_that("group_docvars() works", {
 test_that("docid works", {
     corp <- corpus(c(textone = "This is a sentence.  Another sentence.  Yet another.",
                      textwo = "Sentence 1. Sentence 2."))
-    corpsent <- corp %>%
+    corp_sent <- corp %>%
         corpus_reshape(to = "sentences")
     
     expect_identical(
-        docid(corpsent),
+        docid(corp_sent),
         factor(c("textone", "textone", "textone", "textwo", "textwo"))
     )
     expect_identical(
-        docid(tokens(corpsent)),
-        docid(corpsent)
+        docid(tokens(corp_sent)),
+        docid(corp_sent)
     )
     expect_identical(
-        docid(dfm(tokens(corpsent))),
-        docid(corpsent)
+        docid(dfm(tokens(corp_sent))),
+        docid(corp_sent)
     )
     
     # defaults for group functions
     expect_identical(
-        docid(corpus_group(corpsent)),
+        docid(corpus_group(corp_sent)),
         factor(docnames(corp))
     )
     expect_identical(
-        docid(tokens_group(tokens(corpsent))),
+        docid(tokens_group(tokens(corp_sent))),
         factor(docnames(corp))
     )
     expect_identical(
-        docid(dfm_group(dfm(tokens(corpsent)))),
+        docid(dfm_group(dfm(tokens(corp_sent)))),
         factor(docnames(corp))
     )
     expect_identical(
-        docid(corpus_group(corpsent, groups = docid(corpsent))),
+        docid(corpus_group(corp_sent, groups = docid(corp_sent))),
         factor(docnames(corp))
     )
     expect_identical(
-        docid(tokens_group(tokens(corpsent), groups = docid(corpsent))),
+        docid(tokens_group(tokens(corp_sent), groups = docid(corp_sent))),
         factor(docnames(corp))
     )
     expect_identical(
-        docid(dfm_group(dfm(tokens(corpsent)), groups = docid(corpsent))),
+        docid(dfm_group(dfm(tokens(corp_sent)), groups = docid(corp_sent))),
         factor(docnames(corp))
     )
 })

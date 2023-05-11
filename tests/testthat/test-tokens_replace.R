@@ -5,8 +5,8 @@ toks_test <- tokens(txt)
 test_that("tokens_replace works with regular pattern and replacement", {
     
     # equivalent to tokens conversion method
-    expect_equal(tokens_replace(toks_test, types(toks_test), char_toupper(types(toks_test)), "fixed", case_insensitive = FALSE),
-                 tokens_toupper(toks_test))
+    expect_equal(as.list(tokens_replace(toks_test, types(toks_test), char_toupper(types(toks_test)), "fixed", case_insensitive = FALSE)),
+                 as.list(tokens_toupper(toks_test)))
     
     # fixed, case-insensitive
     expect_equal(as.list(tokens_replace(toks_test, c('aa', 'bb'), c('a', 'b'), "fixed", case_insensitive = TRUE)),
@@ -140,7 +140,7 @@ test_that("tokens_replace raises error when input values are invalid", {
                  "The length of pattern and replacement must be the same")
     
     expect_error(tokens_replace(toks_test, c(1, 2), c(10, 20), valuetype = "fixed"),
-                 "The type of pattern must be character")
+                 "The type of x must be character")
     
     # does nothing when input vector is zero length
     expect_equal(tokens_replace(toks_test, character(), character()),

@@ -23,10 +23,10 @@ NULL
 #'   [make_docvars()]. Names of documents are extracted from the
 #'   `docname_` column.
 #' @keywords internal
-build_dfm <- function(x, features,
+build_dfm <- function(x, features, # NOTE: consider removing feature
                       docvars = data.frame(), meta = list(), 
-                      class = "dfm", ...) {
-    result <- new(class,
+                      class = NULL, ...) {
+    result <- new("dfm",
                   as(as(as(x, "CsparseMatrix"), "generalMatrix"), "dMatrix"),
                   docvars = docvars,
                   meta = make_meta("dfm", inherit = meta, ...)
@@ -89,32 +89,58 @@ upgrade_dfm <- function(x) {
 #'     types = c("a", "b", "c", "d", "e", "f"),
 #'     padding = FALSE
 #' )
-build_tokens <- function(x, types, padding = FALSE,
+build_tokens <- function(x, types, padding = TRUE,
                          docvars = data.frame(), meta = list(), 
-                         class = "tokens", ...) {
-    stopifnot(length(x) == length(docvars[["docname_"]]))
+                         class = NULL, ...) {
+    
     attributes(x) <- NULL
+    class <- setdiff(class, c("tokens_xptr", "tokens")) 
+    if (identical(typeof(x), "externalptr")) {
+        class <- union(class, c("tokens_xptr", "tokens"))
+    } else {
+        stopifnot(length(x) == length(docvars[["docname_"]]))
+        attr(x, "names") <- docvars[["docname_"]]
+        class <- union(class, "tokens")
+    }
     structure(x,
-              names = docvars[["docname_"]],
-              class = union(class, "tokens"),
+              class = class,
               types = types,
-              padding = padding,
+              padding = padding, # TODO: removed after v4
               docvars = docvars,
               meta = make_meta("tokens", inherit = meta, ...))
 }
 
+
+
+#' #' @rdname object-builders
+# rebuild_tokens <- function(x, attrs) {
+# 
+#     attr(x, "docvars") <- attrs[["docvars"]]
+#     attr(x, "meta") <- attrs[["meta"]]
+#     attr(x, "class") <- union(attrs[["class"]], "tokens")
+#     if (is.list(x))
+#         attr(x, "names") <- attrs[["docvars"]][["docname_"]]
+# 
+#     # drop extra attributes from tokens_segment
+#     try({attr(x, "docnum") <- NULL}, silent = TRUE)
+#     try({attr(x, "pattern") <- NULL}, silent = TRUE)
+# 
+#     return(x)
+# }
+
 #' @rdname object-builders
 rebuild_tokens <- function(x, attrs) {
-    attr(x, "names") <- attrs[["docvars"]][["docname_"]]
-    attr(x, "docvars") <- attrs[["docvars"]]
-    attr(x, "meta") <- attrs[["meta"]]
-    attr(x, "class") <- union(attrs[["class"]], "tokens")
 
-    # drop extra attributes from tokens_segment
-    try({attr(x, "docnum") <- NULL}, silent = TRUE)
-    try({attr(x, "pattern") <- NULL}, silent = TRUE)
-
-    return(x)
+    if (is.list(x))
+         attr(x, "names") <- attrs[["docvars"]][["docname_"]]
+    structure(x,
+              padding = TRUE, # TODO: removed after v4
+              docvars = attrs[["docvars"]],
+              meta = attrs[["meta"]],
+              class = union(attrs[["class"]], "tokens"),
+              # drop extra attributes from tokens_segment
+              documents = NULL,
+              matches = NULL)
 }
 
 #' @rdname object-builders
@@ -158,8 +184,10 @@ upgrade_tokens <- function(x) {
 build_corpus <- function(x,
                          docvars = data.frame(),
                          meta = list(),
-                         class = "corpus",
+                         class = NULL,
                          ...) {
+    
+    class <- setdiff(class, c("corpus", "character"))
     stopifnot(length(x) == length(docvars[["docname_"]]))
     attributes(x) <- NULL
     structure(x,

@@ -111,7 +111,7 @@ tokens_lookup.default <- function(x, dictionary, levels = 1:5,
 }
 
 #' @export
-tokens_lookup.tokens <- function(x, dictionary, levels = 1:5,
+tokens_lookup.tokens_xptr <- function(x, dictionary, levels = 1:5,
                           valuetype = c("glob", "regex", "fixed"),
                           case_insensitive = TRUE,
                           capkeys = !exclusive,
@@ -120,7 +120,6 @@ tokens_lookup.tokens <- function(x, dictionary, levels = 1:5,
                           nested_scope = c("key", "dictionary"),
                           verbose = quanteda_options("verbose")) {
 
-    x <- as.tokens(x)
     if (!is.dictionary(dictionary))
         stop("dictionary must be a dictionary object")
     levels <- check_integer(levels, min = 1, max_len = Inf)
@@ -131,12 +130,12 @@ tokens_lookup.tokens <- function(x, dictionary, levels = 1:5,
     verbose <- check_logical(verbose)
         
     attrs <- attributes(x)
-    type <- types(x)
+    type <- get_types(x)
     if (verbose)
         catm("applying a dictionary consisting of ", length(dictionary), " key",
              if (length(dictionary) > 1L) "s" else "", "\n", sep = "")
     ids <- object2id(dictionary, type, valuetype, case_insensitive,
-                        field_object(attrs, "concatenator"), levels)
+                     field_object(attrs, "concatenator"), levels)
     key <- attr(ids, "key")
     id_key <- match(names(ids), key)
     overlap <- match(nested_scope, c("key", "dictionary"))
@@ -145,17 +144,27 @@ tokens_lookup.tokens <- function(x, dictionary, levels = 1:5,
     if (exclusive) {
         if (!is.null(nomatch)) {
             nomatch <- check_character(nomatch)
-            result <- qatd_cpp_tokens_lookup(x, c(key, nomatch), ids, id_key, overlap, 1)
+            result <- cpp_tokens_lookup(x, ids, id_key, c(key, nomatch), overlap, 1,
+                                        get_threads())
         } else {
-            result <- qatd_cpp_tokens_lookup(x, key, ids, id_key, overlap, 0)
+            result <- cpp_tokens_lookup(x, ids, id_key, key, overlap, 0,
+                                        get_threads())
         }
     } else {
         if (!is.null(nomatch))
             warning("nomatch only applies if exclusive = TRUE")
         id_used <- unique(id_key)
-        result <- qatd_cpp_tokens_lookup(x, c(key[id_used], type), ids, match(id_key, id_used), overlap, 2)
+        result <- cpp_tokens_lookup(x, ids, match(id_key, id_used), key[id_used], overlap, 2,
+                                    get_threads())
     }
     if (exclusive)
         field_object(attrs, "what") <- "dictionary"
     rebuild_tokens(result, attrs)
 }
+
+#' @export
+tokens_lookup.tokens <- function(x, ...) {
+    as.tokens(tokens_lookup(as.tokens_xptr(x), ...))
+}
+
+

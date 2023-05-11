@@ -80,10 +80,10 @@ test_that("tokens_select reduces the types appropriately", {
     ## see issue/PR #416
     toks <- tokens(c(doc1 = "This is a SAMPLE text", doc2 = "this sample text is better"))
     feats <- c("this", "sample", "is")
-    expect_equal(attributes(tokens_select(toks, feats, selection = "keep"))$types,
-                 c("This", "is", "SAMPLE", "this", "sample"))
-    expect_equal(attributes(tokens_select(toks, feats, selection = "keep", case_insensitive = FALSE))$types,
-                 c("is", "this", "sample"))
+    expect_setequal(types(tokens_select(toks, feats, selection = "keep")),
+                    c("This", "is", "SAMPLE", "this", "sample"))
+    expect_setequal(types(tokens_select(toks, feats, selection = "keep", case_insensitive = FALSE)),
+                    c("is", "this", "sample"))
 })
 test_that("tokens_remove works on \"\" with tokens containing padding", {
     toks <- tokens(c(doc1 = "a b c d e f g"))
@@ -711,20 +711,4 @@ test_that("position arguments are working", {
         "The length of endpos must be between 1 and 3"
     )
     
-    expect_error(
-        quanteda:::qatd_cpp_tokens_select(toks, types(toks), as.list(1:3), 1, TRUE, 0, 0, integer(), 1:3),
-        "Invalid pos_from"
-    )
-    expect_error(
-        quanteda:::qatd_cpp_tokens_select(toks, types(toks), as.list(1:3), 1, TRUE, 0, 0, 1, 1:3),
-        "Invalid pos_from"
-    )
-    expect_error(
-        quanteda:::qatd_cpp_tokens_select(toks, types(toks), as.list(1:3), 1, TRUE, 0, 0, 1:3, integer()),
-        "Invalid pos_to"
-    )
-    expect_error(
-        quanteda:::qatd_cpp_tokens_select(toks, types(toks), as.list(1:3), 1, TRUE, 0, 0, 1:3, 1),
-        "Invalid pos_to"
-    )
 })

@@ -1,5 +1,5 @@
 Package: quanteda
-Version: 3.3.0.9001
+Version: 4.0.0
 Title: Quantitative Analysis of Textual Data
 Description: A fast, flexible, and comprehensive framework for 
     quantitative text analysis in R.  Provides functionality for corpus management,
@@ -148,6 +148,7 @@ Collate:
     'tokens_select.R'
     'tokens_split.R'
     'tokens_subset.R'
+    'tokens_xptr.R'
     'utils.R'
     'validator.R'
     'wordstem.R'
