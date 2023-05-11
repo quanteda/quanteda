@@ -44,7 +44,7 @@ test_that("test detault n-methods", {
     )
     expect_error(
         ntype(TRUE),
-        "ntype\\(\\) only works on character.*tokens objects"
+        "ntype\\(\\) only works on character.*tokens_xptr objects"
     )
 })
 

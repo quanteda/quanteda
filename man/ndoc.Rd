@@ -10,11 +10,17 @@ ndoc(x)
 nfeat(x)
 }
 \arguments{
-\item{x}{a \pkg{quanteda} object: a \link{corpus}, \link{dfm}, or a
-\link{tokens} object.}
+\item{x}{a \pkg{quanteda} object: a \link{corpus}, \link{dfm}, \link{tokens}, or
+\link{tokens_xptr} object.
 }
 \value{
-an integer (count) of the number of documents or features
+\code{ndoc()} returns an integer count of the number of documents in an
+object whose texts are organized as "documents" (a \link{corpus}, \link{dfm}, or
+\link{tokens} object, a readtext object from the \pkg{readtext} package).
+
+\code{nfeat()} returns an integer count of the number of features.  It is
+an alias for \code{ntype()} for a dfm. This function is only defined for \link{dfm}
+objects because only these have "features".
 }
 \description{
 Get the number of documents or features in an object.
@@ -43,5 +49,5 @@ nfeat(dfm(toks1))
 nfeat(dfm(toks2))
 }
 \seealso{
-\code{\link[=ntoken]{ntoken()}}
+\code{\link[=ntoken]{ntoken()}}, \code{\link[=ntype]{ntype()}}
 }
