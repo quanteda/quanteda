@@ -85,7 +85,7 @@ test_that("pattern2fixed converts complex patterns correctly", {
     regex <- list(c('a...b'), c('c.*d'), c('e.+f'), c('^g[xyz]+h$'), c('z'), c('[0-9]'))
     glob <- list("<*>")
     type <- c('axxxb', 'cxxxd', 'exxxf', 'gyyyh', 'azzzb', 'a999b', 
-              "<*>", "<abc>", "<abc.12>")
+              "<*>", "<xxx>", "<xx.yy>")
     
     expect_setequal(
         pattern2fixed(regex, type, 'regex', case_insensitive = TRUE),
@@ -94,7 +94,7 @@ test_that("pattern2fixed converts complex patterns correctly", {
     
     expect_setequal(
         pattern2fixed(glob, type, 'glob', case_insensitive = TRUE),
-        list("<*>", "<abc>", "<abc.12>")
+        list("<*>", "<xxx>", "<xx.yy>")
     )
 })
 
