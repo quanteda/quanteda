@@ -80,15 +80,22 @@ test_that("pattern2fixed converts regex patterns correctly", {
     
 })
 
-test_that("pattern2fixed converts complex regex patterns correctly", {
+test_that("pattern2fixed converts complex patterns correctly", {
     
     regex <- list(c('a...b'), c('c.*d'), c('e.+f'), c('^g[xyz]+h$'), c('z'), c('[0-9]'))
-    type <- c('axxxb', 'cxxxd', 'exxxf', 'gyyyh', 'azzzb', 'a999b')
+    glob <- list("<*>")
+    type <- c('axxxb', 'cxxxd', 'exxxf', 'gyyyh', 'azzzb', 'a999b', 
+              "<*>", "<xxx>", "<xx.yy>")
     
-    expect_identical(setdiff(
+    expect_setequal(
         pattern2fixed(regex, type, 'regex', case_insensitive = TRUE),
         list('axxxb', 'cxxxd', 'exxxf', 'gyyyh', 'azzzb', 'a999b')
-    ), list())
+    )
+    
+    expect_setequal(
+        pattern2fixed(glob, type, 'glob', case_insensitive = TRUE),
+        list("<*>", "<xxx>", "<xx.yy>")
+    )
 })
 
 test_that("pattern2fixed works with character class", {
