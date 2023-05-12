@@ -32,7 +32,7 @@
 #'   `data.frame` indicating the variable to be read in as text, which must
 #'   be a character vector. All other variables in the data.frame will be
 #'   imported as docvars.  This argument is only used for `data.frame`
-#'   objects (including those created by \pkg{readtext}).
+#'   objects.
 #' @param meta a named list that will be added to the corpus as corpus-level,
 #'   user meta-data.  This can later be accessed or updated using
 #'   [meta()].

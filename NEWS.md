@@ -17,11 +17,24 @@ language handling, and customisation options.
 
 * Deprecated or renamed arguments formerly passed in `tokens()` that formerly mapped to the v3 arguments with a warning are removed.
 
+* Methods for **readtext** objects are removed, since these are data.frame objects that be straightforward to convert into a `corpus` object.
+
 ## Deprecations
 
 
 ## Bug fixes and stability enhancements
 
+
+# quanteda 3.3.1
+
+## Bug fixes and stability enhancements
+
+* Fixed a potential crash when calling `tokens_compound()` with patterns containing paddings (#2254).
+
+* Updated for compatibility with (forthcoming) Matrix 1.5.5 handling of dimnames() 
+for empty dimensions.
+
+* restores `readtext` object class method extensions, to work better with the **readtext** package.
 
 # quanteda 3.3.0
 

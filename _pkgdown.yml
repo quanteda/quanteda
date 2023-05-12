@@ -148,7 +148,6 @@ reference:
     - convert
     - bootstrap_dfm
     - meta
-    - readtext-methods
     - spacyr-methods
 - title: Statistics, models, and plots
   desc: Functions for computing statistics, fitting models, and producing visualisations models from text.

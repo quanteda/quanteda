@@ -16,7 +16,7 @@ nfeat(x)
 \value{
 \code{ndoc()} returns an integer count of the number of documents in an
 object whose texts are organized as "documents" (a \link{corpus}, \link{dfm}, or
-\link{tokens} object, a readtext object from the \pkg{readtext} package).
+\link{tokens}/\link{tokens_xptr} object.
 
 \code{nfeat()} returns an integer count of the number of features.  It is
 an alias for \code{ntype()} for a dfm. This function is only defined for \link{dfm}
