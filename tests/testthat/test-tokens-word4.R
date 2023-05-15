@@ -833,15 +833,12 @@ test_that("Weibo-style hashtags are preserved", {
 })
 
 test_that("emails address is preserved", {
-    # prevents test failing on Ubuntu 20.04 on GitHub Actions
-    #skip_if(
-    #    as.numeric(stringi::stri_info()$Unicode.version) > 10 &&
-    #    as.numeric(stringi::stri_info()$ICU.version) > 61.1
-    #)
-    txt <- c(d1 = "support-team@e-mail.quanteda.io K.Watanabe@qi1234.co.jp")
+    txt <- c(d1 = "support-team@e-mail.quanteda.io SupportTeam@quanteda.org",
+             d2 = "K.Watanabe@qi1234.co.jp K_Watanabe@qi1234.com")
     expect_identical(
         as.list(tokens(txt, what = "word")),
-        list(d1 = c("support-team@e-mail.quanteda.io", "K.Watanabe@qi1234.co.jp"))
+        list(d1 = c("support-team@e-mail.quanteda.io", "SupportTeam@quanteda.org"),
+             d2 = c("K.Watanabe@qi1234.co.jp", "K_Watanabe@qi1234.com"))
     )
 })
 
