@@ -834,11 +834,13 @@ test_that("Weibo-style hashtags are preserved", {
 
 test_that("emails address is preserved", {
     txt <- c(d1 = "support-team@e-mail.quanteda.io SupportTeam@quanteda.org",
-             d2 = "K.Watanabe@qi1234.co.jp K_Watanabe@qi1234.com")
+             d2 = "K.Watanabe@qi1234.co.jp K_Watanabe@qi1234.com",
+             d3 = "support+noreply@qi-japan.tokyo")
     expect_identical(
         as.list(tokens(txt, what = "word")),
         list(d1 = c("support-team@e-mail.quanteda.io", "SupportTeam@quanteda.org"),
-             d2 = c("K.Watanabe@qi1234.co.jp", "K_Watanabe@qi1234.com"))
+             d2 = c("K.Watanabe@qi1234.co.jp", "K_Watanabe@qi1234.com"),
+             d3 = "support+noreply@qi-japan.tokyo")
     )
 })
 
