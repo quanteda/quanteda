@@ -160,7 +160,7 @@ tokenize_word4 <- function(x, split_hyphens = FALSE, split_tags = FALSE, split_e
     
     ftp <- "s?ftp://[-+a-zA-Z0-9@#:.%~=_&/]+"
     http <- "(https?://)?(www.)?[-a-zA-Z0-9]+(\\.[-a-zA-Z0-9]+)+([/?#][-+a-zA-Z0-9@#:.%~=_&]+)*[/?#]?"
-    email <- "[A-Za-z0-9_]+@[A-Za-z][A-Za-z0-9_]+\\.[a-z]+"
+    email <- "[-+a-zA-Z0-9_.]+@[-a-zA-Z0-9]+(\\.[-a-zA-Z0-9]+)*\\.[a-z]+"
     regex <- c(email, ftp, http)
     if (!split_tags) {
         if (verbose) catm(" ...preserving social media tags (#, @)\n")
