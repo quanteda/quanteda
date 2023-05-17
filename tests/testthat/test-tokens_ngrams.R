@@ -53,7 +53,7 @@ test_that("test that ngrams produces the results from Guthrie 2006", {
 })
 
 test_that("test `tokens_ngrams` on characters", {
-    ngms <- quanteda:::tokens_ngrams.character(c('insurgents', 'killed', 'in', 'ongoing', 'fighting'))
+    ngms <- quanteda:::tokens_ngrams_character(c('insurgents', 'killed', 'in', 'ongoing', 'fighting'))
     charNgms <- char_ngrams(c('insurgents','killed', 'in', 'ongoing', 'fighting'))
     expect_equivalent(
         ngms,
@@ -65,10 +65,10 @@ test_that("test `tokens_ngrams` on characters", {
         c('insurgents_killed', 'killed_in', 'in_ongoing', 'ongoing_fighting')
     )
     
-    expect_warning(quanteda:::tokens_ngrams.character('insurgents killed', 'in', 'ongoing', 'fighting'), 
+    expect_warning(quanteda:::tokens_ngrams_character('insurgents killed', 'in', 'ongoing', 'fighting'), 
                  "whitespace detected: you may need to run tokens\\(\\) first")
     
-    expect_warning(quanteda:::tokens_ngrams.character(c('insurgents killed in ongoing fighting'), n = 1, skip = 1), 
+    expect_warning(quanteda:::tokens_ngrams_character(c('insurgents killed in ongoing fighting'), n = 1, skip = 1), 
                    "skip argument ignored for n = 1")
 })
 

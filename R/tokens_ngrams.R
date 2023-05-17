@@ -48,8 +48,7 @@ tokens_ngrams.default <- function(x, n = 2L, skip = 0L, concatenator = "_") {
 ## the grammatical rules of quanteda (inputs character, outputs tokens),
 ## but starts with "tokens_"
 #' @importFrom stats complete.cases
-tokens_ngrams.character <- function(x, n = 2L, skip = 0L, concatenator = "_") {
-
+tokens_ngrams_character <- function(x, n = 2L, skip = 0L, concatenator = "_") {
     # trap condition where a "text" is a single NA
     if (is.na(x[1]) && length(x) == 1) return(NULL)
     if (any(stringi::stri_detect_charclass(x, "\\p{Z}")) & concatenator != " ")
@@ -85,7 +84,7 @@ char_ngrams.default <- function(x, n = 2L, skip = 0L, concatenator = "_") {
 
 #' @export
 char_ngrams.character <- function(x, n = 2L, skip = 0L, concatenator = "_") {
-    as.character(tokens_ngrams(x, n, skip, concatenator))
+    as.character(tokens_ngrams_character(x, n, skip, concatenator))
 }
 
 
