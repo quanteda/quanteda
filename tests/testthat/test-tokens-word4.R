@@ -146,7 +146,7 @@ test_that("remove_url works as expected", {
              "www.r-project.org/about.html is a specific page without protocol",
              "https://www.google.com/search?q=quanteda+package is a google search",
              "ftp://user@host/foo/bar.txt is a FTP-hosted file",
-             "koheiw@quanteda.org is not an url")
+             "kohei.watanabe@quanteda.org is not an url")
     toks <- tokens(txt) %>% 
         tokens_remove(c("^https?:", "^ftp:", "^www"), valuetype = "regex")
     expect_equal(
@@ -157,7 +157,7 @@ test_that("remove_url works as expected", {
              text4 = c("is", "a", "specific", "page", "without", "protocol"),
              text5 = c("is", "a", "google", "search"),
              text6 = c("is", "a", "FTP-hosted", "file"),
-             text7 = c("koheiw@quanteda.org", "is", "not", "an", "url"))
+             text7 = c("kohei.watanabe@quanteda.org", "is", "not", "an", "url"))
     )
 })
 
@@ -865,16 +865,15 @@ test_that("Weibo-style hashtags are preserved", {
     )
 })
 
-test_that("emails address is preserved", {
-    # prevents test failing on Ubuntu 20.04 on GitHub Actions
-    skip_if(
-        as.numeric(stringi::stri_info()$Unicode.version) > 10 &&
-            as.numeric(stringi::stri_info()$ICU.version) > 61.1
-    )
-    txt <- c(d1 = "support@quanteda.io K.Watanabe@qi1234.co.jp")
+test_that("email addresses are preserved", {
+    txt <- c(d1 = "support-team@e-mail.quanteda.io SupportTeam@quanteda.org",
+             d2 = "K.Watanabe@qi1234.co.jp K_Watanabe@qi1234.com",
+             d3 = "support+noreply@qi-japan.tokyo")
     expect_identical(
         as.list(tokens(txt, what = "word")),
-        list(d1 = c("support@quanteda.io", "K.Watanabe@qi1234.co.jp"))
+        list(d1 = c("support-team@e-mail.quanteda.io", "SupportTeam@quanteda.org"),
+             d2 = c("K.Watanabe@qi1234.co.jp", "K_Watanabe@qi1234.com"),
+             d3 = "support+noreply@qi-japan.tokyo")
     )
 })
 
