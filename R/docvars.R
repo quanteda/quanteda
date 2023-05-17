@@ -254,7 +254,7 @@ docvars.dfm <- function(x, field = NULL) {
 
 #' @noRd
 #' @keywords internal
-docvars.kwic <- function(x) {
+docvars.kwic <- function(x, field = NULL) {
     select_docvars(attr(x, "docvars"), NULL)
 }
 
