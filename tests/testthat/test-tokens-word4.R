@@ -832,7 +832,7 @@ test_that("Weibo-style hashtags are preserved", {
     )
 })
 
-test_that("emails address is preserved", {
+test_that("email addresses are preserved", {
     txt <- c(d1 = "support-team@e-mail.quanteda.io SupportTeam@quanteda.org",
              d2 = "K.Watanabe@qi1234.co.jp K_Watanabe@qi1234.com",
              d3 = "support+noreply@qi-japan.tokyo")
