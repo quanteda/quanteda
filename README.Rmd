@@ -80,7 +80,7 @@ See the [quick start guide](https://quanteda.io/articles/pkgdown/quickstart.html
 
 ### Get Help
 
-*  Read out the documentation at https://quanteda.io.
+*  Read the documentation at https://quanteda.io.
 *  Submit a question on the [**quanteda** channel on StackOverflow](https://stackoverflow.com/questions/tagged/quanteda).
 *  See our [tutorial site](https://tutorials.quanteda.io/).
 

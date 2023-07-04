@@ -103,7 +103,7 @@ how to use **quanteda**.
 
 ### Get Help
 
-- Read out the documentation at <https://quanteda.io>.
+- Read the documentation at <https://quanteda.io>.
 - Submit a question on the [**quanteda** channel on
   StackOverflow](https://stackoverflow.com/questions/tagged/quanteda).
 - See our [tutorial site](https://tutorials.quanteda.io/).
