@@ -124,13 +124,13 @@ BEGIN_RCPP
 END_RCPP
 }
 // cpp_tokens_group
-TokensPtr cpp_tokens_group(TokensPtr xptr, IntegerVector groups_, const int thread);
+TokensPtr cpp_tokens_group(TokensPtr xptr, List groups_, const int thread);
 RcppExport SEXP _quanteda_cpp_tokens_group(SEXP xptrSEXP, SEXP groups_SEXP, SEXP threadSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< TokensPtr >::type xptr(xptrSEXP);
-    Rcpp::traits::input_parameter< IntegerVector >::type groups_(groups_SEXP);
+    Rcpp::traits::input_parameter< List >::type groups_(groups_SEXP);
     Rcpp::traits::input_parameter< const int >::type thread(threadSEXP);
     rcpp_result_gen = Rcpp::wrap(cpp_tokens_group(xptr, groups_, thread));
     return rcpp_result_gen;

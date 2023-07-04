@@ -24,6 +24,7 @@ language handling, and customisation options.
 
 ## Bug fixes and stability enhancements
 
+* `tokens_group()` works efficiently even when the number of documents and groups are very large.
 
 # quanteda 3.3.1
 
