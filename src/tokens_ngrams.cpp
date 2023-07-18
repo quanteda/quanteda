@@ -9,7 +9,7 @@ Text skipgram(const Text &tokens,
               MapNgrams &map_ngram,
               IdNgram &id_ngram) {
     
-    if (tokens.size() == 0) return {}; // return empty vector for empty text
+    if (tokens.empty()) return {}; // return empty vector for empty text
     
     // Pre-allocate memory
     int size_reserve = 0;

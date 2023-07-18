@@ -12,7 +12,7 @@ Text keep_token(Text tokens,
           const std::pair<int, int> &window,
           const std::pair<int, int> &pos){
     
-    if (tokens.size() == 0) return {}; // return empty vector for empty text
+    if (tokens.empty()) return {}; // return empty vector for empty text
     
     const unsigned int filler = UINT_MAX; // use upper limit as a filler
     
@@ -74,7 +74,7 @@ Text remove_token(Text tokens,
             const std::pair<int, int> &window,
             const std::pair<int, int> &pos){
 
-    if (tokens.size() == 0) return {}; // return empty vector for empty text
+    if (tokens.empty()) return {}; // return empty vector for empty text
     
     unsigned int filler = UINT_MAX; // use upper limit as a filler
     Text tokens_copy = tokens;

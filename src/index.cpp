@@ -10,7 +10,7 @@ Matches index(Text tokens,
                    const MultiMapNgrams &map_pats,
                    UintParam &N){
     
-    if(tokens.size() == 0) return {}; // return empty vector for empty text
+    if(tokens.empty()) return {}; // return empty vector for empty text
     
     Matches matches;
     matches.reserve(tokens.size());
@@ -100,7 +100,7 @@ DataFrame cpp_index(TokensPtr xptr,
     std::size_t j = 0;
     for (std::size_t h = 0; h < temp.size(); h++) {
         Matches matches = temp[h];
-        if (matches.size() == 0) continue;
+        if (matches.empty()) continue;
         Text tokens = texts[h];
         for (size_t i = 0; i < matches.size(); i++) {
             Match match = matches[i];

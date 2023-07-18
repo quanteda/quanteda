@@ -8,7 +8,7 @@ Text join_mark(Text tokens,
                MapNgrams &map_comps,
                IdNgram &id_comp){
     
-    if (tokens.size() == 0) return {}; // return empty vector for empty text
+    if (tokens.empty()) return {}; // return empty vector for empty text
     
     std::vector< std::vector<unsigned int> > tokens_multi(tokens.size()); 
     std::vector< bool > flags_match(tokens.size(), false); // flag matched tokens
@@ -51,7 +51,7 @@ Text join_mark(Text tokens,
     Text tokens_flat;
     tokens_flat.reserve(match);
     for (auto &tokens_sub: tokens_multi) {
-        if (tokens_sub.size() > 0) {
+        if (!tokens_sub.empty()) {
             tokens_flat.insert(tokens_flat.end(), tokens_sub.begin(), tokens_sub.begin() + 1);
         }
     }
