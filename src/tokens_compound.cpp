@@ -20,7 +20,7 @@ Text join_comp(Text tokens,
                IdNgram &id_comp,
                const std::pair<int, int> &window){
     
-    if (tokens.size() == 0) return {}; // return empty vector for empty text
+    if (tokens.empty()) return {}; // return empty vector for empty text
     
     std::vector< bool > flags_link(tokens.size(), false); // flag tokens to join
     std::size_t match = 0;
@@ -56,12 +56,12 @@ Text join_comp(Text tokens,
         if (flags_link[i]) {
                 tokens_seq.push_back(tokens[i]);
         } else {
-            if (tokens_seq.size() > 0) {
+            if (tokens_seq.empty()) {
+                tokens_flat.push_back(tokens[i]);
+            } else {
                 tokens_seq.push_back(tokens[i]);
                 tokens_flat.push_back(ngram_id(tokens_seq, map_comps, id_comp)); // assign ID to ngram
                 tokens_seq.clear();
-            } else {
-                tokens_flat.push_back(tokens[i]);
             }
         }
     }
@@ -76,7 +76,7 @@ Text match_comp(Text tokens,
                 IdNgram &id_comp,
                 const std::pair<int, int> &window){
     
-    if (tokens.size() == 0) return {}; // return empty vector for empty text
+    if (tokens.empty()) return {}; // return empty vector for empty text
     
     std::vector< std::vector<unsigned int> > tokens_multi(tokens.size()); 
     std::vector< bool > flags_match(tokens.size(), false); // flag matched tokens
@@ -115,7 +115,7 @@ Text match_comp(Text tokens,
     Text tokens_flat;
     tokens_flat.reserve(match);
     for (auto &tokens_sub: tokens_multi) {
-        if (tokens_sub.size() > 0) {
+        if (!tokens_sub.empty()) {
             tokens_flat.insert(tokens_flat.end(), tokens_sub.begin(), tokens_sub.begin() + 1);
         }
     }
