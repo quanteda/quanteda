@@ -15,7 +15,7 @@
 #' @export
 #' @rdname dfm
 #' @keywords dfm
-#' @seealso  [dfm_select()], [dfm-class]
+#' @seealso  [as.dfm()], [dfm_select()], [dfm-class]
 #' @examples
 #' ## for a corpus
 #' toks <- data_corpus_inaugural %>%
