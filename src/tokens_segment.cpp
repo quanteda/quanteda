@@ -107,7 +107,7 @@ TokensPtr cpp_tokens_segment(TokensPtr xptr,
     
     Texts texts = xptr->texts;
     Types types = xptr->types;
-    UintParam N = 0;
+    UintParam N(0);
     SetNgrams set_patterns;
     std::vector<std::size_t> spans = register_ngrams(patterns_, set_patterns);
     

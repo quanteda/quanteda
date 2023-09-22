@@ -4,11 +4,11 @@ using namespace quanteda;
 
 typedef std::vector<std::string> StringText;
 typedef std::vector<StringText> StringTexts;
-#if QUANTEDA_USE_TBB
-typedef tbb::concurrent_unordered_map<std::string, UintParam> MapTypes;
-#else
+// #if QUANTEDA_USE_TBB
+// typedef tbb::concurrent_unordered_map<std::string, UintParam> MapTypes;
+// #else
 typedef std::unordered_map<std::string, unsigned int> MapTypes;
-#endif
+// #endif
 
 Text serialize(const StringText &text, 
                MapTypes &map, 
@@ -18,7 +18,7 @@ Text serialize(const StringText &text,
     Text temp;
     temp.reserve(I);
     for (size_t i = 0; i < I; i++) {
-        if (text[i] == "") {
+        if (text[i].empty()) {
             if (padding) {
                 temp.push_back(0);
             } else {
@@ -29,11 +29,11 @@ Text serialize(const StringText &text,
             if (it1 != map.end()) {
                 temp.push_back(it1->second);
             } else {
-#if QUANTEDA_USE_TBB
-                auto it2 = map.insert(std::pair<std::string, UintParam>(text[i], id.fetch_and_increment()));
-#else
-                auto it2 = map.insert(std::pair<std::string, UintParam>(text[i], id++));
-#endif
+//#if QUANTEDA_USE_TBB
+                auto it2 = map.insert(std::pair<std::string, unsigned int>(text[i], id.fetch_add(1)));
+// #else
+//                 auto it2 = map.insert(std::pair<std::string, unsigned int>(text[i], id++));
+// #endif
                 temp.push_back(it2.first->second);
             }
         }
@@ -51,7 +51,7 @@ TokensPtr cpp_serialize(List texts_,
     MapTypes map;
     
     //dev::start_timer("Serialize", timer);
-    UintParam id = 1;
+    UintParam id(1);
     std::size_t H = texts.size();
     Texts temp(H);
 #if QUANTEDA_USE_TBB
@@ -91,12 +91,12 @@ TokensPtr cpp_serialize_add(List texts_,
     MapTypes map;
     for (std::size_t g = 0; g < types.size(); g++) {
         std::string type = types[g];
-        map.insert(std::pair<std::string, UintParam>(types[g], g + 1));
+        map.insert(std::pair<std::string, unsigned int>(types[g], g + 1));
     }
     //dev::stop_timer("Register", timer);
     
     //dev::start_timer("Serialize", timer);
-    UintParam id = types.size() + 1;
+    UintParam id(types.size() + 1);
     std::size_t H = texts.size();
     Texts temp(H);
 #if QUANTEDA_USE_TBB

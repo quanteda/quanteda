@@ -144,7 +144,7 @@ TokensPtr cpp_tokens_lookup(TokensPtr xptr,
         throw std::range_error("Invalid words and keys");
     
     std::vector<unsigned int> keys = Rcpp::as< std::vector<unsigned int> >(keys_);
-    unsigned int id_max(0);
+    unsigned int id_max = 0;
     if (nomatch == 2) {
         types.insert(types.end(), xptr->types.begin(), xptr->types.end());
         if (keys_.size() > 0)

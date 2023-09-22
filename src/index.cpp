@@ -75,7 +75,7 @@ DataFrame cpp_index(TokensPtr xptr,
     std::vector<Matches> temp(texts.size());
     
     //dev::start_timer("Search keywords", timer);
-    UintParam N = 0;
+    UintParam N(0);
     std::size_t H = texts.size();
 #if QUANTEDA_USE_TBB
     tbb::task_arena arena(thread);

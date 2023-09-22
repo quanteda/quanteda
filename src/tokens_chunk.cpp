@@ -38,7 +38,7 @@ TokensPtr cpp_tokens_chunk(TokensPtr xptr,
     
     Texts texts = xptr->texts;
     Types types = xptr->types;
-    UintParam N = 0;
+    UintParam N(0);
     // dev::Timer timer;
     std::size_t H = texts.size();
     std::vector<Texts> temp(texts.size());
