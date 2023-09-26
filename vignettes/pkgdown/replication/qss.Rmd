@@ -24,7 +24,7 @@ In this vignette we show how the **quanteda** package can be used to replicate t
 To get the textual data, you need to install and load the **qss** package first that comes with the book. 
 
 ```{r eval = FALSE}
-devtools::install_github("kosukeimai/qss-package", build_vignettes = TRUE)
+remotes::install_github("kosukeimai/qss-package", build_vignettes = TRUE)
 ```
 
 ## Section 5.1.1: The Disputed Authorship of ‘The Federalist Papers’

@@ -19,12 +19,12 @@
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]--><!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=UA-144616-24"></script><script>
+<![endif]--><!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-0F398Z98L1"></script><script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
-  gtag('config', 'UA-144616-24');
+  gtag('config', 'G-0F398Z98L1');
 </script>
 </head>
 <body data-spy="scroll" data-target="#toc">
@@ -42,7 +42,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">4.0.0</span>
       </span>
     </div>
 
@@ -83,6 +83,12 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
+      <a href="../../../articles/pkgdown/tokens_xptr.html">External pointer tokens objects</a>
+    </li>
+    <li>
+      <a href="../../../articles/pkgdown/benchmarks_xptr.html">Performance benchmarks for v4</a>
+    </li>
+    <li>
       <a href="../../../articles/pkgdown/comparison.html">Feature comparison</a>
     </li>
     <li>
@@ -216,10 +222,9 @@ website</a>.</p>
 <strong>readtext</strong> package loads the text files into a
 <code>data.frame</code> object. We can access the text from a
 <code>data.frame</code> object (and also, as we will see, a
-<code>corpus</code> class object), using the <code><a href="../../../reference/texts.html">texts()</a></code> or the
-<code><a href="https://rdrr.io/r/utils/View.html" class="external-link">View()</a></code> method. Here we will display just the first 75
-characters, to prevent a massive dump of the text of the entire novel.
-We do this using the <code><a href="https://rdrr.io/pkg/stringi/man/stri_sub.html" class="external-link">stri_sub()</a></code> function from the
+<code>corpus</code> class object). Here we will display just the first
+75 characters, to prevent a massive dump of the text of the entire
+novel. We do this using the <code><a href="https://rdrr.io/pkg/stringi/man/stri_sub.html" class="external-link">stri_sub()</a></code> function from the
 <strong>stringi</strong> package, which shows the 1st through the 75th
 characters of the texts of our new object
 <code>data_char_mobydick</code>. Because we have not assigned the return
@@ -808,7 +813,7 @@ used in section 6.5, can be calculated for each document of the
 <pre><code><span><span class="co">##                       document       TTR</span></span>
 <span><span class="co">## 1         CHAPTER 1. Loomings. 0.3893443</span></span>
 <span><span class="co">## 2   CHAPTER 2. The Carpet-Bag. 0.4382889</span></span>
-<span><span class="co">## 3  CHAPTER 3. The Spouter-Inn. 0.2908181</span></span>
+<span><span class="co">## 3  CHAPTER 3. The Spouter-Inn. 0.2900829</span></span>
 <span><span class="co">## 4  CHAPTER 4. The Counterpane. 0.4038929</span></span>
 <span><span class="co">## 5        CHAPTER 5. Breakfast. 0.5163488</span></span>
 <span><span class="co">## 6       CHAPTER 6. The Street. 0.5390335</span></span>
@@ -873,7 +878,7 @@ wheel here, since <code><a href="../../../reference/kwic.html">kwic()</a></code>
 <p>Let’s create a corpus containing <em>Moby Dick</em> but also Jane
 Austen’s <em>Sense and Sensibility</em>.</p>
 <div class="sourceCode" id="cb119"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">data_char_senseandsensibility</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/texts.html">texts</a></span><span class="op">(</span><span class="fu">readtext</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/readtext/man/readtext.html" class="external-link">readtext</a></span><span class="op">(</span><span class="st">"http://www.gutenberg.org/files/161/161-0.txt"</span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">data_char_senseandsensibility</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="fu">readtext</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/readtext/man/readtext.html" class="external-link">readtext</a></span><span class="op">(</span><span class="st">"http://www.gutenberg.org/files/161/161-0.txt"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">data_char_senseandsensibility</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"Sense and Sensibility"</span></span>
 <span></span>
 <span><span class="va">litcorpus</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/corpus.html">corpus</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">data_char_mobydick</span>, <span class="va">data_char_senseandsensibility</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
@@ -992,30 +997,30 @@ Latent Dirichlet Allocation.</p>
 <span></span>
 <span><span class="co"># get top five terms per topic</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/topicmodels/man/get.html" class="external-link">get_terms</a></span><span class="op">(</span><span class="va">LDA_fit_20</span>, <span class="fl">5</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">##      Topic 1      Topic 2     Topic 3       Topic 4        Topic 5       </span></span>
-<span><span class="co">## [1,] "welfare"    "failed"    "got"         "system"       "society"     </span></span>
-<span><span class="co">## [2,] "investment" "strategy"  "instead"     "stimulus"     "enterprising"</span></span>
-<span><span class="co">## [3,] "future"     "needed"    "citizenship" "government's" "sense"       </span></span>
-<span><span class="co">## [4,] "support"    "ministers" "thinking"    "welfare"      "equal"       </span></span>
-<span><span class="co">## [5,] "back"       "system"    "solidarity"  "policies"     "nation"      </span></span>
-<span><span class="co">##      Topic 6       Topic 7     Topic 8    Topic 9  Topic 10        Topic 11 </span></span>
-<span><span class="co">## [1,] "kind"        "day"       "welfare"  "fianna" "million"       "irish"  </span></span>
-<span><span class="co">## [2,] "carbon"      "bank"      "fianna"   "fáil"   "welfare"       "face"   </span></span>
-<span><span class="co">## [3,] "imagination" "back"      "taxation" "side"   "measures"      "today"  </span></span>
-<span><span class="co">## [4,] "change"      "taoiseach" "fáil"     "level"  "scheme"        "welfare"</span></span>
-<span><span class="co">## [5,] "levy"        "gael"      "worst"    "third"  "international" "benefit"</span></span>
-<span><span class="co">##      Topic 12   Topic 13   Topic 14        Topic 15      Topic 16   </span></span>
-<span><span class="co">## [1,] "million"  "fianna"   "investment"    "million"     "taoiseach"</span></span>
-<span><span class="co">## [2,] "measures" "fáil"     "review"        "support"     "fine"     </span></span>
-<span><span class="co">## [3,] "recent"   "national" "welfare"       "development" "gael"     </span></span>
-<span><span class="co">## [4,] "deficit"  "irish"    "spending"      "employment"  "stimulus" </span></span>
-<span><span class="co">## [5,] "spending" "support"  "international" "enterprise"  "may"      </span></span>
-<span><span class="co">##      Topic 17    Topic 18  Topic 19      Topic 20   </span></span>
-<span><span class="co">## [1,] "taoiseach" "child"   "alternative" "care"     </span></span>
-<span><span class="co">## [2,] "employees" "benefit" "citizenship" "welfare"  </span></span>
-<span><span class="co">## [3,] "rate"      "day"     "adjustment"  "per"      </span></span>
-<span><span class="co">## [4,] "referred"  "bank"    "matter"      "allowance"</span></span>
-<span><span class="co">## [5,] "debate"    "banks"   "wealth"      "hit"</span></span></code></pre>
+<pre><code><span><span class="co">##      Topic 1   Topic 2     Topic 3     Topic 4      Topic 5      Topic 6  </span></span>
+<span><span class="co">## [1,] "system"  "welfare"   "care"      "million"    "adjustment" "face"   </span></span>
+<span><span class="co">## [2,] "welfare" "reduced"   "welfare"   "spending"   "servants"   "society"</span></span>
+<span><span class="co">## [3,] "fáil"    "measures"  "per"       "measures"   "strategy"   "child"  </span></span>
+<span><span class="co">## [4,] "fianna"  "review"    "allowance" "scheme"     "ever"       "benefit"</span></span>
+<span><span class="co">## [5,] "worst"   "reduction" "hit"       "investment" "benefit"    "just"   </span></span>
+<span><span class="co">##      Topic 7      Topic 8   Topic 9     Topic 10       Topic 11  Topic 12   </span></span>
+<span><span class="co">## [1,] "adjustment" "welfare" "taoiseach" "society"      "child"   "failed"   </span></span>
+<span><span class="co">## [2,] "welfare"    "back"    "employees" "enterprising" "benefit" "strategy" </span></span>
+<span><span class="co">## [3,] "support"    "high"    "rate"      "sense"        "day"     "needed"   </span></span>
+<span><span class="co">## [4,] "system"     "rate"    "referred"  "equal"        "bank"    "ministers"</span></span>
+<span><span class="co">## [5,] "future"     "cutting" "debate"    "nation"       "banks"   "system"   </span></span>
+<span><span class="co">##      Topic 13  Topic 14     Topic 15   Topic 16    Topic 17 Topic 18     </span></span>
+<span><span class="co">## [1,] "levy"    "investment" "fianna"   "taoiseach" "fianna" "kind"       </span></span>
+<span><span class="co">## [2,] "million" "case"       "fáil"     "fine"      "fáil"   "imagination"</span></span>
+<span><span class="co">## [3,] "carbon"  "reduce"     "national" "gael"      "side"   "alternative"</span></span>
+<span><span class="co">## [4,] "change"  "position"   "irish"    "may"       "level"  "moral"      </span></span>
+<span><span class="co">## [5,] "welfare" "spending"   "support"  "irish"     "third"  "citizenship"</span></span>
+<span><span class="co">##      Topic 19      Topic 20  </span></span>
+<span><span class="co">## [1,] "million"     "welfare" </span></span>
+<span><span class="co">## [2,] "support"     "taxes"   </span></span>
+<span><span class="co">## [3,] "investment"  "taxation"</span></span>
+<span><span class="co">## [4,] "development" "food"    </span></span>
+<span><span class="co">## [5,] "welfare"     "hope"</span></span></code></pre>
 </div>
   </div>
 
