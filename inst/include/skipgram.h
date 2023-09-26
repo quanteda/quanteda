@@ -9,11 +9,7 @@ inline unsigned int ngram_id(const Ngram &ngram,
     
     auto it1 = map_ngram.find(ngram);
     if (it1 != map_ngram.end()) return it1->second;
-//#if QUANTEDA_USE_TBB    
-    auto it2 = map_ngram.insert(std::pair<Ngram, unsigned int>(ngram, id_ngram.fetch_add(1)));
-// #else
-//     auto it2 = map_ngram.insert(std::pair<Ngram, unsigned int>(ngram, id_ngram++));
-// #endif
+    auto it2 = map_ngram.insert(std::pair<Ngram, unsigned int>(ngram, id_ngram.fetch_add(1, std::memory_order_relaxed)));
     return it2.first->second;
     
 }

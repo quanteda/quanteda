@@ -4,11 +4,11 @@ using namespace quanteda;
 
 typedef std::vector<std::string> StringText;
 typedef std::vector<StringText> StringTexts;
-// #if QUANTEDA_USE_TBB
-// typedef tbb::concurrent_unordered_map<std::string, UintParam> MapTypes;
-// #else
+#if QUANTEDA_USE_TBB
+typedef tbb::concurrent_unordered_map<std::string, unsigned int> MapTypes;
+#else
 typedef std::unordered_map<std::string, unsigned int> MapTypes;
-// #endif
+#endif
 
 Text serialize(const StringText &text, 
                MapTypes &map, 
@@ -29,11 +29,7 @@ Text serialize(const StringText &text,
             if (it1 != map.end()) {
                 temp.push_back(it1->second);
             } else {
-//#if QUANTEDA_USE_TBB
-                auto it2 = map.insert(std::pair<std::string, unsigned int>(text[i], id.fetch_add(1)));
-// #else
-//                 auto it2 = map.insert(std::pair<std::string, unsigned int>(text[i], id++));
-// #endif
+                auto it2 = map.insert(std::pair<std::string, unsigned int>(text[i], id.fetch_add(1, std::memory_order_relaxed)));
                 temp.push_back(it2.first->second);
             }
         }

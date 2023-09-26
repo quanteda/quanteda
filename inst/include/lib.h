@@ -35,22 +35,18 @@ namespace quanteda{
     // typedef ListOf<IntegerVector> Tokens;
     // typedef std::vector<unsigned int> Text;
     // typedef std::vector<Text> Texts;
-
-#if QUANTEDA_USE_TBB
+    
     typedef std::atomic<int> IntParam;
     typedef std::atomic<unsigned int> UintParam;
     typedef std::atomic<long> LongParam;
     typedef std::atomic<double> DoubleParam;
+    
+#if QUANTEDA_USE_TBB
     typedef tbb::concurrent_vector<int> IntParams;
     typedef tbb::concurrent_vector<long> LongParams;
     typedef tbb::concurrent_vector<double> DoubleParams;
     typedef tbb::concurrent_vector<std::string> StringParams;
-    //typedef tbb::spin_mutex Mutex;
 #else
-    typedef int IntParam;
-    typedef unsigned int UintParam;
-    typedef long LongParam;
-    typedef double DoubleParam;
     typedef std::vector<int> IntParams;
     typedef std::vector<long> LongParams;
     typedef std::vector<double> DoubleParams;
