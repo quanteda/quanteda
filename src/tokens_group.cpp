@@ -30,7 +30,7 @@ TokensPtr cpp_tokens_group(TokensPtr xptr,
     Texts temp(G);
     for (std::size_t g = 0; g < G; g++) {
         std::size_t size = 0;
-        for (int h: groups[g]) {
+        for (unsigned int h: groups[g]) {
             if (h < 1 || H < h)
                 throw std::range_error("Invalid groups");
             size += texts[h - 1].size();
