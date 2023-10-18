@@ -208,7 +208,7 @@ test_that("c() works with tokens", {
                       d2 = "Here is the second sample document."))
     toks2 <- tokens(c(d3 = "And the third document."))
     toks3 <- tokens(c(d4 = "This is sample document 4."))
-    toks4 <- tokens(c(d1 = "This is sample document five!"))
+    toks4 <- tokens(c(d5 = "This is sample document five!"))
     
     expect_error(
         c(toks1, list()),
@@ -226,12 +226,12 @@ test_that("c() works with tokens", {
     )
 
     expect_equal(
-        c(toks1, toks2, toks3),
-        toks1 + toks2 + toks3
+        c(toks1, toks2, toks3, toks4),
+        toks1 + toks2 + toks3 + toks4
     )
 
     expect_error(
-        c(toks1, toks4),
+        c(toks1, toks1),
         "Cannot combine tokens with duplicated document names"
     )
 

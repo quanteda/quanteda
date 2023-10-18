@@ -243,8 +243,9 @@ combine_tokens <- function(...) {
     if (length(x) == 1) 
         return(x[[1]])
     result <- cpp_tokens_combine(x[[1]], x[[2]], get_threads())
-    if (length(x) > 2)
-        result <- combine_tokens(result, x[[seq(3, length(x))]])
+    if (length(x) == 2) return(result)
+    for (i in seq(3, length(x)))
+        result <- combine_tokens(result, x[[i]])
     return(result)
 }
 
@@ -253,7 +254,8 @@ combine_docvars <- function(...) {
     if (length(x) == 1) 
         return(x[[1]])
     result <- rbind_fill(x[[1]], x[[2]])
-    if (length(x) > 2)
-        result <- combine_docvars(result, x[[seq(3, length(x))]])
+    if (length(x) == 2) return(result)
+    for (i in seq(3, length(x)))
+        result <- combine_docvars(result, x[[i]])
     return(result)
 }
