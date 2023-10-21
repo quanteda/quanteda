@@ -206,7 +206,7 @@ kwic(data_corpus_inaugural, pattern = "communist*")
 `phrase()` का उपयोग करके हम बहु-शब्द इक्स्प्रेशन भी देख सकते हैं।
 
 ```{r}
-kwic(data_corpus_inaugural, pattern = phrase("United States")) %>%
+kwic(data_corpus_inaugural, pattern = phrase("United States")) |>
     head() # show context of the first six occurrences of "United States"
 ```
 
@@ -263,7 +263,7 @@ tokens(c("Kurt Vongeut said; only assholes use semi-colons.",
 `tokens_compound()` के साथ, हम कई शब्दों से बने हुए इक्स्प्रेशन या वाक्य को सिंगल फ़ीचर के रूप में रख सकते हैं बाद के विश्लेषण के लिए।
 
 ```{r}
-tokens("New York City is located in the United States.") %>%
+tokens("New York City is located in the United States.") |>
     tokens_compound(pattern = phrase(c("New York City", "United States")))
 ```
 
@@ -324,10 +324,10 @@ textplot_wordcloud(dfmat_uk, min_count = 6, random_order = FALSE,
 अक्सर, हम सिर्फ दस्तावेज़ फ़ाइलों की बौंडरीस के बजाय यह विश्लेषण करने में रुचि रखते हैं कि टेक्स्ट्स सब्सटांटिव कारकों - जो दस्तावेज़ चर में एन्कोड किया हुआ सकता है - के अनुसार कैसे अलग हो सकता है। dfm बनाते समय हम जिन दस्तावेज़ को समूह कर सकते है जो दस्तावेज़ चर के लिए समान मूल्य साझा करते हैं:
     
 ```{r}
-dfmat_pres <- tail(data_corpus_inaugural, 20) %>%
-  tokens(remove_punct = TRUE) %>%
-  tokens_remove(stopwords("en")) %>%
-  tokens_group(groups = Party) %>%
+dfmat_pres <- tail(data_corpus_inaugural, 20) |>
+  tokens(remove_punct = TRUE) |>
+  tokens_remove(stopwords("en")) |>
+  tokens_group(groups = Party) |>
   dfm()
 ```
 

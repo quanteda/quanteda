@@ -5,10 +5,10 @@ knitr::opts_chunk$set(
 )
 
 ## ---- eval=FALSE---------------------------------------------------------
-#  mydfm <- texts(mycorpus, group = "party") %>%
-#      char_tolower() %>%
-#      tokens() %>%
-#      tokens_wordstem() %>%
-#      tokens_remove(stopwords("english")) %>%
+#  mydfm <- texts(mycorpus, group = "party") |>
+#      char_tolower() |>
+#      tokens() |>
+#      tokens_wordstem() |>
+#      tokens_remove(stopwords("english")) |>
 #      dfm()
 

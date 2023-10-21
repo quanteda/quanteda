@@ -305,9 +305,9 @@ textplot_wordcloud(dfmat_uk, min_count = 6, random_order = FALSE,
 **quanteda**では，dfmを作成する際に，文書変数の値によって文書をグループ化するすることができる．
 
 ```{r}
-dfmat_ire <- tokens(data_corpus_irishbudget2010, remove_punct = TRUE) %>%
-    tokens_remove(stopwords("en")) %>%
-    tokens_group(groups = party) %>%
+dfmat_ire <- tokens(data_corpus_irishbudget2010, remove_punct = TRUE) |>
+    tokens_remove(stopwords("en")) |>
+    tokens_group(groups = party) |>
     dfm()
 ```
 

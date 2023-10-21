@@ -56,7 +56,7 @@ for (year in 1947:2017) {
 
 # ファイルを結合して保存
 file_all <- list.files(folder_download, full = TRUE, pattern = ".rds")
-speech <- lapply(as.list(file_all), readRDS) %>% bind_rows()
+speech <- lapply(as.list(file_all), readRDS) |> bind_rows()
 saveRDS(speech, file = paste0(folder_download, "committee_speeches.rds"))
 ```
 
@@ -83,10 +83,10 @@ range(docvars(full_corp, "date"))
 full_corp <- corpus_subset(full_corp, speaker != "")
 
 ## capacity変数の作成
-capacity <- full_corp %>%
-  str_sub(1, 20) %>%
-  str_replace_all("\\s+.+|\n", "") %>% # 冒頭の名前部分の取り出し
-  str_replace( "^.+?(参事|政府特別補佐人|内閣官房|会計検査院|最高裁判所長官代理者|主査|議員|副?大臣|副?議長|委員|参考人|分科員|公述人|君(（.+）)?$)", "\\1") %>% # 冒頭の○から，名前部分までを消去
+capacity <- full_corp |>
+  str_sub(1, 20) |>
+  str_replace_all("\\s+.+|\n", "") |> # 冒頭の名前部分の取り出し
+  str_replace( "^.+?(参事|政府特別補佐人|内閣官房|会計検査院|最高裁判所長官代理者|主査|議員|副?大臣|副?議長|委員|参考人|分科員|公述人|君(（.+）)?$)", "\\1") |> # 冒頭の○から，名前部分までを消去
   str_replace("（.+）", "")
 capacity <- str_replace(capacity, "^○.+", "Other") # マイナーな役職名は一括して"Other"に
 knitr::kable(as.data.frame(table(capacity)))
@@ -97,7 +97,7 @@ docvars(full_corp, "capacity") <- capacity
 ## 1991から2010年までの期間の議事録を選択 {#select-speeches-1991-2010}
 
 ```{r}
-docvars(full_corp, "year") <- docvars(full_corp, "date") %>% year() %>% as.numeric()
+docvars(full_corp, "year") <- docvars(full_corp, "date") |> year() |> as.numeric()
 corp <- corpus_subset(full_corp, 1991 <= year & year <= 2010)
 
 ndoc(corp)
@@ -124,17 +124,17 @@ min_count <- 10
 
 # 漢字
 library("quanteda.textstats")
-kanji_col <- tokens_select(toks, "^[一-龠]+$", valuetype = "regex", padding = TRUE) %>% 
+kanji_col <- tokens_select(toks, "^[一-龠]+$", valuetype = "regex", padding = TRUE) |> 
              textstat_collocations(min_count = min_count)
 toks <- tokens_compound(toks, kanji_col[kanji_col$z > 3,], concatenator = "")
 
 # カタカナ
-kana_col <- tokens_select(toks, "^[ァ-ヶー]+$", valuetype = "regex", padding = TRUE) %>% 
+kana_col <- tokens_select(toks, "^[ァ-ヶー]+$", valuetype = "regex", padding = TRUE) |> 
             textstat_collocations(min_count = min_count)
 toks <- tokens_compound(toks, kana_col[kana_col$z > 3,], concatenator = "")
 
 # 漢字，カタカナおよび数字
-any_col <- tokens_select(toks, "^[０-９ァ-ヶー一-龠]+$", valuetype = "regex", padding = TRUE) %>% 
+any_col <- tokens_select(toks, "^[０-９ァ-ヶー一-龠]+$", valuetype = "regex", padding = TRUE) |> 
            textstat_collocations(min_count = min_count)
 toks <- tokens_compound(toks, any_col[any_col$z > 3,], concatenator = "")
 ```
@@ -144,8 +144,8 @@ toks <- tokens_compound(toks, any_col[any_col$z > 3,], concatenator = "")
 `dfm()`によって文書行列を作成した後でも，`dfm_*()`と命名された関数を用いると分析に必要な文書の特徴を自由に選択できる．ここでは，平仮名のみもしくは一語のみから構成されたトークンを`dfm_remove()`によって，頻度が極端に低い語もしくは高い語を`dfm_trim()`によって削除している．
 
 ```{r}
-speech_dfm <- dfm(toks, remove = "") %>% 
-    dfm_remove("^[ぁ-ん]+$", valuetype = "regex", min_nchar = 2) %>% 
+speech_dfm <- dfm(toks, remove = "") |> 
+    dfm_remove("^[ぁ-ん]+$", valuetype = "regex", min_nchar = 2) |> 
     dfm_trim(min_termfreq = 0.50, termfreq_type = "quantile", max_termfreq = 0.99)
 ```
 
@@ -157,14 +157,14 @@ speech_dfm <- dfm(toks, remove = "") %>%
 
 ```{r}
 key <- textstat_keyness(speech_dfm, docvars(speech_dfm, "year") >= 2001)
-head(key, 20) %>% knitr::kable()
+head(key, 20) |> knitr::kable()
 ```
 
 上の表では，委員会出席者の名前が多く含まれるので，それらを取り除くと議論の主題が明確になる．
 
 ```{r}
 key <- key[!str_detect(key$feature, regex("委員|大臣")),]
-head(key, 20) %>% knitr::kable()
+head(key, 20) |> knitr::kable()
 ```
 
 
@@ -175,7 +175,7 @@ head(key, 20) %>% knitr::kable()
 ```{r}
 library("quanteda.textplots")
 feat <- head(key$feature, 50)
-speech_fcm <- dfm_select(speech_dfm, feat) %>% fcm()
+speech_fcm <- dfm_select(speech_dfm, feat) |> fcm()
 size <- sqrt(rowSums(speech_fcm))
 textplot_network(speech_fcm, min_freq = 0.85, edge_alpha = 0.9, 
                  vertex_size = size / max(size) * 3,
@@ -189,6 +189,6 @@ textplot_network(speech_fcm, min_freq = 0.85, edge_alpha = 0.9,
 ```{r, cache=TRUE}
 set.seed(100)
 lda <- LDA(convert(speech_dfm, to = "topicmodels"), k = 10)
-get_terms(lda, 10) %>% knitr::kable()
-get_topics(lda) %>% table() %>% barplot(xlab = "Topic", ylab = "Frequency") 
+get_terms(lda, 10) |> knitr::kable()
+get_topics(lda) |> table() |> barplot(xlab = "Topic", ylab = "Frequency") 
 ```

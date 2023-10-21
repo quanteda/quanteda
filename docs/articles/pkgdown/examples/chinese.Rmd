@@ -39,7 +39,7 @@ ch_stop <- stopwords("zh", source = "misc")
 
 # tokenize
 ch_toks <- 
-    tokens(corp, remove_punct = TRUE) %>%
+    tokens(corp, remove_punct = TRUE) |>
     tokens_remove(ch_stop)
 
 # construct a dfm
@@ -69,7 +69,7 @@ textplot_wordcloud(ch_dfm, min_count = 500, random_order = FALSE,
 # fcm within the window size of 5
 ch17_corp <- corpus_subset(corp, Year == "2017")
 ch17_toks <- 
-    tokens(ch17_corp, remove_punct = TRUE) %>% 
+    tokens(ch17_corp, remove_punct = TRUE) |> 
     tokens_remove(ch_stop)
 ch_fcm <- fcm(ch17_toks, context = "window")  
 topfeatures(ch_fcm["改革", ])

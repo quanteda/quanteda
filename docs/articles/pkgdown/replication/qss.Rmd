@@ -53,8 +53,8 @@ docvars(corpus_raw, "author")[c(10, 14, 37:48, 58)] <- "madison"
 
 ```{r}
 # inspect Paper No. 10 (output suppressed)
-texts(corpus_raw)[10] %>% 
-    stringi::stri_sub(1, 240) %>% 
+texts(corpus_raw)[10] |> 
+    stringi::stri_sub(1, 240) |> 
     cat()
 ```
 
@@ -206,8 +206,8 @@ mean(hm_classify[author_data_known$author == "hamilton"] > 0)
 mean(hm_classify[author_data_known$author == "madison"] < 0)
 
 disputed <- c(49, 50:57, 62, 63) # 11 essays with disputed authorship
-tf_disputed <- tfm %>% 
-    dfm_subset(is.na(author)) %>% 
+tf_disputed <- tfm |> 
+    dfm_subset(is.na(author)) |> 
     convert(to = "data.frame")
 
 author_data$prediction <- predict(hm_fit, newdata = author_data)

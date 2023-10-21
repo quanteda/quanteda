@@ -28,7 +28,7 @@ dev.off()
 
 choose_palette()
 
-pres_corp <- data_corpus_inaugural %>% corpus_subset(Year > 1960)
+pres_corp <- data_corpus_inaugural |> corpus_subset(Year > 1960)
 pres_dfm <- dfm(pres_corp, remove = stopwords("english"),
                 remove_punct = TRUE)
 
@@ -55,7 +55,7 @@ textplot_keyness(pres_key, show_reference = FALSE, color = quanteda_palette(1))
 
 # network
 pres_fcm <- fcm(pres_dfm)
-fcm_select(pres_fcm, names(topfeatures(pres_fcm, 50))) %>% 
+fcm_select(pres_fcm, names(topfeatures(pres_fcm, 50))) |> 
 textplot_network(edge_color =quanteda_palette(1), min_freq = 0.8)
 
 # wordcloud

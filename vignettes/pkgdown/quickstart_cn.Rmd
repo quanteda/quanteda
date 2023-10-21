@@ -262,9 +262,9 @@ dfmat_inaug_post1990[, 1:5]
 ```{r}
 # 构建dfm, 去除停用词以及提取词干
 
-dfmat_inaug_post1990_stem <- tokens(corp_inaug_post1990, remove_punct = TRUE) %>%
-  tokens_remove(stopwords("english")) %>%
-  tokens_wordstem("en") %>%
+dfmat_inaug_post1990_stem <- tokens(corp_inaug_post1990, remove_punct = TRUE) |>
+  tokens_remove(stopwords("english")) |>
+  tokens_wordstem("en") |>
   dfm()
 dfmat_inaug_post1990_stem[, 1:5]
 ```
@@ -282,8 +282,8 @@ head(stopwords("ar", source = "misc"), 10)
 可以在RStudio 的Enviroment pane中查看dfm,或者调用R的View功能。调用`plot`dfm将调用[wordcloud软件包](https://cran.r-project.org/web/packages/wordcloud/index.html)绘制词云图。
 
 ```{r warning=FALSE, fig.width = 8, fig.height = 8}
-dfmat_uk <- tokens(data_char_ukimmig2010, remove_punct = TRUE) %>%
-  tokens_remove(stopwords("en")) %>%
+dfmat_uk <- tokens(data_char_ukimmig2010, remove_punct = TRUE) |>
+  tokens_remove(stopwords("en")) |>
   dfm()
 dfmat_uk
 ```
@@ -309,9 +309,9 @@ textplot_wordcloud(dfmat_uk, min_count = 6, random_order = FALSE,
 通常，我们感兴趣的是根据可能存在于文档变量中实质性因素来分析文本是如何不同的，而不仅仅是根据文档文件的边界。创建dfm时，我们可以将具有相同文档变量的文档分成一组：
 
 ```{r}
-dfmat_ire <- tokens(data_corpus_irishbudget2010, remove_punct = TRUE) %>%
-  tokens_remove(stopwords("en")) %>%
-  dfm() %>%
+dfmat_ire <- tokens(data_corpus_irishbudget2010, remove_punct = TRUE) |>
+  tokens_remove(stopwords("en")) |>
+  dfm() |>
   dfm_group(groups = party)
 ```
 
@@ -340,8 +340,8 @@ dict <- dictionary(list(terror = c("terrorism", "terrorists", "threat"),
 
 我们也可在构建dfm时使用字典：
 ```{r}
-dfmat_inaug_post1991_dict <- tokens(corp_inaug_post1991) %>%
-  tokens_lookup(dictionary = dict) %>%
+dfmat_inaug_post1991_dict <- tokens(corp_inaug_post1991) |>
+  tokens_lookup(dictionary = dict) |>
   dfm()
 dfmat_inaug_post1991_dict
 ```
@@ -360,10 +360,10 @@ dfmat_inaug_subset[, 1:10]
 ## 文本之间的相似度 {#similarities-between-texts}
 
 ```{r fig.width = 6}
-dfmat_inaug_post1980 <- corpus_subset(data_corpus_inaugural, Year > 1980) %>%
-  tokens(remove_punct = TRUE) %>%
-  tokens_remove(stopwords("english")) %>%
-  tokens_wordstem("en") %>%
+dfmat_inaug_post1980 <- corpus_subset(data_corpus_inaugural, Year > 1980) |>
+  tokens(remove_punct = TRUE) |>
+  tokens_remove(stopwords("english")) |>
+  tokens_wordstem("en") |>
   dfm()
 library("quanteda.textstats")
 
@@ -378,10 +378,10 @@ tstat_obama
 ```{r, fig.width = 10, fig.height = 7, eval = TRUE}
 data_corpus_sotu <- readRDS(url("https://quanteda.org/data/data_corpus_sotu.rds"))
 
-dfmat_sotu <- corpus_subset(data_corpus_sotu, Date > as.Date("1980-01-01")) %>%
-  tokens(remove_punct = TRUE) %>%
-  tokens_remove(stopwords("english")) %>%
-  tokens_wordstem("en") %>%
+dfmat_sotu <- corpus_subset(data_corpus_sotu, Date > as.Date("1980-01-01")) |>
+  tokens(remove_punct = TRUE) |>
+  tokens_remove(stopwords("english")) |>
+  tokens_wordstem("en") |>
   dfm()
 dfmat_sotu <- dfm_trim(dfmat_sotu, min_termfreq = 5, min_docfreq = 3)
 
@@ -422,8 +422,8 @@ textplot_scale1d(tmod_wf, groups = docvars(dfmat_ire, "party"))
 **quanteda**可以很轻松训练主题模型：
 
 ```{r}
-quant_dfm <- tokens(data_corpus_irishbudget2010, remove_punct = TRUE, remove_numbers = TRUE) %>%
-  tokens_remove(stopwords("en")) %>%
+quant_dfm <- tokens(data_corpus_irishbudget2010, remove_punct = TRUE, remove_numbers = TRUE) |>
+  tokens_remove(stopwords("en")) |>
   dfm()
 quant_dfm <- dfm_trim(quant_dfm, min_termfreq = 4, max_docfreq = 10)
 quant_dfm
@@ -451,7 +451,7 @@ stopw_zh <- stopwords("zh", source = "misc")
 tokens("中华人民共和国成立于1949 年")
 
 # 除去停用词
-tokens("中华人民共和国成立于1949 年") %>%
+tokens("中华人民共和国成立于1949 年") |>
     tokens_remove(stopwords("zh", source = "misc"))
 ```
 
@@ -464,8 +464,8 @@ load("examples/data/data_corpus_chinesegovreport.rda")
 summary(data_corpus_chinesegovreport, 10)
 
 # 分词
-toks_china <- data_corpus_chinesegovreport %>%
-    tokens(remove_punct = TRUE) %>%
+toks_china <- data_corpus_chinesegovreport |>
+    tokens(remove_punct = TRUE) |>
     tokens_remove(stopwords("zh", source = "misc"))
 
 # 创建 dfm
@@ -491,8 +491,8 @@ textplot_wordcloud(dfmat_china_trim, min_count = 6,
 ```{r}
 # fcm -共现窗口为5，2017政府工作报告
 corp_china2 <- corpus_subset(data_corpus_chinesegovreport, Year == "2017")
-toks_china2 <- corp_china2 %>%
-    tokens(remove_punct = TRUE) %>%
+toks_china2 <- corp_china2 |>
+    tokens(remove_punct = TRUE) |>
     tokens_remove(stopwords("zh", source = "misc"), padding = TRUE)
 
 fcmat_china1 <- fcm(toks_china2, context = "window")

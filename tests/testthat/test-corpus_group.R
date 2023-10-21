@@ -69,7 +69,7 @@ test_that("corpus_group works with empty documents", {
 test_that("corpus_group works with NA group labels", {
     corp <- corpus(c("Doc 1", "Doc 1b", "Doc2", "Doc 3 with NA", "Doc 4, more NA"),
                    docvars = data.frame(factorvar = c("Yes", "Yes", "No", NA, NA)))
-    corp <- corpus(corp) %>%
+    corp <- corpus(corp) |>
         corpus_group(groups = factorvar)
     expect_identical(
         as.character(corp),

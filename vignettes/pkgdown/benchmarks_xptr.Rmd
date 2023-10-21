@@ -69,7 +69,7 @@ microbenchmark::microbenchmark(
     v4 = tokens(corp, remove_punct = TRUE, remove_numbers = TRUE, 
                 remove_symbols = TRUE),
     times = 10
-) %>% autoplot(log = FALSE)
+) |> autoplot(log = FALSE)
 ```
 
 ## Modifying tokens objects
@@ -80,42 +80,42 @@ microbenchmark::microbenchmark(
 # generate n-grams
 microbenchmark::microbenchmark(
     v3 = quanteda3::tokens_ngrams(toks),
-    v4 = as.tokens_xptr(xtoks) %>% 
+    v4 = as.tokens_xptr(xtoks) |> 
         tokens_ngrams(),
     times = 10
-) %>% autoplot(log = FALSE)
+) |> autoplot(log = FALSE)
 
 # lookup dictionary keywords
 microbenchmark::microbenchmark(
     v3 = quanteda3::tokens_lookup(toks, dictionary =  data_dictionary_LSD2015),
-    v4 = as.tokens_xptr(xtoks) %>% 
+    v4 = as.tokens_xptr(xtoks) |> 
         tokens_lookup(dictionary = data_dictionary_LSD2015),
     times = 10
-) %>% autoplot(log = FALSE)
+) |> autoplot(log = FALSE)
 
 
 # remove stop words
 microbenchmark::microbenchmark(
     v3 = quanteda3::tokens_remove(toks, pattern = stopwords("en"), padding = TRUE),
-    v4 = as.tokens_xptr(xtoks) %>% 
+    v4 = as.tokens_xptr(xtoks) |> 
         tokens_remove(pattern = stopwords("en"), padding = TRUE),
     times = 10
-) %>% autoplot(log = FALSE)
+) |> autoplot(log = FALSE)
 
 # compound tokens
 microbenchmark::microbenchmark(
     v3 = quanteda3::tokens_compound(toks,  pattern = "&", window = 1),
-    v4 = as.tokens_xptr(xtoks) %>% 
+    v4 = as.tokens_xptr(xtoks) |> 
         tokens_compound(pattern = "&", window = 1),
     times = 10
-) %>% autoplot(log = FALSE)
+) |> autoplot(log = FALSE)
 
 # group sentences to articles
 microbenchmark::microbenchmark(
     v3 = quanteda3::tokens_group(toks),
     v4 = tokens_group(xtoks),
     times = 10
-) %>% autoplot(log = FALSE)
+) |> autoplot(log = FALSE)
 ```
 
 ## Combining tokens objects
@@ -138,7 +138,7 @@ microbenchmark::microbenchmark(
     v3 = quanteda3:::c.tokens(toks1, toks2),
     v4 = quanteda:::c.tokens_xptr(xtoks1, xtoks2),
     times = 10
-) %>% autoplot(log = FALSE)
+) |> autoplot(log = FALSE)
 ```
 
 ## Constructing a document-feature matrix
@@ -150,19 +150,19 @@ microbenchmark::microbenchmark(
     v3 = quanteda3::dfm(toks),
     v4 = dfm(xtoks),
     times = 10
-) %>% autoplot(log = FALSE)
+) |> autoplot(log = FALSE)
 ```
 
 ## Simple pipeline: tokenising a corpus and creating a document-feature matrix
 
 ```{r}
 microbenchmark::microbenchmark(
-    v3 = quanteda3::tokens(corp) %>% 
-        quanteda3::tokens_remove(stopwords("en"), padding = TRUE) %>% 
+    v3 = quanteda3::tokens(corp) |> 
+        quanteda3::tokens_remove(stopwords("en"), padding = TRUE) |> 
         quanteda3::dfm(remove_padding = TRUE),
-    v4 = tokens(corp, xptr = TRUE) %>% 
-        tokens_remove(stopwords("en"), padding = TRUE) %>% 
+    v4 = tokens(corp, xptr = TRUE) |> 
+        tokens_remove(stopwords("en"), padding = TRUE) |> 
         dfm(remove_padding = TRUE),
     times = 10
-) %>% autoplot(log = FALSE)
+) |> autoplot(log = FALSE)
 ```

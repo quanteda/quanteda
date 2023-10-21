@@ -166,14 +166,14 @@ Additional functions have been defined for **quanteda** objects that are [very s
 
 In most cases, users will use the default settings to create a dfm straight from a corpus.  `dfm()` will combine steps 3--4, even though basic functions will be available to perform these separately.  All options shown in steps 3--4 will be available in `dfm()`.
 
-`dfm` objects can always be built up using constituent steps, through tokenizing and then selecting on the tokens.  **quanteda** integrates the **magrittr** `%>%` pipe operator, to make it easy to chain functions without creating intermediate objects:
+`dfm` objects can always be built up using constituent steps, through tokenizing and then selecting on the tokens.  **quanteda** integrates the **magrittr** `|>` pipe operator, to make it easy to chain functions without creating intermediate objects:
 
 ```{r, eval=FALSE}
-mydfm <- texts(mycorpus, group = "party") %>% 
-    char_tolower() %>% 
-    tokens() %>% 
-    tokens_wordstem() %>%
-    tokens_remove(stopwords("english")) %>% 
+mydfm <- texts(mycorpus, group = "party") |> 
+    char_tolower() |> 
+    tokens() |> 
+    tokens_wordstem() |>
+    tokens_remove(stopwords("english")) |> 
     dfm()
 ```
 

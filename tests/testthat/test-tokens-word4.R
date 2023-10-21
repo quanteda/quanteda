@@ -127,7 +127,7 @@ test_that("remove_url works as expected", {
              "https://www.google.com/search?q=quanteda+package is a google search",
              "ftp://user@host/foo/bar.txt is a FTP-hosted file",
              "kohei.watanabe@quanteda.org is not an url")
-    toks <- tokens(txt) %>% 
+    toks <- tokens(txt) |> 
         tokens_remove(c("^https?:", "^ftp:", "^www"), valuetype = "regex")
     expect_equal(
         as.list(toks),
@@ -475,15 +475,15 @@ test_that("tokens.tokens(x, split_hyphens = TRUE) behaves same as tokens.charact
     # issue #1498
     txt <- "Auto-immune system."
     expect_identical(
-        as.character(tokens(txt, split_hyphens = FALSE) %>% tokens(split_hyphens = TRUE)),
+        as.character(tokens(txt, split_hyphens = FALSE) |> tokens(split_hyphens = TRUE)),
         c("Auto", "-", "immune", "system", ".")
     )
 
     txt <- c("There's shrimp-kabobs, shrimp creole. Deep-deep-fried, stir-fried.",
              "Stir-fried shrimp.")
     expect_identical(
-        tokens(txt, split_hyphens = TRUE) %>% as.list(),
-        tokens(txt, split_hyphens = FALSE) %>% tokens(split_hyphens = TRUE) %>% as.list()
+        tokens(txt, split_hyphens = TRUE) |> as.list(),
+        tokens(txt, split_hyphens = FALSE) |> tokens(split_hyphens = TRUE) |> as.list()
     )
 })
 

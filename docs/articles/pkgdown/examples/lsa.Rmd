@@ -42,7 +42,7 @@ mylsa$docs[, 1:2]
 Now the new unseen document can be represented in the reduced 2-dimensional space.
 The unseen query document:
 ```{r}
-querydfm <- dfm(c("gold silver truck")) %>%
+querydfm <- dfm(c("gold silver truck")) |>
     dfm_select(pattern = mydfm)
 querydfm
 ```

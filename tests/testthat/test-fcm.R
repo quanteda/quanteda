@@ -3,7 +3,9 @@ test_that("compare the output feature co-occurrence matrix to that of the text2v
     library("text2vec")
 
     txt <- "A D A C E A D F E B A C E D"
-    tokens <- txt %>% tolower %>% word_tokenizer
+    tokens <- txt |> 
+        tolower() |> 
+        word_tokenizer()
     it <- itoken(tokens)
     v <- create_vocabulary(it)
     vectorizer <- vocab_vectorizer(v)

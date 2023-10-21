@@ -12,7 +12,7 @@
 #' @examples
 #' toks <- tokens(data_corpus_inaugural[1:8])
 #' index(toks, pattern = "secure*")
-#' index(toks, pattern = c("secure*", phrase("united states"))) %>% head()
+#' index(toks, pattern = c("secure*", phrase("united states"))) |> head()
 index <- function(x, pattern, 
                    valuetype = c("glob", "regex", "fixed"),
                    case_insensitive = TRUE) {

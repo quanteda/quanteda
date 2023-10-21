@@ -130,9 +130,9 @@ library("quanteda")
 
 # construct the feature co-occurrence matrix
 examplefcm <-
-    tokens(data_corpus_irishbudget2010, remove_punct = TRUE) %>%
-    tokens_tolower() %>%
-    tokens_remove(stopwords("english"), padding = FALSE) %>%
+    tokens(data_corpus_irishbudget2010, remove_punct = TRUE) |>
+    tokens_tolower() |>
+    tokens_remove(stopwords("english"), padding = FALSE) |>
     fcm(context = "window", window = 5, tri = FALSE)
 
 # choose 30 most frequency features

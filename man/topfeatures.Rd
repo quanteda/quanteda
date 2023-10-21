@@ -38,8 +38,8 @@ List the most (or least) frequently occurring features in a \link{dfm}, either
 as a whole or separated by document.
 }
 \examples{
-dfmat1 <- corpus_subset(data_corpus_inaugural, Year > 1980) \%>\%
-    tokens(remove_punct = TRUE) \%>\%
+dfmat1 <- corpus_subset(data_corpus_inaugural, Year > 1980) |>
+    tokens(remove_punct = TRUE) |>
     dfm()
 dfmat2 <- dfm_remove(dfmat1, stopwords("en"))
 

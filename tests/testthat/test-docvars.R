@@ -575,7 +575,7 @@ test_that("group_docvars() works", {
 test_that("docid works", {
     corp <- corpus(c(textone = "This is a sentence.  Another sentence.  Yet another.",
                      textwo = "Sentence 1. Sentence 2."))
-    corp_sent <- corp %>%
+    corp_sent <- corp |>
         corpus_reshape(to = "sentences")
     
     expect_identical(

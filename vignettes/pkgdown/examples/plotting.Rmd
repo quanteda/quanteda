@@ -18,8 +18,8 @@ This vignette walks through various plot options available in **quanteda.textplo
 The frequency of features can be plotted as a wordcloud using `textplot_wordcloud()`.
 
 ```{r eval=TRUE, fig.width=8, fig.height=8}
-dfm_inaug <- corpus_subset(data_corpus_inaugural, Year <= 1826) %>% 
-    dfm(remove = stopwords('english'), remove_punct = TRUE) %>%
+dfm_inaug <- corpus_subset(data_corpus_inaugural, Year <= 1826) |> 
+    dfm(remove = stopwords('english'), remove_punct = TRUE) |>
     dfm_trim(min_termfreq = 10, verbose = FALSE)
 
 set.seed(100)
@@ -30,12 +30,12 @@ You can also plot a "comparison cloud", but this can only be done with fewer tha
 
 ```{r eval=TRUE, fig.width=10, fig.height=8}
 corpus_subset(data_corpus_inaugural, 
-              President %in% c("Washington", "Jefferson", "Madison")) %>%
-    tokens(remove_punct = TRUE) %>%
-    tokens_remove(stopwords("english")) %>%
-    dfm() %>%
-    dfm_group(groups = President) %>%
-    dfm_trim(min_termfreq = 5, verbose = FALSE) %>%
+              President %in% c("Washington", "Jefferson", "Madison")) |>
+    tokens(remove_punct = TRUE) |>
+    tokens_remove(stopwords("english")) |>
+    dfm() |>
+    dfm_group(groups = President) |>
+    dfm_trim(min_termfreq = 5, verbose = FALSE) |>
     textplot_wordcloud(comparison = TRUE)
 ```
 
@@ -52,7 +52,7 @@ Plotting a `kwic` object produces a lexical dispersion plot which allows us to v
 ```{r eval=TRUE, fig.width=8, fig.height=4}
 data_corpus_inaugural_subset <- 
     corpus_subset(data_corpus_inaugural, Year > 1949)
-kwic(tokens(data_corpus_inaugural_subset), pattern = "american") %>%
+kwic(tokens(data_corpus_inaugural_subset), pattern = "american") |>
     textplot_xray()
 ```
 
@@ -167,11 +167,11 @@ ggplot(rel_freq_american, aes(x = group, y = frequency)) +
 Finally, `texstat_frequency` allows to plot the most frequent words in terms of relative frequency by group.
 
 ```{r eval=TRUE, fig.width=8, fig.height=6}
-dfm_weight_pres <- data_corpus_inaugural %>%
-  corpus_subset(Year > 2000) %>%
-  tokens(remove_punct = TRUE) %>%
-  tokens_remove(stopwords("english")) %>%
-  dfm() %>%
+dfm_weight_pres <- data_corpus_inaugural |>
+  corpus_subset(Year > 2000) |>
+  tokens(remove_punct = TRUE) |>
+  tokens_remove(stopwords("english")) |>
+  dfm() |>
   dfm_weight(scheme = "prop")
 
 # Calculate relative frequency by president
@@ -198,9 +198,9 @@ pres_corpus <- corpus_subset(data_corpus_inaugural,
                             President %in% c("Obama", "Trump"))
 
 # Create a dfm grouped by president
-pres_dfm <- tokens(pres_corpus, remove_punct = TRUE) %>%
-  tokens_remove(stopwords("english")) %>%
-  tokens_group(groups = President) %>%
+pres_dfm <- tokens(pres_corpus, remove_punct = TRUE) |>
+  tokens_remove(stopwords("english")) |>
+  tokens_group(groups = President) |>
   dfm()
 
 # Calculate keyness and determine Trump as target group

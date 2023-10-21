@@ -247,7 +247,7 @@ Convertir los textos en tokens es una opción intermedia y la mayoría de los us
 corp_inaug_post1990 <- corpus_subset(data_corpus_inaugural, Year > 1990)
 
 # make a dfm
-dfmat_inaug_post1990 <- tokens(corp_inaug_post1990) %>%
+dfmat_inaug_post1990 <- tokens(corp_inaug_post1990) |>
     dfm()
 dfmat_inaug_post1990[, 1:5]
 ```
@@ -298,9 +298,9 @@ textplot_wordcloud(dfmat_uk, min_freq = 6, random_order = FALSE,
 Frecuentemente estamos interesados en analizar cómo textos difieren según factores sustantivos que pueden estar codificados en las variables de documento en vez de simplemente por los límites de los archivos. En esos casos es posible agrupar los documentos que comparten el mismo valor por variable de documento cuando se crea un dfm:
 
 ```{r}
-dfmat_ire <- tokens(data_corpus_irishbudget2010, remove_punct = TRUE) %>%
-    tokens_remove(stopwords("en")) %>%
-    tokens_group(groups = party) %>%
+dfmat_ire <- tokens(data_corpus_irishbudget2010, remove_punct = TRUE) |>
+    tokens_remove(stopwords("en")) |>
+    tokens_group(groups = party) |>
     dfm()
 ```
 

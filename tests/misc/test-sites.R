@@ -1,4 +1,4 @@
-sites <- read.csv("tests/data/sites.csv", row.names = 1, header = TRUE) %>%
+sites <- read.csv("tests/data/sites.csv", row.names = 1, header = TRUE) |>
     as.dfm()
 
 avgp <- colMeans(sites)
