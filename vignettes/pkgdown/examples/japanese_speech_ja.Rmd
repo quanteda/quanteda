@@ -144,7 +144,8 @@ toks <- tokens_compound(toks, any_col[any_col$z > 3,], concatenator = "")
 `dfm()`によって文書行列を作成した後でも，`dfm_*()`と命名された関数を用いると分析に必要な文書の特徴を自由に選択できる．ここでは，平仮名のみもしくは一語のみから構成されたトークンを`dfm_remove()`によって，頻度が極端に低い語もしくは高い語を`dfm_trim()`によって削除している．
 
 ```{r}
-speech_dfm <- dfm(toks, remove = "") |> 
+speech_dfm <- dfm(toks) |>
+    dfm_remove("") |> 
     dfm_remove("^[ぁ-ん]+$", valuetype = "regex", min_nchar = 2) |> 
     dfm_trim(min_termfreq = 0.50, termfreq_type = "quantile", max_termfreq = 0.99)
 ```

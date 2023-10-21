@@ -250,7 +250,7 @@ Splitting the text into chapters means that we will have a collection of documen
 chapters_corp <- 
     corpus(data_char_mobydick) |>
     corpus_segment(pattern = "CHAPTER\\s\\d+.*\\n", valuetype = "regex")
-summary(chapters_corp, 10)
+head(docvars(chapters_corp))
 ```
 The titles are automatically extracted into the `pattern` document variables, and the text of each chapter becomes the text of each new document unit.  To tidy this up, we can remove the trailing `\n` character, using `stri_trim_right()`, since the `\n` is a member of the "whitespace" group.
 ```{r}

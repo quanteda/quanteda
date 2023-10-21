@@ -19,7 +19,9 @@ The frequency of features can be plotted as a wordcloud using `textplot_wordclou
 
 ```{r eval=TRUE, fig.width=8, fig.height=8}
 dfm_inaug <- corpus_subset(data_corpus_inaugural, Year <= 1826) |> 
-    dfm(remove = stopwords('english'), remove_punct = TRUE) |>
+    tokens(remove_punct = TRUE) |>
+    tokens_remove(stopwords("english")) |>
+    dfm() |>
     dfm_trim(min_termfreq = 10, verbose = FALSE)
 
 set.seed(100)

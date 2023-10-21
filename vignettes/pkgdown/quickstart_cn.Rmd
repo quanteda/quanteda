@@ -253,7 +253,8 @@ tokens(c("Kurt Vongeut said; only assholes use semi-colons.",
 corp_inaug_post1990 <- corpus_subset(data_corpus_inaugural, Year > 1990)
 
 # 构建dfm
-dfmat_inaug_post1990 <- dfm(corp_inaug_post1990)
+dfmat_inaug_post1990 <- tokens(corp_inaug_post1990) |>
+    dfm()
 dfmat_inaug_post1990[, 1:5]
 ```
 
