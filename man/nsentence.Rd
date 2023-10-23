@@ -27,6 +27,7 @@ lower-cased text.
 txt <- c(text1 = "This is a sentence: second part of first sentence.",
          text2 = "A word. Repeated repeated.",
          text3 = "Mr. Jones has a PhD from the LSE.  Second sentence.")
-nsentence(txt)
+tokens(txt, what = "sentence") |>
+    nsentence()
 `r lifecycle::badge('deprecated')`
 }
