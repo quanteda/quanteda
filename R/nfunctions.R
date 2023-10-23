@@ -71,36 +71,25 @@ nfeat.dfm <- function(x) {
 #' Count the number of tokens or types
 #'
 #' Get the count of tokens (total features) or types (unique tokens).
-#' @param x a \pkg{quanteda} object: a character, [corpus],
-#'   [tokens], or [dfm] object
-#' @param ... additional arguments passed to [tokens()]; not functional when `x`
-#'   is a [tokens_xptr] object
-#' @note Due to differences between raw text tokens and features that have been
-#'   defined for a [dfm], the counts may be different for dfm objects and the
-#'   texts from which the dfm was generated.  Because the method tokenizes the
-#'   text in order to count the tokens, your results will depend on the options
-#'   passed through to [tokens()].
+#' @param x a \pkg{quanteda} [tokens] or [dfm] object
+#' @param ... not used
 #' @returns `ntoken()` returns a named integer vector of the counts of the total
 #'   tokens
-#' @details
-#' The precise definition of "tokens" for objects not yet tokenized (e.g.
-#' [character] or [corpus] objects) can be controlled through optional
-#' arguments passed to [tokens()] through `...`.
 #' @examples
 #' # simple example
 #' txt <- c(text1 = "This is a sentence, this.", text2 = "A word. Repeated repeated.")
-#' ntoken(txt)
-#' ntype(txt)
-#' ntoken(char_tolower(txt))  # same
-#' ntype(char_tolower(txt))   # fewer types
-#' ntoken(char_tolower(txt), remove_punct = TRUE)
-#' ntype(char_tolower(txt), remove_punct = TRUE)
+#' toks <- tokens(txt)
+#' ntoken(toks)
+#' ntype(toks)
+#' ntoken(tokens_tolower(toks))  # same
+#' ntype(tokens_tolower(toks))   # fewer types
 #'
 #' # with some real texts
-#' ntoken(corpus_subset(data_corpus_inaugural, Year < 1806), remove_punct = TRUE)
-#' ntype(corpus_subset(data_corpus_inaugural, Year < 1806), remove_punct = TRUE)
-#' ntoken(dfm(tokens(corpus_subset(data_corpus_inaugural, Year < 1800))))
-#' ntype(dfm(tokens(corpus_subset(data_corpus_inaugural, Year < 1800))))
+#' toks <- tokens(corpus_subset(data_corpus_inaugural, Year < 1806))
+#' ntoken(tokens(toks, remove_punct = TRUE))
+#' ntype(tokens(toks, remove_punct = TRUE))
+#' ntoken(dfm(toks))
+#' ntype(dfm(toks))
 #' @export
 ntoken <- function(x, ...) {
     UseMethod("ntoken")
