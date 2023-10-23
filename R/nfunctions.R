@@ -134,6 +134,8 @@ ntoken.corpus <- function(x, ...) {
 
 #' @export
 ntoken.character <- function(x, ...) {
+    lifecycle::deprecate_soft("4.0.0", I('ntoken.character()/ntype.corpus()'), 
+                              I('ntoken(tokens(x))'))
     ntoken(tokens(x, ...))
 }
 
@@ -160,6 +162,8 @@ ntoken.dfm <- function(x, ...) {
 
 #' @export
 ntype.character <- function(x, ...) {
+    lifecycle::deprecate_soft("4.0.0", I('ntype.character()/ntype.corpus()'), 
+                              I('ntoken(tokens(x))'))
     if (length(list(...)))
         ntype(tokens(x, ...))
     else
