@@ -245,17 +245,31 @@ head(chap_positions_v)
 
 ## 4.2 Identifying chapter breaks
 
-Splitting the text into chapters means that we will have a collection of documents, which makes this a good time to make a `corpus` object to hold the texts. Initially, we make a single-document corpus, and then use the `char_segment()` function to split this by the string which specifies the chapter breaks. 
+Splitting the text into chapters means that we will have a collection of documents, which makes this a good time to make a `corpus` object to hold the texts. Initially, we make a single-document corpus, and then use the `corpus_segment()` function to split this by the string which specifies the chapter breaks. 
+
+Because of the header information, however, we want to discard the first part. We can do this by segmenting the text according to the first chapter, "CHAPTER 1. Loomings.", which is preceded by 5 newlines.
+
 ```{r}
-chapters_corp <- 
-    corpus(data_char_mobydick) |>
-    corpus_segment(pattern = "CHAPTER\\s\\d+.*\\n", valuetype = "regex")
-head(docvars(chapters_corp))
+chapters_char <- 
+    data_char_mobydick |>
+    char_segment(pattern = "\\n{5}CHAPTER 1\\. Loomings\\.\\n", 
+                 valuetype = "regex", remove_pattern = FALSE)
+sapply(chapters_char, substring, 1, 100)
+# remove header segment
+chapters_char <- chapters_char[-1]
+
+cat(substring(chapters_char, 1, 200))
 ```
-The titles are automatically extracted into the `pattern` document variables, and the text of each chapter becomes the text of each new document unit.  To tidy this up, we can remove the trailing `\n` character, using `stri_trim_right()`, since the `\n` is a member of the "whitespace" group.
+
+Now we can segment the text based on the chapter titles.  These titles are automatically extracted into the `pattern` document variables, and the text of each chapter becomes the text of each new document unit.  To tidy this up, we can remove the trailing `\n` character, using `stri_trim_both()`, since the `\n` is a member of the "whitespace" group.
 ```{r}
-chapters_corp$pattern <- stringi::stri_trim_right(chapters_corp$pattern)
-summary(chapters_corp, n = 3)
+chapters_corp <- chapters_char |>
+    corpus() |>
+    corpus_segment(pattern = "CHAPTER\\s\\d+.*\\n\\n", valuetype = "regex")
+chapters_corp$pattern <- stringi::stri_trim_both(chapters_corp$pattern)
+chapters_corp <- corpus_subset(chapters_corp, chapters_corp != "")
+
+summary(chapters_corp, 10)
 ```
 
 For better reference, let's also rename the document labels with these chapter headings:
@@ -269,7 +283,8 @@ With the corpus split into chapters, we can use the `dfm()` function to create a
 
 ```{r eval=TRUE, fig.width=8}
 # create a dfm
-chap_dfm <- dfm(chapters_corp)
+chap_dfm <- tokens(chapters_corp) |>
+    dfm()
 
 # extract row with count for "whale"/"ahab" in each chapter
 # and convert to data frame for plotting
@@ -403,7 +418,8 @@ sort(mean_word_use_m, decreasing = TRUE) |> head()
 Measures of lexical diversity can be estimated using `textstat_lexdiv()`. The TTR (Type-Token Ratio), a measure used in section 6.5, can be calculated for each document of the `dfm`.
 
 ```{r}
-dfm(chapters_corp) |> 
+tokens(chapters_corp) |>
+    dfm() |>
     textstat_lexdiv(measure = "TTR") |>
     head(n = 10)
 ```
