@@ -119,7 +119,11 @@ dfm_select.dfm <-  function(x, pattern = NULL,
     }
 
     if (is_dfm) {
-        x <- dfm_match(x, pattern)
+        lifecycle::deprecate_stop(
+            when = "3.0", 
+            what = I('Using a dfm as a pattern'),
+            with = I('`dfm_match(x, pattern)`')
+        )
     } else {
         if (!is.null(min_nchar) | !is.null(max_nchar)) {
             len <- stri_length(feat)
