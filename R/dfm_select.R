@@ -101,9 +101,7 @@ dfm_select.dfm <-  function(x, pattern = NULL,
             id_pat <- integer()
         }
     } else {
-        if (is.dfm(pattern)) {
-            .Defunct(msg = "dfm cannot be used as pattern; use 'dfm_match' instead")
-        } else if (is.dictionary(pattern)) {
+        if (is.dictionary(pattern)) {
             pattern <- stri_replace_all_fixed(
                 unlist(pattern, use.names = FALSE),
                 " ",

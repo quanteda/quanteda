@@ -167,10 +167,18 @@ pad_dfm <- function(x, feature) {
 
 #' @export
 dfm.character <- function(x, ...) {
-    .Defunct(msg = "'dfm.character()' was removed in v4. Use 'tokens()' first.")
+    lifecycle::deprecate_stop(
+        when = "3.0", 
+        what = I('`dfm.character()`'),
+        with = I('`dfm(tokens(x))`')
+    )
 }
 
 #' @export
 dfm.corpus <- function(x, ...) {
-    .Defunct(msg = "'dfm.corpus()' was removed in v4. Use 'tokens()' first.")
+    lifecycle::deprecate_stop(
+        when = "3.0", 
+        what = "dfm.corpus()",
+        with = I('`dfm(tokens(x))`')
+    )
 }

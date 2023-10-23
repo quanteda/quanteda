@@ -73,7 +73,6 @@ as.phrase.collocations <- function(x) {
 #' @noRd
 #' @export
 phrase.collocations <- function(x, separator = " ") {
-    # .Deprecated("as.phrase")
     as.phrase(x)
 }
 
@@ -95,8 +94,11 @@ as.phrase.list <- function(x) {
 #' @noRd
 #' @export
 phrase.list <- function(x, separator = " ") {
-    .Deprecated("as.phrase")
-    as.phrase(x)
+    lifecycle::deprecate_stop(
+        when = "3.0", 
+        what = "phrase.list()",
+        with = "as.phrase()"
+    )
 }
 
 #' @noRd
@@ -108,8 +110,11 @@ as.phrase.tokens <- function(x) {
 #' @noRd
 #' @export
 phrase.tokens <- function(x, separator = " ") {
-    .Deprecated("as.phrase")
-    as.phrase(x)
+    lifecycle::deprecate_stop(
+        when = "3.0", 
+        what = "phrase.tokens()",
+        with = "as.phrase()"
+    )
 }
 
 #' @rdname phrase
