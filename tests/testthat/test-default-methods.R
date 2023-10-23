@@ -247,12 +247,12 @@ test_that("test new dfm methods", {
 test_that("dfm message works correctly on defunct methods", {
     expect_error(
         dfm("dfm.character was defuncted in v4"),
-        "'dfm.character()' was removed in v4. Use 'tokens()' first.",
+        "`dfm.character()` was deprecated in quanteda 3.0 and is now defunct.",
         fixed = TRUE
     )
     expect_error(
         dfm(corpus("dfm.corpus was defuncted in v4")),
-        "'dfm.corpus()' was removed in v4. Use 'tokens()' first.",
+        "`dfm.corpus()` was deprecated in quanteda 3.0 and is now defunct.",
         fixed = TRUE
     )
 })

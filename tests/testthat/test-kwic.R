@@ -316,64 +316,6 @@ test_that("kwic works as expected with and without phrases", {
                            stringsAsFactors = FALSE)
     class(coll_tri) <- c("collocations", "data.frame")
 
-    suppressWarnings({
-      expect_equal(
-        as.data.frame(kwic(txt, char_uni))$keyword,
-        c("a", "b", "g",
-          "a", "b", "g", "j")
-    )
-    expect_equal(
-        as.data.frame(kwic(txt, list_uni))$keyword,
-        c("a", "b", "g",
-          "a", "b", "g", "j")
-    )
-    expect_equal(
-        nrow(kwic(txt, char_bi)),
-        0
-    )
-    expect_equal(
-        nrow(kwic(txt, list("c d", "g h"))),
-        0
-    )
-    expect_equal(
-        as.data.frame(kwic(txt, list(c("c", "d"), c("g", "h"))))$keyword,
-        c("c d", "g h", "g h")
-    )
-    expect_equal(
-        as.data.frame(kwic(txt, phrase(c("c d", "g h"))))$keyword,
-        c("c d", "g h", "g h")
-    )
-
-    expect_equal(
-        as.data.frame(kwic(txt, coll_bi))$keyword,
-        c("a b", "e g", "g h",
-          "a b", "e g", "g h")
-    )
-    expect_equal(
-        as.data.frame(kwic(txt, coll_tri))$keyword,
-        c("e g h", "e g h")
-    )
-
-    expect_equal(
-        as.data.frame(kwic(txt, as.phrase(coll_bi)))$keyword,
-        c("a b", "e g", "g h",
-          "a b", "e g", "g h")
-    )
-    expect_equal(
-        as.data.frame(kwic(txt, phrase(coll_bi)))$keyword,
-        c("a b", "e g", "g h",
-          "a b", "e g", "g h")
-    )
-    expect_equal(
-        as.data.frame(kwic(txt, phrase(dict_bi)))$keyword,
-        c("a b", "a b")
-    )
-    expect_equal(
-        as.data.frame(kwic(txt, dict_bi))$keyword,
-        c("a b", "a b")
-    )
-    })
-
     ## on tokens
     expect_equal(
         as.data.frame(kwic(toks_uni, char_uni))$keyword,
@@ -434,9 +376,9 @@ test_that("keywords attribute is set correctly in textplot_kwic (#1514)", {
     expect_identical(kwic2$pattern, factor(c("u", "u")))
     expect_identical(kwic3$pattern, factor(c("f", "u", "f", "u"), levels = c("u", "f")))
 
-    suppressWarnings(kwic_dict1 <- kwic(corp, dictionary(list(ukey = "u"))))
+    kwic_dict1 <- kwic(tokens(corp), dictionary(list(ukey = "u")))
     kwic_dict2 <- kwic(toks, dictionary(list(ukey = "u")))
-    suppressWarnings(kwic_dict3 <- kwic(corp, dictionary(list(ukey = "u", fkey = "f"))))
+    kwic_dict3 <- kwic(tokens(corp), dictionary(list(ukey = "u", fkey = "f")))
     kwic_dict4 <- kwic(toks, dictionary(list(ukey = "u", fkey = "f")))
 
     expect_identical(kwic_dict1, kwic_dict2)
@@ -552,14 +494,14 @@ test_that("kwic structure is as expected", {
 
 test_that("kwic deprecations work as expected", {
     txt <- "A b c d e."
-    expect_warning(
+    expect_error(
       kwic(txt, "c", window = 1),
-      "'kwic.character()' is deprecated. Use 'tokens()' first.",
+      "`kwic.character()` was deprecated in quanteda 3.0 and is now defunct.",
       fixed = TRUE
     )
-    expect_warning(
+    expect_error(
       kwic(corpus(txt), "c", window = 1),
-      "'kwic.corpus()' is deprecated. Use 'tokens()' first.",
+      "`kwic.corpus()` was deprecated in quanteda 3.0 and is now defunct.",
       fixed = TRUE
     )
     expect_warning(

@@ -153,7 +153,8 @@ test_that("dfm_select on a dfm returns equal feature sets", {
     dfmt2 <- dfm(tokens(txts[2:3]))
     expect_error({
         dfmt3 <- dfm_select(dfmt1, dfmt2)
-    }, "dfm cannot be used as pattern; use 'dfm_match' instead")
+    }, "The `pattern` argument of `dfm_select()` cannot be a dfm",
+    fixed = TRUE)
 })
 
 test_that("dfm_select removes padding", {
@@ -266,10 +267,12 @@ test_that("dfm_remove works when selection is a dfm (#1320)", {
     d2 <- dfm(tokens("d d d a a"))
     expect_error({
         d3 <- dfm_remove(d1, pattern = d2)
-    }, "dfm cannot be used as pattern; use 'dfm_match' instead")
+    }, "The `pattern` argument of `dfm_select()` cannot be a dfm",
+    fixed = TRUE)
     expect_error({
         d4 <- dfm_select(d1, pattern = d2, selection = "remove")
-    }, "dfm cannot be used as pattern; use 'dfm_match' instead")
+    }, "The `pattern` argument of `dfm_select()` cannot be a dfm",
+    fixed = TRUE)
 })
 
 test_that("really long words are not removed in tokens() (#1713)", {
