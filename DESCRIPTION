@@ -28,6 +28,7 @@ Depends:
 Imports:
     fastmatch,
     jsonlite,
+    lifecycle,
     magrittr,
     Matrix (>= 1.5-0),
     Rcpp (>= 0.12.12),
@@ -125,6 +126,7 @@ Collate:
     'object2fixed.R'
     'pattern2fixed.R'
     'phrases.R'
+    'quanteda-package.R'
     'quanteda_options.R'
     'spacyr-methods.R'
     'stopwords.R'
