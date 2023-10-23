@@ -55,6 +55,6 @@ dfm(toks) \%>\%
 dfm(toks, tolower = FALSE)
 }
 \seealso{
-\code{\link[=dfm_select]{dfm_select()}}, \linkS4class{dfm}
+\code{\link[=as.dfm]{as.dfm()}}, \code{\link[=dfm_select]{dfm_select()}}, \linkS4class{dfm}
 }
 \keyword{dfm}
