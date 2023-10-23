@@ -49,7 +49,7 @@ corpus_trim.corpus <- function(x, what = c("sentences", "paragraphs", "documents
         return(x)
     
     # exclude based on lengths
-    len <- ntoken(temp, remove_punct = TRUE)
+    len <- ntoken(tokens(temp, remove_punct = TRUE))
     if (!is.null(max_ntoken)) {
         max_ntoken <- check_integer(max_ntoken)
     } else {
