@@ -208,6 +208,7 @@ ntype.tokens <- function(x, ...) {
 #'          text2 = "A word. Repeated repeated.",
 #'          text3 = "Mr. Jones has a PhD from the LSE.  Second sentence.")
 #' nsentence(txt)
+#' `r lifecycle::badge('deprecated')`
 #' @export
 nsentence <- function(x) {
     UseMethod("nsentence")
@@ -221,6 +222,7 @@ nsentence.default <- function(x) {
 #' @export
 #' @importFrom stringi stri_detect_charclass
 nsentence.character <- function(x) {
+    lifecycle::deprecate_soft("4.0.0", "nsentence()", I('lengths(tokens(what = "sentence"))'))
     upcase <- try(any(stri_detect_charclass(x, "[A-Z]")), silent = TRUE)
     if (!is.logical(upcase)) {
         # warning("Input text contains non-UTF-8 characters.")
