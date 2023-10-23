@@ -169,7 +169,7 @@ pad_dfm <- function(x, feature) {
 dfm.character <- function(x, ...) {
     lifecycle::deprecate_stop(
         when = "3.0", 
-        what = I('`dfm.character()`'),
+        what = "dfm.character()",
         with = I('`dfm(tokens(x))`')
     )
 }
