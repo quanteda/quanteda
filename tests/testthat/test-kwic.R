@@ -494,16 +494,6 @@ test_that("kwic structure is as expected", {
 
 test_that("kwic deprecations work as expected", {
     txt <- "A b c d e."
-    expect_error(
-      kwic(txt, "c", window = 1),
-      "`kwic.character()` was deprecated in quanteda 3.0 and is now defunct.",
-      fixed = TRUE
-    )
-    expect_error(
-      kwic(corpus(txt), "c", window = 1),
-      "`kwic.corpus()` was deprecated in quanteda 3.0 and is now defunct.",
-      fixed = TRUE
-    )
     expect_warning(
       kwic(tokens(txt), "e", window = 2, remove_punct = TRUE),
       "remove_punct argument is not used"

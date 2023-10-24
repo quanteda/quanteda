@@ -192,7 +192,12 @@ ntype.tokens <- function(x, ...) {
 #' 
 #' Return the count of sentences in a corpus or character object.
 #' @param x a character or [corpus] whose sentences will be counted
-#' @note `nsentence()` relies on the boundaries definitions in the \pkg{stringi}
+#' @note 
+#'   `nsentence()` is now deprecated for all usages except tokens objects that
+#'   have already been tokenised with `tokens(x, what = "sentence")`.  Using it
+#'   on character or corpus objects will now generate a warning.
+#' 
+#'   `nsentence()` relies on the boundaries definitions in the \pkg{stringi}
 #'   package (see [stri_opts_brkiter][stringi::stri_opts_brkiter]).  It does not
 #'   count sentences correctly if the text has been transformed to lower case,
 #'   and for this reason `nsentence()` will issue a warning if it detects all
@@ -218,7 +223,9 @@ nsentence.default <- function(x) {
 #' @export
 #' @importFrom stringi stri_detect_charclass
 nsentence.character <- function(x) {
-    lifecycle::deprecate_soft("4.0.0", "nsentence()", I('lengths(tokens(what = "sentence"))'))
+    lifecycle::deprecate_soft("4.0", 
+                              "nsentence()", 
+                              I('lengths(tokens(what = "sentence"))'))
     upcase <- try(any(stri_detect_charclass(x, "[A-Z]")), silent = TRUE)
     if (!is.logical(upcase)) {
         # warning("Input text contains non-UTF-8 characters.")

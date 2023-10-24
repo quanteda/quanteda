@@ -106,11 +106,6 @@ test_that("as.dfm for tm matrix objects", {
     )
 })
 
-test_that("as.data.frame for dfm objects", {
-    d <- data_dfm_lbgexample[, 1:5]
-    expect_error(as.data.frame(d), "is now defunct")
-})
-
 test_that('dfm2dataframe same as convert(x, to = "data.fame")', {
     d <- data_dfm_lbgexample[, 1:5]
     expect_identical(
