@@ -13,9 +13,15 @@ nsentence(x)
 count(s) of the total sentences per text
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+
 Return the count of sentences in a corpus or character object.
 }
 \note{
+\code{nsentence()} is now deprecated for all usages except tokens objects that
+have already been tokenised with \code{tokens(x, what = "sentence")}.  Using it
+on character or corpus objects will now generate a warning.
+
 \code{nsentence()} relies on the boundaries definitions in the \pkg{stringi}
 package (see \link[stringi:stri_opts_brkiter]{stri_opts_brkiter}).  It does not
 count sentences correctly if the text has been transformed to lower case,
@@ -27,5 +33,6 @@ lower-cased text.
 txt <- c(text1 = "This is a sentence: second part of first sentence.",
          text2 = "A word. Repeated repeated.",
          text3 = "Mr. Jones has a PhD from the LSE.  Second sentence.")
-nsentence(txt)
+tokens(txt, what = "sentence") |>
+    nsentence()
 }

@@ -10,11 +10,9 @@ ntoken(x, ...)
 ntype(x, ...)
 }
 \arguments{
-\item{x}{a \pkg{quanteda} object: a character, \link{corpus},
-\link{tokens}, or \link{dfm} object}
+\item{x}{a \pkg{quanteda} \link{tokens} or \link{dfm} object}
 
-\item{...}{additional arguments passed to \code{\link[=tokens]{tokens()}}; not functional when \code{x}
-is a \link{tokens_xptr} object}
+\item{...}{not used}
 }
 \value{
 \code{ntoken()} returns a named integer vector of the counts of the total
@@ -27,31 +25,19 @@ count of features that occur more than zero times in the dfm.
 \description{
 Get the count of tokens (total features) or types (unique tokens).
 }
-\details{
-The precise definition of "tokens" for objects not yet tokenized (e.g.
-\link{character} or \link{corpus} objects) can be controlled through optional
-arguments passed to \code{\link[=tokens]{tokens()}} through \code{...}.
-}
-\note{
-Due to differences between raw text tokens and features that have been
-defined for a \link{dfm}, the counts may be different for dfm objects and the
-texts from which the dfm was generated.  Because the method tokenizes the
-text in order to count the tokens, your results will depend on the options
-passed through to \code{\link[=tokens]{tokens()}}.
-}
 \examples{
 # simple example
 txt <- c(text1 = "This is a sentence, this.", text2 = "A word. Repeated repeated.")
-ntoken(txt)
-ntype(txt)
-ntoken(char_tolower(txt))  # same
-ntype(char_tolower(txt))   # fewer types
-ntoken(char_tolower(txt), remove_punct = TRUE)
-ntype(char_tolower(txt), remove_punct = TRUE)
+toks <- tokens(txt)
+ntoken(toks)
+ntype(toks)
+ntoken(tokens_tolower(toks))  # same
+ntype(tokens_tolower(toks))   # fewer types
 
 # with some real texts
-ntoken(corpus_subset(data_corpus_inaugural, Year < 1806), remove_punct = TRUE)
-ntype(corpus_subset(data_corpus_inaugural, Year < 1806), remove_punct = TRUE)
-ntoken(dfm(tokens(corpus_subset(data_corpus_inaugural, Year < 1800))))
-ntype(dfm(tokens(corpus_subset(data_corpus_inaugural, Year < 1800))))
+toks <- tokens(corpus_subset(data_corpus_inaugural, Year < 1806))
+ntoken(tokens(toks, remove_punct = TRUE))
+ntype(tokens(toks, remove_punct = TRUE))
+ntoken(dfm(toks))
+ntype(dfm(toks))
 }

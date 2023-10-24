@@ -56,15 +56,20 @@ kwic.default <- function(x, ...) {
 
 #' @export
 kwic.character <- function(x, ...) {
-    .Deprecated(msg = "'kwic.character()' is deprecated. Use 'tokens()' first.")
-    kwic(tokens(x, what = "word"), ...)
+    lifecycle::deprecate_stop(
+        when = "3.0", 
+        what = "kwic.character()",
+        details = 'Please apply `tokens()` to the character object first.'
+    )
 }
 
 #' @export
 kwic.corpus <- function(x, ...) {
-    .Deprecated(msg = "'kwic.corpus()' is deprecated. Use 'tokens()' first.")
-    x <- as.corpus(x)
-    kwic(tokens(x, what = "word"), ...)
+    lifecycle::deprecate_stop(
+        when = "3.0", 
+        what = "kwic.corpus()",
+        details = 'Please apply `tokens()` to the corpus object first.'
+    )
 }
 
 #' @export

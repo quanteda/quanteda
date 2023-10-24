@@ -125,8 +125,11 @@ as.matrix.dfm <- function(x, ...) {
 
 #' Convert a dfm to a data.frame
 #'
-#' Deprecated function to convert a dfm into a data.frame.
-#' Recommended that you use `convert(x, to = "data.frame")` instead.
+#' @description 
+#' `r lifecycle::badge('superseded')`
+#' 
+#' Defunct function to convert a dfm into a data.frame.
+#' Use `convert(x, to = "data.frame")` instead.
 #' @param document optional first column of mode `character` in the
 #'   data.frame, defaults `docnames(x)`.  Set to `NULL` to exclude.
 #' @inheritParams base::as.data.frame
@@ -139,14 +142,12 @@ as.matrix.dfm <- function(x, ...) {
 #' @export
 as.data.frame.dfm <- function(x, row.names = NULL, ..., document = docnames(x),
                               docid_field = "doc_id", check.names = FALSE) {
-    .Deprecated("convert(x, to = \"data.frame\")")
-    result <- dfm2dataframe(x, row.names = NULL, ..., document = document,
-                            docid_field = docid_field, check.names = check.names)
-    if (!is.null(row.names))
-        row.names(result) <- row.names
-    result
+    lifecycle::deprecate_stop(
+            when = "3.0", 
+            what = "as.data.frame.dfm()",
+            with = I('`convert(x, to = "data.frame"`')
+        )
 }
-
 
 #' Combine dfm objects by Rows or Columns
 #'
