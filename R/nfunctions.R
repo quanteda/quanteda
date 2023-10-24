@@ -187,6 +187,9 @@ ntype.tokens <- function(x, ...) {
 
 #' Count the number of sentences
 #'
+#' @description
+#' `r lifecycle::badge('deprecated')`
+#' 
 #' Return the count of sentences in a corpus or character object.
 #' @param x a character or [corpus] whose sentences will be counted
 #' @note `nsentence()` relies on the boundaries definitions in the \pkg{stringi}
@@ -202,7 +205,6 @@ ntype.tokens <- function(x, ...) {
 #'          text3 = "Mr. Jones has a PhD from the LSE.  Second sentence.")
 #' tokens(txt, what = "sentence") |>
 #'     nsentence()
-#' `r lifecycle::badge('deprecated')`
 #' @export
 nsentence <- function(x) {
     UseMethod("nsentence")

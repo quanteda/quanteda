@@ -13,6 +13,8 @@ nsentence(x)
 count(s) of the total sentences per text
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+
 Return the count of sentences in a corpus or character object.
 }
 \note{
@@ -29,5 +31,4 @@ txt <- c(text1 = "This is a sentence: second part of first sentence.",
          text3 = "Mr. Jones has a PhD from the LSE.  Second sentence.")
 tokens(txt, what = "sentence") |>
     nsentence()
-`r lifecycle::badge('deprecated')`
 }
