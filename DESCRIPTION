@@ -55,6 +55,7 @@ Suggests:
     quanteda.textstats,
     quanteda.textplots,
     RColorBrewer,
+    rlang,
     slam,
     spacyr,
     stm,

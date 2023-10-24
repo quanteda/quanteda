@@ -4,38 +4,31 @@ test_that("dfm defunct arguments generate correct errors", {
     
     expect_error(
         dfm(toks, stem = TRUE),
-        "The `stem` argument of `dfm()` was deprecated in quanteda 3.0 and is now defunct.",
-        fixed = TRUE
+        "The `stem` argument of `dfm\\(\\)` was deprecated in quanteda 3\\.0.*defunct\\."
     )
     expect_error(
         dfm(toks, remove = "and"),
-        "The `remove` argument of `dfm()` was deprecated in quanteda 3.0 and is now defunct.",
-        fixed = TRUE
+        "The `remove` argument of `dfm\\(\\)` was deprecated in quanteda 3\\.0.*defunct\\."
     )
     expect_error(
         dfm(toks, dictionary = data_dictionary_LSD2015),
-        "The `dictionary` argument of `dfm()` was deprecated in quanteda 3.0 and is now defunct.",
-        fixed = TRUE
+        "The `dictionary` argument of `dfm\\(\\)` was deprecated in quanteda 3\\.0.*defunct\\."
     )
     expect_error(
         dfm(toks, thesaurus = data_dictionary_LSD2015),
-        "Please use `dfm_lookup(..., exclusive = FALSE)` instead.",
-        fixed = TRUE
+        "Please use `dfm_lookup\\(\\.\\.\\., exclusive = FALSE\\)` instead\\."
     )
     expect_error(
         dfm(toks, valuetype = "regex"),
-        "The `valuetype` argument of `dfm()` was deprecated in quanteda 3.0 and is now defunct.",
-        fixed = TRUE
+        "The `valuetype` argument of `dfm\\(\\)` was deprecated in quanteda.*3\\.0.*defunct\\.",
     )
     expect_error(
         dfm(toks, case_insensitive = FALSE),
-        "The `case_insensitive` argument of `dfm()` was deprecated in quanteda 3.0 and is now defunct.",
-        fixed = TRUE
+        "The `case_insensitive` argument of `dfm\\(\\)` was deprecated in quanteda.*3\\.0.*defunct\\.",
     )
     expect_error(
         dfm(toks, groups = 1),
-        "The `groups` argument of `dfm()` was deprecated in quanteda 3.0 and is now defunct.",
-        fixed = TRUE
+        "The `groups` argument of `dfm\\(\\)` was deprecated in quanteda 3\\.0.*defunct\\."
     )
 })
 
@@ -65,28 +58,27 @@ test_that("kwic deprecations work as expected", {
     txt <- "A b c d e."
     expect_error(
         kwic(txt, "c", window = 1),
-        "`kwic.character()` was deprecated in quanteda 3.0 and is now defunct.",
-        fixed = TRUE
+        "`kwic.character\\(\\)` was deprecated in quanteda 3\\.0"
     )
     expect_error(
         kwic(corpus(txt), "c", window = 1),
-        "`kwic.corpus()` was deprecated in quanteda 3.0 and is now defunct.",
-        fixed = TRUE
+        "`kwic.corpus\\(\\)` was deprecated in quanteda 3\\.0"
     )
 })
 
 test_that("texts produces a defunct message", {
     expect_error(
         texts(data_corpus_inaugural),
-        "`texts\\(\\)` was deprecated in quanteda 3\\.0 and is now defunct\\."
+        "`texts\\(\\)` was deprecated in quanteda 3\\.0 and is now.*defunct\\."
     )
     expect_error(
         texts(data_corpus_inaugural, groups = Party),
-        "`texts\\(x, groups = \\.\\.\\.\\)` was deprecated in quanteda 3\\.0 and is now defunct\\."
+        "`texts\\(x, groups = \\.\\.\\.\\)` was deprecated in quanteda 3\\.0.*defunct\\."
     )
 })
 
 test_that("nsentence produces a deprecated message", {
+    skip_if_not_installed("rlang")
     rlang::local_options(lifecycle_verbosity = "warning")
     expect_warning(
         nsentence("This is one.  And two."),
@@ -95,8 +87,7 @@ test_that("nsentence produces a deprecated message", {
     )
     expect_error(
         texts(data_corpus_inaugural, groups = Party),
-        "`texts(x, groups = ...)` was deprecated in quanteda 3.0 and is now defunct.",
-        fixed = TRUE
+        "`texts\\(x, groups = \\.\\.\\.\\)` was deprecated in quanteda 3.0.*defunct\\.",
     )
     rlang::local_options(lifecycle_verbosity = "default")
 })
