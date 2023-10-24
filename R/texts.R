@@ -3,8 +3,10 @@
 #' Get or replace the texts in a [corpus], with grouping options.
 #' Works for plain character vectors too, if `groups` is a factor.
 #' 
-#' @description This function is **deprecated** and will be removed in the next
-#'   major release. 
+#' @description 
+#' `r lifecycle::badge('superseded')`
+#' 
+#' This function has been made defunct and replaced. 
 #' * Use [as.character.corpus()] to turn a corpus into a simple named character
 #'   vector.
 #' * Use [corpus_group()] instead of `texts(x, groups = ...)` to aggregate texts
