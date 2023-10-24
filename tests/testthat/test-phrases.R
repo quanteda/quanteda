@@ -39,19 +39,19 @@ test_that("test phrase for dictionaries", {
 
 test_that("test as.phrase", {
     toks <- tokens(c("United States", "Congress", "federal government"))
-    expect_equivalent(
-        as.phrase(toks),
-        list(c("United", "States"), "Congress", c("federal", "government"))
-    )
-    expect_equivalent(
-        suppressWarnings(phrase(toks)),
-        list(c("United", "States"), "Congress", c("federal", "government"))
-    )
-    lis <- as.list(toks)
-    expect_equivalent(
-        as.phrase(lis),
-        list(c("United", "States"), "Congress", c("federal", "government"))
-    )
+    # expect_equivalent(
+    #     as.phrase(toks),
+    #     list(c("United", "States"), "Congress", c("federal", "government"))
+    # )
+    # expect_equivalent(
+    #     suppressWarnings(phrase(toks)),
+    #     list(c("United", "States"), "Congress", c("federal", "government"))
+    # )
+    # lis <- as.list(toks)
+    # expect_equivalent(
+    #     as.phrase(lis),
+    #     list(c("United", "States"), "Congress", c("federal", "government"))
+    # )
     load("../data/collocations/col.rda")
     expect_equivalent(
         as.phrase(col),

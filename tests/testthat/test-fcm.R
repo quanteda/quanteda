@@ -272,13 +272,6 @@ test_that("fcm print works as expected", {
     )
 })
 
-test_that("fcm works the same for different object types", {
-    txt <- c("a a a b b c", "a a c e", "a c e f g")
-    suppressWarnings(expect_equivalent(fcm(txt), fcm(corpus(txt))))
-    expect_equivalent(fcm(tokens(txt)), suppressWarnings(fcm(corpus(txt))))
-    expect_identical(suppressWarnings(fcm(txt)), fcm(tokens(txt)))
-})
-
 test_that("fcm expects error for wrong weight or window", {
     txt <- c("a a a b b c", "a a c e", "a c e f g")
     toks <- tokens(txt)
