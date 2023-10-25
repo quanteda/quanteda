@@ -89,9 +89,6 @@
       <a href="../articles/pkgdown/benchmarks_xptr.html">Performance benchmarks for v4</a>
     </li>
     <li>
-      <a href="../articles/pkgdown/comparison.html">Feature comparison</a>
-    </li>
-    <li>
       <a href="../articles/pkgdown/design.html">Package design</a>
     </li>
     <li>
@@ -221,7 +218,7 @@ parsing.</p></li>
 <p><a href="https://github.com/quanteda/quanteda.corpora" class="external-link"><strong>quanteda.corpora</strong></a>:
 Additional textual data for use with <strong>quanteda</strong>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/remotes/man/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"quanteda/quanteda.corpora"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"quanteda/quanteda.corpora"</span><span class="op">)</span></span></code></pre></div>
 </li>
 <li>
 <p><a href="https://github.com/kbenoit/quanteda.dictionaries" class="external-link"><strong>quanteda.dictionaries</strong></a>:
@@ -229,7 +226,7 @@ Various dictionaries for use with <strong>quanteda</strong>, including
 the function <code>liwcalike()</code>, an R implementation of the <a href="https://www.liwc.app" class="external-link">Linguistic Inquiry and Word Count</a>
 approach to text analysis.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/remotes/man/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"kbenoit/quanteda.dictionaries"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"kbenoit/quanteda.dictionaries"</span><span class="op">)</span></span></code></pre></div>
 </li>
 </ul>
 </div>
@@ -290,12 +287,12 @@ the 2010 election manifestos of the UK political parties (called
 <span><span class="co">##           BNP  1125   3280        88</span></span>
 <span><span class="co">##     Coalition   142    260         4</span></span>
 <span><span class="co">##  Conservative   251    499        15</span></span>
-<span><span class="co">##        Greens   322    677        21</span></span>
-<span><span class="co">##        Labour   298    680        29</span></span>
+<span><span class="co">##        Greens   322    679        21</span></span>
+<span><span class="co">##        Labour   298    683        29</span></span>
 <span><span class="co">##        LibDem   251    483        14</span></span>
 <span><span class="co">##            PC    77    114         5</span></span>
 <span><span class="co">##           SNP    88    134         4</span></span>
-<span><span class="co">##          UKIP   346    722        26</span></span></code></pre>
+<span><span class="co">##          UKIP   346    723        26</span></span></code></pre>
 <p>If we wanted, we could add some document-level variables – what
 quanteda calls <em>docvars</em> – to this corpus.</p>
 <p>We can do this using the R’s <code><a href="https://rdrr.io/r/base/names.html" class="external-link">names()</a></code> function to get the
@@ -311,12 +308,12 @@ assign this to a document variable (<em>docvar</em>).</p>
 <span><span class="co">##           BNP  1125   3280        88          BNP 2010</span></span>
 <span><span class="co">##     Coalition   142    260         4    Coalition 2010</span></span>
 <span><span class="co">##  Conservative   251    499        15 Conservative 2010</span></span>
-<span><span class="co">##        Greens   322    677        21       Greens 2010</span></span>
-<span><span class="co">##        Labour   298    680        29       Labour 2010</span></span>
+<span><span class="co">##        Greens   322    679        21       Greens 2010</span></span>
+<span><span class="co">##        Labour   298    683        29       Labour 2010</span></span>
 <span><span class="co">##        LibDem   251    483        14       LibDem 2010</span></span>
 <span><span class="co">##            PC    77    114         5           PC 2010</span></span>
 <span><span class="co">##           SNP    88    134         4          SNP 2010</span></span>
-<span><span class="co">##          UKIP   346    722        26         UKIP 2010</span></span></code></pre>
+<span><span class="co">##          UKIP   346    723        26         UKIP 2010</span></span></code></pre>
 </div>
 <div class="section level4">
 <h4 id="loading-in-files-using-the-readtext-package">Loading in files using the readtext package<a class="anchor" aria-label="anchor" href="#loading-in-files-using-the-readtext-package"></a>
@@ -442,7 +439,7 @@ plot some basic descriptive statistics with this information:</p>
 <code class="sourceCode R"><span><span class="co"># longest inaugural address: William Henry Harrison</span></span>
 <span><span class="va">tokeninfo</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/which.min.html" class="external-link">which.max</a></span><span class="op">(</span><span class="va">tokeninfo</span><span class="op">$</span><span class="va">Tokens</span><span class="op">)</span>, <span class="op">]</span></span></code></pre></div>
 <pre><code><span><span class="co">##             Text Types Tokens Sentences Year President     FirstName Party</span></span>
-<span><span class="co">## 14 1841-Harrison  1898   9123       210 1841  Harrison William Henry  Whig</span></span></code></pre>
+<span><span class="co">## 14 1841-Harrison  1896   9125       210 1841  Harrison William Henry  Whig</span></span></code></pre>
 </div>
 </div>
 <div class="section level3">
@@ -539,7 +536,7 @@ through the <code>valuetype</code> argument.</p>
 <span><span class="co">##    [1961-Kennedy, 850]         alter that uncertain balance of |  terror   |</span></span>
 <span><span class="co">##    [1961-Kennedy, 972]               of science instead of its |  terrors  |</span></span>
 <span><span class="co">##     [1981-Reagan, 811]          freeing all Americans from the |  terror   |</span></span>
-<span><span class="co">##    [1981-Reagan, 2186]        understood by those who practice | terrorism |</span></span>
+<span><span class="co">##    [1981-Reagan, 2187]        understood by those who practice | terrorism |</span></span>
 <span><span class="co">##   [1997-Clinton, 1047]             They fuel the fanaticism of |  terror   |</span></span>
 <span><span class="co">##   [1997-Clinton, 1647]       maintain a strong defense against |  terror   |</span></span>
 <span><span class="co">##     [2009-Obama, 1619]          advance their aims by inducing |  terror   |</span></span>
@@ -849,7 +846,7 @@ calling R’s <code><a href="https://rdrr.io/r/utils/View.html" class="external-
 <span>    <span class="fu"><a href="../reference/tokens_select.html">tokens_remove</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html" class="external-link">stopwords</a></span><span class="op">(</span><span class="st">"en"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="../reference/dfm.html">dfm</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">dfmat_uk</span></span></code></pre></div>
-<pre><code><span><span class="co">## Document-feature matrix of: 9 documents, 1,551 features (83.81% sparse) and 0 docvars.</span></span>
+<pre><code><span><span class="co">## Document-feature matrix of: 9 documents, 1,547 features (83.78% sparse) and 0 docvars.</span></span>
 <span><span class="co">##               features</span></span>
 <span><span class="co">## docs           immigration unparalleled crisis bnp can solve current birth</span></span>
 <span><span class="co">##   BNP                   21            1      2  13   1     2       4     4</span></span>
@@ -866,7 +863,7 @@ calling R’s <code><a href="https://rdrr.io/r/utils/View.html" class="external-
 <span><span class="co">##   Greens           0          0</span></span>
 <span><span class="co">##   Labour           0          0</span></span>
 <span><span class="co">##   LibDem           0          0</span></span>
-<span><span class="co">## [ reached max_ndoc ... 3 more documents, reached max_nfeat ... 1,541 more features ]</span></span></code></pre>
+<span><span class="co">## [ reached max_ndoc ... 3 more documents, reached max_nfeat ... 1,537 more features ]</span></span></code></pre>
 <p>To access a list of the most frequently occurring features, we can
 use <code><a href="../reference/topfeatures.html">topfeatures()</a></code>:</p>
 <div class="sourceCode" id="cb68"><pre class="downlit sourceCode r">
@@ -910,12 +907,12 @@ dfm, then they can be referred to directly.</p>
 frequency first, and inspect it:</p>
 <div class="sourceCode" id="cb72"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/dfm_sort.html">dfm_sort</a></span><span class="op">(</span><span class="va">dfmat_pres</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Document-feature matrix of: 2 documents, 4,373 features (32.22% sparse) and 1 docvar.</span></span>
+<pre><code><span><span class="co">## Document-feature matrix of: 2 documents, 4,371 features (32.21% sparse) and 1 docvar.</span></span>
 <span><span class="co">##             features</span></span>
 <span><span class="co">## docs          us world can people must new america nation freedom time</span></span>
 <span><span class="co">##   Democratic 149    89  96     80   93  87      65     73      37   52</span></span>
 <span><span class="co">##   Republican 140   107  84     89   68  66      83     62      84   58</span></span>
-<span><span class="co">## [ reached max_nfeat ... 4,363 more features ]</span></span></code></pre>
+<span><span class="co">## [ reached max_nfeat ... 4,361 more features ]</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="dictionary-functions">Dictionary functions<a class="anchor" aria-label="anchor" href="#dictionary-functions"></a>
@@ -989,7 +986,7 @@ this to the Presidential inaugural speech corpus:</p>
 <span>    <span class="fu"><a href="../reference/tokens_wordstem.html">tokens_wordstem</a></span><span class="op">(</span>language <span class="op">=</span> <span class="st">"en"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="../reference/tokens_select.html">tokens_remove</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html" class="external-link">stopwords</a></span><span class="op">(</span><span class="st">"en"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="../reference/dfm.html">dfm</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="va">tstat_obama</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/quanteda.textstats/man/textstat_simil.html" class="external-link">textstat_simil</a></span><span class="op">(</span><span class="va">dfmat_inaug_post1980</span>, <span class="va">dfmat_inaug_post1980</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2009-Obama"</span>,</span>
+<span><span class="va">tstat_obama</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://quanteda.io/reference/textstat_simil.html">textstat_simil</a></span><span class="op">(</span><span class="va">dfmat_inaug_post1980</span>, <span class="va">dfmat_inaug_post1980</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2009-Obama"</span>,</span>
 <span>    <span class="st">"2013-Obama"</span><span class="op">)</span>, <span class="op">]</span>, margin <span class="op">=</span> <span class="st">"documents"</span>, method <span class="op">=</span> <span class="st">"cosine"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">as.list</a></span><span class="op">(</span><span class="va">tstat_obama</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/dotchart.html" class="external-link">dotchart</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">as.list</a></span><span class="op">(</span><span class="va">tstat_obama</span><span class="op">)</span><span class="op">$</span><span class="st">"2013-Obama"</span>, xlab <span class="op">=</span> <span class="st">"Cosine similarity"</span>, pch <span class="op">=</span> <span class="fl">19</span><span class="op">)</span></span></code></pre></div>
@@ -1010,7 +1007,7 @@ First, load some data.</p>
 <code class="sourceCode R"><span><span class="co"># hierarchical clustering - get distances on normalized dfm</span></span>
 <span><span class="va">tstat_dist</span> <span class="op">&lt;-</span> <span class="va">dfmat_sotu</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="../reference/dfm_weight.html">dfm_weight</a></span><span class="op">(</span>scheme <span class="op">=</span> <span class="st">"prop"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/pkg/quanteda.textstats/man/textstat_simil.html" class="external-link">textstat_dist</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://quanteda.io/reference/textstat_simil.html">textstat_dist</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co"># hiarchical clustering the distance object</span></span>
 <span><span class="va">pres_cluster</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/hclust.html" class="external-link">hclust</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/dist.html" class="external-link">as.dist</a></span><span class="op">(</span><span class="va">tstat_dist</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co"># label with document names</span></span>
@@ -1020,7 +1017,7 @@ First, load some data.</p>
 <p><img src="../../../../../Dropbox%20(Personal)/GitHub/quanteda/quanteda/articles/images/fig2.png" width="700"></p>
 <p>We can also look at term similarities:</p>
 <div class="sourceCode" id="cb83"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">tstat_sim</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/quanteda.textstats/man/textstat_simil.html" class="external-link">textstat_simil</a></span><span class="op">(</span><span class="va">dfmat_sotu</span>, <span class="va">dfmat_sotu</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"fair"</span>, <span class="st">"health"</span>, <span class="st">"terror"</span><span class="op">)</span><span class="op">]</span>,</span>
+<code class="sourceCode R"><span><span class="va">tstat_sim</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://quanteda.io/reference/textstat_simil.html">textstat_simil</a></span><span class="op">(</span><span class="va">dfmat_sotu</span>, <span class="va">dfmat_sotu</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"fair"</span>, <span class="st">"health"</span>, <span class="st">"terror"</span><span class="op">)</span><span class="op">]</span>,</span>
 <span>    method <span class="op">=</span> <span class="st">"cosine"</span>, margin <span class="op">=</span> <span class="st">"features"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">as.list</a></span><span class="op">(</span><span class="va">tstat_sim</span><span class="op">)</span>, <span class="va">head</span>, <span class="fl">10</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## $fair</span></span>
@@ -1091,7 +1088,7 @@ well, e.g.:</p>
 <span>    <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">my_lda_fit20</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
 <pre><code><span><span class="co">## Loading required package: stm</span></span></code></pre>
-<pre><code><span><span class="co">## stm v1.3.6 successfully loaded. See ?stm for help. </span></span>
+<pre><code><span><span class="co">## stm v1.3.6.1 successfully loaded. See ?stm for help. </span></span>
 <span><span class="co">##  Papers, resources, and other materials at structuraltopicmodel.com</span></span></code></pre>
 <p><img src="quickstart_files/figure-html/unnamed-chunk-43-1.png" width="672"></p>
 </div>

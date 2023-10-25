@@ -32,8 +32,6 @@ navbar:
           href: articles/pkgdown/tokens_xptr.html
         - text: "Performance benchmarks for v4"
           href: articles/pkgdown/benchmarks_xptr.html
-        - text: "Feature comparison"
-          href: articles/pkgdown/comparison.html
         - text: "Package design"
           href: articles/pkgdown/design.html
         - text: "Changelog"
@@ -112,7 +110,6 @@ reference:
     - tail.dfm
     - as.dfm
     - is.dfm
-    - as.data.frame.dfm
     - as.matrix.dfm
     - starts_with("fcm")
     - as.fcm
@@ -143,7 +140,6 @@ reference:
     - featnames
 - title: Miscellaneous functions
   contents:
-    - copy
     - phrase
     - convert
     - bootstrap_dfm

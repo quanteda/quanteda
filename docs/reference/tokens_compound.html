@@ -70,9 +70,6 @@ subsequently as single tokens, for instance in constructing a dfm.'><!-- mathjax
       <a href="../articles/pkgdown/benchmarks_xptr.html">Performance benchmarks for v4</a>
     </li>
     <li>
-      <a href="../articles/pkgdown/comparison.html">Feature comparison</a>
-    </li>
-    <li>
       <a href="../articles/pkgdown/design.html">Package design</a>
     </li>
     <li>
@@ -296,7 +293,7 @@ list element is the sequence of character elements.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># use window to form ngrams</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="tokens_select.html">tokens_remove</a></span><span class="op">(</span><span class="va">toks</span>, pattern <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html" class="external-link">stopwords</a></span><span class="op">(</span><span class="st">"en"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span><span class="fu"><a href="tokens_select.html">tokens_remove</a></span><span class="op">(</span><span class="va">toks</span>, pattern <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html" class="external-link">stopwords</a></span><span class="op">(</span><span class="st">"en"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>    <span class="fu">tokens_compound</span><span class="op">(</span>pattern <span class="op">=</span> <span class="st">"leav*"</span>, join <span class="op">=</span> <span class="cn">FALSE</span>, window <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Tokens consisting of 1 document.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> text1 :</span>

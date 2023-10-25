@@ -130,10 +130,10 @@ summary(corpus(dat_csv), 5)
 
 **quanteda**のコーパスは，元の文書をユニコード（UTF-8）に変換し，文書に対するメタデータと一緒に格納しすることで、ステミングや句読点の削除などの処理よって変更されないテキストデータの静的な保管庫になるように設計されている．これによって，コーパスから文書を抽出して新しいオブジェクトを作成した後でも，コーパスには元のデータが残り，別の分析を，同じコーパスを用いて行うことができる．
 
-コーパスから文書を取り出すためには，`texts()`と呼ばれる関数を使用する．
+コーパスから文書を取り出すためには，`as.character()`と呼ばれる関数を使用する．
 
 ```{r}
-texts(data_corpus_inaugural)[2]
+as.character(data_corpus_inaugural)[2]
 ```
 
 `summary()`により，コーパス内のテキストの要約を行うことができる．
@@ -187,15 +187,16 @@ summary(corpus_subset(data_corpus_inaugural, President == "Adams"))
 `kwic()`（keywords-in-context）は単語の検索を行い，その単語が現れる文脈を表示する．
 
 ```{r, tidy=TRUE}
-kwic(data_corpus_inaugural, pattern = "terror")
+toks <- tokens(data_corpus_inaugural)
+kwic(toks, pattern = "terror")
 ```
 
 ```{r}
-kwic(data_corpus_inaugural, pattern = "terror", valuetype = "regex")
+kwic(toks, pattern = "terror", valuetype = "regex")
 ```
 
 ```{r}
-kwic(data_corpus_inaugural, pattern = "communist*")
+kwic(toks, pattern = "communist*")
 ```
 
 

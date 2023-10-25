@@ -89,9 +89,6 @@
       <a href="../../../articles/pkgdown/benchmarks_xptr.html">Performance benchmarks for v4</a>
     </li>
     <li>
-      <a href="../../../articles/pkgdown/comparison.html">Feature comparison</a>
-    </li>
-    <li>
       <a href="../../../articles/pkgdown/design.html">Package design</a>
     </li>
     <li>
@@ -204,8 +201,8 @@ and 2017. You can download the corpus using the
 <span><span class="va">ch_stop</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html" class="external-link">stopwords</a></span><span class="op">(</span><span class="st">"zh"</span>, source <span class="op">=</span> <span class="st">"misc"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># tokenize</span></span>
-<span><span class="va">ch_toks</span> <span class="op">&lt;-</span> <span class="va">corp</span> <span class="op"><a href="../../../reference/pipe.html">%&gt;%</a></span> </span>
-<span>    <span class="fu"><a href="../../../reference/tokens.html">tokens</a></span><span class="op">(</span>remove_punct <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="../../../reference/pipe.html">%&gt;%</a></span></span>
+<span><span class="va">ch_toks</span> <span class="op">&lt;-</span> <span class="va">corp</span> <span class="op">|&gt;</span> </span>
+<span>    <span class="fu"><a href="../../../reference/tokens.html">tokens</a></span><span class="op">(</span>remove_punct <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="../../../reference/tokens_select.html">tokens_remove</a></span><span class="op">(</span>pattern <span class="op">=</span> <span class="va">ch_stop</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># construct a dfm</span></span>
@@ -240,7 +237,7 @@ and 2017. You can download the corpus using the
 <code class="sourceCode R"><span><span class="co"># fcm within the window size of 5</span></span>
 <span><span class="va">ch17_corp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/corpus_subset.html">corpus_subset</a></span><span class="op">(</span><span class="va">corp</span>, <span class="va">Year</span> <span class="op">==</span> <span class="st">"2017"</span><span class="op">)</span></span>
 <span><span class="va">ch17_toks</span> <span class="op">&lt;-</span> </span>
-<span>    <span class="fu"><a href="../../../reference/tokens.html">tokens</a></span><span class="op">(</span><span class="va">ch17_corp</span>, remove_punct <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="../../../reference/pipe.html">%&gt;%</a></span> </span>
+<span>    <span class="fu"><a href="../../../reference/tokens.html">tokens</a></span><span class="op">(</span><span class="va">ch17_corp</span>, remove_punct <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>    <span class="fu"><a href="../../../reference/tokens_select.html">tokens_remove</a></span><span class="op">(</span><span class="va">ch_stop</span><span class="op">)</span></span>
 <span><span class="va">ch_fcm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/fcm.html">fcm</a></span><span class="op">(</span><span class="va">ch17_toks</span>, context <span class="op">=</span> <span class="st">"window"</span><span class="op">)</span>  </span>
 <span><span class="fu"><a href="../../../reference/topfeatures.html">topfeatures</a></span><span class="op">(</span><span class="va">ch_fcm</span><span class="op">[</span><span class="st">"改革"</span>, <span class="op">]</span><span class="op">)</span></span></code></pre></div>
@@ -282,80 +279,80 @@ and 2017. You can download the corpus using the
 <td align="right">1787</td>
 <td align="right">0</td>
 <td align="right">2</td>
-<td align="right">5.667199</td>
-<td align="right">128.75420</td>
+<td align="right">5.667646</td>
+<td align="right">128.76439</td>
 </tr>
 <tr class="even">
 <td align="left">亿 元</td>
 <td align="right">689</td>
 <td align="right">0</td>
 <td align="right">2</td>
-<td align="right">7.451204</td>
-<td align="right">93.08925</td>
+<td align="right">7.451647</td>
+<td align="right">93.09479</td>
 </tr>
 <tr class="odd">
 <td align="left">现代 化</td>
 <td align="right">632</td>
 <td align="right">0</td>
 <td align="right">2</td>
-<td align="right">6.956422</td>
-<td align="right">83.62349</td>
+<td align="right">6.956866</td>
+<td align="right">83.62882</td>
 </tr>
 <tr class="even">
 <td align="left">体制 改革</td>
 <td align="right">504</td>
 <td align="right">0</td>
 <td align="right">2</td>
-<td align="right">5.200697</td>
-<td align="right">77.48706</td>
+<td align="right">5.199483</td>
+<td align="right">77.47483</td>
 </tr>
 <tr class="odd">
 <td align="left">五年 计划</td>
 <td align="right">341</td>
 <td align="right">0</td>
 <td align="right">2</td>
-<td align="right">5.366662</td>
-<td align="right">71.74031</td>
+<td align="right">5.365465</td>
+<td align="right">71.73289</td>
 </tr>
 <tr class="even">
 <td align="left">各级 政府</td>
 <td align="right">306</td>
 <td align="right">0</td>
 <td align="right">2</td>
-<td align="right">6.117371</td>
-<td align="right">66.70579</td>
+<td align="right">6.116987</td>
+<td align="right">66.70430</td>
 </tr>
 <tr class="odd">
 <td align="left">增长 百分</td>
 <td align="right">300</td>
 <td align="right">0</td>
 <td align="right">2</td>
-<td align="right">5.526715</td>
-<td align="right">65.95162</td>
+<td align="right">5.527159</td>
+<td align="right">65.95692</td>
 </tr>
 <tr class="even">
 <td align="left">万 吨</td>
 <td align="right">212</td>
 <td align="right">0</td>
 <td align="right">2</td>
-<td align="right">6.595894</td>
-<td align="right">62.61984</td>
+<td align="right">6.596337</td>
+<td align="right">62.62405</td>
 </tr>
 <tr class="odd">
 <td align="left">国民 经济</td>
 <td align="right">589</td>
 <td align="right">0</td>
 <td align="right">2</td>
-<td align="right">6.023857</td>
-<td align="right">61.89636</td>
+<td align="right">6.021117</td>
+<td align="right">61.87053</td>
 </tr>
 <tr class="even">
 <td align="left">充分 发挥</td>
 <td align="right">191</td>
 <td align="right">0</td>
 <td align="right">2</td>
-<td align="right">6.590065</td>
-<td align="right">61.30410</td>
+<td align="right">6.590507</td>
+<td align="right">61.30822</td>
 </tr>
 </tbody>
 </table>
@@ -378,80 +375,80 @@ and 2017. You can download the corpus using the
 <td align="right">12</td>
 <td align="right">0</td>
 <td align="right">2</td>
-<td align="right">5.406008</td>
-<td align="right">12.89291</td>
+<td align="right">5.406843</td>
+<td align="right">12.89491</td>
 </tr>
 <tr class="even">
 <td align="left">亿 元</td>
 <td align="right">14</td>
 <td align="right">0</td>
 <td align="right">2</td>
-<td align="right">8.302008</td>
-<td align="right">12.62058</td>
+<td align="right">8.302839</td>
+<td align="right">12.62184</td>
 </tr>
 <tr class="odd">
 <td align="left">调 控</td>
 <td align="right">11</td>
 <td align="right">0</td>
 <td align="right">2</td>
-<td align="right">7.592997</td>
-<td align="right">12.41165</td>
+<td align="right">7.593829</td>
+<td align="right">12.41301</td>
 </tr>
 <tr class="even">
 <td align="left">政府 工作</td>
 <td align="right">9</td>
 <td align="right">0</td>
 <td align="right">2</td>
-<td align="right">4.709392</td>
-<td align="right">11.07793</td>
+<td align="right">4.710228</td>
+<td align="right">11.07990</td>
 </tr>
 <tr class="odd">
 <td align="left">深入 实施</td>
 <td align="right">8</td>
 <td align="right">0</td>
 <td align="right">2</td>
-<td align="right">5.017757</td>
-<td align="right">10.92273</td>
+<td align="right">5.018592</td>
+<td align="right">10.92455</td>
 </tr>
 <tr class="even">
 <td align="left">党 中央</td>
 <td align="right">7</td>
 <td align="right">0</td>
 <td align="right">2</td>
-<td align="right">5.746402</td>
-<td align="right">10.90747</td>
+<td align="right">5.747235</td>
+<td align="right">10.90905</td>
 </tr>
 <tr class="odd">
 <td align="left">体制 改革</td>
 <td align="right">11</td>
 <td align="right">0</td>
 <td align="right">2</td>
-<td align="right">5.330565</td>
-<td align="right">10.55799</td>
+<td align="right">5.317394</td>
+<td align="right">10.53589</td>
 </tr>
 <tr class="even">
 <td align="left">国内 生产</td>
 <td align="right">6</td>
 <td align="right">0</td>
 <td align="right">2</td>
-<td align="right">6.166045</td>
-<td align="right">10.48735</td>
+<td align="right">6.166877</td>
+<td align="right">10.48876</td>
 </tr>
 <tr class="odd">
 <td align="left">现代 化</td>
 <td align="right">8</td>
 <td align="right">0</td>
 <td align="right">2</td>
-<td align="right">5.705211</td>
-<td align="right">10.43348</td>
+<td align="right">5.706046</td>
+<td align="right">10.43500</td>
 </tr>
 <tr class="even">
 <td align="left">基础 设施</td>
 <td align="right">7</td>
 <td align="right">0</td>
 <td align="right">2</td>
-<td align="right">7.548798</td>
-<td align="right">10.42399</td>
+<td align="right">7.549629</td>
+<td align="right">10.42514</td>
 </tr>
 </tbody>
 </table>

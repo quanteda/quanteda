@@ -137,10 +137,10 @@ summary(corpus(dat_csv), 5)
 
 कॉर्पस टेक्स्ट का लगभग स्थिर कंटेनर है, प्रॉसेसिंग और विश्लेषण के संबंध में। इस कंटेनर में टेक्स्ट को आंतरिक रूप से बदला नहीं जा सकता किसी पूर्व प्रॉसेसिंग के लिए जैसे की `,` जैसे चिन्हों को हटाने के लिए। बल्कि, टेक्स्ट को कॉर्पस से निकाला जा सकता है प्रॉसेसिंग के लिए और नए ऑब्जेक्ट में रखा जा सकता है। कॉर्पस के टेक्स्ट पे , बिना बदलाव किए, विश्लेषण किए सकते हैं - जैसे की वो पढ़ने में कितना आसान है। 
 
-एक कार्पस से टेक्स्ट को निकालने के लिए, हम `texts()` का उपयोग करते हैं।
+एक कार्पस से टेक्स्ट को निकालने के लिए, हम `as.character()` का उपयोग करते हैं।
 
 ```{r}
-texts(data_corpus_inaugural)[2]
+as.character(data_corpus_inaugural)[2]
 ```
 
 एक कार्पस से टेक्स्ट को संक्षेप में प्रस्तुत करने के लिए, हम एक कार्पस के लिए परिभाषित `summary()` मेथड का प्रयोग कर सकते हैं।
@@ -192,21 +192,22 @@ summary(corpus_subset(data_corpus_inaugural, President == "Adams"))
 `kwic` फ़ंक्शन (कीवर्ड-इन-कॉन्टेक्स्ट) शब्दों को ढूँडता है और उन्हें उनके उचित संदर्भों में दिखाता है।  
 
 ```{r, tidy=TRUE}
-kwic(data_corpus_inaugural, pattern = "terror")
+toks <- tokens(data_corpus_inaugural)
+kwic(toks, pattern = "terror")
 ```
 
 ```{r}
-kwic(data_corpus_inaugural, pattern = "terror", valuetype = "regex")
+kwic(toks, pattern = "terror", valuetype = "regex")
 ```
 
 ```{r}
-kwic(data_corpus_inaugural, pattern = "communist*")
+kwic(toks, pattern = "communist*")
 ```
 
 `phrase()` का उपयोग करके हम बहु-शब्द इक्स्प्रेशन भी देख सकते हैं।
 
 ```{r}
-kwic(data_corpus_inaugural, pattern = phrase("United States")) |>
+kwic(toks, pattern = phrase("United States")) |>
     head() # show context of the first six occurrences of "United States"
 ```
 

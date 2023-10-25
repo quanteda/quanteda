@@ -67,9 +67,6 @@ to the proportion of cells that have zero counts."><!-- mathjax --><script src="
       <a href="../articles/pkgdown/benchmarks_xptr.html">Performance benchmarks for v4</a>
     </li>
     <li>
-      <a href="../articles/pkgdown/comparison.html">Feature comparison</a>
-    </li>
-    <li>
       <a href="../articles/pkgdown/design.html">Package design</a>
     </li>
     <li>
@@ -159,9 +156,9 @@ to the proportion of cells that have zero counts.</p>
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">dfmat</span> <span class="op">&lt;-</span> <span class="fu"><a href="dfm.html">dfm</a></span><span class="op">(</span><span class="fu"><a href="tokens.html">tokens</a></span><span class="op">(</span><span class="va">data_corpus_inaugural</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">sparsity</span><span class="op">(</span><span class="va">dfmat</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.9183978</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.9183668</span>
 <span class="r-in"><span><span class="fu">sparsity</span><span class="op">(</span><span class="fu"><a href="dfm_trim.html">dfm_trim</a></span><span class="op">(</span><span class="va">dfmat</span>, min_termfreq <span class="op">=</span> <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.7851587</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.7851998</span>
 </code></pre></div>
     </div>
   </div>

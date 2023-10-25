@@ -66,9 +66,6 @@
       <a href="../articles/pkgdown/benchmarks_xptr.html">Performance benchmarks for v4</a>
     </li>
     <li>
-      <a href="../articles/pkgdown/comparison.html">Feature comparison</a>
-    </li>
-    <li>
       <a href="../articles/pkgdown/design.html">Package design</a>
     </li>
     <li>
@@ -151,30 +148,28 @@
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>x</dt>
-<dd><p>a <span class="pkg">quanteda</span> object: a <a href="corpus.html">corpus</a>, <a href="dfm.html">dfm</a>, or
-<a href="tokens.html">tokens</a> object, or a readtext object from the <span class="pkg">readtext</span> package.</p></dd>
+<dd><p>a <span class="pkg">quanteda</span> object: a <a href="corpus.html">corpus</a>, <a href="dfm.html">dfm</a>, <a href="tokens.html">tokens</a>, or
+<a href="tokens_xptr.html">tokens_xptr</a> object, or a readtext object from the <span class="pkg">readtext</span> package</p></dd>
 
 </dl></div>
     <div id="value">
     <h2>Value</h2>
     
 
-<p>an integer (count) of the number of documents or features</p>
-    </div>
-    <div id="details">
-    <h2>Details</h2>
-    <p><code>ndoc</code> returns the number of documents in an object
-whose texts are organized as "documents" (a <a href="corpus.html">corpus</a>,
-<a href="dfm.html">dfm</a>, or <a href="tokens.html">tokens</a> object, a readtext object from the
-<span class="pkg">readtext</span> package).</p>
-<p><code>nfeat</code> returns the number of features from a dfm; it is an
-alias for <code>ntype</code> when applied to dfm objects.  This function is only
-defined for <a href="dfm.html">dfm</a> objects because only these have "features".  (To count
-tokens, see <code><a href="ntoken.html">ntoken()</a></code>.)</p>
+<p><code>ndoc()</code> returns an integer count of the number of documents in an
+object whose texts are organized as "documents" (a <a href="corpus.html">corpus</a>, <a href="dfm.html">dfm</a>, or
+<a href="tokens.html">tokens</a>/<a href="tokens_xptr.html">tokens_xptr</a> object.</p>
+
+
+<p><code>nfeat()</code> returns an integer count of the number of features.  It is
+an alias for <code><a href="ntoken.html">ntype()</a></code> for a dfm. This function is only defined for <a href="dfm.html">dfm</a></p>
+
+
+<p>objects because only these have "features".</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
-    <div class="dont-index"><p><code><a href="ntoken.html">ntoken()</a></code></p></div>
+    <div class="dont-index"><p><code><a href="ntoken.html">ntoken()</a></code>, <code><a href="ntoken.html">ntype()</a></code></p></div>
     </div>
 
     <div id="ref-examples">
@@ -193,9 +188,9 @@ tokens, see <code><a href="ntoken.html">ntoken()</a></code>.)</p>
 <span class="r-in"><span><span class="va">toks1</span> <span class="op">&lt;-</span> <span class="fu"><a href="tokens.html">tokens</a></span><span class="op">(</span><span class="fu"><a href="corpus_subset.html">corpus_subset</a></span><span class="op">(</span><span class="va">data_corpus_inaugural</span>, <span class="va">Year</span> <span class="op">&gt;</span> <span class="fl">1980</span><span class="op">)</span>, remove_punct <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">toks2</span> <span class="op">&lt;-</span> <span class="fu"><a href="tokens.html">tokens</a></span><span class="op">(</span><span class="fu"><a href="corpus_subset.html">corpus_subset</a></span><span class="op">(</span><span class="va">data_corpus_inaugural</span>, <span class="va">Year</span> <span class="op">&gt;</span> <span class="fl">1980</span><span class="op">)</span>, remove_punct <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">nfeat</span><span class="op">(</span><span class="fu"><a href="dfm.html">dfm</a></span><span class="op">(</span><span class="va">toks1</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 3428</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 3426</span>
 <span class="r-in"><span><span class="fu">nfeat</span><span class="op">(</span><span class="fu"><a href="dfm.html">dfm</a></span><span class="op">(</span><span class="va">toks2</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 3412</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 3410</span>
 </code></pre></div>
     </div>
   </div>

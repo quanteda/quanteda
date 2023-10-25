@@ -69,9 +69,6 @@ or to select only terms of interest from a dictionary."><!-- mathjax --><script 
       <a href="../articles/pkgdown/benchmarks_xptr.html">Performance benchmarks for v4</a>
     </li>
     <li>
-      <a href="../articles/pkgdown/comparison.html">Feature comparison</a>
-    </li>
-    <li>
       <a href="../articles/pkgdown/design.html">Package design</a>
     </li>
     <li>
@@ -265,7 +262,7 @@ features based on the values of the document-feature matrix, use
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">dfmat</span> <span class="op">&lt;-</span> <span class="fu"><a href="tokens.html">tokens</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"My Christmas was ruined by your opposition tax plan."</span>,</span></span>
-<span class="r-in"><span>               <span class="st">"Does the United_States or Sweden have more progressive taxation?"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>               <span class="st">"Does the United_States or Sweden have more progressive taxation?"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>    <span class="fu"><a href="dfm.html">dfm</a></span><span class="op">(</span>tolower <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">dict</span> <span class="op">&lt;-</span> <span class="fu"><a href="dictionary.html">dictionary</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>countries <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"United_States"</span>, <span class="st">"Sweden"</span>, <span class="st">"France"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                        wordsEndingInY <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"by"</span>, <span class="st">"my"</span><span class="op">)</span>,</span></span>

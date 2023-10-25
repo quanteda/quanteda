@@ -66,9 +66,6 @@
       <a href="../articles/pkgdown/benchmarks_xptr.html">Performance benchmarks for v4</a>
     </li>
     <li>
-      <a href="../articles/pkgdown/comparison.html">Feature comparison</a>
-    </li>
-    <li>
       <a href="../articles/pkgdown/design.html">Package design</a>
     </li>
     <li>
@@ -262,9 +259,9 @@ depending on the size of your input matrix.</p>
 <span class="r-in"><span><span class="va">dfmat2</span> <span class="op">&lt;-</span> <span class="fu">dfm_weight</span><span class="op">(</span><span class="va">dfmat1</span>, scheme <span class="op">=</span> <span class="st">"prop"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="topfeatures.html">topfeatures</a></span><span class="op">(</span><span class="va">dfmat2</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       the         ,        of       and         .        to        in       our </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3.8381701 2.8260570 2.7179413 2.1189165 2.0425725 1.7929599 1.0882747 0.8917136 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3.8380892 2.8259669 2.7178890 2.1188598 2.0425030 1.7929097 1.0882477 0.8916800 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         a        we </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0.8790494 0.8082196 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0.8790146 0.8081806 </span>
 <span class="r-in"><span><span class="va">dfmat3</span> <span class="op">&lt;-</span> <span class="fu">dfm_weight</span><span class="op">(</span><span class="va">dfmat1</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="topfeatures.html">topfeatures</a></span><span class="op">(</span><span class="va">dfmat3</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   the    of     ,   and     .    to    in     a   our    we </span>
@@ -278,14 +275,14 @@ depending on the size of your input matrix.</p>
 <span class="r-in"><span><span class="va">dfmat5</span> <span class="op">&lt;-</span> <span class="fu">dfm_weight</span><span class="op">(</span><span class="va">dfmat1</span>, scheme <span class="op">=</span> <span class="st">"logave"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="topfeatures.html">topfeatures</a></span><span class="op">(</span><span class="va">dfmat5</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       the         ,        of       and         .        to        in         a </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 124.00696 118.76452 118.01041 113.83150 112.55827 111.14137 102.32062  97.53529 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 124.00535 118.76293 118.00889 113.83001 112.55676 111.13988 102.31926  97.53391 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       our      that </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  95.57741  94.48649 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  95.57610  94.48517 </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># combine these methods for more complex dfm_weightings, e.g. as in Section 6.4</span></span></span>
 <span class="r-in"><span><span class="co"># of Introduction to Information Retrieval</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="dfm_tfidf.html">dfm_tfidf</a></span><span class="op">(</span><span class="va">dfmat1</span>, scheme_tf <span class="op">=</span> <span class="st">"logcount"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Document-feature matrix of: 6 documents, 9,441 features (93.84% sparse) and 4 docvars.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Document-feature matrix of: 6 documents, 9,437 features (93.83% sparse) and 4 docvars.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                  features</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> docs              fellow-citizens of the    senate and    house representatives</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   1789-Washington       0.4920984  0   0 0.8166095   0 1.128984       0.8127846</span>
@@ -302,12 +299,12 @@ depending on the size of your input matrix.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   1801-Jefferson  0.2026503 0.1373836     0       </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   1805-Jefferson  0         0.2534861     0       </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   1809-Madison    0         0             0       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [ reached max_nfeat ... 9,431 more features ]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [ reached max_nfeat ... 9,427 more features ]</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># smooth the dfm</span></span></span>
 <span class="r-in"><span><span class="va">dfmat</span> <span class="op">&lt;-</span> <span class="fu"><a href="dfm.html">dfm</a></span><span class="op">(</span><span class="fu"><a href="tokens.html">tokens</a></span><span class="op">(</span><span class="va">data_corpus_inaugural</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">dfm_smooth</span><span class="op">(</span><span class="va">dfmat</span>, <span class="fl">0.5</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Document-feature matrix of: 59 documents, 9,441 features (0.00% sparse) and 4 docvars.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Document-feature matrix of: 59 documents, 9,437 features (0.00% sparse) and 4 docvars.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                  features</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> docs              fellow-citizens    of   the senate   and house</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   1789-Washington             1.5  71.5 116.5    1.5  48.5   2.5</span>
@@ -324,7 +321,7 @@ depending on the size of your input matrix.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   1801-Jefferson              0.5 1.5   1.5          0.5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   1805-Jefferson              0.5 0.5   7.5          0.5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   1809-Madison                0.5 0.5   0.5          0.5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [ reached max_ndoc ... 53 more documents, reached max_nfeat ... 9,431 more features ]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [ reached max_ndoc ... 53 more documents, reached max_nfeat ... 9,427 more features ]</span>
 </code></pre></div>
     </div>
   </div>

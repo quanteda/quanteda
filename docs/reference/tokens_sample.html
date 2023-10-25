@@ -68,9 +68,6 @@ weights."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/ma
       <a href="../articles/pkgdown/benchmarks_xptr.html">Performance benchmarks for v4</a>
     </li>
     <li>
-      <a href="../articles/pkgdown/comparison.html">Feature comparison</a>
-    </li>
-    <li>
       <a href="../articles/pkgdown/design.html">Package design</a>
     </li>
     <li>
@@ -276,10 +273,10 @@ variables for the documents sampled.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [9] "of"              "Representatives" ":"               "Among"          </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [ ... and 1,525 more ]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span><span class="fu">tokens_sample</span><span class="op">(</span><span class="va">toks</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu"><a href="docnames.html">docnames</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">tokens_sample</span><span class="op">(</span><span class="va">toks</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="docnames.html">docnames</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "1805-Jefferson.1"  "1801-Jefferson.1"  "1809-Madison.1"   </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [4] "1809-Madison.2"    "1789-Washington.1" "1793-Washington.1"</span>
-<span class="r-in"><span><span class="fu">tokens_sample</span><span class="op">(</span><span class="va">toks</span>, size <span class="op">=</span> <span class="fl">3</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu"><a href="docnames.html">docnames</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">tokens_sample</span><span class="op">(</span><span class="va">toks</span>, size <span class="op">=</span> <span class="fl">3</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="docnames.html">docnames</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "1797-Adams.1"     "1805-Jefferson.1" "1797-Adams.2"    </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># sampling using by</span></span></span>
@@ -291,7 +288,7 @@ variables for the documents sampled.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4 1801  Jefferson    Thomas Democratic-Republican</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5 1805  Jefferson    Thomas Democratic-Republican</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 6 1809    Madison     James Democratic-Republican</span>
-<span class="r-in"><span><span class="fu">tokens_sample</span><span class="op">(</span><span class="va">toks</span>, size <span class="op">=</span> <span class="fl">2</span>, replace <span class="op">=</span> <span class="cn">TRUE</span>, by <span class="op">=</span> <span class="va">Party</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu"><a href="docnames.html">docnames</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">tokens_sample</span><span class="op">(</span><span class="va">toks</span>, size <span class="op">=</span> <span class="fl">2</span>, replace <span class="op">=</span> <span class="cn">TRUE</span>, by <span class="op">=</span> <span class="va">Party</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="docnames.html">docnames</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "1809-Madison.1"    "1801-Jefferson.1"  "1797-Adams.1"     </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [4] "1797-Adams.2"      "1789-Washington.1" "1789-Washington.2"</span>
 <span class="r-in"><span></span></span>

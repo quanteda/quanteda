@@ -52,7 +52,7 @@ docvars(corpus_raw, "author")[c(10, 14, 37:48, 58)] <- "madison"
 
 ```{r}
 # inspect Paper No. 10 (output suppressed)
-texts(corpus_raw)[10] |> 
+corpus_raw[10] |> 
     stringi::stri_sub(1, 240) |> 
     cat()
 ```

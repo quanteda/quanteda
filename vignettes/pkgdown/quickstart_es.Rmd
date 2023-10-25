@@ -109,7 +109,7 @@ dat_xml <- readtext("~/Dropbox/QUANTESS/quanteda_working_files/xmlData/plant_cat
                   textfield = "COMMON")
 summary(corpus(dat_xml), 5)
 # csv file
-write.csv(data.frame(inaug_speech = texts(data_corpus_inaugural),
+write.csv(data.frame(inaug_speech = as.character(data_corpus_inaugural),
                      docvars(data_corpus_inaugural)),
           file = "/tmp/inaug_texts.csv", row.names = FALSE)
 dat_csv <- readtext("/tmp/inaug_texts.csv", textfield = "inaug_speech")
@@ -125,10 +125,10 @@ Un corpus está diseñado para ser una "librería" original de documentos que ha
 
 Un corpus está diseñado para ser un contenedor de textos más o menos estático en lo que respecta a su procesamiento y análisis. Esto significa que los textos en el corpus no están disenado para ser cambiados internamente a través de (por ejemplo) limpieza o preprocesamiento, como stemming o removiendo la puntuación. Más que nada, los textos pueden ser extraídos del corpus como parte del procesamiento y asignados a objetos nuevos, pero la idea es que los corpus se conserven como una copia de referencia original para que otros análisis, por ejemplo aquellos en que stems y puntuación son necesarios, como analizar un índice, pueden ser realizados sobre el mismo corpus.
 
-Para extraer texto de un corpus, es posible utilizar el extractor llamado `texts()`.
+Para extraer texto de un corpus, es posible utilizar el extractor llamado `as.character()`.
 
 ```{r}
-texts(data_corpus_inaugural)[2]
+as.character(data_corpus_inaugural)[2]
 ```
 
 Para obtener la data resumida de textos de un corpus, se puede llamar al método `summary()` definido para un corpus.
@@ -180,15 +180,16 @@ summary(corpus_subset(data_corpus_inaugural, President == "Adams"))
 La función `kwic` (keywords-in-context) realiza una búsqueda de una palabra y permite visualizar los contextos en los que aparece:
 
 ```{r, tidy=TRUE}
-kwic(data_corpus_inaugural, pattern = "terror")
+toks <- tokens(data_corpus_inaugural)
+kwic(toks, pattern = "terror")
 ```
 
 ```{r}
-kwic(data_corpus_inaugural, pattern = "terror", valuetype = "regex")
+kwic(toks, pattern = "terror", valuetype = "regex")
 ```
 
 ```{r}
-kwic(data_corpus_inaugural, pattern = "communist*")
+kwic(toks, pattern = "communist*")
 ```
 
 En el summary de arriba, las variables `Year` (año) y `President` (presidente) son variables asociadas a cada documento. Es posible acceder a dichas variables con la función 'docvars()'
