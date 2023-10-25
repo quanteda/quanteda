@@ -990,7 +990,7 @@ this to the Presidential inaugural speech corpus:</p>
 <span>    <span class="st">"2013-Obama"</span><span class="op">)</span>, <span class="op">]</span>, margin <span class="op">=</span> <span class="st">"documents"</span>, method <span class="op">=</span> <span class="st">"cosine"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">as.list</a></span><span class="op">(</span><span class="va">tstat_obama</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/dotchart.html" class="external-link">dotchart</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">as.list</a></span><span class="op">(</span><span class="va">tstat_obama</span><span class="op">)</span><span class="op">$</span><span class="st">"2013-Obama"</span>, xlab <span class="op">=</span> <span class="st">"Cosine similarity"</span>, pch <span class="op">=</span> <span class="fl">19</span><span class="op">)</span></span></code></pre></div>
-<p><img src="../../../../../Dropbox%20(Personal)/GitHub/quanteda/quanteda/articles/images/fig1.png" width="700"></p>
+<p><img src="../../../../../Dropbox%20(Personal)/GitHub/quanteda/quanteda/articles/fig1.png" width="700"></p>
 <p>We can use these distances to plot a dendrogram, clustering
 presidents.<br>
 First, load some data.</p>
@@ -1014,7 +1014,7 @@ First, load some data.</p>
 <span><span class="va">pres_cluster</span><span class="op">$</span><span class="va">labels</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/docnames.html">docnames</a></span><span class="op">(</span><span class="va">dfmat_sotu</span><span class="op">)</span></span>
 <span><span class="co"># plot as a dendrogram</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">pres_cluster</span>, xlab <span class="op">=</span> <span class="st">""</span>, sub <span class="op">=</span> <span class="st">""</span>, main <span class="op">=</span> <span class="st">"Euclidean Distance on Normalized Token Frequency"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="../../../../../Dropbox%20(Personal)/GitHub/quanteda/quanteda/articles/images/fig2.png" width="700"></p>
+<p><img src="../../../../../Dropbox%20(Personal)/GitHub/quanteda/quanteda/articles/fig2.png" width="700"></p>
 <p>We can also look at term similarities:</p>
 <div class="sourceCode" id="cb83"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tstat_sim</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://quanteda.io/reference/textstat_simil.html">textstat_simil</a></span><span class="op">(</span><span class="va">dfmat_sotu</span>, <span class="va">dfmat_sotu</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"fair"</span>, <span class="st">"health"</span>, <span class="st">"terror"</span><span class="op">)</span><span class="op">]</span>,</span>
