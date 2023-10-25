@@ -232,11 +232,10 @@ index_types <- function(pattern, types, valuetype = c("glob", "fixed", "regex"),
 
 #' Internal function for `select_types` to search the index using
 #' fastmatch.
-#' @param regex a glob expression to search
 #' @param index an index object created by `index_types`
 #' @seealso [index_types()]
 #' @keywords internal
- search_index <- function(pattern, index){
+ search_index <- function(pattern, index) {
     # use fmatch instead of names for quick access
     result <- index[[fastmatch::fmatch(pattern, attr(index, "key"))]]
     if (is.null(result))

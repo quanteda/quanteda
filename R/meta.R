@@ -180,7 +180,6 @@ meta_system <- function(x, field = NULL)
 `meta_system<-.dictionary` <- `meta_system<-.dfm`
 
 #' @rdname meta_system
-#' @param source character; the input object class
 #' @return `meta_system_defaults` returns a list of default system
 #'   values, with the user setting the "source" value.  This should be used
 #'   to set initial system meta information.

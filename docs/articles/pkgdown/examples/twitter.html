@@ -258,6 +258,8 @@ your laptop computer.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">topgat_fcm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/dfm_select.html">fcm_select</a></span><span class="op">(</span><span class="va">tag_fcm</span>, pattern <span class="op">=</span> <span class="va">toptag</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/quanteda.textplots/man/textplot_network.html" class="external-link">textplot_network</a></span><span class="op">(</span><span class="va">topgat_fcm</span>, min_freq <span class="op">=</span> <span class="fl">0.1</span>, edge_alpha <span class="op">=</span> <span class="fl">0.8</span>, edge_size <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Warning: ggrepel: 1 unlabeled data points (too many overlaps). Consider</span></span>
+<span><span class="co">## increasing max.overlaps</span></span></code></pre>
 <p><img src="twitter_files/figure-html/unnamed-chunk-6-1.png" width="700"></p>
 </div>
 </div>
@@ -267,7 +269,7 @@ your laptop computer.</p>
 <div class="section level3">
 <h3 id="extract-most-frequently-mentioned-usernames">Extract most frequently mentioned usernames<a class="anchor" aria-label="anchor" href="#extract-most-frequently-mentioned-usernames"></a>
 </h3>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">user_dfm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/dfm_select.html">dfm_select</a></span><span class="op">(</span><span class="va">tweet_dfm</span>, pattern <span class="op">=</span> <span class="st">"@*"</span><span class="op">)</span></span>
 <span><span class="va">topuser</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="fu"><a href="../../../reference/topfeatures.html">topfeatures</a></span><span class="op">(</span><span class="va">user_dfm</span>, <span class="fl">50</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">topuser</span><span class="op">)</span></span></code></pre></div>
@@ -277,7 +279,7 @@ your laptop computer.</p>
 <div class="section level3">
 <h3 id="construct-feature-occurrence-matrix-of-usernames">Construct feature-occurrence matrix of usernames<a class="anchor" aria-label="anchor" href="#construct-feature-occurrence-matrix-of-usernames"></a>
 </h3>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">user_fcm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/fcm.html">fcm</a></span><span class="op">(</span><span class="va">user_dfm</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">user_fcm</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Feature co-occurrence matrix of: 6 by 5,963 features.</span></span>
@@ -306,11 +308,9 @@ your laptop computer.</p>
 <span><span class="co">##   @mariaspyraki        0        0</span></span>
 <span><span class="co">##   @ernesturtasun       0        0</span></span>
 <span><span class="co">## [ reached max_nfeat ... 5,953 more features ]</span></span></code></pre>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">user_fcm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/dfm_select.html">fcm_select</a></span><span class="op">(</span><span class="va">user_fcm</span>, pattern <span class="op">=</span> <span class="va">topuser</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/quanteda.textplots/man/textplot_network.html" class="external-link">textplot_network</a></span><span class="op">(</span><span class="va">user_fcm</span>, min_freq <span class="op">=</span> <span class="fl">0.1</span>, edge_color <span class="op">=</span> <span class="st">"orange"</span>, edge_alpha <span class="op">=</span> <span class="fl">0.8</span>, edge_size <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Warning: ggrepel: 1 unlabeled data points (too many overlaps). Consider</span></span>
-<span><span class="co">## increasing max.overlaps</span></span></code></pre>
 <p><img src="twitter_files/figure-html/unnamed-chunk-8-1.png" width="700"></p>
 </div>
 </div>

@@ -235,7 +235,6 @@ dictionary.dictionary2 <- function(x, file = NULL, format = NULL,
 
 # coercion and checking methods -----------
 
-#' @param object the dictionary to be coerced
 #' @param flatten flatten the nested structure if `TRUE`
 #' @param levels integer vector indicating levels in the dictionary. Used only
 #'   when `flatten = TRUE`.
