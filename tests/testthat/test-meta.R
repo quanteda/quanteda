@@ -129,7 +129,7 @@ test_that("adding summary info works", {
 
     # for over 100 documents
     set.seed(10)
-    corp <- corpus(sample(LETTERS, size = 110, replace = TRUE)) %>%
+    corp <- corpus(sample(LETTERS, size = 110, replace = TRUE)) |>
         quanteda:::add_summary_metadata()
     expect_identical(
         summary(corp, n = ndoc(corp)),

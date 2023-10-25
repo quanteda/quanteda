@@ -8,15 +8,17 @@ test_that("test dfm_lookup, issue #389", {
                  c("Country", "HOR", "law", "freedom"))
     # expect_error(dfm_lookup(dfm(toks), dictionary = dict),
     #               "dfm_lookup not implemented for ngrams > 1 and multi-word dictionary values")
-
+    
     dict2 <- dictionary(list(Country = "united",
                              HOR = c("House"),
                              law = c("law*", "constitution"),
                              freedom = c("free*", "libert*")))
-    expect_equal(as.numeric(suppressWarnings(dfm(toks, dictionary = dict2))[, "Country"]),
-                 c(4, 1, 3, 0, 1))
+    expect_equal(
+        as.numeric(dfm_lookup(dfm(toks), dictionary = dict2)[, "Country"]),
+        c(4, 1, 3, 0, 1)
+    )
 })
-
+                 
 test_that("#459 apply a hierarchical dictionary to a dfm", {
     txt <- c(d1 = "The United States is bordered by the Atlantic Ocean and the Pacific Ocean.",
              d2 = "The Supreme Court of the United States is seldom in a united state.")

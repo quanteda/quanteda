@@ -18,8 +18,10 @@ This vignette walks through various plot options available in **quanteda.textplo
 The frequency of features can be plotted as a wordcloud using `textplot_wordcloud()`.
 
 ```{r eval=TRUE, fig.width=8, fig.height=8}
-dfm_inaug <- corpus_subset(data_corpus_inaugural, Year <= 1826) %>% 
-    dfm(remove = stopwords('english'), remove_punct = TRUE) %>%
+dfm_inaug <- corpus_subset(data_corpus_inaugural, Year <= 1826) |> 
+    tokens(remove_punct = TRUE) |>
+    tokens_remove(stopwords("english")) |>
+    dfm() |>
     dfm_trim(min_termfreq = 10, verbose = FALSE)
 
 set.seed(100)
@@ -30,12 +32,12 @@ You can also plot a "comparison cloud", but this can only be done with fewer tha
 
 ```{r eval=TRUE, fig.width=10, fig.height=8}
 corpus_subset(data_corpus_inaugural, 
-              President %in% c("Washington", "Jefferson", "Madison")) %>%
-    tokens(remove_punct = TRUE) %>%
-    tokens_remove(stopwords("english")) %>%
-    dfm() %>%
-    dfm_group(groups = President) %>%
-    dfm_trim(min_termfreq = 5, verbose = FALSE) %>%
+              President %in% c("Washington", "Jefferson", "Madison")) |>
+    tokens(remove_punct = TRUE) |>
+    tokens_remove(stopwords("english")) |>
+    dfm() |>
+    dfm_group(groups = President) |>
+    dfm_trim(min_termfreq = 5, verbose = FALSE) |>
     textplot_wordcloud(comparison = TRUE)
 ```
 
@@ -50,18 +52,19 @@ textplot_wordcloud(dfm_inaug, min_count = 10,
 Plotting a `kwic` object produces a lexical dispersion plot which allows us to visualize the occurrences of particular terms throughout the text.  We call these "x-ray" plots due to their similarity to the data produced by [Amazon's "x-ray" feature for Kindle books](https://en.wikipedia.org/wiki/X-Ray_(Amazon_Kindle)).
 
 ```{r eval=TRUE, fig.width=8, fig.height=4}
-data_corpus_inaugural_subset <- 
-    corpus_subset(data_corpus_inaugural, Year > 1949)
-kwic(tokens(data_corpus_inaugural_subset), pattern = "american") %>%
+toks_corpus_inaugural_subset <- 
+    corpus_subset(data_corpus_inaugural, Year > 1949) |>
+    tokens()
+kwic(toks_corpus_inaugural_subset, pattern = "american") |>
     textplot_xray()
 ```
 
 You can also pass multiple kwic objects to `plot` to compare the dispersion of different terms:
 ```{r eval=TRUE, fig.width=8, fig.height=4}
 textplot_xray(
-     kwic(data_corpus_inaugural_subset, pattern = "american"),
-     kwic(data_corpus_inaugural_subset, pattern = "people"),
-     kwic(data_corpus_inaugural_subset, pattern = "communist")
+     kwic(toks_corpus_inaugural_subset, pattern = "american"),
+     kwic(toks_corpus_inaugural_subset, pattern = "people"),
+     kwic(toks_corpus_inaugural_subset, pattern = "communist")
 )
 ```
 
@@ -82,11 +85,10 @@ textplot_xray(
 You might also have noticed that the x-axis scale is the absolute token index for single texts and relative token index when multiple texts are being compared. If you prefer, you can specify that you want an absolute scale:
 
 ```{r eval=TRUE, fig.width=8, fig.height=4}
-toks <- tokens(data_corpus_inaugural_subset)
 textplot_xray(
-    kwic(toks, pattern = "american"),
-    kwic(toks, pattern = "people"),
-    kwic(toks, pattern = "communist"),
+    kwic(toks_corpus_inaugural_subset, pattern = "american"),
+    kwic(toks_corpus_inaugural_subset, pattern = "people"),
+    kwic(toks_corpus_inaugural_subset, pattern = "communist"),
     scale = "absolute"
 )
 ```
@@ -101,9 +103,9 @@ The object returned is a ggplot object, which can be modified using ggplot:
 library("ggplot2")
 theme_set(theme_bw())
 g <- textplot_xray(
-    kwic(toks, pattern = "american"),
-    kwic(toks, pattern = "people"),
-    kwic(toks, pattern = "communist")
+    kwic(toks_corpus_inaugural_subset, pattern = "american"),
+    kwic(toks_corpus_inaugural_subset, pattern = "people"),
+    kwic(toks_corpus_inaugural_subset, pattern = "communist")
 )
 g + aes(color = keyword) + 
     scale_color_manual(values = c("blue", "red", "green")) +
@@ -131,7 +133,7 @@ If you wanted to compare the frequency of a single term across different texts, 
 
 ```{r eval=TRUE, fig.width=8, fig.height=4}
 # Get frequency grouped by president
-freq_grouped <- textstat_frequency(dfm(tokens(data_corpus_inaugural_subset)), 
+freq_grouped <- textstat_frequency(dfm(toks_corpus_inaugural_subset), 
                                    groups = President)
 
 # Filter the term "american"
@@ -148,7 +150,7 @@ ggplot(freq_american, aes(x = group, y = frequency)) +
 The above plots are raw frequency plots. For relative frequency plots, (word count divided by the length of the chapter) we need to weight the document-frequency matrix first. To obtain expected word frequency per 100 words, we multiply by 100. 
 
 ```{r eval=TRUE, fig.width=8, fig.height=4}
-dfm_rel_freq <- dfm_weight(dfm(tokens(data_corpus_inaugural_subset)), scheme = "prop") * 100
+dfm_rel_freq <- dfm_weight(dfm(toks_corpus_inaugural_subset), scheme = "prop") * 100
 head(dfm_rel_freq)
 
 rel_freq <- textstat_frequency(dfm_rel_freq, groups = dfm_rel_freq$President)
@@ -167,11 +169,11 @@ ggplot(rel_freq_american, aes(x = group, y = frequency)) +
 Finally, `texstat_frequency` allows to plot the most frequent words in terms of relative frequency by group.
 
 ```{r eval=TRUE, fig.width=8, fig.height=6}
-dfm_weight_pres <- data_corpus_inaugural %>%
-  corpus_subset(Year > 2000) %>%
-  tokens(remove_punct = TRUE) %>%
-  tokens_remove(stopwords("english")) %>%
-  dfm() %>%
+dfm_weight_pres <- data_corpus_inaugural |>
+  corpus_subset(Year > 2000) |>
+  tokens(remove_punct = TRUE) |>
+  tokens_remove(stopwords("english")) |>
+  dfm() |>
   dfm_weight(scheme = "prop")
 
 # Calculate relative frequency by president
@@ -198,9 +200,9 @@ pres_corpus <- corpus_subset(data_corpus_inaugural,
                             President %in% c("Obama", "Trump"))
 
 # Create a dfm grouped by president
-pres_dfm <- tokens(pres_corpus, remove_punct = TRUE) %>%
-  tokens_remove(stopwords("english")) %>%
-  tokens_group(groups = President) %>%
+pres_dfm <- tokens(pres_corpus, remove_punct = TRUE) |>
+  tokens_remove(stopwords("english")) |>
+  tokens_group(groups = President) |>
   dfm()
 
 # Calculate keyness and determine Trump as target group

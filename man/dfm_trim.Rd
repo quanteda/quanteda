@@ -74,7 +74,7 @@ features themselves (meaning the feature labels from
 removing features matching a stopword list, use \code{\link[=dfm_select]{dfm_select()}}.
 }
 \examples{
-(dfmat <- dfm(data_corpus_inaugural[1:5]))
+dfmat <- dfm(tokens(data_corpus_inaugural))
 
 # keep only words occurring >= 10 times and in >= 2 documents
 dfm_trim(dfmat, min_termfreq = 10, min_docfreq = 2)

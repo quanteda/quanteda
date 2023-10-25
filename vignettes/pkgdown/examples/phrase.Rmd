@@ -87,10 +87,10 @@ If `textstat_collocations()` is applied to a tokens object comprised only of cap
 
 ```{r}
 library("quanteda.textstats")
-col <- toks %>% 
-       tokens_remove(stopwords("en")) %>% 
+col <- toks |> 
+       tokens_remove(stopwords("en")) |> 
        tokens_select(pattern = "^[A-Z]", valuetype = "regex", 
-                     case_insensitive = FALSE, padding = TRUE) %>% 
+                     case_insensitive = FALSE, padding = TRUE) |> 
        textstat_collocations(min_count = 5, tolower = FALSE)
 head(col)
 ```

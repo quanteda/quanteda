@@ -1,6 +1,5 @@
 #include "lib.h"
 //#include "dev.h"
-#include "recompile.h"
 using namespace quanteda;
 
 typedef std::pair<int, int> Position;
@@ -13,7 +12,7 @@ Text keep_token(Text tokens,
           const std::pair<int, int> &window,
           const std::pair<int, int> &pos){
     
-    if (tokens.size() == 0) return {}; // return empty vector for empty text
+    if (tokens.empty()) return {}; // return empty vector for empty text
     
     const unsigned int filler = UINT_MAX; // use upper limit as a filler
     
@@ -75,7 +74,7 @@ Text remove_token(Text tokens,
             const std::pair<int, int> &window,
             const std::pair<int, int> &pos){
 
-    if (tokens.size() == 0) return {}; // return empty vector for empty text
+    if (tokens.empty()) return {}; // return empty vector for empty text
     
     unsigned int filler = UINT_MAX; // use upper limit as a filler
     Text tokens_copy = tokens;
@@ -126,67 +125,30 @@ Text remove_token(Text tokens,
     return tokens_copy;
 }
 
-struct select_mt : public Worker{
-    
-    Texts &texts;
-    const std::vector<std::size_t> &spans;
-    const SetNgrams &set_words;
-    const int &mode;
-    const bool &padding;
-    const std::pair<int, int> &window;
-    const Positions &pos;
-    
-    // Constructor
-    select_mt(Texts &texts_, const std::vector<std::size_t> &spans_, 
-              const SetNgrams &set_words_, const int &mode_, const bool &padding_, 
-              const std::pair<int, int> &window_, const Positions &pos_):
-              texts(texts_), spans(spans_), set_words(set_words_), mode(mode_), padding(padding_), 
-              window(window_), pos(pos_){}
-    
-    // parallelFor calles this function with std::size_t
-    void operator()(std::size_t begin, std::size_t end){
-        //Rcout << "Range " << begin << " " << end << "\n";
-        if (mode == 1) {
-            for (std::size_t h = begin; h < end; h++) {
-                texts[h] = keep_token(texts[h], spans, set_words, padding, window, pos[h]);
-            }
-        } else if (mode == 2) {
-            for (std::size_t h = begin; h < end; h++) {
-                texts[h] = remove_token(texts[h], spans, set_words, padding, window, pos[h]);
-            }
-        } else {
-            for (std::size_t h = begin; h < end; h++) {
-                texts[h] = texts[h];
-            }
-        }
-    }
-};
-
 /* 
- * This function selects features in tokens object with multiple threads. 
+ * Function to selects tokens
  * The number of threads is set by RcppParallel::setThreadOptions()
  * @used tokens_select()
  * @creator Kohei Watanabe
- * @param texts_ tokens ojbect
  * @param words_ list of features to remove or keep 
  * @param mode_ 1: keep; 2: remove
  * @param padding_ fill places where features are removed with zero
  * 
  */
 
+
 // [[Rcpp::export]]
-List qatd_cpp_tokens_select(const List &texts_,
-                            const CharacterVector types_,
-                            const List &words_,
-                            int mode,
-                            bool padding,
-                            int window_left,
-                            int window_right,
-                            const IntegerVector pos_from_,
-                            const IntegerVector pos_to_){
-    
-    Texts texts = Rcpp::as<Texts>(texts_);
-    Types types = Rcpp::as<Types>(types_);
+TokensPtr cpp_tokens_select(TokensPtr xptr,
+                                 const List &words_,
+                                 int mode,
+                                 bool padding,
+                                 int window_left,
+                                 int window_right,
+                                 const IntegerVector pos_from_,
+                                 const IntegerVector pos_to_,
+                                 const int thread = -1) {
+
+    Texts texts = xptr->texts;
     std::pair<int, int> window(window_left, window_right);
     
     SetNgrams set_words;
@@ -203,27 +165,39 @@ List qatd_cpp_tokens_select(const List &texts_,
     
     // dev::Timer timer;
     // dev::start_timer("Token select", timer);
+    std::size_t H = texts.size();
 #if QUANTEDA_USE_TBB
-    select_mt select_mt(texts, spans, set_words, mode, padding, window, pos);
-    parallelFor(0, texts.size(), select_mt);
+    tbb::task_arena arena(thread);
+    arena.execute([&]{
+        tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
+            for (int h = r.begin(); h < r.end(); ++h) {
+                if (mode == 1) {
+                    texts[h] = keep_token(texts[h], spans, set_words, padding, window, pos[h]);
+                } else if(mode == 2) {
+                    texts[h] = remove_token(texts[h], spans, set_words, padding, window, pos[h]);
+                } else {
+                    texts[h] = texts[h];
+                }
+            }    
+        });
+    });
 #else
-    if (mode == 1) {
-        for (std::size_t h = 0; h < texts.size(); h++) {
+    for (std::size_t h = 0; h < texts.size(); h++) {
+        if (mode == 1) {
             texts[h] = keep_token(texts[h], spans, set_words, padding, window, pos[h]);
-        }
-    } else if(mode == 2) {
-        for (std::size_t h = 0; h < texts.size(); h++) {
+        } else if(mode == 2) {
             texts[h] = remove_token(texts[h], spans, set_words, padding, window, pos[h]);
-        }
-    } else {
-        for (std::size_t h = 0; h < texts.size(); h++){
+        } else {
             texts[h] = texts[h];
         }
     }
 #endif
     // dev::stop_timer("Token select", timer);
-    return recompile(texts, types, true, false, is_encoded(types_));
+    xptr->texts = texts;
+    xptr->recompiled = false;
+    return xptr;
 }
+
 
 /***R
 toks <- list(rep(1:10, 1))
@@ -231,16 +205,16 @@ toks <- list(rep(1:10, 1))
 #dict <- as.list(1:100000)
 dict <- list(c(1, 2), c(5, 6), 10, 15, 20)
 #dict <- list(c(99))
-#qatd_cpp_tokens_select(toks, letters, dict, 1, TRUE, 1, 1)
-qatd_cpp_tokens_select(toks, letters, dict, 1, TRUE, 0, 0, 1, 100)
-qatd_cpp_tokens_select(toks, letters, dict, 1, TRUE, 0, 1, 1, 100)
-qatd_cpp_tokens_select(toks, letters, dict, 1, FALSE, 0, 0, 1, 2)
-qatd_cpp_tokens_select(toks, letters, dict, 2, TRUE, 0, 0, 1, 5)
-qatd_cpp_tokens_select(toks, letters, dict, 2, TRUE, 0, 1, 1, 2)
-qatd_cpp_tokens_select(toks, letters, dict, 2, TRUE, 0, 2, 1, 3)
-qatd_cpp_tokens_select(toks, letters, as.list(1:10), 1, FALSE, 0, 0, 1, 2)
-qatd_cpp_tokens_select(toks, letters, as.list(1:10), 1, TRUE, 0, 0, 1, 2)
-qatd_cpp_tokens_select(toks, letters, as.list(1:10), 2, FALSE, 0, 0, 1, 1)
-qatd_cpp_tokens_select(toks, letters, as.list(1:10), 2, TRUE, 0, 0, 1, 1)
+#cpp_tokens_select(toks, letters, dict, 1, TRUE, 1, 1)
+cpp_tokens_select(toks, letters, dict, 1, TRUE, 0, 0, 1, 100)
+cpp_tokens_select(toks, letters, dict, 1, TRUE, 0, 1, 1, 100)
+cpp_tokens_select(toks, letters, dict, 1, FALSE, 0, 0, 1, 2)
+cpp_tokens_select(toks, letters, dict, 2, TRUE, 0, 0, 1, 5)
+cpp_tokens_select(toks, letters, dict, 2, TRUE, 0, 1, 1, 2)
+cpp_tokens_select(toks, letters, dict, 2, TRUE, 0, 2, 1, 3)
+cpp_tokens_select(toks, letters, as.list(1:10), 1, FALSE, 0, 0, 1, 2)
+cpp_tokens_select(toks, letters, as.list(1:10), 1, TRUE, 0, 0, 1, 2)
+cpp_tokens_select(toks, letters, as.list(1:10), 2, FALSE, 0, 0, 1, 1)
+cpp_tokens_select(toks, letters, as.list(1:10), 2, TRUE, 0, 0, 1, 1)
 
 */

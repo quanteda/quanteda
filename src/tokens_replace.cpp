@@ -1,6 +1,5 @@
-//#include "dev.h"
 #include "lib.h"
-#include "recompile.h"
+//#include "dev.h"
 
 using namespace quanteda;
 
@@ -9,7 +8,7 @@ Text replace(Text tokens,
              MapNgrams &map_pat,
              Ngrams &ids_repls){
     
-    if (tokens.size() == 0) return {}; // return empty vector for empty text
+    if (tokens.empty()) return {}; // return empty vector for empty text
     
     std::vector< std::vector<unsigned int> > tokens_multi(tokens.size()); 
     std::vector< bool > flags_match(tokens.size(), false); // flag matched tokens
@@ -47,7 +46,7 @@ Text replace(Text tokens,
     Text tokens_flat;
     tokens_flat.reserve(match);
     for (auto &tokens_sub: tokens_multi) {
-        if (tokens_sub.size() > 0) {
+        if (!tokens_sub.empty()) {
             tokens_flat.insert(tokens_flat.end(), tokens_sub.begin(), tokens_sub.end());
         }
         //dev::print_ngram(tokens_sub);
@@ -55,46 +54,22 @@ Text replace(Text tokens,
     return tokens_flat;
 }
 
-
-struct replace_mt : public Worker{
-    
-    Texts &texts;
-    const std::vector<std::size_t> &spans;
-    MapNgrams &map_pat;
-    Ngrams &ids_repls;
-    
-    // Constructor
-    replace_mt(Texts &texts_, const std::vector<std::size_t> &spans_, MapNgrams &map_pat_, Ngrams &ids_repls_):
-               texts(texts_), spans(spans_), map_pat(map_pat_), ids_repls(ids_repls_){}
-    
-    // parallelFor calles this function with std::size_t
-    void operator()(std::size_t begin, std::size_t end){
-        //Rcout << "Range " << begin << " " << end << "\n";
-        for (std::size_t h = begin; h < end; h++) {
-            texts[h] = replace(texts[h], spans, map_pat, ids_repls);
-        }
-    }
-};
-
 /* 
-* This function replace patterns in tokens object.
+* Function to replace tokens
 * @used tokens_replace()
 * @creator Kohei Watanabe
-* @param texts_ tokens ojbect
-* @param types_ types of tokens
 * @param patterns_ IDs of patterns
 * @param replacements_ IDs to replace patterns. Must be the same length as patterns_
 */
 
 
 // [[Rcpp::export]]
-List qatd_cpp_tokens_replace(const List &texts_,
-                             const CharacterVector types_,
+TokensPtr cpp_tokens_replace(TokensPtr xptr,
                              const List &patterns_,
-                             const List &replacements_){
+                             const List &replacements_,
+                             const int thread = -1) {
     
-    Texts texts = Rcpp::as<Texts>(texts_);
-    Types types = Rcpp::as<Types>(types_);
+    Texts texts = xptr->texts;
     Ngrams ids_repls = Rcpp::as<Ngrams>(replacements_);
     //dev::Timer timer;
     //dev::start_timer("Map construction", timer);
@@ -116,16 +91,24 @@ List qatd_cpp_tokens_replace(const List &texts_,
     //dev::stop_timer("Map construction", timer);
     
     //dev::start_timer("Pattern replace", timer);
+    std::size_t H = texts.size();
 #if QUANTEDA_USE_TBB
-    replace_mt replace_mt(texts, spans, map_pat, ids_repls);
-    parallelFor(0, texts.size(), replace_mt);
+    tbb::task_arena arena(thread);
+    arena.execute([&]{
+        tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
+            for (int h = r.begin(); h < r.end(); ++h) {
+                texts[h] = replace(texts[h], spans, map_pat, ids_repls);
+            }    
+        });
+    });
 #else
-    for (std::size_t h = 0; h < texts.size(); h++) {
+    for (std::size_t h = 0; h < H; h++) {
         texts[h] = replace(texts[h], spans, map_pat, ids_repls);
     }
 #endif
-    //dev::stop_timer("Pattern replace", timer);
-    return recompile(texts, types, true, true, is_encoded(types_));
+    xptr->texts = texts;
+    xptr->recompiled = false;
+    return xptr;
 }
 
 /***R
@@ -137,8 +120,8 @@ toks <- list(rep(1:10, 1), rep(5:15, 1))
 from <- list(c(9, 10))
 to <- list(0)
 
-#qatd_cpp_tokens_replace(toks, letters, dict, integer(0), 0)
-qatd_cpp_tokens_replace(toks, letters, from, to)
-#qatd_cpp_tokens_replace(toks, letters, from, to)
+#cpp_tokens_replace(toks, letters, dict, integer(0), 0)
+cpp_tokens_replace(toks, letters, from, to)
+#cpp_tokens_replace(toks, letters, from, to)
 
 */

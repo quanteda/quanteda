@@ -431,7 +431,7 @@ csw <- stopwords("chinese")
 tokens("中华人民共和国成立于1949 年")
 
 # 除去停用词
-tokens("中华人民共和国成立于1949 年") %>%
+tokens("中华人民共和国成立于1949 年") |>
     tokens_remove(stopwords("chinese"))
 ```
 
@@ -445,7 +445,7 @@ summary(data_corpus_chinesegovreport, 10)
 
 # 分词
 chtoks <- 
-    tokens(data_corpus_chinesegovreport, remove_punct = TRUE) %>%
+    tokens(data_corpus_chinesegovreport, remove_punct = TRUE) |>
     tokens_remove(stopwords("chinese"))
 
 # 创建 dfm
@@ -472,7 +472,7 @@ textplot_wordcloud(chdfm_tf, min_count = 6, random_order = FALSE,
 # fcm -共现窗口为5，2017政府工作报告
 ch17txt <- corpus_subset(data_corpus_chinesegovreport, Year == "2017")
 ch17toks <- 
-    tokens(ch17txt, remove_punct = TRUE) %>% 
+    tokens(ch17txt, remove_punct = TRUE) |> 
     tokens_remove(stopwords("chinese"))
 chfcm <- fcm(ch17toks, context = "window")  
 topfeatures(chfcm["改革", ])

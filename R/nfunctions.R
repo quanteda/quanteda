@@ -1,14 +1,13 @@
 #' Count the number of documents or features
 #'
 #' Get the number of documents or features in an object.
-#' @details `ndoc` returns the number of documents in an object
-#'   whose texts are organized as "documents" (a [corpus],
-#'   [dfm], or [tokens] object, a readtext object from the
-#'   \pkg{readtext} package).
-#'
-#' @param x a \pkg{quanteda} object: a [corpus], [dfm], or
-#'   [tokens] object, or a readtext object from the \pkg{readtext} package.
-#' @return an integer (count) of the number of documents or features
+#' @param x a \pkg{quanteda} object: a [corpus], [dfm], 
+#'   [tokens], or [tokens_xptr] object
+#' @param x a \pkg{quanteda} object: a [corpus], [dfm], [tokens], or
+#'   [tokens_xptr] object, or a readtext object from the \pkg{readtext} package
+#' @returns `ndoc()` returns an integer count of the number of documents in an
+#'   object whose texts are organized as "documents" (a [corpus], [dfm], or
+#'   [tokens]/[tokens_xptr] object.
 #' @export
 #' @examples
 #' # number of documents
@@ -43,12 +42,11 @@ ndoc.tokens <- function(x) {
 
 
 #' @rdname ndoc
-#' @details `nfeat` returns the number of features from a dfm; it is an
-#'   alias for `ntype` when applied to dfm objects.  This function is only
-#'   defined for [dfm] objects because only these have "features".  (To count
-#'   tokens, see [ntoken()].)
+#' @returns `nfeat()` returns an integer count of the number of features.  It is
+#'   an alias for `ntype()` for a dfm. This function is only defined for [dfm]
+#'   objects because only these have "features".
 #' @export
-#' @seealso [ntoken()]
+#' @seealso [ntoken()], [ntype()]
 #' @examples
 #' # number of features
 #' toks1 <- tokens(corpus_subset(data_corpus_inaugural, Year > 1980), remove_punct = FALSE)
@@ -73,34 +71,25 @@ nfeat.dfm <- function(x) {
 #' Count the number of tokens or types
 #'
 #' Get the count of tokens (total features) or types (unique tokens).
-#' @param x a \pkg{quanteda} object: a character, [corpus],
-#'   [tokens], or [dfm] object
-#' @param ... additional arguments passed to [tokens()]
-#' @note Due to differences between raw text tokens and features that have been
-#'   defined for a [dfm], the counts may be different for dfm objects and the
-#'   texts from which the dfm was generated.  Because the method tokenizes the
-#'   text in order to count the tokens, your results will depend on the options
-#'   passed through to [tokens()].
-#' @return named integer vector of the counts of the total tokens or types
-#' @details
-#' The precise definition of "tokens" for objects not yet tokenized (e.g.
-#' [character] or [corpus] objects) can be controlled through optional
-#' arguments passed to [tokens()] through `...`.
+#' @param x a \pkg{quanteda} [tokens] or [dfm] object
+#' @param ... not used
+#' @returns `ntoken()` returns a named integer vector of the counts of the total
+#'   tokens
 #' @examples
 #' # simple example
 #' txt <- c(text1 = "This is a sentence, this.", text2 = "A word. Repeated repeated.")
-#' ntoken(txt)
-#' ntype(txt)
-#' ntoken(char_tolower(txt))  # same
-#' ntype(char_tolower(txt))   # fewer types
-#' ntoken(char_tolower(txt), remove_punct = TRUE)
-#' ntype(char_tolower(txt), remove_punct = TRUE)
+#' toks <- tokens(txt)
+#' ntoken(toks)
+#' ntype(toks)
+#' ntoken(tokens_tolower(toks))  # same
+#' ntype(tokens_tolower(toks))   # fewer types
 #'
 #' # with some real texts
-#' ntoken(corpus_subset(data_corpus_inaugural, Year < 1806), remove_punct = TRUE)
-#' ntype(corpus_subset(data_corpus_inaugural, Year < 1806), remove_punct = TRUE)
-#' ntoken(dfm(tokens(corpus_subset(data_corpus_inaugural, Year < 1800))))
-#' ntype(dfm(tokens(corpus_subset(data_corpus_inaugural, Year < 1800))))
+#' toks <- tokens(corpus_subset(data_corpus_inaugural, Year < 1806))
+#' ntoken(tokens(toks, remove_punct = TRUE))
+#' ntype(tokens(toks, remove_punct = TRUE))
+#' ntoken(dfm(toks))
+#' ntype(dfm(toks))
 #' @export
 ntoken <- function(x, ...) {
     UseMethod("ntoken")
@@ -112,9 +101,10 @@ ntoken.default <- function(x, ...) {
 }
 
 #' @rdname ntoken
-#' @details
-#' For [dfm] objects, `ntype` will only return the count of features
-#' that occur more than zero times in the dfm.
+#' @returns
+#' `ntypes()` returns a named integer vector of the counts of the types (unique
+#' tokens) per document.  For [dfm] objects, `ntype()` will only return the
+#' count of features that occur more than zero times in the dfm.
 #' @export
 ntype <- function(x, ...) {
     UseMethod("ntype")
@@ -133,11 +123,14 @@ ntoken.corpus <- function(x, ...) {
 
 #' @export
 ntoken.character <- function(x, ...) {
+    lifecycle::deprecate_soft("4.0.0", I('ntoken.character()/ntype.corpus()'), 
+                              I('ntoken(tokens(x))'))
     ntoken(tokens(x, ...))
 }
 
 #' @export
 ntoken.tokens <- function(x, ...) {
+    x <- as.tokens(x)
     if (length(list(...))) {
         lengths(tokens(x, ...))
     } else {
@@ -158,6 +151,9 @@ ntoken.dfm <- function(x, ...) {
 
 #' @export
 ntype.character <- function(x, ...) {
+    lifecycle::deprecate_soft("4.0.0", 
+                              I('ntype.character()/ntype.corpus()'), 
+                              I('ntoken(tokens(x))'))
     if (length(list(...)))
         ntype(tokens(x, ...))
     else
@@ -172,7 +168,6 @@ ntype.corpus <- function(x, ...) {
 
 #' @export
 ntype.dfm <- function(x, ...) {
-    
     x <- as.dfm(x)
     check_dots(...)
     
@@ -189,11 +184,20 @@ ntype.tokens <- function(x, ...) {
     vapply(unclass(x), function(y) length(unique(y[y > 0])), integer(1))
 }
 
+
 #' Count the number of sentences
 #'
+#' @description
+#' `r lifecycle::badge('deprecated')`
+#' 
 #' Return the count of sentences in a corpus or character object.
 #' @param x a character or [corpus] whose sentences will be counted
-#' @note `nsentence()` relies on the boundaries definitions in the \pkg{stringi}
+#' @note 
+#'   `nsentence()` is now deprecated for all usages except tokens objects that
+#'   have already been tokenised with `tokens(x, what = "sentence")`.  Using it
+#'   on character or corpus objects will now generate a warning.
+#' 
+#'   `nsentence()` relies on the boundaries definitions in the \pkg{stringi}
 #'   package (see [stri_opts_brkiter][stringi::stri_opts_brkiter]).  It does not
 #'   count sentences correctly if the text has been transformed to lower case,
 #'   and for this reason `nsentence()` will issue a warning if it detects all
@@ -204,7 +208,8 @@ ntype.tokens <- function(x, ...) {
 #' txt <- c(text1 = "This is a sentence: second part of first sentence.",
 #'          text2 = "A word. Repeated repeated.",
 #'          text3 = "Mr. Jones has a PhD from the LSE.  Second sentence.")
-#' nsentence(txt)
+#' tokens(txt, what = "sentence") |>
+#'     nsentence()
 #' @export
 nsentence <- function(x) {
     UseMethod("nsentence")
@@ -218,6 +223,9 @@ nsentence.default <- function(x) {
 #' @export
 #' @importFrom stringi stri_detect_charclass
 nsentence.character <- function(x) {
+    lifecycle::deprecate_soft("4.0", 
+                              "nsentence()", 
+                              I('lengths(tokens(what = "sentence"))'))
     upcase <- try(any(stri_detect_charclass(x, "[A-Z]")), silent = TRUE)
     if (!is.logical(upcase)) {
         # warning("Input text contains non-UTF-8 characters.")

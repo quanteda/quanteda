@@ -71,8 +71,8 @@ a \link{data.frame}}
 \link{matrix}} }
 }
 \examples{
-dfmat <- corpus_subset(data_corpus_inaugural, Year > 1970) \%>\%
-    tokens() \%>\%
+dfmat <- corpus_subset(data_corpus_inaugural, Year > 1970) |>
+    tokens() |>
     dfm()
 
 \dontrun{

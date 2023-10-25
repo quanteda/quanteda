@@ -2,7 +2,7 @@ url: https://quanteda.io
 template:
   params:
     bootswatch: readable
-    ganalytics: UA-144616-24
+    ganalytics: G-0F398Z98L1
     docsearch:
       api_key: 9b4ef7fd791dc6075154d3ebd7b12acf
       index_name: quanteda
@@ -28,8 +28,10 @@ navbar:
       href: reference/index.html
     - text: "Features"
       menu:
-        - text: "Feature comparison"
-          href: articles/pkgdown/comparison.html
+        - text: "External pointer tokens objects"
+          href: articles/pkgdown/tokens_xptr.html
+        - text: "Performance benchmarks for v4"
+          href: articles/pkgdown/benchmarks_xptr.html
         - text: "Package design"
           href: articles/pkgdown/design.html
         - text: "Changelog"
@@ -86,6 +88,8 @@ reference:
     - as.list.tokens
     - as.tokens
     - is.tokens
+    - as.tokens_xptr
+    - is.tokens_xptr
 - title: Character functions
   desc: Functions for constructing and manipulating character objects.
   contents:
@@ -106,7 +110,6 @@ reference:
     - tail.dfm
     - as.dfm
     - is.dfm
-    - as.data.frame.dfm
     - as.matrix.dfm
     - starts_with("fcm")
     - as.fcm
@@ -141,7 +144,6 @@ reference:
     - convert
     - bootstrap_dfm
     - meta
-    - readtext-methods
     - spacyr-methods
 - title: Statistics, models, and plots
   desc: Functions for computing statistics, fitting models, and producing visualisations models from text.

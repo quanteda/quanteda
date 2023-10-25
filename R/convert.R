@@ -55,7 +55,7 @@
 #' @examples
 #' ## convert a dfm
 #'
-#' toks <- corpus_subset(data_corpus_inaugural, Year > 1970) %>%
+#' toks <- corpus_subset(data_corpus_inaugural, Year > 1970) |>
 #'     tokens()
 #' dfmat1 <- dfm(toks)
 #'
@@ -197,8 +197,8 @@ convert.corpus <- function(x, to = c("data.frame", "json"), pretty = FALSE, ...)
 #' @name convert-wrappers
 #' @keywords internal
 #' @examples
-#' dfmat <- corpus_subset(data_corpus_inaugural, Year > 1970) %>%
-#'     tokens() %>%
+#' dfmat <- corpus_subset(data_corpus_inaugural, Year > 1970) |>
+#'     tokens() |>
 #'     dfm()
 #'
 NULL

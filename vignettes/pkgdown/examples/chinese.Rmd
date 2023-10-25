@@ -23,7 +23,7 @@ Download corpus constructed from *Report on the Work of the Government* publishe
 
 ```{r, message=FALSE,eval=FALSE}
 # read text files
-devtools::install_github("quanteda/quanteda.corpora")
+remotes::install_github("quanteda/quanteda.corpora")
 ```
 
 ```{r}
@@ -38,8 +38,8 @@ corp <- quanteda.corpora::download(url = "https://www.dropbox.com/s/37ojd5knz1qe
 ch_stop <- stopwords("zh", source = "misc")
 
 # tokenize
-ch_toks <- corp %>% 
-    tokens(remove_punct = TRUE) %>%
+ch_toks <- corp |> 
+    tokens(remove_punct = TRUE) |>
     tokens_remove(pattern = ch_stop)
 
 # construct a dfm
@@ -70,7 +70,7 @@ textplot_wordcloud(ch_dfm, min_count = 500, random_order = FALSE,
 # fcm within the window size of 5
 ch17_corp <- corpus_subset(corp, Year == "2017")
 ch17_toks <- 
-    tokens(ch17_corp, remove_punct = TRUE) %>% 
+    tokens(ch17_corp, remove_punct = TRUE) |> 
     tokens_remove(ch_stop)
 ch_fcm <- fcm(ch17_toks, context = "window")  
 topfeatures(ch_fcm["改革", ])

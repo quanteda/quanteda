@@ -31,9 +31,8 @@ tokens_chunk <- function(x, size, overlap = 0, use_docvars = TRUE) {
 #' @noRd
 #' @importFrom RcppParallel RcppParallelLibs
 #' @export
-tokens_chunk.tokens <- function(x, size, overlap = 0, use_docvars = TRUE) {
+tokens_chunk.tokens_xptr <- function(x, size, overlap = 0, use_docvars = TRUE) {
 
-    x <- as.tokens(x)
     size <- check_integer(size, min = 1)
     overlap <- check_integer(overlap, min = 0)
     use_docvars <- check_logical(use_docvars)
@@ -44,14 +43,18 @@ tokens_chunk.tokens <- function(x, size, overlap = 0, use_docvars = TRUE) {
         docvars(x) <- NULL
 
     attrs <- attributes(x)
-    type <- types(x)
-    result <- qatd_cpp_tokens_chunk(x, type, size, overlap)
-    if (any(duplicated(attr(result, "docnum")))) {
+    result <- cpp_tokens_chunk(x, size, overlap, get_threads())
+    if (any(duplicated(attr(result, "documents")))) {
         field_object(attrs, "unit") <- "segments"
     } else {
         field_object(attrs, "unit") <- "documents"
     }
-    attrs[["docvars"]] <- reshape_docvars(attrs[["docvars"]], attr(result, "docnum"),
+    attrs[["docvars"]] <- reshape_docvars(attrs[["docvars"]], attr(result, "documents"),
                                           drop_docid = FALSE)
     rebuild_tokens(result, attrs)
+}
+
+#' @export
+tokens_chunk.tokens <- function(x, ...) {
+    as.tokens(tokens_chunk(as.tokens_xptr(x), ...))
 }

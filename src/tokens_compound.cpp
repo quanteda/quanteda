@@ -1,7 +1,6 @@
-//#include "dev.h"
 #include "lib.h"
-#include "recompile.h"
 #include "skipgram.h"
+//#include "dev.h"
 using namespace quanteda;
 
 int adjust_window(Text &tokens, int current, int end) {
@@ -21,7 +20,7 @@ Text join_comp(Text tokens,
                IdNgram &id_comp,
                const std::pair<int, int> &window){
     
-    if (tokens.size() == 0) return {}; // return empty vector for empty text
+    if (tokens.empty()) return {}; // return empty vector for empty text
     
     std::vector< bool > flags_link(tokens.size(), false); // flag tokens to join
     std::size_t match = 0;
@@ -57,12 +56,12 @@ Text join_comp(Text tokens,
         if (flags_link[i]) {
                 tokens_seq.push_back(tokens[i]);
         } else {
-            if (tokens_seq.size() > 0) {
+            if (tokens_seq.empty()) {
+                tokens_flat.push_back(tokens[i]);
+            } else {
                 tokens_seq.push_back(tokens[i]);
                 tokens_flat.push_back(ngram_id(tokens_seq, map_comps, id_comp)); // assign ID to ngram
                 tokens_seq.clear();
-            } else {
-                tokens_flat.push_back(tokens[i]);
             }
         }
     }
@@ -77,7 +76,7 @@ Text match_comp(Text tokens,
                 IdNgram &id_comp,
                 const std::pair<int, int> &window){
     
-    if (tokens.size() == 0) return {}; // return empty vector for empty text
+    if (tokens.empty()) return {}; // return empty vector for empty text
     
     std::vector< std::vector<unsigned int> > tokens_multi(tokens.size()); 
     std::vector< bool > flags_match(tokens.size(), false); // flag matched tokens
@@ -116,52 +115,19 @@ Text match_comp(Text tokens,
     Text tokens_flat;
     tokens_flat.reserve(match);
     for (auto &tokens_sub: tokens_multi) {
-        if (tokens_sub.size() > 0) {
+        if (!tokens_sub.empty()) {
             tokens_flat.insert(tokens_flat.end(), tokens_sub.begin(), tokens_sub.begin() + 1);
         }
     }
     return tokens_flat;
 }
 
-struct compound_mt : public Worker{
-    
-    Texts &texts;
-    const std::vector<std::size_t> &spans;
-    const bool &join;
-    SetNgrams &set_comps;
-    MapNgrams &map_comps;
-    IdNgram &id_comp;
-    const std::pair<int, int> &window;
-    
-    // Constructor
-    compound_mt(Texts &texts_, const std::vector<std::size_t> &spans_, 
-                const bool &join_, SetNgrams &set_comps_, MapNgrams &map_comps_, IdNgram &id_comp_,
-                const std::pair<int, int> &window_):
-                texts(texts_), spans(spans_), 
-                join(join_), set_comps(set_comps_), map_comps(map_comps_), id_comp(id_comp_),
-                window(window_) {}
-    
-    // parallelFor calles this function with std::size_t
-    void operator()(std::size_t begin, std::size_t end){
-        //Rcout << "Range " << begin << " " << end << "\n";
-        for (std::size_t h = begin; h < end; h++) {
-            if (join) {
-                texts[h] = join_comp(texts[h], spans, set_comps, map_comps, id_comp, window);
-            } else {
-                texts[h] = match_comp(texts[h], spans, set_comps, map_comps, id_comp, window);
-            }
-        }
-    }
-};
-
 /* 
- * This function substitutes features in tokens object with new IDs. 
+ * Function to compound tokens
  * The number of threads is set by RcppParallel::setThreadOptions()
  * @used tokens_compound()
  * @creator Kohei Watanabe
- * @param texts_ tokens ojbect
  * @param compounds_ list of patterns to substitute
- * @param types_ types in the tokens object
  * @param delim_ character to concatenate types
  * @param join join overlapped features if true
  * @param window_left numbers tokens on the left-hand side of pattern
@@ -169,16 +135,16 @@ struct compound_mt : public Worker{
  */
 
 // [[Rcpp::export]]
-List qatd_cpp_tokens_compound(const List &texts_, 
+TokensPtr cpp_tokens_compound(TokensPtr xptr,
                               const List &compounds_,
-                              const CharacterVector &types_,
                               const String &delim_,
                               const bool &join,
                               int window_left,
-                              int window_right){
+                              int window_right,
+                              const int thread = -1) {
     
-    Texts texts = Rcpp::as<Texts>(texts_);
-    Types types = Rcpp::as<Types>(types_);
+    Texts texts = xptr->texts;
+    Types types = xptr->types;
     std::string delim = delim_;
     std::pair<int, int> window(window_left, window_right);
 
@@ -210,11 +176,22 @@ List qatd_cpp_tokens_compound(const List &texts_,
      
     // dev::Timer timer;
     // dev::start_timer("Token compound", timer);
+    std::size_t H = texts.size();
 #if QUANTEDA_USE_TBB
-    compound_mt compound_mt(texts, spans, join, set_comps, map_comps, id_comp, window);
-    parallelFor(0, texts.size(), compound_mt);
+    tbb::task_arena arena(thread);
+    arena.execute([&]{
+        tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
+            for (int h = r.begin(); h < r.end(); ++h) {
+                if (join) {
+                    texts[h] = join_comp(texts[h], spans, set_comps, map_comps, id_comp, window);
+                } else {
+                    texts[h] = match_comp(texts[h], spans, set_comps, map_comps, id_comp, window);
+                }
+            }    
+        });
+    });
 #else
-    for (std::size_t h = 0; h < texts.size(); h++) {
+    for (std::size_t h = 0; h < H; h++) {
         if (join) {
             texts[h] = join_comp(texts[h], spans, set_comps, map_comps, id_comp, window);
         } else {
@@ -235,21 +212,15 @@ List qatd_cpp_tokens_compound(const List &texts_,
     // Create compound types
     Types types_comp(ids_comp.size());
     for (std::size_t i = 0; i < ids_comp.size(); i++) {
-        Ngram key = ids_comp[i];
-        if (key.size() == 0) {
-            types_comp[i] = "";
-        } else {
-            std::string type_ngram = types[key[0] - 1];
-            for (std::size_t j = 1; j < key.size(); j++) {
-                type_ngram += delim + types[key[j] - 1];
-            }
-            types_comp[i] = type_ngram;
-        }
+        types_comp[i] = join_strings(ids_comp[i], types, delim);
     }
     types.insert(types.end(), types_comp.begin(), types_comp.end());
     
     // dev::stop_timer("Token compound", timer);
-    return recompile(texts, types, true, true, is_encoded(delim_) || is_encoded(types_));
+    xptr->texts = texts;
+    xptr->types = types;
+    xptr->recompiled = false;
+    return xptr;
 }
 
 /***R
@@ -260,10 +231,10 @@ toks <- list(rep(1:10, 1), rep(5:15, 1))
 #dict <- list(c(1, 2), c(2, 3), c(4, 5))
 dict <- list(6, 4)
 types <- letters[seq_along(unique(unlist(toks)))]
-#qatd_cpp_tokens_compound(toks, dict, types, "_", FALSE)
-qatd_cpp_tokens_compound(toks, dict, types, "_", TRUE, 0, 0)
-qatd_cpp_tokens_compound(toks, dict, types, "_", TRUE, 1, 1)
-qatd_cpp_tokens_compound(toks, dict, types, "_", FALSE, 1, 1)
+#cpp_tokens_compound(toks, dict, types, "_", FALSE)
+cpp_tokens_compound(toks, dict, types, "_", TRUE, 0, 0)
+cpp_tokens_compound(toks, dict, types, "_", TRUE, 1, 1)
+cpp_tokens_compound(toks, dict, types, "_", FALSE, 1, 1)
 
 
 

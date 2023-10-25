@@ -86,9 +86,9 @@ With `textstat_collocations()`, it is possible to discover multi-word expression
 If `textstat_collocations()` is applied to a tokens object comprised only of capitalize words, it usually returns multi-word proper names.
 
 ```{r}
-col <- toks %>% 
-       tokens_remove(stopwords()) %>% 
-       tokens_select('^[A-Z]', valuetype = 'regex', case_insensitive = FALSE, padding = TRUE) %>% 
+col <- toks |> 
+       tokens_remove(stopwords()) |> 
+       tokens_select('^[A-Z]', valuetype = 'regex', case_insensitive = FALSE, padding = TRUE) |> 
        textstat_collocations(min_count = 5, tolower = FALSE)
 head(col)
 ```
@@ -101,11 +101,3 @@ Collocations are automatically recognized as multi-word expressions by `tokens_c
 comp_toks2 <- tokens_compound(toks, col)
 head(kwic(comp_toks2, c('United_States', 'New_York')))
 ```
-
-You can use `phrase()` on collocations if more flexibility is needed. This is usually the case if you compound tokens from different corpus.
-
-```{r}
-comp_toks3 <- tokens_compound(toks, phrase(col$collocation))
-head(kwic(comp_toks3, c('United_States', 'New_York')))
-```
-

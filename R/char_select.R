@@ -50,7 +50,7 @@ char_select.character <- function(x, pattern, selection = c("keep", "remove"),
     result <- 
         pattern2fixed(pattern = pattern, types = x, 
                       valuetype = valuetype, 
-                      case_insensitive = case_insensitive) %>%
+                      case_insensitive = case_insensitive) |>
         unlist()
 
     if (selection == "remove") {
@@ -76,7 +76,7 @@ char_select.character <- function(x, pattern, selection = c("keep", "remove"),
 #'
 #' # remove some of the system stopwords
 #' stopwords("en", source = "snowball")[1:6]
-#' stopwords("en", source = "snowball")[1:6] %>%
+#' stopwords("en", source = "snowball")[1:6] |>
 #'   char_remove(c("me", "my*"))
 #'   
 char_remove <- function(x, ...) {

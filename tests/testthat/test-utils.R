@@ -55,7 +55,7 @@ test_that("pipes work", {
     expect_true(!"package:magrittr" %in% search())
     expect_equal(
         tokens(char_tolower("A B C")),
-        tokens("A B C") %>% tokens_tolower()
+        tokens("A B C") |> tokens_tolower()
     )
 })
 
@@ -145,14 +145,8 @@ test_that("resample works with groups of size 1", {
 })
 
 test_that("max_load_factor can be configured", {
-    quanteda:::qatd_cpp_set_load_factor("pattern", 0.2)
-    quanteda:::qatd_cpp_set_load_factor("pattern", -1.0)
-    quanteda:::qatd_cpp_set_load_factor("pattern", 2.0)
-    quanteda:::qatd_cpp_set_load_factor("ngrams", 0.7)
-    quanteda:::qatd_cpp_set_load_factor("ngrams", -1.0)
-    quanteda:::qatd_cpp_set_load_factor("ngrams", 2.0)
-    expect_equal(quanteda:::qatd_cpp_get_load_factor(),
-                 list(pattern = 0.2, ngrams = 0.7), tolerance = 0.001)
+    expect_equal(quanteda:::cpp_get_load_factor(),
+                 list(pattern = 0.05, ngrams = 0.25), tolerance = 0.001)
     
 })
 

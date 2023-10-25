@@ -13,54 +13,48 @@ dfm(
 )
 }
 \arguments{
-\item{x}{a \link{tokens} or \link{dfm} object}
+\item{x}{a \link{tokens} or \link{dfm} object.}
 
-\item{tolower}{convert all features to lowercase}
+\item{tolower}{convert all features to lowercase.}
 
 \item{remove_padding}{logical; if \code{TRUE}, remove the "pads" left as empty tokens after
-calling \code{\link[=tokens]{tokens()}} or \code{\link[=tokens_remove]{tokens_remove()}} with \code{padding = TRUE}}
+calling \code{\link[=tokens]{tokens()}} or \code{\link[=tokens_remove]{tokens_remove()}} with \code{padding = TRUE}.}
 
-\item{verbose}{display messages if \code{TRUE}}
+\item{verbose}{display messages if \code{TRUE}.}
 
-\item{...}{not used directly}
+\item{...}{not used.}
 }
 \value{
 a \linkS4class{dfm} object
 }
 \description{
-Construct a sparse document-feature matrix, from a character, \link{corpus},
-\link{tokens}, or even other \link{dfm} object.
+Construct a sparse document-feature matrix from a \link{tokens} or \link{dfm} object.
 }
 \section{Changes in version 3}{
 
-In \pkg{quanteda} v3, many convenience functions formerly available in
-\code{dfm()} were deprecated. Formerly, \code{dfm()} could be called directly on a
-\code{character} or \code{corpus} object, but we now steer users to tokenise their
-inputs first using \code{\link[=tokens]{tokens()}}.  Other convenience arguments to \code{dfm()} were
-also removed, such as \code{select}, \code{dictionary}, \code{thesaurus}, and \code{groups}.  All
-of these functions are available elsewhere, e.g. through \code{\link[=dfm_group]{dfm_group()}}.
-See \code{news(Version >= "2.9", package = "quanteda")} for details.
+In \pkg{quanteda} v4, many convenience functions formerly available in
+\code{dfm()} were removed.
 }
 
 \examples{
 ## for a corpus
-toks <- data_corpus_inaugural \%>\%
-  corpus_subset(Year > 1980) \%>\%
+toks <- data_corpus_inaugural |>
+  corpus_subset(Year > 1980) |>
   tokens()
 dfm(toks)
 
 # removal options
-toks <- tokens(c("a b c", "A B C D")) \%>\%
+toks <- tokens(c("a b c", "A B C D")) |>
     tokens_remove("b", padding = TRUE)
 toks
 dfm(toks)
-dfm(toks) \%>\%
+dfm(toks) |>
  dfm_remove(pattern = "") # remove "pads"
 
 # preserving case
 dfm(toks, tolower = FALSE)
 }
 \seealso{
-\code{\link[=dfm_select]{dfm_select()}}, \linkS4class{dfm}
+\code{\link[=as.dfm]{as.dfm()}}, \code{\link[=dfm_select]{dfm_select()}}, \linkS4class{dfm}
 }
 \keyword{dfm}

@@ -85,7 +85,7 @@ an easy way to make a corpus and its document variables into a data.frame.
 \examples{
 ## convert a dfm
 
-toks <- corpus_subset(data_corpus_inaugural, Year > 1970) \%>\%
+toks <- corpus_subset(data_corpus_inaugural, Year > 1970) |>
     tokens()
 dfmat1 <- dfm(toks)
 

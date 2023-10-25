@@ -1,5 +1,5 @@
 Package: quanteda
-Version: 3.3.1
+Version: 4.0.0
 Title: Quantitative Analysis of Textual Data
 Description: A fast, flexible, and comprehensive framework for 
     quantitative text analysis in R.  Provides functionality for corpus management,
@@ -28,6 +28,7 @@ Depends:
 Imports:
     fastmatch,
     jsonlite,
+    lifecycle,
     magrittr,
     Matrix (>= 1.5-0),
     Rcpp (>= 0.12.12),
@@ -54,6 +55,7 @@ Suggests:
     quanteda.textstats,
     quanteda.textplots,
     RColorBrewer,
+    rlang,
     slam,
     spacyr,
     stm,
@@ -125,8 +127,8 @@ Collate:
     'object2fixed.R'
     'pattern2fixed.R'
     'phrases.R'
+    'quanteda-package.R'
     'quanteda_options.R'
-    'readtext-methods.R'
     'spacyr-methods.R'
     'stopwords.R'
     'summary.R'
@@ -148,6 +150,7 @@ Collate:
     'tokens_select.R'
     'tokens_split.R'
     'tokens_subset.R'
+    'tokens_xptr.R'
     'utils.R'
     'validator.R'
     'wordstem.R'

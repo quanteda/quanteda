@@ -75,3 +75,22 @@ test_that("object2id is working with empty patterns", {
     expect_silent(quanteda:::object2id(col, letters, "fixed", TRUE))
     expect_silent(quanteda:::object2id(pat, letters, "fixed", TRUE))
 })
+
+test_that("object2id error if x is not characters", {
+    expect_error(
+        quanteda:::object2id(c(TRUE, FALSE), letters),
+        "The type of x must be character"
+    )
+    
+    expect_error(
+        quanteda:::object2id(c(1, 2), letters),
+        "The type of x must be character"
+    )
+    
+    expect_error(
+        quanteda:::object2id(list("a", 10), letters),
+        "The type of x must be character"
+    )
+    
+})
+

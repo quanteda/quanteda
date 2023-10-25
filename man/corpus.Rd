@@ -72,7 +72,7 @@ based on \verb{([quanteda_options]("base_docname")}.}
 \code{data.frame} indicating the variable to be read in as text, which must
 be a character vector. All other variables in the data.frame will be
 imported as docvars.  This argument is only used for \code{data.frame}
-objects (including those created by \pkg{readtext}).}
+objects.}
 
 \item{split_context}{logical; if \code{TRUE}, split each kwic row into two
 "documents", one for "pre" and one for "post", with this designation saved

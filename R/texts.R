@@ -3,8 +3,10 @@
 #' Get or replace the texts in a [corpus], with grouping options.
 #' Works for plain character vectors too, if `groups` is a factor.
 #' 
-#' @description This function is **deprecated** and will be removed in the next
-#'   major release. 
+#' @description 
+#' `r lifecycle::badge('superseded')`
+#' 
+#' This function has been made defunct and replaced. 
 #' * Use [as.character.corpus()] to turn a corpus into a simple named character
 #'   vector.
 #' * Use [corpus_group()] instead of `texts(x, groups = ...)` to aggregate texts
@@ -29,17 +31,19 @@ texts <- function(x, groups = NULL, spacer = " ") {
 #' @importFrom stringi stri_c_list
 #' @export
 texts.corpus <- function(x, groups = NULL, spacer = " ") {
-    spacer <- check_character(spacer)
-
     if (!missing(groups)) {
-        .Deprecated("corpus_group")
-        grp <- eval(substitute(groups), get_docvars(x, user = TRUE, system = TRUE), parent.frame())
-        x <- corpus_group(x, grp, concatenator = spacer)
+        lifecycle::deprecate_stop(
+            when = "3.0", 
+            what = I('`texts(x, groups = ...)`'),
+            with = I('`corpus_group(x, groups = ...)`')
+        )
     } else {
-        .Deprecated("as.character")
+        lifecycle::deprecate_stop(
+            when = "3.0", 
+            what = "texts()",
+            with = "as.character()"
+        )
     }
-    
-    as.character(x, use.names = TRUE)
 }
 
 #' @rdname texts
@@ -59,13 +63,9 @@ texts.corpus <- function(x, groups = NULL, spacer = " ") {
 
 #' @export
 "texts<-.corpus" <- function(x, value) {
-    .Deprecated(msg = "use the '[<-' replacement for a corpus object instead")
-    x <- as.corpus(x)
-    attrs <- attributes(x)
-    value <- as.character(value)
-    if (length(x) != length(value))
-        stop(message_error("ndoc_mismatch"), call. = FALSE)
-    x <- value
-    attributes(x) <- attrs
-    return(x)
+    lifecycle::deprecate_stop(
+        when = "3.0", 
+        what = I('`texts(x) <-`'),
+        details = I("Please use the `[<-` replacement for a corpus object instead.")
+    )
 }

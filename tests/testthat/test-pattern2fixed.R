@@ -96,7 +96,6 @@ test_that("pattern2fixed converts complex patterns correctly", {
         pattern2fixed(glob, type, 'glob', case_insensitive = TRUE),
         list("<*>", "<xxx>", "<xx.yy>")
     )
-    
 })
 
 test_that("pattern2fixed works with character class", {
@@ -207,56 +206,79 @@ test_that("used of index do not change the result", {
 
 })
 
-test_that("index_fixed and index_glob work correctly", {
+test_that("index_types works correctly", {
+    
+    type <- c("abcd", "abc", "ab", "ABCD", "ABC", "AB")
+    
+    index1 <- quanteda:::index_types("a*", type)
+    expect_null(names(index1))
+    expect_equal(
+        attributes(index1),
+        list(types_search = c("abcd", "abc", "ab", "abcd", "abc", "ab"),
+             types = type, valuetype = "glob", 
+             case_insensitive = TRUE, key = "a*")
+    )
+    
+    index2 <- quanteda:::index_types("a*", type, case_insensitive = FALSE)
+    expect_null(names(index2))
+    expect_equal(
+        attributes(index2),
+        list(types_search = type, types = type, valuetype = "glob", 
+             case_insensitive = FALSE, key = "a*")
+    )
+    
+    # do not index for regex
+    index3 <- quanteda:::index_types("a*", type, valuetype = "regex")
+    expect_null(names(index3))
+    expect_equivalent(index3, list())
+    expect_equal(
+        attributes(index3),
+        list(types_search = c("abcd", "abc", "ab", "abcd", "abc", "ab"),
+             types = type, valuetype = "regex", 
+             case_insensitive = TRUE, key = character())
+    )
+})
+
+test_that("cpp_index_types works correctly", {
 
     type <- c("abcd", "abc", "ab", "ABCD", "ABC", "AB")
     type_lower <- stringi::stri_trans_tolower(type)
     
-    expect_equal(quanteda:::index_fixed("abc", type),
+    expect_equal(quanteda:::cpp_index_types("abc", type, FALSE),
                  list("abc" = 2))
-    expect_equal(quanteda:::index_fixed("abc", type_lower),
+    expect_equal(quanteda:::cpp_index_types("abc", type_lower, FALSE),
                  list("abc" = c(2, 5)))
-    expect_equal(quanteda:::index_fixed("ab*", type),
-                 structure(list(), names = character()))
-    expect_equal(quanteda:::index_fixed("*ab", type),
-                 structure(list(), names = character()))
-    expect_equal(quanteda:::index_fixed("*", type),
-                 structure(list(), names = character()))
+    expect_equal(quanteda:::cpp_index_types("ab*", type, FALSE),
+                 list("ab*" = integer()))
+    expect_equal(quanteda:::cpp_index_types("*ab", type, FALSE),
+                 list("*ab" = integer()))
+    expect_equal(quanteda:::cpp_index_types("*", type, FALSE),
+                 list("*" = integer()))
     
-    expect_equal(quanteda:::index_glob("ab*", type, "*", "right"),
+    expect_equal(quanteda:::cpp_index_types("ab*", type),
                  list("ab*" = c(1, 2, 3)))
-    expect_equal(quanteda:::index_glob("abc*", type_lower, "*", "right"),
+    expect_equal(quanteda:::cpp_index_types("abc*", type_lower),
                  list("abc*" = c(1, 2, 4, 5)))
-    expect_equal(quanteda:::index_glob("*bc", type, "*", "left"),
+    expect_equal(quanteda:::cpp_index_types("*bc", type),
                  list("*bc" = c(2)))
-    expect_equal(quanteda:::index_glob("*bc", type_lower, "*", "left"),
+    expect_equal(quanteda:::cpp_index_types("*bc", type_lower),
                  list("*bc" = c(2, 5)))
     
     
     # no wildcard
-    expect_equal(quanteda:::index_glob("ab", type, "*"),
-                 structure(list(), names = character()))
-    expect_equal(quanteda:::index_glob("ab", type_lower, "*"),
-                 structure(list(), names = character()))
-    expect_equal(quanteda:::index_glob("bc", type, "?"),
-                 structure(list(), names = character()))
-    expect_equal(quanteda:::index_glob("bc", type_lower, "?"),
-                 structure(list(), names = character()))
-    
-    # wrong side
-    expect_equal(quanteda:::index_glob("ab*", type, "*", "left"),
-                 structure(list(), names = character()))
-    expect_equal(quanteda:::index_glob("*bc", type, "*", "right"),
-                 structure(list(), names = character()))
-    
-    # both sides
-    expect_equal(quanteda:::index_glob("*b*", type, "*", "right"),
-                 structure(list(), names = character()))
-    expect_equal(quanteda:::index_glob("*b*", type, "*", "left"),
-                 structure(list(), names = character()))
-    expect_equal(quanteda:::index_glob("?b?", type, "?", "right"),
-                 structure(list(), names = character()))
-    expect_equal(quanteda:::index_glob("?b?", type, "?", "left"),
-                 structure(list(), names = character()))
-})
+    expect_equal(quanteda:::cpp_index_types("ab", type),
+                 list("ab" = 3))
+    expect_equal(quanteda:::cpp_index_types("ab", type_lower),
+                 list("ab" = c(3, 6)))
+    expect_equal(quanteda:::cpp_index_types("bc", type),
+                 list("bc" = integer()))
+    expect_equal(quanteda:::cpp_index_types("bc", type_lower),
+                 list("bc" = integer()))
 
+    # both sides
+    expect_equal(quanteda:::cpp_index_types("*b*", type),
+                 list("*b*" = integer()))
+    expect_equal(quanteda:::cpp_index_types("?b?", type),
+                 list("?b?" = integer()))
+    
+})

@@ -7,7 +7,7 @@
 #' @param x the dfm whose features will be extracted
 #' @return character vector of the feature labels
 #' @examples
-#' dfmat <- dfm(data_corpus_inaugural)
+#' dfmat <- dfm(tokens(data_corpus_inaugural))
 #'
 #' # first 50 features (in original text order)
 #' head(featnames(dfmat), 50)
@@ -182,8 +182,8 @@ is.dfm <- function(x) {
 #' @return A named numeric vector of feature counts, where the names are the
 #'   feature labels, or a list of these if `groups` is given.
 #' @examples
-#' dfmat1 <- corpus_subset(data_corpus_inaugural, Year > 1980) %>%
-#'     tokens(remove_punct = TRUE) %>%
+#' dfmat1 <- corpus_subset(data_corpus_inaugural, Year > 1980) |>
+#'     tokens(remove_punct = TRUE) |>
 #'     dfm()
 #' dfmat2 <- dfm_remove(dfmat1, stopwords("en"))
 #'
@@ -256,7 +256,7 @@ topfeatures.dfm <- function(x, n = 10, decreasing = TRUE,
 #' to the proportion of cells that have zero counts.
 #' @param x the document-feature matrix
 #' @examples
-#' dfmat <- dfm(data_corpus_inaugural)
+#' dfmat <- dfm(tokens(data_corpus_inaugural))
 #' sparsity(dfmat)
 #' sparsity(dfm_trim(dfmat, min_termfreq = 5))
 #' @export

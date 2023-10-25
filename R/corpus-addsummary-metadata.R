@@ -6,15 +6,15 @@
 #' @param ... additional arguments passed to [tokens()] when computing the
 #'   summary information
 #' @return `add_summary_metadata()` returns a corpus with summary metadata added
-#'   as a data.frame, with the top-level list element names `summary`.
+#'   as a data.frame, with the top-level list element names [summary()].
 #' @details This is provided so that a [corpus] object can be stored with
 #'   summary information to avoid having to compute this every time
-#'   `[summary.corpus()]` is called.
+#'   [summary.corpus()] is called.
 #'   
-#'   So in future calls, if `!is.null(meta(x, "summary", type = "system") &&
-#'   !length(list(...))`, then `summary.corpus()` will simply return
-#'   `get_system_meta()` rather than compute the summary statistics on the fly,
-#'   which requires tokenizing the text.
+#'   So in future calls, if `!is.null(meta(x, "summary", type = "system") && !length(list(...))`, 
+#'   then `summary.corpus()` will simply return `get_system_meta()` rather than
+#'   compute the summary statistics on the fly, which requires tokenizing the
+#'   text.
 #' @keywords corpus internal
 #' @examples
 #' corp <- corpus(data_char_ukimmig2010)
@@ -49,17 +49,16 @@ get_summary_metadata <- function(x, ...) {
 #' 
 #' extended_data <- quanteda:::summarize_texts_extended(data_corpus_inaugural)
 #' 
+#' library("quanteda.textplots")
 #' textplot_wordcloud(extended_data$top_dfm, max_words = 100)
 #' 
-#' \dontrun{
 #' library("ggplot2")
 #' ggplot(data.frame(all_tokens = extended_data$all_tokens), aes(x = all_tokens)) +
 #'    geom_histogram(color = "darkblue", fill = "lightblue") +
 #'    xlab("Total length in tokens")
 #' }
-#' }
 summarize_texts_extended <- function(x, stop_words = stopwords("en"), n = 100) {
-    toks <- tokens(x) %>%
+    toks <- tokens(x) |>
         tokens_tolower()
     
     # total tokens
@@ -92,7 +91,7 @@ summarize_texts_extended <- function(x, stop_words = stopwords("en"), n = 100) {
     top_words <- topfeatures(dfmat, n)
     
     # top n features as a dfm
-    top_dfm <- dfm_select(dfmat, names(top_words)) %>%
+    top_dfm <- dfm_select(dfmat, names(top_words)) |>
         dfm_group(groups = rep(1, ndoc(dfmat)))
     
     list(total_tokens = ntoks,

@@ -44,9 +44,10 @@ summary(corpus_sample(data_corpus_inaugural, size = 10, replace = TRUE))
 corp <- data_corpus_inaugural
 corp$century <- paste(floor(corp$Year / 100) + 1)
 corp$century <- paste0(corp$century, ifelse(corp$century < 21, "th", "st"))
-corpus_sample(corp, size = 2, by = century) \%>\% summary()
+corpus_sample(corp, size = 2, by = century) |>
+    summary()
 # needs drop = TRUE to avoid empty interactions
-corpus_sample(corp, size = 1, by = interaction(Party, century, drop = TRUE), replace = TRUE) \%>\%
+corpus_sample(corp, size = 1, by = interaction(Party, century, drop = TRUE), replace = TRUE) |>
     summary()
 
 # sampling sentences by document

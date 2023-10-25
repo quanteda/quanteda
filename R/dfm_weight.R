@@ -44,7 +44,7 @@
 #' @seealso [docfreq()]
 #' @keywords dfm
 #' @examples
-#' dfmat1 <- dfm(data_corpus_inaugural)
+#' dfmat1 <- dfm(tokens(data_corpus_inaugural))
 #'
 #' dfmat2 <- dfm_weight(dfmat1, scheme = "prop")
 #' topfeatures(dfmat2)
@@ -58,11 +58,6 @@
 #' # combine these methods for more complex dfm_weightings, e.g. as in Section 6.4
 #' # of Introduction to Information Retrieval
 #' head(dfm_tfidf(dfmat1, scheme_tf = "logcount"))
-#'
-#' # apply numeric weights
-#' str <- c("apple is better than banana", "banana banana apple much better")
-#' (dfmat6 <- dfm(str, remove = stopwords("english")))
-#' dfm_weight(dfmat6, weights = c(apple = 5, banana = 3, much = 0.5))
 #'
 #' @references  Manning, C.D., Raghavan, P., & Schütze, H. (2008).
 #'   *An Introduction to Information Retrieval*. Cambridge: Cambridge University Press.
@@ -185,7 +180,7 @@ dfm_weight.dfm <- function(x,
 #' @export
 #' @examples
 #' # smooth the dfm
-#' dfmat <- dfm(data_corpus_inaugural)
+#' dfmat <- dfm(tokens(data_corpus_inaugural))
 #' dfm_smooth(dfmat, 0.5)
 dfm_smooth <- function(x, smoothing = 1) {
     UseMethod("dfm_smooth")
@@ -243,7 +238,7 @@ dfm_smooth.dfm <- function(x, smoothing = 1) {
 #' @keywords weighting dfm
 #' @export
 #' @examples
-#' dfmat1 <- dfm(data_corpus_inaugural[1:2])
+#' dfmat1 <- dfm(tokens(data_corpus_inaugural))
 #' docfreq(dfmat1[, 1:20])
 #'
 #' # replication of worked example from
@@ -253,7 +248,7 @@ dfm_smooth.dfm <- function(x, smoothing = 1) {
 #'            byrow = TRUE, nrow = 2,
 #'            dimnames = list(docs = c("document1", "document2"),
 #'                            features = c("this", "is", "a", "sample",
-#'                                         "another", "example"))) %>%
+#'                                         "another", "example"))) |>
 #'     as.dfm()
 #' dfmat2
 #' docfreq(dfmat2)
@@ -326,7 +321,7 @@ docfreq.dfm <- function(x, scheme = c("count", "inverse", "inversemax",
 #' @seealso [dfm_tfidf()], [dfm_weight()]
 #' @export
 #' @examples
-#' dfmat <- dfm(data_char_sampletext)
+#' dfmat <- dfm(tokens(data_char_sampletext))
 #' featfreq(dfmat)
 featfreq <- function(x) {
     UseMethod("featfreq")
@@ -379,16 +374,16 @@ featfreq.dfm <- function(x) {
 #'            byrow = TRUE, nrow = 2,
 #'            dimnames = list(docs = c("document1", "document2"),
 #'                            features = c("this", "is", "a", "sample",
-#'                                         "another", "example"))) %>%
+#'                                         "another", "example"))) |>
 #'     as.dfm()
 #' dfmat2
 #' docfreq(dfmat2)
-#' dfm_tfidf(dfmat2, scheme_tf = "prop") %>% round(digits = 2)
+#' dfm_tfidf(dfmat2, scheme_tf = "prop") |> round(digits = 2)
 #'
 #' \dontrun{
 #' # comparison with tm
 #' if (requireNamespace("tm")) {
-#'     convert(dfmat2, to = "tm") %>% tm::weightTfIdf() %>% as.matrix()
+#'     convert(dfmat2, to = "tm") |> tm::weightTfIdf() |> as.matrix()
 #'     # same as:
 #'     dfm_tfidf(dfmat2, base = 2, scheme_tf = "prop")
 #' }

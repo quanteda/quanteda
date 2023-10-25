@@ -35,7 +35,7 @@ data_char_mobydick <- as.character(readtext::readtext("http://www.gutenberg.org/
 names(data_char_mobydick) <- "Moby Dick"
 ```
 
-The `readtext()` function from the **readtext** package loads the text files into a `data.frame` object. We can access the text from a `data.frame` object (and also, as we will see, a `corpus` class object), using the `texts()` or the `View()` method. Here we will display just the first 75 characters, to prevent a massive dump of the text of the entire novel.  We do this using the `stri_sub()` function from the **stringi** package, which shows the 1st through the 75th characters of the texts of our new object `data_char_mobydick`. Because we have not assigned the return from this command to any object, it invokes a print method for character objects, and is displayed on the screen.
+The `readtext()` function from the **readtext** package loads the text files into a `data.frame` object. We can access the text from a `data.frame` object (and also, as we will see, a `corpus` class object). Here we will display just the first 75 characters, to prevent a massive dump of the text of the entire novel.  We do this using the `stri_sub()` function from the **stringi** package, which shows the 1st through the 75th characters of the texts of our new object `data_char_mobydick`. Because we have not assigned the return from this command to any object, it invokes a print method for character objects, and is displayed on the screen.
 
 ```{r}
 library("stringi")
@@ -64,7 +64,7 @@ stri_count_fixed(data_char_mobydick, "\n")
 
 To measure just the number lines in the novel itself, without the metadata, we can subset the text from the start and end of the novel part, as identified above.
 ```{r}
-stri_sub(data_char_mobydick, from = start_v, to = end_v) %>%
+stri_sub(data_char_mobydick, from = start_v, to = end_v) |>
     stri_count_fixed("\n")
 ```
 
@@ -72,7 +72,7 @@ To trim the non-book content, we use `stri_sub()` to extract the text between th
 ```{r}
 novel_v <- stri_sub(data_char_mobydick, start_v, end_v)
 length(novel_v)
-stri_sub(novel_v, 1, 94) %>% cat()
+stri_sub(novel_v, 1, 94) |> cat()
 ```
 
 
@@ -98,7 +98,7 @@ moby_word_v[["text1"]][99986]
 moby_word_v[["text1"]][c(4, 5, 6)]
 
 # check positions of "whale"
-which(moby_word_v[["text1"]] == "whale") %>%
+which(moby_word_v[["text1"]] == "whale") |>
     head()
 ```
 
@@ -149,7 +149,7 @@ Finally, if we wish to plot the most frequent (50) terms, we can supply the resu
 # plot frequency of 50 most frequent terms 
 library("ggplot2")
 theme_set(theme_minimal())
-textstat_frequency(moby_dfm, n = 50) %>% 
+textstat_frequency(moby_dfm, n = 50) |> 
   ggplot(aes(x = rank, y = frequency)) +
   geom_point() +
   labs(x = "Frequency rank", y = "Term frequency")
@@ -208,7 +208,7 @@ axis(1,1:10, labels = names(sorted_moby_rel_freqs_t[1:10]))
 
 Plotting the most frequent terms using **ggplot2**:
 ```{r}
-textstat_frequency(moby_dfm_pct, n = 10) %>% 
+textstat_frequency(moby_dfm_pct, n = 10) |> 
   ggplot(aes(x = reorder(feature, -rank), y = frequency)) +
   geom_bar(stat = "identity") + coord_flip() + 
   labs(x = "", y = "Term Frequency as a Percentage")
@@ -245,17 +245,31 @@ head(chap_positions_v)
 
 ## 4.2 Identifying chapter breaks
 
-Splitting the text into chapters means that we will have a collection of documents, which makes this a good time to make a `corpus` object to hold the texts. Initially, we make a single-document corpus, and then use the `char_segment()` function to split this by the string which specifies the chapter breaks. 
+Splitting the text into chapters means that we will have a collection of documents, which makes this a good time to make a `corpus` object to hold the texts. Initially, we make a single-document corpus, and then use the `corpus_segment()` function to split this by the string which specifies the chapter breaks. 
+
+Because of the header information, however, we want to discard the first part. We can do this by segmenting the text according to the first chapter, "CHAPTER 1. Loomings.", which is preceded by 5 newlines.
+
 ```{r}
-chapters_corp <- 
-    corpus(data_char_mobydick) %>%
-    corpus_segment(pattern = "CHAPTER\\s\\d+.*\\n", valuetype = "regex")
-summary(chapters_corp, 10)
+chapters_char <- 
+    data_char_mobydick |>
+    char_segment(pattern = "\\n{5}CHAPTER 1\\. Loomings\\.\\n", 
+                 valuetype = "regex", remove_pattern = FALSE)
+sapply(chapters_char, substring, 1, 100)
+# remove header segment
+chapters_char <- chapters_char[-1]
+
+cat(substring(chapters_char, 1, 200))
 ```
-The titles are automatically extracted into the `pattern` document variables, and the text of each chapter becomes the text of each new document unit.  To tidy this up, we can remove the trailing `\n` character, using `stri_trim_right()`, since the `\n` is a member of the "whitespace" group.
+
+Now we can segment the text based on the chapter titles.  These titles are automatically extracted into the `pattern` document variables, and the text of each chapter becomes the text of each new document unit.  To tidy this up, we can remove the trailing `\n` character, using `stri_trim_both()`, since the `\n` is a member of the "whitespace" group.
 ```{r}
-chapters_corp$pattern <- stringi::stri_trim_right(chapters_corp$pattern)
-summary(chapters_corp, n = 3)
+chapters_corp <- chapters_char |>
+    corpus() |>
+    corpus_segment(pattern = "CHAPTER\\s\\d+.*\\n\\n", valuetype = "regex")
+chapters_corp$pattern <- stringi::stri_trim_both(chapters_corp$pattern)
+chapters_corp <- corpus_subset(chapters_corp, chapters_corp != "")
+
+summary(chapters_corp, 10)
 ```
 
 For better reference, let's also rename the document labels with these chapter headings:
@@ -269,12 +283,13 @@ With the corpus split into chapters, we can use the `dfm()` function to create a
 
 ```{r eval=TRUE, fig.width=8}
 # create a dfm
-chap_dfm <- dfm(chapters_corp)
+chap_dfm <- tokens(chapters_corp) |>
+    dfm()
 
 # extract row with count for "whale"/"ahab" in each chapter
 # and convert to data frame for plotting
-whales_ahabs_df <- chap_dfm %>% 
-    dfm_keep(pattern = c("whale", "ahab")) %>% 
+whales_ahabs_df <- chap_dfm |> 
+    dfm_keep(pattern = c("whale", "ahab")) |> 
     convert(to = "data.frame")
     
 whales_ahabs_df$chapter <- 1:nrow(whales_ahabs_df)
@@ -301,8 +316,8 @@ head(rel_dfm)
 
 
 # subset dfm and convert to data.frame object
-rel_chap_freq <- rel_dfm %>% 
-    dfm_keep(pattern = c("whale", "ahab")) %>% 
+rel_chap_freq <- rel_dfm |> 
+    dfm_keep(pattern = c("whale", "ahab")) |> 
     convert(to = "data.frame")
 
 rel_chap_freq$chapter <- 1:nrow(rel_chap_freq)
@@ -323,9 +338,9 @@ ggplot(data = rel_chap_freq, aes(x = chapter, y = ahab)) +
 
 Correlation analysis (and many other similarity measures) can be constructed using fast, sparse means through the `textstat_simil()` function.  Here, we select feature comparisons for just "whale" and "ahab", and convert this into a matrix as in the book.  Because correlations are sensitive to document length, we first convert this into a relative frequency using `dfm_weight()`.
 ```{r}
-dfm_weight(chap_dfm, scheme = "prop") %>% 
-    textstat_simil(y = chap_dfm[, c("whale", "ahab")], method = "correlation", margin = "features") %>%
-    as.matrix() %>%
+dfm_weight(chap_dfm, scheme = "prop") |> 
+    textstat_simil(y = chap_dfm[, c("whale", "ahab")], method = "correlation", margin = "features") |>
+    as.matrix() |>
     head(2)
 ```
 
@@ -334,8 +349,8 @@ With the ahab frequency and whale frequency vectors extracted from the dfm, it i
 ##  5.4 Testing Correlation with Randomization
 
 ```{r, fig.width=8}
-cor_data_df <- dfm_weight(chap_dfm, scheme = "prop") %>% 
-    dfm_keep(pattern = c("ahab", "whale")) %>% 
+cor_data_df <- dfm_weight(chap_dfm, scheme = "prop") |> 
+    dfm_keep(pattern = c("ahab", "whale")) |> 
     convert(to = "data.frame")
 
 # sample 1000 replicates and create data frame
@@ -363,16 +378,16 @@ ggplot(data = samples, aes(x = cor_sample, y = after_stat(density))) +
 ndoc(chapters_corp)
 
 # chapter names
-docnames(chapters_corp) %>% head()
+docnames(chapters_corp) |> head()
 ```
 
 Calculating the mean word frequencies is easy:
 ```{r}
 # for first few chapters
-ntoken(chapters_corp) %>% head()
+ntoken(chapters_corp) |> head()
 
 # average
-(ntoken(chapters_corp) / ntype(chapters_corp)) %>% head()
+(ntoken(chapters_corp) / ntype(chapters_corp)) |> head()
 ```
 
 ## 6.3 Extracting Word Usage Means
@@ -380,14 +395,14 @@ ntoken(chapters_corp) %>% head()
 Since the quotient of the number of tokens and number of types is a vector, we 
 can simply feed this to `plot()` using the pipe operator:
 ```{r, fig.width = 8}
-(ntoken(chapters_corp) / ntype(chapters_corp)) %>%
+(ntoken(chapters_corp) / ntype(chapters_corp)) |>
     plot(type = "h", ylab = "Mean word frequency")
 ```
 
 For the scaled plot:
 ```{r, fig.width = 8}
-(ntoken(chapters_corp) / ntype(chapters_corp)) %>%
-    scale() %>%
+(ntoken(chapters_corp) / ntype(chapters_corp)) |>
+    scale() |>
     plot(type = "h", ylab = "Scaled mean word frequency")
 ```
 
@@ -395,7 +410,7 @@ For the scaled plot:
 
 ```{r}
 mean_word_use_m <- (ntoken(chapters_corp) / ntype(chapters_corp))
-sort(mean_word_use_m, decreasing = TRUE) %>% head()
+sort(mean_word_use_m, decreasing = TRUE) |> head()
 ```
 
 ## 6.5 Calculating the TTR 
@@ -403,8 +418,9 @@ sort(mean_word_use_m, decreasing = TRUE) %>% head()
 Measures of lexical diversity can be estimated using `textstat_lexdiv()`. The TTR (Type-Token Ratio), a measure used in section 6.5, can be calculated for each document of the `dfm`.
 
 ```{r}
-dfm(chapters_corp) %>% 
-    textstat_lexdiv(measure = "TTR") %>%
+tokens(chapters_corp) |>
+    dfm() |>
+    textstat_lexdiv(measure = "TTR") |>
     head(n = 10)
 ```
 
@@ -413,7 +429,7 @@ dfm(chapters_corp) %>%
 Another measure of lexical diversity is Hapax richness, defined as the number of words that occur only once divided by the total number of words. We can calculate Hapax richness very simply by using a logical operation on the document-feature matrix, to return a logical value for each term that occurs once, and then sum these to get a count.
 ```{r}
 # hapaxes per document
-rowSums(chap_dfm == 1) %>% head()
+rowSums(chap_dfm == 1) |> head()
 
 # as a proportion
 hapax_proportion <- rowSums(chap_dfm == 1) / ntoken(chap_dfm)
@@ -441,7 +457,7 @@ This is going to be super easy since we don't need to reinvent the wheel here, s
 
 Let's create a corpus containing _Moby Dick_ but also Jane Austen's _Sense and Sensibility_.
 ```{r}
-data_char_senseandsensibility <- texts(readtext::readtext("http://www.gutenberg.org/files/161/161-0.txt"))
+data_char_senseandsensibility <- as.character(readtext::readtext("http://www.gutenberg.org/files/161/161-0.txt"))
 names(data_char_senseandsensibility) <- "Sense and Sensibility"
 
 litcorpus <- corpus(c(data_char_mobydick, data_char_senseandsensibility))
@@ -465,15 +481,15 @@ Chapter 11 describes how to detect clusters in a corpus. While the book uses the
 
 ```{r}
 library(quanteda.corpora)
-pres_dfm <- tokens(corpus_subset(data_corpus_sotu, Date > "1980-01-01"), remove_punct = TRUE) %>%
-  tokens_wordstem("en") %>%
-  tokens_remove(stopwords("en")) %>%
-  dfm() %>%
+pres_dfm <- tokens(corpus_subset(data_corpus_sotu, Date > "1980-01-01"), remove_punct = TRUE) |>
+  tokens_wordstem("en") |>
+  tokens_remove(stopwords("en")) |>
+  dfm() |>
   dfm_trim(min_termfreq = 5, min_docfreq = 3)
 
 # hierarchical clustering - get distances on normalized dfm
-pres_dist_mat <- dfm_weight(pres_dfm, scheme = "prop") %>%
-    textstat_dist(method = "euclidean") %>% 
+pres_dist_mat <- dfm_weight(pres_dfm, scheme = "prop") |>
+    textstat_dist(method = "euclidean") |> 
     as.dist()
 
 # hiarchical clustering the distance object
@@ -496,13 +512,13 @@ Finally, Jockers' book introduces topic modelling of a corpus and the visualisat
 
 ```{r}
 data(data_corpus_irishbudget2010, package = "quanteda.textmodels")
-dfm_speeches <- tokens(data_corpus_irishbudget2010, remove_punct = TRUE, remove_numbers = TRUE) %>%
-  tokens_remove(stopwords("en")) %>% 
-  dfm() %>%
+dfm_speeches <- tokens(data_corpus_irishbudget2010, remove_punct = TRUE, remove_numbers = TRUE) |>
+  tokens_remove(stopwords("en")) |> 
+  dfm() |>
   dfm_trim(min_termfreq = 4, max_docfreq = 10)
 
 library(topicmodels)
-LDA_fit_20 <- convert(dfm_speeches, to = "topicmodels") %>% 
+LDA_fit_20 <- convert(dfm_speeches, to = "topicmodels") |> 
     LDA(k = 20)
 
 # get top five terms per topic

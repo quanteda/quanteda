@@ -15,7 +15,8 @@ test_that("the base rule produces the same results as type = 'word'", {
     #rules <- c(rules, yaml::read_yaml("rules/custom.yml"))
 
     skip("whether these pass depends on the platform")
-    lis_word <- stringi::stri_split_boundaries(txt, type = "word")
+    lis_word <- structure(stringi::stri_split_boundaries(txt, type = "word"),
+                          names = names(txt))
     lis_rule <- tokenize_custom(txt, rules["base"])
     
     expect_identical(lis_word[1:3], lis_rule[1:3])

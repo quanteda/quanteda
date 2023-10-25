@@ -1,7 +1,7 @@
 #' Bootstrap a dfm
 #'
 #' Create an array of resampled dfms.
-#' @param x a character or [corpus] object
+#' @param x a [dfm] object
 #' @param n number of resamples
 #' @param ... additional arguments passed to [dfm()]
 #' @param verbose if `TRUE` print status messages
@@ -21,7 +21,8 @@
 #' set.seed(10)
 #' txt <- c(textone = "This is a sentence.  Another sentence.  Yet another.",
 #'          texttwo = "Premiere phrase.  Deuxieme phrase.")
-#' bootstrap_dfm(txt, n = 3, verbose = TRUE)
+#' dfmat <- dfm(tokens(txt))
+#' bootstrap_dfm(dfmat, n = 3, verbose = TRUE)
 #'
 bootstrap_dfm <- function(x, n = 10, ..., verbose = quanteda_options("verbose")) {
     UseMethod("bootstrap_dfm")
@@ -33,32 +34,11 @@ bootstrap_dfm.default <- function(x, n = 10, ..., verbose = quanteda_options("ve
 }
 
 #' @noRd
-#' @importFrom stringi stri_replace_all_fixed
-#' @export
-bootstrap_dfm.corpus <- function(x, n = 10, ..., verbose = quanteda_options("verbose")) {
-    if (verbose)
-        message("Segmenting the ",
-                stri_replace_all_fixed(as.character(sys.calls()[2][[1]])[1],
-                                       "bootstrap_dfm.", ""),
-                " into sentences...", appendLF = FALSE)
-    x <- as.corpus(x)
-    x <- corpus_reshape(x, to = "sentences")
-    if (verbose) message("done.")
-    bootstrap_dfm(suppressWarnings(dfm(x, ...)),  n = n, ..., verbose = verbose)
-}
-
-#' @noRd
-#' @export
-bootstrap_dfm.character <- function(x, n = 10, ..., verbose = quanteda_options("verbose")) {
-    bootstrap_dfm(corpus(x), n = n, ..., verbose = verbose)
-}
-
-#' @noRd
 #' @export
 #' @examples
 #' # bootstrapping from a dfm
-#' dfmat <- corpus_reshape(corpus(txt), to = "sentences") %>%
-#'     tokens() %>%
+#' dfmat <- corpus_reshape(corpus(txt), to = "sentences") |>
+#'     tokens() |>
 #'     dfm()
 #' bootstrap_dfm(dfmat, n = 3)
 bootstrap_dfm.dfm <- function(x, n = 10, ..., verbose = quanteda_options("verbose")) {
@@ -67,21 +47,22 @@ bootstrap_dfm.dfm <- function(x, n = 10, ..., verbose = quanteda_options("verbos
     verbose <- check_logical(verbose)
 
     if (verbose) {
-        message("Bootstrapping the sentences to create multiple dfm objects...")
-        message("   ...resampling and forming dfms: 0", appendLF = FALSE)
+        catm("Bootstrapping dfm to create multiple dfm objects...\n")
+        catm("   ...resampling and forming dfms: 0", appendLF = FALSE)
     }
     result <- list()
     result[[1]] <- dfm_group(x, groups = docid(x), fill = TRUE)
     for (i in seq_len(n)) {
         if (verbose)
-            message(", ", i, appendLF = FALSE)
+            catm(",", i, appendLF = FALSE)
         temp <- dfm_sample(x, size = NULL, replace = TRUE, by = docid(x))
         temp <- dfm_group(temp)
         result[[i + 1]] <- temp
     }
+    catm("\n")
     names(result) <- paste0("dfm_", seq(0, n))
     if (verbose)
-        message("\n   ...complete.\n")
-    class(result) <- c("dfm_bootstrap")
+        catm("   ...complete.\n")
+    class(result) <- "dfm_bootstrap"
     return(result)
 }

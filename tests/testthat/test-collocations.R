@@ -53,7 +53,7 @@ test_that("tokens_compound works as expected with collocations", {
 test_that("tokens_select works correctly with collocations objects", {
   txt <- c(d1 = "a b c d e g h",  d2 = "a b e g h i j")
   toks_uni <- tokens(txt)
-  toks_bi <- tokens(txt) %>% tokens_ngrams(n = 2, concatenator = " ")
+  toks_bi <- tokens(txt) |> tokens_ngrams(n = 2, concatenator = " ")
   # coll_bi <- textstat_collocations(toks_uni, size = 2, min_count = 2)
   # coll_tri <- textstat_collocations(toks_uni, size = 3, min_count = 2)[1, ]
   load("../data/collocations/coll_bi.rda")
@@ -124,7 +124,7 @@ test_that("tokens_select on unigrams works as expected when padding = TRUE", {
 test_that("tokens_select on bigrams works as expected when padding = TRUE", {
   txt <- c(d1 = "a b c d e g h",  d2 = "a b e g h i j")
   toks_uni <- tokens(txt)
-  toks_bi <- tokens(txt) %>% tokens_ngrams(n = 2, concatenator = " ")
+  toks_bi <- tokens(txt) |> tokens_ngrams(n = 2, concatenator = " ")
   # coll_bi <- textstat_collocations(toks_uni, size = 2, min_count = 2)
   # coll_tri <- textstat_collocations(toks_uni, size = 3, min_count = 2)[1, ]
   load("../data/collocations/coll_bi.rda")
@@ -154,7 +154,7 @@ test_that("tokens_select on bigrams works as expected when padding = TRUE", {
 test_that("kwic works as expected with and without collocations phrases", {
     txt <- c(d1 = "a b c d e g h",  d2 = "a b e g h i j")
     toks_uni <- tokens(txt)
-    toks_bi <- tokens(txt) %>% tokens_ngrams(n = 2, concatenator = " ")
+    toks_bi <- tokens(txt) |> tokens_ngrams(n = 2, concatenator = " ")
 
     dfm_uni <- dfm(toks_uni)
     dict_bi <- dictionary(list(one = "a b", two = "g j"))

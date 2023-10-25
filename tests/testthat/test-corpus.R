@@ -64,8 +64,8 @@ test_that("corpus constructors works for kwic", {
     )
 
     # test text handling for punctuation - there should be no space before the ?
-    corp <- tokens(data_char_sampletext, what = "word", remove_separators = FALSE) %>%
-      kwic("econom*", window = 10, separator = "") %>%
+    corp <- tokens(data_char_sampletext, what = "word", remove_separators = FALSE) |>
+      kwic("econom*", window = 10, separator = "") |>
       corpus(split_context = FALSE, extract_keyword = FALSE)
     expect_identical(
         as.character(corp)[2],
@@ -264,8 +264,8 @@ test_that("corpus works on dplyr grouped data.frames (#1232)", {
                    some_ints = 1L:6L,
                    text = paste0("This is text number ", 1:6, "."),
                    stringsAsFactors = FALSE,
-                   row.names = paste0("fromDf_", 1:6)) %>%
-        dplyr::group_by(letter_factor) %>%
+                   row.names = paste0("fromDf_", 1:6)) |>
+        dplyr::group_by(letter_factor) |>
         dplyr::mutate(n_group = dplyr::n())
     expect_output(
         print(corpus(df_grouped)),
@@ -401,28 +401,28 @@ test_that("correctly handle data.frame with improper column names (#1388)", {
     # when one column name is NA
     names(df)[3] <- NA
     expect_equal(
-        corpus(df) %>% docvars() %>% names(),
+        corpus(df) |> docvars() |> names(),
         c("dvar1", "V2", "dvar3")
     )
 
     # when two column names are NA
     names(df)[3:4] <- NA
     expect_equal(
-        corpus(df) %>% docvars() %>% names(),
+        corpus(df) |> docvars() |> names(),
         c("dvar1", "V2", "V3")
     )
 
     # when one column name is blank
     names(df)[3:4] <- c("dv", "")
     expect_equal(
-        corpus(df) %>% docvars() %>% names(),
+        corpus(df) |> docvars() |> names(),
         c("dvar1", "dv", "V3")
     )
 
     # when two column names are blank
     names(df)[3:4] <- ""
     expect_equal(
-        corpus(df) %>% docvars() %>% names(),
+        corpus(df) |> docvars() |> names(),
         c("dvar1", "V2", "V3")
     )
 })

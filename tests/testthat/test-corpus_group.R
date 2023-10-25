@@ -69,7 +69,7 @@ test_that("corpus_group works with empty documents", {
 test_that("corpus_group works with NA group labels", {
     corp <- corpus(c("Doc 1", "Doc 1b", "Doc2", "Doc 3 with NA", "Doc 4, more NA"),
                    docvars = data.frame(factorvar = c("Yes", "Yes", "No", NA, NA)))
-    corp <- corpus(corp) %>%
+    corp <- corpus(corp) |>
         corpus_group(groups = factorvar)
     expect_identical(
         as.character(corp),
@@ -128,6 +128,7 @@ test_that("corpus_group save grouping variable (#2037)", {
     corp_grp4 <- corpus_group(corp, grp, fill = TRUE)
     corp_grp5 <- corpus_group(corp, grpvar, fill = TRUE)
     corp_grp6 <- corpus_group(corp, var1, fill = TRUE)
+    corp_grp7 <- corpus_group(corp, groups = interaction(var1, var3))
     
     expect_equal(
         docvars(corp_grp1, "grp"), 
@@ -145,6 +146,11 @@ test_that("corpus_group save grouping variable (#2037)", {
     expect_null(docvars(corp_grp5)$grpvar)
     expect_equal(docvars(corp_grp5)$var1, c(1, 2, 2, NA))
     expect_equal(docvars(corp_grp6)$var1, c(1, 2))
+    expect_equal(
+        docvars(corp_grp7, "grp"), 
+        factor(c("D", "A"), levels = c("A", "B", "C", "D"))
+    )
+    expect_equal(docvars(corp_grp7)$var1, c(1, 2))
 })
 
 

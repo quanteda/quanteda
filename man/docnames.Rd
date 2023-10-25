@@ -50,32 +50,33 @@ corp <- data_corpus_inaugural
 docnames(corp) <- char_tolower(docnames(corp))
 
 # get and set doument names to a tokens
-toks <- tokens(data_corpus_inaugural)
+toks <- tokens(corp)
 docnames(toks) <- char_tolower(docnames(toks))
 
 # get and set doument names to a dfm
-dfmat <- dfm(data_corpus_inaugural[1:5])
+dfmat <- dfm(tokens(corp))
 docnames(dfmat) <- char_tolower(docnames(dfmat))
 
 # reassign the document names of the inaugural speech corpus
-docnames(data_corpus_inaugural) <- paste("Speech", 1:ndoc(data_corpus_inaugural), sep="")
+corp <- data_corpus_inaugural
+docnames(corp) <- paste0("Speech", seq_len(ndoc(corp)))
 
 
 corp <- corpus(c(textone = "This is a sentence.  Another sentence.  Yet another.",
                  textwo = "Sentence 1. Sentence 2."))
-corpsent <- corp \%>\%
+corp_sent <- corp |>
     corpus_reshape(to = "sentences")
-docnames(corpsent)
+docnames(corp_sent)
 
 # docid
-docid(corpsent)
-docid(tokens(corpsent))
-docid(dfm(tokens(corpsent)))
+docid(corp_sent)
+docid(tokens(corp_sent))
+docid(dfm(tokens(corp_sent)))
 
 # segid
-segid(corpsent)
-segid(tokens(corpsent))
-segid(dfm(tokens(corpsent)))
+segid(corp_sent)
+segid(tokens(corp_sent))
+segid(dfm(tokens(corp_sent)))
 }
 \seealso{
 \code{\link[=featnames]{featnames()}}

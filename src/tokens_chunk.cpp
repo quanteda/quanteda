@@ -1,14 +1,13 @@
 #include "lib.h"
-#include "recompile.h"
 //#include "dev.h"
 using namespace quanteda;
 
 Texts chunk(Text &tokens,
-            UintParam &count,
+            UintParam &N,
             const int size,
             const int overlap){
     
-    if (tokens.size() == 0) return {}; // return empty vector for empty text
+    if (tokens.empty()) return {}; // return empty vector for empty text
     
     std::size_t step;
     Texts chunks;
@@ -17,83 +16,66 @@ Texts chunk(Text &tokens,
     for (size_t i = 0; i < tokens.size(); i += step) {
         Text chunk(tokens.begin() + i, tokens.begin() + std::min(i + size, tokens.size()));
         chunks.push_back(chunk);
-        count++;
+        N++;
     }
     return chunks;
 }
 
-struct chunk_mt : public Worker{
-    
-    Texts &texts;
-    std::vector<Texts> &temp;
-    UintParam &count;
-    const int size;
-    const int overlap;
-    
-    chunk_mt(Texts &texts_, std::vector<Texts> &temp_, UintParam &count_, const int size_, 
-             const int overlap_):
-             texts(texts_), temp(temp_), count(count_), size(size_), 
-             overlap(overlap_) {}
-    
-    void operator()(std::size_t begin, std::size_t end){
-        for (std::size_t h = begin; h < end; h++){
-            temp[h] = chunk(texts[h], count, size, overlap);
-        }
-    }
-};
-
-
 /* 
- * This function split tokens into segments by given patterns
+ * Function to split documents
  * The number of threads is set by RcppParallel::setThreadOptions()
  * @used tokens_segment()
  * @creator Kohei Watanabe
- * @param texts_ tokens ojbect
- * @param types_ types
  * @param size size of chunks
  * @param overlap number of tokens overlapping
  */
 
 // [[Rcpp::export]]
-List qatd_cpp_tokens_chunk(const List &texts_,
-                           const CharacterVector types_,
+TokensPtr cpp_tokens_chunk(TokensPtr xptr,
                            const int size,
-                           const int overlap){
+                           const int overlap,
+                           const int thread = -1) {
     
-    Texts texts = Rcpp::as<Texts>(texts_);
-    Types types = Rcpp::as< Types >(types_);
-    UintParam count = 0;
+    Texts texts = xptr->texts;
+    Types types = xptr->types;
+    UintParam N(0);
     // dev::Timer timer;
+    std::size_t H = texts.size();
     std::vector<Texts> temp(texts.size());
-    
-    // dev::start_timer("Dictionary detect", timer);
 #if QUANTEDA_USE_TBB
-     chunk_mt chunk_mt(texts, temp, count, size, overlap);
-     parallelFor(0, texts.size(), chunk_mt);
+    tbb::task_arena arena(thread);
+    arena.execute([&]{
+        tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
+         for (int h = r.begin(); h < r.end(); ++h) {
+             temp[h] = chunk(texts[h], N, size, overlap);
+         }    
+        });
+    });
 #else
-    for (std::size_t h = 0; h < texts.size(); h++) {
-        temp[h] = chunk(texts[h], count, size, overlap);
+    for (std::size_t h = 0; h < H; h++) {
+        temp[h] = chunk(texts[h], N, size, overlap);
     }
 #endif
     
-    Texts chunks(count);
-    IntegerVector docnum_(count), segnum_(count);
-
+    Texts chunks(N);
+    std::vector<int> documents(N);
+    
     std::size_t j = 0;
     for (std::size_t h = 0; h < temp.size(); h++) {
         for (size_t i = 0; i < temp[h].size(); i++) {
             chunks[j] = temp[h][i];
-            docnum_[j] = (int)h + 1;
-            segnum_[j] = (int)i + 1;
+            documents[j] = (int)h + 1;
             j++;
         }
     }
     
-    Tokens chunks_ = recompile(chunks, types, false, false, is_encoded(types_));
-    chunks_.attr("docnum") = docnum_;
-    chunks_.attr("segnum") = segnum_;
+    TokensObj *ptr_new = new TokensObj(chunks, xptr->types, xptr->recompiled);
+    TokensPtr xptr_new = TokensPtr(ptr_new, true);
     
-    return(chunks_);
+    IntegerVector documents_ = Rcpp::wrap(documents);
+    xptr_new.attr("documents") = documents_;
+    
+    return xptr_new;
 }
 
 /***R
@@ -101,11 +83,11 @@ List qatd_cpp_tokens_chunk(const List &texts_,
 toks <- list(text1=1:10, text2=5:15)
 #toks <- rep(list(rep(1:10, 1), rep(5:15, 1)), 100)
 #dict <- list(c(1, 2), c(5, 6), 10, 15, 20)
-out1 <- qatd_cpp_tokens_chunk(toks, letters, 2, 0)
-out2 <- qatd_cpp_tokens_chunk(toks, letters, 2, 1)
+out1 <- cpp_tokens_chunk(toks, letters, 2, 0)
+out2 <- cpp_tokens_chunk(toks, letters, 2, 1)
 
-out3 <- qatd_cpp_tokens_chunk(toks, letters, 2, 0)
-out4 <- qatd_cpp_tokens_chunk(toks, letters, 2, 1)
+out3 <- cpp_tokens_chunk(toks, letters, 2, 0)
+out4 <- cpp_tokens_chunk(toks, letters, 2, 1)
 
 
 */

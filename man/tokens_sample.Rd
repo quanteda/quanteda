@@ -4,7 +4,14 @@
 \alias{tokens_sample}
 \title{Randomly sample documents from a tokens object}
 \usage{
-tokens_sample(x, size = NULL, replace = FALSE, prob = NULL, by = NULL)
+tokens_sample(
+  x,
+  size = NULL,
+  replace = FALSE,
+  prob = NULL,
+  by = NULL,
+  env = NULL
+)
 }
 \arguments{
 \item{x}{a \link{tokens} object whose documents will be sampled}
@@ -24,6 +31,9 @@ vector being sampled.  May not be applied when \code{by} is used.}
 the docvars data.frame, so that docvars may be referred to by name without
 quoting.  This also changes previous behaviours for \code{by}.
 See \code{news(Version >= "2.9", package = "quanteda")} for details.}
+
+\item{env}{an environment or a list object in which \code{x} is searched.
+Passed to \link{substitute} for non-standard evaluation.}
 }
 \value{
 a \link{tokens} object (re)sampled on the documents, containing the document
@@ -39,12 +49,12 @@ set.seed(123)
 toks <- tokens(data_corpus_inaugural[1:6])
 toks
 tokens_sample(toks)
-tokens_sample(toks, replace = TRUE) \%>\% docnames()
-tokens_sample(toks, size = 3, replace = TRUE) \%>\% docnames()
+tokens_sample(toks, replace = TRUE) |> docnames()
+tokens_sample(toks, size = 3, replace = TRUE) |> docnames()
 
 # sampling using by
 docvars(toks)
-tokens_sample(toks, size = 2, replace = TRUE, by = Party) \%>\% docnames()
+tokens_sample(toks, size = 2, replace = TRUE, by = Party) |> docnames()
 
 }
 \seealso{

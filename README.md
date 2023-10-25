@@ -6,7 +6,7 @@ data](https://cdn.rawgit.com/quanteda/quanteda/master/images/quanteda_logo.svg)]
 
 [![CRAN
 Version](https://www.r-pkg.org/badges/version/quanteda)](https://CRAN.R-project.org/package=quanteda)
-[![](https://img.shields.io/badge/devel%20version-3.3.0.9000-royalblue.svg)](https://github.com/quanteda/quanteda)
+[![](https://img.shields.io/badge/devel%20version-4.0.0-royalblue.svg)](https://github.com/quanteda/quanteda)
 [![Downloads](https://cranlogs.r-pkg.org/badges/quanteda)](https://CRAN.R-project.org/package=quanteda)
 [![Total
 Downloads](https://cranlogs.r-pkg.org/badges/grand-total/quanteda?color=orange)](https://CRAN.R-project.org/package=quanteda)
@@ -18,28 +18,41 @@ Downloads](https://cranlogs.r-pkg.org/badges/grand-total/quanteda?color=orange)]
 
 ## About
 
-An R package for managing and analyzing text, created by [Kenneth
-Benoit](https://kenbenoit.net). Supported by the European Research
-Council grant ERC-2011-StG 283794-QUANTESS.
+**quanteda** is an R package for managing and analyzing text, created
+and maintained by [Kenneth Benoit](https://kenbenoit.net) and [Kohei
+Watanabe](https://blog.koheiw.net/). Its creation was funded by the
+European Research Council grant ERC-2011-StG 283794-QUANTESS and its
+continued development is supported by the [Quanteda Initiative
+CIC](https://quanteda.org).
 
 For more details, see <https://quanteda.io>.
 
-## **quanteda** version 3
+## **quanteda** version 4
 
-The **quanteda** 3.0 major release improves functionality, completes the
-modularisation of the package begun in v2.0, further improves function
-consistency by removing previously deprecated functions, and enhances
-workflow stability and consistency by deprecating some shortcut steps
-built into some functions.
+The **quanteda** 4.0 is a major release that improves functionality and
+performance and further improves function consistency by removing
+previously deprecated functions. It also includes significant new
+tokeniser rules that make the default tokeniser smarter than ever, with
+new Unicode and ICU-compliant rules enabling it to work more
+consistently with even more languages.
 
-See
-<https://github.com/quanteda/quanteda/blob/master/NEWS.md#quanteda-30>
-for a full list of the changes.
+We describe more fully these significant changes in:
+
+- an [article about the new external pointer tokens
+  objects](https://quanteda.io/articles/pkgdown/tokens_xptr.html);
+- an [article showing performance
+  benchmarks](https://quanteda.io/articles/pkgdown/benchmarks_xptr.html)
+  for the new external pointer tokens objects, as well as some of the
+  tokeniser improvements in v4; and
+- the [changelog for
+  v4](https://github.com/quanteda/quanteda/blob/master/NEWS.md#quanteda-40)
+  a full listing of the changes, improvements, and deprecations in v4.
 
 ## The **quanteda** family of packages
 
-As of v3.0, we have continued our trend of splitting **quanteda** into
-modular packages. These are now the following:
+We completed the trend of splitting **quanteda** into modular packages
+with the release of v3. The quanteda family of packages includes the
+following:
 
 - **quanteda**: contains all of the core natural language processing and
   textual data management functions
@@ -63,7 +76,7 @@ and more to come.
 
 ## How To…
 
-### How to Install
+### Install
 
 The normal way from CRAN, using your R GUI or
 
@@ -74,7 +87,7 @@ install.packages("quanteda")
 Or for the latest development version:
 
 ``` r
-# devtools package required to install quanteda from Github 
+# remotes package required to install quanteda from Github 
 remotes::install_github("quanteda/quanteda") 
 ```
 
@@ -82,20 +95,20 @@ Because this compiles some C++ and Fortran source code, you will need to
 have installed the appropriate compilers to build the development
 version.
 
-### How to Use
+### Use
 
 See the [quick start
 guide](https://quanteda.io/articles/pkgdown/quickstart.html) to learn
 how to use **quanteda**.
 
-### How to Get Help
+### Get Help
 
-- Read out documentation at <https://quanteda.io>.
+- Read the documentation at <https://quanteda.io>.
 - Submit a question on the [**quanteda** channel on
   StackOverflow](https://stackoverflow.com/questions/tagged/quanteda).
 - See our [tutorial site](https://tutorials.quanteda.io/).
 
-### How to Cite
+### Cite the package
 
 Benoit, Kenneth, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng,
 Stefan Müller, and Akitaka Matsuo. (2018) “[quanteda: An R package for
@@ -107,12 +120,12 @@ data](https://www.theoj.org/joss-papers/joss.00774/10.21105.joss.00774.pdf)”.
 For a BibTeX entry, use the output from
 `citation(package = "quanteda")`.
 
-### How to Leave Feedback
+### Leave Feedback
 
 If you like **quanteda**, please consider leaving [feedback or a
 testimonial here](https://github.com/quanteda/quanteda/issues/461).
 
-### How to Contribute
+### Contribute
 
 Contributions in the form of feedback, comments, code, and bug reports
 are most welcome. How to contribute:

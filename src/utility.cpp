@@ -12,7 +12,7 @@ using namespace arma;
 
 /*
 // [[Rcpp::export]]
-List qatd_cpp_chars_remove(List input_, String char_remove) {
+List cpp_chars_remove(List input_, String char_remove) {
     List output_ = clone(input_);
     for (unsigned int h = 0; h < (unsigned int)output_.size(); h++) {
         CharacterVector elems_ = output_[h];
@@ -43,7 +43,7 @@ List qatd_cpp_chars_remove(List input_, String char_remove) {
  */
 
 // [[Rcpp::export]]
-bool qatd_cpp_is_grouped_numeric(NumericVector values_, IntegerVector groups_) {
+bool cpp_is_grouped_numeric(NumericVector values_, IntegerVector groups_) {
     
     if (values_.size() == 0) return(true);
     if (min(groups_) < 1 || values_.size() != groups_.size())
@@ -67,7 +67,7 @@ bool qatd_cpp_is_grouped_numeric(NumericVector values_, IntegerVector groups_) {
 }
 
 // [[Rcpp::export]]
-bool qatd_cpp_is_grouped_character(CharacterVector values_, IntegerVector groups_) {
+bool cpp_is_grouped_character(CharacterVector values_, IntegerVector groups_) {
     
     if (values_.size() == 0) return(true);
     if (min(groups_) < 1 || values_.size() != groups_.size())
@@ -90,11 +90,8 @@ bool qatd_cpp_is_grouped_character(CharacterVector values_, IntegerVector groups
     return(true);
 }
 
-float GLOBAL_PATTERN_MAX_LOAD_FACTOR = 0.05;
-float GLOBAL_NGRAMS_MAX_LOAD_FACTOR = 0.25;
-
 /* 
- * Internal function to set max_load_factors of hash tables used for pattern
+ * Internal function to get max_load_factors of hash tables used for pattern
  * matching and ngram generation. Smaller values will increase the speed but also 
  * the use of RAM. Ngram generation requires significantly larger amount of
  * storage than pattern matching, so should be larger.
@@ -104,31 +101,33 @@ float GLOBAL_NGRAMS_MAX_LOAD_FACTOR = 0.25;
  */
 //
 // [[Rcpp::export]]
-void qatd_cpp_set_load_factor(std::string type, float value) {
-    
-    if (0 < value && value < 1.0) {
-        if (type == "pattern")
-            GLOBAL_PATTERN_MAX_LOAD_FACTOR = value;
-        if (type == "ngrams")
-            GLOBAL_NGRAMS_MAX_LOAD_FACTOR = value;
-    }
-}
-
-// [[Rcpp::export]]
-List qatd_cpp_get_load_factor() {
+List cpp_get_load_factor() {
     return List::create(
          _["pattern"] = GLOBAL_PATTERN_MAX_LOAD_FACTOR,
          _["ngrams"] = GLOBAL_NGRAMS_MAX_LOAD_FACTOR
     );
 }
 
+// Copied from the pryr package
 // [[Rcpp::export]]
-void qatd_cpp_set_meta(RObject object_, RObject meta_) {
+std::string address(SEXP x) {
+    std::ostringstream s;
+    s << x;
+    return s.str();
+}
+
+// [[Rcpp::export]]
+void cpp_set_meta(RObject object_, RObject meta_) {
     object_.attr("meta") = meta_;
 }
 
 // [[Rcpp::export]]
-bool qatd_cpp_tbb_enabled(){
+int cpp_get_max_thread() {
+    return tbb::this_task_arena::max_concurrency();
+}
+
+// [[Rcpp::export]]
+bool cpp_tbb_enabled(){
 #if QUANTEDA_USE_TBB
     return true;
 #else

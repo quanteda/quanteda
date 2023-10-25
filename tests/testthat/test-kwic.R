@@ -301,7 +301,7 @@ test_that("kwic works as expected with and without phrases", {
     txt <- c(d1 = "a b c d e g h",  d2 = "a b e g h i j")
     toks_uni <- tokens(txt)
     dfm_uni <- dfm(toks_uni)
-    toks_bi <- tokens(txt) %>% tokens_ngrams(n = 2, concatenator = " ")
+    toks_bi <- tokens(txt) |> tokens_ngrams(n = 2, concatenator = " ")
     dfm_bi <- dfm(toks_bi)
     char_uni <- c("a", "b", "g", "j")
     char_bi <- c("a b", "g j")
@@ -315,64 +315,6 @@ test_that("kwic works as expected with and without phrases", {
     coll_tri <- data.frame(collocation = c("e g h"),
                            stringsAsFactors = FALSE)
     class(coll_tri) <- c("collocations", "data.frame")
-
-    suppressWarnings({
-      expect_equal(
-        as.data.frame(kwic(txt, char_uni))$keyword,
-        c("a", "b", "g",
-          "a", "b", "g", "j")
-    )
-    expect_equal(
-        as.data.frame(kwic(txt, list_uni))$keyword,
-        c("a", "b", "g",
-          "a", "b", "g", "j")
-    )
-    expect_equal(
-        nrow(kwic(txt, char_bi)),
-        0
-    )
-    expect_equal(
-        nrow(kwic(txt, list("c d", "g h"))),
-        0
-    )
-    expect_equal(
-        as.data.frame(kwic(txt, list(c("c", "d"), c("g", "h"))))$keyword,
-        c("c d", "g h", "g h")
-    )
-    expect_equal(
-        as.data.frame(kwic(txt, phrase(c("c d", "g h"))))$keyword,
-        c("c d", "g h", "g h")
-    )
-
-    expect_equal(
-        as.data.frame(kwic(txt, coll_bi))$keyword,
-        c("a b", "e g", "g h",
-          "a b", "e g", "g h")
-    )
-    expect_equal(
-        as.data.frame(kwic(txt, coll_tri))$keyword,
-        c("e g h", "e g h")
-    )
-
-    expect_equal(
-        as.data.frame(kwic(txt, as.phrase(coll_bi)))$keyword,
-        c("a b", "e g", "g h",
-          "a b", "e g", "g h")
-    )
-    expect_equal(
-        as.data.frame(kwic(txt, phrase(coll_bi)))$keyword,
-        c("a b", "e g", "g h",
-          "a b", "e g", "g h")
-    )
-    expect_equal(
-        as.data.frame(kwic(txt, phrase(dict_bi)))$keyword,
-        c("a b", "a b")
-    )
-    expect_equal(
-        as.data.frame(kwic(txt, dict_bi))$keyword,
-        c("a b", "a b")
-    )
-    })
 
     ## on tokens
     expect_equal(
@@ -434,9 +376,9 @@ test_that("keywords attribute is set correctly in textplot_kwic (#1514)", {
     expect_identical(kwic2$pattern, factor(c("u", "u")))
     expect_identical(kwic3$pattern, factor(c("f", "u", "f", "u"), levels = c("u", "f")))
 
-    suppressWarnings(kwic_dict1 <- kwic(corp, dictionary(list(ukey = "u"))))
+    kwic_dict1 <- kwic(tokens(corp), dictionary(list(ukey = "u")))
     kwic_dict2 <- kwic(toks, dictionary(list(ukey = "u")))
-    suppressWarnings(kwic_dict3 <- kwic(corp, dictionary(list(ukey = "u", fkey = "f"))))
+    kwic_dict3 <- kwic(tokens(corp), dictionary(list(ukey = "u", fkey = "f")))
     kwic_dict4 <- kwic(toks, dictionary(list(ukey = "u", fkey = "f")))
 
     expect_identical(kwic_dict1, kwic_dict2)
@@ -501,8 +443,8 @@ test_that("kwic pattern column works for phrases", {
 })
 
 test_that("kwic with pattern overlaps works as expected", {
-    kw <- c(d2 = "one two three four", d1 = "four three two one") %>%
-        tokens() %>%
+    kw <- c(d2 = "one two three four", d1 = "four three two one") |>
+        tokens() |>
         kwic(pattern = c("two", "two", "three"))
     expect_equal(
         as.character(kw$pattern),
@@ -552,16 +494,6 @@ test_that("kwic structure is as expected", {
 
 test_that("kwic deprecations work as expected", {
     txt <- "A b c d e."
-    expect_warning(
-      kwic(txt, "c", window = 1),
-      "'kwic.character()' is deprecated. Use 'tokens()' first.",
-      fixed = TRUE
-    )
-    expect_warning(
-      kwic(corpus(txt), "c", window = 1),
-      "'kwic.corpus()' is deprecated. Use 'tokens()' first.",
-      fixed = TRUE
-    )
     expect_warning(
       kwic(tokens(txt), "e", window = 2, remove_punct = TRUE),
       "remove_punct argument is not used"
