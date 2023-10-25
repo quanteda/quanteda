@@ -37,8 +37,6 @@ always \code{TRUE}.}
 \code{meta} information in conversion to the \pkg{stm} package format.
 This aids in selecting the document variables only corresponding to the
 documents with non-zero counts.  Only affects the "stm" format.}
-
-\item{...}{additional arguments used only by \code{as.DocumentTermMatrix}}
 }
 \value{
 A converted object determined by the value of \code{to} (see above).
