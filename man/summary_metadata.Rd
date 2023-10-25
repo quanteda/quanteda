@@ -21,7 +21,7 @@ summary information}
 }
 \value{
 \code{add_summary_metadata()} returns a corpus with summary metadata added
-as a data.frame, with the top-level list element names \code{summary}.
+as a data.frame, with the top-level list element names \code{\link[=summary]{summary()}}.
 
 \code{get_summary_metadata()} returns the summary metadata as a data.frame.
 
@@ -33,11 +33,12 @@ Functions to add or retrieve corpus summary metadata
 \details{
 This is provided so that a \link{corpus} object can be stored with
 summary information to avoid having to compute this every time
-\verb{[summary.corpus()]} is called.
+\code{\link[=summary.corpus]{summary.corpus()}} is called.
 
-So in future calls, if \verb{!is.null(meta(x, "summary", type = "system") && !length(list(...))}, then \code{summary.corpus()} will simply return
-\code{get_system_meta()} rather than compute the summary statistics on the fly,
-which requires tokenizing the text.
+So in future calls, if \verb{!is.null(meta(x, "summary", type = "system") && !length(list(...))},
+then \code{summary.corpus()} will simply return \code{get_system_meta()} rather than
+compute the summary statistics on the fly, which requires tokenizing the
+text.
 }
 \examples{
 corp <- corpus(data_char_ukimmig2010)
@@ -49,14 +50,13 @@ quanteda:::get_summary_metadata(corp)
 
 extended_data <- quanteda:::summarize_texts_extended(data_corpus_inaugural)
 
+library("quanteda.textplots")
 textplot_wordcloud(extended_data$top_dfm, max_words = 100)
 
-\dontrun{
 library("ggplot2")
 ggplot(data.frame(all_tokens = extended_data$all_tokens), aes(x = all_tokens)) +
    geom_histogram(color = "darkblue", fill = "lightblue") +
    xlab("Total length in tokens")
-}
 }
 }
 \keyword{corpus}
