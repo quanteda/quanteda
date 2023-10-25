@@ -37,8 +37,8 @@ bootstrap_dfm.default <- function(x, n = 10, ..., verbose = quanteda_options("ve
 #' @export
 #' @examples
 #' # bootstrapping from a dfm
-#' dfmat <- corpus_reshape(corpus(txt), to = "sentences") %>%
-#'     tokens() %>%
+#' dfmat <- corpus_reshape(corpus(txt), to = "sentences") |>
+#'     tokens() |>
 #'     dfm()
 #' bootstrap_dfm(dfmat, n = 3)
 bootstrap_dfm.dfm <- function(x, n = 10, ..., verbose = quanteda_options("verbose")) {

@@ -21,7 +21,7 @@ test_that("test ntype with dfm (#748)", {
 })
 
 # test_that("cannot call ntoken on a weighted dfm", {
-#     d <- dfm(c(doc1 = "one two three", doc2 = "one one one")) %>%
+#     d <- dfm(c(doc1 = "one two three", doc2 = "one one one")) |>
 #         dfm_weight(scheme = "prop")
 #     expect_error(
 #         ntoken(d),

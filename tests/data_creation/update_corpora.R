@@ -28,14 +28,14 @@ usethis::use_data(data_corpus_inaugural, overwrite = TRUE)
 
 for (i in docnames(data_corpus_dailnoconf1991)) {
     
-    txt <- as.character(data_corpus_dailnoconf1991)[i] %>%
+    txt <- as.character(data_corpus_dailnoconf1991)[i] |>
         # fix paragraph delimiters
-        stringi::stri_replace_all_regex("([^\n])\\n{1}([^\n])", "$1\n\n$2") %>%
+        stringi::stri_replace_all_regex("([^\n])\\n{1}([^\n])", "$1\n\n$2") |>
         # fix page references such as "[545]"
         stringi::stri_replace_all_regex("\\[\\d+\\]", "")
         
     # fix filename
-    fname <- stringi::stri_replace_all_regex(i, "^v*(.*)\\.txt$", "$1") %>%
+    fname <- stringi::stri_replace_all_regex(i, "^v*(.*)\\.txt$", "$1") |>
         stringi::stri_replace_last_regex("_$", "")
     
     # cat(txt, file = paste0("tests/data_creation/dailnoconf/", fname, ".txt"))

@@ -182,8 +182,8 @@ is.dfm <- function(x) {
 #' @return A named numeric vector of feature counts, where the names are the
 #'   feature labels, or a list of these if `groups` is given.
 #' @examples
-#' dfmat1 <- corpus_subset(data_corpus_inaugural, Year > 1980) %>%
-#'     tokens(remove_punct = TRUE) %>%
+#' dfmat1 <- corpus_subset(data_corpus_inaugural, Year > 1980) |>
+#'     tokens(remove_punct = TRUE) |>
 #'     dfm()
 #' dfmat2 <- dfm_remove(dfmat1, stopwords("en"))
 #'

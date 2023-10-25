@@ -41,7 +41,7 @@
 #' @seealso [dfm_match()]
 #' @examples
 #' dfmat <- tokens(c("My Christmas was ruined by your opposition tax plan.",
-#'                "Does the United_States or Sweden have more progressive taxation?")) %>%
+#'                "Does the United_States or Sweden have more progressive taxation?")) |>
 #'     dfm(tolower = FALSE)
 #' dict <- dictionary(list(countries = c("United_States", "Sweden", "France"),
 #'                         wordsEndingInY = c("by", "my"),

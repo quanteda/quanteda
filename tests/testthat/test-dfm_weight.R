@@ -1,6 +1,6 @@
 test_that("dfm_weight works", {
     str <- c("apple is better than banana", "banana banana apple much better")
-    mydfm <- dfm(tokens(str)) %>%
+    mydfm <- dfm(tokens(str)) |>
         dfm_remove(stopwords("english"))
 
     expect_equivalent(round(as.matrix(dfm_weight(mydfm, scheme = "count")), 2),
@@ -35,7 +35,7 @@ test_that("dfm_weight works", {
 test_that("dfm_weight works with weights", {
     str <- c("apple is better than banana", "banana banana apple much better")
     w <- c(apple = 5, banana = 3, much = 0.5)
-    mydfm <- dfm(tokens(str)) %>%
+    mydfm <- dfm(tokens(str)) |>
         dfm_remove(stopwords("english"))
 
     expect_equivalent(as.matrix(dfm_weight(mydfm, weights = w)),
@@ -231,7 +231,7 @@ test_that("weights argument works, issue 1150", {
 })
 
 test_that("docfreq works previously a weighted dfm (#1237)", {
-    df1 <- dfm(data_dfm_lbgexample) %>% dfm_tfidf(scheme_tf = "prop")
+    df1 <- dfm(data_dfm_lbgexample) |> dfm_tfidf(scheme_tf = "prop")
     computed <- c(rep(1, 5), 2, 2, 3, 3, 3, 4)
     names(computed) <- letters[1:11]
     expect_equal(

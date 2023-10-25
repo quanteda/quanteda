@@ -220,7 +220,7 @@ test_that("dfm_select errors when dictionary has multi-word features, issue 775"
 #     txt <- c(d1 = "a b c d e g h",  d2 = "a b e g h i j")
 #     toks_uni <- tokens(txt)
 #     dfm_uni <- dfm(toks_uni)
-#     toks_bi <- tokens(txt) %>% tokens_ngrams(n = 2, concatenator = " ")
+#     toks_bi <- tokens(txt) |> tokens_ngrams(n = 2, concatenator = " ")
 #     dfm_bi <- dfm(toks_bi)
 #     coll_bi <- textstat_collocations(toks_uni, size = 2, min_count = 2)
 #     coll_tri <- textstat_collocations(toks_uni, size = 3, min_count = 2)

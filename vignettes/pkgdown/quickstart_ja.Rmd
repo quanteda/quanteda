@@ -253,7 +253,7 @@ tokens(c("Kurt Vongeut said; only assholes use semi-colons.",
 corp_inaug_post1990 <- corpus_subset(data_corpus_inaugural, Year > 1990)
 
 # make a dfm
-dfmat_inaug_post1990 <- dfm(corp_inaug_post1990)
+dfmat_inaug_post1990 <- dfm(tokens(corp_inaug_post1990))
 dfmat_inaug_post1990[, 1:5]
 ```
 
@@ -261,9 +261,10 @@ dfmat_inaug_post1990[, 1:5]
 
 ```{r}
 # make a dfm, removing stopwords and applying stemming
-dfmat_inaug_post1990 <- dfm(dfmat_inaug_post1990,
-                            remove = stopwords("english"),
-                            stem = TRUE, remove_punct = TRUE)
+dfmat_inaug_post1990 <- tokens(corp_inaug_post1990, remove_punct = TRUE) |>
+    tokens_remove(stopwords("english")) |>
+    tokens_wordstem() |>
+    dfm()
 dfmat_inaug_post1990[, 1:5]
 ```
 
@@ -279,8 +280,11 @@ head(stopwords("ar", source = "misc"), 10)
 
 RStudioの"Environment"パネル，またはRの`View()`を用いることで，dfmに格納された値を見ることができる．
 
-```{r warning=FALSE, fig.width = 8, fig.height = 8}
-dfmat_uk <- dfm(data_char_ukimmig2010, remove = stopwords("english"), remove_punct = TRUE)
+```{r fig.width = 8, fig.height = 8}
+dfmat_uk <- data_char_ukimmig2010 |>
+    tokens(remove_punct = TRUE) |>
+    tokens_remove(stopwords("english")) |>
+    dfm()
 dfmat_uk
 ```
 
@@ -305,9 +309,9 @@ textplot_wordcloud(dfmat_uk, min_count = 6, random_order = FALSE,
 **quanteda**では，dfmを作成する際に，文書変数の値によって文書をグループ化するすることができる．
 
 ```{r}
-dfmat_ire <- tokens(data_corpus_irishbudget2010, remove_punct = TRUE) %>%
-    tokens_remove(stopwords("en")) %>%
-    tokens_group(groups = party) %>%
+dfmat_ire <- tokens(data_corpus_irishbudget2010, remove_punct = TRUE) |>
+    tokens_remove(stopwords("en")) |>
+    tokens_group(groups = party) |>
     dfm()
 ```
 
@@ -337,7 +341,9 @@ dict <- dictionary(list(terror = c("terrorism", "terrorists", "threat"),
 文書行列を作成するときに，この辞書を`dfm()`の`dictionary`に渡す．
 
 ```{r}
-dfmat_inaug_post1991_dict <- dfm(corp_inaug_post1991, dictionary = dict)
+dfmat_inaug_post1991_dict <- tokens(corp_inaug_post1991) |>
+    tokens_lookup(dict) |>
+    dfm()
 dfmat_inaug_post1991_dict
 ```
 
@@ -356,8 +362,13 @@ dfmat_inaug_subset[, 1:10]
 ## 文書の類似性 {#similarities-between-texts}
 
 ```{r fig.width = 6}
-dfmat_inaug_post1980 <- dfm(corpus_subset(data_corpus_inaugural, Year > 1980),
-                            remove = stopwords("english"), stem = TRUE, remove_punct = TRUE)
+dfmat_inaug_post1980 <- data_corpus_inaugural |>
+    corpus_subset(Year > 1980) |>
+    tokens(remove_punct = TRUE) |>
+    tokens_remove(stopwords("english")) |>
+    tokens_wordstem() |>
+    dfm()
+
 library("quanteda.textstats")
 tstat_obama <- textstat_simil(dfmat_inaug_post1980,
                               dfmat_inaug_post1980[c("2009-Obama", "2013-Obama"), ],
@@ -370,9 +381,12 @@ tstat_obama
 ```{r, fig.width = 10, fig.height = 7, eval = TRUE}
 data_corpus_sotu <- readRDS(url("https://quanteda.org/data/data_corpus_sotu.rds"))
 
-dfmat_sotu <- dfm(corpus_subset(data_corpus_sotu, Date > as.Date("1980-01-01")),
-                  stem = TRUE, remove_punct = TRUE,
-                  remove = stopwords("english"))
+dfmat_sotu <- data_corpus_sotu |>
+    corpus_subset(Date > as.Date("1980-01-01")) |>
+    tokens(remove_punct = TRUE) |>
+    tokens_remove(stopwords("english")) |>
+    tokens_wordstem() |>
+    dfm()
 dfmat_sotu <- dfm_trim(dfmat_sotu, min_termfreq = 5, min_docfreq = 3)
 
 # hierarchical clustering - get distances on normalized dfm
@@ -400,7 +414,7 @@ lapply(as.list(tstat_sim), head, 10)
 
 ```{r}
 library("quanteda.textmodels")
-dfmat_ire <- dfm(data_corpus_irishbudget2010)
+dfmat_ire <- dfm(tokens(data_corpus_irishbudget2010))
 tmod_wf <- textmodel_wordfish(dfmat_ire, dir = c(2, 1))
 
 # plot the Wordfish estimates by party
@@ -412,8 +426,11 @@ textplot_scale1d(tmod_wf, groups = docvars(dfmat_ire, "party"))
 `convert()`を用いると，dfmを**topicmodels**の`LDA()`形式のデータに転換し，簡単にトピックモデルを適用できる．
 
 ```{r}
-dfmat_ire2 <- dfm(data_corpus_irishbudget2010,
-                remove_punct = TRUE, remove_numbers = TRUE, remove = stopwords("english"))
+dfmat_ire2 <- data_corpus_irishbudget2010 |>
+    tokens(remove_punct = TRUE, remove_numbers = TRUE) |>
+    tokens_remove(stopwords("english")) |>
+    tokens_wordstem() |>
+    dfm()
 dfmat_ire2 <- dfm_trim(dfmat_ire2, min_termfreq = 4, max_docfreq = 10)
 dfmat_ire2
 

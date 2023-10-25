@@ -18,17 +18,17 @@
 #' @seealso  [as.dfm()], [dfm_select()], [dfm-class]
 #' @examples
 #' ## for a corpus
-#' toks <- data_corpus_inaugural %>%
-#'   corpus_subset(Year > 1980) %>%
+#' toks <- data_corpus_inaugural |>
+#'   corpus_subset(Year > 1980) |>
 #'   tokens()
 #' dfm(toks)
 #'
 #' # removal options
-#' toks <- tokens(c("a b c", "A B C D")) %>%
+#' toks <- tokens(c("a b c", "A B C D")) |>
 #'     tokens_remove("b", padding = TRUE)
 #' toks
 #' dfm(toks)
-#' dfm(toks) %>%
+#' dfm(toks) |>
 #'  dfm_remove(pattern = "") # remove "pads"
 #'
 #' # preserving case

@@ -8,6 +8,8 @@
 
 * Makes `"word4"` the default (word) tokeniser, with improved efficiency, language handling, and customisation options.
 
+* Replaced all occurrences of the **magrittr** `%>%` pipe with the R pipe `|>` introduced in R 4.1, although the `%>%` pipe is still re-exported and therefore available to all users of **quanteda** without loading any additional packages.
+
 ## Removals
 
 * `bootstrap_dfm()` was removed for character and corpus objects.  The correct way to bootstrap sentences is not to tokenize them as sentences and then bootstrap them from the dfm.  This is consistent with requiring the user to tokenise objects prior to forming dfms or other "downstream" objects.

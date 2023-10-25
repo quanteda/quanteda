@@ -112,10 +112,10 @@ test_that("operations on copied xtokens do not affect the original xtokens", {
 
 test_that("tokens_select and tokens_remove work", {
     
-    toks2 <- tokens_remove(toks, stopwords(), padding = TRUE) %>% 
+    toks2 <- tokens_remove(toks, stopwords(), padding = TRUE) |> 
         tokens_select(data_dictionary_LSD2015, padding = TRUE)
-    xtoks2 <- as.tokens_xptr(toks) %>% 
-        tokens_remove(stopwords(), padding = TRUE) %>% 
+    xtoks2 <- as.tokens_xptr(toks) |> 
+        tokens_remove(stopwords(), padding = TRUE) |> 
         tokens_select(data_dictionary_LSD2015, padding = TRUE)
     expect_identical(as.list(xtoks2), as.list(toks2))
     

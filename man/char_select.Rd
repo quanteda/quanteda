@@ -66,7 +66,7 @@ char_remove(words, "^.n.+$", valuetype = "regex")
 
 # remove some of the system stopwords
 stopwords("en", source = "snowball")[1:6]
-stopwords("en", source = "snowball")[1:6] \%>\%
+stopwords("en", source = "snowball")[1:6] |>
   char_remove(c("me", "my*"))
   
 # character keep

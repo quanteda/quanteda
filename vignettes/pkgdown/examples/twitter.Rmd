@@ -26,7 +26,7 @@ load("data/data_corpus_tweets.rda")
 
 ## Construct a document-feature matrix of Twitter posts
 ```{r}
-tweet_dfm <- tokens(data_corpus_tweets, remove_punct = TRUE) %>%
+tweet_dfm <- tokens(data_corpus_tweets, remove_punct = TRUE) |>
     dfm()
 head(tweet_dfm)
 ```

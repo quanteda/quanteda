@@ -128,7 +128,7 @@ test_that("tokens_remove works regardless when features are overlapped, issue #7
 txt <- c(d1 = "a b c d e g h",  d2 = "a b e g h i j")
 toks_uni <- tokens(txt)
 dfm_uni <- dfm(toks_uni)
-toks_bi <- tokens(txt) %>% tokens_ngrams(n = 2, concatenator = " ")
+toks_bi <- tokens(txt) |> tokens_ngrams(n = 2, concatenator = " ")
 dfm_bi <- dfm(toks_bi)
 char_uni <- c("a", "b", "g", "j")
 char_bi <- c("a b", "g j")

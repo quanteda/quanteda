@@ -327,7 +327,7 @@ test_that("convert.corpus works", {
     )
 
     expect_identical(
-        convert(corp, to = "json", pretty = TRUE) %>% as.character(),
+        convert(corp, to = "json", pretty = TRUE) |> as.character(),
         '[
   {
     "doc_id": "d1",
@@ -344,7 +344,7 @@ test_that("convert.corpus works", {
 ]'
         )
     expect_identical(
-        convert(corp, to = "json") %>% as.character(),
+        convert(corp, to = "json") |> as.character(),
         '[{"doc_id":"d1","text":"Text one.","dvar1":1,"dvar2":"one"},{"doc_id":"d2","text":"Text two.","dvar1":2,"dvar2":"two"}]'
     )
     expect_error(convert(corp, to = "json", prett = logical()),

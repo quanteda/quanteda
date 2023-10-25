@@ -59,7 +59,7 @@ get_summary_metadata <- function(x, ...) {
 #' }
 #' }
 summarize_texts_extended <- function(x, stop_words = stopwords("en"), n = 100) {
-    toks <- tokens(x) %>%
+    toks <- tokens(x) |>
         tokens_tolower()
     
     # total tokens
@@ -92,7 +92,7 @@ summarize_texts_extended <- function(x, stop_words = stopwords("en"), n = 100) {
     top_words <- topfeatures(dfmat, n)
     
     # top n features as a dfm
-    top_dfm <- dfm_select(dfmat, names(top_words)) %>%
+    top_dfm <- dfm_select(dfmat, names(top_words)) |>
         dfm_group(groups = rep(1, ndoc(dfmat)))
     
     list(total_tokens = ntoks,

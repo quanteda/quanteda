@@ -178,12 +178,12 @@ tokens(txt[4], remove_numbers = TRUE, remove_symbols = TRUE)
 
 \dontrun{# using other tokenizers
 tokens(tokenizers::tokenize_words(txt[4]), remove_symbols = TRUE)
-tokenizers::tokenize_words(txt, lowercase = FALSE, strip_punct = FALSE) \%>\%
+tokenizers::tokenize_words(txt, lowercase = FALSE, strip_punct = FALSE) |>
     tokens(remove_symbols = TRUE)
-tokenizers::tokenize_characters(txt[3], strip_non_alphanum = FALSE) \%>\%
+tokenizers::tokenize_characters(txt[3], strip_non_alphanum = FALSE) |>
     tokens(remove_punct = TRUE)
 tokenizers::tokenize_sentences(
-    "The quick brown fox.  It jumped over the lazy dog.") \%>\%
+    "The quick brown fox.  It jumped over the lazy dog.") |>
     tokens()
 }
 

@@ -23,7 +23,7 @@
 #' taxwords <- c("tax", "taxing", "taxed", "taxed", "taxation")
 #' lemma <- rep("TAX", length(taxwords))
 #' toks2 <- tokens_replace(toks1, taxwords, lemma, valuetype = "fixed")
-#' kwic(toks2, "TAX") %>% 
+#' kwic(toks2, "TAX") |> 
 #'     tail(10)
 #'
 #' # stemming
