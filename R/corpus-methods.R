@@ -130,7 +130,7 @@ c.corpus <- function(..., recursive = FALSE) {
 #' @method [ corpus
 #' @export
 #' @param i document names or indices for documents to extract.
-#' @param if `TRUE`, drop_docid drop `docid` for documents removed as the result of extraction.
+#' @param drop_docid if `TRUE`, drop `docid` for documents removed as the result of extraction.
 #' @return
 #' Indexing a corpus works in three ways, as of v2.x.x:
 #' * `[` returns a subsetted corpus

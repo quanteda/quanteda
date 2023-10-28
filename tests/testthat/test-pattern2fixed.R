@@ -282,4 +282,3 @@ test_that("cpp_index_types works correctly", {
                  list("?b?" = integer()))
     
 })
-

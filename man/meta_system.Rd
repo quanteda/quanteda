@@ -31,8 +31,6 @@ meta_system_defaults()
 metadata names}
 
 \item{value}{new value of the metadata field}
-
-\item{source}{character; the input object class}
 }
 \value{
 \code{meta_system} returns a list with the object's system metadata.

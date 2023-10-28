@@ -8,8 +8,6 @@ matrix2fcm(x, meta = NULL)
 }
 \arguments{
 \item{x}{a Matrix}
-
-\item{slots}{slots a list of values to be assigned to slots}
 }
 \description{
 Converts a Matrix to a fcm

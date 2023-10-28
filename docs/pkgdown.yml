@@ -20,7 +20,7 @@ articles:
   text2vec: pkgdown/replication/text2vec.html
   tokens_xptr: pkgdown/tokens_xptr.html
   quickstart: quickstart.html
-last_built: 2023-10-25T09:04Z
+last_built: 2023-10-25T11:36Z
 urls:
   reference: https://quanteda.io/reference
   article: https://quanteda.io/articles

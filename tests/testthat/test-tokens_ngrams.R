@@ -47,15 +47,14 @@ test_that("test that ngrams produces the results from Guthrie 2006", {
 })
 
 test_that("char_ngrams works", {
-    
     expect_equivalent(
         char_ngrams(c('insurgents','killed', 'in', 'ongoing', 'fighting')),
         c('insurgents_killed', 'killed_in', 'in_ongoing', 'ongoing_fighting')
     )
     
+
     expect_warning(char_ngrams(c('insurgents killed', 'in', 'ongoing', 'fighting')), 
                  "whitespace detected: you may need to run tokens\\(\\) first")
-
 })
 
 test_that("token_skipgrams works", {

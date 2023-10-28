@@ -184,7 +184,6 @@ convert.corpus <- function(x, to = c("data.frame", "json"), pretty = FALSE, ...)
 #' are converting.
 #' @param x the dfm to be converted
 #' @inheritParams convert
-#' @param ... additional arguments used only by `as.DocumentTermMatrix`
 #' @return A converted object determined by the value of `to` (see above).
 #'   See conversion target package documentation for more detailed descriptions
 #'   of the return formats.

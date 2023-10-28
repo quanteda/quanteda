@@ -127,7 +127,6 @@ as.fcm.Matrix <- function(x) {
 
 #' Converts a Matrix to a fcm
 #' @param x a Matrix
-#' @param slots slots a list of values to be assigned to slots
 #' @keywords internal
 matrix2fcm <- function(x, meta = NULL) {
     rowname <- rownames(x)

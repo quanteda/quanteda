@@ -47,6 +47,9 @@ for empty dimensions.
 
 * restores `readtext` object class method extensions, to work better with the **readtext** package.
 
+* Removes some unused internal methods, such as `docvars.kwic()` that were not exported despite matching exported generics.
+
+
 # quanteda 3.3.0
 
 ## Changes and additions

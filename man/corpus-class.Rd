@@ -27,7 +27,7 @@
 
 \item{i}{document names or indices for documents to extract.}
 
-\item{if}{\code{TRUE}, drop_docid drop \code{docid} for documents removed as the result of extraction.}
+\item{drop_docid}{if \code{TRUE}, drop \code{docid} for documents removed as the result of extraction.}
 }
 \value{
 The \code{+} and \code{c()} operators return a \code{\link[=corpus]{corpus()}} object.
