@@ -27,13 +27,14 @@ library("badger")
 
 ## About
 
-**quanteda*** is an R package for managing and analyzing text, created and maintained by [Kenneth Benoit](https://kenbenoit.net) and [Kohei Watanabe](https://blog.koheiw.net/). Its creation was funded by the European Research Council grant ERC-2011-StG 283794-QUANTESS and its continued development is supported by the [Quanteda Initiative CIC](https://quanteda.org).
+
+**quanteda** is an R package for managing and analyzing text, created and maintained by [Kenneth Benoit](https://kenbenoit.net) and [Kohei Watanabe](https://blog.koheiw.net/). Its creation was funded by the European Research Council grant ERC-2011-StG 283794-QUANTESS and its continued development is supported by the [Quanteda Initiative CIC](https://quanteda.org).
 
 For more details, see https://quanteda.io.
 
 ## **quanteda** version 4
 
-The **quanteda** 4.0 is a major release that improves functionality and performance and further improves function consistency by removing previously deprecated functions. It also includes significant new tokeniser rules that makes the default tokeniser smarter than ever before, with new Unicode and ICU-compliant rules that enable it to work more consistently with even more languages.
+The **quanteda** 4.0 is a major release that improves functionality and performance and further improves function consistency by removing previously deprecated functions.  It also includes significant new tokeniser rules that make the default tokeniser smarter than ever, with new Unicode and ICU-compliant rules enabling it to work more consistently with even more languages.
 
 We describe more fully these significant changes in:
 

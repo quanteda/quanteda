@@ -66,9 +66,6 @@
       <a href="../articles/pkgdown/benchmarks_xptr.html">Performance benchmarks for v4</a>
     </li>
     <li>
-      <a href="../articles/pkgdown/comparison.html">Feature comparison</a>
-    </li>
-    <li>
       <a href="../articles/pkgdown/design.html">Package design</a>
     </li>
     <li>
@@ -151,73 +148,58 @@
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>x</dt>
-<dd><p>a <span class="pkg">quanteda</span> object: a character, <a href="corpus.html">corpus</a>,
-<a href="tokens.html">tokens</a>, or <a href="dfm.html">dfm</a> object</p></dd>
+<dd><p>a <span class="pkg">quanteda</span> <a href="tokens.html">tokens</a> or <a href="dfm.html">dfm</a> object</p></dd>
 
 
 <dt>...</dt>
-<dd><p>additional arguments passed to <code><a href="tokens.html">tokens()</a></code></p></dd>
+<dd><p>not used</p></dd>
 
 </dl></div>
     <div id="value">
     <h2>Value</h2>
     
 
-<p>named integer vector of the counts of the total tokens or types</p>
-    </div>
-    <div id="details">
-    <h2>Details</h2>
-    <p>The precise definition of "tokens" for objects not yet tokenized (e.g.
-<a href="https://rdrr.io/r/base/character.html" class="external-link">character</a> or <a href="corpus.html">corpus</a> objects) can be controlled through optional
-arguments passed to <code><a href="tokens.html">tokens()</a></code> through <code>...</code>.</p>
-<p>For <a href="dfm.html">dfm</a> objects, <code>ntype</code> will only return the count of features
-that occur more than zero times in the dfm.</p>
-    </div>
-    <div id="note">
-    <h2>Note</h2>
-    <p>Due to differences between raw text tokens and features that have been
-defined for a <a href="dfm.html">dfm</a>, the counts may be different for dfm objects and the
-texts from which the dfm was generated.  Because the method tokenizes the
-text in order to count the tokens, your results will depend on the options
-passed through to <code><a href="tokens.html">tokens()</a></code>.</p>
+<p><code>ntoken()</code> returns a named integer vector of the counts of the total
+tokens</p>
+
+
+<p><code>ntypes()</code> returns a named integer vector of the counts of the types (unique
+tokens) per document.  For <a href="dfm.html">dfm</a> objects, <code>ntype()</code> will only return the
+count of features that occur more than zero times in the dfm.</p>
     </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># simple example</span></span></span>
 <span class="r-in"><span><span class="va">txt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>text1 <span class="op">=</span> <span class="st">"This is a sentence, this."</span>, text2 <span class="op">=</span> <span class="st">"A word. Repeated repeated."</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">ntoken</span><span class="op">(</span><span class="va">txt</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">toks</span> <span class="op">&lt;-</span> <span class="fu"><a href="tokens.html">tokens</a></span><span class="op">(</span><span class="va">txt</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">ntoken</span><span class="op">(</span><span class="va">toks</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> text1 text2 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     7     6 </span>
-<span class="r-in"><span><span class="fu">ntype</span><span class="op">(</span><span class="va">txt</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">ntype</span><span class="op">(</span><span class="va">toks</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> text1 text2 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     7     5 </span>
-<span class="r-in"><span><span class="fu">ntoken</span><span class="op">(</span><span class="fu"><a href="char_tolower.html">char_tolower</a></span><span class="op">(</span><span class="va">txt</span><span class="op">)</span><span class="op">)</span>  <span class="co"># same</span></span></span>
+<span class="r-in"><span><span class="fu">ntoken</span><span class="op">(</span><span class="fu"><a href="tokens_tolower.html">tokens_tolower</a></span><span class="op">(</span><span class="va">toks</span><span class="op">)</span><span class="op">)</span>  <span class="co"># same</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> text1 text2 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     7     6 </span>
-<span class="r-in"><span><span class="fu">ntype</span><span class="op">(</span><span class="fu"><a href="char_tolower.html">char_tolower</a></span><span class="op">(</span><span class="va">txt</span><span class="op">)</span><span class="op">)</span>   <span class="co"># fewer types</span></span></span>
+<span class="r-in"><span><span class="fu">ntype</span><span class="op">(</span><span class="fu"><a href="tokens_tolower.html">tokens_tolower</a></span><span class="op">(</span><span class="va">toks</span><span class="op">)</span><span class="op">)</span>   <span class="co"># fewer types</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> text1 text2 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     6     4 </span>
-<span class="r-in"><span><span class="fu">ntoken</span><span class="op">(</span><span class="fu"><a href="char_tolower.html">char_tolower</a></span><span class="op">(</span><span class="va">txt</span><span class="op">)</span>, remove_punct <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> text1 text2 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     5     4 </span>
-<span class="r-in"><span><span class="fu">ntype</span><span class="op">(</span><span class="fu"><a href="char_tolower.html">char_tolower</a></span><span class="op">(</span><span class="va">txt</span><span class="op">)</span>, remove_punct <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> text1 text2 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     4     3 </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># with some real texts</span></span></span>
-<span class="r-in"><span><span class="fu">ntoken</span><span class="op">(</span><span class="fu"><a href="corpus_subset.html">corpus_subset</a></span><span class="op">(</span><span class="va">data_corpus_inaugural</span>, <span class="va">Year</span> <span class="op">&lt;</span> <span class="fl">1806</span><span class="op">)</span>, remove_punct <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">toks</span> <span class="op">&lt;-</span> <span class="fu"><a href="tokens.html">tokens</a></span><span class="op">(</span><span class="fu"><a href="corpus_subset.html">corpus_subset</a></span><span class="op">(</span><span class="va">data_corpus_inaugural</span>, <span class="va">Year</span> <span class="op">&lt;</span> <span class="fl">1806</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">ntoken</span><span class="op">(</span><span class="fu"><a href="tokens.html">tokens</a></span><span class="op">(</span><span class="va">toks</span>, remove_punct <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1789-Washington 1793-Washington      1797-Adams  1801-Jefferson  1805-Jefferson </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            1430             135            2318            1726            2166 </span>
-<span class="r-in"><span><span class="fu">ntype</span><span class="op">(</span><span class="fu"><a href="corpus_subset.html">corpus_subset</a></span><span class="op">(</span><span class="va">data_corpus_inaugural</span>, <span class="va">Year</span> <span class="op">&lt;</span> <span class="fl">1806</span><span class="op">)</span>, remove_punct <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">ntype</span><span class="op">(</span><span class="fu"><a href="tokens.html">tokens</a></span><span class="op">(</span><span class="va">toks</span>, remove_punct <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1789-Washington 1793-Washington      1797-Adams  1801-Jefferson  1805-Jefferson </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             617              91             819             711             799 </span>
-<span class="r-in"><span><span class="fu">ntoken</span><span class="op">(</span><span class="fu"><a href="dfm.html">dfm</a></span><span class="op">(</span><span class="fu"><a href="tokens.html">tokens</a></span><span class="op">(</span><span class="fu"><a href="corpus_subset.html">corpus_subset</a></span><span class="op">(</span><span class="va">data_corpus_inaugural</span>, <span class="va">Year</span> <span class="op">&lt;</span> <span class="fl">1800</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1789-Washington 1793-Washington      1797-Adams </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>            1537             147            2577 </span>
-<span class="r-in"><span><span class="fu">ntype</span><span class="op">(</span><span class="fu"><a href="dfm.html">dfm</a></span><span class="op">(</span><span class="fu"><a href="tokens.html">tokens</a></span><span class="op">(</span><span class="fu"><a href="corpus_subset.html">corpus_subset</a></span><span class="op">(</span><span class="va">data_corpus_inaugural</span>, <span class="va">Year</span> <span class="op">&lt;</span> <span class="fl">1800</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1789-Washington 1793-Washington      1797-Adams </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             603              95             801 </span>
+<span class="r-in"><span><span class="fu">ntoken</span><span class="op">(</span><span class="fu"><a href="dfm.html">dfm</a></span><span class="op">(</span><span class="va">toks</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1789-Washington 1793-Washington      1797-Adams  1801-Jefferson  1805-Jefferson </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>            1537             147            2577            1923            2380 </span>
+<span class="r-in"><span><span class="fu">ntype</span><span class="op">(</span><span class="fu"><a href="dfm.html">dfm</a></span><span class="op">(</span><span class="va">toks</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1789-Washington 1793-Washington      1797-Adams  1801-Jefferson  1805-Jefferson </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             603              95             801             687             781 </span>
 </code></pre></div>
     </div>
   </div>

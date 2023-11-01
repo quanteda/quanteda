@@ -66,9 +66,6 @@
       <a href="../articles/pkgdown/benchmarks_xptr.html">Performance benchmarks for v4</a>
     </li>
     <li>
-      <a href="../articles/pkgdown/comparison.html">Feature comparison</a>
-    </li>
-    <li>
       <a href="../articles/pkgdown/design.html">Package design</a>
     </li>
     <li>
@@ -215,7 +212,7 @@ default for <a href="groups.html">groups</a>, so that documents that have been p
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">corp</span> <span class="op">&lt;-</span> <span class="fu"><a href="corpus.html">corpus</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>textone <span class="op">=</span> <span class="st">"This is a sentence.  Another sentence.  Yet another."</span>,</span></span>
 <span class="r-in"><span>                 textwo <span class="op">=</span> <span class="st">"Sentence 1. Sentence 2."</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">corp_sent</span> <span class="op">&lt;-</span> <span class="va">corp</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span><span class="va">corp_sent</span> <span class="op">&lt;-</span> <span class="va">corp</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>    <span class="fu"><a href="corpus_reshape.html">corpus_reshape</a></span><span class="op">(</span>to <span class="op">=</span> <span class="st">"sentences"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">docnames</span><span class="op">(</span><span class="va">corp_sent</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "textone.1" "textone.2" "textone.3" "textwo.1"  "textwo.2" </span>

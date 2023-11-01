@@ -327,7 +327,8 @@ test_that("object always have docvars in the same rows as documents", {
     expect_true(nrow(docvars(dfm4)) == ndoc(dfm4))
     expect_true(all(row.names(docvars(dfm4)) == seq_len(ndoc(dfm4))))
 
-    dfm5 <- suppressWarnings(dfm(dfm1, groups = rep(c(1, 2, 3), 3)))
+    dfm5 <- dfm(dfm1) |>
+        dfm_group(groups = rep(c(1, 2, 3), 3))
     expect_true(nrow(docvars(dfm5)) == ndoc(dfm5))
     expect_true(all(row.names(docvars(dfm5)) == seq_len(ndoc(dfm5))))
 
@@ -575,7 +576,7 @@ test_that("group_docvars() works", {
 test_that("docid works", {
     corp <- corpus(c(textone = "This is a sentence.  Another sentence.  Yet another.",
                      textwo = "Sentence 1. Sentence 2."))
-    corp_sent <- corp %>%
+    corp_sent <- corp |>
         corpus_reshape(to = "sentences")
     
     expect_identical(

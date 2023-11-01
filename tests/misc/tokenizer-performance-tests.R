@@ -42,7 +42,7 @@ microbenchmark(
 
 toks <- tokens(data_corpus_sotu)
 microbenchmark(
-  fixed = tokens_split(toks, "@", valuetype = "fixed", remove_separator = F) %>% tokens_split("#", valuetype = "fixed", remove_separator = F),
+  fixed = tokens_split(toks, "@", valuetype = "fixed", remove_separator = F) |> tokens_split("#", valuetype = "fixed", remove_separator = F),
   regex = tokens_split(toks, "[@#]", valuetype = "regex", remove_separator = F),
   times = 2, unit = "relative"
 )

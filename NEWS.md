@@ -3,20 +3,51 @@
 ## Changes and additions
 
 * Introduces the `tokens_xptr` objects that extend the `tokens` objects with external pointers for a greater efficiency. Once `tokens` objects are converted to `tokens_xptr` objects using `as.tokens_xptr()`, `tokens_*.tokens_xptr()` methods are called automatically. 
+
 * Improved C++ functions to allow the users to change the number of threads for parallel computing in more flexible manner using `quanteda_options()`. The value of `threads` can be changed in the middle of analysis pipeline.
+
+* Makes `"word4"` the default (word) tokeniser, with improved efficiency, language handling, and customisation options.
+
+* Replaced all occurrences of the **magrittr** `%>%` pipe with the R pipe `|>` introduced in R 4.1, although the `%>%` pipe is still re-exported and therefore available to all users of **quanteda** without loading any additional packages.
 
 ## Removals
 
 * `bootstrap_dfm()` was removed for character and corpus objects.  The correct way to bootstrap sentences is not to tokenize them as sentences and then bootstrap them from the dfm.  This is consistent with requiring the user to tokenise objects prior to forming dfms or other "downstream" objects.
 
-* `dfm()` no longer works on character or corpus objects, only on tokens or other dfm objects.  This was deprecated in v4 and removed in v4. 
+* `dfm()` no longer works on character or corpus objects, only on tokens or other dfm objects.  This was deprecated in v3 and removed in v4. 
+
+* Very old arguments to `dfm()` options that were not visible but worked with warnings (such as `stem = TRUE`) are removed.
 
 * Deprecated or renamed arguments formerly passed in `tokens()` that formerly mapped to the v3 arguments with a warning are removed.
 
+* Methods for **readtext** objects are removed, since these are data.frame objects that are straightforward to convert into a `corpus` object.
+
 ## Deprecations
 
+* Some on-the-fly calculations applied to character or corpus objects that require a temporary tokenisation are now deprecated.  This includes:
+    - `nsentence()` -- use `lengths(tokens(x, what = "sentence"))` instead;  
+    - `ntype()` -- use `ntype(tokens(x))` instead; and. 
+    - `ntoken()` -- use `ntoken(tokens(x))` instead.
+
+
+ 
+## Bug fixes and stability enhancements
+
+* `tokens_group()` works efficiently even when the number of documents and groups are very large.
+
+
+# quanteda 3.3.1
 
 ## Bug fixes and stability enhancements
+
+* Fixed a potential crash when calling `tokens_compound()` with patterns containing paddings (#2254).
+
+* Updated for compatibility with (forthcoming) Matrix 1.5.5 handling of dimnames() 
+for empty dimensions.
+
+* restores `readtext` object class method extensions, to work better with the **readtext** package.
+
+* Removes some unused internal methods, such as `docvars.kwic()` that were not exported despite matching exported generics.
 
 
 # quanteda 3.3.0

@@ -75,9 +75,6 @@ frequencies, or as a quantile of all frequencies."><!-- mathjax --><script src="
       <a href="../articles/pkgdown/benchmarks_xptr.html">Performance benchmarks for v4</a>
     </li>
     <li>
-      <a href="../articles/pkgdown/comparison.html">Feature comparison</a>
-    </li>
-    <li>
       <a href="../articles/pkgdown/design.html">Package design</a>
     </li>
     <li>
@@ -250,28 +247,7 @@ removing features matching a stopword list, use <code><a href="dfm_select.html">
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># keep only words occurring &gt;= 10 times and in &gt;= 2 documents</span></span></span>
 <span class="r-in"><span><span class="fu">dfm_trim</span><span class="op">(</span><span class="va">dfmat</span>, min_termfreq <span class="op">=</span> <span class="fl">10</span>, min_docfreq <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Document-feature matrix of: 59 documents, 1,532 features (68.71% sparse) and 4 docvars.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                  features</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> docs              fellow-citizens  of the senate and house representatives :</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   1789-Washington               1  71 116      1  48     2               2 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   1793-Washington               0  11  13      0   2     0               0 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   1797-Adams                    3 140 163      1 130     0               2 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   1801-Jefferson                2 104 130      0  81     0               0 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   1805-Jefferson                0 101 143      0  93     0               0 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   1809-Madison                  1  69 104      0  43     0               0 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                  features</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> docs              among to</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   1789-Washington     1 48</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   1793-Washington     0  5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   1797-Adams          4 72</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   1801-Jefferson      1 61</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   1805-Jefferson      7 83</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   1809-Madison        0 61</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [ reached max_ndoc ... 53 more documents, reached max_nfeat ... 1,522 more features ]</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># keep only words occurring &gt;= 10 times and in at least 0.4 of the documents</span></span></span>
-<span class="r-in"><span><span class="fu">dfm_trim</span><span class="op">(</span><span class="va">dfmat</span>, min_termfreq <span class="op">=</span> <span class="fl">10</span>, min_docfreq <span class="op">=</span> <span class="fl">0.4</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Document-feature matrix of: 59 documents, 1,533 features (68.73% sparse) and 4 docvars.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Document-feature matrix of: 59 documents, 1,533 features (68.72% sparse) and 4 docvars.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                  features</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> docs              fellow-citizens  of the senate and house representatives :</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   1789-Washington               1  71 116      1  48     2               2 1</span>
@@ -290,9 +266,30 @@ removing features matching a stopword list, use <code><a href="dfm_select.html">
 <span class="r-out co"><span class="r-pr">#&gt;</span>   1809-Madison        0 61</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [ reached max_ndoc ... 53 more documents, reached max_nfeat ... 1,523 more features ]</span>
 <span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># keep only words occurring &gt;= 10 times and in at least 0.4 of the documents</span></span></span>
+<span class="r-in"><span><span class="fu">dfm_trim</span><span class="op">(</span><span class="va">dfmat</span>, min_termfreq <span class="op">=</span> <span class="fl">10</span>, min_docfreq <span class="op">=</span> <span class="fl">0.4</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Document-feature matrix of: 59 documents, 1,534 features (68.74% sparse) and 4 docvars.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                  features</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> docs              fellow-citizens  of the senate and house representatives :</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1789-Washington               1  71 116      1  48     2               2 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1793-Washington               0  11  13      0   2     0               0 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1797-Adams                    3 140 163      1 130     0               2 0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1801-Jefferson                2 104 130      0  81     0               0 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1805-Jefferson                0 101 143      0  93     0               0 0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1809-Madison                  1  69 104      0  43     0               0 0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                  features</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> docs              among to</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1789-Washington     1 48</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1793-Washington     0  5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1797-Adams          4 72</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1801-Jefferson      1 61</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1805-Jefferson      7 83</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1809-Madison        0 61</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [ reached max_ndoc ... 53 more documents, reached max_nfeat ... 1,524 more features ]</span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># keep only words occurring &lt;= 10 times and in &lt;=2 documents</span></span></span>
 <span class="r-in"><span><span class="fu">dfm_trim</span><span class="op">(</span><span class="va">dfmat</span>, max_termfreq <span class="op">=</span> <span class="fl">10</span>, max_docfreq <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Document-feature matrix of: 59 documents, 5,679 features (97.86% sparse) and 4 docvars.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Document-feature matrix of: 59 documents, 5,675 features (97.86% sparse) and 4 docvars.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                  features</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> docs              notification 14th month fondest predilection flattering</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   1789-Washington            1    1     1       1            1          1</span>
@@ -309,7 +306,7 @@ removing features matching a stopword list, use <code><a href="dfm_select.html">
 <span class="r-out co"><span class="r-pr">#&gt;</span>   1801-Jefferson          0      0             0       0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   1805-Jefferson          0      0             0       0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   1809-Madison            0      0             0       0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [ reached max_ndoc ... 53 more documents, reached max_nfeat ... 5,669 more features ]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [ reached max_ndoc ... 53 more documents, reached max_nfeat ... 5,665 more features ]</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># keep only words occurring &lt;= 10 times and in at most 3/4 of the documents</span></span></span>
 <span class="r-in"><span><span class="fu">dfm_trim</span><span class="op">(</span><span class="va">dfmat</span>, max_termfreq <span class="op">=</span> <span class="fl">10</span>, max_docfreq <span class="op">=</span> <span class="fl">0.75</span><span class="op">)</span></span></span>
@@ -331,7 +328,7 @@ removing features matching a stopword list, use <code><a href="dfm_select.html">
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># keep only words occurring frequently (top 20%) and in &lt;=2 documents</span></span></span>
 <span class="r-in"><span><span class="fu">dfm_trim</span><span class="op">(</span><span class="va">dfmat</span>, min_termfreq <span class="op">=</span> <span class="fl">0.2</span>, max_docfreq <span class="op">=</span> <span class="fl">2</span>, termfreq_type <span class="op">=</span> <span class="st">"quantile"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Document-feature matrix of: 59 documents, 5,681 features (97.86% sparse) and 4 docvars.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Document-feature matrix of: 59 documents, 5,677 features (97.86% sparse) and 4 docvars.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                  features</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> docs              notification 14th month fondest predilection flattering</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   1789-Washington            1    1     1       1            1          1</span>
@@ -348,7 +345,7 @@ removing features matching a stopword list, use <code><a href="dfm_select.html">
 <span class="r-out co"><span class="r-pr">#&gt;</span>   1801-Jefferson          0      0             0       0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   1805-Jefferson          0      0             0       0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   1809-Madison            0      0             0       0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [ reached max_ndoc ... 53 more documents, reached max_nfeat ... 5,671 more features ]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [ reached max_ndoc ... 53 more documents, reached max_nfeat ... 5,667 more features ]</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span><span class="co"># compare to removeSparseTerms from the tm package</span></span></span>

@@ -18,7 +18,7 @@
 #'                                                         
 #'   
 
-tokens <- txt %>% tolower %>% word_tokenizer
+tokens <- txt |> tolower |> word_tokenizer
 it <- itoken(tokens)
 v <- create_vocabulary(it)
 vectorizer <- vocab_vectorizer(v, grow_dtm = FALSE, skip_grams_window = 5L)
@@ -28,7 +28,7 @@ toksh <- tokens(char_tolower(txt), removePunct = TRUE)
 
 
 text2vecPfm <- function(tokens,vectorizer ){
-    #tokens <- txt %>% tolower %>% word_tokenizer
+    #tokens <- txt |> tolower |> word_tokenizer
     #it <- itoken(tokens)
     #v <- create_vocabulary(it)
     #vectorizer <- vocab_vectorizer(v, grow_dtm = FALSE, skip_grams_window = 3L)

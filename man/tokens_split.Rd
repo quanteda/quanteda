@@ -31,7 +31,7 @@ effectively reverses the operation of \code{\link[=tokens_compound]{tokens_compo
 # undo tokens_compound()
 toks1 <- tokens("pork barrel is an idiomatic multi-word expression")
 tokens_compound(toks1, phrase("pork barrel"))
-tokens_compound(toks1, phrase("pork barrel")) \%>\%
+tokens_compound(toks1, phrase("pork barrel")) |>
     tokens_split(separator = "_")
     
 # similar to tokens(x, remove_hyphen = TRUE) but post-tokenization 

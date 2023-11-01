@@ -68,9 +68,6 @@ weights."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/ma
       <a href="../articles/pkgdown/benchmarks_xptr.html">Performance benchmarks for v4</a>
     </li>
     <li>
-      <a href="../articles/pkgdown/comparison.html">Feature comparison</a>
-    </li>
-    <li>
       <a href="../articles/pkgdown/design.html">Package design</a>
     </li>
     <li>
@@ -198,8 +195,8 @@ variables for the documents sampled.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           Text Types Tokens Sentences Year President      FirstName      Party</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      1909-Taft  1437   5821       158 1909      Taft William Howard Republican</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      1845-Polk  1334   5186       153 1845      Polk     James Knox       Whig</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      1989-Bush   795   2673       141 1989      Bush         George Republican</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1841-Harrison  1898   9123       210 1841  Harrison  William Henry       Whig</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      1989-Bush   795   2674       141 1989      Bush         George Republican</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1841-Harrison  1896   9125       210 1841  Harrison  William Henry       Whig</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     1797-Adams   826   2577        37 1797     Adams           John Federalist</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu">corpus_sample</span><span class="op">(</span><span class="va">data_corpus_inaugural</span>, size <span class="op">=</span> <span class="fl">10</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></span>
@@ -212,7 +209,7 @@ variables for the documents sampled.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  1957-Eisenhower.1   621   1907        92 1957 Eisenhower     Dwight D.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   1933-Roosevelt.1   743   2057        85 1933  Roosevelt   Franklin D.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     1993-Clinton.1   642   1833        81 1993    Clinton          Bill</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    1841-Harrison.1  1898   9123       210 1841   Harrison William Henry</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    1841-Harrison.1  1896   9125       210 1841   Harrison William Henry</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        2001-Bush.2   621   1806        97 2001       Bush     George W.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   1885-Cleveland.1   676   1816        44 1885  Cleveland        Grover</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    1889-Harrison.1  1352   4721       157 1889   Harrison      Benjamin</span>
@@ -233,7 +230,8 @@ variables for the documents sampled.</p>
 <span class="r-in"><span><span class="va">corp</span> <span class="op">&lt;-</span> <span class="va">data_corpus_inaugural</span></span></span>
 <span class="r-in"><span><span class="va">corp</span><span class="op">$</span><span class="va">century</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">floor</a></span><span class="op">(</span><span class="va">corp</span><span class="op">$</span><span class="va">Year</span> <span class="op">/</span> <span class="fl">100</span><span class="op">)</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">corp</span><span class="op">$</span><span class="va">century</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">corp</span><span class="op">$</span><span class="va">century</span>, <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">corp</span><span class="op">$</span><span class="va">century</span> <span class="op">&lt;</span> <span class="fl">21</span>, <span class="st">"th"</span>, <span class="st">"st"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">corpus_sample</span><span class="op">(</span><span class="va">corp</span>, size <span class="op">=</span> <span class="fl">2</span>, by <span class="op">=</span> <span class="va">century</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">corpus_sample</span><span class="op">(</span><span class="va">corp</span>, size <span class="op">=</span> <span class="fl">2</span>, by <span class="op">=</span> <span class="va">century</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Corpus consisting of 8 documents, showing 8 documents:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             Text Types Tokens Sentences Year  President   FirstName</span>
@@ -256,7 +254,7 @@ variables for the documents sampled.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             Democratic    21st</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="co"># needs drop = TRUE to avoid empty interactions</span></span></span>
-<span class="r-in"><span><span class="fu">corpus_sample</span><span class="op">(</span><span class="va">corp</span>, size <span class="op">=</span> <span class="fl">1</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/interaction.html" class="external-link">interaction</a></span><span class="op">(</span><span class="va">Party</span>, <span class="va">century</span>, drop <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span><span class="fu">corpus_sample</span><span class="op">(</span><span class="va">corp</span>, size <span class="op">=</span> <span class="fl">1</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/interaction.html" class="external-link">interaction</a></span><span class="op">(</span><span class="va">Party</span>, <span class="va">century</span>, drop <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Corpus consisting of 10 documents, showing 10 documents:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>

@@ -18,7 +18,7 @@ Downloads](https://cranlogs.r-pkg.org/badges/grand-total/quanteda?color=orange)]
 
 ## About
 
-**quanteda**\* is an R package for managing and analyzing text, created
+**quanteda** is an R package for managing and analyzing text, created
 and maintained by [Kenneth Benoit](https://kenbenoit.net) and [Kohei
 Watanabe](https://blog.koheiw.net/). Its creation was funded by the
 European Research Council grant ERC-2011-StG 283794-QUANTESS and its
@@ -32,19 +32,21 @@ For more details, see <https://quanteda.io>.
 The **quanteda** 4.0 is a major release that improves functionality and
 performance and further improves function consistency by removing
 previously deprecated functions. It also includes significant new
-tokeniser rules that makes the default tokeniser smarter than ever
-before, with new Unicode and ICU-compliant rules that enable it to work
-more consistently with even more languages.
+tokeniser rules that make the default tokeniser smarter than ever, with
+new Unicode and ICU-compliant rules enabling it to work more
+consistently with even more languages.
 
-We describe more fully these significant changes in: \* an [article
-about the new external pointer tokens
-objects](https://quanteda.io/articles/pkgdown/tokens_xptr.html); \* an
-[article showing performance
-benchmarks](https://quanteda.io/articles/pkgdown/benchmarks_xptr.html)
-for the new external pointer tokens objects, as well as some of the
-tokeniser improvements in v4; and \* the [changelog for
-v4](https://github.com/quanteda/quanteda/blob/master/NEWS.md#quanteda-40)
-a full listing of the changes, improvements, and deprecations in v4.
+We describe more fully these significant changes in:
+
+- an [article about the new external pointer tokens
+  objects](https://quanteda.io/articles/pkgdown/tokens_xptr.html);
+- an [article showing performance
+  benchmarks](https://quanteda.io/articles/pkgdown/benchmarks_xptr.html)
+  for the new external pointer tokens objects, as well as some of the
+  tokeniser improvements in v4; and
+- the [changelog for
+  v4](https://github.com/quanteda/quanteda/blob/master/NEWS.md#quanteda-40)
+  a full listing of the changes, improvements, and deprecations in v4.
 
 ## The **quanteda** family of packages
 
@@ -101,7 +103,7 @@ how to use **quanteda**.
 
 ### Get Help
 
-- Read out documentation at <https://quanteda.io>.
+- Read the documentation at <https://quanteda.io>.
 - Submit a question on the [**quanteda** channel on
   StackOverflow](https://stackoverflow.com/questions/tagged/quanteda).
 - See our [tutorial site](https://tutorials.quanteda.io/).

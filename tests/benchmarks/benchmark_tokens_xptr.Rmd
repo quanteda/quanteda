@@ -12,8 +12,8 @@ knitr::opts_chunk$set(echo = TRUE)
 
 #devtools::install_github("quanteda/quanteda3")
 require(quanteda)
-corp <- #readRDS('/home/kohei/Dropbox/Public/data_corpus_guardian2016-10k.rds') %>% 
-    readRDS('C:/Users/watan/Dropbox/Public/data_corpus_guardian2016-10k.rds') %>% 
+corp <- #readRDS('/home/kohei/Dropbox/Public/data_corpus_guardian2016-10k.rds') |> 
+    readRDS('C:/Users/watan/Dropbox/Public/data_corpus_guardian2016-10k.rds') |> 
     corpus_reshape()
 
 toks <- tokens(corp, remove_punct = FALSE, remove_numbers = FALSE, 
@@ -57,39 +57,39 @@ microbenchmark::microbenchmark(
 )
 
 microbenchmark::microbenchmark(
-    old = quanteda3::tokens(corp) %>% 
-        quanteda3::tokens_remove(stopwords("en"), padding = TRUE) %>% 
+    old = quanteda3::tokens(corp) |> 
+        quanteda3::tokens_remove(stopwords("en"), padding = TRUE) |> 
         quanteda3::dfm(remove_padding = TRUE),
-    new = tokens(corp, xptr = TRUE) %>% 
-        tokens_remove(stopwords("en"), padding = TRUE) %>% 
+    new = tokens(corp, xptr = TRUE) |> 
+        tokens_remove(stopwords("en"), padding = TRUE) |> 
         dfm(remove_padding = TRUE),
     times = 10
 )
 
 microbenchmark::microbenchmark(
     old = tokens_ngrams(toks),
-    new = as.tokens_xptr(xtoks) %>% 
+    new = as.tokens_xptr(xtoks) |> 
         tokens_ngrams(),
     times = 10
 )
 
 microbenchmark::microbenchmark(
     old = quanteda3::tokens_compound(toks, data_dictionary_LSD2015),
-    new = as.tokens_xptr(xtoks) %>% 
+    new = as.tokens_xptr(xtoks) |> 
         tokens_compound(data_dictionary_LSD2015),
     times = 10
 )
 
 microbenchmark::microbenchmark(
     old = quanteda3::tokens_select(toks, data_dictionary_LSD2015, padding = TRUE),
-    new = as.tokens_xptr(xtoks) %>% 
+    new = as.tokens_xptr(xtoks) |> 
         tokens_select(data_dictionary_LSD2015, padding = TRUE),
     times = 10
 )
 
 microbenchmark::microbenchmark(
     old = quanteda3::tokens_compound(toks, "&", window = 1),
-    new = as.tokens_xptr(xtoks) %>% 
+    new = as.tokens_xptr(xtoks) |> 
         tokens_compound("&", window = 1),
     times = 10
 )

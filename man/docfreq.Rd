@@ -62,7 +62,7 @@ dfmat2 <-
            byrow = TRUE, nrow = 2,
            dimnames = list(docs = c("document1", "document2"),
                            features = c("this", "is", "a", "sample",
-                                        "another", "example"))) \%>\%
+                                        "another", "example"))) |>
     as.dfm()
 dfmat2
 docfreq(dfmat2)

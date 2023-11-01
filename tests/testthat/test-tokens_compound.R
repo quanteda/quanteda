@@ -296,4 +296,3 @@ test_that("tokens_compound ignores padding", {
         c("a", "", "c", "d_e")
     )
 })
-

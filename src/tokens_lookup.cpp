@@ -10,7 +10,7 @@ Text lookup(Text tokens,
             const int &nomatch,
             const MultiMapNgrams &map_keys){
     
-    if (tokens.size() == 0) return {}; // return empty vector for empty text
+    if (tokens.empty()) return {}; // return empty vector for empty text
     
     // Match flag for each token
     std::vector<bool> flags_match_global(tokens.size(), false);
@@ -144,7 +144,7 @@ TokensPtr cpp_tokens_lookup(TokensPtr xptr,
         throw std::range_error("Invalid words and keys");
     
     std::vector<unsigned int> keys = Rcpp::as< std::vector<unsigned int> >(keys_);
-    unsigned int id_max(0);
+    unsigned int id_max = 0;
     if (nomatch == 2) {
         types.insert(types.end(), xptr->types.begin(), xptr->types.end());
         if (keys_.size() > 0)

@@ -10,13 +10,27 @@ test_that("Basic functions work", {
     expect_false(is.tokens_xptr(toks))
     expect_true(is.tokens_xptr(xtoks))
     
-    expect_identical(docnames(toks), docnames(xtoks))
-    expect_identical(docid(toks), docid(xtoks))
-    expect_identical(segid(toks), segid(xtoks))
+    expect_identical(docnames(xtoks), docnames(toks))
+    expect_identical(docid(xtoks), docid(toks))
+    expect_identical(segid(xtoks), segid(toks))
     
-    expect_identical(ndoc(toks), ndoc(xtoks))
-    expect_identical(ntoken(toks), ntoken(xtoks))
-    expect_identical(types(toks), types(xtoks))
+    expect_identical(ndoc(xtoks), ndoc(toks))
+    expect_identical(ntoken(xtoks), ntoken(toks))
+    expect_identical(types(xtoks), types(toks))
+    expect_identical(ntype(xtoks), ntype(toks))
+    expect_warning(
+        ntoken(xtoks, remove_padding = TRUE),
+        "remove_padding argument is not used"
+    )
+    expect_warning(
+        ntype(xtoks, remove_padding = TRUE),
+        "remove_padding argument is not used"
+    )
+    
+    xtoks2 <- tokens_remove(as.tokens_xptr(xtoks), 
+                            min_nchar = 2, padding = TRUE)
+    toks2 <- tokens_remove(toks, min_nchar = 2, padding = TRUE)
+    expect_identical(ntype(xtoks2), ntype(toks2))
 })
 
 test_that("attributes are the same", {
@@ -24,7 +38,7 @@ test_that("attributes are the same", {
     expect_identical(attr(toks, "meta"), attr(xtoks, "meta"))
 })
 
-test_that("subsetting work", {
+test_that("subsetting works", {
     expect_identical(docnames(as.tokens_xptr(toks)[2:6]),
                      docnames(toks)[2:6])
     expect_identical(docnames(as.tokens_xptr(toks)[2:6 * -1]),
@@ -40,6 +54,14 @@ test_that("subsetting work", {
                      docnames(tail(toks)))
     expect_identical(docnames(tail(as.tokens_xptr(toks), -10)), 
                      docnames(tail(toks, -10)))
+})
+
+test_that("extractor works", {
+    
+    expect_identical(xtoks[[integer()]], toks[[integer()]])
+    expect_identical(xtoks[[10]], toks[[10]])
+    expect_identical(xtoks[[10:20]], toks[[10:20]])
+    
 })
 
 test_that("deep copy xtokens", {
@@ -90,10 +112,10 @@ test_that("operations on copied xtokens do not affect the original xtokens", {
 
 test_that("tokens_select and tokens_remove work", {
     
-    toks2 <- tokens_remove(toks, stopwords(), padding = TRUE) %>% 
+    toks2 <- tokens_remove(toks, stopwords(), padding = TRUE) |> 
         tokens_select(data_dictionary_LSD2015, padding = TRUE)
-    xtoks2 <- as.tokens_xptr(toks) %>% 
-        tokens_remove(stopwords(), padding = TRUE) %>% 
+    xtoks2 <- as.tokens_xptr(toks) |> 
+        tokens_remove(stopwords(), padding = TRUE) |> 
         tokens_select(data_dictionary_LSD2015, padding = TRUE)
     expect_identical(as.list(xtoks2), as.list(toks2))
     

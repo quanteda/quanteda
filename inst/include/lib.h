@@ -35,22 +35,18 @@ namespace quanteda{
     // typedef ListOf<IntegerVector> Tokens;
     // typedef std::vector<unsigned int> Text;
     // typedef std::vector<Text> Texts;
-
+    
+    typedef std::atomic<int> IntParam;
+    typedef std::atomic<unsigned int> UintParam;
+    typedef std::atomic<long> LongParam;
+    typedef std::atomic<double> DoubleParam;
+    
 #if QUANTEDA_USE_TBB
-    typedef tbb::atomic<int> IntParam;
-    typedef tbb::atomic<unsigned int> UintParam;
-    typedef tbb::atomic<long> LongParam;
-    typedef tbb::atomic<double> DoubleParam;
     typedef tbb::concurrent_vector<int> IntParams;
     typedef tbb::concurrent_vector<long> LongParams;
     typedef tbb::concurrent_vector<double> DoubleParams;
     typedef tbb::concurrent_vector<std::string> StringParams;
-    typedef tbb::spin_mutex Mutex;
 #else
-    typedef int IntParam;
-    typedef unsigned int UintParam;
-    typedef long LongParam;
-    typedef double DoubleParam;
     typedef std::vector<int> IntParams;
     typedef std::vector<long> LongParams;
     typedef std::vector<double> DoubleParams;
@@ -79,9 +75,9 @@ namespace quanteda{
     };
     
 #if QUANTEDA_USE_TBB
-    typedef tbb::atomic<unsigned int> IdNgram;
-    typedef tbb::concurrent_unordered_multimap<Ngram, UintParam, hash_ngram, equal_ngram> MultiMapNgrams;
-    typedef tbb::concurrent_unordered_map<Ngram, UintParam, hash_ngram, equal_ngram> MapNgrams;
+    typedef std::atomic<unsigned int> IdNgram;
+    typedef tbb::concurrent_unordered_multimap<Ngram, unsigned int, hash_ngram, equal_ngram> MultiMapNgrams;
+    typedef tbb::concurrent_unordered_map<Ngram, unsigned int, hash_ngram, equal_ngram> MapNgrams;
     typedef tbb::concurrent_unordered_set<Ngram, hash_ngram, equal_ngram> SetNgrams;
     typedef tbb::concurrent_vector<Ngram> VecNgrams;
     typedef tbb::concurrent_unordered_set<unsigned int> SetUnigrams;
@@ -266,7 +262,7 @@ namespace quanteda{
         std::vector<unsigned int> ids = Rcpp::as< std::vector<unsigned int> >(ids_);
         std::vector<std::size_t> spans(patterns.size());
         for (size_t g = 0; g < std::min(patterns.size(), ids.size()); g++) {
-            map.insert(std::pair<Ngram, IdNgram>(patterns[g], ids[g]));
+            map.insert(std::pair<Ngram, unsigned int>(patterns[g], ids[g]));
             spans[g] = patterns[g].size();
         }
 

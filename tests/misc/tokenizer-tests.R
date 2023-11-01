@@ -28,15 +28,15 @@ txt2 <- "One\n\nTwo   Three."
 names(txt) <- NULL
 microbenchmark(
     fastest = tokens(txt, what = "fastestword"),
-    fastestplus = tokens(txt, what = "fastestword") %>% 
+    fastestplus = tokens(txt, what = "fastestword") |> 
         tokens_split(separator = "[\\p{Z}\\p{C}]+", valuetype = "regex"),
     faster = tokens(txt, what = "fasterword"),
     times = 20, unit = "relative"
 )
 
 
-tokens(txt2, what = "fastestword") %>% 
-    tokens_split(separator = "[\\p{Z}\\p{C}]+", valuetype = "regex") %>%
+tokens(txt2, what = "fastestword") |> 
+    tokens_split(separator = "[\\p{Z}\\p{C}]+", valuetype = "regex") |>
     print(1)
 
 chunked <- chunk_text(mobydick, chunk_size = 100)

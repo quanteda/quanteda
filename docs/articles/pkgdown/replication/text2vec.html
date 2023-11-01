@@ -19,12 +19,12 @@
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]--><!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=UA-144616-24"></script><script>
+<![endif]--><!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-0F398Z98L1"></script><script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
-  gtag('config', 'UA-144616-24');
+  gtag('config', 'G-0F398Z98L1');
 </script>
 </head>
 <body data-spy="scroll" data-target="#toc">
@@ -42,7 +42,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">4.0.0</span>
       </span>
     </div>
 
@@ -83,7 +83,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../../../articles/pkgdown/comparison.html">Feature comparison</a>
+      <a href="../../../articles/pkgdown/tokens_xptr.html">External pointer tokens objects</a>
+    </li>
+    <li>
+      <a href="../../../articles/pkgdown/benchmarks_xptr.html">Performance benchmarks for v4</a>
     </li>
     <li>
       <a href="../../../articles/pkgdown/design.html">Package design</a>
@@ -196,22 +199,20 @@ that occur five times or more. Trimming the features before constructing
 the fcm:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">wiki_toks</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/tokens.html">tokens</a></span><span class="op">(</span><span class="va">wiki_corp</span><span class="op">)</span></span>
-<span><span class="va">feats</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/dfm.html">dfm</a></span><span class="op">(</span><span class="va">wiki_toks</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="../../../reference/pipe.html">%&gt;%</a></span></span>
-<span>    <span class="fu"><a href="../../../reference/dfm_trim.html">dfm_trim</a></span><span class="op">(</span>min_termfreq <span class="op">=</span> <span class="fl">5</span><span class="op">)</span> <span class="op"><a href="../../../reference/pipe.html">%&gt;%</a></span></span>
+<span><span class="va">feats</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/dfm.html">dfm</a></span><span class="op">(</span><span class="va">wiki_toks</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="../../../reference/dfm_trim.html">dfm_trim</a></span><span class="op">(</span>min_termfreq <span class="op">=</span> <span class="fl">5</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="../../../reference/featnames.html">featnames</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Creating a dfm from a tokens input...</span></span></code></pre>
-<pre><code><span><span class="co">##  ...lowercasing</span></span></code></pre>
-<pre><code><span><span class="co">##  ...found 1 document, 253,854 features</span></span></code></pre>
-<pre><code><span><span class="co">##  ...complete, elapsed time: 0.837 seconds.</span></span></code></pre>
+<pre><code><span><span class="co">## Creating a dfm from a tokens object...</span></span></code></pre>
+<pre><code><span><span class="co">##  ...complete, elapsed time: 1.26 seconds.</span></span></code></pre>
 <pre><code><span><span class="co">## Finished constructing a 1 x 253,854 sparse dfm.</span></span></code></pre>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># leave the pads so that non-adjacent words will not become adjacent</span></span>
 <span><span class="va">wiki_toks</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/tokens_select.html">tokens_select</a></span><span class="op">(</span><span class="va">wiki_toks</span>, <span class="va">feats</span>, padding <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="construct-the-feature-co-occurrence-matrix">Construct the feature co-occurrence matrix<a class="anchor" aria-label="anchor" href="#construct-the-feature-co-occurrence-matrix"></a>
 </h2>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">wiki_fcm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/fcm.html">fcm</a></span><span class="op">(</span><span class="va">wiki_toks</span>, context <span class="op">=</span> <span class="st">"window"</span>, count <span class="op">=</span> <span class="st">"weighted"</span>, weights <span class="op">=</span> <span class="fl">1</span> <span class="op">/</span> <span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span>, tri <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
@@ -219,7 +220,7 @@ the fcm:</p>
 </h2>
 <p>Fit the <a href="https://nlp.stanford.edu/pubs/glove.pdf" class="external-link">GloVe
 model</a> using <a href="http://text2vec.org" class="external-link"><strong>rsparse</strong></a>.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="http://text2vec.org" class="external-link">"text2vec"</a></span><span class="op">)</span></span></code></pre></div>
 <p>GloVe is an unsupervised learning algorithm for obtaining vector
 representations for words. Training is performed on aggregated global
@@ -231,21 +232,21 @@ which is thought to represent some crude form of meaning associated with
 the abstract concept of the word, as vector difference. The training
 objective of GloVe is to learn word vectors such that their dot product
 equals the logarithm of the words’ probability of co-occurrence.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">glove</span> <span class="op">&lt;-</span> <span class="va"><a href="https://rdrr.io/pkg/text2vec/man/GloVe.html" class="external-link">GlobalVectors</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>rank <span class="op">=</span> <span class="fl">50</span>, x_max <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
 <span><span class="va">wv_main</span> <span class="op">&lt;-</span> <span class="va">glove</span><span class="op">$</span><span class="fu">fit_transform</span><span class="op">(</span><span class="va">wiki_fcm</span>, n_iter <span class="op">=</span> <span class="fl">10</span>,</span>
 <span>                               convergence_tol <span class="op">=</span> <span class="fl">0.01</span>, n_threads <span class="op">=</span> <span class="fl">8</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## INFO  [12:58:18.615] epoch 1, loss 0.1618</span></span>
-<span><span class="co">## INFO  [12:58:27.239] epoch 2, loss 0.1235</span></span>
-<span><span class="co">## INFO  [12:58:36.037] epoch 3, loss 0.1075</span></span>
-<span><span class="co">## INFO  [12:58:44.948] epoch 4, loss 0.0994</span></span>
-<span><span class="co">## INFO  [12:58:54.064] epoch 5, loss 0.0944</span></span>
-<span><span class="co">## INFO  [12:59:02.937] epoch 6, loss 0.0910</span></span>
-<span><span class="co">## INFO  [12:59:11.737] epoch 7, loss 0.0884</span></span>
-<span><span class="co">## INFO  [12:59:20.336] epoch 8, loss 0.0863</span></span>
-<span><span class="co">## INFO  [12:59:28.992] epoch 9, loss 0.0846</span></span>
-<span><span class="co">## INFO  [12:59:37.752] epoch 10, loss 0.0832</span></span></code></pre>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<pre><code><span><span class="co">## INFO  [10:17:51.741] epoch 1, loss 0.1621</span></span>
+<span><span class="co">## INFO  [10:18:00.167] epoch 2, loss 0.1237</span></span>
+<span><span class="co">## INFO  [10:18:08.540] epoch 3, loss 0.1077</span></span>
+<span><span class="co">## INFO  [10:18:16.962] epoch 4, loss 0.0995</span></span>
+<span><span class="co">## INFO  [10:18:25.402] epoch 5, loss 0.0945</span></span>
+<span><span class="co">## INFO  [10:18:33.946] epoch 6, loss 0.0910</span></span>
+<span><span class="co">## INFO  [10:18:42.503] epoch 7, loss 0.0884</span></span>
+<span><span class="co">## INFO  [10:18:50.832] epoch 8, loss 0.0863</span></span>
+<span><span class="co">## INFO  [10:18:59.267] epoch 9, loss 0.0846</span></span>
+<span><span class="co">## INFO  [10:19:07.701] epoch 10, loss 0.0832</span></span></code></pre>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">wv_main</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 71290    50</span></span></code></pre>
 </div>
@@ -255,11 +256,11 @@ equals the logarithm of the words’ probability of co-occurrence.</p>
 <p>The two vectors are main and context. According to the Glove paper,
 averaging the two word vectors results in more accurate
 representation.</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">wv_context</span> <span class="op">&lt;-</span> <span class="va">glove</span><span class="op">$</span><span class="va">components</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">wv_context</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1]    50 71290</span></span></code></pre>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">word_vectors</span> <span class="op">&lt;-</span> <span class="va">wv_main</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="va">wv_context</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
@@ -267,7 +268,7 @@ representation.</p>
 </h2>
 <p>Now we can find the closest word vectors for
 <code>paris - france + germany</code></p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">berlin</span> <span class="op">&lt;-</span> <span class="va">word_vectors</span><span class="op">[</span><span class="st">"paris"</span>, , drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span> <span class="op">-</span></span>
 <span>  <span class="va">word_vectors</span><span class="op">[</span><span class="st">"france"</span>, , drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span> <span class="op">+</span></span>
 <span>  <span class="va">word_vectors</span><span class="op">[</span><span class="st">"germany"</span>, , drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span></span>
@@ -275,11 +276,11 @@ representation.</p>
 <span><span class="va">cos_sim</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://quanteda.io/reference/textstat_simil.html">textstat_simil</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="../../../reference/as.dfm.html">as.dfm</a></span><span class="op">(</span><span class="va">word_vectors</span><span class="op">)</span>, y <span class="op">=</span> <span class="fu"><a href="../../../reference/as.dfm.html">as.dfm</a></span><span class="op">(</span><span class="va">berlin</span><span class="op">)</span>,</span>
 <span>                          method <span class="op">=</span> <span class="st">"cosine"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sort.html" class="external-link">sort</a></span><span class="op">(</span><span class="va">cos_sim</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span>, decreasing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, <span class="fl">5</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">##     paris    berlin    vienna   germany      near </span></span>
-<span><span class="co">## 0.7965647 0.7746740 0.6929871 0.6632698 0.6599919</span></span></code></pre>
+<pre><code><span><span class="co">##     paris manhattan    munich      near   germany </span></span>
+<span><span class="co">## 0.7857304 0.7141868 0.7055274 0.6904731 0.6759958</span></span></code></pre>
 <p>Here is another example for
 <code>london = paris - france + uk + england</code></p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">london</span> <span class="op">&lt;-</span>  <span class="va">word_vectors</span><span class="op">[</span><span class="st">"paris"</span>, , drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span> <span class="op">-</span></span>
 <span>    <span class="va">word_vectors</span><span class="op">[</span><span class="st">"france"</span>, , drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span> <span class="op">+</span></span>
 <span>    <span class="va">word_vectors</span><span class="op">[</span><span class="st">"uk"</span>, , drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span> <span class="op">+</span></span>
@@ -288,8 +289,8 @@ representation.</p>
 <span><span class="va">cos_sim</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://quanteda.io/reference/textstat_simil.html">textstat_simil</a></span><span class="op">(</span><span class="fu"><a href="../../../reference/as.dfm.html">as.dfm</a></span><span class="op">(</span><span class="va">word_vectors</span><span class="op">)</span>, y <span class="op">=</span> <span class="fu"><a href="../../../reference/as.dfm.html">as.dfm</a></span><span class="op">(</span><span class="va">london</span><span class="op">)</span>,</span>
 <span>                          margin <span class="op">=</span> <span class="st">"documents"</span>, method <span class="op">=</span> <span class="st">"cosine"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sort.html" class="external-link">sort</a></span><span class="op">(</span><span class="va">cos_sim</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span>, decreasing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, <span class="fl">5</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">##    london        uk      york   england        at </span></span>
-<span><span class="co">## 0.7936029 0.7675136 0.7650075 0.7410029 0.7255965</span></span></code></pre>
+<pre><code><span><span class="co">##    london        at        uk   england   founded </span></span>
+<span><span class="co">## 0.7983059 0.7642298 0.7529123 0.7515795 0.7466741</span></span></code></pre>
 </div>
   </div>
 

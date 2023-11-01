@@ -121,7 +121,9 @@ check_entries <- function(dict) {
 #'                           taxation = "taxation",
 #'                           taxregex = "tax*",
 #'                           country = "america"))
-#' head(dfm(tokens(corp), dictionary = dict))
+#' tokens(corp) |>
+#'     tokens_lookup(dictionary = dict) |>
+#'     dfm()
 #'
 #' # subset a dictionary
 #' dict[1:2]
@@ -140,12 +142,12 @@ check_entries <- function(dict) {
 #'               dictfile, mode = "wb")
 #' unzip(dictfile, exdir = (td <- tempdir()))
 #' dictlg <- dictionary(file = paste(td, "LaverGarry.cat", sep = "/"))
-#' head(dfm_lookup(dfmat), dictlg)
+#' dfm_lookup(dfmat, dictlg)
 #'
 #' # import a LIWC formatted dictionary from http://www.moralfoundations.org
 #' download.file("http://bit.ly/37cV95h", tf <- tempfile())
 #' dictliwc <- dictionary(file = tf, format = "LIWC")
-#' head(dfm_lookup(dfmat), dictliwc)
+#' dfm_lookup(dfmat, dictliwc)
 #' }
 #' @export
 dictionary <- function(x, file = NULL, format = NULL,
@@ -233,7 +235,6 @@ dictionary.dictionary2 <- function(x, file = NULL, format = NULL,
 
 # coercion and checking methods -----------
 
-#' @param object the dictionary to be coerced
 #' @param flatten flatten the nested structure if `TRUE`
 #' @param levels integer vector indicating levels in the dictionary. Used only
 #'   when `flatten = TRUE`.

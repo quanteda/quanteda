@@ -94,7 +94,7 @@ test_that("test tokens_group with wrongly dimensioned groups variables", {
 test_that("tokens_group works with NA group labels", {
     corp <- corpus(c("Doc 1", "Doc 1b", "Doc2", "Doc 3 with NA", "Doc 4, more NA"),
                    docvars = data.frame(factorvar = c("Yes", "Yes", "No", NA, NA)))
-    toks <- tokens(corp) %>%
+    toks <- tokens(corp) |>
         tokens_group(groups = factorvar)
     expect_identical(
         as.list(toks),
@@ -104,8 +104,8 @@ test_that("tokens_group works with NA group labels", {
 
 test_that("element names are correctly reset after tokens_group() - #1949", {
     expect_identical(
-        tokens(letters[1:3]) %>% 
-            tokens_group(groups = c("x", "x", "y")) %>%
+        tokens(letters[1:3]) |> 
+            tokens_group(groups = c("x", "x", "y")) |>
             names(),
         c("x", "y")
     )

@@ -64,7 +64,6 @@ char_ngrams.default <- function(x, n = 2L, skip = 0L, concatenator = "_") {
 
 #' @export
 char_ngrams.character <- function(x, n = 2L, skip = 0L, concatenator = "_") {
-    
     if (any(stringi::stri_detect_charclass(x, "\\p{Z}")) & concatenator != " ")
         warning("whitespace detected: you may need to run tokens() first")
     x <- as.tokens(list(x))

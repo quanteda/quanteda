@@ -38,23 +38,23 @@ In \pkg{quanteda} v4, many convenience functions formerly available in
 
 \examples{
 ## for a corpus
-toks <- data_corpus_inaugural \%>\%
-  corpus_subset(Year > 1980) \%>\%
+toks <- data_corpus_inaugural |>
+  corpus_subset(Year > 1980) |>
   tokens()
 dfm(toks)
 
 # removal options
-toks <- tokens(c("a b c", "A B C D")) \%>\%
+toks <- tokens(c("a b c", "A B C D")) |>
     tokens_remove("b", padding = TRUE)
 toks
 dfm(toks)
-dfm(toks) \%>\%
+dfm(toks) |>
  dfm_remove(pattern = "") # remove "pads"
 
 # preserving case
 dfm(toks, tolower = FALSE)
 }
 \seealso{
-\code{\link[=dfm_select]{dfm_select()}}, \linkS4class{dfm}
+\code{\link[=as.dfm]{as.dfm()}}, \code{\link[=dfm_select]{dfm_select()}}, \linkS4class{dfm}
 }
 \keyword{dfm}

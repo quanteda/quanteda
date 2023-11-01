@@ -64,7 +64,7 @@ docnames(corp) <- paste0("Speech", seq_len(ndoc(corp)))
 
 corp <- corpus(c(textone = "This is a sentence.  Another sentence.  Yet another.",
                  textwo = "Sentence 1. Sentence 2."))
-corp_sent <- corp \%>\%
+corp_sent <- corp |>
     corpus_reshape(to = "sentences")
 docnames(corp_sent)
 

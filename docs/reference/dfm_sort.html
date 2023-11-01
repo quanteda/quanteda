@@ -67,9 +67,6 @@ in documents, or both."><!-- mathjax --><script src="https://cdnjs.cloudflare.co
       <a href="../articles/pkgdown/benchmarks_xptr.html">Performance benchmarks for v4</a>
     </li>
     <li>
-      <a href="../articles/pkgdown/comparison.html">Feature comparison</a>
-    </li>
-    <li>
       <a href="../articles/pkgdown/design.html">Package design</a>
     </li>
     <li>
@@ -180,7 +177,7 @@ and <code>both</code> to sort by both</p></dd>
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">dfmat</span> <span class="op">&lt;-</span> <span class="fu"><a href="dfm.html">dfm</a></span><span class="op">(</span><span class="fu"><a href="tokens.html">tokens</a></span><span class="op">(</span><span class="va">data_corpus_inaugural</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">dfmat</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Document-feature matrix of: 6 documents, 9,441 features (93.84% sparse) and 4 docvars.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Document-feature matrix of: 6 documents, 9,437 features (93.83% sparse) and 4 docvars.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                  features</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> docs              fellow-citizens  of the senate and house representatives :</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   1789-Washington               1  71 116      1  48     2               2 1</span>
@@ -197,9 +194,9 @@ and <code>both</code> to sort by both</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   1801-Jefferson      1            0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   1805-Jefferson      7            0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   1809-Madison        0            0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [ reached max_nfeat ... 9,431 more features ]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [ reached max_nfeat ... 9,427 more features ]</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu">dfm_sort</span><span class="op">(</span><span class="va">dfmat</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Document-feature matrix of: 6 documents, 9,441 features (93.84% sparse) and 4 docvars.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Document-feature matrix of: 6 documents, 9,437 features (93.83% sparse) and 4 docvars.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                  features</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> docs              the  of   , and  . to in  a our we</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   1789-Washington 116  71  70  48 23 48 31 14   1  1</span>
@@ -208,9 +205,9 @@ and <code>both</code> to sort by both</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   1801-Jefferson  130 104 128  81 37 61 24 21  24 10</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   1805-Jefferson  143 101 142  93 41 83 35 20  24 13</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   1809-Madison    104  69  47  43 21 61 34 19   9  2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [ reached max_nfeat ... 9,431 more features ]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [ reached max_nfeat ... 9,427 more features ]</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu">dfm_sort</span><span class="op">(</span><span class="va">dfmat</span>, decreasing <span class="op">=</span> <span class="cn">FALSE</span>, <span class="st">"both"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Document-feature matrix of: 6 documents, 9,441 features (96.33% sparse) and 4 docvars.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Document-feature matrix of: 6 documents, 9,437 features (96.33% sparse) and 4 docvars.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                  features</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> docs              notification 14th fondest predilection flattering asylum</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   1793-Washington            0    0       0            0          0      0</span>
@@ -227,7 +224,7 @@ and <code>both</code> to sort by both</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   1905-Roosevelt              0      0           0           0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   1849-Taylor                 0      0           0           0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   1829-Jackson                0      0           0           0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [ reached max_nfeat ... 9,431 more features ]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [ reached max_nfeat ... 9,427 more features ]</span>
 </code></pre></div>
     </div>
   </div>

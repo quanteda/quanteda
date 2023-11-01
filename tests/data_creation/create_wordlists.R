@@ -1,9 +1,9 @@
 library("quanteda")
 
 makewordlist <- function(filename) {
-    wordlist <- readtext::readtext(filename)[["text"]] %>%
-        stringi::stri_split_regex(pattern = "\\p{WHITE_SPACE}+", simplify = TRUE) %>%
-        stringi::stri_trim_both() %>%
+    wordlist <- readtext::readtext(filename)[["text"]] |>
+        stringi::stri_split_regex(pattern = "\\p{WHITE_SPACE}+", simplify = TRUE) |>
+        stringi::stri_trim_both() |>
         sort()
     wordlist
 }

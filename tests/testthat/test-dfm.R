@@ -486,8 +486,8 @@ test_that("test topfeatures", {
         "n must be a number"
     )
     dfmat <- corpus(c("a b b c", "b d", "b c"), 
-                    docvars = data.frame(numdv = c(1, 2, 1))) %>%
-        tokens() %>%
+                    docvars = data.frame(numdv = c(1, 2, 1))) |>
+        tokens() |>
         dfm()
     expect_identical(
         topfeatures(dfmat, groups = numdv),
@@ -873,7 +873,7 @@ test_that("test dfm transpose for #1903", {
 
 test_that("remove_padding argument works", {
     txt <- c("a a b b c", "a a b c c d d")
-    toks <- tokens(txt) %>% tokens_remove("b", padding = TRUE)
+    toks <- tokens(txt) |> tokens_remove("b", padding = TRUE)
     dfmat <- dfm(toks)
     expect_identical(
         featnames(dfm(toks, remove_padding = FALSE)),

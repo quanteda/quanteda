@@ -49,12 +49,12 @@ set.seed(123)
 toks <- tokens(data_corpus_inaugural[1:6])
 toks
 tokens_sample(toks)
-tokens_sample(toks, replace = TRUE) \%>\% docnames()
-tokens_sample(toks, size = 3, replace = TRUE) \%>\% docnames()
+tokens_sample(toks, replace = TRUE) |> docnames()
+tokens_sample(toks, size = 3, replace = TRUE) |> docnames()
 
 # sampling using by
 docvars(toks)
-tokens_sample(toks, size = 2, replace = TRUE, by = Party) \%>\% docnames()
+tokens_sample(toks, size = 2, replace = TRUE, by = Party) |> docnames()
 
 }
 \seealso{

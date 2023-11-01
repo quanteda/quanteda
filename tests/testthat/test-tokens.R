@@ -208,7 +208,7 @@ test_that("c() works with tokens", {
                       d2 = "Here is the second sample document."))
     toks2 <- tokens(c(d3 = "And the third document."))
     toks3 <- tokens(c(d4 = "This is sample document 4."))
-    toks4 <- tokens(c(d1 = "This is sample document five!"))
+    toks4 <- tokens(c(d5 = "This is sample document five!"))
     
     expect_error(
         c(toks1, list()),
@@ -226,12 +226,12 @@ test_that("c() works with tokens", {
     )
 
     expect_equal(
-        c(toks1, toks2, toks3),
-        toks1 + toks2 + toks3
+        c(toks1, toks2, toks3, toks4),
+        toks1 + toks2 + toks3 + toks4
     )
 
     expect_error(
-        c(toks1, toks4),
+        c(toks1, toks1),
         "Cannot combine tokens with duplicated document names"
     )
 
@@ -413,23 +413,23 @@ test_that("test that features remove by tokens.tokens is comparable to tokens.ch
     toks4 <- as.tokens(stringi::stri_split_fixed(chars[4], " "))
     toks5 <- as.tokens(stringi::stri_split_fixed(chars[5], " "))
 
-    expect_equal(tokens(chars[1], remove_numbers = TRUE) %>% as.list(),
-                 tokens(toks1, remove_numbers = TRUE) %>% as.list())
+    expect_equal(tokens(chars[1], remove_numbers = TRUE) |> as.list(),
+                 tokens(toks1, remove_numbers = TRUE) |> as.list())
 
-    expect_equal(tokens(chars[1], remove_punct = TRUE) %>% as.list(),
-                 tokens(toks1, remove_punct = TRUE) %>% as.list())
+    expect_equal(tokens(chars[1], remove_punct = TRUE) |> as.list(),
+                 tokens(toks1, remove_punct = TRUE) |> as.list())
 
-    expect_equal(tokens(chars[1], remove_separator = TRUE) %>% as.list(),
-                 tokens(toks1, remove_separator = TRUE) %>% as.list())
+    expect_equal(tokens(chars[1], remove_separator = TRUE) |> as.list(),
+                 tokens(toks1, remove_separator = TRUE) |> as.list())
 
-    expect_equal(tokens(chars[1], remove_symbols = TRUE) %>% as.list(),
-                 tokens(toks1, remove_symbols = TRUE) %>% as.list())
+    expect_equal(tokens(chars[1], remove_symbols = TRUE) |> as.list(),
+                 tokens(toks1, remove_symbols = TRUE) |> as.list())
 
-    expect_equal(tokens(chars[4], remove_url = TRUE) %>% as.list(),
-                 tokens(toks4, remove_url = TRUE) %>% as.list())
+    expect_equal(tokens(chars[4], remove_url = TRUE) |> as.list(),
+                 tokens(toks4, remove_url = TRUE) |> as.list())
 
-    expect_equal(tokens(chars[3], split_hyphens = TRUE) %>% as.list(),
-                 tokens(toks3, split_hyphens = TRUE) %>% as.list())
+    expect_equal(tokens(chars[3], split_hyphens = TRUE) |> as.list(),
+                 tokens(toks3, split_hyphens = TRUE) |> as.list())
 
     # This fails because there is not separator in toks
     # expect_equal(tokens(chars[1], remove_symbols = TRUE, remove_separator = FALSE),
@@ -568,15 +568,15 @@ test_that("tokens.tokens(x, split_hyphens = TRUE) behaves same as tokens.charact
     # issue #1498
     txt <- "Auto-immune system."
     expect_identical(
-        as.character(tokens(txt, split_hyphens = FALSE) %>% tokens(split_hyphens = TRUE)),
+        as.character(tokens(txt, split_hyphens = FALSE) |> tokens(split_hyphens = TRUE)),
         c("Auto", "-", "immune", "system", ".")
     )
 
     txt <- c("There's shrimp-kabobs, shrimp creole. Deep-deep-fried, stir-fried.",
              "Stir-fried shrimp.")
     expect_identical(
-        tokens(txt, split_hyphens = TRUE) %>% as.list(),
-        tokens(txt, split_hyphens = FALSE) %>% tokens(split_hyphens = TRUE) %>% as.list()
+        tokens(txt, split_hyphens = TRUE) |> as.list(),
+        tokens(txt, split_hyphens = FALSE) |> tokens(split_hyphens = TRUE) |> as.list()
     )
 })
 
@@ -762,38 +762,38 @@ test_that("test that what = \"word\" works the same as \"word2\"", {
     chars <- c("a b c 12345 ! @ # $ % ^ & * ( ) _ + { } | : \' \" < > ? ! , . \t \n \u2028 \u00A0 \u2003",
                "#tag @user", "abc be-fg hi 100kg 2017", "a b c d e")
 
-    expect_equal(tokens(chars, what = "word", remove_numbers = TRUE) %>% as.list(),
-                 tokens(chars, what = "word1", remove_numbers = TRUE) %>% as.list())
-    expect_equal(tokens(chars, what = "word", remove_numbers = TRUE) %>% as.list(),
-                 tokens(chars, what = "word1", remove_numbers = TRUE) %>% as.list())
+    expect_equal(tokens(chars, what = "word", remove_numbers = TRUE) |> as.list(),
+                 tokens(chars, what = "word1", remove_numbers = TRUE) |> as.list())
+    expect_equal(tokens(chars, what = "word", remove_numbers = TRUE) |> as.list(),
+                 tokens(chars, what = "word1", remove_numbers = TRUE) |> as.list())
 
-    expect_equal(tokens(chars, what = "word", remove_symbols = TRUE) %>% as.list(),
-                 tokens(chars, what = "word1", remove_symbols = TRUE) %>% as.list())
-    expect_equal(tokens(chars, what = "word", remove_symbols = TRUE) %>% as.list(),
-                 tokens(chars, what = "word1", remove_symbols = TRUE) %>% as.list())
+    expect_equal(tokens(chars, what = "word", remove_symbols = TRUE) |> as.list(),
+                 tokens(chars, what = "word1", remove_symbols = TRUE) |> as.list())
+    expect_equal(tokens(chars, what = "word", remove_symbols = TRUE) |> as.list(),
+                 tokens(chars, what = "word1", remove_symbols = TRUE) |> as.list())
 
-    expect_equal(tokens(chars, what = "word", remove_punct = TRUE) %>% as.list(),
-                 tokens(chars, what = "word1", remove_punct = TRUE) %>% as.list())
-    expect_equal(tokens(chars, what = "word", remove_punct = TRUE) %>% as.list(),
-                 tokens(chars, what = "word1", remove_punct = TRUE) %>% as.list())
+    expect_equal(tokens(chars, what = "word", remove_punct = TRUE) |> as.list(),
+                 tokens(chars, what = "word1", remove_punct = TRUE) |> as.list())
+    expect_equal(tokens(chars, what = "word", remove_punct = TRUE) |> as.list(),
+                 tokens(chars, what = "word1", remove_punct = TRUE) |> as.list())
 
-    expect_equal(tokens(chars, what = "word", remove_punct = TRUE, split_tags = TRUE) %>% as.list(),
-                 tokens(chars, what = "word1", remove_punct = TRUE, split_tags = TRUE) %>% as.list())
-    expect_equal(tokens(chars, what = "word", remove_punct = TRUE, split_tags = TRUE) %>% as.list(),
-                 tokens(chars, what = "word1", remove_punct = TRUE, split_tags = TRUE) %>% as.list())
+    expect_equal(tokens(chars, what = "word", remove_punct = TRUE, split_tags = TRUE) |> as.list(),
+                 tokens(chars, what = "word1", remove_punct = TRUE, split_tags = TRUE) |> as.list())
+    expect_equal(tokens(chars, what = "word", remove_punct = TRUE, split_tags = TRUE) |> as.list(),
+                 tokens(chars, what = "word1", remove_punct = TRUE, split_tags = TRUE) |> as.list())
     suppressWarnings(
-        expect_equal(tokens(chars, what = "word", remove_punct = FALSE, split_tags = TRUE) %>% as.list(),
-                     tokens(chars, what = "word1", remove_punct = FALSE, split_tags = TRUE) %>% as.list())
+        expect_equal(tokens(chars, what = "word", remove_punct = FALSE, split_tags = TRUE) |> as.list(),
+                     tokens(chars, what = "word1", remove_punct = FALSE, split_tags = TRUE) |> as.list())
     )
     suppressWarnings(
-        expect_equal(tokens(chars, what = "word", remove_punct = FALSE, split_tags = TRUE) %>% as.list(),
-                     tokens(chars, what = "word1", remove_punct = FALSE, split_tags = TRUE) %>% as.list())
+        expect_equal(tokens(chars, what = "word", remove_punct = FALSE, split_tags = TRUE) |> as.list(),
+                     tokens(chars, what = "word1", remove_punct = FALSE, split_tags = TRUE) |> as.list())
     )
 
-    expect_equal(tokens(chars, what = "word", split_hyphens = TRUE) %>% as.list(),
-                 tokens(chars, what = "word1", split_hyphens = TRUE) %>% as.list())
-    expect_equal(tokens(chars, what = "word", split_hyphens = TRUE) %>% as.list(),
-                 tokens(chars, what = "word1", split_hyphens = TRUE) %>% as.list())
+    expect_equal(tokens(chars, what = "word", split_hyphens = TRUE) |> as.list(),
+                 tokens(chars, what = "word1", split_hyphens = TRUE) |> as.list())
+    expect_equal(tokens(chars, what = "word", split_hyphens = TRUE) |> as.list(),
+                 tokens(chars, what = "word1", split_hyphens = TRUE) |> as.list())
 })
 
 

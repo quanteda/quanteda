@@ -15,7 +15,7 @@ Segments segment(Text tokens,
                 const bool &remove,
                 const int &position){
     
-    if(tokens.size() == 0) return {}; // return empty vector for empty text
+    if(tokens.empty()) return {}; // return empty vector for empty text
     
     Targets targets;
     for (std::size_t span : spans) { // substitution starts from the longest sequences
@@ -30,7 +30,7 @@ Segments segment(Text tokens,
     }
     
     Segments segments;
-    if (targets.size() == 0) {
+    if (targets.empty()) {
         segments.push_back(std::make_tuple(0, tokens.size() - 1, -1, -1));
         N++;
         return segments;
@@ -107,7 +107,7 @@ TokensPtr cpp_tokens_segment(TokensPtr xptr,
     
     Texts texts = xptr->texts;
     Types types = xptr->types;
-    UintParam N = 0;
+    UintParam N(0);
     SetNgrams set_patterns;
     std::vector<std::size_t> spans = register_ngrams(patterns_, set_patterns);
     
@@ -138,7 +138,7 @@ TokensPtr cpp_tokens_segment(TokensPtr xptr,
     std::size_t j = 0;
     for (std::size_t h = 0; h < temp.size(); h++) {
         Segments targets = temp[h];
-        if (targets.size() == 0) continue;
+        if (targets.empty()) continue;
         Text tokens = texts[h];
         for (size_t i = 0; i < targets.size(); i++) {
             Segment target = targets[i];

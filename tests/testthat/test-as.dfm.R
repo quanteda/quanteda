@@ -106,37 +106,11 @@ test_that("as.dfm for tm matrix objects", {
     )
 })
 
-test_that("as.data.frame for dfm objects", {
-    d <- data_dfm_lbgexample[, 1:5]
-    expect_equal(
-        suppressWarnings(as.data.frame(d)),
-        data.frame(doc_id = docnames(d), as.matrix(d), stringsAsFactors = FALSE, row.names = NULL)
-    )
-    expect_equal(
-        suppressWarnings(as.data.frame(d, document = NULL)),
-        data.frame(as.matrix(d), stringsAsFactors = FALSE, row.names = NULL)
-    )
-    expect_equal(
-        suppressWarnings(as.data.frame(d, row.names = docnames(d))),
-        data.frame(doc_id = docnames(d), as.matrix(d), stringsAsFactors = FALSE, row.names = docnames(d))
-    )
-    expect_error(
-        suppressWarnings(as.data.frame(d, document = TRUE)),
-        "document must be character or NULL"
-    )
-})
-
-test_that("dfm2dataframe same as as.data.frame.dfm", {
+test_that('dfm2dataframe same as convert(x, to = "data.fame")', {
     d <- data_dfm_lbgexample[, 1:5]
     expect_identical(
-        suppressWarnings(as.data.frame(d)),
+        data.frame(doc_id = docnames(d), as.matrix(d), stringsAsFactors = FALSE, row.names = NULL),
         convert(d, to = "data.frame")
-    )
-    expect_identical(
-        suppressWarnings(as.data.frame(d, document = NULL, 
-                                       row.names = docnames(d))),
-        data.frame(as.matrix(d), stringsAsFactors = FALSE, 
-                   row.names = docnames(d))
     )
     expect_equal(
         quanteda:::dfm2dataframe(d, document = NULL),
@@ -154,9 +128,10 @@ test_that("dfm2dataframe same as as.data.frame.dfm", {
 })
 
 test_that("as.data.frame.dfm handles irregular feature names correctly", {
+    skip("Different behaviour for convert() v. old as.data.frame.dfm()")
     skip_on_os("windows")
     skip_on_cran()
-    mydfm <- dfm(tokens(data_char_sampletext)) %>%
+    mydfm <- dfm(tokens(data_char_sampletext)) |>
         dfm_lookup(dictionary = dictionary(list("字" = "a", "spe cial" = "the", 
                                               "飛機" = "if", "spec+ial" = "of")))
     expect_equal(

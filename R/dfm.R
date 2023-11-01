@@ -15,20 +15,20 @@
 #' @export
 #' @rdname dfm
 #' @keywords dfm
-#' @seealso  [dfm_select()], [dfm-class]
+#' @seealso  [as.dfm()], [dfm_select()], [dfm-class]
 #' @examples
 #' ## for a corpus
-#' toks <- data_corpus_inaugural %>%
-#'   corpus_subset(Year > 1980) %>%
+#' toks <- data_corpus_inaugural |>
+#'   corpus_subset(Year > 1980) |>
 #'   tokens()
 #' dfm(toks)
 #'
 #' # removal options
-#' toks <- tokens(c("a b c", "A B C D")) %>%
+#' toks <- tokens(c("a b c", "A B C D")) |>
 #'     tokens_remove("b", padding = TRUE)
 #' toks
 #' dfm(toks)
-#' dfm(toks) %>%
+#' dfm(toks) |>
 #'  dfm_remove(pattern = "") # remove "pads"
 #'
 #' # preserving case
@@ -42,6 +42,15 @@ dfm <- function(x,
     global$proc_time <- proc.time()
     if (is.null(global$object_class))
         global$object_class <- class(x)[1]
+    
+    # to catch expansion of defunct "remove" to "remove_padding"
+    arg_names <- names(as.list(sys.call())[-1])
+    arg_names_extra <- names(list(...))
+    if ("remove" %in% arg_names) {
+        arg_names_extra <- c("remove", arg_names_extra)
+    }
+    check_defunct_dfm_args(arg_names_extra)
+
     UseMethod("dfm")
 }
 
@@ -167,10 +176,69 @@ pad_dfm <- function(x, feature) {
 
 #' @export
 dfm.character <- function(x, ...) {
-    .Defunct(msg = "'dfm.character()' was removed in v4. Use 'tokens()' first.")
+    lifecycle::deprecate_stop(
+        when = "3.0", 
+        what = "dfm.character()",
+        with = I('`dfm(tokens(x))`')
+    )
 }
 
 #' @export
 dfm.corpus <- function(x, ...) {
-    .Defunct(msg = "'dfm.corpus()' was removed in v4. Use 'tokens()' first.")
+    lifecycle::deprecate_stop(
+        when = "3.0", 
+        what = "dfm.corpus()",
+        with = I('`dfm(tokens(x))`')
+    )
+}
+
+check_defunct_dfm_args <- function(arg_names) {
+    if ("stem" %in% arg_names) {
+        lifecycle::deprecate_stop(
+            when = "3.0", 
+            what = "quanteda::dfm(stem)",
+            with = "dfm_stem()")
+    }
+    if ("select" %in% arg_names) {
+        lifecycle::deprecate_stop(
+            when = "3.0",
+            what = "quanteda::dfm(select)",
+            with = "dfm_select()")
+    }
+    if ("remove" %in% arg_names) {
+        lifecycle::deprecate_stop(
+            when = "3.0",
+            what = "quanteda::dfm(remove)",
+            with = "dfm_remove()")
+    }
+    if ("dictionary" %in% arg_names) {
+        lifecycle::deprecate_stop(
+            when = "3.0",
+            what = "quanteda::dfm(dictionary)",
+            with = "dfm_lookup()")
+    }
+    if ("thesaurus" %in% arg_names) {
+        lifecycle::deprecate_stop(
+            when = "3.0",
+            what = "quanteda::dfm(thesaurus)",
+            with = I("`dfm_lookup(..., exclusive = FALSE)`"))
+    }
+    if ("valuetype" %in% arg_names) {
+        lifecycle::deprecate_stop(
+            when = "3.0",
+            what = "quanteda::dfm(valuetype)",
+            with = "dfm_select()")
+    }
+    if ("case_insensitive" %in% arg_names) {
+        lifecycle::deprecate_stop(
+            when = "3.0",
+            what = "quanteda::dfm(case_insensitive)",
+            with = "dfm_select()")
+    }
+    if ("groups" %in% arg_names) {
+        lifecycle::deprecate_stop(
+            when = "3.0",
+            what = "quanteda::dfm(groups)",
+            with = "dfm_group()")
+    }
 }

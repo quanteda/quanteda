@@ -7,7 +7,7 @@ Texts chunk(Text &tokens,
             const int size,
             const int overlap){
     
-    if (tokens.size() == 0) return {}; // return empty vector for empty text
+    if (tokens.empty()) return {}; // return empty vector for empty text
     
     std::size_t step;
     Texts chunks;
@@ -38,7 +38,7 @@ TokensPtr cpp_tokens_chunk(TokensPtr xptr,
     
     Texts texts = xptr->texts;
     Types types = xptr->types;
-    UintParam N = 0;
+    UintParam N(0);
     // dev::Timer timer;
     std::size_t H = texts.size();
     std::vector<Texts> temp(texts.size());

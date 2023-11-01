@@ -252,11 +252,11 @@ docvars.dfm <- function(x, field = NULL) {
     select_docvars(x@docvars, field, user = TRUE, system = FALSE, drop = TRUE)
 }
 
-#' @noRd
-#' @keywords internal
-docvars.kwic <- function(x) {
-    select_docvars(attr(x, "docvars"), NULL)
-}
+# @noRd
+# @export
+# docvars.kwic <- function(x, field = NULL) {
+#     select_docvars(attr(x, "docvars"), NULL)
+# }
 
 #' @rdname docvars
 #' @param value the new values of the document-level variable

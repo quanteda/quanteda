@@ -1,5 +1,5 @@
 ---
-title: "Performance improvement in version 4.0"
+title: "Performance improvements in version 4.0"
 author: Kohei Watanabe and Stefan Müller
 output:  
   html_document:
@@ -33,7 +33,7 @@ How we performed the comparison: We created the **quanteda3** package from **qua
 
 We repeated the same operation using different versions of the same functions to get the distribution of execution time. The result shows that the execution time of many v4.0 functions is about half of their version 3.3 counterparts.
 
-```{r}
+```{r getting-started}
 # remotes::install_github("quanteda/quanteda3")
 library("quanteda")
 library("ggplot2")
@@ -62,7 +62,7 @@ Although the v4 tokenizer is more flexible, its speed is roughly the same as v3 
 ggplot2::theme_set(ggplot2::theme_bw())
 ```
 
-```{r}
+```{r tokenising-corpus}
 microbenchmark::microbenchmark(
     v3 = quanteda3::tokens(corp, remove_punct = TRUE, remove_numbers = TRUE, 
                            remove_symbols = TRUE),
@@ -76,7 +76,7 @@ microbenchmark::microbenchmark(
 
 `as.tokens_xptr()` is inserted before the v4 functions to keep the original `tokens_xptr` object intact.
 
-```{r}
+```{r modifying-tokens}
 # generate n-grams
 microbenchmark::microbenchmark(
     v3 = quanteda3::tokens_ngrams(toks),
@@ -121,7 +121,7 @@ microbenchmark::microbenchmark(
 
 Combining tokens objects using `c()` is also substantially faster.
 
-```{r}
+```{r combining-tokens}
 # get first 5000 documents
 toks1 <- head(toks, 5000)
 
@@ -144,7 +144,7 @@ microbenchmark::microbenchmark(
 
 We also compare the speed of constructing a document-feature matrix (DFM) using tokens objects.
 
-```{r}
+```{r dfm-from-tokens}
 microbenchmark::microbenchmark(
     v3 = quanteda3::dfm(toks),
     v4 = dfm(xtoks),
@@ -154,7 +154,7 @@ microbenchmark::microbenchmark(
 
 ## Simple pipeline: tokenising a corpus and creating a document-feature matrix
 
-```{r}
+```{r simple-pipeline}
 microbenchmark::microbenchmark(
     v3 = quanteda3::tokens(corp) |> 
         quanteda3::tokens_remove(stopwords("en"), padding = TRUE) |> 

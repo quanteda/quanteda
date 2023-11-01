@@ -55,7 +55,7 @@
 #' @examples
 #' ## convert a dfm
 #'
-#' toks <- corpus_subset(data_corpus_inaugural, Year > 1970) %>%
+#' toks <- corpus_subset(data_corpus_inaugural, Year > 1970) |>
 #'     tokens()
 #' dfmat1 <- dfm(toks)
 #'
@@ -184,7 +184,6 @@ convert.corpus <- function(x, to = c("data.frame", "json"), pretty = FALSE, ...)
 #' are converting.
 #' @param x the dfm to be converted
 #' @inheritParams convert
-#' @param ... additional arguments used only by `as.DocumentTermMatrix`
 #' @return A converted object determined by the value of `to` (see above).
 #'   See conversion target package documentation for more detailed descriptions
 #'   of the return formats.
@@ -197,8 +196,8 @@ convert.corpus <- function(x, to = c("data.frame", "json"), pretty = FALSE, ...)
 #' @name convert-wrappers
 #' @keywords internal
 #' @examples
-#' dfmat <- corpus_subset(data_corpus_inaugural, Year > 1970) %>%
-#'     tokens() %>%
+#' dfmat <- corpus_subset(data_corpus_inaugural, Year > 1970) |>
+#'     tokens() |>
 #'     dfm()
 #'
 NULL

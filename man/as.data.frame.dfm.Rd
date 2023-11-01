@@ -30,8 +30,10 @@ names used when \code{to = "data.frame"}.  Unused for other conversions.}
 \item{check.names}{logical; passed to the \code{\link[base]{data.frame}()} call.}
 }
 \description{
-Deprecated function to convert a dfm into a data.frame.
-Recommended that you use \code{convert(x, to = "data.frame")} instead.
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#superseded}{\figure{lifecycle-superseded.svg}{options: alt='[Superseded]'}}}{\strong{[Superseded]}}
+
+Defunct function to convert a dfm into a data.frame.
+Use \code{convert(x, to = "data.frame")} instead.
 }
 \seealso{
 \code{\link[=convert]{convert()}}

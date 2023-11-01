@@ -37,7 +37,7 @@ corp <- quanteda.corpora::download(url = "https://www.dropbox.com/s/37ojd5knz1qe
 # Chinese stopwords
 ch_stop <- stopwords("zh", source = "misc")
 
-# Tokenize
+# tokenize
 toks_ch <- corp |> 
     tokens(remove_punct = TRUE) |>
     tokens_remove(pattern = ch_stop)

@@ -30,8 +30,9 @@ For \verb{texts <-}, the corpus with the updated texts.
 for \verb{texts <-}, a corpus with the texts replaced by \code{value}
 }
 \description{
-This function is \strong{deprecated} and will be removed in the next
-major release.
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#superseded}{\figure{lifecycle-superseded.svg}{options: alt='[Superseded]'}}}{\strong{[Superseded]}}
+
+This function has been made defunct and replaced.
 \itemize{
 \item Use \code{\link[=as.character.corpus]{as.character.corpus()}} to turn a corpus into a simple named character
 vector.

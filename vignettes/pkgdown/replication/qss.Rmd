@@ -24,7 +24,7 @@ In this vignette we show how the **quanteda** package can be used to replicate t
 To get the textual data, you need to install and load the **qss** package first that comes with the book. 
 
 ```{r eval = FALSE}
-devtools::install_github("kosukeimai/qss-package", build_vignettes = TRUE)
+remotes::install_github("kosukeimai/qss-package", build_vignettes = TRUE)
 ```
 
 ## Section 5.1.1: The Disputed Authorship of ‘The Federalist Papers’
@@ -52,8 +52,8 @@ docvars(corpus_raw, "author")[c(10, 14, 37:48, 58)] <- "madison"
 
 ```{r}
 # inspect Paper No. 10 (output suppressed)
-texts(corpus_raw)[10] %>% 
-    stringi::stri_sub(1, 240) %>% 
+corpus_raw[10] |> 
+    stringi::stri_sub(1, 240) |> 
     cat()
 ```
 
@@ -64,12 +64,12 @@ Next, we transform the corpus to a document-feature matrix. `dfm_prep` (used in 
 
 ```{r}
 # transform corpus to a document-feature matrix
-dfm_prep <- tokens(corpus_raw, remove_numbers = TRUE, remove_punct = TRUE) %>%
+dfm_prep <- tokens(corpus_raw, remove_numbers = TRUE, remove_punct = TRUE) |>
   dfm(tolower = TRUE)
 
 # remove stop words and stem words
-dfm_papers <- dfm_prep %>%
-  dfm_remove(stopwords("en")) %>%
+dfm_papers <- dfm_prep |>
+  dfm_remove(stopwords("en")) |>
   dfm_wordstem("en")
 
 # inspect
@@ -208,7 +208,7 @@ mean(hm_classify[author_data_known$author == "hamilton"] > 0)
 mean(hm_classify[author_data_known$author == "madison"] < 0)
 
 disputed <- c(49, 50:57, 62, 63) # 11 essays with disputed authorship
-tf_disputed <- dfm_subset(tfm, is.na(author)) %>% 
+tf_disputed <- dfm_subset(tfm, is.na(author)) |> 
     convert(to = "data.frame")
 
 author_data$prediction <- predict(hm_fit, newdata = author_data)

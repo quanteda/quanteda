@@ -41,7 +41,7 @@
 #' @seealso [dfm_match()]
 #' @examples
 #' dfmat <- tokens(c("My Christmas was ruined by your opposition tax plan.",
-#'                "Does the United_States or Sweden have more progressive taxation?")) %>%
+#'                "Does the United_States or Sweden have more progressive taxation?")) |>
 #'     dfm(tolower = FALSE)
 #' dict <- dictionary(list(countries = c("United_States", "Sweden", "France"),
 #'                         wordsEndingInY = c("by", "my"),
@@ -89,7 +89,15 @@ dfm_select.dfm <-  function(x, pattern = NULL,
     x <- as.dfm(x)
     selection <- match.arg(selection)
     valuetype <- match.arg(valuetype)
-    is_dfm <- FALSE
+    
+    if (is.dfm(pattern)) {
+        lifecycle::deprecate_stop(
+            when = "3.0", 
+            what = "dfm_select(pattern = 'cannot be a dfm')",
+            with = I('`dfm_match(x, pattern)`')
+        )
+    }
+
     attrs <- attributes(x)
     feat <- featnames(x)
         
@@ -101,9 +109,7 @@ dfm_select.dfm <-  function(x, pattern = NULL,
             id_pat <- integer()
         }
     } else {
-        if (is.dfm(pattern)) {
-            .Defunct(msg = "dfm cannot be used as pattern; use 'dfm_match' instead")
-        } else if (is.dictionary(pattern)) {
+        if (is.dictionary(pattern)) {
             pattern <- stri_replace_all_fixed(
                 unlist(pattern, use.names = FALSE),
                 " ",
@@ -120,34 +126,31 @@ dfm_select.dfm <-  function(x, pattern = NULL,
         id <- setdiff(id, id_pat)
     }
 
-    if (is_dfm) {
-        x <- dfm_match(x, pattern)
-    } else {
-        if (!is.null(min_nchar) | !is.null(max_nchar)) {
-            len <- stri_length(feat)
-            is_short <- is_long <- rep(FALSE, length(len))
-            if (!is.null(min_nchar))
-                is_short <- len < min_nchar
-            if (!is.null(max_nchar))
-                is_long <- max_nchar < len
-            id_out <- which(is_short | is_long)
-            id <- setdiff(id, id_out)
-        }
-        if (padding) {
-            n <- rowSums(x)
-            x <- x[, id]
-            m <- n - rowSums(x)
-            if (sum(m)) {
-                if (!nfeat(x) || "" != featnames(x)[1])
-                    x <- cbind(make_null_dfm("", docnames(x)), x)
-                x[,1] <- x[,1] + m
-                x <- rebuild_dfm(as.dfm(x), attrs)
-                # x@padding <- TRUE TODO: add padding slot
-            }
-        } else {
-            x <- x[, id]
-        }
+    if (!is.null(min_nchar) | !is.null(max_nchar)) {
+        len <- stri_length(feat)
+        is_short <- is_long <- rep(FALSE, length(len))
+        if (!is.null(min_nchar))
+            is_short <- len < min_nchar
+        if (!is.null(max_nchar))
+            is_long <- max_nchar < len
+        id_out <- which(is_short | is_long)
+        id <- setdiff(id, id_out)
     }
+    if (padding) {
+        n <- rowSums(x)
+        x <- x[, id]
+        m <- n - rowSums(x)
+        if (sum(m)) {
+            if (!nfeat(x) || "" != featnames(x)[1])
+                x <- cbind(make_null_dfm("", docnames(x)), x)
+            x[,1] <- x[,1] + m
+            x <- rebuild_dfm(as.dfm(x), attrs)
+            # x@padding <- TRUE TODO: add padding slot
+        }
+    } else {
+        x <- x[, id]
+    }
+
     if (verbose) {
         if ("keep" == selection) {
             message_select("keep", nfeat(x), 0)

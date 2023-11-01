@@ -70,9 +70,6 @@ supplied as part of the LIWC 2001, 2007, and 2015 software (see References)."><!
       <a href="../articles/pkgdown/benchmarks_xptr.html">Performance benchmarks for v4</a>
     </li>
     <li>
-      <a href="../articles/pkgdown/comparison.html">Feature comparison</a>
-    </li>
-    <li>
       <a href="../articles/pkgdown/design.html">Package design</a>
     </li>
     <li>
@@ -254,18 +251,19 @@ manual]. Austin, TX (<a href="https://www.liwc.app/" class="external-link">https
 <span class="r-in"><span>                          taxation <span class="op">=</span> <span class="st">"taxation"</span>,</span></span>
 <span class="r-in"><span>                          taxregex <span class="op">=</span> <span class="st">"tax*"</span>,</span></span>
 <span class="r-in"><span>                          country <span class="op">=</span> <span class="st">"america"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="dfm.html">dfm</a></span><span class="op">(</span><span class="fu"><a href="tokens.html">tokens</a></span><span class="op">(</span><span class="va">corp</span><span class="op">)</span>, dictionary <span class="op">=</span> <span class="va">dict</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>dictionary argument is not used.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Document-feature matrix of: 6 documents, 6,518 features (87.52% sparse) and 4 docvars.</span>
+<span class="r-in"><span><span class="fu"><a href="tokens.html">tokens</a></span><span class="op">(</span><span class="va">corp</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="tokens_lookup.html">tokens_lookup</a></span><span class="op">(</span>dictionary <span class="op">=</span> <span class="va">dict</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="dfm.html">dfm</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Document-feature matrix of: 31 documents, 6 features (71.51% sparse) and 4 docvars.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 features</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> docs             my fellow-citizens   , when we assembled here on the 4th</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   1901-McKinley   7               2 109    4 28         1    1  9 200   1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   1905-Roosevelt  1               0  56    1 32         0    0  1  65   0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   1909-Taft      19               1 218   10 30         0    3 27 486   0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   1913-Wilson     1               0 101    2 40         0    2  1 109   0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   1917-Wilson     3               0  50    0 47         0    1  2  94   0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   1921-Harding    4               0 222    6 80         0    1  9 200   0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [ reached max_nfeat ... 6,508 more features ]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> docs             christmas opposition taxing taxation taxregex country</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1901-McKinley          0          2      0        1        1       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1905-Roosevelt         0          0      0        0        0       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1909-Taft              0          1      0        4        6       4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1913-Wilson            0          0      0        1        1       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1917-Wilson            0          0      0        0        0       2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1921-Harding           0          0      0        1        2      15</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [ reached max_ndoc ... 25 more documents ]</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># subset a dictionary</span></span></span>
 <span class="r-in"><span><span class="va">dict</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span></span></span>
@@ -300,12 +298,12 @@ manual]. Austin, TX (<a href="https://www.liwc.app/" class="external-link">https
 <span class="r-in"><span>              <span class="va">dictfile</span>, mode <span class="op">=</span> <span class="st">"wb"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/unzip.html" class="external-link">unzip</a></span><span class="op">(</span><span class="va">dictfile</span>, exdir <span class="op">=</span> <span class="op">(</span><span class="va">td</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">dictlg</span> <span class="op">&lt;-</span> <span class="fu">dictionary</span><span class="op">(</span>file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="va">td</span>, <span class="st">"LaverGarry.cat"</span>, sep <span class="op">=</span> <span class="st">"/"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="dfm_lookup.html">dfm_lookup</a></span><span class="op">(</span><span class="va">dfmat</span><span class="op">)</span>, <span class="va">dictlg</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="dfm_lookup.html">dfm_lookup</a></span><span class="op">(</span><span class="va">dfmat</span>, <span class="va">dictlg</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># import a LIWC formatted dictionary from http://www.moralfoundations.org</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/download.file.html" class="external-link">download.file</a></span><span class="op">(</span><span class="st">"http://bit.ly/37cV95h"</span>, <span class="va">tf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">dictliwc</span> <span class="op">&lt;-</span> <span class="fu">dictionary</span><span class="op">(</span>file <span class="op">=</span> <span class="va">tf</span>, format <span class="op">=</span> <span class="st">"LIWC"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="dfm_lookup.html">dfm_lookup</a></span><span class="op">(</span><span class="va">dfmat</span><span class="op">)</span>, <span class="va">dictliwc</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="dfm_lookup.html">dfm_lookup</a></span><span class="op">(</span><span class="va">dfmat</span>, <span class="va">dictliwc</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>

@@ -9,8 +9,6 @@ search_index(pattern, index)
 }
 \arguments{
 \item{index}{an index object created by \code{index_types}}
-
-\item{regex}{a glob expression to search}
 }
 \description{
 Internal function for \code{select_types} to search the index using

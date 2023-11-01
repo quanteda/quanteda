@@ -16,7 +16,10 @@
     <loc>https://quanteda.io/articles/index.html</loc>
   </url>
   <url>
-    <loc>https://quanteda.io/articles/pkgdown/comparison.html</loc>
+    <loc>https://quanteda.io/articles/pkgdown/benchmark.html</loc>
+  </url>
+  <url>
+    <loc>https://quanteda.io/articles/pkgdown/benchmarks_xptr.html</loc>
   </url>
   <url>
     <loc>https://quanteda.io/articles/pkgdown/design.html</loc>
@@ -71,6 +74,12 @@
   </url>
   <url>
     <loc>https://quanteda.io/articles/pkgdown/replication/text2vec.html</loc>
+  </url>
+  <url>
+    <loc>https://quanteda.io/articles/pkgdown/tokens.html</loc>
+  </url>
+  <url>
+    <loc>https://quanteda.io/articles/pkgdown/tokens_xptr.html</loc>
   </url>
   <url>
     <loc>https://quanteda.io/articles/quickstart.html</loc>
@@ -137,6 +146,9 @@
   </url>
   <url>
     <loc>https://quanteda.io/news/news-3.3.html</loc>
+  </url>
+  <url>
+    <loc>https://quanteda.io/news/news-4.0.html</loc>
   </url>
   <url>
     <loc>https://quanteda.io/news/news-dev.html</loc>
@@ -211,6 +223,9 @@
     <loc>https://quanteda.io/reference/as.tokens.html</loc>
   </url>
   <url>
+    <loc>https://quanteda.io/reference/as.tokens_xptr.html</loc>
+  </url>
+  <url>
     <loc>https://quanteda.io/reference/as.yaml.html</loc>
   </url>
   <url>
@@ -263,6 +278,9 @@
   </url>
   <url>
     <loc>https://quanteda.io/reference/convert.html</loc>
+  </url>
+  <url>
+    <loc>https://quanteda.io/reference/copy.html</loc>
   </url>
   <url>
     <loc>https://quanteda.io/reference/corpus-class.html</loc>
@@ -917,6 +935,9 @@
   </url>
   <url>
     <loc>https://quanteda.io/reference/tokens_wordstem.html</loc>
+  </url>
+  <url>
+    <loc>https://quanteda.io/reference/tokens_xptr.html</loc>
   </url>
   <url>
     <loc>https://quanteda.io/reference/topfeatures.html</loc>

@@ -124,13 +124,13 @@ BEGIN_RCPP
 END_RCPP
 }
 // cpp_tokens_group
-TokensPtr cpp_tokens_group(TokensPtr xptr, IntegerVector groups_, const int thread);
+TokensPtr cpp_tokens_group(TokensPtr xptr, List groups_, const int thread);
 RcppExport SEXP _quanteda_cpp_tokens_group(SEXP xptrSEXP, SEXP groups_SEXP, SEXP threadSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< TokensPtr >::type xptr(xptrSEXP);
-    Rcpp::traits::input_parameter< IntegerVector >::type groups_(groups_SEXP);
+    Rcpp::traits::input_parameter< List >::type groups_(groups_SEXP);
     Rcpp::traits::input_parameter< const int >::type thread(threadSEXP);
     rcpp_result_gen = Rcpp::wrap(cpp_tokens_group(xptr, groups_, thread));
     return rcpp_result_gen;
@@ -324,6 +324,17 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// cpp_ntype
+IntegerVector cpp_ntype(TokensPtr xptr);
+RcppExport SEXP _quanteda_cpp_ntype(SEXP xptrSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< TokensPtr >::type xptr(xptrSEXP);
+    rcpp_result_gen = Rcpp::wrap(cpp_ntype(xptr));
+    return rcpp_result_gen;
+END_RCPP
+}
 // cpp_get_types
 CharacterVector cpp_get_types(TokensPtr xptr, bool recompile);
 RcppExport SEXP _quanteda_cpp_get_types(SEXP xptrSEXP, SEXP recompileSEXP) {
@@ -471,6 +482,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_quanteda_cpp_subset", (DL_FUNC) &_quanteda_cpp_subset, 2},
     {"_quanteda_cpp_ndoc", (DL_FUNC) &_quanteda_cpp_ndoc, 1},
     {"_quanteda_cpp_ntoken", (DL_FUNC) &_quanteda_cpp_ntoken, 1},
+    {"_quanteda_cpp_ntype", (DL_FUNC) &_quanteda_cpp_ntype, 1},
     {"_quanteda_cpp_get_types", (DL_FUNC) &_quanteda_cpp_get_types, 2},
     {"_quanteda_cpp_set_types", (DL_FUNC) &_quanteda_cpp_set_types, 2},
     {"_quanteda_cpp_recompile", (DL_FUNC) &_quanteda_cpp_recompile, 1},

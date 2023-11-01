@@ -110,7 +110,6 @@ reference:
     - tail.dfm
     - as.dfm
     - is.dfm
-    - as.data.frame.dfm
     - as.matrix.dfm
     - starts_with("fcm")
     - as.fcm
@@ -141,12 +140,10 @@ reference:
     - featnames
 - title: Miscellaneous functions
   contents:
-    - copy
     - phrase
     - convert
     - bootstrap_dfm
     - meta
-    - readtext-methods
     - spacyr-methods
 - title: Statistics, models, and plots
   desc: Functions for computing statistics, fitting models, and producing visualisations models from text.

@@ -67,9 +67,6 @@ with full control over options.  Uses fully sparse methods for efficiency."><!--
       <a href="../articles/pkgdown/benchmarks_xptr.html">Performance benchmarks for v4</a>
     </li>
     <li>
-      <a href="../articles/pkgdown/comparison.html">Feature comparison</a>
-    </li>
-    <li>
       <a href="../articles/pkgdown/design.html">Package design</a>
     </li>
     <li>
@@ -245,7 +242,7 @@ can be overridden using <code>scheme_tf = "prop"</code>.</p>
 <span class="r-in"><span>           byrow <span class="op">=</span> <span class="cn">TRUE</span>, nrow <span class="op">=</span> <span class="fl">2</span>,</span></span>
 <span class="r-in"><span>           dimnames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>docs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"document1"</span>, <span class="st">"document2"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                           features <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"this"</span>, <span class="st">"is"</span>, <span class="st">"a"</span>, <span class="st">"sample"</span>,</span></span>
-<span class="r-in"><span>                                        <span class="st">"another"</span>, <span class="st">"example"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>                                        <span class="st">"another"</span>, <span class="st">"example"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>    <span class="fu"><a href="as.dfm.html">as.dfm</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">dfmat2</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Document-feature matrix of: 2 documents, 6 features (33.33% sparse) and 0 docvars.</span>
@@ -256,7 +253,7 @@ can be overridden using <code>scheme_tf = "prop"</code>.</p>
 <span class="r-in"><span><span class="fu"><a href="docfreq.html">docfreq</a></span><span class="op">(</span><span class="va">dfmat2</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    this      is       a  sample another example </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       2       2       1       1       1       1 </span>
-<span class="r-in"><span><span class="fu">dfm_tfidf</span><span class="op">(</span><span class="va">dfmat2</span>, scheme_tf <span class="op">=</span> <span class="st">"prop"</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">dfm_tfidf</span><span class="op">(</span><span class="va">dfmat2</span>, scheme_tf <span class="op">=</span> <span class="st">"prop"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Document-feature matrix of: 2 documents, 6 features (33.33% sparse) and 0 docvars.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            features</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> docs        this is    a sample another example</span>
@@ -266,7 +263,7 @@ can be overridden using <code>scheme_tf = "prop"</code>.</p>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span><span class="co"># comparison with tm</span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"tm"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span>    <span class="fu"><a href="convert.html">convert</a></span><span class="op">(</span><span class="va">dfmat2</span>, to <span class="op">=</span> <span class="st">"tm"</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu">tm</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tm/man/weightTfIdf.html" class="external-link">weightTfIdf</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="convert.html">convert</a></span><span class="op">(</span><span class="va">dfmat2</span>, to <span class="op">=</span> <span class="st">"tm"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">tm</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tm/man/weightTfIdf.html" class="external-link">weightTfIdf</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span>    <span class="co"># same as:</span></span></span>
 <span class="r-in"><span>    <span class="fu">dfm_tfidf</span><span class="op">(</span><span class="va">dfmat2</span>, base <span class="op">=</span> <span class="fl">2</span>, scheme_tf <span class="op">=</span> <span class="st">"prop"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>

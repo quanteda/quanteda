@@ -86,9 +86,9 @@ With `textstat_collocations()`, it is possible to discover multi-word expression
 If `textstat_collocations()` is applied to a tokens object comprised only of capitalize words, it usually returns multi-word proper names.
 
 ```{r}
-col <- toks %>% 
-       tokens_remove(stopwords()) %>% 
-       tokens_select('^[A-Z]', valuetype = 'regex', case_insensitive = FALSE, padding = TRUE) %>% 
+col <- toks |> 
+       tokens_remove(stopwords()) |> 
+       tokens_select('^[A-Z]', valuetype = 'regex', case_insensitive = FALSE, padding = TRUE) |> 
        textstat_collocations(min_count = 5, tolower = FALSE)
 head(col)
 ```

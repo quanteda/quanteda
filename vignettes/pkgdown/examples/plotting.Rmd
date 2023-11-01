@@ -52,25 +52,26 @@ textplot_wordcloud(dfmat_inaug, min_count = 10,
 Plotting a `kwic` object produces a lexical dispersion plot which allows us to visualize the occurrences of particular terms throughout the text.  We call these "x-ray" plots due to their similarity to the data produced by [Amazon's "x-ray" feature for Kindle books](https://en.wikipedia.org/wiki/X-Ray_(Amazon_Kindle)).
 
 ```{r eval=TRUE, fig.width=8, fig.height=4}
-data_corpus_inaugural_subset <- 
-    corpus_subset(data_corpus_inaugural, Year > 1949)
-kwic(tokens(data_corpus_inaugural_subset), pattern = "american") |>
+toks_corpus_inaugural_subset <- 
+    corpus_subset(data_corpus_inaugural, Year > 1949) |>
+    tokens()
+kwic(toks_corpus_inaugural_subset, pattern = "american") |>
     textplot_xray()
 ```
 
 You can also pass multiple kwic objects to `plot` to compare the dispersion of different terms:
 ```{r eval=TRUE, fig.width=8, fig.height=4}
 textplot_xray(
-     kwic(tokens(data_corpus_inaugural_subset), pattern = "american"),
-     kwic(tokens(data_corpus_inaugural_subset), pattern = "people"),
-     kwic(tokens(data_corpus_inaugural_subset), pattern = "communist")
+     kwic(toks_corpus_inaugural_subset, pattern = "american"),
+     kwic(toks_corpus_inaugural_subset, pattern = "people"),
+     kwic(toks_corpus_inaugural_subset, pattern = "communist")
 )
 ```
 
 If you're only plotting a single document, but with multiple keywords, then the keywords are displayed one below the other rather than side-by-side.
 
 ```{r eval=TRUE, fig.width=8, fig.height=1.25}
-require(readtext)
+require("readtext")
 data_char_mobydick <- as.character(readtext("http://www.gutenberg.org/cache/epub/2701/pg2701.txt"))
 
 names(data_char_mobydick) <- "Moby Dick"
@@ -84,11 +85,10 @@ textplot_xray(
 You might also have noticed that the x-axis scale is the absolute token index for single texts and relative token index when multiple texts are being compared. If you prefer, you can specify that you want an absolute scale:
 
 ```{r eval=TRUE, fig.width=8, fig.height=4}
-toks <- tokens(data_corpus_inaugural_subset)
 textplot_xray(
-    kwic(toks, pattern = "american"),
-    kwic(toks, pattern = "people"),
-    kwic(toks, pattern = "communist"),
+    kwic(toks_corpus_inaugural_subset, pattern = "american"),
+    kwic(toks_corpus_inaugural_subset, pattern = "people"),
+    kwic(toks_corpus_inaugural_subset, pattern = "communist"),
     scale = "absolute"
 )
 ```
@@ -103,9 +103,9 @@ The object returned is a ggplot object, which can be modified using ggplot:
 library("ggplot2")
 theme_set(theme_bw())
 g <- textplot_xray(
-    kwic(toks, pattern = "american"),
-    kwic(toks, pattern = "people"),
-    kwic(toks, pattern = "communist")
+    kwic(toks_corpus_inaugural_subset, pattern = "american"),
+    kwic(toks_corpus_inaugural_subset, pattern = "people"),
+    kwic(toks_corpus_inaugural_subset, pattern = "communist")
 )
 g + aes(color = keyword) + 
     scale_color_manual(values = c("blue", "red", "green")) +
@@ -130,18 +130,12 @@ If you wanted to compare the frequency of a single term across different texts, 
 
 ```{r eval=TRUE, fig.width=8, fig.height=5}
 # Create document-level variable with year and president
-data_corpus_inaugural_subset$Year_President <- paste(
-    data_corpus_inaugural_subset$Year, 
-    data_corpus_inaugural_subset$President, sep = " ")
-
-# Get frequency grouped by speech
-tstat_freq_grouped <- data_corpus_inaugural_subset |> 
-    tokens() |> 
-    dfm() |> 
-    textstat_frequency(groups = Year_President)
+# Get frequency grouped by president
+freq_grouped <- textstat_frequency(dfm(toks_corpus_inaugural_subset), 
+                                   groups = President)
 
 # Filter the term "american"
-freq_american <- subset(tstat_freq_grouped, feature %in% "american")  
+freq_american <- subset(freq_grouped, freq_grouped$feature %in% "american")  
 
 ggplot(freq_american, aes(x = frequency, y = group)) +
     geom_point() + 
@@ -153,22 +147,20 @@ ggplot(freq_american, aes(x = frequency, y = group)) +
 The above plots are raw frequency plots. For relative frequency plots, (word count divided by the length of the chapter) we need to weight the document-frequency matrix first. To obtain expected word frequency per 100 words, we multiply by 100. 
 
 ```{r eval=TRUE, fig.width=8, fig.height=4}
-dfmat_rel_freq <- data_corpus_inaugural_subset |> 
-    tokens() |> 
-    dfm() |> 
-    dfm_weight(scheme = "prop") * 100
-print(dfmat_rel_freq)
+dfm_rel_freq <- dfm_weight(dfm(toks_corpus_inaugural_subset), scheme = "prop") * 100
+head(dfm_rel_freq)
 
-dat_rel_freq <- textstat_frequency(dfmat_rel_freq, groups = Year_President)
+rel_freq <- textstat_frequency(dfm_rel_freq, groups = dfm_rel_freq$President)
 
 # Filter the term "american"
-dat_rel_freq_american <- subset(dat_rel_freq, feature %in% "american")  
+rel_freq_american <- subset(rel_freq, feature %in% "american")  
 
-ggplot(dat_rel_freq_american, aes(x = frequency, y = group)) +
+ggplot(rel_freq_american, aes(x = group, y = frequency)) +
     geom_point() + 
-    scale_x_continuous(limits = c(0, 0.7), breaks = c(seq(0, 0.7, 0.1))) +
-        labs(x = "Relative frequency",
-         title = 'Relative frequency of "american"')
+    scale_y_continuous(limits = c(0, 0.7), breaks = c(seq(0, 0.7, 0.1))) +
+    xlab(NULL) + 
+    ylab("Relative frequency") +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1))
 ```
 
 Finally, `texstat_frequency` allows to plot the most frequent words in terms of relative frequency by group.

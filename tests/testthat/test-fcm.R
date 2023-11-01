@@ -3,7 +3,9 @@ test_that("compare the output feature co-occurrence matrix to that of the text2v
     library("text2vec")
 
     txt <- "A D A C E A D F E B A C E D"
-    tokens <- txt %>% tolower %>% word_tokenizer
+    tokens <- txt |> 
+        tolower() |> 
+        word_tokenizer()
     it <- itoken(tokens)
     v <- create_vocabulary(it)
     vectorizer <- vocab_vectorizer(v)
@@ -270,13 +272,6 @@ test_that("fcm print works as expected", {
     )
 })
 
-test_that("fcm works the same for different object types", {
-    txt <- c("a a a b b c", "a a c e", "a c e f g")
-    suppressWarnings(expect_equivalent(fcm(txt), fcm(corpus(txt))))
-    expect_equivalent(fcm(tokens(txt)), suppressWarnings(fcm(corpus(txt))))
-    expect_identical(suppressWarnings(fcm(txt)), fcm(tokens(txt)))
-})
-
 test_that("fcm expects error for wrong weight or window", {
     txt <- c("a a a b b c", "a a c e", "a c e f g")
     toks <- tokens(txt)
@@ -284,10 +279,10 @@ test_that("fcm expects error for wrong weight or window", {
                  "The value of window must be between 1 and Inf")
     expect_error(fcm(toks, context = "window", window = integer()),
                  "The length of window must be 1")
-    expect_error(fcm(toks, context = "window", window = 2, 
+    expect_error(fcm(toks, context = "window", window = 2,
                      count = "weighted", weights = c(1, 2, 3)),
                  "The length of weights must be equal to the window size")
-    expect_error(fcm(toks, context = "window", window = 2, 
+    expect_error(fcm(toks, context = "window", window = 2,
                      count = "weighted", weights = c(1, 2, 3)),
                  "The length of weights must be equal to the window size")
 })

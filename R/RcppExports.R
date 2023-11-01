@@ -93,6 +93,10 @@ cpp_ntoken <- function(xptr) {
     .Call(`_quanteda_cpp_ntoken`, xptr)
 }
 
+cpp_ntype <- function(xptr) {
+    .Call(`_quanteda_cpp_ntype`, xptr)
+}
+
 cpp_get_types <- function(xptr, recompile = FALSE) {
     .Call(`_quanteda_cpp_get_types`, xptr, recompile)
 }

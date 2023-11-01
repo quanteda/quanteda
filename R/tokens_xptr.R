@@ -82,7 +82,14 @@ types.tokens_xptr <- function(x) {
 }
 
 #' @export
+ntype.tokens_xptr <- function(x, ...) {
+    check_dots(...)
+    structure(cpp_ntype(x), names = docnames(x))
+}
+
+#' @export
 ntoken.tokens_xptr <- function(x, ...) {
+    check_dots(...)
     structure(cpp_ntoken(x), names = docnames(x))
 }
 
@@ -140,6 +147,11 @@ as.list.tokens_xptr <- function(x, ...) {
         meta = attrs[["meta"]],
         class = attrs[["class"]]
     )
+}
+
+#' @export
+"[[.tokens_xptr" <- function(x, i) {
+    unlist_character(as.list(as.tokens(x[head(i, 1)])), use.names = FALSE)
 }
 
 #' @method head tokens_xptr

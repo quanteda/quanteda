@@ -5,9 +5,9 @@ test_that("character wordstem test to test testing.", {
 
 test_that("can wordstem dfms with zero features and zero docs", {
     # zero feature documents
-    dfmt1 <- dfm(tokens(c("one", "0"), remove_numbers = TRUE)) %>%
+    dfmt1 <- dfm(tokens(c("one", "0"), remove_numbers = TRUE)) |>
         dfm_wordstem()
-    dfmt2 <- dfm(tokens(c("one", "!!"), remove_punct = TRUE)) %>%
+    dfmt2 <- dfm(tokens(c("one", "!!"), remove_punct = TRUE)) |>
         dfm_wordstem()
     expect_equal(ndoc(dfmt1), ndoc(dfmt2), 2)
 
@@ -31,7 +31,7 @@ test_that("can wordstem tokens", {
 test_that("can wordstem token ngrams", {
     txt <- c(d1 = "stemming plurals perfectly",
              d2 = "one two three")
-    toks <- tokens(txt) %>% tokens_ngrams(n = 2)
+    toks <- tokens(txt) |> tokens_ngrams(n = 2)
     expect_equal(as.list(tokens_wordstem(toks, "english")),
                  list(d1 = c("stem_plural", "plural_perfect"),
                       d2 = c("one_two", "two_three")))
@@ -49,7 +49,7 @@ test_that("can wordstem dfm with unigrams", {
 test_that("can wordstem dfm with ngrams", {
     txt <- c(d1 = "stemming stems stemmed plurals perfectly",
              d2 = "one two three")
-    dfmat <- tokens(txt) %>% tokens_ngrams(n = 2) %>% dfm()
+    dfmat <- tokens(txt) |> tokens_ngrams(n = 2) |> dfm()
     dfmat_stemmed <- dfm_wordstem(dfmat, language = "english")
     expect_equal(sort(featnames(dfmat_stemmed)),
                  c("one_two", "plural_perfect", "stem_plural", "stem_stem", "two_three"))

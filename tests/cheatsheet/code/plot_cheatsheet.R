@@ -30,12 +30,12 @@ pres_dfm <- dfm(corpus_subset(data_corpus_inaugural,
                 groups = "President", 	remove = stopwords("english"), 
                 remove_punct = TRUE) 
 
-data_corpus_inaugural %>%   
+data_corpus_inaugural |>   
     corpus_subset(President %in% 
-                      c("Obama", "Trump")) %>%
+                      c("Obama", "Trump")) |>
     dfm(groups = "President", 
-        remove = stopwords("english")) %>%   
-    textstat_keyness(target = "Trump") %>%   
+        remove = stopwords("english")) |>   
+    textstat_keyness(target = "Trump") |>   
     textplot_keyness(n = 10)
 ggsave("plots/textplot_keyness.pdf", width = 8, height = 5)
 

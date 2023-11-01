@@ -125,17 +125,12 @@ search_glob <- function(pattern, types_search, case_insensitive, index = NULL) {
         return(which(stri_detect_regex(types_search, utils::glob2rx(pattern),
                                        case_insensitive = case_insensitive)))
     } else {
-        pos <- search_index(pattern, index)
-        if (length(pos)) {
-            #cat("Index search", pattern, "\n")
-            return(pos)
-        } else if (!is_indexed(pattern)) {
-            #cat("Regex search", pattern, "\n")
-            return(which(stri_detect_regex(types_search, utils::glob2rx(pattern),
-                                           case_insensitive = case_insensitive)))
+        if (is_indexed(pattern)) {
+            return(search_index(pattern, index))
         } else {
-            #cat("Not found\n")
-            return(integer())
+            l <- stri_detect_regex(types_search, utils::glob2rx(pattern),
+                                   case_insensitive = case_insensitive)
+            return(which(l))
         }
     }
 }
@@ -237,11 +232,10 @@ index_types <- function(pattern, types, valuetype = c("glob", "fixed", "regex"),
 
 #' Internal function for `select_types` to search the index using
 #' fastmatch.
-#' @param regex a glob expression to search
 #' @param index an index object created by `index_types`
 #' @seealso [index_types()]
 #' @keywords internal
- search_index <- function(pattern, index){
+ search_index <- function(pattern, index) {
     # use fmatch instead of names for quick access
     result <- index[[fastmatch::fmatch(pattern, attr(index, "key"))]]
     if (is.null(result))

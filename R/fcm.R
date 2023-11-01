@@ -115,15 +115,21 @@ fcm.default <- function(x, ...) {
 #' @noRd
 #' @export
 fcm.character <- function(x, ...) {
-    .Deprecated(msg = "'fcm.character()' is deprecated. Use 'tokens()' or 'dfm()' first.")
-    fcm(corpus(x), ...)
+    lifecycle::deprecate_stop(
+        when = "3.0", 
+        what = "fcm.character()",
+        details = 'Please apply `tokens()` to the object first.'
+    )
 }
 
 #' @noRd
 #' @export
 fcm.corpus <- function(x, ...) {
-    .Deprecated(msg = "'fcm.corpus()' is deprecated. Use 'tokens()' or 'dfm()' first.")
-    fcm(tokens(x), ...)
+    lifecycle::deprecate_stop(
+        when = "3.0", 
+        what = "fcm.corpus()",
+        details = 'Please apply `tokens()` to the object first.'
+    )
 }
 
 #' @noRd

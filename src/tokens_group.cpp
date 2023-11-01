@@ -11,50 +11,48 @@ using namespace quanteda;
  * @param groups_ group index
  */
 
+typedef std::vector<int> Group;
+typedef std::vector<Group> Groups;
+
 // [[Rcpp::export]]
 TokensPtr cpp_tokens_group(TokensPtr xptr,
-                           IntegerVector groups_,
+                           List groups_,
                            const int thread = -1) {
     
     Texts texts = xptr->texts;
-    std::vector<int> groups = Rcpp::as< std::vector<int> >(groups_);
-    Types levels = Rcpp::as<Types>(groups_.attr("levels"));
-    
-    if (texts.size() != groups.size())
-        throw std::range_error("Invalid groups");
-    
+    Groups groups = Rcpp::as<Groups>(groups_);
+
     // pre-allocate memory
-    std::size_t G = levels.size();
+    std::size_t G = groups.size();
     std::size_t H = texts.size();
     std::vector<size_t> sizes(G);
-    for (std::size_t h = 0; h < H; h++) {
-        sizes[groups[h] - 1] += texts[h].size();
-    }
+    
     Texts temp(G);
     for (std::size_t g = 0; g < G; g++) {
-        temp[g].reserve(sizes[g]);  
+        std::size_t size = 0;
+        for (std::size_t h: groups[g]) {
+            if (h < 1 || H < h)
+                throw std::range_error("Invalid groups");
+            size += texts[h - 1].size();
+        }
+        temp[g].reserve(size);  
     }
-    
 
 #if QUANTEDA_USE_TBB
     tbb::task_arena arena(thread);
     arena.execute([&]{
        tbb::parallel_for(tbb::blocked_range<int>(0, G), [&](tbb::blocked_range<int> r) {
           for (int g = r.begin(); g < r.end(); ++g) {
-              for (std::size_t h = 0; h < H; h++) {
-                  if (g == groups[h] - 1) {
-                      temp[g].insert(temp[g].end(), texts[h].begin(), texts[h].end());
-                  }
+              for (std::size_t h: groups[g]) {
+                  temp[g].insert(temp[g].end(), texts[h - 1].begin(), texts[h - 1].end());
               }
           }
        });
     });
 #else
     for (std::size_t g = 0; g < G; g++) {
-        for (std::size_t h = 0; h < H; h++) {
-            if (g == groups[h] - 1) {
-                temp[g].insert(temp[g].end(), texts[h].begin(), texts[h].end());
-            }
+        for (std::size_t h: groups[g]) {
+            temp[g].insert(temp[g].end(), texts[h - 1.begin(), texts[h - 1].end());
         }
     }
 #endif
