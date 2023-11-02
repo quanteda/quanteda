@@ -1,6 +1,6 @@
 ---
 title: "Example: Latent Semantic Analysis (LSA)"
-author: Haiyan Wang
+author: "Haiyan Wang"
 output: 
   html_document:
     toc: true
@@ -14,7 +14,7 @@ LSA decomposes document-feature matrix into a reduced vector space that is assum
 New documents or queries can be 'folded-in' to this constructed latent semantic space for downstream tasks. 
 
 ```{r, message = FALSE}
-library(quanteda)
+library("quanteda")
 ```
 
 # Create a document-feature matrix
@@ -24,30 +24,32 @@ txt <- c(d1 = "Shipment of gold damaged in a fire",
          d2 = "Delivery of silver arrived in a silver truck",
          d3 = "Shipment of gold arrived in a truck" )
 
-mydfm <- dfm(tokens(txt))
-mydfm
+dfmat <- txt |> 
+    tokens() |> 
+    dfm()
+dfmat
 ```
 
 # Construct the LSA model
 ```{r}
 library("quanteda.textmodels")
-mylsa <- textmodel_lsa(mydfm)
+tmod_lsa <- textmodel_lsa(dfmat)
 ```
 
- the new document vector coordinates in the reduced 2-dimensional space is:
+The new document vector coordinates in the reduced 2-dimensional space is:
 ```{r}
-mylsa$docs[, 1:2]
+tmod_lsa$docs[, 1:2]
 ```
 
 # Apply the constructed LSA model to new data
 Now the new unseen document can be represented in the reduced 2-dimensional space.
 The unseen query document:
 ```{r}
-querydfm <- dfm(tokens(c("gold silver truck"))) |>
-    dfm_match(features = featnames(mydfm))
-querydfm
-```
-```{r}
-newq <- predict(mylsa, newdata = querydfm)
-newq$docs_newspace[, 1:2]
+dfmat_test <- tokens("gold silver truck") |> 
+    dfm() |> 
+    dfm_match(features = featnames(dfmat))
+dfmat_test
+
+pred_lsa <- predict(tmod_lsa, newdata = dfmat_test)
+pred_lsa$docs_newspace[, 1:2]
 ```

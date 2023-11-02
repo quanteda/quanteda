@@ -30,7 +30,7 @@ With the introduction of the `tokens_xptr` object, this conversion upon passing 
 
 These efficiency gains are only evident for large tokens objects, for instance those with more than one million tokens.  The default `tokens` object format remains the non-external pointer type, but below, we show how to create and work with the `tokens_xptr` variant.  All of the `tokens_*()` functions work the same for both object classes, so that the user-facing differences are almost unnoticeable between the two object types.
 
-A detailed comparison of performance gains and execution times for `tokens` versus `tokens_xptr` objects is available in a [separate article](./articles/benchmarks_xptr.html). 
+A detailed comparison of performance gains and execution times for `tokens` versus `tokens_xptr` objects is available in a [separate article](./articles/pkgdown/benchmarks_xptr.html). 
 
 ```{r}
 library("quanteda")
@@ -165,4 +165,4 @@ microbenchmark::microbenchmark(
 ) |> autoplot(log = FALSE)
 ```
 
-We explore further benchmarks and comparisons for `tokens_xptr` usage in a [separate article](./articles/benchmarks_xptr.html).
+We explore further benchmarks and comparisons for `tokens_xptr` usage in a [separate article](./articles/pkgdown/benchmarks_xptr.html).

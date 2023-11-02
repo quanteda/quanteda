@@ -26,43 +26,43 @@ load("data/data_corpus_tweets.rda")
 
 ## Construct a document-feature matrix of Twitter posts
 ```{r}
-tweet_dfm <- tokens(data_corpus_tweets, remove_punct = TRUE) |>
+dfmat_tweets <- tokens(data_corpus_tweets, remove_punct = TRUE) |>
     dfm()
-head(tweet_dfm)
+head(dfmat_tweets)
 ```
 
 # Hashtags
 
 ## Extract most common hashtags
 ```{r}
-tag_dfm <- dfm_select(tweet_dfm, pattern = "#*")
-toptag <- names(topfeatures(tag_dfm, 50))
+dfmat_tag <- dfm_select(dfmat_tweets, pattern = "#*")
+toptag <- names(topfeatures(dfmat_tag, 50))
 head(toptag)
 ```
 
 ## Construct feature-occurrence matrix of hashtags
 ```{r}
 library("quanteda.textplots")
-tag_fcm <- fcm(tag_dfm)
-head(tag_fcm)
-topgat_fcm <- fcm_select(tag_fcm, pattern = toptag)
-textplot_network(topgat_fcm, min_freq = 0.1, edge_alpha = 0.8, edge_size = 5)
+fcmat_tag <- fcm(dfmat_tag)
+head(fcmat_tag)
+fcmat_topgat <- fcm_select(fcmat_tag, pattern = toptag)
+textplot_network(fcmat_topgat, min_freq = 0.1, edge_alpha = 0.8, edge_size = 5)
 ```
 
 # Usernames
 
 ## Extract most frequently mentioned usernames 
 ```{r}
-user_dfm <- dfm_select(tweet_dfm, pattern = "@*")
-topuser <- names(topfeatures(user_dfm, 50))
+dfmtat_users <- dfm_select(dfmat_tweets, pattern = "@*")
+topuser <- names(topfeatures(dfmtat_users, 50))
 head(topuser)
 ```
 
 ## Construct feature-occurrence matrix of usernames
 ```{r}
-user_fcm <- fcm(user_dfm)
-head(user_fcm)
-user_fcm <- fcm_select(user_fcm, pattern = topuser)
-textplot_network(user_fcm, min_freq = 0.1, edge_color = "orange", edge_alpha = 0.8, edge_size = 5)
+fcmat_users <- fcm(dfmtat_users)
+head(fcmat_users)
+fcmat_users <- fcm_select(fcmat_users, pattern = topuser)
+textplot_network(fcmat_users, min_freq = 0.1, edge_color = "orange", edge_alpha = 0.8, edge_size = 5)
 ```
 

@@ -287,13 +287,13 @@ expressions by underscore, so they become “United_States” and
 whitespaces in a dictionary, but you do not use <code><a href="../../../reference/phrase.html">phrase()</a></code>
 here.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">multiword_dict</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/dictionary.html">dictionary</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>country <span class="op">=</span> <span class="st">"United States"</span>, </span>
+<code class="sourceCode R"><span><span class="va">dict_multiword</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/dictionary.html">dictionary</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>country <span class="op">=</span> <span class="st">"United States"</span>, </span>
 <span>                                  city <span class="op">=</span> <span class="st">"New York"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="section level4">
 <h4 id="lookup-dictionary">Lookup dictionary<a class="anchor" aria-label="anchor" href="#lookup-dictionary"></a>
 </h4>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="../../../reference/tokens_lookup.html">tokens_lookup</a></span><span class="op">(</span><span class="va">toks</span>, dictionary <span class="op">=</span> <span class="va">multiword_dict</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="../../../reference/tokens_lookup.html">tokens_lookup</a></span><span class="op">(</span><span class="va">toks</span>, dictionary <span class="op">=</span> <span class="va">dict_multiword</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Tokens consisting of 6 documents and 4 docvars.</span></span>
 <span><span class="co">## 1789-Washington :</span></span>
 <span><span class="co">## [1] "country" "country"</span></span>
@@ -329,10 +329,10 @@ names.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://quanteda.io">"quanteda.textstats"</a></span><span class="op">)</span></span>
 <span><span class="va">col</span> <span class="op">&lt;-</span> <span class="va">toks</span> <span class="op">|&gt;</span> </span>
-<span>       <span class="fu"><a href="../../../reference/tokens_select.html">tokens_remove</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html" class="external-link">stopwords</a></span><span class="op">(</span><span class="st">"en"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>       <span class="fu"><a href="../../../reference/tokens_select.html">tokens_select</a></span><span class="op">(</span>pattern <span class="op">=</span> <span class="st">"^[A-Z]"</span>, valuetype <span class="op">=</span> <span class="st">"regex"</span>, </span>
-<span>                     case_insensitive <span class="op">=</span> <span class="cn">FALSE</span>, padding <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>       <span class="fu"><a href="https://quanteda.io/reference/textstat_collocations.html">textstat_collocations</a></span><span class="op">(</span>min_count <span class="op">=</span> <span class="fl">5</span>, tolower <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="../../../reference/tokens_select.html">tokens_remove</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html" class="external-link">stopwords</a></span><span class="op">(</span><span class="st">"en"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>    <span class="fu"><a href="../../../reference/tokens_select.html">tokens_select</a></span><span class="op">(</span>pattern <span class="op">=</span> <span class="st">"^[A-Z]"</span>, valuetype <span class="op">=</span> <span class="st">"regex"</span>, </span>
+<span>                  case_insensitive <span class="op">=</span> <span class="cn">FALSE</span>, padding <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="https://quanteda.io/reference/textstat_collocations.html">textstat_collocations</a></span><span class="op">(</span>min_count <span class="op">=</span> <span class="fl">5</span>, tolower <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">col</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##           collocation count count_nested length   lambda        z</span></span>
 <span><span class="co">## 1       United States   158            0      2 8.669783 28.56498</span></span>

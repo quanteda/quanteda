@@ -1,6 +1,6 @@
 ---
 title: "Example: Chinese text analysis"
-author: Haiyan Wang
+author: "Haiyan Wang"
 output: 
   html_document:
     toc: true
@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 ```
 
 ```{r, message=FALSE, warnings=FALSE}
-library(quanteda)
+library("quanteda")
 ```
 
 # Download corpus
@@ -27,7 +27,7 @@ remotes::install_github("quanteda/quanteda.corpora")
 ```
 
 ```{r}
-library(quanteda.corpora)
+library("quanteda.corpora")
 corp <- quanteda.corpora::download(url = "https://www.dropbox.com/s/37ojd5knz1qeyul/data_corpus_chinesegovreport.rds?dl=1")
 ```
 
@@ -38,13 +38,15 @@ corp <- quanteda.corpora::download(url = "https://www.dropbox.com/s/37ojd5knz1qe
 ch_stop <- stopwords("zh", source = "misc")
 
 # tokenize
-ch_toks <- corp |> 
+toks_ch <- corp |> 
     tokens(remove_punct = TRUE) |>
     tokens_remove(pattern = ch_stop)
 
-# construct a dfm
-ch_dfm <- dfm(ch_toks)
-topfeatures(ch_dfm)
+# Construct a dfm
+dfmat_ch <- dfm(toks_ch)
+
+# Get most frequent features
+topfeatures(dfmat_ch)
 ```
 
 # Analysis
@@ -52,12 +54,12 @@ topfeatures(ch_dfm)
 ## Word cloud
 
 ```{r, fig.height = 5, fig.width = 5, fig.align = "center"}
-# plot a word cloud
+# Plot a word cloud
 set.seed(100)
 
 # to set the font correctly for macOS
 library("quanteda.textplots")
-textplot_wordcloud(ch_dfm, min_count = 500, random_order = FALSE,
+textplot_wordcloud(dfmat_ch, min_count = 500, random_order = FALSE,
                    rotation = .25, max_words = 100,
                    min_size = 0.5, max_size = 2.8,
                    font = if (Sys.info()['sysname'] == "Darwin") "SimHei" else NULL,
@@ -68,23 +70,32 @@ textplot_wordcloud(ch_dfm, min_count = 500, random_order = FALSE,
 
 ```{r}
 # fcm within the window size of 5
-ch17_corp <- corpus_subset(corp, Year == "2017")
-ch17_toks <- 
-    tokens(ch17_corp, remove_punct = TRUE) |> 
+corp_ch17 <- corpus_subset(corp, Year == "2017")
+
+toks_ch17 <- corp_ch17 |> 
+    tokens(remove_punct = TRUE) |> 
     tokens_remove(ch_stop)
-ch_fcm <- fcm(ch17_toks, context = "window")  
-topfeatures(ch_fcm["改革", ])
+    
+fcmat_ch <- corp_ch17 |> 
+    tokens() |> 
+    fcm(context = "window", window = 5)  
+
+topfeatures(fcmat_ch["改革", ])
 ```
 
 ## Unsupervised document scaling
 
+In this example, we run a Wordfish model to show how to apply an unspervised document scaling method to Chinese texts.
+
 ```{r fig2, fig.height = 4, fig.width = 6, fig.align = "center"}
 library("quanteda.textmodels")
-wf <- textmodel_wordfish(ch_dfm)
+
+tmod_wf <- textmodel_wordfish(dfmat_ch)
+
 y <- 1954:2017
 y <- y[y <= 1964 | y >= 1975]
 y <- y[!y %in% c(1963, 1961, 1962, 1976, 1977)]
-plot(y, wf$theta, xlab = "Year", ylab = "Position")
+plot(y, tmod_wf$theta, xlab = "Year", ylab = "Position")
 ```
 
 ## Collocations
@@ -92,10 +103,11 @@ plot(y, wf$theta, xlab = "Year", ylab = "Position")
 ```{r}
 # bigrams cross the whole dataset
 library("quanteda.textstats")
-ch_col <- textstat_collocations(ch_toks, size = 2, min_count = 20)
-knitr::kable(head(ch_col, 10))
+
+tstat_col_ch <- textstat_collocations(toks_ch, size = 2, min_count = 20)
+knitr::kable(head(tstat_col_ch, 10))
 
 # bigrams in 2017 report
-ch17_col <- textstat_collocations(ch17_toks, size = 2)
-knitr::kable(head(ch17_col, 10))
+tstat_col_ch17 <- textstat_collocations(toks_ch17, size = 2)
+knitr::kable(head(tstat_col_ch17, 10))
 ```
