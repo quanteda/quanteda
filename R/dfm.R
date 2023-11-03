@@ -39,9 +39,10 @@ dfm <- function(x,
                 verbose = quanteda_options("verbose"),
                 ...) {
 
-    global$proc_time <- proc.time()
-    if (is.null(global$object_class))
+    if (is.null(global$object_class)) {
         global$object_class <- class(x)[1]
+        global$proc_time <- proc.time()   
+    }
     
     # to catch expansion of defunct "remove" to "remove_padding"
     arg_names <- names(as.list(sys.call())[-1])
