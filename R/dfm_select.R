@@ -94,7 +94,7 @@ dfm_select.dfm <-  function(x, pattern = NULL,
         lifecycle::deprecate_stop(
             when = "3.0", 
             what = "dfm_select(pattern = 'cannot be a dfm')",
-            with = I('`dfm_match(x, pattern)`')
+            with = "dfm_match()"
         )
     }
 
