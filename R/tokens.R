@@ -445,7 +445,8 @@ tokens.tokens_xptr <-  function(x,
 
     if (!include_docvars)
         docvars(x) <- NULL
-
+    
+    global$object_class <- NULL
     return(x)
 }
 
