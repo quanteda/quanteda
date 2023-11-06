@@ -39,17 +39,17 @@ dfm <- function(x,
                 verbose = quanteda_options("verbose"),
                 ...) {
 
-    global$proc_time <- proc.time()
-    if (is.null(global$object_class))
+    if (is.null(global$object_class)) {
         global$object_class <- class(x)[1]
+        global$proc_time <- proc.time()   
+    }
     
     # to catch expansion of defunct "remove" to "remove_padding"
-    arg_names <- names(as.list(sys.call())[-1])
-    arg_names_extra <- names(list(...))
-    if ("remove" %in% arg_names) {
-        arg_names_extra <- c("remove", arg_names_extra)
-    }
-    check_defunct_dfm_args(arg_names_extra)
+    check_defunct_dfm_args(names(as.list(sys.call())[-1]))
+                           
+    tolower <- check_logical(tolower)
+    remove_padding <- check_logical(remove_padding)
+    verbose <- check_logical(verbose)
 
     UseMethod("dfm")
 }
@@ -117,9 +117,6 @@ dfm.dfm <- function(x,
     check_dots(...)
     x <- as.dfm(x)
 
-    if (verbose)
-        catm("Creating a dfm from a dfm object...\n")
-
     if (tolower) {
         if (verbose) catm(" ...lowercasing\n", sep = "")
         x <- dfm_tolower(x)
@@ -133,14 +130,8 @@ dfm.dfm <- function(x,
     is_na <- is.na(featnames(x))
     if (any(is_na))
         x <- x[, !is_na, drop = FALSE]
-
-    if (verbose) {
-        catm(" ...complete, elapsed time:",
-             format((proc.time() - global$proc_time)[3], digits = 3), "seconds.\n")
-        catm("Finished constructing a", paste(format(dim(x), big.mark = ",", trim = TRUE), collapse = " x "),
-             "sparse dfm.\n")
-    }
-
+    
+    global$object_class <- NULL
     return(x)
 }
 
