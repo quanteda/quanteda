@@ -34,8 +34,8 @@ texts.corpus <- function(x, groups = NULL, spacer = " ") {
     if (!missing(groups)) {
         lifecycle::deprecate_stop(
             when = "3.0", 
-            what = I("texts(x, groups = ...)"),
-            with = I("corpus_group(x, groups = ...)")
+            what = I('`texts(x, groups = ...)`'),
+            with = I('`corpus_group(x, groups = ...)`')
         )
     } else {
         lifecycle::deprecate_stop(

@@ -170,7 +170,7 @@ dfm.character <- function(x, ...) {
     lifecycle::deprecate_stop(
         when = "3.0", 
         what = "dfm.character()",
-        with = I("dfm(tokens(x))")
+        with = I('`dfm(tokens(x))`')
     )
 }
 
@@ -179,7 +179,7 @@ dfm.corpus <- function(x, ...) {
     lifecycle::deprecate_stop(
         when = "3.0", 
         what = "dfm.corpus()",
-        with = I("dfm(tokens(x))")
+        with = I('`dfm(tokens(x))`')
     )
 }
 
@@ -212,7 +212,7 @@ check_defunct_dfm_args <- function(arg_names) {
         lifecycle::deprecate_stop(
             when = "3.0",
             what = "quanteda::dfm(thesaurus)",
-            with = I("dfm_lookup(..., exclusive = FALSE)"))
+            with = I("`dfm_lookup(..., exclusive = FALSE)`"))
     }
     if ("valuetype" %in% arg_names) {
         lifecycle::deprecate_stop(

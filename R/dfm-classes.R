@@ -145,7 +145,7 @@ as.data.frame.dfm <- function(x, row.names = NULL, ..., document = docnames(x),
     lifecycle::deprecate_stop(
             when = "3.0", 
             what = "as.data.frame.dfm()",
-            with = I('convert(x, to = "data.frame")')
+            with = I('`convert(x, to = "data.frame"`')
         )
 }
 
