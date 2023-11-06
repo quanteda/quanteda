@@ -62,6 +62,17 @@
 #' # keep only words occurring 5 times in 1000, and in 2 of 5 of documents
 #' dfm_trim(dfmat, min_docfreq = 0.4, min_termfreq = 0.005, termfreq_type = "prop")
 #'
+#' ## quantiles
+#' toks <- as.tokens(list(unlist(mapply(rep, letters[1:10], 10:1), use.names = FALSE)))
+#' dfmat <- dfm(toks)
+#' dfmat
+#' 
+#' # keep only the top 20th percentile or higher features
+# dfm_trim(dfmat, min_termfreq = 0.2, termfreq_type = "quantile", verbose = TRUE)
+#'
+#' # keep only words above the 80th percentile
+#' dfm_trim(dfmat, min_termfreq = 0.800001, termfreq_type = "quantile", verbose = TRUE)
+#' 
 #' # keep only words occurring frequently (top 20%) and in <=2 documents
 #' dfm_trim(dfmat, min_termfreq = 0.2, max_docfreq = 2, termfreq_type = "quantile")
 #'
