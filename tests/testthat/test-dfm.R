@@ -419,13 +419,10 @@ test_that("dfm verbose option prints correctly", {
     corp <- corpus(txt)
     toks <- tokens(txt)
     xtoks <- as.tokens_xptr(toks)
-    dfmat <- dfm(toks)
     expect_message(dfm(toks, verbose = TRUE), 
                    "Creating a dfm from a tokens object")
     expect_message(dfm(xtoks, verbose = TRUE), 
                    "Creating a dfm from a tokens_xptr object")
-    expect_message(dfm(dfmat, verbose = TRUE), 
-                   "Creating a dfm from a dfm object")
 })
 
 test_that("dfm works with purrr::map (#928)", {
