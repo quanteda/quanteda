@@ -239,6 +239,7 @@ corpus.data.frame <- function(x, docid_field = "doc_id", text_field = "text",
 #'   "documents", one for "pre" and one for "post", with this designation saved
 #'   in a new docvar `context` and with the new number of documents
 #'   therefore being twice the number of rows in the kwic.
+#' @param concatenator character between tokens, default is the whitespace. 
 #' @param extract_keyword logical; if  `TRUE`, save the keyword matching
 #'   `pattern` as a new docvar `keyword`
 #' @examples
@@ -250,9 +251,20 @@ corpus.data.frame <- function(x, docid_field = "doc_id", text_field = "text",
 #' as.character(corpus(kw, split_context = FALSE))
 #'
 #' @export
-corpus.kwic <- function(x, split_context = TRUE, extract_keyword = TRUE, meta = list(), ...) {
+corpus.kwic <- function(x, split_context = TRUE, 
+                        extract_keyword = TRUE, meta = list(), 
+                        concatenator = " ",
+                        ...) {
+    
+    lifecycle::deprecate_warn(
+        when = "4.0", 
+        what = "corpus.kwic()",
+        details = 'Please use `tokens_select(window)` instead.'
+    )
+    
     split_context <- check_logical(split_context)
     extract_keyword <- check_logical(extract_keyword)
+    concatenator <- check_character(concatenator)
     check_dots(...)
     
     x <- as.data.frame(x)
@@ -271,7 +283,7 @@ corpus.kwic <- function(x, split_context = TRUE, extract_keyword = TRUE, meta = 
         result <- pre + post
         if (!extract_keyword) docvars(result, "keyword") <- NULL
     } else {
-        result <- corpus(paste0(x[["pre"]], x[["keyword"]], x[["post"]]),
+        result <- corpus(paste(x[["pre"]], x[["keyword"]], x[["post"]], sep = concatenator),
                          docnames = x[["docname"]], meta = meta, unique_docnames = FALSE)
         docnames(result) <- paste0(x[["docname"]], ".L", x[["from"]])
         if (extract_keyword) docvars(result, "keyword") <- x[["keyword"]]

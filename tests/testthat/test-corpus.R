@@ -64,12 +64,21 @@ test_that("corpus constructors works for kwic", {
     )
 
     # test text handling for punctuation - there should be no space before the ?
-    corp <- tokens(data_char_sampletext, what = "word", remove_separators = FALSE) |>
+    corp1 <- tokens(data_char_sampletext, what = "word", remove_separators = FALSE) |>
       kwic("econom*", window = 10, separator = "") |>
-      corpus(split_context = FALSE, extract_keyword = FALSE)
+      corpus(split_context = FALSE, extract_keyword = FALSE, concatenator = "")
     expect_identical(
-        as.character(corp)[2],
+        as.character(corp1)[2],
         c("text1.L390" = "it is decimating the domestic economy? As we are tired ")
+    )
+    
+    # concatenator is working
+    corp2 <- tokens(data_char_sampletext, what = "word", remove_separators = TRUE) |>
+        kwic("econom*", window = 5) |>
+        corpus(split_context = FALSE, extract_keyword = FALSE)
+    expect_identical(
+        as.character(corp2)[2],
+        c("text1.L202" = "it is decimating the domestic economy ? As we are tired")
     )
 
     # ; and !
@@ -77,7 +86,8 @@ test_that("corpus constructors works for kwic", {
     toks1 <- tokens(txt1, what = "word", remove_separators = FALSE)
     kw1 <- kwic(toks1, "a", window = 10, separator = "")
     expect_equivalent(
-        as.character(corpus(kw1, split_context = FALSE)), txt1
+        as.character(corpus(kw1, split_context = FALSE, concatenator = "")), 
+        txt1
     )
 
     # quotes
@@ -85,25 +95,29 @@ test_that("corpus constructors works for kwic", {
     toks2 <- tokens(txt2, what = "word", remove_separators = FALSE)
     kw2 <- kwic(toks2, "a", window = 10, separator = "")
     expect_equivalent(
-        as.character(corpus(kw2, split_context = FALSE)), txt2
+        as.character(corpus(kw2, split_context = FALSE, concatenator = "")), 
+        txt2
     )
     txt3 <- "This \"is\" only a test!"
     toks3 <- tokens(txt3, what = "word", remove_separators = FALSE)
     kw3 <- kwic(toks3, "a", window = 10, separator = "")
     expect_equivalent(
-        as.character(corpus(kw3, split_context = FALSE)), txt3
+        as.character(corpus(kw3, split_context = FALSE, concatenator = "")), 
+        txt3
     )
     txt4 <- 'This "is" only (a) test!'
     toks4 <- tokens(txt4, what = "word", remove_separators = FALSE)
     kw4 <- kwic(toks4, "a", window = 10, separator = "")
     expect_equivalent(
-        as.character(corpus(kw4, split_context = FALSE)), txt4
+        as.character(corpus(kw4, split_context = FALSE, concatenator = "")), 
+        txt4
     )
     txt5 <- "This is only (a) test!"
     toks5 <- tokens(txt5, what = "word", remove_separators = FALSE)
     kw5 <- kwic(toks5, "a", window = 10, separator = "")
     expect_equivalent(
-        as.character(corpus(kw5, split_context = FALSE)), txt5
+        as.character(corpus(kw5, split_context = FALSE, concatenator = "")), 
+        txt5
     )
     expect_error(corpus(kw, split_context = logical(), extract_keyword = FALSE))
     expect_error(corpus(kw, extract_keyword = logical()))
