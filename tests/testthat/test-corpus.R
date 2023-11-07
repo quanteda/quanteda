@@ -40,6 +40,12 @@ test_that("print works", {
 test_that("corpus constructors works for kwic", {
     kw <- kwic(tokens(data_char_sampletext), "econom*")
 
+    # deprecated
+    lifecycle::expect_deprecated(
+        corpus(kw),
+        "`corpus.kwic()` was deprecated in quanteda 4.0.", fixed = TRUE
+    )
+    
     # split_context = TRUE, extract_keyword = TRUE
     corp <- corpus(kw, split_context = TRUE, extract_keyword = TRUE)
     expect_is(corp, "corpus")
