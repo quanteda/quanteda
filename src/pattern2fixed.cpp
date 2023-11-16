@@ -127,7 +127,7 @@ List cpp_index_types(const CharacterVector &patterns_,
     MapIndex index;
     for (size_t j = 0; j < patterns.size(); j++) {
         size_t n = 1;
-        // estimate number of the matches
+        // estimate the number of matches
         if (glob) {
             int len = utf8_length(patterns[j]);
             if (len > 0)
