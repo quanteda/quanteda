@@ -125,8 +125,12 @@ List cpp_index_types(const CharacterVector &patterns_,
     Types types = Rcpp::as<Types>(types_);
     
     MapIndex index;
-    for (size_t j = 0; j < patterns.size(); j++) {
-        index[patterns[j]].reserve(types.size());
+    for (size_t j = 0; j < patterns.size(); j++) {// [[Rcpp::export]]
+        size_t n == 1;
+        int len utf8_length(patterns[j]);
+        if (len > 0)
+            size_t n = types.size() ^ (1 / len);
+        index[patterns[j]].reserve(n);
         //Rcout << "Register: " << patterns[j] << "\n";
     }
     Configs confs = parse_patterns(patterns, glob);
