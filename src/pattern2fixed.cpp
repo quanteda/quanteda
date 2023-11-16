@@ -126,10 +126,13 @@ List cpp_index_types(const CharacterVector &patterns_,
     
     MapIndex index;
     for (size_t j = 0; j < patterns.size(); j++) {// [[Rcpp::export]]
-        size_t n == 1;
-        int len utf8_length(patterns[j]);
-        if (len > 0)
-            size_t n = types.size() ^ (1 / len);
+        size_t n = 1;
+        // estimate number of the matches
+        if (glob) {
+            int len utf8_length(patterns[j]);
+            if (len > 0)
+                n = types.size() ^ (1 / len);
+        }
         index[patterns[j]].reserve(n);
         //Rcout << "Register: " << patterns[j] << "\n";
     }
