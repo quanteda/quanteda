@@ -557,8 +557,8 @@ removals_regex <- function(separators = FALSE,
         regex[["symbols"]] <- "^\\p{S}$"
     if (numbers) # includes currency amounts and those containing , or . digit separators, and 100bn
         regex[["numbers"]] <- "^\\p{Sc}{0,1}\\p{N}+([.,]*\\p{N})*\\p{Sc}{0,1}$"
-    if (url)
-        regex[["url"]] <- "(?:^(?:https?://)?(?:www\\.)?[-a-zA-Z0-9]+(?:\\.[-a-zA-Z0-9]+)+(?:[/?#][-+a-zA-Z0-9@#:.%\\~=_\\&]+)*[/?#]?)|(^((https{0,1}|s{0,1}ftp)://))"
+    if (url) # the same patter for preserve_special
+        regex[["url"]] <- "(https?://|s?ftp://|www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-z]{2,4}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)"
     return(regex)
 }
 
