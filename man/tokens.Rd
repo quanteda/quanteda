@@ -40,8 +40,8 @@ valid social media tags if \code{preserve_tags = TRUE}}
 \item{remove_numbers}{logical; if \code{TRUE} remove tokens that consist only of
 numbers, but not words that start with digits, e.g. \verb{2day}}
 
-\item{remove_url}{logical; if \code{TRUE} find and eliminate URLs beginning with
-http(s)}
+\item{remove_url}{logical; if \code{TRUE} removes URLs (http, https, ftp, sftp)
+and email addresses.}
 
 \item{remove_separators}{logical; if \code{TRUE} remove separators and separator
 characters (Unicode "Separator" \verb{[Z]} and "Control" \verb{[C]} categories)}

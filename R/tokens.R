@@ -24,8 +24,8 @@
 #'   "Symbol" `[S]` class
 #' @param remove_numbers logical; if `TRUE` remove tokens that consist only of
 #'   numbers, but not words that start with digits, e.g. `2day`
-#' @param remove_url logical; if `TRUE` find and eliminate URLs beginning with
-#'   http(s)
+#' @param remove_url logical; if `TRUE` removes URLs (http, https, ftp, sftp)
+#'   and email addresses.
 #' @param remove_separators logical; if `TRUE` remove separators and separator
 #'   characters (Unicode "Separator" `[Z]` and "Control" `[C]` categories)
 #' @param split_hyphens logical; if `FALSE`, do not split words that are
