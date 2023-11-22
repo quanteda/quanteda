@@ -200,6 +200,7 @@ R's
 segmentSentence
 segmenter
 selectFeatures
+sftp
 skipgram
 skipgrams
 smoothdfm
