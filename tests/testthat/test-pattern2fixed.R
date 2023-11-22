@@ -124,10 +124,21 @@ test_that("pattern2fixed converts emoji correctly", {
 
 test_that("index_types works fine with empty types", {
 
-    expect_silent(index_types("a*", character(), 'glob', FALSE))
-    expect_silent(index_types("a*", character(), 'fixed', FALSE))
-    expect_silent(index_types("a*", character(), 'regex', FALSE))
+    expect_type(quanteda:::index_types("a*", character(), 'glob', FALSE),
+                "list")
+    expect_type(quanteda:::index_types("a*", character(), 'fixed', FALSE),
+                "list")
+    expect_type(quanteda:::index_types("a*", character(), 'regex', FALSE),
+                "list")
+})
+
+test_that("index_types works fine with large vectors", {
     
+    pat <- unique(stringi::stri_rand_strings(100000, 1:10))
+    type <- unique(stringi::stri_rand_strings(1000000, 1:10))
+    expect_type(quanteda:::index_types(pat, type, 'fixed', FALSE),
+                "list")
+
 })
 
 test_that("glob patterns that contain regex special characters works", {

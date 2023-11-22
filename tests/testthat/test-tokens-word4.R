@@ -126,9 +126,9 @@ test_that("remove_url works as expected", {
              "www.r-project.org/about.html is a specific page without protocol",
              "https://www.google.com/search?q=quanteda+package is a google search",
              "ftp://user@host/foo/bar.txt is a FTP-hosted file",
-             "kohei.watanabe@quanteda.org is not an url")
-    toks <- tokens(txt) |> 
-        tokens_remove(c("^https?:", "^ftp:", "^www"), valuetype = "regex")
+             "kohei.watanabe@quanteda.org is an email address",
+             "The U.S. is not an url")
+    toks <- tokens(txt, remove_url = TRUE)
     expect_equal(
         as.list(toks),
         list(text1 = c("The", "URL", "was"),
@@ -137,7 +137,8 @@ test_that("remove_url works as expected", {
              text4 = c("is", "a", "specific", "page", "without", "protocol"),
              text5 = c("is", "a", "google", "search"),
              text6 = c("is", "a", "FTP-hosted", "file"),
-             text7 = c("kohei.watanabe@quanteda.org", "is", "not", "an", "url"))
+             text7 = c("is", "an", "email", "address"),
+             text8 = c("The", "U.S", ".", "is", "not", "an", "url"))
     )
 })
 
