@@ -37,7 +37,14 @@ corpus(x, ...)
   ...
 )
 
-\method{corpus}{kwic}(x, split_context = TRUE, extract_keyword = TRUE, meta = list(), ...)
+\method{corpus}{kwic}(
+  x,
+  split_context = TRUE,
+  extract_keyword = TRUE,
+  meta = list(),
+  concatenator = " ",
+  ...
+)
 
 \method{corpus}{Corpus}(x, ...)
 }
@@ -81,6 +88,8 @@ therefore being twice the number of rows in the kwic.}
 
 \item{extract_keyword}{logical; if  \code{TRUE}, save the keyword matching
 \code{pattern} as a new docvar \code{keyword}}
+
+\item{concatenator}{character between tokens, default is the whitespace.}
 }
 \value{
 A \linkS4class{corpus} class object containing the original texts,

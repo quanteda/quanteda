@@ -29,7 +29,7 @@
     - `ntype()` -- use `ntype(tokens(x))` instead; and. 
     - `ntoken()` -- use `ntoken(tokens(x))` instead.
 
-
+* `corpus.kwic()` is deprecated, with the suggestion to form a corpus from using `tokens_select(x, window = ...)` instead.
  
 ## Bug fixes and stability enhancements
 
