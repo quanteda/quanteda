@@ -161,9 +161,11 @@ tokens <-  function(x,
                     verbose = quanteda_options("verbose"),
                     ...,
                     xptr = FALSE) {
-    global$proc_time <- proc.time()
-    if (is.null(global$object_class))
+    
+    if (is.null(global$object_class)) {
         global$object_class <- class(x)[1]
+        global$proc_time <- proc.time()   
+    }
     UseMethod("tokens")
 }
 
