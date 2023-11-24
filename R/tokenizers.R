@@ -69,8 +69,8 @@ preserve_special <- function(x, split_hyphens = TRUE, split_tags = TRUE, verbose
     username <- quanteda_options("pattern_username")
     hashtag <- quanteda_options("pattern_hashtag")
     # preserves web and email address
-    address <- "(https?://|s?ftp://|www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-z]{2,4}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)"
-
+    address <- "(https?:\\/\\/(www\\.)?|@)[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-z]{2,4}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)"
+    
     regex <- address
     if (!split_hyphens) {
         if (verbose) catm(" ...preserving hyphens\n")
