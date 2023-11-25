@@ -64,16 +64,14 @@ select_docvars <- function(x, field = NULL, user = TRUE, system = FALSE, drop = 
     x <- x[user * !is_system(names(x)) | system * is_system(names(x))]
     if (is.null(field)) {
         return(x)
-    } else {
-        error <- !field %in% names(x)
-        if (any(error))
-            stop("field(s) ", paste(field[error], collapse = ", "), " not found")
-        if (length(field) == 1 && drop) {
-            return(x[[field]])
-        } else {
-            return(x[field])
-        }
     }
+    error <- !field %in% names(x)
+    if (any(error))
+        stop("field(s) ", paste(field[error], collapse = ", "), " not found")
+    if (length(field) == 1 && drop) {
+        return(x[[field]])
+    }
+    return(x[field])
 }
 
 
