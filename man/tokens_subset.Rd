@@ -4,18 +4,19 @@
 \alias{tokens_subset}
 \title{Extract a subset of a tokens}
 \usage{
-tokens_subset(x, subset, drop_docid = TRUE, ...)
+tokens_subset(
+  x,
+  subset,
+  min_ntoken = NULL,
+  max_ntoken = NULL,
+  drop_docid = TRUE,
+  ...
+)
 }
 \arguments{
-\item{x}{\link{tokens} object to be subsetted}
+\item{x}{\link{tokens} object to be subsetted.}
 
-\item{subset}{logical expression indicating the documents to keep: missing
-values are taken as false}
-
-\item{drop_docid}{if \code{TRUE}, \code{docid} for documents are removed as the result
-of subsetting.}
-
-\item{...}{not used}
+\item{min_ntoken, max_ntoken}{minimum and maximum lengths of the documents to extract}
 }
 \value{
 \link{tokens} object, with a subset of documents (and docvars)
