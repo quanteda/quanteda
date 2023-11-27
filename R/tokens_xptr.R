@@ -168,8 +168,11 @@ tail.tokens_xptr <- function(x, n = 6L, ...) {
 
 
 #' @export
-tokens_subset.tokens_xptr <- function(x, subset, drop_docid = TRUE, ...) {
+tokens_subset.tokens_xptr <- function(x, subset, drop_docid = TRUE, 
+                                      min_ntoken = NULL, max_ntoken = NULL, ...) {
     
+    min_ntoken <- check_integer(min_ntoken, min = 0, allow_null = TRUE)
+    max_ntoken <- check_integer(max_ntoken, min = 0, allow_null = TRUE)
     check_dots(...)
     
     attrs <- attributes(x)
@@ -181,7 +184,17 @@ tokens_subset.tokens_xptr <- function(x, subset, drop_docid = TRUE, ...) {
         r <- eval(e, docvar, parent.frame())
         r & !is.na(r)
     }
-    return(x[r, drop_docid = drop_docid])
+    
+    l <- if (is.null(min_ntoken) && is.null(max_ntoken)) {
+        rep_len(TRUE, ndoc(x))
+    } else {
+        n <- ntoken(x)
+        if (is.null(min_ntoken)) min_ntoken <- 0L
+        if (is.null(max_ntoken)) max_ntoken <- max(n)
+        min_ntoken <= n & n <= max_ntoken
+    }
+    
+    return(x[r & l, drop_docid = drop_docid])
 }
 
 
