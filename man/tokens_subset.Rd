@@ -16,7 +16,15 @@ tokens_subset(
 \arguments{
 \item{x}{\link{tokens} object to be subsetted.}
 
-\item{min_ntoken, max_ntoken}{minimum and maximum lengths of the documents to extract}
+\item{subset}{logical expression indicating the documents to keep: missing
+values are taken as false.}
+
+\item{min_ntoken, max_ntoken}{minimum and maximum lengths of the documents to extract.}
+
+\item{drop_docid}{if \code{TRUE}, \code{docid} for documents are removed as the result
+of subsetting.}
+
+\item{...}{not used}
 }
 \value{
 \link{tokens} object, with a subset of documents (and docvars)

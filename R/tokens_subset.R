@@ -7,8 +7,8 @@
 #' tokens.
 #'
 #' @param x [tokens] object to be subsetted.
-#' @param min_ntoken,max_ntoken minimum and maximum lengths of the documents to extract
-#' @inheritParams corpus_subset.
+#' @param min_ntoken,max_ntoken minimum and maximum lengths of the documents to extract.
+#' @inheritParams corpus_subset
 #' @return [tokens] object, with a subset of documents (and docvars)
 #'   selected according to arguments
 #' @export

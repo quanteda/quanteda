@@ -19,7 +19,7 @@ dfm_subset(
 \item{subset}{logical expression indicating the documents to keep: missing
 values are taken as false.}
 
-\item{min_ntoken, max_ntoken}{minimum and maximum lengths of the documents to extract}
+\item{min_ntoken, max_ntoken}{minimum and maximum lengths of the documents to extract.}
 
 \item{drop_docid}{if \code{TRUE}, \code{docid} for documents are removed as the result
 of subsetting.}
