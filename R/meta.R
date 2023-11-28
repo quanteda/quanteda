@@ -264,6 +264,7 @@ make_meta_tokens <- function(inherit = NULL, ...) {
     default <- list(
         "unit" = "documents",
         "what" = "word",
+        "tokenizer" = "tokenizer_word",
         "ngram" = 1L,
         "skip" = 0L,
         "concatenator" = "_",
@@ -280,6 +281,7 @@ make_meta_dfm <- function(inherit = NULL, ...) {
     default <- list(
         "unit" = "documents",
         "what" = "word",
+        "tokenizer" = "tokenizer_word",
         "ngram" = 1L,
         "skip" = 0L,
         "concatenator" = "_",

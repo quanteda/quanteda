@@ -333,6 +333,7 @@ tokens.corpus <- function(x,
         result, 
         types = NULL, 
         what = what,
+        tokenizer = tokenizer,
         docvars = select_docvars(attrs[["docvars"]], user = include_docvars, system = TRUE),
         meta = attrs[["meta"]]
     )
