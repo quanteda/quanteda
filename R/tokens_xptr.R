@@ -168,8 +168,8 @@ tail.tokens_xptr <- function(x, n = 6L, ...) {
 
 
 #' @export
-tokens_subset.tokens_xptr <- function(x, subset, drop_docid = TRUE, 
-                                      min_ntoken = NULL, max_ntoken = NULL, ...) {
+tokens_subset.tokens_xptr <- function(x, subset, min_ntoken = NULL, max_ntoken = NULL, 
+                                      drop_docid = TRUE, ...) {
     
     min_ntoken <- check_integer(min_ntoken, min = 0, allow_null = TRUE)
     max_ntoken <- check_integer(max_ntoken, min = 0, allow_null = TRUE)
