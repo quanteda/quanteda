@@ -7,8 +7,9 @@
 #' [docvars] in the dfm.
 #' 
 #' To select or subset *features*, see [dfm_select()] instead.
-#' @param x [dfm] object to be subsetted
+#' @param x [dfm] object to be subsetted.
 #' @inheritParams corpus_subset
+#' @inheritParams tokens_subset
 # @param select expression, indicating the docvars to select from the dfm; or a
 #   \link{dfm} object, in which case the returned dfm will contain the same
 #   documents as the original dfm, even if these are empty.  See Details.
@@ -31,19 +32,24 @@
 #' dfm_subset(dfmat, grp > 1)
 #' # selecting on a supplied vector
 #' dfm_subset(dfmat, c(TRUE, FALSE, TRUE, FALSE))
-dfm_subset <- function(x, subset, drop_docid = TRUE, ...) {
+dfm_subset <- function(x, subset, min_ntoken = NULL, max_ntoken = NULL, 
+                       drop_docid = TRUE, ...) {
     UseMethod("dfm_subset")
 }
     
 #' @export
-dfm_subset.default <- function(x, subset, drop_docid = TRUE, ...) {
+dfm_subset.default <- function(x, subset, min_ntoken = NULL, max_ntoken = NULL, 
+                               drop_docid = TRUE, ...) {
     check_class(class(x), "dfm_subset")
 }
     
 #' @export
-dfm_subset.dfm <- function(x, subset, drop_docid = TRUE, ...) {
+dfm_subset.dfm <- function(x, subset, min_ntoken = NULL, max_ntoken = NULL,
+                           drop_docid = TRUE, ...) {
     
     x <- as.dfm(x)
+    min_ntoken <- check_integer(min_ntoken, min = 0, allow_null = TRUE)
+    max_ntoken <- check_integer(max_ntoken, min = 0, allow_null = TRUE)
     check_dots(...)
     
     #sys <- select_docvars(x@docvars, system = TRUE)
@@ -55,12 +61,15 @@ dfm_subset.dfm <- function(x, subset, drop_docid = TRUE, ...) {
         r <- eval(e, docvar, parent.frame())
         r & !is.na(r)
     }
-    # vars <- if (missing(select)) 
-    #     rep_len(TRUE, ncol(usr))
-    # else {
-    #     nl <- as.list(seq_along(usr))
-    #     names(nl) <- names(usr)
-    #     eval(substitute(select), nl, parent.frame())
-    # }
-    return(x[r,,drop_docid = drop_docid])
+    
+    l <- if (is.null(min_ntoken) && is.null(max_ntoken)) {
+        rep_len(TRUE, ndoc(x))
+    } else {
+        n <- ntoken(x)
+        if (is.null(min_ntoken)) min_ntoken <- 0L
+        if (is.null(max_ntoken)) max_ntoken <- max(n)
+        min_ntoken <= n & n <= max_ntoken
+    }
+    
+    return(x[r & l,,drop_docid = drop_docid])
 }

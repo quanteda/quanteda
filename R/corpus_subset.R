@@ -5,9 +5,9 @@
 #' functions identically to [subset.data.frame()], using non-standard
 #' evaluation to evaluate conditions based on the [docvars] in the corpus.
 #' 
-#' @param x [corpus] object to be subsetted
+#' @param x [corpus] object to be subsetted.
 #' @param subset logical expression indicating the documents to keep: missing
-#'   values are taken as false
+#'   values are taken as false.
 #' @param drop_docid if `TRUE`, `docid` for documents are removed as the result 
 #'   of subsetting.
 #' @param ... not used

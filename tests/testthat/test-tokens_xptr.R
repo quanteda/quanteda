@@ -148,6 +148,25 @@ test_that("tokens_tolower and tokens_toupper work", {
                      list(recompiled = TRUE))
 })
 
+test_that("tokens_subset works", {
+
+    expect_equal(
+        tokens_subset(xtoks, 1000 <= ntoken(xtoks)),
+        tokens_subset(xtoks, min_ntoken = 1000)
+    )
+    
+    expect_equal(
+        tokens_subset(xtoks, ntoken(xtoks) <= 3000),
+        tokens_subset(xtoks, max_ntoken = 3000)
+    )
+    
+    expect_equal(
+        tokens_subset(xtoks, Year > 2000 & 1000 <= ntoken(xtoks) & ntoken(xtoks) >= 1000),
+        tokens_subset(xtoks, Year > 2000, min_ntoken = 1000, max_ntoken = 3000)
+    )
+
+})
+
 test_that("all the meta fields are copied", {
     
     toks_dict <- tokens_lookup(toks, data_dictionary_LSD2015[1:2])

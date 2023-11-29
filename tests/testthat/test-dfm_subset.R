@@ -33,3 +33,44 @@ test_that("dfm_subset works with docvars", {
         c("McKinley", "Roosevelt", "Taft", "Wilson", "Wilson")
     )
 })
+
+test_that("tokens_subset works with min_ntoken and max_ntoken", {
+    toks <- tokens(corpus_subset(data_corpus_inaugural, Year > 1900))
+    dfmt <- dfm(toks)
+    
+    expect_equal(
+        dfm_subset(dfmt, 1000 <= ntoken(dfmt)),
+        dfm_subset(dfmt, min_ntoken = 1000)
+    )
+    
+    expect_equal(
+        dfm_subset(dfmt, ntoken(dfmt) <= 3000),
+        dfm_subset(dfmt, max_ntoken = 3000)
+    )
+    
+    expect_equal(
+        dfm_subset(dfmt, Year > 2000 & 1000 <= ntoken(dfmt) & ntoken(dfmt) >= 1000),
+        dfm_subset(dfmt, Year > 2000, min_ntoken = 1000, max_ntoken = 3000)
+    )
+    
+    expect_error(
+        dfm_subset(dfmt, min_ntoken = -1),
+        "The value of min_ntoken must be between 0 and Inf"
+    )
+    
+    expect_error(
+        dfm_subset(dfmt, min_ntoken = c(10, 20)),
+        "The length of min_ntoken must be 1"
+    )
+    
+    expect_error(
+        dfm_subset(dfmt, max_ntoken = -1),
+        "The value of max_ntoken must be between 0 and Inf"
+    )
+    
+    expect_error(
+        dfm_subset(dfmt, max_ntoken = c(10, 20)),
+        "The length of max_ntoken must be 1"
+    )
+})
+
