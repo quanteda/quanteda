@@ -218,6 +218,7 @@ c.tokens_xptr <- function(...) {
     build_tokens(
         temp, types = NULL,
         what = field_object(attrs[[1]], "what"),
+        tokenizer = field_object(attrs[[1]], "tokenizer"),
         ngram = sort(unique(ngram)),
         skip = sort(unique(skip)),
         concatenator = field_object(attrs[[1]], "concatenator"),
