@@ -3,12 +3,13 @@
 ## Changes and additions
 
 * Introduces the `tokens_xptr` objects that extend the `tokens` objects with external pointers for a greater efficiency. Once `tokens` objects are converted to `tokens_xptr` objects using `as.tokens_xptr()`, `tokens_*.tokens_xptr()` methods are called automatically. 
-
 * Improved C++ functions to allow the users to change the number of threads for parallel computing in more flexible manner using `quanteda_options()`. The value of `threads` can be changed in the middle of analysis pipeline.
 
 * Makes `"word4"` the default (word) tokeniser, with improved efficiency, language handling, and customisation options.
 
 * Replaced all occurrences of the **magrittr** `%>%` pipe with the R pipe `|>` introduced in R 4.1, although the `%>%` pipe is still re-exported and therefore available to all users of **quanteda** without loading any additional packages.
+
+* Added `min_ntoken` and `max_ntoken` to `tokens_subset()` and `dfm_subset()` to extract documents based on number of tokens easily. It is equivalent to selecting documents using `ntoken()`.
 
 ## Removals
 

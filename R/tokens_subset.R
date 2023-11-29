@@ -6,9 +6,9 @@
 #' non-standard evaluation to evaluate conditions based on the [docvars] in the
 #' tokens.
 #'
-#' @param x [tokens] object to be subsetted
+#' @param x [tokens] object to be subsetted.
+#' @param min_ntoken,max_ntoken minimum and maximum lengths of the documents to extract.
 #' @inheritParams corpus_subset
-# @param select expression, indicating the \link{docvars} to keep
 #' @return [tokens] object, with a subset of documents (and docvars)
 #'   selected according to arguments
 #' @export
@@ -23,19 +23,24 @@
 #' tokens_subset(toks, grp > 1)
 #' # selecting on a supplied vector
 #' tokens_subset(toks, c(TRUE, FALSE, TRUE, FALSE))
-tokens_subset <- function(x, subset, drop_docid = TRUE, ...) {
+tokens_subset <- function(x, subset, min_ntoken = NULL, max_ntoken = NULL, 
+                          drop_docid = TRUE, ...) {
     UseMethod("tokens_subset")
 }
     
 #' @export
-tokens_subset.default <- function(x, subset, drop_docid = TRUE, ...) {
+tokens_subset.default <- function(x, subset, min_ntoken = NULL, max_ntoken = NULL, 
+                                  drop_docid = TRUE, ...) {
     check_class(class(x), "tokens_subset")
 }
     
 #' @export
-tokens_subset.tokens <- function(x, subset, drop_docid = TRUE, ...) {
+tokens_subset.tokens <- function(x, subset, min_ntoken = NULL, max_ntoken = NULL, 
+                                 drop_docid = TRUE, ...) {
     
     x <- as.tokens(x)
+    min_ntoken <- check_integer(min_ntoken, min = 0, allow_null = TRUE)
+    max_ntoken <- check_integer(max_ntoken, min = 0, allow_null = TRUE)
     check_dots(...)
     
     attrs <- attributes(x)
@@ -47,5 +52,15 @@ tokens_subset.tokens <- function(x, subset, drop_docid = TRUE, ...) {
         r <- eval(e, docvar, parent.frame())
         r & !is.na(r)
     }
-    return(x[r, drop_docid = drop_docid])
+    
+    l <- if (is.null(min_ntoken) && is.null(max_ntoken)) {
+        rep_len(TRUE, ndoc(x))
+    } else {
+        n <- ntoken(x)
+        if (is.null(min_ntoken)) min_ntoken <- 0L
+        if (is.null(max_ntoken)) max_ntoken <- max(n)
+        min_ntoken <= n & n <= max_ntoken
+    }
+    
+    return(x[r & l, drop_docid = drop_docid])
 }
