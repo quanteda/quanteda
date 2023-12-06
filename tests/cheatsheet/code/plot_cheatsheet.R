@@ -1,49 +1,58 @@
 # Plots for the quanteda cheatsheet
 
 library(quanteda)
+library(quanteda.textmodels)
+library(quanteda.textstats)
+library(quanteda.textplots)
 library(ggplot2)
+
+setwd("/Users/smueller/Documents/GitHub/quanteda/tests/cheatsheet")
 
 ###
 # Wordcloud
 ###
 
 set.seed(3)
-pdf(file = "plots/textplot_wordcloud.pdf", width = 5, height = 5)
-textplot_wordcloud(dfm(corpus_subset(data_corpus_inaugural,
-                                     President=="Obama"), remove = stopwords("english"),
-                       remove_punct = TRUE), max_words = 50)
-dev.off()
+data_corpus_inaugural |>
+    corpus_subset(President == "Obama") |>
+    tokens() |> 
+    tokens_remove(pattern = stopwords("en")) |> 
+    dfm() |>  
+    textplot_wordcloud() 
+ggsave("plots/textplot_wordcloud.pdf", width = 5, height = 5)
+
 
 ###
 # X-Ray Plot
 ###
-
-textplot_xray(kwic(corpus_subset(data_corpus_inaugural, Year > 2000), "american"))
+data_corpus_inaugural |> 
+    corpus_subset(Year > 2000) |> 
+    tokens() |> 
+    kwic(pattern = "american") |> 
+    textplot_xray()
 ggsave("plots/textplot_xray.pdf", width = 4, height = 3)
 
 ###
 # Keyness plot
 ###
 
-pres_dfm <- dfm(corpus_subset(data_corpus_inaugural, 
-                              President %in% c("Obama", "Trump")), 
-                groups = "President", 	remove = stopwords("english"), 
-                remove_punct = TRUE) 
 
 data_corpus_inaugural |>   
     corpus_subset(President %in% 
                       c("Obama", "Trump")) |>
-    dfm(groups = "President", 
-        remove = stopwords("english")) |>   
+    tokens() |> 
+    dfm() |>   
+    dfm_group(groups = President) |> 
     textstat_keyness(target = "Trump") |>   
     textplot_keyness(n = 10)
 ggsave("plots/textplot_keyness.pdf", width = 8, height = 5)
+
 
 ###
 # Wordscores plot
 ###
            
-ie_dfm <- dfm(data_corpus_irishbudget2010)
+ie_dfm <- dfm(tokens(data_corpus_irishbudget2010))
 doclab <- apply(docvars(data_corpus_irishbudget2010, c("name", "party")), 
                 1, paste, collapse = " ")
 
