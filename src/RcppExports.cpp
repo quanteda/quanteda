@@ -227,8 +227,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // cpp_tokens_select
-TokensPtr cpp_tokens_select(TokensPtr xptr, const List& words_, int mode, bool padding, int window_left, int window_right, const IntegerVector pos_from_, const IntegerVector pos_to_, const int thread);
-RcppExport SEXP _quanteda_cpp_tokens_select(SEXP xptrSEXP, SEXP words_SEXP, SEXP modeSEXP, SEXP paddingSEXP, SEXP window_leftSEXP, SEXP window_rightSEXP, SEXP pos_from_SEXP, SEXP pos_to_SEXP, SEXP threadSEXP) {
+TokensPtr cpp_tokens_select(TokensPtr xptr, const List& words_, int mode, bool padding, int window_left, int window_right, const IntegerVector pos_from_, const IntegerVector pos_to_, const LogicalVector bypass_, const int thread);
+RcppExport SEXP _quanteda_cpp_tokens_select(SEXP xptrSEXP, SEXP words_SEXP, SEXP modeSEXP, SEXP paddingSEXP, SEXP window_leftSEXP, SEXP window_rightSEXP, SEXP pos_from_SEXP, SEXP pos_to_SEXP, SEXP bypass_SEXP, SEXP threadSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -240,8 +240,9 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< int >::type window_right(window_rightSEXP);
     Rcpp::traits::input_parameter< const IntegerVector >::type pos_from_(pos_from_SEXP);
     Rcpp::traits::input_parameter< const IntegerVector >::type pos_to_(pos_to_SEXP);
+    Rcpp::traits::input_parameter< const LogicalVector >::type bypass_(bypass_SEXP);
     Rcpp::traits::input_parameter< const int >::type thread(threadSEXP);
-    rcpp_result_gen = Rcpp::wrap(cpp_tokens_select(xptr, words_, mode, padding, window_left, window_right, pos_from_, pos_to_, thread));
+    rcpp_result_gen = Rcpp::wrap(cpp_tokens_select(xptr, words_, mode, padding, window_left, window_right, pos_from_, pos_to_, bypass_, thread));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -474,7 +475,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_quanteda_cpp_tokens_replace", (DL_FUNC) &_quanteda_cpp_tokens_replace, 4},
     {"_quanteda_cpp_tokens_restore", (DL_FUNC) &_quanteda_cpp_tokens_restore, 5},
     {"_quanteda_cpp_tokens_segment", (DL_FUNC) &_quanteda_cpp_tokens_segment, 5},
-    {"_quanteda_cpp_tokens_select", (DL_FUNC) &_quanteda_cpp_tokens_select, 9},
+    {"_quanteda_cpp_tokens_select", (DL_FUNC) &_quanteda_cpp_tokens_select, 10},
     {"_quanteda_cpp_as_xptr", (DL_FUNC) &_quanteda_cpp_as_xptr, 2},
     {"_quanteda_cpp_copy_xptr", (DL_FUNC) &_quanteda_cpp_copy_xptr, 1},
     {"_quanteda_cpp_get_attributes", (DL_FUNC) &_quanteda_cpp_get_attributes, 1},

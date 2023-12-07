@@ -61,8 +61,8 @@ cpp_tokens_segment <- function(xptr, patterns_, remove, position, thread = -1L) 
     .Call(`_quanteda_cpp_tokens_segment`, xptr, patterns_, remove, position, thread)
 }
 
-cpp_tokens_select <- function(xptr, words_, mode, padding, window_left, window_right, pos_from_, pos_to_, thread = -1L) {
-    .Call(`_quanteda_cpp_tokens_select`, xptr, words_, mode, padding, window_left, window_right, pos_from_, pos_to_, thread)
+cpp_tokens_select <- function(xptr, words_, mode, padding, window_left, window_right, pos_from_, pos_to_, bypass_, thread = -1L) {
+    .Call(`_quanteda_cpp_tokens_select`, xptr, words_, mode, padding, window_left, window_right, pos_from_, pos_to_, bypass_, thread)
 }
 
 cpp_as_xptr <- function(text_, types_) {

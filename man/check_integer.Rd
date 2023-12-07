@@ -27,7 +27,14 @@ check_double(
   allow_null = FALSE
 )
 
-check_logical(x, min_len = 1, max_len = 1, strict = FALSE, allow_null = FALSE)
+check_logical(
+  x,
+  min_len = 1,
+  max_len = 1,
+  strict = FALSE,
+  allow_null = FALSE,
+  allow_na = FALSE
+)
 
 check_character(
   x,
@@ -51,6 +58,8 @@ check_character(
 \item{strict}{raise error when \code{x} is a different type}
 
 \item{allow_null}{if \code{TRUE}, returns \code{NULL} when \code{is.null(x)}}
+
+\item{allow_na}{if \code{TRUE}, convert \code{NA} to \code{FALSE}}
 
 \item{min_nchar}{minimum character length of values in the vector}
 
