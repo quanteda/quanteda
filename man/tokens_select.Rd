@@ -72,6 +72,9 @@ When the length of the vector is equal to \code{ndoc}, tokens in corresponding
 positions will be selected; when it is less than \code{ndoc}, values are
 repeated to make them equal in length.}
 
+\item{condition}{logical vector with \code{ndoc(x)} values. Documents are
+modified only when corresponding values are \code{TRUE}.}
+
 \item{verbose}{if \code{TRUE} print messages about how many tokens were selected
 or removed}
 

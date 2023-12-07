@@ -43,6 +43,8 @@
 #'   maximum length in characters for tokens to be removed or kept; defaults are
 #'   `NULL` for no limits.  These are applied after (and hence, in addition to)
 #'   any selection based on pattern matches.
+#' @param condition logical vector with `ndoc(x)` values. Documents are
+#'   modified only when corresponding values are `TRUE`.
 #' @return a [tokens] object with tokens selected or removed based on their
 #'   match to `pattern`
 #' @export
