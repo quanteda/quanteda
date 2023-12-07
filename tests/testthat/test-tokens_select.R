@@ -719,7 +719,8 @@ test_that("condition argument is working", {
     dat <- data.frame(text = c("R and C are languages",
                               "Windows (R), Quanteda (C)",
                               "Sizes are X=10, Y=20, Z=30"),
-                      topic = c("langauge", "software", "hadware"))
+                      topic = c("langauge", "software", "hardware"),
+                      month = c(NA, 4, 12))
     corp <- corpus(dat)
     toks <- tokens(corp)
     
@@ -751,6 +752,16 @@ test_that("condition argument is working", {
         list(text1 = c("R", "C"),
              text2 = c("Windows", "Quanteda"),
              text3 = character())
+    )
+    
+    toks4 <- toks |>
+        tokens_remove(min_nchar = 2, condition = toks$month) |>
+        tokens_remove(stopwords())
+    expect_identical(
+        as.list(toks4),
+        list(text1 = c("R", "C", "languages"),
+             text2 = c("Windows", "Quanteda"),
+             text3 = c("Sizes", "10", "20", "30"))
     )
 })
 
