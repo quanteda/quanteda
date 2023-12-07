@@ -69,6 +69,7 @@ tokens_select <- function(x, pattern, selection = c("keep", "remove"),
                           case_insensitive = TRUE, padding = FALSE, window = 0,
                           min_nchar = NULL, max_nchar = NULL,
                           startpos = 1L, endpos = -1L,
+                          condition,
                           verbose = quanteda_options("verbose")) {
     UseMethod("tokens_select")
 }
@@ -80,6 +81,7 @@ tokens_select.default <- function(x, pattern = NULL,
                                   case_insensitive = TRUE, padding = FALSE, window = 0,
                                   min_nchar = NULL, max_nchar = NULL,
                                   startpos = 1L, endpos = -1L,
+                                  condition,
                                   verbose = quanteda_options("verbose")) {
     check_class(class(x), "tokens_select")
 }
@@ -129,13 +131,14 @@ tokens_select.default <- function(x, pattern = NULL,
 #' tokens_select(toks, "t*", endpos = 3)
 #'
 tokens_select.tokens_xptr <- function(x, pattern = NULL,
-                                 selection = c("keep", "remove"),
-                                 valuetype = c("glob", "regex", "fixed"),
-                                 case_insensitive = TRUE, padding = FALSE, window = 0,
-                                 min_nchar = NULL, max_nchar = NULL,
-                                 startpos = 1L, endpos = -1L,
-                                 verbose = quanteda_options("verbose")) {
-
+                                      selection = c("keep", "remove"),
+                                      valuetype = c("glob", "regex", "fixed"),
+                                      case_insensitive = TRUE, padding = FALSE, window = 0,
+                                      min_nchar = NULL, max_nchar = NULL,
+                                      startpos = 1L, endpos = -1L,
+                                      condition,
+                                      verbose = quanteda_options("verbose")) {
+    
     selection <- match.arg(selection)
     valuetype <- match.arg(valuetype)
     padding <- check_logical(padding)
@@ -146,7 +149,7 @@ tokens_select.tokens_xptr <- function(x, pattern = NULL,
     
     attrs <- attributes(x)
     type <- get_types(x)
-
+    
     # selection by pattern
     if (is.null(pattern)) {
         if (selection == "keep") {
@@ -156,9 +159,9 @@ tokens_select.tokens_xptr <- function(x, pattern = NULL,
         }
     } else {
         ids <- object2id(pattern, type, valuetype, case_insensitive,
-                            field_object(attrs, "concatenator"))
+                         field_object(attrs, "concatenator"))
     }
-
+    
     # selection by nchar
     if (!is.null(min_nchar) | !is.null(max_nchar)) {
         len <- stri_length(type)
@@ -185,18 +188,27 @@ tokens_select.tokens_xptr <- function(x, pattern = NULL,
             }
         }
     }
-
+    
     if (verbose) message_select(selection, length(ids), 0)
     if (length(window) == 1) window <- rep(window, 2)
     
     startpos <- rep(startpos, length.out = ndoc(x))
     endpos <- rep(endpos, length.out = ndoc(x))
     
+    docvar <- get_docvars(x, user = TRUE, system = TRUE)
+    r <- if (missing(condition)) {
+        rep_len(TRUE, ndoc(x))
+    } else {
+        e <- substitute(condition)
+        r <- eval(e, docvar, parent.frame())
+        r & !is.na(r)
+    }
+    
     if (selection == "keep") {
-        result <- cpp_tokens_select(x, ids, 1, padding, window[1], window[2], startpos, endpos,
+        result <- cpp_tokens_select(x, ids, 1, padding, window[1], window[2], startpos, endpos, !r, 
                                     get_threads())
     } else {
-        result <- cpp_tokens_select(x, ids, 2, padding, window[1], window[2], startpos, endpos,
+        result <- cpp_tokens_select(x, ids, 2, padding, window[1], window[2], startpos, endpos, !r, 
                                     get_threads())
     }
     rebuild_tokens(result, attrs)
@@ -223,10 +235,11 @@ tokens_select.tokens <- function(x, ...) {
 #' tokens_remove(tokens(txt, remove_punct = TRUE), stopwords("english"))
 #'
 tokens_remove <- function(x, ...) {
-    if ("selection" %in% names(list(...))) {
-        stop("tokens_remove cannot include selection argument")
-    }
-    tokens_select(x, ..., selection = "remove")
+    (function(..., selection) {
+        if (!missing(selection))
+            stop("tokens_remove cannot include selection argument")
+        tokens_select(x, ..., selection = "remove")
+    })(...)
 }
 
 #' @rdname tokens_select
@@ -236,8 +249,9 @@ tokens_remove <- function(x, ...) {
 #' tokens_keep(tokens(txt, remove_punct = TRUE), "??")
 #'
 tokens_keep <- function(x, ...) {
-    if ("selection" %in% names(list(...))) {
-        stop("tokens_keep cannot include selection argument")
-    }
-    tokens_select(x, ..., selection = "keep")
+    (function(..., selection) {
+        if (!missing(selection))
+            stop("tokens_keep cannot include selection argument")
+        tokens_select(x, ..., selection = "keep")
+    })(...)
 }
