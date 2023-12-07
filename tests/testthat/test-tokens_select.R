@@ -719,12 +719,12 @@ test_that("condition argument is working", {
     dat <- data.frame(text = c("R and C are languages",
                               "Windows (R), Quanteda (C)",
                               "Sizes are X=10, Y=20, Z=30"),
-                      topic = c("langauge", "software", "hardware"),
+                      topic = c("language", "software", "hardware"),
                       month = c(NA, 4, 12))
     corp <- corpus(dat)
     toks <- tokens(corp)
     
-    toks1 <- tokens_select(toks, min_nchar = 2, condition = toks$topic != "langauge")
+    toks1 <- tokens_select(toks, min_nchar = 2, condition = toks$topic != "language")
     expect_identical(
         as.list(toks1),
         list(text1 = c("R", "and", "C", "are", "languages"),
@@ -745,8 +745,8 @@ test_that("condition argument is working", {
     )
     
     toks3 <- toks |>
-        tokens_keep(c("R", "C"), condition = toks$topic == "langauge") %>% 
-        tokens_remove(min_nchar = 6, condition = toks$topic != "langauge")
+        tokens_keep(c("R", "C"), condition = toks$topic == "language") %>% 
+        tokens_remove(min_nchar = 6, condition = toks$topic != "language")
     expect_identical(
         as.list(toks3),
         list(text1 = c("R", "C"),
