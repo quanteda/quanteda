@@ -712,3 +712,31 @@ test_that("position arguments are working", {
     )
     
 })
+
+
+test_that("position arguments are working", {
+    
+    dat <- data.frame(text = c("R and C are languages",
+                              "Windows (R), Quanteda (C)",
+                              "Sizes are X=10, Y=20, Z=5"),
+                      topic = c("langauge", "software", "hadware"))
+    corp <- corpus(dat)
+    toks <- tokens(corp)
+    toks1 <- tokens_select(toks, min_nchar = 2, condition = topic != "langauge")
+    toks1
+    list(text1 = c("R", "and", "C", "langauges"),
+         text2 = c("Widnows", "Quanteda"),
+         text3 = c("Sizes", "are", "10", "20", "30"))
+    
+    toks2 <- toks %>% 
+        tokens_select(c("R", "C"), condition = docnames(toks) == "text1") %>% 
+        tokens_select(c("windows", "quanteda"), condition = docnames(toks) == "text2") %>% 
+        tokens_select("\\d", valuetype = "regex", condition = docnames(toks) == "text3")
+    toks2
+    
+    toks3 <- toks |>
+        tokens_keep(c("R", "C"), condition = topic == "langauge") %>% 
+        tokens_remove(min_nchar = 6, condition = topic != "langauge")
+    toks3
+})
+
