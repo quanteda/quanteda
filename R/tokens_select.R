@@ -71,7 +71,7 @@ tokens_select <- function(x, pattern, selection = c("keep", "remove"),
                           case_insensitive = TRUE, padding = FALSE, window = 0,
                           min_nchar = NULL, max_nchar = NULL,
                           startpos = 1L, endpos = -1L,
-                          condition = NA,
+                          condition = NULL,
                           verbose = quanteda_options("verbose")) {
     UseMethod("tokens_select")
 }
@@ -83,7 +83,7 @@ tokens_select.default <- function(x, pattern = NULL,
                                   case_insensitive = TRUE, padding = FALSE, window = 0,
                                   min_nchar = NULL, max_nchar = NULL,
                                   startpos = 1L, endpos = -1L,
-                                  condition = NA,
+                                  condition = NULL,
                                   verbose = quanteda_options("verbose")) {
     check_class(class(x), "tokens_select")
 }
