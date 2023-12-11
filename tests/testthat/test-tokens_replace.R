@@ -243,16 +243,14 @@ test_that("condition argument is working", {
     corp <- corpus(dat)
     toks <- tokens(corp)
     
-    toks1 <- tokens_replace(toks, "C", "R", concatenator = "",
-                             condition = toks$topic == "language")
+    toks1 <- tokens_replace(toks, "C", "R", condition = toks$topic == "language")
     expect_identical(
         as.list(toks1),
         list(text1 = c("R", "language"),
              text2 = c("Vitamin", "C"))
     )
     
-    toks2 <- tokens_replace(toks, "C", "D", concatenator = "",
-                            condition = toks$topic == "vitamin")
+    toks2 <- tokens_replace(toks, "C", "D", condition = toks$topic == "vitamin")
     expect_identical(
         as.list(toks2),
         list(text1 = c("C", "language"),
