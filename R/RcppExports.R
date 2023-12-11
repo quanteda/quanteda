@@ -29,8 +29,8 @@ cpp_tokens_combine <- function(xptr1, xptr2, thread = -1L) {
     .Call(`_quanteda_cpp_tokens_combine`, xptr1, xptr2, thread)
 }
 
-cpp_tokens_compound <- function(xptr, compounds_, delim_, join, window_left, window_right, thread = -1L) {
-    .Call(`_quanteda_cpp_tokens_compound`, xptr, compounds_, delim_, join, window_left, window_right, thread)
+cpp_tokens_compound <- function(xptr, compounds_, delim_, join, window_left, window_right, bypass_, thread = -1L) {
+    .Call(`_quanteda_cpp_tokens_compound`, xptr, compounds_, delim_, join, window_left, window_right, bypass_, thread)
 }
 
 cpp_tokens_group <- function(xptr, groups_, thread = -1L) {
@@ -49,8 +49,8 @@ cpp_tokens_recompile <- function(texts_, types_, gap = TRUE, dup = TRUE) {
     .Call(`_quanteda_cpp_tokens_recompile`, texts_, types_, gap, dup)
 }
 
-cpp_tokens_replace <- function(xptr, patterns_, replacements_, thread = -1L) {
-    .Call(`_quanteda_cpp_tokens_replace`, xptr, patterns_, replacements_, thread)
+cpp_tokens_replace <- function(xptr, patterns_, replacements_, bypass_, thread = -1L) {
+    .Call(`_quanteda_cpp_tokens_replace`, xptr, patterns_, replacements_, bypass_, thread)
 }
 
 cpp_tokens_restore <- function(xptr, marks_left_, marks_right_, delim_, thread = -1L) {

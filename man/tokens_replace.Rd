@@ -10,6 +10,7 @@ tokens_replace(
   replacement,
   valuetype = "glob",
   case_insensitive = TRUE,
+  condition = NULL,
   verbose = quanteda_options("verbose")
 )
 }
@@ -28,6 +29,9 @@ exact matching. See \link{valuetype} for details.}
 
 \item{case_insensitive}{logical; if \code{TRUE}, ignore case when matching a
 \code{pattern} or \link{dictionary} values}
+
+\item{condition}{logical vector with \code{ndoc(x)} values. Documents are
+modified only when corresponding values are \code{TRUE}.}
 
 \item{verbose}{print status messages if \code{TRUE}}
 }

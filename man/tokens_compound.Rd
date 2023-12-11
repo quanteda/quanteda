@@ -11,7 +11,8 @@ tokens_compound(
   concatenator = "_",
   window = 0L,
   case_insensitive = TRUE,
-  join = TRUE
+  join = TRUE,
+  condition = NULL
 )
 }
 \arguments{
@@ -42,6 +43,9 @@ be shrunk to exclude them.}
 
 \item{join}{logical; if \code{TRUE}, join overlapping compounds into a single
 compound; otherwise, form these separately.  See examples.}
+
+\item{condition}{logical vector with \code{ndoc(x)} values. Documents are
+modified only when corresponding values are \code{TRUE}.}
 }
 \value{
 A \link{tokens} object in which the token sequences matching \code{pattern}
