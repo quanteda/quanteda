@@ -36,36 +36,65 @@
 #' toks4 <- tokens_replace(toks1, phrase(c("Supreme Court")),
 #'                         phrase(c("Supreme Court of the United States")))
 #' kwic(toks4, phrase(c("Supreme Court of the United States")))
-tokens_replace <- function(x, pattern, replacement, valuetype = "glob",
-                           case_insensitive = TRUE, verbose = quanteda_options("verbose")) {
+tokens_replace <- function(x, pattern, replacement = NULL, valuetype = "glob",
+                           case_insensitive = TRUE, concatenator = "_", 
+                           cap_keys = TRUE, add_keys = FALSE,
+                           verbose = quanteda_options("verbose")) {
     UseMethod("tokens_replace")
 }
 
 #' @export
-tokens_replace.default <- function(x, pattern, replacement, valuetype = "glob",
-                                   case_insensitive = TRUE, verbose = quanteda_options("verbose")) {
+tokens_replace.default <- function(x, pattern, replacement = NULL, valuetype = "glob",
+                                   case_insensitive = TRUE, concatenator = "_", 
+                                   cap_keys = TRUE, add_keys = FALSE,
+                                   verbose = quanteda_options("verbose")) {
     check_class(class(x), "tokens_replace")
 }
 
 #' @export
-tokens_replace.tokens_xptr <- function(x, pattern, replacement, valuetype = "glob",
-                                  case_insensitive = TRUE, verbose = quanteda_options("verbose")) {
-
-    if (length(pattern) != length(replacement))
-        stop("The length of pattern and replacement must be the same", call. = FALSE)
+tokens_replace.tokens_xptr <- function(x, pattern, replacement = NULL, valuetype = "glob",
+                                  case_insensitive = TRUE, concatenator = "_", 
+                                  cap_keys = TRUE, add_keys = FALSE,
+                                  verbose = quanteda_options("verbose")) {
+    
+    if (is.dictionary(pattern)) {
+        if (!is.null(replacement))
+            stop("Replacement must be NULL when pattern is a dictionary", call. = FALSE)
+        
+        x <- tokens_compound(x, pattern, valuetype, concatenator = concatenator, 
+                             case_insensitive = case_insensitive, join = FALSE)
+        
+        # convert dictionary to fixed patterns
+        cpp_recompile(x)
+        fixed <- object2fixed(pattern, get_types(x), valuetype, 
+                              case_insensitive = case_insensitive,
+                              concatenator = concatenator)
+        valuetype <- "fixed"
+        case_insensitive <- FALSE
+        
+        pattern <- unlist(fixed)
+        replacement <- names(pattern)
+        if (cap_keys)
+            replacement <- stri_trans_toupper(replacement)
+        if (add_keys)
+            replacement <- paste0(pattern, "/", replacement)
+        
+    } else {
+        if (length(pattern) != length(replacement))
+            stop("The length of pattern and replacement must be the same", call. = FALSE)
+    }
     if (!length(pattern)) return(x)
-
+    
     type <- get_types(x)
-    attrs <- attributes(x)
     type <- union(type, unlist(replacement, use.names = FALSE))
+    attrs <- attributes(x)
     conc <- field_object(attrs, "concatenator")
     
     ids_pat <- object2id(pattern, type, valuetype, case_insensitive, conc, keep_nomatch = FALSE)
     ids_rep <- object2id(replacement, type, "fixed", FALSE, conc, keep_nomatch = TRUE)
     
     set_types(x) <- type
-    result <- cpp_tokens_replace(x, ids_pat, ids_rep[attr(ids_pat, "pattern")],
-                                 get_threads())
+    result <- cpp_tokens_replace(x, ids_pat, ids_rep[attr(ids_pat, "pattern")])
     
     rebuild_tokens(result, attrs)
 }
