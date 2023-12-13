@@ -10,11 +10,18 @@ Text replace(Text tokens,
              const int offset){
     
     if (tokens.empty()) return {}; // return empty vector for empty text
-    
-    std::vector< std::vector<unsigned int> > tokens_multi(tokens.size()); 
+    std::vector< std::vector<unsigned int> > tokens_multi(tokens.size());
     std::vector< bool > flags_match(tokens.size(), false); // flag matched tokens
     std::size_t match = 0;
     bool none = true;
+    
+    if (offset > 0) {
+        // Add original tokens before replacement
+        for (std::size_t i = 0; i < tokens.size(); i++) {
+            tokens_multi[i].push_back(tokens[i]); 
+            match++;
+        }
+    }
     
     for (std::size_t span : spans) { // substitution starts from the longest sequences
         if (tokens.size() < span) continue;
@@ -23,14 +30,11 @@ Text replace(Text tokens,
             Ngram ngram(tokens.begin() + i, tokens.begin() + i + span);
             auto it = map_pat.find(ngram);
             if (it != map_pat.end()) {
-                std::size_t j = i;
-                if (offset > 0) {
-                    j = std::min((int)i + offset + (int)span - 1, (int)tokens.size() - 1);
-                } else if (0 < offset) {
-                    j = std::max(0, (int)i - offset);
-                } else {
-                    std::fill(flags_match.begin() + j, flags_match.begin() + j + span, true); // mark tokens matched
-                }
+                if (offset == 0)
+                    std::fill(flags_match.begin() + i, flags_match.begin() + i + span, true); // mark tokens matched
+                size_t j = i;
+                if (offset > 0)
+                    j = i + span - 1;
                 tokens_multi[j].insert(tokens_multi[j].end(), ids_repls[it->second].begin(), ids_repls[it->second].end());
                 match += ids_repls[it->second].size();
                 none = false;
@@ -41,12 +45,19 @@ Text replace(Text tokens,
     // return original tokens if no match
     if (none) return tokens; 
     
-    // Add original tokens that did not match
-    for (std::size_t i = 0; i < tokens.size(); i++) {
-        if (!flags_match[i]) {
+    if (offset < 0) {
+        // Add original tokens after replacement
+        for (std::size_t i = 0; i < tokens.size(); i++) {
             tokens_multi[i].push_back(tokens[i]); 
             match++;
-            //Rcout << tokens[i] << "\n";
+        }
+    } else if (offset == 0) {
+        // Add original tokens that did not match
+        for (std::size_t i = 0; i < tokens.size(); i++) {
+            if (!flags_match[i]) {
+                tokens_multi[i].push_back(tokens[i]); 
+                match++;
+            }
         }
     }
     
