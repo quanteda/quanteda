@@ -183,16 +183,17 @@ BEGIN_RCPP
 END_RCPP
 }
 // cpp_tokens_replace
-TokensPtr cpp_tokens_replace(TokensPtr xptr, const List& patterns_, const List& replacements_, const int thread);
-RcppExport SEXP _quanteda_cpp_tokens_replace(SEXP xptrSEXP, SEXP patterns_SEXP, SEXP replacements_SEXP, SEXP threadSEXP) {
+TokensPtr cpp_tokens_replace(TokensPtr xptr, const List& patterns_, const List& replacements_, const int offset, const int thread);
+RcppExport SEXP _quanteda_cpp_tokens_replace(SEXP xptrSEXP, SEXP patterns_SEXP, SEXP replacements_SEXP, SEXP offsetSEXP, SEXP threadSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< TokensPtr >::type xptr(xptrSEXP);
     Rcpp::traits::input_parameter< const List& >::type patterns_(patterns_SEXP);
     Rcpp::traits::input_parameter< const List& >::type replacements_(replacements_SEXP);
+    Rcpp::traits::input_parameter< const int >::type offset(offsetSEXP);
     Rcpp::traits::input_parameter< const int >::type thread(threadSEXP);
-    rcpp_result_gen = Rcpp::wrap(cpp_tokens_replace(xptr, patterns_, replacements_, thread));
+    rcpp_result_gen = Rcpp::wrap(cpp_tokens_replace(xptr, patterns_, replacements_, offset, thread));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -471,7 +472,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_quanteda_cpp_tokens_lookup", (DL_FUNC) &_quanteda_cpp_tokens_lookup, 7},
     {"_quanteda_cpp_tokens_ngrams", (DL_FUNC) &_quanteda_cpp_tokens_ngrams, 5},
     {"_quanteda_cpp_tokens_recompile", (DL_FUNC) &_quanteda_cpp_tokens_recompile, 4},
-    {"_quanteda_cpp_tokens_replace", (DL_FUNC) &_quanteda_cpp_tokens_replace, 4},
+    {"_quanteda_cpp_tokens_replace", (DL_FUNC) &_quanteda_cpp_tokens_replace, 5},
     {"_quanteda_cpp_tokens_restore", (DL_FUNC) &_quanteda_cpp_tokens_restore, 5},
     {"_quanteda_cpp_tokens_segment", (DL_FUNC) &_quanteda_cpp_tokens_segment, 5},
     {"_quanteda_cpp_tokens_select", (DL_FUNC) &_quanteda_cpp_tokens_select, 9},

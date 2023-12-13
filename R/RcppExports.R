@@ -49,8 +49,8 @@ cpp_tokens_recompile <- function(texts_, types_, gap = TRUE, dup = TRUE) {
     .Call(`_quanteda_cpp_tokens_recompile`, texts_, types_, gap, dup)
 }
 
-cpp_tokens_replace <- function(xptr, patterns_, replacements_, thread = -1L) {
-    .Call(`_quanteda_cpp_tokens_replace`, xptr, patterns_, replacements_, thread)
+cpp_tokens_replace <- function(xptr, patterns_, replacements_, offset = 0L, thread = -1L) {
+    .Call(`_quanteda_cpp_tokens_replace`, xptr, patterns_, replacements_, offset, thread)
 }
 
 cpp_tokens_restore <- function(xptr, marks_left_, marks_right_, delim_, thread = -1L) {

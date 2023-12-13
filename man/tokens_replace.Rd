@@ -19,8 +19,8 @@ tokens_replace(
 \item{pattern}{a character vector or list of character vectors.  See
 \link{pattern} for more details.}
 
-\item{replacement}{a character vector or (if \code{pattern} is a list) list
-of character vectors of the same length as \code{pattern}}
+\item{replacement}{a character vector or (if \code{pattern} is a list) list of
+character vectors of the same length as \code{pattern}}
 
 \item{valuetype}{the type of pattern matching: \code{"glob"} for "glob"-style
 wildcard expressions; \code{"regex"} for regular expressions; or \code{"fixed"} for
@@ -30,15 +30,18 @@ exact matching. See \link{valuetype} for details.}
 \code{pattern} or \link{dictionary} values}
 
 \item{verbose}{print status messages if \code{TRUE}}
+
+\item{offset}{the position at which \code{replacement} is inserted; specified
+by the number of tokens from the matches.}
 }
 \description{
 Substitute token types based on vectorized one-to-one matching. Since this
 function is created for lemmatization or user-defined stemming. It supports
 substitution of multi-word features by multi-word features, but substitution
-is fastest when \code{pattern} and \code{replacement} are character vectors
-and \code{valuetype = "fixed"} as the function only substitute types of
-tokens. Please use \code{\link[=tokens_lookup]{tokens_lookup()}} with \code{exclusive = FALSE}
-to replace \link{dictionary} values.
+is fastest when \code{pattern} and \code{replacement} are character vectors and
+\code{valuetype = "fixed"} as the function only substitute types of tokens. Please
+use \code{\link[=tokens_lookup]{tokens_lookup()}} with \code{exclusive = FALSE} to replace \link{dictionary}
+values.
 }
 \examples{
 toks1 <- tokens(data_corpus_inaugural, remove_punct = TRUE)
@@ -47,7 +50,7 @@ toks1 <- tokens(data_corpus_inaugural, remove_punct = TRUE)
 taxwords <- c("tax", "taxing", "taxed", "taxed", "taxation")
 lemma <- rep("TAX", length(taxwords))
 toks2 <- tokens_replace(toks1, taxwords, lemma, valuetype = "fixed")
-kwic(toks2, "TAX") |> 
+kwic(toks2, "TAX") |>
     tail(10)
 
 # stemming
