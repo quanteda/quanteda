@@ -6,7 +6,8 @@ using namespace quanteda;
 Text replace(Text tokens, 
              const std::vector<std::size_t> &spans,
              MapNgrams &map_pat,
-             Ngrams &ids_repls){
+             Ngrams &ids_repls,
+             const int offset){
     
     if (tokens.empty()) return {}; // return empty vector for empty text
     
@@ -22,8 +23,15 @@ Text replace(Text tokens,
             Ngram ngram(tokens.begin() + i, tokens.begin() + i + span);
             auto it = map_pat.find(ngram);
             if (it != map_pat.end()) {
-                std::fill(flags_match.begin() + i, flags_match.begin() + i + span, true); // mark tokens matched
-                tokens_multi[i].insert(tokens_multi[i].end(), ids_repls[it->second].begin(), ids_repls[it->second].end());
+                std::size_t j = i;
+                if (offset > 0) {
+                    j = std::min((int)i + offset + (int)span - 1, (int)tokens.size() - 1);
+                } else if (0 < offset) {
+                    j = std::max(0, (int)i - offset);
+                } else {
+                    std::fill(flags_match.begin() + j, flags_match.begin() + j + span, true); // mark tokens matched
+                }
+                tokens_multi[j].insert(tokens_multi[j].end(), ids_repls[it->second].begin(), ids_repls[it->second].end());
                 match += ids_repls[it->second].size();
                 none = false;
             }
@@ -67,6 +75,7 @@ Text replace(Text tokens,
 TokensPtr cpp_tokens_replace(TokensPtr xptr,
                              const List &patterns_,
                              const List &replacements_,
+                             const int offset = 0,
                              const int thread = -1) {
     
     Texts texts = xptr->texts;
@@ -97,13 +106,13 @@ TokensPtr cpp_tokens_replace(TokensPtr xptr,
     arena.execute([&]{
         tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
             for (int h = r.begin(); h < r.end(); ++h) {
-                texts[h] = replace(texts[h], spans, map_pat, ids_repls);
+                texts[h] = replace(texts[h], spans, map_pat, ids_repls, offset);
             }    
         });
     });
 #else
     for (std::size_t h = 0; h < H; h++) {
-        texts[h] = replace(texts[h], spans, map_pat, ids_repls);
+        texts[h] = replace(texts[h], spans, map_pat, ids_repls, offset);
     }
 #endif
     xptr->texts = texts;

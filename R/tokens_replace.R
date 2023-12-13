@@ -3,16 +3,18 @@
 #' Substitute token types based on vectorized one-to-one matching. Since this
 #' function is created for lemmatization or user-defined stemming. It supports
 #' substitution of multi-word features by multi-word features, but substitution
-#' is fastest when `pattern` and `replacement` are character vectors
-#' and `valuetype = "fixed"` as the function only substitute types of
-#' tokens. Please use [tokens_lookup()] with `exclusive = FALSE`
-#' to replace [dictionary] values.
+#' is fastest when `pattern` and `replacement` are character vectors and
+#' `valuetype = "fixed"` as the function only substitute types of tokens. Please
+#' use [tokens_lookup()] with `exclusive = FALSE` to replace [dictionary]
+#' values.
 #' @param x [tokens] object whose token elements will be replaced
 #' @param pattern a character vector or list of character vectors.  See
 #'   [pattern] for more details.
-#' @param replacement a character vector or (if `pattern` is a list) list
-#'   of character vectors of the same length as `pattern`
+#' @param replacement a character vector or (if `pattern` is a list) list of
+#'   character vectors of the same length as `pattern`
 #' @inheritParams valuetype
+#' @param offset the position at which `replacement` is inserted; specified
+#'   by the number of tokens from the matches.
 #' @param verbose print status messages if `TRUE`
 #' @export
 #' @seealso tokens_lookup
@@ -23,7 +25,7 @@
 #' taxwords <- c("tax", "taxing", "taxed", "taxed", "taxation")
 #' lemma <- rep("TAX", length(taxwords))
 #' toks2 <- tokens_replace(toks1, taxwords, lemma, valuetype = "fixed")
-#' kwic(toks2, "TAX") |> 
+#' kwic(toks2, "TAX") |>
 #'     tail(10)
 #'
 #' # stemming
@@ -37,24 +39,28 @@
 #'                         phrase(c("Supreme Court of the United States")))
 #' kwic(toks4, phrase(c("Supreme Court of the United States")))
 tokens_replace <- function(x, pattern, replacement, valuetype = "glob",
-                           case_insensitive = TRUE, verbose = quanteda_options("verbose")) {
+                           case_insensitive = TRUE, offset = 0,
+                           verbose = quanteda_options("verbose")) {
     UseMethod("tokens_replace")
 }
 
 #' @export
 tokens_replace.default <- function(x, pattern, replacement, valuetype = "glob",
-                                   case_insensitive = TRUE, verbose = quanteda_options("verbose")) {
+                                   case_insensitive = TRUE, offset = 0,
+                                   verbose = quanteda_options("verbose")) {
     check_class(class(x), "tokens_replace")
 }
 
 #' @export
 tokens_replace.tokens_xptr <- function(x, pattern, replacement, valuetype = "glob",
-                                  case_insensitive = TRUE, verbose = quanteda_options("verbose")) {
+                                  case_insensitive = TRUE, offset = 0,
+                                  verbose = quanteda_options("verbose")) {
 
     if (length(pattern) != length(replacement))
         stop("The length of pattern and replacement must be the same", call. = FALSE)
     if (!length(pattern)) return(x)
-
+    offset <- check_integer(offset)
+    
     type <- get_types(x)
     attrs <- attributes(x)
     type <- union(type, unlist(replacement, use.names = FALSE))
@@ -64,7 +70,7 @@ tokens_replace.tokens_xptr <- function(x, pattern, replacement, valuetype = "glo
     ids_rep <- object2id(replacement, type, "fixed", FALSE, conc, keep_nomatch = TRUE)
     
     set_types(x) <- type
-    result <- cpp_tokens_replace(x, ids_pat, ids_rep[attr(ids_pat, "pattern")],
+    result <- cpp_tokens_replace(x, ids_pat, ids_rep[attr(ids_pat, "pattern")], offset,
                                  get_threads())
     
     rebuild_tokens(result, attrs)
