@@ -461,8 +461,10 @@ tokens.tokens_xptr <-  function(x,
         docvars(x) <- NULL
     
     if (!identical(get_concatenator(x), concatenator)) {
-        warning('concatenator changed from "', 
-                get_concatenator(x), '" to "', concatenator, '"', call. = FALSE)
+        #warning('concatenator changed from "', 
+        #        get_concatenator(x), '" to "', concatenator, '"', call. = FALSE)
+        set_types(x) <- stri_replace_all_fixed(get_types(x), get_concatenator(x), 
+                                               concatenator)
         set_concatenator(x) <- concatenator
     }
     
