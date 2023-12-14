@@ -27,6 +27,8 @@
 #'   within the key, while `"dictionary"` applies it across keys, matching only
 #'   the key with the longer pattern, not the matches nested within that longer
 #'   pattern from other keys.  See Details.
+#' @param append if `TRUE`, annotate matched tokens with keys.
+#' @param separator a character to separate tokens and keys when `append = TRUE`.
 #' @param verbose print status messages if `TRUE`
 #' @details Dictionary values may consist of sequences, and there are different
 #'   methods of counting key matches based on values that are nested or that
