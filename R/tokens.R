@@ -518,13 +518,13 @@ as.tokens <- function(x, concatenator = "_", ...) {
 }
 
 #' @export
-as.tokens.default <- function(x, concatenator = "", ...) {
+as.tokens.default <- function(x, concatenator = "_", ...) {
     check_class(class(x), "as.tokens")
 }
 
 #' @importFrom stringi stri_trans_nfc
 #' @export
-as.tokens.list <- function(x, ...) {
+as.tokens.list <- function(x, concatenator = "_", ...) {
     result <- build_tokens(
         cpp_serialize(lapply(x, as.character), get_threads()),
         types = NULL,
