@@ -27,8 +27,8 @@
 #'   within the key, while `"dictionary"` applies it across keys, matching only
 #'   the key with the longer pattern, not the matches nested within that longer
 #'   pattern from other keys.  See Details.
-#' @param append if `TRUE`, annotate matched tokens with keys.
-#' @param separator a character to separate tokens and keys when `append = TRUE`.
+#' @param append_key if `TRUE`, annotate matched tokens with keys.
+#' @param separator a character to separate tokens and keys when `append_key = TRUE`.
 #' @param verbose print status messages if `TRUE`
 #' @details Dictionary values may consist of sequences, and there are different
 #'   methods of counting key matches based on values that are nested or that
@@ -95,7 +95,7 @@ tokens_lookup <- function(x, dictionary, levels = 1:5,
                           capkeys = !exclusive,
                           exclusive = TRUE,
                           nomatch = NULL,
-                          append = FALSE,
+                          append_key = FALSE,
                           separator = "/",
                           nested_scope = c("key", "dictionary"),
                           verbose = quanteda_options("verbose")) {
@@ -109,7 +109,7 @@ tokens_lookup.default <- function(x, dictionary, levels = 1:5,
                                  capkeys = !exclusive,
                                  exclusive = TRUE,
                                  nomatch = NULL,
-                                 append = FALSE,
+                                 append_key = FALSE,
                                  separator = "/",
                                  nested_scope = c("key", "dictionary"),
                                  verbose = quanteda_options("verbose")) {
@@ -123,7 +123,7 @@ tokens_lookup.tokens_xptr <- function(x, dictionary, levels = 1:5,
                           capkeys = !exclusive,
                           exclusive = TRUE,
                           nomatch = NULL,
-                          append = FALSE,
+                          append_key = FALSE,
                           separator = "/",
                           nested_scope = c("key", "dictionary"),
                           verbose = quanteda_options("verbose")) {
@@ -135,7 +135,7 @@ tokens_lookup.tokens_xptr <- function(x, dictionary, levels = 1:5,
     capkeys <- check_logical(capkeys)
     exclusive <- check_logical(exclusive)
     nomatch <- check_character(nomatch, allow_null = TRUE)
-    append <- check_logical(append)
+    append_key <- check_logical(append_key)
     separator <- check_character(separator)
     nested_scope <- match.arg(nested_scope)
     verbose <- check_logical(verbose)
@@ -163,7 +163,7 @@ tokens_lookup.tokens_xptr <- function(x, dictionary, levels = 1:5,
     } else {
         if (!is.null(nomatch))
             warning("nomatch only applies if exclusive = TRUE")
-        if (append) {
+        if (append_key) {
             fixed <- lapply(ids, function(x) type[x])
             fixed <- structure(
                 stri_c_list(fixed, field_object(attrs, "concatenator")),
