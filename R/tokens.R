@@ -427,7 +427,7 @@ tokens.tokens_xptr <-  function(x,
         x <- tokens_split(x, "\\p{Pd}", valuetype = "regex", remove_separator = FALSE)
     }
     if (split_tags) {
-        warning("split_tags argument is not used")
+        warning("split_tags argument is not used", call. = FALSE)
     }
     
     # removals
@@ -459,6 +459,12 @@ tokens.tokens_xptr <-  function(x,
 
     if (!include_docvars)
         docvars(x) <- NULL
+    
+    if (!identical(get_concatenator(x), concatenator)) {
+        warning('concatenator changed from "', 
+                get_concatenator(x), '" to "', concatenator, '"', call. = FALSE)
+        set_concatenator(x) <- concatenator
+    }
     
     global$object_class <- NULL
     return(x)

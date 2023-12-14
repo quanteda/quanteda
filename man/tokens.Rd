@@ -16,6 +16,7 @@ tokens(
   split_tags = FALSE,
   include_docvars = TRUE,
   padding = FALSE,
+  concatenator = "_",
   verbose = quanteda_options("verbose"),
   ...,
   xptr = FALSE
