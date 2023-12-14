@@ -94,6 +94,7 @@ tokens_lookup <- function(x, dictionary, levels = 1:5,
                           exclusive = TRUE,
                           nomatch = NULL,
                           append = FALSE,
+                          separator = "/",
                           nested_scope = c("key", "dictionary"),
                           verbose = quanteda_options("verbose")) {
     UseMethod("tokens_lookup")
@@ -107,6 +108,7 @@ tokens_lookup.default <- function(x, dictionary, levels = 1:5,
                                  exclusive = TRUE,
                                  nomatch = NULL,
                                  append = FALSE,
+                                 separator = "/",
                                  nested_scope = c("key", "dictionary"),
                                  verbose = quanteda_options("verbose")) {
     check_class(class(x), "tokens_lookup")
@@ -120,6 +122,7 @@ tokens_lookup.tokens_xptr <- function(x, dictionary, levels = 1:5,
                           exclusive = TRUE,
                           nomatch = NULL,
                           append = FALSE,
+                          separator = "/",
                           nested_scope = c("key", "dictionary"),
                           verbose = quanteda_options("verbose")) {
 
@@ -129,6 +132,9 @@ tokens_lookup.tokens_xptr <- function(x, dictionary, levels = 1:5,
     valuetype <- match.arg(valuetype)
     capkeys <- check_logical(capkeys)
     exclusive <- check_logical(exclusive)
+    nomatch <- check_character(nomatch, allow_null = TRUE)
+    append <- check_logical(append)
+    separator <- check_character(separator)
     nested_scope <- match.arg(nested_scope)
     verbose <- check_logical(verbose)
         
@@ -146,7 +152,6 @@ tokens_lookup.tokens_xptr <- function(x, dictionary, levels = 1:5,
         key <- char_toupper(key)
     if (exclusive) {
         if (!is.null(nomatch)) {
-            nomatch <- check_character(nomatch)
             result <- cpp_tokens_lookup(x, ids, id_key, c(key, nomatch), overlap, 1,
                                         get_threads())
         } else {
@@ -159,11 +164,14 @@ tokens_lookup.tokens_xptr <- function(x, dictionary, levels = 1:5,
         if (append) {
             fixed <- sapply(ids, function(x, y) paste(type[x], collapse = y), 
                             field_object(attrs, "concatenator"))
-            key <- paste0(fixed, "/", key)
+            key <- paste0(fixed, separator, names(fixed))
+            result <- cpp_tokens_lookup(x, ids, seq_along(key), key, overlap, 2,
+                                        get_threads())
+        } else {
+            id_used <- unique(id_key)
+            result <- cpp_tokens_lookup(x, ids, match(id_key, id_used), key[id_used], overlap, 2,
+                                        get_threads())
         }
-        id_used <- unique(id_key)
-        result <- cpp_tokens_lookup(x, ids, match(id_key, id_used), key[id_used], overlap, 2,
-                                    get_threads())
     }
     if (exclusive)
         field_object(attrs, "what") <- "dictionary"
