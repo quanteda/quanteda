@@ -13,7 +13,7 @@ tokens_lookup(
   capkeys = !exclusive,
   exclusive = TRUE,
   nomatch = NULL,
-  append = FALSE,
+  append_key = FALSE,
   separator = "/",
   nested_scope = c("key", "dictionary"),
   verbose = quanteda_options("verbose")
@@ -50,9 +50,9 @@ features unaffected}
 matched to a dictionary values  If \code{NULL} (default), do not record
 unmatched tokens.}
 
-\item{append}{if \code{TRUE}, annotate matched tokens with keys.}
+\item{append_key}{if \code{TRUE}, annotate matched tokens with keys.}
 
-\item{separator}{a character to separate tokens and keys when \code{append = TRUE}.}
+\item{separator}{a character to separate tokens and keys when \code{append_key = TRUE}.}
 
 \item{nested_scope}{how to treat matches from different dictionary keys that
 are nested.  When one value is nested within another, such as "a b" being
