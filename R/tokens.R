@@ -158,6 +158,7 @@ tokens <-  function(x,
                     split_tags = FALSE,
                     include_docvars = TRUE,
                     padding = FALSE,
+                    concatenator = "_",
                     verbose = quanteda_options("verbose"),
                     ...,
                     xptr = FALSE) {
@@ -190,6 +191,7 @@ tokens.list <- function(x,
                         split_tags = FALSE,
                         include_docvars = TRUE,
                         padding = FALSE,
+                        concatenator = "_",
                         verbose = quanteda_options("verbose"),
                         ...) {
     tokens(as.tokens(x),
@@ -200,6 +202,7 @@ tokens.list <- function(x,
            remove_separators = remove_separators,
            split_hyphens = split_hyphens,
            split_tags = split_tags,
+           concatenator = concatenator,
            verbose = quanteda_options("verbose"),
            ...)
 }
@@ -218,6 +221,7 @@ tokens.character <- function(x,
                              split_tags = FALSE,
                              include_docvars = TRUE,
                              padding = FALSE,
+                             concatenator = "_",
                              verbose = quanteda_options("verbose"),
                              ...,
                              xptr = FALSE) {
@@ -232,6 +236,7 @@ tokens.character <- function(x,
            split_tags = split_tags,
            include_docvars = include_docvars,
            padding = padding,
+           concatenator = concatenator,
            verbose = verbose,
            ...,
            xptr = xptr)
@@ -253,6 +258,7 @@ tokens.corpus <- function(x,
                           split_tags = FALSE,
                           include_docvars = TRUE,
                           padding = FALSE,
+                          concatenator = "_",
                           verbose = quanteda_options("verbose"),
                           ...,
                           xptr = FALSE)  {
@@ -279,6 +285,7 @@ tokens.corpus <- function(x,
     split_tags <- check_logical(split_tags)
     include_docvars <- check_logical(include_docvars)
     padding <- check_logical(padding)
+    concatenator <- check_character(concatenator)
     verbose <- check_logical(verbose)
     check_dots(..., method = c("tokens", "tokenize_word4"))
     
@@ -334,6 +341,7 @@ tokens.corpus <- function(x,
         types = NULL, 
         what = what,
         tokenizer = tokenizer,
+        concatenator = concatenator,
         docvars = select_docvars(attrs[["docvars"]], user = include_docvars, system = TRUE),
         meta = attrs[["meta"]]
     )
@@ -356,6 +364,7 @@ tokens.corpus <- function(x,
                      split_tags = FALSE,
                      include_docvars = TRUE,
                      padding = padding,
+                     concatenator = concatenator,
                      verbose = verbose)
     
     if (!xptr)
@@ -395,6 +404,7 @@ tokens.tokens_xptr <-  function(x,
                            split_tags = FALSE,
                            include_docvars = TRUE,
                            padding = FALSE,
+                           concatenator = "_",
                            verbose = quanteda_options("verbose"),
                            ...) {
     
@@ -407,6 +417,7 @@ tokens.tokens_xptr <-  function(x,
     split_tags <- check_logical(split_tags)
     include_docvars <- check_logical(include_docvars)
     padding <- check_logical(padding)
+    concatenator <- check_character(concatenator)
     verbose <- check_logical(verbose)
     check_dots(..., method = c("tokens", "tokenize_word4"))
     
@@ -503,7 +514,7 @@ as.tokens.default <- function(x, concatenator = "", ...) {
 
 #' @importFrom stringi stri_trans_nfc
 #' @export
-as.tokens.list <- function(x, concatenator = "_", ...) {
+as.tokens.list <- function(x, ...) {
     result <- build_tokens(
         cpp_serialize(lapply(x, as.character), get_threads()),
         types = NULL,
@@ -514,8 +525,9 @@ as.tokens.list <- function(x, concatenator = "_", ...) {
 }
 
 #' @export
-as.tokens.tokens <- function(x, ...) {
-    upgrade_tokens(x)
+as.tokens.tokens <- function(x, concatenator = "_", ...) {
+    x <- upgrade_tokens(x)
+    return(x)
 }
 
 #' @rdname as.tokens
@@ -726,4 +738,3 @@ types.tokens <- function(x) {
 "types<-.tokens_xptr" <- function(x, value) {
     set_types(x) <- value
 }
-

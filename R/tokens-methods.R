@@ -260,3 +260,14 @@ combine_docvars <- function(...) {
         result <- combine_docvars(result, x[[i]])
     return(result)
 }
+
+get_concatenator <- function(x) {
+    attr(x, "meta")$object$concatenator
+}
+
+"set_concatenator<-" <- function(x, value) {
+    if (!is.character(value) || length(value) != 1L)
+        stop("concatenator value must be a single character")
+    attr(x, "meta")$object$concatenator <- value
+    return(x)
+}
