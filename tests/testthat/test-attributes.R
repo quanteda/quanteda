@@ -29,3 +29,30 @@ test_that("unit attributes are set correctly", {
     expect_equal(fcm(dfm(toks_chunk))@meta$object$unit, "segments")
     expect_equal(fcm(toks_chunk)@meta$object$unit, "segments")
 })
+
+test_that("set_concatenator and get_concatenator are working", {
+    
+    txt <- c(d1 = "Sentence one.  Second sentence is this one!\n
+                   Here is the third sentence.",
+             d2 = "Only sentence of doc2?  No there is another.")
+    toks <- tokens(txt, concatenator = "+")
+    expect_equal(
+        quanteda:::get_concatenator(toks),
+        "+"
+    )
+    quanteda:::set_concatenator(toks) <- "-"
+    expect_equal(
+        quanteda:::get_concatenator(toks),
+        "-"
+    )
+    expect_error(
+        quanteda:::set_concatenator(toks) <- c("-", "-"),
+        "concatenator value must be a single character"
+    )
+    expect_error(
+        quanteda:::set_concatenator(toks) <- 123,
+        "concatenator value must be a single character"
+    )
+})
+
+
