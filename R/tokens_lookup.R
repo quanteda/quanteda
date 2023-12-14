@@ -153,6 +153,8 @@ tokens_lookup.tokens_xptr <- function(x, dictionary, levels = 1:5,
     if (capkeys)
         key <- stri_trans_toupper(key)
     if (exclusive) {
+        if (append_key)
+            warning("append_key only applies if exclusive = FALSE")
         if (!is.null(nomatch)) {
             result <- cpp_tokens_lookup(x, ids, id_key, c(key, nomatch), overlap, 1,
                                         get_threads())
