@@ -145,6 +145,8 @@ test_that("non-exclusive lookup is working",{
                      d2 = "Let freedom ring in the United States!",
                      d3 = "Aliens are invading Mars"),
                    remove_punct = TRUE)
+    toks2 <- tokens_remove(toks, stopwords("en"), padding = TRUE)
+    
     dict <- dictionary(list(country = c("united states", "mexico", "canada"), 
                             "law words" = c('law*', 'constitution'), 
                             freedom = c('free', "freedom", 'libertarian'),
@@ -155,7 +157,6 @@ test_that("non-exclusive lookup is working",{
                       d2 = c("Let", "FREEDOM", "ring", "in", "the", "COUNTRY", "OVERLAP"),
                       d3 = c("Aliens", "are", "invading", "Mars")))
     
-    toks2 <- tokens_remove(toks, stopwords("en"), padding = TRUE)
     expect_equal(as.list(tokens_lookup(toks2, dict, exclusive = FALSE, capkeys = TRUE)),
                  list(d1 = c("COUNTRY", "signed", "", "new", "FREEDOM", "LAW WORDS", "", "COUNTRY"),
                       d2 = c("Let", "FREEDOM", "ring", "", "", "COUNTRY", "OVERLAP"),
@@ -186,11 +187,12 @@ test_that("non-exclusive lookup is working",{
                       d3 = c("Aliens", "", "invading", "Mars")))
     
     expect_error(
-        tokens_lookup(toks, dict, append_key = NA),
+        tokens_lookup(toks, dict, exclusive = FALSE,  append_key = NA),
         "append_key cannot be NA"
     )
     expect_error(
-        tokens_lookup(toks, dict, append_key = TRUE, separator = c("+", "+")),
+        tokens_lookup(toks, dict, exclusive = FALSE, append_key = TRUE, 
+                      separator = c("+", "+")),
         "The length of separator must be 1"
     )
     
@@ -407,6 +409,10 @@ test_that("tokens_lookup works with exclusive = TRUE, #958", {
         as.list(tokens_lookup(toks, dict, exclusive = FALSE, capkeys = TRUE)),
         list(text1 = c('word', 'word2', 'DOCUMENT', 'DOCUMENT', 'DOCUMENT'), 
              text2 = c('USE', 'USE', 'word', 'word2'))
+    )
+    expect_warning(
+        tokens_lookup(toks, dict, exclusive = TRUE, append_key = TRUE),
+        "append_key only applies if exclusive = FALSE"
     )
 })
 
