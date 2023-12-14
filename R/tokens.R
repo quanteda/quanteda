@@ -535,7 +535,7 @@ as.tokens.list <- function(x, concatenator = "_", ...) {
 }
 
 #' @export
-as.tokens.tokens <- function(x, concatenator = "_", ...) {
+as.tokens.tokens <- function(x, ...) {
     x <- upgrade_tokens(x)
     return(x)
 }
