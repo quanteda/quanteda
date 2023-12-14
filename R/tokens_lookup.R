@@ -164,8 +164,11 @@ tokens_lookup.tokens_xptr <- function(x, dictionary, levels = 1:5,
         if (!is.null(nomatch))
             warning("nomatch only applies if exclusive = TRUE")
         if (append) {
-            fixed <- stri_c_list(lapply(ids, function(x) type[x]), 
-                                 field_object(attrs, "concatenator"))
+            fixed <- lapply(ids, function(x) type[x])
+            fixed <- structure(
+                stri_c_list(fixed, field_object(attrs, "concatenator")),
+                names = names(fixed)
+            )
             key <- paste0(fixed, separator, names(fixed))
             result <- cpp_tokens_lookup(x, ids, seq_along(key), key, overlap, 2,
                                         get_threads())
