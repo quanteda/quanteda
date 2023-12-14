@@ -147,14 +147,26 @@ tokens_lookup.tokens_xptr <- function(x, dictionary, levels = 1:5,
              if (length(dictionary) > 1L) "s" else "", "\n", sep = "")
     ids <- object2id(dictionary, type, valuetype, case_insensitive,
                      field_object(attrs, "concatenator"), levels)
-    key <- attr(ids, "key")
-    id_key <- match(names(ids), key)
     overlap <- match(nested_scope, c("key", "dictionary"))
-    if (capkeys)
-        key <- stri_trans_toupper(key)
+    
+    if (append_key) {
+        fixed <- lapply(ids, function(x) type[x])
+        fixed <- structure(
+            stri_c_list(fixed, field_object(attrs, "concatenator")),
+            names = names(fixed)
+        )
+        key <- names(fixed)
+        if (capkeys)
+            key <- stri_trans_toupper(key)
+        key <- paste0(fixed, separator, key)
+        id_key <- seq_along(key)
+    } else {
+        key <- attr(ids, "key")
+        id_key <- match(names(ids), key)
+        if (capkeys)
+            key <- stri_trans_toupper(key)
+    }
     if (exclusive) {
-        if (append_key)
-            warning("append_key only applies if exclusive = FALSE")
         if (!is.null(nomatch)) {
             result <- cpp_tokens_lookup(x, ids, id_key, c(key, nomatch), overlap, 1,
                                         get_threads())
@@ -165,23 +177,9 @@ tokens_lookup.tokens_xptr <- function(x, dictionary, levels = 1:5,
     } else {
         if (!is.null(nomatch))
             warning("nomatch only applies if exclusive = TRUE")
-        if (append_key) {
-            fixed <- lapply(ids, function(x) type[x])
-            fixed <- structure(
-                stri_c_list(fixed, field_object(attrs, "concatenator")),
-                names = names(fixed)
-            )
-            key <- names(fixed)
-            if (capkeys)
-                key <- stri_trans_toupper(key)
-            key <- paste0(fixed, separator, key)
-            result <- cpp_tokens_lookup(x, ids, seq_along(key), key, overlap, 2,
-                                        get_threads())
-        } else {
-            id_used <- unique(id_key)
-            result <- cpp_tokens_lookup(x, ids, match(id_key, id_used), key[id_used], overlap, 2,
-                                        get_threads())
-        }
+        id_used <- unique(id_key)
+        result <- cpp_tokens_lookup(x, ids, match(id_key, id_used), key[id_used], overlap, 2,
+                                    get_threads())
     }
     if (exclusive)
         field_object(attrs, "what") <- "dictionary"
