@@ -161,6 +161,39 @@ test_that("non-exclusive lookup is working",{
                       d2 = c("Let", "FREEDOM", "ring", "", "", "COUNTRY", "OVERLAP"),
                       d3 = c("Aliens", "", "invading", "Mars")))
     
+    expect_equal(as.list(tokens_lookup(toks, dict, exclusive = FALSE, capkeys = TRUE,
+                                       append_key = TRUE)),
+                 list(d1 = c("Mexico/COUNTRY", "signed", "a", "new", "libertarian/FREEDOM", 
+                             "law/LAW WORDS", "with", "Canada/COUNTRY"),
+                      d2 = c("Let", "freedom/FREEDOM", "ring", "in", "the", 
+                             "United_States/COUNTRY", "United/OVERLAP"),
+                      d3 = c("Aliens", "are", "invading", "Mars")))
+    
+    expect_equal(as.list(tokens_lookup(toks, dict, exclusive = FALSE, capkeys = TRUE,
+                                       append_key = TRUE, separator = "+")),
+                 list(d1 = c("Mexico+COUNTRY", "signed", "a", "new", "libertarian+FREEDOM", 
+                             "law+LAW WORDS", "with", "Canada+COUNTRY"),
+                      d2 = c("Let", "freedom+FREEDOM", "ring", "in", "the", 
+                             "United_States+COUNTRY", "United+OVERLAP"),
+                      d3 = c("Aliens", "are", "invading", "Mars")))
+    
+    expect_equal(as.list(tokens_lookup(toks2, dict, exclusive = FALSE, capkeys = TRUE, 
+                                       append_key = TRUE)),
+                 list(d1 = c("Mexico/COUNTRY", "signed", "", "new", "libertarian/FREEDOM", 
+                             "law/LAW WORDS", "", "Canada/COUNTRY"),
+                      d2 = c("Let", "freedom/FREEDOM", "ring", "", "", 
+                             "United_States/COUNTRY", "United/OVERLAP"),
+                      d3 = c("Aliens", "", "invading", "Mars")))
+    
+    expect_error(
+        tokens_lookup(toks, dict, append_key = NA),
+        "append_key cannot be NA"
+    )
+    expect_error(
+        tokens_lookup(toks, dict, append_key = TRUE, separator = c("+", "+")),
+        "The length of separator must be 1"
+    )
+    
 })
 
 test_that("tokens_lookup preserves case on keys", {
