@@ -151,7 +151,7 @@ tokens_lookup.tokens_xptr <- function(x, dictionary, levels = 1:5,
     id_key <- match(names(ids), key)
     overlap <- match(nested_scope, c("key", "dictionary"))
     if (capkeys)
-        key <- char_toupper(key)
+        key <- stri_trans_toupper(key)
     if (exclusive) {
         if (!is.null(nomatch)) {
             result <- cpp_tokens_lookup(x, ids, id_key, c(key, nomatch), overlap, 1,
@@ -169,7 +169,10 @@ tokens_lookup.tokens_xptr <- function(x, dictionary, levels = 1:5,
                 stri_c_list(fixed, field_object(attrs, "concatenator")),
                 names = names(fixed)
             )
-            key <- paste0(fixed, separator, names(fixed))
+            key <- names(fixed)
+            if (capkeys)
+                key <- stri_trans_toupper(key)
+            key <- paste0(fixed, separator, key)
             result <- cpp_tokens_lookup(x, ids, seq_along(key), key, overlap, 2,
                                         get_threads())
         } else {
