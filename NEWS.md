@@ -11,6 +11,8 @@
 
 * Added `min_ntoken` and `max_ntoken` to `tokens_subset()` and `dfm_subset()` to extract documents based on number of tokens easily. It is equivalent to selecting documents using `ntoken()`.
 
+* Added a new argument `condition` that allows a tokens-based operation to apply only to documents that meet a logical condition.  This argument has been added to `tokens_select()`, `tokens_compound()`, `tokens_replace()`, and `tokens_split()`.  This is similar to applying `purrr::map_if()` to a tokens object, but is implemented within the function so that it can be performed efficiently in C++.
+
 ## Removals
 
 * `bootstrap_dfm()` was removed for character and corpus objects.  The correct way to bootstrap sentences is not to tokenize them as sentences and then bootstrap them from the dfm.  This is consistent with requiring the user to tokenise objects prior to forming dfms or other "downstream" objects.
