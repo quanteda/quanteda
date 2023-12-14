@@ -1123,4 +1123,49 @@ test_that("edge case usernames are correctly recognized", {
     )
 })
 
+test_that("cancatenator is working", {
+    
+    txt <- c(d1 = "The United States is bordered by the Atlantic Ocean and the Pacific Ocean.",
+             d2 = "The Supreme Court of the United States is seldom in a united state.")
+    
+    # construct
+    toks <- tokens(txt, remove_punct = TRUE, concatenator = " ")
+    expect_error(
+        tokens(txt, remove_punct = TRUE, concatenator = c(" ", " ")),
+        "The length of concatenator must be 1"
+    )
+    expect_equal(
+        quanteda:::get_concatenator(toks),
+        " "
+    )
+    
+    # compound
+    dict <- dictionary(list(Countries = c("* States", "Federal Republic of *"),
+                            Oceans = c("* Ocean")), tolower = FALSE)
+    toks <- tokens_compound(toks, dict, concatenator = "_")
+    expect_equal(
+        quanteda:::get_concatenator(toks),
+        "_"
+    )
+    expect_equal(
+        ntoken(tokens_select(toks, c("United_States"))),
+        c(d1 = 1, d2 = 1)
+    )
+    
+    # update
+    toks <- tokens(toks, concatenator = "+")
+    expect_error(
+        tokens(toks, concatenator = c(" ", " ")),
+        "The length of concatenator must be 1"
+    )
+    expect_equal(
+        quanteda:::get_concatenator(toks),
+        "+"
+    )
+    expect_equal(
+        ntoken(tokens_select(toks, "United+States")),
+        c(d1 = 1, d2 = 1)
+    )
+})
+
 quanteda_options(reset = TRUE)
