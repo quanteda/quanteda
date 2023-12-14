@@ -62,6 +62,9 @@ previously existed.  This is useful if a positional match is needed between
 the pre- and post-selected tokens, for instance if a window of adjacency
 needs to be computed.}
 
+\item{concatenator}{the concatenation character that will connect the words
+making up the multi-word sequences.}
+
 \item{verbose}{if \code{TRUE}, print timing messages to the console}
 
 \item{...}{used to pass arguments among the functions}
