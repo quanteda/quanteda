@@ -764,3 +764,20 @@ concatenator.default <- function(x) {
 concatenator.tokens <- function(x) {
     get_concatenator(x)
 }
+
+#' @rdname types
+#' @export
+concat <- function(x) {
+    UseMethod("concatenator")
+}
+
+#' @export
+concat.default <- function(x) {
+    check_class(class(x), "concatenator")
+}
+
+#' @export
+concat.tokens <- function(x) {
+    get_concatenator(x)
+}
+
