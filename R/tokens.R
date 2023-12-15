@@ -36,8 +36,8 @@
 #'   "#\\w+#?"` and `pattern_username = "@[a-zA-Z0-9_]+"`.
 #' @param include_docvars if `TRUE`, pass docvars through to the tokens object.
 #'   Does not apply when the input is a character data or a list of characters.
-#' @param concatenator the concatenation character that will connect the words
-#'   making up the multi-word sequences.
+#' @param concatenator character; the concatenation character that will connect
+#'   the tokens making up a multi-token sequence.
 #' @inheritParams tokens_select
 #' @param xptr if `TRUE`, returns a `tokens_xptr` class object
 #' @param verbose if `TRUE`, print timing messages to the console
