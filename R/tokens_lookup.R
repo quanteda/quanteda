@@ -12,14 +12,14 @@
 #'   level into the first, but record the third level (if present) collapsed
 #'   below the first (see examples).
 #' @inheritParams valuetype
-#' @param capkeys if TRUE, convert dictionary keys to uppercase to distinguish
-#'   them from other features
+#' @param capkeys if `TRUE`, convert dictionary keys to uppercase to distinguish
+#'   them from unmatched tokens.
 #' @param nomatch an optional character naming a new key for tokens that do not
 #'   matched to a dictionary values  If `NULL` (default), do not record
 #'   unmatched tokens.
 #' @param exclusive if `TRUE`, remove all features not in dictionary,
 #'   otherwise, replace values in dictionary with keys while leaving other
-#'   features unaffected
+#'   features unaffected.
 #' @param nested_scope how to treat matches from different dictionary keys that
 #'   are nested.  When one value is nested within another, such as "a b" being
 #'   nested within "a b c", then `tokens_lookup()` will match the longer.  When

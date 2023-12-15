@@ -40,12 +40,12 @@ exact matching. See \link{valuetype} for details.}
 \item{case_insensitive}{logical; if \code{TRUE}, ignore case when matching a
 \code{pattern} or \link{dictionary} values}
 
-\item{capkeys}{if TRUE, convert dictionary keys to uppercase to distinguish
-them from other features}
+\item{capkeys}{if \code{TRUE}, convert dictionary keys to uppercase to distinguish
+them from unmatched tokens.}
 
 \item{exclusive}{if \code{TRUE}, remove all features not in dictionary,
 otherwise, replace values in dictionary with keys while leaving other
-features unaffected}
+features unaffected.}
 
 \item{nomatch}{an optional character naming a new key for tokens that do not
 matched to a dictionary values  If \code{NULL} (default), do not record
