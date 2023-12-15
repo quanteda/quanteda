@@ -15,6 +15,7 @@ tokens_lookup(
   nomatch = NULL,
   append_key = FALSE,
   separator = "/",
+  concatenator = "_",
   nested_scope = c("key", "dictionary"),
   verbose = quanteda_options("verbose")
 )
@@ -53,6 +54,9 @@ unmatched tokens.}
 \item{append_key}{if \code{TRUE}, annotate matched tokens with keys.}
 
 \item{separator}{a character to separate tokens and keys when \code{append_key = TRUE}.}
+
+\item{concatenator}{the concatenation character that will connect the words
+making up the multi-word sequences.}
 
 \item{nested_scope}{how to treat matches from different dictionary keys that
 are nested.  When one value is nested within another, such as "a b" being

@@ -29,6 +29,8 @@
 #'   pattern from other keys.  See Details.
 #' @param append_key if `TRUE`, annotate matched tokens with keys.
 #' @param separator a character to separate tokens and keys when `append_key = TRUE`.
+#' @param concatenator the concatenation character that will connect the words
+#'   making up the multi-word sequences.
 #' @param verbose print status messages if `TRUE`
 #' @details Dictionary values may consist of sequences, and there are different
 #'   methods of counting key matches based on values that are nested or that
@@ -97,6 +99,7 @@ tokens_lookup <- function(x, dictionary, levels = 1:5,
                           nomatch = NULL,
                           append_key = FALSE,
                           separator = "/",
+                          concatenator = "_",
                           nested_scope = c("key", "dictionary"),
                           verbose = quanteda_options("verbose")) {
     UseMethod("tokens_lookup")
@@ -111,6 +114,7 @@ tokens_lookup.default <- function(x, dictionary, levels = 1:5,
                                  nomatch = NULL,
                                  append_key = FALSE,
                                  separator = "/",
+                                 concatenator = "_",
                                  nested_scope = c("key", "dictionary"),
                                  verbose = quanteda_options("verbose")) {
     check_class(class(x), "tokens_lookup")
@@ -125,6 +129,7 @@ tokens_lookup.tokens_xptr <- function(x, dictionary, levels = 1:5,
                           nomatch = NULL,
                           append_key = FALSE,
                           separator = "/",
+                          concatenator = "_",
                           nested_scope = c("key", "dictionary"),
                           verbose = quanteda_options("verbose")) {
 
@@ -137,6 +142,7 @@ tokens_lookup.tokens_xptr <- function(x, dictionary, levels = 1:5,
     nomatch <- check_character(nomatch, allow_null = TRUE)
     append_key <- check_logical(append_key)
     separator <- check_character(separator)
+    concatenator <- check_character(concatenator)
     nested_scope <- match.arg(nested_scope)
     verbose <- check_logical(verbose)
         
@@ -152,7 +158,7 @@ tokens_lookup.tokens_xptr <- function(x, dictionary, levels = 1:5,
     if (append_key) {
         fixed <- lapply(ids, function(x) type[x])
         fixed <- structure(
-            stri_c_list(fixed, field_object(attrs, "concatenator")),
+            stri_c_list(fixed, concatenator),
             names = names(fixed)
         )
         key <- names(fixed)

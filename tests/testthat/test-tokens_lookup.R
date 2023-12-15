@@ -551,6 +551,14 @@ test_that("append_key is working",{
                              "United_States/COUNTRY", "United/OVERLAP"),
                       d3 = character()))
     
+    expect_equal(as.list(tokens_lookup(toks2, dict, exclusive = TRUE, capkeys = TRUE,
+                                       append_key = TRUE, concatenator = "+")),
+                 list(d1 = c("Mexico/COUNTRY", "libertarian/FREEDOM", 
+                             "law/LAW WORDS", "Canada/COUNTRY"),
+                      d2 = c("freedom/FREEDOM", 
+                             "United+States/COUNTRY", "United/OVERLAP"),
+                      d3 = character()))
+    
     # non-exclusive mode
     expect_equal(as.list(tokens_lookup(toks, dict, exclusive = FALSE, capkeys = TRUE,
                                        append_key = TRUE)),
@@ -600,6 +608,11 @@ test_that("append_key is working",{
         tokens_lookup(toks, dict, exclusive = FALSE, append_key = TRUE, 
                       separator = c("+", "+")),
         "The length of separator must be 1"
+    )
+    expect_error(
+        tokens_lookup(toks, dict, exclusive = FALSE, append_key = TRUE, 
+                      concatenator = c("_", "_")),
+        "The length of concatenator must be 1"
     )
     
 })
