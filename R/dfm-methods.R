@@ -219,7 +219,12 @@ topfeatures.default <- function(x, n = 10, decreasing = TRUE,
 #' @importFrom stats quantile
 topfeatures.dfm <- function(x, n = 10, decreasing = TRUE,
                             scheme = c("count", "docfreq"), groups = NULL) {
-
+    if (is.fcm(x)) {
+        lifecycle::deprecate_stop(
+            when = "4.0", 
+            what = "quanteda::topfeatures.fcm()"
+        )
+    }
     x <- as.dfm(x)
     if (!nfeat(x) || !ndoc(x)) return(numeric())
     if (!is.numeric(n)) stop("n must be a number")
@@ -247,6 +252,7 @@ topfeatures.dfm <- function(x, n = 10, decreasing = TRUE,
     result <- sort(wght, decreasing)
     return(head(result, n))
 }
+
 
 # sparsity -----------
 
