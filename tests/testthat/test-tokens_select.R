@@ -714,7 +714,7 @@ test_that("position arguments are working", {
 })
 
 
-test_that("condition argument is working", {
+test_that("modify_if argument is working", {
     
     dat <- data.frame(text = c("R and C are languages",
                               "Windows (R), Quanteda (C)",
@@ -724,7 +724,7 @@ test_that("condition argument is working", {
     corp <- corpus(dat)
     toks <- tokens(corp)
     
-    toks1 <- tokens_select(toks, min_nchar = 2, condition = toks$topic != "language")
+    toks1 <- tokens_select(toks, min_nchar = 2, modify_if = toks$topic != "language")
     expect_identical(
         as.list(toks1),
         list(text1 = c("R", "and", "C", "are", "languages"),
@@ -734,9 +734,9 @@ test_that("condition argument is working", {
     
     docname <- docnames(toks)
     toks2 <- toks %>% 
-        tokens_select(c("R", "C"), condition = docname == "text1") %>% 
-        tokens_select(c("windows", "quanteda"), condition = docname == "text2") %>% 
-        tokens_select("\\d", valuetype = "regex", condition = docname == "text3")
+        tokens_select(c("R", "C"), modify_if = docname == "text1") %>% 
+        tokens_select(c("windows", "quanteda"), modify_if = docname == "text2") %>% 
+        tokens_select("\\d", valuetype = "regex", modify_if = docname == "text3")
     expect_identical(
         as.list(toks2),
         list(text1 = c("R", "C"),
@@ -745,8 +745,8 @@ test_that("condition argument is working", {
     )
     
     toks3 <- toks |>
-        tokens_keep(c("R", "C"), condition = toks$topic == "language") %>% 
-        tokens_remove(min_nchar = 6, condition = toks$topic != "language")
+        tokens_keep(c("R", "C"), modify_if = toks$topic == "language") %>% 
+        tokens_remove(min_nchar = 6, modify_if = toks$topic != "language")
     expect_identical(
         as.list(toks3),
         list(text1 = c("R", "C"),
@@ -755,7 +755,7 @@ test_that("condition argument is working", {
     )
     
     toks4 <- toks |>
-        tokens_remove(min_nchar = 2, condition = toks$month) |>
+        tokens_remove(min_nchar = 2, modify_if = toks$month) |>
         tokens_remove(stopwords())
     expect_identical(
         as.list(toks4),

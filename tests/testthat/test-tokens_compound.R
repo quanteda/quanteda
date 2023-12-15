@@ -298,7 +298,7 @@ test_that("tokens_compound ignores padding", {
 })
 
 
-test_that("condition argument is working", {
+test_that("modify_if argument is working", {
     
     dat <- data.frame(text = c("C++ is a language",
                                "+++ Section C +++"),
@@ -307,7 +307,7 @@ test_that("condition argument is working", {
     toks <- tokens(corp)
     
     toks1 <- tokens_compound(toks, phrase("+ +"), concatenator = "",
-                             condition = toks$topic == "language")
+                             modify_if = toks$topic == "language")
     expect_identical(
         as.list(toks1),
         list(text1 = c("C", "++", "is", "a", "language"),
@@ -315,7 +315,7 @@ test_that("condition argument is working", {
     )
     
     toks2 <- tokens_compound(toks, "c", window = c(0, 2), concatenator = "",
-                             condition = toks$topic == "language") %>% 
+                             modify_if = toks$topic == "language") %>% 
              tokens_select(min_nchar = 3)
     expect_identical(
         as.list(toks2),
