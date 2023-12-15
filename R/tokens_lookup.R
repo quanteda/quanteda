@@ -12,14 +12,14 @@
 #'   level into the first, but record the third level (if present) collapsed
 #'   below the first (see examples).
 #' @inheritParams valuetype
-#' @param capkeys if TRUE, convert dictionary keys to uppercase to distinguish
-#'   them from other features
+#' @param capkeys if `TRUE`, convert dictionary keys to uppercase to distinguish
+#'   them from unmatched tokens.
 #' @param nomatch an optional character naming a new key for tokens that do not
 #'   matched to a dictionary values  If `NULL` (default), do not record
 #'   unmatched tokens.
 #' @param exclusive if `TRUE`, remove all features not in dictionary,
 #'   otherwise, replace values in dictionary with keys while leaving other
-#'   features unaffected
+#'   features unaffected.
 #' @param nested_scope how to treat matches from different dictionary keys that
 #'   are nested.  When one value is nested within another, such as "a b" being
 #'   nested within "a b c", then `tokens_lookup()` will match the longer.  When
@@ -27,6 +27,10 @@
 #'   within the key, while `"dictionary"` applies it across keys, matching only
 #'   the key with the longer pattern, not the matches nested within that longer
 #'   pattern from other keys.  See Details.
+#' @param append_key if `TRUE`, annotate matched tokens with keys.
+#' @param separator a character to separate tokens and keys when `append_key = TRUE`.
+#' @param concatenator the concatenation character that will connect the words
+#'   making up the multi-word sequences.
 #' @param verbose print status messages if `TRUE`
 #' @details Dictionary values may consist of sequences, and there are different
 #'   methods of counting key matches based on values that are nested or that
@@ -93,6 +97,9 @@ tokens_lookup <- function(x, dictionary, levels = 1:5,
                           capkeys = !exclusive,
                           exclusive = TRUE,
                           nomatch = NULL,
+                          append_key = FALSE,
+                          separator = "/",
+                          concatenator = "_",
                           nested_scope = c("key", "dictionary"),
                           verbose = quanteda_options("verbose")) {
     UseMethod("tokens_lookup")
@@ -105,6 +112,9 @@ tokens_lookup.default <- function(x, dictionary, levels = 1:5,
                                  capkeys = !exclusive,
                                  exclusive = TRUE,
                                  nomatch = NULL,
+                                 append_key = FALSE,
+                                 separator = "/",
+                                 concatenator = "_",
                                  nested_scope = c("key", "dictionary"),
                                  verbose = quanteda_options("verbose")) {
     check_class(class(x), "tokens_lookup")
@@ -117,6 +127,9 @@ tokens_lookup.tokens_xptr <- function(x, dictionary, levels = 1:5,
                           capkeys = !exclusive,
                           exclusive = TRUE,
                           nomatch = NULL,
+                          append_key = FALSE,
+                          separator = "/",
+                          concatenator = "_",
                           nested_scope = c("key", "dictionary"),
                           verbose = quanteda_options("verbose")) {
 
@@ -126,6 +139,10 @@ tokens_lookup.tokens_xptr <- function(x, dictionary, levels = 1:5,
     valuetype <- match.arg(valuetype)
     capkeys <- check_logical(capkeys)
     exclusive <- check_logical(exclusive)
+    nomatch <- check_character(nomatch, allow_null = TRUE)
+    append_key <- check_logical(append_key)
+    separator <- check_character(separator)
+    concatenator <- check_character(concatenator)
     nested_scope <- match.arg(nested_scope)
     verbose <- check_logical(verbose)
         
@@ -136,14 +153,27 @@ tokens_lookup.tokens_xptr <- function(x, dictionary, levels = 1:5,
              if (length(dictionary) > 1L) "s" else "", "\n", sep = "")
     ids <- object2id(dictionary, type, valuetype, case_insensitive,
                      field_object(attrs, "concatenator"), levels)
-    key <- attr(ids, "key")
-    id_key <- match(names(ids), key)
     overlap <- match(nested_scope, c("key", "dictionary"))
-    if (capkeys)
-        key <- char_toupper(key)
+    
+    if (append_key) {
+        fixed <- lapply(ids, function(x) type[x])
+        fixed <- structure(
+            stri_c_list(fixed, concatenator),
+            names = names(fixed)
+        )
+        key <- names(fixed)
+        if (capkeys)
+            key <- stri_trans_toupper(key)
+        key <- paste0(fixed, separator, key)
+        id_key <- seq_along(key)
+    } else {
+        key <- attr(ids, "key")
+        id_key <- match(names(ids), key)
+        if (capkeys)
+            key <- stri_trans_toupper(key)
+    }
     if (exclusive) {
         if (!is.null(nomatch)) {
-            nomatch <- check_character(nomatch)
             result <- cpp_tokens_lookup(x, ids, id_key, c(key, nomatch), overlap, 1,
                                         get_threads())
         } else {

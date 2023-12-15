@@ -13,6 +13,9 @@ tokens_lookup(
   capkeys = !exclusive,
   exclusive = TRUE,
   nomatch = NULL,
+  append_key = FALSE,
+  separator = "/",
+  concatenator = "_",
   nested_scope = c("key", "dictionary"),
   verbose = quanteda_options("verbose")
 )
@@ -37,16 +40,23 @@ exact matching. See \link{valuetype} for details.}
 \item{case_insensitive}{logical; if \code{TRUE}, ignore case when matching a
 \code{pattern} or \link{dictionary} values}
 
-\item{capkeys}{if TRUE, convert dictionary keys to uppercase to distinguish
-them from other features}
+\item{capkeys}{if \code{TRUE}, convert dictionary keys to uppercase to distinguish
+them from unmatched tokens.}
 
 \item{exclusive}{if \code{TRUE}, remove all features not in dictionary,
 otherwise, replace values in dictionary with keys while leaving other
-features unaffected}
+features unaffected.}
 
 \item{nomatch}{an optional character naming a new key for tokens that do not
 matched to a dictionary values  If \code{NULL} (default), do not record
 unmatched tokens.}
+
+\item{append_key}{if \code{TRUE}, annotate matched tokens with keys.}
+
+\item{separator}{a character to separate tokens and keys when \code{append_key = TRUE}.}
+
+\item{concatenator}{the concatenation character that will connect the words
+making up the multi-word sequences.}
 
 \item{nested_scope}{how to treat matches from different dictionary keys that
 are nested.  When one value is nested within another, such as "a b" being
