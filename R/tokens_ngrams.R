@@ -35,12 +35,12 @@
 #' tokens_ngrams(toks, n = 1:3)
 #' tokens_ngrams(toks, n = c(2,4), concatenator = " ")
 #' tokens_ngrams(toks, n = c(2,4), skip = 1, concatenator = " ")
-tokens_ngrams <- function(x, n = 2L, skip = 0L, concatenator = "_") {
+tokens_ngrams <- function(x, n = 2L, skip = 0L, concatenator = concat(x)) {
     UseMethod("tokens_ngrams")
 }
 
 #' @export
-tokens_ngrams.default <- function(x, n = 2L, skip = 0L, concatenator = "_") {
+tokens_ngrams.default <- function(x, n = 2L, skip = 0L, concatenator = concat(x)) {
     check_class(class(x), "tokens_ngrams")
 }
 
@@ -53,17 +53,17 @@ tokens_ngrams.default <- function(x, n = 2L, skip = 0L, concatenator = "_") {
 #' char_ngrams(letters[1:3], n = 1:3)
 #'
 #' @export
-char_ngrams <- function(x, n = 2L, skip = 0L, concatenator = "_") {
+char_ngrams <- function(x, n = 2L, skip = 0L, concatenator = concat(x)) {
     UseMethod("char_ngrams")
 }
 
 #' @export
-char_ngrams.default <- function(x, n = 2L, skip = 0L, concatenator = "_") {
+char_ngrams.default <- function(x, n = 2L, skip = 0L, concatenator = concat(x)) {
     check_class(class(x), "char_ngrams")
 }
 
 #' @export
-char_ngrams.character <- function(x, n = 2L, skip = 0L, concatenator = "_") {
+char_ngrams.character <- function(x, n = 2L, skip = 0L, concatenator = concat(x)) {
     if (any(stringi::stri_detect_charclass(x, "\\p{Z}")) & concatenator != " ")
         warning("whitespace detected: you may need to run tokens() first")
     x <- as.tokens(list(x))
@@ -79,7 +79,7 @@ char_ngrams.character <- function(x, n = 2L, skip = 0L, concatenator = "_") {
 #' tokens_ngrams(toks, n = 2:3)
 #' @importFrom RcppParallel RcppParallelLibs
 #' @export
-tokens_ngrams.tokens_xptr <- function(x, n = 2L, skip = 0L, concatenator = "_") {
+tokens_ngrams.tokens_xptr <- function(x, n = 2L, skip = 0L, concatenator = concat(x)) {
 
     n <- check_integer(n, min = 1, max_len = Inf)
     skip <- check_integer(skip, min_len = 1, max_len = Inf, min = 0)
@@ -119,22 +119,22 @@ tokens_ngrams.tokens <- function(x, ...) {
 #' tokens_skipgrams(toks, n = 2, skip = 0:1, concatenator = " ")
 #' tokens_skipgrams(toks, n = 2, skip = 0:2, concatenator = " ")
 #' tokens_skipgrams(toks, n = 3, skip = 0:2, concatenator = " ")
-tokens_skipgrams <- function(x, n, skip, concatenator = "_") {
+tokens_skipgrams <- function(x, n, skip, concatenator = concat(x)) {
     UseMethod("tokens_skipgrams")
 }
 
 #' @export
-tokens_skipgrams.default <- function(x, n, skip, concatenator = "_") {
+tokens_skipgrams.default <- function(x, n, skip, concatenator = concat(x)) {
     check_class(class(x), "tokens_skipgrams")
 }
 
 #' @export
-tokens_skipgrams.tokens <- function(x, n, skip, concatenator = "_") {
+tokens_skipgrams.tokens <- function(x, n, skip, concatenator = concat(x)) {
     tokens_ngrams(x, n = n, skip = skip, concatenator = concatenator)
 }
 
 #' @export
-tokens_skipgrams.tokens_xptr <- function(x, n, skip, concatenator = "_") {
+tokens_skipgrams.tokens_xptr <- function(x, n, skip, concatenator = concat(x)) {
     tokens_ngrams(x, n = n, skip = skip, concatenator = concatenator)
 }
 

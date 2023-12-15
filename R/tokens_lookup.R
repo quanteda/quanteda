@@ -99,7 +99,7 @@ tokens_lookup <- function(x, dictionary, levels = 1:5,
                           nomatch = NULL,
                           append_key = FALSE,
                           separator = "/",
-                          concatenator = "_",
+                          concatenator = concat(x),
                           nested_scope = c("key", "dictionary"),
                           verbose = quanteda_options("verbose")) {
     UseMethod("tokens_lookup")
@@ -114,7 +114,7 @@ tokens_lookup.default <- function(x, dictionary, levels = 1:5,
                                  nomatch = NULL,
                                  append_key = FALSE,
                                  separator = "/",
-                                 concatenator = "_",
+                                 concatenator = concat(x),
                                  nested_scope = c("key", "dictionary"),
                                  verbose = quanteda_options("verbose")) {
     check_class(class(x), "tokens_lookup")
@@ -129,7 +129,7 @@ tokens_lookup.tokens_xptr <- function(x, dictionary, levels = 1:5,
                           nomatch = NULL,
                           append_key = FALSE,
                           separator = "/",
-                          concatenator = "_",
+                          concatenator = concat(x),
                           nested_scope = c("key", "dictionary"),
                           verbose = quanteda_options("verbose")) {
 

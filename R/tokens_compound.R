@@ -67,7 +67,7 @@
 #'
 tokens_compound <- function(x, pattern,
                             valuetype = c("glob", "regex", "fixed"),
-                            concatenator = "_",
+                            concatenator = concat(x),
                             window = 0L,
                             case_insensitive = TRUE, join = TRUE,
                             modify_if = NULL) {
@@ -77,7 +77,7 @@ tokens_compound <- function(x, pattern,
 #' @export
 tokens_compound.default <- function(x, pattern,
                                     valuetype = c("glob", "regex", "fixed"),
-                                    concatenator = "_",
+                                    concatenator = concat(x),
                                     window = 0L,
                                     case_insensitive = TRUE, join = TRUE,
                                     modify_if = NULL) {
@@ -88,7 +88,7 @@ tokens_compound.default <- function(x, pattern,
 #' @export
 tokens_compound.tokens_xptr <- function(x, pattern,
                                         valuetype = c("glob", "regex", "fixed"),
-                                        concatenator = "_",
+                                        concatenator = concat(x),
                                         window = 0L,
                                         case_insensitive = TRUE, join = TRUE,
                                         modify_if = NULL) {
