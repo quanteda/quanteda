@@ -67,9 +67,6 @@ the calculations}
 \item{i}{document names or indices for documents to extract.}
 
 \item{j}{feature names or indices for documents to extract.}
-
-\item{drop_docid}{if \code{TRUE}, \code{docid} for documents are removed as the result
-of extraction.}
 }
 \description{
 The dfm class of object is a type of \link[Matrix:Matrix-class]{Matrix-class} object with

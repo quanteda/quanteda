@@ -40,9 +40,6 @@ subset_dfm <- function(x, i, j, ..., drop) {
 
 #' @param i document names or indices for documents to extract.
 #' @param j feature names or indices for documents to extract.
-#' @param drop_docid if `TRUE`, `docid` for documents are removed as the result 
-#'   of extraction.
-# @param drop always set to `FALSE`
 #' @param ... additional arguments not used here
 #' @rdname dfm-class
 #' @export
