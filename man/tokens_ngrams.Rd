@@ -8,7 +8,7 @@
 \usage{
 tokens_ngrams(x, n = 2L, skip = 0L, concatenator = concat(x))
 
-char_ngrams(x, n = 2L, skip = 0L, concatenator = concat(x))
+char_ngrams(x, n = 2L, skip = 0L, concatenator = "_")
 
 tokens_skipgrams(x, n, skip, concatenator = concat(x))
 }
