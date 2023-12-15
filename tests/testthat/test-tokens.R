@@ -1168,4 +1168,45 @@ test_that("cancatenator is working", {
     )
 })
 
+test_that("cancatenator is passed to the downstream", {
+    
+    txt <- c(d1 = "The United States is bordered by the Atlantic Ocean and the Pacific Ocean.",
+             d2 = "The Supreme Court of the United States is seldom in a united state.")
+    
+    dict <- dictionary(list(Countries = c("* States", "Federal Republic of *"),
+                            Oceans = c("* Ocean")), tolower = FALSE)
+    
+    # construct
+    
+    toks <- tokens(txt, remove_punct = TRUE, concatenator = "+")
+    
+    toks_dict <- tokens_lookup(toks, dict, append_key = TRUE)
+    expect_true("United+States/Countries" %in% types(toks_dict))
+    expect_identical(concat(toks_dict), "+")
+    
+    toks_ngram <- tokens_ngrams(toks)
+    expect_true("United+States" %in% types(toks_ngram))
+    expect_identical(concat(toks_ngram), "+")
+    
+    toks_comp <- tokens_compound(toks, dict)
+    expect_true("United+States" %in% types(toks_comp))
+    expect_identical(concat(toks_comp), "+")
+    
+    # re-construct with different concatantor
+    
+    toks2 <- tokens(toks, remove_punct = TRUE, concatenator = "*")
+    
+    toks_dict2 <- tokens_lookup(toks2, dict, append_key = TRUE)
+    expect_true("United*States/Countries" %in% types(toks_dict2))
+    expect_identical(concat(toks_dict2), "*")
+    
+    toks_ngram2 <- tokens_ngrams(toks2)
+    expect_true("United*States" %in% types(toks_ngram2))
+    expect_identical(concat(toks_ngram2), "*")
+    
+    toks_comp2 <- tokens_compound(toks2, dict)
+    expect_true("United*States" %in% types(toks_comp2))
+    expect_identical(concat(toks_comp2), "*")
+    
+})
 quanteda_options(reset = TRUE)
