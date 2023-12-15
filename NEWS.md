@@ -25,6 +25,8 @@
 
 * Methods for **readtext** objects are removed, since these are data.frame objects that are straightforward to convert into a `corpus` object.
 
+* `topfeatures()` no longer works on an fcm object. (#2141)
+
 ## Deprecations
 
 * Some on-the-fly calculations applied to character or corpus objects that require a temporary tokenisation are now deprecated.  This includes:
