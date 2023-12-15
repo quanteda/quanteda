@@ -712,3 +712,56 @@ test_that("position arguments are working", {
     )
     
 })
+
+
+test_that("modify_if argument is working", {
+    
+    dat <- data.frame(text = c("R and C are languages",
+                              "Windows (R), Quanteda (C)",
+                              "Sizes are X=10, Y=20, Z=30"),
+                      topic = c("language", "software", "hardware"),
+                      month = c(NA, 4, 12))
+    corp <- corpus(dat)
+    toks <- tokens(corp)
+    
+    toks1 <- tokens_select(toks, min_nchar = 2, modify_if = toks$topic != "language")
+    expect_identical(
+        as.list(toks1),
+        list(text1 = c("R", "and", "C", "are", "languages"),
+             text2 = c("Windows", "Quanteda"),
+             text3 = c("Sizes", "are", "10", "20", "30"))
+    )
+    
+    docname <- docnames(toks)
+    toks2 <- toks %>% 
+        tokens_select(c("R", "C"), modify_if = docname == "text1") %>% 
+        tokens_select(c("windows", "quanteda"), modify_if = docname == "text2") %>% 
+        tokens_select("\\d", valuetype = "regex", modify_if = docname == "text3")
+    expect_identical(
+        as.list(toks2),
+        list(text1 = c("R", "C"),
+             text2 = c("Windows", "Quanteda"),
+             text3 = c("10", "20", "30"))
+    )
+    
+    toks3 <- toks |>
+        tokens_keep(c("R", "C"), modify_if = toks$topic == "language") %>% 
+        tokens_remove(min_nchar = 6, modify_if = toks$topic != "language")
+    expect_identical(
+        as.list(toks3),
+        list(text1 = c("R", "C"),
+             text2 = c("Windows", "Quanteda"),
+             text3 = character())
+    )
+    
+    toks4 <- toks |>
+        tokens_remove(min_nchar = 2, modify_if = toks$month) |>
+        tokens_remove(stopwords())
+    expect_identical(
+        as.list(toks4),
+        list(text1 = c("R", "C", "languages"),
+             text2 = c("Windows", "Quanteda"),
+             text3 = c("Sizes", "10", "20", "30"))
+    )
+})
+

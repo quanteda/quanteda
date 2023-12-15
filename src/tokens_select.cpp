@@ -146,6 +146,7 @@ TokensPtr cpp_tokens_select(TokensPtr xptr,
                                  int window_right,
                                  const IntegerVector pos_from_,
                                  const IntegerVector pos_to_,
+                                 const LogicalVector bypass_,
                                  const int thread = -1) {
 
     Texts texts = xptr->texts;
@@ -163,6 +164,10 @@ TokensPtr cpp_tokens_select(TokensPtr xptr,
         pos[g] = std::make_pair(pos_from_[g], pos_to_[g]);
     }
     
+    if (bypass_.size() != (int)texts.size())
+        throw std::range_error("Invalid bypass");
+    std::vector<bool> bypass = Rcpp::as< std::vector<bool> >(bypass_);
+    
     // dev::Timer timer;
     // dev::start_timer("Token select", timer);
     std::size_t H = texts.size();
@@ -171,24 +176,24 @@ TokensPtr cpp_tokens_select(TokensPtr xptr,
     arena.execute([&]{
         tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
             for (int h = r.begin(); h < r.end(); ++h) {
+                if (bypass[h])
+                    continue;
                 if (mode == 1) {
                     texts[h] = keep_token(texts[h], spans, set_words, padding, window, pos[h]);
                 } else if(mode == 2) {
                     texts[h] = remove_token(texts[h], spans, set_words, padding, window, pos[h]);
-                } else {
-                    texts[h] = texts[h];
                 }
             }    
         });
     });
 #else
     for (std::size_t h = 0; h < texts.size(); h++) {
+        if (bypass[h])
+            continue;
         if (mode == 1) {
             texts[h] = keep_token(texts[h], spans, set_words, padding, window, pos[h]);
         } else if(mode == 2) {
             texts[h] = remove_token(texts[h], spans, set_words, padding, window, pos[h]);
-        } else {
-            texts[h] = texts[h];
         }
     }
 #endif

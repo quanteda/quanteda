@@ -10,6 +10,7 @@ tokens_replace(
   replacement,
   valuetype = "glob",
   case_insensitive = TRUE,
+  modify_if = NULL,
   verbose = quanteda_options("verbose")
 )
 }
@@ -29,6 +30,9 @@ exact matching. See \link{valuetype} for details.}
 \item{case_insensitive}{logical; if \code{TRUE}, ignore case when matching a
 \code{pattern} or \link{dictionary} values}
 
+\item{modify_if}{logical vector of length \code{ndoc(x)}; documents are modified
+only when corresponding values are \code{TRUE}, others are left unchanged.}
+
 \item{verbose}{print status messages if \code{TRUE}}
 }
 \description{
@@ -47,7 +51,7 @@ toks1 <- tokens(data_corpus_inaugural, remove_punct = TRUE)
 taxwords <- c("tax", "taxing", "taxed", "taxed", "taxation")
 lemma <- rep("TAX", length(taxwords))
 toks2 <- tokens_replace(toks1, taxwords, lemma, valuetype = "fixed")
-kwic(toks2, "TAX") |> 
+kwic(toks2, "TAX") |>
     tail(10)
 
 # stemming

@@ -8,7 +8,8 @@ tokens_split(
   x,
   separator = " ",
   valuetype = c("fixed", "regex"),
-  remove_separator = TRUE
+  remove_separator = TRUE,
+  modify_if = NULL
 )
 }
 \arguments{
@@ -21,6 +22,9 @@ wildcard expressions; \code{"regex"} for regular expressions; or \code{"fixed"} 
 exact matching. See \link{valuetype} for details.}
 
 \item{remove_separator}{if \code{TRUE}, remove separator from new tokens}
+
+\item{modify_if}{logical vector of length \code{ndoc(x)}; documents are modified
+only when corresponding values are \code{TRUE}, others are left unchanged.}
 }
 \description{
 Replaces tokens by multiple replacements consisting of elements split by a
@@ -33,8 +37,8 @@ toks1 <- tokens("pork barrel is an idiomatic multi-word expression")
 tokens_compound(toks1, phrase("pork barrel"))
 tokens_compound(toks1, phrase("pork barrel")) |>
     tokens_split(separator = "_")
-    
-# similar to tokens(x, remove_hyphen = TRUE) but post-tokenization 
+
+# similar to tokens(x, remove_hyphen = TRUE) but post-tokenization
 toks2 <- tokens("UK-EU negotiation is not going anywhere as of 2018-12-24.")
 tokens_split(toks2, separator = "-", remove_separator = FALSE)
 }

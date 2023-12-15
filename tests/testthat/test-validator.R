@@ -117,6 +117,8 @@ test_that("check_logical works", {
     expect_identical(quanteda:::check_logical(n2), TRUE)
     expect_identical(quanteda:::check_logical(n3, max_len = 4), 
                      c(TRUE, FALSE, TRUE, TRUE))
+    expect_identical(quanteda:::check_logical(l4, max_len = 2, allow_na = TRUE), 
+                     c(TRUE, FALSE))
     expect_error(quanteda:::check_logical(c1), 
                      "The value of c1 cannot be NA")
     expect_error(quanteda:::check_logical(c2), 

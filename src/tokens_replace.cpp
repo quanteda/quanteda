@@ -67,6 +67,7 @@ Text replace(Text tokens,
 TokensPtr cpp_tokens_replace(TokensPtr xptr,
                              const List &patterns_,
                              const List &replacements_,
+                             const LogicalVector bypass_,
                              const int thread = -1) {
     
     Texts texts = xptr->texts;
@@ -74,6 +75,10 @@ TokensPtr cpp_tokens_replace(TokensPtr xptr,
     //dev::Timer timer;
     //dev::start_timer("Map construction", timer);
 
+    if (bypass_.size() != (int)texts.size())
+        throw std::range_error("Invalid bypass");
+    std::vector<bool> bypass = Rcpp::as< std::vector<bool> >(bypass_);
+    
     MapNgrams map_pat;
     map_pat.max_load_factor(GLOBAL_PATTERN_MAX_LOAD_FACTOR);
     Ngrams pats = Rcpp::as<Ngrams>(patterns_);
@@ -97,12 +102,16 @@ TokensPtr cpp_tokens_replace(TokensPtr xptr,
     arena.execute([&]{
         tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
             for (int h = r.begin(); h < r.end(); ++h) {
+                if (bypass[h])
+                    continue;
                 texts[h] = replace(texts[h], spans, map_pat, ids_repls);
             }    
         });
     });
 #else
     for (std::size_t h = 0; h < H; h++) {
+        if (bypass[h])
+            continue;
         texts[h] = replace(texts[h], spans, map_pat, ids_repls);
     }
 #endif

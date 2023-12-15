@@ -18,6 +18,7 @@ tokens_select(
   max_nchar = NULL,
   startpos = 1L,
   endpos = -1L,
+  modify_if = NULL,
   verbose = quanteda_options("verbose")
 )
 
@@ -70,6 +71,9 @@ that -1 denotes the last token in the document, -2 the second to last, etc.
 When the length of the vector is equal to \code{ndoc}, tokens in corresponding
 positions will be selected; when it is less than \code{ndoc}, values are
 repeated to make them equal in length.}
+
+\item{modify_if}{logical vector of length \code{ndoc(x)}; documents are modified
+only when corresponding values are \code{TRUE}, others are left unchanged.}
 
 \item{verbose}{if \code{TRUE} print messages about how many tokens were selected
 or removed}
