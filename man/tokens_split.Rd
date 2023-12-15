@@ -9,7 +9,7 @@ tokens_split(
   separator = " ",
   valuetype = c("fixed", "regex"),
   remove_separator = TRUE,
-  condition = NULL
+  modify_if = NULL
 )
 }
 \arguments{
@@ -23,8 +23,8 @@ exact matching. See \link{valuetype} for details.}
 
 \item{remove_separator}{if \code{TRUE}, remove separator from new tokens}
 
-\item{condition}{logical vector with \code{ndoc(x)} values. Documents are
-modified only when corresponding values are \code{TRUE}.}
+\item{modify_if}{logical vector of length \code{ndoc(x)}; documents are modified
+only when corresponding values are \code{TRUE}, others are left unchanged.}
 }
 \description{
 Replaces tokens by multiple replacements consisting of elements split by a

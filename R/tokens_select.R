@@ -43,8 +43,7 @@
 #'   maximum length in characters for tokens to be removed or kept; defaults are
 #'   `NULL` for no limits.  These are applied after (and hence, in addition to)
 #'   any selection based on pattern matches.
-#' @param condition logical vector with `ndoc(x)` values. Documents are
-#'   modified only when corresponding values are `TRUE`.
+#' @inheritParams modify_if
 #' @return a [tokens] object with tokens selected or removed based on their
 #'   match to `pattern`
 #' @export
@@ -71,7 +70,7 @@ tokens_select <- function(x, pattern, selection = c("keep", "remove"),
                           case_insensitive = TRUE, padding = FALSE, window = 0,
                           min_nchar = NULL, max_nchar = NULL,
                           startpos = 1L, endpos = -1L,
-                          condition = NULL,
+                          modify_if = NULL,
                           verbose = quanteda_options("verbose")) {
     UseMethod("tokens_select")
 }
@@ -83,7 +82,7 @@ tokens_select.default <- function(x, pattern = NULL,
                                   case_insensitive = TRUE, padding = FALSE, window = 0,
                                   min_nchar = NULL, max_nchar = NULL,
                                   startpos = 1L, endpos = -1L,
-                                  condition = NULL,
+                                  modify_if = NULL,
                                   verbose = quanteda_options("verbose")) {
     check_class(class(x), "tokens_select")
 }
@@ -138,7 +137,7 @@ tokens_select.tokens_xptr <- function(x, pattern = NULL,
                                       case_insensitive = TRUE, padding = FALSE, window = 0,
                                       min_nchar = NULL, max_nchar = NULL,
                                       startpos = 1L, endpos = -1L,
-                                      condition = NULL,
+                                      modify_if = NULL,
                                       verbose = quanteda_options("verbose")) {
     
     selection <- match.arg(selection)
@@ -147,7 +146,7 @@ tokens_select.tokens_xptr <- function(x, pattern = NULL,
     window <- check_integer(window, min_len = 1, max_len = 2, min = 0)
     startpos <- check_integer(startpos, max_len = pmax(1, ndoc(x)))
     endpos <- check_integer(endpos, max_len = pmax(1, ndoc(x)))
-    condition <- check_logical(condition, min_len = ndoc(x), max_len = ndoc(x), 
+    modify_if <- check_logical(modify_if, min_len = ndoc(x), max_len = ndoc(x), 
                                allow_null = TRUE, allow_na = TRUE)
     verbose <- check_logical(verbose)
     
@@ -199,14 +198,14 @@ tokens_select.tokens_xptr <- function(x, pattern = NULL,
     startpos <- rep(startpos, length.out = ndoc(x))
     endpos <- rep(endpos, length.out = ndoc(x))
     
-    if (is.null(condition))
-        condition <- rep(TRUE, length.out = ndoc(x))
+    if (is.null(modify_if))
+        modify_if <- rep(TRUE, length.out = ndoc(x))
     
     if (selection == "keep") {
-        result <- cpp_tokens_select(x, ids, 1, padding, window[1], window[2], startpos, endpos, !condition, 
+        result <- cpp_tokens_select(x, ids, 1, padding, window[1], window[2], startpos, endpos, !modify_if, 
                                     get_threads())
     } else {
-        result <- cpp_tokens_select(x, ids, 2, padding, window[1], window[2], startpos, endpos, !condition, 
+        result <- cpp_tokens_select(x, ids, 2, padding, window[1], window[2], startpos, endpos, !modify_if, 
                                     get_threads())
     }
     rebuild_tokens(result, attrs)

@@ -11,7 +11,7 @@
 
 * Added `min_ntoken` and `max_ntoken` to `tokens_subset()` and `dfm_subset()` to extract documents based on number of tokens easily. It is equivalent to selecting documents using `ntoken()`.
 
-* Added a new argument `condition` that allows a tokens-based operation to apply only to documents that meet a logical condition.  This argument has been added to `tokens_select()`, `tokens_compound()`, `tokens_replace()`, and `tokens_split()`.  This is similar to applying `purrr::map_if()` to a tokens object, but is implemented within the function so that it can be performed efficiently in C++.
+* Added a new argument `modify_if` that allows a tokens-based operation to apply only to documents that meet a logical condition.  This argument has been added to `tokens_select()`, `tokens_compound()`, `tokens_replace()`, and `tokens_split()`.  This is similar to applying `purrr::map_if()` to a tokens object, but is implemented within the function so that it can be performed efficiently in C++.
 
 ## Removals
 

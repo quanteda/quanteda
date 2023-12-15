@@ -21,8 +21,7 @@
 #'   with the first giving the window size before `pattern` and the second the
 #'   window size after.  If paddings (empty `""` tokens) are found, window will
 #'   be shrunk to exclude them.
-#' @param condition logical vector with `ndoc(x)` values. Documents are
-#'   modified only when corresponding values are `TRUE`.
+#' @inheritParams modify_if
 #' @return A [tokens] object in which the token sequences matching `pattern`
 #'   have been replaced by new compounded "tokens" joined by the concatenator.
 #' @note Patterns to be compounded (naturally) consist of multi-word sequences,
@@ -71,7 +70,7 @@ tokens_compound <- function(x, pattern,
                     concatenator = "_", 
                     window = 0L,
                     case_insensitive = TRUE, join = TRUE,
-                    condition = NULL) {
+                    modify_if = NULL) {
     UseMethod("tokens_compound")
 }
 
@@ -81,7 +80,7 @@ tokens_compound.default <- function(x, pattern,
                                    concatenator = "_", 
                                    window = 0L,
                                    case_insensitive = TRUE, join = TRUE,
-                                   condition = NULL) {
+                                   modify_if = NULL) {
     check_class(class(x), "tokens_compound")
 }
 
@@ -92,13 +91,13 @@ tokens_compound.tokens_xptr <- function(x, pattern,
                    concatenator = "_", 
                    window = 0L,
                    case_insensitive = TRUE, join = TRUE, 
-                   condition = NULL) {
+                   modify_if = NULL) {
 
     valuetype <- match.arg(valuetype)
     concatenator <- check_character(concatenator)
     window <- check_integer(window, min_len = 1, max_len = 2, min = 0)
     join <- check_logical(join)
-    condition <- check_logical(condition, min_len = ndoc(x), max_len = ndoc(x), 
+    modify_if <- check_logical(modify_if, min_len = ndoc(x), max_len = ndoc(x), 
                                allow_null = TRUE, allow_na = TRUE)
     
     attrs <- attributes(x)
@@ -106,9 +105,9 @@ tokens_compound.tokens_xptr <- function(x, pattern,
 
     ids <- object2id(pattern, type, valuetype, case_insensitive, remove_unigram = all(window == 0))
     if (length(window) == 1) window <- rep(window, 2)
-    if (is.null(condition))
-        condition <- rep(TRUE, length.out = ndoc(x))
-    result <- cpp_tokens_compound(x, ids, concatenator, join, window[1], window[2], !condition,
+    if (is.null(modify_if))
+        modify_if <- rep(TRUE, length.out = ndoc(x))
+    result <- cpp_tokens_compound(x, ids, concatenator, join, window[1], window[2], !modify_if,
                                   get_threads())
     field_object(attrs, "concatenator") <- concatenator
     rebuild_tokens(result, attrs)
