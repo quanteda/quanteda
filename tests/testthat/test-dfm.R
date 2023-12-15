@@ -500,6 +500,9 @@ test_that("test topfeatures", {
         list("1" = c(b = 1.00, c = 0.75, a = 0.25, d = 0.00),
              "2" = c(b = 0.5, d = 0.5, a = 0, c = 0))
     )
+    lifecycle::expect_defunct(
+        topfeatures(fcm(dfmat))
+    )
 })
 
 test_that("test sparsity", {
