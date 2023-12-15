@@ -8,7 +8,7 @@ tokens_compound(
   x,
   pattern,
   valuetype = c("glob", "regex", "fixed"),
-  concatenator = "_",
+  concatenator = concat(x),
   window = 0L,
   case_insensitive = TRUE,
   join = TRUE,

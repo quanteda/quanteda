@@ -15,7 +15,7 @@ tokens_lookup(
   nomatch = NULL,
   append_key = FALSE,
   separator = "/",
-  concatenator = "_",
+  concatenator = concat(x),
   nested_scope = c("key", "dictionary"),
   verbose = quanteda_options("verbose")
 )

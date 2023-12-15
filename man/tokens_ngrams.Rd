@@ -6,11 +6,11 @@
 \alias{tokens_skipgrams}
 \title{Create n-grams and skip-grams from tokens}
 \usage{
-tokens_ngrams(x, n = 2L, skip = 0L, concatenator = "_")
+tokens_ngrams(x, n = 2L, skip = 0L, concatenator = concat(x))
 
-char_ngrams(x, n = 2L, skip = 0L, concatenator = "_")
+char_ngrams(x, n = 2L, skip = 0L, concatenator = concat(x))
 
-tokens_skipgrams(x, n, skip, concatenator = "_")
+tokens_skipgrams(x, n, skip, concatenator = concat(x))
 }
 \arguments{
 \item{x}{a tokens object, or a character vector, or a list of characters}
