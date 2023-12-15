@@ -141,13 +141,18 @@ TokensPtr cpp_tokens_compound(TokensPtr xptr,
                               const bool &join,
                               int window_left,
                               int window_right,
+                              const LogicalVector bypass_,
                               const int thread = -1) {
     
     Texts texts = xptr->texts;
     Types types = xptr->types;
     std::string delim = delim_;
     std::pair<int, int> window(window_left, window_right);
-
+    
+    if (bypass_.size() != (int)texts.size())
+        throw std::range_error("Invalid bypass");
+    std::vector<bool> bypass = Rcpp::as< std::vector<bool> >(bypass_);
+    
     unsigned int id_last = types.size();
 #if QUANTEDA_USE_TBB
     IdNgram id_comp(id_last + 1);
@@ -182,6 +187,8 @@ TokensPtr cpp_tokens_compound(TokensPtr xptr,
     arena.execute([&]{
         tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
             for (int h = r.begin(); h < r.end(); ++h) {
+                if (bypass[h])
+                    continue;
                 if (join) {
                     texts[h] = join_comp(texts[h], spans, set_comps, map_comps, id_comp, window);
                 } else {
@@ -192,6 +199,8 @@ TokensPtr cpp_tokens_compound(TokensPtr xptr,
     });
 #else
     for (std::size_t h = 0; h < H; h++) {
+        if (bypass[h])
+            continue;
         if (join) {
             texts[h] = join_comp(texts[h], spans, set_comps, map_comps, id_comp, window);
         } else {

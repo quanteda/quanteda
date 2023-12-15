@@ -217,3 +217,13 @@ NULL
 #' dfmat <- dfm(toks)
 #' print(dfmat, max_ndoc = 3, max_nfeat = 10)
 NULL
+
+#' Modify only documents matching a logical condition
+#'
+#' Applies the modification only to documents matching a condition.
+#' 
+#' @param modify_if logical vector of length `ndoc(x)`; documents are modified
+#'   only when corresponding values are `TRUE`, others are left unchanged.
+#' @name modify_if
+#' @keywords internal
+NULL

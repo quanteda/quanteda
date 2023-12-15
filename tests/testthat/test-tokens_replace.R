@@ -234,3 +234,27 @@ test_that("tokens_replace works with same replacement characters (#1765)", {
         exp4
     )
 })
+
+test_that("modify_if argument is working", {
+    
+    dat <- data.frame(text = c("C language",
+                               "Vitamin C"),
+                      topic = c("language", "vitamin"))
+    corp <- corpus(dat)
+    toks <- tokens(corp)
+    
+    toks1 <- tokens_replace(toks, "C", "R", modify_if = toks$topic == "language")
+    expect_identical(
+        as.list(toks1),
+        list(text1 = c("R", "language"),
+             text2 = c("Vitamin", "C"))
+    )
+    
+    toks2 <- tokens_replace(toks, "C", "D", modify_if = toks$topic == "vitamin")
+    expect_identical(
+        as.list(toks2),
+        list(text1 = c("C", "language"),
+             text2 = c("Vitamin", "D"))
+    )
+    
+})

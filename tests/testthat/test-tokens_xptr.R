@@ -354,3 +354,52 @@ test_that("lengths works on tokens xptr objects", {
         NULL
     )
 })
+
+test_that("test low-level validation", {
+    
+    xtoks <- tokens("a b c", xptr = TRUE)
+    dict <- list(c(1, 2))
+    
+    expect_error(
+        quanteda:::cpp_tokens_select(as.tokens_xptr(xtoks), 
+                                     dict, 2, TRUE, 0, 0, c(1, 1), 3, FALSE),
+        "Invalid pos_from"
+    )
+    expect_error(
+        quanteda:::cpp_tokens_select(as.tokens_xptr(xtoks), 
+                                     dict, 2, TRUE, 0, 0, 1, c(3, 3), FALSE),
+        "Invalid pos_to"
+    )
+    expect_error(
+        quanteda:::cpp_tokens_select(as.tokens_xptr(xtoks), 
+                                     dict, 2, TRUE, 0, 0, 1, 3, c(FALSE, TRUE)),
+        "Invalid bypass"
+    )
+    expect_error(
+        quanteda:::cpp_tokens_compound(as.tokens_xptr(xtoks), 
+                                     dict, "-", TRUE, 0, 0, c(FALSE, TRUE)),
+        "Invalid bypass"
+    )
+    expect_error(
+        quanteda:::cpp_tokens_replace(as.tokens_xptr(xtoks), 
+                                      dict, list(c(2, 3)), c(FALSE, TRUE)),
+        "Invalid bypass"
+    )
+    expect_error(
+        quanteda:::cpp_tokens_lookup(as.tokens_xptr(xtoks), 
+                                     dict, c(1, 2), "A", 1, 1, 3),
+        "Invalid words and keys"
+    )
+    
+    expect_error(
+        quanteda:::cpp_subset(as.tokens_xptr(xtoks), c(TRUE, FALSE)),
+        "Invalid document index"
+    )
+    
+    expect_error(
+        quanteda:::cpp_tokens_group(as.tokens_xptr(xtoks), 2),
+        "Invalid groups"
+    )
+})
+
+

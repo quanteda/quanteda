@@ -43,6 +43,7 @@
 #'   maximum length in characters for tokens to be removed or kept; defaults are
 #'   `NULL` for no limits.  These are applied after (and hence, in addition to)
 #'   any selection based on pattern matches.
+#' @inheritParams modify_if
 #' @return a [tokens] object with tokens selected or removed based on their
 #'   match to `pattern`
 #' @export
@@ -63,12 +64,13 @@
 #' tokens_select(toks, c("b", "f"), selection = "remove", window = 1)
 #' tokens_remove(toks, c("b", "f"), window = c(0, 1))
 #' tokens_select(toks, pattern = c("e", "g"), window = c(1, 2))
-#' 
+#'
 tokens_select <- function(x, pattern, selection = c("keep", "remove"),
                           valuetype = c("glob", "regex", "fixed"),
                           case_insensitive = TRUE, padding = FALSE, window = 0,
                           min_nchar = NULL, max_nchar = NULL,
                           startpos = 1L, endpos = -1L,
+                          modify_if = NULL,
                           verbose = quanteda_options("verbose")) {
     UseMethod("tokens_select")
 }
@@ -80,6 +82,7 @@ tokens_select.default <- function(x, pattern = NULL,
                                   case_insensitive = TRUE, padding = FALSE, window = 0,
                                   min_nchar = NULL, max_nchar = NULL,
                                   startpos = 1L, endpos = -1L,
+                                  modify_if = NULL,
                                   verbose = quanteda_options("verbose")) {
     check_class(class(x), "tokens_select")
 }
@@ -129,12 +132,13 @@ tokens_select.default <- function(x, pattern = NULL,
 #' tokens_select(toks, "t*", endpos = 3)
 #'
 tokens_select.tokens_xptr <- function(x, pattern = NULL,
-                                 selection = c("keep", "remove"),
-                                 valuetype = c("glob", "regex", "fixed"),
-                                 case_insensitive = TRUE, padding = FALSE, window = 0,
-                                 min_nchar = NULL, max_nchar = NULL,
-                                 startpos = 1L, endpos = -1L,
-                                 verbose = quanteda_options("verbose")) {
+                                      selection = c("keep", "remove"),
+                                      valuetype = c("glob", "regex", "fixed"),
+                                      case_insensitive = TRUE, padding = FALSE, window = 0,
+                                      min_nchar = NULL, max_nchar = NULL,
+                                      startpos = 1L, endpos = -1L,
+                                      modify_if = NULL,
+                                      verbose = quanteda_options("verbose")) {
 
     selection <- match.arg(selection)
     valuetype <- match.arg(valuetype)
@@ -142,8 +146,10 @@ tokens_select.tokens_xptr <- function(x, pattern = NULL,
     window <- check_integer(window, min_len = 1, max_len = 2, min = 0)
     startpos <- check_integer(startpos, max_len = pmax(1, ndoc(x)))
     endpos <- check_integer(endpos, max_len = pmax(1, ndoc(x)))
+    modify_if <- check_logical(modify_if, min_len = ndoc(x), max_len = ndoc(x),
+                               allow_null = TRUE, allow_na = TRUE)
     verbose <- check_logical(verbose)
-    
+
     attrs <- attributes(x)
     type <- get_types(x)
 
@@ -156,11 +162,11 @@ tokens_select.tokens_xptr <- function(x, pattern = NULL,
         }
     } else {
         ids <- object2id(pattern, type, valuetype, case_insensitive,
-                            field_object(attrs, "concatenator"))
+                         field_object(attrs, "concatenator"))
     }
 
     # selection by nchar
-    if (!is.null(min_nchar) | !is.null(max_nchar)) {
+    if (!is.null(min_nchar) || !is.null(max_nchar)) {
         len <- stri_length(type)
         is_short <- is_long <- rep(FALSE, length(len))
         if (!is.null(min_nchar)) {
@@ -188,15 +194,18 @@ tokens_select.tokens_xptr <- function(x, pattern = NULL,
 
     if (verbose) message_select(selection, length(ids), 0)
     if (length(window) == 1) window <- rep(window, 2)
-    
+
     startpos <- rep(startpos, length.out = ndoc(x))
     endpos <- rep(endpos, length.out = ndoc(x))
-    
+
+    if (is.null(modify_if))
+        modify_if <- rep(TRUE, length.out = ndoc(x))
+
     if (selection == "keep") {
-        result <- cpp_tokens_select(x, ids, 1, padding, window[1], window[2], startpos, endpos,
+        result <- cpp_tokens_select(x, ids, 1, padding, window[1], window[2], startpos, endpos, !modify_if,
                                     get_threads())
     } else {
-        result <- cpp_tokens_select(x, ids, 2, padding, window[1], window[2], startpos, endpos,
+        result <- cpp_tokens_select(x, ids, 2, padding, window[1], window[2], startpos, endpos, !modify_if,
                                     get_threads())
     }
     rebuild_tokens(result, attrs)
@@ -223,10 +232,11 @@ tokens_select.tokens <- function(x, ...) {
 #' tokens_remove(tokens(txt, remove_punct = TRUE), stopwords("english"))
 #'
 tokens_remove <- function(x, ...) {
-    if ("selection" %in% names(list(...))) {
-        stop("tokens_remove cannot include selection argument")
-    }
-    tokens_select(x, ..., selection = "remove")
+    (function(..., selection) {
+        if (!missing(selection))
+            stop("tokens_remove cannot include selection argument")
+        tokens_select(x, ..., selection = "remove")
+    })(...)
 }
 
 #' @rdname tokens_select
@@ -236,8 +246,9 @@ tokens_remove <- function(x, ...) {
 #' tokens_keep(tokens(txt, remove_punct = TRUE), "??")
 #'
 tokens_keep <- function(x, ...) {
-    if ("selection" %in% names(list(...))) {
-        stop("tokens_keep cannot include selection argument")
-    }
-    tokens_select(x, ..., selection = "keep")
+    (function(..., selection) {
+        if (!missing(selection))
+            stop("tokens_keep cannot include selection argument")
+        tokens_select(x, ..., selection = "keep")
+    })(...)
 }
