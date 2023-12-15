@@ -145,6 +145,8 @@ test_that("non-exclusive lookup is working",{
                      d2 = "Let freedom ring in the United States!",
                      d3 = "Aliens are invading Mars"),
                    remove_punct = TRUE)
+    toks2 <- tokens_remove(toks, stopwords("en"), padding = TRUE)
+    
     dict <- dictionary(list(country = c("united states", "mexico", "canada"), 
                             "law words" = c('law*', 'constitution'), 
                             freedom = c('free', "freedom", 'libertarian'),
@@ -155,7 +157,6 @@ test_that("non-exclusive lookup is working",{
                       d2 = c("Let", "FREEDOM", "ring", "in", "the", "COUNTRY", "OVERLAP"),
                       d3 = c("Aliens", "are", "invading", "Mars")))
     
-    toks2 <- tokens_remove(toks, stopwords("en"), padding = TRUE)
     expect_equal(as.list(tokens_lookup(toks2, dict, exclusive = FALSE, capkeys = TRUE)),
                  list(d1 = c("COUNTRY", "signed", "", "new", "FREEDOM", "LAW WORDS", "", "COUNTRY"),
                       d2 = c("Let", "FREEDOM", "ring", "", "", "COUNTRY", "OVERLAP"),
@@ -517,4 +518,101 @@ test_that("tokens_lookup return tokens even if no matches", {
         c("1789-Washington" = 0L, "1793-Washington" = 0L, "1797-Adams" = 0L,
           "1801-Jefferson"  = 0L, "1805-Jefferson" = 0L)
     )
+})
+
+
+test_that("append_key is working",{
+    
+    toks <- tokens(c(d1 = "Mexico signed a new libertarian law with Canada.",
+                     d2 = "Let freedom ring in the United States!",
+                     d3 = "Aliens are invading Mars"),
+                   remove_punct = TRUE)
+    toks2 <- tokens_remove(toks, stopwords("en"), padding = TRUE)
+    
+    dict <- dictionary(list(country = c("united states", "mexico", "canada"), 
+                            "law words" = c('law*', 'constitution'), 
+                            freedom = c('free', "freedom", 'libertarian'),
+                            overlap = "United"))
+    
+    # exclusive mode
+    expect_equal(as.list(tokens_lookup(toks, dict, exclusive = TRUE, capkeys = TRUE,
+                                       append_key = TRUE)),
+                 list(d1 = c("Mexico/COUNTRY", "libertarian/FREEDOM", 
+                             "law/LAW WORDS", "Canada/COUNTRY"),
+                      d2 = c("freedom/FREEDOM", 
+                             "United_States/COUNTRY", "United/OVERLAP"),
+                      d3 = character()))
+    
+    expect_equal(as.list(tokens_lookup(toks2, dict, exclusive = TRUE, capkeys = TRUE,
+                                       append_key = TRUE)),
+                 list(d1 = c("Mexico/COUNTRY", "libertarian/FREEDOM", 
+                             "law/LAW WORDS", "Canada/COUNTRY"),
+                      d2 = c("freedom/FREEDOM", 
+                             "United_States/COUNTRY", "United/OVERLAP"),
+                      d3 = character()))
+    
+    expect_equal(as.list(tokens_lookup(toks2, dict, exclusive = TRUE, capkeys = TRUE,
+                                       append_key = TRUE, concatenator = "+")),
+                 list(d1 = c("Mexico/COUNTRY", "libertarian/FREEDOM", 
+                             "law/LAW WORDS", "Canada/COUNTRY"),
+                      d2 = c("freedom/FREEDOM", 
+                             "United+States/COUNTRY", "United/OVERLAP"),
+                      d3 = character()))
+    
+    # non-exclusive mode
+    expect_equal(as.list(tokens_lookup(toks, dict, exclusive = FALSE, capkeys = TRUE,
+                                       append_key = TRUE)),
+                 list(d1 = c("Mexico/COUNTRY", "signed", "a", "new", "libertarian/FREEDOM", 
+                             "law/LAW WORDS", "with", "Canada/COUNTRY"),
+                      d2 = c("Let", "freedom/FREEDOM", "ring", "in", "the", 
+                             "United_States/COUNTRY", "United/OVERLAP"),
+                      d3 = c("Aliens", "are", "invading", "Mars")))
+    
+    expect_equal(as.list(tokens_lookup(toks, dict, exclusive = FALSE, capkeys = TRUE,
+                                       append_key = TRUE, separator = "+")),
+                 list(d1 = c("Mexico+COUNTRY", "signed", "a", "new", "libertarian+FREEDOM", 
+                             "law+LAW WORDS", "with", "Canada+COUNTRY"),
+                      d2 = c("Let", "freedom+FREEDOM", "ring", "in", "the", 
+                             "United_States+COUNTRY", "United+OVERLAP"),
+                      d3 = c("Aliens", "are", "invading", "Mars")))
+    
+    expect_equal(as.list(tokens_lookup(toks, dict, exclusive = FALSE, capkeys = TRUE, 
+                                       append_key = TRUE, separator = " x ")),
+                 list(d1 = c("Mexico x COUNTRY", "signed", "a", "new", "libertarian x FREEDOM", 
+                             "law x LAW WORDS", "with", "Canada x COUNTRY"),
+                      d2 = c("Let", "freedom x FREEDOM", "ring", "in", "the", 
+                             "United_States x COUNTRY", "United x OVERLAP"),
+                      d3 = c("Aliens", "are", "invading", "Mars")))
+    
+    expect_equal(as.list(tokens_lookup(toks2, dict, exclusive = FALSE, capkeys = FALSE, 
+                                       append_key = TRUE)),
+                 list(d1 = c("Mexico/country", "signed", "", "new", "libertarian/freedom", 
+                             "law/law words", "", "Canada/country"),
+                      d2 = c("Let", "freedom/freedom", "ring", "", "", 
+                             "United_States/country", "United/overlap"),
+                      d3 = c("Aliens", "", "invading", "Mars")))
+    
+    expect_equal(as.list(tokens_lookup(toks2, dict, exclusive = FALSE, capkeys = FALSE, 
+                                       append_key = TRUE, separator = "➡️")),
+                 list(d1 = c("Mexico➡️country", "signed", "", "new", "libertarian➡️freedom", 
+                             "law➡️law words", "", "Canada➡️country"),
+                      d2 = c("Let", "freedom➡️freedom", "ring", "", "", 
+                             "United_States➡️country", "United➡️overlap"),
+                      d3 = c("Aliens", "", "invading", "Mars")))
+    
+    expect_error(
+        tokens_lookup(toks, dict, exclusive = FALSE,  append_key = NA),
+        "append_key cannot be NA"
+    )
+    expect_error(
+        tokens_lookup(toks, dict, exclusive = FALSE, append_key = TRUE, 
+                      separator = c("+", "+")),
+        "The length of separator must be 1"
+    )
+    expect_error(
+        tokens_lookup(toks, dict, exclusive = FALSE, append_key = TRUE, 
+                      concatenator = c("_", "_")),
+        "The length of concatenator must be 1"
+    )
+    
 })
