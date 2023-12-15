@@ -1135,7 +1135,7 @@ test_that("cancatenator is working", {
         "The length of concatenator must be 1"
     )
     expect_equal(
-        quanteda:::get_concatenator(toks),
+        concatenator(toks),
         " "
     )
     
@@ -1144,7 +1144,7 @@ test_that("cancatenator is working", {
                             Oceans = c("* Ocean")), tolower = FALSE)
     toks <- tokens_compound(toks, dict, concatenator = "_")
     expect_equal(
-        quanteda:::get_concatenator(toks),
+        concatenator(toks),
         "_"
     )
     expect_equal(
@@ -1159,7 +1159,7 @@ test_that("cancatenator is working", {
         "The length of concatenator must be 1"
     )
     expect_equal(
-        quanteda:::get_concatenator(toks),
+        concatenator(toks),
         "+"
     )
     expect_equal(

@@ -2,9 +2,12 @@
 % Please edit documentation in R/tokens.R
 \name{types}
 \alias{types}
+\alias{concatenator}
 \title{Get word types from a tokens object}
 \usage{
 types(x)
+
+concatenator(x)
 }
 \arguments{
 \item{x}{a tokens object}

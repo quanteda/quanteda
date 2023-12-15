@@ -748,3 +748,19 @@ types.tokens <- function(x) {
 "types<-.tokens_xptr" <- function(x, value) {
     set_types(x) <- value
 }
+
+#' @rdname types
+#' @export
+concatenator <- function(x) {
+    UseMethod("concatenator")
+}
+
+#' @export
+concatenator.default <- function(x) {
+    check_class(class(x), "concatenator")
+}
+
+#' @export
+concatenator.tokens <- function(x) {
+    get_concatenator(x)
+}
