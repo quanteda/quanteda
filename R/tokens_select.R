@@ -64,7 +64,7 @@
 #' tokens_select(toks, c("b", "f"), selection = "remove", window = 1)
 #' tokens_remove(toks, c("b", "f"), window = c(0, 1))
 #' tokens_select(toks, pattern = c("e", "g"), window = c(1, 2))
-#' 
+#'
 tokens_select <- function(x, pattern, selection = c("keep", "remove"),
                           valuetype = c("glob", "regex", "fixed"),
                           case_insensitive = TRUE, padding = FALSE, window = 0,
@@ -139,20 +139,20 @@ tokens_select.tokens_xptr <- function(x, pattern = NULL,
                                       startpos = 1L, endpos = -1L,
                                       modify_if = NULL,
                                       verbose = quanteda_options("verbose")) {
-    
+
     selection <- match.arg(selection)
     valuetype <- match.arg(valuetype)
     padding <- check_logical(padding)
     window <- check_integer(window, min_len = 1, max_len = 2, min = 0)
     startpos <- check_integer(startpos, max_len = pmax(1, ndoc(x)))
     endpos <- check_integer(endpos, max_len = pmax(1, ndoc(x)))
-    modify_if <- check_logical(modify_if, min_len = ndoc(x), max_len = ndoc(x), 
+    modify_if <- check_logical(modify_if, min_len = ndoc(x), max_len = ndoc(x),
                                allow_null = TRUE, allow_na = TRUE)
     verbose <- check_logical(verbose)
-    
+
     attrs <- attributes(x)
     type <- get_types(x)
-    
+
     # selection by pattern
     if (is.null(pattern)) {
         if (selection == "keep") {
@@ -164,9 +164,9 @@ tokens_select.tokens_xptr <- function(x, pattern = NULL,
         ids <- object2id(pattern, type, valuetype, case_insensitive,
                          field_object(attrs, "concatenator"))
     }
-    
+
     # selection by nchar
-    if (!is.null(min_nchar) | !is.null(max_nchar)) {
+    if (!is.null(min_nchar) || !is.null(max_nchar)) {
         len <- stri_length(type)
         is_short <- is_long <- rep(FALSE, length(len))
         if (!is.null(min_nchar)) {
@@ -191,21 +191,21 @@ tokens_select.tokens_xptr <- function(x, pattern = NULL,
             }
         }
     }
-    
+
     if (verbose) message_select(selection, length(ids), 0)
     if (length(window) == 1) window <- rep(window, 2)
-    
+
     startpos <- rep(startpos, length.out = ndoc(x))
     endpos <- rep(endpos, length.out = ndoc(x))
-    
+
     if (is.null(modify_if))
         modify_if <- rep(TRUE, length.out = ndoc(x))
-    
+
     if (selection == "keep") {
-        result <- cpp_tokens_select(x, ids, 1, padding, window[1], window[2], startpos, endpos, !modify_if, 
+        result <- cpp_tokens_select(x, ids, 1, padding, window[1], window[2], startpos, endpos, !modify_if,
                                     get_threads())
     } else {
-        result <- cpp_tokens_select(x, ids, 2, padding, window[1], window[2], startpos, endpos, !modify_if, 
+        result <- cpp_tokens_select(x, ids, 2, padding, window[1], window[2], startpos, endpos, !modify_if,
                                     get_threads())
     }
     rebuild_tokens(result, attrs)

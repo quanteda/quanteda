@@ -64,42 +64,42 @@
 #' # use window to form ngrams
 #' tokens_remove(toks, pattern = stopwords("en")) |>
 #'     tokens_compound(pattern = "leav*", join = FALSE, window = c(0, 3))
-#'     
+#'
 tokens_compound <- function(x, pattern,
-                    valuetype = c("glob", "regex", "fixed"),
-                    concatenator = "_", 
-                    window = 0L,
-                    case_insensitive = TRUE, join = TRUE,
-                    modify_if = NULL) {
+                            valuetype = c("glob", "regex", "fixed"),
+                            concatenator = "_",
+                            window = 0L,
+                            case_insensitive = TRUE, join = TRUE,
+                            modify_if = NULL) {
     UseMethod("tokens_compound")
 }
 
 #' @export
 tokens_compound.default <- function(x, pattern,
-                                   valuetype = c("glob", "regex", "fixed"),
-                                   concatenator = "_", 
-                                   window = 0L,
-                                   case_insensitive = TRUE, join = TRUE,
-                                   modify_if = NULL) {
+                                    valuetype = c("glob", "regex", "fixed"),
+                                    concatenator = "_",
+                                    window = 0L,
+                                    case_insensitive = TRUE, join = TRUE,
+                                    modify_if = NULL) {
     check_class(class(x), "tokens_compound")
 }
 
 #' @importFrom RcppParallel RcppParallelLibs
 #' @export
 tokens_compound.tokens_xptr <- function(x, pattern,
-                   valuetype = c("glob", "regex", "fixed"),
-                   concatenator = "_", 
-                   window = 0L,
-                   case_insensitive = TRUE, join = TRUE, 
-                   modify_if = NULL) {
+                                        valuetype = c("glob", "regex", "fixed"),
+                                        concatenator = "_",
+                                        window = 0L,
+                                        case_insensitive = TRUE, join = TRUE,
+                                        modify_if = NULL) {
 
     valuetype <- match.arg(valuetype)
     concatenator <- check_character(concatenator)
     window <- check_integer(window, min_len = 1, max_len = 2, min = 0)
     join <- check_logical(join)
-    modify_if <- check_logical(modify_if, min_len = ndoc(x), max_len = ndoc(x), 
+    modify_if <- check_logical(modify_if, min_len = ndoc(x), max_len = ndoc(x),
                                allow_null = TRUE, allow_na = TRUE)
-    
+
     attrs <- attributes(x)
     type <- get_types(x)
 

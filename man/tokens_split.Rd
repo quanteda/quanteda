@@ -37,8 +37,8 @@ toks1 <- tokens("pork barrel is an idiomatic multi-word expression")
 tokens_compound(toks1, phrase("pork barrel"))
 tokens_compound(toks1, phrase("pork barrel")) |>
     tokens_split(separator = "_")
-    
-# similar to tokens(x, remove_hyphen = TRUE) but post-tokenization 
+
+# similar to tokens(x, remove_hyphen = TRUE) but post-tokenization
 toks2 <- tokens("UK-EU negotiation is not going anywhere as of 2018-12-24.")
 tokens_split(toks2, separator = "-", remove_separator = FALSE)
 }

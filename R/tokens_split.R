@@ -1,5 +1,5 @@
 #' Split tokens by a separator pattern
-#' 
+#'
 #' Replaces tokens by multiple replacements consisting of elements split by a
 #' separator pattern, with the option of retaining the separator.  This function
 #' effectively reverses the operation of [tokens_compound()].
@@ -14,12 +14,12 @@
 #' tokens_compound(toks1, phrase("pork barrel"))
 #' tokens_compound(toks1, phrase("pork barrel")) |>
 #'     tokens_split(separator = "_")
-#'     
-#' # similar to tokens(x, remove_hyphen = TRUE) but post-tokenization 
+#'
+#' # similar to tokens(x, remove_hyphen = TRUE) but post-tokenization
 #' toks2 <- tokens("UK-EU negotiation is not going anywhere as of 2018-12-24.")
 #' tokens_split(toks2, separator = "-", remove_separator = FALSE)
 #' @keywords tokens
-#' @export 
+#' @export
 tokens_split <- function(x, separator = " ", valuetype = c("fixed", "regex"),
                          remove_separator = TRUE, modify_if = NULL) {
     UseMethod("tokens_split")
@@ -34,7 +34,7 @@ tokens_split.default <- function(x, separator = " ", valuetype = c("fixed", "reg
 #' @export
 tokens_split.tokens_xptr <- function(x, separator = " ", valuetype = c("fixed", "regex"),
                                      remove_separator = TRUE, modify_if = NULL) {
-    
+
     separator <- check_character(separator)
     valuetype <- match.arg(valuetype)
     remove_separator <- check_logical(remove_separator)
@@ -64,7 +64,7 @@ tokens_split.tokens_xptr <- function(x, separator = " ", valuetype = c("fixed", 
     }
 
     replacement <- stri_split_fixed(type, "\uE000", omit_empty = TRUE)
-    tokens_replace(x, pattern, replacement, "fixed", case_insensitive = FALSE, 
+    tokens_replace(x, pattern, replacement, "fixed", case_insensitive = FALSE,
                    modify_if = modify_if)
 }
 
