@@ -53,17 +53,17 @@ tokens_ngrams.default <- function(x, n = 2L, skip = 0L, concatenator = concat(x)
 #' char_ngrams(letters[1:3], n = 1:3)
 #'
 #' @export
-char_ngrams <- function(x, n = 2L, skip = 0L, concatenator = concat(x)) {
+char_ngrams <- function(x, n = 2L, skip = 0L, concatenator = "_") {
     UseMethod("char_ngrams")
 }
 
 #' @export
-char_ngrams.default <- function(x, n = 2L, skip = 0L, concatenator = concat(x)) {
+char_ngrams.default <- function(x, n = 2L, skip = 0L, concatenator = "_") {
     check_class(class(x), "char_ngrams")
 }
 
 #' @export
-char_ngrams.character <- function(x, n = 2L, skip = 0L, concatenator = concat(x)) {
+char_ngrams.character <- function(x, n = 2L, skip = 0L, concatenator = "_") {
     if (any(stringi::stri_detect_charclass(x, "\\p{Z}")) & concatenator != " ")
         warning("whitespace detected: you may need to run tokens() first")
     x <- as.tokens(list(x))
