@@ -187,6 +187,8 @@ tokens_lookup.tokens_xptr <- function(x, dictionary, levels = 1:5,
         result <- cpp_tokens_lookup(x, ids, match(id_key, id_used), key[id_used], overlap, 2,
                                     get_threads())
     }
+    if (append_key)
+        cpp_recompile(result)
     if (exclusive)
         field_object(attrs, "what") <- "dictionary"
     rebuild_tokens(result, attrs)
