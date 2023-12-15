@@ -8,7 +8,8 @@ tokens_split(
   x,
   separator = " ",
   valuetype = c("fixed", "regex"),
-  remove_separator = TRUE
+  remove_separator = TRUE,
+  condition = NULL
 )
 }
 \arguments{
@@ -21,6 +22,9 @@ wildcard expressions; \code{"regex"} for regular expressions; or \code{"fixed"} 
 exact matching. See \link{valuetype} for details.}
 
 \item{remove_separator}{if \code{TRUE}, remove separator from new tokens}
+
+\item{condition}{logical vector with \code{ndoc(x)} values. Documents are
+modified only when corresponding values are \code{TRUE}.}
 }
 \description{
 Replaces tokens by multiple replacements consisting of elements split by a
