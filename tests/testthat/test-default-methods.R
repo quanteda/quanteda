@@ -147,6 +147,13 @@ test_that("types defaults work", {
     # )
 })
 
+test_that("concatenator defaults work", {
+    expect_error(
+        concatenator(TRUE),
+        "concatenator\\(\\) only works on tokens, tokens_xptr objects"
+    )
+})
+
 test_that("test new bootstrap_dfm methods", {
     expect_error(
         bootstrap_dfm(TRUE),
