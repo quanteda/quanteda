@@ -114,8 +114,8 @@
 #'   tokenization, consider using \pkg{spacyr}.} }
 #' @return \pkg{quanteda} `tokens` class object, by default a serialized list of
 #'   integers corresponding to a vector of types.
-#' @seealso [tokens_ngrams()], [tokens_skipgrams()], [as.list.tokens()],
-#'   [as.tokens()]
+#' @seealso [tokens_ngrams()], [tokens_skipgrams()], [tokens_compound()],
+#'   [tokens_lookup()], [concat()], [as.list.tokens()], [as.tokens()]
 #' @keywords tokens
 #' @export
 #' @examples
@@ -487,8 +487,7 @@ tokens.tokens <- function(x, ...) {
 #' object is a [tokens] object, and functions to combine [tokens]
 #' objects.
 #' @param x object to be coerced or checked
-#' @param concatenator character between multi-word expressions, default is the
-#'   underscore character.  See Details.
+#' @inheritParams tokens
 #' @param ... additional arguments used by specific methods.  For
 #'   [c.tokens], these are the [tokens] objects to be concatenated.
 #' @return `as.tokens` returns a quanteda [tokens] object.
@@ -749,24 +748,28 @@ types.tokens <- function(x) {
     set_types(x) <- value
 }
 
-#' @rdname types
-#' @export
-concatenator <- function(x) {
-    UseMethod("concatenator")
-}
 
-#' @export
-concatenator.default <- function(x) {
-    check_class(class(x), "concatenator")
-}
+# concatenator functions --------------
 
+#' Return the concatenator character from an object
+#'
+#' Get the concatenator character from a [tokens] object.
+#' @param x a [tokens] object
+#' @returns a character of length 1
+#' @details The concatenator character is a special delimiter used to link
+#' separate tokens in multi-token phrases.  It is embedded in the meta-data of
+#' tokens objects and used in downstream operations, such as [tokens_compound()]
+#' or [tokens_lookup()].  It can be extracted using [concat()] and set using
+#' `tokens(x, concatenator = ...)` when `x` is a tokens object.
+#'
+#' The default `_` is recommended since it will not be removed during normal
+#' cleaning and tokenization (while nearly all other punctuation characters, at
+#' least those in the Unicode punctuation class `[P]` will be removed).
 #' @export
-concatenator.tokens <- function(x) {
-    get_concatenator(x)
-}
-
-#' @rdname types
-#' @export
+#' @examples
+#' toks <- tokens(data_corpus_inaugural[1:5])
+#' concat(toks)
+#' 
 concat <- function(x) {
     UseMethod("concat")
 }
@@ -781,3 +784,18 @@ concat.tokens <- function(x) {
     get_concatenator(x)
 }
 
+#' @rdname concat
+#' @export
+concatenator <- function(x) {
+    UseMethod("concatenator")
+}
+
+#' @export
+concatenator.default <- function(x) {
+    check_class(class(x), "concatenator")
+}
+
+#' @export
+concatenator.tokens <- function(x) {
+    get_concatenator(x)
+}

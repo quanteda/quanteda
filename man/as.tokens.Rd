@@ -35,8 +35,8 @@ is.tokens(x)
 \item{use.names}{logical; preserve names if \code{TRUE}.  For
 \code{as.character} and \code{unlist} only.}
 
-\item{concatenator}{character between multi-word expressions, default is the
-underscore character.  See Details.}
+\item{concatenator}{character; the concatenation character that will connect
+the tokens making up a multi-token sequence.}
 
 \item{include_pos}{character; whether and which part-of-speech tag to use:
 \code{"none"} do not use any part of speech indicator, \code{"pos"} use the

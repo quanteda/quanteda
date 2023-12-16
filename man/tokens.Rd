@@ -193,7 +193,7 @@ tokenizers::tokenize_sentences(
 
 }
 \seealso{
-\code{\link[=tokens_ngrams]{tokens_ngrams()}}, \code{\link[=tokens_skipgrams]{tokens_skipgrams()}}, \code{\link[=as.list.tokens]{as.list.tokens()}},
-\code{\link[=as.tokens]{as.tokens()}}
+\code{\link[=tokens_ngrams]{tokens_ngrams()}}, \code{\link[=tokens_skipgrams]{tokens_skipgrams()}}, \code{\link[=tokens_compound]{tokens_compound()}},
+\code{\link[=tokens_lookup]{tokens_lookup()}}, \code{\link[=concat]{concat()}}, \code{\link[=as.list.tokens]{as.list.tokens()}}, \code{\link[=as.tokens]{as.tokens()}}
 }
 \keyword{tokens}

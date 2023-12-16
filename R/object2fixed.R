@@ -5,7 +5,7 @@
 #' @param x a list of character vectors, [dictionary] or collocations object
 #' @inheritParams valuetype
 #' @inheritParams pattern2id
-#' @param concatenator the concatenation character that join multi-word
+#' @param concatenator the concatenation character that joins multi-word
 #'   expression in `types`
 #' @inheritParams tokens_lookup
 #' @param remove_unigram  if `TRUE`, ignores single-word patterns

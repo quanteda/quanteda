@@ -2,7 +2,7 @@
 #'
 #' Convert tokens into equivalence classes defined by values of a dictionary
 #' object.
-#' @param x tokens object to which dictionary or thesaurus will be supplied
+#' @param x the [tokens] object to which the dictionary will be applied
 #' @param dictionary the [dictionary]-class object that will be applied to
 #'   `x`
 #' @param levels integers specifying the levels of entries in a hierarchical

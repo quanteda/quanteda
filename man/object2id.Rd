@@ -39,7 +39,7 @@ exact matching. See \link{valuetype} for details.}
 \item{case_insensitive}{logical; if \code{TRUE}, ignore case when matching a
 \code{pattern} or \link{dictionary} values}
 
-\item{concatenator}{the concatenation character that join multi-word
+\item{concatenator}{the concatenation character that joins multi-word
 expression in \code{types}}
 
 \item{levels}{integers specifying the levels of entries in a hierarchical

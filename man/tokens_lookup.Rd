@@ -21,7 +21,7 @@ tokens_lookup(
 )
 }
 \arguments{
-\item{x}{tokens object to which dictionary or thesaurus will be supplied}
+\item{x}{the \link{tokens} object to which the dictionary will be applied}
 
 \item{dictionary}{the \link{dictionary}-class object that will be applied to
 \code{x}}
