@@ -768,12 +768,12 @@ concatenator.tokens <- function(x) {
 #' @rdname types
 #' @export
 concat <- function(x) {
-    UseMethod("concatenator")
+    UseMethod("concat")
 }
 
 #' @export
 concat.default <- function(x) {
-    check_class(class(x), "concatenator")
+    check_class(class(x), "concat")
 }
 
 #' @export
