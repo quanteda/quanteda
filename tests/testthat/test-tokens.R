@@ -1138,6 +1138,10 @@ test_that("cancatenator is working", {
         concatenator(toks),
         " "
     )
+    expect_equal(
+        concat(toks),
+        " "
+    )
     
     # compound
     dict <- dictionary(list(Countries = c("* States", "Federal Republic of *"),
@@ -1145,6 +1149,10 @@ test_that("cancatenator is working", {
     toks <- tokens_compound(toks, dict, concatenator = "_")
     expect_equal(
         concatenator(toks),
+        "_"
+    )
+    expect_equal(
+        concat(toks),
         "_"
     )
     expect_equal(
@@ -1160,6 +1168,10 @@ test_that("cancatenator is working", {
     )
     expect_equal(
         concatenator(toks),
+        "+"
+    )
+    expect_equal(
+        concat(toks),
         "+"
     )
     expect_equal(
