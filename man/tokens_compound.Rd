@@ -8,7 +8,7 @@ tokens_compound(
   x,
   pattern,
   valuetype = c("glob", "regex", "fixed"),
-  concatenator = "_",
+  concatenator = concat(x),
   window = 0L,
   case_insensitive = TRUE,
   join = TRUE,
@@ -25,11 +25,8 @@ or collocations object.  See \link{pattern} for details.}
 wildcard expressions; \code{"regex"} for regular expressions; or \code{"fixed"} for
 exact matching. See \link{valuetype} for details.}
 
-\item{concatenator}{the concatenation character that will connect the words
-making up the multi-word sequences.  The default \verb{_} is recommended since
-it will not be removed during normal cleaning and tokenization (while
-nearly all other punctuation characters, at least those in the Unicode
-punctuation class \verb{[P]} will be removed).}
+\item{concatenator}{character; the concatenation character that will connect
+the tokens making up a multi-token sequence.}
 
 \item{window}{integer; a vector of length 1 or 2 that specifies size of the
 window of tokens adjacent to \code{pattern} that will be compounded with matches

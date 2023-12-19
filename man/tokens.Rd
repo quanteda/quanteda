@@ -16,6 +16,7 @@ tokens(
   split_tags = FALSE,
   include_docvars = TRUE,
   padding = FALSE,
+  concatenator = "_",
   verbose = quanteda_options("verbose"),
   ...,
   xptr = FALSE
@@ -60,6 +61,9 @@ Does not apply when the input is a character data or a list of characters.}
 previously existed.  This is useful if a positional match is needed between
 the pre- and post-selected tokens, for instance if a window of adjacency
 needs to be computed.}
+
+\item{concatenator}{character; the concatenation character that will connect
+the tokens making up a multi-token sequence.}
 
 \item{verbose}{if \code{TRUE}, print timing messages to the console}
 
@@ -189,7 +193,7 @@ tokenizers::tokenize_sentences(
 
 }
 \seealso{
-\code{\link[=tokens_ngrams]{tokens_ngrams()}}, \code{\link[=tokens_skipgrams]{tokens_skipgrams()}}, \code{\link[=as.list.tokens]{as.list.tokens()}},
-\code{\link[=as.tokens]{as.tokens()}}
+\code{\link[=tokens_ngrams]{tokens_ngrams()}}, \code{\link[=tokens_skipgrams]{tokens_skipgrams()}}, \code{\link[=tokens_compound]{tokens_compound()}},
+\code{\link[=tokens_lookup]{tokens_lookup()}}, \code{\link[=concat]{concat()}}, \code{\link[=as.list.tokens]{as.list.tokens()}}, \code{\link[=as.tokens]{as.tokens()}}
 }
 \keyword{tokens}

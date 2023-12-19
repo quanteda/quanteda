@@ -17,6 +17,8 @@ test_that("Basic functions work", {
     expect_identical(ndoc(xtoks), ndoc(toks))
     expect_identical(ntoken(xtoks), ntoken(toks))
     expect_identical(types(xtoks), types(toks))
+    expect_identical(concatenator(xtoks), concatenator(toks))
+    expect_identical(concat(xtoks), concat(toks))
     expect_identical(ntype(xtoks), ntype(toks))
     expect_warning(
         ntoken(xtoks, remove_padding = TRUE),

@@ -15,13 +15,13 @@ tokens_lookup(
   nomatch = NULL,
   append_key = FALSE,
   separator = "/",
-  concatenator = "_",
+  concatenator = concat(x),
   nested_scope = c("key", "dictionary"),
   verbose = quanteda_options("verbose")
 )
 }
 \arguments{
-\item{x}{tokens object to which dictionary or thesaurus will be supplied}
+\item{x}{the \link{tokens} object to which the dictionary will be applied}
 
 \item{dictionary}{the \link{dictionary}-class object that will be applied to
 \code{x}}

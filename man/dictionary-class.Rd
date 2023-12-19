@@ -31,8 +31,6 @@ when \code{flatten = TRUE}.}
 \item{name}{the dictionary key}
 
 \item{...}{\link{dictionary} objects to be concatenated}
-
-\item{object}{the dictionary to be extracted}
 }
 \description{
 The \code{dictionary2} class constructed by \code{\link[=dictionary]{dictionary()}}, and associated core

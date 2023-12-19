@@ -82,6 +82,16 @@ types.tokens_xptr <- function(x) {
 }
 
 #' @export
+concatenator.tokens_xptr <- function(x) {
+    get_concatenator(x)
+}
+
+#' @export
+concat.tokens_xptr <- function(x) {
+    get_concatenator(x)
+}
+
+#' @export
 ntype.tokens_xptr <- function(x, ...) {
     check_dots(...)
     structure(cpp_ntype(x), names = docnames(x))

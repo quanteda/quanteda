@@ -7,11 +7,7 @@
 #' subsequently as single tokens, for instance in constructing a [dfm].
 #' @param x an input [tokens] object
 #' @inheritParams pattern
-#' @param concatenator the concatenation character that will connect the words
-#'   making up the multi-word sequences.  The default `_` is recommended since
-#'   it will not be removed during normal cleaning and tokenization (while
-#'   nearly all other punctuation characters, at least those in the Unicode
-#'   punctuation class `[P]` will be removed).
+#' @inheritParams tokens
 #' @inheritParams valuetype
 #' @param join logical; if `TRUE`, join overlapping compounds into a single
 #'   compound; otherwise, form these separately.  See examples.
@@ -67,7 +63,7 @@
 #'
 tokens_compound <- function(x, pattern,
                             valuetype = c("glob", "regex", "fixed"),
-                            concatenator = "_",
+                            concatenator = concat(x),
                             window = 0L,
                             case_insensitive = TRUE, join = TRUE,
                             modify_if = NULL) {
@@ -77,7 +73,7 @@ tokens_compound <- function(x, pattern,
 #' @export
 tokens_compound.default <- function(x, pattern,
                                     valuetype = c("glob", "regex", "fixed"),
-                                    concatenator = "_",
+                                    concatenator = concat(x),
                                     window = 0L,
                                     case_insensitive = TRUE, join = TRUE,
                                     modify_if = NULL) {
@@ -88,7 +84,7 @@ tokens_compound.default <- function(x, pattern,
 #' @export
 tokens_compound.tokens_xptr <- function(x, pattern,
                                         valuetype = c("glob", "regex", "fixed"),
-                                        concatenator = "_",
+                                        concatenator = concat(x),
                                         window = 0L,
                                         case_insensitive = TRUE, join = TRUE,
                                         modify_if = NULL) {

@@ -36,6 +36,8 @@
 #'   "#\\w+#?"` and `pattern_username = "@[a-zA-Z0-9_]+"`.
 #' @param include_docvars if `TRUE`, pass docvars through to the tokens object.
 #'   Does not apply when the input is a character data or a list of characters.
+#' @param concatenator character; the concatenation character that will connect
+#'   the tokens making up a multi-token sequence.
 #' @inheritParams tokens_select
 #' @param xptr if `TRUE`, returns a `tokens_xptr` class object
 #' @param verbose if `TRUE`, print timing messages to the console
@@ -112,8 +114,8 @@
 #'   tokenization, consider using \pkg{spacyr}.} }
 #' @return \pkg{quanteda} `tokens` class object, by default a serialized list of
 #'   integers corresponding to a vector of types.
-#' @seealso [tokens_ngrams()], [tokens_skipgrams()], [as.list.tokens()],
-#'   [as.tokens()]
+#' @seealso [tokens_ngrams()], [tokens_skipgrams()], [tokens_compound()],
+#'   [tokens_lookup()], [concat()], [as.list.tokens()], [as.tokens()]
 #' @keywords tokens
 #' @export
 #' @examples
@@ -158,6 +160,7 @@ tokens <-  function(x,
                     split_tags = FALSE,
                     include_docvars = TRUE,
                     padding = FALSE,
+                    concatenator = "_",
                     verbose = quanteda_options("verbose"),
                     ...,
                     xptr = FALSE) {
@@ -190,6 +193,7 @@ tokens.list <- function(x,
                         split_tags = FALSE,
                         include_docvars = TRUE,
                         padding = FALSE,
+                        concatenator = "_",
                         verbose = quanteda_options("verbose"),
                         ...) {
     tokens(as.tokens(x),
@@ -200,6 +204,7 @@ tokens.list <- function(x,
            remove_separators = remove_separators,
            split_hyphens = split_hyphens,
            split_tags = split_tags,
+           concatenator = concatenator,
            verbose = quanteda_options("verbose"),
            ...)
 }
@@ -218,6 +223,7 @@ tokens.character <- function(x,
                              split_tags = FALSE,
                              include_docvars = TRUE,
                              padding = FALSE,
+                             concatenator = "_",
                              verbose = quanteda_options("verbose"),
                              ...,
                              xptr = FALSE) {
@@ -232,6 +238,7 @@ tokens.character <- function(x,
            split_tags = split_tags,
            include_docvars = include_docvars,
            padding = padding,
+           concatenator = concatenator,
            verbose = verbose,
            ...,
            xptr = xptr)
@@ -253,6 +260,7 @@ tokens.corpus <- function(x,
                           split_tags = FALSE,
                           include_docvars = TRUE,
                           padding = FALSE,
+                          concatenator = "_",
                           verbose = quanteda_options("verbose"),
                           ...,
                           xptr = FALSE)  {
@@ -279,6 +287,7 @@ tokens.corpus <- function(x,
     split_tags <- check_logical(split_tags)
     include_docvars <- check_logical(include_docvars)
     padding <- check_logical(padding)
+    concatenator <- check_character(concatenator)
     verbose <- check_logical(verbose)
     check_dots(..., method = c("tokens", "tokenize_word4"))
     
@@ -334,6 +343,7 @@ tokens.corpus <- function(x,
         types = NULL, 
         what = what,
         tokenizer = tokenizer,
+        concatenator = concatenator,
         docvars = select_docvars(attrs[["docvars"]], user = include_docvars, system = TRUE),
         meta = attrs[["meta"]]
     )
@@ -356,6 +366,7 @@ tokens.corpus <- function(x,
                      split_tags = FALSE,
                      include_docvars = TRUE,
                      padding = padding,
+                     concatenator = concatenator,
                      verbose = verbose)
     
     if (!xptr)
@@ -395,6 +406,7 @@ tokens.tokens_xptr <-  function(x,
                            split_tags = FALSE,
                            include_docvars = TRUE,
                            padding = FALSE,
+                           concatenator = "_",
                            verbose = quanteda_options("verbose"),
                            ...) {
     
@@ -407,6 +419,7 @@ tokens.tokens_xptr <-  function(x,
     split_tags <- check_logical(split_tags)
     include_docvars <- check_logical(include_docvars)
     padding <- check_logical(padding)
+    concatenator <- check_character(concatenator)
     verbose <- check_logical(verbose)
     check_dots(..., method = c("tokens", "tokenize_word4"))
     
@@ -416,7 +429,7 @@ tokens.tokens_xptr <-  function(x,
         x <- tokens_split(x, "\\p{Pd}", valuetype = "regex", remove_separator = FALSE)
     }
     if (split_tags) {
-        warning("split_tags argument is not used")
+        warning("split_tags argument is not used", call. = FALSE)
     }
     
     # removals
@@ -449,6 +462,14 @@ tokens.tokens_xptr <-  function(x,
     if (!include_docvars)
         docvars(x) <- NULL
     
+    if (!identical(get_concatenator(x), concatenator)) {
+        #warning('concatenator changed from "', 
+        #        get_concatenator(x), '" to "', concatenator, '"', call. = FALSE)
+        set_types(x) <- stri_replace_all_fixed(get_types(x), get_concatenator(x), 
+                                               concatenator)
+        set_concatenator(x) <- concatenator
+    }
+    
     global$object_class <- NULL
     return(x)
 }
@@ -466,8 +487,7 @@ tokens.tokens <- function(x, ...) {
 #' object is a [tokens] object, and functions to combine [tokens]
 #' objects.
 #' @param x object to be coerced or checked
-#' @param concatenator character between multi-word expressions, default is the
-#'   underscore character.  See Details.
+#' @inheritParams tokens
 #' @param ... additional arguments used by specific methods.  For
 #'   [c.tokens], these are the [tokens] objects to be concatenated.
 #' @return `as.tokens` returns a quanteda [tokens] object.
@@ -497,7 +517,7 @@ as.tokens <- function(x, concatenator = "_", ...) {
 }
 
 #' @export
-as.tokens.default <- function(x, concatenator = "", ...) {
+as.tokens.default <- function(x, concatenator = "_", ...) {
     check_class(class(x), "as.tokens")
 }
 
@@ -515,7 +535,8 @@ as.tokens.list <- function(x, concatenator = "_", ...) {
 
 #' @export
 as.tokens.tokens <- function(x, ...) {
-    upgrade_tokens(x)
+    x <- upgrade_tokens(x)
+    return(x)
 }
 
 #' @rdname as.tokens
@@ -727,3 +748,54 @@ types.tokens <- function(x) {
     set_types(x) <- value
 }
 
+
+# concatenator functions --------------
+
+#' Return the concatenator character from an object
+#'
+#' Get the concatenator character from a [tokens] object.
+#' @param x a [tokens] object
+#' @returns a character of length 1
+#' @details The concatenator character is a special delimiter used to link
+#' separate tokens in multi-token phrases.  It is embedded in the meta-data of
+#' tokens objects and used in downstream operations, such as [tokens_compound()]
+#' or [tokens_lookup()].  It can be extracted using [concat()] and set using
+#' `tokens(x, concatenator = ...)` when `x` is a tokens object.
+#'
+#' The default `_` is recommended since it will not be removed during normal
+#' cleaning and tokenization (while nearly all other punctuation characters, at
+#' least those in the Unicode punctuation class `[P]` will be removed).
+#' @export
+#' @examples
+#' toks <- tokens(data_corpus_inaugural[1:5])
+#' concat(toks)
+#' 
+concat <- function(x) {
+    UseMethod("concat")
+}
+
+#' @export
+concat.default <- function(x) {
+    check_class(class(x), "concat")
+}
+
+#' @export
+concat.tokens <- function(x) {
+    get_concatenator(x)
+}
+
+#' @rdname concat
+#' @export
+concatenator <- function(x) {
+    UseMethod("concatenator")
+}
+
+#' @export
+concatenator.default <- function(x) {
+    check_class(class(x), "concatenator")
+}
+
+#' @export
+concatenator.tokens <- function(x) {
+    get_concatenator(x)
+}

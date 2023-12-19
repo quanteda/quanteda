@@ -2,7 +2,7 @@
 #'
 #' Convert tokens into equivalence classes defined by values of a dictionary
 #' object.
-#' @param x tokens object to which dictionary or thesaurus will be supplied
+#' @param x the [tokens] object to which the dictionary will be applied
 #' @param dictionary the [dictionary]-class object that will be applied to
 #'   `x`
 #' @param levels integers specifying the levels of entries in a hierarchical
@@ -99,7 +99,7 @@ tokens_lookup <- function(x, dictionary, levels = 1:5,
                           nomatch = NULL,
                           append_key = FALSE,
                           separator = "/",
-                          concatenator = "_",
+                          concatenator = concat(x),
                           nested_scope = c("key", "dictionary"),
                           verbose = quanteda_options("verbose")) {
     UseMethod("tokens_lookup")
@@ -114,7 +114,7 @@ tokens_lookup.default <- function(x, dictionary, levels = 1:5,
                                  nomatch = NULL,
                                  append_key = FALSE,
                                  separator = "/",
-                                 concatenator = "_",
+                                 concatenator = concat(x),
                                  nested_scope = c("key", "dictionary"),
                                  verbose = quanteda_options("verbose")) {
     check_class(class(x), "tokens_lookup")
@@ -129,7 +129,7 @@ tokens_lookup.tokens_xptr <- function(x, dictionary, levels = 1:5,
                           nomatch = NULL,
                           append_key = FALSE,
                           separator = "/",
-                          concatenator = "_",
+                          concatenator = concat(x),
                           nested_scope = c("key", "dictionary"),
                           verbose = quanteda_options("verbose")) {
 
@@ -187,6 +187,8 @@ tokens_lookup.tokens_xptr <- function(x, dictionary, levels = 1:5,
         result <- cpp_tokens_lookup(x, ids, match(id_key, id_used), key[id_used], overlap, 2,
                                     get_threads())
     }
+    if (append_key)
+        cpp_recompile(result)
     if (exclusive)
         field_object(attrs, "what") <- "dictionary"
     rebuild_tokens(result, attrs)

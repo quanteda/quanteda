@@ -1123,4 +1123,102 @@ test_that("edge case usernames are correctly recognized", {
     )
 })
 
+test_that("cancatenator is working", {
+    
+    txt <- c(d1 = "The United States is bordered by the Atlantic Ocean and the Pacific Ocean.",
+             d2 = "The Supreme Court of the United States is seldom in a united state.")
+    
+    # construct
+    toks <- tokens(txt, remove_punct = TRUE, concatenator = " ")
+    expect_error(
+        tokens(txt, remove_punct = TRUE, concatenator = c(" ", " ")),
+        "The length of concatenator must be 1"
+    )
+    expect_equal(
+        concatenator(toks),
+        " "
+    )
+    expect_equal(
+        concat(toks),
+        " "
+    )
+    
+    # compound
+    dict <- dictionary(list(Countries = c("* States", "Federal Republic of *"),
+                            Oceans = c("* Ocean")), tolower = FALSE)
+    toks <- tokens_compound(toks, dict, concatenator = "_")
+    expect_equal(
+        concatenator(toks),
+        "_"
+    )
+    expect_equal(
+        concat(toks),
+        "_"
+    )
+    expect_equal(
+        ntoken(tokens_select(toks, c("United_States"))),
+        c(d1 = 1, d2 = 1)
+    )
+    
+    # update
+    toks <- tokens(toks, concatenator = "+")
+    expect_error(
+        tokens(toks, concatenator = c(" ", " ")),
+        "The length of concatenator must be 1"
+    )
+    expect_equal(
+        concatenator(toks),
+        "+"
+    )
+    expect_equal(
+        concat(toks),
+        "+"
+    )
+    expect_equal(
+        ntoken(tokens_select(toks, "United+States")),
+        c(d1 = 1, d2 = 1)
+    )
+})
+
+test_that("cancatenator is passed to the downstream", {
+    
+    txt <- c(d1 = "The United States is bordered by the Atlantic Ocean and the Pacific Ocean.",
+             d2 = "The Supreme Court of the United States is seldom in a united state.")
+    
+    dict <- dictionary(list(Countries = c("* States", "Federal Republic of *"),
+                            Oceans = c("* Ocean")), tolower = FALSE)
+    
+    # construct
+    
+    toks <- tokens(txt, remove_punct = TRUE, concatenator = "+")
+    
+    toks_dict <- tokens_lookup(toks, dict, append_key = TRUE)
+    expect_true("United+States/Countries" %in% types(toks_dict))
+    expect_identical(concat(toks_dict), "+")
+    
+    toks_ngram <- tokens_ngrams(toks)
+    expect_true("United+States" %in% types(toks_ngram))
+    expect_identical(concat(toks_ngram), "+")
+    
+    toks_comp <- tokens_compound(toks, dict)
+    expect_true("United+States" %in% types(toks_comp))
+    expect_identical(concat(toks_comp), "+")
+    
+    # re-construct with different concatantor
+    
+    toks2 <- tokens(toks, remove_punct = TRUE, concatenator = "*")
+    
+    toks_dict2 <- tokens_lookup(toks2, dict, append_key = TRUE)
+    expect_true("United*States/Countries" %in% types(toks_dict2))
+    expect_identical(concat(toks_dict2), "*")
+    
+    toks_ngram2 <- tokens_ngrams(toks2)
+    expect_true("United*States" %in% types(toks_ngram2))
+    expect_identical(concat(toks_ngram2), "*")
+    
+    toks_comp2 <- tokens_compound(toks2, dict)
+    expect_true("United*States" %in% types(toks_comp2))
+    expect_identical(concat(toks_comp2), "*")
+    
+})
 quanteda_options(reset = TRUE)

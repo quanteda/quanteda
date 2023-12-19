@@ -413,7 +413,6 @@ print_dictionary <- function(entry, level = 1,
     }
 }
 
-#' @param object the dictionary to be extracted
 #' @param i index for entries
 #' @rdname dictionary-class
 #' @export
@@ -432,7 +431,6 @@ setMethod("[",
               result
           })
 
-#' @param object the dictionary to be extracted
 #' @param i index for entries
 #' @rdname dictionary-class
 #' @export
