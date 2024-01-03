@@ -66,7 +66,7 @@ char_ngrams.default <- function(x, n = 2L, skip = 0L, concatenator = "_") {
 char_ngrams.character <- function(x, n = 2L, skip = 0L, concatenator = "_") {
     lifecycle::deprecate_soft("4.0.0", 
                               I('char_ngrams()'), 
-                              I('tokens_ngram(tokens(x))'))
+                              I('`tokens_ngram(tokens(x))`'))
     if (any(stringi::stri_detect_charclass(x, "\\p{Z}")) & concatenator != " ")
         warning("whitespace detected: you may need to run tokens() first")
     x <- as.tokens(list(x))

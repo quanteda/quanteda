@@ -81,7 +81,7 @@ test_that("char_ngrams produces a deprecated message", {
     txt <- c('insurgents','killed', 'in', 'ongoing', 'fighting')
     expect_warning(
         char_ngrams(txt),
-        "`char_ngrams()` was deprecated in quanteda 4.0",
+        "char_ngrams() was deprecated in quanteda 4.0",
         fixed = TRUE
     )
 })
