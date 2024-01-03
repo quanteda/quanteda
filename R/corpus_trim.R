@@ -41,6 +41,8 @@ corpus_trim.corpus <- function(x, what = c("sentences", "paragraphs", "documents
     x <- as.corpus(x)
     what <- match.arg(what)
     min_ntoken <- check_integer(min_ntoken, min = 0)
+    max_ntoken <- check_integer(max_ntoken, allow_null = TRUE)
+    exclude_pattern <- check_character(exclude_pattern, allow_null = TRUE)
 
     # segment corpus
     temp <- corpus_reshape(x, to = what)
@@ -49,17 +51,13 @@ corpus_trim.corpus <- function(x, what = c("sentences", "paragraphs", "documents
         return(x)
     
     # exclude based on lengths
-    len <- ntoken(tokens(temp, remove_punct = TRUE))
-    if (!is.null(max_ntoken)) {
-        max_ntoken <- check_integer(max_ntoken)
-    } else {
+    len <- stringi::stri_count_boundaries(temp, type = "word", skip_word_none = TRUE)
+    if (is.null(max_ntoken))
         max_ntoken <- max(len)
-    }
     result <- corpus_subset(temp, len >= min_ntoken & len <= max_ntoken)
 
     # exclude based on regular expression match
     if (!is.null(exclude_pattern)) {
-        exclude_pattern <- check_character(exclude_pattern)
         is_pattern <- stri_detect_regex(result, exclude_pattern)
         result <- corpus_subset(result, !is_pattern)
     }
