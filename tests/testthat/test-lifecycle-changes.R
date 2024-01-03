@@ -77,6 +77,15 @@ test_that("texts produces a defunct message", {
     )
 })
 
+test_that("char_ngrams produces a deprecated message", {
+    txt <- c('insurgents','killed', 'in', 'ongoing', 'fighting')
+    expect_warning(
+        char_ngrams(txt),
+        "`char_ngrams()` was deprecated in quanteda 4.0",
+        fixed = TRUE
+    )
+})
+
 test_that("nsentence produces a deprecated message", {
     skip_if_not_installed("rlang")
     rlang::local_options(lifecycle_verbosity = "warning")

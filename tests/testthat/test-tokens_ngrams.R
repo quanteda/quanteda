@@ -52,7 +52,6 @@ test_that("char_ngrams works", {
         c('insurgents_killed', 'killed_in', 'in_ongoing', 'ongoing_fighting')
     )
     
-
     expect_warning(char_ngrams(c('insurgents killed', 'in', 'ongoing', 'fighting')), 
                  "whitespace detected: you may need to run tokens\\(\\) first")
 })
