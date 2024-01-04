@@ -89,8 +89,8 @@ cpp_ndoc <- function(xptr) {
     .Call(`_quanteda_cpp_ndoc`, xptr)
 }
 
-cpp_ntoken <- function(xptr) {
-    .Call(`_quanteda_cpp_ntoken`, xptr)
+cpp_ntoken <- function(xptr, padding = TRUE) {
+    .Call(`_quanteda_cpp_ntoken`, xptr, padding)
 }
 
 cpp_ntype <- function(xptr) {
