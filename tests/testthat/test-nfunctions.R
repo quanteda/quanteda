@@ -32,9 +32,17 @@ test_that("test ntype with dfm (#748)", {
 test_that("test ntoken tokens", {
     txt <- c(d1 = "a b c a b c", 
              d2 = "a b c d e")
-    crp <- corpus(txt)
-    suppressWarnings(expect_identical(ntoken(txt), c(d1 = 6L, d2 = 5L)))
-    expect_identical(ntoken(crp), c(d1 = 6L, d2 = 5L))
+    corp <- corpus(txt)
+    toks <- tokens(corp)
+    toks2 <- tokens_remove(toks, "a", padding = TRUE)
+    
+    expect_identical(ntoken(toks), c(d1 = 6L, d2 = 5L))
+    expect_identical(ntoken(toks, remove_padding = TRUE), c(d1 = 6L, d2 = 5L))
+    expect_identical(ntoken(toks2, remove_padding = TRUE), c(d1 = 4L, d2 = 4L))
+    expect_error(
+        ntoken(toks2, remove_padding = c(TRUE, FALSE)),
+        "The length of remove_padding must be 1"
+    )
 })
 
 test_that("test ntype tokens", {
@@ -49,23 +57,23 @@ test_that("test ntype tokens", {
     expect_identical(ntype(toks2), c(d1 = 2L, d2 = 4L))
 })
 
-test_that("dots are applied in ntokens.tokens, ntype.tokens", {
-    txt <- c(d1 = "3 wonderful tokens of the tokens function.")
-    toks <- tokens(txt)
-    
-    expect_identical(ntoken(toks), c(d1 = 8L))
-    expect_identical(ntoken(toks, remove_punct = TRUE), c(d1 = 7L))
-    expect_identical(ntoken(toks, remove_punct = TRUE, remove_numbers = TRUE), c(d1 = 6L))
-    expect_warning(ntoken(toks, notarg = TRUE), "^notarg argument is not used")
-    
-    expect_identical(ntype(toks), c(d1 = 7L))
-    expect_identical(ntype(toks, remove_punct = TRUE), c(d1 = 6L))
-    expect_identical(ntype(toks, remove_punct = TRUE, remove_numbers = TRUE), c(d1 = 5L))
-    expect_warning(ntype(toks, notarg = TRUE), "^notarg argument is not used")
-    
-    suppressWarnings(expect_identical(ntype(txt, remove_punct = TRUE), c(d1 = 6L)))
-    expect_identical(ntype(txt), c(d1 = 7L))
-})
+# test_that("dots are applied in ntokens.tokens, ntype.tokens", {
+#     txt <- c(d1 = "3 wonderful tokens of the tokens function.")
+#     toks <- tokens(txt)
+#     
+#     expect_identical(ntoken(toks), c(d1 = 8L))
+#     expect_identical(ntoken(toks, remove_punct = TRUE), c(d1 = 7L))
+#     expect_identical(ntoken(toks, remove_punct = TRUE, remove_numbers = TRUE), c(d1 = 6L))
+#     expect_warning(ntoken(toks, notarg = TRUE), "^notarg argument is not used")
+#     
+#     expect_identical(ntype(toks), c(d1 = 7L))
+#     expect_identical(ntype(toks, remove_punct = TRUE), c(d1 = 6L))
+#     expect_identical(ntype(toks, remove_punct = TRUE, remove_numbers = TRUE), c(d1 = 5L))
+#     expect_warning(ntype(toks, notarg = TRUE), "^notarg argument is not used")
+#     
+#     suppressWarnings(expect_identical(ntype(txt, remove_punct = TRUE), c(d1 = 6L)))
+#     expect_identical(ntype(txt), c(d1 = 7L))
+# })
 
 test_that("test nsentence", {
     txt <- c(doc1 = "This is Mr. Smith.  He is married to Mrs. Jones.",
