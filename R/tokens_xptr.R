@@ -99,8 +99,9 @@ ntype.tokens_xptr <- function(x, ...) {
 
 #' @export
 ntoken.tokens_xptr <- function(x, remove_padding = FALSE, ...) {
-    check_dots(...)
     remove_padding <- check_logical(remove_padding)
+    if (length(list(...))) # TODO: deprecate ...
+        x <- tokens(as.tokens_xptr(x), ...) 
     structure(cpp_ntoken(x, !remove_padding), names = docnames(x))
 }
 

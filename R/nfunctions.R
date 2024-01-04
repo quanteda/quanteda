@@ -130,8 +130,7 @@ ntoken.character <- function(x, ...) {
 
 #' @export
 ntoken.tokens <- function(x, remove_padding = FALSE, ...) {
-    check_dots(...)
-    ntoken(as.tokens_xptr(x), remove_padding)
+    ntoken(as.tokens_xptr(x), remove_padding, ...)
 }
 
 #' @export
