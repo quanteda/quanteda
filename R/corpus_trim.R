@@ -6,7 +6,9 @@
 #' @param what units of trimming, `"sentences"` or `"paragraphs"`, or
 #'   `"documents"`
 #' @param min_ntoken,max_ntoken minimum and maximum lengths in word tokens
-#'   (excluding punctuation)
+#'   (excluding punctuation).  Note that these are approximate numbers of tokens
+#'   based on checking for word boundaries, rather than on-the-fly full
+#'   tokenisation.
 #' @param exclude_pattern a \pkg{stringi} regular expression whose match (at the
 #'   sentence level) will be used to exclude sentences
 #' @return a [corpus] or character vector equal in length to the input.  If
@@ -41,6 +43,8 @@ corpus_trim.corpus <- function(x, what = c("sentences", "paragraphs", "documents
     x <- as.corpus(x)
     what <- match.arg(what)
     min_ntoken <- check_integer(min_ntoken, min = 0)
+    max_ntoken <- check_integer(max_ntoken, allow_null = TRUE)
+    exclude_pattern <- check_character(exclude_pattern, allow_null = TRUE)
 
     # segment corpus
     temp <- corpus_reshape(x, to = what)
@@ -49,17 +53,13 @@ corpus_trim.corpus <- function(x, what = c("sentences", "paragraphs", "documents
         return(x)
     
     # exclude based on lengths
-    len <- ntoken(tokens(temp, remove_punct = TRUE))
-    if (!is.null(max_ntoken)) {
-        max_ntoken <- check_integer(max_ntoken)
-    } else {
+    len <- stringi::stri_count_boundaries(temp, type = "word", skip_word_none = TRUE)
+    if (is.null(max_ntoken))
         max_ntoken <- max(len)
-    }
     result <- corpus_subset(temp, len >= min_ntoken & len <= max_ntoken)
 
     # exclude based on regular expression match
     if (!is.null(exclude_pattern)) {
-        exclude_pattern <- check_character(exclude_pattern)
         is_pattern <- stri_detect_regex(result, exclude_pattern)
         result <- corpus_subset(result, !is_pattern)
     }
