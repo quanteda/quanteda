@@ -28,7 +28,9 @@ char_trim(
 \code{"documents"}}
 
 \item{min_ntoken, max_ntoken}{minimum and maximum lengths in word tokens
-(excluding punctuation)}
+(excluding punctuation).  Note that these are approximate numbers of tokens
+based on checking for word boundaries, rather than on-the-fly full
+tokenisation.}
 
 \item{exclude_pattern}{a \pkg{stringi} regular expression whose match (at the
 sentence level) will be used to exclude sentences}
