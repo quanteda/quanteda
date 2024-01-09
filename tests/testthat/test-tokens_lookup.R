@@ -630,3 +630,35 @@ test_that("append_key is working",{
     )
     
 })
+
+test_that("modify_if argument is working", {
+    
+    dat <- data.frame(text = c("R and C are languages",
+                               "Windows (R), Quanteda (C)"),
+                      topic = c("language", "software"))
+    dict <- dictionary(list(language = c("C", "R")))
+    corp <- corpus(dat)
+    toks <- tokens(corp, remove_punct = TRUE) %>% 
+        tokens_remove(stopwords())
+    
+    toks1 <- tokens_lookup(toks, dict)
+    expect_identical(
+        as.list(toks1),
+        list(text1 = c("language", "language"),
+             text2 = c("language", "language"))
+    )
+    
+    toks2 <- tokens_lookup(toks, dict, modify_if = toks$topic == "language")
+    expect_identical(
+        as.list(toks2),
+        list(text1 = c("language", "language"),
+             text2 = character())
+    )
+    
+    toks3 <- tokens_lookup(toks, dict, exclusive = FALSE, append_key = TRUE)
+    expect_identical(
+        as.list(toks3),
+        list(text1 = c("R/LANGUAGE", "C/LANGUAGE", "languages"),
+             text2 = c("Windows", "R/LANGUAGE" , "Quanteda", "C/LANGUAGE"))
+    )
+})
