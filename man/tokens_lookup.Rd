@@ -17,6 +17,7 @@ tokens_lookup(
   separator = "/",
   concatenator = concat(x),
   nested_scope = c("key", "dictionary"),
+  modify_if = NULL,
   verbose = quanteda_options("verbose")
 )
 }
@@ -65,6 +66,9 @@ nested within "a b c", then \code{tokens_lookup()} will match the longer.  When
 within the key, while \code{"dictionary"} applies it across keys, matching only
 the key with the longer pattern, not the matches nested within that longer
 pattern from other keys.  See Details.}
+
+\item{modify_if}{logical vector of length \code{ndoc(x)}; documents are modified
+only when corresponding values are \code{TRUE}, others are left unchanged.}
 
 \item{verbose}{print status messages if \code{TRUE}}
 }
