@@ -77,7 +77,7 @@ IntegerVector cpp_ntoken(TokensPtr xptr, bool padding = true) {
 }
 
 // [[Rcpp::export]]
-IntegerVector cpp_ntype(TokensPtr xptr) {
+IntegerVector cpp_ntype(TokensPtr xptr, bool padding = true) {
     xptr->recompile();
     std::size_t H = xptr->texts.size();
     IntegerVector ns_(H);
@@ -86,7 +86,7 @@ IntegerVector cpp_ntype(TokensPtr xptr) {
         std::sort(text.begin(), text.end());
         text.erase(unique(text.begin(), text.end()), text.end());
         int n = text.size();
-        if (text[0] == 0)
+        if (text[0] == 0 && !padding)
             n--;    
         ns_[h] = n;
     }

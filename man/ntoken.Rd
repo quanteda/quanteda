@@ -12,7 +12,7 @@ ntype(x, ...)
 \arguments{
 \item{x}{a \pkg{quanteda} \link{tokens} or \link{dfm} object}
 
-\item{...}{not used}
+\item{...}{additional arguments passed to \code{tokens()}}
 }
 \value{
 \code{ntoken()} returns a named integer vector of the counts of the total

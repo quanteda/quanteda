@@ -72,7 +72,7 @@ nfeat.dfm <- function(x) {
 #'
 #' Get the count of tokens (total features) or types (unique tokens).
 #' @param x a \pkg{quanteda} [tokens] or [dfm] object
-#' @param ... not used
+#' @param ... additional arguments passed to `tokens()`
 #' @returns `ntoken()` returns a named integer vector of the counts of the total
 #'   tokens
 #' @examples
@@ -98,21 +98,6 @@ ntoken <- function(x, ...) {
 #' @export
 ntoken.default <- function(x, ...) {
     check_class(class(x), "ntoken")
-}
-
-#' @rdname ntoken
-#' @returns
-#' `ntypes()` returns a named integer vector of the counts of the types (unique
-#' tokens) per document.  For [dfm] objects, `ntype()` will only return the
-#' count of features that occur more than zero times in the dfm.
-#' @export
-ntype <- function(x, ...) {
-    UseMethod("ntype")
-}
-
-#' @export
-ntype.default <- function(x, ...) {
-    check_class(class(x), "ntype")
 }
 
 #' @export
@@ -144,6 +129,21 @@ ntoken.dfm <- function(x, ...) {
     result
 }
 
+#' @rdname ntoken
+#' @returns
+#' `ntypes()` returns a named integer vector of the counts of the types (unique
+#' tokens) per document.  For [dfm] objects, `ntype()` will only return the
+#' count of features that occur more than zero times in the dfm.
+#' @export
+ntype <- function(x, ...) {
+    UseMethod("ntype")
+}
+
+#' @export
+ntype.default <- function(x, ...) {
+    check_class(class(x), "ntype")
+}
+
 #' @export
 ntype.character <- function(x, ...) {
     lifecycle::deprecate_soft("4.0.0", 
@@ -173,10 +173,8 @@ ntype.dfm <- function(x, ...) {
 }
 
 #' @export
-ntype.tokens <- function(x, ...) {
-    if (length(list(...)))
-        x <- tokens(x, ...)
-    vapply(unclass(x), function(y) length(unique(y[y > 0])), integer(1))
+ntype.tokens <- function(x, remove_padding = FALSE, ...) {
+    ntype(as.tokens_xptr(x), remove_padding, ...)
 }
 
 

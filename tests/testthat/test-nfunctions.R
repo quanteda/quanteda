@@ -29,7 +29,7 @@ test_that("test ntype with dfm (#748)", {
 #     )
 # })
 
-test_that("test ntoken tokens", {
+test_that("test ntoken.tokens", {
     txt <- c(d1 = "a b c a b c", 
              d2 = "a b c d e")
     corp <- corpus(txt)
@@ -45,16 +45,20 @@ test_that("test ntoken tokens", {
     )
 })
 
-test_that("test ntype tokens", {
+test_that("test ntype.tokens", {
     txt <- c(d1 = "a b c a b c", 
              d2 = "a b c d e")
-    toks <- tokens(txt)
-    expect_identical(ntype(toks), c(d1 = 3L, d2 = 5L))
-    expect_identical(ntype(toks), c(d1 = 3L, d2 = 5L))
+    corp <- corpus(txt)
+    toks <- tokens(corp)
+    toks2 <- tokens_remove(toks, "a", padding = TRUE)
     
-    toks2 <- tokens_remove(toks, 'a', padding = TRUE)
-    expect_identical(ntype(toks2), c(d1 = 2L, d2 = 4L))
-    expect_identical(ntype(toks2), c(d1 = 2L, d2 = 4L))
+    expect_identical(ntype(toks), c(d1 = 3L, d2 = 5L))
+    expect_identical(ntype(toks, remove_padding = TRUE), c(d1 = 3L, d2 = 5L))
+    expect_identical(ntype(toks2, remove_padding = TRUE), c(d1 = 2L, d2 = 4L))
+    expect_error(
+        ntype(toks2, remove_padding = c(TRUE, FALSE)),
+        "The length of remove_padding must be 1"
+    )
 })
 
 test_that("dots are applied in ntokens.tokens, ntype.tokens", {
