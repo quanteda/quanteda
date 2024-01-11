@@ -33,11 +33,8 @@ test_that("dfm defunct arguments generate correct errors", {
 })
 
 test_that("as.data.frame for dfm objects", {
-    d <- data_dfm_lbgexample[, 1:5]
-    expect_error(
-        as.data.frame(d), 
-        "`as.data.frame.dfm()` was deprecated in quanteda 3.0 and is now defunct.",
-        fixed = TRUE
+    lifecycle::expect_defunct(
+        as.data.frame(data_dfm_lbgexample[, 1:5])
     )
 })
 
