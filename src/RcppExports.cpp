@@ -318,24 +318,26 @@ BEGIN_RCPP
 END_RCPP
 }
 // cpp_ntoken
-IntegerVector cpp_ntoken(TokensPtr xptr);
-RcppExport SEXP _quanteda_cpp_ntoken(SEXP xptrSEXP) {
+IntegerVector cpp_ntoken(TokensPtr xptr, bool padding);
+RcppExport SEXP _quanteda_cpp_ntoken(SEXP xptrSEXP, SEXP paddingSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< TokensPtr >::type xptr(xptrSEXP);
-    rcpp_result_gen = Rcpp::wrap(cpp_ntoken(xptr));
+    Rcpp::traits::input_parameter< bool >::type padding(paddingSEXP);
+    rcpp_result_gen = Rcpp::wrap(cpp_ntoken(xptr, padding));
     return rcpp_result_gen;
 END_RCPP
 }
 // cpp_ntype
-IntegerVector cpp_ntype(TokensPtr xptr);
-RcppExport SEXP _quanteda_cpp_ntype(SEXP xptrSEXP) {
+IntegerVector cpp_ntype(TokensPtr xptr, bool padding);
+RcppExport SEXP _quanteda_cpp_ntype(SEXP xptrSEXP, SEXP paddingSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< TokensPtr >::type xptr(xptrSEXP);
-    rcpp_result_gen = Rcpp::wrap(cpp_ntype(xptr));
+    Rcpp::traits::input_parameter< bool >::type padding(paddingSEXP);
+    rcpp_result_gen = Rcpp::wrap(cpp_ntype(xptr, padding));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -485,8 +487,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_quanteda_cpp_as_list", (DL_FUNC) &_quanteda_cpp_as_list, 1},
     {"_quanteda_cpp_subset", (DL_FUNC) &_quanteda_cpp_subset, 2},
     {"_quanteda_cpp_ndoc", (DL_FUNC) &_quanteda_cpp_ndoc, 1},
-    {"_quanteda_cpp_ntoken", (DL_FUNC) &_quanteda_cpp_ntoken, 1},
-    {"_quanteda_cpp_ntype", (DL_FUNC) &_quanteda_cpp_ntype, 1},
+    {"_quanteda_cpp_ntoken", (DL_FUNC) &_quanteda_cpp_ntoken, 2},
+    {"_quanteda_cpp_ntype", (DL_FUNC) &_quanteda_cpp_ntype, 2},
     {"_quanteda_cpp_get_types", (DL_FUNC) &_quanteda_cpp_get_types, 2},
     {"_quanteda_cpp_set_types", (DL_FUNC) &_quanteda_cpp_set_types, 2},
     {"_quanteda_cpp_recompile", (DL_FUNC) &_quanteda_cpp_recompile, 1},

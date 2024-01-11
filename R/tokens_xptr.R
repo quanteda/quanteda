@@ -92,15 +92,19 @@ concat.tokens_xptr <- function(x) {
 }
 
 #' @export
-ntype.tokens_xptr <- function(x, ...) {
-    check_dots(...)
-    structure(cpp_ntype(x), names = docnames(x))
+ntype.tokens_xptr <- function(x, remove_padding = FALSE, ...) {
+    remove_padding <- check_logical(remove_padding)
+    if (length(list(...)))
+        x <- tokens(as.tokens_xptr(x), ...) 
+    structure(cpp_ntype(x, !remove_padding), names = docnames(x))
 }
 
 #' @export
-ntoken.tokens_xptr <- function(x, ...) {
-    check_dots(...)
-    structure(cpp_ntoken(x), names = docnames(x))
+ntoken.tokens_xptr <- function(x, remove_padding = FALSE, ...) {
+    remove_padding <- check_logical(remove_padding)
+    if (length(list(...)))
+        x <- tokens(as.tokens_xptr(x), ...) 
+    structure(cpp_ntoken(x, !remove_padding), names = docnames(x))
 }
 
 # #' @export

@@ -16,6 +16,8 @@
 
 * Added new arguments `append_key`, `separator` and `concatenator` to `tokens_lookup()`. These allow tokens matched by dictionary values to be retained with their keys appended to them, separated by `separator`.  The addition of the `concatenator` argument allows additional control at the lookup stage for tokens that will be concatenated from having matched multi-word dictionary values. (#2324)
 
+* Added a new argument `remove_padding` to `ntoken()` that allows for not counting padding that might have been left over from `tokens_remove(x, padding = TRUE`). (#2336)
+
 ## Removals
 
 * `bootstrap_dfm()` was removed for character and corpus objects.  The correct way to bootstrap sentences is not to tokenize them as sentences and then bootstrap them from the dfm.  This is consistent with requiring the user to tokenise objects prior to forming dfms or other "downstream" objects.
