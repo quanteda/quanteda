@@ -222,8 +222,8 @@ NULL
 #'
 #' Applies the modification only to documents matching a condition.
 #' 
-#' @param modify_if logical vector of length `ndoc(x)`; documents are modified
+#' @param apply_if logical vector of length `ndoc(x)`; documents are modified
 #'   only when corresponding values are `TRUE`, others are left unchanged.
-#' @name modify_if
+#' @name apply_if
 #' @keywords internal
 NULL

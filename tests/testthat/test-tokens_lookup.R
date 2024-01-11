@@ -631,7 +631,7 @@ test_that("append_key is working",{
     
 })
 
-test_that("modify_if argument is working", {
+test_that("apply_if argument is working", {
     
     dat <- data.frame(text = c("R and C are languages",
                                "Windows (R), Quanteda (C)"),
@@ -648,7 +648,7 @@ test_that("modify_if argument is working", {
              text2 = c("language", "language"))
     )
     
-    toks2 <- tokens_lookup(toks, dict, modify_if = toks$topic == "language")
+    toks2 <- tokens_lookup(toks, dict, apply_if = toks$topic == "language")
     expect_identical(
         as.list(toks2),
         list(text1 = c("language", "language"),
