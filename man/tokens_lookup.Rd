@@ -92,6 +92,12 @@ for these two different behaviours.
 \emph{Overlapping values}, such as \code{"a b"} and \code{"b a"} are
 currently always considered as separate matches if they are in different
 keys, or as one match if the overlap is within the same key.
+
+\emph{\code{modify_if}} This applies the dictionary lookup only to documents that
+match the logical condition.  When \code{exclusive = TRUE} (the default),
+however, this means that empty documents will be returned for those not
+meeting the condition, since no lookup will be applied and hence no tokens
+replaced by matching keys.
 }
 \examples{
 toks1 <- tokens(data_corpus_inaugural)

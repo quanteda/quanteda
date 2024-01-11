@@ -48,6 +48,12 @@
 #'   *Overlapping values*, such as `"a b"` and `"b a"` are
 #'   currently always considered as separate matches if they are in different
 #'   keys, or as one match if the overlap is within the same key.
+#'   
+#'   *`modify_if`* This applies the dictionary lookup only to documents that 
+#'   match the logical condition.  When `exclusive = TRUE` (the default), 
+#'   however, this means that empty documents will be returned for those not
+#'   meeting the condition, since no lookup will be applied and hence no tokens
+#'   replaced by matching keys.
 #' 
 #' @keywords tokens
 #' @seealso tokens_replace

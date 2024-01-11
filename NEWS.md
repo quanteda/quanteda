@@ -38,6 +38,7 @@
     - `nsentence()` -- use `lengths(tokens(x, what = "sentence"))` instead;  
     - `ntype()` -- use `ntype(tokens(x))` instead; and. 
     - `ntoken()` -- use `ntoken(tokens(x))` instead.
+    - `char_ngrams()` -- use `tokens_ngrams(tokens(x))` instead.
 
 * `corpus.kwic()` is deprecated, with the suggestion to form a corpus from using `tokens_select(x, window = ...)` instead.
  
