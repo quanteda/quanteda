@@ -84,13 +84,13 @@ tweet_dfm <- dfm(toks)
 
 ```{r}
 library("quanteda.textplots")
-tag_fcm <- 
+tag_dfm <- 
     tweet_dfm |> 
     dfm_select(pattern = "#*") |> 
     dfm_remove(pattern = c("*選挙*", "*衆院選*", "*衆議院*", "*投票*"), min_nchar = 2) |> 
-    dfm_trim(min_termfreq = 10) |> 
-    fcm()
-feat <- names(topfeatures(tag_fcm, 100))
+    dfm_trim(min_termfreq = 10)
+tag_fcm <- fcm(tag_dfm)
+feat <- names(topfeatures(tag_dfm, 100))
 textplot_network(fcm_select(tag_fcm, pattern = feat), 
                  min_freq = 0.8,
                  vertex_labelfont = if (Sys.info()["sysname"] == "Darwin") "SimHei" else NULL)
@@ -102,13 +102,13 @@ textplot_network(fcm_select(tag_fcm, pattern = feat),
 
 ```{r}
 library("quanteda.textstats")
-msg_fcm <- tweet_dfm |> 
+msg_dfm <- tweet_dfm |> 
     dfm_remove(pattern = c("#*", "@*")) |> 
     dfm_remove(pattern = "^[ぁ-ん]+$", valuetype = "regex", min_nchar = 2) |> 
     dfm_trim(min_termfreq = 10) |> 
-    dfm_toupper() |> 
-    fcm()
-feat <- names(topfeatures(msg_fcm, 50))
+    dfm_toupper()
+msg_fcm <- fcm(msg_dfm)
+feat <- names(topfeatures(msg_dfm, 50))
 textplot_network(fcm_select(msg_fcm, pattern = feat), min_freq = 0.3,
                  vertex_labelfont = if (Sys.info()["sysname"] == "Darwin") "SimHei" else NULL)
 ```

@@ -80,7 +80,6 @@ fcmat_ch <- corp_ch17 |>
     tokens() |> 
     fcm(context = "window", window = 5)  
 
-topfeatures(fcmat_ch["改革", ])
 ```
 
 ## Unsupervised document scaling
