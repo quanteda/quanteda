@@ -8,7 +8,8 @@ Text lookup(Text tokens,
             const unsigned int &id_max,
             const int &overlap,
             const int &nomatch,
-            const MultiMapNgrams &map_keys){
+            const MultiMapNgrams &map_keys,
+            const bool &bypass){
     
     if (tokens.empty()) return {}; // return empty vector for empty text
     
@@ -27,27 +28,14 @@ Text lookup(Text tokens,
     
     std::size_t match_count = 0;
     std::vector< std::vector<unsigned int> > keys(tokens.size());
-    for (std::size_t span : spans) { // substitution starts from the longest sequences
-        if (tokens.size() < span) continue;
-        for (std::size_t i = 0; i < tokens.size() - (span - 1); i++) {
-            Ngram ngram(tokens.begin() + i, tokens.begin() + i + span);
-            auto range = map_keys.equal_range(ngram);
-            bool match = false;
-            if (overlap == 1) { // local
-                for (auto it = range.first; it != range.second; ++it) {
-                    unsigned int id = it->second;
-                    std::vector< bool > &flags_match_local = flags_match[id - 1];
-                    bool flagged = std::any_of(flags_match_local.begin() + i, flags_match_local.begin() + i + span, [](bool v) { return v; });
-                    if (!flagged) {
-                        keys[i].push_back(id); // keep multiple keys in the same position
-                        std::fill(flags_match_local.begin() + i, flags_match_local.begin() + i + span, true); // for each key
-                        match = true;
-                        match_count++;
-                    }
-                }
-            } else if (overlap == 2) { // global
-                bool flagged = std::all_of(flags_match_global.begin() + i, flags_match_global.begin() + i + span, [](bool v) { return v; });
-                if (!flagged) {
+    if (!bypass) {
+        for (std::size_t span : spans) { // substitution starts from the longest sequences
+            if (tokens.size() < span) continue;
+            for (std::size_t i = 0; i < tokens.size() - (span - 1); i++) {
+                Ngram ngram(tokens.begin() + i, tokens.begin() + i + span);
+                auto range = map_keys.equal_range(ngram);
+                bool match = false;
+                if (overlap == 1) { // local
                     for (auto it = range.first; it != range.second; ++it) {
                         unsigned int id = it->second;
                         std::vector< bool > &flags_match_local = flags_match[id - 1];
@@ -59,10 +47,25 @@ Text lookup(Text tokens,
                             match_count++;
                         }
                     }
+                } else if (overlap == 2) { // global
+                    bool flagged = std::all_of(flags_match_global.begin() + i, flags_match_global.begin() + i + span, [](bool v) { return v; });
+                    if (!flagged) {
+                        for (auto it = range.first; it != range.second; ++it) {
+                            unsigned int id = it->second;
+                            std::vector< bool > &flags_match_local = flags_match[id - 1];
+                            bool flagged = std::any_of(flags_match_local.begin() + i, flags_match_local.begin() + i + span, [](bool v) { return v; });
+                            if (!flagged) {
+                                keys[i].push_back(id); // keep multiple keys in the same position
+                                std::fill(flags_match_local.begin() + i, flags_match_local.begin() + i + span, true); // for each key
+                                match = true;
+                                match_count++;
+                            }
+                        }
+                    }
                 }
+                if (match)
+                    std::fill(flags_match_global.begin() + i, flags_match_global.begin() + i + span, true); // for all keys
             }
-            if (match)
-                std::fill(flags_match_global.begin() + i, flags_match_global.begin() + i + span, true); // for all keys
         }
     }
     
@@ -126,6 +129,7 @@ Text lookup(Text tokens,
 * @param keys_ IDs of dictionary keys
 * @param overlap ignore overlapped words: 1=local, 2=global, 3=none
 * @param nomatch determine how to treat unmached words: 0=remove, 1=pad; 2=keep
+* @param bypass_ select documents to modify: TRUE=modify, FALSE=don't modify
 */
 
 // [[Rcpp::export]]
@@ -135,6 +139,7 @@ TokensPtr cpp_tokens_lookup(TokensPtr xptr,
                                  const CharacterVector &types_,
                                  const int overlap,
                                  const int nomatch,
+                                 const LogicalVector bypass_,
                                  const int thread = 1) {
     
     Texts texts = xptr->texts;
@@ -142,6 +147,10 @@ TokensPtr cpp_tokens_lookup(TokensPtr xptr,
     
     if (words_.size() != keys_.size())
         throw std::range_error("Invalid words and keys");
+    
+    if (bypass_.size() != (int)texts.size())
+        throw std::range_error("Invalid bypass");
+    std::vector<bool> bypass = Rcpp::as< std::vector<bool> >(bypass_);
     
     std::vector<unsigned int> keys = Rcpp::as< std::vector<unsigned int> >(keys_);
     unsigned int id_max = 0;
@@ -177,13 +186,13 @@ TokensPtr cpp_tokens_lookup(TokensPtr xptr,
     arena.execute([&]{
         tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
             for (int h = r.begin(); h < r.end(); ++h) {
-                texts[h] = lookup(texts[h], spans, id_max, overlap, nomatch, map_keys);
+                texts[h] = lookup(texts[h], spans, id_max, overlap, nomatch, map_keys, bypass[h]);
             }    
         });
     });
 #else
     for (std::size_t h = 0; h < H; h++) {
-        texts[h] = lookup(texts[h], spans, id_max, overlap, nomatch, map_keys);
+        texts[h] = lookup(texts[h], spans, id_max, overlap, nomatch, map_keys, bypass[h]);
     }
 #endif
     

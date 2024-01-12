@@ -16,7 +16,7 @@
 
 * Added new arguments `append_key`, `separator` and `concatenator` to `tokens_lookup()`. These allow tokens matched by dictionary values to be retained with their keys appended to them, separated by `separator`.  The addition of the `concatenator` argument allows additional control at the lookup stage for tokens that will be concatenated from having matched multi-word dictionary values. (#2324)
 
-* Added a new argument `remove_padding` to `ntoken()` that allows for not counting padding that might have been left over from `tokens_remove(x, padding = TRUE`). (#2336)
+* Added a new argument `remove_padding` to `ntoken()` and `ntype()` that allows for not counting padding that might have been left over from `tokens_remove(x, padding = TRUE`). This changes the previous number of types from `ntype()` when pads exist, by counting pads by default. (#2336)
 
 ## Removals
 
@@ -38,6 +38,7 @@
     - `nsentence()` -- use `lengths(tokens(x, what = "sentence"))` instead;  
     - `ntype()` -- use `ntype(tokens(x))` instead; and. 
     - `ntoken()` -- use `ntoken(tokens(x))` instead.
+    - `char_ngrams()` -- use `tokens_ngrams(tokens(x))` instead.
 
 * `corpus.kwic()` is deprecated, with the suggestion to form a corpus from using `tokens_select(x, window = ...)` instead.
  

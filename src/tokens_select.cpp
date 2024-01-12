@@ -133,7 +133,7 @@ Text remove_token(Text tokens,
  * @param words_ list of features to remove or keep 
  * @param mode_ 1: keep; 2: remove
  * @param padding_ fill places where features are removed with zero
- * 
+ * @param bypass_ select documents to modify: TRUE=modify, FALSE=don't modify
  */
 
 

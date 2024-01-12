@@ -12,7 +12,7 @@
 #'   [pattern] for more details.
 #' @param replacement a character vector or (if `pattern` is a list) list
 #'   of character vectors of the same length as `pattern`
-#' @inheritParams modify_if
+#' @inheritParams apply_if
 #' @inheritParams valuetype
 #' @param verbose print status messages if `TRUE`
 #' @export
@@ -38,28 +38,28 @@
 #'                         phrase(c("Supreme Court of the United States")))
 #' kwic(toks4, phrase(c("Supreme Court of the United States")))
 tokens_replace <- function(x, pattern, replacement, valuetype = "glob",
-                           case_insensitive = TRUE, modify_if = NULL,
+                           case_insensitive = TRUE, apply_if = NULL,
                            verbose = quanteda_options("verbose")) {
     UseMethod("tokens_replace")
 }
 
 #' @export
 tokens_replace.default <- function(x, pattern, replacement, valuetype = "glob",
-                                   case_insensitive = TRUE, modify_if = NULL,
+                                   case_insensitive = TRUE, apply_if = NULL,
                                    verbose = quanteda_options("verbose")) {
     check_class(class(x), "tokens_replace")
 }
 
 #' @export
 tokens_replace.tokens_xptr <- function(x, pattern, replacement, valuetype = "glob",
-                                       case_insensitive = TRUE, modify_if = NULL,
+                                       case_insensitive = TRUE, apply_if = NULL,
                                        verbose = quanteda_options("verbose")) {
 
     if (length(pattern) != length(replacement))
         stop("The length of pattern and replacement must be the same", call. = FALSE)
     if (!length(pattern)) return(x)
 
-    modify_if <- check_logical(modify_if, min_len = ndoc(x), max_len = ndoc(x),
+    apply_if <- check_logical(apply_if, min_len = ndoc(x), max_len = ndoc(x),
                                allow_null = TRUE, allow_na = TRUE)
 
     type <- get_types(x)
@@ -71,9 +71,9 @@ tokens_replace.tokens_xptr <- function(x, pattern, replacement, valuetype = "glo
     ids_rep <- object2id(replacement, type, "fixed", FALSE, conc, keep_nomatch = TRUE)
     set_types(x) <- type
 
-    if (is.null(modify_if))
-        modify_if <- rep(TRUE, length.out = ndoc(x))
-    result <- cpp_tokens_replace(x, ids_pat, ids_rep[attr(ids_pat, "pattern")], !modify_if,
+    if (is.null(apply_if))
+        apply_if <- rep(TRUE, length.out = ndoc(x))
+    result <- cpp_tokens_replace(x, ids_pat, ids_rep[attr(ids_pat, "pattern")], !apply_if,
                                  get_threads())
 
     rebuild_tokens(result, attrs)
