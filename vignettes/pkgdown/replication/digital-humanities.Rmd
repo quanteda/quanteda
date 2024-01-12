@@ -30,10 +30,15 @@ library("quanteda")
 ```
 
 We can load the text from _Moby Dick_ using the **readtext** package, directly from the [Project Gutenberg website](https://www.gutenberg.org/ebooks/2701).  
-```{r}
+```{r, eval=FALSE}
 data_char_mobydick <- as.character(readtext::readtext("http://www.gutenberg.org/cache/epub/2701/pg2701.txt"))
 names(data_char_mobydick) <- "Moby Dick"
 ```
+
+```{r, eval=TRUE, echo=FALSE}
+load("data_char_mobydick.rda")
+```
+
 
 The `readtext()` function from the **readtext** package loads the text files into a `data.frame` object. We can access the text from a `data.frame` object (and also, as we will see, a `corpus` class object). Here we will display just the first 75 characters, to prevent a massive dump of the text of the entire novel.  We do this using the `stri_sub()` function from the **stringi** package, which shows the 1st through the 75th characters of the texts of our new object `data_char_mobydick`. Because we have not assigned the return from this command to any object, it invokes a print method for character objects, and is displayed on the screen.
 
