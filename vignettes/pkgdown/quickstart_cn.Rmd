@@ -486,24 +486,6 @@ textplot_wordcloud(dfmat_china_trim, min_count = 6,
                    color = RColorBrewer::brewer.pal(8, "Dark2"))
 ```
 
-
-## 特征共现矩阵 {#feature-co-occurrence-matrix}
-
-```{r}
-# fcm -共现窗口为5，2017政府工作报告
-corp_china2 <- corpus_subset(data_corpus_chinesegovreport, Year == "2017")
-toks_china2 <- corp_china2 |>
-    tokens(remove_punct = TRUE) |>
-    tokens_remove(stopwords("zh", source = "misc"), padding = TRUE)
-
-fcmat_china1 <- fcm(toks_china2, context = "window")
-topfeatures(fcmat_china1["改革", ])
-
-# fcm 共现窗口为："改革" + “xx”
-fcmat_china2 <- fcm(toks_china2, context = "window", ordered = TRUE, tri = FALSE)
-topfeatures(fcmat_china2["改革", ])
-```
-
 ## 文本缩放模型 {#wordfish}
 
 ```{r fig2, fig.height = 4, fig.width = 6, fig.align = "center"}
