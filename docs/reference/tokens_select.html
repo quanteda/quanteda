@@ -170,6 +170,7 @@ positions of tokens searched for <code>pattern</code> and areas affected are exp
 <span>  max_nchar <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  startpos <span class="op">=</span> <span class="fl">1L</span>,</span>
 <span>  endpos <span class="op">=</span> <span class="op">-</span><span class="fl">1L</span>,</span>
+<span>  apply_if <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="fu"><a href="quanteda_options.html">quanteda_options</a></span><span class="op">(</span><span class="st">"verbose"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -240,6 +241,11 @@ that -1 denotes the last token in the document, -2 the second to last, etc.
 When the length of the vector is equal to <code>ndoc</code>, tokens in corresponding
 positions will be selected; when it is less than <code>ndoc</code>, values are
 repeated to make them equal in length.</p></dd>
+
+
+<dt>apply_if</dt>
+<dd><p>logical vector of length <code>ndoc(x)</code>; documents are modified
+only when corresponding values are <code>TRUE</code>, others are left unchanged.</p></dd>
 
 
 <dt>verbose</dt>

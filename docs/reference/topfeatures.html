@@ -211,7 +211,7 @@ feature labels, or a list of these if <code>groups</code> is given.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># top features of individual documents</span></span></span>
 <span class="r-in"><span><span class="fu">topfeatures</span><span class="op">(</span><span class="va">dfmat2</span>, n <span class="op">=</span> <span class="fl">5</span>, groups <span class="op">=</span> <span class="fu"><a href="docnames.html">docnames</a></span><span class="op">(</span><span class="va">dfmat2</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(groupsub):</span> object 'dfmat2' not found</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in docnames(dfmat2):</span> object 'dfmat2' not found</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># grouping by president last name</span></span></span>
 <span class="r-in"><span><span class="fu">topfeatures</span><span class="op">(</span><span class="va">dfmat2</span>, n <span class="op">=</span> <span class="fl">5</span>, groups <span class="op">=</span> <span class="va">President</span><span class="op">)</span></span></span>

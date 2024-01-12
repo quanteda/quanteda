@@ -148,18 +148,29 @@ tokens.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">tokens_subset</span><span class="op">(</span><span class="va">x</span>, <span class="va">subset</span>, drop_docid <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">tokens_subset</span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  <span class="va">subset</span>,</span>
+<span>  min_ntoken <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  max_ntoken <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  drop_docid <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>x</dt>
-<dd><p><a href="tokens.html">tokens</a> object to be subsetted</p></dd>
+<dd><p><a href="tokens.html">tokens</a> object to be subsetted.</p></dd>
 
 
 <dt>subset</dt>
 <dd><p>logical expression indicating the documents to keep: missing
-values are taken as false</p></dd>
+values are taken as false.</p></dd>
+
+
+<dt>min_ntoken, max_ntoken</dt>
+<dd><p>minimum and maximum lengths of the documents to extract.</p></dd>
 
 
 <dt>drop_docid</dt>

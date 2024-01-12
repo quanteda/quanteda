@@ -501,9 +501,5 @@ plot(y, wfm$theta, xlab = "Year", ylab = "Position")
 # 所有报告中的双词词组
 tstat_col <- textstat_collocations(toks_china, size = 2, min_count = 20, tolower = TRUE)
 head(tstat_col, 10)
-
-# 2017 报告中的双词词组
-tstat_col2 <- textstat_collocations(toks_china2, size = 2, tolower = TRUE)
-head(tstat_col2, 10)
 ```
 注：以上这部分介绍翻译于[英文版](https://quanteda.io/articles/pkgdown/examples/chinese.html).

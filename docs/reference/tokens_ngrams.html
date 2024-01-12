@@ -146,11 +146,11 @@ lengths or skips in one pass.  Implemented in C++ for efficiency.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">tokens_ngrams</span><span class="op">(</span><span class="va">x</span>, n <span class="op">=</span> <span class="fl">2L</span>, skip <span class="op">=</span> <span class="fl">0L</span>, concatenator <span class="op">=</span> <span class="st">"_"</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">tokens_ngrams</span><span class="op">(</span><span class="va">x</span>, n <span class="op">=</span> <span class="fl">2L</span>, skip <span class="op">=</span> <span class="fl">0L</span>, concatenator <span class="op">=</span> <span class="fu"><a href="concat.html">concat</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">char_ngrams</span><span class="op">(</span><span class="va">x</span>, n <span class="op">=</span> <span class="fl">2L</span>, skip <span class="op">=</span> <span class="fl">0L</span>, concatenator <span class="op">=</span> <span class="st">"_"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">tokens_skipgrams</span><span class="op">(</span><span class="va">x</span>, <span class="va">n</span>, <span class="va">skip</span>, concatenator <span class="op">=</span> <span class="st">"_"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">tokens_skipgrams</span><span class="op">(</span><span class="va">x</span>, <span class="va">n</span>, <span class="va">skip</span>, concatenator <span class="op">=</span> <span class="fu"><a href="concat.html">concat</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -254,6 +254,8 @@ scheme.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="co"># on character</span></span></span>
 <span class="r-in"><span><span class="fu">char_ngrams</span><span class="op">(</span><span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>, n <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>char_ngrams() was deprecated in quanteda 4.0.0.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Please use `tokens_ngram(tokens(x))` instead.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "a"     "b"     "c"     "a_b"   "b_c"   "a_b_c"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># skipgrams</span></span></span>

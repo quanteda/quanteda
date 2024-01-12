@@ -212,7 +212,7 @@ version 3.3 counterparts.</p>
 <span><span class="fu"><a href="../../reference/ndoc.html">ndoc</a></span><span class="op">(</span><span class="va">toks</span><span class="op">)</span> <span class="co"># the number of sentences</span></span>
 <span><span class="co">## [1] 200254</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="fu"><a href="../../reference/ntoken.html">ntoken</a></span><span class="op">(</span><span class="va">toks</span><span class="op">)</span><span class="op">)</span> <span class="co"># the total number of tokens</span></span>
-<span><span class="co">## [1] 5320339</span></span></code></pre></div>
+<span><span class="co">## [1] 5322396</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="tokenising-a-corpus">Tokenising a corpus<a class="anchor" aria-label="anchor" href="#tokenising-a-corpus"></a>
@@ -230,10 +230,7 @@ version 4.0 and 3.3 (“v4” and “v3” in the plots, respectively).</p>
 <span>    v4 <span class="op">=</span> <span class="fu"><a href="../../reference/tokens.html">tokens</a></span><span class="op">(</span><span class="va">corp</span>, remove_punct <span class="op">=</span> <span class="cn">TRUE</span>, remove_numbers <span class="op">=</span> <span class="cn">TRUE</span>, </span>
 <span>                remove_symbols <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
 <span>    times <span class="op">=</span> <span class="fl">10</span></span>
-<span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span>log <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="co">## Warning in microbenchmark::microbenchmark(v3 = quanteda3::tokens(corp,</span></span>
-<span><span class="co">## remove_punct = TRUE, : less accurate nanosecond times to avoid potential</span></span>
-<span><span class="co">## integer overflows</span></span></code></pre></div>
+<span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span>log <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <p><img src="benchmarks_xptr_files/figure-html/tokenising-corpus-1.png" width="1200"></p>
 </div>
 <div class="section level2">
@@ -287,7 +284,26 @@ keep the original <code>tokens_xptr</code> object intact.</p>
 <span>    v3 <span class="op">=</span> <span class="fu">quanteda3</span><span class="fu">::</span><span class="fu"><a href="https://quanteda.io/reference/tokens_group.html">tokens_group</a></span><span class="op">(</span><span class="va">toks</span><span class="op">)</span>,</span>
 <span>    v4 <span class="op">=</span> <span class="fu"><a href="../../reference/tokens_group.html">tokens_group</a></span><span class="op">(</span><span class="va">xtoks</span><span class="op">)</span>,</span>
 <span>    times <span class="op">=</span> <span class="fl">10</span></span>
-<span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span>log <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span>log <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="co">## Warning in update_meta(default, inherit, ...): tokenizer is ignored.</span></span>
+<span></span>
+<span><span class="co">## Warning in update_meta(default, inherit, ...): tokenizer is ignored.</span></span>
+<span></span>
+<span><span class="co">## Warning in update_meta(default, inherit, ...): tokenizer is ignored.</span></span>
+<span></span>
+<span><span class="co">## Warning in update_meta(default, inherit, ...): tokenizer is ignored.</span></span>
+<span></span>
+<span><span class="co">## Warning in update_meta(default, inherit, ...): tokenizer is ignored.</span></span>
+<span></span>
+<span><span class="co">## Warning in update_meta(default, inherit, ...): tokenizer is ignored.</span></span>
+<span></span>
+<span><span class="co">## Warning in update_meta(default, inherit, ...): tokenizer is ignored.</span></span>
+<span></span>
+<span><span class="co">## Warning in update_meta(default, inherit, ...): tokenizer is ignored.</span></span>
+<span></span>
+<span><span class="co">## Warning in update_meta(default, inherit, ...): tokenizer is ignored.</span></span>
+<span></span>
+<span><span class="co">## Warning in update_meta(default, inherit, ...): tokenizer is ignored.</span></span></code></pre></div>
 <p><img src="benchmarks_xptr_files/figure-html/modifying-tokens-5.png" width="1200"></p>
 </div>
 <div class="section level2">
@@ -298,9 +314,11 @@ faster.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># get first 5000 documents</span></span>
 <span><span class="va">toks1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">toks</span>, <span class="fl">5000</span><span class="op">)</span></span>
+<span><span class="co">## Warning in update_meta(default, inherit, ...): tokenizer is ignored.</span></span>
 <span></span>
 <span><span class="co"># get last 5000 documents</span></span>
 <span><span class="va">toks2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail</a></span><span class="op">(</span><span class="va">toks</span>, <span class="fl">5000</span><span class="op">)</span></span>
+<span><span class="co">## Warning in update_meta(default, inherit, ...): tokenizer is ignored.</span></span>
 <span></span>
 <span><span class="co"># transform both objects to tokens_xptr objects</span></span>
 <span><span class="va">xtoks1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/tokens_xptr.html">as.tokens_xptr</a></span><span class="op">(</span><span class="va">toks1</span><span class="op">)</span></span>
@@ -324,7 +342,26 @@ faster.</p>
 <span>    v3 <span class="op">=</span> <span class="fu">quanteda3</span><span class="fu">::</span><span class="fu"><a href="https://quanteda.io/reference/dfm.html">dfm</a></span><span class="op">(</span><span class="va">toks</span><span class="op">)</span>,</span>
 <span>    v4 <span class="op">=</span> <span class="fu"><a href="../../reference/dfm.html">dfm</a></span><span class="op">(</span><span class="va">xtoks</span><span class="op">)</span>,</span>
 <span>    times <span class="op">=</span> <span class="fl">10</span></span>
-<span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span>log <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span>log <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="co">## Warning in update_meta(default, inherit, ...): tokenizer is ignored.</span></span>
+<span></span>
+<span><span class="co">## Warning in update_meta(default, inherit, ...): tokenizer is ignored.</span></span>
+<span></span>
+<span><span class="co">## Warning in update_meta(default, inherit, ...): tokenizer is ignored.</span></span>
+<span></span>
+<span><span class="co">## Warning in update_meta(default, inherit, ...): tokenizer is ignored.</span></span>
+<span></span>
+<span><span class="co">## Warning in update_meta(default, inherit, ...): tokenizer is ignored.</span></span>
+<span></span>
+<span><span class="co">## Warning in update_meta(default, inherit, ...): tokenizer is ignored.</span></span>
+<span></span>
+<span><span class="co">## Warning in update_meta(default, inherit, ...): tokenizer is ignored.</span></span>
+<span></span>
+<span><span class="co">## Warning in update_meta(default, inherit, ...): tokenizer is ignored.</span></span>
+<span></span>
+<span><span class="co">## Warning in update_meta(default, inherit, ...): tokenizer is ignored.</span></span>
+<span></span>
+<span><span class="co">## Warning in update_meta(default, inherit, ...): tokenizer is ignored.</span></span></code></pre></div>
 <p><img src="benchmarks_xptr_files/figure-html/dfm-from-tokens-1.png" width="1200"></p>
 </div>
 <div class="section level2">

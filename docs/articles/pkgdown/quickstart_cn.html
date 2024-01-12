@@ -937,7 +937,7 @@ pane中查看dfm,或者调用R的View功能。调用<code>plot</code>dfm将调�
 <span>    <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">my_lda_fit20</span><span class="op">)</span>    </span>
 <span><span class="op">}</span></span></code></pre></div>
 <pre><code><span><span class="co">## Loading required package: stm</span></span></code></pre>
-<pre><code><span><span class="co">## stm v1.3.6.1 successfully loaded. See ?stm for help. </span></span>
+<pre><code><span><span class="co">## stm v1.3.7 successfully loaded. See ?stm for help. </span></span>
 <span><span class="co">##  Papers, resources, and other materials at structuraltopicmodel.com</span></span></code></pre>
 <p><img src="quickstart_cn_files/figure-html/unnamed-chunk-38-1.png" width="672"></p>
 <p>注：以上这个指南翻译于英文版<a href="https://quanteda.io/articles/pkgdown/quickstart.html">quickstart</a>.</p>
@@ -1013,30 +1013,9 @@ pane中查看dfm,或者调用R的View功能。调用<code>plot</code>dfm将调�
 <p><img src="quickstart_cn_files/figure-html/fig1-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level3">
-<h3 id="feature-co-occurrence-matrix">特征共现矩阵<a class="anchor" aria-label="anchor" href="#feature-co-occurrence-matrix"></a>
-</h3>
-<div class="sourceCode" id="cb94"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># fcm -共现窗口为5，2017政府工作报告</span></span>
-<span><span class="va">corp_china2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/corpus_subset.html">corpus_subset</a></span><span class="op">(</span><span class="va">data_corpus_chinesegovreport</span>, <span class="va">Year</span> <span class="op">==</span> <span class="st">"2017"</span><span class="op">)</span></span>
-<span><span class="va">toks_china2</span> <span class="op">&lt;-</span> <span class="va">corp_china2</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu"><a href="../../reference/tokens.html">tokens</a></span><span class="op">(</span>remove_punct <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu"><a href="../../reference/tokens_select.html">tokens_remove</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html" class="external-link">stopwords</a></span><span class="op">(</span><span class="st">"zh"</span>, source <span class="op">=</span> <span class="st">"misc"</span><span class="op">)</span>, padding <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">fcmat_china1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/fcm.html">fcm</a></span><span class="op">(</span><span class="va">toks_china2</span>, context <span class="op">=</span> <span class="st">"window"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../../reference/topfeatures.html">topfeatures</a></span><span class="op">(</span><span class="va">fcmat_china1</span><span class="op">[</span><span class="st">"改革"</span>, <span class="op">]</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## 推进 制度   性 体制 完善   试   点   侧 农村 综合 </span></span>
-<span><span class="co">##   20   19   11   11   10    8    8    7    7    7</span></span></code></pre>
-<div class="sourceCode" id="cb96"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># fcm 共现窗口为："改革" + “xx”</span></span>
-<span><span class="va">fcmat_china2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/fcm.html">fcm</a></span><span class="op">(</span><span class="va">toks_china2</span>, context <span class="op">=</span> <span class="st">"window"</span>, ordered <span class="op">=</span> <span class="cn">TRUE</span>, tri <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../../reference/topfeatures.html">topfeatures</a></span><span class="op">(</span><span class="va">fcmat_china2</span><span class="op">[</span><span class="st">"改革"</span>, <span class="op">]</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## 完善 发展   试   点 制度 全面 深化 推进 社会 开放 </span></span>
-<span><span class="co">##   10    8    8    8    8    7    6    6    5    5</span></span></code></pre>
-</div>
-<div class="section level3">
 <h3 id="wordfish">文本缩放模型<a class="anchor" aria-label="anchor" href="#wordfish"></a>
 </h3>
-<div class="sourceCode" id="cb98"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb94"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">wfm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/quanteda.textmodels/man/textmodel_wordfish.html" class="external-link">textmodel_wordfish</a></span><span class="op">(</span><span class="va">dfmat_china</span><span class="op">)</span></span>
 <span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fl">1954</span><span class="op">:</span><span class="fl">2017</span></span>
 <span><span class="va">y</span> <span class="op">&lt;-</span> <span class="va">y</span><span class="op">[</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="va">y</span> <span class="op">==</span> <span class="fl">1963</span> <span class="op">|</span> <span class="va">y</span> <span class="op">==</span> <span class="fl">1961</span> <span class="op">|</span> <span class="va">y</span> <span class="op">==</span> <span class="fl">1962</span> <span class="op">|</span> <span class="op">(</span><span class="va">y</span> <span class="op">&gt;</span> <span class="fl">1964</span> <span class="op">&amp;</span> <span class="va">y</span> <span class="op">&lt;</span> <span class="fl">1975</span><span class="op">)</span> <span class="op">|</span> <span class="va">y</span> <span class="op">==</span> <span class="fl">1976</span> <span class="op">|</span> <span class="va">y</span> <span class="op">==</span> <span class="fl">1977</span><span class="op">)</span><span class="op">]</span></span>
@@ -1046,7 +1025,7 @@ pane中查看dfm,或者调用R的View功能。调用<code>plot</code>dfm将调�
 <div class="section level3">
 <h3 id="collocation">词组 - 双词词组/三词词组等<a class="anchor" aria-label="anchor" href="#collocation"></a>
 </h3>
-<div class="sourceCode" id="cb99"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb95"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># 所有报告中的双词词组</span></span>
 <span><span class="va">tstat_col</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://quanteda.io/reference/textstat_collocations.html">textstat_collocations</a></span><span class="op">(</span><span class="va">toks_china</span>, size <span class="op">=</span> <span class="fl">2</span>, min_count <span class="op">=</span> <span class="fl">20</span>, tolower <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">tstat_col</span>, <span class="fl">10</span><span class="op">)</span></span></code></pre></div>
@@ -1061,21 +1040,6 @@ pane中查看dfm,或者调用R的View功能。调用<code>plot</code>dfm将调�
 <span><span class="co">## 8        万 吨   212            0      2 6.596337  62.62405</span></span>
 <span><span class="co">## 9    国民 经济   589            0      2 6.021117  61.87053</span></span>
 <span><span class="co">## 10   充分 发挥   191            0      2 6.590507  61.30822</span></span></code></pre>
-<div class="sourceCode" id="cb101"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># 2017 报告中的双词词组</span></span>
-<span><span class="va">tstat_col2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://quanteda.io/reference/textstat_collocations.html">textstat_collocations</a></span><span class="op">(</span><span class="va">toks_china2</span>, size <span class="op">=</span> <span class="fl">2</span>, tolower <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">tstat_col2</span>, <span class="fl">10</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">##    collocation count count_nested length   lambda        z</span></span>
-<span><span class="co">## 1    人民 群众    12            0      2 5.566523 13.27640</span></span>
-<span><span class="co">## 2        亿 元    14            0      2 8.461958 12.86399</span></span>
-<span><span class="co">## 3        调 控    11            0      2 7.752948 12.67340</span></span>
-<span><span class="co">## 4    深入 实施     8            0      2 5.178184 11.27242</span></span>
-<span><span class="co">## 5      党 中央     7            0      2 5.906546 11.21180</span></span>
-<span><span class="co">## 6    体制 改革    11            0      2 5.477657 10.85381</span></span>
-<span><span class="co">## 7    国内 生产     6            0      2 6.326048 10.75976</span></span>
-<span><span class="co">## 8      现代 化     8            0      2 5.865620 10.72714</span></span>
-<span><span class="co">## 9    基础 设施     7            0      2 7.708660 10.64492</span></span>
-<span><span class="co">## 10       优 化     8            0      2 6.032776 10.55036</span></span></code></pre>
 <p>注：以上这部分介绍翻译于<a href="https://quanteda.io/articles/pkgdown/examples/chinese.html">英文版</a>.</p>
 </div>
 </div>
