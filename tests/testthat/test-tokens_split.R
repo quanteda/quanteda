@@ -54,21 +54,21 @@ test_that("tokens_split works fully when matching entire tokens to separator pat
 })
 
 
-test_that("modify_if argument is working", {
+test_that("apply_if argument is working", {
     dat <- data.frame(text = c("US-EU low-carbon agreement",
                                "five-star hotel"),
                       topic = c("environment", "travel"))
     corp <- corpus(dat)
     toks <- tokens(corp)
 
-    toks1 <- tokens_split(toks, separator = "-", modify_if = toks$topic == "environment")
+    toks1 <- tokens_split(toks, separator = "-", apply_if = toks$topic == "environment")
     expect_identical(
         as.list(toks1),
         list(text1 = c("US", "EU", "low", "carbon", "agreement"),
              text2 = c("five-star", "hotel"))
     )
 
-    toks2 <- tokens_split(toks, separator = "-", modify_if = toks$topic == "travel")
+    toks2 <- tokens_split(toks, separator = "-", apply_if = toks$topic == "travel")
     expect_identical(
         as.list(toks2),
         list(text1 = c("US-EU", "low-carbon", "agreement"),

@@ -31,6 +31,7 @@
 #' @param separator a character to separate tokens and keys when `append_key = TRUE`.
 #' @param concatenator the concatenation character that will connect the words
 #'   making up the multi-word sequences.
+#' @inheritParams apply_if
 #' @param verbose print status messages if `TRUE`
 #' @details Dictionary values may consist of sequences, and there are different
 #'   methods of counting key matches based on values that are nested or that
@@ -47,6 +48,12 @@
 #'   *Overlapping values*, such as `"a b"` and `"b a"` are
 #'   currently always considered as separate matches if they are in different
 #'   keys, or as one match if the overlap is within the same key.
+#'   
+#'   Note: `apply_if` This applies the dictionary lookup only to documents that
+#'   match the logical condition.  When `exclusive = TRUE` (the default),
+#'   however, this means that empty documents will be returned for those not
+#'   meeting the condition, since no lookup will be applied and hence no tokens
+#'   replaced by matching keys.
 #' 
 #' @keywords tokens
 #' @seealso tokens_replace
@@ -101,6 +108,7 @@ tokens_lookup <- function(x, dictionary, levels = 1:5,
                           separator = "/",
                           concatenator = concat(x),
                           nested_scope = c("key", "dictionary"),
+                          apply_if = NULL,
                           verbose = quanteda_options("verbose")) {
     UseMethod("tokens_lookup")
 }
@@ -116,6 +124,7 @@ tokens_lookup.default <- function(x, dictionary, levels = 1:5,
                                  separator = "/",
                                  concatenator = concat(x),
                                  nested_scope = c("key", "dictionary"),
+                                 apply_if = NULL,
                                  verbose = quanteda_options("verbose")) {
     check_class(class(x), "tokens_lookup")
 }
@@ -131,6 +140,7 @@ tokens_lookup.tokens_xptr <- function(x, dictionary, levels = 1:5,
                           separator = "/",
                           concatenator = concat(x),
                           nested_scope = c("key", "dictionary"),
+                          apply_if = NULL,
                           verbose = quanteda_options("verbose")) {
 
     if (!is.dictionary(dictionary))
@@ -144,6 +154,8 @@ tokens_lookup.tokens_xptr <- function(x, dictionary, levels = 1:5,
     separator <- check_character(separator)
     concatenator <- check_character(concatenator)
     nested_scope <- match.arg(nested_scope)
+    apply_if <- check_logical(apply_if, min_len = ndoc(x), max_len = ndoc(x),
+                               allow_null = TRUE, allow_na = TRUE)
     verbose <- check_logical(verbose)
         
     attrs <- attributes(x)
@@ -154,6 +166,8 @@ tokens_lookup.tokens_xptr <- function(x, dictionary, levels = 1:5,
     ids <- object2id(dictionary, type, valuetype, case_insensitive,
                      field_object(attrs, "concatenator"), levels)
     overlap <- match(nested_scope, c("key", "dictionary"))
+    if (is.null(apply_if))
+        apply_if <- rep(TRUE, length.out = ndoc(x))
     
     if (append_key) {
         fixed <- lapply(ids, function(x) type[x])
@@ -175,17 +189,17 @@ tokens_lookup.tokens_xptr <- function(x, dictionary, levels = 1:5,
     if (exclusive) {
         if (!is.null(nomatch)) {
             result <- cpp_tokens_lookup(x, ids, id_key, c(key, nomatch), overlap, 1,
-                                        get_threads())
+                                        !apply_if, get_threads())
         } else {
             result <- cpp_tokens_lookup(x, ids, id_key, key, overlap, 0,
-                                        get_threads())
+                                        !apply_if, get_threads())
         }
     } else {
         if (!is.null(nomatch))
             warning("nomatch only applies if exclusive = TRUE")
         id_used <- unique(id_key)
         result <- cpp_tokens_lookup(x, ids, match(id_key, id_used), key[id_used], overlap, 2,
-                                    get_threads())
+                                    !apply_if, get_threads())
     }
     if (append_key)
         cpp_recompile(result)

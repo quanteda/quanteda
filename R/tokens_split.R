@@ -7,7 +7,7 @@
 #' @param separator a single-character pattern match by which tokens are separated
 #' @inheritParams valuetype
 #' @param remove_separator if `TRUE`, remove separator from new tokens
-#' @inheritParams modify_if
+#' @inheritParams apply_if
 #' @examples
 #' # undo tokens_compound()
 #' toks1 <- tokens("pork barrel is an idiomatic multi-word expression")
@@ -21,19 +21,19 @@
 #' @keywords tokens
 #' @export
 tokens_split <- function(x, separator = " ", valuetype = c("fixed", "regex"),
-                         remove_separator = TRUE, modify_if = NULL) {
+                         remove_separator = TRUE, apply_if = NULL) {
     UseMethod("tokens_split")
 }
 
 #' @export
 tokens_split.default <- function(x, separator = " ", valuetype = c("fixed", "regex"),
-                                 remove_separator = TRUE, modify_if = NULL) {
+                                 remove_separator = TRUE, apply_if = NULL) {
     check_class(class(x), "tokens_split")
 }
 
 #' @export
 tokens_split.tokens_xptr <- function(x, separator = " ", valuetype = c("fixed", "regex"),
-                                     remove_separator = TRUE, modify_if = NULL) {
+                                     remove_separator = TRUE, apply_if = NULL) {
 
     separator <- check_character(separator)
     valuetype <- match.arg(valuetype)
@@ -65,7 +65,7 @@ tokens_split.tokens_xptr <- function(x, separator = " ", valuetype = c("fixed", 
 
     replacement <- stri_split_fixed(type, "\uE000", omit_empty = TRUE)
     tokens_replace(x, pattern, replacement, "fixed", case_insensitive = FALSE,
-                   modify_if = modify_if)
+                   apply_if = apply_if)
 }
 
 #' @export

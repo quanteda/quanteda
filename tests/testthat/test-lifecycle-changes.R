@@ -33,11 +33,8 @@ test_that("dfm defunct arguments generate correct errors", {
 })
 
 test_that("as.data.frame for dfm objects", {
-    d <- data_dfm_lbgexample[, 1:5]
-    expect_error(
-        as.data.frame(d), 
-        "`as.data.frame.dfm()` was deprecated in quanteda 3.0 and is now defunct.",
-        fixed = TRUE
+    lifecycle::expect_defunct(
+        as.data.frame(data_dfm_lbgexample[, 1:5])
     )
 })
 
@@ -77,10 +74,19 @@ test_that("texts produces a defunct message", {
     )
 })
 
+test_that("char_ngrams produces a deprecated message", {
+    txt <- c('insurgents','killed', 'in', 'ongoing', 'fighting')
+    lifecycle::expect_deprecated(
+        char_ngrams(txt),
+        "char_ngrams() was deprecated in quanteda 4.0",
+        fixed = TRUE
+    )
+})
+
 test_that("nsentence produces a deprecated message", {
     skip_if_not_installed("rlang")
     rlang::local_options(lifecycle_verbosity = "warning")
-    expect_warning(
+    lifecycle::expect_deprecated(
         nsentence("This is one.  And two."),
         "`nsentence()` was deprecated in quanteda 4.0",
         fixed = TRUE

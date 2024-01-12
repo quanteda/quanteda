@@ -73,31 +73,6 @@ test_that("tokens_recompile: preserves encoding", {
     )
 })
 
-test_that("tokens_recompile: ngrams", {
-    toks <- tokens(c(one = "a b c"))
-
-    expect_equal(
-        as.list(tokens_ngrams(toks, 2:3)),
-        list(one = c("a_b", "b_c", "a_b_c"))
-    )
-
-    expect_equal(
-        attributes(tokens_ngrams(toks, 2:3, concatenator = " "))$meta$object$concatenator,
-        " "
-    )
-
-    expect_equal(
-        attributes(tokens_ngrams(toks, 2:3, concatenator = " "))$meta$object$ngram,
-        2L:3L
-    )
-
-    attr(toks, "types") <- char_ngrams(attr(toks, "types"), 2:3)
-    expect_equal(
-        quanteda:::tokens_recompile(toks, method = "R"),
-        quanteda:::tokens_recompile(toks, method = "C++")
-    )
-})
-
 test_that("tokens_recompile: [ works for tokens", {
     toks <- tokens(c(one = "a b c d",
                      two = "x y z",

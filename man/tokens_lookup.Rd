@@ -17,6 +17,7 @@ tokens_lookup(
   separator = "/",
   concatenator = concat(x),
   nested_scope = c("key", "dictionary"),
+  apply_if = NULL,
   verbose = quanteda_options("verbose")
 )
 }
@@ -66,6 +67,9 @@ within the key, while \code{"dictionary"} applies it across keys, matching only
 the key with the longer pattern, not the matches nested within that longer
 pattern from other keys.  See Details.}
 
+\item{apply_if}{logical vector of length \code{ndoc(x)}; documents are modified
+only when corresponding values are \code{TRUE}, others are left unchanged.}
+
 \item{verbose}{print status messages if \code{TRUE}}
 }
 \description{
@@ -88,6 +92,12 @@ for these two different behaviours.
 \emph{Overlapping values}, such as \code{"a b"} and \code{"b a"} are
 currently always considered as separate matches if they are in different
 keys, or as one match if the overlap is within the same key.
+
+Note: \code{apply_if} This applies the dictionary lookup only to documents that
+match the logical condition.  When \code{exclusive = TRUE} (the default),
+however, this means that empty documents will be returned for those not
+meeting the condition, since no lookup will be applied and hence no tokens
+replaced by matching keys.
 }
 \examples{
 toks1 <- tokens(data_corpus_inaugural)

@@ -16,23 +16,21 @@ test_that("Basic functions work", {
     
     expect_identical(ndoc(xtoks), ndoc(toks))
     expect_identical(ntoken(xtoks), ntoken(toks))
+
     expect_identical(types(xtoks), types(toks))
     expect_identical(concatenator(xtoks), concatenator(toks))
     expect_identical(concat(xtoks), concat(toks))
     expect_identical(ntype(xtoks), ntype(toks))
     expect_warning(
-        ntoken(xtoks, remove_padding = TRUE),
-        "remove_padding argument is not used"
+        ntoken(xtoks, xxx = TRUE),
+        "xxx argument is not used"
     )
-    expect_warning(
-        ntype(xtoks, remove_padding = TRUE),
-        "remove_padding argument is not used"
-    )
-    
     xtoks2 <- tokens_remove(as.tokens_xptr(xtoks), 
                             min_nchar = 2, padding = TRUE)
     toks2 <- tokens_remove(toks, min_nchar = 2, padding = TRUE)
     expect_identical(ntype(xtoks2), ntype(toks2))
+    expect_identical(ntoken(xtoks2, remove_padding = TRUE), 
+                     ntoken(tokens_remove(toks2, "")))
 })
 
 test_that("attributes are the same", {
@@ -73,7 +71,7 @@ test_that("deep copy xtokens", {
     )
 })
 
-test_that("c words on xtokens", {
+test_that("c works on xtokens", {
     xtoks_pad <- tokens_remove(as.tokens_xptr(toks), stopwords(), padding = TRUE)
     xtoks1 <- as.tokens_xptr(xtoks_pad)[1:10]
     xtoks2 <- as.tokens_xptr(xtoks_pad)[11:20]
@@ -388,7 +386,12 @@ test_that("test low-level validation", {
     )
     expect_error(
         quanteda:::cpp_tokens_lookup(as.tokens_xptr(xtoks), 
-                                     dict, c(1, 2), "A", 1, 1, 3),
+                                     dict, 1, "A", 1, 1, c(FALSE, TRUE)),
+        "Invalid bypass"
+    )
+    expect_error(
+        quanteda:::cpp_tokens_lookup(as.tokens_xptr(xtoks), 
+                                     dict, c(1, 2), "A", 1, 1, c(FALSE)),
         "Invalid words and keys"
     )
     

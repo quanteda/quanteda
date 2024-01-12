@@ -37,8 +37,8 @@ cpp_tokens_group <- function(xptr, groups_, thread = -1L) {
     .Call(`_quanteda_cpp_tokens_group`, xptr, groups_, thread)
 }
 
-cpp_tokens_lookup <- function(xptr, words_, keys_, types_, overlap, nomatch, thread = 1L) {
-    .Call(`_quanteda_cpp_tokens_lookup`, xptr, words_, keys_, types_, overlap, nomatch, thread)
+cpp_tokens_lookup <- function(xptr, words_, keys_, types_, overlap, nomatch, bypass_, thread = 1L) {
+    .Call(`_quanteda_cpp_tokens_lookup`, xptr, words_, keys_, types_, overlap, nomatch, bypass_, thread)
 }
 
 cpp_tokens_ngrams <- function(xptr, delim_, ns_, skips_, thread = -1L) {
@@ -89,12 +89,12 @@ cpp_ndoc <- function(xptr) {
     .Call(`_quanteda_cpp_ndoc`, xptr)
 }
 
-cpp_ntoken <- function(xptr) {
-    .Call(`_quanteda_cpp_ntoken`, xptr)
+cpp_ntoken <- function(xptr, padding = TRUE) {
+    .Call(`_quanteda_cpp_ntoken`, xptr, padding)
 }
 
-cpp_ntype <- function(xptr) {
-    .Call(`_quanteda_cpp_ntype`, xptr)
+cpp_ntype <- function(xptr, padding = TRUE) {
+    .Call(`_quanteda_cpp_ntype`, xptr, padding)
 }
 
 cpp_get_types <- function(xptr, recompile = FALSE) {

@@ -132,6 +132,7 @@ Text match_comp(Text tokens,
  * @param join join overlapped features if true
  * @param window_left numbers tokens on the left-hand side of pattern
  * @param window_right numbers tokens on the right-hand side of pattern
+ * @param bypass_ select documents to modify: TRUE=modify, FALSE=don't modify
  */
 
 // [[Rcpp::export]]
