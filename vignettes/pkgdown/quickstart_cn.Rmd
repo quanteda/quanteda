@@ -185,7 +185,7 @@ summary(corpus_subset(data_corpus_inaugural, President == "Adams"))
 
 `kwic`功能（keywords-in-context）可以搜索一个指定的词并显示它的上下文：
 
-```{r, tidy=TRUE}
+```{r}
 data_tokens_inaugural <- tokens(data_corpus_inaugural)
 kwic(data_tokens_inaugural, pattern = "terror")
 ```

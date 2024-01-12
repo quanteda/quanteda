@@ -179,7 +179,7 @@ summary(corpus_subset(data_corpus_inaugural, President == "Adams"))
 
 La función `kwic` (keywords-in-context) realiza una búsqueda de una palabra y permite visualizar los contextos en los que aparece:
 
-```{r, tidy=TRUE}
+```{r}
 toks <- tokens(data_corpus_inaugural)
 kwic(toks, pattern = "terror")
 ```

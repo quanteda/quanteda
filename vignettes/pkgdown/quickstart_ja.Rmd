@@ -186,7 +186,7 @@ summary(corpus_subset(data_corpus_inaugural, President == "Adams"))
 
 `kwic()`（keywords-in-context）は単語の検索を行い，その単語が現れる文脈を表示する．
 
-```{r, tidy=TRUE}
+```{r}
 toks <- tokens(data_corpus_inaugural)
 kwic(toks, pattern = "terror")
 ```

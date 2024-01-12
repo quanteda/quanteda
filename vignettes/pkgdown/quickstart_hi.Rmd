@@ -182,7 +182,7 @@ summary(corpus_subset(data_corpus_inaugural, President == "Adams"))
 
 `kwic` फ़ंक्शन (कीवर्ड-इन-कॉन्टेक्स्ट) शब्दों को ढूँडता है और उन्हें उनके उचित संदर्भों में दिखाता है।  
 
-```{r, tidy=TRUE}
+```{r}
 toks <- tokens(data_corpus_inaugural)
 kwic(toks, pattern = "terror")
 ```
