@@ -468,7 +468,7 @@ names(data_char_senseandsensibility) <- "Sense and Sensibility"
 litcorpus <- corpus(c(data_char_mobydick, data_char_senseandsensibility))
 ```
 
-```{r, eval=FALSE, echo=FALSE}
+```{r, eval=TRUE, echo=FALSE}
 load("data_char_mobydick.rda")
 load("data_char_senseandsensibility.rda")
 
