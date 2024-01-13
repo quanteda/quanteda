@@ -107,7 +107,7 @@ Additional functions have been defined for **quanteda** objects that are [very s
 
 1.  **Creating the corpus**
 
-    Reading files, probably using `readtext()` from the **readtext** package, then creating a corpus using `corpus()`, making sure the texts have a common encoding, and adding document variables (`docvars()`) and metadata (`metadoc` and `metacorpus`).
+    Reading files, probably using `readtext()` from the **readtext** package, then creating a corpus using `corpus()`, making sure the texts have a common encoding, and adding document variables (`docvars()`).
 
 2.  **Defining and delimiting documents**
 

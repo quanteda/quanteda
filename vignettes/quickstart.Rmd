@@ -8,9 +8,7 @@ vignette: >
 ---
 
 ```{r, echo = FALSE}
-knitr::opts_chunk$set(collapse = FALSE,
-                      comment = "##",
-                      tidy = TRUE)
+knitr::opts_chunk$set(collapse = FALSE, comment = "##")
 ```
 
 # Installing the package

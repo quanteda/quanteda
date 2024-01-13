@@ -84,15 +84,6 @@ docvars(corp_uk, "Year") <- 2010
 summary(corp_uk)
 ```
 
-यदि हम प्रत्येक डॉक्युमेंट को अतिरिक्त मेटा-डेटा के साथ टैग करना चाहते हैं जो विश्लेषण के लिए ज़रूरी नहीं है, बल्कि कुछ ऐसा है जिसे हमें डॉक्युमेंट की विशेषता के रूप में जानने की आवश्यकता है, हम उन्हें भी अपने कार्पस में जोड़ सकते हैं।
-```{r}
-docvars(corp_uk, "language") <- "english"
-docvars(corp_uk, "docsource")  <- paste("data_char_ukimmig2010", 1:ndoc(corp_uk), sep = "_")
-summary(corp_uk)
-```
-
-अंतिम कमांड `metadoc`, आपको अपने डॉक्युमेंट के मेटा-डेटा फ़ील्ड को परिभाषित करने की सुविधा देता है। ध्यान दें कि `"english"` की सिंगल वैल्यू को असाइन करने के लिए, आर ने वैल्यू को तब तक रीसायकल किया है जब तक कि यह कॉर्पस में डॉक्युमेंट की संख्या से मेल नहीं खाता। हमारे कस्टम मेटाडॉक फ़ील्ड`docsource` के लिए एक सरल टैग बनाने में, हमने अपने कॉर्पस में डॉक्युमेंट की संख्या को प्राप्त करने के लिए क्वांटेडा फ़ंक्शन `ndoc()` का उपयोग किया है। इस फ़ंक्शन को उन कार्यों के समान काम करने के लिए डिज़ाइन किया गया है जो आप पहले से ही आर में उपयोग कर सकते हैं, जैसे कि `nrow()` और `ncol()`।
-
 ### रीडटेक्सट पैकेज का उपयोग करके फ़ाइलों को लोड करने के लिए निर्देश
 
 ```{r, eval=FALSE}
@@ -181,7 +172,7 @@ summary(corp3)
 
 कॉर्पस ऑब्जेक्ट के लिए परिभाषित `corpus_subset()` फ़ंक्शन में एक विधि है, जिससे एक नए कॉर्पस को *docvars* पर तार्किक स्थितियों को लागू करके निकाला जा सकता है:
     
-    ```{r}
+```{r}
 summary(corpus_subset(data_corpus_inaugural, Year > 1990))
 summary(corpus_subset(data_corpus_inaugural, President == "Adams"))
 ```
@@ -191,7 +182,7 @@ summary(corpus_subset(data_corpus_inaugural, President == "Adams"))
 
 `kwic` फ़ंक्शन (कीवर्ड-इन-कॉन्टेक्स्ट) शब्दों को ढूँडता है और उन्हें उनके उचित संदर्भों में दिखाता है।  
 
-```{r, tidy=TRUE}
+```{r}
 toks <- tokens(data_corpus_inaugural)
 kwic(toks, pattern = "terror")
 ```
@@ -246,14 +237,14 @@ tokens(txt, remove_numbers = FALSE, remove_punct = FALSE, remove_separators = FA
 ```
 
 हमारे पास करैक्टरों को tokenize करने का विकल्प भी है:
-    ```{r}
+```{r}
 tokens("Great website: http://textasdata.com?page=123.", what = "character")
 tokens("Great website: http://textasdata.com?page=123.", what = "character",
        remove_separators = FALSE)
 ```
 
 और वाक्यों का भी:
-    ```{r}
+```{r}
 # sentence level         
 tokens(c("Kurt Vongeut said; only assholes use semi-colons.",
          "Today is Thursday in Canberra:  It is yesterday in London.",
@@ -291,7 +282,7 @@ dfmat_inaug_post1990[, 1:5]
 ```
 
 `remove` नामक विकल्प, ऐसे टोकंज़ की सूची प्रदान करता है जिन्हें अनदेखा किया जा सकता है। काफ़ी users पूर्व-परिभाषित"स्टॉप वर्ड्स" की एक सूची देंगे, जो कई भाषाओं मे परिभाषित होंगे, और इन्हे हम `stopwords()` फ़ंक्शन के माध्यम से अभिगम कर सकते है:
-    ```{r}
+```{r}
 head(stopwords("en"), 20)
 head(stopwords("ru"), 10)
 head(stopwords("ar", source = "misc"), 10)
@@ -309,7 +300,7 @@ dfmat_uk
 ```
 
 अक्सर आने वाले फीचर्स की एक सूची को ऐक्सेस करने के लिए, हम `topfeatures()` का उपयोग कर सकते हैं:
-    ```{r}
+```{r}
 topfeatures(dfmat_uk, 20) # 20 most frequent words
 ```
 

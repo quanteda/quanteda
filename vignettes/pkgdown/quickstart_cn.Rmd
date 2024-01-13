@@ -185,7 +185,7 @@ summary(corpus_subset(data_corpus_inaugural, President == "Adams"))
 
 `kwic`功能（keywords-in-context）可以搜索一个指定的词并显示它的上下文：
 
-```{r, tidy=TRUE}
+```{r}
 data_tokens_inaugural <- tokens(data_corpus_inaugural)
 kwic(data_tokens_inaugural, pattern = "terror")
 ```
@@ -486,24 +486,6 @@ textplot_wordcloud(dfmat_china_trim, min_count = 6,
                    color = RColorBrewer::brewer.pal(8, "Dark2"))
 ```
 
-
-## 特征共现矩阵 {#feature-co-occurrence-matrix}
-
-```{r}
-# fcm -共现窗口为5，2017政府工作报告
-corp_china2 <- corpus_subset(data_corpus_chinesegovreport, Year == "2017")
-toks_china2 <- corp_china2 |>
-    tokens(remove_punct = TRUE) |>
-    tokens_remove(stopwords("zh", source = "misc"), padding = TRUE)
-
-fcmat_china1 <- fcm(toks_china2, context = "window")
-topfeatures(fcmat_china1["改革", ])
-
-# fcm 共现窗口为："改革" + “xx”
-fcmat_china2 <- fcm(toks_china2, context = "window", ordered = TRUE, tri = FALSE)
-topfeatures(fcmat_china2["改革", ])
-```
-
 ## 文本缩放模型 {#wordfish}
 
 ```{r fig2, fig.height = 4, fig.width = 6, fig.align = "center"}
@@ -519,9 +501,5 @@ plot(y, wfm$theta, xlab = "Year", ylab = "Position")
 # 所有报告中的双词词组
 tstat_col <- textstat_collocations(toks_china, size = 2, min_count = 20, tolower = TRUE)
 head(tstat_col, 10)
-
-# 2017 报告中的双词词组
-tstat_col2 <- textstat_collocations(toks_china2, size = 2, tolower = TRUE)
-head(tstat_col2, 10)
 ```
 注：以上这部分介绍翻译于[英文版](https://quanteda.io/articles/pkgdown/examples/chinese.html).

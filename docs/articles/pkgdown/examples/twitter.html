@@ -198,7 +198,7 @@ your laptop computer.</p>
 <code class="sourceCode R"><span><span class="va">dfmat_tweets</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/tokens.html">tokens</a></span><span class="op">(</span><span class="va">data_corpus_tweets</span>, remove_punct <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="../../../reference/dfm.html">dfm</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">dfmat_tweets</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Document-feature matrix of: 6 documents, 42,320 features (99.97% sparse) and 34 docvars.</span></span>
+<pre><code><span><span class="co">## Document-feature matrix of: 6 documents, 42,258 features (99.97% sparse) and 34 docvars.</span></span>
 <span><span class="co">##         features</span></span>
 <span><span class="co">## docs     oggi pomeriggio a partire dalle 18.00 interverrò #pomeriggio5 su</span></span>
 <span><span class="co">##   tweet1    1          1 2       1     1     1          1            1  1</span></span>
@@ -215,7 +215,7 @@ your laptop computer.</p>
 <span><span class="co">##   tweet4        0</span></span>
 <span><span class="co">##   tweet5        0</span></span>
 <span><span class="co">##   tweet6        0</span></span>
-<span><span class="co">## [ reached max_nfeat ... 42,310 more features ]</span></span></code></pre>
+<span><span class="co">## [ reached max_nfeat ... 42,248 more features ]</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="hashtags">Hashtags<a class="anchor" aria-label="anchor" href="#hashtags"></a>
@@ -237,7 +237,7 @@ your laptop computer.</p>
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">"quanteda.textplots"</span><span class="op">)</span></span>
 <span><span class="va">fcmat_tag</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/fcm.html">fcm</a></span><span class="op">(</span><span class="va">dfmat_tag</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">fcmat_tag</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Feature co-occurrence matrix of: 6 by 2,780 features.</span></span>
+<pre><code><span><span class="co">## Feature co-occurrence matrix of: 6 by 2,781 features.</span></span>
 <span><span class="co">##                  features</span></span>
 <span><span class="co">## features          #pomeriggio5 #canale5 #miaou #iovotoitaliano #fdian #pp</span></span>
 <span><span class="co">##   #pomeriggio5               0        2      0               0      0   0</span></span>
@@ -254,7 +254,7 @@ your laptop computer.</p>
 <span><span class="co">##   #iovotoitaliano               0      0                 0           0</span></span>
 <span><span class="co">##   #fdian                        0      0                 0           0</span></span>
 <span><span class="co">##   #pp                           1      1                 0           0</span></span>
-<span><span class="co">## [ reached max_nfeat ... 2,770 more features ]</span></span></code></pre>
+<span><span class="co">## [ reached max_nfeat ... 2,771 more features ]</span></span></code></pre>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fcmat_topgat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/dfm_select.html">fcm_select</a></span><span class="op">(</span><span class="va">fcmat_tag</span>, pattern <span class="op">=</span> <span class="va">toptag</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/quanteda.textplots/man/textplot_network.html" class="external-link">textplot_network</a></span><span class="op">(</span><span class="va">fcmat_topgat</span>, min_freq <span class="op">=</span> <span class="fl">0.1</span>, edge_alpha <span class="op">=</span> <span class="fl">0.8</span>, edge_size <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></code></pre></div>
@@ -309,8 +309,6 @@ your laptop computer.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fcmat_users</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/dfm_select.html">fcm_select</a></span><span class="op">(</span><span class="va">fcmat_users</span>, pattern <span class="op">=</span> <span class="va">topuser</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/quanteda.textplots/man/textplot_network.html" class="external-link">textplot_network</a></span><span class="op">(</span><span class="va">fcmat_users</span>, min_freq <span class="op">=</span> <span class="fl">0.1</span>, edge_color <span class="op">=</span> <span class="st">"orange"</span>, edge_alpha <span class="op">=</span> <span class="fl">0.8</span>, edge_size <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Warning: ggrepel: 1 unlabeled data points (too many overlaps). Consider</span></span>
-<span><span class="co">## increasing max.overlaps</span></span></code></pre>
 <p><img src="twitter_files/figure-html/unnamed-chunk-8-1.png" width="700"></p>
 </div>
 </div>

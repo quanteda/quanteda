@@ -84,6 +84,7 @@ reference:
   contents:
     - starts_with("tokens")
     - types
+    - concat
     - as.character.tokens
     - as.list.tokens
     - as.tokens

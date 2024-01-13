@@ -158,6 +158,7 @@ to replace <a href="dictionary.html">dictionary</a> values.</p>
 <span>  <span class="va">replacement</span>,</span>
 <span>  valuetype <span class="op">=</span> <span class="st">"glob"</span>,</span>
 <span>  case_insensitive <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  apply_if <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="fu"><a href="quanteda_options.html">quanteda_options</a></span><span class="op">(</span><span class="st">"verbose"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -189,6 +190,11 @@ exact matching. See <a href="valuetype.html">valuetype</a> for details.</p></dd>
 <code>pattern</code> or <a href="dictionary.html">dictionary</a> values</p></dd>
 
 
+<dt>apply_if</dt>
+<dd><p>logical vector of length <code>ndoc(x)</code>; documents are modified
+only when corresponding values are <code>TRUE</code>, others are left unchanged.</p></dd>
+
+
 <dt>verbose</dt>
 <dd><p>print status messages if <code>TRUE</code></p></dd>
 
@@ -206,7 +212,7 @@ exact matching. See <a href="valuetype.html">valuetype</a> for details.</p></dd>
 <span class="r-in"><span><span class="va">taxwords</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"tax"</span>, <span class="st">"taxing"</span>, <span class="st">"taxed"</span>, <span class="st">"taxed"</span>, <span class="st">"taxation"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">lemma</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"TAX"</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">taxwords</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">toks2</span> <span class="op">&lt;-</span> <span class="fu">tokens_replace</span><span class="op">(</span><span class="va">toks1</span>, <span class="va">taxwords</span>, <span class="va">lemma</span>, valuetype <span class="op">=</span> <span class="st">"fixed"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="kwic.html">kwic</a></span><span class="op">(</span><span class="va">toks2</span>, <span class="st">"TAX"</span><span class="op">)</span> <span class="op">|&gt;</span> </span></span>
+<span class="r-in"><span><span class="fu"><a href="kwic.html">kwic</a></span><span class="op">(</span><span class="va">toks2</span>, <span class="st">"TAX"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Keyword-in-context with 10 matches.                                                                        </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1925-Coolidge, 3004]                     a living we must have | TAX |</span>
