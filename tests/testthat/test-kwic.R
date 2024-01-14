@@ -287,7 +287,8 @@ test_that("kwic works with padding", {
     expect_output(
         print(kwic(tokens_remove(testtoks, c("what", "the"), padding = TRUE), "fox")),
         "Keyword-in-context with 1 match.                                
- [text1, 4] does | fox | say cat",
+ [text1, 4]  does | fox | say cat
+",
         fixed = TRUE
  )
     expect_output(
@@ -476,12 +477,14 @@ test_that("pre and post for phrases are working", {
 })
 
 test_that("kwic structure is as expected", {
-    toks <- tokens(c(doc1 = "a a a b c d d d", doc2 = "a b c d e", doc3 = "b b a a"))
+    toks <- tokens(c(doc1 = "a a a b c d d d", 
+                     doc2 = "a b c d e", 
+                     doc3 = "b b a a"))
     kw <- kwic(toks, phrase("a a"), window = 2)
     expect_identical(
       kw,
       structure(data.frame(docname = c("doc1", "doc1", "doc3"), 
-                           from = 1:3, to = 2:4, 
+                           from = 1L:3L, to = 2L:4L, 
                            pre = c("", "a", "b b"), 
                            keyword = c("a a", "a a", "a a"), 
                            post = c("a b", "b c", ""), 
