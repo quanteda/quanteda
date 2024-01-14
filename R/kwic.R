@@ -105,10 +105,9 @@ kwic.tokens_xptr <- function(x, pattern = NULL, window = 5,
 
     # reorder columns to match pre-v3 order
     result <- result[, c("docname", "from", "to", "pre", "keyword", "post", "pattern")]
-    rownames(result) <- NULL
+    attr(result, "ntoken") <- n[unique(index$docname)]
     class(result) <- c("kwic", "data.frame")
-    attr(result, "ntoken") <- n
-    
+    rownames(result) <- NULL
     return(result)
 }
 
@@ -202,5 +201,6 @@ print.kwic <- function(x, max_nrow = quanteda_options("print_kwic_max_nrow"),
     x <- x[i,]
     attr(x, "ntoken") <- attrs$ntoken[i]
     class(x) <- c("kwic", "data.frame")
+    rownames(x) <- NULL
     return(x)
 }
