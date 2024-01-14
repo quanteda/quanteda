@@ -15,7 +15,7 @@ std::string kwic(Text tokens,
     to = std::min(to, (int)tokens.size());
     //Rcout << from << ", " << to << "\n";
     if (from > to)
-        return "";
+        throw std::range_error("Invalid index");
     Text context(tokens.begin() + from, tokens.begin() + to);
     return join_strings(context, types, delim);
 }
@@ -68,8 +68,8 @@ DataFrame cpp_kwic(TokensPtr xptr,
                 std::size_t h = documents[g] - 1;
                 if (h < 0 || texts.size() <= h)
                     throw std::range_error("Invalid documents");
-                pre[g] = kwic(texts[h], types, delim, pos_from[g] - window, pos_from[g] - 1L);
                 keyword[g] = kwic(texts[h], types, delim, pos_from[g], pos_to[g]);
+                pre[g] = kwic(texts[h], types, delim, pos_from[g] - window, pos_from[g] - 1L);
                 post[g] = kwic(texts[h], types, delim, pos_to[g] + 1L, pos_to[g] + window);
             }
         });
