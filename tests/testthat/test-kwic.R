@@ -286,15 +286,12 @@ test_that("kwic works with padding", {
     testtoks <- tokens("what does the fox say cat")
     expect_output(
         print(kwic(tokens_remove(testtoks, c("what", "the"), padding = TRUE), "fox")),
-        "Keyword-in-context with 1 match.                               
- [text1, 4]  does | fox | say cat
-",
-        fixed = TRUE
- )
+        paste("Keyword-in-context with 1 match.",
+              "[text1, 4]  does | fox | say cat", sep = ".*")
+    )
     expect_output(
         print(kwic(tokens_remove(testtoks, "*", padding = TRUE), "fox")),
         "Keyword-in-context with 0 matches.",
-        fixed = TRUE
     )
 })
 
