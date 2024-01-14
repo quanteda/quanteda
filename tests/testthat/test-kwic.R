@@ -243,7 +243,7 @@ test_that("print method works as expected", {
         print(testkwic), 
         paste("Keyword-in-context with 2 matches.",
               "[text1, 4]         what does the | fox | say fox",
-              "[text1, 6] what does the fox say | fox |", sep = ".*"
+              "[text1, 6] what does the fox say | fox |", sep = "\\s*"
         ))
         
     testkwic <- kwic(tokens("what does the fox say fox"), "foox")
@@ -257,7 +257,7 @@ test_that("print method works as expected", {
       "[1805-Jefferson, 2367] shall | secure  | to",
       "[1817-Monroe, 1754]    To | secure  | us",
       "[1817-Monroe, 1814]    to | secure  | our",
-      "[1817-Monroe, 3009]    to | secure  | economy", sep = ".*")
+      "[1817-Monroe, 3009]    to | secure  | economy", sep = "\\s*")
     expect_output(print(kw, max_nrow = -1), out)
     expect_output(print(kw, max_nrow = 6), out)
     expect_output(print(kw, max_nrow = 7), out)
@@ -267,18 +267,18 @@ test_that("print method works as expected", {
                         "[1805-Jefferson, 2367] shall | secure  | to",
                         "[1817-Monroe, 1754]    To | secure  | us",
                         "[1817-Monroe, 1814]    to | secure  | our",   
-                        "[1817-Monroe, 3009]    to | secure  | economy", sep = ".*"))
+                        "[1817-Monroe, 3009]    to | secure  | economy", sep = "\\s*"))
     expect_output(print(kw, 3),
                   paste("Keyword-in-context with 6 matches.",
                         "[1797-Adams, 478]   and | secure  | the",
                         "[1797-Adams, 1512]   and | secured | immortal",
                         "[1805-Jefferson, 2367] shall | secure  | to",
-                        "[ reached max_nrow ... 3 more matches ]", sep = ".*"))
+                        "[ reached max_nrow ... 3 more matches ]", sep = "\\s*"))
     expect_output(print(kwic(toks, "secured", window = 1)),
                   "Keyword-in-context with 1 match.                                            
  [1797-Adams, 1512] and | secured | immortal", fixed = TRUE)
     expect_output(print(kwic(toks, "XXX", window = 1)),
-                  "Keyword-in-context with 0 matches.", fixed = TRUE)
+                  "Keyword-in-context with 0 matches.")
 })
 
 test_that("kwic works with padding", {
@@ -286,7 +286,7 @@ test_that("kwic works with padding", {
     expect_output(
         print(kwic(tokens_remove(testtoks, c("what", "the"), padding = TRUE), "fox")),
         paste("Keyword-in-context with 1 match.",
-              "[text1, 4]  does | fox | say cat", sep = ".*")
+              "[text1, 4]  does | fox | say cat", sep = "\\s*")
     )
     expect_output(
         print(kwic(tokens_remove(testtoks, "*", padding = TRUE), "fox")),
