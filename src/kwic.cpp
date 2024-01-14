@@ -79,8 +79,8 @@ DataFrame cpp_kwic(TokensPtr xptr,
         std::size_t h = documents[g] - 1;
         if (h < 0 || texts.size() <= h)
             throw std::range_error("Invalid documents");
-        pre[g] = kwic(texts[h], types, delim, pos_from[g] - window, pos_from[g] - 1L);
         keyword[g] = kwic(texts[h], types, delim, pos_from[g], pos_to[g]);
+        pre[g] = kwic(texts[h], types, delim, pos_from[g] - window, pos_from[g] - 1L);
         post[g] = kwic(texts[h], types, delim, pos_to[g] + 1L, pos_to[g] + window);
     }
 #endif
