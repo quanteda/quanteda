@@ -222,6 +222,10 @@ test_that("test that kwic works with index", {
   kwic_pat2 <- kwic(toks, pattern = "security")[c(2, 3, 1),]
   expect_identical(kiwc_idx2, kwic_pat2)
   
+  kiwc_idx3 <- kwic(toks, index = idx[0,])
+  kwic_pat3 <- kwic(toks, pattern = "security")[0,]
+  expect_identical(kiwc_idx3, kwic_pat3)
+  
   expect_error(kwic(toks),
                "Either pattten or index must be provided")
   expect_error(kwic(toks, index = data.frame(1:5)),
