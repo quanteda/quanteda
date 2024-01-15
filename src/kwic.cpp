@@ -2,24 +2,6 @@
 //#include "dev.h"
 using namespace quanteda;
 
-// #if QUANTEDA_USE_TBB
-// typedef tbb::concurrent_vector<int> Positions;
-// typedef tbb::concurrent_vector<std::string> Contexts;
-// #else
-// typedef std::vector<int> Positions;
-// typedef std::vector<std::string> Contexts;
-// #endif
-
-// CharacterVector encode(Contexts &contexts){
-//     CharacterVector contexts_(contexts.size());
-//     for (std::size_t i = 0; i < contexts.size(); i++) {
-//         String context_ = contexts[i];
-//         context_.set_encoding(CE_UTF8);
-//         contexts_[i] = context_;
-//     }
-//     return(contexts_);
-// }
-
 std::string kwic(Text tokens, 
                  const std::vector<std::string> &types,
                  const std::string delim,
@@ -60,22 +42,14 @@ DataFrame cpp_kwic(TokensPtr xptr,
                    const String delim_ = " ",
                    const int thread = -1) {
 
-    const Texts texts = xptr->texts;
-    const Types types = xptr->types;
+    Texts texts = xptr->texts;
+    Types types = xptr->types;
     std::string delim = delim_;
     
     if (pos_from_.size() != documents_.size())
         throw std::range_error("Invalid pos_from");
     if (pos_to_.size() != documents_.size())
         throw std::range_error("Invalid pos_to");
-    
-    //std::size_t G = documents_.size();
-    // Positions documents(G), pos_from(G), pos_to(G);
-    // for (std::size_t g = 0; g < G; g++) {
-    //     documents[g] = documents_[g];
-    //     pos_from[g] = pos_from_[g];
-    //     pos_to[g] = pos_to_[g];
-    // }
     
     std::vector<int> documents = Rcpp::as< std::vector<int> >(documents_);
     std::vector<int> pos_from = Rcpp::as< std::vector<int> >(pos_from_);
@@ -85,7 +59,6 @@ DataFrame cpp_kwic(TokensPtr xptr,
     // dev::start_timer("Kwic", timer);
     std::size_t G = documents.size();
     std::size_t H = texts.size();
-    //Contexts pre(G), keyword(G), post(G);
     std::vector<std::string> pre(G), keyword(G), post(G);
 #if QUANTEDA_USE_TBB
     tbb::task_arena arena(thread);
@@ -118,11 +91,7 @@ DataFrame cpp_kwic(TokensPtr xptr,
     CharacterVector pre_ = encode(pre);
     CharacterVector keyword_ = encode(keyword);
     CharacterVector post_ = encode(post);
-    
-    // CharacterVector pre_ = "aaa"; //encode(pre);
-    // CharacterVector keyword_ = "bbb"; //encode(keyword);
-    // CharacterVector post_ = "ccc"; //encode(post);
-    
+
     return DataFrame::create(_["pre"]     = pre_,
                              _["keyword"] = keyword_,
                              _["post"]    = post_,
