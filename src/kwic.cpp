@@ -2,6 +2,23 @@
 //#include "dev.h"
 using namespace quanteda;
 
+// #if QUANTEDA_USE_TBB
+// typedef tbb::concurrent_vector<int> Positions;
+// typedef tbb::concurrent_vector<std::string> Contexts;
+// #else
+// typedef std::vector<int> Positions;
+// typedef std::vector<std::string> Contexts;
+// #endif
+
+// CharacterVector encode(Contexts &contexts){
+//     CharacterVector contexts_(contexts.size());
+//     for (std::size_t i = 0; i < contexts.size(); i++) {
+//         String context_ = contexts[i];
+//         context_.set_encoding(CE_UTF8);
+//         contexts_[i] = context_;
+//     }
+//     return(contexts_);
+// }
 
 std::string kwic(Text tokens, 
                  const std::vector<std::string> &types,
@@ -43,8 +60,8 @@ DataFrame cpp_kwic(TokensPtr xptr,
                    const String delim_ = " ",
                    const int thread = -1) {
 
-    Texts texts = xptr->texts;
-    Types types = xptr->types;
+    const Texts texts = xptr->texts;
+    const Types types = xptr->types;
     std::string delim = delim_;
     
     if (pos_from_.size() != documents_.size())
@@ -52,21 +69,31 @@ DataFrame cpp_kwic(TokensPtr xptr,
     if (pos_to_.size() != documents_.size())
         throw std::range_error("Invalid pos_to");
     
+    //std::size_t G = documents_.size();
+    // Positions documents(G), pos_from(G), pos_to(G);
+    // for (std::size_t g = 0; g < G; g++) {
+    //     documents[g] = documents_[g];
+    //     pos_from[g] = pos_from_[g];
+    //     pos_to[g] = pos_to_[g];
+    // }
+    
     std::vector<int> documents = Rcpp::as< std::vector<int> >(documents_);
     std::vector<int> pos_from = Rcpp::as< std::vector<int> >(pos_from_);
     std::vector<int> pos_to = Rcpp::as< std::vector<int> >(pos_to_);
     
     // dev::Timer timer;
-    // dev::start_timer("Token select", timer);
+    // dev::start_timer("Kwic", timer);
     std::size_t G = documents.size();
+    std::size_t H = texts.size();
+    //Contexts pre(G), keyword(G), post(G);
     std::vector<std::string> pre(G), keyword(G), post(G);
 #if QUANTEDA_USE_TBB
     tbb::task_arena arena(thread);
     arena.execute([&]{
         tbb::parallel_for(tbb::blocked_range<int>(0, G), [&](tbb::blocked_range<int> r) {
             for (int g = r.begin(); g < r.end(); ++g) {
-                std::size_t h = documents[g] - 1;
-                if (h < 0 || texts.size() <= h)
+                int h = documents[g] - 1L;
+                if (h < 0 || (int)H <= h)
                     throw std::range_error("Invalid documents");
                 keyword[g] = kwic(texts[h], types, delim, pos_from[g], pos_to[g]);
                 pre[g] = kwic(texts[h], types, delim, pos_from[g] - window, pos_from[g] - 1L);
@@ -74,21 +101,34 @@ DataFrame cpp_kwic(TokensPtr xptr,
             }
         });
     });
+    
 #else
     for (std::size_t g = 0; g < G; g++) {
-        std::size_t h = documents[g] - 1;
-        if (h < 0 || texts.size() <= h)
+        int h = documents[g] - 1L;
+        if (h < 0 || (int)H <= h)
             throw std::range_error("Invalid documents");
         keyword[g] = kwic(texts[h], types, delim, pos_from[g], pos_to[g]);
         pre[g] = kwic(texts[h], types, delim, pos_from[g] - window, pos_from[g] - 1L);
         post[g] = kwic(texts[h], types, delim, pos_to[g] + 1L, pos_to[g] + window);
     }
 #endif
-    // dev::stop_timer("Token select", timer);
+    
+    // dev::stop_timer("KWIC", timer);
+    
+    CharacterVector pre_ = encode(pre);
+    CharacterVector keyword_ = encode(keyword);
+    CharacterVector post_ = encode(post);
+    
+    // CharacterVector pre_ = "aaa"; //encode(pre);
+    // CharacterVector keyword_ = "bbb"; //encode(keyword);
+    // CharacterVector post_ = "ccc"; //encode(post);
+    
+    return DataFrame::create(_["pre"]     = pre_,
+                             _["keyword"] = keyword_,
+                             _["post"]    = post_,
+                             _["stringsAsFactors"] = false);
+    
 
-    return DataFrame::create(_["pre"] = encode(pre), 
-                             _["keyword"] = encode(keyword),
-                             _["post"] = encode(post));
 }
 
 
