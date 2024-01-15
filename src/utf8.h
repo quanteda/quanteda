@@ -1,5 +1,5 @@
 
-int utf8_length(std::string &text) {
+int utf8_length(const std::string &text) {
     int n = 0;
     size_t i = 0;
     while (i < text.length()) {
@@ -21,7 +21,7 @@ int utf8_length(std::string &text) {
     return(n);
 }
 
-std::string utf8_sub_left(std::string &text, int len = 0) {
+std::string utf8_sub_left(const std::string &text, const int len = 0) {
     int n = 0;
     size_t i = 0;
     while (i < text.length()) {
@@ -46,7 +46,7 @@ std::string utf8_sub_left(std::string &text, int len = 0) {
     return text;
 }
 
-std::string utf8_sub_right(std::string &text, int len = 0) {
+std::string utf8_sub_right(const std::string &text, const int len = 0) {
     int n = 0;
     size_t i = text.length();
     while (0 < i) {
