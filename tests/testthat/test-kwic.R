@@ -222,6 +222,10 @@ test_that("test that kwic works with index", {
   kwic_pat2 <- kwic(toks, pattern = "security")[c(2, 3, 1),]
   expect_identical(kiwc_idx2, kwic_pat2)
   
+  kiwc_idx3 <- kwic(toks, index = idx[0,])
+  kwic_pat3 <- kwic(toks, pattern = "security")[0,]
+  expect_identical(kiwc_idx3, kwic_pat3)
+  
   expect_error(kwic(toks),
                "Either pattten or index must be provided")
   expect_error(kwic(toks, index = data.frame(1:5)),
@@ -241,59 +245,56 @@ test_that("print method works as expected", {
     testkwic <- kwic(tokens("what does the fox say fox"), "fox")
     expect_output(
         print(testkwic), 
-        "Keyword-in-context with 2 matches.                                                 
- [text1, 4]         what does the | fox | say fox
- [text1, 6] what does the fox say | fox |",
-        fixed = TRUE
-        )
+        paste("Keyword-in-context with 2 matches.",
+              "[text1, 4]         what does the | fox | say fox",
+              "[text1, 6] what does the fox say | fox |", sep = "\\s*"
+        ))
         
     testkwic <- kwic(tokens("what does the fox say fox"), "foox")
     expect_output(print(testkwic), "Keyword-in-context with 0 matches.", fixed = TRUE)
     
     toks <- tokens(data_corpus_inaugural[1:8])
     kw <- kwic(toks, "secure*", window = 1)
-    out <- "Keyword-in-context with 6 matches.                                                  
-      [1797-Adams, 478]   and | secure  | the     
-     [1797-Adams, 1512]   and | secured | immortal
- [1805-Jefferson, 2367] shall | secure  | to      
-    [1817-Monroe, 1754]    To | secure  | us      
-    [1817-Monroe, 1814]    to | secure  | our     
-    [1817-Monroe, 3009]    to | secure  | economy"
-    expect_output(print(kw, max_nrow = -1), out, fixed = TRUE)
-    expect_output(print(kw, max_nrow = 6), out, fixed = TRUE)
-    expect_output(print(kw, max_nrow = 7), out, fixed = TRUE)
+    out <- paste("Keyword-in-context with 6 matches.",
+      "[1797-Adams, 478]   and | secure  | the",
+      "[1797-Adams, 1512]   and | secured | immortal",
+      "[1805-Jefferson, 2367] shall | secure  | to",
+      "[1817-Monroe, 1754]    To | secure  | us",
+      "[1817-Monroe, 1814]    to | secure  | our",
+      "[1817-Monroe, 3009]    to | secure  | economy", sep = "\\s*")
+    expect_output(print(kw, max_nrow = -1), out)
+    expect_output(print(kw, max_nrow = 6), out)
+    expect_output(print(kw, max_nrow = 7), out)
     expect_output(print(kw, show_summary = FALSE),
-                  "      [1797-Adams, 478]   and | secure  | the     
-     [1797-Adams, 1512]   and | secured | immortal
- [1805-Jefferson, 2367] shall | secure  | to      
-    [1817-Monroe, 1754]    To | secure  | us      
-    [1817-Monroe, 1814]    to | secure  | our     
-    [1817-Monroe, 3009]    to | secure  | economy", fixed = TRUE)
+                  paste("[1797-Adams, 478]   and | secure  | the",   
+                        "[1797-Adams, 1512]   and | secured | immortal",
+                        "[1805-Jefferson, 2367] shall | secure  | to",
+                        "[1817-Monroe, 1754]    To | secure  | us",
+                        "[1817-Monroe, 1814]    to | secure  | our",   
+                        "[1817-Monroe, 3009]    to | secure  | economy", sep = "\\s*"))
     expect_output(print(kw, 3),
-                  "Keyword-in-context with 6 matches.                                                  
-      [1797-Adams, 478]   and | secure  | the     
-     [1797-Adams, 1512]   and | secured | immortal
- [1805-Jefferson, 2367] shall | secure  | to      
-[ reached max_nrow ... 3 more matches ]", fixed = TRUE)
+                  paste("Keyword-in-context with 6 matches.",
+                        "[1797-Adams, 478]   and | secure  | the",
+                        "[1797-Adams, 1512]   and | secured | immortal",
+                        "[1805-Jefferson, 2367] shall | secure  | to",
+                        "[ reached max_nrow ... 3 more matches ]", sep = "\\s*"))
     expect_output(print(kwic(toks, "secured", window = 1)),
                   "Keyword-in-context with 1 match.                                            
  [1797-Adams, 1512] and | secured | immortal", fixed = TRUE)
     expect_output(print(kwic(toks, "XXX", window = 1)),
-                  "Keyword-in-context with 0 matches.", fixed = TRUE)
+                  "Keyword-in-context with 0 matches.")
 })
 
 test_that("kwic works with padding", {
     testtoks <- tokens("what does the fox say cat")
     expect_output(
         print(kwic(tokens_remove(testtoks, c("what", "the"), padding = TRUE), "fox")),
-        "Keyword-in-context with 1 match.                                
- [text1, 4] does | fox | say cat",
-        fixed = TRUE
- )
+        paste("Keyword-in-context with 1 match.",
+              "[text1, 4]  does | fox | say cat", sep = "\\s*")
+    )
     expect_output(
         print(kwic(tokens_remove(testtoks, "*", padding = TRUE), "fox")),
         "Keyword-in-context with 0 matches.",
-        fixed = TRUE
     )
 })
 
@@ -476,12 +477,14 @@ test_that("pre and post for phrases are working", {
 })
 
 test_that("kwic structure is as expected", {
-    toks <- tokens(c(doc1 = "a a a b c d d d", doc2 = "a b c d e", doc3 = "b b a a"))
+    toks <- tokens(c(doc1 = "a a a b c d d d", 
+                     doc2 = "a b c d e", 
+                     doc3 = "b b a a"))
     kw <- kwic(toks, phrase("a a"), window = 2)
     expect_identical(
       kw,
       structure(data.frame(docname = c("doc1", "doc1", "doc3"), 
-                           from = 1:3, to = 2:4, 
+                           from = 1L:3L, to = 2L:4L, 
                            pre = c("", "a", "b b"), 
                            keyword = c("a a", "a a", "a a"), 
                            post = c("a b", "b c", ""), 

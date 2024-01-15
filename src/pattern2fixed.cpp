@@ -1,5 +1,5 @@
 #include "lib.h"
-#include "dev.h"
+//#include "dev.h"
 #include "utf8.h"
 using namespace quanteda;
 
@@ -13,7 +13,7 @@ typedef std::vector<Pattern> Patterns;
 typedef std::tuple<int, std::string, int> Config;
 typedef std::vector<Config> Configs;
 
-void index_types(Types &types, MapIndex &index, Config conf) {
+void index_types(const Config conf, const Types &types, MapIndex &index) {
     
     int len, side;
     std::string wildcard;
@@ -37,7 +37,7 @@ void index_types(Types &types, MapIndex &index, Config conf) {
                     it->second.push_back(h);
                     //Rcout << "Insert: " << wildcard + value << " " << h << "\n";
                 }
-            } 
+            }
         } else if (side == 2) {
             if (len > 0) {
                 value = utf8_sub_left(types[h], len);
@@ -131,7 +131,7 @@ List cpp_index_types(const CharacterVector &patterns_,
         if (glob) {
             int len = utf8_length(patterns[j]);
             if (len > 0)
-                n = types.size() ^ (1 / len);
+                n = (int)std::pow(types.size(), (1.0 / len));
         }
         index[patterns[j]].reserve(n);
         //Rcout << "Register: " << patterns[j] << "\n";
@@ -147,14 +147,15 @@ List cpp_index_types(const CharacterVector &patterns_,
 #if QUANTEDA_USE_TBB
     tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
         for (int h = r.begin(); h < r.end(); ++h) {
-            index_types(types, index, confs[h]);
+            index_types(confs[h], types, index);
         }
     });
 #else
     for (size_t h = 0; h < H; h++) {
-        index_types(types, index, confs[h]);
+        index_types(confs[h], types, index);
     }
 #endif
+
     //dev::stop_timer("Index", timer);
 
     //dev::start_timer("List", timer);

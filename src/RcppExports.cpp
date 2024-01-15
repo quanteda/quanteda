@@ -41,6 +41,23 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// cpp_kwic
+DataFrame cpp_kwic(TokensPtr xptr, const IntegerVector documents_, const IntegerVector pos_from_, const IntegerVector pos_to_, const int window, const String delim_, const int thread);
+RcppExport SEXP _quanteda_cpp_kwic(SEXP xptrSEXP, SEXP documents_SEXP, SEXP pos_from_SEXP, SEXP pos_to_SEXP, SEXP windowSEXP, SEXP delim_SEXP, SEXP threadSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< TokensPtr >::type xptr(xptrSEXP);
+    Rcpp::traits::input_parameter< const IntegerVector >::type documents_(documents_SEXP);
+    Rcpp::traits::input_parameter< const IntegerVector >::type pos_from_(pos_from_SEXP);
+    Rcpp::traits::input_parameter< const IntegerVector >::type pos_to_(pos_to_SEXP);
+    Rcpp::traits::input_parameter< const int >::type window(windowSEXP);
+    Rcpp::traits::input_parameter< const String >::type delim_(delim_SEXP);
+    Rcpp::traits::input_parameter< const int >::type thread(threadSEXP);
+    rcpp_result_gen = Rcpp::wrap(cpp_kwic(xptr, documents_, pos_from_, pos_to_, window, delim_, thread));
+    return rcpp_result_gen;
+END_RCPP
+}
 // cpp_index_types
 List cpp_index_types(const CharacterVector& patterns_, const CharacterVector& types_, bool glob);
 RcppExport SEXP _quanteda_cpp_index_types(SEXP patterns_SEXP, SEXP types_SEXP, SEXP globSEXP) {
@@ -467,6 +484,7 @@ END_RCPP
 static const R_CallMethodDef CallEntries[] = {
     {"_quanteda_cpp_fcm", (DL_FUNC) &_quanteda_cpp_fcm, 6},
     {"_quanteda_cpp_index", (DL_FUNC) &_quanteda_cpp_index, 3},
+    {"_quanteda_cpp_kwic", (DL_FUNC) &_quanteda_cpp_kwic, 7},
     {"_quanteda_cpp_index_types", (DL_FUNC) &_quanteda_cpp_index_types, 3},
     {"_quanteda_cpp_serialize", (DL_FUNC) &_quanteda_cpp_serialize, 2},
     {"_quanteda_cpp_serialize_add", (DL_FUNC) &_quanteda_cpp_serialize_add, 3},

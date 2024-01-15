@@ -53,15 +53,16 @@ DataFrame cpp_index(TokensPtr xptr,
     MultiMapNgrams map_pats;
     map_pats.max_load_factor(GLOBAL_PATTERN_MAX_LOAD_FACTOR);
     Ngrams words = Rcpp::as<Ngrams>(words_);
-    std::vector<unsigned int> pats(words_.size());
+    std::size_t G = words.size();
+    
+    std::vector<unsigned int> pats(G);
     unsigned int p = 0;
-    for (size_t f = 0; f < pats.size(); f++) {
-        pats[f] = p++;
+    for (std::size_t g = 0; g < G; g++) {
+        pats[g] = p++;
     }
     
-    size_t len = words.size();
-    std::vector<std::size_t> spans(len);
-    for (size_t g = 0; g < len; g++) {
+    std::vector<std::size_t> spans(G);
+    for (std::size_t g = 0; g < G; g++) {
         Ngram value = words[g];
         unsigned int pat = pats[g];
         map_pats.insert(std::pair<Ngram, unsigned int>(value, pat));

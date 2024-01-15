@@ -404,6 +404,27 @@ test_that("test low-level validation", {
         quanteda:::cpp_tokens_group(as.tokens_xptr(xtoks), 2),
         "Invalid groups"
     )
+    
+    expect_error(
+        quanteda:::cpp_kwic(as.tokens_xptr(xtoks), c(1, 2), c(1, 1), c(1, 1), 2),
+        "Invalid documents"
+    )
+    
+    expect_error(
+        quanteda:::cpp_kwic(as.tokens_xptr(xtoks), 1, c(1, 1), 2, 2),
+        "Invalid pos_from"
+    )
+    
+    expect_error(
+        quanteda:::cpp_kwic(as.tokens_xptr(xtoks), 1, 1, c(2, 2), 2),
+        "Invalid pos_to"
+    )
+    
+    expect_error(
+        quanteda:::cpp_kwic(as.tokens_xptr(xtoks), 1, 3, 1, 2),
+        "Invalid index"
+    )
+    
 })
 
 
