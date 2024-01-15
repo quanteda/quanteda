@@ -57,12 +57,12 @@ DataFrame cpp_index(TokensPtr xptr,
     
     std::vector<unsigned int> pats(G);
     unsigned int p = 0;
-    for (size_t g = 0; g < G; g++) {
+    for (std::size_t g = 0; g < G; g++) {
         pats[g] = p++;
     }
     
     std::vector<std::size_t> spans(G);
-    for (size_t g = 0; g < G; g++) {
+    for (std::size_t g = 0; g < G; g++) {
         Ngram value = words[g];
         unsigned int pat = pats[g];
         map_pats.insert(std::pair<Ngram, unsigned int>(value, pat));
