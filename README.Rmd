@@ -77,7 +77,7 @@ Because this compiles some C++ and Fortran source code, you will need to have in
 
 ### Use
 
-See the [quick start guide](https://quanteda.io/articles/pkgdown/quickstart.html) to learn how to use **quanteda**.
+See the [quick start guide](https://quanteda.io/articles/quickstart.html) to learn how to use **quanteda**.
 
 ### Get Help
 

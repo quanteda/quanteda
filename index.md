@@ -82,8 +82,8 @@ version.
 ### Use
 
 See the [quick start
-guide](https://quanteda.io/articles/pkgdown/quickstart.html) to learn
-how to use **quanteda**.
+guide](https://quanteda.io/articles/quickstart.html) to learn how to use
+**quanteda**.
 
 ### Get Help
 

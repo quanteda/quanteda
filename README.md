@@ -54,23 +54,28 @@ We completed the trend of splitting **quanteda** into modular packages
 with the release of v3. The quanteda family of packages includes the
 following:
 
-- **quanteda**: contains all of the core natural language processing and
-  textual data management functions
-- **quanteda.textmodels**: contains all of the text models and
-  supporting functions, namely the `textmodel_*()` functions. This was
-  split from the main package with the v2 release
-- **quanteda.textstats**: statistics for textual data, namely the
-  `textstat_*()` functions, split with the v3 release
-- **quanteda.textplots**: plots for textual data, namely the
-  `textplot_*()` functions, split with the v3 release
+- [**quanteda**](https://github.com/quanteda/quanteda): contains all of
+  the core natural language processing and textual data management
+  functions
+- [**quanteda.textmodels**](https://github.com/quanteda/quanteda.textmodels):
+  contains all of the text models and supporting functions, namely the
+  `textmodel_*()` functions. This was split from the main package with
+  the v2 release
+- [**quanteda.textstats**](https://github.com/quanteda/quanteda.textstats):
+  statistics for textual data, namely the `textstat_*()` functions,
+  split with the v3 release
+- [**quanteda.textplots**](https://github.com/quanteda/quanteda.textplots):
+  plots for textual data, namely the `textplot_*()` functions, split
+  with the v3 release
 
 We are working on additional package releases, available in the meantime
 from our GitHub pages:
 
-- **quanteda.sentiment**: Functions and lexicons for sentiment analysis
-  using dictionaries
-- **quanteda.tidy**: Extensions for manipulating document variables in
-  core **quanteda** objects using your favourite **tidyverse** functions
+- [**quanteda.sentiment**](https://github.com/quanteda/quanteda.sentiment):
+  Functions and lexicons for sentiment analysis using dictionaries
+- [**quanteda.tidy**](https://github.com/quanteda/quanteda.tidy):
+  Extensions for manipulating document variables in core **quanteda**
+  objects using your favourite **tidyverse** functions
 
 and more to come.
 
@@ -98,12 +103,14 @@ version.
 ### Use
 
 See the [quick start
-guide](https://quanteda.io/articles/pkgdown/quickstart.html) to learn
-how to use **quanteda**.
+guide](https://quanteda.io/articles/quickstart.html) to learn how to use
+**quanteda**.
 
 ### Get Help
 
-- Read the documentation at <https://quanteda.io>.
+- Read out documentation at <https://quanteda.io>.
+- Check out the [**quanteda**
+  cheatsheet](https://github.com/quanteda/quanteda/blob/master/tests/cheatsheet/quanteda-cheatsheet.pdf).
 - Submit a question on the [**quanteda** channel on
   StackOverflow](https://stackoverflow.com/questions/tagged/quanteda).
 - See our [tutorial site](https://tutorials.quanteda.io/).
@@ -114,7 +121,7 @@ Benoit, Kenneth, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng,
 Stefan Müller, and Akitaka Matsuo. (2018) “[quanteda: An R package for
 the quantitative analysis of textual
 data](https://www.theoj.org/joss-papers/joss.00774/10.21105.joss.00774.pdf)”.
-*Journal of Open Source Software*. 3(30), 774.
+*Journal of Open Source Software* 3(30), 774.
 <https://doi.org/10.21105/joss.00774>.
 
 For a BibTeX entry, use the output from
