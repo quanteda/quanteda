@@ -2,7 +2,6 @@
 % Please edit documentation in R/quanteda-documentation.R, R/quanteda-package.R
 \docType{package}
 \name{quanteda-package}
-\alias{quanteda}
 \alias{quanteda-package}
 \title{An R package for the quantitative analysis of textual data}
 \description{
