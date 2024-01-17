@@ -99,7 +99,7 @@ kwic.tokens_xptr <- function(x, pattern = NULL, window = 5,
     
     n <- ntoken(x)
     index$document <- match(index$docname, docnames(x))
-    index <- subset(index, !is.na(document))
+    index <- subset(index, !is.na(index$document))
     result <- cbind(index, cpp_kwic(x, index$document, index$from, index$to, 
                                     window, separator, get_threads()))
 
