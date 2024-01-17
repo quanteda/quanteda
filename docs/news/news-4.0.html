@@ -142,6 +142,10 @@
 <li><p>Improved C++ functions to allow the users to change the number of threads for parallel computing in more flexible manner using <code><a href="../reference/quanteda_options.html">quanteda_options()</a></code>. The value of <code>threads</code> can be changed in the middle of analysis pipeline.</p></li>
 <li><p>Makes <code>"word4"</code> the default (word) tokeniser, with improved efficiency, language handling, and customisation options.</p></li>
 <li><p>Replaced all occurrences of the <strong>magrittr</strong> <code>%&gt;%</code> pipe with the R pipe <code>|&gt;</code> introduced in R 4.1, although the <code>%&gt;%</code> pipe is still re-exported and therefore available to all users of <strong>quanteda</strong> without loading any additional packages.</p></li>
+<li><p>Added <code>min_ntoken</code> and <code>max_ntoken</code> to <code><a href="../reference/tokens_subset.html">tokens_subset()</a></code> and <code><a href="../reference/dfm_subset.html">dfm_subset()</a></code> to extract documents based on number of tokens easily. It is equivalent to selecting documents using <code><a href="../reference/ntoken.html">ntoken()</a></code>.</p></li>
+<li><p>Added a new argument <code>apply_if</code> that allows a tokens-based operation to apply only to documents that meet a logical condition. This argument has been added to <code><a href="../reference/tokens_select.html">tokens_select()</a></code>, <code><a href="../reference/tokens_compound.html">tokens_compound()</a></code>, <code><a href="../reference/tokens_replace.html">tokens_replace()</a></code>, <code><a href="../reference/tokens_split.html">tokens_split()</a></code>, and <code><a href="../reference/tokens_lookup.html">tokens_lookup()</a></code>. This is similar to applying <code><a href="https://purrr.tidyverse.org/reference/map_if.html" class="external-link">purrr::map_if()</a></code> to a tokens object, but is implemented within the function so that it can be performed efficiently in C++.</p></li>
+<li><p>Added new arguments <code>append_key</code>, <code>separator</code> and <code>concatenator</code> to <code><a href="../reference/tokens_lookup.html">tokens_lookup()</a></code>. These allow tokens matched by dictionary values to be retained with their keys appended to them, separated by <code>separator</code>. The addition of the <code>concatenator</code> argument allows additional control at the lookup stage for tokens that will be concatenated from having matched multi-word dictionary values. (<a href="https://github.com/quanteda/quanteda/issues/2324" class="external-link">#2324</a>)</p></li>
+<li><p>Added a new argument <code>remove_padding</code> to <code><a href="../reference/ntoken.html">ntoken()</a></code> and <code><a href="../reference/ntoken.html">ntype()</a></code> that allows for not counting padding that might have been left over from <code>tokens_remove(x, padding = TRUE</code>). This changes the previous number of types from <code><a href="../reference/ntoken.html">ntype()</a></code> when pads exist, by counting pads by default. (<a href="https://github.com/quanteda/quanteda/issues/2336" class="external-link">#2336</a>)</p></li>
 </ul></div>
 <div class="section level3">
 <h3 id="removals-4-0-0">Removals<a class="anchor" aria-label="anchor" href="#removals-4-0-0"></a></h3>
@@ -150,6 +154,7 @@
 <li><p>Very old arguments to <code><a href="../reference/dfm.html">dfm()</a></code> options that were not visible but worked with warnings (such as <code>stem = TRUE</code>) are removed.</p></li>
 <li><p>Deprecated or renamed arguments formerly passed in <code><a href="../reference/tokens.html">tokens()</a></code> that formerly mapped to the v3 arguments with a warning are removed.</p></li>
 <li><p>Methods for <strong>readtext</strong> objects are removed, since these are data.frame objects that are straightforward to convert into a <code>corpus</code> object.</p></li>
+<li><p><code><a href="../reference/topfeatures.html">topfeatures()</a></code> no longer works on an fcm object. (<a href="https://github.com/quanteda/quanteda/issues/2141" class="external-link">#2141</a>)</p></li>
 </ul></div>
 <div class="section level3">
 <h3 id="deprecations-4-0-0">Deprecations<a class="anchor" aria-label="anchor" href="#deprecations-4-0-0"></a></h3>
@@ -160,7 +165,11 @@
 <code><a href="../reference/ntoken.html">ntype()</a></code> – use <code>ntype(tokens(x))</code> instead; and.</li>
 <li>
 <code><a href="../reference/ntoken.html">ntoken()</a></code> – use <code>ntoken(tokens(x))</code> instead.</li>
+<li>
+<code><a href="../reference/tokens_ngrams.html">char_ngrams()</a></code> – use <code>tokens_ngrams(tokens(x))</code> instead.</li>
 </ul></li>
+<li>
+<code><a href="../reference/corpus.html">corpus.kwic()</a></code> is deprecated, with the suggestion to form a corpus from using <code>tokens_select(x, window = ...)</code> instead.</li>
 </ul></div>
 <div class="section level3">
 <h3 id="bug-fixes-and-stability-enhancements-4-0-0">Bug fixes and stability enhancements<a class="anchor" aria-label="anchor" href="#bug-fixes-and-stability-enhancements-4-0-0"></a></h3>
