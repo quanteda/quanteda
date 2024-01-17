@@ -62,7 +62,7 @@ navbar:
 reference:
 - title: Package-level
   contents:
-    - quanteda
+    - quanteda-package
     - quanteda_options
 - title: Data
   desc: Built-in data objects.
