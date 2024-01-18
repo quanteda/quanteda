@@ -33,8 +33,6 @@ index.tokens_xptr <- function(x, pattern,
     
     attrs <- attributes(x)
     type <- get_types(x)
-    if (is.list(pattern) && is.null(names(pattern)))
-        names(pattern) <- pattern
     ids <- object2id(pattern, type, valuetype,
                      case_insensitive, field_object(attrs, "concatenator"))
     result <- cpp_index(x, ids, get_threads())
