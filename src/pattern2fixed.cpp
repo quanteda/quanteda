@@ -155,7 +155,11 @@ List cpp_index_types(const CharacterVector &patterns_,
 }
 
 /*** R
-cpp_index_types(c("a*", "*b", "*c*"), 
-                c("bbb", "aaa", "ccc", "aa", "bb"))
+# cpp_index_types(c("a*", "*b", "*c*"), 
+#                 c("bbb", "aaa", "ccc", "aa", "bb"))
 #cpp_index_types(c("跩", "跩*"), c("跩购鹇", "跩"))
+load("../vignettes/pkgdown/replication/data_char_mobydick.rda")
+xtoks <- quanteda:::tokens(data_char_mobydick, xptr = TRUE)
+type <- quanteda:::cpp_get_types(xtoks)
+cpp_index_types("whale*", type)
 */
