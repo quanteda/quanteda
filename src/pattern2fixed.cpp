@@ -120,7 +120,6 @@ List cpp_index_types(const CharacterVector &patterns_,
 
     //dev::start_timer("Index", timer);
     std::size_t H = confs.size();
-    Texts temp(H);
 #if QUANTEDA_USE_TBB
     tbb::task_arena arena(thread);
     arena.execute([&]{
