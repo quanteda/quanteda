@@ -167,7 +167,7 @@ TokensPtr cpp_tokens_lookup(TokensPtr xptr,
     
     size_t G = words.size();
     std::vector<std::size_t> spans(G);
-    for (size_t g = 0; g < G; g++) {
+    for (std::size_t g = 0; g < G; g++) {
         Ngram value = words[g];
         unsigned int key = keys[g];
         map_keys.insert(std::pair<Ngram, unsigned int>(value, key));
