@@ -4,9 +4,9 @@
 using namespace quanteda;
 
 #if QUANTEDA_USE_TBB
-typedef tbb::concurrent_unordered_map<Type, tbb::concurrent_vector<int> > MapIndex;
+typedef tbb::concurrent_unordered_multimap<Type, unsigned int> MapIndex;
 #else 
-typedef std::unordered_map<Type, std::vector<int> > MapIndex;
+typedef std::unordered_multimap<Type, unsigned int> MapIndex;
 #endif
 typedef std::string Pattern;
 typedef std::vector<Pattern> Patterns;
@@ -32,11 +32,8 @@ void index_types(const Config conf, const Types &types, MapIndex &index) {
                 value = utf8_sub_right(types[h], utf8_length(types[h]) + len);
             }
             if (value != "") {
-                auto it = index.find(wildcard + value);
-                if (it != index.end()) {
-                    it->second.push_back(h);
-                    //Rcout << "Insert: " << wildcard + value << " " << h << "\n";
-                }
+                index.insert(std::pair<Type, unsigned int>(wildcard + value, h));
+                //Rcout << "Insert: " << wildcard + value << " " << h << "\n";
             }
         } else if (side == 2) {
             if (len > 0) {
@@ -45,18 +42,12 @@ void index_types(const Config conf, const Types &types, MapIndex &index) {
                 value = utf8_sub_left(types[h], utf8_length(types[h]) + len);
             }
             if (value != "") {
-                auto it = index.find(value + wildcard);
-                if (it != index.end()) {
-                    it->second.push_back(h);
-                    //Rcout << "Insert: " << value + wildcard << " " << h << "\n";
-                }
+                index.insert(std::pair<Type, unsigned int>(value + wildcard, h));
+                //Rcout << "Insert: " << value + wildcard << " " << h << "\n";
             }
         } else {
-            auto it = index.find(types[h]);
-            if (it != index.end()) {
-                it->second.push_back(h);
-                //Rcout << "Insert: " << types[h] << " " << h << "\n";
-            }
+            index.insert(std::pair<Type, unsigned int>(types[h], h));
+            //Rcout << "Insert: " << types[h] << " " << h << "\n";
         }
     }
 }
@@ -121,29 +112,13 @@ List cpp_index_types(const CharacterVector &patterns_,
                      const int thread = -1) {
     
     //dev::Timer timer;
-    //dev::start_timer("Convert", timer);
-    
     Patterns patterns = Rcpp::as<Patterns>(patterns_);
     Types types = Rcpp::as<Types>(types_);
-    
-    MapIndex index;
-    for (size_t j = 0; j < patterns.size(); j++) {
-        size_t n = 1;
-        // estimate the number of matches
-        if (glob) {
-            int len = utf8_length(patterns[j]);
-            if (len > 0)
-                n = (int)std::pow(types.size(), (1.0 / len));
-        }
-        index[patterns[j]].reserve(n);
-        //Rcout << "Register: " << patterns[j] << "\n";
-    }
-    Configs confs = parse_patterns(patterns, glob);
 
-    //dev::stop_timer("Convert", timer);
-    
+    Configs confs = parse_patterns(patterns, glob);
+    MapIndex index;
+
     //dev::start_timer("Index", timer);
-    
     std::size_t H = confs.size();
     Texts temp(H);
 #if QUANTEDA_USE_TBB
@@ -160,15 +135,19 @@ List cpp_index_types(const CharacterVector &patterns_,
         index_types(confs[h], types, index);
     }
 #endif
-
     //dev::stop_timer("Index", timer);
 
     //dev::start_timer("List", timer);
     List result_(patterns.size());
-    for (size_t i = 0; i < patterns.size(); i++) {
-        std::string pattern = patterns[i];
-        IntegerVector value_ = Rcpp::wrap(index[pattern]);
-        result_[i] = sort_unique(value_) + 1; // R is 1 base
+    for (std::size_t i = 0; i < patterns.size(); i++) {
+        std::string pat = patterns[i];
+        IntegerVector value_(index.count(pat));
+        std::size_t j = 0;
+        auto range = index.equal_range(pat);
+        for (auto it = range.first; it != range.second; ++it) {
+            value_[j++] = it->second + 1;
+        }
+        result_[i] = sort_unique(value_);
     }
     result_.attr("names") = encode(patterns);
     //dev::stop_timer("List", timer);
@@ -177,7 +156,7 @@ List cpp_index_types(const CharacterVector &patterns_,
 }
 
 /*** R
-#out <- cpp_index_types(c("a*", "*b", "*c*", "跩*"), 
-#                       c("bbb", "aaa", "跩购鹇", "ccc", "aa", "bb"))
-cpp_index_types(c("跩", "跩*"), c("跩购鹇", "跩"))
+cpp_index_types(c("a*", "*b", "*c*"), 
+                c("bbb", "aaa", "ccc", "aa", "bb"))
+#cpp_index_types(c("跩", "跩*"), c("跩购鹇", "跩"))
 */
