@@ -13,25 +13,20 @@ load("data_char_mobydick.rda")
 ```
 
 ```{r}
-# extract the header information
-start_v <- stri_locate_first_fixed(data_char_mobydick, "CHAPTER 1. Loomings.")[1]
-end_v <- stri_locate_last_fixed(data_char_mobydick, "orphan.")[1]
-txt <- stri_sub(data_char_mobydick, start_v, end_v)
+corp <- corpus(data_char_mobydick)
+#corp <- corpus_segment(corp, "CHAPTER", pattern_position = "before", case_insensitive = FALSE)
 ```
 
 ```{r}
-toks <- tokens(txt)
+toks <- tokens(corp)
 toks_lower <- tokens_tolower(toks)
 ```
 
 ```{r}
-xtoks <- as.tokens_xptr(toks)
-type <- quanteda:::cpp_get_types(xtoks)
+#xtoks <- as.tokens_xptr(toks)
+type <- types(toks)
 pat <- "whale*"
-```
-
-```{r, eval=FALSE}
-quanteda_options(threads = 2)
+#quanteda_options(threads = 8)
 out <- quanteda:::index_types(pat, type, "glob")
 ```
 
@@ -42,7 +37,7 @@ print(ids)
 head(quanteda:::cpp_index(xtoks, ids))
 ```
 
-```{r, eval=TRUE}
+```{r, eval=FALSE}
 #ERROR?
 nrow(index(toks_lower, pattern = "whale"))
 nrow(index(toks_lower, pattern = "whale*")) # includes words like "whalemen"
