@@ -140,7 +140,7 @@ TokensPtr cpp_tokens_lookup(TokensPtr xptr,
                                  const int overlap,
                                  const int nomatch,
                                  const LogicalVector bypass_,
-                                 const int thread = 1) {
+                                 const int thread = -1) {
     
     Texts texts = xptr->texts;
     Types types = Rcpp::as<Types>(types_);
