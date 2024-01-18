@@ -23,7 +23,7 @@ void index_types(const Config conf, const Types &types, MapIndex &index) {
     std::size_t H = types.size();
     Types temp(H);
     
-    for (size_t h = 0; h < H; h++) {
+    for (std::size_t h = 0; h < H; h++) {
         std::string value;
         if (side == 1) {
             if (len > 0) {
@@ -116,7 +116,9 @@ Configs parse_patterns(Patterns patterns, bool glob = true) {
 
 // [[Rcpp::export]]
 List cpp_index_types(const CharacterVector &patterns_, 
-                     const CharacterVector &types_, bool glob = true) {
+                     const CharacterVector &types_, 
+                     const bool glob = true,
+                     const int thread = -1) {
     
     //dev::Timer timer;
     //dev::start_timer("Convert", timer);
@@ -145,10 +147,13 @@ List cpp_index_types(const CharacterVector &patterns_,
     std::size_t H = confs.size();
     Texts temp(H);
 #if QUANTEDA_USE_TBB
-    tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
-        for (int h = r.begin(); h < r.end(); ++h) {
-            index_types(confs[h], types, index);
-        }
+    tbb::task_arena arena(thread);
+    arena.execute([&]{
+        tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
+            for (int h = r.begin(); h < r.end(); ++h) {
+                index_types(confs[h], types, index);
+            }
+        });
     });
 #else
     for (size_t h = 0; h < H; h++) {
