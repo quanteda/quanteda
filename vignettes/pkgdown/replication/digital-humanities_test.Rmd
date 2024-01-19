@@ -8,7 +8,7 @@ output:
 
 ```{r message=FALSE}
 library("quanteda")
-library("stringi")
+quanteda_options(threads = 1)
 load("data_char_mobydick.rda")
 ```
 
@@ -26,25 +26,15 @@ toks_lower <- tokens_tolower(toks)
 #xtoks <- as.tokens_xptr(toks)
 type <- types(toks)
 pat <- "whale*"
-#quanteda_options(threads = 8)
 out <- quanteda:::index_types(pat, type, "glob")
 ```
 
-```{r, eval=FALSE}
-conc <- attributes(xtoks)$meta$object$concatenator
-ids <- object2id(pat, type, case_insensitive = TRUE, concatenator = conc)
-print(ids)
-head(quanteda:::cpp_index(xtoks, ids))
-```
-
-```{r, eval=FALSE}
-#ERROR?
+```{r, eval=TRUE}
 nrow(index(toks_lower, pattern = "whale"))
 nrow(index(toks_lower, pattern = "whale*")) # includes words like "whalemen"
 ```
 
-```{r, eval=FALSE}
-# same thing using kwic()
+```{r, eval=TRUE}
 nrow(kwic(toks_lower, pattern = "whale"))
 nrow(kwic(toks_lower, pattern = "whale*")) # includes words like "whalemen"
 ```
