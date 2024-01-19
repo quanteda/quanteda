@@ -3,11 +3,11 @@
 #include "utf8.h"
 using namespace quanteda;
 
-#if QUANTEDA_USE_TBB
-typedef tbb::concurrent_unordered_multimap<std::string, unsigned int> MapIndex;
-#else
+// #if QUANTEDA_USE_TBB
+// typedef tbb::concurrent_unordered_multimap<std::string, unsigned int> MapIndex;
+// #else
 typedef std::unordered_multimap<std::string, unsigned int> MapIndex;
-#endif
+//#endif
 typedef std::string Pattern;
 typedef std::vector<Pattern> Patterns;
 typedef std::tuple<int, std::string, int> Config;
@@ -117,20 +117,20 @@ List cpp_index_types(const CharacterVector &patterns_,
 
     //dev::start_timer("Index", timer);
     std::size_t G = confs.size();
-#if QUANTEDA_USE_TBB
-    tbb::task_arena arena(thread);
-    arena.execute([&]{
-        tbb::parallel_for(tbb::blocked_range<int>(0, G), [&](tbb::blocked_range<int> r) {
-            for (int g = r.begin(); g < r.end(); ++g) {
-                index_types(confs[g], types, index);
-            }
-        });
-    });
-#else
+// #if QUANTEDA_USE_TBB
+//     tbb::task_arena arena(thread);
+//     arena.execute([&]{
+//         tbb::parallel_for(tbb::blocked_range<int>(0, G), [&](tbb::blocked_range<int> r) {
+//             for (int g = r.begin(); g < r.end(); ++g) {
+//                 index_types(confs[g], types, index);
+//             }
+//         });
+//     });
+// #else
     for (std::size_t g = 0; g < G; g++) {
         index_types(confs[g], types, index);
     }
-#endif
+//#endif
     //dev::stop_timer("Index", timer);
 
     //dev::start_timer("List", timer);
