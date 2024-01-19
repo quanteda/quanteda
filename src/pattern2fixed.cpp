@@ -4,9 +4,9 @@
 using namespace quanteda;
 
 #if QUANTEDA_USE_TBB
-typedef tbb::concurrent_unordered_multimap<Type, unsigned int> MapIndex;
-#else 
-typedef std::unordered_multimap<Type, unsigned int> MapIndex;
+typedef tbb::concurrent_unordered_multimap<std::string, unsigned int> MapIndex;
+#else
+typedef std::unordered_multimap<std::string, unsigned int> MapIndex;
 #endif
 typedef std::string Pattern;
 typedef std::vector<Pattern> Patterns;
@@ -20,10 +20,7 @@ void index_types(const Config conf, const Types &types, MapIndex &index) {
     std::tie(side, wildcard, len) = conf;
     //Rcout << "Side: " << side << " wildcard: " << wildcard << " len: " << len << "\n";
     
-    std::size_t H = types.size();
-    Types temp(H);
-    
-    for (std::size_t h = 0; h < H; h++) {
+    for (std::size_t h = 0; h < types.size(); h++) {
         std::string value;
         if (side == 1) {
             if (len > 0) {
@@ -31,8 +28,8 @@ void index_types(const Config conf, const Types &types, MapIndex &index) {
             } else {
                 value = utf8_sub_right(types[h], utf8_length(types[h]) + len);
             }
-            if (value != "") {
-                index.insert(std::pair<Type, unsigned int>(wildcard + value, h));
+            if (!value.empty()) {
+                index.insert(std::make_pair(wildcard + value, h));
                 //Rcout << "Insert: " << wildcard + value << " " << h << "\n";
             }
         } else if (side == 2) {
@@ -41,12 +38,12 @@ void index_types(const Config conf, const Types &types, MapIndex &index) {
             } else {
                 value = utf8_sub_left(types[h], utf8_length(types[h]) + len);
             }
-            if (value != "") {
-                index.insert(std::pair<Type, unsigned int>(value + wildcard, h));
+            if (!value.empty()) {
+                index.insert(std::make_pair(value + wildcard, h));
                 //Rcout << "Insert: " << value + wildcard << " " << h << "\n";
             }
         } else {
-            index.insert(std::pair<Type, unsigned int>(types[h], h));
+            index.insert(std::make_pair(types[h], h));
             //Rcout << "Insert: " << types[h] << " " << h << "\n";
         }
     }
@@ -101,7 +98,7 @@ Configs parse_patterns(Patterns patterns, bool glob = true) {
             }
         }
     }
-    
+    confs.shrink_to_fit();
     return confs;
 }
 
@@ -119,19 +116,19 @@ List cpp_index_types(const CharacterVector &patterns_,
     MapIndex index;
 
     //dev::start_timer("Index", timer);
-    std::size_t H = confs.size();
+    std::size_t G = confs.size();
 #if QUANTEDA_USE_TBB
     tbb::task_arena arena(thread);
     arena.execute([&]{
-        tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
-            for (int h = r.begin(); h < r.end(); ++h) {
-                index_types(confs[h], types, index);
+        tbb::parallel_for(tbb::blocked_range<int>(0, G), [&](tbb::blocked_range<int> r) {
+            for (int g = r.begin(); g < r.end(); ++g) {
+                index_types(confs[g], types, index);
             }
         });
     });
 #else
-    for (size_t h = 0; h < H; h++) {
-        index_types(confs[h], types, index);
+    for (std::size_t g = 0; g < G; g++) {
+        index_types(confs[g], types, index);
     }
 #endif
     //dev::stop_timer("Index", timer);
@@ -155,11 +152,7 @@ List cpp_index_types(const CharacterVector &patterns_,
 }
 
 /*** R
-# cpp_index_types(c("a*", "*b", "*c*"), 
-#                 c("bbb", "aaa", "ccc", "aa", "bb"))
-#cpp_index_types(c("跩", "跩*"), c("跩购鹇", "跩"))
-load("../vignettes/pkgdown/replication/data_char_mobydick.rda")
-xtoks <- quanteda:::tokens(data_char_mobydick, xptr = TRUE)
-type <- quanteda:::cpp_get_types(xtoks)
-cpp_index_types("whale*", type)
+cpp_index_types(c("a*", "*b", "*c*"),
+                c("bbb", "aaa", "ccc", "aa", "bb"))
+cpp_index_types(c("跩", "跩*"), c("跩购鹇", "跩"))
 */
