@@ -217,7 +217,7 @@ index_types <- function(pattern, types, valuetype = c("glob", "fixed", "regex"),
         return(index)
     }
 
-    index <- cpp_index_types(pattern, types_search, valuetype == "glob", get_threads())
+    index <- cpp_index_types(pattern, types_search, valuetype == "glob")
     index <- index[lengths(index) > 0]
     
     attr(index, "types_search") <- types_search

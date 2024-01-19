@@ -3,11 +3,7 @@
 #include "utf8.h"
 using namespace quanteda;
 
-// #if QUANTEDA_USE_TBB
-// typedef tbb::concurrent_unordered_multimap<std::string, unsigned int> MapIndex;
-// #else
 typedef std::unordered_multimap<std::string, unsigned int> MapIndex;
-//#endif
 typedef std::string Pattern;
 typedef std::vector<Pattern> Patterns;
 typedef std::tuple<int, std::string, int> Config;
@@ -29,7 +25,9 @@ void index_types(const Config conf, const Types &types, MapIndex &index) {
                 value = utf8_sub_right(types[h], utf8_length(types[h]) + len);
             }
             if (!value.empty()) {
-                index.insert(std::make_pair(wildcard + value, h));
+                auto it = index.find(wildcard + value);
+                index.emplace(wildcard + value, h);
+                //index.insert(std::make_pair(wildcard + value, h));
                 //Rcout << "Insert: " << wildcard + value << " " << h << "\n";
             }
         } else if (side == 2) {
@@ -39,11 +37,13 @@ void index_types(const Config conf, const Types &types, MapIndex &index) {
                 value = utf8_sub_left(types[h], utf8_length(types[h]) + len);
             }
             if (!value.empty()) {
-                index.insert(std::make_pair(value + wildcard, h));
+                //index.insert(std::make_pair(value + wildcard, h));
+                index.emplace(value + wildcard, h);
                 //Rcout << "Insert: " << value + wildcard << " " << h << "\n";
             }
         } else {
-            index.insert(std::make_pair(types[h], h));
+            //index.insert(std::make_pair(types[h], h));
+            index.emplace(types[h], h);
             //Rcout << "Insert: " << types[h] << " " << h << "\n";
         }
     }
@@ -105,8 +105,7 @@ Configs parse_patterns(Patterns patterns, bool glob = true) {
 // [[Rcpp::export]]
 List cpp_index_types(const CharacterVector &patterns_, 
                      const CharacterVector &types_, 
-                     const bool glob = true,
-                     const int thread = -1) {
+                     const bool glob = true) {
     
     //dev::Timer timer;
     Patterns patterns = Rcpp::as<Patterns>(patterns_);
@@ -117,20 +116,9 @@ List cpp_index_types(const CharacterVector &patterns_,
 
     //dev::start_timer("Index", timer);
     std::size_t G = confs.size();
-// #if QUANTEDA_USE_TBB
-//     tbb::task_arena arena(thread);
-//     arena.execute([&]{
-//         tbb::parallel_for(tbb::blocked_range<int>(0, G), [&](tbb::blocked_range<int> r) {
-//             for (int g = r.begin(); g < r.end(); ++g) {
-//                 index_types(confs[g], types, index);
-//             }
-//         });
-//     });
-// #else
     for (std::size_t g = 0; g < G; g++) {
         index_types(confs[g], types, index);
     }
-//#endif
     //dev::stop_timer("Index", timer);
 
     //dev::start_timer("List", timer);
