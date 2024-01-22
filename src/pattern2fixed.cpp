@@ -25,7 +25,6 @@ void index_types(const Config conf, const Types &types, MapIndex &index) {
                 value = utf8_sub_right(types[h], utf8_length(types[h]) + len);
             }
             if (!value.empty()) {
-                auto it = index.find(wildcard + value);
                 index.emplace(wildcard + value, h);
                 //index.insert(std::make_pair(wildcard + value, h));
                 //Rcout << "Insert: " << wildcard + value << " " << h << "\n";
