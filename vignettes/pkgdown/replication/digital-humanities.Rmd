@@ -37,6 +37,8 @@ names(data_char_mobydick) <- "Moby Dick"
 
 ```{r, eval=TRUE, echo=FALSE}
 load("data_char_mobydick.rda")
+quanteda_options(threads = 1)
+RcppParallel::setThreadOptions(numThreads = 1)
 ```
 
 
