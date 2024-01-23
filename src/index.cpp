@@ -2,7 +2,7 @@
 //#include "dev.h"
 using namespace quanteda;
 
-typedef std::tuple<unsigned int, unsigned int, int, int> Match;
+typedef std::tuple<unsigned int, int, int, int> Match;
 #if QUANTEDA_USE_TBB
 typedef tbb::concurrent_vector<Match> Matches;
 #else
@@ -10,14 +10,13 @@ typedef std::vector<Match> Matches;
 #endif
 
 void index(Text tokens,
-           const std::size_t &document,
+           const int document,
            const std::vector<std::size_t> &spans,
            const MultiMapNgrams &map_pats,
            Matches &matches) {
     
-    if (tokens.empty()) return; // return empty vector for empty text
+    if (tokens.empty()) return;
     
-    Match match;
     for (std::size_t span : spans) { // substitution starts from the longest sequences
         if (tokens.size() < span) continue;
         for (std::size_t i = 0; i < tokens.size() - (span - 1); i++) {
@@ -25,7 +24,7 @@ void index(Text tokens,
             auto range = map_pats.equal_range(ngram);
             for (auto it = range.first; it != range.second; ++it) {
                 unsigned int pat = it->second;
-                match = std::make_tuple(pat, document, i, i + span - 1);
+                Match match = std::make_tuple(pat, document, i, i + span - 1);
                 matches.push_back(match);
             }
         }
@@ -56,7 +55,7 @@ DataFrame cpp_index(TokensPtr xptr,
     std::vector<std::size_t> spans(G);
     for (std::size_t g = 0; g < G; g++) {
         Ngram value = words[g];
-        map_pats.insert(std::pair<Ngram, unsigned int>(value, g));
+        map_pats.insert(std::make_pair(value, g));
         spans[g] = value.size();
     }
     sort(spans.begin(), spans.end());
@@ -89,10 +88,10 @@ DataFrame cpp_index(TokensPtr xptr,
     IntegerVector patterns_(I), documents_(I);
     for (std::size_t i = 0; i < I; i++) {
         Match match = matches[i];
-        patterns_[i] = std::get<0>(match) + 1L;
-        documents_[i] = std::get<1>(match) + 1L;
-        pos_from_[i] = std::get<2>(match) + 1L;
-        pos_to_[i] = std::get<3>(match) + 1L;
+        patterns_[i] = std::get<0>(match) + 1;
+        documents_[i] = std::get<1>(match) + 1;
+        pos_from_[i] = std::get<2>(match) + 1;
+        pos_to_[i] = std::get<3>(match) + 1;
     }
     
     return DataFrame::create(_["docname"] = documents_,

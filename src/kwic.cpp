@@ -65,7 +65,7 @@ DataFrame cpp_kwic(TokensPtr xptr,
     arena.execute([&]{
         tbb::parallel_for(tbb::blocked_range<int>(0, G), [&](tbb::blocked_range<int> r) {
             for (int g = r.begin(); g < r.end(); ++g) {
-                int h = documents[g] - 1L;
+                int h = documents[g] - 1;
                 if (h < 0 || H <= h)
                     throw std::range_error("Invalid documents");
                 keyword[g] = kwic(texts[h], types, delim, pos_from[g], pos_to[g]);
