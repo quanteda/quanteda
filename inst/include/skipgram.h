@@ -47,8 +47,8 @@ inline void skip(const Text &tokens,
         if (set_words.size() > 0) { // for compounding
             auto it = set_words.find(ngram);
             if (it != set_words.end()) {
-                //Rcout << "Save ngram ";
-                dev::print_ngram(ngram);
+                // Rcout << "Save ngram ";
+                // dev::print_ngram(ngram);
                 tokens_ng.push_back(ngram_id(ngram, map_ngram, id_ngram));
             }
         } else {

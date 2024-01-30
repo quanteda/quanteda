@@ -140,7 +140,7 @@ TokensPtr cpp_tokens_lookup(TokensPtr xptr,
                                  const int overlap,
                                  const int nomatch,
                                  const LogicalVector bypass_,
-                                 const int thread = 1) {
+                                 const int thread = -1) {
     
     Texts texts = xptr->texts;
     Types types = Rcpp::as<Types>(types_);
@@ -167,10 +167,10 @@ TokensPtr cpp_tokens_lookup(TokensPtr xptr,
     
     size_t G = words.size();
     std::vector<std::size_t> spans(G);
-    for (size_t g = 0; g < G; g++) {
+    for (std::size_t g = 0; g < G; g++) {
         Ngram value = words[g];
         unsigned int key = keys[g];
-        map_keys.insert(std::pair<Ngram, unsigned int>(value, key));
+        map_keys.insert(std::make_pair(value, key));
         spans[g] = value.size();
     }
     sort(spans.begin(), spans.end());

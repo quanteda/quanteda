@@ -1,0 +1,40 @@
+---
+title: "Replication: Text Analysis with R for Students of Literature"
+author: Kenneth Benoit, Stefan Müller, and Paul Nulty
+output: 
+  html_document:
+    toc: true
+---
+
+```{r message=FALSE}
+library("quanteda")
+quanteda_options(threads = 1)
+load("data_char_mobydick.rda")
+```
+
+```{r}
+corp <- corpus(data_char_mobydick)
+#corp <- corpus_segment(corp, "CHAPTER", pattern_position = "before", case_insensitive = FALSE)
+```
+
+```{r}
+toks <- tokens(corp)
+toks_lower <- tokens_tolower(toks)
+```
+
+```{r}
+#xtoks <- as.tokens_xptr(toks)
+type <- types(toks)
+pat <- "whale*"
+out <- quanteda:::index_types(pat, type, "glob")
+```
+
+```{r, eval=TRUE}
+nrow(index(toks_lower, pattern = "whale"))
+nrow(index(toks_lower, pattern = "whale*")) # includes words like "whalemen"
+```
+
+```{r, eval=TRUE}
+nrow(kwic(toks_lower, pattern = "whale"))
+nrow(kwic(toks_lower, pattern = "whale*")) # includes words like "whalemen"
+```

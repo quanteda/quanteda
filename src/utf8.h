@@ -65,7 +65,7 @@ std::string utf8_sub_right(const std::string &text, const int len = 0) {
             //Rcout << i << " " << n << " / " << len << " " << ": "<< text.substr(i, cplen) << "\n";
         }
         if (n > len)
-            return text.substr(i, text.length());
+            return text.substr(i);
         i -= 1;
     }
     return text;

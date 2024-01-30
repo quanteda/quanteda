@@ -59,14 +59,14 @@ BEGIN_RCPP
 END_RCPP
 }
 // cpp_index_types
-List cpp_index_types(const CharacterVector& patterns_, const CharacterVector& types_, bool glob);
+List cpp_index_types(const CharacterVector& patterns_, const CharacterVector& types_, const bool glob);
 RcppExport SEXP _quanteda_cpp_index_types(SEXP patterns_SEXP, SEXP types_SEXP, SEXP globSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const CharacterVector& >::type patterns_(patterns_SEXP);
     Rcpp::traits::input_parameter< const CharacterVector& >::type types_(types_SEXP);
-    Rcpp::traits::input_parameter< bool >::type glob(globSEXP);
+    Rcpp::traits::input_parameter< const bool >::type glob(globSEXP);
     rcpp_result_gen = Rcpp::wrap(cpp_index_types(patterns_, types_, glob));
     return rcpp_result_gen;
 END_RCPP

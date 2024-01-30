@@ -44,34 +44,33 @@ void count_col(const Text &text,
     
     unsigned int j_ini, j_lim;
     double weight;
-    Triplet tripl;
     for (unsigned int i = 0; i < text.size(); i++) {
         if (text[i] == 0) continue; // skip padding
         j_ini = std::min((int)(i + 1), (int)text.size());
         j_lim = std::min((int)(i + window + 1), (int)text.size());
-        for(unsigned int j = j_ini; j < j_lim; j++) {
+        for (unsigned int j = j_ini; j < j_lim; j++) {
             if (text[j] == 0) continue; // skip padding
             weight = weights[std::abs((int)j - (int)i) - 1];
             if (ordered) {
                 if (!boolean || !exist(text[i] - 1, text[j] - 1, set_pair)) {
                     //Rcout << i << " " << j << "\n";
-                    tripl = std::make_tuple(text[i] - 1, text[j] - 1, weight);
+                    Triplet tripl = std::make_tuple(text[i] - 1, text[j] - 1, weight);
                     fcm_tri.push_back(tripl);
                 }
             } else {
                 if (text[i] < text[j]) {
                     if (!boolean || !exist(text[i] - 1, text[j] - 1, set_pair)) {
-                        tripl = std::make_tuple(text[i] - 1, text[j] - 1, weight);
+                        Triplet tripl = std::make_tuple(text[i] - 1, text[j] - 1, weight);
                         fcm_tri.push_back(tripl);
                     }
                 } else if (text[i] > text[j]){
                     if (!boolean || !exist(text[j] - 1, text[i] - 1, set_pair)) {
-                        tripl = std::make_tuple(text[j] - 1, text[i] - 1, weight);
+                        Triplet tripl = std::make_tuple(text[j] - 1, text[i] - 1, weight);
                         fcm_tri.push_back(tripl);
                     }
                 } else {
                     if (!boolean || !exist(text[i] - 1, text[j] - 1, set_pair)) {
-                        tripl = std::make_tuple(text[i] - 1, text[j] - 1, weight * 2);
+                        Triplet tripl = std::make_tuple(text[i] - 1, text[j] - 1, weight * 2);
                         fcm_tri.push_back(tripl);
                     }
                 } 
@@ -103,7 +102,7 @@ S4 cpp_fcm(TokensPtr xptr,
     std::size_t H = texts.size();
 #if QUANTEDA_USE_TBB
     tbb::task_arena arena(thread);
-        arena.execute([&]{
+    arena.execute([&]{
         tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
             for (int h = r.begin(); h < r.end(); ++h) {
                 count_col(texts[h], weights, window, ordered, boolean, fcm_tri);
