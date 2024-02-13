@@ -105,7 +105,7 @@
 #'   Dictionary*. Available at <https://www.snsoroka.com/data-lexicoder/>.
 #'   
 #'   Young, L. & Soroka, S. (2012). Affective News: The Automated Coding of
-#'   Sentiment in Political Texts]. \doi{10.1080/10584609.2012.671234}.
+#'   Sentiment in Political Texts. \doi{10.1080/10584609.2012.671234}.
 #'   *Political Communication*, 29(2), 205--231.
 #' @keywords data
 #' @examples 
