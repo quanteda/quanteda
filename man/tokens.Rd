@@ -27,7 +27,8 @@ tokens(
 \link{character} object to tokenize.}
 
 \item{what}{character; which tokenizer to use.  The default \code{what = "word"}
-is the version 2 \pkg{quanteda} tokenizer.  Legacy tokenizers (version < 2)
+is the current version of the \pkg{quanteda} tokenizer, set by
+\code{quanteda_options(okens_tokenizer_word)}. Legacy tokenizers (version < 2)
 are also supported, including the default \code{what = "word1"}. See the Details
 and quanteda Tokenizers below.}
 
@@ -76,15 +77,16 @@ the tokens making up a multi-token sequence.}
 integers corresponding to a vector of types.
 }
 \description{
-Construct a tokens object, either by importing a named list of characters
-from an external tokenizer, or by calling the internal \pkg{quanteda}
-tokenizer.
-}
-\details{
-\code{tokens()} works on tokens class objects, which means that the removal rules
-can be applied post-tokenization, although it should be noted that it will
-not be possible to remove things that are not present.  For instance, if the
-\code{tokens} object has already had punctuation removed, then \code{tokens(x, remove_punct = TRUE)} will have no additional effect.
+Construct a tokens object, either by importing a named list of
+characters from an external tokenizer, or by calling the internal
+\pkg{quanteda} tokenizer.
+
+\code{tokens()} can also be applied to tokens class objects, which
+means that the removal rules can be applied post-tokenization, although it
+should be noted that it will not be possible to remove things that are not
+present.  For instance, if the \code{tokens} object has already had punctuation
+removed, then \code{tokens(x, remove_punct = TRUE)} will have no additional
+effect.
 }
 \section{Details}{
  As of version 2, the choice of tokenizer is left more to

@@ -33,7 +33,7 @@ character.  See also \code{\link[utils:glob2rx]{utils::glob2rx()}} and Reference
 \note{
 If "fixed" is used with \code{case_insensitive = TRUE}, features will
 typically be lowercased internally prior to matching.  Also, glob matches
-are converted to regular expressions (using \link[utils:glob2rx]{glob2rx}) when
+are converted to regular expressions (using \code{\link[utils:glob2rx]{utils::glob2rx()}}) when
 they contain wild card characters, and to fixed pattern matches when they
 do not.
 }

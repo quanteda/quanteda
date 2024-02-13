@@ -14,7 +14,7 @@ Pattern(s) for use in matching features, tokens, and keywords through a
 \details{
 The \code{pattern} argument is a vector of patterns, including
 sequences, to match in a target object, whose match type is specified by
-\code{\link[=valuetype]{valuetype()}}. Note that an empty pattern (\code{""}) will match
+\link{valuetype}. Note that an empty pattern (\code{""}) will match
 "padding" in a \link{tokens} object.
 \describe{
 \item{\code{character}}{A character vector of token patterns to be selected
@@ -61,5 +61,8 @@ phrase(patt4 <- c("president?", "white house", "house * representatives"))
 # dictionary with multi-word matches
 (dict1 <- dictionary(list(us = c("president", "white house", "house of representatives"))))
 phrase(dict1)
+}
+\seealso{
+\link{valuetype}, \link{case_insensitive}
 }
 \keyword{internal}
