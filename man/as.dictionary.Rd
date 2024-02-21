@@ -8,14 +8,14 @@
 \usage{
 as.dictionary(x, ...)
 
-\method{as.dictionary}{data.frame}(x, format = c("tidytext"), separator = " ", tolower = FALSE)
+\method{as.dictionary}{data.frame}(x, format = c("tidytext"), separator = " ", tolower = FALSE, ...)
 
 is.dictionary(x)
 }
 \arguments{
 \item{x}{a object to be coerced to a \link{dictionary} object.}
 
-\item{...}{passed to underying functions.}
+\item{...}{additional arguments passed to underlying functions.}
 
 \item{format}{input format for the object to be coerced to a
 \link{dictionary}; current legal values are a data.frame with the fields

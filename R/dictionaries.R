@@ -259,7 +259,7 @@ setMethod("as.list",
 #' Convert a dictionary from a different format into a \pkg{quanteda}
 #' dictionary, or check to see if an object is a dictionary.
 #' @param x a object to be coerced to a [dictionary] object.
-#' @param ... passed to underying functions.
+#' @param ... additional arguments passed to underlying functions.
 #' @return `as.dictionary` returns a \pkg{quanteda} [dictionary]
 #'   object.  This conversion function differs from the [dictionary()]
 #'   constructor function in that it converts an existing object rather than
