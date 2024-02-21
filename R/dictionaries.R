@@ -258,11 +258,8 @@ setMethod("as.list",
 #'
 #' Convert a dictionary from a different format into a \pkg{quanteda}
 #' dictionary, or check to see if an object is a dictionary.
-#' @param x a dictionary-like object to be coerced or checked
-#' @param format input format for the object to be coerced to a
-#'   [dictionary]; current legal values are a data.frame with the fields
-#'   `word` and `sentiment` (as per the **tidytext** package)
-#' @inheritParams dictionary
+#' @param x a object to be coerced to a [dictionary] object.
+#' @param ... passed to underying functions.
 #' @return `as.dictionary` returns a \pkg{quanteda} [dictionary]
 #'   object.  This conversion function differs from the [dictionary()]
 #'   constructor function in that it converts an existing object rather than
@@ -291,12 +288,12 @@ setMethod("as.list",
 #' as.dictionary(dat, tolower = FALSE)
 #' }
 #'
-as.dictionary <- function(x, format = c("tidytext"), separator = " ", tolower = FALSE) {
+as.dictionary <- function(x, ...) {
     UseMethod("as.dictionary")
 }
 
 #' @export
-as.dictionary.default <- function(x, format = c("tidytext"), separator = " ", tolower = FALSE) {
+as.dictionary.default <- function(x, ...) {
     check_class(class(x), "as.dictionary")
 }
 
@@ -308,11 +305,17 @@ as.dictionary.dictionary2 <- function(x, ...) {
     upgrade_dictionary2(x)
 }
 
-#' @noRd
+#' @rdname as.dictionary
+#' @param format input format for the object to be coerced to a
+#'   [dictionary]; current legal values are a data.frame with the fields
+#'   `word` and `sentiment` (as per the **tidytext** package)
+#' @inheritParams dictionary
 #' @method as.dictionary data.frame
 #' @export
-as.dictionary.data.frame <- function(x, format = c("tidytext"), separator = " ", tolower = FALSE) {
+as.dictionary.data.frame <- function(x, format = c("tidytext"), 
+                                     separator = " ", tolower = FALSE, ...) {
     
+    check_dots(...)
     format <- match.arg(format)
     separator <- check_character(separator)
     tolower <- check_logical(tolower)
