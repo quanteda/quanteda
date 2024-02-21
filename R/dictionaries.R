@@ -293,11 +293,6 @@ as.dictionary <- function(x, ...) {
 }
 
 #' @export
-as.dictionary.default <- function(x, ...) {
-    check_class(class(x), "as.dictionary")
-}
-
-#' @export
 #' @noRd
 #' @method as.dictionary dictionary2
 as.dictionary.dictionary2 <- function(x, ...) {
