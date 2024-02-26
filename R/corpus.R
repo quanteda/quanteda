@@ -242,14 +242,6 @@ corpus.data.frame <- function(x, docid_field = "doc_id", text_field = "text",
 #' @param concatenator character between tokens, default is the whitespace. 
 #' @param extract_keyword logical; if  `TRUE`, save the keyword matching
 #'   `pattern` as a new docvar `keyword`
-#' @examples
-#' # from a kwic
-#' kw <- kwic(tokens(data_char_sampletext, remove_separators = FALSE),
-#'            pattern = "econom*", separator = "")
-#' summary(corpus(kw))
-#' summary(corpus(kw, split_context = FALSE))
-#' as.character(corpus(kw, split_context = FALSE))
-#'
 #' @export
 corpus.kwic <- function(x, split_context = TRUE, 
                         extract_keyword = TRUE, meta = list(), 

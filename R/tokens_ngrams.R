@@ -48,10 +48,6 @@ tokens_ngrams.default <- function(x, n = 2L, skip = 0L, concatenator = concat(x)
 #' @note `char_ngrams` is a convenience wrapper for a (non-list)
 #'   vector of characters, so named to be consistent with \pkg{quanteda}'s naming
 #'   scheme.
-#' @examples
-#' # on character
-#' char_ngrams(letters[1:3], n = 1:3)
-#'
 #' @export
 char_ngrams <- function(x, n = 2L, skip = 0L, concatenator = "_") {
     UseMethod("char_ngrams")
