@@ -43,7 +43,12 @@ Complete output:
 ```
 
 We have tried to examine the results of `examples_and_tests/tests/testthat.Rout.fail` but that file produces a 404 error. 
-I emailed Uwe Ligges about this a week ago asking for assistance, but received no reply.  We are unsure whether this is a real error or something amiss with the CRAN checks.
+
+I emailed Uwe Ligges about this following a previous submission, and he sought input from Tomas Kalibera, who tested the package and identified the issue as pertaining to a version of the TBB library that is part of RpppParallel specific to the ARM64 platform for windows.
+
+He wrote:
+"please release a new revision with the fixes you have on github."
+
 
 ## Reverse dependency and other package conflicts
 
