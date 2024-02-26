@@ -723,7 +723,7 @@ tokens_recompile <- function(x, method = c("C++", "R"), gap = TRUE, dup = TRUE) 
 #' @seealso [featnames]
 #' @examples
 #' toks <- tokens(data_corpus_inaugural)
-#' types(toks)
+#' head(types(toks), 20)
 types <- function(x) {
     UseMethod("types")
 }
