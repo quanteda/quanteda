@@ -21,11 +21,11 @@ const float GLOBAL_PATTERN_MAX_LOAD_FACTOR = 0.05;
 const float GLOBAL_NGRAMS_MAX_LOAD_FACTOR = 0.25;
 
 // compiler has to be newer than clang 3.30 or gcc 4.8.1
-// #if RCPP_PARALLEL_USE_TBB && (CLANG_VERSION >= 30300 || GCC_VERSION >= 40801) 
-// #define QUANTEDA_USE_TBB true // tbb.h is loaded automatically by RcppParallel.h
-// #else
+#if RCPP_PARALLEL_USE_TBB && (CLANG_VERSION >= 30300 || GCC_VERSION >= 40801)
+#define QUANTEDA_USE_TBB true // tbb.h is loaded automatically by RcppParallel.h
+#else
 #define QUANTEDA_USE_TBB false
-//#endif
+#endif
 
 namespace quanteda{
     
