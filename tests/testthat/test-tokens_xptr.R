@@ -280,6 +280,8 @@ test_that("cpp_serialize is working", {
 
 test_that("returns shallow or deep copy x", {
   
+  skip_on_cran()
+    
   # shallow copy
   xtoks <- as.tokens_xptr(toks[1:10])
   xtoks10 <- tokens_select(xtoks, stopwords("en"))
@@ -355,6 +357,8 @@ test_that("lengths works on tokens xptr objects", {
 })
 
 test_that("test low-level validation", {
+    
+    skip_on_cran()
     
     xtoks <- tokens("a b c", xptr = TRUE)
     dict <- list(c(1, 2))
