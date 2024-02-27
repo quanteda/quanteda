@@ -57,8 +57,8 @@ DataFrame cpp_kwic(TokensPtr xptr,
     
     // dev::Timer timer;
     // dev::start_timer("Kwic", timer);
-    int G = documents.size();
-    int H = texts.size();
+    std::size_t G = documents.size();
+    std::size_t H = texts.size();
     std::vector<std::string> pre(G), keyword(G), post(G);
 #if QUANTEDA_USE_TBB
     tbb::task_arena arena(thread);
@@ -102,9 +102,9 @@ DataFrame cpp_kwic(TokensPtr xptr,
 
 
 /***R
-#toks <- quanteda::tokens(c("a b c d e f g", "A B C D E F G"), xptr = TRUE)
-toks <- quanteda::tokens(c("a b c d 😊 f g", "A B C D E 🎅 G"), xptr = TRUE)
-toks
-cpp_kwic(toks, c(1, 2), c(3, 7), c(4, 8), 2, "_")
-#cpp_kwic(toks, c(1), c(3), c(4), 2, "_")
+# oks <- quanteda::tokens(c("a b c d e f g", "A B C D E F G"), xptr = TRUE)
+# toks <- quanteda::tokens(c("a b c d 😊 f g", "A B C D E 🎅 G"), xptr = TRUE)
+# toks
+# cpp_kwic(toks, c(1, 2), c(3, 7), c(4, 8), 2, "_")
+# cpp_kwic(toks, c(1), c(3), c(4), 2, "_")
 */
