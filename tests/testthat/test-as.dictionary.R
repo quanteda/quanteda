@@ -1,14 +1,15 @@
-test_that("as.dictionary works for data.frame", {
+test_that("as.dictionary works", {
     df <- data.frame(
         word = letters[1:6],
         sentiment = c("neg", "neg", "neutral", "neutral", "pos", "pos"),
         lexicon = rep("madeup", 6),
         stringsAsFactors = FALSE
     )
+    lis <- list(neg = c("a", "b"), 
+                neutral = c("c", "d"), 
+                pos = c("e", "f"))
     expect_equal(
-        dictionary(list(neg = c("a", "b"), 
-                        neutral = c("c", "d"), 
-                        pos = c("e", "f"))),
+        dictionary(lis),
         as.dictionary(df, format = "tidytext")
     )
     df <- data.frame(
@@ -18,9 +19,12 @@ test_that("as.dictionary works for data.frame", {
         stringsAsFactors = TRUE
     )
     expect_equal(
-        dictionary(list(neg = c("a", "b"), 
-                        neutral = c("c", "d"), pos = c("e", "f"))),
+        dictionary(lis),
         as.dictionary(df, format = "tidytext")
+    )
+    expect_equal(
+        dictionary(lis),
+        as.dictionary(lis)
     )
 })
 

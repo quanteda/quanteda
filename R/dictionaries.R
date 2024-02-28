@@ -300,6 +300,13 @@ as.dictionary.dictionary2 <- function(x, ...) {
     upgrade_dictionary2(x)
 }
 
+#' @method as.dictionary list
+#' @export
+as.dictionary.list <- function(x, separator = " ", tolower = TRUE, ...) {
+    check_dots(...)
+    dictionary(x, separator = separator, tolower = tolower)
+}
+
 #' @rdname as.dictionary
 #' @param format input format for the object to be coerced to a
 #'   [dictionary]; current legal values are a data.frame with the fields
@@ -312,8 +319,6 @@ as.dictionary.data.frame <- function(x, format = c("tidytext"),
     
     check_dots(...)
     format <- match.arg(format)
-    separator <- check_character(separator)
-    tolower <- check_logical(tolower)
 
     if (format == "tidytext") {
         if (!all(c("word", "sentiment") %in% names(x)))
