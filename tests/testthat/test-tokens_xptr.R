@@ -1,3 +1,5 @@
+skip_on_cran()
+
 toks <- tokens(data_corpus_inaugural)
 xtoks <- as.tokens_xptr(toks)
 

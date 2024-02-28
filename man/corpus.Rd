@@ -160,13 +160,6 @@ dat
 summary(corpus(dat, text_field = "some_text",
                meta = list(source = "From a data.frame called mydf.")))
 
-# from a kwic
-kw <- kwic(tokens(data_char_sampletext, remove_separators = FALSE),
-           pattern = "econom*", separator = "")
-summary(corpus(kw))
-summary(corpus(kw, split_context = FALSE))
-as.character(corpus(kw, split_context = FALSE))
-
 }
 \seealso{
 \linkS4class{corpus}, \code{\link[=docvars]{docvars()}},

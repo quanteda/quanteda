@@ -80,11 +80,11 @@ TokensPtr cpp_tokens_restore(TokensPtr xptr,
     std::string delim = delim_;
 
     unsigned int id_last = types.size();
-#if QUANTEDA_USE_TBB
+//#if QUANTEDA_USE_TBB
     IdNgram id_comp(id_last + 1);
-#else
-    IdNgram id_comp = id_last + 1;
-#endif
+// #else
+//     IdNgram id_comp = id_last + 1;
+// #endif
 
     MapNgrams map_marks; // for matching
     map_marks.max_load_factor(GLOBAL_PATTERN_MAX_LOAD_FACTOR);
