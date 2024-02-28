@@ -2,15 +2,20 @@
 % Please edit documentation in R/dictionaries.R
 \name{as.dictionary}
 \alias{as.dictionary}
+\alias{as.dictionary.data.frame}
 \alias{is.dictionary}
 \title{Coercion and checking functions for dictionary objects}
 \usage{
-as.dictionary(x, format = c("tidytext"), separator = " ", tolower = FALSE)
+as.dictionary(x, ...)
+
+\method{as.dictionary}{data.frame}(x, format = c("tidytext"), separator = " ", tolower = FALSE, ...)
 
 is.dictionary(x)
 }
 \arguments{
-\item{x}{a dictionary-like object to be coerced or checked}
+\item{x}{a object to be coerced to a \link{dictionary} object.}
+
+\item{...}{additional arguments passed to underlying functions.}
 
 \item{format}{input format for the object to be coerced to a
 \link{dictionary}; current legal values are a data.frame with the fields
