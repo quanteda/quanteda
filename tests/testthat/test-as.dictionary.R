@@ -91,3 +91,24 @@ test_that("options for tidytext only currently supported", {
         "'arg' should be (one of )*[“\"]tidytext[”\"]"
     )
 })
+
+test_that("as.dictionary.list works", {
+    l <- list(Word = c("A", "B"),
+              Sentiment = c("Pos Word", "Neg_Word"))
+    expect_identical(
+        dictionary(l),
+        as.dictionary(l)
+    )
+    expect_identical(
+        dictionary(l, tolower = FALSE),
+        as.dictionary(l, tolower = FALSE)
+    )
+    expect_identical(
+        meta(as.dictionary(l, separator = " "), type = "all")$object$separator,
+        " "
+    )
+    expect_identical(
+        meta(as.dictionary(l, separator = "_"), type = "all")$object$separator,
+        "_"
+    )
+})
