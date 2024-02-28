@@ -252,12 +252,6 @@ scheme.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [7] "the dog"              "the brown jumped the" "quick fox over lazy" </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [10] "brown jumped the dog"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span><span class="co"># on character</span></span></span>
-<span class="r-in"><span><span class="fu">char_ngrams</span><span class="op">(</span><span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>, n <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>char_ngrams() was deprecated in quanteda 4.0.0.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Please use `tokens_ngram(tokens(x))` instead.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "a"     "b"     "c"     "a_b"   "b_c"   "a_b_c"</span>
-<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># skipgrams</span></span></span>
 <span class="r-in"><span><span class="va">toks</span> <span class="op">&lt;-</span> <span class="fu"><a href="tokens.html">tokens</a></span><span class="op">(</span><span class="st">"insurgents killed in ongoing fighting"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">tokens_skipgrams</span><span class="op">(</span><span class="va">toks</span>, n <span class="op">=</span> <span class="fl">2</span>, skip <span class="op">=</span> <span class="fl">0</span><span class="op">:</span><span class="fl">1</span>, concatenator <span class="op">=</span> <span class="st">" "</span><span class="op">)</span></span></span>
