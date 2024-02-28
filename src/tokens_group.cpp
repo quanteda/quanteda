@@ -52,7 +52,7 @@ TokensPtr cpp_tokens_group(TokensPtr xptr,
 #else
     for (std::size_t g = 0; g < G; g++) {
         for (std::size_t h: groups[g]) {
-            temp[g].insert(temp[g].end(), texts[h - 1.begin(), texts[h - 1].end());
+            temp[g].insert(temp[g].end(), texts[h - 1].begin(), texts[h - 1].end());
         }
     }
 #endif

@@ -14,7 +14,7 @@ Get unique types of tokens from a \link{tokens} object.
 }
 \examples{
 toks <- tokens(data_corpus_inaugural)
-types(toks)
+head(types(toks), 20)
 }
 \seealso{
 \link{featnames}

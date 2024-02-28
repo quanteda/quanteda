@@ -187,7 +187,7 @@ TokensPtr cpp_tokens_select(TokensPtr xptr,
         });
     });
 #else
-    for (std::size_t h = 0; h < texts.size(); h++) {
+    for (std::size_t h = 0; h < H; h++) {
         if (bypass[h])
             continue;
         if (mode == 1) {
