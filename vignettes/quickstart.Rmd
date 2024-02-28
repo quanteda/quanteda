@@ -49,6 +49,10 @@ You load the package to access to functions and data in the package.
 library("quanteda")
 ```
 
+```{r include=FALSE}
+quanteda_options(threads = 1)
+```
+
 ## Currently available corpus sources
 
 **quanteda** has a simple and powerful companion package for loading texts: [**readtext**](https://github.com/quanteda/readtext). The main function in this package, `readtext()`, takes a file or fileset from disk or a URL, and returns a type of data.frame that can be used directly with the `corpus()` constructor function, to create a **quanteda** corpus object.
