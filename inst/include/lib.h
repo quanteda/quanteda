@@ -21,7 +21,7 @@ const float GLOBAL_PATTERN_MAX_LOAD_FACTOR = 0.05;
 const float GLOBAL_NGRAMS_MAX_LOAD_FACTOR = 0.25;
 
 // compiler has to be newer than clang 3.30 or gcc 4.8.1
-#if RCPP_PARALLEL_USE_TBB && (CLANG_VERSION >= 30300 || GCC_VERSION >= 40801) 
+#if RCPP_PARALLEL_USE_TBB && (CLANG_VERSION >= 30300 || GCC_VERSION >= 40801)
 #define QUANTEDA_USE_TBB true // tbb.h is loaded automatically by RcppParallel.h
 #else
 #define QUANTEDA_USE_TBB false
@@ -74,8 +74,8 @@ namespace quanteda{
         }
     };
     
-#if QUANTEDA_USE_TBB
     typedef std::atomic<unsigned int> IdNgram;
+#if QUANTEDA_USE_TBB
     typedef tbb::concurrent_unordered_multimap<Ngram, unsigned int, hash_ngram, equal_ngram> MultiMapNgrams;
     typedef tbb::concurrent_unordered_map<Ngram, unsigned int, hash_ngram, equal_ngram> MapNgrams;
     typedef tbb::concurrent_unordered_set<Ngram, hash_ngram, equal_ngram> SetNgrams;
@@ -84,7 +84,6 @@ namespace quanteda{
     typedef std::tuple<unsigned int, unsigned int, double> Triplet;
     typedef tbb::concurrent_vector<Triplet> Triplets; // for fcm_mt, ca_mt, wordfish_mt
 #else
-    typedef unsigned int IdNgram;
     typedef std::unordered_multimap<Ngram, unsigned int, hash_ngram, equal_ngram> MultiMapNgrams;
     typedef std::unordered_map<Ngram, unsigned int, hash_ngram, equal_ngram> MapNgrams;
     typedef std::unordered_set<Ngram, hash_ngram, equal_ngram> SetNgrams;
