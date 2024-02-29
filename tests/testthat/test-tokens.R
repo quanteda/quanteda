@@ -612,7 +612,8 @@ test_that("tokens verbose = TRUE produces expected messages", {
 test_that("types<- with wrong value generates error", {
     toks <- tokens(c("one two three", "four five."))
     expect_error(
-        quanteda:::`types<-.tokens`(toks, value = 1:6),
+        # quanteda:::`types<-.tokens`(toks, value = 1:6),
+        quanteda:::`types<-`(toks, value = 1:6),
         "replacement value must be character"
     )
 })

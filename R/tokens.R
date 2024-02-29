@@ -177,7 +177,21 @@ tokens <-  function(x,
 #' @rdname tokens
 #' @noRd
 #' @export
-tokens.default <- function(x, ...) {
+tokens.default <- function(x,
+                           what = "word",
+                           remove_punct = FALSE,
+                           remove_symbols = FALSE,
+                           remove_numbers = FALSE,
+                           remove_url = FALSE,
+                           remove_separators = TRUE,
+                           split_hyphens = FALSE,
+                           split_tags = FALSE,
+                           include_docvars = TRUE,
+                           padding = FALSE,
+                           concatenator = "_",
+                           verbose = quanteda_options("verbose"),
+                           ...,
+                           xptr = FALSE) {
     check_class(class(x), "tokens")
 }
 
@@ -739,16 +753,17 @@ types.tokens <- function(x) {
 }
 
 "types<-" <- function(x, value) {
-    UseMethod("types<-")
+    set_types(x) <- value
+    #UseMethod("types<-")
 }
 
-"types<-.tokens" <- function(x, value) {
-    set_types(x) <- value
-}
-
-"types<-.tokens_xptr" <- function(x, value) {
-    set_types(x) <- value
-}
+# "types<-.tokens" <- function(x, value) {
+#     set_types(x) <- value
+# }
+# 
+# "types<-.tokens_xptr" <- function(x, value) {
+#     set_types(x) <- value
+# }
 
 
 # concatenator functions --------------
