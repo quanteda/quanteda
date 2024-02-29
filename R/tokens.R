@@ -166,32 +166,13 @@ tokens <-  function(x,
                     verbose = quanteda_options("verbose"),
                     ...,
                     xptr = FALSE) {
-    
-    if (is.null(global$object_class)) {
-        global$object_class <- class(x)[1]
-        global$proc_time <- proc.time()   
-    }
     UseMethod("tokens")
 }
 
 #' @rdname tokens
 #' @noRd
 #' @export
-tokens.default <- function(x,
-                           what = "word",
-                           remove_punct = FALSE,
-                           remove_symbols = FALSE,
-                           remove_numbers = FALSE,
-                           remove_url = FALSE,
-                           remove_separators = TRUE,
-                           split_hyphens = FALSE,
-                           split_tags = FALSE,
-                           include_docvars = TRUE,
-                           padding = FALSE,
-                           concatenator = "_",
-                           verbose = quanteda_options("verbose"),
-                           ...,
-                           xptr = FALSE) {
+tokens.default <- function(x, ...) {
     check_class(class(x), "tokens")
 }
 
@@ -212,6 +193,12 @@ tokens.list <- function(x,
                         concatenator = "_",
                         verbose = quanteda_options("verbose"),
                         ...) {
+    
+    if (is.null(global$object_class)) {
+        global$object_class <- class(x)[1]
+        global$proc_time <- proc.time()   
+    }
+    
     tokens(as.tokens(x),
            remove_punct = remove_punct,
            remove_symbols = remove_symbols,
@@ -243,6 +230,12 @@ tokens.character <- function(x,
                              verbose = quanteda_options("verbose"),
                              ...,
                              xptr = FALSE) {
+    
+    if (is.null(global$object_class)) {
+        global$object_class <- class(x)[1]
+        global$proc_time <- proc.time()   
+    }
+    
     tokens.corpus(corpus(x),
            what = what,
            remove_punct = remove_punct,
@@ -280,6 +273,12 @@ tokens.corpus <- function(x,
                           verbose = quanteda_options("verbose"),
                           ...,
                           xptr = FALSE)  {
+    
+    if (is.null(global$object_class)) {
+        global$object_class <- class(x)[1]
+        global$proc_time <- proc.time()   
+    }
+    
     x <- as.corpus(x)
     
     if (verbose) {
@@ -425,6 +424,11 @@ tokens.tokens_xptr <-  function(x,
                            concatenator = "_",
                            verbose = quanteda_options("verbose"),
                            ...) {
+
+    if (is.null(global$object_class)) {
+        global$object_class <- class(x)[1]
+        global$proc_time <- proc.time()   
+    }
     
     remove_punct <- check_logical(remove_punct)
     remove_symbols <- check_logical(remove_symbols)
@@ -492,6 +496,10 @@ tokens.tokens_xptr <-  function(x,
 
 #' @export
 tokens.tokens <- function(x, ...) {
+    if (is.null(global$object_class)) {
+        global$object_class <- class(x)[1]
+        global$proc_time <- proc.time()   
+    }
     as.tokens(tokens(as.tokens_xptr(x), ...))
 }
 
