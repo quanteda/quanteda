@@ -324,7 +324,7 @@ test_that("tokens arguments works with values from parent frame (#721)", {
 
 test_that("tokens works for strange spaces (#796)", {
     txt <- "space tab\t newline\n non-breakingspace\u00A0, variationselector16 \uFE0F."
-    expect_identical(ntoken(txt, remove_punct = FALSE, remove_separators = TRUE),
+    expect_identical(ntoken(tokens(txt, remove_punct = FALSE, remove_separators = TRUE)),
                      c(text1 = 7L))
     expect_identical(
         as.character(tokens(txt, what = "word", remove_punct = TRUE, remove_separators = TRUE)),
@@ -514,7 +514,8 @@ test_that("tokens verbose = TRUE produces expected messages", {
 test_that("types<- with wrong value generates error", {
     toks <- tokens(c("one two three", "four five."))
     expect_error(
-        quanteda:::`types<-.tokens`(toks, value = 1:6),
+        # quanteda:::`types<-.tokens`(toks, value = 1:6),
+        quanteda:::`types<-`(toks, value = 1:6),
         "replacement value must be character"
     )
 })
