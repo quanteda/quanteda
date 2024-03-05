@@ -76,7 +76,7 @@ DataFrame cpp_kwic(TokensPtr xptr,
     });
     
 #else
-    for (int g = 0; g < G; g++) {
+    for (int g = 0; g < (int)G; g++) {
         int h = documents[g] - 1L;
         if (h < 0 || (int)H <= h)
             throw std::range_error("Invalid documents");
