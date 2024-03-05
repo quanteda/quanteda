@@ -38,7 +38,7 @@ Imports:
     stringi,
     xml2,
     yaml
-LinkingTo: Rcpp, RcppParallel, RcppArmadillo (>= 0.7.600.1.0)
+LinkingTo: Rcpp, RcppArmadillo (>= 0.7.600.1.0)
 SystemRequirements: GNU make
 Suggests:
     rmarkdown,

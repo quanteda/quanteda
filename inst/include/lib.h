@@ -2,7 +2,6 @@
 #define QUANTEDA4
 
 #include <RcppArmadillo.h>
-#include <RcppParallel.h>
 #include <unordered_map>
 #include <unordered_set>
 #include <limits>
@@ -11,8 +10,9 @@
 
 // [[Rcpp::plugins(cpp11)]]
 using namespace Rcpp;
-// [[Rcpp::depends(RcppParallel)]]
-using namespace RcppParallel;
+
+#include "oneapi/tbb/task_arena.h"
+#include "oneapi/tbb/parallel_for.h"
 
 #define CLANG_VERSION (__clang_major__ * 10000 + __clang_minor__ * 100 + __clang_patchlevel__)
 
@@ -22,7 +22,7 @@ const float GLOBAL_NGRAMS_MAX_LOAD_FACTOR = 0.25;
 
 // compiler has to be newer than clang 3.30 or gcc 4.8.1
 #if RCPP_PARALLEL_USE_TBB && (CLANG_VERSION >= 30300 || GCC_VERSION >= 40801)
-#define QUANTEDA_USE_TBB true // tbb.h is loaded automatically by RcppParallel.h
+#define QUANTEDA_USE_TBB true 
 #else
 #define QUANTEDA_USE_TBB false
 #endif
