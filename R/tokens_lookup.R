@@ -96,7 +96,6 @@
 #' tokens_lookup(toks4, dict4, nested_scope = "key", exclusive = FALSE)
 #' tokens_lookup(toks4, dict4, nested_scope = "dictionary", exclusive = FALSE)
 #'
-#' @importFrom RcppParallel RcppParallelLibs
 #' @export
 tokens_lookup <- function(x, dictionary, levels = 1:5,
                           valuetype = c("glob", "regex", "fixed"),

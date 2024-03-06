@@ -32,7 +32,6 @@ Imports:
     magrittr,
     Matrix (>= 1.5-0),
     Rcpp (>= 0.12.12),
-    RcppParallel,
     SnowballC,
     stopwords,
     stringi,

@@ -89,7 +89,6 @@ tokens_select.default <- function(x, pattern = NULL,
 
 #' @rdname tokens_select
 #' @noRd
-#' @importFrom RcppParallel RcppParallelLibs
 #' @export
 #' @examples
 #' toks <- tokens(c(doc1 = "This is a SAMPLE text", doc2 = "this sample text is better"))
