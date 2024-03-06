@@ -2,6 +2,14 @@
 #define QUANTEDA4
 
 #include <RcppArmadillo.h>
+#include <oneapi/tbb/task_arena.h>
+#include <oneapi/tbb/task_group.h>
+#include <oneapi/tbb/blocked_range.h>
+#include <oneapi/tbb/parallel_for.h>
+#include <oneapi/tbb/concurrent_vector.h>
+#include <oneapi/tbb/concurrent_unordered_map.h>
+#include <oneapi/tbb/concurrent_unordered_set.h>
+//#include <oneapi/tbb/global_control.h>
 #include <unordered_map>
 #include <unordered_set>
 #include <limits>
@@ -10,9 +18,7 @@
 
 // [[Rcpp::plugins(cpp11)]]
 using namespace Rcpp;
-
-#include "oneapi/tbb/task_arena.h"
-#include "oneapi/tbb/parallel_for.h"
+using namespace oneapi;
 
 #define CLANG_VERSION (__clang_major__ * 10000 + __clang_minor__ * 100 + __clang_patchlevel__)
 
@@ -21,7 +27,7 @@ const float GLOBAL_PATTERN_MAX_LOAD_FACTOR = 0.05;
 const float GLOBAL_NGRAMS_MAX_LOAD_FACTOR = 0.25;
 
 // compiler has to be newer than clang 3.30 or gcc 4.8.1
-#if RCPP_PARALLEL_USE_TBB && (CLANG_VERSION >= 30300 || GCC_VERSION >= 40801)
+#if (CLANG_VERSION >= 30300 || GCC_VERSION >= 40801)
 #define QUANTEDA_USE_TBB true 
 #else
 #define QUANTEDA_USE_TBB false
@@ -75,13 +81,13 @@ namespace quanteda{
     };
     
     typedef std::atomic<unsigned int> IdNgram;
+    typedef std::tuple<unsigned int, unsigned int, double> Triplet;
 #if QUANTEDA_USE_TBB
     typedef tbb::concurrent_unordered_multimap<Ngram, unsigned int, hash_ngram, equal_ngram> MultiMapNgrams;
     typedef tbb::concurrent_unordered_map<Ngram, unsigned int, hash_ngram, equal_ngram> MapNgrams;
     typedef tbb::concurrent_unordered_set<Ngram, hash_ngram, equal_ngram> SetNgrams;
     typedef tbb::concurrent_vector<Ngram> VecNgrams;
     typedef tbb::concurrent_unordered_set<unsigned int> SetUnigrams;
-    typedef std::tuple<unsigned int, unsigned int, double> Triplet;
     typedef tbb::concurrent_vector<Triplet> Triplets; // for fcm_mt, ca_mt, wordfish_mt
 #else
     typedef std::unordered_multimap<Ngram, unsigned int, hash_ngram, equal_ngram> MultiMapNgrams;
@@ -89,7 +95,6 @@ namespace quanteda{
     typedef std::unordered_set<Ngram, hash_ngram, equal_ngram> SetNgrams;
     typedef std::vector<Ngram> VecNgrams;
     typedef std::unordered_set<unsigned int> SetUnigrams;
-    typedef std::tuple<unsigned int, unsigned int, double> Triplet;
     typedef std::vector<Triplet> Triplets; // for fcm_mt, ca_mt, wordfish_mt
 #endif    
     
