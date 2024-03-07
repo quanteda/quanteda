@@ -166,11 +166,6 @@ tokens <-  function(x,
                     verbose = quanteda_options("verbose"),
                     ...,
                     xptr = FALSE) {
-    
-    if (is.null(global$object_class)) {
-        global$object_class <- class(x)[1]
-        global$proc_time <- proc.time()   
-    }
     UseMethod("tokens")
 }
 
@@ -198,6 +193,12 @@ tokens.list <- function(x,
                         concatenator = "_",
                         verbose = quanteda_options("verbose"),
                         ...) {
+    
+    if (is.null(global$object_class)) {
+        global$object_class <- class(x)[1]
+        global$proc_time <- proc.time()   
+    }
+    
     tokens(as.tokens(x),
            remove_punct = remove_punct,
            remove_symbols = remove_symbols,
@@ -229,6 +230,12 @@ tokens.character <- function(x,
                              verbose = quanteda_options("verbose"),
                              ...,
                              xptr = FALSE) {
+    
+    if (is.null(global$object_class)) {
+        global$object_class <- class(x)[1]
+        global$proc_time <- proc.time()   
+    }
+    
     tokens.corpus(corpus(x),
            what = what,
            remove_punct = remove_punct,
@@ -266,6 +273,12 @@ tokens.corpus <- function(x,
                           verbose = quanteda_options("verbose"),
                           ...,
                           xptr = FALSE)  {
+    
+    if (is.null(global$object_class)) {
+        global$object_class <- class(x)[1]
+        global$proc_time <- proc.time()   
+    }
+    
     x <- as.corpus(x)
     
     if (verbose) {
@@ -411,6 +424,11 @@ tokens.tokens_xptr <-  function(x,
                            concatenator = "_",
                            verbose = quanteda_options("verbose"),
                            ...) {
+
+    if (is.null(global$object_class)) {
+        global$object_class <- class(x)[1]
+        global$proc_time <- proc.time()   
+    }
     
     remove_punct <- check_logical(remove_punct)
     remove_symbols <- check_logical(remove_symbols)
@@ -478,6 +496,10 @@ tokens.tokens_xptr <-  function(x,
 
 #' @export
 tokens.tokens <- function(x, ...) {
+    if (is.null(global$object_class)) {
+        global$object_class <- class(x)[1]
+        global$proc_time <- proc.time()   
+    }
     as.tokens(tokens(as.tokens_xptr(x), ...))
 }
 
@@ -739,16 +761,17 @@ types.tokens <- function(x) {
 }
 
 "types<-" <- function(x, value) {
-    UseMethod("types<-")
+    set_types(x) <- value
+    #UseMethod("types<-")
 }
 
-"types<-.tokens" <- function(x, value) {
-    set_types(x) <- value
-}
-
-"types<-.tokens_xptr" <- function(x, value) {
-    set_types(x) <- value
-}
+# "types<-.tokens" <- function(x, value) {
+#     set_types(x) <- value
+# }
+# 
+# "types<-.tokens_xptr" <- function(x, value) {
+#     set_types(x) <- value
+# }
 
 
 # concatenator functions --------------
