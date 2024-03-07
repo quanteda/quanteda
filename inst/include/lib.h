@@ -2,13 +2,14 @@
 #define QUANTEDA4
 
 #include <RcppArmadillo.h>
-#include <oneapi/tbb/task_arena.h>
-#include <oneapi/tbb/task_group.h>
-#include <oneapi/tbb/blocked_range.h>
-#include <oneapi/tbb/parallel_for.h>
-#include <oneapi/tbb/concurrent_vector.h>
-#include <oneapi/tbb/concurrent_unordered_map.h>
-#include <oneapi/tbb/concurrent_unordered_set.h>
+#include <oneapi/tbb.h>
+// #include <oneapi/tbb/task_arena.h>
+// #include <oneapi/tbb/task_group.h>
+// #include <oneapi/tbb/blocked_range.h>
+// #include <oneapi/tbb/parallel_for.h>
+// #include <oneapi/tbb/concurrent_vector.h>
+// #include <oneapi/tbb/concurrent_unordered_map.h>
+// #include <oneapi/tbb/concurrent_unordered_set.h>
 //#include <oneapi/tbb/global_control.h>
 #include <unordered_map>
 #include <unordered_set>
