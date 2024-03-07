@@ -38,11 +38,6 @@ dfm <- function(x,
                 remove_padding = FALSE,
                 verbose = quanteda_options("verbose"),
                 ...) {
-
-    if (is.null(global$object_class)) {
-        global$object_class <- class(x)[1]
-        global$proc_time <- proc.time()   
-    }
     
     # to catch expansion of defunct "remove" to "remove_padding"
     check_defunct_dfm_args(names(as.list(sys.call())[-1]))
@@ -65,7 +60,12 @@ dfm.tokens <- function(x,
                        remove_padding = FALSE,
                        verbose = quanteda_options("verbose"),
                        ...) {
-
+    
+    if (is.null(global$object_class)) {
+        global$object_class <- class(x)[1]
+        global$proc_time <- proc.time()   
+    }
+    
     dfm(as.tokens_xptr(x), tolower = tolower,
         remove_padding = remove_padding, verbose = verbose, ...)
 
@@ -78,7 +78,12 @@ dfm.tokens_xptr <- function(x,
                             remove_padding = FALSE,
                             verbose = quanteda_options("verbose"),
                             ...) {
-
+    
+    if (is.null(global$object_class)) {
+        global$object_class <- class(x)[1]
+        global$proc_time <- proc.time()   
+    }
+    
     check_dots(...)
     if (verbose)
         catm("Creating a dfm from a", global$object_class, "object...\n")
@@ -113,7 +118,12 @@ dfm.dfm <- function(x,
                     remove_padding = FALSE,
                     verbose = quanteda_options("verbose"),
                     ...) {
-
+    
+    if (is.null(global$object_class)) {
+        global$object_class <- class(x)[1]
+        global$proc_time <- proc.time()   
+    }
+    
     check_dots(...)
     x <- as.dfm(x)
 
