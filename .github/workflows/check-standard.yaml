@@ -30,7 +30,7 @@ jobs:
 
     steps:
       - if: ${{ matrix.config.os }} == 'ubuntu'
-        - run: 'sudo apt install libtbb-dev'
+        run: 'sudo apt install libtbb-dev'
         
       - uses: actions/checkout@v3
 
