@@ -9,12 +9,7 @@ on:
 name: R-CMD-check
 
 jobs:
-  TBB-install:
-    runs-on: ubuntu-latest
-    steps:
-        - run: 'sudo apt install libtbb-dev'
   R-CMD-check:
-    needs: TBB-install
     runs-on: ${{ matrix.config.os }}
 
     name: ${{ matrix.config.os }} (${{ matrix.config.r }})
@@ -34,6 +29,10 @@ jobs:
       R_KEEP_PKG_SOURCE: yes
     
     steps:
+      - name: TBB-install
+        if: matrix.config.os == 'ubuntu-latest'
+        run: 'sudo apt install libtbb-dev'
+        
       - uses: actions/checkout@v3
 
       - uses: r-lib/actions/setup-pandoc@v2
