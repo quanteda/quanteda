@@ -29,7 +29,7 @@ jobs:
       R_KEEP_PKG_SOURCE: yes
 
     steps:
-      - if: ${{ matrix.config.os }} == 'ubuntu'
+      - if: ${{ matrix.config.os }} == 'ubuntu-latest'
         run: 'sudo apt install libtbb-dev'
         
       - uses: actions/checkout@v3
