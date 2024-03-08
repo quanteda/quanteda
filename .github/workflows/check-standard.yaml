@@ -29,9 +29,11 @@ jobs:
       R_KEEP_PKG_SOURCE: yes
     
     steps:
-      - name: TBB-install
+      - name: Install TBB
         if: matrix.config.os == 'ubuntu-latest'
-        run: 'sudo apt install libtbb-dev'
+        run: |
+            sudo apt update
+            sudo apt install libtbb-dev
         
       - uses: actions/checkout@v3
 
