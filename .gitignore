@@ -5,7 +5,12 @@ doc
 *.so
 .httr-oauth
 *.dll
+# Configure
 src/Makevars
+autom4te.cache
+config.log
+config.status
+*~
 # Documents
 .Rd2pdf*
 quanteda.pdf
