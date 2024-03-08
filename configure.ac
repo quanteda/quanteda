@@ -21,14 +21,15 @@ AC_PROG_CXX
 
 # Default to no Intel TBB
 TBBFLAG=
+TBBLIBS=
 
 # If tbb.h is found, define TBB
 AC_CHECK_HEADER([tbb.h],
-   [TBBFLAG=-DTBB],
+   [TBBFLAG=-DTBB;TBBLIBS=-ltbb],
    [AC_MSG_WARN([tbb.h not found, so skipping TBB resulting in slower code.])])
 
 # Now substitute these variables in src/Makevars.in to create src/Makevars
-AC_SUBST(TBB_CFLAGS, ["${TBBFLAG} ${CFLAGS}"])
-AC_SUBST(TBB_LIBS, ${LIBS})
+AC_SUBST(TBB_CFLAGS, ${TBBFLAG})
+AC_SUBST(TBB_LIBS, ${TBBLIBS})
 AC_CONFIG_FILES([src/Makevars])
 AC_OUTPUT
