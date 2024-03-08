@@ -26,7 +26,7 @@ TBBLIBS=
 # If tbb.h is found, define TBB
 AC_CHECK_HEADER([oneapi/tbb.h],
    [TBBFLAG=-DTBB;TBBLIBS=-ltbb],
-   [AC_MSG_WARN([disabling parallel computing with Intel TBB])])
+   [AC_MSG_WARN([parallel computing is disabled becuase oneapi/tbb.h (Intel TBB) is not found])])
 
 # Now substitute these variables in src/Makevars.in to create src/Makevars
 AC_SUBST(TBB_CFLAGS, ${TBBFLAG})
