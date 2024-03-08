@@ -4387,13 +4387,13 @@ then :
 printf "%s\n" "#define STDC_HEADERS 1" >>confdefs.h
 
 fi
-ac_fn_cxx_check_header_compile "$LINENO" "tbb.h" "ac_cv_header_tbb_h" "$ac_includes_default"
-if test "x$ac_cv_header_tbb_h" = xyes
+ac_fn_cxx_check_header_compile "$LINENO" "oneapi/tbb.h" "ac_cv_header_oneapi_tbb_h" "$ac_includes_default"
+if test "x$ac_cv_header_oneapi_tbb_h" = xyes
 then :
   TBBFLAG=-DTBB;TBBLIBS=-ltbb
 else $as_nop
-  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: WARNING: tbb.h not found, so skipping TBB resulting in slower code." >&5
-printf "%s\n" "$as_me: WARNING: tbb.h not found, so skipping TBB resulting in slower code." >&2;}
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: WARNING: disabling parallel computing with Intel TBB" >&5
+printf "%s\n" "$as_me: WARNING: disabling parallel computing with Intel TBB" >&2;}
 fi
 
 
