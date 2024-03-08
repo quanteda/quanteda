@@ -5,7 +5,7 @@ doc
 *.so
 .httr-oauth
 *.dll
-
+src/Makevars
 # Documents
 .Rd2pdf*
 quanteda.pdf
