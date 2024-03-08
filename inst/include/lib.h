@@ -2,37 +2,25 @@
 #define QUANTEDA4
 
 #include <RcppArmadillo.h>
-#include <oneapi/tbb.h>
-// #include <oneapi/tbb/task_arena.h>
-// #include <oneapi/tbb/task_group.h>
-// #include <oneapi/tbb/blocked_range.h>
-// #include <oneapi/tbb/parallel_for.h>
-// #include <oneapi/tbb/concurrent_vector.h>
-// #include <oneapi/tbb/concurrent_unordered_map.h>
-// #include <oneapi/tbb/concurrent_unordered_set.h>
-//#include <oneapi/tbb/global_control.h>
 #include <unordered_map>
 #include <unordered_set>
 #include <limits>
 #include <algorithm>
 #include "tokens.h"
+#ifdef TBB
+#include <oneapi/tbb.h>
+using namespace oneapi;
+#define QUANTEDA_USE_TBB true
+#else
+#define QUANTEDA_USE_TBB false
+#endif
 
 // [[Rcpp::plugins(cpp11)]]
 using namespace Rcpp;
-using namespace oneapi;
-
-#define CLANG_VERSION (__clang_major__ * 10000 + __clang_minor__ * 100 + __clang_patchlevel__)
 
 // NOTE: used in textstats
 const float GLOBAL_PATTERN_MAX_LOAD_FACTOR = 0.05;
 const float GLOBAL_NGRAMS_MAX_LOAD_FACTOR = 0.25;
-
-// compiler has to be newer than clang 3.30 or gcc 4.8.1
-#if (CLANG_VERSION >= 30300 || GCC_VERSION >= 40801)
-#define QUANTEDA_USE_TBB true 
-#else
-#define QUANTEDA_USE_TBB false
-#endif
 
 namespace quanteda{
     
