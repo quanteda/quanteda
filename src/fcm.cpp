@@ -122,7 +122,6 @@ S4 cpp_fcm(TokensPtr xptr,
 
 
 /***R
-RcppParallel::setThreadOptions(1)
 toks <- list(rep(1:10, 10), rep(5:15, 10))
 toks <- list(c(1, 4, 2, 3))
 types <- unique(unlist(toks))

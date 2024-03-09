@@ -36,7 +36,6 @@ Text skipgram(const Text &tokens,
 
 /* 
 * Function to generates ngrams/skipgrams
-* The number of threads is set by RcppParallel::setThreadOptions()
 * @used tokens_ngrams()
 * @creator Kohei Watanabe
 * @param delim_ string to join words

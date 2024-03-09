@@ -122,7 +122,6 @@ Text lookup(Text tokens,
 
 /* 
 * Function to find dictionary keywords
-* The number of threads is set by RcppParallel::setThreadOptions()
 * @used tokens_lookup()
 * @creator Kohei Watanabe
 * @param words_ list of dictionary values

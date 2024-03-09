@@ -124,7 +124,6 @@ Text match_comp(Text tokens,
 
 /* 
  * Function to compound tokens
- * The number of threads is set by RcppParallel::setThreadOptions()
  * @used tokens_compound()
  * @creator Kohei Watanabe
  * @param compounds_ list of patterns to substitute

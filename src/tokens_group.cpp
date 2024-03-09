@@ -5,7 +5,6 @@ using namespace quanteda;
 
 /* 
  * Function to group documents
- * The number of threads is set by RcppParallel::setThreadOptions()
  * @used tokens_group()
  * @creator Kohei Watanabe
  * @param groups_ group index

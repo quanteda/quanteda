@@ -88,7 +88,6 @@ Segments segment(Text tokens,
 
 /* 
  * Function to segment documents
- * The number of threads is set by RcppParallel::setThreadOptions()
  * @used tokens_segment()
  * @creator Kohei Watanabe
  * @param texts_ tokens ojbect
