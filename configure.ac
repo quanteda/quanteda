@@ -20,16 +20,16 @@ AC_PROG_CC
 AC_PROG_CXX
 
 # Default to no Intel TBB
-TBBFLAG=
+TBBFLAGS=
 TBBLIBS=
 
 # If tbb.h is found, define TBB
 AC_CHECK_HEADER([tbb/tbb.h],
-   [TBBFLAG=-DTBB;TBBLIBS=-ltbb],
+   [TBBFLAGS=-DTBB;TBBLIBS=-ltbb],
    [AC_MSG_WARN([parallel computing is disabled becuase tbb/tbb.h (Intel TBB) is not found])])
 
 # Now substitute these variables in src/Makevars.in to create src/Makevars
-AC_SUBST(TBB_CFLAGS, ${TBBFLAG})
+AC_SUBST(TBB_CFLAGS, ${TBBFLAGS})
 AC_SUBST(TBB_LIBS, ${TBBLIBS})
 AC_CONFIG_FILES([src/Makevars])
 AC_OUTPUT
