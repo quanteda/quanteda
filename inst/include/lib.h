@@ -8,7 +8,7 @@
 #include <algorithm>
 #include "tokens.h"
 #ifdef TBB
-#include <oneapi/tbb.h>
+#include <tbb/tbb.h>
 using namespace oneapi;
 #define QUANTEDA_USE_TBB true
 #else
