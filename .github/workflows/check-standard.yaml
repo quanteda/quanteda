@@ -55,5 +55,5 @@ jobs:
 
       - uses: r-lib/actions/check-r-package@v2
         with:
-          args: 'c("--as-cran", "--clean")'
+          args: 'c("--as-cran")'
           upload-snapshots: true
