@@ -22,7 +22,6 @@ std::string kwic(Text tokens,
 
 /* 
  * Function to create kwic
- * The number of threads is set by RcppParallel::setThreadOptions()
  * @used kwic()
  * @creator Kohei Watanabe
  * @param documents_ document index 

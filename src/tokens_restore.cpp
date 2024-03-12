@@ -60,7 +60,6 @@ Text join_mark(Text tokens,
 
 /* 
  * This function substitutes features in tokens object with new IDs. 
- * The number of threads is set by RcppParallel::setThreadOptions()
  * @used tokens_restore()
  * @creator Kohei Watanabe
  * @param texts_ tokens ojbect
