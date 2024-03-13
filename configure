@@ -4392,8 +4392,8 @@ if test "x$ac_cv_header_tbb_tbb_h" = xyes
 then :
   TBBFLAG=-DTBB;TBBLIBS=-ltbb
 else $as_nop
-  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: WARNING: parallel computing is disabled becuase tbb/tbb.h (Intel TBB) is not found" >&5
-printf "%s\n" "$as_me: WARNING: parallel computing is disabled becuase tbb/tbb.h (Intel TBB) is not found" >&2;}
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: WARNING: parallel computing is disabled because tbb/tbb.h (Intel TBB) is not found" >&5
+printf "%s\n" "$as_me: WARNING: parallel computing is disabled because tbb/tbb.h (Intel TBB) is not found" >&2;}
 fi
 
 
