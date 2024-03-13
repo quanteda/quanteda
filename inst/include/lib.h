@@ -1,6 +1,10 @@
 #ifndef QUANTEDA4 // prevent redefining
 #define QUANTEDA4
 
+#ifndef ARMA_64BIT_WORD
+#define ARMA_64BIT_WORD
+#endif
+
 #include <RcppArmadillo.h>
 #include <unordered_map>
 #include <unordered_set>
