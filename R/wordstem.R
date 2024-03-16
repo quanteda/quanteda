@@ -12,7 +12,7 @@
 #'   codes)
 #' @seealso [wordStem][SnowballC::wordStem]
 #'
-#' @references <http://snowball.tartarus.org/>
+#' @references <https://snowballstem.org/>
 #'
 #'   <http://www.iso.org/iso/home/standards/language_codes.htm> for the
 #'   ISO-639 language codes
