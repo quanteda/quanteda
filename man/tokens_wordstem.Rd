@@ -61,7 +61,7 @@ dfm_wordstem(origdfm)
 
 }
 \references{
-\url{http://snowball.tartarus.org/}
+\url{https://snowballstem.org/}
 
 \url{https://www.iso.org/iso-639-language-code} for the
 ISO-639 language codes

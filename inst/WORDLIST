@@ -270,3 +270,5 @@ aaa
 RBBI
 RuleBasedBreakIterator
 yml
+RcppParallel
+RcppArmadillo
