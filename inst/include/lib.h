@@ -5,7 +5,7 @@
 #define ARMA_64BIT_WORD
 #endif
 
-#include <RcppArmadillo.h>
+#include <Rcpp.h>
 #include <unordered_map>
 #include <unordered_set>
 #include <limits>
