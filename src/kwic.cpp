@@ -22,7 +22,6 @@ std::string kwic(Text tokens,
 
 /* 
  * Function to create kwic
- * The number of threads is set by RcppParallel::setThreadOptions()
  * @used kwic()
  * @creator Kohei Watanabe
  * @param documents_ document index 
@@ -76,7 +75,7 @@ DataFrame cpp_kwic(TokensPtr xptr,
     });
     
 #else
-    for (int g = 0; g < G; g++) {
+    for (int g = 0; g < (int)G; g++) {
         int h = documents[g] - 1L;
         if (h < 0 || (int)H <= h)
             throw std::range_error("Invalid documents");

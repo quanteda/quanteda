@@ -127,7 +127,6 @@ Text remove_token(Text tokens,
 
 /* 
  * Function to selects tokens
- * The number of threads is set by RcppParallel::setThreadOptions()
  * @used tokens_select()
  * @creator Kohei Watanabe
  * @param words_ list of features to remove or keep 

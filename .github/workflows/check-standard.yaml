@@ -27,8 +27,17 @@ jobs:
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       R_KEEP_PKG_SOURCE: yes
-
+    
     steps:
+      - if: matrix.config.os == 'ubuntu-latest'
+        run: |
+            sudo apt update
+            sudo apt install libtbb-dev
+      - if: matrix.config.os == 'macos-latest'
+        run: |
+            brew update
+            brew install tbb
+        
       - uses: actions/checkout@v3
 
       - uses: r-lib/actions/setup-pandoc@v2
@@ -46,4 +55,5 @@ jobs:
 
       - uses: r-lib/actions/check-r-package@v2
         with:
+          args: 'c("--no-vignettes", "--no-manual", "--as-cran")'
           upload-snapshots: true

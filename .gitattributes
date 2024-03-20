@@ -13,3 +13,6 @@ inst/doc/quickstart.html    linguist-generated
 *.Rdx       binary
 *.Rmd       text
 *.R         text
+
+# Fix for R checks
+configure.ac text eol=lf

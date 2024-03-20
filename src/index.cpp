@@ -33,7 +33,6 @@ void index(Text tokens,
 
 /* 
  * Function to locates patterns in tokens 
- * The number of threads is set by RcppParallel::setThreadOptions()
  * @used index()
  * @creator Kohei Watanabe
  * @param words_ list of target features

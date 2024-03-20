@@ -32,14 +32,14 @@ Imports:
     magrittr,
     Matrix (>= 1.5-0),
     Rcpp (>= 0.12.12),
-    RcppParallel,
     SnowballC,
     stopwords,
     stringi,
     xml2,
     yaml
-LinkingTo: Rcpp, RcppParallel, RcppArmadillo (>= 0.7.600.1.0)
-SystemRequirements: GNU make
+LinkingTo: Rcpp, RcppArmadillo (>= 0.7.600.1.0)
+SystemRequirements: Intel TBB: tbb-devel (Fedora, CentOS, RHEL), libtbb-dev (Debian, Ubuntu, etc) or tbb (Mac).
+NeedsCompilation: yes
 Suggests:
     rmarkdown,
     spelling,
