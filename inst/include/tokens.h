@@ -1,4 +1,4 @@
-#include <Rcpp.h>
+#include <RcppArmadillo.h>
 // [[Rcpp::plugins(cpp11)]]
 using namespace Rcpp;
 
