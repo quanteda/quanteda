@@ -13,7 +13,9 @@
 #include "tokens.h"
 #ifdef TBB
 #include <tbb/tbb.h>
-using namespace oneapi;
+#ifdef ONETBB_SPEC_VERSION
+using namespace oneapi; // only Windows R 4.3.x or later
+#endif
 #define QUANTEDA_USE_TBB true
 #else
 #define QUANTEDA_USE_TBB false
