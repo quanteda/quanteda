@@ -167,7 +167,7 @@ TokensPtr cpp_tokens_compound(TokensPtr xptr,
 
     Ngrams comps = Rcpp::as<Ngrams>(compounds_);
     std::vector<std::size_t> spans(comps.size());
-    for (size_t g = 0; g < comps.size(); g++) {
+    for (std::size_t g = 0; g < comps.size(); g++) {
         Ngram comp = comps[g];
         // ignore patterns with paddings
         if (std::find(comp.begin(), comp.end(), 0) == comp.end()) {

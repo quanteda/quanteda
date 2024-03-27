@@ -18,8 +18,13 @@ tokens_restore.default <- function(x) {
 tokens_restore.tokens_xptr <- function(x) {
     type <- get_types(x)
     attrs <- attributes(x)
-    result <- cpp_tokens_restore(x, list(match("\uE001", type)), list(match("\uE002", type)), 
-                                 "", get_threads())
+    
+    left <- pattern2id("\uE001", type, valuetype = "fixed")
+    right <- pattern2id("\uE002", type, valuetype = "fixed")
+    if (!length(left) || !length(right)) 
+        return(x)
+    
+    result <- cpp_tokens_restore(x, left, right, "", get_threads())
     rebuild_tokens(result, attrs)
 }
 
