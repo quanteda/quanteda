@@ -1,3 +1,19 @@
+# Re-submission notes
+
+Fixed:
+
+- Breaking documentation link in two .Rd files in the package **tosca** is now fixed on the **quanteda** side.
+
+- **tidytext** - We have not only informed the package maintainer that their use in a vignette of a function deprecated in v3 (released in 2021) is now defunct, but also we issued a PR to fix this (https://github.com/juliasilge/tidytext/pull/242).
+
+- **RNewsflow** - We have not only informed the package maintainer that their use in a vignette of a function deprecated in v3 (released in 2021) is now defunct, but also we issued a PR to fix this (https://github.com/kasperwelbers/RNewsflow/pull/9).
+
+Not fixed:
+
+- This breaks the **gofastr** package because that package calls functions that we first deprecated in version 3.3 and have now made defunct.  We issued a pull request fixing this for that package nearly six months ago (https://github.com/trinker/gofastr/pull/12) and the package maintainer has yet to accept it.
+
+
+
 # Submission notes
 
 This is both a fix for issues noted on CRAN checks and a major update to the package.  The major update is to bring new functionalities to quanteda, make the code more efficient, and rationalise the code through new deprecations and removals.
@@ -23,15 +39,8 @@ Major changes include:
 
 ## R CMD check results
 
-All checks are clean, locally and on GitHub's CI for multiple platforms, with the exception of this NOTE:
-
-* checking compilation flags in Makevars ... NOTE
-Package has both ‘src/Makevars.in’ and ‘src/Makevars’.
-Installation with --no-configure' is unlikely to work.  If you intended
-‘src/Makevars’ to be used on Windows, rename it to ‘src/Makevars.win’
-otherwise remove it.  If ‘configure’ created ‘src/Makevars’, you need a
-‘cleanup’ script.
+All checks are clean, locally and on GitHub's CI for multiple platforms.
 
 ## Reverse dependency and other package conflicts
 
-According to revdepcheck::revdep_check(), this breaks the **gofastr** package because that package calls functions that we first deprecated in version 3.3 and have now made defunct.  We issued a pull request fixing this for that package over four months ago (https://github.com/trinker/gofastr/pull/12) and the package maintainer has yet to accept it.
+None, except those noted above.
