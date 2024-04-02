@@ -3,6 +3,7 @@
 \docType{package}
 \name{quanteda-package}
 \alias{quanteda-package}
+\alias{quanteda}
 \title{An R package for the quantitative analysis of textual data}
 \description{
 Functions for creating and managing textual corpora, extracting
