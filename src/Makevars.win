@@ -1,2 +1,2 @@
 PKG_LIBS = $(LAPACK_LIBS) $(BLAS_LIBS) `$(R_HOME)/bin${R_ARCH_BIN}/Rscript.exe ../inst/libtbb.R` -fstack-protector
-PKG_CXXFLAGS = -I../inst/include -DTBB
+PKG_CXXFLAGS = -I'../inst/include' -DTBB
