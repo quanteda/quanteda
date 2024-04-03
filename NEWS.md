@@ -18,7 +18,7 @@
 
 * Added a new argument `remove_padding` to `ntoken()` and `ntype()` that allows for not counting padding that might have been left over from `tokens_remove(x, padding = TRUE`). This changes the previous number of types from `ntype()` when pads exist, by counting pads by default. (#2336)
 
-* Removed dependency on **RcppParallel** to improve the stability of the C++ code. This change requires the users of Linux-like OS to install the Intel TBB library manually to enable parallel computing.
+* Removed dependency on **RcppParallel** to improve the stability of the C++ code and bundle the Intel oneAPI TBB library for Linux-like systems.
 
 ## Removals
 
