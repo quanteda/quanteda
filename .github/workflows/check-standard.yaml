@@ -29,15 +29,6 @@ jobs:
       R_KEEP_PKG_SOURCE: yes
     
     steps:
-      - if: matrix.config.os == 'ubuntu-latest'
-        run: |
-            sudo apt update
-            sudo apt install libtbb-dev
-      - if: matrix.config.os == 'macos-latest'
-        run: |
-            brew update
-            brew install tbb
-        
       - uses: actions/checkout@v3
 
       - uses: r-lib/actions/setup-pandoc@v2
