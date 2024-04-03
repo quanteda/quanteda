@@ -38,7 +38,7 @@ Imports:
     xml2,
     yaml
 LinkingTo: Rcpp, RcppArmadillo (>= 0.7.600.1.0)
-SystemRequirements: Intel TBB: tbb-devel (Fedora, CentOS, RHEL), libtbb-dev (Debian, Ubuntu, etc) or tbb (Mac).
+SystemRequirements: Intel oneAPI Threading Building Blocks
 NeedsCompilation: yes
 Suggests:
     rmarkdown,
