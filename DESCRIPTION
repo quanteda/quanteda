@@ -66,7 +66,7 @@ Suggests:
 Enhances:
     quanteda.textmodels,
     quanteda.textstats,
-    quanteda.textplots,
+    quanteda.textplots
 URL: https://quanteda.io
 Encoding: UTF-8
 BugReports: https://github.com/quanteda/quanteda/issues
