@@ -46,26 +46,21 @@ Suggests:
     testthat,
     formatR,
     tm (>= 0.6),
-    tokenizers,
     knitr,
-    lda,
     lsa,
-    dplyr,
-    purrr,
-    quanteda.textmodels,
-    quanteda.textstats,
-    quanteda.textplots,
-    RColorBrewer,
     rlang,
-    slam,
+    slam
+Enhances:
+    dplyr,
+    lda,
+    purrr,
     spacyr,
-    stm,
-    text2vec,
-    topicmodels,
-    tibble,
-    tidytext,
-    xtable,
-    ggplot2
+    stm, 
+    text2vec, 
+    tibble, 
+    tidytext, 
+    tokenizers, 
+    topicmodels
 URL: https://quanteda.io
 Encoding: UTF-8
 BugReports: https://github.com/quanteda/quanteda/issues
