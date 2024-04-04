@@ -66,6 +66,17 @@ from our GitHub pages:
 
 ### Install
 
+Since **quanteda** v4.0.0, it requires the Intel oneAPI Threading
+Building Blocks for parallel computing. Windows and Mac users can
+download a binary package from CRAN, but Linux users must install the
+library manually before installing using the commands below:
+
+    # Fedora, CentOS, RHEL
+    sudo yum install tbb-devel
+
+    # Debian and Ubuntu
+    sudo apt install libtbb-dev
+
 The normal way from CRAN, using your R GUI or
 
     install.packages("quanteda") 
