@@ -2,16 +2,15 @@
 
 Fixed:
 
-- Breaking documentation link in two .Rd files in the package **tosca** is now fixed on the **quanteda** side.
+- Breaking documentation link in two .Rd files in the package **tosca**: fixed on the **quanteda** side.
 
-- **tidytext** - We have not only informed the package maintainer that their use in a vignette of a function deprecated in v3 (released in 2021) is now defunct, but also we issued a PR to fix this (https://github.com/juliasilge/tidytext/pull/242).
+- **RNewsflow** - Fised on CRAN, based on our PR (https://github.com/kasperwelbers/RNewsflow/pull/9).
 
-- **RNewsflow** - We have not only informed the package maintainer that their use in a vignette of a function deprecated in v3 (released in 2021) is now defunct, but also we issued a PR to fix this (https://github.com/kasperwelbers/RNewsflow/pull/9).
+Informed and pending a fix:
 
-Not fixed:
+- **tidytext**: We have not only informed the package maintainer that their use in a vignette of a function deprecated in v3 (released in 2021) is now defunct, but also we issued a PR to fix this (https://github.com/juliasilge/tidytext/pull/242).
 
-- This breaks the **gofastr** package because that package calls functions that we first deprecated in version 3.3 and have now made defunct.  We issued a pull request fixing this for that package nearly six months ago (https://github.com/trinker/gofastr/pull/12) and the package maintainer has yet to accept it.
-
+- **gofastr**: That package calls functions that we first deprecated in version 3.3 and have now made defunct.  We issued a pull request fixing this for that package nearly six months ago (https://github.com/trinker/gofastr/pull/12) and the package maintainer has yet to accept it.
 
 
 # Submission notes
@@ -31,8 +30,8 @@ Major changes include:
 
 ## Test environments
 
-* local macOS 14.2.1, R 4.3.2
-* Ubuntu 22.04 LTS, R 4.3.2
+* local macOS 14.2.1, R 4.3.3
+* Ubuntu 22.04 LTS, R 4.3.3
 * Windows release via devtools::check_win_release()
 * Windows devel via devtools::check_win_devel()
 * Windows oldrelease via devtools::check_win_oldrelease()
