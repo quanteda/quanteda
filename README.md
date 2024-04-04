@@ -83,10 +83,10 @@ and more to come.
 
 ### Install
 
-Since **quanteda** v4.0.0, it requires the Intel oneAPI Threading
-Building Blocks for parallel computing. Windows and Mac users can
-download a binary package from CRAN, but Linux users must install the
-library manually before installing using the commands below:
+Since **quanteda** v4.0, it requires the Intel oneAPI Threading Building
+Blocks for parallel computing. Windows and Mac users can download a
+binary package from CRAN, but Linux users must install the library by
+executing the commands below:
 
 ``` bash
 # Fedora, CentOS, RHEL
