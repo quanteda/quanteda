@@ -139,21 +139,21 @@
 <div class="section level3">
 <h3 id="bug-fixes-and-stability-enhancements-1-4-0">Bug fixes and stability enhancements<a class="anchor" aria-label="anchor" href="#bug-fixes-and-stability-enhancements-1-4-0"></a></h3>
 <ul><li>Fixed bug in <code><a href="../reference/dfm_compress.html">dfm_compress()</a></code> and <code><a href="../reference/dfm_group.html">dfm_group()</a></code> that changed or deleted docvars attributes of dfm objects (<a href="https://github.com/quanteda/quanteda/issues/1506" class="external-link">#1506</a>).</li>
-<li>Fixed a bug in <code><a href="https://rdrr.io/pkg/quanteda.textplots/man/textplot_xray.html" class="external-link">textplot_xray()</a></code> that caused incorrect facet labels when a pattern contained multiple list elements or values (<a href="https://github.com/quanteda/quanteda/issues/1514" class="external-link">#1514</a>).</li>
+<li>Fixed a bug in <code>textplot_xray()</code> that caused incorrect facet labels when a pattern contained multiple list elements or values (<a href="https://github.com/quanteda/quanteda/issues/1514" class="external-link">#1514</a>).</li>
 <li>
 <code><a href="../reference/kwic.html">kwic()</a></code> now correctly returns the pattern associated with each match as the <code>"keywords"</code> attribute, for all <code>pattern</code> types (<a href="https://github.com/quanteda/quanteda/issues/1515" class="external-link">#1515</a>)</li>
-<li>Implemented some improvements in efficiency and computation of unusual edge cases for <code><a href="https://quanteda.io/reference/textstat_simil.html">textstat_simil()</a></code> and <code><a href="https://quanteda.io/reference/textstat_simil.html">textstat_dist()</a></code>.</li>
+<li>Implemented some improvements in efficiency and computation of unusual edge cases for <code>textstat_simil()</code> and <code>textstat_dist()</code>.</li>
 </ul></div>
 <div class="section level3">
 <h3 id="new-features-1-4-0">New features<a class="anchor" aria-label="anchor" href="#new-features-1-4-0"></a></h3>
 <ul><li>
-<code><a href="https://quanteda.io/reference/textstat_lexdiv.html">textstat_lexdiv()</a></code> now works on tokens objects, not just dfm objects. New methods of lexical diversity now include MATTR (the Moving-Average Type-Token Ratio, Covington &amp; McFall 2010) and MSTTR (Mean Segmental Type-Token Ratio).</li>
+<code>textstat_lexdiv()</code> now works on tokens objects, not just dfm objects. New methods of lexical diversity now include MATTR (the Moving-Average Type-Token Ratio, Covington &amp; McFall 2010) and MSTTR (Mean Segmental Type-Token Ratio).</li>
 <li>New function <code><a href="../reference/tokens_split.html">tokens_split()</a></code> allows splitting single into multiple tokens based on a pattern match. (<a href="https://github.com/quanteda/quanteda/issues/1500" class="external-link">#1500</a>)</li>
 <li>New function <code><a href="../reference/tokens_chunk.html">tokens_chunk()</a></code> allows splitting tokens into new documents of equally-sized “chunks”. (<a href="https://github.com/quanteda/quanteda/issues/1520" class="external-link">#1520</a>)</li>
-<li>New function <code><a href="https://quanteda.io/reference/textstat_entropy.html">textstat_entropy()</a></code> now computes entropy for a dfm across feature or document margins.</li>
-<li>The documentation for <code><a href="https://quanteda.io/reference/textstat_readability.html">textstat_readability()</a></code> is vastly improved, now providing detailing all formulas and providing full references.</li>
+<li>New function <code>textstat_entropy()</code> now computes entropy for a dfm across feature or document margins.</li>
+<li>The documentation for <code>textstat_readability()</code> is vastly improved, now providing detailing all formulas and providing full references.</li>
 <li>New function <code><a href="../reference/dfm_match.html">dfm_match()</a></code> allows a user to specify the features in a dfm according to a fixed vector of feature names, including those of another dfm. Replaces <code>dfm_select(x, pattern)</code> where <code>pattern</code> was a dfm.</li>
-<li>A new argument <code>vertex_labelsize</code> added to <code><a href="https://rdrr.io/pkg/quanteda.textplots/man/textplot_network.html" class="external-link">textplot_network()</a></code> to allow more precise control of label sizes, either globally or individually.</li>
+<li>A new argument <code>vertex_labelsize</code> added to <code>textplot_network()</code> to allow more precise control of label sizes, either globally or individually.</li>
 </ul></div>
 <div class="section level3">
 <h3 id="behaviour-changes-1-4-0">Behaviour changes<a class="anchor" aria-label="anchor" href="#behaviour-changes-1-4-0"></a></h3>
