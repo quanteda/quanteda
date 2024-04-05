@@ -26,24 +26,37 @@ TBBLIBS=
 # If tbb.h and libtbb are found, define TBB and add -ltbb
 AC_CHECK_HEADER([tbb/tbb.h],,
     [AC_MSG_WARN([parallel computing is disabled because tbb/tbb.h (Intel TBB) is not found])])
-AC_MSG_CHECKING([libtbb available for linking])
-AC_LANG(C++)
-SAVED_LDFLAGS=$LDFLAGS
-LDFLAGS="$LDFLAGS -ltbb"
-HAVE_TBB=no
-AC_LINK_IFELSE(
-    [AC_LANG_PROGRAM([#include <tbb/tbb.h>],
-      [major_version()])]
-    [TBBFLAGS=-DTBB;TBBLIBS=-ltbb] [HAVE_TBB=yes],
-    [AC_MSG_WARN([parallel computing is disabled because libtbb (Intel TBB devel package) is absent])])
-if test ${HAVE_TBB} = no ; then
+AC_MSG_CHECKING([libtbb available for linking:])
+# https://link.springer.com/chapter/10.1007/978-1-4842-4398-5_1 fig 1.4
+[cat > libtbb_test.cpp <<_EOCONF
+#include <iostream>
+#include <tbb/tbb.h>
+
+int main() { 
+  tbb::parallel_invoke(
+    []() { std::cout << " Hello " << std::endl; },
+    []() { std::cout << " TBB! " << std::endl; }
+  );
+  return 0;
+}
+_EOCONF]
+  ${CXX} ${CXXFLAGS} -o libtbb_test libtbb_test.cpp -ltbb 2> errors.txt
+
+if test `echo $?` -ne 0 ; then
     AC_MSG_RESULT(no)
+    AC_MSG_WARN([parallel computing is disabled because libtbb (Intel TBB devel package) is absent])
 else
     AC_MSG_RESULT(yes)
+    TBBFLAGS=-DTBB
+    TBBLIBS=-ltbb
 fi
-LDFLAGS=$SAVED_LDFLAGS
+rm -f libtbb_test.cpp libtbb_test errors.txt
 # Now substitute these variables in src/Makevars.in to create src/Makevars
 AC_SUBST(TBB_CFLAGS, ${TBBFLAGS})
 AC_SUBST(TBB_LIBS, ${TBBLIBS})
+
+AC_MSG_NOTICE([Package CPP flags: ${TBB_CFLAGS}])
+AC_MSG_NOTICE([Package LIBS: ${TBB_LIBS}])
+
 AC_CONFIG_FILES([src/Makevars])
 AC_OUTPUT

@@ -1569,53 +1569,6 @@ printf "%s\n" "$ac_res" >&6; }
   eval $as_lineno_stack; ${as_lineno_stack:+:} unset as_lineno
 
 } # ac_fn_cxx_check_header_compile
-
-# ac_fn_cxx_try_link LINENO
-# -------------------------
-# Try to link conftest.$ac_ext, and return whether this succeeded.
-ac_fn_cxx_try_link ()
-{
-  as_lineno=${as_lineno-"$1"} as_lineno_stack=as_lineno_stack=$as_lineno_stack
-  rm -f conftest.$ac_objext conftest.beam conftest$ac_exeext
-  if { { ac_try="$ac_link"
-case "(($ac_try" in
-  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
-  *) ac_try_echo=$ac_try;;
-esac
-eval ac_try_echo="\"\$as_me:${as_lineno-$LINENO}: $ac_try_echo\""
-printf "%s\n" "$ac_try_echo"; } >&5
-  (eval "$ac_link") 2>conftest.err
-  ac_status=$?
-  if test -s conftest.err; then
-    grep -v '^ *+' conftest.err >conftest.er1
-    cat conftest.er1 >&5
-    mv -f conftest.er1 conftest.err
-  fi
-  printf "%s\n" "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
-  test $ac_status = 0; } && {
-	 test -z "$ac_cxx_werror_flag" ||
-	 test ! -s conftest.err
-       } && test -s conftest$ac_exeext && {
-	 test "$cross_compiling" = yes ||
-	 test -x conftest$ac_exeext
-       }
-then :
-  ac_retval=0
-else $as_nop
-  printf "%s\n" "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-	ac_retval=1
-fi
-  # Delete the IPA/IPO (Inter Procedural Analysis/Optimization) information
-  # created by the PGI compiler (conftest_ipa8_conftest.oo), as it would
-  # interfere with the next link command; also delete a directory that is
-  # left behind by Apple's compiler.  We do this before executing the actions.
-  rm -rf conftest.dSYM conftest_ipa8_conftest.oo
-  eval $as_lineno_stack; ${as_lineno_stack:+:} unset as_lineno
-  as_fn_set_status $ac_retval
-
-} # ac_fn_cxx_try_link
 ac_configure_args_raw=
 for ac_arg
 do
@@ -4443,48 +4396,45 @@ else $as_nop
 printf "%s\n" "$as_me: WARNING: parallel computing is disabled because tbb/tbb.h (Intel TBB) is not found" >&2;}
 fi
 
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking libtbb available for linking" >&5
-printf %s "checking libtbb available for linking... " >&6; }
-ac_ext=cpp
-ac_cpp='$CXXCPP $CPPFLAGS'
-ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
-ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
-ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
-
-SAVED_LDFLAGS=$LDFLAGS
-LDFLAGS="$LDFLAGS -ltbb"
-HAVE_TBB=no
-cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking libtbb available for linking:" >&5
+printf %s "checking libtbb available for linking:... " >&6; }
+# https://link.springer.com/chapter/10.1007/978-1-4842-4398-5_1 fig 1.4
+cat > libtbb_test.cpp <<_EOCONF
+#include <iostream>
 #include <tbb/tbb.h>
-int
-main (void)
-{
-major_version()
-  ;
+
+int main() {
+  tbb::parallel_invoke(
+    []() { std::cout << " Hello " << std::endl; },
+    []() { std::cout << " TBB! " << std::endl; }
+  );
   return 0;
 }
-    TBBFLAGS=-DTBB;TBBLIBS=-ltbb HAVE_TBB=yes
-_ACEOF
-if ac_fn_cxx_try_link "$LINENO"
-then :
-  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: WARNING: parallel computing is disabled because libtbb (Intel TBB devel package) is absent" >&5
-printf "%s\n" "$as_me: WARNING: parallel computing is disabled because libtbb (Intel TBB devel package) is absent" >&2;}
-fi
-rm -f core conftest.err conftest.$ac_objext conftest.beam \
-    conftest$ac_exeext conftest.$ac_ext
-if test ${HAVE_TBB} = no ; then
+_EOCONF
+  ${CXX} ${CXXFLAGS} -o libtbb_test libtbb_test.cpp -ltbb 2> errors.txt
+
+if test `echo $?` -ne 0 ; then
     { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
 printf "%s\n" "no" >&6; }
+    { printf "%s\n" "$as_me:${as_lineno-$LINENO}: WARNING: parallel computing is disabled because libtbb (Intel TBB devel package) is absent" >&5
+printf "%s\n" "$as_me: WARNING: parallel computing is disabled because libtbb (Intel TBB devel package) is absent" >&2;}
 else
     { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: yes" >&5
 printf "%s\n" "yes" >&6; }
+    TBBFLAGS=-DTBB
+    TBBLIBS=-ltbb
 fi
-LDFLAGS=$SAVED_LDFLAGS
+rm -f libtbb_test.cpp libtbb_test errors.txt
 # Now substitute these variables in src/Makevars.in to create src/Makevars
 TBB_CFLAGS=${TBBFLAGS}
 
 TBB_LIBS=${TBBLIBS}
+
+
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: Package CPP flags: ${TBB_CFLAGS}" >&5
+printf "%s\n" "$as_me: Package CPP flags: ${TBB_CFLAGS}" >&6;}
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: Package LIBS: ${TBB_LIBS}" >&5
+printf "%s\n" "$as_me: Package LIBS: ${TBB_LIBS}" >&6;}
 
 ac_config_files="$ac_config_files src/Makevars"
 
