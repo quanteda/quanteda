@@ -23,11 +23,25 @@ AC_PROG_CXX
 TBBFLAGS=
 TBBLIBS=
 
-# If tbb.h is found, define TBB
-AC_CHECK_HEADER([tbb/tbb.h],
-   [TBBFLAG=-DTBB;TBBLIBS=-ltbb],
-   [AC_MSG_WARN([parallel computing is disabled because tbb/tbb.h (Intel TBB) is not found])])
-
+# If tbb.h and libtbb are found, define TBB and add -ltbb
+AC_CHECK_HEADER([tbb/tbb.h],,
+    [AC_MSG_WARN([parallel computing is disabled because tbb/tbb.h (Intel TBB) is not found])])
+AC_MSG_CHECKING([libtbb available for linking])
+AC_LANG(C++)
+SAVED_LDFLAGS=$LDFLAGS
+LDFLAGS="$LDFLAGS -ltbb"
+HAVE_TBB=no
+AC_LINK_IFELSE(
+    [AC_LANG_PROGRAM([#include <tbb/tbb.h>],
+      [major_version()])]
+    [TBBFLAGS=-DTBB;TBBLIBS=-ltbb] [HAVE_TBB=yes],
+    [AC_MSG_WARN([parallel computing is disabled because libtbb (Intel TBB devel package) is absent])])
+if test ${HAVE_TBB} = no ; then
+    AC_MSG_RESULT(no)
+else
+    AC_MSG_RESULT(yes)
+fi
+LDFLAGS=$SAVED_LDFLAGS
 # Now substitute these variables in src/Makevars.in to create src/Makevars
 AC_SUBST(TBB_CFLAGS, ${TBBFLAGS})
 AC_SUBST(TBB_LIBS, ${TBBLIBS})
