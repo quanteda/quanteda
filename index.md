@@ -83,6 +83,9 @@ To install TBB on Linux:
     # Debian and Ubuntu
     sudo apt install libtbb-dev
 
+Windows or macOS users do not have to install TBB or any other packages
+to enable parallel computing when installing **quanteda** from CRAN.
+
 ### Compile from source (macOS and Windows)
 
 Because this compiles some C++ and Fortran source code, you will need to
