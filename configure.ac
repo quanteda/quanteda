@@ -23,10 +23,9 @@ AC_PROG_CXX
 TBBFLAGS=
 TBBLIBS=
 
-# If tbb.h and libtbb are found, define TBB and add -ltbb
-AC_CHECK_HEADER([tbb/tbb.h],,
-    [AC_MSG_WARN([parallel computing is disabled because tbb/tbb.h (Intel TBB) is not found])])
-AC_MSG_CHECKING([libtbb available for linking:])
+# If tbb/tbb.h and libtbb are found, define TBB and add -ltbb
+
+AC_MSG_CHECKING([tbb available for compiling and linking:])
 # https://link.springer.com/chapter/10.1007/978-1-4842-4398-5_1 fig 1.4
 [cat > libtbb_test.cpp <<_EOCONF
 #include <iostream>
@@ -40,11 +39,11 @@ int main() {
   return 0;
 }
 _EOCONF]
-  ${CXX} ${CXXFLAGS} -o libtbb_test libtbb_test.cpp -ltbb 2> errors.txt
+${CXX} ${CXXFLAGS} -o libtbb_test libtbb_test.cpp -ltbb 2> errors.txt
 
 if test `echo $?` -ne 0 ; then
     AC_MSG_RESULT(no)
-    AC_MSG_WARN([parallel computing is disabled because libtbb (Intel TBB devel package) is absent])
+    AC_MSG_WARN([parallel computing is disabled because the Intel TBB devel package is absent])
 else
     AC_MSG_RESULT(yes)
     TBBFLAGS=-DTBB
