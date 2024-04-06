@@ -26,17 +26,22 @@ TBBLIBS=
 # If tbb/tbb.h and libtbb are found, define TBB and add -ltbb
 
 AC_MSG_CHECKING([tbb available for compiling and linking:])
-# https://link.springer.com/chapter/10.1007/978-1-4842-4398-5_1 fig 1.4
 [cat > libtbb_test.cpp <<_EOCONF
-#include <iostream>
 #include <tbb/tbb.h>
 
 int main() { 
-  tbb::parallel_invoke(
-    []() { std::cout << " Hello " << std::endl; },
-    []() { std::cout << " TBB! " << std::endl; }
-  );
-  return 0;
+  int H = 1000;
+  tbb::concurrent_vector<bool> v(H, false);
+  tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
+    for (int h = r.begin(); h < r.end(); ++h) {
+        v[h] = true;
+    }
+  });
+  if (std::find(begin(v), end(v), false) == end(v)) { // all true
+    return 0;
+  } else {
+    return 1;
+  }
 }
 _EOCONF]
 ${CXX} ${CXXFLAGS} -o libtbb_test libtbb_test.cpp -ltbb 2> errors.txt
