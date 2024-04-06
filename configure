@@ -4298,7 +4298,7 @@ int main() {
         v[h] = true;
     }
   });
-  if (std::find(begin(v), end(v), false) == end(v)) { // all true
+  if (std::find(v.begin(), v.end(), false) == v.end()) { // all true
     return 0;
   } else {
     return 1;
