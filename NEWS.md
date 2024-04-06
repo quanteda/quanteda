@@ -1,3 +1,9 @@
+# quanteda 4.0.1
+
+## Bug fixes and stability enhancements
+
+* Make detection of Intel oneAPI Threads Building Blocks (TBB) library more reliable.
+
 # quanteda 4.0.0
 
 ## Changes and additions
