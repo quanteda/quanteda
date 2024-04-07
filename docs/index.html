@@ -208,23 +208,32 @@
 <h2 id="how-to">How To…<a class="anchor" aria-label="anchor" href="#how-to"></a>
 </h2>
 <div class="section level3">
-<h3 id="install">Install<a class="anchor" aria-label="anchor" href="#install"></a>
+<h3 id="install-binaries-from-cran">Install (binaries) from CRAN<a class="anchor" aria-label="anchor" href="#install-binaries-from-cran"></a>
 </h3>
-<p>Since <strong>quanteda</strong> v4.0, it requires the Intel oneAPI Threading Building Blocks for parallel computing. Windows and Mac users can download a binary package from CRAN, but Linux users must install the library by executing the commands below:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="co"># Fedora, CentOS, RHEL</span></span>
-<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>sudo yum install tbb<span class="sc">-</span>devel</span>
-<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="co"># Debian and Ubuntu</span></span>
-<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>sudo apt install libtbb<span class="sc">-</span>dev</span></code></pre></div>
 <p>The normal way from CRAN, using your R GUI or</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"quanteda"</span>) </span></code></pre></div>
-<p>Or for the latest development version:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="co"># remotes package required to install quanteda from Github </span></span>
-<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"quanteda/quanteda"</span>) </span></code></pre></div>
-<p>Because this compiles some C++ and Fortran source code, you will need to have installed the appropriate compilers to build the development version.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"quanteda"</span>) </span></code></pre></div>
+<p><strong>(New for quanteda v4.0)</strong> For Linux users: Because all installations on Linux are compiled, Linux users will first need to install the Intel oneAPI Threading Building Blocks for parallel computing for installation to work.</p>
+<p>To install TBB on Linux:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="co"># Fedora, CentOS, RHEL</span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>sudo yum install tbb<span class="sc">-</span>devel</span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a><span class="co"># Debian and Ubuntu</span></span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>sudo apt install libtbb<span class="sc">-</span>dev</span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="use">Use<a class="anchor" aria-label="anchor" href="#use"></a>
+<h3 id="compile-from-source-macos-and-windows">Compile from source (macOS and Windows)<a class="anchor" aria-label="anchor" href="#compile-from-source-macos-and-windows"></a>
+</h3>
+<p>Because this compiles some C++ and Fortran source code, you will need to have installed the appropriate compilers to build the development version.</p>
+<p>You will also need to install TBB:</p>
+<p><strong>macOS:</strong></p>
+<p>After installing <a href="https://brew.sh" class="external-link">Homebrew</a>:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>brew install tbb</span></code></pre></div>
+<p><strong>Windows:</strong></p>
+<p>Install <a href="https://cran.r-project.org/bin/windows/Rtools/" class="external-link">RTools</a>, which includes the TBB libraries.</p>
+</div>
+<div class="section level3">
+<h3 id="use-quanteda">Use <strong>quanteda</strong>
+<a class="anchor" aria-label="anchor" href="#use-quanteda"></a>
 </h3>
 <p>See the <a href="https://quanteda.io/articles/quickstart.html">quick start guide</a> to learn how to use <strong>quanteda</strong>.</p>
 </div>
