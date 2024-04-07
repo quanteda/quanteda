@@ -1,5 +1,5 @@
 Package: quanteda
-Version: 4.0.0
+Version: 4.0.1
 Title: Quantitative Analysis of Textual Data
 Description: A fast, flexible, and comprehensive framework for 
     quantitative text analysis in R.  Provides functionality for corpus management,
@@ -38,7 +38,6 @@ Imports:
     xml2,
     yaml
 LinkingTo: Rcpp, RcppArmadillo (>= 0.7.600.1.0)
-SystemRequirements: Intel TBB: tbb-devel (Fedora, CentOS, RHEL), libtbb-dev (Debian, Ubuntu, etc) or tbb (Mac).
 NeedsCompilation: yes
 Suggests:
     rmarkdown,
