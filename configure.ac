@@ -24,8 +24,30 @@ TBBFLAGS=
 TBBLIBS=
 
 # If tbb/tbb.h and libtbb are found, define TBB and add -ltbb
+AC_MSG_CHECKING([Intel TBB existence:])
+TBB_EXISTS=no
+pkg-config --exists tbb
+SH_TBB_EXISTS=`echo $?`
+if test ${SH_TBB_EXISTS} = 0 ; then
+  TBB_EXISTS=yes
+  AC_MSG_RESULT(yes)
+else 
+  if test ${SH_TBB_EXISTS} = 1 ; then
+    TBB_EXISTS=no
+    AC_MSG_RESULT(no)
+    AC_MSG_WARN([Intel TBB not installed; install TBB devel package for parallel processing or update PKG_CONFIG_PATH environment variable])
+  else
+    TBB_EXISTS=no
+    AC_MSG_RESULT(no)
+    AC_MSG_WARN([pkg-config not found; install pkg-config to auto-detect Intel TBB; assumed absent])
+  fi
+fi
 
-AC_MSG_CHECKING([tbb available for compiling and linking:])
+if test ${TBB_EXISTS} = yes ; then
+  AC_SUBST(TBBFLAGS, [-DTBB `pkg-config --cflags tbb`])
+  AC_SUBST(TBBLIBS, [`pkg-config --libs tbb`])
+
+  AC_MSG_CHECKING([tbb available for compiling and linking:])
 [cat > libtbb_test.cpp <<_EOCONF
 #include <tbb/tbb.h>
 
@@ -44,17 +66,16 @@ int main() {
   }
 }
 _EOCONF]
-${CXX} ${CXXFLAGS} -o libtbb_test libtbb_test.cpp -ltbb 2> errors.txt
+  ${CXX} ${CXXFLAGS} ${TBBFLAGS} -o libtbb_test libtbb_test.cpp ${TBBLIBS} 2> errors.txt
 
-if test `echo $?` -ne 0 ; then
+  if test `echo $?` -ne 0 ; then
     AC_MSG_RESULT(no)
     AC_MSG_WARN([parallel computing is disabled because the Intel TBB devel package is absent])
-else
+  else
     AC_MSG_RESULT(yes)
-    TBBFLAGS=-DTBB
-    TBBLIBS=-ltbb
+  fi
+  rm -f libtbb_test.cpp libtbb_test errors.txt
 fi
-rm -f libtbb_test.cpp libtbb_test errors.txt
 # Now substitute these variables in src/Makevars.in to create src/Makevars
 AC_SUBST(TBB_CFLAGS, ${TBBFLAGS})
 AC_SUBST(TBB_LIBS, ${TBBLIBS})
