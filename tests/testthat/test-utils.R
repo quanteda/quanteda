@@ -172,3 +172,9 @@ test_that("is_pre2 can detect docvars failed to upgrade (#2097)", {
     
 })
 
+test_that("info_tbb() is working", {
+    lis <- info_tbb()
+    expect_equal(names(lis), c("enabled", "max_threads"))
+    expect_type(lis$enabled, "logical")
+    expect_type(lis$max_threads, "integer")
+})

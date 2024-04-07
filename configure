@@ -612,38 +612,6 @@ PACKAGE_STRING='quanteda 4.0.0'
 PACKAGE_BUGREPORT=''
 PACKAGE_URL=''
 
-# Factoring default headers for most tests.
-ac_includes_default="\
-#include <stddef.h>
-#ifdef HAVE_STDIO_H
-# include <stdio.h>
-#endif
-#ifdef HAVE_STDLIB_H
-# include <stdlib.h>
-#endif
-#ifdef HAVE_STRING_H
-# include <string.h>
-#endif
-#ifdef HAVE_INTTYPES_H
-# include <inttypes.h>
-#endif
-#ifdef HAVE_STDINT_H
-# include <stdint.h>
-#endif
-#ifdef HAVE_STRINGS_H
-# include <strings.h>
-#endif
-#ifdef HAVE_SYS_TYPES_H
-# include <sys/types.h>
-#endif
-#ifdef HAVE_SYS_STAT_H
-# include <sys/stat.h>
-#endif
-#ifdef HAVE_UNISTD_H
-# include <unistd.h>
-#endif"
-
-ac_header_cxx_list=
 ac_subst_vars='LTLIBOBJS
 LIBOBJS
 TBB_LIBS
@@ -1536,39 +1504,6 @@ fi
   as_fn_set_status $ac_retval
 
 } # ac_fn_c_try_compile
-
-# ac_fn_cxx_check_header_compile LINENO HEADER VAR INCLUDES
-# ---------------------------------------------------------
-# Tests whether HEADER exists and can be compiled using the include files in
-# INCLUDES, setting the cache variable VAR accordingly.
-ac_fn_cxx_check_header_compile ()
-{
-  as_lineno=${as_lineno-"$1"} as_lineno_stack=as_lineno_stack=$as_lineno_stack
-  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for $2" >&5
-printf %s "checking for $2... " >&6; }
-if eval test \${$3+y}
-then :
-  printf %s "(cached) " >&6
-else $as_nop
-  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-$4
-#include <$2>
-_ACEOF
-if ac_fn_cxx_try_compile "$LINENO"
-then :
-  eval "$3=yes"
-else $as_nop
-  eval "$3=no"
-fi
-rm -f core conftest.err conftest.$ac_objext conftest.beam conftest.$ac_ext
-fi
-eval ac_res=\$$3
-	       { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ac_res" >&5
-printf "%s\n" "$ac_res" >&6; }
-  eval $as_lineno_stack; ${as_lineno_stack:+:} unset as_lineno
-
-} # ac_fn_cxx_check_header_compile
 ac_configure_args_raw=
 for ac_arg
 do
@@ -2388,15 +2323,6 @@ main (int argc, char **argv)
 }
 "
 
-as_fn_append ac_header_cxx_list " stdio.h stdio_h HAVE_STDIO_H"
-as_fn_append ac_header_cxx_list " stdlib.h stdlib_h HAVE_STDLIB_H"
-as_fn_append ac_header_cxx_list " string.h string_h HAVE_STRING_H"
-as_fn_append ac_header_cxx_list " inttypes.h inttypes_h HAVE_INTTYPES_H"
-as_fn_append ac_header_cxx_list " stdint.h stdint_h HAVE_STDINT_H"
-as_fn_append ac_header_cxx_list " strings.h strings_h HAVE_STRINGS_H"
-as_fn_append ac_header_cxx_list " sys/stat.h sys_stat_h HAVE_SYS_STAT_H"
-as_fn_append ac_header_cxx_list " sys/types.h sys_types_h HAVE_SYS_TYPES_H"
-as_fn_append ac_header_cxx_list " unistd.h unistd_h HAVE_UNISTD_H"
 # Check that the precious variables saved in the cache have kept the same
 # value.
 ac_cache_corrupted=false
@@ -4354,53 +4280,55 @@ ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
 
 
 # Default to no Intel TBB
-TBBFLAG=
+TBBFLAGS=
 TBBLIBS=
 
-# If tbb.h is found, define TBB
-ac_header= ac_cache=
-for ac_item in $ac_header_cxx_list
-do
-  if test $ac_cache; then
-    ac_fn_cxx_check_header_compile "$LINENO" $ac_header ac_cv_header_$ac_cache "$ac_includes_default"
-    if eval test \"x\$ac_cv_header_$ac_cache\" = xyes; then
-      printf "%s\n" "#define $ac_item 1" >> confdefs.h
-    fi
-    ac_header= ac_cache=
-  elif test $ac_header; then
-    ac_cache=$ac_item
-  else
-    ac_header=$ac_item
-  fi
-done
+# If tbb/tbb.h and libtbb are found, define TBB and add -ltbb
 
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking tbb available for compiling and linking:" >&5
+printf %s "checking tbb available for compiling and linking:... " >&6; }
+cat > libtbb_test.cpp <<_EOCONF
+#include <tbb/tbb.h>
 
+int main() {
+  int H = 1000;
+  tbb::concurrent_vector<bool> v(H, false);
+  tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
+    for (int h = r.begin(); h < r.end(); ++h) {
+        v[h] = true;
+    }
+  });
+  if (std::find(v.begin(), v.end(), false) == v.end()) { // all true
+    return 0;
+  } else {
+    return 1;
+  }
+}
+_EOCONF
+${CXX} ${CXXFLAGS} -o libtbb_test libtbb_test.cpp -ltbb 2> errors.txt
 
-
-
-
-
-
-if test $ac_cv_header_stdlib_h = yes && test $ac_cv_header_string_h = yes
-then :
-
-printf "%s\n" "#define STDC_HEADERS 1" >>confdefs.h
-
+if test `echo $?` -ne 0 ; then
+    { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+printf "%s\n" "no" >&6; }
+    { printf "%s\n" "$as_me:${as_lineno-$LINENO}: WARNING: parallel computing is disabled because the Intel TBB devel package is absent" >&5
+printf "%s\n" "$as_me: WARNING: parallel computing is disabled because the Intel TBB devel package is absent" >&2;}
+else
+    { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+printf "%s\n" "yes" >&6; }
+    TBBFLAGS=-DTBB
+    TBBLIBS=-ltbb
 fi
-ac_fn_cxx_check_header_compile "$LINENO" "tbb/tbb.h" "ac_cv_header_tbb_tbb_h" "$ac_includes_default"
-if test "x$ac_cv_header_tbb_tbb_h" = xyes
-then :
-  TBBFLAG=-DTBB;TBBLIBS=-ltbb
-else $as_nop
-  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: WARNING: parallel computing is disabled because tbb/tbb.h (Intel TBB) is not found" >&5
-printf "%s\n" "$as_me: WARNING: parallel computing is disabled because tbb/tbb.h (Intel TBB) is not found" >&2;}
-fi
-
-
+rm -f libtbb_test.cpp libtbb_test errors.txt
 # Now substitute these variables in src/Makevars.in to create src/Makevars
-TBB_CFLAGS=${TBBFLAG}
+TBB_CFLAGS=${TBBFLAGS}
 
 TBB_LIBS=${TBBLIBS}
+
+
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: Package CPP flags: ${TBB_CFLAGS}" >&5
+printf "%s\n" "$as_me: Package CPP flags: ${TBB_CFLAGS}" >&6;}
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: Package LIBS: ${TBB_LIBS}" >&5
+printf "%s\n" "$as_me: Package LIBS: ${TBB_LIBS}" >&6;}
 
 ac_config_files="$ac_config_files src/Makevars"
 
