@@ -59,7 +59,7 @@ delimiters.)
 \code{pattern} will be a keyword pattern or phrase, possibly multiple
 patterns, that may include punctuation.  If a pattern contains whitespace,
 it is best to wrap it in \code{\link[=phrase]{phrase()}} to make this explicit. However if
-\code{pattern} is a \link[quanteda.textstats:textstat_collocations]{collocations} or
+\code{pattern} is a \code{collocations} (see \pkg{quanteda.textstats} or
 \link{dictionary} object, then the collocations or multi-word dictionary keys
 will automatically be considered phrases where each whitespace-separated
 element matches a token in sequence.
