@@ -2,15 +2,12 @@
 
 #' Simple Good-Turing Frequency Estimation
 #'
-#' @param x object for which frequency estimates will be computed (a
-#'   document-feature matrix)
+#' @param x [dfm] object for which frequency estimates will be computed
 #' @param scheme scheme for output; The default is `"est_count"`, the estimated
 #'   frequency that would have been observed if the sample were perfectly
 #'   representative of the population (sometimes known as r*). `"est_prop"`
 #'   gives the corresponding estimate of the relative frequency, correcting for
 #'   unobserved features in the sample.
-#' @inheritParams dfm_weight
-#' @param ... additional arguments passed to \code{\link{docfreq}}.
 #' @details `dfm_goodturing` computes estimated term frequencies, correcting for
 #'   unobserved cases in the sample. This method was pioneered by Alan Turing
 #'   and I. J. Good for cracking German ciphers during World War II. The
@@ -18,30 +15,32 @@
 #'   (1995). Without this correction, observed token frequencies will
 #'   systematically overestimate population frequencies, since there are many
 #'   infrequent tokens that have not yet been observed in the sample.
-#' @references Gale, W. A., & Sampson, G. (1995).
-#'   Good-Turing frequency estimation without tears.
+#' @references Gale, W. A., & Sampson, G. (1995). Good-Turing frequency
+#'   estimation without tears.
 #'   *J. Quant. Linguistics*, 2, 217-237.
 #'   <https://doi.org/10.1080/09296179508590051>
-#' @keywords dfm weighting
+#' @keywords dfm
 #' @examples
-#' dfmat1 <- dfm(tokens(data_corpus_inaugural))
-#' head(dfmat1[, 5:10])
-#' head(dfm_goodturing(dfmat1)[, 5:10])
+#' data_dfm_lbgexample
+#' dfm_goodturing(data_dfm_lbgexample)
+#' dfm_goodturing(data_dfm_lbgexample, scheme = "est_prop")
 #' @keywords dfm weighting
 #' @export
-dfm_goodturing <- function(x, scheme = "est_count") {
+#' @importFrom stats lm predict
+dfm_goodturing <- function(x, scheme = c("est_count", "est_prop")) {
     UseMethod("dfm_goodturing")
 }
 
 #' @export
-dfm_goodturing.default <- function(x, scheme = "est_count") {
+dfm_goodturing <- function(x, scheme = c("est_count", "est_prop")) {
     check_class(class(x), "dfm_goodturing")
 }
 
 #' @export
-dfm_goodturing.dfm <- function(x, scheme = "est_count") {
+dfm_goodturing <- function(x, scheme = c("est_count", "est_prop")) {
     # variable names follow Gale & Sampson (1995)
 
+    scheme <- match.arg(scheme)
     x <- as.dfm(x)
     if (!nfeat(x) || !ndoc(x)) {
         return(x)
