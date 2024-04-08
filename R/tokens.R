@@ -2,19 +2,21 @@
 
 #' Construct a tokens object
 #'
-#' Construct a tokens object, either by importing a named list of characters
-#' from an external tokenizer, or by calling the internal \pkg{quanteda}
-#' tokenizer.
+#' @description Construct a tokens object, either by importing a named list of
+#'   characters from an external tokenizer, or by calling the internal
+#'   \pkg{quanteda} tokenizer.
 #'
-#' `tokens()` works on tokens class objects, which means that the removal rules
-#' can be applied post-tokenization, although it should be noted that it will
-#' not be possible to remove things that are not present.  For instance, if the
-#' `tokens` object has already had punctuation removed, then `tokens(x,
-#' remove_punct = TRUE)` will have no additional effect.
+#' @description `tokens()` can also be applied to tokens class objects, which
+#'   means that the removal rules can be applied post-tokenization, although it
+#'   should be noted that it will not be possible to remove things that are not
+#'   present.  For instance, if the `tokens` object has already had punctuation
+#'   removed, then `tokens(x, remove_punct = TRUE)` will have no additional
+#'   effect.
 #' @param x the input object to the tokens constructor; a [tokens], [corpus] or
 #'   [character] object to tokenize.
 #' @param what character; which tokenizer to use.  The default `what = "word"`
-#'   is the version 2 \pkg{quanteda} tokenizer.  Legacy tokenizers (version < 2)
+#'   is the current version of the \pkg{quanteda} tokenizer, set by
+#'   `quanteda_options(okens_tokenizer_word)`. Legacy tokenizers (version < 2)
 #'   are also supported, including the default `what = "word1"`. See the Details
 #'   and quanteda Tokenizers below.
 #' @param remove_punct logical; if `TRUE` remove all characters in the Unicode
@@ -164,11 +166,6 @@ tokens <-  function(x,
                     verbose = quanteda_options("verbose"),
                     ...,
                     xptr = FALSE) {
-    
-    if (is.null(global$object_class)) {
-        global$object_class <- class(x)[1]
-        global$proc_time <- proc.time()   
-    }
     UseMethod("tokens")
 }
 
@@ -196,6 +193,12 @@ tokens.list <- function(x,
                         concatenator = "_",
                         verbose = quanteda_options("verbose"),
                         ...) {
+    
+    if (is.null(global$object_class)) {
+        global$object_class <- class(x)[1]
+        global$proc_time <- proc.time()   
+    }
+    
     tokens(as.tokens(x),
            remove_punct = remove_punct,
            remove_symbols = remove_symbols,
@@ -227,6 +230,12 @@ tokens.character <- function(x,
                              verbose = quanteda_options("verbose"),
                              ...,
                              xptr = FALSE) {
+    
+    if (is.null(global$object_class)) {
+        global$object_class <- class(x)[1]
+        global$proc_time <- proc.time()   
+    }
+    
     tokens.corpus(corpus(x),
            what = what,
            remove_punct = remove_punct,
@@ -264,6 +273,12 @@ tokens.corpus <- function(x,
                           verbose = quanteda_options("verbose"),
                           ...,
                           xptr = FALSE)  {
+    
+    if (is.null(global$object_class)) {
+        global$object_class <- class(x)[1]
+        global$proc_time <- proc.time()   
+    }
+    
     x <- as.corpus(x)
     
     if (verbose) {
@@ -409,6 +424,11 @@ tokens.tokens_xptr <-  function(x,
                            concatenator = "_",
                            verbose = quanteda_options("verbose"),
                            ...) {
+
+    if (is.null(global$object_class)) {
+        global$object_class <- class(x)[1]
+        global$proc_time <- proc.time()   
+    }
     
     remove_punct <- check_logical(remove_punct)
     remove_symbols <- check_logical(remove_symbols)
@@ -476,6 +496,10 @@ tokens.tokens_xptr <-  function(x,
 
 #' @export
 tokens.tokens <- function(x, ...) {
+    if (is.null(global$object_class)) {
+        global$object_class <- class(x)[1]
+        global$proc_time <- proc.time()   
+    }
     as.tokens(tokens(as.tokens_xptr(x), ...))
 }
 
@@ -721,7 +745,7 @@ tokens_recompile <- function(x, method = c("C++", "R"), gap = TRUE, dup = TRUE) 
 #' @seealso [featnames]
 #' @examples
 #' toks <- tokens(data_corpus_inaugural)
-#' types(toks)
+#' head(types(toks), 20)
 types <- function(x) {
     UseMethod("types")
 }
@@ -737,16 +761,17 @@ types.tokens <- function(x) {
 }
 
 "types<-" <- function(x, value) {
-    UseMethod("types<-")
+    set_types(x) <- value
+    #UseMethod("types<-")
 }
 
-"types<-.tokens" <- function(x, value) {
-    set_types(x) <- value
-}
-
-"types<-.tokens_xptr" <- function(x, value) {
-    set_types(x) <- value
-}
+# "types<-.tokens" <- function(x, value) {
+#     set_types(x) <- value
+# }
+# 
+# "types<-.tokens_xptr" <- function(x, value) {
+#     set_types(x) <- value
+# }
 
 
 # concatenator functions --------------

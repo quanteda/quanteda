@@ -1,3 +1,9 @@
+# quanteda 4.0.1
+
+## Bug fixes and stability enhancements
+
+* Make detection of Intel oneAPI Threads Building Blocks (TBB) library more reliable.
+
 # quanteda 4.0.0
 
 ## Changes and additions
@@ -17,6 +23,8 @@
 * Added new arguments `append_key`, `separator` and `concatenator` to `tokens_lookup()`. These allow tokens matched by dictionary values to be retained with their keys appended to them, separated by `separator`.  The addition of the `concatenator` argument allows additional control at the lookup stage for tokens that will be concatenated from having matched multi-word dictionary values. (#2324)
 
 * Added a new argument `remove_padding` to `ntoken()` and `ntype()` that allows for not counting padding that might have been left over from `tokens_remove(x, padding = TRUE`). This changes the previous number of types from `ntype()` when pads exist, by counting pads by default. (#2336)
+
+* Removed dependency on **RcppParallel** to improve the stability of the C++ code. This change requires the users of Linux-like OS to install the Intel TBB library manually to enable parallel computing.
 
 ## Removals
 

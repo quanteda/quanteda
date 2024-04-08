@@ -50,8 +50,13 @@ test_that("dictionary constructor works with LIWC format", {
                                       ANOTHER_CATEGORY = c("had", "mary"))))
 })
 
-test_that("dictionary constructor works with Lexicoder format", {
+test_that("dictionary constructor works with Yoshicoder format", {
     expect_equivalent(dictionary(file = "../data/dictionaries/mary.lcd"),
+                      marydict)
+})
+
+test_that("dictionary constructor works with Lexicoder format", {
+    expect_equivalent(dictionary(file = "../data/dictionaries/mary.lc3"),
                       marydict)
 })
 

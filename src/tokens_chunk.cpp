@@ -23,7 +23,6 @@ Texts chunk(Text &tokens,
 
 /* 
  * Function to split documents
- * The number of threads is set by RcppParallel::setThreadOptions()
  * @used tokens_segment()
  * @creator Kohei Watanabe
  * @param size size of chunks

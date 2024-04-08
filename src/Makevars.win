@@ -1,4 +1,2 @@
-PKG_LIBS = $(LAPACK_LIBS) $(BLAS_LIBS)
-PKG_LIBS += `$(R_HOME)/bin${R_ARCH_BIN}/Rscript.exe -e "RcppParallel::RcppParallelLibs()"`
-PKG_CXXFLAGS = -DRCPP_PARALLEL_USE_TBB=1 -DARMA_64BIT_WORD=1
-PKG_CPPFLAGS = -I../inst/include -DARMA_DONT_PRINT_OPENMP_WARNING=1
+PKG_LIBS = $(LAPACK_LIBS) $(BLAS_LIBS) `$(R_HOME)/bin${R_ARCH_BIN}/Rscript.exe ../inst/libtbb.R` -fstack-protector
+PKG_CXXFLAGS = -I../inst/include -DTBB

@@ -127,7 +127,6 @@ Text remove_token(Text tokens,
 
 /* 
  * Function to selects tokens
- * The number of threads is set by RcppParallel::setThreadOptions()
  * @used tokens_select()
  * @creator Kohei Watanabe
  * @param words_ list of features to remove or keep 
@@ -187,7 +186,7 @@ TokensPtr cpp_tokens_select(TokensPtr xptr,
         });
     });
 #else
-    for (std::size_t h = 0; h < texts.size(); h++) {
+    for (std::size_t h = 0; h < H; h++) {
         if (bypass[h])
             continue;
         if (mode == 1) {

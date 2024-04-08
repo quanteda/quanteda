@@ -1,5 +1,5 @@
 Package: quanteda
-Version: 4.0.0
+Version: 4.0.1
 Title: Quantitative Analysis of Textual Data
 Description: A fast, flexible, and comprehensive framework for 
     quantitative text analysis in R.  Provides functionality for corpus management,
@@ -32,46 +32,41 @@ Imports:
     magrittr,
     Matrix (>= 1.5-0),
     Rcpp (>= 0.12.12),
-    RcppParallel,
     SnowballC,
     stopwords,
     stringi,
     xml2,
     yaml
-LinkingTo: Rcpp, RcppParallel, RcppArmadillo (>= 0.7.600.1.0)
+LinkingTo: Rcpp, RcppArmadillo (>= 0.7.600.1.0)
+NeedsCompilation: yes
 Suggests:
     rmarkdown,
     spelling,
     testthat,
     formatR,
     tm (>= 0.6),
-    tokenizers,
     knitr,
-    lda,
     lsa,
-    dplyr,
-    purrr,
-    quanteda.textmodels,
-    quanteda.textstats,
-    quanteda.textplots,
-    RColorBrewer,
     rlang,
-    slam,
+    slam
+Enhances:
+    dplyr,
+    lda,
+    purrr,
     spacyr,
-    stm,
-    text2vec,
-    topicmodels,
-    tibble,
-    tidytext,
-    xtable,
-    ggplot2
+    stm, 
+    text2vec, 
+    tibble, 
+    tidytext, 
+    tokenizers, 
+    topicmodels
 URL: https://quanteda.io
 Encoding: UTF-8
 BugReports: https://github.com/quanteda/quanteda/issues
 LazyData: TRUE
 VignetteBuilder: knitr
 Language: en-GB
-RoxygenNote: 7.3.0
+RoxygenNote: 7.3.1
 Roxygen: list(markdown = TRUE)
 Collate: 
     'RcppExports.R'

@@ -135,7 +135,7 @@
     </div>
 
     <div class="section level2">
-<h2 class="page-header" data-toc-text="4.0.0" id="quanteda-400">quanteda 4.0.0<a class="anchor" aria-label="anchor" href="#quanteda-400"></a></h2>
+<h2 class="page-header" data-toc-text="4.0.0" id="quanteda-400">quanteda 4.0.0<small>2024-04-04</small><a class="anchor" aria-label="anchor" href="#quanteda-400"></a></h2>
 <div class="section level3">
 <h3 id="changes-and-additions-4-0-0">Changes and additions<a class="anchor" aria-label="anchor" href="#changes-and-additions-4-0-0"></a></h3>
 <ul><li><p>Introduces the <code>tokens_xptr</code> objects that extend the <code>tokens</code> objects with external pointers for a greater efficiency. Once <code>tokens</code> objects are converted to <code>tokens_xptr</code> objects using <code><a href="../reference/tokens_xptr.html">as.tokens_xptr()</a></code>, <code>tokens_*.tokens_xptr()</code> methods are called automatically.</p></li>
@@ -146,6 +146,7 @@
 <li><p>Added a new argument <code>apply_if</code> that allows a tokens-based operation to apply only to documents that meet a logical condition. This argument has been added to <code><a href="../reference/tokens_select.html">tokens_select()</a></code>, <code><a href="../reference/tokens_compound.html">tokens_compound()</a></code>, <code><a href="../reference/tokens_replace.html">tokens_replace()</a></code>, <code><a href="../reference/tokens_split.html">tokens_split()</a></code>, and <code><a href="../reference/tokens_lookup.html">tokens_lookup()</a></code>. This is similar to applying <code><a href="https://purrr.tidyverse.org/reference/map_if.html" class="external-link">purrr::map_if()</a></code> to a tokens object, but is implemented within the function so that it can be performed efficiently in C++.</p></li>
 <li><p>Added new arguments <code>append_key</code>, <code>separator</code> and <code>concatenator</code> to <code><a href="../reference/tokens_lookup.html">tokens_lookup()</a></code>. These allow tokens matched by dictionary values to be retained with their keys appended to them, separated by <code>separator</code>. The addition of the <code>concatenator</code> argument allows additional control at the lookup stage for tokens that will be concatenated from having matched multi-word dictionary values. (<a href="https://github.com/quanteda/quanteda/issues/2324" class="external-link">#2324</a>)</p></li>
 <li><p>Added a new argument <code>remove_padding</code> to <code><a href="../reference/ntoken.html">ntoken()</a></code> and <code><a href="../reference/ntoken.html">ntype()</a></code> that allows for not counting padding that might have been left over from <code>tokens_remove(x, padding = TRUE</code>). This changes the previous number of types from <code><a href="../reference/ntoken.html">ntype()</a></code> when pads exist, by counting pads by default. (<a href="https://github.com/quanteda/quanteda/issues/2336" class="external-link">#2336</a>)</p></li>
+<li><p>Removed dependency on <strong>RcppParallel</strong> to improve the stability of the C++ code. This change requires the users of Linux-like OS to install the Intel TBB library manually to enable parallel computing.</p></li>
 </ul></div>
 <div class="section level3">
 <h3 id="removals-4-0-0">Removals<a class="anchor" aria-label="anchor" href="#removals-4-0-0"></a></h3>

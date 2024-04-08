@@ -19,6 +19,7 @@ ERC
 fileset
 Haass
 Herdan's
+Homebrew
 ICU
 ICU's
 Javascript
@@ -40,6 +41,7 @@ Pennebaker
 Provalis
 QUANTESS
 RStudio
+RTools
 Raghavan
 Rcpp
 Rdata
@@ -173,6 +175,7 @@ nsentence
 ntoken
 nuls
 oauth
+oneAPI
 org
 passthrough
 phrasetotoken
@@ -270,3 +273,5 @@ aaa
 RBBI
 RuleBasedBreakIterator
 yml
+RcppParallel
+RcppArmadillo

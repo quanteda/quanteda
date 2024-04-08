@@ -81,7 +81,7 @@ and more to come.
 
 ## How To…
 
-### Install
+### Install (binaries) from CRAN
 
 The normal way from CRAN, using your R GUI or
 
@@ -89,18 +89,46 @@ The normal way from CRAN, using your R GUI or
 install.packages("quanteda") 
 ```
 
-Or for the latest development version:
+**(New for quanteda v4.0)** For Linux users: Because all installations
+on Linux are compiled, Linux users will first need to install the Intel
+oneAPI Threading Building Blocks for parallel computing for installation
+to work.
 
-``` r
-# remotes package required to install quanteda from Github 
-remotes::install_github("quanteda/quanteda") 
+To install TBB on Linux:
+
+``` bash
+# Fedora, CentOS, RHEL
+sudo yum install tbb-devel
+
+# Debian and Ubuntu
+sudo apt install libtbb-dev
 ```
+
+Windows or macOS users do not have to install TBB or any other packages
+to enable parallel computing when installing **quanteda** from CRAN.
+
+### Compile from source (macOS and Windows)
 
 Because this compiles some C++ and Fortran source code, you will need to
 have installed the appropriate compilers to build the development
 version.
 
-### Use
+You will also need to install TBB:
+
+**macOS:**
+
+After installing [Homebrew](https://brew.sh):
+
+``` bash
+brew install tbb
+```
+
+**Windows:**
+
+Install [RTools](https://cran.r-project.org/bin/windows/Rtools/), which
+includes the TBB libraries.
+
+### Use **quanteda**
 
 See the [quick start
 guide](https://quanteda.io/articles/quickstart.html) to learn how to use

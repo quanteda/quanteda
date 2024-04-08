@@ -36,7 +36,6 @@ Text skipgram(const Text &tokens,
 
 /* 
 * Function to generates ngrams/skipgrams
-* The number of threads is set by RcppParallel::setThreadOptions()
 * @used tokens_ngrams()
 * @creator Kohei Watanabe
 * @param delim_ string to join words
@@ -65,8 +64,8 @@ TokensPtr cpp_tokens_ngrams(TokensPtr xptr,
     //dev::Timer timer;
     //dev::start_timer("Ngram generation", timer);
     std::size_t H = texts.size();
-#if QUANTEDA_USE_TBB
     IdNgram id_ngram(1);
+#if QUANTEDA_USE_TBB
     tbb::task_arena arena(thread);
     arena.execute([&]{
         tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
@@ -76,7 +75,6 @@ TokensPtr cpp_tokens_ngrams(TokensPtr xptr,
         });
     });
 #else
-    IdNgram id_ngram = 1;
     for (std::size_t h = 0; h < H; h++) {
         texts[h] = skipgram(texts[h], ns, skips, map_ngram, id_ngram);
     }

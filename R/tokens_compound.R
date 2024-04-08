@@ -80,7 +80,6 @@ tokens_compound.default <- function(x, pattern,
     check_class(class(x), "tokens_compound")
 }
 
-#' @importFrom RcppParallel RcppParallelLibs
 #' @export
 tokens_compound.tokens_xptr <- function(x, pattern,
                                         valuetype = c("glob", "regex", "fixed"),

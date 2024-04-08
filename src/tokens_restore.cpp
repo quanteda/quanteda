@@ -60,7 +60,6 @@ Text join_mark(Text tokens,
 
 /* 
  * This function substitutes features in tokens object with new IDs. 
- * The number of threads is set by RcppParallel::setThreadOptions()
  * @used tokens_restore()
  * @creator Kohei Watanabe
  * @param texts_ tokens ojbect
@@ -80,11 +79,11 @@ TokensPtr cpp_tokens_restore(TokensPtr xptr,
     std::string delim = delim_;
 
     unsigned int id_last = types.size();
-#if QUANTEDA_USE_TBB
+//#if QUANTEDA_USE_TBB
     IdNgram id_comp(id_last + 1);
-#else
-    IdNgram id_comp = id_last + 1;
-#endif
+// #else
+//     IdNgram id_comp = id_last + 1;
+// #endif
 
     MapNgrams map_marks; // for matching
     map_marks.max_load_factor(GLOBAL_PATTERN_MAX_LOAD_FACTOR);
@@ -92,13 +91,13 @@ TokensPtr cpp_tokens_restore(TokensPtr xptr,
     map_comps.max_load_factor(GLOBAL_NGRAMS_MAX_LOAD_FACTOR);
 
     Ngrams marks_left = Rcpp::as<Ngrams>(marks_left_);
-    for (size_t g = 0; g < marks_left.size(); g++) {
+    for (std::size_t g = 0; g < marks_left.size(); g++) {
         Ngram value = marks_left[g];
         unsigned int key = 1; // 1 for left
         map_marks.insert(std::pair<Ngram, unsigned int>(value, key));
     }
     Ngrams marks_right = Rcpp::as<Ngrams>(marks_right_);
-    for (size_t g = 0; g < marks_right.size(); g++) {
+    for (std::size_t g = 0; g < marks_right.size(); g++) {
         Ngram value = marks_right[g];
         unsigned int key = 2; // 2 for right
         map_marks.insert(std::pair<Ngram, unsigned int>(value, key));

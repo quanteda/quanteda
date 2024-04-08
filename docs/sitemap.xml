@@ -16,9 +16,6 @@
     <loc>https://quanteda.io/articles/index.html</loc>
   </url>
   <url>
-    <loc>https://quanteda.io/articles/pkgdown/benchmark.html</loc>
-  </url>
-  <url>
     <loc>https://quanteda.io/articles/pkgdown/benchmarks_xptr.html</loc>
   </url>
   <url>
@@ -43,22 +40,16 @@
     <loc>https://quanteda.io/articles/pkgdown/examples/plotting.html</loc>
   </url>
   <url>
-    <loc>https://quanteda.io/articles/pkgdown/examples/quickstart_cn.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/articles/pkgdown/examples/quickstart_ja.html</loc>
-  </url>
-  <url>
     <loc>https://quanteda.io/articles/pkgdown/examples/twitter.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/articles/pkgdown/quickstart.html</loc>
   </url>
   <url>
     <loc>https://quanteda.io/articles/pkgdown/quickstart_cn.html</loc>
   </url>
   <url>
     <loc>https://quanteda.io/articles/pkgdown/quickstart_es.html</loc>
+  </url>
+  <url>
+    <loc>https://quanteda.io/articles/pkgdown/quickstart_further_examples.html</loc>
   </url>
   <url>
     <loc>https://quanteda.io/articles/pkgdown/quickstart_hi.html</loc>
@@ -74,9 +65,6 @@
   </url>
   <url>
     <loc>https://quanteda.io/articles/pkgdown/replication/text2vec.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/articles/pkgdown/tokens.html</loc>
   </url>
   <url>
     <loc>https://quanteda.io/articles/pkgdown/tokens_xptr.html</loc>
@@ -161,6 +149,9 @@
   </url>
   <url>
     <loc>https://quanteda.io/reference/affinity.html</loc>
+  </url>
+  <url>
+    <loc>https://quanteda.io/reference/apply_if.html</loc>
   </url>
   <url>
     <loc>https://quanteda.io/reference/as.character.corpus.html</loc>
@@ -272,6 +263,9 @@
   </url>
   <url>
     <loc>https://quanteda.io/reference/compute_msttr.html</loc>
+  </url>
+  <url>
+    <loc>https://quanteda.io/reference/concat.html</loc>
   </url>
   <url>
     <loc>https://quanteda.io/reference/convert-wrappers.html</loc>

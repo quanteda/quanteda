@@ -1,0 +1,5 @@
+#!/bin/sh
+rm -f src/Makevars
+rm -rf  config.log config.status confdefs.h autom4te.cache/ \
+        src/*.o src/*.so src/symbols.rds \
+        */*~ *~

@@ -275,7 +275,7 @@ dtm2lda <- function(x, omit_empty = TRUE) {
     docs <- vector(mode = "list", length = nrow(x))
     names(docs) <- rownames(x)
 
-    docs[slam::row_sums(x) > 0] <- split.matrix(rbind(as.integer(x$j) - 1L,
+    docs[slam::row_sums(x) > 0] <- split_matrix(rbind(as.integer(x$j) - 1L,
                                                       as.integer(x$v)),
                                                 as.integer(x$i))
     if (omit_empty) {
@@ -288,7 +288,7 @@ dtm2lda <- function(x, omit_empty = TRUE) {
 }
 
 # internal function for dtm2lda
-split.matrix <- function(x, f, drop = FALSE, ...) {
+split_matrix <- function(x, f, drop = FALSE, ...) {
     lapply(split(seq_len(ncol(x)),
                  f, drop = drop, ...), function(ind) x[, ind, drop = FALSE])
 }

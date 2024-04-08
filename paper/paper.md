@@ -94,7 +94,7 @@ Using the ICU library in the **stringi** package [@stringi] for text processing,
 matching and detecting word boundaries for tokenization. Once texts are tokenized,
 **quanteda** maps tokens to a hash table of integers to increase processing speed while
 reducing memory usage. Many of the text processing functions are parallelized
-using the Intel TBB library via the **RcppParallel** package [@RcppParallel].
+using the Intel TBB library.
 
 # Models and textual statistics
 

@@ -8,8 +8,8 @@ output:
 
 ```{r message=FALSE}
 library("quanteda")
-quanteda_options(threads = 1)
-load("data_char_mobydick.rda")
+#quanteda_options(threads = 1)
+load("../../vignettes/pkgdown/replication/data_char_mobydick.rda")
 ```
 
 ```{r}

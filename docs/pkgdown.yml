@@ -13,6 +13,7 @@ articles:
   twitter: pkgdown/examples/twitter.html
   quickstart_cn: pkgdown/quickstart_cn.html
   quickstart_es: pkgdown/quickstart_es.html
+  quickstart_further_examples: pkgdown/quickstart_further_examples.html
   quickstart_hi: pkgdown/quickstart_hi.html
   quickstart_ja: pkgdown/quickstart_ja.html
   digital-humanities: pkgdown/replication/digital-humanities.html
@@ -20,7 +21,7 @@ articles:
   text2vec: pkgdown/replication/text2vec.html
   tokens_xptr: pkgdown/tokens_xptr.html
   quickstart: quickstart.html
-last_built: 2024-01-17T06:42Z
+last_built: 2024-04-05T08:51Z
 urls:
   reference: https://quanteda.io/reference
   article: https://quanteda.io/articles

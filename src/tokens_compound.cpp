@@ -124,7 +124,6 @@ Text match_comp(Text tokens,
 
 /* 
  * Function to compound tokens
- * The number of threads is set by RcppParallel::setThreadOptions()
  * @used tokens_compound()
  * @creator Kohei Watanabe
  * @param compounds_ list of patterns to substitute
@@ -155,11 +154,11 @@ TokensPtr cpp_tokens_compound(TokensPtr xptr,
     std::vector<bool> bypass = Rcpp::as< std::vector<bool> >(bypass_);
     
     unsigned int id_last = types.size();
-#if QUANTEDA_USE_TBB
+//#if QUANTEDA_USE_TBB
     IdNgram id_comp(id_last + 1);
-#else
-    IdNgram id_comp = id_last + 1;
-#endif
+// #else
+//     IdNgram id_comp = id_last + 1;
+// #endif
 
     SetNgrams set_comps; // for matching
     set_comps.max_load_factor(GLOBAL_PATTERN_MAX_LOAD_FACTOR);
@@ -168,7 +167,7 @@ TokensPtr cpp_tokens_compound(TokensPtr xptr,
 
     Ngrams comps = Rcpp::as<Ngrams>(compounds_);
     std::vector<std::size_t> spans(comps.size());
-    for (size_t g = 0; g < comps.size(); g++) {
+    for (std::size_t g = 0; g < comps.size(); g++) {
         Ngram comp = comps[g];
         // ignore patterns with paddings
         if (std::find(comp.begin(), comp.end(), 0) == comp.end()) {

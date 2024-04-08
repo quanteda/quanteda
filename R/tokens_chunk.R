@@ -29,7 +29,6 @@ tokens_chunk <- function(x, size, overlap = 0, use_docvars = TRUE) {
 
 
 #' @noRd
-#' @importFrom RcppParallel RcppParallelLibs
 #' @export
 tokens_chunk.tokens_xptr <- function(x, size, overlap = 0, use_docvars = TRUE) {
 

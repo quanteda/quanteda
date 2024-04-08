@@ -47,7 +47,6 @@ tokens_segment <- function(x, pattern,
 
 #' @rdname tokens_segment
 #' @noRd
-#' @importFrom RcppParallel RcppParallelLibs
 #' @export
 tokens_segment.tokens_xptr <- function(x, pattern,
                                   valuetype = c("glob", "regex", "fixed"),

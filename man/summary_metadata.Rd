@@ -45,18 +45,11 @@ corp <- corpus(data_char_ukimmig2010)
 corp <- quanteda:::add_summary_metadata(corp)
 quanteda:::get_summary_metadata(corp)
 
+## using extended summary
+
 \dontrun{
-# using extended summary
-
 extended_data <- quanteda:::summarize_texts_extended(data_corpus_inaugural)
-
-library("quanteda.textplots")
-textplot_wordcloud(extended_data$top_dfm, max_words = 100)
-
-library("ggplot2")
-ggplot(data.frame(all_tokens = extended_data$all_tokens), aes(x = all_tokens)) +
-   geom_histogram(color = "darkblue", fill = "lightblue") +
-   xlab("Total length in tokens")
+topfeatures(extended_data$top_dfm)
 }
 }
 \keyword{corpus}

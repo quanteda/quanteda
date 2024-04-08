@@ -20,7 +20,7 @@
 #' @note `pattern` will be a keyword pattern or phrase, possibly multiple
 #'   patterns, that may include punctuation.  If a pattern contains whitespace,
 #'   it is best to wrap it in [phrase()] to make this explicit. However if
-#'   `pattern` is a [collocations][quanteda.textstats::textstat_collocations] or
+#'   `pattern` is a `collocations` (see \pkg{quanteda.textstats} or
 #'   [dictionary] object, then the collocations or multi-word dictionary keys
 #'   will automatically be considered phrases where each whitespace-separated
 #'   element matches a token in sequence.

@@ -48,10 +48,6 @@ tokens_ngrams.default <- function(x, n = 2L, skip = 0L, concatenator = concat(x)
 #' @note `char_ngrams` is a convenience wrapper for a (non-list)
 #'   vector of characters, so named to be consistent with \pkg{quanteda}'s naming
 #'   scheme.
-#' @examples
-#' # on character
-#' char_ngrams(letters[1:3], n = 1:3)
-#'
 #' @export
 char_ngrams <- function(x, n = 2L, skip = 0L, concatenator = "_") {
     UseMethod("char_ngrams")
@@ -80,7 +76,6 @@ char_ngrams.character <- function(x, n = 2L, skip = 0L, concatenator = "_") {
 #' txt <- c(txt1 = "a b c d e", txt2 = "c d e f g")
 #' toks <- tokens(txt)
 #' tokens_ngrams(toks, n = 2:3)
-#' @importFrom RcppParallel RcppParallelLibs
 #' @export
 tokens_ngrams.tokens_xptr <- function(x, n = 2L, skip = 0L, concatenator = concat(x)) {
 

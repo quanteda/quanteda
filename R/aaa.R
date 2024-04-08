@@ -8,3 +8,4 @@ global <- new.env(parent = emptyenv())
 # v4 tokenizer rules
 breakrules_reset("word")
 breakrules_reset("sentence")
+
