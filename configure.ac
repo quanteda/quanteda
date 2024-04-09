@@ -26,7 +26,7 @@ TBBLIBS=
 # If tbb/tbb.h and libtbb are found, define TBB and add -ltbb
 AC_MSG_CHECKING([Intel TBB existence:])
 TBB_EXISTS=no
-pkg-config --exists tbb
+pkg-config --exists tbb >/dev/null 2>&1
 SH_TBB_EXISTS=`echo $?`
 if test ${SH_TBB_EXISTS} = 0 ; then
   TBB_EXISTS=yes
@@ -44,8 +44,8 @@ else
 fi
 
 if test ${TBB_EXISTS} = yes ; then
-  AC_SUBST(TBBFLAGS, [-DTBB `pkg-config --cflags tbb`])
-  AC_SUBST(TBBLIBS, [`pkg-config --libs tbb`])
+  AC_SUBST(TBBFLAGS, ["-DTBB $(pkg-config --cflags tbb)"])
+  AC_SUBST(TBBLIBS, ["$(pkg-config --libs tbb)"])
 
   AC_MSG_CHECKING([tbb available for compiling and linking:])
 [cat > libtbb_test.cpp <<_EOCONF
