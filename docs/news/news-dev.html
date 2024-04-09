@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">4.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">4.0.1</span>
       </span>
     </div>
 
@@ -139,7 +139,7 @@
 <div class="section level3">
 <h3 id="new-features-0-9-9-17">New features<a class="anchor" aria-label="anchor" href="#new-features-0-9-9-17"></a></h3>
 <ul><li>
-<code>textstat_keyness()</code> now returns a data.frame with p-values as well as the test statistic, and rownames containing the feature. This is more consistent with the other textstat functions.</li>
+<code><a href="https://quanteda.io/reference/textstat_keyness.html">textstat_keyness()</a></code> now returns a data.frame with p-values as well as the test statistic, and rownames containing the feature. This is more consistent with the other textstat functions.</li>
 <li>
 <code><a href="../reference/tokens_lookup.html">tokens_lookup()</a></code> implements new rules for nested and linked sequences in dictionary values. See <a href="https://github.com/quanteda/quanteda/issues/502" class="external-link">#502</a>.</li>
 <li>
@@ -170,7 +170,7 @@
 </ul></div>
 <div class="section level3">
 <h3 id="new-features-0-9-9-17-1">New features<a class="anchor" aria-label="anchor" href="#new-features-0-9-9-17-1"></a></h3>
-<ul><li>New textstat function <code>textstat_keyness()</code> discovers words that occur at differential rates between partitions of a dfm (using chi-squared, Fisher’s exact test, and the G^2 likelihood ratio test to measure the strength of associations).<br></li>
+<ul><li>New textstat function <code><a href="https://quanteda.io/reference/textstat_keyness.html">textstat_keyness()</a></code> discovers words that occur at differential rates between partitions of a dfm (using chi-squared, Fisher’s exact test, and the G^2 likelihood ratio test to measure the strength of associations).<br></li>
 <li>Added 2017-Trump to the inaugural corpus datasets (<code>data_corpus_inaugual</code> and <code>data_char_inaugural</code>).<br></li>
 <li>Improved the <code>groups</code> argument in <code><a href="../reference/texts.html">texts()</a></code> (and in <code><a href="../reference/dfm.html">dfm()</a></code> that uses this function), which will now coerce to a factor rather than requiring one.</li>
 <li>Added a dfm constructor from dfm objects, with the option of collapsing by groups.</li>
@@ -476,14 +476,14 @@
 <code><a href="../reference/docvars.html">docvars()</a></code> on eligible objects that contain no docvars now returns an empty 0 x 0 data.frame (in the spirit of <a href="https://github.com/quanteda/quanteda/issues/242" class="external-link">#242</a>).</li>
 <li>Redesigned <code>textmodel_scale1d</code> now produces sorted and grouped document positions for fitted wordfish models, and produces a ggplot2 plot object.</li>
 <li>
-<code>textmodel_wordfish()</code> now preserves sparsity while processing the dfm, and uses a fast approximation to an SVD to get starting values. This also dramatically improves performance in computing this model. (<a href="https://github.com/quanteda/quanteda/issues/482" class="external-link">#482</a>, <a href="https://github.com/quanteda/quanteda/issues/124" class="external-link">#124</a>)</li>
+<code><a href="https://rdrr.io/pkg/quanteda.textmodels/man/textmodel_wordfish.html" class="external-link">textmodel_wordfish()</a></code> now preserves sparsity while processing the dfm, and uses a fast approximation to an SVD to get starting values. This also dramatically improves performance in computing this model. (<a href="https://github.com/quanteda/quanteda/issues/482" class="external-link">#482</a>, <a href="https://github.com/quanteda/quanteda/issues/124" class="external-link">#124</a>)</li>
 <li>The speed of <code><a href="../reference/kwic.html">kwic()</a></code> is now dramatically improved, and also returns an indexed set of tokens that makes subsequent commands on a kwic class object much faster. (<a href="https://github.com/quanteda/quanteda/issues/603" class="external-link">#603</a>)</li>
 <li>Package options (for verbose, threads) can now be set or queried using <code><a href="../reference/quanteda_options.html">quanteda_options()</a></code>.</li>
 <li>Improved performance and better documentation for <code><a href="../reference/corpus_segment.html">corpus_segment()</a></code>. (<a href="https://github.com/quanteda/quanteda/issues/634" class="external-link">#634</a>)</li>
 <li>Added functions <code>corpus_trimsentences()</code> and <code>char_trimsentences()</code> to remove sentences from a corpus or character object, based on token length or pattern matching.</li>
-<li>Added options to <code>textstat_readability()</code>: <code>min_sentence_length</code> and <code>max_sentence_length</code>. (<a href="https://github.com/quanteda/quanteda/issues/632" class="external-link">#632</a>)</li>
+<li>Added options to <code><a href="https://quanteda.io/reference/textstat_readability.html">textstat_readability()</a></code>: <code>min_sentence_length</code> and <code>max_sentence_length</code>. (<a href="https://github.com/quanteda/quanteda/issues/632" class="external-link">#632</a>)</li>
 <li>Indexing now works for dictionaries, for slicing out keys and values (<code>[</code>), or accessing values directly (<code>[[</code>). (<a href="https://github.com/quanteda/quanteda/issues/651" class="external-link">#651</a>)</li>
-<li>Began the consolidation of collocation detection and scoring into a new function <code>textstat_collocations()</code>, which combines the existing <code>collocations()</code> and <code>sequences()</code> functions. (<a href="https://github.com/quanteda/quanteda/issues/434" class="external-link">#434</a>) Collocations now behave as sequences for other functions (such as <code><a href="../reference/tokens_compound.html">tokens_compound()</a></code>) and have a greatly improved performance for such uses.</li>
+<li>Began the consolidation of collocation detection and scoring into a new function <code><a href="https://quanteda.io/reference/textstat_collocations.html">textstat_collocations()</a></code>, which combines the existing <code>collocations()</code> and <code>sequences()</code> functions. (<a href="https://github.com/quanteda/quanteda/issues/434" class="external-link">#434</a>) Collocations now behave as sequences for other functions (such as <code><a href="../reference/tokens_compound.html">tokens_compound()</a></code>) and have a greatly improved performance for such uses.</li>
 </ul></div>
 <div class="section level3">
 <h3 id="behaviour-changes-0-9-9-24">Behaviour changes<a class="anchor" aria-label="anchor" href="#behaviour-changes-0-9-9-24"></a></h3>
@@ -494,9 +494,9 @@
 </li>
 <li>Most <code>verbose</code> options now take the default from <code>getOption("verbose")</code> rather than fixing the value in the function signatures. (<a href="https://github.com/quanteda/quanteda/issues/577" class="external-link">#577</a>)</li>
 <li>
-<code>textstat_dist()</code> and <code>textstat_simil()</code> now return a matrix if a <code>selection</code> argument is supplied, and coercion to a list produces a list of distances or similarities only for that selection.</li>
+<code><a href="https://quanteda.io/reference/textstat_simil.html">textstat_dist()</a></code> and <code><a href="https://quanteda.io/reference/textstat_simil.html">textstat_simil()</a></code> now return a matrix if a <code>selection</code> argument is supplied, and coercion to a list produces a list of distances or similarities only for that selection.</li>
 <li>All remaining camelCase arguments are gone. For commonly used ones, such as those in <code><a href="../reference/tokens.html">tokens()</a></code>, the old arguments (e.g. <code>removePunct</code>) still produce the same behaviour but with a deprecation warning.</li>
-<li>Added <code>n_target</code> and <code>n_reference</code> columns to <code>textstat_keyness()</code> to return counts for each category being compared for keyness.</li>
+<li>Added <code>n_target</code> and <code>n_reference</code> columns to <code><a href="https://quanteda.io/reference/textstat_keyness.html">textstat_keyness()</a></code> to return counts for each category being compared for keyness.</li>
 </ul></div>
 <div class="section level3">
 <h3 id="bug-fixes-0-9-9-24">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-9-9-24"></a></h3>
@@ -529,10 +529,10 @@
 <ul><li>
 <code><a href="../reference/dfm_lookup.html">dfm_lookup()</a></code> behaves more robustly on different platforms, especially for keys whose values match no features (<a href="https://github.com/quanteda/quanteda/issues/704" class="external-link">#704</a>).</li>
 <li>
-<code>textstat_simil()</code> and <code>textstat_dist()</code> no longer take the <code>n</code> argument, as this was not sorting features in correct order.</li>
+<code><a href="https://quanteda.io/reference/textstat_simil.html">textstat_simil()</a></code> and <code><a href="https://quanteda.io/reference/textstat_simil.html">textstat_dist()</a></code> no longer take the <code>n</code> argument, as this was not sorting features in correct order.</li>
 <li>Fixed failure of <code>tokens(x, what = "character")</code> when <code>x</code> included Twitter characters <code>@</code> and <code>#</code> (<a href="https://github.com/quanteda/quanteda/issues/637" class="external-link">#637</a>).</li>
 <li>Fixed bug <a href="https://github.com/quanteda/quanteda/issues/707" class="external-link">#707</a> where <code>ntype.dfm()</code> produced an incorrect result.</li>
-<li>Fixed bug <a href="https://github.com/quanteda/quanteda/issues/706" class="external-link">#706</a> where <code>textstat_readability()</code> and <code>textstat_lexdiv()</code> for single-document returns when <code>drop = TRUE</code>.</li>
+<li>Fixed bug <a href="https://github.com/quanteda/quanteda/issues/706" class="external-link">#706</a> where <code><a href="https://quanteda.io/reference/textstat_readability.html">textstat_readability()</a></code> and <code><a href="https://quanteda.io/reference/textstat_lexdiv.html">textstat_lexdiv()</a></code> for single-document returns when <code>drop = TRUE</code>.</li>
 <li>Improved the robustness of <code><a href="../reference/corpus_reshape.html">corpus_reshape()</a></code>.</li>
 <li>
 <code>print</code>, and <code>head</code>, and <code>tail</code> methods for <code>dfm</code> are more robust (<a href="https://github.com/quanteda/quanteda/issues/684" class="external-link">#684</a>).</li>
@@ -543,7 +543,7 @@
 <li>
 <code><a href="../reference/dfm_compress.html">fcm_compress()</a></code> now retains the fcm class, and generates and error when an asymmetric compression is attempted (<a href="https://github.com/quanteda/quanteda/issues/728" class="external-link">#728</a>).</li>
 <li>
-<code>textstat_collocations()</code> now returns the collocations as character, not as a factor (<a href="https://github.com/quanteda/quanteda/issues/736" class="external-link">#736</a>)</li>
+<code><a href="https://quanteda.io/reference/textstat_collocations.html">textstat_collocations()</a></code> now returns the collocations as character, not as a factor (<a href="https://github.com/quanteda/quanteda/issues/736" class="external-link">#736</a>)</li>
 <li>Fixed a bug in <code>dfm_lookup(x, exclusive = FALSE)</code> wherein an empty dfm ws returned with there was no no match (<a href="https://github.com/quanteda/quanteda/issues/116" class="external-link">#116</a>).</li>
 <li>Argument passing through <code><a href="../reference/dfm.html">dfm()</a></code> to <code><a href="../reference/tokens.html">tokens()</a></code> is now robust, and preserves variables defined in the calling environment (<a href="https://github.com/quanteda/quanteda/issues/721" class="external-link">#721</a>).</li>
 <li>Fixed issues related to dictionaries failing when applying <code><a href="https://rdrr.io/r/utils/str.html" class="external-link">str()</a></code>, <code><a href="https://rdrr.io/r/base/names.html" class="external-link">names()</a></code>, or other indexing operations, which started happening on Linux and Windows platforms following the CRAN move to 3.4.0. (<a href="https://github.com/quanteda/quanteda/issues/744" class="external-link">#744</a>)</li>
@@ -555,7 +555,7 @@
 <h2 class="page-header" data-toc-text="0.9.9-65" id="quanteda-099-65">quanteda 0.9.9-65<small>2017-05-26</small><a class="anchor" aria-label="anchor" href="#quanteda-099-65"></a></h2>
 <div class="section level3">
 <h3 id="new-features-0-9-9-65">New features<a class="anchor" aria-label="anchor" href="#new-features-0-9-9-65"></a></h3>
-<ul><li>Improvements and consolidation of methods for detecting multi-word expressions, now active only through <code>textstat_collocations()</code>, which computes only the <code>lambda</code> method for now, but does so accurately and efficiently. (<a href="https://github.com/quanteda/quanteda/issues/753" class="external-link">#753</a>, <a href="https://github.com/quanteda/quanteda/issues/803" class="external-link">#803</a>). This function is still under development and likely to change further.</li>
+<ul><li>Improvements and consolidation of methods for detecting multi-word expressions, now active only through <code><a href="https://quanteda.io/reference/textstat_collocations.html">textstat_collocations()</a></code>, which computes only the <code>lambda</code> method for now, but does so accurately and efficiently. (<a href="https://github.com/quanteda/quanteda/issues/753" class="external-link">#753</a>, <a href="https://github.com/quanteda/quanteda/issues/803" class="external-link">#803</a>). This function is still under development and likely to change further.</li>
 <li>Added new <code>quanteda_options</code> that affect the maximum documents and features displayed by the dfm print method (<a href="https://github.com/quanteda/quanteda/issues/756" class="external-link">#756</a>).</li>
 <li>
 <code>ngram</code> formation is now significantly faster, including with skips (skipgrams).</li>
@@ -566,17 +566,17 @@
 <li>New wrapper <code><a href="../reference/phrase.html">phrase()</a></code> converts whitespace-separated multi-word patterns into a list of patterns. This affects the feature/pattern matching in <code>tokens/dfm_select/remove</code>, <code>tokens_compound</code>, <code>tokens/dfm_lookup</code>, and <code>kwic</code>. <code><a href="../reference/phrase.html">phrase()</a></code> and the associated changes also make the behaviour of using character vectors, lists of characters, dictionaries, and collocation objects for pattern matches far more consistent. (See <a href="https://github.com/quanteda/quanteda/issues/820" class="external-link">#820</a>, <a href="https://github.com/quanteda/quanteda/issues/787" class="external-link">#787</a>, <a href="https://github.com/quanteda/quanteda/issues/740" class="external-link">#740</a>, <a href="https://github.com/quanteda/quanteda/issues/837" class="external-link">#837</a>, <a href="https://github.com/quanteda/quanteda/issues/836" class="external-link">#836</a>, <a href="https://github.com/quanteda/quanteda/issues/838" class="external-link">#838</a>)</li>
 <li>
 <code><a href="../reference/corpus.html">corpus.Corpus()</a></code> for creating a corpus from a <strong>tm</strong> Corpus now works with more complex objects that include document-level variables, such as data from the <strong>manifestoR</strong> package (<a href="https://github.com/quanteda/quanteda/issues/849" class="external-link">#849</a>).</li>
-<li>New plot function <code>textplot_keyness()</code> plots term “keyness”, the association of words with contrasting classes as measured by <code>textstat_keyness()</code>.</li>
+<li>New plot function <code><a href="https://rdrr.io/pkg/quanteda.textplots/man/textplot_keyness.html" class="external-link">textplot_keyness()</a></code> plots term “keyness”, the association of words with contrasting classes as measured by <code><a href="https://quanteda.io/reference/textstat_keyness.html">textstat_keyness()</a></code>.</li>
 <li>Added corpus constructor for corpus objects (<a href="https://github.com/quanteda/quanteda/issues/690" class="external-link">#690</a>).</li>
 <li>Added dictionary constructor for dictionary objects (<a href="https://github.com/quanteda/quanteda/issues/690" class="external-link">#690</a>).</li>
 <li>Added a tokens constructor for tokens objects (<a href="https://github.com/quanteda/quanteda/issues/690" class="external-link">#690</a>), including updates to <code><a href="../reference/tokens.html">tokens()</a></code> that improve the consistency and efficiency of the tokenization.</li>
 <li>Added new <code><a href="../reference/quanteda_options.html">quanteda_options()</a></code>: <code>language_stemmer</code> and <code>language_stopwords</code>, now used for default in <code>*_wordstem</code> functions and <code><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html" class="external-link">stopwords()</a></code> for defaults, respectively. Also uses this option in <code><a href="../reference/dfm.html">dfm()</a></code> when <code>stem = TRUE</code>, rather than hard-wiring in the “english” stemmer (<a href="https://github.com/quanteda/quanteda/issues/386" class="external-link">#386</a>).</li>
-<li>Added a new function <code>textstat_frequency()</code> to compile feature frequencies, possibly by groups. (<a href="https://github.com/quanteda/quanteda/issues/825" class="external-link">#825</a>)</li>
+<li>Added a new function <code><a href="https://quanteda.io/reference/textstat_frequency.html">textstat_frequency()</a></code> to compile feature frequencies, possibly by groups. (<a href="https://github.com/quanteda/quanteda/issues/825" class="external-link">#825</a>)</li>
 <li>Added <code>nomatch</code> option to <code><a href="../reference/tokens_lookup.html">tokens_lookup()</a></code> and <code><a href="../reference/dfm_lookup.html">dfm_lookup()</a></code>, to provide tokens or feature counts for categories not matched to any dictionary key. (<a href="https://github.com/quanteda/quanteda/issues/496" class="external-link">#496</a>)</li>
 </ul></div>
 <div class="section level3">
 <h3 id="behaviour-changes-0-9-9-65">Behaviour changes<a class="anchor" aria-label="anchor" href="#behaviour-changes-0-9-9-65"></a></h3>
-<ul><li>The functions <code>sequences()</code> and <code>collocations()</code> have been removed and replaced by <code>textstat_collocations()</code>.</li>
+<ul><li>The functions <code>sequences()</code> and <code>collocations()</code> have been removed and replaced by <code><a href="https://quanteda.io/reference/textstat_collocations.html">textstat_collocations()</a></code>.</li>
 <li>(Finally) we added “will” to the list of English stopwords (<a href="https://github.com/quanteda/quanteda/issues/818" class="external-link">#818</a>).</li>
 <li>
 <code>dfm</code> objects with one or both dimensions having zero length, and empty <code>kwic</code> objects now display more appropriately in their print methods (per <a href="https://github.com/quanteda/quanteda/issues/811" class="external-link">#811</a>).</li>
@@ -590,14 +590,14 @@
 </ul></div>
 <div class="section level3">
 <h3 id="bug-fixes-and-stability-enhancements-0-9-9-65">Bug fixes and stability enhancements<a class="anchor" aria-label="anchor" href="#bug-fixes-and-stability-enhancements-0-9-9-65"></a></h3>
-<ul><li>For the underlying methods behind <code>textstat_collocations()</code>, we corrected the word matching, and lambda and z calculation methods, which were slightly incorrect before. We also removed the chi2, G2, and pmi statistics, because these were incorrectly calculated for size &gt; 2.<br></li>
+<ul><li>For the underlying methods behind <code><a href="https://quanteda.io/reference/textstat_collocations.html">textstat_collocations()</a></code>, we corrected the word matching, and lambda and z calculation methods, which were slightly incorrect before. We also removed the chi2, G2, and pmi statistics, because these were incorrectly calculated for size &gt; 2.<br></li>
 <li>LIWC-formatted dictionary import now robust to assignment to term assignment to missing categories.</li>
 <li>
 <code>textmodel_NB(x, y, distribution = "Bernoulli")</code> was previously inactive even when this option was set. It has now been fully implemented and tested (<a href="https://github.com/quanteda/quanteda/issues/776" class="external-link">#776</a>, <a href="https://github.com/quanteda/quanteda/issues/780" class="external-link">#780</a>).</li>
 <li>Separators including rare spacing characters are now handled more robustly by the <code>remove_separators</code> argument in <code><a href="../reference/tokens.html">tokens()</a></code>. See <a href="https://github.com/quanteda/quanteda/issues/796" class="external-link">#796</a>.</li>
 <li>Improved memory usage when computing <code><a href="../reference/ntoken.html">ntoken()</a></code> and <code><a href="../reference/ntoken.html">ntype()</a></code>. (<a href="https://github.com/quanteda/quanteda/issues/795" class="external-link">#795</a>)</li>
 <li>Improvements to <code><a href="../reference/quanteda_options.html">quanteda_options()</a></code> now does not throw an error when <strong>quanteda</strong> functions are called directly without attaching the package. In addition, <strong>quanteda</strong> options can be set now in .Rprofile and will not be overwritten when the options initialization takes place when attaching the package.</li>
-<li>Fixed a bug in <code>textstat_readability()</code> that wrongly computed the number of words with fewer than 3 syllables in a text; this affected the <code>FOG.NRI</code> and the <code>Linsear.Write</code> measures only.</li>
+<li>Fixed a bug in <code><a href="https://quanteda.io/reference/textstat_readability.html">textstat_readability()</a></code> that wrongly computed the number of words with fewer than 3 syllables in a text; this affected the <code>FOG.NRI</code> and the <code>Linsear.Write</code> measures only.</li>
 <li>Fixed mistakes in the computation of two docfreq schemes: <code>"logave"</code> and <code>"inverseprob"</code>.</li>
 <li>Fixed a bug in the handling of multi-thread options where the settings using <code><a href="../reference/quanteda_options.html">quanteda_options()</a></code> did not actually set the number of threads. In addition, we fixed a bug causing threading to be turned off on macOS (due to a check for a gcc version that is not used for compiling the macOS binaries) prevented multi-threading from being used at all on that platform.</li>
 <li>Fixed a bug causing failure when functions that use <code><a href="../reference/quanteda_options.html">quanteda_options()</a></code> are called without the namespace or package being attached or loaded (<a href="https://github.com/quanteda/quanteda/issues/864" class="external-link">#864</a>).</li>

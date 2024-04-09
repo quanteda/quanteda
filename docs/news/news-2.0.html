@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">4.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">4.0.1</span>
       </span>
     </div>
 
@@ -158,7 +158,7 @@
 <p>The <code>subset</code> argument now must be logical, and the <code>select</code> argument has been removed. (This is part of <code><a href="https://rdrr.io/r/base/subset.html" class="external-link">base::subset()</a></code> but has never made sense, either in <strong>quanteda</strong> or <strong>base</strong>.)</p>
 </li>
 <li>
-<p>Return format from <code>textstat_simil()</code> and <code>textstat_dist()</code>.</p>
+<p>Return format from <code><a href="https://quanteda.io/reference/textstat_simil.html">textstat_simil()</a></code> and <code><a href="https://quanteda.io/reference/textstat_simil.html">textstat_dist()</a></code>.</p>
 <p>Now defaults to a sparse matrix from the <strong>Matrix</strong> package, but coercion methods are provided for <code><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame()</a></code>, to make these functions return a data.frame just like the other textstat functions. Additional coercion methods are provided for <code><a href="https://rdrr.io/r/stats/dist.html" class="external-link">as.dist()</a></code>, <code>as.simil()</code>, and <code><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix()</a></code>.</p>
 </li>
 <li><p>settings functions (and related slots and object attributes) are gone. These are now replaced by a new <code>meta(x, type = "object")</code> that records object-specific meta-data, including settings such as the <code>n</code> for tokens (to record the <code>ngrams</code>).</p></li>
@@ -180,16 +180,16 @@
 <li>Fixes a few CRAN-related issues (compiler warnings on Solaris and encoding warnings on r-devel-linux-x86_64-debian-clang.)</li>
 <li>Added <code>startpos</code> and <code>endpos</code> arguments to <code><a href="../reference/tokens_select.html">tokens_select()</a></code>, for selecting on token positions relative to the start or end of the tokens in each document. (<a href="https://github.com/quanteda/quanteda/issues/1475" class="external-link">#1475</a>)</li>
 <li>Added a <code><a href="../reference/convert.html">convert()</a></code> method for corpus objects, to convert them into data.frame or json formats.</li>
-<li>Added a <code>spacy_tokenize()</code> method for corpus objects, to provide direct access via the <strong>spacyr</strong> package.</li>
+<li>Added a <code><a href="http://spacyr.quanteda.io/reference/spacy_tokenize.html" class="external-link">spacy_tokenize()</a></code> method for corpus objects, to provide direct access via the <strong>spacyr</strong> package.</li>
 </ul></div>
 <div class="section level3">
 <h3 id="behaviour-changes-2-0">Behaviour changes<a class="anchor" aria-label="anchor" href="#behaviour-changes-2-0"></a></h3>
-<ul><li>Added a <code>force = TRUE</code> option and error checking for the situations of applying <code><a href="../reference/dfm_weight.html">dfm_weight()</a></code> or <code><a href="../reference/dfm_group.html">dfm_group()</a></code> to a dfm that has already been weighted. (<a href="https://github.com/quanteda/quanteda/issues/1545" class="external-link">#1545</a>) The function <code>textstat_frequency()</code> now allows passing this argument to <code><a href="../reference/dfm_group.html">dfm_group()</a></code> via <code>...</code>. (<a href="https://github.com/quanteda/quanteda/issues/1646" class="external-link">#1646</a>)</li>
+<ul><li>Added a <code>force = TRUE</code> option and error checking for the situations of applying <code><a href="../reference/dfm_weight.html">dfm_weight()</a></code> or <code><a href="../reference/dfm_group.html">dfm_group()</a></code> to a dfm that has already been weighted. (<a href="https://github.com/quanteda/quanteda/issues/1545" class="external-link">#1545</a>) The function <code><a href="https://quanteda.io/reference/textstat_frequency.html">textstat_frequency()</a></code> now allows passing this argument to <code><a href="../reference/dfm_group.html">dfm_group()</a></code> via <code>...</code>. (<a href="https://github.com/quanteda/quanteda/issues/1646" class="external-link">#1646</a>)</li>
 <li>
-<code>textstat_frequency()</code> now has a new argument for resolving ties when ranking term frequencies, defaulting to the “min” method. (<a href="https://github.com/quanteda/quanteda/issues/1634" class="external-link">#1634</a>)</li>
+<code><a href="https://quanteda.io/reference/textstat_frequency.html">textstat_frequency()</a></code> now has a new argument for resolving ties when ranking term frequencies, defaulting to the “min” method. (<a href="https://github.com/quanteda/quanteda/issues/1634" class="external-link">#1634</a>)</li>
 <li>New docvars accessor and replacement functions are available for corpus, tokens, and dfm objects via <code>$</code>. (See Index Operators for Core Objects above.)</li>
 <li>
-<code>textstat_entropy()</code> now produces a data.frame that is more consistent with other <code>textstat</code> methods. (<a href="https://github.com/quanteda/quanteda/issues/1690" class="external-link">#1690</a>)</li>
+<code><a href="https://quanteda.io/reference/textstat_entropy.html">textstat_entropy()</a></code> now produces a data.frame that is more consistent with other <code>textstat</code> methods. (<a href="https://github.com/quanteda/quanteda/issues/1690" class="external-link">#1690</a>)</li>
 </ul></div>
 <div class="section level3">
 <h3 id="bug-fixes-and-stability-enhancements-2-0">Bug fixes and stability enhancements<a class="anchor" aria-label="anchor" href="#bug-fixes-and-stability-enhancements-2-0"></a></h3>
