@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">4.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">4.0.1</span>
       </span>
     </div>
 
@@ -160,7 +160,7 @@
 <ul><li>
 <code><a href="../reference/summary.corpus.html">summary.corpus()</a></code> now generates a special data.frame, which has its own print method, rather than requiring <code>verbose = FALSE</code> to suppress output (<a href="https://github.com/quanteda/quanteda/issues/926" class="external-link">#926</a>).</li>
 <li>
-<code>textstat_collocations()</code> is now multi-threaded.</li>
+<code><a href="https://quanteda.io/reference/textstat_collocations.html">textstat_collocations()</a></code> is now multi-threaded.</li>
 <li>
 <code><a href="../reference/head.dfm.html">head.dfm()</a></code>, <code><a href="../reference/head.dfm.html">tail.dfm()</a></code> now behave consistently with base R methods for matrix, with the added argument <code>nfeature</code>. Previously, these methods printed the subset and invisibly returned it. Now, they simply return the subset. (<a href="https://github.com/quanteda/quanteda/issues/952" class="external-link">#952</a>)</li>
 <li>Dictionary keys are now unique, and if multiple, identical keys are defined for a dictionary when constructed, the values will be merged into the consolidated key. (<a href="https://github.com/quanteda/quanteda/issues/959" class="external-link">#959</a>)</li>
@@ -171,7 +171,7 @@
 <div class="section level3">
 <h3 id="new-features-0-99-9">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-99-9"></a></h3>
 <ul><li>Added methods for changing the docnames of tokens and dfm objects (<a href="https://github.com/quanteda/quanteda/issues/987" class="external-link">#987</a>).</li>
-<li>Added new function <code>textmodel_lsa()</code> for Latent Semantic Analysis.</li>
+<li>Added new function <code><a href="https://rdrr.io/pkg/quanteda.textmodels/man/textmodel_lsa.html" class="external-link">textmodel_lsa()</a></code> for Latent Semantic Analysis.</li>
 </ul></div>
 <div class="section level3">
 <h3 id="bug-fixes-and-stability-enhancements-0-99-9">Bug fixes and stability enhancements<a class="anchor" aria-label="anchor" href="#bug-fixes-and-stability-enhancements-0-99-9"></a></h3>
@@ -188,12 +188,12 @@
 <li>
 <code><a href="../reference/tokens_replace.html">tokens_replace()</a></code> now allows token types to be substituted directly and quickly.</li>
 <li>
-<code>textmodel_affinity()</code> now adds functionality to fit the Perry and Benoit (2017) class affinity model.</li>
+<code><a href="https://rdrr.io/pkg/quanteda.textmodels/man/textmodel_affinity.html" class="external-link">textmodel_affinity()</a></code> now adds functionality to fit the Perry and Benoit (2017) class affinity model.</li>
 <li>Added a <code>spacy_parse</code> method for corpus objects. Also restored quanteda methods for <strong>spacyr</strong> <code>spacy_parsed</code> objects.</li>
 </ul></div>
 <div class="section level3">
 <h3 id="bug-fixes-and-stability-enhancements-0-99-12">Bug fixes and stability enhancements<a class="anchor" aria-label="anchor" href="#bug-fixes-and-stability-enhancements-0-99-12"></a></h3>
-<ul><li>Improved documentation for <code>textmodel_nb()</code> (<a href="https://github.com/quanteda/quanteda/issues/1010" class="external-link">#1010</a>), and made output quantities from the fitted NB model regular matrix objects instead of <strong>Matrix</strong> classes.</li>
+<ul><li>Improved documentation for <code><a href="https://rdrr.io/pkg/quanteda.textmodels/man/textmodel_nb.html" class="external-link">textmodel_nb()</a></code> (<a href="https://github.com/quanteda/quanteda/issues/1010" class="external-link">#1010</a>), and made output quantities from the fitted NB model regular matrix objects instead of <strong>Matrix</strong> classes.</li>
 </ul></div>
 <div class="section level3">
 <h3 id="behaviour-changes-0-99-12">Behaviour Changes<a class="anchor" aria-label="anchor" href="#behaviour-changes-0-99-12"></a></h3>
@@ -203,7 +203,7 @@
 <li>The deprecated “list of characters” <code><a href="../reference/tokenize_internal.html">tokenize()</a></code> function and all methods associated with the <code>tokenizedTexts</code> object types have been removed.</li>
 <li>Added convenience functions for keeping tokens or features: <code><a href="../reference/tokens_select.html">tokens_keep()</a></code>, <code><a href="../reference/dfm_select.html">dfm_keep()</a></code>, and <code><a href="../reference/dfm_select.html">fcm_keep()</a></code>. (<a href="https://github.com/quanteda/quanteda/issues/1037" class="external-link">#1037</a>)</li>
 <li>
-<code>textmodel_NB()</code> has been replaced by <code>textmodel_nb()</code>.</li>
+<code>textmodel_NB()</code> has been replaced by <code><a href="https://rdrr.io/pkg/quanteda.textmodels/man/textmodel_nb.html" class="external-link">textmodel_nb()</a></code>.</li>
 </ul></div>
 </div>
   </div>
