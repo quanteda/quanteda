@@ -4289,19 +4289,12 @@ TBBLIBS=
 { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking Intel TBB existence:" >&5
 printf %s "checking Intel TBB existence:... " >&6; }
 TBB_EXISTS=no
-pkg-config --exists tbb
-SH_TBB_EXISTS=`echo $?`
-if test ${SH_TBB_EXISTS} = 0 ; then
-  TBB_EXISTS=yes
-  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: yes" >&5
-printf "%s\n" "yes" >&6; }
-else
-  if test ${SH_TBB_EXISTS} = 1 ; then
-    TBB_EXISTS=no
-    { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
-printf "%s\n" "no" >&6; }
-    { printf "%s\n" "$as_me:${as_lineno-$LINENO}: WARNING: Intel TBB not installed; install TBB devel package for parallel processing or update PKG_CONFIG_PATH environment variable" >&5
-printf "%s\n" "$as_me: WARNING: Intel TBB not installed; install TBB devel package for parallel processing or update PKG_CONFIG_PATH environment variable" >&2;}
+if pkg-config --exists tbb >/dev/null 2>&1; then
+  # Verify that cflags and libs return something valid
+  TBB_CFLAGS=$(pkg-config --cflags tbb 2>/dev/null)
+  TBB_LIBS=$(pkg-config --libs tbb 2>/dev/null)
+  if [ -n "$TBB_CFLAGS" ] && [ -n "$TBB_LIBS" ]; then
+    TBB_EXISTS=yes
   else
     TBB_EXISTS=no
     { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
@@ -4311,11 +4304,32 @@ printf "%s\n" "$as_me: WARNING: pkg-config not found; install pkg-config to auto
   fi
 fi
 
-if test ${TBB_EXISTS} = yes ; then
-  TBBFLAGS=-DTBB `pkg-config --cflags tbb`
+# pkg-config --exists tbb >/dev/null 2>&1
+# SH_TBB_EXISTS=`echo $?`
+# if test ${SH_TBB_EXISTS} = 0 ; then
+#   TBB_EXISTS=yes
+#   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+# printf "%s\n" "yes" >&6; }
+# else
+#   if test ${SH_TBB_EXISTS} = 1 ; then
+#     TBB_EXISTS=no
+#     { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+# printf "%s\n" "no" >&6; }
+#     { printf "%s\n" "$as_me:${as_lineno-$LINENO}: WARNING: Intel TBB not installed; install TBB devel package for parallel processing or update PKG_CONFIG_PATH environment variable" >&5
+# printf "%s\n" "$as_me: WARNING: Intel TBB not installed; install TBB devel package for parallel processing or update PKG_CONFIG_PATH environment variable" >&2;}
+#   else
+#     TBB_EXISTS=no
+#     { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+# printf "%s\n" "no" >&6; }
+#     { printf "%s\n" "$as_me:${as_lineno-$LINENO}: WARNING: pkg-config not found; install pkg-config to auto-detect Intel TBB; assumed absent" >&5
+# printf "%s\n" "$as_me: WARNING: pkg-config not found; install pkg-config to auto-detect Intel TBB; assumed absent" >&2;}
+#   fi
+# fi
 
-  TBBLIBS=`pkg-config --libs tbb`
+if test "${TBB_EXISTS}" = yes ; then
+  TBBFLAGS="-DTBB $(pkg-config --cflags tbb)"
 
+  TBBLIBS="$(pkg-config --libs tbb)"
 
   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking tbb available for compiling and linking:" >&5
 printf %s "checking tbb available for compiling and linking:... " >&6; }
@@ -4337,7 +4351,15 @@ int main() {
   }
 }
 _EOCONF
-  ${CXX} ${CXXFLAGS} ${TBBFLAGS} -o libtbb_test libtbb_test.cpp ${TBBLIBS} 2> errors.txt
+  
+  # Assuming TBBLIBS is already set from `pkg-config --libs tbb`
+  # Append -Wl,-rpath,<path> if necessary. Might need a more sophisticated way to extract the path
+  LIB_PATH=$(pkg-config --variable=libdir tbb)
+  if [ -n "$LIB_PATH" ]; then
+    RPATH_FLAG="-Wl,-rpath,$LIB_PATH"
+  fi
+
+  ${CXX} ${CXXFLAGS} ${TBBFLAGS} -o libtbb_test libtbb_test.cpp ${TBBLIBS} $RPATH_FLAG 2> errors.txt
 
   if test `echo $?` -ne 0 ; then
     { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
