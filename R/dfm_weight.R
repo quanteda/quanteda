@@ -222,8 +222,8 @@ dfm_weight.dfm <- function(x,
                   # computation
                   if (!crit_passed) {
                     r_star_x[j] <- (r[j] + 1) * n_doc[j + 1] / n_doc[j]
-                    crit <- abs(r_star_x[j] - r_star_y[j]) > crit * sqrt((1 + n_doc[j + 1] / n_doc[j]) * ((r[j] + 1)^2) * (n_doc[j + 1] / n_doc[j]^2))
-                    r_star[j] <- ifelse(crit, r_star_x[j], r_star_y[j])
+                    crit_test <- abs(r_star_x[j] - r_star_y[j]) > crit * sqrt((1 + n_doc[j + 1] / n_doc[j]) * ((r[j] + 1)^2) * (n_doc[j + 1] / n_doc[j]^2))
+                    r_star[j] <- ifelse(crit_test, r_star_x[j], r_star_y[j])
                   } else {
                     r_star[j] <- r_star_y[j]
                   }
