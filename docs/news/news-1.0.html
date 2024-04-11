@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">4.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">4.0.1</span>
       </span>
     </div>
 
@@ -138,23 +138,23 @@
 <h2 class="page-header" data-toc-text="1.0.0" id="quanteda-100">quanteda 1.0.0<small>2018-01-28</small><a class="anchor" aria-label="anchor" href="#quanteda-100"></a></h2>
 <div class="section level3">
 <h3 id="new-features-1-0-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-1-0-0"></a></h3>
-<ul><li>Added <code>vertex_labelfont</code> to <code>textplot_network()</code>.</li>
-<li>Added <code>textmodel_lsa()</code> for Latent Semantic Analysis models.<br></li>
-<li>Added <code>textmodel_affinity()</code> for the Perry and Benoit (2017) class affinity scaling model.</li>
+<ul><li>Added <code>vertex_labelfont</code> to <code><a href="https://rdrr.io/pkg/quanteda.textplots/man/textplot_network.html" class="external-link">textplot_network()</a></code>.</li>
+<li>Added <code><a href="https://rdrr.io/pkg/quanteda.textmodels/man/textmodel_lsa.html" class="external-link">textmodel_lsa()</a></code> for Latent Semantic Analysis models.<br></li>
+<li>Added <code><a href="https://rdrr.io/pkg/quanteda.textmodels/man/textmodel_affinity.html" class="external-link">textmodel_affinity()</a></code> for the Perry and Benoit (2017) class affinity scaling model.</li>
 <li>Added Chinese stopwords.</li>
 <li>Added a pkgdown vignette for applications in the Chinese language.</li>
-<li>Added <code>textplot_network()</code> function.</li>
+<li>Added <code><a href="https://rdrr.io/pkg/quanteda.textplots/man/textplot_network.html" class="external-link">textplot_network()</a></code> function.</li>
 <li>The <code><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html" class="external-link">stopwords()</a></code> function and the associated internal data object <code>data_char_stopwords</code> have been removed from <strong>quanteda</strong>, and replaced by equivalent functionality in the <strong>stopwords</strong> package.</li>
 <li>Added <code><a href="../reference/tokens_subset.html">tokens_subset()</a></code>, now consistent with other <code>*_subset()</code> functions (<a href="https://github.com/quanteda/quanteda/issues/1149" class="external-link">#1149</a>).</li>
 </ul></div>
 <div class="section level3">
 <h3 id="bug-fixes-and-stability-enhancements-1-0-0">Bug fixes and stability enhancements<a class="anchor" aria-label="anchor" href="#bug-fixes-and-stability-enhancements-1-0-0"></a></h3>
-<ul><li>Performance has been improved for <code><a href="../reference/fcm.html">fcm()</a></code> and for <code>textmodel_wordfish()</code>.</li>
+<ul><li>Performance has been improved for <code><a href="../reference/fcm.html">fcm()</a></code> and for <code><a href="https://rdrr.io/pkg/quanteda.textmodels/man/textmodel_wordfish.html" class="external-link">textmodel_wordfish()</a></code>.</li>
 <li>
 <code><a href="../reference/dfm.html">dfm()</a></code> now correctly passes through all <code>...</code> arguments to <code><a href="../reference/tokens.html">tokens()</a></code>. (<a href="https://github.com/quanteda/quanteda/issues/1121" class="external-link">#1121</a>)</li>
 <li>All <code>dfm_*()</code> functions now work correctly with empty dfm objects. (<a href="https://github.com/quanteda/quanteda/issues/1133" class="external-link">#1133</a>)</li>
 <li>Fixed a bug in <code><a href="../reference/dfm_weight.html">dfm_weight()</a></code> for named weight vectors (<a href="https://github.com/quanteda/quanteda/issues/1150" class="external-link">#1150</a>)</li>
-<li>Fixed a bug preventing <code>textplot_influence()</code> from working (<a href="https://github.com/quanteda/quanteda/issues/1116" class="external-link">#1116</a>).</li>
+<li>Fixed a bug preventing <code><a href="https://rdrr.io/pkg/quanteda.textmodels/man/textplot_influence.html" class="external-link">textplot_influence()</a></code> from working (<a href="https://github.com/quanteda/quanteda/issues/1116" class="external-link">#1116</a>).</li>
 </ul></div>
 <div class="section level3">
 <h3 id="behaviour-changes-1-0-0">Behaviour Changes<a class="anchor" aria-label="anchor" href="#behaviour-changes-1-0-0"></a></h3>
