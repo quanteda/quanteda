@@ -21,6 +21,13 @@
 #'   within document), or \deqn{\frac{1 + \textrm{log}_{base} tf_{ij}}{1 +
 #'   \textrm{log}_{base}(\sum_j tf_{ij} / N_i)}}}
 #'   \item{`logsmooth`}{log of the counts + `smooth`, or \eqn{tf_{ij} + s}}
+#'   \item{`goodturing_count`}{estimate what the feature counts would be if the 
+#'   sample were representative, correcting for unobserved cases, using the 
+#'   "Simple Good-Turing" algorithm described by Gale & Sampson (1995)}
+#'   \item{`goodturing_prop`}{estimate what the proportion of feature counts 
+#'   would be if the sample were representative, correcting for unobserved 
+#'   cases, using the "Simple Good-Turing" algorithm described by Gale & Sampson
+#'   (1995)}
 #' }
 #' @param weights if `scheme` is unused, then `weights` can be a named
 #'   numeric vector of weights to be applied to the dfm, where the names of the
@@ -31,6 +38,15 @@
 #' @param base base for the logarithm when `scheme` is `"logcount"` or
 #'   `logave`
 #' @param k the k for the augmentation when `scheme = "augmented"`
+#' @param crit criterion for switching between raw and smoothed estimates when 
+#'   `scheme` is `"goodturing_count"` or `"goodturing_prop"`. The default `1.96` 
+#'   corresponds to the standard 0.05 significance criterion.
+#' @param estimate_zeros logical; if `TRUE`, distribute the estimated 
+#'   probability of unobserved tokens among features with a count of zero in 
+#'   each document when `scheme = "goodturing_count"` or 
+#'   `scheme = "goodturing_prop"`. Note that this effectively converts a matrix 
+#'   from sparse to dense format, so may exceed memory requirements depending on 
+#'   the size of your input matrix.
 #' @param force logical; if `TRUE`, apply weighting scheme even if the dfm
 #'   has been weighted before.  This can result in invalid weights, such as as
 #'   weighting by `"prop"` after applying `"logcount"`, or after
@@ -39,7 +55,14 @@
 #'   because the default weighting scheme is `"count"`, simply calling this
 #'   function on an unweighted dfm will return the same object.  Many users will
 #'   want the normalized dfm consisting of the proportions of the feature counts
-#'   within each document, which requires setting `scheme = "prop"`.
+#'   within each document, which requires setting `scheme = "prop"`. The 
+#'   `"goodturing_count"` and `"goodturing_prop"` weighting schemes perform 
+#'   Good-Turing frequency estimation, a method pioneered by Alan Turing and I. 
+#'   J. Good for cracking German ciphers during World War II. The particular 
+#'   algorithm implemented here was described by Gale & Sampson (1995). Without 
+#'   this correction, observed token frequencies will systematically 
+#'   overestimate population frequencies, since there are many infrequent tokens 
+#'   that have not yet been observed in the sample.
 #' @export
 #' @seealso [docfreq()]
 #' @keywords dfm
@@ -59,28 +82,34 @@
 #' # of Introduction to Information Retrieval
 #' head(dfm_tfidf(dfmat1, scheme_tf = "logcount"))
 #'
-#' @references  Manning, C.D., Raghavan, P., & Schütze, H. (2008).
+#' @references  
+#'   Gale, W. A., & Sampson, G. (1995). Good-Turing frequency
+#'   estimation without tears.
+#'   *J. Quant. Linguistics*, 2, 217-237.
+#'   <https://doi.org/10.1080/09296179508590051>
+#'   
+#'   Manning, C.D., Raghavan, P., & Schütze, H. (2008).
 #'   *An Introduction to Information Retrieval*. Cambridge: Cambridge University Press.
 #'   <https://nlp.stanford.edu/IR-book/pdf/irbookonlinereading.pdf>
 dfm_weight <- function(x,
-                       scheme = c("count", "prop", "propmax", "logcount", "boolean", "augmented", "logave"),
-                       weights = NULL, base = 10, k = 0.5, smoothing = 0.5,
+                       scheme = c("count", "prop", "propmax", "logcount", "boolean", "augmented", "logave", "goodturing_count", "goodturing_prop"),
+                       weights = NULL, base = 10, k = 0.5, smoothing = 0.5, crit = 1.96, estimate_zeros = FALSE,
                        force = FALSE) {
     UseMethod("dfm_weight")
 }
 
 #' @export
 dfm_weight.default <- function(x,
-                               scheme = c("count", "prop", "propmax", "logcount", "boolean", "augmented", "logave"),
-                               weights = NULL, base = 10, k = 0.5, smoothing = 0.5,
+                               scheme = c("count", "prop", "propmax", "logcount", "boolean", "augmented", "logave", "goodturing_count", "goodturing_prop"),
+                               weights = NULL, base = 10, k = 0.5, smoothing = 0.5, crit = 1.96, estimate_zeros = FALSE,
                                force = FALSE) {
     check_class(class(x), "dfm_weight")
 }
 
 #' @export
 dfm_weight.dfm <- function(x,
-                           scheme = c("count", "prop", "propmax", "logcount", "boolean", "augmented", "logave"),
-                           weights = NULL, base = 10, k = 0.5, smoothing = 0.5,
+                           scheme = c("count", "prop", "propmax", "logcount", "boolean", "augmented", "logave", "goodturing_count", "goodturing_prop"),
+                           weights = NULL, base = 10, k = 0.5, smoothing = 0.5, crit = 1.96, estimate_zeros = FALSE,
                            force = FALSE) {
     x <- as.dfm(x)
     base <- check_double(base)
@@ -161,6 +190,70 @@ dfm_weight.dfm <- function(x,
             meantf <- Matrix::rowSums(x) / Matrix::rowSums(dfm_weight(x, "boolean"))
             x@x <- (1 + log(x@x, base)) / (1 + log(meantf[x@i + 1], base))
             field_object(attrs, "weight_tf")$base <- base
+        } else if (scheme %in% c("goodturing_count", "goodturing_prop")) {
+            Nr <- lapply(split(x@x, x@i), table)
+
+            logr_logZ_list <- lapply(
+              Nr, 
+              function(n_doc) {
+                r <- as.numeric(as.character(names(n_doc)))
+                if (length(n_doc) <= 1 || min(n_doc) > 1){
+                  warning('Document has only one unique term frequency, or does not contain hapax legomena. Returning ',
+                          if(scheme == "goodturing_count"){'raw counts.'}else{'relative frequecies.'})
+                  return(r)
+                }
+                Z <- 2 * n_doc / diff(c(0, r, 2 * r[length(r)-1] - r[length(r)-2]), lag = 2)
+                
+                lmfit <- stats::lm(log(Z) ~ log(r))
+                coef = lmfit$coefficients
+
+                r_star <- rep(NA, length(r))
+                r_star_x <- rep(NA, length(r))
+                r_star_y <- (r + 1) * exp(coef[1] + coef[2]*log(r + 1)) / exp(coef[1] + coef[2]*log(r))
+                
+                crit_passed <- FALSE
+                for (j in 1:length(n_doc)) {
+                  # check for gap in Nr
+                  if (!crit_passed) {
+                    if (is.na(n_doc[as.character(r[j] + 1)])) {
+                      crit_passed <- TRUE
+                    }
+                  }
+                  # computation
+                  if (!crit_passed) {
+                    r_star_x[j] <- (r[j] + 1) * n_doc[j + 1] / n_doc[j]
+                    crit <- abs(r_star_x[j] - r_star_y[j]) > crit * sqrt((1 + n_doc[j + 1] / n_doc[j]) * ((r[j] + 1)^2) * (n_doc[j + 1] / n_doc[j]^2))
+                    r_star[j] <- ifelse(crit, r_star_x[j], r_star_y[j])
+                  } else {
+                    r_star[j] <- r_star_y[j]
+                  }
+                }
+                N <- sum(n_doc * r)
+                Nprime <- sum(n_doc * r_star)
+                P0 <- n_doc[1] / N
+                p = (1 - P0) * (r_star / Nprime)
+                if (scheme == "goodturing_count"){
+                  return(c(P0 = n_doc[1], p * N))
+                }else{
+                  return(c(P0 = P0, p))
+                }
+              }
+            )
+            
+            x@x <- unlist(
+              lapply(1:length(x@i), function(doc) logr_logZ_list[[x@i[doc] + 1L]][as.character(x@x[doc])])
+            )
+
+            if (estimate_zeros){
+              x_dense <- as(x, "dgCMatrix")
+              for (doc in 1:nrow(x_dense)) {
+                x_dense[doc,x_dense[doc,] == 0] <- logr_logZ_list[[doc]]["P0"]/sum(x_dense[doc,] == 0)
+              }
+              x <- matrix2dfm(x_dense, x@docvars, x@meta)
+            }
+            
+            field_object(attrs, "weight_tf")$crit <- crit
+            field_object(attrs, "weight_tf")$estimate_zeros <- estimate_zeros
         }
         field_object(attrs, "weight_tf")$scheme <- scheme
         rebuild_dfm(x, attrs)
