@@ -115,12 +115,8 @@ TokensPtr cpp_set_types(TokensPtr xptr, const CharacterVector types_) {
 }
 
 // [[Rcpp::export]]
-void cpp_recompile(TokensPtr xptr, bool old = false) {
-    if (old) {
-        xptr->recompile_old();
-    } else {
-        xptr->recompile();
-    }
+void cpp_recompile(TokensPtr xptr, bool) {
+    xptr->recompile();
 }
 
 // [[Rcpp::export]]
