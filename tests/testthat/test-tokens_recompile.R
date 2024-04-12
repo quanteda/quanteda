@@ -118,17 +118,25 @@ test_that("corrupt tokens object does not crash R", {
 
 test_that("tokens_recompile: flag use of padding even when it does not reindex tokens", {
     
-    toks <- list(0:26) # has padding, but no gap
-    attr(toks, 'types') <- letters # no duplication
-    attr(toks, 'class') <- 'tokens'
+    toks <- quanteda:::build_tokens(
+        list(0:26), # has padding, but no gap
+        letters,
+        docvars = quanteda:::make_docvars(1L)
+    )
     expect_true(attr(quanteda:::tokens_recompile(toks, 'C++'), 'padding'))
     
 })
 
 test_that("non-ascii types are UTF8 encoded", {
-    toks <- list(c(1:3))
-    toks <- quanteda:::cpp_tokens_recompile(toks, c('あ', 'い', 'う', 'え', 'お'))
-    expect_equal(Encoding(attr(toks, 'types')), rep('UTF-8', 3))
+    
+    toks <- quanteda:::build_tokens(
+        list(c(1, 2, 3)),
+        c('あ', 'い', 'う', 'え', 'お'),
+        docvars = quanteda:::make_docvars(1L)
+    )
+    
+    toks2 <- quanteda:::tokens_recompile(toks, 'C++')
+    expect_equal(Encoding(attr(toks2, 'types')), rep('UTF-8', 3))
 })
 
 test_that("keep gap and dupli argument works, #1278", {
