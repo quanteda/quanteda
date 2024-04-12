@@ -41,9 +41,7 @@ inline bool TokensObj::is_duplicated(Types types) {
 
 inline void TokensObj::recompile() {
     
-    if (recompiled) {
-        return;
-    }
+    if (recompiled) return; // do nothing
     
     std::size_t G = types.size();
     std::size_t H = texts.size();
@@ -56,13 +54,10 @@ inline void TokensObj::recompile() {
     unsigned int id = 1;
     std::vector<unsigned int> ids(G, 0);
     int count_pad = 0;
-    
     for (std::size_t h = 0; h < H; h++) {
-        
         std::size_t I = texts[h].size();
         Text text_new(I);
         for (std::size_t i = 0; i < I; i++) {
-            
             if (texts[h][i] > id_limit) 
                 throw std::range_error("Invalid tokens object");
             if (texts[h][i] == 0) {
@@ -74,7 +69,6 @@ inline void TokensObj::recompile() {
                     id++;
                 }
                 text_new[i] = ids[texts[h][i] - 1];
-            
             }
         }
         texts[h] = text_new;
