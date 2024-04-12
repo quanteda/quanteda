@@ -20,6 +20,7 @@ class TokensObj {
         
         // functions
         void recompile();
+        void recompile2();
 
     private:
         bool is_duplicated(Types types);
@@ -129,4 +130,109 @@ inline void TokensObj::recompile() {
     return;
 }
 
+inline void TokensObj::recompile2() {
+    
+    if (recompiled) {
+        return;
+    }
+    
+    Rcout << "Re-index tokens\n";
+    
+    // Re-index tokens -------------------
+    
+    std::size_t G = types.size();
+    unsigned int id = 1;
+    std::vector<unsigned int> ids(G, 0);
+    unsigned int id_limit = G;
+    int count_pad = 0;
+    
+    // NOTE: do we need thses?
+    bool asis = false; 
+    
+    std::size_t H = texts.size();
+    for (std::size_t h = 0; h < H; h++) {
+        
+        std::size_t I = texts[h].size();
+        Text text_new(I);
+        for (std::size_t i = 0; i < I; i++) {
+            
+            if (texts[h][i] > id_limit) 
+                throw std::range_error("Invalid tokens object");
+            if (texts[h][i] == 0) {
+                text_new[i] = 0;
+                count_pad++;
+            } else {
+                if (asis) {
+                    text_new[i] = texts[h][i]; // for dictionary
+                } else {
+                    if (ids[texts[h][i] - 1] == 0) {
+                        ids[texts[h][i] - 1] = id;
+                        id++; // do not increment if duplicated?
+                    }
+                    text_new[i] = ids[texts[h][i] - 1];
+                }
+            }
+        }
+        texts[h] = text_new;
+    }
 
+    
+    // sort types
+    Types types_new(G);
+    if (!asis) {
+        for (std::size_t g = 0; g < G; g++) {
+            if (ids[g] != 0) // zero if the types are not used
+                types_new[ids[g] - 1] = types[g];
+        }
+    }
+    types = types_new;
+    
+    // Merge duplicated types -------------------
+    
+    if (!is_duplicated(types)) {
+        recompiled = true;
+        return;
+    } else {
+        Rcout << "Merge duplicate types\n";
+        
+        // Check if types are duplicated
+        unsigned int id = 1;
+        std::vector<unsigned int> ids(G, 0);
+        std::vector<double> unique(G);
+        std::unordered_map<std::string, unsigned int> map;
+        for (std::size_t g = 0; g < G; g++) {
+            if (types[g] == "") {
+                ids[g] = 0;
+            } else {
+                auto it = map.insert(std::pair<std::string, unsigned int>(types[g], id));
+                ids[g] = it.first->second;
+                if (it.second) {
+                    unique[g] = true;
+                    id++; // increment iff there is no gap
+                }
+            }
+        }
+    
+        for (std::size_t h = 0; h < H; h++) {
+            std::size_t I = texts[h].size();
+            Text text_new(I);
+            for (std::size_t i = 0; i < I; i++) {
+                if (texts[h][i] != 0)
+                    text_new[i] = ids[texts[h][i] - 1];
+            }
+            texts[h] = text_new;
+        }
+        
+        Types types_new;
+        types_new.reserve(G);
+        for (std::size_t g = 0; g < G; g++) {
+            if (unique[g]) {
+                types_new.push_back(types[g]);
+            }
+        }
+        types = types_new;
+        
+        recompiled = true;
+        return;
+    }
+}
