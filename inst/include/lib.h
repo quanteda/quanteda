@@ -208,10 +208,12 @@ namespace quanteda{
         IntegerVector i_(l), j_(l);
         NumericVector x_(l);
         
-        for (std::size_t k = 0; k < tri.size(); k++) {
-            i_[k] = std::get<0>(tri[k]);
-            j_[k] = std::get<1>(tri[k]);
-            x_[k] = std::get<2>(tri[k]);
+        std::size_t k = 0;
+        for (Triplet t : tri) {
+            i_[k] = std::get<0>(t);
+            j_[k] = std::get<1>(t);
+            x_[k] = std::get<2>(t);
+            k++;
         }
         if (symmetric) {
             S4 simil_("dsTMatrix");

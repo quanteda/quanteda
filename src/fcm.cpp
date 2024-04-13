@@ -81,11 +81,11 @@ void count_col(const Text &text,
 
 // [[Rcpp::export]]
 S4 cpp_fcm(TokensPtr xptr,
-                const int n_types,
-                const NumericVector &weights_,
-                const bool boolean,
-                const bool ordered,
-                const int thread = -1) {
+           const int n_types,
+           const NumericVector &weights_,
+           const bool boolean,
+           const bool ordered,
+           const int thread = -1) {
     
     // triplets are constructed according to tri & ordered settings to be efficient
     xptr->recompile();

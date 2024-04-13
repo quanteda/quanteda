@@ -187,20 +187,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// cpp_tokens_recompile
-List cpp_tokens_recompile(const List& texts_, const CharacterVector types_, const bool gap, const bool dup);
-RcppExport SEXP _quanteda_cpp_tokens_recompile(SEXP texts_SEXP, SEXP types_SEXP, SEXP gapSEXP, SEXP dupSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const List& >::type texts_(texts_SEXP);
-    Rcpp::traits::input_parameter< const CharacterVector >::type types_(types_SEXP);
-    Rcpp::traits::input_parameter< const bool >::type gap(gapSEXP);
-    Rcpp::traits::input_parameter< const bool >::type dup(dupSEXP);
-    rcpp_result_gen = Rcpp::wrap(cpp_tokens_recompile(texts_, types_, gap, dup));
-    return rcpp_result_gen;
-END_RCPP
-}
 // cpp_tokens_replace
 TokensPtr cpp_tokens_replace(TokensPtr xptr, const List& patterns_, const List& replacements_, const LogicalVector bypass_, const int thread);
 RcppExport SEXP _quanteda_cpp_tokens_replace(SEXP xptrSEXP, SEXP patterns_SEXP, SEXP replacements_SEXP, SEXP bypass_SEXP, SEXP threadSEXP) {
@@ -393,14 +379,14 @@ BEGIN_RCPP
 END_RCPP
 }
 // cpp_dfm
-S4 cpp_dfm(TokensPtr xptr, bool asis);
-RcppExport SEXP _quanteda_cpp_dfm(SEXP xptrSEXP, SEXP asisSEXP) {
+S4 cpp_dfm(TokensPtr xptr, bool recompile);
+RcppExport SEXP _quanteda_cpp_dfm(SEXP xptrSEXP, SEXP recompileSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< TokensPtr >::type xptr(xptrSEXP);
-    Rcpp::traits::input_parameter< bool >::type asis(asisSEXP);
-    rcpp_result_gen = Rcpp::wrap(cpp_dfm(xptr, asis));
+    Rcpp::traits::input_parameter< bool >::type recompile(recompileSEXP);
+    rcpp_result_gen = Rcpp::wrap(cpp_dfm(xptr, recompile));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -494,7 +480,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_quanteda_cpp_tokens_group", (DL_FUNC) &_quanteda_cpp_tokens_group, 3},
     {"_quanteda_cpp_tokens_lookup", (DL_FUNC) &_quanteda_cpp_tokens_lookup, 8},
     {"_quanteda_cpp_tokens_ngrams", (DL_FUNC) &_quanteda_cpp_tokens_ngrams, 5},
-    {"_quanteda_cpp_tokens_recompile", (DL_FUNC) &_quanteda_cpp_tokens_recompile, 4},
     {"_quanteda_cpp_tokens_replace", (DL_FUNC) &_quanteda_cpp_tokens_replace, 5},
     {"_quanteda_cpp_tokens_restore", (DL_FUNC) &_quanteda_cpp_tokens_restore, 5},
     {"_quanteda_cpp_tokens_segment", (DL_FUNC) &_quanteda_cpp_tokens_segment, 5},
