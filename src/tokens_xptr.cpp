@@ -15,13 +15,17 @@ TokensPtr cpp_as_xptr(const List text_,
 
 // [[Rcpp::export]]
 TokensPtr cpp_copy_xptr(TokensPtr xptr) {
-    TokensObj *ptr_copy = new TokensObj(xptr->texts, xptr->types, xptr->recompiled);
+    TokensObj *ptr_copy = new TokensObj(xptr->texts, 
+                                        xptr->types, 
+                                        xptr->recompiled,
+                                        xptr->padded);
     return TokensPtr(ptr_copy, true);
 }
 
 // [[Rcpp::export]]
 List cpp_get_attributes(TokensPtr xptr) {
-    List list_ = List::create(_["recompiled"] = xptr->recompiled);
+    List list_ = List::create(_["recompiled"] = xptr->recompiled,
+                              _["padded"] = xptr->padded);
     return list_;
 }
 
@@ -116,14 +120,13 @@ void cpp_recompile(TokensPtr xptr) {
 }
 
 // [[Rcpp::export]]
-S4 cpp_dfm(TokensPtr xptr, bool asis = false) {
+S4 cpp_dfm(TokensPtr xptr, bool recompile = true) {
     
-    xptr->recompiled = asis;
-    xptr->recompile(); // remove unused types
+    xptr->recompiled = recompile;
+    xptr->recompile();
     std::size_t H = xptr->texts.size();
     std::size_t G = xptr->types.size();
-    std::vector<unsigned int> ids(G, 0);
-    
+
     int N = 0;
     for (std::size_t h = 0; h < H; h++)
         N += xptr->texts[h].size();
@@ -135,28 +138,11 @@ S4 cpp_dfm(TokensPtr xptr, bool asis = false) {
     int p = 0;
     
     slot_p.push_back(p);
-    int count_pad = 0;
-    unsigned int id = 1;
     for (std::size_t h = 0; h < H; h++) {
         // assign new token IDs in the order of their occurrence
-        std::size_t I = xptr->texts[h].size();
-        Text text(I);
-        for (std::size_t i = 0; i < I; i++) {
-            if (xptr->texts[h][i] == 0) {
-                text[i] = 0;
-                count_pad++;
-            } else {
-                if (asis) {
-                    text[i] = xptr->texts[h][i]; // for dictionary
-                } else {
-                    if (ids[xptr->texts[h][i] - 1] == 0) {
-                        ids[xptr->texts[h][i] - 1] = id;
-                        id++;
-                    }
-                    text[i] = ids[xptr->texts[h][i] - 1];
-                }
-            }
-        }
+        Text text = xptr->texts[h];
+        std::size_t I = text.size();
+
         // aggregate the same token IDs
         std::sort(text.begin(), text.end()); // rows must be sorted in dgCMatrix
         int n = 1;
@@ -178,27 +164,11 @@ S4 cpp_dfm(TokensPtr xptr, bool asis = false) {
     //Rcout << "x: " << slot_x_ << "\n";
     IntegerVector slot_i_ = Rcpp::wrap(slot_i);
     //Rcout << "i: " << slot_i_ << "\n";
-    
-    // sort types in the order of their occurrence
-    
-    // Rcout << "G: " << G << "\n";
-    // Rcout << "ids: " << ids.size() << "\n";
-    // Rcout << "xptr->types: " << xptr->types.size() << "\n";
-    
-    Types types(G);
-    if (asis) {
-        types = xptr->types;
-    } else {
-        for (std::size_t g = 0; g < G; g++) {
-            if (ids[g] != 0) // zero if the types are not used
-                types[ids[g] - 1] = xptr->types[g];
-        }
-    }
-    CharacterVector types_ = encode(types);
+    CharacterVector types_ = encode(xptr->types);
     
     //Rcout << "types: " << types_ << "\n";
     
-    if (count_pad == 0) {
+    if (!xptr->padded) {
         slot_i_ = slot_i_ - 1; // use zero for other tokens
     } else {
         G++;

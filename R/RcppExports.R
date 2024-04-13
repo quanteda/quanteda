@@ -49,10 +49,6 @@ cpp_tokens_ngrams <- function(xptr, delim_, ns_, skips_, thread = -1L) {
     .Call(`_quanteda_cpp_tokens_ngrams`, xptr, delim_, ns_, skips_, thread)
 }
 
-cpp_tokens_recompile <- function(texts_, types_, gap = TRUE, dup = TRUE) {
-    .Call(`_quanteda_cpp_tokens_recompile`, texts_, types_, gap, dup)
-}
-
 cpp_tokens_replace <- function(xptr, patterns_, replacements_, bypass_, thread = -1L) {
     .Call(`_quanteda_cpp_tokens_replace`, xptr, patterns_, replacements_, bypass_, thread)
 }
@@ -113,8 +109,8 @@ cpp_recompile <- function(xptr) {
     invisible(.Call(`_quanteda_cpp_recompile`, xptr))
 }
 
-cpp_dfm <- function(xptr, asis = FALSE) {
-    .Call(`_quanteda_cpp_dfm`, xptr, asis)
+cpp_dfm <- function(xptr, recompile = TRUE) {
+    .Call(`_quanteda_cpp_dfm`, xptr, recompile)
 }
 
 cpp_is_grouped_numeric <- function(values_, groups_) {

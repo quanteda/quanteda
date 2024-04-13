@@ -199,6 +199,7 @@ TokensPtr cpp_tokens_select(TokensPtr xptr,
     // dev::stop_timer("Token select", timer);
     xptr->texts = texts;
     xptr->recompiled = false;
+    xptr->padded = padding;
     return xptr;
 }
 
