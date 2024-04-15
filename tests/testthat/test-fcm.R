@@ -50,8 +50,6 @@ test_that("fcm works with dfm and tokens in the same way", {
 
     # same as document context diagonal
     fcmat_toks_win_ord <- fcm(toks, context = "window", window = 1000, ordered = TRUE)
-    print(diag(as.matrix(fcmat_toks_doc)))
-    print(diag(as.matrix(fcmat_toks_win_ord)))
     expect_equivalent(diag(as.matrix(fcmat_toks_doc)), 
                        diag(as.matrix(fcmat_toks_win_ord)))
 })

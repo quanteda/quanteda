@@ -4,7 +4,7 @@
 \alias{tokens_recompile}
 \title{recompile a serialized tokens object}
 \usage{
-tokens_recompile(x, method = c("C++", "R"), gap = TRUE, dup = TRUE)
+tokens_recompile(x, method = c("C++", "R"))
 }
 \arguments{
 \item{x}{the \link{tokens} object to be recompiled}
@@ -49,7 +49,7 @@ unclass(tokens_lookup(toks3, dict))
 
 # empty pads
 unclass(tokens_select(toks3, dict))
-unclass(tokens_select(toks3, dict, pad = TRUE))
+unclass(tokens_select(toks3, dict, padding = TRUE))
 
 # ngrams
 unclass(tokens_ngrams(toks3, n = 2:3))

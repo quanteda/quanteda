@@ -682,20 +682,21 @@ serialize_tokens <- function(x, types_reserved = NULL, ...) {
 #'
 #' # empty pads
 #' unclass(tokens_select(toks3, dict))
-#' unclass(tokens_select(toks3, dict, pad = TRUE))
+#' unclass(tokens_select(toks3, dict, padding = TRUE))
 #'
 #' # ngrams
 #' unclass(tokens_ngrams(toks3, n = 2:3))
 #'
 #' @keywords internal tokens
-tokens_recompile <- function(x, method = c("C++", "R"), gap = TRUE, dup = TRUE) {
+tokens_recompile <- function(x, method = c("C++", "R")) {
 
     method <- match.arg(method)
     attrs <- attributes(x)
     type <- attr(x, "types")
     if (method == "C++") {
-        x <- cpp_tokens_recompile(x, type, gap, dup)
-        x <- rebuild_tokens(x, attrs)
+        x <- as.tokens_xptr(x)
+        cpp_recompile(x)
+        x <- as.tokens(x)
     } else {
 
         # Check for padding
@@ -704,31 +705,26 @@ tokens_recompile <- function(x, method = c("C++", "R"), gap = TRUE, dup = TRUE) 
         attrs[["padding"]] <- any(padding) # add padding flag
         index_unique <- index_unique[!padding] # exclude padding
 
-        if (!gap && !dup) return(x)
-
         # Remove gaps in the type index, if any, remap index
-        if (gap) {
-            if (any(is.na(match(seq_len(length(type)), index_unique)))) {
-                type_new <- type[index_unique]
-                index_new <- c(0, seq_along(index_unique)) # padding index is zero but not in types
-                index_unique <- c(0, index_unique) # padding index is zero but not in types
-                x <- lapply(unclass(x), function(y) index_new[fastmatch::fmatch(y, index_unique)])
-                attributes(x) <- attrs
-                type <- type_new
-            }
+        if (any(is.na(match(seq_len(length(type)), index_unique)))) {
+            type_new <- type[index_unique]
+            index_new <- c(0, seq_along(index_unique)) # padding index is zero but not in types
+            index_unique <- c(0, index_unique) # padding index is zero but not in types
+            x <- lapply(unclass(x), function(y) index_new[fastmatch::fmatch(y, index_unique)])
+            attributes(x) <- attrs
+            type <- type_new
         }
 
         # Reindex duplicates, if any
-        if (dup) {
-            if (any(duplicated(type))) {
-                type_unique <- unique(type)
-                index_mapping <- match(type, type_unique)
-                index_mapping <- c(0, index_mapping) # padding index is zero but not in types
-                x <- lapply(unclass(x), function(y) index_mapping[y + 1]) # shift index for padding
-                attributes(x) <- attrs
-                type <- type_unique
-            }
+        if (any(duplicated(type))) {
+            type_unique <- unique(type)
+            index_mapping <- match(type, type_unique)
+            index_mapping <- c(0, index_mapping) # padding index is zero but not in types
+            x <- lapply(unclass(x), function(y) index_mapping[y + 1]) # shift index for padding
+            attributes(x) <- attrs
+            type <- type_unique
         }
+    
         Encoding(type) <- "UTF-8"
         attr(x, "types") <- type
         x <- rebuild_tokens(x, attrs)

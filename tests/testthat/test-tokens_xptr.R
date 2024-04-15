@@ -89,12 +89,12 @@ test_that("c works on xtokens", {
 
 test_that("operations on copied xtokens do not affect the original xtokens", {
     expect_identical(
-        as.tokens(tokens_subset(as.tokens_xptr(toks), Party == "Republican")),
-        tokens_subset(toks, Party == "Republican")
+        as.list(as.tokens(tokens_subset(as.tokens_xptr(toks), Party == "Republican"))),
+        as.list(tokens_subset(toks, Party == "Republican"))
     )
     expect_identical(
-        as.tokens(tokens_select(as.tokens_xptr(toks), stopwords("en"))),
-        tokens_select(toks, stopwords("en"))
+        as.list(as.tokens(tokens_select(as.tokens_xptr(toks), stopwords("en")))),
+        as.list(tokens_select(toks, stopwords("en")))
     )
     expect_identical(
         as.list(as.tokens(tokens_ngrams(as.tokens_xptr(toks)))),
@@ -138,16 +138,16 @@ test_that("tokens_tolower and tokens_toupper work", {
     
     xtoks1 <- tokens_lookup(as.tokens_xptr(toks), dict, exclusive = FALSE)
     expect_identical(quanteda:::cpp_get_attributes(xtoks1),
-                     list(recompiled = FALSE))
+                     list(recompiled = FALSE, padded = FALSE))
     
     xtoks2 <- tokens_lookup(as.tokens_xptr(toks), dict, nomatch = "nomatch")
     expect_identical(quanteda:::cpp_get_attributes(xtoks2),
-                     list(recompiled = TRUE))
+                     list(recompiled = TRUE, padded = FALSE))
     
     # attributes are copied
     xtoks3 <- as.tokens_xptr(xtoks2)
     expect_identical(quanteda:::cpp_get_attributes(xtoks3),
-                     list(recompiled = TRUE))
+                     list(recompiled = TRUE, padded = FALSE))
 })
 
 test_that("tokens_subset works", {
@@ -181,8 +181,13 @@ test_that("all the meta fields are copied", {
     
 })
 
-test_that("recompile flag is correct", {
+test_that("attributes are correct", {
     dict <- data_dictionary_LSD2015[1:2]
+    
+    xtoks2 <- tokens_remove(as.tokens_xptr(toks), stopwords(), padding = TRUE)
+    expect_false(quanteda:::cpp_get_attributes(xtoks2)$recompiled)
+    expect_true(quanteda:::cpp_get_attributes(xtoks2)$padded)
+    
     xtoks_dict1 <- tokens_lookup(as.tokens_xptr(toks), 
                                  dict, exclusive = TRUE)
     expect_true(quanteda:::cpp_get_attributes(xtoks_dict1)$recompiled)

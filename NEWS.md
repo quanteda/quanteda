@@ -1,3 +1,9 @@
+# quanteda 4.0.2
+
+## Bug fixes and stability enhancements
+
+* Rewrite the recompilation function to serialize tokens more systematically (#2375).
+
 # quanteda 4.0.1
 
 ## Bug fixes and stability enhancements
