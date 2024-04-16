@@ -197,7 +197,7 @@ dfm_weight.dfm <- function(x,
               Nr, 
               function(n_doc) {
                 r <- as.numeric(as.character(names(n_doc)))
-                if (length(n_doc) <= 1 || min(n_doc) > 1){
+                if (length(n_doc) <= 1 || min(r) > 1){
                   warning('Document has only one unique term frequency, or does not contain hapax legomena. Returning ',
                           if(scheme == "goodturing_count"){'raw counts.'}else{'relative frequecies.'})
                   return(r)
@@ -228,6 +228,7 @@ dfm_weight.dfm <- function(x,
                     r_star[j] <- r_star_y[j]
                   }
                 }
+                names(r_star) <- r
                 N <- sum(n_doc * r)
                 Nprime <- sum(n_doc * r_star)
                 P0 <- n_doc[1] / N
@@ -247,7 +248,7 @@ dfm_weight.dfm <- function(x,
             if (estimate_zeros){
               x_dense <- as(x, "dgCMatrix")
               for (doc in 1:nrow(x_dense)) {
-                x_dense[doc,x_dense[doc,] == 0] <- logr_logZ_list[[doc]]["P0"]/sum(x_dense[doc,] == 0)
+                x_dense[doc,x_dense[doc,] == 0] <- logr_logZ_list[[doc]]["P0.1"]/sum(x_dense[doc,] == 0)
               }
               x <- matrix2dfm(x_dense, x@docvars, x@meta)
             }

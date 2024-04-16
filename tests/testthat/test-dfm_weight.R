@@ -30,6 +30,26 @@ test_that("dfm_weight works", {
     # print(matrix(c(0, 0, 0, 0, 0.120412, 0, 0.060206, 0, 0, 0.08600857, 0, 0.1290129), nrow = 2,
     #              dimnames = list(docs = c("text1", "text2"),
     #                              features = c("this", "is", "a", "sample", "another", "example"))))
+    
+    # expected values calculated with the `simple-good-turing` Python library
+    str <- c("I like to test my function because my function is buggy", "but unfortunately existing tests need way way too much text")
+    sgtdfm <- dfm(tokens(str))
+    expect_equivalent(
+        round(as.matrix(dfm_weight(sgtdfm, scheme = "goodturing_count")), 3),
+        matrix(c(0.332, 0, 0.332, 0, 0.332, 0, 0.332, 0, 0.838, 0, 0.838, 0, 0.332, 0, 0.332, 0, 0.332, 0, 0, 0.173, 0, 0.173, 0, 0.173, 0, 0.173, 0, 0.173, 0, 0.615, 0, 0.173, 0, 0.173, 0, 0.173), nrow = 2)
+    )
+    expect_equivalent(
+      round(as.matrix(dfm_weight(sgtdfm, scheme = "goodturing_count", estimate_zeros = TRUE)), 3),
+      matrix(c(0.332, 0.889, 0.332, 0.889, 0.332, 0.889, 0.332, 0.889, 0.838, 0.889, 0.838, 0.889, 0.332, 0.889, 0.332, 0.889, 0.332, 0.889, 0.778, 0.173, 0.778, 0.173, 0.778, 0.173, 0.778, 0.173, 0.778, 0.173, 0.778, 0.615, 0.778, 0.173, 0.778, 0.173, 0.778, 0.173), nrow = 2)
+    )
+    expect_equivalent(
+      round(as.matrix(dfm_weight(sgtdfm, scheme = "goodturing_prop")), 3),
+      matrix(c(0.030, 0, 0.030, 0, 0.030, 0, 0.030, 0, 0.076, 0, 0.076, 0, 0.030, 0, 0.030, 0, 0.030, 0, 0, 0.017, 0, 0.017, 0, 0.017, 0, 0.017, 0, 0.017, 0, 0.062, 0, 0.017, 0, 0.017, 0, 0.017), nrow = 2)
+    )
+    expect_equivalent(
+      round(as.matrix(dfm_weight(sgtdfm, scheme = "goodturing_prop", estimate_zeros = TRUE)), 3),
+      matrix(c(0.030, 0.089, 0.030, 0.089, 0.030, 0.089, 0.030, 0.089, 0.076, 0.089, 0.076, 0.089, 0.030, 0.089, 0.030, 0.089, 0.030, 0.089, 0.071, 0.017, 0.071, 0.017, 0.071, 0.017, 0.071, 0.017, 0.071, 0.017, 0.071, 0.062, 0.071, 0.017, 0.071, 0.017, 0.071, 0.017), nrow = 2)
+    )
 })
 
 test_that("dfm_weight works with weights", {
