@@ -181,6 +181,27 @@ test_that("goodturing works with different switching criterion", {
   )
 })
 
+test_that("goodturing gracefully deals with short texts", {
+  str <- c("I like to test my function", "but unfortunately existing tests need way way too much text")
+  sgtdfm <- dfm(tokens(str))
+  expect_warning(
+    dfm_weight(sgtdfm, scheme = "goodturing_count"),
+    "Document has only one unique term frequency, or does not contain hapax legomena. Returning raw counts."
+  )
+  suppressWarnings(
+    expect_equivalent(
+      round(as.matrix(dfm_weight(sgtdfm, scheme = "goodturing_count")), 3),
+      matrix(c(1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0.173, 0, 0.173, 0, 0.173, 0, 0.173, 0, 0.173, 0, 0.615, 0, 0.173, 0, 0.173, 0, 0.173), nrow = 2)
+    )
+  )
+  suppressWarnings(
+    expect_equivalent(
+      round(as.matrix(dfm_weight(sgtdfm, scheme = "goodturing_count", estimate_zeros = TRUE)), 3),
+      matrix(c(1, 1.333, 1, 1.333, 1, 1.333, 1, 1.333, 1, 1.333, 1, 1.333, 0, 0.173, 0, 0.173, 0, 0.173, 0, 0.173, 0, 0.173, 0, 0.615, 0, 0.173, 0, 0.173, 0, 0.173), nrow = 2)
+    )
+  )
+})
+
 test_that("docfreq works when features have duplicated names (#829)", {
     mydfm <- dfm(tokens(c(d1 = "a b c d e", d2 = "a a b b e f", d3 = "b e e f f f")))
     colnames(mydfm)[3] <- "b"
