@@ -193,7 +193,7 @@ dfm_weight.dfm <- function(x,
         } else if (scheme %in% c("goodturing_count", "goodturing_prop")) {
             Nr <- lapply(split(x@x, x@i), table)
 
-            logr_logZ_list <- lapply(
+            plist <- lapply(
               Nr, 
               function(n_doc) {
                 r <- as.numeric(as.character(names(n_doc)))
@@ -202,14 +202,13 @@ dfm_weight.dfm <- function(x,
                           if(scheme == "goodturing_count"){'raw counts.'}else{'relative frequecies.'})
                   return(r)
                 }
-                Z <- 2 * n_doc / diff(c(0, r, 2 * r[length(r)-1] - r[length(r)-2]), lag = 2)
+                Z <- 2 * n_doc / diff(c(0, r, 2 * r[length(r)] - r[length(r)-1]), lag = 2)
                 
                 lmfit <- stats::lm(log(Z) ~ log(r))
-                coef = lmfit$coefficients
 
                 r_star <- rep(NA, length(r))
                 r_star_x <- rep(NA, length(r))
-                r_star_y <- (r + 1) * exp(coef[1] + coef[2]*log(r + 1)) / exp(coef[1] + coef[2]*log(r))
+                r_star_y <- r * (1 + 1/r)^(lmfit$coefficients[2] + 1)
                 
                 crit_passed <- FALSE
                 for (j in 1:length(n_doc)) {
@@ -219,11 +218,11 @@ dfm_weight.dfm <- function(x,
                       crit_passed <- TRUE
                     }
                   }
-                  # computation
+                  # compute r_star
                   if (!crit_passed) {
                     r_star_x[j] <- (r[j] + 1) * n_doc[j + 1] / n_doc[j]
-                    crit_test <- abs(r_star_x[j] - r_star_y[j]) > crit * sqrt((1 + n_doc[j + 1] / n_doc[j]) * ((r[j] + 1)^2) * (n_doc[j + 1] / n_doc[j]^2))
-                    r_star[j] <- ifelse(crit_test, r_star_x[j], r_star_y[j])
+                    crit_passed <- ((r_star_x[j] - r_star_y[j])/crit)^2 < (1 + n_doc[j + 1] / n_doc[j]) * ((r[j] + 1)^2) * (n_doc[j + 1] / n_doc[j]^2)
+                    r_star[j] <- ifelse(crit_passed, r_star_y[j], r_star_x[j])
                   } else {
                     r_star[j] <- r_star_y[j]
                   }
@@ -242,13 +241,13 @@ dfm_weight.dfm <- function(x,
             )
             
             x@x <- unlist(
-              lapply(1:length(x@i), function(doc) logr_logZ_list[[x@i[doc] + 1L]][as.character(x@x[doc])])
+              lapply(1:length(x@i), function(doc) plist[[x@i[doc] + 1L]][as.character(x@x[doc])])
             )
 
             if (estimate_zeros){
               x_dense <- as(x, "dgCMatrix")
               for (doc in 1:nrow(x_dense)) {
-                x_dense[doc,x_dense[doc,] == 0] <- logr_logZ_list[[doc]]["P0.1"]/sum(x_dense[doc,] == 0)
+                x_dense[doc,x_dense[doc,] == 0] <- plist[[doc]]["P0.1"]/sum(x_dense[doc,] == 0)
               }
               x <- matrix2dfm(x_dense, x@docvars, x@meta)
             }

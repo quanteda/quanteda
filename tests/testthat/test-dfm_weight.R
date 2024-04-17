@@ -161,6 +161,26 @@ test_that("tfidf works with different log base", {
     )
 })
 
+test_that("goodturing works with different switching criterion", {
+  sampletext_dfm <- dfm(tokens(data_char_sampletext))
+  sampletext_dfm_sgt <- dfm_weight(sampletext_dfm, scheme = "goodturing_count")
+  sampletext_dfm_sgt_newcrit <- dfm_weight(sampletext_dfm, scheme = "goodturing_count", crit = .5)
+  expect_equal(
+    as.numeric(names(sort(lapply(split(sampletext_dfm_sgt@x, sampletext_dfm_sgt@i), table)[[1]], decreasing = TRUE))),
+    c(0.2709534764429325, 1.3332215216996022, 2.2622143132335153, 3.2270783083222403, 4.209939071887706, 5.203104894290868, 
+      6.202720318759163, 7.206639784094425, 8.213574361264547, 10.233478108463693, 13.272392502445745, 14.286874718500478, 
+      15.30189035910026, 19.365764296925104, 36.66589098973531, 45.831581076522305),
+    tol = .0001
+  )
+  expect_equal(
+    as.numeric(names(sort(lapply(split(sampletext_dfm_sgt_newcrit@x, sampletext_dfm_sgt_newcrit@i), table)[[1]], decreasing = TRUE))),
+    c(0.2628479519184065, 1.934093861705855, 2.899708130439, 1.7973397502721076, 4.083999501589802, 5.047454947008355,
+      6.01716705580604, 6.991054450862116, 7.967866761224695, 9.927345451048527, 12.875351267396793, 13.859485430383975,
+      14.844137060616866, 18.786440940363644, 35.569037454093404, 44.46053757012243),
+    tol = .0001
+  )
+})
+
 test_that("docfreq works when features have duplicated names (#829)", {
     mydfm <- dfm(tokens(c(d1 = "a b c d e", d2 = "a a b b e f", d3 = "b e e f f f")))
     colnames(mydfm)[3] <- "b"
