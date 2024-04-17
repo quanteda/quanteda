@@ -203,9 +203,9 @@ dfm_weight.dfm <- function(x,
                   warning('Document has only one unique term frequency, or does not contain hapax legomena. Returning ',
                           if(scheme == "goodturing_count"){'raw counts.'}else{'relative frequecies.'})
                   if (scheme == "goodturing_count"){
-                    return(c(P0.1 = 0, r))
+                    return(c(P0 = 0, r))
                   }else{
-                    return(c(P0.1 = 0, r/N))
+                    return(c(P0 = 0, r/N))
                   }
                 }
                 Z <- 2 * n_doc / diff(c(0, r, 2 * r[length(r)] - r[length(r)-1]), lag = 2)
@@ -238,21 +238,23 @@ dfm_weight.dfm <- function(x,
                 P0 <- n_doc[1] / N
                 p = (1 - P0) * (r_star / Nprime)
                 if (scheme == "goodturing_count"){
-                  return(c(P0 = n_doc[1], p * N))
+                  out <- c(n_doc[1], p * N)
+                  names(out)[1] <- "P0"
+                  return(out)
                 }else{
-                  return(c(P0 = P0, p))
+                  out <- c(P0, p)
+                  names(out)[1] <- "P0"
+                  return(out)
                 }
               }
             )
             
-            x@x <- unlist(
-              lapply(1:length(x@i), function(doc) plist[[x@i[doc] + 1L]][as.character(x@x[doc])])
-            )
+            x@x <- vapply(1:length(x@i), function(doc) plist[[x@i[doc] + 1L]][as.character(x@x[doc])], numeric(1))
 
             if (estimate_zeros){
               x_dense <- as(x, "dgCMatrix")
               for (doc in 1:nrow(x_dense)) {
-                x_dense[doc,x_dense[doc,] == 0] <- plist[[doc]]["P0.1"]/sum(x_dense[doc,] == 0)
+                x_dense[doc,x_dense[doc,] == 0] <- plist[[doc]]["P0"]/sum(x_dense[doc,] == 0)
               }
               x <- matrix2dfm(x_dense, x@docvars, x@meta)
             }
