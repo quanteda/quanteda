@@ -62,12 +62,12 @@
 #' @details
 #'  Additional features of \pkg{quanteda} include:
 #' * powerful, flexible tools for working with [dictionaries][dictionary];
-#' * the ability to identify [keywords][quanteda.textstats::textstat_keyness]
+#' * the ability to identify [keywords][kwic]
 #'   associated with documents or groups of documents;
-#' * the ability to explore texts using [key-words-in-context][kwic];
-#' * quick computation of word or document
-#'   [similarities][quanteda.textstats::textstat_simil], for clustering or to
-#'   compute distances for other purposes;
+#' * the ability to explore texts using [keywords-in-context][kwic];
+#' * quick computation of word or document statistics, using the 
+#'   \pkg{quanteda.textstats} package, for clustering or to compute distances
+#'   for other purposes;
 #' * a comprehensive suite of [descriptive statistics on text][summary.corpus]
 #'   such as the number of sentences, words, characters, or syllables per
 #'   document; and

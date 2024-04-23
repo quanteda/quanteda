@@ -71,12 +71,12 @@ formats so that these are easy to use with other analytic packages.
 Additional features of \pkg{quanteda} include:
 \itemize{
 \item powerful, flexible tools for working with \link[=dictionary]{dictionaries};
-\item the ability to identify \link[quanteda.textstats:textstat_keyness]{keywords}
+\item the ability to identify \link[=kwic]{keywords}
 associated with documents or groups of documents;
-\item the ability to explore texts using \link[=kwic]{key-words-in-context};
-\item quick computation of word or document
-\link[quanteda.textstats:textstat_simil]{similarities}, for clustering or to
-compute distances for other purposes;
+\item the ability to explore texts using \link[=kwic]{keywords-in-context};
+\item quick computation of word or document statistics, using the
+\pkg{quanteda.textstats} package, for clustering or to compute distances
+for other purposes;
 \item a comprehensive suite of \link[=summary.corpus]{descriptive statistics on text}
 such as the number of sentences, words, characters, or syllables per
 document; and
