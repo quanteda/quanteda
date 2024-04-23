@@ -90,11 +90,19 @@ You will also need to install TBB:
 
 **macOS:**
 
-After installing [Homebrew](https://brew.sh):
+First, you will need to install XCode command line tools.
 
 ```{bash eval = FALSE}
-brew install tbb
+xcode-select --install
 ```
+
+Then install the TBB libraries and the pkg-config utility: (after installing [Homebrew](https://brew.sh)):
+
+```{bash eval = FALSE}
+brew install tbb pkg-config
+```
+
+Finally, you will need to install [gfortran](https://github.com/fxcoudert/gfortran-for-macOS/releases).
 
 **Windows:**
 

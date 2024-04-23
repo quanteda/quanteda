@@ -275,3 +275,7 @@ RuleBasedBreakIterator
 yml
 RcppParallel
 RcppArmadillo
+XCode
+config
+gfortran
+pkg
