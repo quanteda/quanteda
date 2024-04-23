@@ -671,6 +671,7 @@ SHELL'
 ac_subst_files=''
 ac_user_opts='
 enable_option_checking
+enable_tbb
 '
       ac_precious_vars='build_alias
 host_alias
@@ -1297,6 +1298,13 @@ if test -n "$ac_init_help"; then
      short | recursive ) echo "Configuration of quanteda 4.0.2:";;
    esac
   cat <<\_ACEOF
+
+Optional Features:
+  --disable-option-checking  ignore unrecognized --enable/--with options
+  --disable-FEATURE       do not include FEATURE (same as --enable-FEATURE=no)
+  --enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
+  --enable-tbb            "to choose to disable Intel TBB even if installed,
+                          use --disable-tbb"
 
 Some influential environment variables:
   CXX         C++ compiler command
@@ -2945,11 +2953,11 @@ if test x$ac_prog_cxx_stdcxx = xno
 then :
   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for $CXX option to enable C++11 features" >&5
 printf %s "checking for $CXX option to enable C++11 features... " >&6; }
-if test ${ac_cv_prog_cxx_11+y}
+if test ${ac_cv_prog_cxx_cxx11+y}
 then :
   printf %s "(cached) " >&6
 else $as_nop
-  ac_cv_prog_cxx_11=no
+  ac_cv_prog_cxx_cxx11=no
 ac_save_CXX=$CXX
 cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
@@ -2991,11 +2999,11 @@ if test x$ac_prog_cxx_stdcxx = xno
 then :
   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for $CXX option to enable C++98 features" >&5
 printf %s "checking for $CXX option to enable C++98 features... " >&6; }
-if test ${ac_cv_prog_cxx_98+y}
+if test ${ac_cv_prog_cxx_cxx98+y}
 then :
   printf %s "(cached) " >&6
 else $as_nop
-  ac_cv_prog_cxx_98=no
+  ac_cv_prog_cxx_cxx98=no
 ac_save_CXX=$CXX
 cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
@@ -4185,11 +4193,11 @@ if test x$ac_prog_cxx_stdcxx = xno
 then :
   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for $CXX option to enable C++11 features" >&5
 printf %s "checking for $CXX option to enable C++11 features... " >&6; }
-if test ${ac_cv_prog_cxx_11+y}
+if test ${ac_cv_prog_cxx_cxx11+y}
 then :
   printf %s "(cached) " >&6
 else $as_nop
-  ac_cv_prog_cxx_11=no
+  ac_cv_prog_cxx_cxx11=no
 ac_save_CXX=$CXX
 cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
@@ -4231,11 +4239,11 @@ if test x$ac_prog_cxx_stdcxx = xno
 then :
   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for $CXX option to enable C++98 features" >&5
 printf %s "checking for $CXX option to enable C++98 features... " >&6; }
-if test ${ac_cv_prog_cxx_98+y}
+if test ${ac_cv_prog_cxx_cxx98+y}
 then :
   printf %s "(cached) " >&6
 else $as_nop
-  ac_cv_prog_cxx_98=no
+  ac_cv_prog_cxx_cxx98=no
 ac_save_CXX=$CXX
 cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
@@ -4285,39 +4293,60 @@ ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
 TBBFLAGS=
 TBBLIBS=
 
-# If tbb/tbb.h and libtbb are found, define TBB and add -ltbb
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking Intel TBB existence:" >&5
-printf %s "checking Intel TBB existence:... " >&6; }
-TBB_EXISTS=no
-pkg-config --exists tbb >/dev/null 2>&1
-SH_TBB_EXISTS=`echo $?`
-if test ${SH_TBB_EXISTS} = 0 ; then
-  TBB_EXISTS=yes
-  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: yes" >&5
-printf "%s\n" "yes" >&6; }
+# Configure argument to avoid TBB
+WITH_TBB="yes"
+# Check whether --enable-tbb was given.
+if test ${enable_tbb+y}
+then :
+  enableval=$enable_tbb; if test "${enableval}" = no; then
+  want_tbb=no
+elif test "${enableval}" = yes; then
+  want_tbb=yes
 else
-  if test ${SH_TBB_EXISTS} = 1 ; then
-    TBB_EXISTS=no
-    { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
-printf "%s\n" "no" >&6; }
-    { printf "%s\n" "$as_me:${as_lineno-$LINENO}: WARNING: Intel TBB not installed; install TBB devel package for parallel processing or update PKG_CONFIG_PATH environment variable" >&5
-printf "%s\n" "$as_me: WARNING: Intel TBB not installed; install TBB devel package for parallel processing or update PKG_CONFIG_PATH environment variable" >&2;}
-  else
-    TBB_EXISTS=no
-    { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
-printf "%s\n" "no" >&6; }
-    { printf "%s\n" "$as_me:${as_lineno-$LINENO}: WARNING: pkg-config not found; install pkg-config to auto-detect Intel TBB; assumed absent" >&5
-printf "%s\n" "$as_me: WARNING: pkg-config not found; install pkg-config to auto-detect Intel TBB; assumed absent" >&2;}
-  fi
+  want_tbb=yes
+fi
+else $as_nop
+  want_tbb=yes
 fi
 
-if test ${TBB_EXISTS} = yes ; then
-  TBBFLAGS="-DTBB $(pkg-config --cflags tbb)"
 
-  TBBLIBS="$(pkg-config --libs tbb)"
+if test "$want_tbb" = no ; then
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: Intel TBB detection disabled" >&5
+printf "%s\n" "$as_me: Intel TBB detection disabled" >&6;}
+else
+# If tbb/tbb.h and libtbb are found, define TBB and add -ltbb
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking Intel TBB existence:" >&5
+printf %s "checking Intel TBB existence:... " >&6; }
+  TBB_EXISTS=no
+  pkg-config --exists tbb >/dev/null 2>&1
+  SH_TBB_EXISTS=`echo $?`
+  if test ${SH_TBB_EXISTS} = 0 ; then
+    TBB_EXISTS=yes
+    { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+printf "%s\n" "yes" >&6; }
+  else
+    if test ${SH_TBB_EXISTS} = 1 ; then
+      TBB_EXISTS=no
+      { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+printf "%s\n" "no" >&6; }
+      { printf "%s\n" "$as_me:${as_lineno-$LINENO}: WARNING: Intel TBB not installed; install TBB devel package for parallel processing or update PKG_CONFIG_PATH environment variable" >&5
+printf "%s\n" "$as_me: WARNING: Intel TBB not installed; install TBB devel package for parallel processing or update PKG_CONFIG_PATH environment variable" >&2;}
+    else
+      TBB_EXISTS=no
+      { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+printf "%s\n" "no" >&6; }
+      { printf "%s\n" "$as_me:${as_lineno-$LINENO}: WARNING: pkg-config not found; install pkg-config to auto-detect Intel TBB; assumed absent" >&5
+printf "%s\n" "$as_me: WARNING: pkg-config not found; install pkg-config to auto-detect Intel TBB; assumed absent" >&2;}
+    fi
+  fi
+
+  if test ${TBB_EXISTS} = yes ; then
+    TBBFLAGS="-DTBB $(pkg-config --cflags tbb)"
+
+    TBBLIBS="$(pkg-config --libs tbb)"
 
 
-  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking tbb available for compiling and linking:" >&5
+    { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking tbb available for compiling and linking:" >&5
 printf %s "checking tbb available for compiling and linking:... " >&6; }
 cat > libtbb_test.cpp <<_EOCONF
 #include <tbb/tbb.h>
@@ -4337,18 +4366,35 @@ int main() {
   }
 }
 _EOCONF
-  ${CXX} ${CXXFLAGS} ${TBBFLAGS} -o libtbb_test libtbb_test.cpp ${TBBLIBS} 2> errors.txt
+    ${CXX} ${CXXFLAGS} ${TBBFLAGS} -o libtbb_test libtbb_test.cpp ${TBBLIBS} 2> errors.txt
 
-  if test `echo $?` -ne 0 ; then
-    { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+    if test `echo $?` -ne 0 ; then
+      { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
 printf "%s\n" "no" >&6; }
-    { printf "%s\n" "$as_me:${as_lineno-$LINENO}: WARNING: parallel computing is disabled because the Intel TBB devel package is absent" >&5
+      { printf "%s\n" "$as_me:${as_lineno-$LINENO}: WARNING: parallel computing is disabled because the Intel TBB devel package is absent" >&5
 printf "%s\n" "$as_me: WARNING: parallel computing is disabled because the Intel TBB devel package is absent" >&2;}
-  else
-    { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+      TBBFLAGS=""
+
+      TBBLIBS=""
+
+    else
+      ./libtbb_test >/dev/null 2>&1
+      if test `echo $?` -ne 0 ; then
+        { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+printf "%s\n" "no" >&6; }
+        { printf "%s\n" "$as_me:${as_lineno-$LINENO}: WARNING: parallel computing is disabled because Intel TBB did not load" >&5
+printf "%s\n" "$as_me: WARNING: parallel computing is disabled because Intel TBB did not load" >&2;}
+        TBBFLAGS=""
+
+        TBBLIBS=""
+
+      else
+        { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: yes" >&5
 printf "%s\n" "yes" >&6; }
+      fi
+    fi
+    rm -f libtbb_test.cpp libtbb_test errors.txt
   fi
-  rm -f libtbb_test.cpp libtbb_test errors.txt
 fi
 # Now substitute these variables in src/Makevars.in to create src/Makevars
 TBB_CFLAGS=${TBBFLAGS}
