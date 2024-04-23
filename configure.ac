@@ -12,6 +12,7 @@ if test -z "${R_HOME}"; then
 fi
 CXX=`"${R_HOME}/bin/R" CMD config CXX`
 CXXFLAGS=`"${R_HOME}/bin/R" CMD config CXXFLAGS`
+CXXFLAGS="${CXXFLAGS} -g0"  # Disable debug information
 CPPFLAGS=`"${R_HOME}/bin/R" CMD config CPPFLAGS`
 LDFLAGS=`"${R_HOME}/bin/R" CMD config LDFLAGS`
 AC_LANG(C++)
