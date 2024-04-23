@@ -654,8 +654,6 @@ serialize_tokens <- function(x, types_reserved = NULL, ...) {
 #' duplicates, through a procedure such as stemming or lowercasing; or the
 #' addition of new tokens through compounding.
 #' @param x the [tokens] object to be recompiled
-#' @param gap if `TRUE`, remove gaps between token IDs
-#' @param dup if `TRUE`, merge duplicated token types into the same ID
 #' @param method `"C++"` for C++ implementation or `"R"` for an older
 #'   R-based method
 #' @examples
