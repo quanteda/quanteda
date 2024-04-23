@@ -14,5 +14,5 @@ is.collocations(x)
 }
 \description{
 Function to check if an object is a collocations object, created by
-\code{\link[quanteda.textstats:textstat_collocations]{quanteda.textstats::textstat_collocations()}}.
+\code{quanteda.textstats::textstat_collocations()}.
 }
