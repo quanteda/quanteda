@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>クイック・スタートガイド • quanteda</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../../bootstrap-toc.css">
 <script src="../../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
@@ -42,7 +42,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">4.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">4.0.2</span>
       </span>
     </div>
 
@@ -221,8 +221,8 @@ Guide</a>の日本語訳であり，英語のテキスト分析を通じて<stro
 <div class="section level3">
 <h3 id="currently-available-corpus-sources">利用可能なコーパス<a class="anchor" aria-label="anchor" href="#currently-available-corpus-sources"></a>
 </h3>
-<p><strong>quanteda</strong>にはテキストを読み込むためのシンプルで強力なパッケージ，<a href="https://github.com/kbenoit/readtext" class="external-link"><strong>readtext</strong></a>があります．このパッケージの<code><a href="https://rdrr.io/pkg/readtext/man/readtext.html" class="external-link">readtext()</a></code>は，ローカス・ストレージやインターネットからファイル読み込み，<code><a href="../../reference/corpus.html">corpus()</a></code>にデータ・フレームを返す．</p>
-<p><code><a href="https://rdrr.io/pkg/readtext/man/readtext.html" class="external-link">readtext()</a></code>で利用可能なファイルやデータの形式:</p>
+<p><strong>quanteda</strong>にはテキストを読み込むためのシンプルで強力なパッケージ，<a href="https://github.com/kbenoit/readtext" class="external-link"><strong>readtext</strong></a>があります．このパッケージの<code>readtext()</code>は，ローカス・ストレージやインターネットからファイル読み込み，<code><a href="../../reference/corpus.html">corpus()</a></code>にデータ・フレームを返す．</p>
+<p><code>readtext()</code>で利用可能なファイルやデータの形式:</p>
 <ul>
 <li>テキスト（<code>.txt</code>）ファイル</li>
 <li>コンマ区切り値（<code>.csv</code>）ファイル</li>
@@ -286,33 +286,33 @@ Guide</a>の日本語訳であり，英語のテキスト分析を通じて<stro
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://github.com/quanteda/readtext" class="external-link">readtext</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Twitter json</span></span>
-<span><span class="va">dat_json</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/readtext/man/readtext.html" class="external-link">readtext</a></span><span class="op">(</span><span class="st">"~/Dropbox/QUANTESS/social media/zombies/tweets.json"</span><span class="op">)</span></span>
+<span><span class="va">dat_json</span> <span class="op">&lt;-</span> <span class="fu">readtext</span><span class="op">(</span><span class="st">"~/Dropbox/QUANTESS/social media/zombies/tweets.json"</span><span class="op">)</span></span>
 <span><span class="va">corp_twitter</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/corpus.html">corpus</a></span><span class="op">(</span><span class="va">dat_json</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">corp_twitter</span>, <span class="fl">5</span><span class="op">)</span></span>
 <span><span class="co"># generic json - needs a textfield specifier</span></span>
-<span><span class="va">dat_sotu</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/readtext/man/readtext.html" class="external-link">readtext</a></span><span class="op">(</span><span class="st">"~/Dropbox/QUANTESS/Manuscripts/collocations/Corpora/sotu/sotu.json"</span>,</span>
+<span><span class="va">dat_sotu</span> <span class="op">&lt;-</span> <span class="fu">readtext</span><span class="op">(</span><span class="st">"~/Dropbox/QUANTESS/Manuscripts/collocations/Corpora/sotu/sotu.json"</span>,</span>
 <span>                  textfield <span class="op">=</span> <span class="st">"text"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu"><a href="../../reference/corpus.html">corpus</a></span><span class="op">(</span><span class="va">dat_sotu</span><span class="op">)</span>, <span class="fl">5</span><span class="op">)</span></span>
 <span><span class="co"># text file</span></span>
-<span><span class="va">dat_txtone</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/readtext/man/readtext.html" class="external-link">readtext</a></span><span class="op">(</span><span class="st">"~/Dropbox/QUANTESS/corpora/project_gutenberg/pg2701.txt"</span>, cache <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="va">dat_txtone</span> <span class="op">&lt;-</span> <span class="fu">readtext</span><span class="op">(</span><span class="st">"~/Dropbox/QUANTESS/corpora/project_gutenberg/pg2701.txt"</span>, cache <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu"><a href="../../reference/corpus.html">corpus</a></span><span class="op">(</span><span class="va">dat_txtone</span><span class="op">)</span>, <span class="fl">5</span><span class="op">)</span></span>
 <span><span class="co"># multiple text files</span></span>
-<span><span class="va">dat_txtmultiple1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/readtext/man/readtext.html" class="external-link">readtext</a></span><span class="op">(</span><span class="st">"~/Dropbox/QUANTESS/corpora/inaugural/*.txt"</span>, cache <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="va">dat_txtmultiple1</span> <span class="op">&lt;-</span> <span class="fu">readtext</span><span class="op">(</span><span class="st">"~/Dropbox/QUANTESS/corpora/inaugural/*.txt"</span>, cache <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu"><a href="../../reference/corpus.html">corpus</a></span><span class="op">(</span><span class="va">dat_txtmultiple1</span><span class="op">)</span>, <span class="fl">5</span><span class="op">)</span></span>
 <span><span class="co"># multiple text files with docvars from filenames</span></span>
-<span><span class="va">dat_txtmultiple2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/readtext/man/readtext.html" class="external-link">readtext</a></span><span class="op">(</span><span class="st">"~/Dropbox/QUANTESS/corpora/inaugural/*.txt"</span>,</span>
+<span><span class="va">dat_txtmultiple2</span> <span class="op">&lt;-</span> <span class="fu">readtext</span><span class="op">(</span><span class="st">"~/Dropbox/QUANTESS/corpora/inaugural/*.txt"</span>,</span>
 <span>                             docvarsfrom <span class="op">=</span> <span class="st">"filenames"</span>, sep <span class="op">=</span> <span class="st">"-"</span>,</span>
 <span>                             docvarnames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Year"</span>, <span class="st">"President"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu"><a href="../../reference/corpus.html">corpus</a></span><span class="op">(</span><span class="va">dat_txtmultiple2</span><span class="op">)</span>, <span class="fl">5</span><span class="op">)</span></span>
 <span><span class="co"># XML data</span></span>
-<span><span class="va">dat_xml</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/readtext/man/readtext.html" class="external-link">readtext</a></span><span class="op">(</span><span class="st">"~/Dropbox/QUANTESS/quanteda_working_files/xmlData/plant_catalog.xml"</span>,</span>
+<span><span class="va">dat_xml</span> <span class="op">&lt;-</span> <span class="fu">readtext</span><span class="op">(</span><span class="st">"~/Dropbox/QUANTESS/quanteda_working_files/xmlData/plant_catalog.xml"</span>,</span>
 <span>                  textfield <span class="op">=</span> <span class="st">"COMMON"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu"><a href="../../reference/corpus.html">corpus</a></span><span class="op">(</span><span class="va">dat_xml</span><span class="op">)</span>, <span class="fl">5</span><span class="op">)</span></span>
 <span><span class="co"># csv file</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>inaug_speech <span class="op">=</span> <span class="fu"><a href="../../reference/texts.html">texts</a></span><span class="op">(</span><span class="va">data_corpus_inaugural</span><span class="op">)</span>,</span>
 <span>                     <span class="fu"><a href="../../reference/docvars.html">docvars</a></span><span class="op">(</span><span class="va">data_corpus_inaugural</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>          file <span class="op">=</span> <span class="st">"/tmp/inaug_texts.csv"</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="va">dat_csv</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/readtext/man/readtext.html" class="external-link">readtext</a></span><span class="op">(</span><span class="st">"/tmp/inaug_texts.csv"</span>, textfield <span class="op">=</span> <span class="st">"inaug_speech"</span><span class="op">)</span></span>
+<span><span class="va">dat_csv</span> <span class="op">&lt;-</span> <span class="fu">readtext</span><span class="op">(</span><span class="st">"/tmp/inaug_texts.csv"</span>, textfield <span class="op">=</span> <span class="st">"inaug_speech"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu"><a href="../../reference/corpus.html">corpus</a></span><span class="op">(</span><span class="va">dat_csv</span><span class="op">)</span>, <span class="fl">5</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
@@ -902,7 +902,7 @@ matrix</em>と呼ぶが，<strong>quanteda</strong>が語（term）でなはく�
 <div class="section level3">
 <h3 id="topic-models">トピックモデル<a class="anchor" aria-label="anchor" href="#topic-models"></a>
 </h3>
-<p><code><a href="../../reference/convert.html">convert()</a></code>を用いると，dfmを<strong>topicmodels</strong>の<code><a href="https://rdrr.io/pkg/topicmodels/man/lda.html" class="external-link">LDA()</a></code>形式のデータに転換し，簡単にトピックモデルを適用できる．</p>
+<p><code><a href="../../reference/convert.html">convert()</a></code>を用いると，dfmを<strong>topicmodels</strong>の<code>LDA()</code>形式のデータに転換し，簡単にトピックモデルを適用できる．</p>
 <div class="sourceCode" id="cb80"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dfmat_ire2</span> <span class="op">&lt;-</span> <span class="va">data_corpus_irishbudget2010</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="../../reference/tokens.html">tokens</a></span><span class="op">(</span>remove_punct <span class="op">=</span> <span class="cn">TRUE</span>, remove_numbers <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -932,28 +932,12 @@ matrix</em>と呼ぶが，<strong>quanteda</strong>が語（term）でなはく�
 <div class="sourceCode" id="cb82"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span></span>
 <span><span class="kw">if</span> <span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va">topicmodels</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="va">my_lda_fit20</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/topicmodels/man/lda.html" class="external-link">LDA</a></span><span class="op">(</span><span class="fu"><a href="../../reference/convert.html">convert</a></span><span class="op">(</span><span class="va">dfmat_ire2</span>, to <span class="op">=</span> <span class="st">"topicmodels"</span><span class="op">)</span>, k <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/pkg/topicmodels/man/get.html" class="external-link">get_terms</a></span><span class="op">(</span><span class="va">my_lda_fit20</span>, <span class="fl">5</span><span class="op">)</span></span>
+<span>    <span class="va">my_lda_fit20</span> <span class="op">&lt;-</span> <span class="fu">LDA</span><span class="op">(</span><span class="fu"><a href="../../reference/convert.html">convert</a></span><span class="op">(</span><span class="va">dfmat_ire2</span>, to <span class="op">=</span> <span class="st">"topicmodels"</span><span class="op">)</span>, k <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span>
+<span>    <span class="fu">get_terms</span><span class="op">(</span><span class="va">my_lda_fit20</span>, <span class="fl">5</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
 <pre><code><span><span class="co">## Loading required package: topicmodels</span></span></code></pre>
-<pre><code><span><span class="co">##      Topic 1    Topic 2     Topic 3  Topic 4    Topic 5   Topic 6  Topic 7    </span></span>
-<span><span class="co">## [1,] "fail"     "taoiseach" "system" "famili"   "levi"    "fianna" "back"     </span></span>
-<span><span class="co">## [2,] "strategi" "refer"     "welfar" "care"     "sustain" "fáil"   "includ"   </span></span>
-<span><span class="co">## [3,] "ask"      "employe"   "creat"  "hospit"   "million" "side"   "reduct"   </span></span>
-<span><span class="co">## [4,] "creat"    "debat"     "rate"   "unemploy" "carbon"  "level"  "creat"    </span></span>
-<span><span class="co">## [5,] "address"  "problem"   "polici" "million"  "import"  "third"  "enterpris"</span></span>
-<span><span class="co">##      Topic 8  Topic 9     Topic 10  Topic 11  Topic 12 Topic 13  Topic 14 </span></span>
-<span><span class="co">## [1,] "spend"  "enterpris" "increas" "fianna"  "creat"  "bank"    "day"    </span></span>
-<span><span class="co">## [2,] "fianna" "societi"   "reduct"  "fáil"    "kind"   "benefit" "child"  </span></span>
-<span><span class="co">## [3,] "child"  "sens"      "reduc"   "support" "altern" "societi" "benefit"</span></span>
-<span><span class="co">## [4,] "widow"  "equal"     "scheme"  "measur"  "tackl"  "today"   "bank"   </span></span>
-<span><span class="co">## [5,] "irish"  "difficult" "million" "irish"   "imagin" "child"   "much"   </span></span>
-<span><span class="co">##      Topic 15  Topic 16    Topic 17  Topic 18  Topic 19 Topic 20  </span></span>
-<span><span class="co">## [1,] "welfar"  "taoiseach" "rate"    "support" "child"  "fáil"    </span></span>
-<span><span class="co">## [2,] "fáil"    "bank"      "pension" "million" "polici" "strategi"</span></span>
-<span><span class="co">## [3,] "measur"  "case"      "fund"    "invest"  "system" "fianna"  </span></span>
-<span><span class="co">## [4,] "payment" "fine"      "welfar"  "increas" "care"   "bank"    </span></span>
-<span><span class="co">## [5,] "fianna"  "gael"      "spend"   "welfar"  "welfar" "support"</span></span></code></pre>
+<pre><code><span><span class="co">## Warning in library(package, lib.loc = lib.loc, character.only = TRUE,</span></span>
+<span><span class="co">## logical.return = TRUE, : there is no package called 'topicmodels'</span></span></code></pre>
 </div>
 </div>
   </div>
@@ -975,7 +959,7 @@ matrix</em>と呼ぶが，<strong>quanteda</strong>が語（term）でなはく�
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
 </div>
 
       </footer>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Replication: Text Analysis with R for Students of Literature • quanteda</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../../../bootstrap-toc.css">
 <script src="../../../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
@@ -42,7 +42,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">4.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">4.0.2</span>
       </span>
     </div>
 
@@ -1013,30 +1013,30 @@ Latent Dirichlet Allocation.</p>
 <span></span>
 <span><span class="co"># get top five terms per topic</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/topicmodels/man/get.html" class="external-link">get_terms</a></span><span class="op">(</span><span class="va">LDA_fit_20</span>, <span class="fl">5</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">##      Topic 1     Topic 2    Topic 3   Topic 4        Topic 5      Topic 6   </span></span>
-<span><span class="co">## [1,] "taoiseach" "million"  "scheme"  "society"      "levy"       "national"</span></span>
-<span><span class="co">## [2,] "fine"      "welfare"  "million" "enterprising" "carbon"     "fáil"    </span></span>
-<span><span class="co">## [3,] "gael"      "rate"     "reduce"  "sense"        "placing"    "banks"   </span></span>
-<span><span class="co">## [4,] "may"       "measures" "welfare" "equal"        "colleagues" "families"</span></span>
-<span><span class="co">## [5,] "irish"     "homes"    "rate"    "nation"       "change"     "welfare" </span></span>
-<span><span class="co">##      Topic 7      Topic 8    Topic 9      Topic 10   Topic 11      Topic 12 </span></span>
-<span><span class="co">## [1,] "investment" "care"     "leadership" "spending" "alternative" "child"  </span></span>
-<span><span class="co">## [2,] "support"    "welfare"  "void"       "measures" "citizenship" "benefit"</span></span>
-<span><span class="co">## [3,] "million"    "fianna"   "proposed"   "million"  "wealth"      "day"    </span></span>
-<span><span class="co">## [4,] "continue"   "families" "employment" "review"   "adjustment"  "today"  </span></span>
-<span><span class="co">## [5,] "welfare"    "child"    "give"       "pension"  "breaks"      "bank"   </span></span>
-<span><span class="co">##      Topic 13    Topic 14   Topic 15    Topic 16     Topic 17   Topic 18   </span></span>
-<span><span class="co">## [1,] "failed"    "welfare"  "side"      "million"    "fianna"   "allowance"</span></span>
-<span><span class="co">## [2,] "strategy"  "system"   "kind"      "welfare"    "fáil"     "hospital" </span></span>
-<span><span class="co">## [3,] "ministers" "taxation" "education" "future"     "irish"    "per"      </span></span>
-<span><span class="co">## [4,] "system"    "worst"    "fianna"    "benefit"    "support"  "million"  </span></span>
-<span><span class="co">## [5,] "vision"    "child"    "fáil"      "efficiency" "national" "benefit"  </span></span>
-<span><span class="co">##      Topic 19    Topic 20   </span></span>
-<span><span class="co">## [1,] "fáil"      "taoiseach"</span></span>
-<span><span class="co">## [2,] "system"    "employees"</span></span>
-<span><span class="co">## [3,] "recession" "rate"     </span></span>
-<span><span class="co">## [4,] "fianna"    "referred" </span></span>
-<span><span class="co">## [5,] "high"      "debate"</span></span></code></pre>
+<pre><code><span><span class="co">##      Topic 1    Topic 2   Topic 3      Topic 4       Topic 5    Topic 6     </span></span>
+<span><span class="co">## [1,] "system"   "levy"    "fianna"     "kind"        "million"  "million"   </span></span>
+<span><span class="co">## [2,] "welfare"  "million" "national"   "imagination" "measures" "support"   </span></span>
+<span><span class="co">## [3,] "measures" "carbon"  "irish"      "policies"    "spending" "welfare"   </span></span>
+<span><span class="co">## [4,] "food"     "change"  "adjustment" "wit"         "review"   "investment"</span></span>
+<span><span class="co">## [5,] "earning"  "welfare" "supports"   "create"      "pension"  "back"      </span></span>
+<span><span class="co">##      Topic 7    Topic 8     Topic 9  Topic 10     Topic 11       Topic 12   </span></span>
+<span><span class="co">## [1,] "welfare"  "care"      "fianna" "system"     "welfare"      "failed"   </span></span>
+<span><span class="co">## [2,] "system"   "welfare"   "fáil"   "per"        "prices"       "ministers"</span></span>
+<span><span class="co">## [3,] "stimulus" "per"       "side"   "modern"     "contribution" "strategy" </span></span>
+<span><span class="co">## [4,] "recovery" "allowance" "level"  "sort"       "increases"    "vision"   </span></span>
+<span><span class="co">## [5,] "per"      "hit"       "third"  "employment" "current"      "confront" </span></span>
+<span><span class="co">##      Topic 13    Topic 14       Topic 15  Topic 16      Topic 17    Topic 18 </span></span>
+<span><span class="co">## [1,] "taoiseach" "society"      "workers" "alternative" "taoiseach" "child"  </span></span>
+<span><span class="co">## [2,] "gael"      "enterprising" "fáil"    "citizenship" "employees" "benefit"</span></span>
+<span><span class="co">## [3,] "fine"      "sense"        "parties" "wealth"      "rate"      "day"    </span></span>
+<span><span class="co">## [4,] "may"       "equal"        "fianna"  "matter"      "referred"  "today"  </span></span>
+<span><span class="co">## [5,] "irish"     "nation"       "low"     "adjustment"  "debate"    "bank"   </span></span>
+<span><span class="co">##      Topic 19   Topic 20 </span></span>
+<span><span class="co">## [1,] "know"     "fáil"   </span></span>
+<span><span class="co">## [2,] "strategy" "fianna" </span></span>
+<span><span class="co">## [3,] "banks"    "support"</span></span>
+<span><span class="co">## [4,] "bank"     "society"</span></span>
+<span><span class="co">## [5,] "interest" "ted"</span></span></code></pre>
 </div>
   </div>
 
@@ -1057,7 +1057,7 @@ Latent Dirichlet Allocation.</p>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
 </div>
 
       </footer>

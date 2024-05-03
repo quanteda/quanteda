@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>快速入门指南 • quanteda</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../../bootstrap-toc.css">
 <script src="../../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
@@ -42,7 +42,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">4.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">4.0.2</span>
       </span>
     </div>
 
@@ -220,8 +220,8 @@ Count</a> 文本分析软件</li>
 </h3>
 <p><strong>quanteda</strong>有一个简单而强大的配套软件包用于加载文本文件:
 <a href="https://github.com/quanteda/readtext" class="external-link"><strong>readtext</strong></a>。
-这个软件包的主函数<code><a href="https://rdrr.io/pkg/readtext/man/readtext.html" class="external-link">readtext()</a></code>从磁盘或者URL中读取文件或者文件集，并且返回一个可以直接和<code><a href="../../reference/corpus.html">corpus()</a></code>构造函数一起使用的data.frame，可用来创建一个<strong>quanteda</strong>语料库。</p>
-<p><code><a href="https://rdrr.io/pkg/readtext/man/readtext.html" class="external-link">readtext()</a></code>可读取：</p>
+这个软件包的主函数<code>readtext()</code>从磁盘或者URL中读取文件或者文件集，并且返回一个可以直接和<code><a href="../../reference/corpus.html">corpus()</a></code>构造函数一起使用的data.frame，可用来创建一个<strong>quanteda</strong>语料库。</p>
+<p><code>readtext()</code>可读取：</p>
 <ul>
 <li>文本文件 (<code>.txt</code>)</li>
 <li>逗号分割的（<code>.csv</code>）文本文件</li>
@@ -284,32 +284,32 @@ Count</a> 文本分析软件</li>
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://github.com/quanteda/readtext" class="external-link">readtext</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Twitter json</span></span>
-<span><span class="va">dat_json</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/readtext/man/readtext.html" class="external-link">readtext</a></span><span class="op">(</span><span class="st">"~/Dropbox/QUANTESS/social media/zombies/tweets.json"</span><span class="op">)</span></span>
+<span><span class="va">dat_json</span> <span class="op">&lt;-</span> <span class="fu">readtext</span><span class="op">(</span><span class="st">"~/Dropbox/QUANTESS/social media/zombies/tweets.json"</span><span class="op">)</span></span>
 <span><span class="va">corp_twitter</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/corpus.html">corpus</a></span><span class="op">(</span><span class="va">dat_json</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">corp_twitter</span>, <span class="fl">5</span><span class="op">)</span></span>
 <span><span class="co"># 通用json - 需要“textfield”说明符</span></span>
-<span><span class="va">dat_sotu</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/readtext/man/readtext.html" class="external-link">readtext</a></span><span class="op">(</span><span class="st">"~/Dropbox/QUANTESS/Manuscripts/collocations/Corpora/sotu/sotu.json"</span>,</span>
+<span><span class="va">dat_sotu</span> <span class="op">&lt;-</span> <span class="fu">readtext</span><span class="op">(</span><span class="st">"~/Dropbox/QUANTESS/Manuscripts/collocations/Corpora/sotu/sotu.json"</span>,</span>
 <span>                     textfield <span class="op">=</span> <span class="st">"text"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu"><a href="../../reference/corpus.html">corpus</a></span><span class="op">(</span><span class="va">dat_sotu</span><span class="op">)</span>, <span class="fl">5</span><span class="op">)</span></span>
 <span><span class="co"># 文本文件</span></span>
-<span><span class="va">dat_txtone</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/readtext/man/readtext.html" class="external-link">readtext</a></span><span class="op">(</span><span class="st">"~/Dropbox/QUANTESS/corpora/project_gutenberg/pg2701.txt"</span>, cache <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="va">dat_txtone</span> <span class="op">&lt;-</span> <span class="fu">readtext</span><span class="op">(</span><span class="st">"~/Dropbox/QUANTESS/corpora/project_gutenberg/pg2701.txt"</span>, cache <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu"><a href="../../reference/corpus.html">corpus</a></span><span class="op">(</span><span class="va">dat_txtone</span><span class="op">)</span>, <span class="fl">5</span><span class="op">)</span></span>
 <span><span class="co"># 多文本文件</span></span>
-<span><span class="va">dat_txtmultiple1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/readtext/man/readtext.html" class="external-link">readtext</a></span><span class="op">(</span><span class="st">"~/Dropbox/QUANTESS/corpora/inaugural/*.txt"</span>, cache <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="va">dat_txtmultiple1</span> <span class="op">&lt;-</span> <span class="fu">readtext</span><span class="op">(</span><span class="st">"~/Dropbox/QUANTESS/corpora/inaugural/*.txt"</span>, cache <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu"><a href="../../reference/corpus.html">corpus</a></span><span class="op">(</span><span class="va">dat_txtmultiple1</span><span class="op">)</span>, <span class="fl">5</span><span class="op">)</span></span>
 <span><span class="co"># 包含取自文件名的docvars的多个文本文件</span></span>
-<span><span class="va">dat_txtmultiple2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/readtext/man/readtext.html" class="external-link">readtext</a></span><span class="op">(</span><span class="st">"~/Dropbox/QUANTESS/corpora/inaugural/*.txt"</span>,</span>
+<span><span class="va">dat_txtmultiple2</span> <span class="op">&lt;-</span> <span class="fu">readtext</span><span class="op">(</span><span class="st">"~/Dropbox/QUANTESS/corpora/inaugural/*.txt"</span>,</span>
 <span>                             docvarsfrom <span class="op">=</span> <span class="st">"filenames"</span>, sep <span class="op">=</span> <span class="st">"-"</span>, docvarnames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Year"</span>, <span class="st">"President"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu"><a href="../../reference/corpus.html">corpus</a></span><span class="op">(</span><span class="va">dat_txtmultiple2</span><span class="op">)</span>, <span class="fl">5</span><span class="op">)</span></span>
 <span><span class="co"># XML 数据</span></span>
-<span><span class="va">dat_xml</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/readtext/man/readtext.html" class="external-link">readtext</a></span><span class="op">(</span><span class="st">"~/Dropbox/QUANTESS/quanteda_working_files/xmlData/plant_catalog.xml"</span>,</span>
+<span><span class="va">dat_xml</span> <span class="op">&lt;-</span> <span class="fu">readtext</span><span class="op">(</span><span class="st">"~/Dropbox/QUANTESS/quanteda_working_files/xmlData/plant_catalog.xml"</span>,</span>
 <span>                    dat_xml <span class="op">=</span> <span class="st">"COMMON"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu"><a href="../../reference/corpus.html">corpus</a></span><span class="op">(</span><span class="va">dat_xml</span><span class="op">)</span>, <span class="fl">5</span><span class="op">)</span></span>
 <span><span class="co"># csv 文件</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>inaug_speech <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">data_corpus_inaugural</span><span class="op">)</span>,</span>
 <span>                     <span class="fu"><a href="../../reference/docvars.html">docvars</a></span><span class="op">(</span><span class="va">data_corpus_inaugural</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>          file <span class="op">=</span> <span class="st">"/tmp/inaug_texts.csv"</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="va">dat_csv</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/readtext/man/readtext.html" class="external-link">readtext</a></span><span class="op">(</span><span class="st">"/tmp/inaug_texts.csv"</span>, textfield <span class="op">=</span> <span class="st">"inaug_speech"</span><span class="op">)</span></span>
+<span><span class="va">dat_csv</span> <span class="op">&lt;-</span> <span class="fu">readtext</span><span class="op">(</span><span class="st">"/tmp/inaug_texts.csv"</span>, textfield <span class="op">=</span> <span class="st">"inaug_speech"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu"><a href="../../reference/corpus.html">corpus</a></span><span class="op">(</span><span class="va">dat_csv</span><span class="op">)</span>, <span class="fl">5</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
@@ -933,13 +933,12 @@ pane中查看dfm,或者调用R的View功能。调用<code>plot</code>dfm将调�
 <div class="sourceCode" id="cb82"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span></span>
 <span><span class="kw">if</span> <span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="http://www.structuraltopicmodel.com/" class="external-link">"stm"</a></span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="va">my_lda_fit20</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/stm/man/stm.html" class="external-link">stm</a></span><span class="op">(</span><span class="va">quant_dfm</span>, K <span class="op">=</span> <span class="fl">20</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span>    <span class="va">my_lda_fit20</span> <span class="op">&lt;-</span> <span class="fu">stm</span><span class="op">(</span><span class="va">quant_dfm</span>, K <span class="op">=</span> <span class="fl">20</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">my_lda_fit20</span><span class="op">)</span>    </span>
 <span><span class="op">}</span></span></code></pre></div>
 <pre><code><span><span class="co">## Loading required package: stm</span></span></code></pre>
-<pre><code><span><span class="co">## stm v1.3.7 successfully loaded. See ?stm for help. </span></span>
-<span><span class="co">##  Papers, resources, and other materials at structuraltopicmodel.com</span></span></code></pre>
-<p><img src="quickstart_cn_files/figure-html/unnamed-chunk-38-1.png" width="672"></p>
+<pre><code><span><span class="co">## Warning in library(package, lib.loc = lib.loc, character.only = TRUE,</span></span>
+<span><span class="co">## logical.return = TRUE, : there is no package called 'stm'</span></span></code></pre>
 <p>注：以上这个指南翻译于英文版<a href="https://quanteda.io/articles/pkgdown/quickstart.html">quickstart</a>.</p>
 </div>
 </div>
@@ -1062,7 +1061,7 @@ pane中查看dfm,或者调用R的View功能。调用<code>plot</code>dfm将调�
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
 </div>
 
       </footer>
