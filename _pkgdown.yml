@@ -28,6 +28,8 @@ navbar:
       href: reference/index.html
     - text: "Features"
       menu:
+        - text: "Enabling parallelisation in quanteda"
+          href: articles/pkgdown/parallelisation.html
         - text: "External pointer tokens objects"
           href: articles/pkgdown/tokens_xptr.html
         - text: "Performance benchmarks for v4"
