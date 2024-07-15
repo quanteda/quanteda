@@ -84,7 +84,7 @@ message_select <- function(selection, nfeats, ndocs, nfeatspad = 0, ndocspad = 0
 #' @param verbose if `TRUE` print the number of tokens and documents before and
 #'   after the function is applied.
 #' @param name the name of the operation.
-#' @param before,after object statistics before and aafter the operation.
+#' @param before,after object statistics before and after the operation.
 #' @keywords message internal
 message_tokens <- function(operation, before, after) {
     msg <- sprintf("Apply %s: changed from %d tokens (%d documents) to %d tokens (%d documents)",
@@ -102,7 +102,7 @@ stats_tokens <- function(x) {
 #' @param verbose if `TRUE` print the number of features and documents before and
 #'   after the function is applied.
 #' @param name the name of the operation.
-#' @param before,after object statistics before and aafter the operation.
+#' @param before,after object statistics before and after the operation.
 #' @keywords message internal
 message_dfm <- function(operation, before, after) {
     msg <- sprintf("Apply %s: changed from %d features (%d documents) to %d features (%d documents)",
