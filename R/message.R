@@ -80,14 +80,33 @@ message_select <- function(selection, nfeats, ndocs, nfeatspad = 0, ndocspad = 0
     catm("", appendLF = TRUE)
 }
 
+#' Print messages in tokens methods
+#' @param verbose if `TRUE` print the number of tokens and documents before and
+#'   after the function is applied.
+#' @param name the name of the operation.
+#' @param before,after object statistics before and aafter the operation.
+#' @keywords message internal
+message_tokens <- function(operation, before, after) {
+    msg <- sprintf("Apply %s: changed from %d tokens (%d documents) to %d tokens (%d documents)",
+                   operation, before$ntoken, before$ndoc, after$ntoken, after$ndoc)
+    msg <- prettyNum(msg, big.mark = ",")
+    message(msg)
+}
+
 stats_tokens <- function(x) {
     list(ndoc = ndoc(x),
          ntoken = sum(ntoken(x, remove_padding = TRUE)))
 }
 
-message_tokens <- function(operation, pre, post) {
-    msg <- sprintf("Apply %s: changed from %d tokens (%d documents) to %d tokens (%d documents)",
-                   operation, pre$ntoken, pre$ndoc, post$ntoken, post$ndoc)
+#' Print messages in dfm methods
+#' @param verbose if `TRUE` print the number of features and documents before and
+#'   after the function is applied.
+#' @param name the name of the operation.
+#' @param before,after object statistics before and aafter the operation.
+#' @keywords message internal
+message_dfm <- function(operation, before, after) {
+    msg <- sprintf("Apply %s: changed from %d features (%d documents) to %d features (%d documents)",
+                   operation, before$nfeat, before$ndoc, after$nfeat, after$ndoc)
     msg <- prettyNum(msg, big.mark = ",")
     message(msg)
 }
@@ -95,12 +114,5 @@ message_tokens <- function(operation, pre, post) {
 stats_dfm <- function(x) {
     list(ndoc = ndoc(x),
          nfeat = nfeat(dfm_remove(x, "")))
-}
-
-message_dfm <- function(operation, pre, post) {
-    msg <- sprintf("Apply %s: changed from %d features (%d documents) to %d features (%d documents)",
-                   operation, pre$nfeat, pre$ndoc, post$nfeat, post$ndoc)
-    msg <- prettyNum(msg, big.mark = ",")
-    message(msg)
 }
 

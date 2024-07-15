@@ -25,7 +25,8 @@ values are taken as false.}
 \item{drop_docid}{if \code{TRUE}, \code{docid} for documents are removed as the result
 of subsetting.}
 
-\item{verbose}{if \code{TRUE} print messages about how many documents were selected.}
+\item{verbose}{if \code{TRUE} print the number of tokens and documents before and
+after the function is applied.}
 
 \item{...}{not used}
 }
