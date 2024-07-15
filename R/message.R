@@ -80,3 +80,34 @@ message_select <- function(selection, nfeats, ndocs, nfeatspad = 0, ndocspad = 0
     catm("", appendLF = TRUE)
 }
 
+stats_tokens <- function(x) {
+    list(ndoc = ndoc(x),
+         ntoken = sum(ntoken(x, remove_padding = TRUE)))
+}
+
+message_tokens <- function(operation, pre, post) {
+    msg <- sprintf("%s: from %d tokens (%d documents) to %d tokens (%d documents)",
+                   operation, pre$ntoken, pre$ndoc, post$ntoken, post$ndoc)
+    msg <- prettyNum(msg, big.mark = ",")
+    cat(msg)
+}
+
+stats_dfm <- function(x) {
+    list(ndoc = ndoc(x),
+         nfeat = nfeat(dfm_remove(x, "")))
+}
+
+message_tokens <- function(operation, pre, post) {
+    msg <- sprintf("%s: from %d tokens (%d documents) to %d tokens (%d documents)",
+                   operation, pre$ntoken, pre$ndoc, post$ntoken, post$ndoc)
+    msg <- prettyNum(msg, big.mark = ",")
+    cat(msg)
+}
+
+message_dfm <- function(operation, pre, post) {
+    msg <- sprintf("%s: from %d features (%d documents) to %d features (%d documents)",
+                   operation, pre$nfeat, pre$ndoc, post$nfeat, post$ndoc)
+    msg <- prettyNum(msg, big.mark = ",")
+    cat(msg)
+}
+
