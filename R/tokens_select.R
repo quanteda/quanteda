@@ -191,21 +191,25 @@ tokens_select.tokens_xptr <- function(x, pattern = NULL,
         }
     }
 
-    if (verbose) message_select(selection, length(ids), 0)
     if (length(window) == 1) window <- rep(window, 2)
-
     startpos <- rep(startpos, length.out = ndoc(x))
     endpos <- rep(endpos, length.out = ndoc(x))
 
     if (is.null(apply_if))
         apply_if <- rep(TRUE, length.out = ndoc(x))
-
+    
+    if (verbose)
+        before <- stats_tokens(x)
     if (selection == "keep") {
         result <- cpp_tokens_select(x, ids, 1, padding, window[1], window[2], startpos, endpos, !apply_if,
                                     get_threads())
+        if (verbose)
+            message_tokens("tokens_keep()", before, stats_tokens(result))
     } else {
         result <- cpp_tokens_select(x, ids, 2, padding, window[1], window[2], startpos, endpos, !apply_if,
                                     get_threads())
+        if (verbose)
+            message_tokens("tokens_remove()", before, stats_tokens(result))
     }
     rebuild_tokens(result, attrs)
 }
