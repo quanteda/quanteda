@@ -20,6 +20,11 @@ test_that("tokens_subset works in a basic way", {
         docnames(tokens_subset(toks, c(TRUE, TRUE, rep(FALSE, 8)))),
         c("1981-Reagan", "1985-Reagan")
     )
+    
+    expect_message(
+        tokens_subset(toks, Year > 2000, verbose = TRUE),
+        "Apply tokens_subset()"
+    )
     expect_warning(
         tokens_subset(toks, Year > 2000, something = 10),
         "something argument is not used.", fixed = TRUE
