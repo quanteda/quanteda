@@ -350,15 +350,15 @@ test_that("tokens_select output works as planned", {
 
     expect_message(
         tokens_remove(toks, stopwords("english"), verbose = TRUE),
-        "Apply tokens_remove()"
+        "tokens_remove() changed"
     )
     expect_message(
         tokens_select(toks, stopwords("english"), verbose = TRUE),
-        "Apply tokens_keep()"
+        "tokens_keep() changed"
     )
     expect_message(
         tokens_select(toks, stopwords("english"), padding = TRUE, verbose = TRUE),
-        "Apply tokens_keep()"
+        "tokens_keep() changed"
     )
 })
 
