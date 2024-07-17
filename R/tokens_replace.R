@@ -14,6 +14,7 @@
 #'   of character vectors of the same length as `pattern`
 #' @inheritParams apply_if
 #' @inheritParams valuetype
+#' @inheritParams message_tokens
 #' @param verbose print status messages if `TRUE`
 #' @export
 #' @seealso tokens_lookup
@@ -61,6 +62,7 @@ tokens_replace.tokens_xptr <- function(x, pattern, replacement, valuetype = "glo
 
     apply_if <- check_logical(apply_if, min_len = ndoc(x), max_len = ndoc(x),
                                allow_null = TRUE, allow_na = TRUE)
+    verbose <- check_logical(verbose)
 
     type <- get_types(x)
     attrs <- attributes(x)
@@ -73,9 +75,12 @@ tokens_replace.tokens_xptr <- function(x, pattern, replacement, valuetype = "glo
 
     if (is.null(apply_if))
         apply_if <- rep(TRUE, length.out = ndoc(x))
+    if (verbose)
+        before <- stats_tokens(x)
     result <- cpp_tokens_replace(x, ids_pat, ids_rep[attr(ids_pat, "pattern")], !apply_if,
                                  get_threads())
-
+    if (verbose)
+        message_tokens("tokens_replace()", before, stats_tokens(result))
     rebuild_tokens(result, attrs)
 }
 
