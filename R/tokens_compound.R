@@ -17,6 +17,8 @@
 #'   with the first giving the window size before `pattern` and the second the
 #'   window size after.  If paddings (empty `""` tokens) are found, window will
 #'   be shrunk to exclude them.
+#' @param concatenator character; the concatenation character that will connect
+#'   the tokens making up a multi-token sequence.
 #' @inheritParams apply_if
 #' @return A [tokens] object in which the token sequences matching `pattern`
 #'   have been replaced by new compounded "tokens" joined by the concatenator.

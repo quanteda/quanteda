@@ -26,6 +26,9 @@ or collocations object.  See \link{pattern} for details.}
 wildcard expressions; \code{"regex"} for regular expressions; or \code{"fixed"} for
 exact matching. See \link{valuetype} for details.}
 
+\item{concatenator}{character; the concatenation character that will connect
+the tokens making up a multi-token sequence.}
+
 \item{window}{integer; a vector of length 1 or 2 that specifies size of the
 window of tokens adjacent to \code{pattern} that will be compounded with matches
 to \code{pattern}.  The window can be asymmetric if two elements are specified,
