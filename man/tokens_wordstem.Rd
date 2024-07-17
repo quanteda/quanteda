@@ -6,7 +6,11 @@
 \alias{dfm_wordstem}
 \title{Stem the terms in an object}
 \usage{
-tokens_wordstem(x, language = quanteda_options("language_stemmer"))
+tokens_wordstem(
+  x,
+  language = quanteda_options("language_stemmer"),
+  verbose = quanteda_options("verbose")
+)
 
 char_wordstem(
   x,
@@ -24,6 +28,9 @@ removed.  If tokenized texts, the tokenization must be word-based.}
 \link[SnowballC:getStemLanguages]{getStemLanguages}, or a two- or three-letter ISO-639 code
 corresponding to one of these languages (see references for the list of
 codes)}
+
+\item{verbose}{if \code{TRUE} print the number of tokens and documents before and
+after the function is applied.}
 
 \item{check_whitespace}{logical; if \code{TRUE}, stop with a warning when trying
 to stem inputs containing whitespace}

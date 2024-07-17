@@ -12,7 +12,8 @@ tokens_compound(
   window = 0L,
   case_insensitive = TRUE,
   join = TRUE,
-  apply_if = NULL
+  apply_if = NULL,
+  verbose = quanteda_options("verbose")
 )
 }
 \arguments{
@@ -24,9 +25,6 @@ or collocations object.  See \link{pattern} for details.}
 \item{valuetype}{the type of pattern matching: \code{"glob"} for "glob"-style
 wildcard expressions; \code{"regex"} for regular expressions; or \code{"fixed"} for
 exact matching. See \link{valuetype} for details.}
-
-\item{concatenator}{character; the concatenation character that will connect
-the tokens making up a multi-token sequence.}
 
 \item{window}{integer; a vector of length 1 or 2 that specifies size of the
 window of tokens adjacent to \code{pattern} that will be compounded with matches
@@ -43,6 +41,9 @@ compound; otherwise, form these separately.  See examples.}
 
 \item{apply_if}{logical vector of length \code{ndoc(x)}; documents are modified
 only when corresponding values are \code{TRUE}, others are left unchanged.}
+
+\item{verbose}{if \code{TRUE} print the number of tokens and documents before and
+after the function is applied.}
 }
 \value{
 A \link{tokens} object in which the token sequences matching \code{pattern}
