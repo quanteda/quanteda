@@ -32,7 +32,7 @@ tokens_chunk <- function(x, size, overlap = 0, use_docvars = TRUE,
 #' @export
 tokens_chunk.default <- function(x, size, overlap = 0, use_docvars = TRUE,
                                  verbose = quanteda_options("verbose")) {
-    UseMethod("tokens_chunk")
+    check_class(class(x), "tokens_chunk")
 }
 
 #' @noRd

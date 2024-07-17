@@ -20,7 +20,7 @@
 #'   are not desired for the segmented corpus.
 #' @return `tokens_segment` returns a [tokens] object whose documents
 #'   have been split by patterns
-#' @keywords tokens internal
+#' @keywords tokens
 #' @export
 #' @examples
 #' txts <- "Fellow citizens, I am again called upon by the voice of my country to
@@ -54,7 +54,7 @@ tokens_segment.default <- function(x, pattern,
                                    pattern_position = c("before", "after"),
                                    use_docvars = TRUE,
                                    verbose = quanteda_options("verbose")) {
-    UseMethod("tokens_segment")
+    check_class(class(x), "tokens_segment")
 }
 
 #' @rdname tokens_segment
