@@ -8,6 +8,7 @@
 #' @param x [tokens] object whose token elements will be segmented
 #' @inheritParams pattern
 #' @inheritParams valuetype
+#' @inheritParams message_tokens
 #' @param extract_pattern remove matched patterns from the texts and save in
 #'   [docvars], if `TRUE`
 #' @param pattern_position either `"before"` or `"after"`, depending
@@ -40,10 +41,21 @@ tokens_segment <- function(x, pattern,
                            case_insensitive = TRUE,
                            extract_pattern = FALSE,
                            pattern_position = c("before", "after"),
-                           use_docvars = TRUE) {
+                           use_docvars = TRUE,
+                           verbose = quanteda_options("verbose")) {
     UseMethod("tokens_segment")
 }
 
+#' @export
+tokens_segment.default <- function(x, pattern,
+                                   valuetype = c("glob", "regex", "fixed"),
+                                   case_insensitive = TRUE,
+                                   extract_pattern = FALSE,
+                                   pattern_position = c("before", "after"),
+                                   use_docvars = TRUE,
+                                   verbose = quanteda_options("verbose")) {
+    UseMethod("tokens_segment")
+}
 
 #' @rdname tokens_segment
 #' @noRd
@@ -53,12 +65,14 @@ tokens_segment.tokens_xptr <- function(x, pattern,
                                   case_insensitive = TRUE,
                                   extract_pattern = FALSE,
                                   pattern_position = c("before", "after"),
-                                  use_docvars = TRUE) {
+                                  use_docvars = TRUE,
+                                  verbose = quanteda_options("verbose")) {
 
     valuetype <- match.arg(valuetype)
     extract_pattern <- check_logical(extract_pattern)
     pattern_position <- match.arg(pattern_position)
     use_docvars <- check_logical(use_docvars)
+    verbose <- check_logical(verbose)
     
     if (!use_docvars)
         docvars(x) <- NULL
@@ -69,11 +83,15 @@ tokens_segment.tokens_xptr <- function(x, pattern,
                         field_object(attrs, "concatenator"))
     if ("" %in% pattern) ids <- c(ids, list(0)) # append padding index
     
+    if (verbose)
+        before <- stats_tokens(x)
     if (pattern_position == "before") {
         result <- cpp_tokens_segment(x, ids, extract_pattern, 1, get_threads())
     } else {
         result <- cpp_tokens_segment(x, ids, extract_pattern, 2, get_threads())
     }
+    if (verbose)
+        message_tokens("tokens_segment()", before, stats_tokens(result))
     attrs[["docvars"]] <- reshape_docvars(attrs[["docvars"]], attr(result, "documents"))
     field_object(attrs, "unit") <- "segments"
     if (extract_pattern)
