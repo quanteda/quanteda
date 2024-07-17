@@ -7,8 +7,8 @@
 #' subsequently as single tokens, for instance in constructing a [dfm].
 #' @param x an input [tokens] object
 #' @inheritParams pattern
-#' @inheritParams tokens
 #' @inheritParams valuetype
+#' @inheritParams message_tokens
 #' @param join logical; if `TRUE`, join overlapping compounds into a single
 #'   compound; otherwise, form these separately.  See examples.
 #' @param window integer; a vector of length 1 or 2 that specifies size of the
@@ -66,7 +66,8 @@ tokens_compound <- function(x, pattern,
                             concatenator = concat(x),
                             window = 0L,
                             case_insensitive = TRUE, join = TRUE,
-                            apply_if = NULL) {
+                            apply_if = NULL,
+                            verbose = quanteda_options("verbose")) {
     UseMethod("tokens_compound")
 }
 
@@ -76,7 +77,8 @@ tokens_compound.default <- function(x, pattern,
                                     concatenator = concat(x),
                                     window = 0L,
                                     case_insensitive = TRUE, join = TRUE,
-                                    apply_if = NULL) {
+                                    apply_if = NULL,
+                                    verbose = quanteda_options("verbose")) {
     check_class(class(x), "tokens_compound")
 }
 
@@ -86,7 +88,8 @@ tokens_compound.tokens_xptr <- function(x, pattern,
                                         concatenator = concat(x),
                                         window = 0L,
                                         case_insensitive = TRUE, join = TRUE,
-                                        apply_if = NULL) {
+                                        apply_if = NULL,
+                                        verbose = quanteda_options("verbose")) {
 
     valuetype <- match.arg(valuetype)
     concatenator <- check_character(concatenator)
@@ -94,6 +97,7 @@ tokens_compound.tokens_xptr <- function(x, pattern,
     join <- check_logical(join)
     apply_if <- check_logical(apply_if, min_len = ndoc(x), max_len = ndoc(x),
                                allow_null = TRUE, allow_na = TRUE)
+    verbose <- check_logical(verbose)
 
     attrs <- attributes(x)
     type <- get_types(x)
@@ -102,8 +106,12 @@ tokens_compound.tokens_xptr <- function(x, pattern,
     if (length(window) == 1) window <- rep(window, 2)
     if (is.null(apply_if))
         apply_if <- rep(TRUE, length.out = ndoc(x))
+    if (verbose)
+        before <- stats_tokens(x)
     result <- cpp_tokens_compound(x, ids, concatenator, join, window[1], window[2], !apply_if,
                                   get_threads())
+    if (verbose)
+        message_tokens("tokens_compound()", before, stats_tokens(result))
     field_object(attrs, "concatenator") <- concatenator
     rebuild_tokens(result, attrs)
 }
