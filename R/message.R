@@ -87,7 +87,7 @@ message_select <- function(selection, nfeats, ndocs, nfeatspad = 0, ndocspad = 0
 #' @param before,after object statistics before and after the operation.
 #' @keywords message internal
 message_tokens <- function(operation, before, after) {
-    msg <- sprintf("Apply %s: changed from %d tokens (%d documents) to %d tokens (%d documents)",
+    msg <- sprintf("%s changed from %d tokens (%d documents) to %d tokens (%d documents)",
                    operation, before$ntoken, before$ndoc, after$ntoken, after$ndoc)
     msg <- prettyNum(msg, big.mark = ",")
     message(msg)
@@ -105,7 +105,7 @@ stats_tokens <- function(x) {
 #' @param before,after object statistics before and after the operation.
 #' @keywords message internal
 message_dfm <- function(operation, before, after) {
-    msg <- sprintf("Apply %s: changed from %d features (%d documents) to %d features (%d documents)",
+    msg <- sprintf("%s changed from %d features (%d documents) to %d features (%d documents)",
                    operation, before$nfeat, before$ndoc, after$nfeat, after$ndoc)
     msg <- prettyNum(msg, big.mark = ",")
     message(msg)
