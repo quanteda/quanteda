@@ -83,10 +83,13 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
+      <a href="../../../articles/pkgdown/parallelisation.html">Parallel computing</a>
+    </li>
+    <li>
       <a href="../../../articles/pkgdown/tokens_xptr.html">External pointer tokens objects</a>
     </li>
     <li>
-      <a href="../../../articles/pkgdown/benchmarks_xptr.html">Performance benchmarks for v4</a>
+      <a href="../../../articles/pkgdown/benchmarks_xptr.html">Performance benchmarks</a>
     </li>
     <li>
       <a href="../../../articles/pkgdown/design.html">Package design</a>
@@ -183,7 +186,7 @@ and Akitaka Matsuo</h4>
 <h3 id="download">コーパスのダウンロード<a class="anchor" aria-label="anchor" href="#download"></a>
 </h3>
 <p>本コーパスは，2017年総選挙の際に収集されたツイートから構成されている．ツイートは，TwitterのStrem
-APIから、キーワード”選挙”を使い，10月20日から10月31日の期間にダウンロードした．インターネット上で収集されたテキストは，英数字の全半角が統一されていないので，<code>stri_trans_nfkc()</code>によって表記を標準化すると良い．</p>
+APIから、キーワード”選挙”を使い，10月20日から10月31日の期間にダウンロードした．インターネット上で収集されたテキストは，英数字の全半角が統一されていないので，<code><a href="https://rdrr.io/pkg/stringi/man/stri_trans_nf.html" class="external-link">stri_trans_nfkc()</a></code>によって表記を標準化すると良い．</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"quanteda/quanteda.corpora"</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">

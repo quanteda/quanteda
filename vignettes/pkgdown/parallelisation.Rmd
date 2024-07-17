@@ -1,5 +1,5 @@
 ---
-title: "Enabling parallelisation in quanteda >v4.0.0 with TBB"
+title: "Parallel computing"
 author: Kenneth Benoit and Stefan Müller
 output:  
   html_document:

@@ -68,10 +68,13 @@ effect."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mat
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
+      <a href="../articles/pkgdown/parallelisation.html">Parallel computing</a>
+    </li>
+    <li>
       <a href="../articles/pkgdown/tokens_xptr.html">External pointer tokens objects</a>
     </li>
     <li>
-      <a href="../articles/pkgdown/benchmarks_xptr.html">Performance benchmarks for v4</a>
+      <a href="../articles/pkgdown/benchmarks_xptr.html">Performance benchmarks</a>
     </li>
     <li>
       <a href="../articles/pkgdown/design.html">Package design</a>
@@ -438,14 +441,14 @@ tokenization, consider using <span class="pkg">spacyr</span>.</p></dd>
 <span class="r-in"><span><span class="fu">tokens</span><span class="op">(</span><span class="fu">tokenizers</span><span class="fu">::</span><span class="fu">tokenize_words</span><span class="op">(</span><span class="va">txt</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span><span class="op">)</span>, remove_symbols <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">tokenizers</span><span class="fu">::</span><span class="fu">tokenize_words</span><span class="op">(</span><span class="va">txt</span>, lowercase <span class="op">=</span> <span class="cn">FALSE</span>, strip_punct <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>    <span class="fu">tokens</span><span class="op">(</span>remove_symbols <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in loadNamespace(x):</span> there is no package called ‘tokenizers’</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in loadNamespace(x):</span> there is no package called 'tokenizers'</span>
 <span class="r-in"><span><span class="fu">tokenizers</span><span class="fu">::</span><span class="fu">tokenize_characters</span><span class="op">(</span><span class="va">txt</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span>, strip_non_alphanum <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>    <span class="fu">tokens</span><span class="op">(</span>remove_punct <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in loadNamespace(x):</span> there is no package called ‘tokenizers’</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in loadNamespace(x):</span> there is no package called 'tokenizers'</span>
 <span class="r-in"><span><span class="fu">tokenizers</span><span class="fu">::</span><span class="fu">tokenize_sentences</span><span class="op">(</span></span></span>
 <span class="r-in"><span>    <span class="st">"The quick brown fox.  It jumped over the lazy dog."</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>    <span class="fu">tokens</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in loadNamespace(x):</span> there is no package called ‘tokenizers’</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in loadNamespace(x):</span> there is no package called 'tokenizers'</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

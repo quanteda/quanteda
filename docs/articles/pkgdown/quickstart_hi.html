@@ -83,10 +83,13 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
+      <a href="../../articles/pkgdown/parallelisation.html">Parallel computing</a>
+    </li>
+    <li>
       <a href="../../articles/pkgdown/tokens_xptr.html">External pointer tokens objects</a>
     </li>
     <li>
-      <a href="../../articles/pkgdown/benchmarks_xptr.html">Performance benchmarks for v4</a>
+      <a href="../../articles/pkgdown/benchmarks_xptr.html">Performance benchmarks</a>
     </li>
     <li>
       <a href="../../articles/pkgdown/design.html">Package design</a>
@@ -225,11 +228,11 @@
 </h3>
 <p><strong>quanteda</strong> में टेक्स्ट को लोड करने के लिए एक सरल और शक्तिशाली
 साथी पैकेज है: <a href="https://github.com/quanteda/readtext" class="external-link"><strong>readtext</strong></a>
-इस पैकेज में मुख्य फ़ंक्शन, <code>readtext()</code>, डिस्क या URL से एक फ़ाइल या
+इस पैकेज में मुख्य फ़ंक्शन, <code><a href="https://rdrr.io/pkg/readtext/man/readtext.html" class="external-link">readtext()</a></code>, डिस्क या URL से एक फ़ाइल या
 फाइलसेट लेकर, एक प्रकार का डेटाफ्रेम लौटाता है जिसका उपयोग सीधे
 <code><a href="../../reference/corpus.html">corpus()</a></code> कंस्ट्रक्टर फ़ंक्शन के साथ किया जा सकता है, ताकि एक
 <strong>quanteda</strong> कॉर्पस ऑब्जेक्ट बनाया जा सके।</p>
-<p><code>readtext()</code> निम्नलिखित में से सभी पर काम करता है:</p>
+<p><code><a href="https://rdrr.io/pkg/readtext/man/readtext.html" class="external-link">readtext()</a></code> निम्नलिखित में से सभी पर काम करता है:</p>
 <ul>
 <li>टेक्स्ट (<code>.txt</code>) फ़ाइल;</li>
 <li>कॉमा-सेपरेटेड-वैल्यू (<code>.csv</code>) फ़ाइल;</li>
@@ -301,33 +304,33 @@
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://github.com/quanteda/readtext" class="external-link">readtext</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Twitter json</span></span>
-<span><span class="va">dat_json</span> <span class="op">&lt;-</span> <span class="fu">readtext</span><span class="op">(</span><span class="st">"~/Dropbox/QUANTESS/social media/zombies/tweets.json"</span><span class="op">)</span></span>
+<span><span class="va">dat_json</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/readtext/man/readtext.html" class="external-link">readtext</a></span><span class="op">(</span><span class="st">"~/Dropbox/QUANTESS/social media/zombies/tweets.json"</span><span class="op">)</span></span>
 <span><span class="va">corp_twitter</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/corpus.html">corpus</a></span><span class="op">(</span><span class="va">dat_json</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">corp_twitter</span>, <span class="fl">5</span><span class="op">)</span></span>
 <span><span class="co"># generic json - needs a textfield specifier</span></span>
-<span><span class="va">dat_sotu</span> <span class="op">&lt;-</span> <span class="fu">readtext</span><span class="op">(</span><span class="st">"~/Dropbox/QUANTESS/Manuscripts/collocations/Corpora/sotu/sotu.json"</span>,</span>
+<span><span class="va">dat_sotu</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/readtext/man/readtext.html" class="external-link">readtext</a></span><span class="op">(</span><span class="st">"~/Dropbox/QUANTESS/Manuscripts/collocations/Corpora/sotu/sotu.json"</span>,</span>
 <span>                     textfield <span class="op">=</span> <span class="st">"text"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu"><a href="../../reference/corpus.html">corpus</a></span><span class="op">(</span><span class="va">dat_sotu</span><span class="op">)</span>, <span class="fl">5</span><span class="op">)</span></span>
 <span><span class="co"># text file</span></span>
-<span><span class="va">dat_txtone</span> <span class="op">&lt;-</span> <span class="fu">readtext</span><span class="op">(</span><span class="st">"~/Dropbox/QUANTESS/corpora/project_gutenberg/pg2701.txt"</span>, cache <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="va">dat_txtone</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/readtext/man/readtext.html" class="external-link">readtext</a></span><span class="op">(</span><span class="st">"~/Dropbox/QUANTESS/corpora/project_gutenberg/pg2701.txt"</span>, cache <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu"><a href="../../reference/corpus.html">corpus</a></span><span class="op">(</span><span class="va">dat_txtone</span><span class="op">)</span>, <span class="fl">5</span><span class="op">)</span></span>
 <span><span class="co"># multiple text files</span></span>
-<span><span class="va">dat_txtmultiple1</span> <span class="op">&lt;-</span> <span class="fu">readtext</span><span class="op">(</span><span class="st">"~/Dropbox/QUANTESS/corpora/inaugural/*.txt"</span>, cache <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="va">dat_txtmultiple1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/readtext/man/readtext.html" class="external-link">readtext</a></span><span class="op">(</span><span class="st">"~/Dropbox/QUANTESS/corpora/inaugural/*.txt"</span>, cache <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu"><a href="../../reference/corpus.html">corpus</a></span><span class="op">(</span><span class="va">dat_txtmultiple1</span><span class="op">)</span>, <span class="fl">5</span><span class="op">)</span></span>
 <span><span class="co"># multiple text files with docvars from filenames</span></span>
-<span><span class="va">dat_txtmultiple2</span> <span class="op">&lt;-</span> <span class="fu">readtext</span><span class="op">(</span><span class="st">"~/Dropbox/QUANTESS/corpora/inaugural/*.txt"</span>,</span>
+<span><span class="va">dat_txtmultiple2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/readtext/man/readtext.html" class="external-link">readtext</a></span><span class="op">(</span><span class="st">"~/Dropbox/QUANTESS/corpora/inaugural/*.txt"</span>,</span>
 <span>                             docvarsfrom <span class="op">=</span> <span class="st">"filenames"</span>, sep <span class="op">=</span> <span class="st">"-"</span>,</span>
 <span>                             docvarnames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Year"</span>, <span class="st">"President"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu"><a href="../../reference/corpus.html">corpus</a></span><span class="op">(</span><span class="va">dat_txtmultiple2</span><span class="op">)</span>, <span class="fl">5</span><span class="op">)</span></span>
 <span><span class="co"># XML data</span></span>
-<span><span class="va">dat_xml</span> <span class="op">&lt;-</span> <span class="fu">readtext</span><span class="op">(</span><span class="st">"~/Dropbox/QUANTESS/quanteda_working_files/xmlData/plant_catalog.xml"</span>,</span>
+<span><span class="va">dat_xml</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/readtext/man/readtext.html" class="external-link">readtext</a></span><span class="op">(</span><span class="st">"~/Dropbox/QUANTESS/quanteda_working_files/xmlData/plant_catalog.xml"</span>,</span>
 <span>                    textfield <span class="op">=</span> <span class="st">"COMMON"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu"><a href="../../reference/corpus.html">corpus</a></span><span class="op">(</span><span class="va">dat_xml</span><span class="op">)</span>, <span class="fl">5</span><span class="op">)</span></span>
 <span><span class="co"># csv file</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>inaug_speech <span class="op">=</span> <span class="fu"><a href="../../reference/texts.html">texts</a></span><span class="op">(</span><span class="va">data_corpus_inaugural</span><span class="op">)</span>,</span>
 <span>                     <span class="fu"><a href="../../reference/docvars.html">docvars</a></span><span class="op">(</span><span class="va">data_corpus_inaugural</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>          file <span class="op">=</span> <span class="st">"/tmp/inaug_texts.csv"</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="va">dat_csv</span> <span class="op">&lt;-</span> <span class="fu">readtext</span><span class="op">(</span><span class="st">"/tmp/inaug_texts.csv"</span>, textfield <span class="op">=</span> <span class="st">"inaug_speech"</span><span class="op">)</span></span>
+<span><span class="va">dat_csv</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/readtext/man/readtext.html" class="external-link">readtext</a></span><span class="op">(</span><span class="st">"/tmp/inaug_texts.csv"</span>, textfield <span class="op">=</span> <span class="st">"inaug_speech"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu"><a href="../../reference/corpus.html">corpus</a></span><span class="op">(</span><span class="va">dat_csv</span><span class="op">)</span>, <span class="fl">5</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
@@ -1001,6 +1004,7 @@
 <span>    <span class="fu"><a href="https://rdrr.io/pkg/quanteda.textplots/man/textplot_scale1d.html" class="external-link">textplot_scale1d</a></span><span class="op">(</span><span class="va">tmod_wf</span>, groups <span class="op">=</span> <span class="fu"><a href="../../reference/docvars.html">docvars</a></span><span class="op">(</span><span class="va">dfmat_ire</span>, <span class="st">"party"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
 <pre><code><span><span class="co">## Loading required package: quanteda.textmodels</span></span></code></pre>
+<pre><code><span><span class="co">## Warning: package 'quanteda.textmodels' was built under R version 4.4.1</span></span></code></pre>
 <p><img src="quickstart_hi_files/figure-html/unnamed-chunk-38-1.png" width="672"></p>
 </div>
 <div class="section level3">
@@ -1008,7 +1012,7 @@
 </h3>
 <p><strong>quanteda</strong> विषय मॉडल को भी फिट करना बहुत आसान बनाता है,
 e.g.:</p>
-<div class="sourceCode" id="cb87"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb88"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">quant_dfm</span> <span class="op">&lt;-</span> <span class="va">data_corpus_irishbudget2010</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="../../reference/tokens.html">tokens</a></span><span class="op">(</span>remove_punct <span class="op">=</span> <span class="cn">TRUE</span>, remove_numbers <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="../../reference/tokens_select.html">tokens_remove</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html" class="external-link">stopwords</a></span><span class="op">(</span><span class="st">"english"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -1034,7 +1038,7 @@ e.g.:</p>
 <span><span class="co">##   Cowen, Brian (FF)         2          2     3</span></span>
 <span><span class="co">##   Kenny, Enda (FG)          2          0     2</span></span>
 <span><span class="co">## [ reached max_ndoc ... 8 more documents, reached max_nfeat ... 1,056 more features ]</span></span></code></pre>
-<div class="sourceCode" id="cb89"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb90"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span></span>
 <span><span class="kw">if</span> <span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="http://www.structuraltopicmodel.com/" class="external-link">"stm"</a></span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>    <span class="va">my_lda_fit20</span> <span class="op">&lt;-</span> <span class="fu">stm</span><span class="op">(</span><span class="va">quant_dfm</span>, K <span class="op">=</span> <span class="fl">20</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>

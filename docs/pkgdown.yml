@@ -9,19 +9,20 @@ articles:
   japanese_speech_ja: pkgdown/examples/japanese_speech_ja.html
   japanese_twitter_ja: pkgdown/examples/japanese_twitter_ja.html
   lsa: pkgdown/examples/lsa.html
+  parallelisation: pkgdown/parallelisation.html
   phrase: pkgdown/examples/phrase.html
   plotting: pkgdown/examples/plotting.html
   qss: pkgdown/replication/qss.html
+  quickstart: quickstart.html
   quickstart_cn: pkgdown/quickstart_cn.html
   quickstart_es: pkgdown/quickstart_es.html
   quickstart_further_examples: pkgdown/quickstart_further_examples.html
   quickstart_hi: pkgdown/quickstart_hi.html
   quickstart_ja: pkgdown/quickstart_ja.html
-  quickstart: quickstart.html
   text2vec: pkgdown/replication/text2vec.html
   tokens_xptr: pkgdown/tokens_xptr.html
   twitter: pkgdown/examples/twitter.html
-last_built: 2024-05-03T10:02Z
+last_built: 2024-07-17T06:44Z
 urls:
   reference: https://quanteda.io/reference
   article: https://quanteda.io/articles
