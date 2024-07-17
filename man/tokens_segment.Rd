@@ -69,5 +69,4 @@ tokens_segment(toks, c(".", "?", "!"), valuetype = "fixed",
                extract_pattern = TRUE,
                pattern_position = "after")
 }
-\keyword{internal}
 \keyword{tokens}
