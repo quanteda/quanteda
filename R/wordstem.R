@@ -10,6 +10,7 @@
 #'   [getStemLanguages][SnowballC::getStemLanguages], or a two- or three-letter ISO-639 code
 #'   corresponding to one of these languages (see references for the list of
 #'   codes)
+#' @inheritParams message_tokens
 #' @seealso [wordStem][SnowballC::wordStem]
 #'
 #' @references <https://snowballstem.org/>
@@ -26,20 +27,26 @@
 #' th <- tokens(txt)
 #' tokens_wordstem(th)
 #'
-tokens_wordstem <- function(x, language = quanteda_options("language_stemmer")) {
+tokens_wordstem <- function(x, language = quanteda_options("language_stemmer"),
+                            verbose = quanteda_options("verbose")) {
     UseMethod("tokens_wordstem")
 }
 
 #' @export
-tokens_wordstem.default <- function(x, language = quanteda_options("language_stemmer")) {
+tokens_wordstem.default <- function(x, language = quanteda_options("language_stemmer"),
+                                    verbose = quanteda_options("verbose")) {
     check_class(class(x), "tokens_wordstem")
 }
 
 #' @importFrom stringi stri_split_fixed stri_paste_list
 #' @export
-tokens_wordstem.tokens_xptr <- function(x, language = quanteda_options("language_stemmer")) {
+tokens_wordstem.tokens_xptr <- function(x, language = quanteda_options("language_stemmer"),
+                                        verbose = quanteda_options("verbose")) {
     
+    verbose <- check_logical(verbose)
     attrs <- attributes(x)
+    if (verbose)
+        before <- stats_tokens(x)
     if (identical(field_object(attrs, "ngram"), 1L)) {
         set_types(x) <- char_wordstem(get_types(x), language = language, check_whitespace = FALSE)
     } else {
@@ -49,6 +56,8 @@ tokens_wordstem.tokens_xptr <- function(x, language = quanteda_options("language
             language = language
             )
     }
+    if (verbose)
+        message_tokens("tokens_tokens_wordstem()", before, stats_tokens(result))
     rebuild_tokens(x, attrs)
 }
 
