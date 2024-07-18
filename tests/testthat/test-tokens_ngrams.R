@@ -1,3 +1,11 @@
+test_that("tokens_ngrams works", {
+    toks <- tokens(c('insurgents killed in ongoing fighting'))
+    expect_message(
+        tokens_ngrams(toks, n = 1:2, verbose = TRUE),
+        "tokens_ngrams() changed", fixed = TRUE
+    )
+})
+
 test_that("test that ngrams produces the results from Guthrie 2006", {
       toks <- tokens(c('insurgents killed in ongoing fighting'))
 
