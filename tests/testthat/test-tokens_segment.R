@@ -13,6 +13,12 @@ test_that("tokens_segment works for sentences", {
                  list(d2.1 = c("Only", "sentence", "of", "doc2", "?")))
     expect_equal(docvars(toks_sent, "title"),
                  as.factor(c("doc1", "doc1", "doc1", "doc2", "doc2")))
+    
+    expect_message(
+        tokens_segment(toks, "\\p{Sterm}", valuetype = "regex", pattern_position = "after",
+                       verbose = TRUE),
+        "tokens_segment() changed", fixed = TRUE
+    )
 
 })
 

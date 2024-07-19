@@ -90,13 +90,17 @@ tokens_segment.tokens_xptr <- function(x, pattern,
     } else {
         result <- cpp_tokens_segment(x, ids, extract_pattern, 2, get_threads())
     }
-    if (verbose)
-        message_tokens("tokens_segment()", before, stats_tokens(result))
-    attrs[["docvars"]] <- reshape_docvars(attrs[["docvars"]], attr(result, "documents"))
     field_object(attrs, "unit") <- "segments"
+    attrs[["docvars"]] <- reshape_docvars(attrs[["docvars"]], 
+                                          attr(result, "index"),
+                                          drop_docid = FALSE)
+    attr(result, "index") <- NULL
     if (extract_pattern)
         attrs[["docvars"]][["pattern"]] <- attr(result, "matches")
-    rebuild_tokens(result, attrs)
+    result <- rebuild_tokens(result, attrs)
+    if (verbose)
+        message_tokens("tokens_segment()", before, stats_tokens(result))
+    return(result)
 }
 
 
