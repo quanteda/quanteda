@@ -54,7 +54,7 @@ tokens_chunk.tokens_xptr <- function(x, size, overlap = 0, use_docvars = TRUE,
     if (verbose)
         before <- stats_tokens(x)
     result <- cpp_tokens_chunk(x, size, overlap, get_threads())
-    if (any(duplicated(attr(result, "documents")))) {
+    if (any(duplicated(attr(result, "index")))) {
         field_object(attrs, "unit") <- "segments"
     } else {
         field_object(attrs, "unit") <- "documents"
