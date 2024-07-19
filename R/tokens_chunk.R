@@ -54,17 +54,19 @@ tokens_chunk.tokens_xptr <- function(x, size, overlap = 0, use_docvars = TRUE,
     if (verbose)
         before <- stats_tokens(x)
     result <- cpp_tokens_chunk(x, size, overlap, get_threads())
-    if (verbose)
-        message_tokens("tokens_chunk()", before, stats_tokens(result))
     if (any(duplicated(attr(result, "documents")))) {
         field_object(attrs, "unit") <- "segments"
     } else {
         field_object(attrs, "unit") <- "documents"
     }
-    attrs[["docvars"]] <- reshape_docvars(attrs[["docvars"]], 
-                                          attr(result, "documents"),
+    attrs[["docvars"]] <- reshape_docvars(attrs[["docvars"]],
+                                          attr(result, "index"), 
                                           drop_docid = FALSE)
-    rebuild_tokens(result, attrs)
+    attr(result, "index") <- NULL
+    result <- rebuild_tokens(result, attrs)
+    if (verbose)
+        message_tokens("tokens_chunk()", before, stats_tokens(result))
+    return(result)
 }
 
 #' @export
