@@ -154,7 +154,7 @@ dfm_select.dfm <-  function(x, pattern = NULL,
     }
     if (verbose)
         message_dfm(ifelse(selection == "keep", "dfm_keep()", "dfm_remove()"), 
-                    before, stats_dfm(result))
+                    before, stats_dfm(x))
     return(x)
 }
 
