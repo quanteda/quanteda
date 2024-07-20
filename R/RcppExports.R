@@ -77,6 +77,10 @@ cpp_get_attributes <- function(xptr) {
     .Call(`_quanteda_cpp_get_attributes`, xptr)
 }
 
+cpp_as_tokens <- function(xptr) {
+    .Call(`_quanteda_cpp_as_tokens`, xptr)
+}
+
 cpp_as_list <- function(xptr) {
     .Call(`_quanteda_cpp_as_list`, xptr)
 }
