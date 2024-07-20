@@ -30,11 +30,18 @@ List cpp_get_attributes(TokensPtr xptr) {
 }
 
 // [[Rcpp::export]]
-List cpp_as_list(TokensPtr xptr) {
+List cpp_as_tokens(TokensPtr xptr) {
     xptr->recompile();
     Tokens texts_ = as_list(xptr->texts);
     texts_.attr("types") = encode(xptr->types);;
     texts_.attr("class") = "tokens";
+    return texts_;
+}
+
+// [[Rcpp::export]]
+List cpp_as_list(TokensPtr xptr) {
+    Tokens texts_ = as_list(xptr->texts);
+    texts_.attr("types") = encode(xptr->types);;
     return texts_;
 }
 

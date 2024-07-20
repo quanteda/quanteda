@@ -126,7 +126,7 @@ ntoken.tokens_xptr <- function(x, remove_padding = FALSE, ...) {
 #' @export
 as.tokens.tokens_xptr <- function(x, ...) {
     attrs <- attributes(x)
-    result <- cpp_as_list(x)
+    result <- cpp_as_tokens(x)
     build_tokens(result, 
                  types = attr(result, "types"), 
                  padding = TRUE, 
