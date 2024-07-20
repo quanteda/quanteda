@@ -208,8 +208,8 @@ tokens_select.tokens_xptr <- function(x, pattern = NULL,
     }
     result <- rebuild_tokens(result, attrs)
     if (verbose)
-        result <- message_tokens(ifelse(selection == "keep", "tokens_keep()", "tokens_remove()"), 
-                                 before, stats_tokens(result))
+        message_tokens(ifelse(selection == "keep", "tokens_keep()", "tokens_remove()"), 
+                              before, stats_tokens(result))
     return(result)
 }
 

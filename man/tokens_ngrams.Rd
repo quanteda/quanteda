@@ -18,8 +18,8 @@ char_ngrams(x, n = 2L, skip = 0L, concatenator = "_")
 
 tokens_skipgrams(
   x,
-  n = 2L,
-  skip = 0L,
+  n,
+  skip,
   concatenator = concat(x),
   verbose = quanteda_options("verbose")
 )

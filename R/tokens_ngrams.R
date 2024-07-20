@@ -127,4 +127,20 @@ tokens_ngrams.tokens <- function(x, ...) {
 #' tokens_skipgrams(toks, n = 2, skip = 0:1, concatenator = " ")
 #' tokens_skipgrams(toks, n = 2, skip = 0:2, concatenator = " ")
 #' tokens_skipgrams(toks, n = 3, skip = 0:2, concatenator = " ")
-tokens_skipgrams <- tokens_ngrams
+tokens_skipgrams <- function(x, n, skip, concatenator = concat(x),
+                             verbose = quanteda_options("verbose")) {
+    UseMethod("tokens_skipgrams")
+}
+
+#' @export
+tokens_skipgrams.default <- function(x, n, skip, concatenator = concat(x),
+                                     verbose = quanteda_options("verbose")) {
+    check_class(class(x), "tokens_skipgrams")
+}
+
+#' @export
+tokens_skipgrams.tokens <- tokens_ngrams.tokens
+
+#' @export
+tokens_skipgrams.tokens_xptr <- tokens_ngrams.tokens_xptr
+
