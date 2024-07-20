@@ -94,12 +94,13 @@ tokens_ngrams.tokens_xptr <- function(x, n = 2L, skip = 0L, concatenator = conca
     if (verbose)
         before <- stats_tokens(x)
     result <- cpp_tokens_ngrams(x, concatenator, n, skip, get_threads())
-    if (verbose)
-        message_tokens("tokens_ngrams()", before, stats_tokens(result))
     field_object(attrs, "ngram") <- n
     field_object(attrs, "skip") <- skip
     field_object(attrs, "concatenator") <- concatenator
-    rebuild_tokens(result, attrs)
+    result <- rebuild_tokens(result, attrs)
+    if (verbose)
+        message_tokens("tokens_ngrams()", before, stats_tokens(result))
+    return(result)
 }
 
 #' @export

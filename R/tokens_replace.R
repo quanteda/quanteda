@@ -79,9 +79,10 @@ tokens_replace.tokens_xptr <- function(x, pattern, replacement, valuetype = "glo
         before <- stats_tokens(x)
     result <- cpp_tokens_replace(x, ids_pat, ids_rep[attr(ids_pat, "pattern")], !apply_if,
                                  get_threads())
+    result <- rebuild_tokens(result, attrs)
     if (verbose)
         message_tokens("tokens_replace()", before, stats_tokens(result))
-    rebuild_tokens(result, attrs)
+    return(result)
 }
 
 #' @export

@@ -199,13 +199,14 @@ tokens_lookup.tokens_xptr <- function(x, dictionary, levels = 1:5,
         result <- cpp_tokens_lookup(x, ids, match(id_key, id_used), key[id_used], overlap, 2,
                                     !apply_if, get_threads())
     }
-    if (verbose)
-        message_tokens("tokens_lookup()", before, stats_tokens(result))
     if (append_key)
         cpp_recompile(result)
     if (exclusive)
         field_object(attrs, "what") <- "dictionary"
-    rebuild_tokens(result, attrs)
+    result <- rebuild_tokens(result, attrs)
+    if (verbose)
+        message_tokens("tokens_lookup()", before, stats_tokens(result))
+    return(result)
 }
 
 #' @export

@@ -112,10 +112,11 @@ tokens_compound.tokens_xptr <- function(x, pattern,
         before <- stats_tokens(x)
     result <- cpp_tokens_compound(x, ids, concatenator, join, window[1], window[2], !apply_if,
                                   get_threads())
+    field_object(attrs, "concatenator") <- concatenator
+    result <- rebuild_tokens(result, attrs)
     if (verbose)
         message_tokens("tokens_compound()", before, stats_tokens(result))
-    field_object(attrs, "concatenator") <- concatenator
-    rebuild_tokens(result, attrs)
+    return(result)
 }
 
 #' @export
