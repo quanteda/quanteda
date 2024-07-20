@@ -113,6 +113,6 @@ message_dfm <- function(operation, before, after) {
 
 stats_dfm <- function(x) {
     list(ndoc = ndoc(x),
-         nfeat = nfeat(dfm_remove(x, "")))
+         nfeat = nfeat(dfm_remove(x, "", verbose = FALSE)))
 }
 
