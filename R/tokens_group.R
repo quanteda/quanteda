@@ -67,11 +67,11 @@ tokens_group.tokens_xptr <- function(x, groups = docid(x), fill = FALSE, env = N
     if (verbose)
         before <- stats_tokens(x)
     result <- cpp_tokens_group(x, split(seq_along(groups), groups), get_threads())
+    attrs[["docvars"]] <- group_docvars(attrs[["docvars"]], groups, field)
+    result <- rebuild_tokens(result, attrs)
     if (verbose)
         message_tokens("tokens_group()", before, stats_tokens(result))
-    
-    attrs[["docvars"]] <- group_docvars(attrs[["docvars"]], groups, field)
-    rebuild_tokens(result, attrs)
+    return(result)
 }
 
 #' @export
