@@ -59,7 +59,7 @@ tokens_wordstem.tokens_xptr <- function(x, language = quanteda_options("language
     result <- rebuild_tokens(x, attrs)
     if (verbose)
         message_tokens("tokens_wordstem()", before, stats_tokens(result))
-    reutrn(result)
+    return(result)
 }
 
 #' @export
