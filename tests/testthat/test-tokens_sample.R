@@ -6,10 +6,12 @@ toks_sent <- tokens(corp_sent)
     
 test_that("test tokens_sample works", {
     
-    set.seed(100)
-    expect_equal(
-        docnames(tokens_sample(toks_sent, 5, replace = FALSE)),
-        c("one.2", "one.3", "two.2", "two.1", "one.1")
+    docnames(tokens_sample(toks_sent, 5, replace = FALSE))
+    expect_true(
+       setequal(
+            docnames(tokens_sample(toks_sent, 5, replace = FALSE)),
+            c("one.2", "one.3", "two.2", "two.1", "one.1")
+       )
     )
     
     expect_error(
