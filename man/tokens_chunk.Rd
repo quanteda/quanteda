@@ -25,7 +25,7 @@ last \code{overlap} tokens from the preceding chunk}
 if \code{FALSE}, drop the docvars in the chunked tokens}
 
 \item{verbose}{if \code{TRUE} print the number of tokens and documents before and
-after the function is applied.}
+after the function is applied. The number of tokens does not include paddings.}
 }
 \value{
 A \link{tokens} object whose documents have been split into chunks of

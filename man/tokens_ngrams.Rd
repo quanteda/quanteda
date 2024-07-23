@@ -44,7 +44,7 @@ Guthrie et al (2006).}
 (underscore) character}
 
 \item{verbose}{if \code{TRUE} print the number of tokens and documents before and
-after the function is applied.}
+after the function is applied. The number of tokens does not include paddings.}
 }
 \value{
 a tokens object consisting a list of character vectors of n-grams, one

@@ -30,7 +30,7 @@ corresponding to one of these languages (see references for the list of
 codes)}
 
 \item{verbose}{if \code{TRUE} print the number of tokens and documents before and
-after the function is applied.}
+after the function is applied. The number of tokens does not include paddings.}
 
 \item{check_whitespace}{logical; if \code{TRUE}, stop with a warning when trying
 to stem inputs containing whitespace}

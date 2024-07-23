@@ -41,7 +41,7 @@ Dropping the docvars might be useful in order to conserve space or if these
 are not desired for the segmented corpus.}
 
 \item{verbose}{if \code{TRUE} print the number of tokens and documents before and
-after the function is applied.}
+after the function is applied. The number of tokens does not include paddings.}
 }
 \value{
 \code{tokens_segment} returns a \link{tokens} object whose documents

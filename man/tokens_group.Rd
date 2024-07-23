@@ -33,7 +33,7 @@ variable(s) are not factors.}
 Passed to \link{substitute} for non-standard evaluation.}
 
 \item{verbose}{if \code{TRUE} print the number of tokens and documents before and
-after the function is applied.}
+after the function is applied. The number of tokens does not include paddings.}
 }
 \value{
 a \link{tokens} object whose documents are equal to the unique group
