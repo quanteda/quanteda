@@ -76,7 +76,7 @@ repeated to make them equal in length.}
 only when corresponding values are \code{TRUE}, others are left unchanged.}
 
 \item{verbose}{if \code{TRUE} print the number of tokens and documents before and
-after the function is applied.}
+after the function is applied. The number of tokens does not include paddings.}
 
 \item{...}{additional arguments passed by \code{tokens_remove} and
 \code{tokens_keep} to \code{tokens_select}. Cannot include

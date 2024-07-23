@@ -66,6 +66,11 @@ test_that("tokens_replace works with regular pattern and replacement", {
                  as.list(toks_test))
     
     
+    expect_message(
+        tokens_replace(toks_test, c('aa', 'bb'), c('a', 'b'), verbose = TRUE),
+        "tokens_replace() changed", fixed = TRUE
+    )
+    
 })
 
 test_that("tokens_replace works with pharsal pattern and replacement", {

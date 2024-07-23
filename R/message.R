@@ -82,12 +82,12 @@ message_select <- function(selection, nfeats, ndocs, nfeatspad = 0, ndocspad = 0
 
 #' Print messages in tokens methods
 #' @param verbose if `TRUE` print the number of tokens and documents before and
-#'   after the function is applied.
+#'   after the function is applied. The number of tokens does not include paddings.
 #' @param name the name of the operation.
 #' @param before,after object statistics before and after the operation.
 #' @keywords message internal
 message_tokens <- function(operation, before, after) {
-    msg <- sprintf("Apply %s: changed from %d tokens (%d documents) to %d tokens (%d documents)",
+    msg <- sprintf("%s changed from %d tokens (%d documents) to %d tokens (%d documents)",
                    operation, before$ntoken, before$ndoc, after$ntoken, after$ndoc)
     msg <- prettyNum(msg, big.mark = ",")
     message(msg)
@@ -100,12 +100,12 @@ stats_tokens <- function(x) {
 
 #' Print messages in dfm methods
 #' @param verbose if `TRUE` print the number of features and documents before and
-#'   after the function is applied.
+#'   after the function is applied. The number of features does not include paddings.
 #' @param name the name of the operation.
 #' @param before,after object statistics before and after the operation.
 #' @keywords message internal
 message_dfm <- function(operation, before, after) {
-    msg <- sprintf("Apply %s: changed from %d features (%d documents) to %d features (%d documents)",
+    msg <- sprintf("%s changed from %d features (%d documents) to %d features (%d documents)",
                    operation, before$nfeat, before$ndoc, after$nfeat, after$ndoc)
     msg <- prettyNum(msg, big.mark = ",")
     message(msg)
@@ -113,6 +113,6 @@ message_dfm <- function(operation, before, after) {
 
 stats_dfm <- function(x) {
     list(ndoc = ndoc(x),
-         nfeat = nfeat(dfm_remove(x, "")))
+         nfeat = nfeat(dfm_remove(x, "", verbose = FALSE)))
 }
 

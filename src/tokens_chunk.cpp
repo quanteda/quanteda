@@ -57,23 +57,21 @@ TokensPtr cpp_tokens_chunk(TokensPtr xptr,
 #endif
     
     Texts chunks(N);
-    std::vector<int> documents(N);
+    std::vector<int> index(N);
     
     std::size_t j = 0;
     for (std::size_t h = 0; h < temp.size(); h++) {
         for (size_t i = 0; i < temp[h].size(); i++) {
             chunks[j] = temp[h][i];
-            documents[j] = (int)h + 1;
+            index[j] = (int)h + 1;
             j++;
         }
     }
     
     TokensObj *ptr_new = new TokensObj(chunks, xptr->types, xptr->recompiled);
     TokensPtr xptr_new = TokensPtr(ptr_new, true);
-    
-    IntegerVector documents_ = Rcpp::wrap(documents);
-    xptr_new.attr("documents") = documents_;
-    
+    xptr_new.attr("index") = Rcpp::wrap(index);;
+
     return xptr_new;
 }
 

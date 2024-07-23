@@ -4,7 +4,13 @@
 \alias{tokens_group}
 \title{Combine documents in a tokens object by a grouping variable}
 \usage{
-tokens_group(x, groups = docid(x), fill = FALSE, env = NULL)
+tokens_group(
+  x,
+  groups = docid(x),
+  fill = FALSE,
+  env = NULL,
+  verbose = quanteda_options("verbose")
+)
 }
 \arguments{
 \item{x}{\link{tokens} object}
@@ -25,6 +31,9 @@ variable(s) are not factors.}
 
 \item{env}{an environment or a list object in which \code{x} is searched.
 Passed to \link{substitute} for non-standard evaluation.}
+
+\item{verbose}{if \code{TRUE} print the number of tokens and documents before and
+after the function is applied. The number of tokens does not include paddings.}
 }
 \value{
 a \link{tokens} object whose documents are equal to the unique group
