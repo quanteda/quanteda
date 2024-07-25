@@ -62,13 +62,30 @@ test_that("tokens_compound join a sequences of sequences", {
         list(text1 = c("a_b", "b_c_d", "e_f", "f_g"),
              text2 = c("A_B", "B_C_D", "E_F", "F_G"))
     )
-
-    txts <- "we like high quality sound"
-    seqs <- phrase(c("high quality", "quality sound"))
-    expect_equal(as.list(tokens_compound(tokens(txts), seqs, join = TRUE)),
+    
+    txt2 <- "we like high quality sound"
+    toks2 <- tokens(txt2)
+    seqs2 <- phrase(c("high quality", "quality sound"))
+    expect_equal(as.list(tokens_compound(toks2, seqs2, join = TRUE)),
                       list(text1 = c("we", "like", "high_quality_sound")))
-    expect_equal(as.list(tokens_compound(tokens(txts), seqs, join = FALSE)),
+    expect_equal(as.list(tokens_compound(toks2, seqs2, join = FALSE)),
                       list(text1 = c("we", "like", "high_quality", "quality_sound")))
+    expect_equal(as.list(tokens_compound(toks2, seqs2, join = TRUE, keep_unigrams = TRUE)),
+                 list(text1 = c("we", "like", "high", "quality", "sound",
+                                "high_quality_sound")))
+    expect_equal(as.list(tokens_compound(toks2, seqs2, join = FALSE, keep_unigrams = TRUE)),
+                 list(text1 = c("we", "like", "high", "high_quality", "quality",
+                                "quality_sound", "sound")))
+    
+    expect_error(
+        tokens_compound(toks, seqs, join = c(TRUE, FALSE)),
+        "The length of join must be 1"
+    )
+    
+    expect_error(
+        tokens_compound(toks, seqs, keep_unigrams = c(TRUE, FALSE)),
+        "The length of keep_unigrams must be 1"
+    )
 
 })
 
