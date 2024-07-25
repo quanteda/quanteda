@@ -63,18 +63,19 @@ test_that("tokens_compound join a sequences of sequences", {
              text2 = c("A_B", "B_C_D", "E_F", "F_G"))
     )
 
-    txts <- "we like high quality sound"
+    txt2 <- "we like high quality sound"
+    toks2 <- tokens(txt2)
     seqs <- phrase(c("high quality", "quality sound"))
-    expect_equal(as.list(tokens_compound(tokens(txts), seqs, join = TRUE)),
+    expect_equal(as.list(tokens_compound(toks2, seqs, join = TRUE)),
                       list(text1 = c("we", "like", "high_quality_sound")))
-    expect_equal(as.list(tokens_compound(tokens(txts), seqs, join = FALSE)),
+    expect_equal(as.list(tokens_compound(toks2, seqs, join = FALSE)),
                       list(text1 = c("we", "like", "high_quality", "quality_sound")))
-    expect_equal(as.list(tokens_compound(tokens(txts), seqs, join = TRUE, keep_unigrams = TRUE)),
+    expect_equal(as.list(tokens_compound(toks2, seqs, join = TRUE, keep_unigrams = TRUE)),
                  list(text1 = c("we", "like", "high", "quality", "sound",
                                 "high_quality_sound")))
-    expect_equal(as.list(tokens_compound(tokens(txts), seqs, join = FALSE, keep_unigrams = TRUE)),
-                 list(text1 = c("we", "like", "high", "quality", "high_quality", 
-                                "quality", "sound", "quality_sound")))
+    expect_equal(as.list(tokens_compound(toks2, seqs, join = FALSE, keep_unigrams = TRUE)),
+                 list(text1 = c("we", "like", "high", "high_quality", "quality",
+                                "quality_sound", "sound")))
 
 })
 

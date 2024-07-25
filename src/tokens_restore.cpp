@@ -10,7 +10,7 @@ Text join_mark(Text tokens,
     
     if (tokens.empty()) return {}; // return empty vector for empty text
     
-    std::vector< std::vector<unsigned int> > tokens_multi(tokens.size()); 
+    std::vector< Text > tokens_multi(tokens.size()); 
     std::vector< bool > flags_match(tokens.size(), false); // flag matched tokens
     std::size_t match = 0;
 
