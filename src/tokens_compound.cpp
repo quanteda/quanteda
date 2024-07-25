@@ -56,8 +56,6 @@ Text join_comp(Text tokens,
         //Rcout << "Flag "<< i << ":" << flags_link[i] << "\n";
         if (flags_link[i]) {
             tokens_seq.push_back(tokens[i]);
-            //if (keep)
-            //    tokens_flat.push_back(tokens[i]);
         } else {
             if (tokens_seq.empty()) {
                 tokens_flat.push_back(tokens[i]);
