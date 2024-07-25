@@ -18,6 +18,7 @@ Text join_comp(Text tokens,
                const SetNgrams &set_comps,
                MapNgrams &map_comps,
                IdNgram &id_comp,
+               const bool &keep,
                const std::pair<int, int> &window){
     
     if (tokens.empty()) return {}; // return empty vector for empty text
@@ -54,7 +55,9 @@ Text join_comp(Text tokens,
     for (std::size_t i = 0; i < len; i++) {
         //Rcout << "Flag "<< i << ":" << flags_link[i] << "\n";
         if (flags_link[i]) {
-                tokens_seq.push_back(tokens[i]);
+            tokens_seq.push_back(tokens[i]);
+            //if (keep)
+            //    tokens_flat.push_back(tokens[i]);
         } else {
             if (tokens_seq.empty()) {
                 tokens_flat.push_back(tokens[i]);
@@ -74,6 +77,7 @@ Text match_comp(Text tokens,
                 const SetNgrams &set_comps,
                 MapNgrams &map_comps,
                 IdNgram &id_comp,
+                const bool &keep,
                 const std::pair<int, int> &window){
     
     if (tokens.empty()) return {}; // return empty vector for empty text
@@ -129,6 +133,7 @@ Text match_comp(Text tokens,
  * @param compounds_ list of patterns to substitute
  * @param delim_ character to concatenate types
  * @param join join overlapped features if true
+ * @param keep original unigrams if true
  * @param window_left numbers tokens on the left-hand side of pattern
  * @param window_right numbers tokens on the right-hand side of pattern
  * @param bypass_ select documents to modify: TRUE=modify, FALSE=don't modify
@@ -139,6 +144,7 @@ TokensPtr cpp_tokens_compound(TokensPtr xptr,
                               const List &compounds_,
                               const String &delim_,
                               const bool &join,
+                              const bool &keep,
                               int window_left,
                               int window_right,
                               const LogicalVector bypass_,
@@ -190,9 +196,11 @@ TokensPtr cpp_tokens_compound(TokensPtr xptr,
                 if (bypass[h])
                     continue;
                 if (join) {
-                    texts[h] = join_comp(texts[h], spans, set_comps, map_comps, id_comp, window);
+                    texts[h] = join_comp(texts[h], spans, set_comps, map_comps, id_comp, 
+                                         keep, window);
                 } else {
-                    texts[h] = match_comp(texts[h], spans, set_comps, map_comps, id_comp, window);
+                    texts[h] = match_comp(texts[h], spans, set_comps, map_comps, id_comp, 
+                                          keep, window);
                 }
             }    
         });
@@ -202,9 +210,9 @@ TokensPtr cpp_tokens_compound(TokensPtr xptr,
         if (bypass[h])
             continue;
         if (join) {
-            texts[h] = join_comp(texts[h], spans, set_comps, map_comps, id_comp, window);
+            texts[h] = join_comp(texts[h], spans, set_comps, map_comps, id_comp, keep, window);
         } else {
-            texts[h] = match_comp(texts[h], spans, set_comps, map_comps, id_comp, window);
+            texts[h] = match_comp(texts[h], spans, set_comps, map_comps, id_comp, keep, window);
         }
     }
 #endif
