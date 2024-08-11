@@ -217,7 +217,6 @@ tokens_tolower.tokens_xptr <- function(x, keep_acronyms = FALSE) {
     keep_acronyms <- check_logical(keep_acronyms)
     # NOTE: consider removing keep_acronyms
     set_types(x) <- lowercase_types(get_types(x), keep_acronyms)
-    #cpp_recompile(x)
     return(x)
 }
 
@@ -225,7 +224,6 @@ tokens_tolower.tokens_xptr <- function(x, keep_acronyms = FALSE) {
 #' @export
 tokens_toupper.tokens_xptr <- function(x) {
     set_types(x) <- char_toupper(types(x))
-    #cpp_recompile(x)
     return(x)
 }
 
