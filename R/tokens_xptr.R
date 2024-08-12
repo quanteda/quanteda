@@ -216,7 +216,7 @@ tokens_subset.tokens_xptr <- function(x, subset, min_ntoken = NULL, max_ntoken =
 tokens_tolower.tokens_xptr <- function(x, keep_acronyms = FALSE) {
     keep_acronyms <- check_logical(keep_acronyms)
     # NOTE: consider removing keep_acronyms
-    set_types(x) <- lowercase_types(get_types(x), keep_acronyms) 
+    set_types(x) <- lowercase_types(get_types(x), keep_acronyms)
     return(x)
 }
 

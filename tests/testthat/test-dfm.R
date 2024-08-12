@@ -910,3 +910,23 @@ test_that("features of DFM are always in the same order (#2100)", {
     expect_identical(c("a", "b", "c", "d"), featnames(dfmat3))
     
 })
+
+test_that("dfm works with no-breaking space (#2407)", {
+    
+    toks <- tokens("A a b \n\ufeff", 
+                   padding = TRUE, xptr = FALSE)
+    expect_equal(
+        as.matrix(dfm(toks, tolower = TRUE)),
+        matrix(c(1, 2, 1), nrow = 1, 
+               dimnames = list(docs = "text1", features = c("", "a", "b"))
+        )
+    )
+    
+    expect_equal(
+        as.matrix(dfm(toks, tolower = FALSE)),
+        matrix(c(1, 1, 1, 1), nrow = 1, 
+               dimnames = list(docs = "text1", features = c("", "A", "a", "b"))
+        )
+    )
+})
+
