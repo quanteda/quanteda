@@ -1,3 +1,11 @@
+# quanteda 4.0.3
+
+## Bug fixes and stability enhancements
+
+## Changes and additions
+
+* Added `keep_unigrams` argument to `tokens_compound()`, to keep in the returned object the unigrams that are to be compounded. (#2399)
+
 # quanteda 4.0.2
 
 ## Bug fixes and stability enhancements
