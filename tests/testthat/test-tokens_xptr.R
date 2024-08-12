@@ -383,7 +383,7 @@ test_that("test low-level validation", {
     )
     expect_error(
         quanteda:::cpp_tokens_compound(as.tokens_xptr(xtoks), 
-                                     dict, "-", TRUE, 0, 0, c(FALSE, TRUE)),
+                                      dict, "-", TRUE, FALSE, 0, 0, c(FALSE, TRUE)),
         "Invalid bypass"
     )
     expect_error(

@@ -18,12 +18,13 @@ Text join_comp(Text tokens,
                const SetNgrams &set_comps,
                MapNgrams &map_comps,
                IdNgram &id_comp,
+               const bool &keep,
                const std::pair<int, int> &window){
     
     if (tokens.empty()) return {}; // return empty vector for empty text
     
     std::vector< bool > flags_link(tokens.size(), false); // flag tokens to join
-    std::size_t match = 0;
+    std::size_t match = tokens.size();
     
     for (std::size_t span : spans) { // substitution starts from the longest sequences
         if (tokens.size() < span) continue;
@@ -44,7 +45,7 @@ Text join_comp(Text tokens,
     if (match == 0) return tokens; // return original tokens if no match
     
     Text tokens_flat;
-    tokens_flat.reserve(tokens.size());
+    tokens_flat.reserve(match);
     
     Ngram tokens_seq;
     tokens_seq.reserve(tokens.size());
@@ -54,12 +55,14 @@ Text join_comp(Text tokens,
     for (std::size_t i = 0; i < len; i++) {
         //Rcout << "Flag "<< i << ":" << flags_link[i] << "\n";
         if (flags_link[i]) {
-                tokens_seq.push_back(tokens[i]);
+            tokens_seq.push_back(tokens[i]);
         } else {
             if (tokens_seq.empty()) {
                 tokens_flat.push_back(tokens[i]);
             } else {
                 tokens_seq.push_back(tokens[i]);
+                if (keep)
+                    tokens_flat.insert(tokens_flat.end(), tokens_seq.begin(), tokens_seq.end());
                 tokens_flat.push_back(ngram_id(tokens_seq, map_comps, id_comp)); // assign ID to ngram
                 tokens_seq.clear();
             }
@@ -74,15 +77,16 @@ Text match_comp(Text tokens,
                 const SetNgrams &set_comps,
                 MapNgrams &map_comps,
                 IdNgram &id_comp,
+                const bool &keep,
                 const std::pair<int, int> &window){
     
     if (tokens.empty()) return {}; // return empty vector for empty text
     
-    std::vector< std::vector<unsigned int> > tokens_multi(tokens.size()); 
+    std::vector< Text > tokens_multi(tokens.size()); 
     std::vector< bool > flags_match(tokens.size(), false); // flag matched tokens
     std::vector< bool > flags_link(tokens.size(), false); // flag tokens to join
-    std::size_t match = 0;
-
+    std::size_t match = tokens.size();
+    
     for (std::size_t span : spans) { // substitution starts from the longest sequences
         if (tokens.size() < span) continue;
         for (std::size_t i = 0; i < tokens.size() - (span - 1); i++) {
@@ -103,20 +107,19 @@ Text match_comp(Text tokens,
     
     if (match == 0) return tokens; // return original tokens if no match
     
-    // Add original tokens that did not match
-    for (std::size_t i = 0; i < tokens.size(); i++) {
-        if (!flags_match[i]) {
-            tokens_multi[i].push_back(tokens[i]);
-            match++;
-        }
-    }
-
-    // Flatten the vector of vector
     Text tokens_flat;
     tokens_flat.reserve(match);
-    for (auto &tokens_sub: tokens_multi) {
-        if (!tokens_sub.empty()) {
-            tokens_flat.insert(tokens_flat.end(), tokens_sub.begin(), tokens_sub.begin() + 1);
+    
+    // Flatten the vector of vector
+    for (std::size_t i = 0; i < tokens_multi.size(); i++) {
+        Text tokens_sub = tokens_multi[i];
+        if (!flags_match[i]) {
+            tokens_flat.push_back(tokens[i]);
+        } else {
+            if (keep)
+                tokens_flat.push_back(tokens[i]);
+            if (tokens_sub.size())
+                tokens_flat.insert(tokens_flat.end(), tokens_sub.begin(), tokens_sub.begin() + 1);
         }
     }
     return tokens_flat;
@@ -129,6 +132,7 @@ Text match_comp(Text tokens,
  * @param compounds_ list of patterns to substitute
  * @param delim_ character to concatenate types
  * @param join join overlapped features if true
+ * @param keep original unigrams if true
  * @param window_left numbers tokens on the left-hand side of pattern
  * @param window_right numbers tokens on the right-hand side of pattern
  * @param bypass_ select documents to modify: TRUE=modify, FALSE=don't modify
@@ -139,6 +143,7 @@ TokensPtr cpp_tokens_compound(TokensPtr xptr,
                               const List &compounds_,
                               const String &delim_,
                               const bool &join,
+                              const bool &keep,
                               int window_left,
                               int window_right,
                               const LogicalVector bypass_,
@@ -190,9 +195,11 @@ TokensPtr cpp_tokens_compound(TokensPtr xptr,
                 if (bypass[h])
                     continue;
                 if (join) {
-                    texts[h] = join_comp(texts[h], spans, set_comps, map_comps, id_comp, window);
+                    texts[h] = join_comp(texts[h], spans, set_comps, map_comps, id_comp, 
+                                         keep, window);
                 } else {
-                    texts[h] = match_comp(texts[h], spans, set_comps, map_comps, id_comp, window);
+                    texts[h] = match_comp(texts[h], spans, set_comps, map_comps, id_comp, 
+                                          keep, window);
                 }
             }    
         });
@@ -202,9 +209,9 @@ TokensPtr cpp_tokens_compound(TokensPtr xptr,
         if (bypass[h])
             continue;
         if (join) {
-            texts[h] = join_comp(texts[h], spans, set_comps, map_comps, id_comp, window);
+            texts[h] = join_comp(texts[h], spans, set_comps, map_comps, id_comp, keep, window);
         } else {
-            texts[h] = match_comp(texts[h], spans, set_comps, map_comps, id_comp, window);
+            texts[h] = match_comp(texts[h], spans, set_comps, map_comps, id_comp, keep, window);
         }
     }
 #endif

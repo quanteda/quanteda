@@ -9,8 +9,9 @@
 #' @inheritParams pattern
 #' @inheritParams tokens
 #' @inheritParams valuetype
-#' @param join logical; if `TRUE`, join overlapping compounds into a single
+#' @param join if `TRUE`, join overlapping compounds into a single
 #'   compound; otherwise, form these separately.  See examples.
+#' @param keep_unigrams if `TRUE`, keep the original tokens.
 #' @param window integer; a vector of length 1 or 2 that specifies size of the
 #'   window of tokens adjacent to `pattern` that will be compounded with matches
 #'   to `pattern`.  The window can be asymmetric if two elements are specified,
@@ -65,7 +66,9 @@ tokens_compound <- function(x, pattern,
                             valuetype = c("glob", "regex", "fixed"),
                             concatenator = concat(x),
                             window = 0L,
-                            case_insensitive = TRUE, join = TRUE,
+                            case_insensitive = TRUE, 
+                            join = TRUE,
+                            keep_unigrams = FALSE,
                             apply_if = NULL) {
     UseMethod("tokens_compound")
 }
@@ -75,7 +78,9 @@ tokens_compound.default <- function(x, pattern,
                                     valuetype = c("glob", "regex", "fixed"),
                                     concatenator = concat(x),
                                     window = 0L,
-                                    case_insensitive = TRUE, join = TRUE,
+                                    case_insensitive = TRUE, 
+                                    join = TRUE,
+                                    keep_unigrams = FALSE,
                                     apply_if = NULL) {
     check_class(class(x), "tokens_compound")
 }
@@ -85,7 +90,9 @@ tokens_compound.tokens_xptr <- function(x, pattern,
                                         valuetype = c("glob", "regex", "fixed"),
                                         concatenator = concat(x),
                                         window = 0L,
-                                        case_insensitive = TRUE, join = TRUE,
+                                        case_insensitive = TRUE, 
+                                        join = TRUE,
+                                        keep_unigrams = FALSE,
                                         apply_if = NULL) {
 
     valuetype <- match.arg(valuetype)
@@ -94,6 +101,7 @@ tokens_compound.tokens_xptr <- function(x, pattern,
     join <- check_logical(join)
     apply_if <- check_logical(apply_if, min_len = ndoc(x), max_len = ndoc(x),
                                allow_null = TRUE, allow_na = TRUE)
+    keep_unigrams <- check_logical(keep_unigrams)
 
     attrs <- attributes(x)
     type <- get_types(x)
@@ -102,8 +110,8 @@ tokens_compound.tokens_xptr <- function(x, pattern,
     if (length(window) == 1) window <- rep(window, 2)
     if (is.null(apply_if))
         apply_if <- rep(TRUE, length.out = ndoc(x))
-    result <- cpp_tokens_compound(x, ids, concatenator, join, window[1], window[2], !apply_if,
-                                  get_threads())
+    result <- cpp_tokens_compound(x, ids, concatenator, join, keep_unigrams,
+                                  window[1], window[2], !apply_if, get_threads())
     field_object(attrs, "concatenator") <- concatenator
     rebuild_tokens(result, attrs)
 }
