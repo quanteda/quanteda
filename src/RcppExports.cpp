@@ -124,8 +124,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // cpp_tokens_compound
-TokensPtr cpp_tokens_compound(TokensPtr xptr, const List& compounds_, const String& delim_, const bool& join, int window_left, int window_right, const LogicalVector bypass_, const int thread);
-RcppExport SEXP _quanteda_cpp_tokens_compound(SEXP xptrSEXP, SEXP compounds_SEXP, SEXP delim_SEXP, SEXP joinSEXP, SEXP window_leftSEXP, SEXP window_rightSEXP, SEXP bypass_SEXP, SEXP threadSEXP) {
+TokensPtr cpp_tokens_compound(TokensPtr xptr, const List& compounds_, const String& delim_, const bool& join, const bool& keep, int window_left, int window_right, const LogicalVector bypass_, const int thread);
+RcppExport SEXP _quanteda_cpp_tokens_compound(SEXP xptrSEXP, SEXP compounds_SEXP, SEXP delim_SEXP, SEXP joinSEXP, SEXP keepSEXP, SEXP window_leftSEXP, SEXP window_rightSEXP, SEXP bypass_SEXP, SEXP threadSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -133,11 +133,12 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const List& >::type compounds_(compounds_SEXP);
     Rcpp::traits::input_parameter< const String& >::type delim_(delim_SEXP);
     Rcpp::traits::input_parameter< const bool& >::type join(joinSEXP);
+    Rcpp::traits::input_parameter< const bool& >::type keep(keepSEXP);
     Rcpp::traits::input_parameter< int >::type window_left(window_leftSEXP);
     Rcpp::traits::input_parameter< int >::type window_right(window_rightSEXP);
     Rcpp::traits::input_parameter< const LogicalVector >::type bypass_(bypass_SEXP);
     Rcpp::traits::input_parameter< const int >::type thread(threadSEXP);
-    rcpp_result_gen = Rcpp::wrap(cpp_tokens_compound(xptr, compounds_, delim_, join, window_left, window_right, bypass_, thread));
+    rcpp_result_gen = Rcpp::wrap(cpp_tokens_compound(xptr, compounds_, delim_, join, keep, window_left, window_right, bypass_, thread));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -476,7 +477,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_quanteda_cpp_serialize_add", (DL_FUNC) &_quanteda_cpp_serialize_add, 3},
     {"_quanteda_cpp_tokens_chunk", (DL_FUNC) &_quanteda_cpp_tokens_chunk, 4},
     {"_quanteda_cpp_tokens_combine", (DL_FUNC) &_quanteda_cpp_tokens_combine, 3},
-    {"_quanteda_cpp_tokens_compound", (DL_FUNC) &_quanteda_cpp_tokens_compound, 8},
+    {"_quanteda_cpp_tokens_compound", (DL_FUNC) &_quanteda_cpp_tokens_compound, 9},
     {"_quanteda_cpp_tokens_group", (DL_FUNC) &_quanteda_cpp_tokens_group, 3},
     {"_quanteda_cpp_tokens_lookup", (DL_FUNC) &_quanteda_cpp_tokens_lookup, 8},
     {"_quanteda_cpp_tokens_ngrams", (DL_FUNC) &_quanteda_cpp_tokens_ngrams, 5},
