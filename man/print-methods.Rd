@@ -71,7 +71,8 @@
 \item{show_summary}{print a brief summary indicating the number of documents
 and other characteristics of the object, such as docvars or sparsity.}
 
-\item{...}{passed to \code{\link[base:print]{base::print()}}.}
+\item{...}{passed to \code{\link[base:print]{base::print()}} for \link{tokens}; unused for all other
+objects.}
 
 \item{max_nfeat}{max number of features to print; default is from the
 \code{print_dfm_max_nfeat} setting of \code{\link[=quanteda_options]{quanteda_options()}}}
