@@ -12,10 +12,9 @@ tokens_compound(
   window = 0L,
   case_insensitive = TRUE,
   join = TRUE,
+  keep_unigrams = FALSE,
   apply_if = NULL,
   verbose = quanteda_options("verbose")
-  keep_unigrams = FALSE,
-  apply_if = NULL
 )
 }
 \arguments{
@@ -41,7 +40,7 @@ be shrunk to exclude them.}
 \item{case_insensitive}{logical; if \code{TRUE}, ignore case when matching a
 \code{pattern} or \link{dictionary} values}
 
-\item{join}{if \code{TRUE}, join overlapping compounds into a single
+\item{join}{logical; if \code{TRUE}, join overlapping compounds into a single
 compound; otherwise, form these separately.  See examples.}
 
 \item{keep_unigrams}{if \code{TRUE}, keep the original tokens.}

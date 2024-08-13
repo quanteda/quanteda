@@ -73,7 +73,6 @@ tokens_compound <- function(x, pattern,
                             keep_unigrams = FALSE,
                             apply_if = NULL,
                             verbose = quanteda_options("verbose")) {
-                            apply_if = NULL) {
     UseMethod("tokens_compound")
 }
 
@@ -87,7 +86,6 @@ tokens_compound.default <- function(x, pattern,
                                     keep_unigrams = FALSE,
                                     apply_if = NULL,
                                     verbose = quanteda_options("verbose")) {
-                                    apply_if = NULL) {
     check_class(class(x), "tokens_compound")
 }
 
@@ -101,7 +99,6 @@ tokens_compound.tokens_xptr <- function(x, pattern,
                                         keep_unigrams = FALSE,
                                         apply_if = NULL,
                                         verbose = quanteda_options("verbose")) {
-                                        apply_if = NULL) {
 
     valuetype <- match.arg(valuetype)
     concatenator <- check_character(concatenator)
