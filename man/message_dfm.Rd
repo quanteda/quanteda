@@ -8,11 +8,6 @@ message_dfm(operation, before, after)
 }
 \arguments{
 \item{before, after}{object statistics before and after the operation.}
-
-\item{verbose}{if \code{TRUE} print the number of features and documents before and
-after the function is applied. The number of features does not include paddings.}
-
-\item{name}{the name of the operation.}
 }
 \description{
 Print messages in dfm methods

@@ -6,7 +6,7 @@
 #' @param x a [tokens] object
 #' @param separator a single-character pattern match by which tokens are separated
 #' @inheritParams valuetype
-#' @inheritParams message_tokens
+#' @inheritParams messages
 #' @param remove_separator if `TRUE`, remove separator from new tokens
 #' @inheritParams apply_if
 #' @examples

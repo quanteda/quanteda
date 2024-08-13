@@ -7,7 +7,7 @@
 #' @param env an environment or a list object in which `x` is searched.
 #' Passed to [substitute] for non-standard evaluation.
 #' @inheritParams groups
-#' @inheritParams message_tokens
+#' @inheritParams messages
 #' @return a [tokens] object whose documents are equal to the unique group
 #'   combinations, and whose tokens are the concatenations of the tokens by
 #'   group. Document-level variables that have no variation within groups are

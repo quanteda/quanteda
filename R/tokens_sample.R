@@ -7,7 +7,7 @@
 #' @param env an environment or a list object in which `x` is searched.
 #' Passed to [substitute] for non-standard evaluation.
 #' @inheritParams corpus_sample
-#' @inheritParams message_tokens
+#' @inheritParams messages
 #' @export
 #' @return a [tokens] object (re)sampled on the documents, containing the document
 #'   variables for the documents sampled.

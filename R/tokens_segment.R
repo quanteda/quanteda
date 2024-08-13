@@ -8,7 +8,7 @@
 #' @param x [tokens] object whose token elements will be segmented
 #' @inheritParams pattern
 #' @inheritParams valuetype
-#' @inheritParams message_tokens
+#' @inheritParams messages
 #' @param extract_pattern remove matched patterns from the texts and save in
 #'   [docvars], if `TRUE`
 #' @param pattern_position either `"before"` or `"after"`, depending

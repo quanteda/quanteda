@@ -10,7 +10,7 @@
 #'   [getStemLanguages][SnowballC::getStemLanguages], or a two- or three-letter ISO-639 code
 #'   corresponding to one of these languages (see references for the list of
 #'   codes)
-#' @inheritParams message_tokens
+#' @inheritParams messages
 #' @seealso [wordStem][SnowballC::wordStem]
 #'
 #' @references <https://snowballstem.org/>

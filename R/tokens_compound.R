@@ -8,7 +8,7 @@
 #' @param x an input [tokens] object
 #' @inheritParams pattern
 #' @inheritParams valuetype
-#' @inheritParams message_tokens
+#' @inheritParams messages
 #' @param join logical; if `TRUE`, join overlapping compounds into a single
 #'   compound; otherwise, form these separately.  See examples.
 #' @param keep_unigrams if `TRUE`, keep the original tokens.

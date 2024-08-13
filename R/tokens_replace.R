@@ -14,8 +14,7 @@
 #'   of character vectors of the same length as `pattern`
 #' @inheritParams apply_if
 #' @inheritParams valuetype
-#' @inheritParams message_tokens
-#' @param verbose print status messages if `TRUE`
+#' @inheritParams messages
 #' @export
 #' @seealso tokens_lookup
 #' @examples

@@ -1,3 +1,4 @@
+# messaging utilities ------------
 
 #' Conditionally format messages
 #' 
@@ -80,11 +81,21 @@ message_select <- function(selection, nfeats, ndocs, nfeatspad = 0, ndocspad = 0
     catm("", appendLF = TRUE)
 }
 
-#' Print messages in tokens methods
+# messaging methods ------------
+
+#' Message parameter documentation
+#' 
+#' Used in printing verbose messages for message_tokens() and message_dfm()
+#' @name messages
 #' @param verbose if `TRUE` print the number of tokens and documents before and
 #'   after the function is applied. The number of tokens does not include paddings.
-#' @param name the name of the operation.
 #' @param before,after object statistics before and after the operation.
+#' @seealso message_tokens() message_dfm()
+#' @keywords internal
+NULL
+
+#' Print messages in tokens methods
+#' @inheritParams messages
 #' @keywords message internal
 message_tokens <- function(operation, before, after) {
     msg <- sprintf("%s changed from %d tokens (%d documents) to %d tokens (%d documents)",
@@ -99,10 +110,7 @@ stats_tokens <- function(x) {
 }
 
 #' Print messages in dfm methods
-#' @param verbose if `TRUE` print the number of features and documents before and
-#'   after the function is applied. The number of features does not include paddings.
-#' @param name the name of the operation.
-#' @param before,after object statistics before and after the operation.
+#' @inheritParams messages
 #' @keywords message internal
 message_dfm <- function(operation, before, after) {
     msg <- sprintf("%s changed from %d features (%d documents) to %d features (%d documents)",

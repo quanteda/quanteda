@@ -12,7 +12,7 @@
 #'   level into the first, but record the third level (if present) collapsed
 #'   below the first (see examples).
 #' @inheritParams valuetype
-#' @inheritParams message_tokens
+#' @inheritParams messages
 #' @param capkeys if `TRUE`, convert dictionary keys to uppercase to distinguish
 #'   them from unmatched tokens.
 #' @param nomatch an optional character naming a new key for tokens that do not

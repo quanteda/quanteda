@@ -22,7 +22,7 @@
 #'   Guthrie et al (2006).
 #' @param concatenator character for combining words, default is `_`
 #'   (underscore) character
-#' @inheritParams message_tokens
+#' @inheritParams messages
 #' @details Normally, these functions will be called through
 #'   `[tokens](x, ngrams = , ...)`, but these functions are provided
 #'   in case a user wants to perform lower-level n-gram construction on tokenized

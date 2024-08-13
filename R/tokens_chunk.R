@@ -9,7 +9,7 @@
 #'   last `overlap` tokens from the preceding chunk
 #' @param use_docvars if `TRUE`, repeat the docvar values for each chunk;
 #'   if `FALSE`, drop the docvars in the chunked tokens
-#' @inheritParams message_tokens
+#' @inheritParams messages
 #' @return A [tokens] object whose documents have been split into chunks of
 #'   length `size`.
 #' @seealso [tokens_segment()]
