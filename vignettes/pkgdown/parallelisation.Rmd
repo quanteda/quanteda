@@ -1,0 +1,99 @@
+---
+title: "Parallel computing"
+author: Kenneth Benoit and Stefan Müller
+output:  
+  html_document:
+    toc: true
+editor_options: 
+  chunk_output_type: console
+---
+
+**quanteda** takes advantage of parallel computing through the [TBB (Threading Building Blocks) library](https://en.wikipedia.org/wiki/Threading_Building_Blocks) to speed up computations. This guide provides step-by-step instructions on how to set up your system for using Quanteda with parallel capabilities on Windows, macOS, and Linux.
+
+
+## For Windows Users
+
+### Install RTools
+
+- Download and install RTools from [RTools download page](https://cran.r-project.org/bin/windows/Rtools/).
+- During installation, ensure you select the option to add RTools to the system path.
+
+### Check Installation
+
+- Open an R session and check that RTools is correctly configured:
+  ```R
+  find.package("pkgbuild")
+  ```
+
+## For macOS users
+
+### Opening the Terminal
+
+To open the terminal on macOS, press `Cmd+Space` to open Spotlight, type "Terminal", and press enter. Alternatively, you can find the Terminal in `/Applications/Utilities/`.
+
+### Install required tools and libraries
+
+1. **Install XCode Command Line Tools**
+   - Type the following command in the terminal:
+     ```bash
+     xcode-select --install
+     ```
+
+2. **Install Homebrew**
+   - If Homebrew is not installed, run:
+     ```bash
+     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+     ```
+   - Follow the on-screen instructions.
+
+3. **Install TBB and pkg-config**
+   - After installing Homebrew, run:
+     ```bash
+     brew install tbb pkg-config
+     ```
+
+4. **Install gfortran**
+   - Required for compiling Fortran code, install using Homebrew:
+     ```bash
+     brew install gcc
+     ```
+
+## For Linux users
+
+### Opening the terminal
+
+To open the terminal in Linux, you can usually use `Ctrl+Alt+T`, or search for "Terminal" in your system's application launcher.
+
+### Install TBB
+
+- **For Fedora, CentOS, RHEL**:
+  ```bash
+  sudo yum install tbb-devel
+  ```
+- **For Debian and Ubuntu**:
+  ```bash
+  sudo apt install libtbb-dev
+  ```
+
+## Installing **quanteda** from CRAN
+
+After setting up the required tools and libraries, install **quanteda** from CRAN:
+
+```R
+install.packages("quanteda")
+```
+
+Parallelisation functions properly if you receive a message detailing the number of threads used for parallel computing after loading **quanteda**.
+
+```R
+library(quanteda)
+# Package version: 4.0.2
+# Unicode version: 15.1
+# ICU version: 74.1
+# Parallel computing: 20 of 20 threads used.
+# See https://quanteda.io for tutorials and examples.
+```
+
+
+
+

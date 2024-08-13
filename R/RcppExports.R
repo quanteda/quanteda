@@ -33,8 +33,8 @@ cpp_tokens_combine <- function(xptr1, xptr2, thread = -1L) {
     .Call(`_quanteda_cpp_tokens_combine`, xptr1, xptr2, thread)
 }
 
-cpp_tokens_compound <- function(xptr, compounds_, delim_, join, window_left, window_right, bypass_, thread = -1L) {
-    .Call(`_quanteda_cpp_tokens_compound`, xptr, compounds_, delim_, join, window_left, window_right, bypass_, thread)
+cpp_tokens_compound <- function(xptr, compounds_, delim_, join, keep, window_left, window_right, bypass_, thread = -1L) {
+    .Call(`_quanteda_cpp_tokens_compound`, xptr, compounds_, delim_, join, keep, window_left, window_right, bypass_, thread)
 }
 
 cpp_tokens_group <- function(xptr, groups_, thread = -1L) {
@@ -109,8 +109,8 @@ cpp_recompile <- function(xptr) {
     invisible(.Call(`_quanteda_cpp_recompile`, xptr))
 }
 
-cpp_dfm <- function(xptr, recompile = TRUE) {
-    .Call(`_quanteda_cpp_dfm`, xptr, recompile)
+cpp_dfm <- function(xptr, asis = TRUE) {
+    .Call(`_quanteda_cpp_dfm`, xptr, asis)
 }
 
 cpp_is_grouped_numeric <- function(values_, groups_) {

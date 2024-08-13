@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>クイック・スタートガイド • quanteda</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../../bootstrap-toc.css">
 <script src="../../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
@@ -42,7 +42,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">4.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">4.0.2</span>
       </span>
     </div>
 
@@ -83,10 +83,13 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
+      <a href="../../articles/pkgdown/parallelisation.html">Parallel computing</a>
+    </li>
+    <li>
       <a href="../../articles/pkgdown/tokens_xptr.html">External pointer tokens objects</a>
     </li>
     <li>
-      <a href="../../articles/pkgdown/benchmarks_xptr.html">Performance benchmarks for v4</a>
+      <a href="../../articles/pkgdown/benchmarks_xptr.html">Performance benchmarks</a>
     </li>
     <li>
       <a href="../../articles/pkgdown/design.html">Package design</a>
@@ -891,8 +894,10 @@ matrix</em>と呼ぶが，<strong>quanteda</strong>が語（term）でなはく�
 </h3>
 <p><strong>quanteda</strong>には多数のテキスト分析のためのモデルが含まれている．ここでは，ワードフィッシュ（<code><a href="https://rdrr.io/pkg/quanteda.textmodels/man/textmodel_wordfish.html" class="external-link">textmodel_wordfish()</a></code>）による教師なしの文書のスケーリングを2010年のアイルランドの予算討論の分析に用いている．</p>
 <div class="sourceCode" id="cb79"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/quanteda/quanteda.textmodels" class="external-link">"quanteda.textmodels"</a></span><span class="op">)</span></span>
-<span><span class="va">dfmat_ire</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/dfm.html">dfm</a></span><span class="op">(</span><span class="fu"><a href="../../reference/tokens.html">tokens</a></span><span class="op">(</span><span class="va">data_corpus_irishbudget2010</span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/quanteda/quanteda.textmodels" class="external-link">"quanteda.textmodels"</a></span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Warning: package 'quanteda.textmodels' was built under R version 4.4.1</span></span></code></pre>
+<div class="sourceCode" id="cb81"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">dfmat_ire</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/dfm.html">dfm</a></span><span class="op">(</span><span class="fu"><a href="../../reference/tokens.html">tokens</a></span><span class="op">(</span><span class="va">data_corpus_irishbudget2010</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">tmod_wf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/quanteda.textmodels/man/textmodel_wordfish.html" class="external-link">textmodel_wordfish</a></span><span class="op">(</span><span class="va">dfmat_ire</span>, dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># plot the Wordfish estimates by party</span></span>
@@ -903,7 +908,7 @@ matrix</em>と呼ぶが，<strong>quanteda</strong>が語（term）でなはく�
 <h3 id="topic-models">トピックモデル<a class="anchor" aria-label="anchor" href="#topic-models"></a>
 </h3>
 <p><code><a href="../../reference/convert.html">convert()</a></code>を用いると，dfmを<strong>topicmodels</strong>の<code><a href="https://rdrr.io/pkg/topicmodels/man/lda.html" class="external-link">LDA()</a></code>形式のデータに転換し，簡単にトピックモデルを適用できる．</p>
-<div class="sourceCode" id="cb80"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb82"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dfmat_ire2</span> <span class="op">&lt;-</span> <span class="va">data_corpus_irishbudget2010</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="../../reference/tokens.html">tokens</a></span><span class="op">(</span>remove_punct <span class="op">=</span> <span class="cn">TRUE</span>, remove_numbers <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="../../reference/tokens_select.html">tokens_remove</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html" class="external-link">stopwords</a></span><span class="op">(</span><span class="st">"english"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -929,31 +934,32 @@ matrix</em>と呼ぶが，<strong>quanteda</strong>が語（term）でなはく�
 <span><span class="co">##   Cowen, Brian (FF)         2          2     3</span></span>
 <span><span class="co">##   Kenny, Enda (FG)          2          0     2</span></span>
 <span><span class="co">## [ reached max_ndoc ... 8 more documents, reached max_nfeat ... 1,056 more features ]</span></span></code></pre>
-<div class="sourceCode" id="cb82"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb84"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span></span>
 <span><span class="kw">if</span> <span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va">topicmodels</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>    <span class="va">my_lda_fit20</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/topicmodels/man/lda.html" class="external-link">LDA</a></span><span class="op">(</span><span class="fu"><a href="../../reference/convert.html">convert</a></span><span class="op">(</span><span class="va">dfmat_ire2</span>, to <span class="op">=</span> <span class="st">"topicmodels"</span><span class="op">)</span>, k <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/pkg/topicmodels/man/get.html" class="external-link">get_terms</a></span><span class="op">(</span><span class="va">my_lda_fit20</span>, <span class="fl">5</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
 <pre><code><span><span class="co">## Loading required package: topicmodels</span></span></code></pre>
-<pre><code><span><span class="co">##      Topic 1    Topic 2     Topic 3  Topic 4    Topic 5   Topic 6  Topic 7    </span></span>
-<span><span class="co">## [1,] "fail"     "taoiseach" "system" "famili"   "levi"    "fianna" "back"     </span></span>
-<span><span class="co">## [2,] "strategi" "refer"     "welfar" "care"     "sustain" "fáil"   "includ"   </span></span>
-<span><span class="co">## [3,] "ask"      "employe"   "creat"  "hospit"   "million" "side"   "reduct"   </span></span>
-<span><span class="co">## [4,] "creat"    "debat"     "rate"   "unemploy" "carbon"  "level"  "creat"    </span></span>
-<span><span class="co">## [5,] "address"  "problem"   "polici" "million"  "import"  "third"  "enterpris"</span></span>
-<span><span class="co">##      Topic 8  Topic 9     Topic 10  Topic 11  Topic 12 Topic 13  Topic 14 </span></span>
-<span><span class="co">## [1,] "spend"  "enterpris" "increas" "fianna"  "creat"  "bank"    "day"    </span></span>
-<span><span class="co">## [2,] "fianna" "societi"   "reduct"  "fáil"    "kind"   "benefit" "child"  </span></span>
-<span><span class="co">## [3,] "child"  "sens"      "reduc"   "support" "altern" "societi" "benefit"</span></span>
-<span><span class="co">## [4,] "widow"  "equal"     "scheme"  "measur"  "tackl"  "today"   "bank"   </span></span>
-<span><span class="co">## [5,] "irish"  "difficult" "million" "irish"   "imagin" "child"   "much"   </span></span>
-<span><span class="co">##      Topic 15  Topic 16    Topic 17  Topic 18  Topic 19 Topic 20  </span></span>
-<span><span class="co">## [1,] "welfar"  "taoiseach" "rate"    "support" "child"  "fáil"    </span></span>
-<span><span class="co">## [2,] "fáil"    "bank"      "pension" "million" "polici" "strategi"</span></span>
-<span><span class="co">## [3,] "measur"  "case"      "fund"    "invest"  "system" "fianna"  </span></span>
-<span><span class="co">## [4,] "payment" "fine"      "welfar"  "increas" "care"   "bank"    </span></span>
-<span><span class="co">## [5,] "fianna"  "gael"      "spend"   "welfar"  "welfar" "support"</span></span></code></pre>
+<pre><code><span><span class="co">## Warning: package 'topicmodels' was built under R version 4.4.1</span></span></code></pre>
+<pre><code><span><span class="co">##      Topic 1   Topic 2   Topic 3   Topic 4  Topic 5     Topic 6     Topic 7  </span></span>
+<span><span class="co">## [1,] "fianna"  "benefit" "invest"  "import" "taoiseach" "taoiseach" "levi"   </span></span>
+<span><span class="co">## [2,] "fáil"    "child"   "support" "leader" "refer"     "bank"      "carbon" </span></span>
+<span><span class="co">## [3,] "support" "today"   "million" "futur"  "employe"   "case"      "million"</span></span>
+<span><span class="co">## [4,] "irish"   "bank"    "increas" "price"  "debat"     "fine"      "harsh"  </span></span>
+<span><span class="co">## [5,] "creat"   "day"     "develop" "annum"  "problem"   "gael"      "addit"  </span></span>
+<span><span class="co">##      Topic 8    Topic 9  Topic 10  Topic 11   Topic 12   Topic 13  </span></span>
+<span><span class="co">## [1,] "famili"   "welfar" "fáil"    "million"  "bank"     "fail"    </span></span>
+<span><span class="co">## [2,] "care"     "system" "rate"    "introduc" "say"      "strategi"</span></span>
+<span><span class="co">## [3,] "hospit"   "fianna" "high"    "sustain"  "day"      "ask"     </span></span>
+<span><span class="co">## [4,] "welfar"   "educ"   "increas" "review"   "know"     "creat"   </span></span>
+<span><span class="co">## [5,] "unemploy" "measur" "fianna"  "recent"   "recoveri" "address" </span></span>
+<span><span class="co">##      Topic 14      Topic 15  Topic 16 Topic 17  Topic 18 Topic 19    Topic 20</span></span>
+<span><span class="co">## [1,] "altern"      "reduc"   "welfar" "support" "kind"   "enterpris" "system"</span></span>
+<span><span class="co">## [2,] "fianna"      "pension" "system" "month"   "creat"  "societi"   "carer" </span></span>
+<span><span class="co">## [3,] "fáil"        "increas" "taxat"  "rate"    "tackl"  "sens"      "disabl"</span></span>
+<span><span class="co">## [4,] "citizenship" "reduct"  "much"   "measur"  "imagin" "equal"     "per"   </span></span>
+<span><span class="co">## [5,] "societi"     "measur"  "worst"  "reduct"  "author" "difficult" "care"</span></span></code></pre>
 </div>
 </div>
   </div>
@@ -975,7 +981,7 @@ matrix</em>と呼ぶが，<strong>quanteda</strong>が語（term）でなはく�
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
 </div>
 
       </footer>

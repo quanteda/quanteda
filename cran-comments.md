@@ -2,12 +2,9 @@
 
 Fixed:
 
-- A failing test caused by the ever-shifting behaviour of **Matrix** and the devel R on r-devel-linux-x86_64-debian-clang and r-devel-linux-x86_64-debian-gcc.
+- A failing test caused by C++ code related to `fcm()` and how tokens objects are re-indexed.
 
-- An Undeclared package ‘quanteda.textstats’ in Rd xrefs.
-
-- An installation failure on r-devel-linux-x86_64-fedora-gcc due to searching for TBB in all the wrong places.
-
+- An undeclared package ‘quanteda.textstats’ in Rd xrefs.
 
 ## Test environments
 

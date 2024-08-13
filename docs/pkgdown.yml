@@ -1,27 +1,28 @@
-pandoc: 3.1.1
-pkgdown: 2.0.7
+pandoc: 3.1.11
+pkgdown: 2.0.9
 pkgdown_sha: ~
 articles:
   benchmarks_xptr: pkgdown/benchmarks_xptr.html
-  design: pkgdown/design.html
   chinese: pkgdown/examples/chinese.html
+  design: pkgdown/design.html
+  digital-humanities: pkgdown/replication/digital-humanities.html
   japanese_speech_ja: pkgdown/examples/japanese_speech_ja.html
   japanese_twitter_ja: pkgdown/examples/japanese_twitter_ja.html
   lsa: pkgdown/examples/lsa.html
+  parallelisation: pkgdown/parallelisation.html
   phrase: pkgdown/examples/phrase.html
   plotting: pkgdown/examples/plotting.html
-  twitter: pkgdown/examples/twitter.html
+  qss: pkgdown/replication/qss.html
+  quickstart: quickstart.html
   quickstart_cn: pkgdown/quickstart_cn.html
   quickstart_es: pkgdown/quickstart_es.html
   quickstart_further_examples: pkgdown/quickstart_further_examples.html
   quickstart_hi: pkgdown/quickstart_hi.html
   quickstart_ja: pkgdown/quickstart_ja.html
-  digital-humanities: pkgdown/replication/digital-humanities.html
-  qss: pkgdown/replication/qss.html
   text2vec: pkgdown/replication/text2vec.html
   tokens_xptr: pkgdown/tokens_xptr.html
-  quickstart: quickstart.html
-last_built: 2024-04-09T07:12Z
+  twitter: pkgdown/examples/twitter.html
+last_built: 2024-07-17T06:44Z
 urls:
   reference: https://quanteda.io/reference
   article: https://quanteda.io/articles

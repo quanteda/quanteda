@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Example: textual data visualization • quanteda</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../../../bootstrap-toc.css">
 <script src="../../../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
@@ -42,7 +42,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">4.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">4.0.2</span>
       </span>
     </div>
 
@@ -83,10 +83,13 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
+      <a href="../../../articles/pkgdown/parallelisation.html">Parallel computing</a>
+    </li>
+    <li>
       <a href="../../../articles/pkgdown/tokens_xptr.html">External pointer tokens objects</a>
     </li>
     <li>
-      <a href="../../../articles/pkgdown/benchmarks_xptr.html">Performance benchmarks for v4</a>
+      <a href="../../../articles/pkgdown/benchmarks_xptr.html">Performance benchmarks</a>
     </li>
     <li>
       <a href="../../../articles/pkgdown/design.html">Package design</a>
@@ -247,12 +250,13 @@ than side-by-side.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="https://github.com/quanteda/readtext" class="external-link">"readtext"</a></span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Loading required package: readtext</span></span></code></pre>
+<pre><code><span><span class="co">## Warning: package 'readtext' was built under R version 4.4.1</span></span></code></pre>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">## Attaching package: 'readtext'</span></span></code></pre>
 <pre><code><span><span class="co">## The following object is masked from 'package:quanteda':</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">##     texts</span></span></code></pre>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data_char_mobydick</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/readtext/man/readtext.html" class="external-link">readtext</a></span><span class="op">(</span><span class="st">"http://www.gutenberg.org/cache/epub/2701/pg2701.txt"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">data_char_mobydick</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"Moby Dick"</span></span>
@@ -268,7 +272,7 @@ than side-by-side.</p>
 token index for single texts and relative token index when multiple
 texts are being compared. If you prefer, you can specify that you want
 an absolute scale:</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/quanteda.textplots/man/textplot_xray.html" class="external-link">textplot_xray</a></span><span class="op">(</span></span>
 <span>    <span class="fu"><a href="../../../reference/kwic.html">kwic</a></span><span class="op">(</span><span class="va">toks_corpus_inaugural_subset</span>, pattern <span class="op">=</span> <span class="st">"american"</span><span class="op">)</span>,</span>
 <span>    <span class="fu"><a href="../../../reference/kwic.html">kwic</a></span><span class="op">(</span><span class="va">toks_corpus_inaugural_subset</span>, pattern <span class="op">=</span> <span class="st">"people"</span><span class="op">)</span>,</span>
@@ -285,7 +289,7 @@ that don’t exist in a particular text are shaded in grey.</p>
 </h3>
 <p>The object returned is a ggplot object, which can be modified using
 ggplot:</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://ggplot2.tidyverse.org" class="external-link">"ggplot2"</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme_get.html" class="external-link">theme_set</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">g</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/quanteda.textplots/man/textplot_xray.html" class="external-link">textplot_xray</a></span><span class="op">(</span></span>
@@ -304,7 +308,7 @@ ggplot:</p>
 </h2>
 <p>You can plot the frequency of the top features in a text using
 <code>topfeatures</code>.</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://quanteda.io">"quanteda.textstats"</a></span><span class="op">)</span></span>
 <span><span class="va">tstat_freq_inaug</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://quanteda.io/reference/textstat_frequency.html">textstat_frequency</a></span><span class="op">(</span><span class="va">dfmat_inaug</span>, n <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span>
 <span></span>
@@ -315,7 +319,7 @@ ggplot:</p>
 <p>If you wanted to compare the frequency of a single term across
 different texts, you can also use <code>textstat_frequency</code>, group
 the frequency by speech and extract the term.</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Create document-level variable with year and president</span></span>
 <span><span class="co"># Get frequency grouped by president</span></span>
 <span><span class="va">freq_grouped</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://quanteda.io/reference/textstat_frequency.html">textstat_frequency</a></span><span class="op">(</span><span class="fu"><a href="../../../reference/dfm.html">dfm</a></span><span class="op">(</span><span class="va">toks_corpus_inaugural_subset</span><span class="op">)</span>, </span>
@@ -334,7 +338,7 @@ the frequency by speech and extract the term.</p>
 plots, (word count divided by the length of the chapter) we need to
 weight the document-frequency matrix first. To obtain expected word
 frequency per 100 words, we multiply by 100.</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dfm_rel_freq</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/dfm_weight.html">dfm_weight</a></span><span class="op">(</span><span class="fu"><a href="../../../reference/dfm.html">dfm</a></span><span class="op">(</span><span class="va">toks_corpus_inaugural_subset</span><span class="op">)</span>, scheme <span class="op">=</span> <span class="st">"prop"</span><span class="op">)</span> <span class="op">*</span> <span class="fl">100</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">dfm_rel_freq</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Document-feature matrix of: 6 documents, 4,346 features (85.57% sparse) and 4 docvars.</span></span>
@@ -355,7 +359,7 @@ frequency per 100 words, we multiply by 100.</p>
 <span><span class="co">##   1969-Nixon      0          5.629139 0          3.890728 0.4552980</span></span>
 <span><span class="co">##   1973-Nixon      0          4.160401 0          3.408521 0.3007519</span></span>
 <span><span class="co">## [ reached max_nfeat ... 4,336 more features ]</span></span></code></pre>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">rel_freq</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://quanteda.io/reference/textstat_frequency.html">textstat_frequency</a></span><span class="op">(</span><span class="va">dfm_rel_freq</span>, groups <span class="op">=</span> <span class="va">dfm_rel_freq</span><span class="op">$</span><span class="va">President</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Filter the term "american"</span></span>
@@ -370,7 +374,7 @@ frequency per 100 words, we multiply by 100.</p>
 <p><img src="plotting_files/figure-html/unnamed-chunk-12-1.png" width="768"></p>
 <p>Finally, <code>texstat_frequency</code> allows to plot the most
 frequent words in terms of relative frequency by group.</p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dfmat_weight_pres</span> <span class="op">&lt;-</span> <span class="va">data_corpus_inaugural</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../../../reference/corpus_subset.html">corpus_subset</a></span><span class="op">(</span><span class="va">Year</span> <span class="op">&gt;</span> <span class="fl">2000</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../../../reference/tokens.html">tokens</a></span><span class="op">(</span>remove_punct <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -398,7 +402,7 @@ frequent words in terms of relative frequency by group.</p>
 target and reference group, you can calculate “keyness” which is based
 on <code>textstat_keyness</code>. In this example, we compare the
 inaugural speech by Donald Trump with the speeches by Barack Obama.</p>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Only select speeches by Obama and Trump</span></span>
 <span><span class="va">corp_pres</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/corpus_subset.html">corpus_subset</a></span><span class="op">(</span><span class="va">data_corpus_inaugural</span>, </span>
 <span>                            <span class="va">President</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Obama"</span>, <span class="st">"Trump"</span><span class="op">)</span><span class="op">)</span></span>
@@ -415,7 +419,7 @@ inaugural speech by Donald Trump with the speeches by Barack Obama.</p>
 <span><span class="co"># Plot estimated word keyness</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/quanteda.textplots/man/textplot_keyness.html" class="external-link">textplot_keyness</a></span><span class="op">(</span><span class="va">tstat_keyness</span><span class="op">)</span> </span></code></pre></div>
 <p><img src="plotting_files/figure-html/unnamed-chunk-14-1.png" width="768"></p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Plot without the reference text (in this case Obama)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/quanteda.textplots/man/textplot_keyness.html" class="external-link">textplot_keyness</a></span><span class="op">(</span><span class="va">tstat_keyness</span>, show_reference <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <p><img src="plotting_files/figure-html/unnamed-chunk-14-2.png" width="768"></p>
@@ -433,10 +437,11 @@ scores (Laver et al., 2003). Known scores are assigned to so called
 reference texts in order to infer the positions of new documents
 (“virgin texts”). You can plot the position of words (features) against
 the logged term frequency, or the position of the documents.</p>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/quanteda/quanteda.textmodels" class="external-link">"quanteda.textmodels"</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Transform corpus to dfm</span></span>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/quanteda/quanteda.textmodels" class="external-link">"quanteda.textmodels"</a></span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Warning: package 'quanteda.textmodels' was built under R version 4.4.1</span></span></code></pre>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Transform corpus to dfm</span></span>
 <span><span class="va">dfmat_ie</span> <span class="op">&lt;-</span> <span class="va">data_corpus_irishbudget2010</span> <span class="op">|&gt;</span> </span>
 <span>    <span class="fu"><a href="../../../reference/tokens.html">tokens</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>    <span class="fu"><a href="../../../reference/dfm.html">dfm</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -452,7 +457,7 @@ the logged term frequency, or the position of the documents.</p>
 <span>                 highlighted <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"minister"</span>, <span class="st">"have"</span>, <span class="st">"our"</span>, <span class="st">"budget"</span><span class="op">)</span>, </span>
 <span>                 highlighted_color <span class="op">=</span> <span class="st">"red"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="plotting_files/figure-html/unnamed-chunk-15-1.png" width="768"></p>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Get predictions</span></span>
 <span><span class="va">pred_ws</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">tmod_ws</span>, se.fit <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
@@ -460,7 +465,7 @@ the logged term frequency, or the position of the documents.</p>
 <span><span class="fu"><a href="https://rdrr.io/pkg/quanteda.textplots/man/textplot_scale1d.html" class="external-link">textplot_scale1d</a></span><span class="op">(</span><span class="va">pred_ws</span>, margin <span class="op">=</span> <span class="st">"documents"</span>,</span>
 <span>                 groups <span class="op">=</span> <span class="va">data_corpus_irishbudget2010</span><span class="op">$</span><span class="va">party</span><span class="op">)</span></span></code></pre></div>
 <p><img src="plotting_files/figure-html/unnamed-chunk-15-2.png" width="768"></p>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Plot estimated document positions using the LBG transformation and group by "party" variable</span></span>
 <span></span>
 <span><span class="va">pred_lbg</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">tmod_ws</span>, se.fit <span class="op">=</span> <span class="cn">TRUE</span>, rescaling <span class="op">=</span> <span class="st">"lbg"</span><span class="op">)</span></span>
@@ -476,7 +481,7 @@ the logged term frequency, or the position of the documents.</p>
 document positions using maximum likelihood (Slapin and Proksch, 2008).
 Both the estimated position of words and the positions of the documents
 can be plotted.</p>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Estimate Wordfish model</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/quanteda/quanteda.textmodels" class="external-link">"quanteda.textmodels"</a></span><span class="op">)</span></span>
 <span><span class="va">tmod_wf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/quanteda.textmodels/man/textmodel_wordfish.html" class="external-link">textmodel_wordfish</a></span><span class="op">(</span><span class="va">dfmat_ie</span>, dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">6</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span>
@@ -488,7 +493,7 @@ can be plotted.</p>
 <span>                                 <span class="st">"productivity"</span>, <span class="st">"deficit"</span><span class="op">)</span>, </span>
 <span>                 highlighted_color <span class="op">=</span> <span class="st">"red"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="plotting_files/figure-html/unnamed-chunk-16-1.png" width="768"></p>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Plot estimated document positions</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/quanteda.textplots/man/textplot_scale1d.html" class="external-link">textplot_scale1d</a></span><span class="op">(</span><span class="va">tmod_wf</span>, groups <span class="op">=</span> <span class="va">data_corpus_irishbudget2010</span><span class="op">$</span><span class="va">party</span><span class="op">)</span></span></code></pre></div>
 <p><img src="plotting_files/figure-html/unnamed-chunk-16-2.png" width="768"></p>
@@ -498,7 +503,7 @@ can be plotted.</p>
 </h3>
 <p>You can also plot the estimated document positions of a correspodence
 analysis (Nenadic and Greenacre 2007).</p>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Run correspondence analysis on dfm</span></span>
 <span><span class="va">tmod_ca</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/quanteda.textmodels/man/textmodel_ca.html" class="external-link">textmodel_ca</a></span><span class="op">(</span><span class="va">dfmat_ie</span><span class="op">)</span></span>
 <span></span>
@@ -540,7 +545,7 @@ Journal of Political Science</em> 52(3): 705–772.</p>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
 </div>
 
       </footer>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>快速入门指南 • quanteda</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../../bootstrap-toc.css">
 <script src="../../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
@@ -42,7 +42,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">4.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">4.0.2</span>
       </span>
     </div>
 
@@ -83,10 +83,13 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
+      <a href="../../articles/pkgdown/parallelisation.html">Parallel computing</a>
+    </li>
+    <li>
       <a href="../../articles/pkgdown/tokens_xptr.html">External pointer tokens objects</a>
     </li>
     <li>
-      <a href="../../articles/pkgdown/benchmarks_xptr.html">Performance benchmarks for v4</a>
+      <a href="../../articles/pkgdown/benchmarks_xptr.html">Performance benchmarks</a>
     </li>
     <li>
       <a href="../../articles/pkgdown/design.html">Package design</a>
@@ -894,8 +897,10 @@ pane中查看dfm,或者调用R的View功能。调用<code>plot</code>dfm将调�
 <p>我们在<code><a href="https://rdrr.io/pkg/quanteda.textmodels/man/textmodel_wordfish.html" class="external-link">textmodel_wordfish()</a></code>功能上做了大量的开发工作，这里仅演示“wordfish”模型的无监督文档缩放分析：</p>
 <div class="sourceCode" id="cb79"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># make prettier document names</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/quanteda/quanteda.textmodels" class="external-link">"quanteda.textmodels"</a></span><span class="op">)</span></span>
-<span><span class="va">dfmat_ire</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/dfm.html">dfm</a></span><span class="op">(</span><span class="fu"><a href="../../reference/tokens.html">tokens</a></span><span class="op">(</span><span class="va">data_corpus_irishbudget2010</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/quanteda/quanteda.textmodels" class="external-link">"quanteda.textmodels"</a></span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Warning: package 'quanteda.textmodels' was built under R version 4.4.1</span></span></code></pre>
+<div class="sourceCode" id="cb81"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">dfmat_ire</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/dfm.html">dfm</a></span><span class="op">(</span><span class="fu"><a href="../../reference/tokens.html">tokens</a></span><span class="op">(</span><span class="va">data_corpus_irishbudget2010</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">tmod_wf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/quanteda.textmodels/man/textmodel_wordfish.html" class="external-link">textmodel_wordfish</a></span><span class="op">(</span><span class="va">dfmat_ire</span>, dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># plot the Wordfish estimates by party</span></span>
@@ -906,7 +911,7 @@ pane中查看dfm,或者调用R的View功能。调用<code>plot</code>dfm将调�
 <h3 id="topic-models">主题模型<a class="anchor" aria-label="anchor" href="#topic-models"></a>
 </h3>
 <p><strong>quanteda</strong>可以很轻松训练主题模型：</p>
-<div class="sourceCode" id="cb80"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb82"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">quant_dfm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/tokens.html">tokens</a></span><span class="op">(</span><span class="va">data_corpus_irishbudget2010</span>, remove_punct <span class="op">=</span> <span class="cn">TRUE</span>, remove_numbers <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../../reference/tokens_select.html">tokens_remove</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html" class="external-link">stopwords</a></span><span class="op">(</span><span class="st">"en"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../../reference/dfm.html">dfm</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -930,16 +935,15 @@ pane中查看dfm,或者调用R的View功能。调用<code>plot</code>dfm将调�
 <span><span class="co">##   Cowen, Brian (FF)               1      3    2</span></span>
 <span><span class="co">##   Kenny, Enda (FG)                0      2    5</span></span>
 <span><span class="co">## [ reached max_ndoc ... 8 more documents, reached max_nfeat ... 1,253 more features ]</span></span></code></pre>
-<div class="sourceCode" id="cb82"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb84"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span></span>
 <span><span class="kw">if</span> <span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="http://www.structuraltopicmodel.com/" class="external-link">"stm"</a></span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="va">my_lda_fit20</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/stm/man/stm.html" class="external-link">stm</a></span><span class="op">(</span><span class="va">quant_dfm</span>, K <span class="op">=</span> <span class="fl">20</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span>    <span class="va">my_lda_fit20</span> <span class="op">&lt;-</span> <span class="fu">stm</span><span class="op">(</span><span class="va">quant_dfm</span>, K <span class="op">=</span> <span class="fl">20</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">my_lda_fit20</span><span class="op">)</span>    </span>
 <span><span class="op">}</span></span></code></pre></div>
 <pre><code><span><span class="co">## Loading required package: stm</span></span></code></pre>
-<pre><code><span><span class="co">## stm v1.3.7 successfully loaded. See ?stm for help. </span></span>
-<span><span class="co">##  Papers, resources, and other materials at structuraltopicmodel.com</span></span></code></pre>
-<p><img src="quickstart_cn_files/figure-html/unnamed-chunk-38-1.png" width="672"></p>
+<pre><code><span><span class="co">## Warning in library(package, lib.loc = lib.loc, character.only = TRUE,</span></span>
+<span><span class="co">## logical.return = TRUE, : there is no package called 'stm'</span></span></code></pre>
 <p>注：以上这个指南翻译于英文版<a href="https://quanteda.io/articles/pkgdown/quickstart.html">quickstart</a>.</p>
 </div>
 </div>
@@ -949,7 +953,7 @@ pane中查看dfm,或者调用R的View功能。调用<code>plot</code>dfm将调�
 <div class="section level3">
 <h3 id="chinese-stop-words">中文停用词：取自百度停用词<a class="anchor" aria-label="anchor" href="#chinese-stop-words"></a>
 </h3>
-<div class="sourceCode" id="cb85"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb87"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># 读取中文停用词</span></span>
 <span><span class="va">stopw_zh</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html" class="external-link">stopwords</a></span><span class="op">(</span><span class="st">"zh"</span>, source <span class="op">=</span> <span class="st">"misc"</span><span class="op">)</span></span>
 <span></span>
@@ -957,7 +961,7 @@ pane中查看dfm,或者调用R的View功能。调用<code>plot</code>dfm将调�
 <pre><code><span><span class="co">## Tokens consisting of 1 document.</span></span>
 <span><span class="co">## text1 :</span></span>
 <span><span class="co">## [1] "中华"   "人民"   "共和国" "成立"   "于"     "1949"   "年"</span></span></code></pre>
-<div class="sourceCode" id="cb87"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb89"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># 除去停用词</span></span>
 <span><span class="fu"><a href="../../reference/tokens.html">tokens</a></span><span class="op">(</span><span class="st">"中华人民共和国成立于1949 年"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="../../reference/tokens_select.html">tokens_remove</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html" class="external-link">stopwords</a></span><span class="op">(</span><span class="st">"zh"</span>, source <span class="op">=</span> <span class="st">"misc"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
@@ -969,7 +973,7 @@ pane中查看dfm,或者调用R的View功能。调用<code>plot</code>dfm将调�
 <h3 id="chinese-government-report">例子：中国总理的“政府工作报告”<a class="anchor" aria-label="anchor" href="#chinese-government-report"></a>
 </h3>
 <p>四十九份中国总理的“政府工作报告”，1954 - 2017</p>
-<div class="sourceCode" id="cb89"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb91"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># 读取文件</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/load.html" class="external-link">load</a></span><span class="op">(</span><span class="st">"examples/data/data_corpus_chinesegovreport.rda"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">data_corpus_chinesegovreport</span>, <span class="fl">10</span><span class="op">)</span></span></code></pre></div>
@@ -986,7 +990,7 @@ pane中查看dfm,或者调用R的View功能。调用<code>plot</code>dfm将调�
 <span><span class="co">##   text8  1891  11670       387 1964政府工作报告_周恩来_摘要.txt 1964  周恩来</span></span>
 <span><span class="co">##   text9   966   3187       125      1975政府工作报告_周恩来.txt 1975  周恩来</span></span>
 <span><span class="co">##  text10  2965  19119       659      1978政府工作报告_华国锋.txt 1978  华国锋</span></span></code></pre>
-<div class="sourceCode" id="cb91"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb93"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># 分词</span></span>
 <span><span class="va">toks_china</span> <span class="op">&lt;-</span> <span class="va">data_corpus_chinesegovreport</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="../../reference/tokens.html">tokens</a></span><span class="op">(</span>remove_punct <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -997,7 +1001,7 @@ pane中查看dfm,或者调用R的View功能。调用<code>plot</code>dfm将调�
 <span><span class="fu"><a href="../../reference/topfeatures.html">topfeatures</a></span><span class="op">(</span><span class="va">dfmat_china</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## 发展 经济 社会 建设 改革 人民 主义 工作 企业 国家 </span></span>
 <span><span class="co">## 5627 5036 4255 4248 2931 2897 2817 2642 2627 2595</span></span></code></pre>
-<div class="sourceCode" id="cb93"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb95"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#发展 经济 社会 建设 改革 人民 主义 工作 企业 国家 </span></span>
 <span><span class="co">#5627 5036 4255 4248 2931 2897 2817 2642 2627 2595 </span></span>
 <span></span>
@@ -1015,7 +1019,7 @@ pane中查看dfm,或者调用R的View功能。调用<code>plot</code>dfm将调�
 <div class="section level3">
 <h3 id="wordfish">文本缩放模型<a class="anchor" aria-label="anchor" href="#wordfish"></a>
 </h3>
-<div class="sourceCode" id="cb94"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb96"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">wfm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/quanteda.textmodels/man/textmodel_wordfish.html" class="external-link">textmodel_wordfish</a></span><span class="op">(</span><span class="va">dfmat_china</span><span class="op">)</span></span>
 <span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fl">1954</span><span class="op">:</span><span class="fl">2017</span></span>
 <span><span class="va">y</span> <span class="op">&lt;-</span> <span class="va">y</span><span class="op">[</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="va">y</span> <span class="op">==</span> <span class="fl">1963</span> <span class="op">|</span> <span class="va">y</span> <span class="op">==</span> <span class="fl">1961</span> <span class="op">|</span> <span class="va">y</span> <span class="op">==</span> <span class="fl">1962</span> <span class="op">|</span> <span class="op">(</span><span class="va">y</span> <span class="op">&gt;</span> <span class="fl">1964</span> <span class="op">&amp;</span> <span class="va">y</span> <span class="op">&lt;</span> <span class="fl">1975</span><span class="op">)</span> <span class="op">|</span> <span class="va">y</span> <span class="op">==</span> <span class="fl">1976</span> <span class="op">|</span> <span class="va">y</span> <span class="op">==</span> <span class="fl">1977</span><span class="op">)</span><span class="op">]</span></span>
@@ -1025,7 +1029,7 @@ pane中查看dfm,或者调用R的View功能。调用<code>plot</code>dfm将调�
 <div class="section level3">
 <h3 id="collocation">词组 - 双词词组/三词词组等<a class="anchor" aria-label="anchor" href="#collocation"></a>
 </h3>
-<div class="sourceCode" id="cb95"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb97"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># 所有报告中的双词词组</span></span>
 <span><span class="va">tstat_col</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://quanteda.io/reference/textstat_collocations.html">textstat_collocations</a></span><span class="op">(</span><span class="va">toks_china</span>, size <span class="op">=</span> <span class="fl">2</span>, min_count <span class="op">=</span> <span class="fl">20</span>, tolower <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">tstat_col</span>, <span class="fl">10</span><span class="op">)</span></span></code></pre></div>
@@ -1062,7 +1066,7 @@ pane中查看dfm,或者调用R的View功能。调用<code>plot</code>dfm将调�
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
 </div>
 
       </footer>

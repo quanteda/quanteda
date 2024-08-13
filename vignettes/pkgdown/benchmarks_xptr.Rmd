@@ -1,5 +1,5 @@
 ---
-title: "Performance improvements in version 4.0"
+title: "Performance improvements"
 author: Kohei Watanabe and Stefan Müller
 output:  
   html_document:
