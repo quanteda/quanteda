@@ -126,9 +126,9 @@ void cpp_recompile(TokensPtr xptr) {
 }
 
 // [[Rcpp::export]]
-S4 cpp_dfm(TokensPtr xptr, bool recompile = true) {
+S4 cpp_dfm(TokensPtr xptr, bool asis = true) {
     
-    xptr->recompiled = recompile;
+    xptr->recompiled = asis;
     xptr->recompile();
     std::size_t H = xptr->texts.size();
     std::size_t G = xptr->types.size();
