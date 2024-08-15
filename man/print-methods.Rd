@@ -71,7 +71,8 @@
 \item{show_summary}{print a brief summary indicating the number of documents
 and other characteristics of the object, such as docvars or sparsity.}
 
-\item{...}{not used}
+\item{...}{passed to \code{\link[base:print]{base::print()}} for \link{tokens}; unused for all other
+objects.}
 
 \item{max_nfeat}{max number of features to print; default is from the
 \code{print_dfm_max_nfeat} setting of \code{\link[=quanteda_options]{quanteda_options()}}}
@@ -86,7 +87,7 @@ and other characteristics of the object, such as docvars or sparsity.}
 \code{print_kwic_max_nrow} setting of \code{\link[=quanteda_options]{quanteda_options()}}}
 
 \item{max_ntoken}{max number of tokens to print; default is from the
-\code{print_tokens_max_ntoken} setting of \code{\link[=quanteda_options]{quanteda_options()}}}
+\code{print_tokens_max_ntoken} setting of \code{\link[=quanteda_options]{quanteda_options()}}.}
 }
 \description{
 Print method for \pkg{quanteda} objects.  In each \verb{max_n*} option, 0 shows none, and
