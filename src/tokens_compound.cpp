@@ -16,7 +16,7 @@ int adjust_window(Text &tokens, int current, int end) {
 bool is_nested(std::vector<bool> &flags, int current, int end) {
     for (int i = current; i <= end; i++) {
         if (i == (int)flags.size()) // reached the end
-            return(false);
+            return(true);
         if (!flags[i])
             return(false);
     }
