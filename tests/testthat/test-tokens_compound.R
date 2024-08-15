@@ -74,8 +74,8 @@ test_that("tokens_compound join a sequences of sequences", {
                  list(text1 = c("we", "like", "high", "quality", "sound",
                                 "high_quality_sound")))
     expect_equal(as.list(tokens_compound(toks2, seqs2, join = FALSE, keep_unigrams = TRUE)),
-                 list(text1 = c("we", "like", "high", "high_quality", "quality",
-                                "quality_sound", "sound")))
+                 list(text1 = c("we", "like", "high", "quality", "high_quality",
+                                "sound", "quality_sound")))
     
     expect_error(
         tokens_compound(toks, seqs, join = c(TRUE, FALSE)),

@@ -90,7 +90,7 @@ Text match_comp(Text tokens,
     for (std::size_t span : spans) { // substitution starts from the longest sequences
         if (tokens.size() < span) continue;
         for (std::size_t i = 0; i < tokens.size() - (span - 1); i++) {
-            //if (!nested && flags_link[i]) continue; // ignore matched tokens 
+            //if (flags_match[i]) continue; // ignore matched tokens 
             Ngram ngram(tokens.begin() + i, tokens.begin() + i + span);
             auto it = set_comps.find(ngram);
             if (it != set_comps.end()) {
@@ -99,7 +99,7 @@ Text match_comp(Text tokens,
                 int to = adjust_window(tokens, i, i + span + window.second);
                 std::fill(flags_match.begin() + from, flags_match.begin() + to + 1, true); // mark tokens matched
                 Ngram tokens_seq(tokens.begin() + from, tokens.begin() + to + 1); // extract tokens matched
-                tokens_multi[i].push_back(ngram_id(tokens_seq, map_comps, id_comp)); // assign ID to ngram
+                tokens_multi[i + span - 1].push_back(ngram_id(tokens_seq, map_comps, id_comp)); // assign ID to ngram
                 match++;
             }
         }
