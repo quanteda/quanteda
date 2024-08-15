@@ -73,7 +73,8 @@ test_that("keep_unigrams works", {
     
     txt <- "we like high quality sound"
     toks <- tokens(txt)
-
+    
+    # overlapped
     pat <- phrase(c("high quality", "quality sound"))
     expect_equal(as.list(tokens_compound(toks, pat, join = TRUE)),
                  list(text1 = c("we", "like", "high_quality_sound")))
@@ -86,6 +87,7 @@ test_that("keep_unigrams works", {
                  list(text1 = c("we", "like", "high", "quality", "high_quality",
                                 "sound", "quality_sound")))
     
+    # nested
     pat2 <- phrase(c("high quality", "quality sound", "high quality sound"))
     expect_equal(as.list(tokens_compound(toks, pat2, join = TRUE)),
                  list(text1 = c("we", "like", "high_quality_sound")))
