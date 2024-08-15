@@ -13,6 +13,16 @@ int adjust_window(Text &tokens, int current, int end) {
     return(i);
 }
 
+bool is_nested(std::vector<bool> &flags, int current, int end) {
+    for (int i = current; i <= end; i++) {
+        if (i == (int)flags.size()) // reached the end
+            return(false);
+        if (!flags[i])
+            return(false);
+    }
+    return(true);
+}
+
 Text join_comp(Text tokens, 
                const std::vector<std::size_t> &spans,
                const SetNgrams &set_comps,
@@ -83,23 +93,25 @@ Text match_comp(Text tokens,
     if (tokens.empty()) return {}; // return empty vector for empty text
     
     std::vector< Text > tokens_multi(tokens.size()); 
+    // NOTE: record span in flags_match?
     std::vector< bool > flags_match(tokens.size(), false); // flag matched tokens
-    std::vector< bool > flags_link(tokens.size(), false); // flag tokens to join
+    //std::vector< bool > flags_link(tokens.size(), false); // flag tokens to join
     std::size_t match = tokens.size();
     
     for (std::size_t span : spans) { // substitution starts from the longest sequences
         if (tokens.size() < span) continue;
         for (std::size_t i = 0; i < tokens.size() - (span - 1); i++) {
-            //if (flags_match[i]) continue; // ignore matched tokens 
             Ngram ngram(tokens.begin() + i, tokens.begin() + i + span);
             auto it = set_comps.find(ngram);
             if (it != set_comps.end()) {
+                if (is_nested(flags_match, i, i + span)) continue; // ignore nested tokens 
                 // Adjust window size to exclude padding
                 int from = adjust_window(tokens, i, i - window.first);
                 int to = adjust_window(tokens, i, i + span + window.second);
                 std::fill(flags_match.begin() + from, flags_match.begin() + to + 1, true); // mark tokens matched
                 Ngram tokens_seq(tokens.begin() + from, tokens.begin() + to + 1); // extract tokens matched
-                tokens_multi[i + span - 1].push_back(ngram_id(tokens_seq, map_comps, id_comp)); // assign ID to ngram
+                //tokens_multi[i + span - 1].push_back(ngram_id(tokens_seq, map_comps, id_comp)); // assign ID to ngram
+                tokens_multi[i].push_back(ngram_id(tokens_seq, map_comps, id_comp)); // assign ID to ngram
                 match++;
             }
         }
