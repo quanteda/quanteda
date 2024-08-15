@@ -23,7 +23,7 @@
 \item{x}{a tokens object}
 
 \item{recursive}{a required argument for \link{unlist} but inapplicable to
-\link{tokens} objects}
+\link{tokens} objects.}
 
 \item{i}{document names or indices for documents to extract.}
 

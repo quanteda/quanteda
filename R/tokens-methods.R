@@ -41,7 +41,7 @@ is.tokens <- function(x) "tokens" %in% class(x)
 #' @return `unlist` returns a simple vector of characters from a
 #'   [tokens] object.
 #' @param recursive a required argument for [unlist] but inapplicable to
-#'   [tokens] objects
+#'   [tokens] objects.
 #' @method unlist tokens
 #' @keywords internal
 #' @export
@@ -52,8 +52,7 @@ unlist.tokens <- function(x, recursive = FALSE, use.names = TRUE) {
 #' @rdname print-methods
 #' @method print tokens
 #' @param max_ntoken max number of tokens to print; default is from the
-#'   `print_tokens_max_ntoken` setting of [quanteda_options()]
-#' @param ... not used
+#'   `print_tokens_max_ntoken` setting of [quanteda_options()].
 #' @export
 print.tokens <- function(x, max_ndoc = quanteda_options("print_tokens_max_ndoc"),
                          max_ntoken = quanteda_options("print_tokens_max_ntoken"),
@@ -63,7 +62,6 @@ print.tokens <- function(x, max_ndoc = quanteda_options("print_tokens_max_ndoc")
     max_ndoc <- check_integer(max_ndoc, min = -1)
     max_ntoken <- check_integer(max_ntoken, min = -1)
     show_summary <- check_logical(show_summary)
-    check_dots(...)
     
     docvars <- docvars(x)
     ndoc <- ndoc(x)
@@ -91,7 +89,7 @@ print.tokens <- function(x, max_ndoc = quanteda_options("print_tokens_max_ndoc")
         x <- lapply(unclass(x), function(y) types[head(y, max_ntoken) + 1]) # shift index to show padding
         for (i in seq_along(label)) {
             cat(label[i], "\n", sep = "")
-            print(x[[i]])
+            print(x[[i]], ...)
             if (len[i] > max_ntoken)
                 cat("[ ... and ",  format(len[i] - max_ntoken, big.mark = ","), " more ]\n", sep = "")
             cat("\n", sep = "")
