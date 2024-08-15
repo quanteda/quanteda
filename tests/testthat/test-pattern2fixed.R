@@ -244,7 +244,7 @@ test_that("index_types works correctly", {
     expect_equivalent(index3, list())
     expect_equal(
         attributes(index3),
-        list(types_search = c("abcd", "abc", "ab", "abcd", "abc", "ab"),
+        list(types_search = c("abcd", "abc", "ab", "ABCD", "ABC", "AB"),
              types = type, valuetype = "regex", 
              case_insensitive = TRUE, key = character())
     )
