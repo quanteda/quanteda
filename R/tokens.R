@@ -255,7 +255,6 @@ tokens.character <- function(x,
 
 #' @rdname tokens
 #' @noRd
-#' @importFrom stringi stri_startswith_fixed stri_trans_casefold
 #' @importFrom utils getFromNamespace
 #' @export
 tokens.corpus <- function(x,
@@ -363,11 +362,6 @@ tokens.corpus <- function(x,
         meta = attrs[["meta"]]
     )
     
-    # replace non-printing characters with empty tokens
-    type <- get_types(result)
-    type[stri_width(type) == 0] <- ""
-    set_types(result) <- type
-    
     if (tokenizer == "tokenize_word1") {
         result <- restore_special1(result, split_hyphens = split_hyphens,
                                    split_tags = split_tags)
@@ -414,7 +408,7 @@ tokens.corpus <- function(x,
 
 #' @rdname tokens
 #' @noRd
-#' @importFrom stringi stri_startswith_fixed
+#' @importFrom stringi stri_replace_all_fixed
 #' @export
 tokens.tokens_xptr <-  function(x,
                            what = "word",
