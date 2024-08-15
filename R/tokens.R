@@ -363,9 +363,9 @@ tokens.corpus <- function(x,
         meta = attrs[["meta"]]
     )
     
-    # replace control characters with empty tokens
+    # replace non-printing characters with empty tokens
     type <- get_types(result)
-    type[!nzchar(stri_trans_casefold(type))] <- ""
+    type[stri_width(type) == 0] <- ""
     set_types(result) <- type
     
     if (tokenizer == "tokenize_word1") {
