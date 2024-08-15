@@ -142,37 +142,35 @@ test_that("tokens_compound works with different concatenators", {
   expect_equal(meta(toks4, field = "concatenator", type = "object"), "++")
 })
 
-test_that("tokens_compound works as expected with nested tokens", {
-
+test_that("tokens_compound works with nested tokens", {
+    
+    toks <- tokens("a b c d")
+    pat <- phrase(c("a b", "b c", "a b c"))
     expect_equal(
-        as.character(tokens_compound(tokens("a b c d"), phrase(c("a b", "a b c")),
-                     join = FALSE)),
+        as.character(tokens_compound(toks, pat, join = FALSE)),
         c("a_b_c", "d")
     )
     expect_equal(
-        as.character(tokens_compound(tokens("a b c d"), phrase(c("a b", "a b c")),
-                     join = TRUE)),
+        as.character(tokens_compound(toks, pat, join = TRUE)),
         c("a_b_c", "d")
     )
 })
 
-test_that("tokens_compound works as expected with nested and overlapping tokens", {
-
+test_that("tokens_compound works with nested and overlapping tokens", {
+    
+    toks <- tokens("a b c d e")
+    pat <- phrase(c("a b", "a b c", "c d"))
     expect_equal(
-        as.character(tokens_compound(tokens("a b c d e"),
-                                     phrase(c("a b", "a b c", "c d")),
-                                     join = FALSE)),
+        as.character(tokens_compound(toks, pat, join = FALSE)),
         c("a_b_c", "c_d", "e")
     )
     expect_equal(
-        as.character(tokens_compound(tokens("a b c d e"),
-                                     phrase(c("a b", "a b c", "c d")),
-                                     join = TRUE)),
+        as.character(tokens_compound(toks, pat, join = TRUE)),
         c("a_b_c_d", "e")
     )
 })
 
-test_that("tokens_compound works as expected with dictionaries", {
+test_that("tokens_compound works with dictionaries", {
     dict <- dictionary(list(taxcgt = c("capital gains tax*"), taxit = "inheritance tax*"))
     toks <- tokens("The new law included capital gains taxes and inheritance taxes.")
     expect_equal(
