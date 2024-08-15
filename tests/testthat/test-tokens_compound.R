@@ -277,7 +277,7 @@ test_that("tokens_compound window is working", {
   )
   expect_equal(
     as.list(tokens_compound(toks_pad1, pat, join = FALSE, window = 2)),
-    list(text1 = c("a_b_c_d", "a_b_c_d", "", "f_g"))
+    list(text1 = c("a_b_c_d", "", "f_g"))
   )
 
   toks_pad2 <- tokens_remove(toks, c("a", "e"), padding = TRUE)
