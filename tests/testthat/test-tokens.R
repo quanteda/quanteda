@@ -866,6 +866,13 @@ test_that("tokens printing works", {
                '[1] "a" "b" "c" "d"'),
         fixed = TRUE
     )
+    expect_output(
+        print(tokens("a b c d"), quote = FALSE),
+        paste0('Tokens consisting of 1 document.\n',
+               'text1 :\n',
+               '[1] a b c d'),
+        fixed = TRUE
+    )
 })
 
 test_that("tokens.list() works", {

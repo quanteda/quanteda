@@ -207,6 +207,8 @@ NULL
 #'   `print_*_max_ndoc` setting of [quanteda_options()]
 #' @param show_summary print a brief summary indicating the number of documents
 #'   and other characteristics of the object, such as docvars or sparsity.
+#' @param ... passed to [base::print()] for [tokens]; unused for all other
+#'   objects.
 #' @seealso [quanteda_options()]
 #' @examples
 #' corp <- corpus(data_char_ukimmig2010)
