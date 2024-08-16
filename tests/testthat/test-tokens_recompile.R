@@ -1,129 +1,62 @@
-test_that("tokens_recompile: tokens_tolower", {
-    toks1 <- tokens(c(one = "a b c d A B C D",
-                      two = "A B C d"))
-    attr(toks1, "types") <- char_tolower(attr(toks1, "types"))
-    expect_equal(
-        attr(quanteda:::tokens_recompile(toks1), "types"),
-        letters[1:4]
-    )
-    expect_equal(
-        unique(unlist(unclass(quanteda:::tokens_recompile(toks1)))),
-        1:4
-    )
-    expect_equal(
-        quanteda:::tokens_recompile(toks1, method = "C++"),
-        quanteda:::tokens_recompile(toks1, method = "R")
-    )
-})
 
-test_that("tokens_recompile: tokens_wordstem", {
-    toks <- tokens(c(one = "stems stemming stemmed"))
-    attr(toks, "types") <- char_wordstem(attr(toks, "types"))
-    expect_equal(
-        attr(quanteda:::tokens_recompile(toks), "types"),
-        "stem"
-    )
-    expect_equal(
-        unique(unlist(unclass(quanteda:::tokens_recompile(toks)))),
-        1
-    )
-    expect_equal(
-        quanteda:::tokens_recompile(toks, method = "C++"),
-        quanteda:::tokens_recompile(toks, method = "R")
-    )
-    expect_equal(
-        as.character(tokens_wordstem(toks)),
-        rep("stem", 3)
-    )
-})
-
-
-test_that("tokens_recompile: tokens_select w/gaps", {
-    toks1 <- tokens(c(one = "a b c d A B C D",
-                      two = "A B C d"))
-    expect_equal(
-        unique(unlist(unclass(tokens_select(toks1, c("b", "d"))))),
-        1:4
-    )
-    expect_equal(
-        unique(unlist(unclass(tokens_select(toks1, c("b", "d"), padding = TRUE)))),
-        0:4
-    )
-    expect_equal(
-        attr(tokens_select(toks1, c("b", "d")), "types"),
-        c("b", "d", "B", "D")
-    )
-})
-
-
-test_that("tokens_recompile: preserves encoding", {
+test_that("remove unused types", {
     
-    txt <- c(French = "Pêcheur pêcheur Français")
-    Encoding(txt) <- "UTF-8"
-    toks <- tokens(txt)
-    attr(toks, "types") <- char_tolower(attr(toks, "types"))
-    
-    expect_equal(
-        Encoding(as.character(quanteda:::tokens_recompile(toks, method = "R"), "types")),
-        rep("UTF-8", 3)
-    )
-    expect_equal(
-        Encoding(as.character(quanteda:::tokens_recompile(toks, method = "C++"), "types")),
-        rep("UTF-8", 3)
-    )
-})
-
-test_that("tokens_recompile: [ works for tokens", {
-    toks <- tokens(c(one = "a b c d",
-                     two = "x y z",
-                     three = "e f g h i j k"))
-    expect_equal(
-        unclass(toks[2])[[1]], 
-        1:3
-    )
-    expect_equal(
-        attr(toks[1], "types"), 
-        letters[1:4]
-    )
-})
-
-test_that("tokens_recompile: selecting all tokens to produce and empty document", {
     toks <- tokens(c(one = "a b c d",
                      two = "x y z"))
-    toks <- tokens_select(toks, letters[1:4])
-
     expect_equal(
-        attr(toks, "types"), 
-        letters[1:4]
+        types(toks[1]),
+        c("a", "b", "c", "d")
     )
+    
     expect_equal(
-        unclass(toks)[2], 
-        list(two = integer(0))
+        types(toks[2]),
+        c("x", "y", "z")
     )
+    
+    toks_rm <- tokens_remove(toks, "*")
     expect_equal(
-        as.list(toks[2]), 
-        list(two = character(0))
+        types(toks_rm),
+        character()
     )
     
 })
 
-test_that("corrupt tokens object does not crash R", {
-    skip_on_os("solaris")
+test_that("raise error when tokens are invalid", {
+
+    toks <- quanteda:::build_tokens(
+        list(1:5),
+        c('a', 'b', 'c'),
+        docvars = quanteda:::make_docvars(1L)
+    )
     
-    toks <- list(1:10)
-    attr(toks, 'types') <- c('a', 'b', 'c') # Shorter than 10
-    attr(toks, 'class') <- 'tokens'
-    expect_error(quanteda:::tokens_recompile(toks, 'C++'))
+    expect_error(quanteda:::tokens_recompile(toks, 'C++'),
+                 "Invalid tokens object")
 })
 
-test_that("tokens_recompile: flag use of padding even when it does not reindex tokens", {
+test_that("empty tokens become paddings", {
+    
+    toks <- quanteda:::build_tokens(
+        list(1:5),
+        c('a', 'b', 'c', '', 'e'),
+        docvars = quanteda:::make_docvars(1L)
+    )
+    
+    toks_re<- quanteda:::tokens_recompile(toks, 'C++')
+    expect_true(attr(toks_re, "padding"))
+    expect_equal(attr(toks_re, "types"),
+                 c('a', 'b', 'c', 'e'))
+})
+
+test_that("padding is detected", {
     
     toks <- quanteda:::build_tokens(
         list(0:26), # has padding, but no gap
         letters,
         docvars = quanteda:::make_docvars(1L)
     )
-    expect_true(attr(quanteda:::tokens_recompile(toks, 'C++'), 'padding'))
+    
+    toks_re <- quanteda:::tokens_recompile(toks, 'C++')
+    expect_true(attr(toks_re, 'padding'))
     
 })
 
@@ -135,8 +68,11 @@ test_that("non-ascii types are UTF8 encoded", {
         docvars = quanteda:::make_docvars(1L)
     )
     
-    toks2 <- quanteda:::tokens_recompile(toks, 'C++')
-    expect_equal(Encoding(attr(toks2, 'types')), rep('UTF-8', 3))
+    toks_re <- quanteda:::tokens_recompile(toks, 'C++')
+    expect_equal(
+        Encoding(attr(toks_re, 'types')), 
+        rep('UTF-8', 3)
+    )
 })
 
 test_that("keep gap and dupli argument works, #1278", {
@@ -147,26 +83,26 @@ test_that("keep gap and dupli argument works, #1278", {
         docvars = quanteda:::make_docvars(1L)
     )
 
-    toks2 <- quanteda:::tokens_recompile(toks, 'C++')
-    expect_equal(attr(toks2, 'padding'), TRUE)
-    expect_equal(attr(toks2, 'types'), c("b", "c"))
+    toks_re <- quanteda:::tokens_recompile(toks, 'C++')
+    expect_equal(attr(toks_re, 'padding'), TRUE)
+    expect_equal(attr(toks_re, 'types'), c("b", "c"))
     
     expect_equal(quanteda:::tokens_recompile(toks, 'C++'),
                  quanteda:::tokens_recompile(toks, 'R'))
     
-    toks_pad <- quanteda:::build_tokens(
+    toks2 <- quanteda:::build_tokens(
         list(c(0, 2, 3, 4)),
         c('a', 'b', 'c', 'c', 'd'),
         padding = TRUE,
         docvars = quanteda:::make_docvars(1L)
     )
     
-    toks_pad2 <- quanteda:::tokens_recompile(toks_pad, 'C++')
-    expect_equal(attr(toks_pad2, 'padding'), TRUE)
-    expect_equal(attr(toks_pad2, 'types'), c("b", "c"))
+    toks_re2 <- quanteda:::tokens_recompile(toks2, 'C++')
+    expect_equal(attr(toks_re2, 'padding'), TRUE)
+    expect_equal(attr(toks_re2, 'types'), c("b", "c"))
     
-    expect_equal(quanteda:::tokens_recompile(toks_pad, 'C++'),
-                 quanteda:::tokens_recompile(toks_pad, 'R'))
+    expect_equal(quanteda:::tokens_recompile(toks2, 'C++'),
+                 quanteda:::tokens_recompile(toks2, 'R'))
     
     toks_err <- quanteda:::build_tokens(
         list(c(2, 3, 4, 6)),
@@ -175,7 +111,8 @@ test_that("keep gap and dupli argument works, #1278", {
         docvars = quanteda:::make_docvars(1L)
     )
     expect_error(
-        quanteda:::tokens_recompile(toks_err, 'C++')
+        quanteda:::tokens_recompile(toks_err, 'C++'),
+        "Invalid tokens object"
     )
     
 })
