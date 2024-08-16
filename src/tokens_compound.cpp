@@ -3,14 +3,24 @@
 //#include "dev.h"
 using namespace quanteda;
 
-int adjust_window(Text &tokens, int current, int end) {
-    int i = current; 
-    if (end < current) {
+int adjust_window(Text &tokens, int begin, int end) {
+    int i = begin; 
+    if (end < begin) {
         while (i - 1 >= 0 && i - 1 >= end && tokens[i - 1] != 0) i--;
     } else {
         while (i + 1 < (int)tokens.size() && i + 1 < end && tokens[i + 1] != 0) i++;
     }
     return(i);
+}
+
+bool is_nested(std::vector<bool> &flags, int begin, int end) {
+    begin = std::max(0, begin);
+    end = std::min(end, (int)flags.size());
+    for (int i = begin; i < end; i++) {
+        if (!flags[i])
+            return(false);
+    }
+    return(true);
 }
 
 Text join_comp(Text tokens, 
@@ -84,22 +94,21 @@ Text match_comp(Text tokens,
     
     std::vector< Text > tokens_multi(tokens.size()); 
     std::vector< bool > flags_match(tokens.size(), false); // flag matched tokens
-    std::vector< bool > flags_link(tokens.size(), false); // flag tokens to join
     std::size_t match = tokens.size();
     
     for (std::size_t span : spans) { // substitution starts from the longest sequences
         if (tokens.size() < span) continue;
         for (std::size_t i = 0; i < tokens.size() - (span - 1); i++) {
-            //if (!nested && flags_link[i]) continue; // ignore matched tokens 
             Ngram ngram(tokens.begin() + i, tokens.begin() + i + span);
             auto it = set_comps.find(ngram);
             if (it != set_comps.end()) {
+                if (is_nested(flags_match, i, i + span)) continue; // ignore nested tokens 
                 // Adjust window size to exclude padding
                 int from = adjust_window(tokens, i, i - window.first);
                 int to = adjust_window(tokens, i, i + span + window.second);
                 std::fill(flags_match.begin() + from, flags_match.begin() + to + 1, true); // mark tokens matched
                 Ngram tokens_seq(tokens.begin() + from, tokens.begin() + to + 1); // extract tokens matched
-                tokens_multi[i].push_back(ngram_id(tokens_seq, map_comps, id_comp)); // assign ID to ngram
+                tokens_multi[i + span - 1].push_back(ngram_id(tokens_seq, map_comps, id_comp)); // assign ID to ngram
                 match++;
             }
         }
@@ -119,7 +128,7 @@ Text match_comp(Text tokens,
             if (keep)
                 tokens_flat.push_back(tokens[i]);
             if (tokens_sub.size())
-                tokens_flat.insert(tokens_flat.end(), tokens_sub.begin(), tokens_sub.begin() + 1);
+                tokens_flat.insert(tokens_flat.end(), tokens_sub.begin(), tokens_sub.end());
         }
     }
     return tokens_flat;
