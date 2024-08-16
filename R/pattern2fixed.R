@@ -201,7 +201,8 @@ index_types <- function(pattern, types, valuetype = c("glob", "fixed", "regex"),
     valuetype <- match.arg(valuetype)
     
     # lowercase for case-insensitive search
-    if (case_insensitive) {
+    if (valuetype != "regex" && case_insensitive) {
+        # NOTE: disabled for regex to keep conrol character (#2407)
         types_search <- stri_trans_tolower(types)
     } else {
         types_search <- types
