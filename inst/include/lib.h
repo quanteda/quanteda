@@ -194,7 +194,7 @@ namespace quanteda{
     inline List as_list(Texts &texts){
       List texts_(texts.size());
       for (std::size_t h = 0; h < texts.size(); h++) {
-        IntegerVector text_ = IntegerVector(std::begin(texts[h]), std::end(texts[h]));
+        IntegerVector text_ = IntegerVector(texts[h].begin(), texts[h].end());
         texts_[h] = text_;
       }
       return texts_;
