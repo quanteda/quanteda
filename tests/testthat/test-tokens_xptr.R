@@ -364,8 +364,9 @@ test_that("lengths works on tokens xptr objects", {
 test_that("test low-level validation", {
     
     xtoks <- tokens("a b c", xptr = TRUE)
-    dict <- list(c(1, 2))
     
+    # interger patterns
+    dict <- list(c(1L, 2L))
     expect_error(
         quanteda:::cpp_tokens_select(as.tokens_xptr(xtoks), 
                                      dict, 2, TRUE, 0, 0, c(1, 1), 3, FALSE),
@@ -430,6 +431,28 @@ test_that("test low-level validation", {
     expect_error(
         quanteda:::cpp_kwic(as.tokens_xptr(xtoks), 1, 3, 1, 2),
         "Invalid index"
+    )
+    
+    # not-integer patterns
+    expect_error(
+        quanteda:::cpp_tokens_select(as.tokens_xptr(xtoks), 
+                                     list(c(1, 2)), 
+                                     2, TRUE, 0, 0, 1, 3, FALSE),
+        "Invalid patterns"
+    )
+    
+    # negative patterns
+    expect_silent(
+        quanteda:::cpp_tokens_select(as.tokens_xptr(xtoks), 
+                                     list(c(1L, -1L)), 
+                                     2, TRUE, 0, 0, 1, 3, FALSE)
+    )
+    
+    # NA in patterns
+    expect_silent(
+        quanteda:::cpp_tokens_select(as.tokens_xptr(xtoks), 
+                                     list(c(1L, NA_integer_)), 
+                                     2, TRUE, 0, 0, 1, 3, FALSE)
     )
     
 })
