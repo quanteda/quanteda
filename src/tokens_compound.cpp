@@ -178,20 +178,22 @@ TokensPtr cpp_tokens_compound(TokensPtr xptr,
     set_comps.max_load_factor(GLOBAL_PATTERN_MAX_LOAD_FACTOR);
     MapNgrams map_comps; // for ID generation
     map_comps.max_load_factor(GLOBAL_NGRAMS_MAX_LOAD_FACTOR);
-
-    Ngrams comps = Rcpp::as<Ngrams>(compounds_);
-    std::vector<std::size_t> spans(comps.size());
-    for (std::size_t g = 0; g < comps.size(); g++) {
-        Ngram comp = comps[g];
-        // ignore patterns with paddings
-        if (std::find(comp.begin(), comp.end(), 0) == comp.end()) {
-            set_comps.insert(comp);
-            spans[g] = comp.size();
-        }
-    }
-    sort(spans.begin(), spans.end());
-    spans.erase(unique(spans.begin(), spans.end()), spans.end());
-    std::reverse(std::begin(spans), std::end(spans));
+    
+    std::vector<std::size_t> spans = register_ngrams(compounds_, set_comps, true);
+    
+    // Ngrams comps = Rcpp::as<Ngrams>(compounds_);
+    // std::vector<std::size_t> spans(comps.size());
+    // for (std::size_t g = 0; g < comps.size(); g++) {
+    //     Ngram comp = comps[g];
+    //     // ignore patterns with paddings
+    //     if (std::find(comp.begin(), comp.end(), 0) == comp.end()) {
+    //         set_comps.insert(comp);
+    //         spans[g] = comp.size();
+    //     }
+    // }
+    // sort(spans.begin(), spans.end());
+    // spans.erase(unique(spans.begin(), spans.end()), spans.end());
+    // std::reverse(std::begin(spans), std::end(spans));
      
     // dev::Timer timer;
     // dev::start_timer("Token compound", timer);
