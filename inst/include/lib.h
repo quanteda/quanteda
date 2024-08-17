@@ -248,9 +248,7 @@ namespace quanteda{
             for (std::size_t j = 0; j < J; j++) {
                 if (no_padding && pattern[j] == 0)
                     break;
-                if (pattern[j] < 0)
-                    break;
-                if (Rcpp::IntegerVector::is_na(pattern[j]))
+                if (pattern[j] < 0 || Rcpp::IntegerVector::is_na(pattern[j]))
                     break;
                 ngram[j] = pattern[j];
             }
