@@ -4,6 +4,8 @@
 
 * Improved the handling of invisible control characters causing some tokens operations to crash (#2407).
 
+* Addressed #2358 and #2359 more thoroughly, at the C++ level, to convert list(integer(), integer(),...) to std::vector<std::vector<unsigned int>. This function removes negative values and NA_INTEGER.
+
 ## Changes and additions
 
 * Added `keep_unigrams` argument to `tokens_compound()`, to keep in the returned object the unigrams that are to be compounded (#2399).
