@@ -15,7 +15,7 @@
 #' @param selection whether to `"keep"` or `"remove"` the tokens matching
 #'   `pattern`
 #' @inheritParams valuetype
-#' @inheritParams message_tokens
+#' @inheritParams messages
 #' @param padding if `TRUE`, leave an empty string where the removed tokens
 #'   previously existed.  This is useful if a positional match is needed between
 #'   the pre- and post-selected tokens, for instance if a window of adjacency
@@ -43,6 +43,7 @@
 #'   `NULL` for no limits.  These are applied after (and hence, in addition to)
 #'   any selection based on pattern matches.
 #' @inheritParams apply_if
+#' @inheritParams messages
 #' @return a [tokens] object with tokens selected or removed based on their
 #'   match to `pattern`
 #' @export

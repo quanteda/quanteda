@@ -7,15 +7,15 @@
 msg(x, values = NULL, indices = NULL, pretty = TRUE, ...)
 }
 \arguments{
-\item{x}{message template to be passed to \code{\link[=stri_sprintf]{stri_sprintf()}}.}
+\item{x}{message template to be passed to \code{\link[stringi:stri_sprintf]{stringi::stri_sprintf()}}.}
 
 \item{values}{list of values to be used in the template. Coerced to list if vector is given.}
 
 \item{indices}{list of integer to specify which value to be used.}
 
-\item{pretty}{if \code{TRUE}, message is passed to \code{\link[=prettyNum]{prettyNum()}}.}
+\item{pretty}{if \code{TRUE}, message is passed to \code{\link[base:formatc]{base::prettyNum()}}.}
 
-\item{...}{additional arguments passed to \code{\link[=prettyNum]{prettyNum()}}.}
+\item{...}{additional arguments passed to \code{\link[base:formatc]{base::prettyNum()}}.}
 }
 \description{
 Conditionally format messages
