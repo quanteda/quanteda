@@ -322,14 +322,14 @@ BEGIN_RCPP
 END_RCPP
 }
 // cpp_ntoken
-IntegerVector cpp_ntoken(TokensPtr xptr, bool padding);
-RcppExport SEXP _quanteda_cpp_ntoken(SEXP xptrSEXP, SEXP paddingSEXP) {
+IntegerVector cpp_ntoken(TokensPtr xptr, bool no_padding);
+RcppExport SEXP _quanteda_cpp_ntoken(SEXP xptrSEXP, SEXP no_paddingSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< TokensPtr >::type xptr(xptrSEXP);
-    Rcpp::traits::input_parameter< bool >::type padding(paddingSEXP);
-    rcpp_result_gen = Rcpp::wrap(cpp_ntoken(xptr, padding));
+    Rcpp::traits::input_parameter< bool >::type no_padding(no_paddingSEXP);
+    rcpp_result_gen = Rcpp::wrap(cpp_ntoken(xptr, no_padding));
     return rcpp_result_gen;
 END_RCPP
 }

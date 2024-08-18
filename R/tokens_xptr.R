@@ -104,7 +104,7 @@ ntoken.tokens_xptr <- function(x, remove_padding = FALSE, ...) {
     remove_padding <- check_logical(remove_padding)
     if (length(list(...)))
         x <- tokens(as.tokens_xptr(x), ...) 
-    structure(cpp_ntoken(x, !remove_padding), names = docnames(x))
+    structure(cpp_ntoken(x, remove_padding), names = docnames(x))
 }
 
 # #' @export

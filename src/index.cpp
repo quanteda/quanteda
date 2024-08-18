@@ -48,7 +48,7 @@ DataFrame cpp_index(TokensPtr xptr,
 
     MultiMapNgrams map_pats;
     map_pats.max_load_factor(GLOBAL_PATTERN_MAX_LOAD_FACTOR);
-    Ngrams words = Rcpp::as<Ngrams>(words_);
+    Ngrams words = to_ngrams(words_);
 
     std::size_t G = words.size();
     std::vector<std::size_t> spans(G);
