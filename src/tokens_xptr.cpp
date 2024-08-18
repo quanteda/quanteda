@@ -66,14 +66,11 @@ int cpp_ndoc(TokensPtr xptr) {
 
 
 // [[Rcpp::export]]
-IntegerVector cpp_ntoken(TokensPtr xptr, bool padding = true) {
+IntegerVector cpp_ntoken(TokensPtr xptr, bool no_padding = false) {
+    xptr->recompile();
     std::size_t H = xptr->texts.size();
     IntegerVector ls_(H, 0);
-    if (padding) { 
-        for (std::size_t h = 0; h < H; h++) {
-            ls_[h] = xptr->texts[h].size();
-        }
-    } else {
+    if (no_padding) { 
         for (std::size_t h = 0; h < H; h++) {
             std::size_t I = xptr->texts[h].size();
             for (std::size_t i = 0; i < I; i++) {
@@ -81,6 +78,10 @@ IntegerVector cpp_ntoken(TokensPtr xptr, bool padding = true) {
                 if (xptr->texts[h][i] > 0)
                     ls_[h]++;
             }    
+        }
+    } else {
+        for (std::size_t h = 0; h < H; h++) {
+            ls_[h] = xptr->texts[h].size();
         }
     }
     return ls_;

@@ -43,6 +43,7 @@
 #'   `NULL` for no limits.  These are applied after (and hence, in addition to)
 #'   any selection based on pattern matches.
 #' @inheritParams apply_if
+#' @inheritParams messages
 #' @return a [tokens] object with tokens selected or removed based on their
 #'   match to `pattern`
 #' @export

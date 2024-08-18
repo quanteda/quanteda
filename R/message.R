@@ -2,11 +2,11 @@
 
 #' Conditionally format messages
 #' 
-#' @param x message template to be passed to [`stri_sprintf()`].
+#' @param x message template to be passed to [stringi::stri_sprintf()].
 #' @param values list of values to be used in the template. Coerced to list if vector is given.
 #' @param indices list of integer to specify which value to be used.
-#' @param pretty if `TRUE`, message is passed to [`prettyNum()`].
-#' @param ... additional arguments passed to [`prettyNum()`].
+#' @param pretty if `TRUE`, message is passed to [base::prettyNum()].
+#' @param ... additional arguments passed to [base::prettyNum()].
 #' @keywords internal development
 #' @examples 
 #' \dontrun{
@@ -81,8 +81,9 @@ message_select <- function(selection, nfeats, ndocs, nfeatspad = 0, ndocspad = 0
     catm("", appendLF = TRUE)
 }
 
-# messaging methods ------------
 
+# messaging methods ------------
+             
 #' Message parameter documentation
 #' 
 #' Used in printing verbose messages for message_tokens() and message_dfm()
@@ -123,4 +124,3 @@ stats_dfm <- function(x) {
     list(ndoc = ndoc(x),
          nfeat = nfeat(dfm_remove(x, "", verbose = FALSE)))
 }
-

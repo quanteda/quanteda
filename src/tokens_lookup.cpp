@@ -162,7 +162,7 @@ TokensPtr cpp_tokens_lookup(TokensPtr xptr,
     }
     MultiMapNgrams map_keys;
     map_keys.max_load_factor(GLOBAL_PATTERN_MAX_LOAD_FACTOR);
-    Ngrams words = Rcpp::as<Ngrams>(words_);
+    Ngrams words = to_ngrams(words_);
     
     size_t G = words.size();
     std::vector<std::size_t> spans(G);
