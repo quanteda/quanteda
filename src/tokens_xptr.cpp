@@ -97,6 +97,38 @@ IntegerVector cpp_ntype(TokensPtr xptr, bool padding = true) {
     return ns_;
 }
 
+// [[Rcpp::export]]
+IntegerVector cpp_get_freq(TokensPtr xptr, bool boolean = false) {
+    xptr->recompile();
+    std::size_t G = xptr->types.size();
+    if (xptr->padded)
+        G++;
+    IntegerVector freq_(G, 0);
+    std::size_t H = xptr->texts.size();
+    for (std::size_t h = 0; h < H; h++) {
+        Text text = xptr->texts[h];
+        std::size_t I = text.size();
+        std::vector<bool> flag(G);
+        for (std::size_t i = 0; i < I; i++) {
+            unsigned int id = text[i];
+            if (!xptr->padded) {
+                if (id == 0)
+                    throw std::range_error("Invalid tokens object");
+                id--;
+            }
+            if (boolean && flag[id])
+                continue;
+            freq_[id]++;
+            flag[id] = true;
+        }
+    }
+    CharacterVector types_ = encode(xptr->types);
+    if (xptr->padded)
+        types_.push_front("");
+    freq_.attr("names") = types_;
+    return freq_;
+}
+
 
 // [[Rcpp::export]]
 CharacterVector cpp_get_types(TokensPtr xptr, bool recompile = false) {

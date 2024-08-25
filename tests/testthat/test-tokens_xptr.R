@@ -285,6 +285,36 @@ test_that("cpp_serialize is working", {
     )
 })
 
+test_that("cpp_get_freq is working", {
+    
+    txt <- c("a b c d !", "a b c a b c")
+    
+    # without padding
+    xtoks <- tokens(txt, remove_punct = TRUE, xptr = TRUE)
+    expect_equal(
+        quanteda:::cpp_get_freq(xtoks),
+        featfreq(dfm(xtoks))
+    )
+    
+    expect_equal(
+        quanteda:::cpp_get_freq(xtoks, boolean = TRUE),
+        docfreq(dfm(xtoks))
+    )
+    
+    # with padding
+    xtoks2 <- tokens(txt, remove_punct = TRUE, padding = TRUE, xptr = TRUE)
+    expect_equal(
+        quanteda:::cpp_get_freq(xtoks2),
+        featfreq(dfm(xtoks2))
+    )
+    
+    expect_equal(
+        quanteda:::cpp_get_freq(xtoks2, boolean = TRUE),
+        docfreq(dfm(xtoks2))
+    )
+
+})
+
 test_that("returns shallow or deep copy x", {
   
   # shallow copy
@@ -365,7 +395,7 @@ test_that("test low-level validation", {
     
     xtoks <- tokens("a b c", xptr = TRUE)
     
-    # interger patterns
+    # integer patterns
     dict <- list(c(1L, 2L))
     expect_error(
         quanteda:::cpp_tokens_select(as.tokens_xptr(xtoks), 
@@ -456,5 +486,4 @@ test_that("test low-level validation", {
     )
     
 })
-
 

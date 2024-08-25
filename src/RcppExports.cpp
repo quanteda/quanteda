@@ -345,6 +345,18 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// cpp_get_freq
+IntegerVector cpp_get_freq(TokensPtr xptr, bool boolean);
+RcppExport SEXP _quanteda_cpp_get_freq(SEXP xptrSEXP, SEXP booleanSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< TokensPtr >::type xptr(xptrSEXP);
+    Rcpp::traits::input_parameter< bool >::type boolean(booleanSEXP);
+    rcpp_result_gen = Rcpp::wrap(cpp_get_freq(xptr, boolean));
+    return rcpp_result_gen;
+END_RCPP
+}
 // cpp_get_types
 CharacterVector cpp_get_types(TokensPtr xptr, bool recompile);
 RcppExport SEXP _quanteda_cpp_get_types(SEXP xptrSEXP, SEXP recompileSEXP) {
@@ -493,6 +505,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_quanteda_cpp_ndoc", (DL_FUNC) &_quanteda_cpp_ndoc, 1},
     {"_quanteda_cpp_ntoken", (DL_FUNC) &_quanteda_cpp_ntoken, 2},
     {"_quanteda_cpp_ntype", (DL_FUNC) &_quanteda_cpp_ntype, 2},
+    {"_quanteda_cpp_get_freq", (DL_FUNC) &_quanteda_cpp_get_freq, 2},
     {"_quanteda_cpp_get_types", (DL_FUNC) &_quanteda_cpp_get_types, 2},
     {"_quanteda_cpp_set_types", (DL_FUNC) &_quanteda_cpp_set_types, 2},
     {"_quanteda_cpp_recompile", (DL_FUNC) &_quanteda_cpp_recompile, 1},
