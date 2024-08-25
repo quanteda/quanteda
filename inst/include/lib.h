@@ -7,7 +7,7 @@
 
 //#include <RcppArmadillo.h>
 #include <Rcpp.h>
-#include <atomic.h>
+#include <atomic>
 #include <unordered_map>
 #include <unordered_set>
 #include <limits>
