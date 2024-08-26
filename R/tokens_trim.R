@@ -1,4 +1,4 @@
-#' Trim a tokens using frequency threshold-based feature selection
+#' Trim tokens using frequency threshold-based feature selection
 #'
 #' @description Returns a tokens object reduced in size based on
 #'   document and term frequency, usually in terms of a minimum frequency, but
@@ -6,6 +6,8 @@
 #'   minimum and maximum frequencies will select features based on a range.
 #'
 #' @inheritParams dfm_trim
+#' @param padding if `TRUE`, leave an empty string where the removed tokens
+#'   previously existed.
 #' @return A [tokens] object with reduced size.
 #' @export
 #' @seealso [dfm_trim()]

@@ -2,7 +2,7 @@
 % Please edit documentation in R/tokens_trim.R
 \name{tokens_trim}
 \alias{tokens_trim}
-\title{Trim a tokens using frequency threshold-based feature selection}
+\title{Trim tokens using frequency threshold-based feature selection}
 \usage{
 tokens_trim(
   x,
@@ -41,6 +41,9 @@ frequency, so that 1, 2, ... are the features with the highest and second
 highest document frequencies, and so on; \code{"quantile"} sets the cutoffs
 according to the quantiles (see \code{\link[=quantile]{quantile()}}) of document
 frequencies.}
+
+\item{padding}{if \code{TRUE}, leave an empty string where the removed tokens
+previously existed.}
 
 \item{verbose}{print messages}
 }
