@@ -30,6 +30,10 @@ test_that("dfm_trim works", {
     expect_equal(nfeat(dfm_trim(mydfm, max_docfreq = 2, docfreq_type = "rank")), 4)
     expect_equal(nfeat(dfm_trim(mydfm, max_docfreq = 2)), 4)
     
+    expect_equal(nfeat(dfm_trim(mydfm, sparsity = 0.0)), 2)
+    expect_equal(nfeat(dfm_trim(mydfm, sparsity = 0.5)), 5)
+    expect_equal(nfeat(dfm_trim(mydfm, sparsity = 1.0)), 6)
+    
 })
 
 # test_that("dfm_trim works as expected", {
