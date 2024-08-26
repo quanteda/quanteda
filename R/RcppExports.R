@@ -93,12 +93,12 @@ cpp_ntoken <- function(xptr, no_padding = FALSE) {
     .Call(`_quanteda_cpp_ntoken`, xptr, no_padding)
 }
 
-cpp_ntype <- function(xptr, padding = TRUE) {
-    .Call(`_quanteda_cpp_ntype`, xptr, padding)
+cpp_ntype <- function(xptr, no_padding = FALSE) {
+    .Call(`_quanteda_cpp_ntype`, xptr, no_padding)
 }
 
-cpp_get_freq <- function(xptr, boolean = FALSE) {
-    .Call(`_quanteda_cpp_get_freq`, xptr, boolean)
+cpp_get_freq <- function(xptr, no_padding = FALSE, boolean = FALSE) {
+    .Call(`_quanteda_cpp_get_freq`, xptr, no_padding, boolean)
 }
 
 cpp_get_types <- function(xptr, recompile = FALSE) {
