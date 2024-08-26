@@ -102,7 +102,7 @@ IntegerVector cpp_get_freq(TokensPtr xptr, bool no_padding = false,
                            bool boolean = false) {
     xptr->recompile();
     std::size_t G = xptr->types.size();
-    if (xptr->padded && !no_padding)
+    if (!no_padding)
         G++;
     IntegerVector freq_(G, 0);
     std::size_t H = xptr->texts.size();
@@ -113,11 +113,9 @@ IntegerVector cpp_get_freq(TokensPtr xptr, bool no_padding = false,
         for (std::size_t i = 0; i < I; i++) {
             unsigned int id = text[i];
             // ignore paddings
-            if (no_padding && id == 0)
-                continue;
-            if (!xptr->padded) {
+            if (no_padding) {
                 if (id == 0)
-                    throw std::range_error("Invalid tokens object");
+                    continue;
                 id--;
             }
             if (boolean && flag[id])
@@ -127,7 +125,7 @@ IntegerVector cpp_get_freq(TokensPtr xptr, bool no_padding = false,
         }
     }
     CharacterVector types_ = encode(xptr->types);
-    if (xptr->padded && !no_padding)
+    if (!no_padding)
         types_.push_front("");
     freq_.attr("names") = types_;
     return freq_;

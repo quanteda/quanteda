@@ -37,9 +37,10 @@ test_that("tokens_trim works", {
 
 test_that("tokens_trim works with padding", {
     
-    toks <- tokens(c(d1 = "a b c d e", 
-                     d2 = "a a b b e f", 
-                     d3 = "b c e e f f f"))
+    txt <- c(d1 = "a b c d e ?", 
+             d2 = "a ! a b b e f", 
+             d3 = "b c e e . f f f")
+    toks <- tokens(txt, remove_punct = TRUE, padding = TRUE)
     
     expect_equal(
         types(tokens_trim(toks, min_termfreq = 4)), 
