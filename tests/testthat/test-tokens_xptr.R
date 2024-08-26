@@ -287,30 +287,31 @@ test_that("cpp_serialize is working", {
 
 test_that("cpp_get_freq is working", {
     
-    txt <- c("a b c d !", "a b c a b c")
+    txt <- c("a b c d !", "a ? b c a b . c")
     
-    # without padding
-    xtoks <- tokens(txt, remove_punct = TRUE, xptr = TRUE)
+    xtoks <- tokens(txt, remove_punct = TRUE, padding = TRUE, xptr = TRUE)
     expect_equal(
         quanteda:::cpp_get_freq(xtoks),
-        featfreq(dfm(xtoks))
+        structure(c(3L, 3L, 3L, 3L, 1L),
+                  names = c("", "a", "b", "c", "d"))
+    )
+    
+    expect_equal(
+        quanteda:::cpp_get_freq(xtoks, no_padding = TRUE),
+        structure(c(3L, 3L, 3L, 1L),
+                  names = c("a", "b", "c", "d"))
     )
     
     expect_equal(
         quanteda:::cpp_get_freq(xtoks, boolean = TRUE),
-        docfreq(dfm(xtoks))
-    )
-    
-    # with padding
-    xtoks2 <- tokens(txt, remove_punct = TRUE, padding = TRUE, xptr = TRUE)
-    expect_equal(
-        quanteda:::cpp_get_freq(xtoks2),
-        featfreq(dfm(xtoks2))
+        structure(c(2L, 2L, 2L, 2L, 1L),
+                  names = c("", "a", "b", "c", "d"))
     )
     
     expect_equal(
-        quanteda:::cpp_get_freq(xtoks2, boolean = TRUE),
-        docfreq(dfm(xtoks2))
+        quanteda:::cpp_get_freq(xtoks, boolean = TRUE, no_padding = TRUE),
+        structure(c(2L, 2L, 2L, 1L),
+                  names = c("a", "b", "c", "d"))
     )
 
 })
