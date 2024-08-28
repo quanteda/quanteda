@@ -1,8 +1,13 @@
-# Re-submission notes
+# Resubmission
 
-## Test environments
+We have done our best to address the UBSAN issues flagged in our recent submission (and showing on the current CRAN version).
 
-* local macOS 14.4.1, R 4.3.3
+# Submission notes
+
+Fixed:
+- Warnings and additional issues noted with 4.0.2.
+
+* local macOS 14.4.1, R 4.4.1 and devtools::check_mac_release()
 * Windows release via devtools::check_win_release()
 * Windows devel via devtools::check_win_devel()
 * Windows oldrelease via devtools::check_win_oldrelease()
