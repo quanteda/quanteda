@@ -1,4 +1,4 @@
-# quanteda 4.0.3
+# quanteda 4.1
 
 ## Bug fixes and stability enhancements
 
@@ -9,6 +9,8 @@
 * Removed **RcppArmadillo** as a dependency in an effort to avoid UBSAN warnings in #2417.
 
 ## Changes and additions
+
+* Added `tokens_trim()` function similar to `dfm_trim()` (#2419).
 
 * Added `keep_unigrams` argument to `tokens_compound()`, to keep in the returned object the unigrams that are to be compounded (#2399).
 
