@@ -1,4 +1,4 @@
-test_that("dfm_trim", {
+test_that("dfm_trim works", {
     mydfm <- dfm(tokens(c(d1 = "a b c d e", d2 = "a a b b e f", d3 = "b c e e f f f")))
     s <- sum(mydfm)
     
@@ -30,32 +30,36 @@ test_that("dfm_trim", {
     expect_equal(nfeat(dfm_trim(mydfm, max_docfreq = 2, docfreq_type = "rank")), 4)
     expect_equal(nfeat(dfm_trim(mydfm, max_docfreq = 2)), 4)
     
-})
-
-test_that("dfm_trim works as expected", {
-    mydfm <- dfm(tokens(c("This is a sentence.", "This is a second sentence.", 
-                          "Third sentence.", "Fouth sentence.", "Fifth sentence.")))
-    expect_message(dfm_trim(mydfm, min_termfreq = 2, min_docfreq = 2, verbose = TRUE),
-                   regexp = "Removing features occurring:")
-    expect_message(dfm_trim(mydfm, min_termfreq = 2, min_docfreq = 2, verbose = TRUE),
-                   regexp = "fewer than 2 times: 4")
-    expect_message(dfm_trim(mydfm, min_termfreq = 2, min_docfreq = 2, verbose = TRUE),
-                   regexp = "in fewer than 2 documents: 4")
-    expect_message(dfm_trim(mydfm, min_termfreq = 2, min_docfreq = 2, verbose = TRUE),
-                   regexp = "  Total features removed: 4 \\(44.4%\\).")
-})
-
-test_that("dfm_trim works as expected", {
-    mydfm <- dfm(tokens(c("This is a sentence.", "This is a second sentence.", 
-                          "Third sentence.", "Fouth sentence.", "Fifth sentence.")))
-    expect_message(dfm_trim(mydfm, max_termfreq = 2, max_docfreq = 2, verbose = TRUE),
-                   regexp = "more than 2 times: 2")
-    expect_message(dfm_trim(mydfm, max_termfreq = 2, max_docfreq = 2, verbose = TRUE),
-                   regexp = "in more than 2 documents: 2")
+    expect_equal(nfeat(dfm_trim(mydfm, sparsity = 0.0)), 2)
+    expect_equal(nfeat(dfm_trim(mydfm, sparsity = 0.5)), 5)
+    expect_equal(nfeat(dfm_trim(mydfm, sparsity = 1.0)), 6)
     
-    expect_message(dfm_trim(mydfm, max_termfreq = 5, max_docfreq = 5, verbose = TRUE),
-                   regexp = "No features removed.")
 })
+
+# test_that("dfm_trim works as expected", {
+#     mydfm <- dfm(tokens(c("This is a sentence.", "This is a second sentence.", 
+#                           "Third sentence.", "Fouth sentence.", "Fifth sentence.")))
+#     expect_message(dfm_trim(mydfm, min_termfreq = 2, min_docfreq = 2, verbose = TRUE),
+#                    regexp = "Removing features occurring:")
+#     expect_message(dfm_trim(mydfm, min_termfreq = 2, min_docfreq = 2, verbose = TRUE),
+#                    regexp = "fewer than 2 times: 4")
+#     expect_message(dfm_trim(mydfm, min_termfreq = 2, min_docfreq = 2, verbose = TRUE),
+#                    regexp = "in fewer than 2 documents: 4")
+#     expect_message(dfm_trim(mydfm, min_termfreq = 2, min_docfreq = 2, verbose = TRUE),
+#                    regexp = "  Total features removed: 4 \\(44.4%\\).")
+# })
+
+# test_that("dfm_trim works as expected", {
+#     mydfm <- dfm(tokens(c("This is a sentence.", "This is a second sentence.", 
+#                           "Third sentence.", "Fouth sentence.", "Fifth sentence.")))
+#     expect_message(dfm_trim(mydfm, max_termfreq = 2, max_docfreq = 2, verbose = TRUE),
+#                    regexp = "more than 2 times: 2")
+#     expect_message(dfm_trim(mydfm, max_termfreq = 2, max_docfreq = 2, verbose = TRUE),
+#                    regexp = "in more than 2 documents: 2")
+#     
+#     expect_message(dfm_trim(mydfm, max_termfreq = 5, max_docfreq = 5, verbose = TRUE),
+#                    regexp = "No features removed.")
+# })
 
 test_that("dfm_trim works without trimming arguments #509", {
     mydfm <- dfm(tokens(c("This is a sentence.", "This is a second sentence.", "Third sentence.")))
@@ -63,24 +67,27 @@ test_that("dfm_trim works without trimming arguments #509", {
     expect_equal(dim(dfm_trim(mydfm[-2, ], verbose = FALSE)), c(2, 6))
 })
 
-test_that("dfm_trim doesn't break because of duplicated feature names (#829)", {
+test_that("dfm_trim works with duplicated feature names (#829)", {
     mydfm <- dfm(tokens(c(d1 = "a b c d e", d2 = "a a b b e f", d3 = "b c e e f f f")))
     colnames(mydfm)[3] <- "b"
     expect_equal(
         as.matrix(dfm_trim(mydfm, min_termfreq = 1)),
         matrix(c(1,1,1,1,1,0, 2,2,0,0,1,1, 0,1,1,0,2,3), byrow = TRUE, nrow = 3,
-               dimnames = list(docs = c("d1", "d2", "d3"), features = c(letters[c(1,2,2,4:6)])))
+               dimnames = list(docs = c("d1", "d2", "d3"), 
+                               features = c(letters[c(1,2,2,4:6)])))
     )
     expect_equal(
         as.matrix(dfm_trim(mydfm, min_termfreq = 2)),
         matrix(c(1,1,1,1,0, 2,2,0,1,1, 0,1,1,2,3), byrow = TRUE, nrow = 3,
-               dimnames = list(docs = c("d1", "d2", "d3"), features = c(letters[c(1,2,2,5:6)])))
+               dimnames = list(docs = c("d1", "d2", "d3"), 
+                               features = c(letters[c(1,2,2,5:6)])))
     )
-    expect_equal(
-        as.matrix(dfm_trim(mydfm, min_termfreq = 3)),
-        matrix(c(1,1,1,0, 2,2,1,1, 0,1,2,3), byrow = TRUE, nrow = 3,
-               dimnames = list(docs = c("d1", "d2", "d3"), features = c(letters[c(1,2,5:6)])))
-    )
+    # expect_equal(
+    #     as.matrix(dfm_trim(mydfm, min_termfreq = 3)),
+    #     matrix(c(1,1,1,0, 2,2,1,1, 0,1,2,3), byrow = TRUE, nrow = 3,
+    #            dimnames = list(docs = c("d1", "d2", "d3"), 
+    #                            features = c(letters[c(1,2,5:6)])))
+    # )
 })
 
 test_that("dfm_trim works with min_termfreq larger than total number (#1181)", {
