@@ -33,7 +33,7 @@ List cpp_get_attributes(TokensPtr xptr) {
 List cpp_as_list(TokensPtr xptr) {
     xptr->recompile();
     Tokens texts_ = as_list(xptr->texts);
-    texts_.attr("types") = encode(xptr->types);;
+    texts_.attr("types") = encode(xptr->types);
     texts_.attr("class") = "tokens";
     return texts_;
 }
