@@ -34,10 +34,10 @@ namespace quanteda{
     
     typedef ListOf<IntegerVector> Tokens;
     typedef XPtr<TokensObj> TokensPtr;
-
-    // typedef ListOf<IntegerVector> Tokens;
-    // typedef std::vector<unsigned int> Text;
-    // typedef std::vector<Text> Texts;
+    
+    // uncomment to avoid UBSAN error
+    typedef std::vector<unsigned int> Text;
+    typedef std::vector<Text> Texts;
     
     typedef std::atomic<int> IntParam;
     typedef std::atomic<unsigned int> UintParam;
