@@ -260,13 +260,38 @@ test_that("dfm_lookup handle nested patterns correctly, #2159", {
     dfmat <- dfm(toks)
     expect_equal(
         as.matrix(dfm_lookup(dfmat, dict, exclusive = TRUE)),
-        matrix(c(1, 2), nrow = 1, dimnames = list(docs = "text1", features = c("irish", "anger")))
+        matrix(c(1, 2), nrow = 1, 
+               dimnames = list(docs = "text1", features = c("irish", "anger")))
     )
     
     expect_equal(
         as.matrix(dfm_lookup(dfmat, dict, exclusive = FALSE)),
-        matrix(c(1, 1, 1, 2, 1), nrow = 1,
+        matrix(c(1, 1, 2, 1, 1), nrow = 1,
                dimnames = list(docs = "text1",
-                               features = c("i", "am", "IRISH", "ANGER", "about")))
+                               features = c("i", "am", "ANGER", "about", "IRISH")))
     )
+    
+    expect_equal(
+        as.matrix(dfm_lookup(dfmat, dict, exclusive = FALSE)),
+        as.matrix(dfm_lookup(dfmat, rev(dict), exclusive = FALSE))
+    )
+})
+
+
+test_that("dfm_lookup produce the same result regardlress of the order of keys, #2424", {
+    
+    dict <- dictionary(list(apple = c("apple*"),
+                            banana = c("banana*")))
+    
+    toks <- tokens(c("I like apples, but I don't like apple pie. Bananas are OK",
+                     "I like bananas, but I don't like banana fritter."))
+    dfmat <- dfm(toks)
+    
+    dfmt1 <- dfm_lookup(dfmat,
+                        dictionary = dict, exclusive = FALSE, capkeys = FALSE)
+    dfmt2 <- dfm_lookup(dfmat,
+                        dictionary = rev(dict), exclusive = FALSE, capkeys = FALSE)
+    
+    expect_equal(as.matrix(dfmt1), as.matrix(dfmt2))
+    
 })

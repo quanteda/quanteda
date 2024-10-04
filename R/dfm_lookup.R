@@ -103,7 +103,7 @@ dfm_lookup.dfm <- function(x, dictionary, levels = 1:5,
              if (length(dictionary) > 1L) "s" else "", "\n", sep = "")
 
     ids <- object2id(dictionary, type, valuetype, case_insensitive,
-                        field_object(attrs, "concatenator"), levels)
+                     field_object(attrs, "concatenator"), levels)
     
     # flag nested patterns
     if (length(ids)) {
@@ -136,18 +136,17 @@ dfm_lookup.dfm <- function(x, dictionary, levels = 1:5,
         } else {
             if (!is.null(nomatch))
                 warning("nomatch only applies if exclusive = TRUE")
-            col_new <- type
             
             # repeat columns for multiple keys
             if (any(duplicated(id))) {
-                ids_rep <- as.list(seq_len(nfeat(x)))
-                ids_rep[unique(id)] <- split(id, id)
+                ids_rep <- as.list(seq_along(type))
+                ids_rep[unique(id)] <- split(id, factor(id, unique(id)))
                 id_rep <- unlist(ids_rep, use.names = FALSE)
             } else {
-                id_rep <- seq_len(nfeat(x))
+                id_rep <- seq_along(type)
             }
-            col_new <- col_new[id_rep]
-            col_new[id_rep %in% id] <- key[id_key] 
+            col_new <- type[id_rep]
+            col_new[id_rep %in% id][order(id)] <- key[id_key]
             x <- x[,id_rep]
             
             set_dfm_featnames(x) <- col_new
