@@ -137,16 +137,17 @@ dfm_lookup.dfm <- function(x, dictionary, levels = 1:5,
             if (!is.null(nomatch))
                 warning("nomatch only applies if exclusive = TRUE")
             
+            r <- order(id)
+            id <- id[r]
+            id_key <- id_key[r]
+            
             # repeat columns for multiple keys
-            if (any(duplicated(id))) {
-                ids_rep <- as.list(seq_along(type))
-                ids_rep[unique(id)] <- split(id, factor(id, unique(id)))
-                id_rep <- unlist(ids_rep, use.names = FALSE)
-            } else {
-                id_rep <- seq_along(type)
-            }
+            id_rep <- seq_along(type)
+            id_rep <- sort(c(id, id_rep[!id_rep %in% id]))
+            
             col_new <- type[id_rep]
-            col_new[id_rep %in% id][order(id)] <- key[id_key]
+            # shift index for repeated columns
+            col_new[id + cumsum(duplicated(id))] <- key[id_key]
             x <- x[,id_rep]
             
             set_dfm_featnames(x) <- col_new
