@@ -1,3 +1,9 @@
+# quanteda 4.1.x
+
+## Bug fixes and stability enhancements
+
+* Fix a bug in `dfm_lookup()` that leads to wrong feature names when `exclusive = TRUE` (#2424).
+
 # quanteda 4.1
 
 ## Bug fixes and stability enhancements
