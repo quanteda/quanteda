@@ -16,6 +16,11 @@ test_that("tokens_split works", {
     expect_equal(as.list(tokens_split(toks, separator = "\\p{S}", valuetype = "regex",
                                       remove_separator = FALSE)),
                  list(text1 = c("a-a", "b", "+", "b", "B*B", "cc", "DD", "ee")))
+    
+    expect_message(
+        tokens_split(toks, separator = "-", verbose = TRUE),
+        "tokens_split() changed", fixed = TRUE
+    )
 
 })
 
