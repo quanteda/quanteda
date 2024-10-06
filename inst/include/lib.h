@@ -5,7 +5,9 @@
 #define ARMA_64BIT_WORD
 #endif
 
-#include <RcppArmadillo.h>
+//#include <RcppArmadillo.h>
+#include <Rcpp.h>
+#include <atomic>
 #include <unordered_map>
 #include <unordered_set>
 #include <limits>
@@ -194,7 +196,8 @@ namespace quanteda{
     inline List as_list(Texts &texts){
       List texts_(texts.size());
       for (std::size_t h = 0; h < texts.size(); h++) {
-        IntegerVector text_ = IntegerVector(texts[h].begin(), texts[h].end());
+        Text text = texts[h];
+        IntegerVector text_ = wrap(text);
         texts_[h] = text_;
       }
       return texts_;
@@ -248,7 +251,7 @@ namespace quanteda{
             for (std::size_t j = 0; j < J; j++) {
                 if (no_padding && pattern[j] == 0)
                     break;
-                if (pattern[j] < 0 || Rcpp::IntegerVector::is_na(pattern[j]))
+                if (pattern[j] < 0 || IntegerVector::is_na(pattern[j]))
                     break;
                 ngram[j] = pattern[j];
             }

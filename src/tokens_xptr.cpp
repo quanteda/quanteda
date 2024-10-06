@@ -32,8 +32,8 @@ List cpp_get_attributes(TokensPtr xptr) {
 // [[Rcpp::export]]
 List cpp_as_tokens(TokensPtr xptr) {
     xptr->recompile();
-    Tokens texts_ = as_list(xptr->texts);
-    texts_.attr("types") = encode(xptr->types);;
+    List texts_ = as_list(xptr->texts);
+    texts_.attr("types") = encode(xptr->types);
     texts_.attr("class") = "tokens";
     return texts_;
 }
@@ -88,7 +88,7 @@ IntegerVector cpp_ntoken(TokensPtr xptr, bool no_padding = false) {
 }
 
 // [[Rcpp::export]]
-IntegerVector cpp_ntype(TokensPtr xptr, bool padding = true) {
+IntegerVector cpp_ntype(TokensPtr xptr, bool no_padding = false) {
     xptr->recompile();
     std::size_t H = xptr->texts.size();
     IntegerVector ns_(H);
@@ -97,11 +97,45 @@ IntegerVector cpp_ntype(TokensPtr xptr, bool padding = true) {
         std::sort(text.begin(), text.end());
         text.erase(unique(text.begin(), text.end()), text.end());
         int n = text.size();
-        if (text[0] == 0 && !padding)
+        if (text[0] == 0 && no_padding)
             n--;    
         ns_[h] = n;
     }
     return ns_;
+}
+
+// [[Rcpp::export]]
+IntegerVector cpp_get_freq(TokensPtr xptr, bool no_padding = false,
+                           bool boolean = false) {
+    xptr->recompile();
+    std::size_t G = xptr->types.size();
+    if (!no_padding)
+        G++;
+    IntegerVector freq_(G, 0);
+    std::size_t H = xptr->texts.size();
+    for (std::size_t h = 0; h < H; h++) {
+        Text text = xptr->texts[h];
+        std::size_t I = text.size();
+        std::vector<bool> flag(G);
+        for (std::size_t i = 0; i < I; i++) {
+            unsigned int id = text[i];
+            // ignore paddings
+            if (no_padding) {
+                if (id == 0)
+                    continue;
+                id--;
+            }
+            if (boolean && flag[id])
+                continue;
+            freq_[id]++;
+            flag[id] = true;
+        }
+    }
+    CharacterVector types_ = encode(xptr->types);
+    if (!no_padding)
+        types_.push_front("");
+    freq_.attr("names") = types_;
+    return freq_;
 }
 
 

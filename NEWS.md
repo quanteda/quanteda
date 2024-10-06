@@ -1,4 +1,10 @@
-# quanteda 4.0.3
+# quanteda 4.1.x
+
+## Bug fixes and stability enhancements
+
+* Fix a bug in `dfm_lookup()` that leads to wrong feature names when `exclusive = TRUE` (#2424).
+
+# quanteda 4.1
 
 ## Bug fixes and stability enhancements
 
@@ -6,7 +12,11 @@
 
 * Addressed #2358 and #2359 more thoroughly, at the C++ level, to convert list(integer(), integer(),...) to std::vector<std::vector<unsigned int>. This function removes negative values and NA_INTEGER.
 
+* Removed **RcppArmadillo** as a dependency in an effort to avoid UBSAN warnings in #2417.
+
 ## Changes and additions
+
+* Added `tokens_trim()` function similar to `dfm_trim()` (#2419).
 
 * Added `keep_unigrams` argument to `tokens_compound()`, to keep in the returned object the unigrams that are to be compounded (#2399).
 

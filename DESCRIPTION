@@ -1,5 +1,5 @@
 Package: quanteda
-Version: 4.0.3
+Version: 4.1.0
 Title: Quantitative Analysis of Textual Data
 Description: A fast, flexible, and comprehensive framework for 
     quantitative text analysis in R.  Provides functionality for corpus management,
@@ -37,7 +37,7 @@ Imports:
     stringi,
     xml2,
     yaml
-LinkingTo: Rcpp, RcppArmadillo (>= 0.7.600.1.0)
+LinkingTo: Rcpp
 NeedsCompilation: yes
 Suggests:
     rmarkdown,
@@ -145,6 +145,7 @@ Collate:
     'tokens_select.R'
     'tokens_split.R'
     'tokens_subset.R'
+    'tokens_trim.R'
     'tokens_xptr.R'
     'utils.R'
     'validator.R'
