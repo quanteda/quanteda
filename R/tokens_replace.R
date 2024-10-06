@@ -68,14 +68,15 @@ tokens_replace.tokens_xptr <- function(x, pattern, replacement, valuetype = "glo
     type <- union(type, unlist(replacement, use.names = FALSE))
     conc <- field_object(attrs, "concatenator")
 
-    ids_pat <- object2id(pattern, type, valuetype, case_insensitive, conc, keep_nomatch = FALSE)
-    ids_rep <- object2id(replacement, type, "fixed", FALSE, conc, keep_nomatch = TRUE)
-    set_types(x) <- type
-
     if (is.null(apply_if))
         apply_if <- rep(TRUE, length.out = ndoc(x))
     if (verbose)
         before <- stats_tokens(x)
+    
+    ids_pat <- object2id(pattern, type, valuetype, case_insensitive, conc, keep_nomatch = FALSE)
+    ids_rep <- object2id(replacement, type, "fixed", FALSE, conc, keep_nomatch = TRUE)
+    set_types(x) <- type
+    
     result <- cpp_tokens_replace(x, ids_pat, ids_rep[attr(ids_pat, "pattern")], !apply_if,
                                  get_threads())
     result <- rebuild_tokens(result, attrs)
