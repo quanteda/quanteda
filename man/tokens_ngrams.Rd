@@ -6,11 +6,23 @@
 \alias{tokens_skipgrams}
 \title{Create n-grams and skip-grams from tokens}
 \usage{
-tokens_ngrams(x, n = 2L, skip = 0L, concatenator = concat(x))
+tokens_ngrams(
+  x,
+  n = 2L,
+  skip = 0L,
+  concatenator = concat(x),
+  verbose = quanteda_options("verbose")
+)
 
 char_ngrams(x, n = 2L, skip = 0L, concatenator = "_")
 
-tokens_skipgrams(x, n, skip, concatenator = concat(x))
+tokens_skipgrams(
+  x,
+  n,
+  skip,
+  concatenator = concat(x),
+  verbose = quanteda_options("verbose")
+)
 }
 \arguments{
 \item{x}{a tokens object, or a character vector, or a list of characters}
@@ -30,6 +42,9 @@ Guthrie et al (2006).}
 
 \item{concatenator}{character for combining words, default is \verb{_}
 (underscore) character}
+
+\item{verbose}{if \code{TRUE} print the number of tokens and documents before and
+after the function is applied. The number of tokens does not include paddings.}
 }
 \value{
 a tokens object consisting a list of character vectors of n-grams, one

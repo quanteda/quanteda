@@ -12,6 +12,7 @@
 #'   level into the first, but record the third level (if present) collapsed
 #'   below the first (see examples).
 #' @inheritParams valuetype
+#' @inheritParams messages
 #' @param capkeys if `TRUE`, convert dictionary keys to uppercase to distinguish
 #'   them from unmatched tokens.
 #' @param nomatch an optional character naming a new key for tokens that do not
@@ -32,7 +33,6 @@
 #' @param concatenator the concatenation character that will connect the words
 #'   making up the multi-word sequences.
 #' @inheritParams apply_if
-#' @param verbose print status messages if `TRUE`
 #' @details Dictionary values may consist of sequences, and there are different
 #'   methods of counting key matches based on values that are nested or that
 #'   overlap.
@@ -159,9 +159,6 @@ tokens_lookup.tokens_xptr <- function(x, dictionary, levels = 1:5,
         
     attrs <- attributes(x)
     type <- get_types(x)
-    if (verbose)
-        catm("applying a dictionary consisting of ", length(dictionary), " key",
-             if (length(dictionary) > 1L) "s" else "", "\n", sep = "")
     ids <- object2id(dictionary, type, valuetype, case_insensitive,
                      field_object(attrs, "concatenator"), levels)
     overlap <- match(nested_scope, c("key", "dictionary"))
@@ -185,6 +182,8 @@ tokens_lookup.tokens_xptr <- function(x, dictionary, levels = 1:5,
         if (capkeys)
             key <- stri_trans_toupper(key)
     }
+    if (verbose)
+        before <- stats_tokens(x)
     if (exclusive) {
         if (!is.null(nomatch)) {
             result <- cpp_tokens_lookup(x, ids, id_key, c(key, nomatch), overlap, 1,
@@ -204,7 +203,10 @@ tokens_lookup.tokens_xptr <- function(x, dictionary, levels = 1:5,
         cpp_recompile(result)
     if (exclusive)
         field_object(attrs, "what") <- "dictionary"
-    rebuild_tokens(result, attrs)
+    result <- rebuild_tokens(result, attrs)
+    if (verbose)
+        message_tokens("tokens_lookup()", before, stats_tokens(result))
+    return(result)
 }
 
 #' @export

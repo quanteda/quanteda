@@ -33,7 +33,8 @@ exact matching. See \link{valuetype} for details.}
 \item{apply_if}{logical vector of length \code{ndoc(x)}; documents are modified
 only when corresponding values are \code{TRUE}, others are left unchanged.}
 
-\item{verbose}{print status messages if \code{TRUE}}
+\item{verbose}{if \code{TRUE} print the number of tokens and documents before and
+after the function is applied. The number of tokens does not include paddings.}
 }
 \description{
 Substitute token types based on vectorized one-to-one matching. Since this
