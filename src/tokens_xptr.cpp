@@ -94,12 +94,16 @@ IntegerVector cpp_ntype(TokensPtr xptr, bool no_padding = false) {
     IntegerVector ns_(H);
     for (std::size_t h = 0; h < H; h++) {
         Text text = xptr->texts[h];
-        std::sort(text.begin(), text.end());
-        text.erase(unique(text.begin(), text.end()), text.end());
-        int n = text.size();
-        if (text[0] == 0 && no_padding)
-            n--;    
-        ns_[h] = n;
+        if (text.size() == 0) {
+            ns_[h] = 0;
+        } else {
+            std::sort(text.begin(), text.end());
+            text.erase(unique(text.begin(), text.end()), text.end());
+            int n = text.size();
+            if (text[0] == 0 && no_padding)
+                n--;    
+            ns_[h] = n;
+        }
     }
     return ns_;
 }
