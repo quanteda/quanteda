@@ -120,19 +120,23 @@ test_that("types attribute is a character vector", {
 })
 
 test_that("remove_url works as expected", {
-    txt <- c("The URL was http://t.co/something.",
-             "The URL was http://quanteda.io",
-             "https://github.com/quanteda/quanteda/issue/1 is another URL",
-             "www.r-project.org/about.html is a specific page without protocol",
-             "https://www.google.com/search?q=quanteda+package is a google search",
-             "ftp://user@host/foo/bar.txt is a FTP-hosted file",
-             "kohei.watanabe@quanteda.org is an email address",
-             "The U.S. is not an url")
+    txt <- c(text1 = "The URL was http://t.co/something.",
+             text2 = "The URL was http://quanteda.io",
+             text2a = "The URL was irc://t.co/something.",
+             text2b = "The URL was file://quanteda.io",
+             text3 = "https://github.com/quanteda/quanteda/issue/1 is another URL",
+             text4 = "www.r-project.org/about.html is a specific page without protocol",
+             text5 = "https://www.google.com/search?q=quanteda+package is a google search",
+             text6 = "ftp://user@host/foo/bar.txt is a FTP-hosted file",
+             text7 = "kohei.watanabe@quanteda.org is an email address",
+             text8 = "The U.S. is not an url")
     toks <- tokens(txt, remove_url = TRUE)
     expect_equal(
         as.list(toks),
         list(text1 = c("The", "URL", "was"),
              text2 = c("The", "URL", "was"),
+             text2a = c("The", "URL", "was"),
+             text2b = c("The", "URL", "was"),
              text3 = c("is", "another", "URL"),
              text4 = c("is", "a", "specific", "page", "without", "protocol"),
              text5 = c("is", "a", "google", "search"),
