@@ -127,7 +127,7 @@ test_that("remove_url works as expected", {
              text3 = "https://github.com/quanteda/quanteda/issue/1 is another URL",
              text4 = "www.r-project.org/about.html is a specific page without protocol",
              text5 = "https://www.google.com/search?q=quanteda+package is a google search",
-             text6 = "ftp://user@host/foo/bar.txt is a FTP-hosted file",
+             text6 = "ftp://user@host.org/foo/bar.txt is a FTP-hosted file",
              text7 = "kohei.watanabe@quanteda.org is an email address",
              text8 = "The U.S. is not an url")
     toks <- tokens(txt, remove_url = TRUE)
