@@ -158,10 +158,9 @@ tokenize_word4 <- function(x, split_hyphens = FALSE, split_tags = FALSE, split_e
     username <- quanteda_options("pattern_username")
     hashtag <- quanteda_options("pattern_hashtag")
     
-    ftp <- "s?ftp://[-+a-zA-Z0-9@#:.%~=_&/]+"
-    http <- "(https?://|www\\.)[-a-zA-Z0-9]+(\\.[-a-zA-Z0-9]+)+([/?#][-+a-zA-Z0-9@#:.%~=_&]+)*[/?#]?"
+    url <- "([-a-zA-Z0-9+.]{2,20}://|www\\.)[-+a-zA-Z0-9@#:.%~=_&/]+(\\.[-a-zA-Z0-9]+)+([/?#][-+a-zA-Z0-9@#:.%~=_&]+)*[/?#]?"
     email <- "[-+a-zA-Z0-9_.]+@[-a-zA-Z0-9]+(\\.[-a-zA-Z0-9]+)*\\.[a-z]+"
-    regex <- c(email, ftp, http)
+    regex <- c(email, url)
     if (!split_tags) {
         if (verbose) catm(" ...preserving social media tags (#, @)\n")
         regex <- c(regex, username, hashtag)
