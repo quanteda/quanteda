@@ -1,3 +1,4 @@
+# messaging utilities ------------
 
 #' Conditionally format messages
 #' 
@@ -80,6 +81,9 @@ message_select <- function(selection, nfeats, ndocs, nfeatspad = 0, ndocspad = 0
     catm("", appendLF = TRUE)
 }
 
+
+# messaging methods ------------
+             
 #' Message parameter documentation
 #' 
 #' Used in printing verbose messages for message_tokens() and message_dfm()
@@ -95,7 +99,7 @@ NULL
 #' @inheritParams messages
 #' @keywords message internal
 message_tokens <- function(operation, before, after) {
-    msg <- sprintf("Apply %s: changed from %d tokens (%d documents) to %d tokens (%d documents)",
+    msg <- sprintf("%s changed from %d tokens (%d documents) to %d tokens (%d documents)",
                    operation, before$ntoken, before$ndoc, after$ntoken, after$ndoc)
     msg <- prettyNum(msg, big.mark = ",")
     message(msg)
@@ -110,7 +114,7 @@ stats_tokens <- function(x) {
 #' @inheritParams messages
 #' @keywords message internal
 message_dfm <- function(operation, before, after) {
-    msg <- sprintf("Apply %s: changed from %d features (%d documents) to %d features (%d documents)",
+    msg <- sprintf("%s changed from %d features (%d documents) to %d features (%d documents)",
                    operation, before$nfeat, before$ndoc, after$nfeat, after$ndoc)
     msg <- prettyNum(msg, big.mark = ",")
     message(msg)
@@ -118,5 +122,5 @@ message_dfm <- function(operation, before, after) {
 
 stats_dfm <- function(x) {
     list(ndoc = ndoc(x),
-         nfeat = nfeat(dfm_remove(x, "")))
+         nfeat = nfeat(dfm_remove(x, "", verbose = FALSE)))
 }

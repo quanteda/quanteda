@@ -288,6 +288,14 @@ test_that("test token default methods", {
         "tokens_select\\(\\) only works on tokens, tokens_xptr objects"
     )
     expect_error(
+        tokens_segment(TRUE),
+        "tokens_segment\\(\\) only works on tokens, tokens_xptr objects"
+    )
+    expect_error(
+        tokens_chunk(TRUE),
+        "tokens_chunk\\(\\) only works on tokens, tokens_xptr objects"
+    )
+    expect_error(
         tokens_lookup(TRUE),
         "tokens_lookup\\(\\) only works on tokens, tokens_xptr objects"
     )

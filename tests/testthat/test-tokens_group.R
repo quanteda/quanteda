@@ -40,6 +40,11 @@ test_that("test that tokens_group is working", {
              "B" = character(),
              "Z" = c("a", "b", "c", "d", "A", "B", "C"))
     )
+    
+    expect_message(
+        tokens_group(toks, verbose = TRUE),
+        "tokens_group() changed", fixed = TRUE
+    )
 })
 
 test_that("tokens_group works with empty documents", {

@@ -9,7 +9,8 @@ tokens_split(
   separator = " ",
   valuetype = c("fixed", "regex"),
   remove_separator = TRUE,
-  apply_if = NULL
+  apply_if = NULL,
+  verbose = quanteda_options("verbose")
 )
 }
 \arguments{
@@ -25,6 +26,9 @@ exact matching. See \link{valuetype} for details.}
 
 \item{apply_if}{logical vector of length \code{ndoc(x)}; documents are modified
 only when corresponding values are \code{TRUE}, others are left unchanged.}
+
+\item{verbose}{if \code{TRUE} print the number of tokens and documents before and
+after the function is applied. The number of tokens does not include paddings.}
 }
 \description{
 Replaces tokens by multiple replacements consisting of elements split by a

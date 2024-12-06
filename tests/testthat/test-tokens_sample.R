@@ -4,10 +4,29 @@ corp_sent <- corpus_reshape(corp, to = "sentences")
 toks <- tokens(corp)
 toks_sent <- tokens(corp_sent)
     
-test_that("test tokens_sample to see if without grouping, documents can be oversampled", {
-    set.seed(100)
-    toks_samp <- tokens_sample(toks_sent, replace = TRUE)
-    expect_gt(sum(stringi::stri_detect_regex(docnames(toks_samp), "^one")), 3)         
+test_that("test tokens_sample works", {
+    
+    docnames(tokens_sample(toks_sent, 5, replace = FALSE))
+    expect_true(
+       setequal(
+            docnames(tokens_sample(toks_sent, 5, replace = FALSE)),
+            c("one.2", "one.3", "two.2", "two.1", "one.1")
+       )
+    )
+    
+    expect_error(
+        tokens_sample(toks_sent, 10, replace = FALSE),
+        "size cannot exceed the number of items when replace = FALSE", fixed = TRUE
+    )
+    
+    expect_silent(
+        tokens_sample(toks_sent, 10, replace = TRUE)
+    )
+    
+    expect_message(
+        tokens_sample(toks_sent, replace = TRUE, verbose = TRUE),
+        "tokens_sample() changed", fixed = TRUE
+    )
 })
 
 test_that("test tokens_sample to see if with grouping, documents can be oversampled", {

@@ -131,7 +131,7 @@ TokensPtr cpp_tokens_segment(TokensPtr xptr,
 #endif
     
     Texts segments(N);
-    std::vector<int> documents(N);
+    std::vector<int> index(N);
     std::vector<std::string> matches(N);
     
     std::size_t j = 0;
@@ -157,7 +157,7 @@ TokensPtr cpp_tokens_segment(TokensPtr xptr,
             } else {
                 matches[j] = "";
             }
-            documents[j] = (int)h + 1;
+            index[j] = (int)h + 1;
             j++;
         }
     }
@@ -166,10 +166,8 @@ TokensPtr cpp_tokens_segment(TokensPtr xptr,
     TokensObj *ptr_new = new TokensObj(segments, xptr->types, xptr->recompiled);
     TokensPtr xptr_new = TokensPtr(ptr_new, true);
     
-    CharacterVector matches_ = encode(matches);
-    IntegerVector documents_ = Rcpp::wrap(documents);
-    xptr_new.attr("matches") = matches_;
-    xptr_new.attr("documents") = documents_;
+    xptr_new.attr("matches") = encode(matches);
+    xptr_new.attr("index") = Rcpp::wrap(index);
     
     return xptr_new;
 }

@@ -6,6 +6,7 @@
 #' @param x a [tokens] object
 #' @param separator a single-character pattern match by which tokens are separated
 #' @inheritParams valuetype
+#' @inheritParams messages
 #' @param remove_separator if `TRUE`, remove separator from new tokens
 #' @inheritParams apply_if
 #' @examples
@@ -21,23 +22,27 @@
 #' @keywords tokens
 #' @export
 tokens_split <- function(x, separator = " ", valuetype = c("fixed", "regex"),
-                         remove_separator = TRUE, apply_if = NULL) {
+                         remove_separator = TRUE, apply_if = NULL,
+                         verbose = quanteda_options("verbose")) {
     UseMethod("tokens_split")
 }
 
 #' @export
 tokens_split.default <- function(x, separator = " ", valuetype = c("fixed", "regex"),
-                                 remove_separator = TRUE, apply_if = NULL) {
+                                 remove_separator = TRUE, apply_if = NULL,
+                                 verbose = quanteda_options("verbose")) {
     check_class(class(x), "tokens_split")
 }
 
 #' @export
 tokens_split.tokens_xptr <- function(x, separator = " ", valuetype = c("fixed", "regex"),
-                                     remove_separator = TRUE, apply_if = NULL) {
+                                     remove_separator = TRUE, apply_if = NULL,
+                                     verbose = quanteda_options("verbose")) {
 
     separator <- check_character(separator)
     valuetype <- match.arg(valuetype)
     remove_separator <- check_logical(remove_separator)
+    verbose <- check_logical(verbose)
 
     type <- get_types(x)
     if (valuetype == "regex") {
@@ -64,8 +69,13 @@ tokens_split.tokens_xptr <- function(x, separator = " ", valuetype = c("fixed", 
     }
 
     replacement <- stri_split_fixed(type, "\uE000", omit_empty = TRUE)
-    tokens_replace(x, pattern, replacement, "fixed", case_insensitive = FALSE,
-                   apply_if = apply_if)
+    if (verbose)
+        before <- stats_tokens(x)
+    result <- tokens_replace(x, pattern, replacement, "fixed", case_insensitive = FALSE,
+                             apply_if = apply_if, verbose = FALSE)
+    if (verbose)
+        message_tokens("tokens_split()", before, stats_tokens(result))
+    return(result)
 }
 
 #' @export
