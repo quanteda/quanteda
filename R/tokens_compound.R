@@ -112,7 +112,6 @@ tokens_compound.tokens_xptr <- function(x, pattern,
         apply_if <- rep(TRUE, length.out = ndoc(x))
     result <- cpp_tokens_compound(x, ids, concatenator, join, keep_unigrams,
                                   window[1], window[2], !apply_if, get_threads())
-    field_object(attrs, "concatenator") <- concatenator
     rebuild_tokens(result, attrs)
 }
 

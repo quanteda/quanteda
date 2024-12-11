@@ -444,7 +444,7 @@ test_that("empty tokens are removed correctly", {
 test_that("combined tokens objects have all the attributes", {
 
     toks1 <- tokens(c(text1 = "a b c"))
-    toks2 <- tokens_compound(tokens(c(text2 = "d e f")), phrase("e f"), concatenator = "+")
+    toks2 <- tokens(c(text2 = "d e f"), concatenator = "+")
     toks3 <- tokens(c(text3 = "d e f"), what = "sentence")
     expect_warning(
         toks4 <- tokens(c(text4 = "d e f"), ngram = 1:2, skip = 2),
