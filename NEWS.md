@@ -1,6 +1,8 @@
-# quanteda 4.1.x
+# quanteda 4.2.0
 
 ## Changes and additions
+
+* Preserve the default `concatenator` of tokens objects in `tokens_compound()` (#2432).
 
 * Make the `c` operation on `tokens` and `tokens_xptr` objects significantly faster. 
 
