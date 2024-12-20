@@ -4,7 +4,13 @@
 \alias{dfm_group}
 \title{Combine documents in a dfm by a grouping variable}
 \usage{
-dfm_group(x, groups = docid(x), fill = FALSE, force = FALSE)
+dfm_group(
+  x,
+  groups = docid(x),
+  fill = FALSE,
+  force = FALSE,
+  verbose = quanteda_options("verbose")
+)
 }
 \arguments{
 \item{x}{a \link{dfm}}
@@ -28,6 +34,9 @@ the dfm has been weighted.  This can result in invalid sums, such as adding
 log counts (when a dfm has been weighted by \code{"logcount"} for instance using
 \code{\link[=dfm_weight]{dfm_weight()}}).  Not needed when the term weight schemes "count" and
 "prop".}
+
+\item{verbose}{if \code{TRUE} print the number of tokens and documents before and
+after the function is applied. The number of tokens does not include paddings.}
 }
 \value{
 \code{dfm_group} returns a \link{dfm} whose documents are equal to

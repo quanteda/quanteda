@@ -4,6 +4,7 @@
 #' frequencies within group and creating new "documents" with the group labels.
 #' @param x a [dfm]
 #' @inheritParams groups
+#' @inheritParams messages
 #' @param force logical; if `TRUE`, group by summing existing counts, even if
 #'   the dfm has been weighted.  This can result in invalid sums, such as adding
 #'   log counts (when a dfm has been weighted by `"logcount"` for instance using
@@ -26,17 +27,20 @@
 #' # with fill = TRUE
 #' dfm_group(dfmat, fill = TRUE,
 #'           groups = factor(c("A", "A", "B", "C"), levels = LETTERS[1:4]))
-dfm_group <- function(x, groups = docid(x), fill = FALSE, force = FALSE) {
+dfm_group <- function(x, groups = docid(x), fill = FALSE, force = FALSE,
+                      verbose = quanteda_options("verbose")) {
     UseMethod("dfm_group")
 }
 
 #' @export
-dfm_group.default <- function(x, groups, fill = FALSE, force = FALSE) {
+dfm_group.default <- function(x, groups, fill = FALSE, force = FALSE,
+                              verbose = quanteda_options("verbose")) {
     check_class(class(x), "dfm_group")
 }
     
 #' @export
-dfm_group.dfm <- function(x, groups = docid(x), fill = FALSE, force = FALSE) {
+dfm_group.dfm <- function(x, groups = docid(x), fill = FALSE, force = FALSE,
+                          verbose = quanteda_options("verbose")) {
     x <- as.dfm(x)
     fill <- check_logical(fill)
     force <- check_logical(force)
@@ -67,17 +71,23 @@ dfm_group.dfm <- function(x, groups = docid(x), fill = FALSE, force = FALSE) {
     if (ndoc(x) != length(groups))
         stop("groups must have length ndoc(x)", call. = FALSE)
 
+    if (verbose)
+        before <- stats_dfm(x)
+    
     # remove NA groups
     x <- dfm_subset(x, !is.na(groups))
     attrs <- attributes(x)
     groups <- groups[!is.na(groups)]
     
     x <- group_matrix(x, documents = groups, fill = fill)
-    build_dfm(x, colnames(x),
-              unit = "documents",
-              docvars = group_docvars(attrs[["docvars"]], groups, field),
-              meta = attrs[["meta"]]
+    result <- build_dfm(x, colnames(x),
+                        unit = "documents",
+                        docvars = group_docvars(attrs[["docvars"]], groups, field),
+                        meta = attrs[["meta"]]
     )
+    if (verbose)
+        message_dfm("dfm_group()", before, stats_dfm(result))
+    return(result)
 }
 
 # check if values are uniform within groups
