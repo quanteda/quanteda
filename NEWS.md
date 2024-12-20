@@ -1,12 +1,15 @@
-# quanteda 4.1.x
+# quanteda 4.1.1
 
 ## Changes and additions
 
-* Make the `c` operation on `tokens` and `tokens_xptr` objects significantly faster. 
+* Made the `c` operation on `tokens` and `tokens_xptr` objects significantly faster.
+
+* New, and more consistent verbose messages for tokens and dfm objects.
 
 ## Bug fixes and stability enhancements
 
 * Fix a bug in `dfm_lookup()` that leads to wrong feature names when `exclusive = TRUE` (#2424).
+
 
 # quanteda 4.1
 
