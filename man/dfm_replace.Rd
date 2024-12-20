@@ -25,7 +25,8 @@ match.}
 \item{case_insensitive}{logical; if \code{TRUE}, ignore case when matching a
 \code{pattern} or \link{dictionary} values}
 
-\item{verbose}{print status messages if \code{TRUE}}
+\item{verbose}{if \code{TRUE} print the number of tokens and documents before and
+after the function is applied. The number of tokens does not include paddings.}
 }
 \description{
 Substitute features based on vectorized one-to-one matching for lemmatization

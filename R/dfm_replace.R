@@ -9,7 +9,7 @@
 #'   `replacement` must be character vector of equal length, for a 1:1
 #'   match.
 #' @inheritParams valuetype
-#' @param verbose print status messages if `TRUE`
+#' @inheritParams messages
 #' @export
 #' @examples
 #' dfmat1 <- dfm(tokens(data_corpus_inaugural))
@@ -40,7 +40,6 @@ dfm_replace.default <- function(x, pattern, replacement, case_insensitive = TRUE
 #' @export
 dfm_replace.dfm <- function(x, pattern, replacement, case_insensitive = TRUE,
                             verbose = quanteda_options("verbose")) {
-    
     x <- as.dfm(x)
     pattern <- check_character(pattern, min_len = 0, max_len = Inf, strict = TRUE)
     replacement <- check_character(replacement, min_len = 0, max_len = Inf, strict = TRUE)
@@ -51,6 +50,12 @@ dfm_replace.dfm <- function(x, pattern, replacement, case_insensitive = TRUE,
     if (!length(pattern)) return(x)
 
     if (!length(pattern)) return(x)
+    
+    if (verbose)
+        before <- stats_dfm(x)
     set_dfm_featnames(x) <- replace_type(featnames(x), pattern, replacement, case_insensitive)
-    dfm_compress(x, "features")
+    x <- dfm_compress(x, "features")
+    if (verbose)
+        message_dfm("dfm_replace()", before, stats_dfm(x))
+    return(x)
 }
