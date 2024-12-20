@@ -74,3 +74,20 @@ test_that("tokens_subset works with min_ntoken and max_ntoken", {
     )
 })
 
+test_that("dfm_subset() works with verbose", {
+    corp <- corpus(c(d1 = "a b c d", d2 = "a a b e",
+                     d3 = "b b c e", d4 = "e e f a b"),
+                   docvars = data.frame(grp = c(1, 1, 2, 3)))
+    dfmat <- dfm(tokens(corp))
+    
+    expect_message(
+        dfm_subset(dfmat, grp > 1, verbose = TRUE),
+        "dfm_subset() changed from 6 features (4 documents) to 6 features (2 documents)",
+        fixed = TRUE
+    )
+    expect_message(
+        dfm_subset(dfmat, c(TRUE, FALSE, FALSE, FALSE), verbose = TRUE),
+        "dfm_subset() changed from 6 features (4 documents) to 6 features (1 documents)",
+        fixed = TRUE
+    )
+})
