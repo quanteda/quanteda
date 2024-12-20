@@ -41,3 +41,26 @@ test_that("dfm_wordstem works with ngrams", {
         meta(dfmat_stemmed, "concatenator", "object")
     )
 })
+
+test_that("dfm_wordstem() works with verbose", {
+    dfmat <- dfm(tokens(c("b A A", "C C a b B")), tolower = FALSE)
+    expect_message(
+        dfm_tolower(dfmat, verbose = TRUE),
+        "",
+        fixed = TRUE
+    )
+    expect_message(
+        dfm_toupper(dfmat, verbose = TRUE),
+        "",
+        fixed = TRUE
+    )
+})
+
+test_that("dfm_wordstem() works with verbose", {
+    dfmat <- dfm(tokens(c("win", "winning", "wins", "won", "winner")), tolower = FALSE)
+    expect_message(
+        dfm_wordstem(dfmat, verbose = TRUE),
+        "dfm_wordstem() changed from 5 features (5 documents) to 3 features (5 documents)",
+        fixed = TRUE
+    )
+})

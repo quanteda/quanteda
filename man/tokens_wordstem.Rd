@@ -18,7 +18,11 @@ char_wordstem(
   check_whitespace = TRUE
 )
 
-dfm_wordstem(x, language = quanteda_options("language_stemmer"))
+dfm_wordstem(
+  x,
+  language = quanteda_options("language_stemmer"),
+  verbose = quanteda_options("verbose")
+)
 }
 \arguments{
 \item{x}{a character, tokens, or dfm object whose word stems are to be
@@ -36,13 +40,13 @@ after the function is applied. The number of tokens does not include paddings.}
 to stem inputs containing whitespace}
 }
 \value{
-\code{tokens_wordstem} returns a \link{tokens} object whose word
+\code{\link[=tokens_wordstem]{tokens_wordstem()}} returns a \link{tokens} object whose word
 types have been stemmed.
 
-\code{char_wordstem} returns a \link{character} object whose word
+\code{\link[=char_wordstem]{char_wordstem()}} returns a \link{character} object whose word
 types have been stemmed.
 
-\code{dfm_wordstem} returns a \link{dfm} object whose word
+\code{\link[=dfm_wordstem]{dfm_wordstem()}} returns a \link{dfm} object whose word
 types (features) have been stemmed, and recombined to consolidate features made
 equivalent because of stemming.
 }
