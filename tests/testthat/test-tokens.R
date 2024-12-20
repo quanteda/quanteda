@@ -501,7 +501,7 @@ test_that("empty tokens are removed correctly", {
 test_that("combined tokens objects have all the attributes", {
 
     toks1 <- tokens(c(text1 = "a b c"))
-    toks2 <- tokens_compound(tokens(c(text2 = "d e f")), phrase("e f"), concatenator = "+")
+    toks2 <- tokens(c(text2 = "d e f"), concatenator = "+")
     toks3 <- tokens(c(text3 = "d e f"), what = "sentence")
     expect_warning(
         toks4 <- tokens(c(text4 = "d e f"), ngram = 1:2, skip = 2),
@@ -1154,24 +1154,24 @@ test_that("cancatenator is working", {
     # compound
     dict <- dictionary(list(Countries = c("* States", "Federal Republic of *"),
                             Oceans = c("* Ocean")), tolower = FALSE)
-    toks <- tokens_compound(toks, dict, concatenator = "_")
+    toks <- tokens_compound(toks, dict)
     expect_equal(
         concatenator(toks),
-        "_"
+        " "
     )
     expect_equal(
         concat(toks),
-        "_"
+        " "
     )
     expect_equal(
-        ntoken(tokens_select(toks, c("United_States"))),
+        ntoken(tokens_select(toks, c("United States"))),
         c(d1 = 1, d2 = 1)
     )
     
     # update
     toks <- tokens(toks, concatenator = "+")
     expect_error(
-        tokens(toks, concatenator = c(" ", " ")),
+        tokens(toks, concatenator = c("+", "+")),
         "The length of concatenator must be 1"
     )
     expect_equal(
