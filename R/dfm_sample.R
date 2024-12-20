@@ -5,6 +5,7 @@
 #' weights.
 #' @param x the [dfm] object whose documents will be sampled
 #' @inheritParams corpus_sample
+#' @inheritParams messages
 #' @export
 #' @return a [dfm] object (re)sampled on the documents, containing the document
 #'   variables for the documents sampled.
@@ -20,17 +21,21 @@
 #' # by groups
 #' dfmat <- dfm(tokens(data_corpus_inaugural[50:58]))
 #' dfm_sample(dfmat, by = Party, size = 2)
-dfm_sample <- function(x, size = NULL, replace = FALSE, prob = NULL, by = NULL) {
+dfm_sample <- function(x, size = NULL, replace = FALSE, prob = NULL, by = NULL,
+                       verbose = quanteda_options("verbose")) {
     UseMethod("dfm_sample")
 }
 
 #' @export
-dfm_sample.default <- function(x, size = NULL, replace = FALSE, prob = NULL, by = NULL) {
+dfm_sample.default <- function(x, size = NULL, replace = FALSE, prob = NULL, by = NULL,
+                               verbose = quanteda_options("verbose")) {
     check_class(class(x), "dfm_sample")
 }
     
 #' @export
-dfm_sample.dfm <- function(x, size = NULL, replace = FALSE, prob = NULL, by = NULL) {
+dfm_sample.dfm <- function(x, size = NULL, replace = FALSE, prob = NULL, by = NULL,
+                           verbose = quanteda_options("verbose")) {
+    verbose <- check_logical(verbose)
     x <- as.dfm(x)
 
     if (!missing(by)) {
@@ -40,5 +45,10 @@ dfm_sample.dfm <- function(x, size = NULL, replace = FALSE, prob = NULL, by = NU
 
     i <- resample(seq_len(ndoc(x)), size = size, replace = replace, prob = prob, by = by)
 
-    return(x[i, ])
+    if (verbose)
+        before <- stats_dfm(x)
+    result <- x[i, ]
+    if (verbose)
+        message_dfm("dfm_sample()", before, stats_dfm(result))
+    return(result)    
 }
