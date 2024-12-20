@@ -62,10 +62,10 @@ and then construct the dfm.
 }
 \examples{
 dict <- dictionary(list(christmas = c("Christmas", "Santa", "holiday"),
-                          opposition = c("Opposition", "reject", "notincorpus"),
-                          taxglob = "tax*",
-                          taxregex = "tax.+$",
-                          country = c("United_States", "Sweden")))
+                        opposition = c("Opposition", "reject", "notincorpus"),
+                        taxglob = "tax*",
+                        taxregex = "tax.+$",
+                        country = c("United_States", "Sweden")))
 dfmat <- dfm(tokens(c("My Christmas was ruined by your opposition tax plan.",
                       "Does the United_States or Sweden have more progressive taxation?")))
 dfmat
