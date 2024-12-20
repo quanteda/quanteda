@@ -45,7 +45,8 @@ frequencies.}
 \item{sparsity}{equivalent to \code{1 - min_docfreq}, included for comparison
 with \pkg{tm}}
 
-\item{verbose}{print messages}
+\item{verbose}{if \code{TRUE} print the number of tokens and documents before and
+after the function is applied. The number of tokens does not include paddings.}
 }
 \value{
 A \link{dfm} reduced in features (with the same number of documents)

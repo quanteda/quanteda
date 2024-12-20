@@ -206,3 +206,12 @@ test_that("dfm_trim error with invalid input", {
         "The value of max_docfreq must be between 1 and Inf"
     )
 })
+
+test_that("dfm_trim() verbose works", {
+    dfmat <- dfm(tokens(data_corpus_inaugural[1:2]))
+    expect_message(
+        dfm_trim(dfmat, min_termfreq = 10, min_docfreq = 2, verbose = TRUE),
+        "dfm_trim() changed from 635 features (2 documents) to 19 features (2 documents)",
+        fixed = TRUE
+    )
+})

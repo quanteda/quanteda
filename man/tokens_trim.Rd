@@ -45,7 +45,8 @@ frequencies.}
 \item{padding}{if \code{TRUE}, leave an empty string where the removed tokens
 previously existed.}
 
-\item{verbose}{print messages}
+\item{verbose}{if \code{TRUE} print the number of tokens and documents before and
+after the function is applied. The number of tokens does not include paddings.}
 }
 \value{
 A \link{tokens} object with reduced size.
