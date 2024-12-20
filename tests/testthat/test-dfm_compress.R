@@ -78,3 +78,34 @@ test_that("add test for group_matrix with features and fill = TRUE", {
                dimnames = list(paste0("text", 1:2), c("a", "b", "c", "e")))
     )
 })
+
+test_that("dfm_compress() works with verbose options", {
+    mat <- rbind(dfm(tokens(c("b A A", "C C a b B")), tolower = FALSE, verbose = FALSE),
+                 dfm(tokens("A C C C C C"), tolower = FALSE, verbose = FALSE))
+    colnames(mat) <- char_tolower(featnames(mat))
+    
+    expect_message(
+        dfm_compress(mat, margin = "documents", verbose = TRUE),
+        "dfm_compress() changed from 5 features (3 documents) to 5 features (2 documents)",
+        fixed = TRUE
+    )
+    expect_message(
+        dfm_compress(mat, margin = "features", verbose = TRUE),
+        "dfm_compress() changed from 5 features (3 documents) to 3 features (3 documents)",
+        fixed = TRUE
+    )
+    expect_message(
+        dfm_compress(mat, verbose = TRUE),
+        "dfm_compress() changed from 5 features (3 documents) to 3 features (2 documents)",
+        fixed = TRUE
+    )
+})
+
+#' # dfm_compress examples
+#' dfmat <- rbind(dfm(tokens(c("b A A", "C C a b B")), tolower = FALSE),
+#'                dfm(tokens("A C C C C C"), tolower = FALSE))
+#' colnames(dfmat) <- char_tolower(featnames(dfmat))
+#' dfmat
+#' dfm_compress(dfmat, margin = "documents")
+#' dfm_compress(dfmat, margin = "features")
+#' dfm_compress(dfmat)

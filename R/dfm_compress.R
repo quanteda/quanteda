@@ -11,6 +11,7 @@
 #' @param margin character indicating on which margin to compress a dfm, either
 #'   `"documents"`, `"features"`, or `"both"` (default).  For fcm
 #'   objects, `"documents"` has no effect.
+#' @inheritParams messages
 #' @return `dfm_compress` returns a [dfm] whose dimensions have been
 #'   recombined by summing the cells across identical dimension names
 #'   ([docnames] or [featnames]).  The [docvars] will be
@@ -31,19 +32,21 @@
 #' dim(dfmatsubset)
 #' dim(dfm_compress(dfmatsubset))
 #'
-dfm_compress <- function(x, margin = c("both", "documents", "features")) {
+dfm_compress <- function(x, margin = c("both", "documents", "features"),
+                         verbose = quanteda_options("verbose")) {
     UseMethod("dfm_compress")
 }
 
 #' @export
 dfm_compress.default <- function(x,
-                                 margin = c("both", "documents", "features")) {
+                                 margin = c("both", "documents", "features"),
+                                 verbose = quanteda_options("verbose")) {
     check_class(class(x), "dfm_compress")
 }
 
 #' @export
-dfm_compress.dfm <- function(x, margin = c("both", "documents", "features")) {
-    
+dfm_compress.dfm <- function(x, margin = c("both", "documents", "features"),
+                             verbose = quanteda_options("verbose")) {
     x <- as.dfm(x)
     margin <- match.arg(margin)
     
@@ -56,10 +59,15 @@ dfm_compress.dfm <- function(x, margin = c("both", "documents", "features")) {
     if (margin %in% c("both", "features"))
         features <- factor(featnames(x), levels = unique(featnames(x)))
     
+    if (verbose)
+        before <- stats_dfm(x)
     x <- group_matrix(x, documents, features)
-    build_dfm(x, colnames(x),
-              unit = "documents",
-              docvars = group_docvars(attrs[["docvars"]], documents),
-              meta = attrs[["meta"]]
+    result <- build_dfm(x, colnames(x),
+                        unit = "documents",
+                        docvars = group_docvars(attrs[["docvars"]], documents),
+                        meta = attrs[["meta"]]
     )
+    if (verbose)
+        message_dfm("dfm_compress()", before, stats_dfm(result))
+    return(result)
 }
