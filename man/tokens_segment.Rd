@@ -11,7 +11,8 @@ tokens_segment(
   case_insensitive = TRUE,
   extract_pattern = FALSE,
   pattern_position = c("before", "after"),
-  use_docvars = TRUE
+  use_docvars = TRUE,
+  verbose = quanteda_options("verbose")
 )
 }
 \arguments{
@@ -38,6 +39,9 @@ text (as with punctuation delimiters)}
 segmented text; if \code{FALSE}, drop the docvars in the segmented corpus.
 Dropping the docvars might be useful in order to conserve space or if these
 are not desired for the segmented corpus.}
+
+\item{verbose}{if \code{TRUE} print the number of tokens and documents before and
+after the function is applied. The number of tokens does not include paddings.}
 }
 \value{
 \code{tokens_segment} returns a \link{tokens} object whose documents
@@ -65,5 +69,4 @@ tokens_segment(toks, c(".", "?", "!"), valuetype = "fixed",
                extract_pattern = TRUE,
                pattern_position = "after")
 }
-\keyword{internal}
 \keyword{tokens}

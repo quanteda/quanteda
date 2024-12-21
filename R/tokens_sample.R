@@ -7,6 +7,7 @@
 #' @param env an environment or a list object in which `x` is searched.
 #' Passed to [substitute] for non-standard evaluation.
 #' @inheritParams corpus_sample
+#' @inheritParams messages
 #' @export
 #' @return a [tokens] object (re)sampled on the documents, containing the document
 #'   variables for the documents sampled.
@@ -24,29 +25,37 @@
 #' docvars(toks)
 #' tokens_sample(toks, size = 2, replace = TRUE, by = Party) |> docnames()
 #'
-tokens_sample <- function(x, size = NULL, replace = FALSE, prob = NULL, by = NULL, env = NULL) {
+tokens_sample <- function(x, size = NULL, replace = FALSE, prob = NULL, by = NULL, 
+                          env = NULL, verbose = quanteda_options("verbose")) {
     UseMethod("tokens_sample")
 }
 
 #' @export
 tokens_sample.default <- function(x, size = NULL, replace = FALSE, prob = NULL, 
-                                  by = NULL, env = NULL) {
+                                  by = NULL, env = NULL, 
+                                  verbose = quanteda_options("verbose")) {
     check_class(class(x), "tokens_sample")
 }
     
 #' @export
 tokens_sample.tokens_xptr <- function(x, size = NULL, replace = FALSE, prob = NULL, 
-                                      by = NULL, env = NULL) {
+                                      by = NULL, env = NULL, 
+                                      verbose = quanteda_options("verbose")) {
     
+    verbose <- check_logical(verbose)
     if (is.null(env))
         env <- parent.frame()
     if (!missing(by)) {
         by <- eval(substitute(by), get_docvars(x, user = TRUE, system = TRUE), env)
         if (is.factor(by)) by <- droplevels(by)
     }
-
     i <- resample(seq_len(ndoc(x)), size = size, replace = replace, prob = prob, by = by)
-    return(x[i])
+    if (verbose)
+        before <- stats_tokens(x)
+    result <- x[i]
+    if (verbose)
+        message_tokens("tokens_sample()", before, stats_tokens(result))
+    return(result)
 }
 
 #' @export

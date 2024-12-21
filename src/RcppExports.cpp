@@ -286,6 +286,17 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// cpp_as_tokens
+List cpp_as_tokens(TokensPtr xptr);
+RcppExport SEXP _quanteda_cpp_as_tokens(SEXP xptrSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< TokensPtr >::type xptr(xptrSEXP);
+    rcpp_result_gen = Rcpp::wrap(cpp_as_tokens(xptr));
+    return rcpp_result_gen;
+END_RCPP
+}
 // cpp_as_list
 List cpp_as_list(TokensPtr xptr);
 RcppExport SEXP _quanteda_cpp_as_list(SEXP xptrSEXP) {
@@ -500,6 +511,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_quanteda_cpp_as_xptr", (DL_FUNC) &_quanteda_cpp_as_xptr, 2},
     {"_quanteda_cpp_copy_xptr", (DL_FUNC) &_quanteda_cpp_copy_xptr, 1},
     {"_quanteda_cpp_get_attributes", (DL_FUNC) &_quanteda_cpp_get_attributes, 1},
+    {"_quanteda_cpp_as_tokens", (DL_FUNC) &_quanteda_cpp_as_tokens, 1},
     {"_quanteda_cpp_as_list", (DL_FUNC) &_quanteda_cpp_as_list, 1},
     {"_quanteda_cpp_subset", (DL_FUNC) &_quanteda_cpp_subset, 2},
     {"_quanteda_cpp_ndoc", (DL_FUNC) &_quanteda_cpp_ndoc, 1},

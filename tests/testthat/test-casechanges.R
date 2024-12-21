@@ -76,3 +76,32 @@ test_that("works with empty objects (#2142)", {
                      character())
 
 })
+
+test_that("dfm_toupper() and dfm_tolower() work with verbose", {
+    dfmat <- dfm(tokens(c("b A A", "C C a b B")), tolower = FALSE)
+    expect_message(
+        dfm_tolower(dfmat, verbose = TRUE),
+        "dfm_tolower() changed from 5 features (2 documents) to 3 features (2 documents)",
+        fixed = TRUE
+    )
+    expect_message(
+        dfm_toupper(dfmat, verbose = TRUE),
+        "dfm_toupper() changed from 5 features (2 documents) to 3 features (2 documents)",
+        fixed = TRUE
+    )
+})
+
+test_that("fcm_toupper() and fcm_tolower() work with verbose", {
+    fcmat <- fcm(dfm(tokens(c("b A A", "C C a b B")), tolower = FALSE))
+    expect_message(
+        fcm_tolower(fcmat, verbose = TRUE),
+        "fcm_tolower() changed from 5 features (5 documents) to 3 features (3 documents)",
+        fixed = TRUE
+    )
+    expect_message(
+        fcm_toupper(fcmat, verbose = TRUE),
+        "fcm_toupper() changed from 5 features (5 documents) to 3 features (3 documents)",
+        fixed = TRUE
+    )
+})
+

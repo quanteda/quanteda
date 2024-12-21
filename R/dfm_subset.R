@@ -10,18 +10,10 @@
 #' @param x [dfm] object to be subsetted.
 #' @inheritParams corpus_subset
 #' @inheritParams tokens_subset
-# @param select expression, indicating the docvars to select from the dfm; or a
-#   \link{dfm} object, in which case the returned dfm will contain the same
-#   documents as the original dfm, even if these are empty.  See Details.
+#' @inheritParams messages
 #' @return [dfm] object, with a subset of documents (and docvars) selected
 #'   according to arguments
-#' @details When `select` is a dfm, then the returned dfm will be equal in
-#'   document dimension and order to the dfm used for selection.  This is the
-#'   document-level version of using [dfm_select()] where
-#'   `pattern` is a dfm: that function matches features, while
-#'   `dfm_subset` will match documents.
 #' @export
-#' @seealso [subset.data.frame()]
 #' @keywords dfm
 #' @examples
 #' corp <- corpus(c(d1 = "a b c d", d2 = "a a b e",
@@ -33,19 +25,24 @@
 #' # selecting on a supplied vector
 #' dfm_subset(dfmat, c(TRUE, FALSE, TRUE, FALSE))
 dfm_subset <- function(x, subset, min_ntoken = NULL, max_ntoken = NULL, 
-                       drop_docid = TRUE, ...) {
+                       drop_docid = TRUE, verbose = quanteda_options("verbose"), 
+                       ...) {
     UseMethod("dfm_subset")
 }
     
 #' @export
 dfm_subset.default <- function(x, subset, min_ntoken = NULL, max_ntoken = NULL, 
-                               drop_docid = TRUE, ...) {
+                               drop_docid = TRUE, 
+                               verbose = quanteda_options("verbose"),
+                               ...) {
     check_class(class(x), "dfm_subset")
 }
     
 #' @export
 dfm_subset.dfm <- function(x, subset, min_ntoken = NULL, max_ntoken = NULL,
-                           drop_docid = TRUE, ...) {
+                           drop_docid = TRUE, 
+                           verbose = quanteda_options("verbose"),
+                           ...) {
     
     x <- as.dfm(x)
     min_ntoken <- check_integer(min_ntoken, min = 0, allow_null = TRUE)
@@ -70,6 +67,10 @@ dfm_subset.dfm <- function(x, subset, min_ntoken = NULL, max_ntoken = NULL,
         if (is.null(max_ntoken)) max_ntoken <- max(n)
         min_ntoken <= n & n <= max_ntoken
     }
-    
-    return(x[r & l,,drop_docid = drop_docid])
+    if (verbose)
+        before <- stats_dfm(x)
+    x <- x[r & l,,drop_docid = drop_docid]
+    if (verbose)
+        message_dfm("dfm_subset()", before, stats_dfm(x))
+    return(x)
 }

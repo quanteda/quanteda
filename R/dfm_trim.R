@@ -34,7 +34,7 @@
 #'   frequencies.
 #' @param sparsity equivalent to `1 - min_docfreq`, included for comparison
 #'   with \pkg{tm}
-#' @param verbose print messages
+#' @inheritParams messages
 #' @return A [dfm] reduced in features (with the same number of documents)
 #' @export
 #' @note Trimming a [dfm] object is an operation based on the *values*
@@ -130,12 +130,12 @@ dfm_trim.dfm <- function(x,
                        min_termfreq, max_termfreq, termfreq_type, 
                        min_docfreq, max_docfreq, docfreq_type)
     
+    if (verbose)
+        before <- stats_dfm(x)
     x <- dfm_select(x, f, valuetype = "fixed", case_insensitive = FALSE, 
                     verbose = FALSE)
-    
-    # if (verbose) # TODO: print verbose message 
-    #    print()
-    
+    if (verbose)
+        message_dfm("dfm_trim()", before, stats_dfm(x))    
     return(x)
 }
 

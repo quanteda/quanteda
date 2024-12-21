@@ -2,6 +2,10 @@
 
 ## Changes and additions
 
+* Made the `c` operation on `tokens` and `tokens_xptr` objects significantly faster.
+
+* New, and more consistent verbose messages for tokens and dfm objects.
+
 * Preserve the default `concatenator` of tokens objects in `tokens_compound()` (#2432).
 
 * Make the `c` operation on `tokens` and `tokens_xptr` objects significantly faster. 
@@ -9,6 +13,7 @@
 ## Bug fixes and stability enhancements
 
 * Fix a bug in `dfm_lookup()` that leads to wrong feature names when `exclusive = TRUE` (#2424).
+
 
 # quanteda 4.1
 

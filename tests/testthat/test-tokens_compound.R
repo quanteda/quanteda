@@ -42,6 +42,11 @@ test_that("tokens_compound join tokens correctly", {
              c("aaa", "bbb", "ccc", "ddd", "eee", "fff", "ggg"),
              c("a_b", "b_c", "c_d", "d_e_e_f", "f_g"))
     )
+    
+    expect_message(
+        tokens_compound(toks, seqs, verbose = TRUE),
+        "tokens_compound() changed", fixed = TRUE
+    )
   
 })
 

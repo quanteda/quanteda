@@ -3,6 +3,7 @@
 #' `tokens_tolower()` and `tokens_toupper()` convert the features of a
 #' [tokens] object and re-index the types.
 #' @inheritParams char_tolower
+#' @inheritParams messages
 #' @importFrom stringi stri_trans_tolower
 #' @export
 #' @examples
@@ -134,6 +135,7 @@ char_toupper.character <- function(x) {
 #' `dfm_tolower()` and `dfm_toupper()` convert the features of the dfm or
 #' fcm to lower and upper case, respectively, and then recombine the counts.
 #' @inheritParams char_tolower
+#' @inheritParams messages
 #' @importFrom stringi stri_trans_tolower
 #' @export
 #' @examples
@@ -143,42 +145,58 @@ char_toupper.character <- function(x) {
 #' dfm_tolower(dfmat)
 #' dfm_toupper(dfmat)
 #'
-dfm_tolower <- function(x, keep_acronyms = FALSE) {
+dfm_tolower <- function(x, keep_acronyms = FALSE,
+                        verbose = quanteda_options("verbose")) {
     UseMethod("dfm_tolower")
 }
 
 #' @export
-dfm_tolower.default <- function(x, keep_acronyms = FALSE) {
+dfm_tolower.default <- function(x, keep_acronyms = FALSE,
+                                verbose = quanteda_options("verbose")) {
     check_class(class(x), "dfm_tolower")
 }
 
 #' @export
-dfm_tolower.dfm <- function(x, keep_acronyms = FALSE) {
+dfm_tolower.dfm <- function(x, keep_acronyms = FALSE,
+                            verbose = quanteda_options("verbose")) {
     x <- as.dfm(x)
     keep_acronyms <- check_logical(keep_acronyms)
     if (!nfeat(x)) return(x)
     set_dfm_featnames(x) <- lowercase_types(featnames(x), keep_acronyms)
-    dfm_compress(x, margin = "features")
+    if (verbose)
+        before <- stats_dfm(x)
+    x <- dfm_compress(x, margin = "features")
+    if (verbose)
+        message_dfm("dfm_tolower()", before, stats_dfm(x))    
+    return(x)
 }
 
 #' @rdname dfm_tolower
 #' @importFrom stringi stri_trans_toupper
 #' @export
-dfm_toupper <- function(x) {
+dfm_toupper <- function(x,
+                        verbose = quanteda_options("verbose")) {
     UseMethod("dfm_toupper")
 }
 
 #' @export
-dfm_toupper.default <- function(x) {
+dfm_toupper.default <- function(x,
+                                verbose = quanteda_options("verbose")) {
     check_class(class(x), "dfm_toupper")
 }
 
 #' @export
-dfm_toupper.dfm <- function(x) {
+dfm_toupper.dfm <- function(x,
+                            verbose = quanteda_options("verbose")) {
     x <- as.dfm(x)
     if (!nfeat(x)) return(x)
     set_dfm_featnames(x) <- char_toupper(featnames(x))
-    dfm_compress(x, margin = "features")
+    if (verbose)
+        before <- stats_dfm(x)
+    x <- dfm_compress(x, margin = "features")
+    if (verbose)
+        message_dfm("dfm_toupper()", before, stats_dfm(x))    
+    return(x)
 }
 
 #' @rdname dfm_tolower
@@ -194,38 +212,54 @@ dfm_toupper.dfm <- function(x) {
 #' fcmat
 #' fcm_tolower(fcmat)
 #' fcm_toupper(fcmat)
-fcm_tolower <- function(x, keep_acronyms = FALSE) {
+fcm_tolower <- function(x, keep_acronyms = FALSE,
+                        verbose = quanteda_options("verbose")) {
     UseMethod("fcm_tolower")
 }
 
 #' @export
-fcm_tolower.default <- function(x, keep_acronyms = FALSE) {
+fcm_tolower.default <- function(x, keep_acronyms = FALSE,
+                                verbose = quanteda_options("verbose")) {
     check_class(class(x), "fcm_tolower")
 }
 
 #' @export
-fcm_tolower.fcm <- function(x, keep_acronyms = FALSE) {
+fcm_tolower.fcm <- function(x, keep_acronyms = FALSE,
+                            verbose = quanteda_options("verbose")) {
     x <- as.fcm(x)
     keep_acronyms <- check_logical(keep_acronyms)
     set_fcm_featnames(x) <- lowercase_types(featnames(x), keep_acronyms)
-    fcm_compress(x)
+    if (verbose)
+        before <- stats_dfm(x)
+    x <- fcm_compress(x)
+    if (verbose)
+        message_dfm("fcm_tolower()", before, stats_dfm(x))    
+    return(x)
 }
 
 #' @rdname dfm_tolower
 #' @importFrom stringi stri_trans_toupper
 #' @export
-fcm_toupper <- function(x) {
+fcm_toupper <- function(x,
+                        verbose = quanteda_options("verbose")) {
     UseMethod("fcm_toupper")
 }
 
 #' @export
-fcm_toupper.default <- function(x) {
+fcm_toupper.default <- function(x,
+                                verbose = quanteda_options("verbose")) {
     check_class(class(x), "fcm_toupper")
 }
 
 #' @export
-fcm_toupper.fcm <- function(x) {
+fcm_toupper.fcm <- function(x,
+                            verbose = quanteda_options("verbose")) {
     x <- as.fcm(x)
     set_fcm_featnames(x) <- char_toupper(colnames(x))
-    fcm_compress(x)
+    if (verbose)
+        before <- stats_dfm(x)
+    x <- fcm_compress(x)
+    if (verbose)
+        message_dfm("fcm_toupper()", before, stats_dfm(x))    
+    return(x)
 }

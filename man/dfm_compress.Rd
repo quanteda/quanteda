@@ -5,7 +5,11 @@
 \alias{fcm_compress}
 \title{Recombine a dfm or fcm by combining identical dimension elements}
 \usage{
-dfm_compress(x, margin = c("both", "documents", "features"))
+dfm_compress(
+  x,
+  margin = c("both", "documents", "features"),
+  verbose = quanteda_options("verbose")
+)
 
 fcm_compress(x)
 }
@@ -15,6 +19,9 @@ fcm_compress(x)
 \item{margin}{character indicating on which margin to compress a dfm, either
 \code{"documents"}, \code{"features"}, or \code{"both"} (default).  For fcm
 objects, \code{"documents"} has no effect.}
+
+\item{verbose}{if \code{TRUE} print the number of tokens and documents before and
+after the function is applied. The number of tokens does not include paddings.}
 }
 \value{
 \code{dfm_compress} returns a \link{dfm} whose dimensions have been

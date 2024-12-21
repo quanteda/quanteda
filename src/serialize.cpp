@@ -128,9 +128,9 @@ lis2 <- replicate(10, sample(c("", LETTERS)), simplify = FALSE)
 
 out1 <- cpp_serialize(lis1)
 quanteda:::cpp_get_attributes(out1)
-#unclass(quanteda:::cpp_as_list(out1))
+#unclass(quanteda:::cpp_as_tokens(out1))
 out2 <- cpp_serialize_add(lis2, out1)
 quanteda:::cpp_get_attributes(out2)
-#unclass(quanteda:::cpp_as_list(out2))
+#unclass(quanteda:::cpp_as_tokens(out2))
 
 */

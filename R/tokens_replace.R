@@ -14,7 +14,7 @@
 #'   of character vectors of the same length as `pattern`
 #' @inheritParams apply_if
 #' @inheritParams valuetype
-#' @param verbose print status messages if `TRUE`
+#' @inheritParams messages
 #' @export
 #' @seealso tokens_lookup
 #' @examples
@@ -61,22 +61,28 @@ tokens_replace.tokens_xptr <- function(x, pattern, replacement, valuetype = "glo
 
     apply_if <- check_logical(apply_if, min_len = ndoc(x), max_len = ndoc(x),
                                allow_null = TRUE, allow_na = TRUE)
+    verbose <- check_logical(verbose)
 
     type <- get_types(x)
     attrs <- attributes(x)
     type <- union(type, unlist(replacement, use.names = FALSE))
     conc <- field_object(attrs, "concatenator")
 
+    if (is.null(apply_if))
+        apply_if <- rep(TRUE, length.out = ndoc(x))
+    if (verbose)
+        before <- stats_tokens(x)
+    
     ids_pat <- object2id(pattern, type, valuetype, case_insensitive, conc, keep_nomatch = FALSE)
     ids_rep <- object2id(replacement, type, "fixed", FALSE, conc, keep_nomatch = TRUE)
     set_types(x) <- type
-
-    if (is.null(apply_if))
-        apply_if <- rep(TRUE, length.out = ndoc(x))
+    
     result <- cpp_tokens_replace(x, ids_pat, ids_rep[attr(ids_pat, "pattern")], !apply_if,
                                  get_threads())
-
-    rebuild_tokens(result, attrs)
+    result <- rebuild_tokens(result, attrs)
+    if (verbose)
+        message_tokens("tokens_replace()", before, stats_tokens(result))
+    return(result)
 }
 
 #' @export

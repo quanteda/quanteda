@@ -10,6 +10,7 @@
 #'   [getStemLanguages][SnowballC::getStemLanguages], or a two- or three-letter ISO-639 code
 #'   corresponding to one of these languages (see references for the list of
 #'   codes)
+#' @inheritParams messages
 #' @seealso [wordStem][SnowballC::wordStem]
 #'
 #' @references <https://snowballstem.org/>
@@ -17,7 +18,7 @@
 #'   <http://www.iso.org/iso/home/standards/language_codes.htm> for the
 #'   ISO-639 language codes
 #' @export
-#' @return `tokens_wordstem` returns a [tokens] object whose word
+#' @return [tokens_wordstem()] returns a [tokens] object whose word
 #'   types have been stemmed.
 #' @examples
 #' # example applied to tokens
@@ -26,20 +27,26 @@
 #' th <- tokens(txt)
 #' tokens_wordstem(th)
 #'
-tokens_wordstem <- function(x, language = quanteda_options("language_stemmer")) {
+tokens_wordstem <- function(x, language = quanteda_options("language_stemmer"),
+                            verbose = quanteda_options("verbose")) {
     UseMethod("tokens_wordstem")
 }
 
 #' @export
-tokens_wordstem.default <- function(x, language = quanteda_options("language_stemmer")) {
+tokens_wordstem.default <- function(x, language = quanteda_options("language_stemmer"),
+                                    verbose = quanteda_options("verbose")) {
     check_class(class(x), "tokens_wordstem")
 }
 
 #' @importFrom stringi stri_split_fixed stri_paste_list
 #' @export
-tokens_wordstem.tokens_xptr <- function(x, language = quanteda_options("language_stemmer")) {
+tokens_wordstem.tokens_xptr <- function(x, language = quanteda_options("language_stemmer"),
+                                        verbose = quanteda_options("verbose")) {
     
+    verbose <- check_logical(verbose)
     attrs <- attributes(x)
+    if (verbose)
+        before <- stats_tokens(x)
     if (identical(field_object(attrs, "ngram"), 1L)) {
         set_types(x) <- char_wordstem(get_types(x), language = language, check_whitespace = FALSE)
     } else {
@@ -49,7 +56,10 @@ tokens_wordstem.tokens_xptr <- function(x, language = quanteda_options("language
             language = language
             )
     }
-    rebuild_tokens(x, attrs)
+    result <- rebuild_tokens(x, attrs)
+    if (verbose)
+        message_tokens("tokens_wordstem()", before, stats_tokens(result))
+    return(result)
 }
 
 #' @export
@@ -61,7 +71,7 @@ tokens_wordstem.tokens <- function(x, ...) {
 #' @param check_whitespace logical; if `TRUE`, stop with a warning when trying
 #'   to stem inputs containing whitespace
 #' @export
-#' @return `char_wordstem` returns a [character] object whose word
+#' @return [char_wordstem()] returns a [character] object whose word
 #'   types have been stemmed.
 #' @examples
 #' # simple example
@@ -92,7 +102,7 @@ char_wordstem.character <- function(x, language = quanteda_options("language_ste
 
 
 #' @rdname tokens_wordstem
-#' @return `dfm_wordstem` returns a [dfm] object whose word
+#' @return [dfm_wordstem()] returns a [dfm] object whose word
 #'   types (features) have been stemmed, and recombined to consolidate features made
 #'   equivalent because of stemming.
 #' @examples
@@ -101,18 +111,21 @@ char_wordstem.character <- function(x, language = quanteda_options("language_ste
 #' dfm_wordstem(origdfm)
 #'
 #' @export
-dfm_wordstem <- function(x, language = quanteda_options("language_stemmer")) {
+dfm_wordstem <- function(x, language = quanteda_options("language_stemmer"),
+                         verbose = quanteda_options("verbose")) {
     UseMethod("dfm_wordstem")
 }
 
 #' @export
-dfm_wordstem.default <- function(x, language = quanteda_options("language_stemmer")) {
+dfm_wordstem.default <- function(x, language = quanteda_options("language_stemmer"),
+                                 verbose = quanteda_options("verbose")) {
     check_class(class(x), "dfm_wordstem")
 }
 
 #' @noRd
 #' @export
-dfm_wordstem.dfm <- function(x, language = quanteda_options("language_stemmer")) {
+dfm_wordstem.dfm <- function(x, language = quanteda_options("language_stemmer"),
+                             verbose = quanteda_options("verbose")) {
     x <- as.dfm(x)
     attrs <- attributes(x)
     if (identical(field_object(attrs, "ngram"), 1L)) {
@@ -124,7 +137,13 @@ dfm_wordstem.dfm <- function(x, language = quanteda_options("language_stemmer"))
             language
         )
     }
-    dfm_compress(x, margin = "features")
+    
+    if (verbose)
+        before <- stats_dfm(x)
+    x <- dfm_compress(x, margin = "features")
+    if (verbose)
+        message_dfm("dfm_wordstem()", before, stats_dfm(x))    
+    return(x)
 }
 
 
