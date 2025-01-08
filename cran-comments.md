@@ -1,14 +1,12 @@
-# Resubmission
-
-We have done our best to address the UBSAN issues flagged in our recent submission (and showing on the current CRAN version).  This includes working with the Rcpp team - see https://github.com/RcppCore/Rcpp/issues/1326.  This bug was very hard to reproduce and the Rcpp team even suspected that it might be a bug in the sanitizer, but by changing a variable type (https://github.com/quanteda/quanteda/pull/2423/files) we seem to be avoiding the sanitizer exceptions now, at least on the setup we are able to test.
-
 # Submission notes
 
 Fixed:
-- Warnings and additional issues noted with 4.0.2.
+- Bugs in 4.1.0
+- Improved output messages
+- Improved minor behaviours of some functions
 
 Checked on: 
-* local macOS 14.4.1, R 4.4.1 and devtools::check_mac_release()
+* local macOS 15.0.1, R 4.4.2 and devtools::check_mac_release()
 * Windows release via devtools::check_win_release()
 * Windows devel via devtools::check_win_devel()
 * Windows oldrelease via devtools::check_win_oldrelease()

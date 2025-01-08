@@ -6,7 +6,7 @@ data](https://cdn.rawgit.com/quanteda/quanteda/master/images/quanteda_logo.svg)]
 
 [![CRAN
 Version](https://www.r-pkg.org/badges/version/quanteda)](https://CRAN.R-project.org/package=quanteda)
-[![](https://img.shields.io/badge/devel%20version-4.0.2-royalblue.svg)](https://github.com/quanteda/quanteda)
+[![](https://img.shields.io/badge/devel%20version-4.2.0-royalblue.svg)](https://github.com/quanteda/quanteda)
 [![Downloads](https://cranlogs.r-pkg.org/badges/quanteda)](https://CRAN.R-project.org/package=quanteda)
 [![Total
 Downloads](https://cranlogs.r-pkg.org/badges/grand-total/quanteda?color=orange)](https://CRAN.R-project.org/package=quanteda)
@@ -104,9 +104,6 @@ sudo yum install tbb-devel
 sudo apt install libtbb-dev
 ```
 
-Windows or macOS users do not have to install TBB or any other packages
-to enable parallel computing when installing **quanteda** from CRAN.
-
 ### Compile from source (macOS and Windows)
 
 Because this compiles some C++ and Fortran source code, you will need to
@@ -137,6 +134,66 @@ Finally, you will need to install
 
 Install [RTools](https://cran.r-project.org/bin/windows/Rtools/), which
 includes the TBB libraries.
+
+### Enable parallelisation
+
+**quanteda** takes advantage of parallel computing through the [TBB
+(Threading Building Blocks)
+library](https://en.wikipedia.org/wiki/Threading_Building_Blocks) to
+speed up computations. This guide provides step-by-step instructions on
+how to set up your system for using Quanteda with parallel capabilities
+on Windows, macOS, and Linux.
+
+**Windows:**
+
+Download and install RTools from [RTools download
+page](https://cran.r-project.org/bin/windows/Rtools/).
+
+**macOS:**
+
+1.  **Install XCode Command Line Tools**
+    - Type the following command in the terminal:
+
+      ``` bash
+      xcode-select --install
+      ```
+2.  **Install Homebrew**
+    - If Homebrew is not installed, run:
+
+      ``` bash
+      /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+      ```
+3.  **Install TBB and pkg-config**
+    - After installing Homebrew, run:
+
+      ``` bash
+      brew install tbb pkg-config
+      ```
+4.  **Install gfortran**
+    - Required for compiling Fortran code, install using Homebrew:
+
+      ``` bash
+      brew install gcc
+      ```
+
+**Linux:**
+
+Install TBB:
+
+- For Fedora, CentOS, RHEL:
+
+  ``` bash
+  sudo yum install tbb-devel
+  ```
+
+- For Debian and Ubuntu:
+
+  ``` bash
+  sudo apt install libtbb-dev
+  ```
+
+More details are provided in the [quanteda
+documentation](http://quanteda.io/articles/pkgdown/parallelisation.html).
 
 ### Use **quanteda**
 
