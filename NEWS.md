@@ -1,3 +1,9 @@
+# quanteda 4.2.1
+
+## Changes and additions
+
+* Added `corpus_chunk()` for chunking texts into smaller documents.
+
 # quanteda 4.2.0
 
 ## Changes and additions
