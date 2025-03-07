@@ -12,7 +12,7 @@ using namespace quanteda;
 // [[Rcpp::export]]
 TokensPtr cpp_tokens_combine(TokensPtr xptr1, 
                              TokensPtr xptr2,
-                             bool clear = false,
+                             bool destroy = false,
                              const int thread = -1) {
     
     //dev::Timer timer;
@@ -56,7 +56,7 @@ TokensPtr cpp_tokens_combine(TokensPtr xptr1,
     }
 #endif
     //dev::stop_timer("Shift", timer);
-    if (clear) {
+    if (destroy) {
         R_ClearExternalPtr(xptr1);
         R_ClearExternalPtr(xptr2);
     }
