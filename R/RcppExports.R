@@ -29,8 +29,8 @@ cpp_tokens_chunk <- function(xptr, size, overlap, thread = -1L) {
     .Call(`_quanteda_cpp_tokens_chunk`, xptr, size, overlap, thread)
 }
 
-cpp_tokens_combine <- function(xptr1, xptr2, thread = -1L) {
-    .Call(`_quanteda_cpp_tokens_combine`, xptr1, xptr2, thread)
+cpp_tokens_combine <- function(xptr1, xptr2, clear = FALSE, thread = -1L) {
+    .Call(`_quanteda_cpp_tokens_combine`, xptr1, xptr2, clear, thread)
 }
 
 cpp_tokens_compound <- function(xptr, compounds_, delim_, join, keep, window_left, window_right, bypass_, thread = -1L) {

@@ -244,7 +244,7 @@ combine_tokens <- function(..., destroy = FALSE) {
     result <- cpp_tokens_combine(x[[1]], x[[2]], destroy, get_threads())
     if (length(x) == 2) return(result)
     for (i in seq(3, length(x)))
-        result <- combine_tokens(result, x[[i]], destroy)
+        result <- combine_tokens(result, as.tokens_xptr(x[[i]]), destroy = TRUE)
     return(result)
 }
 
