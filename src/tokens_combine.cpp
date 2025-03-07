@@ -5,13 +5,14 @@ using namespace quanteda;
 
 /* 
  * Function to combine tokens objects
- * @used tokens_segment()
+ * @used c()
  * @creator Kohei Watanabe
  */
 
 // [[Rcpp::export]]
 TokensPtr cpp_tokens_combine(TokensPtr xptr1, 
                              TokensPtr xptr2,
+                             bool clear = false,
                              const int thread = -1) {
     
     //dev::Timer timer;
@@ -55,7 +56,10 @@ TokensPtr cpp_tokens_combine(TokensPtr xptr1,
     }
 #endif
     //dev::stop_timer("Shift", timer);
-    
+    if (clear) {
+        R_ClearExternalPtr(xptr1);
+        R_ClearExternalPtr(xptr2);
+    }
     TokensObj *ptr = new TokensObj(texts, types, false);
     return TokensPtr(ptr, true);
 }

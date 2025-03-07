@@ -237,14 +237,14 @@ c.tokens <- function(...) {
     as.tokens(do.call(c, lapply(x, as.tokens_xptr)))
 }
 
-combine_tokens <- function(...) {
+combine_tokens <- function(..., destroy = FALSE) {
     x <- list(...)
     if (length(x) == 1) 
         return(x[[1]])
-    result <- cpp_tokens_combine(x[[1]], x[[2]], get_threads())
+    result <- cpp_tokens_combine(x[[1]], x[[2]], destroy, get_threads())
     if (length(x) == 2) return(result)
     for (i in seq(3, length(x)))
-        result <- combine_tokens(result, x[[i]])
+        result <- combine_tokens(result, x[[i]], destroy)
     return(result)
 }
 
