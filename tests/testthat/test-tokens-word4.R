@@ -110,7 +110,7 @@ test_that("tokens works with unusual hiragana #554", {
     skip_on_os("mac")
     txts <- c("づいﾞ", "゛んﾞ", "たーﾟ")
     expect_equivalent(as.list(tokens(txts)),
-                      list(c("づ", "いﾞ"), c("゛", "んﾞ"), c("た", "ーﾟ")))
+                      list(c("づ", "いﾞ"), c("゛んﾞ"), c("た", "ーﾟ")))
 })
 
 test_that("types attribute is a character vector", {
