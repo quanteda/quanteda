@@ -114,6 +114,7 @@ Collate:
     'fcm-subsetting.R'
     'fcm.R'
     'fcm_select.R'
+    'freq-functions.R'
     'index.R'
     'kwic.R'
     'message.R'
