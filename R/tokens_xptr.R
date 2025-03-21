@@ -100,6 +100,9 @@ ntype.tokens_xptr <- function(x, remove_padding = FALSE, ...) {
 }
 
 #' @export
+nfeat.tokens_xptr <- ntype.tokens_xptr 
+
+#' @export
 ntoken.tokens_xptr <- function(x, remove_padding = FALSE, ...) {
     remove_padding <- check_logical(remove_padding)
     if (length(list(...)))
@@ -225,6 +228,16 @@ tokens_tolower.tokens_xptr <- function(x, keep_acronyms = FALSE) {
 tokens_toupper.tokens_xptr <- function(x) {
     set_types(x) <- char_toupper(types(x))
     return(x)
+}
+
+#' @export
+featfreq.tokens_xptr <- function(x) {
+    cpp_get_freq(x, no_padding = TRUE)
+}
+
+#' @export
+docfreq.tokens_xptr <- function(x) {
+    cpp_get_freq(x, boolean = TRUE, no_padding = TRUE)
 }
 
 # internal functions ----------------------------------------

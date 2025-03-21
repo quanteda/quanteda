@@ -181,6 +181,9 @@ ntype.tokens <- function(x, remove_padding = FALSE, ...) {
     ntype(as.tokens_xptr(x), remove_padding, ...)
 }
 
+#' @export
+nfeat.tokens <- ntype.tokens
+
 
 #' Count the number of sentences
 #'
