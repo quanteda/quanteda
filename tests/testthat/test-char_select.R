@@ -93,15 +93,20 @@ test_that("test that char_remove and char_select work as shortcuts", {
 test_that("char_select works with edge cases", {
     txt <- c(c1 = "aa", c2 = "ab", c3 = "aa", c4 = "bcd", c5 = "bcd")
 
-    expect_identical(char_select(txt, "x*"), NULL)
+    expect_identical(char_select(txt, "x*"), 
+                     structure(character(), names = character()))
     expect_identical(char_select(txt, "x*", selection = "remove"), txt)
     
     expect_identical(char_select(txt, c("aa*", "x*")), c(c1 = "aa", c3 = "aa"))
     expect_identical(char_remove(txt, c("aa*", "x*")), 
                      c(c2 = "ab", c4 = "bcd", c5 = "bcd"))
     
-    expect_identical(char_remove(txt, "*"), character())
-    expect_identical(char_remove(unname(txt), "*"), character())
+    expect_identical(char_remove(txt, "*"), 
+                     structure(character(), names = character()))
+    expect_identical(char_keep(unname(txt), "*"), 
+                     unname(txt))
+    expect_identical(char_remove(unname(txt), "*"), 
+                     character())
     
     expect_identical(char_keep(txt, "*"), txt)
 })
