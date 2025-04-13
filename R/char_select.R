@@ -39,27 +39,21 @@ char_select.default <- function(x, ...) {
 char_select.character <- function(x, pattern, selection = c("keep", "remove"),
                                   valuetype = c("glob", "fixed", "regex"),
                                   case_insensitive = TRUE) {
+    
     valuetype <- match.arg(valuetype)
     selection <- match.arg(selection)
     
-    if (is.dictionary(pattern))
-        pattern <- unique(unlist(as.list(pattern), use.names = FALSE))
-    if (is.collocations(pattern))
-        pattern <- pattern[["collocation"]]
+    ids <- object2id(pattern, types = x, 
+                     valuetype = valuetype, 
+                     case_insensitive = case_insensitive)
+    id <- unlist_integer(ids)
     
-    result <- 
-        pattern2fixed(pattern = pattern, types = x, 
-                      valuetype = valuetype, 
-                      case_insensitive = case_insensitive) |>
-        unlist()
-
-    if (selection == "remove") {
-        result <- x[!(x %in% result)]
-        if (!length(result)) 
-            result <- character(0) # avoids named character(0)
+    if (selection == "keep") {
+        result <- x[seq_along(x) %in% id]
+    } else {
+        result <- x[!seq_along(x) %in% id]
     }
-    
-    result
+    return(result)
 }
 
 #' @rdname char_select
