@@ -112,27 +112,27 @@ test_that("char_select works with edge cases", {
 })
 
 test_that("char_select works with list pattern", {
-    txt <- c(c1 = "aa", c2 = "ab", c3 = "aa", c4 = "bcd", c5 = "bcd")
+    txt <- c(c1 = "aa", c2 = "ab", c3 = "aa bb", c4 = "bcd", c5 = "bcd")
     
     expect_identical(
-        char_keep(txt, list("x*", "b*")), 
-        c(c4 = "bcd", c5 = "bcd")
+        char_keep(txt, list("x*", "b*", "aa b*")), 
+        c(c3 = "aa bb", c4 = "bcd", c5 = "bcd")
     )
     expect_identical(
-        char_remove(txt, list("x*", "b*")), 
-        c(c1 = "aa", c2 = "ab", c3 = "aa")
+        char_remove(txt, list("x*", "b*", "aa b*")), 
+        c(c1 = "aa", c2 = "ab")
     )
 })
 
 test_that("char_select works with dictionary pattern", {
-    txt <- c(c1 = "aa", c2 = "ab", c3 = "aa", c4 = "bcd", c5 = "bcd")
-    patt <- dictionary(list(one = "x*", two = "b*"))
+    txt <- c(c1 = "aa", c2 = "ab", c3 = "aa bb", c4 = "bcd", c5 = "bcd")
+    patt <- dictionary(list(one = "x*", two = "b*", three = "aa b*"))
     expect_identical(
         char_keep(txt, patt),
-        c(c4 = "bcd", c5 = "bcd")
+        c(c3 = "aa bb", c4 = "bcd", c5 = "bcd")
     )
     expect_identical(
         char_remove(txt, patt), 
-        c(c1 = "aa", c2 = "ab", c3 = "aa")
+        c(c1 = "aa", c2 = "ab")
     )
 })
