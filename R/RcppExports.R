@@ -65,6 +65,10 @@ cpp_tokens_select <- function(xptr, words_, mode, padding, window_left, window_r
     .Call(`_quanteda_cpp_tokens_select`, xptr, words_, mode, padding, window_left, window_right, pos_from_, pos_to_, bypass_, thread)
 }
 
+cpp_xptr <- function() {
+    .Call(`_quanteda_cpp_xptr`)
+}
+
 cpp_as_xptr <- function(text_, types_) {
     .Call(`_quanteda_cpp_as_xptr`, text_, types_)
 }
