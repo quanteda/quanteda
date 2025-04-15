@@ -280,14 +280,9 @@ tokens.corpus <- function(x,
     
     x <- as.corpus(x)
     
-    if (verbose) {
-        if (xptr) {
-            catm("Creating a tokens_xptr from a", global$object_class, "object...\n")
-        } else {
-            catm("Creating a tokens from a", global$object_class, "object...\n")
-        }
-    }
-        
+    if (verbose)
+        catm("Creating a", if (xptr) "tokens_xptr" else "tokens", 
+             "from a", global$object_class, "object...\n")
     
     what <- match.arg(what, c("word", paste0("word", 1:4), 
                               "sentence", "character",
@@ -390,17 +385,12 @@ tokens.corpus <- function(x,
     if (verbose) {
         n <- length(types(result))
         catm(" ...", format(n, big.mark = ",", trim = TRUE),
-             " unique type", if (n == 1) "" else "s", "\n", sep = "")
+             "unique", if (n > 1) "types" else "type", "\n")
         catm(" ...complete, elapsed time:",
              format((proc.time() - global$proc_time)[3], digits = 3), "seconds.\n")
-        
-        if (xptr) {
-            catm("Finished constructing tokens_xptr from ", format(ndoc(result), big.mark = ","), " document",
-                 if (ndoc(result) > 1) "s", ".\n", sep = "")
-        } else {
-            catm("Finished constructing tokens from ", format(ndoc(result), big.mark = ","), " document",
-                 if (ndoc(result) > 1) "s", ".\n", sep = "")
-        }
+        catm("Finished constructing", if (xptr) "tokens_xptr" else "tokens", 
+             "from", format(ndoc(result), big.mark = ","), "document",
+             if (ndoc(result) > 1) "documents" else "document", ".\n")
     }
     global$object_class <- NULL
     return(result)
@@ -442,6 +432,9 @@ tokens.tokens_xptr <-  function(x,
     concatenator <- check_character(concatenator)
     verbose <- check_logical(verbose)
     check_dots(..., method = c("tokens", "tokenize_word4"))
+    
+    if (verbose)
+        catm("Creating a",  global$object_class, "from a", global$object_class, "object...\n")
     
     # splits
     if (split_hyphens) {
@@ -490,6 +483,16 @@ tokens.tokens_xptr <-  function(x,
         set_concatenator(x) <- concatenator
     }
     
+    if (verbose) {
+        n <- length(types(x))
+        catm(" ...", format(n, big.mark = ",", trim = TRUE),
+            "unique", if (n > 1) "types" else "type", "\n")
+        catm(" ...complete, elapsed time:",
+             format((proc.time() - global$proc_time)[3], digits = 3), "seconds.\n")
+        catm("Finished constructing", global$object_class, "from", 
+             format(ndoc(x), big.mark = ","),
+             if (ndoc(x) > 1) "documents" else "document", ".\n")
+    }
     global$object_class <- NULL
     return(x)
 }
@@ -500,7 +503,8 @@ tokens.tokens <- function(x, ...) {
         global$object_class <- class(x)[1]
         global$proc_time <- proc.time()   
     }
-    as.tokens(tokens(as.tokens_xptr(x), ...))
+    result <- as.tokens(tokens(as.tokens_xptr(x), ...))
+    return(result)
 }
 
 # coercion and checking functions -----------
