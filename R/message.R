@@ -53,6 +53,24 @@ catm <- function(..., sep = " ", appendLF = FALSE) {
     message(paste(..., sep = sep), appendLF = appendLF)
 }
 
+message_create <- function(input, output) {
+    message(sprintf("Creating a %s from a %s object...",
+                    output, input))
+}
+
+message_finish <- function(x) {
+    n <- length(types(x))
+    message(sprintf(" ...%s unique %s", 
+                    format(n, big.mark = ",", trim = TRUE), 
+                    if (n > 1) "types" else "type"))
+    message(sprintf(" ...complete, elapsed time: %s seconds.",
+                    format((proc.time() - global$proc_time)[3], digits = 3)))
+    message(sprintf("Finished constructing %s from %s %s",
+                    class(x)[1],
+                    format(ndoc(x), big.mark = ","),
+                    if (ndoc(x) > 1) "documents" else "document"))
+}
+
 # used in displaying verbose messages for tokens_select and dfm_select
 message_select <- function(selection, nfeats, ndocs, nfeatspad = 0, ndocspad = 0) {
     catm(if (selection == "keep") "kept" else "removed", " ",
