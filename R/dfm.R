@@ -59,15 +59,22 @@ dfm.tokens <- function(x,
                        tolower = TRUE,
                        remove_padding = FALSE,
                        verbose = quanteda_options("verbose"),
-                       ...) {
+                       ...,
+                       internal = FALSE) {
     
-    if (is.null(global$object_class)) {
-        global$object_class <- class(x)[1]
+    if (!internal) {
+        if (verbose)
+            message_create("tokens", "dfm")
         global$proc_time <- proc.time()   
     }
     
-    dfm(as.tokens_xptr(x), tolower = tolower,
-        remove_padding = remove_padding, verbose = verbose, ...)
+    result <- dfm(as.tokens_xptr(x), tolower = tolower,
+                  remove_padding = remove_padding, verbose = verbose, internal = TRUE, ...)
+    
+    if (verbose && !internal)
+        message_finish(result)
+    
+    return(result)
 
 }
 
@@ -77,17 +84,16 @@ dfm.tokens_xptr <- function(x,
                             tolower = TRUE,
                             remove_padding = FALSE,
                             verbose = quanteda_options("verbose"),
-                            ...) {
+                            ..., 
+                            internal = FALSE) {
     
-    if (is.null(global$object_class)) {
-        global$object_class <- class(x)[1]
+    if (!internal) {
+        if (verbose)
+            message_create("tokens_xptr", "dfm")
         global$proc_time <- proc.time()   
     }
     
     check_dots(...)
-    if (verbose)
-        catm("Creating a dfm from a", global$object_class, "object...\n")
-
     x <- as.tokens_xptr(x) # avoid modifying the original tokens
     if (tolower)
         x <- tokens_tolower(x)
@@ -99,13 +105,9 @@ dfm.tokens_xptr <- function(x,
                         docvars = get_docvars(x, user = TRUE, system = TRUE),
                         meta = attrs[["meta"]])
 
-    if (verbose) {
-        catm(" ...complete, elapsed time:",
-             format((proc.time() - global$proc_time)[3], digits = 3), "seconds.\n")
-        catm("Finished constructing a", paste(format(dim(result), big.mark = ",", trim = TRUE), collapse = " x "),
-             "sparse dfm.\n")
-    }
-    global$object_class <- NULL
+    if (verbose && !internal)
+        message_finish(result)
+    
     return(result)
 }
 
@@ -117,10 +119,12 @@ dfm.dfm <- function(x,
                     tolower = TRUE,
                     remove_padding = FALSE,
                     verbose = quanteda_options("verbose"),
-                    ...) {
+                    ...,
+                    internal = FALSE) {
     
-    if (is.null(global$object_class)) {
-        global$object_class <- class(x)[1]
+    if (!internal) {
+        if (verbose)
+            message_create("dfm", "dfm")
         global$proc_time <- proc.time()   
     }
     
@@ -141,7 +145,9 @@ dfm.dfm <- function(x,
     if (any(is_na))
         x <- x[, !is_na, drop = FALSE]
     
-    global$object_class <- NULL
+    if (verbose && !internal)
+        message_finish(result)
+    
     return(x)
 }
 
