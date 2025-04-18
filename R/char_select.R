@@ -43,9 +43,15 @@ char_select.character <- function(x, pattern, selection = c("keep", "remove"),
     valuetype <- match.arg(valuetype)
     selection <- match.arg(selection)
     
+    if (is.collocations(pattern)) {
+        pattern <- pattern$collocation
+    } else if (is.dictionary(pattern)) {
+        pattern <- as.list(pattern)
+    }
     ids <- object2id(pattern, types = x, 
                      valuetype = valuetype, 
-                     case_insensitive = case_insensitive)
+                     case_insensitive = case_insensitive,
+                     concatenator = " ")
     id <- unlist_integer(ids)
     
     if (selection == "keep") {

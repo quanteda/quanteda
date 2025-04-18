@@ -11,6 +11,9 @@ typedef std::vector<unsigned int> Ids;
 
 class TokensObj {
     public:
+        TokensObj(bool recompiled_ = false, bool padded_ = false): 
+                  recompiled(recompiled_), padded(padded_) {}
+        
         TokensObj(Texts texts_, Types types_, 
                   bool recompiled_ = false, bool padded_ = false): 
                   texts(texts_), types(types_), 
