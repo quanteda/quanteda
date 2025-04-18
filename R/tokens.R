@@ -496,7 +496,7 @@ tokens.tokens <- function(x, verbose = FALSE, ..., internal = FALSE) {
             message_create("tokens", "tokens")
         global$proc_time <- proc.time()   
     }
-    result <- as.tokens(tokens(as.tokens_xptr(x), internal = TRUE, ...))
+    result <- as.tokens(tokens(as.tokens_xptr(x), verbose = verbose, internal = TRUE, ...))
     if (verbose && !internal)
         message_finish(result)
     return(result)
