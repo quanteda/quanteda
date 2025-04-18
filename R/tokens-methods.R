@@ -239,23 +239,17 @@ c.tokens <- function(...) {
 
 combine_tokens <- function(...) {
     x <- list(...)
-    if (length(x) == 1) 
-        return(x[[1]])
-    result <- cpp_tokens_combine(x[[1]], x[[2]], get_threads())
-    if (length(x) == 2) return(result)
-    for (i in seq(3, length(x)))
-        result <- combine_tokens(result, x[[i]])
+    result <- cpp_xptr()
+    for (i in seq_along(x))
+        result <- cpp_tokens_combine(result, x[[i]], get_threads())
     return(result)
 }
 
 combine_docvars <- function(...) {
     x <- list(...)
-    if (length(x) == 1) 
-        return(x[[1]])
-    result <- rbind_fill(x[[1]], x[[2]])
-    if (length(x) == 2) return(result)
-    for (i in seq(3, length(x)))
-        result <- combine_docvars(result, x[[i]])
+    result <- data.frame()
+    for (i in seq_along(x))
+        result <- rbind_fill(result, x[[i]])
     return(result)
 }
 
