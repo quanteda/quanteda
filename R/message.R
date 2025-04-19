@@ -63,7 +63,7 @@ message_finish <- function(x, time) {
     if (is.dfm(x)) {
         message(sprintf(" ...complete, elapsed time: %s seconds.",
                         format((proc.time() - time)[3], digits = 3)))
-        message(sprintf("Finished constructing %s sparse dfm.",
+        message(sprintf("Finished constructing a %s sparse dfm.",
                         paste(format(dim(x), big.mark = ",", trim = TRUE), collapse = " x ")))
     } else {
         m <- length(types(x))

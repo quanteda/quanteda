@@ -625,6 +625,17 @@ test_that("tokens.tokens warns about unused arguments", {
     )
 })
 
+test_that("tokens.tokens print complete message", {
+    expect_message(
+        tokens(tokens("one two three"), verbose = TRUE),
+        "Creating a tokens from a tokens object..."
+    )
+    expect_message(
+        tokens(tokens("one two three"), verbose = TRUE),
+        "Finished constructing tokens from 1 document"
+    )
+})
+
 test_that("tokens.tokens(x, split_hyphens = TRUE, verbose = TRUE) works as expected  (#1683)", {
     expect_message(
         tokens(tokens("No hyphens here."), split_hyphens = TRUE, verbose = TRUE),
@@ -706,7 +717,7 @@ test_that("tokens.tokens(x, remove_symbols = TRUE, verbose = TRUE) works as expe
 })
 
 test_that("tokens.tokens(x, remove_separators = TRUE, verbose = TRUE) works as expected (#1683)", {
-    skip("the verbose message has been changed")
+    
     expect_message(
         tokens(tokens("Removing separators", remove_separators = FALSE, what = "word1"),
                remove_separators = TRUE, verbose = TRUE),
