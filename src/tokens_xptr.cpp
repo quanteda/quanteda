@@ -211,10 +211,13 @@ S4 cpp_dfm(TokensPtr xptr, bool asis = true) {
         slot_p.push_back(p);
     }
     IntegerVector slot_p_ = Rcpp::wrap(slot_p);
+    slot_p.clear();
     //Rcout << "p: " << slot_p_ << "\n";
     DoubleVector slot_x_ = Rcpp::wrap(slot_x);
+    slot_x.clear();
     //Rcout << "x: " << slot_x_ << "\n";
     IntegerVector slot_i_ = Rcpp::wrap(slot_i);
+    slot_i.clear();
     //Rcout << "i: " << slot_i_ << "\n";
     CharacterVector types_ = encode(xptr->types);
     
