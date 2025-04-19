@@ -3,6 +3,13 @@
 //#include "recompile.h"
 using namespace quanteda;
 
+
+// [[Rcpp::export]]
+TokensPtr cpp_xptr() {
+    TokensObj *ptr = new TokensObj();
+    return TokensPtr(ptr, true);
+}
+
 // [[Rcpp::export]]
 TokensPtr cpp_as_xptr(const List text_, 
                       const CharacterVector types_) {

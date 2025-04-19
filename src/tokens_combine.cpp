@@ -5,7 +5,7 @@ using namespace quanteda;
 
 /* 
  * Function to combine tokens objects
- * @used tokens_segment()
+ * @used c()
  * @creator Kohei Watanabe
  */
 
@@ -15,21 +15,17 @@ TokensPtr cpp_tokens_combine(TokensPtr xptr1,
                              const int thread = -1) {
     
     //dev::Timer timer;
-    //dev::start_timer("Insert", timer);
-    Types types;
-    types.reserve(xptr1->types.size() + xptr2->types.size());
-    types.insert(types.end(), xptr1->types.begin(), xptr1->types.end());
-    types.insert(types.end(), xptr2->types.begin(), xptr2->types.end());
-    //dev::stop_timer("Insert", timer);
-    
+
     std::size_t V = xptr1->types.size();
+    std::size_t W = xptr2->types.size();
     std::size_t G = xptr1->texts.size(); 
     std::size_t H = xptr2->texts.size(); 
     
-    Texts texts = xptr1->texts;
-    texts.resize(G + H);
-    
-    //dev::start_timer("Shift", timer);
+    xptr1->texts.resize(G + H);
+    xptr1->types.reserve(V + W);
+    xptr1->types.insert(xptr1->types.end(), xptr2->types.begin(), xptr2->types.end());
+
+    //dev::start_timer("Combine", timer);
 #if QUANTEDA_USE_TBB
     tbb::task_arena arena(thread);
     arena.execute([&]{
@@ -40,7 +36,7 @@ TokensPtr cpp_tokens_combine(TokensPtr xptr1,
                     if (text[i] != 0)
                         text[i] += V;
                 }
-                texts[G + h] = text;
+                xptr1->texts[G + h] = text;
             }
         });
     });
@@ -51,13 +47,11 @@ TokensPtr cpp_tokens_combine(TokensPtr xptr1,
             if (text[i] != 0)
                 text[i] += V;
         }
-        texts[G + h] = text;
+        xptr1->texts[G + h] = text;
     }
 #endif
-    //dev::stop_timer("Shift", timer);
-    
-    TokensObj *ptr = new TokensObj(texts, types, false);
-    return TokensPtr(ptr, true);
+    //dev::stop_timer("Combine", timer);
+    return xptr1;
 }
 
 /***R
