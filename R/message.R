@@ -80,35 +80,6 @@ message_finish <- function(x) {
     }
 }
 
-# used in displaying verbose messages for tokens_select and dfm_select
-# message_select <- function(selection, nfeats, ndocs, nfeatspad = 0, ndocspad = 0) {
-#     catm(if (selection == "keep") "kept" else "removed", " ",
-#          format(nfeats, big.mark = ",", scientific = FALSE),
-#          " feature", if (nfeats != 1L) "s" else "", sep = "")
-#     if (ndocs > 0) {
-#         catm(" and ",
-#              format(ndocs, big.mark = ",", scientific = FALSE),
-#              " document", if (ndocs != 1L) "s" else "",
-#              sep = "")
-#     }
-#     if ((nfeatspad + ndocspad) > 0) {
-#         catm(", padded ", sep = "")
-#     }
-#     if (nfeatspad > 0) {
-#         catm(format(nfeatspad, big.mark = ",", scientific = FALSE),
-#              " feature", if (nfeatspad != 1L) "s" else "",
-#              sep = "")
-#     }
-#     if (ndocspad > 0) {
-#         if (nfeatspad > 0) catm(" and ", sep = "")
-#         catm(format(ndocspad, big.mark = ",", scientific = FALSE),
-#              " document", if (ndocspad != 1L) "s" else "",
-#              sep = "")
-#     }
-#     catm("", appendLF = TRUE)
-# }
-
-
 # messaging methods ------------
              
 #' Message parameter documentation
