@@ -65,14 +65,14 @@ dfm.tokens <- function(x,
     if (!internal) {
         if (verbose)
             message_create("tokens", "dfm")
-        global$proc_time <- proc.time()   
+        proc_time <- proc.time()   
     }
     
     result <- dfm(as.tokens_xptr(x), tolower = tolower,
                   remove_padding = remove_padding, verbose = verbose, internal = TRUE, ...)
     
     if (verbose && !internal)
-        message_finish(result)
+        message_finish(result, proc_time)
     
     return(result)
 
@@ -90,7 +90,7 @@ dfm.tokens_xptr <- function(x,
     if (!internal) {
         if (verbose)
             message_create("tokens_xptr", "dfm")
-        global$proc_time <- proc.time()   
+        proc_time <- proc.time()   
     }
     
     check_dots(...)
@@ -106,7 +106,7 @@ dfm.tokens_xptr <- function(x,
                         meta = attrs[["meta"]])
 
     if (verbose && !internal)
-        message_finish(result)
+        message_finish(result, proc_time)
     
     return(result)
 }
@@ -125,7 +125,7 @@ dfm.dfm <- function(x,
     if (!internal) {
         if (verbose)
             message_create("dfm", "dfm")
-        global$proc_time <- proc.time()   
+        proc_time <- proc.time()   
     }
     
     check_dots(...)
@@ -146,7 +146,7 @@ dfm.dfm <- function(x,
         x <- x[, !is_na, drop = FALSE]
     
     if (verbose && !internal)
-        message_finish(result)
+        message_finish(result, proc_time)
     
     return(x)
 }

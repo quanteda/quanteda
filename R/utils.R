@@ -211,3 +211,9 @@ info_tbb <- function() {
     list("enabled" = cpp_tbb_enabled(),
          "max_threads" = cpp_get_max_thread())
 }
+
+# check the presence and the value of internal in dots
+is_internal <- function(...) {
+    args <- list(...)
+    !is.null(args$internal) && args$internal
+}

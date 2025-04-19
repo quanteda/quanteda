@@ -59,10 +59,10 @@ message_create <- function(input, output) {
                     output, input))
 }
 
-message_finish <- function(x) {
+message_finish <- function(x, time) {
     if (is.dfm(x)) {
         message(sprintf(" ...complete, elapsed time: %s seconds.",
-                        format((proc.time() - global$proc_time)[3], digits = 3)))
+                        format((proc.time() - time)[3], digits = 3)))
         message(sprintf("Finished constructing %s sparse dfm.",
                         paste(format(dim(x), big.mark = ",", trim = TRUE), collapse = " x ")))
     } else {
@@ -72,7 +72,7 @@ message_finish <- function(x) {
                         format(m, big.mark = ",", trim = TRUE), 
                         if (m > 1) "types" else "type"))
         message(sprintf(" ...complete, elapsed time: %s seconds.",
-                        format((proc.time() - global$proc_time)[3], digits = 3)))
+                        format((proc.time() - time)[3], digits = 3)))
         message(sprintf("Finished constructing %s from %s %s",
                         class(x)[1],
                         format(n, big.mark = ","),

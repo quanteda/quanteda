@@ -199,20 +199,25 @@ tokens.list <- function(x,
     if (!internal) {
         if (verbose) 
             message_create("list", if (xptr) "tokens_xptr" else "tokens")
-        global$proc_time <- proc.time()   
+        proc_time <- proc.time()   
     }
     
-    tokens(as.tokens(x),
-           remove_punct = remove_punct,
-           remove_symbols = remove_symbols,
-           remove_numbers = remove_numbers,
-           remove_url = remove_url,
-           remove_separators = remove_separators,
-           split_hyphens = split_hyphens,
-           split_tags = split_tags,
-           concatenator = concatenator,
-           verbose = quanteda_options("verbose"),
-           ...)
+    x <- tokens(as.tokens(x),
+                remove_punct = remove_punct,
+                remove_symbols = remove_symbols,
+                remove_numbers = remove_numbers,
+                remove_url = remove_url,
+                remove_separators = remove_separators,
+                split_hyphens = split_hyphens,
+                split_tags = split_tags,
+                concatenator = concatenator,
+                verbose = quanteda_options("verbose"),
+                ...)
+    
+    if (verbose && !is_internal(...)) 
+        message_finish(x, proc_time)
+    
+    return(x)
 }
 
 #' @rdname tokens
@@ -232,13 +237,12 @@ tokens.character <- function(x,
                              concatenator = "_",
                              xptr = FALSE,
                              verbose = quanteda_options("verbose"),
-                             ...,
-                             internal = FALSE) {
+                             ...) {
     
-    if (!internal) {
+    if (!is_internal(...)) {
         if (verbose) 
             message_create("character", if (xptr) "tokens_xptr" else "tokens")
-        global$proc_time <- proc.time()   
+        proc_time <- proc.time()   
     }
     
     result <- tokens(corpus(x),
@@ -258,8 +262,8 @@ tokens.character <- function(x,
                      internal = TRUE,
                      ...)
 
-    if (verbose && !internal) 
-        message_finish(result)
+    if (verbose && !is_internal(...)) 
+        message_finish(result, proc_time)
     
     return(result)
 }
@@ -282,13 +286,12 @@ tokens.corpus <- function(x,
                           concatenator = "_",
                           xptr = FALSE,
                           verbose = quanteda_options("verbose"),
-                          ...,
-                          internal = FALSE)  {
+                          ...)  {
     
-    if (!internal) {
+    if (!is_internal(...)) {
         if (verbose) 
             message_create("corpus", if (xptr) "tokens_xptr" else "tokens")
-        global$proc_time <- proc.time()   
+        proc_time <- proc.time()   
     }
     
     x <- as.corpus(x)
@@ -391,8 +394,8 @@ tokens.corpus <- function(x,
     if (!xptr)
         result <- as.tokens(result)
     
-    if (verbose && !internal) 
-        message_finish(result)
+    if (verbose && !is_internal(...)) 
+        message_finish(result, proc_time)
     
     return(result)
 }
@@ -414,13 +417,12 @@ tokens.tokens_xptr <-  function(x,
                            padding = FALSE,
                            concatenator = "_",
                            verbose = quanteda_options("verbose"),
-                           ...,
-                           internal = FALSE) {
+                           ...) {
 
-    if (!internal) {
+    if (!is_internal(...)) {
         if (verbose)
             message_create("tokens_xptr", "tokens_xptr")
-        global$proc_time <- proc.time()
+        proc_time <- proc.time()
     }
     
     remove_punct <- check_logical(remove_punct)
@@ -483,22 +485,22 @@ tokens.tokens_xptr <-  function(x,
         set_concatenator(x) <- concatenator
     }
     
-    if (verbose && !internal)
-        message_finish(x)
+    if (verbose && !is_internal(...))
+        message_finish(x, proc_time)
     
     return(x)
 }
 
 #' @export
-tokens.tokens <- function(x, verbose = FALSE, ..., internal = FALSE) {
-    if (!internal) {
+tokens.tokens <- function(x, verbose = FALSE, ...) {
+    if (!is_internal(...)) {
         if (verbose)
             message_create("tokens", "tokens")
-        global$proc_time <- proc.time()   
+        proc_time <- proc.time()   
     }
-    result <- as.tokens(tokens(as.tokens_xptr(x), verbose = verbose, internal = TRUE, ...))
-    if (verbose && !internal)
-        message_finish(result)
+    result <- as.tokens(tokens(as.tokens_xptr(x), verbose = verbose, ...))
+    if (verbose && !is_internal(...))
+        message_finish(result, proc_time)
     return(result)
 }
 
