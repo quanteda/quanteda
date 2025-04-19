@@ -163,9 +163,9 @@ tokens <-  function(x,
                     include_docvars = TRUE,
                     padding = FALSE,
                     concatenator = "_",
-                    xptr = FALSE,
                     verbose = quanteda_options("verbose"),
-                    ...) {
+                    ...,
+                    xptr = FALSE) {
     UseMethod("tokens")
 }
 
@@ -191,9 +191,9 @@ tokens.list <- function(x,
                         include_docvars = TRUE,
                         padding = FALSE,
                         concatenator = "_",
-                        xptr = FALSE,
                         verbose = quanteda_options("verbose"),
-                        ...) {
+                        ...,
+                        xptr = FALSE) {
     
     if (is_verbose(verbose, ...)) {
         message_create("list", if (xptr) "tokens_xptr" else "tokens")
@@ -236,9 +236,9 @@ tokens.character <- function(x,
                              include_docvars = TRUE,
                              padding = FALSE,
                              concatenator = "_",
-                             xptr = FALSE,
                              verbose = quanteda_options("verbose"),
-                             ...) {
+                             ...,
+                             xptr = FALSE) {
     
     if (is_verbose(verbose, ...)) {
         message_create("character", if (xptr) "tokens_xptr" else "tokens")
@@ -284,9 +284,9 @@ tokens.corpus <- function(x,
                           include_docvars = TRUE,
                           padding = FALSE,
                           concatenator = "_",
-                          xptr = FALSE,
                           verbose = quanteda_options("verbose"),
-                          ...)  {
+                          ...,
+                          xptr = FALSE)  {
     
     if (is_verbose(verbose, ...)) {
         message_create("corpus", if (xptr) "tokens_xptr" else "tokens")
