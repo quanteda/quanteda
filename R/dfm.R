@@ -143,7 +143,7 @@ dfm.dfm <- function(x,
         x <- x[, !is_na, drop = FALSE]
     
     if (is_verbose(verbose, ...))
-        message_finish(result, proc_time)
+        message_finish(x, proc_time)
     
     return(x)
 }
