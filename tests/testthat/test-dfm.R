@@ -782,52 +782,35 @@ test_that("dfm feature and document names have encoding", {
 })
 
 test_that("dfm verbose = TRUE works as expected", {
-    skip("the verbose message has been changed")
+    
+    toks <- tokens(data_corpus_inaugural[1:3])
+
     expect_message(
-        tmp <- suppressWarnings(dfm(data_corpus_inaugural[1:3], verbose = TRUE)),
-        "Creating a dfm from a corpus input"
+        dfm(toks, verbose = TRUE),
+        "Creating a dfm from a tokens object"
     )
     expect_message(
-        tmp <- dfm(tokens(data_corpus_inaugural[1:3]), verbose = TRUE),
+        dfm(toks, verbose = TRUE),
+        " ...lowercasing"
+    )
+    expect_message(
+        dfm(toks, verbose = TRUE),
         "Finished constructing a 3 x 1,\\d{3} sparse dfm"
     )
-    dict <- dictionary(list(pos = "good", neg = "bad", neg_pos = "not good", neg_neg = "not bad"))
-    expect_message(
-        tmp <- suppressWarnings(dfm(tokens(data_corpus_inaugural[1:3]), dictionary = dict, verbose = TRUE)),
-        "applying a dictionary consisting of 4 keys"
-    )
-    expect_message(
-        tmp <- suppressWarnings(dfm(dfm(tokens(data_corpus_inaugural[1:3])), dictionary = dict, verbose = TRUE)),
-        "applying a dictionary consisting of 4 keys"
-    )
-    expect_message(
-        tmp <- suppressWarnings(dfm(tokens(data_corpus_inaugural[1:3]), 
-                                    groups = data_corpus_inaugural$President[1:3], 
-                                    verbose = TRUE)),
-        "grouping texts"
-    )
-    expect_message(
-        tmp <- suppressWarnings(dfm(tokens(data_corpus_inaugural[1:2]), stem = TRUE, verbose = TRUE)),
-        "stemming types \\(English\\)"
-    )
-    expect_message(
-        tmp <- suppressWarnings(dfm(dfm(tokens(data_corpus_inaugural[1:2])), stem = TRUE, verbose = TRUE)),
-        "stemming features \\(English\\)"
-    )
-    expect_message(
-        tmp <- suppressWarnings(dfm(dfm(tokens(data_corpus_inaugural[1:3])), 
-                                    groups = data_corpus_inaugural$President[1:3], 
-                                    verbose = TRUE)),
-        "grouping texts"
-    )
-    expect_error(
-        dfm(tokens("one two three"), remove = "one", select = "three"),
-        "only one of select and remove may be supplied at once"
-    )
+})
 
-    toks <- tokens(c("one two", "two three four"))
-    attributes(toks)$types[4] <- NA
-    dfm(toks)
+test_that("dfm.dfm print complete message", {
+    
+    toks <- tokens(data_corpus_inaugural[1:3])
+    
+    expect_message(
+        dfm(dfm(toks), verbose = TRUE),
+        "Creating a dfm from a dfm object..."
+    )
+    expect_message(
+        dfm(dfm(toks), verbose = TRUE),
+        "Finished constructing a 3 x 1,\\d{3} sparse dfm"
+    )
 })
 
 test_that("dfm_sort works as expected", {

@@ -625,6 +625,17 @@ test_that("tokens.tokens warns about unused arguments", {
     )
 })
 
+test_that("tokens.tokens print complete message", {
+    expect_message(
+        tokens(tokens("one two three"), verbose = TRUE),
+        "Creating a tokens from a tokens object..."
+    )
+    expect_message(
+        tokens(tokens("one two three"), verbose = TRUE),
+        "Finished constructing tokens from 1 document"
+    )
+})
+
 test_that("tokens.tokens(x, split_hyphens = TRUE, verbose = TRUE) works as expected  (#1683)", {
     expect_message(
         tokens(tokens("No hyphens here."), split_hyphens = TRUE, verbose = TRUE),
@@ -706,7 +717,7 @@ test_that("tokens.tokens(x, remove_symbols = TRUE, verbose = TRUE) works as expe
 })
 
 test_that("tokens.tokens(x, remove_separators = TRUE, verbose = TRUE) works as expected (#1683)", {
-    skip("the verbose message has been changed")
+    
     expect_message(
         tokens(tokens("Removing separators", remove_separators = FALSE, what = "word1"),
                remove_separators = TRUE, verbose = TRUE),
@@ -876,11 +887,44 @@ test_that("tokens printing works", {
 })
 
 test_that("tokens.list() works", {
+    
     lis <- list(d1 = c("one", "two-three", "@test"), d2 = c("four", "."))
+    
     expect_identical(as.list(tokens(lis)), lis)
     expect_identical(as.list(tokens(lis, split_hyphens = TRUE)),
                      list(d1 = c("one", "two", "-", "three", "@test"),
                           d2 = c("four", ".")))
+    
+    expect_message(
+        tokens(lis, verbose = TRUE),
+        "Creating a tokens from a list object..."
+    )
+    
+    expect_message(
+        tokens(lis, verbose = TRUE, xptr = TRUE),
+        "Creating a tokens_xptr from a list object..."
+    )
+})
+
+test_that("tokens.tokens_xptr() works", {
+    
+    lis <- list(d1 = c("one", "two-three", "@test"), d2 = c("four", "."))
+    xtoks <- tokens(lis, xptr = TRUE)
+    
+    expect_identical(as.list(tokens(xtoks)), lis)
+    expect_identical(as.list(tokens(xtoks, split_hyphens = TRUE)),
+                     list(d1 = c("one", "two", "-", "three", "@test"),
+                          d2 = c("four", ".")))
+    
+    expect_message(
+        tokens(xtoks, verbose = TRUE),
+        "Creating a tokens_xptr from a tokens_xptr object..."
+    )
+    
+    expect_message(
+        tokens(xtoks, verbose = TRUE),
+        "Creating a tokens_xptr from a tokens_xptr object..."
+    )
 })
 
 test_that("tokens.character(x, padding = TRUE) works", {

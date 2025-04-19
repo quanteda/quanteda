@@ -192,24 +192,33 @@ tokens.list <- function(x,
                         padding = FALSE,
                         concatenator = "_",
                         verbose = quanteda_options("verbose"),
-                        ...) {
+                        ...,
+                        xptr = FALSE) {
     
-    if (is.null(global$object_class)) {
-        global$object_class <- class(x)[1]
-        global$proc_time <- proc.time()   
+    if (is_verbose(verbose, ...)) {
+        message_create("list", if (xptr) "tokens_xptr" else "tokens")
+        proc_time <- proc.time()   
     }
     
-    tokens(as.tokens(x),
-           remove_punct = remove_punct,
-           remove_symbols = remove_symbols,
-           remove_numbers = remove_numbers,
-           remove_url = remove_url,
-           remove_separators = remove_separators,
-           split_hyphens = split_hyphens,
-           split_tags = split_tags,
-           concatenator = concatenator,
-           verbose = quanteda_options("verbose"),
-           ...)
+    x <- tokens(as.tokens_xptr(as.tokens(x)),
+                remove_punct = remove_punct,
+                remove_symbols = remove_symbols,
+                remove_numbers = remove_numbers,
+                remove_url = remove_url,
+                remove_separators = remove_separators,
+                split_hyphens = split_hyphens,
+                split_tags = split_tags,
+                concatenator = concatenator,
+                verbose = quanteda_options("verbose"),
+                internal = TRUE,
+                ...)
+    if (!xptr)
+        x <- as.tokens(x)
+    
+    if (is_verbose(verbose, ...)) 
+        message_finish(x, proc_time)
+    
+    return(x)
 }
 
 #' @rdname tokens
@@ -231,26 +240,32 @@ tokens.character <- function(x,
                              ...,
                              xptr = FALSE) {
     
-    if (is.null(global$object_class)) {
-        global$object_class <- class(x)[1]
-        global$proc_time <- proc.time()   
+    if (is_verbose(verbose, ...)) {
+        message_create("character", if (xptr) "tokens_xptr" else "tokens")
+        proc_time <- proc.time()   
     }
     
-    tokens.corpus(corpus(x),
-           what = what,
-           remove_punct = remove_punct,
-           remove_symbols = remove_symbols,
-           remove_numbers = remove_numbers,
-           remove_url = remove_url,
-           remove_separators = remove_separators,
-           split_hyphens = split_hyphens,
-           split_tags = split_tags,
-           include_docvars = include_docvars,
-           padding = padding,
-           concatenator = concatenator,
-           verbose = verbose,
-           ...,
-           xptr = xptr)
+    result <- tokens(corpus(x),
+                     what = what,
+                     remove_punct = remove_punct,
+                     remove_symbols = remove_symbols,
+                     remove_numbers = remove_numbers,
+                     remove_url = remove_url,
+                     remove_separators = remove_separators,
+                     split_hyphens = split_hyphens,
+                     split_tags = split_tags,
+                     include_docvars = include_docvars,
+                     padding = padding,
+                     concatenator = concatenator,
+                     xptr = xptr,
+                     verbose = verbose,
+                     internal = TRUE,
+                     ...)
+
+    if (is_verbose(verbose, ...)) 
+        message_finish(result, proc_time)
+    
+    return(result)
 }
 
 #' @rdname tokens
@@ -273,22 +288,12 @@ tokens.corpus <- function(x,
                           ...,
                           xptr = FALSE)  {
     
-    if (is.null(global$object_class)) {
-        global$object_class <- class(x)[1]
-        global$proc_time <- proc.time()   
+    if (is_verbose(verbose, ...)) {
+        message_create("corpus", if (xptr) "tokens_xptr" else "tokens")
+        proc_time <- proc.time()   
     }
     
     x <- as.corpus(x)
-    
-    if (verbose) {
-        if (xptr) {
-            catm("Creating a tokens_xptr from a", global$object_class, "object...\n")
-        } else {
-            catm("Creating a tokens from a", global$object_class, "object...\n")
-        }
-    }
-        
-    
     what <- match.arg(what, c("word", paste0("word", 1:4), 
                               "sentence", "character",
                               "fasterword", "fastestword"))
@@ -382,27 +387,15 @@ tokens.corpus <- function(x,
                      include_docvars = TRUE,
                      padding = padding,
                      concatenator = concatenator,
-                     verbose = verbose)
+                     verbose = verbose,
+                     internal = TRUE)
     
     if (!xptr)
         result <- as.tokens(result)
     
-    if (verbose) {
-        n <- length(types(result))
-        catm(" ...", format(n, big.mark = ",", trim = TRUE),
-             " unique type", if (n == 1) "" else "s", "\n", sep = "")
-        catm(" ...complete, elapsed time:",
-             format((proc.time() - global$proc_time)[3], digits = 3), "seconds.\n")
-        
-        if (xptr) {
-            catm("Finished constructing tokens_xptr from ", format(ndoc(result), big.mark = ","), " document",
-                 if (ndoc(result) > 1) "s", ".\n", sep = "")
-        } else {
-            catm("Finished constructing tokens from ", format(ndoc(result), big.mark = ","), " document",
-                 if (ndoc(result) > 1) "s", ".\n", sep = "")
-        }
-    }
-    global$object_class <- NULL
+    if (is_verbose(verbose, ...)) 
+        message_finish(result, proc_time)
+    
     return(result)
 }
 
@@ -425,9 +418,9 @@ tokens.tokens_xptr <-  function(x,
                            verbose = quanteda_options("verbose"),
                            ...) {
 
-    if (is.null(global$object_class)) {
-        global$object_class <- class(x)[1]
-        global$proc_time <- proc.time()   
+    if (is_verbose(verbose, ...)) {
+        message_create("tokens_xptr", "tokens_xptr")
+        proc_time <- proc.time()
     }
     
     remove_punct <- check_logical(remove_punct)
@@ -490,17 +483,22 @@ tokens.tokens_xptr <-  function(x,
         set_concatenator(x) <- concatenator
     }
     
-    global$object_class <- NULL
+    if (is_verbose(verbose, ...))
+        message_finish(x, proc_time)
+    
     return(x)
 }
 
 #' @export
 tokens.tokens <- function(x, ...) {
-    if (is.null(global$object_class)) {
-        global$object_class <- class(x)[1]
-        global$proc_time <- proc.time()   
+    if (is_verbose(...)) {
+        message_create("tokens", "tokens")
+        proc_time <- proc.time()   
     }
-    as.tokens(tokens(as.tokens_xptr(x), ...))
+    result <- as.tokens(tokens(as.tokens_xptr(x), internal = TRUE, ...))
+    if (is_verbose(...))
+        message_finish(result, proc_time)
+    return(result)
 }
 
 # coercion and checking functions -----------

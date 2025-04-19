@@ -53,34 +53,32 @@ catm <- function(..., sep = " ", appendLF = FALSE) {
     message(paste(..., sep = sep), appendLF = appendLF)
 }
 
-# used in displaying verbose messages for tokens_select and dfm_select
-message_select <- function(selection, nfeats, ndocs, nfeatspad = 0, ndocspad = 0) {
-    catm(if (selection == "keep") "kept" else "removed", " ",
-         format(nfeats, big.mark = ",", scientific = FALSE),
-         " feature", if (nfeats != 1L) "s" else "", sep = "")
-    if (ndocs > 0) {
-        catm(" and ",
-             format(ndocs, big.mark = ",", scientific = FALSE),
-             " document", if (ndocs != 1L) "s" else "",
-             sep = "")
-    }
-    if ((nfeatspad + ndocspad) > 0) {
-        catm(", padded ", sep = "")
-    }
-    if (nfeatspad > 0) {
-        catm(format(nfeatspad, big.mark = ",", scientific = FALSE),
-             " feature", if (nfeatspad != 1L) "s" else "",
-             sep = "")
-    }
-    if (ndocspad > 0) {
-        if (nfeatspad > 0) catm(" and ", sep = "")
-        catm(format(ndocspad, big.mark = ",", scientific = FALSE),
-             " document", if (ndocspad != 1L) "s" else "",
-             sep = "")
-    }
-    catm("", appendLF = TRUE)
+# used in displaying verbose messages for tokens and dfm constructors
+message_create <- function(input, output) {
+    message(sprintf("Creating a %s from a %s object...",
+                    output, input))
 }
 
+message_finish <- function(x, time) {
+    if (is.dfm(x)) {
+        message(sprintf(" ...complete, elapsed time: %s seconds.",
+                        format((proc.time() - time)[3], digits = 3)))
+        message(sprintf("Finished constructing a %s sparse dfm.",
+                        paste(format(dim(x), big.mark = ",", trim = TRUE), collapse = " x ")))
+    } else {
+        m <- length(types(x))
+        n <- ndoc(x)
+        message(sprintf(" ...%s unique %s", 
+                        format(m, big.mark = ",", trim = TRUE), 
+                        if (m > 1) "types" else "type"))
+        message(sprintf(" ...complete, elapsed time: %s seconds.",
+                        format((proc.time() - time)[3], digits = 3)))
+        message(sprintf("Finished constructing %s from %s %s",
+                        class(x)[1],
+                        format(n, big.mark = ","),
+                        if (n > 1) "documents" else "document"))
+    }
+}
 
 # messaging methods ------------
              

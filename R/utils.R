@@ -211,3 +211,10 @@ info_tbb <- function() {
     list("enabled" = cpp_tbb_enabled(),
          "max_threads" = cpp_get_max_thread())
 }
+
+# Disable verbose messages in internal functions
+is_verbose <- function(...) {
+    (function(verbose = FALSE, internal = FALSE, ...) {
+        verbose && !internal
+    })(...)
+}
