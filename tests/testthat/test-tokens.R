@@ -887,11 +887,44 @@ test_that("tokens printing works", {
 })
 
 test_that("tokens.list() works", {
+    
     lis <- list(d1 = c("one", "two-three", "@test"), d2 = c("four", "."))
+    
     expect_identical(as.list(tokens(lis)), lis)
     expect_identical(as.list(tokens(lis, split_hyphens = TRUE)),
                      list(d1 = c("one", "two", "-", "three", "@test"),
                           d2 = c("four", ".")))
+    
+    expect_message(
+        tokens(lis, verbose = TRUE),
+        "Creating a tokens from a list object..."
+    )
+    
+    expect_message(
+        tokens(lis, verbose = TRUE, xptr = TRUE),
+        "Creating a tokens_xptr from a list object..."
+    )
+})
+
+test_that("tokens.tokens_xptr() works", {
+    
+    lis <- list(d1 = c("one", "two-three", "@test"), d2 = c("four", "."))
+    xtoks <- tokens(lis, xptr = TRUE)
+    
+    expect_identical(as.list(tokens(xtoks)), lis)
+    expect_identical(as.list(tokens(xtoks, split_hyphens = TRUE)),
+                     list(d1 = c("one", "two", "-", "three", "@test"),
+                          d2 = c("four", ".")))
+    
+    expect_message(
+        tokens(xtoks, verbose = TRUE),
+        "Creating a tokens_xptr from a tokens_xptr object..."
+    )
+    
+    expect_message(
+        tokens(xtoks, verbose = TRUE),
+        "Creating a tokens_xptr from a tokens_xptr object..."
+    )
 })
 
 test_that("tokens.character(x, padding = TRUE) works", {
