@@ -4,6 +4,8 @@
 
 * Added `corpus_chunk()` for chunking texts into smaller documents.
 
+* Significantly reduce the memory usage for the `c` operation on large `tokens` and `tokens_xptr` objects.
+
 # quanteda 4.2.0
 
 ## Changes and additions
