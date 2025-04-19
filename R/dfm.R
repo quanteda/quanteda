@@ -94,8 +94,10 @@ dfm.tokens_xptr <- function(x,
     
     check_dots(...)
     x <- as.tokens_xptr(x) # avoid modifying the original tokens
-    if (tolower)
+    if (tolower) {
+        if (verbose) catm(" ...lowercasing\n", sep = "")
         x <- tokens_tolower(x)
+    }
     if (remove_padding)
         x <- tokens_remove(x, "", valuetype = "fixed")
     attrs <- attributes(x)
@@ -120,7 +122,7 @@ dfm.dfm <- function(x,
                     verbose = quanteda_options("verbose"),
                     ...) {
     
-    if (!is_verbose(verbose, ...)) {
+    if (is_verbose(verbose, ...)) {
         message_create("dfm", "dfm")
         proc_time <- proc.time()   
     }
