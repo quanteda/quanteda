@@ -59,19 +59,20 @@ dfm.tokens <- function(x,
                        tolower = TRUE,
                        remove_padding = FALSE,
                        verbose = quanteda_options("verbose"),
-                       ...,
-                       internal = FALSE) {
+                       ...) {
     
-    if (!internal) {
-        if (verbose)
-            message_create("tokens", "dfm")
+    if (is_verbose(verbose, ...)) {
+        message_create("tokens", "dfm")
         proc_time <- proc.time()   
     }
     
-    result <- dfm(as.tokens_xptr(x), tolower = tolower,
-                  remove_padding = remove_padding, verbose = verbose, internal = TRUE, ...)
+    result <- dfm(as.tokens_xptr(x), 
+                  tolower = tolower,
+                  remove_padding = remove_padding, 
+                  verbose = verbose, 
+                  internal = TRUE, ...)
     
-    if (verbose && !internal)
+    if (is_verbose(verbose, ...))
         message_finish(result, proc_time)
     
     return(result)
@@ -84,12 +85,10 @@ dfm.tokens_xptr <- function(x,
                             tolower = TRUE,
                             remove_padding = FALSE,
                             verbose = quanteda_options("verbose"),
-                            ..., 
-                            internal = FALSE) {
+                            ...) {
     
-    if (!internal) {
-        if (verbose)
-            message_create("tokens_xptr", "dfm")
+    if (is_verbose(verbose, ...)) {
+        message_create("tokens_xptr", "dfm")
         proc_time <- proc.time()   
     }
     
@@ -105,7 +104,7 @@ dfm.tokens_xptr <- function(x,
                         docvars = get_docvars(x, user = TRUE, system = TRUE),
                         meta = attrs[["meta"]])
 
-    if (verbose && !internal)
+    if (is_verbose(verbose, ...))
         message_finish(result, proc_time)
     
     return(result)
@@ -119,12 +118,10 @@ dfm.dfm <- function(x,
                     tolower = TRUE,
                     remove_padding = FALSE,
                     verbose = quanteda_options("verbose"),
-                    ...,
-                    internal = FALSE) {
+                    ...) {
     
-    if (!internal) {
-        if (verbose)
-            message_create("dfm", "dfm")
+    if (!is_verbose(verbose, ...)) {
+        message_create("dfm", "dfm")
         proc_time <- proc.time()   
     }
     
@@ -145,7 +142,7 @@ dfm.dfm <- function(x,
     if (any(is_na))
         x <- x[, !is_na, drop = FALSE]
     
-    if (verbose && !internal)
+    if (is_verbose(verbose, ...))
         message_finish(result, proc_time)
     
     return(x)

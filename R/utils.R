@@ -212,8 +212,9 @@ info_tbb <- function() {
          "max_threads" = cpp_get_max_thread())
 }
 
-# check the presence and the value of internal in dots
-is_internal <- function(...) {
-    args <- list(...)
-    !is.null(args$internal) && args$internal
+# Disable verbose messages in internal functions
+is_verbose <- function(...) {
+    (function(verbose = FALSE, internal = FALSE, ...) {
+        verbose && !internal
+    })(...)
 }

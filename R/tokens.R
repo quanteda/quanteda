@@ -193,16 +193,14 @@ tokens.list <- function(x,
                         concatenator = "_",
                         xptr = FALSE,
                         verbose = quanteda_options("verbose"),
-                        ...,
-                        internal = FALSE) {
+                        ...) {
     
-    if (!internal) {
-        if (verbose) 
-            message_create("list", if (xptr) "tokens_xptr" else "tokens")
+    if (is_verbose(verbose, ...)) {
+        message_create("list", if (xptr) "tokens_xptr" else "tokens")
         proc_time <- proc.time()   
     }
     
-    x <- tokens(as.tokens(x),
+    x <- tokens(as.tokens_xptr(as.tokens(x)),
                 remove_punct = remove_punct,
                 remove_symbols = remove_symbols,
                 remove_numbers = remove_numbers,
@@ -212,9 +210,12 @@ tokens.list <- function(x,
                 split_tags = split_tags,
                 concatenator = concatenator,
                 verbose = quanteda_options("verbose"),
+                internal = TRUE,
                 ...)
+    if (!xptr)
+        x <- as.tokens(x)
     
-    if (verbose && !is_internal(...)) 
+    if (is_verbose(verbose, ...)) 
         message_finish(x, proc_time)
     
     return(x)
@@ -239,9 +240,8 @@ tokens.character <- function(x,
                              verbose = quanteda_options("verbose"),
                              ...) {
     
-    if (!is_internal(...)) {
-        if (verbose) 
-            message_create("character", if (xptr) "tokens_xptr" else "tokens")
+    if (is_verbose(verbose, ...)) {
+        message_create("character", if (xptr) "tokens_xptr" else "tokens")
         proc_time <- proc.time()   
     }
     
@@ -262,7 +262,7 @@ tokens.character <- function(x,
                      internal = TRUE,
                      ...)
 
-    if (verbose && !is_internal(...)) 
+    if (is_verbose(verbose, ...)) 
         message_finish(result, proc_time)
     
     return(result)
@@ -288,9 +288,8 @@ tokens.corpus <- function(x,
                           verbose = quanteda_options("verbose"),
                           ...)  {
     
-    if (!is_internal(...)) {
-        if (verbose) 
-            message_create("corpus", if (xptr) "tokens_xptr" else "tokens")
+    if (is_verbose(verbose, ...)) {
+        message_create("corpus", if (xptr) "tokens_xptr" else "tokens")
         proc_time <- proc.time()   
     }
     
@@ -394,7 +393,7 @@ tokens.corpus <- function(x,
     if (!xptr)
         result <- as.tokens(result)
     
-    if (verbose && !is_internal(...)) 
+    if (is_verbose(verbose, ...)) 
         message_finish(result, proc_time)
     
     return(result)
@@ -419,9 +418,8 @@ tokens.tokens_xptr <-  function(x,
                            verbose = quanteda_options("verbose"),
                            ...) {
 
-    if (!is_internal(...)) {
-        if (verbose)
-            message_create("tokens_xptr", "tokens_xptr")
+    if (is_verbose(verbose, ...)) {
+        message_create("tokens_xptr", "tokens_xptr")
         proc_time <- proc.time()
     }
     
@@ -485,21 +483,20 @@ tokens.tokens_xptr <-  function(x,
         set_concatenator(x) <- concatenator
     }
     
-    if (verbose && !is_internal(...))
+    if (is_verbose(verbose, ...))
         message_finish(x, proc_time)
     
     return(x)
 }
 
 #' @export
-tokens.tokens <- function(x, verbose = FALSE, ...) {
-    if (!is_internal(...)) {
-        if (verbose)
-            message_create("tokens", "tokens")
+tokens.tokens <- function(x, ...) {
+    if (is_verbose(...)) {
+        message_create("tokens", "tokens")
         proc_time <- proc.time()   
     }
-    result <- as.tokens(tokens(as.tokens_xptr(x), verbose = verbose, ...))
-    if (verbose && !is_internal(...))
+    result <- as.tokens(tokens(as.tokens_xptr(x), internal = TRUE, ...))
+    if (is_verbose(...))
         message_finish(result, proc_time)
     return(result)
 }
