@@ -38,11 +38,11 @@ message_finish <- function(x, time) {
         m <- length(types(x))
         n <- ndoc(x)
         message(msg(" ...%s unique %s", 
-                    m, if (m > 1) "types" else "type"))
+                    m, if (m == 1) "type" else "types"))
         message(msg(" ...complete, elapsed time: %s seconds.",
                     format((proc.time() - time)[3], digits = 3)))
         message(msg("Finished constructing %s from %s %s",
-                    class(x)[1], n, if (n > 1) "documents" else "document"))
+                    class(x)[1], n, if (n == 1) "document" else "documents"))
     }
 }
 
