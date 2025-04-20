@@ -93,41 +93,46 @@ test_that("test that char_remove and char_select work as shortcuts", {
 test_that("char_select works with edge cases", {
     txt <- c(c1 = "aa", c2 = "ab", c3 = "aa", c4 = "bcd", c5 = "bcd")
 
-    expect_identical(char_select(txt, "x*"), NULL)
+    expect_identical(char_select(txt, "x*"), 
+                     structure(character(), names = character()))
     expect_identical(char_select(txt, "x*", selection = "remove"), txt)
     
     expect_identical(char_select(txt, c("aa*", "x*")), c(c1 = "aa", c3 = "aa"))
     expect_identical(char_remove(txt, c("aa*", "x*")), 
                      c(c2 = "ab", c4 = "bcd", c5 = "bcd"))
     
-    expect_identical(char_remove(txt, "*"), character())
-    expect_identical(char_remove(unname(txt), "*"), character())
+    expect_identical(char_remove(txt, "*"), 
+                     structure(character(), names = character()))
+    expect_identical(char_keep(unname(txt), "*"), 
+                     unname(txt))
+    expect_identical(char_remove(unname(txt), "*"), 
+                     character())
     
     expect_identical(char_keep(txt, "*"), txt)
 })
 
 test_that("char_select works with list pattern", {
-    txt <- c(c1 = "aa", c2 = "ab", c3 = "aa", c4 = "bcd", c5 = "bcd")
+    txt <- c(c1 = "aa", c2 = "ab", c3 = "aa bb", c4 = "bcd", c5 = "bcd")
     
     expect_identical(
-        char_keep(txt, list("x*", "b*")), 
-        c(c4 = "bcd", c5 = "bcd")
+        char_keep(txt, list("x*", "b*", "aa b*")), 
+        c(c3 = "aa bb", c4 = "bcd", c5 = "bcd")
     )
     expect_identical(
-        char_remove(txt, list("x*", "b*")), 
-        c(c1 = "aa", c2 = "ab", c3 = "aa")
+        char_remove(txt, list("x*", "b*", "aa b*")), 
+        c(c1 = "aa", c2 = "ab")
     )
 })
 
 test_that("char_select works with dictionary pattern", {
-    txt <- c(c1 = "aa", c2 = "ab", c3 = "aa", c4 = "bcd", c5 = "bcd")
-    patt <- dictionary(list(one = "x*", two = "b*"))
+    txt <- c(c1 = "aa", c2 = "ab", c3 = "aa bb", c4 = "bcd", c5 = "bcd")
+    patt <- dictionary(list(one = "x*", two = "b*", three = "aa b*"))
     expect_identical(
         char_keep(txt, patt),
-        c(c4 = "bcd", c5 = "bcd")
+        c(c3 = "aa bb", c4 = "bcd", c5 = "bcd")
     )
     expect_identical(
         char_remove(txt, patt), 
-        c(c1 = "aa", c2 = "ab", c3 = "aa")
+        c(c1 = "aa", c2 = "ab")
     )
 })

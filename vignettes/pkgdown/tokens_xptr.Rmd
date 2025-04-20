@@ -92,16 +92,17 @@ print(xtoks, max_ndoc = 1)
 
 This is not the normal R behaviour for modifying objects, but does exist in other packages that use external pointers, for instance, **data.table**, which has an entire [vignette on reference semantics](https://cran.r-project.org/web/packages/data.table/vignettes/datatable-reference-semantics.html).
 
-If you want to copy the underlying data of a `tokens_xptr` object (a _deep_ copy), this can be done explicitly using `copy()` or using `as.tokens_xptr()`.
+If you want to copy the underlying data of a `tokens_xptr` object (a _deep_ copy), this can be done by re-applying `as.tokens_xptr()`.
+
 ```{r}
-# deep copies
-# print(copy(xtoks), 0, 0)
-# print(as.tokens_xptr(xtoks), 0, 0)
+# deep copy
+print(as.tokens_xptr(xtoks), 0, 0)
 ```
+
 Each of these has a different memory address from that of the `xtoks` object above.
 
 
-### Modifying `tokens_xptr` objects using `tokens_*()` functions
+### Modifying tokens_xptr objects using tokens functions
 
 The functions that modify `tokens_xptr` objects work in exactly the same way as they do for `tokens` objects, with the exception that they modify those objects by reference rather than passing copies by value back and forth from R to the underlying C++ code that performs the work.  
 
@@ -120,7 +121,7 @@ print(xtoks3, 0, 0)
 ```
 
 
-## Saving `tokens_xptr` objects
+## Saving tokens_xptr objects
 
 Because they point to a memory location rather than containing the data itself, a `tokens_xptr` object needs first needs to be converted to a `tokens` object before its data can be saved to disk.  This is simple and performed by applying the `as.tokens()` method to the `tokens_xptr` object.  After conversion, it can be saved normally using `save()` or `saveRDS()`.
 
@@ -130,7 +131,7 @@ save(as.tokens(xtoks), file = "~/tmp/xtoks.rda")
 saveRDS(as.tokens(xtoks), file = "~/tmp/xtoks.rds")
 ```
 
-## Creating a document-feature matrix from a `tokens_xptr` object
+## Creating a document-feature matrix from a tokens_xptr object
 
 Passing a `tokens_xptr` object directly to `dfm()` to compile a document-feature matrix avoids a deep copy of that object and for larger objects can significantly reduce execution times for dfm creation. 
 
