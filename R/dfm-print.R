@@ -22,7 +22,7 @@ setMethod("print", signature(x = "dfm"),
                           ndoc(x), if (ndoc(x) == 1) "document" else "documents",
                           nfeat(x), if (nfeat(x) == 1) "feature" else "features",
                           format_sparsity(sparsity(x)),
-                          ncol(docvars), if (ncol(docvars) > 1) "docvars" else "docvar"))
+                          ncol(docvars), if (ncol(docvars) == 1) "docvar" else "docvars"))
               }
               if (max_ndoc < 0) 
                   max_ndoc <- ndoc(x)
