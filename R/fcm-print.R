@@ -4,9 +4,9 @@ setMethod("print", signature(x = "fcm"),
           function(x, max_nfeat = quanteda_options("print_dfm_max_nfeat"), 
                    show_summary = TRUE, ...) {
               if (show_summary) {
-                  cat(msg("Feature co-occurrence matrix of: %s by %s.\n",
+                  cat(msg("Feature co-occurrence matrix of: %s by %s %s.\n",
                           nrow(x), ncol(x), 
-                          if (nrow(x) == 1 && col(x) == 1) "feature" else "features"))
+                          if (nrow(x) == 1 && ncol(x) == 1) "feature" else "features"))
               }
               print_fcm(x, max_nfeat, show_summary, ...)
           })

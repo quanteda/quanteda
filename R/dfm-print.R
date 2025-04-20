@@ -19,8 +19,7 @@ setMethod("print", signature(x = "dfm"),
               if (show_summary) {
                   docvars <- docvars(x)
                   cat(msg("Document-feature matrix of: %s %s, %s %s (%s sparse) and %s %s.\n",
-                          ndoc(x), 
-                          if (ndoc(x) == 1) "document" else "documents",
+                          ndoc(x), if (ndoc(x) == 1) "document" else "documents",
                           nfeat(x), if (nfeat(x) == 1) "feature" else "features",
                           format_sparsity(sparsity(x)),
                           ncol(docvars), if (ncol(docvars) > 1) "docvars" else "docvar"))
