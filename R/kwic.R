@@ -91,7 +91,7 @@ kwic.tokens_xptr <- function(x, pattern = NULL, window = 5,
         stop("Either pattten or index must be provided\n", call. = FALSE)
     if (!is.null(pattern)) {
         index <- index(x, pattern = pattern, valuetype = valuetype, 
-                        case_insensitive = case_insensitive)
+                       case_insensitive = case_insensitive)
     } else if (!is.null(index)) {
         if (!is.index(index))
             stop("Invalid index object\n", call. = FALSE)
@@ -158,8 +158,9 @@ print.kwic <- function(x, max_nrow = quanteda_options("print_kwic_max_nrow"),
     
     x <- head(x, max_nrow)
     if (show_summary) {
-        cat(msg("Keyword-in-context with %d %s",
-                nrow(x) + nrem, if (nrow(x) + nrem > 0) "matches" else "match"))
+        cat(msg("Keyword-in-context with %s %s.",
+                nrow(x) + nrem, 
+                if (nrow(x) + nrem == 1) "match" else "matches"))
     }
     
     if (nrow(x)) {
@@ -180,12 +181,9 @@ print.kwic <- function(x, max_nrow = quanteda_options("print_kwic_max_nrow"),
         print(result, row.names = FALSE)
 
         if (nrem > 0) {
-            cat("[", sep = "") 
-            if (nrem > 0) {
-                cat(" reached max_nrow ... ", format(nrem, big.mark = ","), " more match", sep = "") 
-                if (nrem > 1) cat("es", sep = "")
-            }
-            cat(" ]\n", sep = "") 
+            cat(msg("[ reached max_nrow ... %s more %s]",
+                    nrem, 
+                    if (nrem == 1) "match" else "matches"))
         }
     }
     cat("\n", sep = "") 
