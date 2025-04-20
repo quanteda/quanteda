@@ -159,8 +159,7 @@ print.kwic <- function(x, max_nrow = quanteda_options("print_kwic_max_nrow"),
     x <- head(x, max_nrow)
     if (show_summary) {
         cat(msg("Keyword-in-context with %d %s",
-                list(nrow(x) + nrem, c("match", "matches")),
-                list(1, nrow(x) + nrem != 1)), ".", sep = "")
+                nrow(x) + nrem, if (nrow(x) + nrem > 0) "matches" else "match"))
     }
     
     if (nrow(x)) {

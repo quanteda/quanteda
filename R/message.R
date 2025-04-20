@@ -24,28 +24,25 @@ catm <- function(..., sep = " ", appendLF = FALSE) {
 
 # used in displaying verbose messages for tokens and dfm constructors
 message_create <- function(input, output) {
-    message(sprintf("Creating a %s from a %s object...",
-                    output, input))
+    message(msg("Creating a %s from a %s object...",
+                output, input))
 }
 
 message_finish <- function(x, time) {
     if (is.dfm(x)) {
-        message(sprintf(" ...complete, elapsed time: %s seconds.",
-                        format((proc.time() - time)[3], digits = 3)))
-        message(sprintf("Finished constructing a %s sparse dfm.",
-                        paste(format(dim(x), big.mark = ",", trim = TRUE), collapse = " x ")))
+        message(msg(" ...complete, elapsed time: %s seconds.",
+                    format((proc.time() - time)[3], digits = 3)))
+        message(msg("Finished constructing a %d x %d sparse dfm.",
+                    nrow(x), ncol(x)))
     } else {
         m <- length(types(x))
         n <- ndoc(x)
-        message(sprintf(" ...%s unique %s", 
-                        format(m, big.mark = ",", trim = TRUE), 
-                        if (m > 1) "types" else "type"))
-        message(sprintf(" ...complete, elapsed time: %s seconds.",
-                        format((proc.time() - time)[3], digits = 3)))
-        message(sprintf("Finished constructing %s from %s %s",
-                        class(x)[1],
-                        format(n, big.mark = ","),
-                        if (n > 1) "documents" else "document"))
+        message(msg(" ...%s unique %s", 
+                    m, if (m > 1) "types" else "type"))
+        message(msg(" ...complete, elapsed time: %s seconds.",
+                    format((proc.time() - time)[3], digits = 3)))
+        message(msg("Finished constructing %s from %s %s",
+                    class(x)[1], n, if (n > 1) "documents" else "document"))
     }
 }
 
@@ -66,10 +63,8 @@ NULL
 #' @inheritParams messages
 #' @keywords message internal
 message_tokens <- function(operation, before, after) {
-    msg <- sprintf("%s changed from %d tokens (%d documents) to %d tokens (%d documents)",
-                   operation, before$ntoken, before$ndoc, after$ntoken, after$ndoc)
-    msg <- prettyNum(msg, big.mark = ",")
-    message(msg)
+    message(msg("%s changed from %d tokens (%d documents) to %d tokens (%d documents)",
+                operation, before$ntoken, before$ndoc, after$ntoken, after$ndoc))
 }
 
 stats_tokens <- function(x) {
@@ -81,10 +76,8 @@ stats_tokens <- function(x) {
 #' @inheritParams messages
 #' @keywords message internal
 message_dfm <- function(operation, before, after) {
-    msg <- sprintf("%s changed from %d features (%d documents) to %d features (%d documents)",
-                   operation, before$nfeat, before$ndoc, after$nfeat, after$ndoc)
-    msg <- prettyNum(msg, big.mark = ",")
-    message(msg)
+    message(msg("%s changed from %d features (%d documents) to %d features (%d documents)",
+                operation, before$nfeat, before$ndoc, after$nfeat, after$ndoc))
 }
 
 stats_dfm <- function(x) {
