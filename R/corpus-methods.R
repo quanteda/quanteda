@@ -30,12 +30,10 @@ print.corpus <- function(x, max_ndoc = quanteda_options("print_corpus_max_ndoc")
 
     if (show_summary) {
         cat(msg("Corpus consisting of %s %s",
-                ndoc, 
-                if (ndoc == 1) "document" else "documents"))
+                ndoc, if (ndoc == 1) "document" else "documents"))
         if (ncol(docvars))
             cat(msg(" and %s %s",
-                ncol(docvars), 
-                if (ncol(docvars) == 1) "docvar" else "docvars"))
+                ncol(docvars), if (ncol(docvars) == 1) "docvar" else "docvars"))
         cat(".\n")
     }
 
@@ -58,8 +56,7 @@ print.corpus <- function(x, max_ndoc = quanteda_options("print_corpus_max_ndoc")
         ndoc_rem <- ndoc - max_ndoc
         if (ndoc_rem > 0)
             cat(msg("[ reached max_ndoc ... %s more %s]\n", 
-                    ndoc_rem, 
-                    if (ndoc_rem == 1) "document" else "documents"))
+                    ndoc_rem, if (ndoc_rem == 1) "document" else "documents"))
     }
 
 }
