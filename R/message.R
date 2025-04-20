@@ -7,12 +7,16 @@
 #' @keywords internal development
 #' @examples 
 #' \dontrun{
-#' quanteda:::msg("you cannot delete %d %s", 2000, "documents")
+#' quanteda:::msg("you cannot delete %s %s", 2000, "documents")
 msg <- function(format, ..., pretty = TRUE) {
-    msg <- stringi::stri_sprintf(format, ...)
-    if (pretty)
-        msg <- prettyNum(msg, big.mark = ",")
-    return(msg)
+    args <- list(...)
+    if (pretty) {
+        args <- lapply(args, prettyNum, big.mark = ",")
+    } else {
+        args <- lapply(args, as.character)
+    }
+    args$format <- format
+    do.call(stringi::stri_sprintf, args)
 }
 
 # rdname catm
@@ -33,16 +37,20 @@ message_finish <- function(x, time) {
         message(msg(" ...complete, elapsed time: %s seconds.",
                     format((proc.time() - time)[3], digits = 3)))
         message(msg("Finished constructing a %d x %d sparse dfm.",
-                    nrow(x), ncol(x)))
+                    format(nrow(x), big.mark = ","), 
+                    format(ncol(x), big.mark = ",")))
     } else {
         m <- length(types(x))
         n <- ndoc(x)
         message(msg(" ...%s unique %s", 
-                    m, if (m == 1) "type" else "types"))
+                    format(m, big.mark = ","), 
+                    if (m == 1) "type" else "types"))
         message(msg(" ...complete, elapsed time: %s seconds.",
                     format((proc.time() - time)[3], digits = 3)))
         message(msg("Finished constructing %s from %s %s",
-                    class(x)[1], n, if (n == 1) "document" else "documents"))
+                    class(x)[1], 
+                    format(n, big.mark = ","),
+                    if (n == 1) "document" else "documents"))
     }
 }
 
