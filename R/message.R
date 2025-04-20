@@ -36,21 +36,18 @@ message_finish <- function(x, time) {
     if (is.dfm(x)) {
         message(msg(" ...complete, elapsed time: %s seconds.",
                     format((proc.time() - time)[3], digits = 3)))
-        message(msg("Finished constructing a %d x %d sparse dfm.",
-                    format(nrow(x), big.mark = ","), 
-                    format(ncol(x), big.mark = ",")))
+        message(msg("Finished constructing a %s x %s sparse dfm.",
+                    nrow(x), ncol(x)))
     } else {
         m <- length(types(x))
         n <- ndoc(x)
         message(msg(" ...%s unique %s", 
-                    format(m, big.mark = ","), 
-                    if (m == 1) "type" else "types"))
+                    m, if (m == 1) "type" else "types"))
         message(msg(" ...complete, elapsed time: %s seconds.",
                     format((proc.time() - time)[3], digits = 3)))
         message(msg("Finished constructing %s from %s %s",
                     class(x)[1], 
-                    format(n, big.mark = ","),
-                    if (n == 1) "document" else "documents"))
+                    n, if (n == 1) "document" else "documents"))
     }
 }
 
@@ -71,7 +68,7 @@ NULL
 #' @inheritParams messages
 #' @keywords message internal
 message_tokens <- function(operation, before, after) {
-    message(msg("%s changed from %d tokens (%d documents) to %d tokens (%d documents)",
+    message(msg("%s changed from %s tokens (%s documents) to %s tokens (%s documents)",
                 operation, before$ntoken, before$ndoc, after$ntoken, after$ndoc))
 }
 
@@ -84,7 +81,7 @@ stats_tokens <- function(x) {
 #' @inheritParams messages
 #' @keywords message internal
 message_dfm <- function(operation, before, after) {
-    message(msg("%s changed from %d features (%d documents) to %d features (%d documents)",
+    message(msg("%s changed from %s features (%s documents) to %s features (%s documents)",
                 operation, before$nfeat, before$ndoc, after$nfeat, after$ndoc))
 }
 
