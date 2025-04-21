@@ -152,7 +152,6 @@ test_that("apply_if argument is working", {
              text3 = c("Civilians", "attacked"))
     )
     
-    docname <- docnames(toks)
     toks2 <- tokens_ngrams(toks, n = 3, apply_if = toks$victim == "soldiers")
     expect_identical(
         as.list(toks2),
@@ -161,13 +160,18 @@ test_that("apply_if argument is working", {
              text3 = c("Civilians", "attacked"))
     )
     
-    docname <- docnames(toks)
     toks3 <- tokens_ngrams(toks, apply_if = !is.na(toks$number))
     expect_identical(
         as.list(toks3),
         list(text1 = c("Insurgents", "killed"),
              text2 = c("Army_soldiers", "soldiers_wounded"),
              text3 = c("Civilians_attacked"))
+    )
+    
+    toks4 <- tokens_skipgrams(toks, apply_if = !is.na(toks$number))
+    expect_identical(
+        as.list(toks3),
+        as.list(toks4)
     )
 })
 

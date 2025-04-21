@@ -22,6 +22,7 @@ tokens_skipgrams(
   n,
   skip,
   concatenator = concat(x),
+  apply_if = NULL,
   verbose = quanteda_options("verbose")
 )
 }
