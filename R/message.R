@@ -6,7 +6,6 @@
 #' @param pretty if `TRUE`, message is passed to [base::prettyNum()].
 #' @keywords internal development
 #' @examples 
-#' \dontrun{
 #' quanteda:::msg("you cannot delete %s %s", 2000, "documents")
 msg <- function(format, ..., pretty = TRUE) {
     args <- list(...)
