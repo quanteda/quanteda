@@ -4,36 +4,16 @@
 \alias{msg}
 \title{Conditionally format messages}
 \usage{
-msg(x, values = NULL, indices = NULL, pretty = TRUE, ...)
+msg(format, ..., pretty = TRUE)
 }
 \arguments{
-\item{x}{message template to be passed to \code{\link[stringi:stri_sprintf]{stringi::stri_sprintf()}}.}
-
-\item{values}{list of values to be used in the template. Coerced to list if vector is given.}
-
-\item{indices}{list of integer to specify which value to be used.}
-
 \item{pretty}{if \code{TRUE}, message is passed to \code{\link[base:formatc]{base::prettyNum()}}.}
-
-\item{...}{additional arguments passed to \code{\link[base:formatc]{base::prettyNum()}}.}
 }
 \description{
 Conditionally format messages
 }
 \examples{
-\dontrun{
-quanteda:::msg("you cannot delete \%s", 
-               c("a document", "documents"), indices = TRUE)
-quanteda:::msg("tokens has \%s", 
-               c("sentences", "paragraphs", "documents"), indices = 2)
-
-dfmat <- data_dfm_lbgexample
-quanteda:::msg("dfm has \%d \%s and \%d \%s", 
-     list(ndoc(dfmat), c("document", "documents"),
-          nfeat(dfmat), c("feature", "features")), 
-     list(1, ndoc(dfmat) > 1, 
-          1, nfeat(dfmat) > 1))
-}      
+quanteda:::msg("you cannot delete \%s \%s", 2000, "documents")
 }
 \keyword{development}
 \keyword{internal}

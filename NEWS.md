@@ -4,6 +4,8 @@
 
 * Significantly reduce the memory usage for the `c` operation on large `tokens` and `tokens_xptr` objects.
 
+* Further improve the verbose messages for corpus, tokens, dfm and fcm objects.
+
 # quanteda 4.2.0
 
 ## Changes and additions

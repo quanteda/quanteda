@@ -178,7 +178,7 @@ friendly_class_undefined_message <- check_class # for compatibility
 #' @param method the names of functions `...` is passed to
 #' @keywords internal development
 check_dots <- function(..., method = NULL) {
-    arg <- setdiff(names(list(...)), "")
+    arg <- setdiff(names(list(...)), c("", "internal"))
     if (!is.null(method)) {
         arg_used <- unlist(lapply(method, function(x) names(formals(x))))
         arg <- setdiff(arg, arg_used)
