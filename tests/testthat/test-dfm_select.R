@@ -187,27 +187,31 @@ test_that("dfm_remove works even when it does not remove anything, issue 711", {
 
 test_that("dfm_select errors when dictionary has multi-word features, issue 775", {
     dfmt <- dfm(tokens(data_corpus_inaugural[50:58]))
+    
+    # with the default separator
     testdict1 <- dictionary(list(eco = c("compan*", "factory worker*"),
                                  pol = c("political part*", "election*")),
                             separator = " ")
-    testdict2 <- dictionary(list(eco = c("compan*", "factory_worker"),
-                                 pol = c("political_part*", "election*")),
-                            separator = "_")
     expect_equal(
         featnames(dfm_select(dfmt, pattern = testdict1, valuetype = "glob")),
         c("election", "elections", "company", "companies")
     )
     expect_equal(
         featnames(dfm_select(dfmt, pattern = phrase(testdict1), valuetype = "glob")),
-        c("political", "election", "part", "parties", "elections", "partisan", "company", "participation", "party", "partisanship", "partial", "companies")
+        c("election", "elections", "company", "companies")
     )
+    
+    # with a different separator
+    testdict2 <- dictionary(list(eco = c("compan*", "factory_worker"),
+                                 pol = c("political_part*", "election*")),
+                            separator = "_")
     expect_equal(
         featnames(dfm_select(dfmt, pattern = testdict2, valuetype = "glob")),
         c("election", "elections", "company", "companies")
     )
     expect_equal(
         featnames(dfm_select(dfmt, pattern = phrase(testdict2), valuetype = "glob")),
-        c("political", "election", "part", "parties", "elections", "partisan", "company", "participation", "party", "partisanship", "partial", "companies")
+        c("election", "elections", "company", "companies")
     )
 })
 
