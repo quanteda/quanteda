@@ -112,7 +112,9 @@ tokens_compound.tokens_xptr <- function(x, pattern,
     attrs <- attributes(x)
     type <- get_types(x)
 
-    ids <- object2id(pattern, type, valuetype, case_insensitive, remove_unigram = all(window == 0))
+    ids <- object2id(pattern, type, valuetype, case_insensitive, 
+                     concatenator = field_object(attrs, "concatenator"),
+                     match_pattern = if (all(window == 0)) "multi" else "any")
     if (length(window) == 1) window <- rep(window, 2)
     if (is.null(apply_if))
         apply_if <- rep(TRUE, length.out = ndoc(x))

@@ -160,7 +160,8 @@ tokens_lookup.tokens_xptr <- function(x, dictionary, levels = 1:5,
     attrs <- attributes(x)
     type <- get_types(x)
     ids <- object2id(dictionary, type, valuetype, case_insensitive,
-                     field_object(attrs, "concatenator"), levels)
+                     concatenator = field_object(attrs, "concatenator"), 
+                     levels = levels)
     overlap <- match(nested_scope, c("key", "dictionary"))
     if (is.null(apply_if))
         apply_if <- rep(TRUE, length.out = ndoc(x))

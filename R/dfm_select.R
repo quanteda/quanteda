@@ -116,7 +116,9 @@ dfm_select.dfm <-  function(x, pattern = NULL,
                 field_object(attrs, "concatenator")
             )
         }
-        ids_pat <- pattern2id(pattern, feat, valuetype, case_insensitive)
+        ids_pat <- object2id(pattern, feat, valuetype, case_insensitive,
+                             concatenator = field_object(attrs, "concatenator"),
+                             match_pattern = "single")
         id_pat <- unlist_integer(ids_pat, unique = TRUE, use.names = FALSE)
         if ("" %in% feat) id_pat[id_pat == 0] <- 1L
     }
