@@ -73,8 +73,10 @@ tokens_replace.tokens_xptr <- function(x, pattern, replacement, valuetype = "glo
     if (verbose)
         before <- stats_tokens(x)
     
-    ids_pat <- object2id(pattern, type, valuetype, case_insensitive, conc, keep_nomatch = FALSE)
-    ids_rep <- object2id(replacement, type, "fixed", FALSE, conc, keep_nomatch = TRUE)
+    ids_pat <- object2id(pattern, type, valuetype, case_insensitive, 
+                         concatenator = conc, keep_nomatch = FALSE)
+    ids_rep <- object2id(replacement, type, "fixed", FALSE, 
+                         concatenator = conc, keep_nomatch = TRUE)
     set_types(x) <- type
     
     result <- cpp_tokens_replace(x, ids_pat, ids_rep[attr(ids_pat, "pattern")], !apply_if,

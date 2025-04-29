@@ -103,7 +103,9 @@ dfm_lookup.dfm <- function(x, dictionary, levels = 1:5,
              if (length(dictionary) > 1L) "s" else "", "\n", sep = "")
 
     ids <- object2id(dictionary, type, valuetype, case_insensitive,
-                     field_object(attrs, "concatenator"), levels)
+                     concatenator = field_object(attrs, "concatenator"), 
+                     levels = levels,
+                     match_pattern = "single")
     
     # flag nested patterns
     if (length(ids)) {

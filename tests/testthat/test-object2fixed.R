@@ -22,6 +22,28 @@ test_that("object2id is working with a list", {
     attr(lis3, "pattern") <- c(1, 2, 3, 4, 5)
     expect_equal(ids3, lis3)
     
+    ids4 <- quanteda:::object2id(phrase(pat), types = letters, 
+                                 valuetype = 'fixed', case_insensitive = TRUE,
+                                 match_pattern = "single")
+    lis4 <- list("A" = 1)
+    attr(lis4, "pattern") <- c(1)
+    expect_equal(ids4, lis4)
+    
+    ids5 <- quanteda:::object2id(phrase(pat), types = letters, 
+                                 valuetype = 'fixed', case_insensitive = TRUE,
+                                 match_pattern = "multi")
+    lis5 <- list("a b" = c(1, 2), "C D" = c(3, 4),
+                 "e f g" = c(5, 6, 7))
+    attr(lis5, "pattern") <- c(1, 2, 3)
+    expect_equal(ids5, lis5)
+    
+    expect_error(
+        quanteda:::object2id(phrase(pat), types = letters, 
+                             match_pattern = "bigrams"),
+        '\'arg\' should be one of "any", "single", "multi"',
+        fixed = TRUE
+    )
+    
 })
 
 test_that("object2id is working with a list", {

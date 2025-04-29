@@ -4,7 +4,14 @@
 
 * Significantly reduce the memory usage for the `c` operation on large `tokens` and `tokens_xptr` objects.
 
-* Further improve the verbose messages for corpus, tokens, dfm and fcm objects.
+* Further improvements to the verbose messages for corpus, tokens, dfm and fcm objects.
+
+* `tokens_ngrams()` now includes a new argument `apply_if`, functioning similar to this argument
+in `tokens_compound()` and `tokens_lookup()` (#2390).
+
+
+* Changes to dfm_select() now include new arguments `match_pattern` and `concatenator`, to control how single-word patterns or multi-word patterns
+  and multi-word patterns matched, as well as controlling the concatenator that binds phrases in the pattern.
 
 * `data_corpus_inaugural` now updated for Trump 2025.
 
