@@ -12,6 +12,7 @@
 #'   the actual chunk size will be 100 / 0.8 = 125. Defaults to 1.0.
 #' @seealso [tokens_chunk()]
 #' @keywords corpus
+#' @importFrom lifecycle signal_stage
 #' @export
 #' @examples
 #' data_corpus_inaugural[1] |>
@@ -20,7 +21,8 @@
 corpus_chunk <- function(x, size, overlap = 0, inflation_factor = 1.0,
                          use_docvars = TRUE,
                          verbose = quanteda_options("verbose")) {
-    UseMethod("corpus_chunk")
+  signal_stage("experimental", "corpus_chunk()")
+  UseMethod("corpus_chunk")
 }
 
 #' @export
