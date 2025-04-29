@@ -4,7 +4,11 @@
 
 * Significantly reduce the memory usage for the `c` operation on large `tokens` and `tokens_xptr` objects.
 
-* Further improve the verbose messages for corpus, tokens, dfm and fcm objects.
+* Further improvements to the verbose messages for corpus, tokens, dfm and fcm objects.
+
+* `tokens_ngrams()` now includes a new argument `apply_if`, functioning similar to this argument
+in `tokens_compound()` and `tokens_lookup()` (#2390).
+
 
 # quanteda 4.2.0
 
