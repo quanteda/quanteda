@@ -1,16 +1,18 @@
 test_that("bootstrap_dfm works with character and corpus objects", {
+    
     txt <- c(textone = "This is a sentence.  Another sentence.  Yet another.",
              texttwo = "Premiere phrase.  Deuxieme phrase.",
              textthree = "Sentence three is really short.")
     corp <- corpus(txt,
                    docvars = data.frame(country = c("UK", "USA", "UK"), 
                                         year = c(1990, 2000, 2005)))
-    toks <- tokens(corp)
+    toks <- tokens(corpus_reshape(corp, to = "sentences"))
     dfmt <- dfm(toks)
     
     set.seed(10)
     bs <- bootstrap_dfm(dfmt, n = 10)
-    expect_equal(bs[[1]], dfmt)
+    expect_equal(bs[[1]], 
+                 dfm_group(dfmt))
     
     # are feature names of resamples identical?
     expect_identical(
@@ -29,6 +31,7 @@ test_that("bootstrap_dfm works with character and corpus objects", {
 })
 
 test_that("bootstrap_dfm works as planned with dfm", {
+    
     txt <- c(textone = "This is a sentence.  Another sentence.  Yet another.",
              texttwo = "Premiere phrase.  Deuxieme phrase.")
     corp <- corpus(txt, 
@@ -53,13 +56,34 @@ test_that("bootstrap_dfm works as planned with dfm", {
 })
 
 test_that("verbose messages work", {
+    
     txt <- c(textone = "This is a sentence.  Another sentence.  Yet another.",
              texttwo = "Premiere phrase.  Deuxieme phrase.",
              textthree = "Sentence three is really short.")
-    toks <- tokens(txt)
+    corp <- corpus(txt)
+    
+    # sentences
+    toks <- tokens(corpus_reshape(corp, to = "sentences"))
     dfmt <- dfm(toks)
     expect_message(
         bootstrap_dfm(dfmt, n = 1, verbose = TRUE),
         "resampling and forming dfms: 0"
     )
+    
+    # documents
+    toks2 <- tokens(corp)
+    dfmt2 <- dfm(toks2)
+    expect_warning(
+        bootstrap_dfm(dfmt2, n = 1, verbose = TRUE),
+        "x must contain sentences for bootstrapping"
+    )
+    
+    # segments
+    toks3 <- tokens(corpus_segment(corp, pattern = "."))
+    dfmt3 <- dfm(toks3)
+    expect_message(
+        bootstrap_dfm(dfmt3, n = 1, verbose = TRUE),
+        "resampling and forming dfms: 0"
+    )
+    
 })

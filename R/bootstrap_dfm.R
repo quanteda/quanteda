@@ -17,12 +17,13 @@
 #' @export
 #' @keywords dfm experimental bootstrap
 #' @examples
-#' # bootstrapping from the original text
 #' set.seed(10)
 #' txt <- c(textone = "This is a sentence.  Another sentence.  Yet another.",
 #'          texttwo = "Premiere phrase.  Deuxieme phrase.")
-#' dfmat <- dfm(tokens(txt))
-#' bootstrap_dfm(dfmat, n = 3, verbose = TRUE)
+#' dfmat <- corpus_reshape(corpus(txt), to = "sentences") |>
+#'     tokens() |>
+#'     dfm()
+#' bootstrap_dfm(dfmat, n = 3)
 #'
 bootstrap_dfm <- function(x, n = 10, ..., verbose = quanteda_options("verbose")) {
     UseMethod("bootstrap_dfm")
@@ -35,17 +36,14 @@ bootstrap_dfm.default <- function(x, n = 10, ..., verbose = quanteda_options("ve
 
 #' @noRd
 #' @export
-#' @examples
-#' # bootstrapping from a dfm
-#' dfmat <- corpus_reshape(corpus(txt), to = "sentences") |>
-#'     tokens() |>
-#'     dfm()
-#' bootstrap_dfm(dfmat, n = 3)
 bootstrap_dfm.dfm <- function(x, n = 10, ..., verbose = quanteda_options("verbose")) {
     x <- as.dfm(x)
     n <- check_integer(n, min = 0)
     verbose <- check_logical(verbose)
-
+    
+    attrs <- attributes(x)
+    if (field_object(attrs, "unit") == "documents")
+        warning("x must contain sentences for bootstrapping")
     if (verbose) {
         catm("Bootstrapping dfm to create multiple dfm objects...\n")
         catm("   ...resampling and forming dfms: 0", appendLF = FALSE)
