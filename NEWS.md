@@ -6,6 +6,8 @@
 
 * Further improve the verbose messages for corpus, tokens, dfm and fcm objects.
 
+* `data_corpus_inaugural` now updated for Trump 2025.
+
 # quanteda 4.2.0
 
 ## Changes and additions
