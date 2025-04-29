@@ -45,8 +45,8 @@ cpp_tokens_lookup <- function(xptr, words_, keys_, types_, overlap, nomatch, byp
     .Call(`_quanteda_cpp_tokens_lookup`, xptr, words_, keys_, types_, overlap, nomatch, bypass_, thread)
 }
 
-cpp_tokens_ngrams <- function(xptr, delim_, ns_, skips_, thread = -1L) {
-    .Call(`_quanteda_cpp_tokens_ngrams`, xptr, delim_, ns_, skips_, thread)
+cpp_tokens_ngrams <- function(xptr, delim_, ns_, skips_, bypass_, thread = -1L) {
+    .Call(`_quanteda_cpp_tokens_ngrams`, xptr, delim_, ns_, skips_, bypass_, thread)
 }
 
 cpp_tokens_replace <- function(xptr, patterns_, replacements_, bypass_, thread = -1L) {

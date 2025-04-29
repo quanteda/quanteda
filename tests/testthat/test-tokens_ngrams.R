@@ -134,3 +134,44 @@ test_that("tokens_ngrams(x, n = ...) works when ntokens(x) < n", {
                       char_ngrams("a", n = 2))
 })
 
+test_that("apply_if argument is working", {
+    
+    dat <- data.frame(text = c("Insurgents killed",
+                               "Army soldiers wounded",
+                               "Civilians attacked"),
+                      victim = c("insurgents", "soldiers", "sivilians"),
+                      number = c(NA, 10, 100))
+    corp <- corpus(dat)
+    toks <- tokens(corp)
+    
+    toks1 <- tokens_ngrams(toks, apply_if = toks$victim == "insurgents")
+    expect_identical(
+        as.list(toks1),
+        list(text1 = c("Insurgents_killed"),
+             text2 = c("Army", "soldiers", "wounded"),
+             text3 = c("Civilians", "attacked"))
+    )
+    
+    toks2 <- tokens_ngrams(toks, n = 3, apply_if = toks$victim == "soldiers")
+    expect_identical(
+        as.list(toks2),
+        list(text1 = c("Insurgents", "killed"),
+             text2 = c("Army_soldiers_wounded"),
+             text3 = c("Civilians", "attacked"))
+    )
+    
+    toks3 <- tokens_ngrams(toks, apply_if = !is.na(toks$number))
+    expect_identical(
+        as.list(toks3),
+        list(text1 = c("Insurgents", "killed"),
+             text2 = c("Army_soldiers", "soldiers_wounded"),
+             text3 = c("Civilians_attacked"))
+    )
+    
+    toks4 <- tokens_skipgrams(toks, apply_if = !is.na(toks$number))
+    expect_identical(
+        as.list(toks3),
+        as.list(toks4)
+    )
+})
+
