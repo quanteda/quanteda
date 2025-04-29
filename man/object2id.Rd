@@ -12,7 +12,7 @@ object2id(
   case_insensitive = TRUE,
   concatenator = "_",
   levels = 1,
-  remove_unigram = FALSE,
+  match_pattern = c("any", "single", "multi"),
   keep_nomatch = FALSE
 )
 
@@ -23,7 +23,7 @@ object2fixed(
   case_insensitive = TRUE,
   concatenator = "_",
   levels = 1,
-  remove_unigram = FALSE,
+  match_pattern = c("any", "single", "multi"),
   keep_nomatch = FALSE
 )
 }
@@ -49,7 +49,8 @@ levels are not contiguous, e.g. \code{levels = c(1:3)} will collapse the second
 level into the first, but record the third level (if present) collapsed
 below the first (see examples).}
 
-\item{remove_unigram}{if \code{TRUE}, ignores single-word patterns}
+\item{match_pattern}{select only single-word patterns or multi-word patterns
+should be matched. If "any", it matches both single-word and multi-word patterns.}
 
 \item{keep_nomatch}{keep patterns that did not match}
 }
@@ -71,7 +72,8 @@ dict <- dictionary(list(A = c("a", "aa"),
                         B = c("BB", "B B"),
                         C = c("C", "C-C")))
 object2fixed(dict, types)
-object2fixed(dict, types, remove_unigram = TRUE)
+object2fixed(dict, types, match_pattern = "single")
+object2fixed(dict, types, match_pattern = "multi")
 
 # phrase
 pats <- phrase(c("a", "aa", "zz", "bb", "b b"))

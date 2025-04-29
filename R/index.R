@@ -33,8 +33,8 @@ index.tokens_xptr <- function(x, pattern,
     
     attrs <- attributes(x)
     type <- get_types(x)
-    ids <- object2id(pattern, type, valuetype,
-                     case_insensitive, field_object(attrs, "concatenator"))
+    ids <- object2id(pattern, type, valuetype, case_insensitive, 
+                     concatenator = field_object(attrs, "concatenator"))
     result <- cpp_index(x, ids, get_threads())
     result$docname <- docnames(x)[result$docname]
     result$pattern <- factor(names(ids)[result$pattern], levels = unique(names(ids)))

@@ -8,7 +8,8 @@
 #' @param concatenator the concatenation character that joins multi-word
 #'   expression in `types`
 #' @inheritParams tokens_lookup
-#' @param remove_unigram  if `TRUE`, ignores single-word patterns
+#' @param match_pattern select only single-word patterns or multi-word patterns
+#'   should be matched. If "any", it matches both single-word and multi-word patterns.
 #' @return `object2fixed()` returns a list of character vectors of matched
 #'   types. `object2id()` returns a list of indices of matched types with
 #'   attributes. The "pattern" attribute records the indices of the matched patterns
@@ -19,7 +20,8 @@
 #' @export
 object2id <- function(x, types, valuetype = c("glob", "fixed", "regex"),
                       case_insensitive = TRUE,
-                      concatenator = "_", levels = 1, remove_unigram = FALSE,
+                      concatenator = "_", levels = 1, 
+                      match_pattern = c("any", "single", "multi"),
                       keep_nomatch = FALSE) {
     
     if (is.dfm(x))
@@ -30,7 +32,7 @@ object2id <- function(x, types, valuetype = c("glob", "fixed", "regex"),
     case_insensitive <- check_logical(case_insensitive)
     concatenator <- check_character(concatenator)
     levels <- check_integer(levels, min = 1, max_len = Inf)
-    remove_unigram <- check_logical(remove_unigram)
+    match_pattern <- match.arg(match_pattern)
     keep_nomatch <- check_logical(keep_nomatch)
     
     if (is.collocations(x)) {
@@ -61,10 +63,14 @@ object2id <- function(x, types, valuetype = c("glob", "fixed", "regex"),
             temp <- as.list(x)
             names(temp) <- x
         }
-        if (remove_unigram)
-            temp <- temp[lengths(temp) > 1] # drop single-word patterns
+        if (identical(match_pattern, "single")) {
+            temp <- temp[lengths(temp) == 1] # only single-word patterns
+        } else if (identical(match_pattern, "multi")) {
+            temp <- temp[lengths(temp) > 1] # only multi-word patterns
+        } 
         result <- pattern2id(temp, types, valuetype, case_insensitive, keep_nomatch)
-        attr(result, "pattern") <- match(names(result), names(temp)) # TODO might need to return index in dictionary
+        # NOTE: need to return index in x?
+        attr(result, "pattern") <- match(names(result), names(temp))
         if (is.dictionary(x))
             attr(result, "key") <- key
     }
@@ -82,19 +88,21 @@ object2id <- function(x, types, valuetype = c("glob", "fixed", "regex"),
 #'                         B = c("BB", "B B"),
 #'                         C = c("C", "C-C")))
 #' object2fixed(dict, types)
-#' object2fixed(dict, types, remove_unigram = TRUE)
+#' object2fixed(dict, types, match_pattern = "single")
+#' object2fixed(dict, types, match_pattern = "multi")
 #' 
 #' # phrase
 #' pats <- phrase(c("a", "aa", "zz", "bb", "b b"))
 #' object2fixed(pats, types)
 #' object2fixed(pats, types, keep_nomatch = TRUE)
 object2fixed <- function(x, types, valuetype = c("glob", "fixed", "regex"),
-                                  case_insensitive = TRUE,
-                                  concatenator = "_", levels = 1, remove_unigram = FALSE,
-                                  keep_nomatch = FALSE) {
+                         case_insensitive = TRUE,
+                         concatenator = "_", levels = 1, 
+                         match_pattern = c("any", "single", "multi"),
+                         keep_nomatch = FALSE) {
     
     temp <- object2id(x, types, valuetype, case_insensitive, concatenator,
-                      levels, remove_unigram, keep_nomatch)
+                      levels, match_pattern, keep_nomatch)
     result <- lapply(temp, function(x) types[x])
     return(result)
 }
