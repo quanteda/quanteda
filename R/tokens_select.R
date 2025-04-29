@@ -161,7 +161,7 @@ tokens_select.tokens_xptr <- function(x, pattern = NULL,
         }
     } else {
         ids <- object2id(pattern, type, valuetype, case_insensitive,
-                         field_object(attrs, "concatenator"))
+                         concatenator = field_object(attrs, "concatenator"))
     }
 
     # selection by nchar

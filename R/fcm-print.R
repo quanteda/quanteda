@@ -4,11 +4,9 @@ setMethod("print", signature(x = "fcm"),
           function(x, max_nfeat = quanteda_options("print_dfm_max_nfeat"), 
                    show_summary = TRUE, ...) {
               if (show_summary) {
-                cat("Feature co-occurrence matrix of: ",
-                    format(nrow(x), big.mark = ","), " by ",
-                    format(ncol(x), big.mark = ","), " feature",
-                    if (nrow(x) != 1L || col(x) != 1L) "s" else "",
-                    ".\n", sep = "")
+                  cat(msg("Feature co-occurrence matrix of: %s by %s %s.\n",
+                          nrow(x), ncol(x), 
+                          if (nrow(x) == 1 && ncol(x) == 1) "feature" else "features"))
               }
               print_fcm(x, max_nfeat, show_summary, ...)
           })
@@ -42,14 +40,14 @@ print_fcm <- function(x, max_nfeat, show_summary, ...) {
     if (nrow_rem > 0 || ncol_rem > 0) {
       cat("[", sep = "") 
       if (nrow_rem > 0) {
-          cat(" reached max_feat ... ", format(nrow_rem, big.mark = ","), " more feature", sep = "") 
-          if (nrow_rem > 1) cat("s", sep = "")
+          cat(msg(" reached max_nfeat ... %s more %s",
+                  nrow_rem, if (nrow_rem == 1) "feature" else "features"))
       }
       if (nrow_rem > 0 && ncol_rem > 0) 
           cat(",", sep = "")
       if (ncol_rem > 0) {
-          cat(" reached max_nfeat ... ", format(ncol_rem, big.mark = ","), " more feature", sep = "") 
-          if (ncol_rem > 1) cat("s", sep = "")
+          cat(msg(" reached max_nfeat ... %s more %s",
+                  ncol_rem, if (ncol_rem == 1) "feature" else "features"))
       }
       cat(" ]\n", sep = "") 
     }
