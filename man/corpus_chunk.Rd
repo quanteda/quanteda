@@ -7,7 +7,6 @@
 corpus_chunk(
   x,
   size,
-  overlap = 0,
   inflation_factor = 1,
   truncate = FALSE,
   use_docvars = TRUE,
@@ -15,30 +14,18 @@ corpus_chunk(
 )
 }
 \arguments{
-\item{x}{\link{tokens} object whose token elements will be segmented into
-chunks}
-
 \item{size}{integer; the (approximate) token length of the chunks. See
 Details.}
-
-\item{overlap}{integer; the number of tokens in a chunk to be taken from the
-last \code{overlap} tokens from the preceding chunk}
 
 \item{inflation_factor}{numeric; the number of single default quanteda tokens
 required to produce a single chunked token. This is designed for chunking
 for input to LLMs, since LLM tokenizers (such as LLaMA's SentencePiece
-Byte-Pair Encoding tokenizer) require more tokens than the ;linguistically
+Byte-Pair Encoding tokenizer) require more tokens than the linguistically
 defined grammatically-based tokenizer that is the \pkg{quanteda} default.
 The recommended setting for this is 0.8, meaning that if size is 100, then
 the actual chunk size will be 100 / 0.8 = 125. Defaults to 1.0.}
 
 \item{truncate}{logical; if \code{TRUE}, truncate the text after \code{size}}
-
-\item{use_docvars}{if \code{TRUE}, repeat the docvar values for each chunk;
-if \code{FALSE}, drop the docvars in the chunked tokens}
-
-\item{verbose}{if \code{TRUE} print the number of tokens and documents before and
-after the function is applied. The number of tokens does not include paddings.}
 }
 \description{
 Segment a corpus into new documents of roughly equal sized text chunks, with
