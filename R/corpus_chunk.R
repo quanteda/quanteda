@@ -2,7 +2,6 @@
 #'
 #' Segment a corpus into new documents of roughly equal sized text chunks, with
 #' the possibility of overlapping the chunks.
-#' @inheritParams tokens_chunk
 #' @param size integer; the (approximate) token length of the chunks. See
 #'   Details.
 #' @param truncate logical; if `TRUE`, truncate the text after `size`
@@ -26,7 +25,7 @@
 #' data_corpus_inaugural[1] |>
 #'   corpus_chunk(size = 10)
 #'
-corpus_chunk <- function(x, size, overlap = 0, inflation_factor = 1.0,
+corpus_chunk <- function(x, size, inflation_factor = 1.0,
                          truncate = FALSE,
                          use_docvars = TRUE,
                          verbose = quanteda_options("verbose")) {
@@ -35,7 +34,7 @@ corpus_chunk <- function(x, size, overlap = 0, inflation_factor = 1.0,
 }
 
 #' @export
-corpus_chunk.default <- function(x, size, overlap = 0, inflation_factor = 1.0,
+corpus_chunk.default <- function(x, size, inflation_factor = 1.0,
                                  truncate = FALSE,
                                  use_docvars = TRUE,
                                  verbose = quanteda_options("verbose")) {
@@ -44,22 +43,30 @@ corpus_chunk.default <- function(x, size, overlap = 0, inflation_factor = 1.0,
 
 #' @export
 #' @importFrom stringi stri_length stri_count_boundaries stri_wrap
-corpus_chunk.corpus <- function(x, size, overlap = 0, inflation_factor = 1.0,
+corpus_chunk.corpus <- function(x, size, inflation_factor = 1.0,
                                 truncate = FALSE,
                                 use_docvars = TRUE,
                                 verbose = quanteda_options("verbose")) {
-  if (!use_docvars) {
+    
+  size <- check_integer(size, min = 0)
+  inflation_factor <- check_double(inflation_factor, min = 0)
+  truncate <- check_logical(truncate)
+  verbose <- check_logical(verbose)
+  
+  if (!use_docvars)
     docvars(x) <- NULL
-  }
+
   attrs <- attributes(x)
-
-  mean_tok_nchar <- stri_length(x) / stri_count_boundaries(x)
-
+    
+  n <- stri_count_boundaries(x)
+  n[n == 0] <- 1.0
+  avg <- stri_length(x) / n # average token length
+      
   lis <- lapply(seq_along(x), function(i) {
     if (truncate) {
-      head(stri_wrap(x[[i]], width = size / inflation_factor * mean_tok_nchar[i]), 1)
+      head(stri_wrap(x[[i]], width = size / inflation_factor * avg[i]), 1)
     } else {
-      stri_wrap(x[[i]], width = size / inflation_factor * mean_tok_nchar[i])
+      stri_wrap(x[[i]], width = size / inflation_factor * avg[i])
     }
   })
 
