@@ -14,6 +14,9 @@ corpus_chunk(
 )
 }
 \arguments{
+\item{x}{\link{tokens} object whose token elements will be segmented into
+chunks}
+
 \item{size}{integer; the (approximate) token length of the chunks. See
 Details.}
 
@@ -26,6 +29,12 @@ The recommended setting for this is 0.8, meaning that if size is 100, then
 the actual chunk size will be 100 / 0.8 = 125. Defaults to 1.0.}
 
 \item{truncate}{logical; if \code{TRUE}, truncate the text after \code{size}}
+
+\item{use_docvars}{if \code{TRUE}, repeat the docvar values for each chunk;
+if \code{FALSE}, drop the docvars in the chunked tokens}
+
+\item{verbose}{if \code{TRUE} print the number of tokens and documents before and
+after the function is applied. The number of tokens does not include paddings.}
 }
 \description{
 Segment a corpus into new documents of roughly equal sized text chunks, with
