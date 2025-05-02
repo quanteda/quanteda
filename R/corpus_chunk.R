@@ -9,7 +9,7 @@
 #' @param inflation_factor numeric; the number of single default quanteda tokens
 #'   required to produce a single chunked token. This is designed for chunking
 #'   for input to LLMs, since LLM tokenizers (such as LLaMA's SentencePiece
-#'   Byte-Pair Encoding tokenizer) require more tokens than the ;linguistically
+#'   Byte-Pair Encoding tokenizer) require more tokens than the linguistically
 #'   defined grammatically-based tokenizer that is the \pkg{quanteda} default.
 #'   The recommended setting for this is 0.8, meaning that if size is 100, then
 #'   the actual chunk size will be 100 / 0.8 = 125. Defaults to 1.0.
