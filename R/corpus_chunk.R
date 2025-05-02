@@ -59,7 +59,7 @@ corpus_chunk.corpus <- function(x, size, inflation_factor = 1.0,
   attrs <- attributes(x)
     
   n <- stri_count_boundaries(x)
-  n[n == 0] <- 1.0
+  n[n == 0] <- 1L
   avg <- stri_length(x) / n # average token length
       
   lis <- lapply(seq_along(x), function(i) {
