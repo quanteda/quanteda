@@ -12,6 +12,7 @@
 #'   defined grammatically-based tokenizer that is the \pkg{quanteda} default.
 #'   The recommended setting for this is 0.8, meaning that if size is 100, then
 #'   the actual chunk size will be 100 / 0.8 = 125. Defaults to 1.0.
+#' @inheritParams tokens_chunk
 #' @details
 #' The token length is estimated using `stringi::stri_length(txt) /
 #' stringi::stri_count_boundaries(txt)` to avoid needing to tokenize and rejoin
@@ -57,7 +58,8 @@ corpus_chunk.corpus <- function(x, size, inflation_factor = 1.0,
     docvars(x) <- NULL
 
   attrs <- attributes(x)
-    
+  if (verbose)
+      before <- stats_corpus(x)
   n <- stri_count_boundaries(x)
   n[n == 0] <- 1L
   avg <- stri_length(x) / n # average token length
@@ -74,6 +76,7 @@ corpus_chunk.corpus <- function(x, size, inflation_factor = 1.0,
                                         rep(seq_along(lis), lengths(lis)),
                                         drop_docid = FALSE)
   result <- rebuild_corpus(unlist(lis, use.names = FALSE), attrs)
-
+  if (verbose)
+      message_corpus("corpus_chunk()", before, stats_corpus(result))
   return(result)
 }

@@ -63,6 +63,19 @@ message_finish <- function(x, time) {
 #' @keywords internal
 NULL
 
+#' Print messages in corpus methods
+#' @inheritParams messages
+#' @keywords message internal
+message_corpus <- function(operation, before, after) {
+    message(msg("%s changed from %s characters (%s documents) to %s characters (%s documents)",
+                operation, before$nchar, before$ndoc, after$nchar, after$ndoc))
+}
+
+stats_corpus <- function(x) {
+    list(ndoc = ndoc(x),
+         nchar = sum(nchar(x)))
+}
+
 #' Print messages in tokens methods
 #' @inheritParams messages
 #' @keywords message internal

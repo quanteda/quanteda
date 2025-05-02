@@ -46,6 +46,11 @@ test_that("corpus_chunk works", {
       "The value of truncate cannot be NA"
   )
   
+  expect_message(
+      corpus_chunk(corp, size = 2, verbose = TRUE),
+      "corpus_chunk() changed", fixed = TRUE
+  )
+  
 })
 
 test_that("corpus_chunk preserves docvars", {
