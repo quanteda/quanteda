@@ -27,6 +27,10 @@ test_that("test default corpus* methods", {
         corpus_subset(1),
         "corpus_subset\\(\\) only works on corpus objects"
     )
+    expect_error(
+      corpus_chunk(1),
+      "corpus_chunk\\(\\) only works on corpus objects"
+    )
 })
 
 test_that("test detault n-methods", {
@@ -129,7 +133,7 @@ test_that("phrase default works", {
         phrase(TRUE),
         "phrase\\(\\) only works on character, collocations, dictionary2, list, tokens objects"
     )
-    
+
     expect_error(
         as.phrase(TRUE),
         "phrase\\(\\) only works on collocations, dictionary2, list, tokens objects"

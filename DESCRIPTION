@@ -1,5 +1,5 @@
 Package: quanteda
-Version: 4.2.0
+Version: 4.2.1
 Title: Quantitative Analysis of Textual Data
 Description: A fast, flexible, and comprehensive framework for 
     quantitative text analysis in R.  Provides functionality for corpus management,
@@ -81,6 +81,7 @@ Collate:
     'corpus-addsummary-metadata.R'
     'corpus-methods.R'
     'corpus.R'
+    'corpus_chunk.R'
     'corpus_group.R'
     'corpus_reshape.R'
     'corpus_sample.R'
