@@ -7,6 +7,10 @@
 msg(format, ..., pretty = TRUE)
 }
 \arguments{
+\item{format}{character vector of format strings}
+
+\item{...}{vectors (coercible to integer, real, or character)}
+
 \item{pretty}{if \code{TRUE}, message is passed to \code{\link[base:formatc]{base::prettyNum()}}.}
 }
 \description{
@@ -14,6 +18,9 @@ Conditionally format messages
 }
 \examples{
 quanteda:::msg("you cannot delete \%s \%s", 2000, "documents")
+}
+\seealso{
+\link[stringi:stri_sprintf]{stringi::stri_sprintf}
 }
 \keyword{development}
 \keyword{internal}

@@ -1,11 +1,12 @@
 # messaging utilities ------------
 
 #' Conditionally format messages
-#' 
-#' @inheritParams stringi::stri_sprintf()
+#'
+#' @inheritParams stringi::stri_sprintf
 #' @param pretty if `TRUE`, message is passed to [base::prettyNum()].
 #' @keywords internal development
-#' @examples 
+#' @seealso [stringi::stri_sprintf]
+#' @examples
 #' quanteda:::msg("you cannot delete %s %s", 2000, "documents")
 msg <- function(format, ..., pretty = TRUE) {
     args <- list(...)
@@ -40,20 +41,20 @@ message_finish <- function(x, time) {
     } else {
         m <- length(types(x))
         n <- ndoc(x)
-        message(msg(" ...%s unique %s", 
+        message(msg(" ...%s unique %s",
                     m, if (m == 1) "type" else "types"))
         message(msg(" ...complete, elapsed time: %s seconds.",
                     format((proc.time() - time)[3], digits = 3)))
         message(msg("Finished constructing %s from %s %s",
-                    class(x)[1], 
+                    class(x)[1],
                     n, if (n == 1) "document" else "documents"))
     }
 }
 
 # messaging methods ------------
-             
+
 #' Message parameter documentation
-#' 
+#'
 #' Used in printing verbose messages for message_tokens() and message_dfm()
 #' @name messages
 #' @param verbose if `TRUE` print the number of tokens and documents before and
