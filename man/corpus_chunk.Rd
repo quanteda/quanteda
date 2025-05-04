@@ -7,7 +7,6 @@
 corpus_chunk(
   x,
   size,
-  inflation_factor = 1,
   truncate = FALSE,
   use_docvars = TRUE,
   verbose = quanteda_options("verbose")
@@ -19,14 +18,6 @@ chunks}
 
 \item{size}{integer; the (approximate) token length of the chunks. See
 Details.}
-
-\item{inflation_factor}{numeric; the number of single default quanteda tokens
-required to produce a single chunked token. This is designed for chunking
-for input to LLMs, since LLM tokenizers (such as LLaMA's SentencePiece
-Byte-Pair Encoding tokenizer) require more tokens than the linguistically
-defined grammatically-based tokenizer that is the \pkg{quanteda} default.
-The recommended setting for this is 0.8, meaning that if size is 100, then
-the actual chunk size will be 100 / 0.8 = 125. Defaults to 1.0.}
 
 \item{truncate}{logical; if \code{TRUE}, truncate the text after \code{size}}
 
@@ -42,8 +33,16 @@ the possibility of overlapping the chunks.
 }
 \details{
 The token length is estimated using \code{stringi::stri_length(txt) / stringi::stri_count_boundaries(txt)} to avoid needing to tokenize and rejoin
-the corpus from the tokens. Combined with \code{inflation_factor}, this means
-that the exact token length for chunking will be approximate.
+the corpus from the tokens.
+
+Note that when used for chunking texts prior to sending to large language
+models (LLMs) with limited input token lengths, size should typically be set
+to approximately 0.75-0.80 of the LLM's token limit.  This is because
+tokenizers (such as LLaMA's SentencePiece Byte-Pair Encoding tokenizer)
+require more tokens than the linguistically defined grammatically-based
+tokenizer that is the \pkg{quanteda} default. Note also that because of the
+use of \code{stringi::stri_count_boundaries(txt)} to approximate token length
+(efficiently), the exact token length for chunking will be approximate.
 }
 \examples{
 data_corpus_inaugural[1] |>

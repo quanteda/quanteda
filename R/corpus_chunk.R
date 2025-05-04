@@ -5,19 +5,20 @@
 #' @param size integer; the (approximate) token length of the chunks. See
 #'   Details.
 #' @param truncate logical; if `TRUE`, truncate the text after `size`
-#' @param inflation_factor numeric; the number of single default quanteda tokens
-#'   required to produce a single chunked token. This is designed for chunking
-#'   for input to LLMs, since LLM tokenizers (such as LLaMA's SentencePiece
-#'   Byte-Pair Encoding tokenizer) require more tokens than the linguistically
-#'   defined grammatically-based tokenizer that is the \pkg{quanteda} default.
-#'   The recommended setting for this is 0.8, meaning that if size is 100, then
-#'   the actual chunk size will be 100 / 0.8 = 125. Defaults to 1.0.
 #' @inheritParams tokens_chunk
 #' @details
 #' The token length is estimated using `stringi::stri_length(txt) /
 #' stringi::stri_count_boundaries(txt)` to avoid needing to tokenize and rejoin
-#' the corpus from the tokens. Combined with `inflation_factor`, this means
-#' that the exact token length for chunking will be approximate.
+#' the corpus from the tokens.
+#'
+#' Note that when used for chunking texts prior to sending to large language
+#' models (LLMs) with limited input token lengths, size should typically be set
+#' to approximately 0.75-0.80 of the LLM's token limit.  This is because
+#' tokenizers (such as LLaMA's SentencePiece Byte-Pair Encoding tokenizer)
+#' require more tokens than the linguistically defined grammatically-based
+#' tokenizer that is the \pkg{quanteda} default. Note also that because of the
+#' use of `stringi::stri_count_boundaries(txt)` to approximate token length
+#' (efficiently), the exact token length for chunking will be approximate.
 #' @seealso [tokens_chunk()]
 #' @keywords corpus
 #' @importFrom lifecycle signal_stage
@@ -26,7 +27,7 @@
 #' data_corpus_inaugural[1] |>
 #'   corpus_chunk(size = 10)
 #'
-corpus_chunk <- function(x, size, inflation_factor = 1.0,
+corpus_chunk <- function(x, size,
                          truncate = FALSE,
                          use_docvars = TRUE,
                          verbose = quanteda_options("verbose")) {
@@ -35,7 +36,7 @@ corpus_chunk <- function(x, size, inflation_factor = 1.0,
 }
 
 #' @export
-corpus_chunk.default <- function(x, size, inflation_factor = 1.0,
+corpus_chunk.default <- function(x, size,
                                  truncate = FALSE,
                                  use_docvars = TRUE,
                                  verbose = quanteda_options("verbose")) {
@@ -44,16 +45,15 @@ corpus_chunk.default <- function(x, size, inflation_factor = 1.0,
 
 #' @export
 #' @importFrom stringi stri_length stri_count_boundaries stri_wrap
-corpus_chunk.corpus <- function(x, size, inflation_factor = 1.0,
+corpus_chunk.corpus <- function(x, size,
                                 truncate = FALSE,
                                 use_docvars = TRUE,
                                 verbose = quanteda_options("verbose")) {
-    
+
   size <- check_integer(size, min = 0)
-  inflation_factor <- check_double(inflation_factor, min = 0)
   truncate <- check_logical(truncate)
   verbose <- check_logical(verbose)
-  
+
   if (!use_docvars)
     docvars(x) <- NULL
 
@@ -63,12 +63,12 @@ corpus_chunk.corpus <- function(x, size, inflation_factor = 1.0,
   n <- stri_count_boundaries(x)
   n[n == 0] <- 1L
   avg <- stri_length(x) / n # average token length
-      
+
   lis <- lapply(seq_along(x), function(i) {
     if (truncate) {
-      head(stri_wrap(x[[i]], width = size / inflation_factor * avg[i]), 1)
+      head(stri_wrap(x[[i]], width = size * avg[i]), 1)
     } else {
-      stri_wrap(x[[i]], width = size / inflation_factor * avg[i])
+      stri_wrap(x[[i]], width = size * avg[i])
     }
   })
 
