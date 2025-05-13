@@ -48,7 +48,7 @@ List cpp_as_tokens(TokensPtr xptr) {
 // [[Rcpp::export]]
 List cpp_as_list(TokensPtr xptr) {
     List texts_ = wrap(as_list(xptr->texts));
-    texts_.attr("types") = encode(xptr->types);;
+    texts_.attr("types") = encode(xptr->types);
     return texts_;
 }
 
