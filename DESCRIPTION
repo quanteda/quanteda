@@ -23,7 +23,7 @@ Authors@R: c(
     )
 License: GPL-3
 Depends:
-    R (>= 3.5.0),
+    R (>= 4.1.0),
     methods
 Imports:
     fastmatch,
