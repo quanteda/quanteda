@@ -1,4 +1,4 @@
-# quanteda 4.2.1
+# quanteda 4.3.0
 
 ## Changes and additions
 
@@ -11,11 +11,11 @@
 * `tokens_ngrams()` now includes a new argument `apply_if`, functioning similar to this argument
 in `tokens_compound()` and `tokens_lookup()` (#2390).
 
-
 * Changes to dfm_select() now include new arguments `match_pattern` and `concatenator`, to control how single-word patterns or multi-word patterns
   and multi-word patterns matched, as well as controlling the concatenator that binds phrases in the pattern.
 
 * `data_corpus_inaugural` now updated for Trump 2025.
+
 
 # quanteda 4.2.0
 
