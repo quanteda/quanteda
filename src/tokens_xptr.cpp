@@ -11,9 +11,9 @@ TokensPtr cpp_xptr() {
 }
 
 // [[Rcpp::export]]
-TokensPtr cpp_as_xptr(const List text_, 
+TokensPtr cpp_as_xptr(const List text_,
                       const CharacterVector types_) {
-    
+
     Texts texts = Rcpp::as<Texts>(text_);
     Types types = Rcpp::as<Types>(types_);
     TokensObj *ptr = new TokensObj(texts, types);
@@ -22,8 +22,8 @@ TokensPtr cpp_as_xptr(const List text_,
 
 // [[Rcpp::export]]
 TokensPtr cpp_copy_xptr(TokensPtr xptr) {
-    TokensObj *ptr_copy = new TokensObj(xptr->texts, 
-                                        xptr->types, 
+    TokensObj *ptr_copy = new TokensObj(xptr->texts,
+                                        xptr->types,
                                         xptr->recompiled,
                                         xptr->padded);
     return TokensPtr(ptr_copy, true);
@@ -39,15 +39,15 @@ List cpp_get_attributes(TokensPtr xptr) {
 // [[Rcpp::export]]
 List cpp_as_tokens(TokensPtr xptr) {
     xptr->recompile();
-    List texts_ = as_list(xptr->texts);
-    texts_.attr("types") = encode(xptr->types);
+    List texts_ = wrap(as_list(xptr->texts));
+    texts_.attr("types") = wrap(encode(xptr->types));
     texts_.attr("class") = "tokens";
     return texts_;
 }
 
 // [[Rcpp::export]]
 List cpp_as_list(TokensPtr xptr) {
-    Tokens texts_ = as_list(xptr->texts);
+    List texts_ = wrap(as_list(xptr->texts));
     texts_.attr("types") = encode(xptr->types);;
     return texts_;
 }
@@ -77,14 +77,14 @@ IntegerVector cpp_ntoken(TokensPtr xptr, bool no_padding = false) {
     xptr->recompile();
     std::size_t H = xptr->texts.size();
     IntegerVector ls_(H, 0);
-    if (no_padding) { 
+    if (no_padding) {
         for (std::size_t h = 0; h < H; h++) {
             std::size_t I = xptr->texts[h].size();
             for (std::size_t i = 0; i < I; i++) {
                 // ignore paddings
                 if (xptr->texts[h][i] > 0)
                     ls_[h]++;
-            }    
+            }
         }
     } else {
         for (std::size_t h = 0; h < H; h++) {
@@ -108,7 +108,7 @@ IntegerVector cpp_ntype(TokensPtr xptr, bool no_padding = false) {
             text.erase(unique(text.begin(), text.end()), text.end());
             int n = text.size();
             if (text[0] == 0 && no_padding)
-                n--;    
+                n--;
             ns_[h] = n;
         }
     }
@@ -173,7 +173,7 @@ void cpp_recompile(TokensPtr xptr) {
 
 // [[Rcpp::export]]
 S4 cpp_dfm(TokensPtr xptr, bool asis = true) {
-    
+
     xptr->recompiled = asis;
     xptr->recompile();
     std::size_t H = xptr->texts.size();
@@ -188,7 +188,7 @@ S4 cpp_dfm(TokensPtr xptr, bool asis = true) {
     slot_x.reserve(N);
     slot_p.reserve(H + 1);
     int p = 0;
-    
+
     slot_p.push_back(p);
     for (std::size_t h = 0; h < H; h++) {
         // assign new token IDs in the order of their occurrence
@@ -220,19 +220,19 @@ S4 cpp_dfm(TokensPtr xptr, bool asis = true) {
     slot_i.clear();
     //Rcout << "i: " << slot_i_ << "\n";
     CharacterVector types_ = encode(xptr->types);
-    
+
     //Rcout << "types: " << types_ << "\n";
-    
+
     if (!xptr->padded) {
         slot_i_ = slot_i_ - 1; // use zero for other tokens
     } else {
         G++;
         types_.push_front("");
     }
-    
+
     IntegerVector dim_ = IntegerVector::create(G, H);
     List dimnames_ = List::create(types_, R_NilValue);
-    
+
     S4 dfm_("dgCMatrix");
     dfm_.slot("p") = slot_p_;
     dfm_.slot("i") = slot_i_;
