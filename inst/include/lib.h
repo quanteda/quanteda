@@ -32,12 +32,8 @@ const float GLOBAL_NGRAMS_MAX_LOAD_FACTOR = 0.25;
 
 namespace quanteda{
     
-    typedef ListOf<IntegerVector> Tokens;
+    //typedef ListOf<IntegerVector> Tokens; // might cause UBSAN (#2423)
     typedef XPtr<TokensObj> TokensPtr;
-
-    // typedef ListOf<IntegerVector> Tokens;
-    // typedef std::vector<unsigned int> Text;
-    // typedef std::vector<Text> Texts;
     
     typedef std::atomic<int> IntParam;
     typedef std::atomic<unsigned int> UintParam;
@@ -179,7 +175,7 @@ namespace quanteda{
     inline CharacterVector encode(Types &types){
         CharacterVector types_(types.size());
         for (std::size_t i = 0; i < types.size(); i++) {
-            String type_ = types[i];
+            String type_ = wrap(types[i]);
             type_.set_encoding(CE_UTF8);
             types_[i] = type_;
         }
