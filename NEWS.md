@@ -11,8 +11,7 @@
 * `tokens_ngrams()` now includes a new argument `apply_if`, functioning similar to this argument
 in `tokens_compound()` and `tokens_lookup()` (#2390).
 
-* Changes to dfm_select() now include new arguments `match_pattern` and `concatenator`, to control how single-word patterns or multi-word patterns
-  and multi-word patterns matched, as well as controlling the concatenator that binds phrases in the pattern.
+* Replaced `remove_unigram` with `match_pattern` in `object2id()` to control the matching of single-word patterns or multi-word patterns.
 
 * `data_corpus_inaugural` now updated for Trump 2025.
 
