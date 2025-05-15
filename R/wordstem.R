@@ -15,7 +15,7 @@
 #'
 #' @references <https://snowballstem.org/>
 #'
-#'   <http://www.iso.org/iso/home/standards/language_codes.htm> for the
+#'   <https://www.iso.org/iso-639-language-code> for the
 #'   ISO-639 language codes
 #' @export
 #' @return [tokens_wordstem()] returns a [tokens] object whose word
@@ -42,7 +42,7 @@ tokens_wordstem.default <- function(x, language = quanteda_options("language_ste
 #' @export
 tokens_wordstem.tokens_xptr <- function(x, language = quanteda_options("language_stemmer"),
                                         verbose = quanteda_options("verbose")) {
-    
+
     verbose <- check_logical(verbose)
     attrs <- attributes(x)
     if (verbose)
@@ -137,12 +137,12 @@ dfm_wordstem.dfm <- function(x, language = quanteda_options("language_stemmer"),
             language
         )
     }
-    
+
     if (verbose)
         before <- stats_dfm(x)
     x <- dfm_compress(x, margin = "features")
     if (verbose)
-        message_dfm("dfm_wordstem()", before, stats_dfm(x))    
+        message_dfm("dfm_wordstem()", before, stats_dfm(x))
     return(x)
 }
 
