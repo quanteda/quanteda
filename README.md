@@ -206,8 +206,8 @@ guide](https://quanteda.io/articles/quickstart.html) to learn how to use
 - Read out documentation at <https://quanteda.io>.
 - Check out the [**quanteda**
   cheatsheet](https://github.com/quanteda/quanteda/blob/master/tests/cheatsheet/quanteda-cheatsheet.pdf).
-- Submit a question on the [**quanteda** channel on
-  StackOverflow](https://stackoverflow.com/questions/tagged/quanteda).
+- Submit a question on the **quanteda** channel on StackOverflow
+  (questions tagged as quanteda”).
 - See our [tutorial site](https://tutorials.quanteda.io/).
 
 ### Cite the package
