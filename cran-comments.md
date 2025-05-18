@@ -1,19 +1,16 @@
 # Submission notes
 
-Fixed:
-- Bugs in 4.1.0
-- Improved output messages
-- Improved minor behaviours of some functions
+Adds new features and updates.
+
+Addresses two CRAN issues:
+* the NOTE about R version dependency caused by our use of `|>`
+* clang-UBSAN issues
 
 Checked on: 
-* local macOS 15.0.1, R 4.4.2 and devtools::check_mac_release()
+* local macOS 15.0.1, R 4.5.0 and devtools::check_mac_release()
 * Windows release via devtools::check_win_release()
 * Windows devel via devtools::check_win_devel()
 * Windows oldrelease via devtools::check_win_oldrelease()
-* Linux devel (2024-08-16 r87025) compiled with clang, Address Sanitizer and Undefined Behavior Sanitizer.
-* Linux devel (2024-08-16 r87025) compiled with gcc, valgrind level 2 instrumentation.
-
-We used the Docker container available at https://github.com/wch/r-debug for tests on Linux devel. 
 
 ## R CMD check results
 

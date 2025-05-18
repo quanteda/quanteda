@@ -6,7 +6,7 @@ data](https://cdn.rawgit.com/quanteda/quanteda/master/images/quanteda_logo.svg)]
 
 [![CRAN
 Version](https://www.r-pkg.org/badges/version/quanteda)](https://CRAN.R-project.org/package=quanteda)
-[![](https://img.shields.io/badge/devel%20version-4.2.0-royalblue.svg)](https://github.com/quanteda/quanteda)
+[![](https://img.shields.io/badge/devel%20version-4.3.0-royalblue.svg)](https://github.com/quanteda/quanteda)
 [![Downloads](https://cranlogs.r-pkg.org/badges/quanteda)](https://CRAN.R-project.org/package=quanteda)
 [![Total
 Downloads](https://cranlogs.r-pkg.org/badges/grand-total/quanteda?color=orange)](https://CRAN.R-project.org/package=quanteda)
@@ -206,8 +206,8 @@ guide](https://quanteda.io/articles/quickstart.html) to learn how to use
 - Read out documentation at <https://quanteda.io>.
 - Check out the [**quanteda**
   cheatsheet](https://github.com/quanteda/quanteda/blob/master/tests/cheatsheet/quanteda-cheatsheet.pdf).
-- Submit a question on the [**quanteda** channel on
-  StackOverflow](https://stackoverflow.com/questions/tagged/quanteda).
+- Submit a question on the **quanteda** channel on StackOverflow
+  (questions tagged as quanteda”).
 - See our [tutorial site](https://tutorials.quanteda.io/).
 
 ### Cite the package

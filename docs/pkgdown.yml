@@ -1,29 +1,28 @@
-pandoc: 3.1.11
-pkgdown: 2.0.9
+pandoc: '3.5'
+pkgdown: 2.1.2
 pkgdown_sha: ~
 articles:
-  benchmarks_xptr: pkgdown/benchmarks_xptr.html
-  chinese: pkgdown/examples/chinese.html
-  design: pkgdown/design.html
-  digital-humanities: pkgdown/replication/digital-humanities.html
-  japanese_speech_ja: pkgdown/examples/japanese_speech_ja.html
-  japanese_twitter_ja: pkgdown/examples/japanese_twitter_ja.html
-  lsa: pkgdown/examples/lsa.html
-  parallelisation: pkgdown/parallelisation.html
-  phrase: pkgdown/examples/phrase.html
-  plotting: pkgdown/examples/plotting.html
-  qss: pkgdown/replication/qss.html
+  pkgdown/benchmarks_xptr: pkgdown/benchmarks_xptr.html
+  pkgdown/examples/chinese: pkgdown/examples/chinese.html
+  pkgdown/design: pkgdown/design.html
+  pkgdown/replication/digital-humanities: pkgdown/replication/digital-humanities.html
+  pkgdown/examples/japanese_speech_ja: pkgdown/examples/japanese_speech_ja.html
+  pkgdown/examples/japanese_twitter_ja: pkgdown/examples/japanese_twitter_ja.html
+  pkgdown/examples/lsa: pkgdown/examples/lsa.html
+  pkgdown/parallelisation: pkgdown/parallelisation.html
+  pkgdown/examples/phrase: pkgdown/examples/phrase.html
+  pkgdown/examples/plotting: pkgdown/examples/plotting.html
+  pkgdown/replication/qss: pkgdown/replication/qss.html
+  pkgdown/quickstart_cn: pkgdown/quickstart_cn.html
+  pkgdown/quickstart_es: pkgdown/quickstart_es.html
+  pkgdown/quickstart_further_examples: pkgdown/quickstart_further_examples.html
+  pkgdown/quickstart_hi: pkgdown/quickstart_hi.html
+  pkgdown/quickstart_ja: pkgdown/quickstart_ja.html
   quickstart: quickstart.html
-  quickstart_cn: pkgdown/quickstart_cn.html
-  quickstart_es: pkgdown/quickstart_es.html
-  quickstart_further_examples: pkgdown/quickstart_further_examples.html
-  quickstart_hi: pkgdown/quickstart_hi.html
-  quickstart_ja: pkgdown/quickstart_ja.html
-  text2vec: pkgdown/replication/text2vec.html
-  tokens_xptr: pkgdown/tokens_xptr.html
-  twitter: pkgdown/examples/twitter.html
-last_built: 2024-07-17T06:44Z
+  pkgdown/replication/text2vec: pkgdown/replication/text2vec.html
+  pkgdown/tokens_xptr: pkgdown/tokens_xptr.html
+  pkgdown/examples/twitter: pkgdown/examples/twitter.html
+last_built: 2025-05-15T00:48Z
 urls:
   reference: https://quanteda.io/reference
   article: https://quanteda.io/articles
-

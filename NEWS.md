@@ -1,4 +1,4 @@
-# quanteda 4.2.1
+# quanteda 4.3.0
 
 ## Changes and additions
 
@@ -11,11 +11,10 @@
 * `tokens_ngrams()` now includes a new argument `apply_if`, functioning similar to this argument
 in `tokens_compound()` and `tokens_lookup()` (#2390).
 
-
-* Changes to dfm_select() now include new arguments `match_pattern` and `concatenator`, to control how single-word patterns or multi-word patterns
-  and multi-word patterns matched, as well as controlling the concatenator that binds phrases in the pattern.
+* Replaced `remove_unigram` with `match_pattern` in `object2id()` to control the matching of single-word patterns or multi-word patterns.
 
 * `data_corpus_inaugural` now updated for Trump 2025.
+
 
 # quanteda 4.2.0
 
@@ -846,7 +845,7 @@ The full listing of deprecations is:
 * Argument passing through `dfm()` to `tokens()` is now robust, and preserves variables defined in the calling environment (#721).
 * Fixed issues related to dictionaries failing when applying `str()`, `names()`, or other indexing operations, which started happening on Linux and Windows platforms following the CRAN move to 3.4.0. (#744)
 * Dictionary import using the LIWC format is more robust to improperly formatted input files (#685).
-* Weights applied using `dfm_weight()` now print friendlier error messages when the weight vector contains features not found in the dfm.  See [this Stack Overflow question](https://stackoverflow.com/questions/44132313/can-the-anew-dictionary-be-used-for-sentiment-analysis-in-quanteda/) for the use case that sparked this improvement.
+* Weights applied using `dfm_weight()` now print friendlier error messages when the weight vector contains features not found in the dfm.  See [this Stack Overflow question](https://stackoverflow.com/q/44132313) for the use case that sparked this improvement.
 
 # quanteda 0.9.9-24
 

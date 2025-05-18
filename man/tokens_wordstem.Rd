@@ -74,7 +74,7 @@ dfm_wordstem(origdfm)
 \references{
 \url{https://snowballstem.org/}
 
-\url{http://www.iso.org/iso/home/standards/language_codes.htm} for the
+\url{https://www.iso.org/iso-639-language-code} for the
 ISO-639 language codes
 }
 \seealso{

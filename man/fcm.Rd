@@ -119,8 +119,9 @@ An Introduction to Natural Language Processing, Computational Linguistics,
 and Speech Recognition}. Draft of September 23, 2018 (Chapter 6, Vector
 Semantics). Available at \url{https://web.stanford.edu/~jurafsky/slp3/}.
 
-Church, K. W. & P. Hanks (1990). \href{https://dl.acm.org/doi/10.5555/89086.89095}{Word association norms, mutual information, and lexicography}.
-\emph{Computational Linguistics}, 16(1), 22-29.
+Church, K. W. & P. Hanks (1990). Word association norms, mutual information,
+and lexicography.
+\emph{Computational Linguistics}, 16(1), 22-29. https://aclanthology.org/J90-1003/
 }
 \author{
 Kenneth Benoit (R), Haiyan Wang (R, C++), Kohei Watanabe (C++)
