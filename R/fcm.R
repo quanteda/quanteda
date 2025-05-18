@@ -33,7 +33,7 @@
 #'   the window. Only makes sense for `context = "window"`, and when `ordered =
 #'   TRUE`, the argument `tri` has no effect.
 #' @param tri if `TRUE` return only upper triangle (including diagonal).
-#'   Ignored if `ordered = TRUE`.
+#'   Automatically set to `FALSE` if `ordered = TRUE`.
 #' @param ... not used here
 #' @author Kenneth Benoit (R), Haiyan Wang (R, C++), Kohei Watanabe (C++)
 #' @import Matrix
@@ -210,11 +210,13 @@ fcm.tokens_xptr <- function(x, context = c("document", "window"),
     tri <- check_logical(tri)
 
     attrs <- attributes(x)
-    if (ordered)
+    if (ordered) {
+        if (tri)
+            warning("cannot return only upper triangle when ordered = TRUE")
         tri <- FALSE
-    if (context == "document") {
+    }
+    if (context == "document")
         window <- max(ntoken(x))
-    
     if (count == "weighted") {
         if (!is.null(weights)) {
             weights <- check_double(weights, max_len = Inf)
