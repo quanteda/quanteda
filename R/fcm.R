@@ -213,38 +213,38 @@ fcm.tokens_xptr <- function(x, context = c("document", "window"),
     if (ordered)
         tri <- FALSE
     if (context == "document") {
-        result <- fcm(dfm(x, tolower = FALSE, verbose = FALSE), count = count, tri = tri)
-    } else {
-        if (count == "weighted") {
-            if (!is.null(weights)) {
-                weights <- check_double(weights, max_len = Inf)
-                if (length(weights) != window)
-                    stop("The length of weights must be equal to the window size")
-            } else {
-                weights <- 1 / seq_len(window)
-            }
+        window <- max(ntoken(x))
+    
+    if (count == "weighted") {
+        if (!is.null(weights)) {
+            weights <- check_double(weights, max_len = Inf)
+            if (length(weights) != window)
+                stop("The length of weights must be equal to the window size")
         } else {
-            weights <- rep(1, window)
+            weights <- 1 / seq_len(window)
         }
-        type <- get_types(x)
-        boolean <- count == "boolean"
-        temp <- cpp_fcm(x, length(type), weights, boolean, ordered,
-                        get_threads())
-        temp <- as(temp, "CsparseMatrix")
-        if (!ordered) {
-            if (tri) {
-                temp <- Matrix::triu(temp)
-            } else {
-                temp <- Matrix::forceSymmetric(temp)
-            }
-        }
-        result <- build_fcm(
-            temp,
-            type,
-            count = count, context = context, margin = featfreq(dfm(x, tolower = FALSE)),
-            weights = weights, ordered = ordered, tri = tri,
-            meta = attrs[["meta"]])
+    } else {
+        weights <- rep(1, window)
     }
+    type <- get_types(x)
+    boolean <- count == "boolean"
+    temp <- cpp_fcm(x, length(type), weights, boolean, ordered,
+                    get_threads())
+    temp <- as(temp, "CsparseMatrix")
+    if (!ordered) {
+        if (tri) {
+            temp <- Matrix::triu(temp)
+        } else {
+            temp <- Matrix::forceSymmetric(temp)
+        }
+    }
+    result <- build_fcm(
+        temp,
+        type,
+        count = count, context = context, margin = featfreq(dfm(x, tolower = FALSE)),
+        weights = weights, ordered = ordered, tri = tri,
+        meta = attrs[["meta"]])
+
     return(result)
 }
 
