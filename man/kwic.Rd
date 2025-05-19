@@ -67,6 +67,7 @@ element matches a token in sequence.
 \examples{
 # single token matching
 toks <- tokens(data_corpus_inaugural[1:8])
+quanteda_options(threads = 2)
 kwic(toks, pattern = "secure*", valuetype = "glob", window = 3)
 kwic(toks, pattern = "secur", valuetype = "regex", window = 3)
 kwic(toks, pattern = "security", valuetype = "fixed", window = 3)
