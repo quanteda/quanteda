@@ -27,9 +27,9 @@
 #' @export
 #' @seealso [print-methods]
 #' @examples
+#' \donttest{
 #' # single token matching
 #' toks <- tokens(data_corpus_inaugural[1:8])
-#' quanteda_options(threads = 2)
 #' kwic(toks, pattern = "secure*", valuetype = "glob", window = 3)
 #' kwic(toks, pattern = "secur", valuetype = "regex", window = 3)
 #' kwic(toks, pattern = "security", valuetype = "fixed", window = 3)
@@ -41,6 +41,7 @@
 #' # use index
 #' idx <- index(toks, phrase("secur* against"))
 #' kwic(toks, index = idx, window = 2)
+#' }
 kwic <- function(x, pattern, window = 5,
                  valuetype = c("glob", "regex", "fixed"),
                  separator = " ",
