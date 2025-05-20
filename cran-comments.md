@@ -1,5 +1,18 @@
 # Submission notes
 
+## Resubmission
+
+Avoids this problem, by \donttest{}ing the examples for `kwic()`:
+
+```
+Check: examples, Result: NOTE
+Examples with CPU time > 2.5 times elapsed time
+user system elapsed ratio
+kwic 0.624 0.466 0.297 3.67
+```
+
+## Purpose 
+
 Adds new features and updates.
 
 Addresses two CRAN issues:
