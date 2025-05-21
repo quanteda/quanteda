@@ -232,7 +232,8 @@ element matches a token in sequence.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># single token matching</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
+<span class="r-in"><span><span class="co"># single token matching</span></span></span>
 <span class="r-in"><span><span class="va">toks</span> <span class="op">&lt;-</span> <span class="fu"><a href="tokens.html">tokens</a></span><span class="op">(</span><span class="va">data_corpus_inaugural</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">8</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">kwic</span><span class="op">(</span><span class="va">toks</span>, pattern <span class="op">=</span> <span class="st">"secure*"</span>, valuetype <span class="op">=</span> <span class="st">"glob"</span>, window <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Keyword-in-context with 6 matches.                                                                      </span>
@@ -300,6 +301,7 @@ element matches a token in sequence.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1817-Monroe, 1609:1610] form some | security against | these dangers  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1817-Monroe, 3427:3428]      as a | security against | foreign dangers</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
 <span class="r-in"><span><span class="va">kw</span> <span class="op">&lt;-</span> <span class="fu">kwic</span><span class="op">(</span><span class="fu"><a href="tokens.html">tokens</a></span><span class="op">(</span><span class="va">data_corpus_inaugural</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">20</span><span class="op">]</span><span class="op">)</span>, <span class="st">"provident*"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">is.kwic</span><span class="op">(</span><span class="va">kw</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>

@@ -244,13 +244,13 @@ object.</p>
 <span><span class="co">## Tokens consisting of 60 documents and 4 docvars.</span></span>
 <span><span class="va">xtoks</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/tokens_xptr.html">as.tokens_xptr</a></span><span class="op">(</span><span class="va">toks</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">xtoks</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span></span>
-<span><span class="co">## Tokens consisting of 60 documents and 4 docvars (pointer to 0x1,271,387b8).</span></span></code></pre></div>
+<span><span class="co">## Tokens consisting of 60 documents and 4 docvars (pointer to 0x12e4,487f0).</span></span></code></pre></div>
 <p>Second, this step can be performed by setting
 <code>xptr = TRUE</code> argument in <code><a href="../../reference/tokens.html">tokens()</a></code>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">xtoks2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/tokens.html">tokens</a></span><span class="op">(</span><span class="va">data_corpus_inaugural</span>, xptr <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">xtoks2</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span></span>
-<span><span class="co">## Tokens consisting of 60 documents and 4 docvars (pointer to 0x1,276c57b0).</span></span></code></pre></div>
+<span><span class="co">## Tokens consisting of 60 documents and 4 docvars (pointer to 0x12e,971,158).</span></span></code></pre></div>
 <p>When <code>xtoks</code> object is printed, the address of its
 underlying data is shown as <code>(pointer to xxxx)</code>. Because two
 different objects were created above, the addresses displayed for
@@ -281,19 +281,19 @@ object — and indeed most R objects — works.</p>
 <span></span>
 <span><span class="va">xtoks</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/tokens_xptr.html">as.tokens_xptr</a></span><span class="op">(</span><span class="va">toks</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">xtoks</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span></span>
-<span><span class="co">## Tokens consisting of 5,450 documents and 4 docvars (pointer to 0x,120,728ce0).</span></span>
+<span><span class="co">## Tokens consisting of 5,450 documents and 4 docvars (pointer to 0x12ca51,008).</span></span>
 <span></span>
 <span><span class="co"># shallow copy</span></span>
 <span><span class="va">xtoks_copy</span> <span class="op">&lt;-</span> <span class="va">xtoks</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">xtoks_copy</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span></span>
-<span><span class="co">## Tokens consisting of 5,450 documents and 4 docvars (pointer to 0x,120,728ce0).</span></span></code></pre></div>
+<span><span class="co">## Tokens consisting of 5,450 documents and 4 docvars (pointer to 0x12ca51,008).</span></span></code></pre></div>
 <p>As an external pointer object, the underlying data of the copy of the
 object <code>xtoks_copy</code> is the same. This means that operations
 on <code>xtoks</code> using <code>tokens_*</code> functions also affect
 <code>xtoks_copy</code> even after the copying (shallow copy).</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">xtoks</span>, max_ndoc <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
-<span><span class="co">## Tokens consisting of 5,450 documents and 4 docvars (pointer to 0x,120,728ce0).</span></span>
+<span><span class="co">## Tokens consisting of 5,450 documents and 4 docvars (pointer to 0x12ca51,008).</span></span>
 <span><span class="co">## 1789-Washington.1 :</span></span>
 <span><span class="co">##  [1] "Fellow-Citizens" "of"              "the"             "Senate"         </span></span>
 <span><span class="co">##  [5] "and"             "of"              "the"             "House"          </span></span>
@@ -307,7 +307,7 @@ on <code>xtoks</code> using <code>tokens_*</code> functions also affect
 <span>    <span class="fu"><a href="../../reference/tokens_tolower.html">tokens_tolower</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">xtoks</span>, max_ndoc <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
-<span><span class="co">## Tokens consisting of 5,450 documents and 4 docvars (pointer to 0x,120,728ce0).</span></span>
+<span><span class="co">## Tokens consisting of 5,450 documents and 4 docvars (pointer to 0x12ca51,008).</span></span>
 <span><span class="co">## 1789-Washington.1 :</span></span>
 <span><span class="co">##  [1] "fellow-citizens" "senate"          "house"           "representatives"</span></span>
 <span><span class="co">##  [5] ":"               "among"           "vicissitudes"    "incident"       </span></span>
@@ -325,7 +325,7 @@ object (a <em>deep</em> copy), this can be done by re-applying
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># deep copy</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="../../reference/tokens_xptr.html">as.tokens_xptr</a></span><span class="op">(</span><span class="va">xtoks</span><span class="op">)</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span></span>
-<span><span class="co">## Tokens consisting of 5,450 documents and 4 docvars (pointer to 0x126b1abe0).</span></span></code></pre></div>
+<span><span class="co">## Tokens consisting of 5,450 documents and 4 docvars (pointer to 0x12e6bb0b0).</span></span></code></pre></div>
 <p>Each of these has a different memory address from that of the
 <code>xtoks</code> object above.</p>
 </div>
@@ -351,17 +351,17 @@ pointer <code>(pointer to xxxx)</code> when using
 <code>tokens_xptr</code> objects.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">xtoks</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span></span>
-<span><span class="co">## Tokens consisting of 5,450 documents and 4 docvars (pointer to 0x,120,728ce0).</span></span>
+<span><span class="co">## Tokens consisting of 5,450 documents and 4 docvars (pointer to 0x12ca51,008).</span></span>
 <span></span>
 <span><span class="co"># shallow copy</span></span>
 <span><span class="va">xtoks2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/tokens_select.html">tokens_remove</a></span><span class="op">(</span><span class="va">xtoks</span>, <span class="fu"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html" class="external-link">stopwords</a></span><span class="op">(</span><span class="st">"en"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">xtoks2</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span></span>
-<span><span class="co">## Tokens consisting of 5,450 documents and 4 docvars (pointer to 0x,120,728ce0).</span></span>
+<span><span class="co">## Tokens consisting of 5,450 documents and 4 docvars (pointer to 0x12ca51,008).</span></span>
 <span></span>
 <span><span class="co"># deep copy</span></span>
 <span><span class="va">xtoks3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/tokens_subset.html">tokens_subset</a></span><span class="op">(</span><span class="va">xtoks</span>, <span class="fu"><a href="https://rdrr.io/r/base/lengths.html" class="external-link">lengths</a></span><span class="op">(</span><span class="va">toks</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">150</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">xtoks3</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span></span>
-<span><span class="co">## Tokens consisting of 11 documents and 4 docvars (pointer to 0x127c1cb38).</span></span></code></pre></div>
+<span><span class="co">## Tokens consisting of 11 documents and 4 docvars (pointer to 0x12f6a75b8).</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
