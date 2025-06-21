@@ -127,6 +127,7 @@ IntegerVector cpp_get_freq(TokensPtr xptr, bool no_padding = false,
     std::size_t H = xptr->texts.size();
     for (std::size_t h = 0; h < H; h++) {
         Text text = xptr->texts[h];
+        std::fill(flag.begin(), flag.end(), false);
         std::size_t I = text.size();
         for (std::size_t i = 0; i < I; i++) {
             unsigned int id = text[i];
@@ -141,7 +142,6 @@ IntegerVector cpp_get_freq(TokensPtr xptr, bool no_padding = false,
             freq[id]++;
             flag[id] = true;
         }
-        std::fill(flag.begin(), flag.end(), false);
     }
     IntegerVector freq_ = Rcpp::wrap(freq);
     CharacterVector types_ = encode(xptr->types);
