@@ -1,3 +1,9 @@
+# quanteda 4.3.x
+
+## Changes and additions
+
+* Improve the speed of `tokens_trim()` when tokens are very large.
+
 # quanteda 4.3.0
 
 ## Changes and additions
