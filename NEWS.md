@@ -1,4 +1,4 @@
-# quanteda 4.3.x
+# quanteda 4.3.1
 
 ## Changes and additions
 
