@@ -77,7 +77,7 @@ Text lookup(Text tokens,
             // return tokens with no-match
             Text keys_flat(tokens.size(), id_max); 
             return keys_flat;
-        } else if (nomatch == 2) {
+        } else if (nomatch == 2 || nomatch == 3) {
             // return shifted tokens in exclusive mode
             Text keys_flat(tokens.size());
             for (std::size_t i = 0; i < tokens.size(); i++) {
@@ -99,6 +99,8 @@ Text lookup(Text tokens,
         keys_flat.reserve(match_count);
     }
     for (size_t i = 0; i < keys.size(); i++) {
+        if (nomatch == 3)
+            keys_flat.push_back(id_max + tokens[i]); // keep original token always
         if (flags_match_global[i]) {
             std::vector<unsigned int> key_sub = keys[i];
             if (key_sub.size() > 1) {
@@ -153,7 +155,7 @@ TokensPtr cpp_tokens_lookup(TokensPtr xptr,
     
     std::vector<unsigned int> keys = Rcpp::as< std::vector<unsigned int> >(keys_);
     unsigned int id_max = 0;
-    if (nomatch == 2) {
+    if (nomatch == 2 || nomatch == 3) {
         types.insert(types.end(), xptr->types.begin(), xptr->types.end());
         if (keys_.size() > 0)
             id_max = *max_element(keys.begin(), keys.end());
@@ -198,7 +200,7 @@ TokensPtr cpp_tokens_lookup(TokensPtr xptr,
     xptr->texts = texts;
     xptr->types = types;
     
-    if (nomatch != 2) { // exclusive mode
+    if (nomatch == 0 || nomatch == 1) { // exclusive mode
         // NOTE: values might need to be reset
         xptr->recompiled = true;
     } else {

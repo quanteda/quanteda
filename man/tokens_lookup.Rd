@@ -15,6 +15,7 @@ tokens_lookup(
   nomatch = NULL,
   append_key = FALSE,
   separator = "/",
+  annotate = FALSE,
   concatenator = concat(x),
   nested_scope = c("key", "dictionary"),
   apply_if = NULL,
