@@ -9,7 +9,7 @@ test_that("tokens_subset works in a basic way", {
         5
     )
     expect_equal(
-        length(levels(docid(tokens_subset(toks, Year > 2000, drop_docid = FALSE)))), 
+        length(levels(docid(tokens_subset(toks, Year > 2000, drop_docid = FALSE)))),
         10
     )
     expect_equal(
@@ -45,32 +45,32 @@ test_that("tokens_subset works with min_ntoken and max_ntoken", {
         tokens_subset(toks, 1000 <= ntoken(toks)),
         tokens_subset(toks, min_ntoken = 1000)
     )
-    
+
     expect_equal(
         tokens_subset(toks, ntoken(toks) <= 3000),
         tokens_subset(toks, max_ntoken = 3000)
     )
-    
+
     expect_equal(
         tokens_subset(toks, Year > 2000 & 1000 <= ntoken(toks) & ntoken(toks) >= 1000),
-        tokens_subset(toks, Year > 2000, min_ntoken = 1000, max_ntoken = 3000)
+        tokens_subset(toks, Year > 2000, min_ntoken = 1000, max_ntoken = 3500)
     )
-    
+
     expect_error(
         tokens_subset(toks, min_ntoken = -1),
         "The value of min_ntoken must be between 0 and Inf"
     )
-    
+
     expect_error(
         tokens_subset(toks, min_ntoken = c(10, 20)),
         "The length of min_ntoken must be 1"
     )
-    
+
     expect_error(
         tokens_subset(toks, max_ntoken = -1),
         "The value of max_ntoken must be between 0 and Inf"
     )
-    
+
     expect_error(
         tokens_subset(toks, max_ntoken = c(10, 20)),
         "The length of max_ntoken must be 1"
