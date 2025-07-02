@@ -2,15 +2,15 @@
 
 library("quanteda")
 
-data_corpus_inaugural_pre_2021 <- corpus_subset(data_corpus_inaugural, Year != "2021")
+data_corpus_inaugural_pre_2021 <- corpus_subset(data_corpus_inaugural, Year < "2021")
 
 metadata <- meta(data_corpus_inaugural)
 
 data_corpus_inaugural_2021 <- corpus(readtext::readtext("tests/data_creation/inaugural/2021-Biden.txt"))
 docnames(data_corpus_inaugural_2021) <- "2021-Biden"
 
-data_corpus_inaugural_2025 <- corpus(readtext::readtext("tests/data_creation/inaugural/2021-Biden.txt"))
-docnames(data_corpus_inaugural_2021) <- "2025-Trump"
+data_corpus_inaugural_2025 <- corpus(readtext::readtext("tests/data_creation/inaugural/2025-Trump.txt"))
+docnames(data_corpus_inaugural_2025) <- "2025-Trump"
 
 data_corpus_inaugural <- data_corpus_inaugural_pre_2021 + data_corpus_inaugural_2021 +
   data_corpus_inaugural_2025
