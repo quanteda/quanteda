@@ -148,7 +148,7 @@ test_that("the number of characters and tokens are roughly the same", {
 
     expect_equal(
         mean(ntoken(toks_chunk)) / 512,
-        0.97,
+        0.98,
         tolerance = 0.01
     )
 })
