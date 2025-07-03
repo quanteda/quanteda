@@ -105,7 +105,6 @@ tokens_lookup <- function(x, dictionary, levels = 1:5,
                           nomatch = NULL,
                           append_key = FALSE,
                           separator = "/",
-                          annotate = FALSE,
                           concatenator = concat(x),
                           nested_scope = c("key", "dictionary"),
                           apply_if = NULL,
@@ -122,7 +121,6 @@ tokens_lookup.default <- function(x, dictionary, levels = 1:5,
                                  nomatch = NULL,
                                  append_key = FALSE,
                                  separator = "/",
-                                 annotate = FALSE,
                                  concatenator = concat(x),
                                  nested_scope = c("key", "dictionary"),
                                  apply_if = NULL,
@@ -139,7 +137,6 @@ tokens_lookup.tokens_xptr <- function(x, dictionary, levels = 1:5,
                           nomatch = NULL,
                           append_key = FALSE,
                           separator = "/",
-                          annotate = FALSE,
                           concatenator = concat(x),
                           nested_scope = c("key", "dictionary"),
                           apply_if = NULL,
@@ -200,13 +197,8 @@ tokens_lookup.tokens_xptr <- function(x, dictionary, levels = 1:5,
         if (!is.null(nomatch))
             warning("nomatch only applies if exclusive = TRUE")
         id_used <- unique(id_key)
-        if (!annotate) { 
-            result <- cpp_tokens_lookup(x, ids, match(id_key, id_used), key[id_used], overlap, 2,
-                                        !apply_if, get_threads())
-        } else {
-            result <- cpp_tokens_lookup(x, ids, match(id_key, id_used), key[id_used], overlap, 3,
-                                        !apply_if, get_threads())
-        }
+        result <- cpp_tokens_lookup(x, ids, match(id_key, id_used), key[id_used], overlap, 2,
+                                    !apply_if, get_threads())
     }
     if (append_key)
         cpp_recompile(result)
