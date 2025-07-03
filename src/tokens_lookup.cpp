@@ -7,7 +7,7 @@ Text lookup(Text tokens,
             const std::vector<std::size_t> &spans,
             const unsigned int &id_max,
             const int &overlap,
-            const int &nomatch,
+            const int &mode,
             const MultiMapNgrams &map_keys,
             const bool &bypass){
     
@@ -41,7 +41,7 @@ Text lookup(Text tokens,
                         std::vector< bool > &flags_match_local = flags_match[id - 1];
                         bool flagged = std::any_of(flags_match_local.begin() + i, flags_match_local.begin() + i + span, [](bool v) { return v; });
                         if (!flagged) {
-                            if (nomatch == 3) {
+                            if (mode == 3) {
                                 keys[i + span - 1].push_back(id); // keep multiple keys in the same position
                             } else {
                                 keys[i].push_back(id); // keep multiple keys in the same position
@@ -59,7 +59,7 @@ Text lookup(Text tokens,
                             std::vector< bool > &flags_match_local = flags_match[id - 1];
                             bool flagged = std::any_of(flags_match_local.begin() + i, flags_match_local.begin() + i + span, [](bool v) { return v; });
                             if (!flagged) {
-                                if (nomatch == 3) {
+                                if (mode == 3) {
                                     keys[i + span - 1].push_back(id); // keep multiple keys in the same position
                                 } else {
                                     keys[i].push_back(id); // keep multiple keys in the same position
@@ -78,14 +78,14 @@ Text lookup(Text tokens,
     }
     
     if (match_count == 0) {
-        if (nomatch == 0) {
+        if (mode == 0) {
             // return empty vector
             return {}; 
-        } else if (nomatch == 1) {
+        } else if (mode == 1) {
             // return tokens with no-match
             Text keys_flat(tokens.size(), id_max); 
             return keys_flat;
-        } else if (nomatch == 2 || nomatch == 3) {
+        } else if (mode == 2 || mode == 3) {
             // return shifted tokens in exclusive mode
             Text keys_flat(tokens.size());
             for (std::size_t i = 0; i < tokens.size(); i++) {
@@ -101,13 +101,13 @@ Text lookup(Text tokens,
     
     // Flatten the vector of vectors
     Text keys_flat;
-    if (nomatch > 0) {
+    if (mode > 0) {
         keys_flat.reserve(match_count + tokens.size());
     } else {
         keys_flat.reserve(match_count);
     }
     for (size_t i = 0; i < keys.size(); i++) {
-        if (nomatch == 3) {
+        if (mode == 3) { // keep all tokens
             if (tokens[i] == 0) {
                 keys_flat.push_back(0);
             } else {
@@ -121,13 +121,13 @@ Text lookup(Text tokens,
             }
             keys_flat.insert(keys_flat.end(), key_sub.begin(), key_sub.end());
         } else {
-            if (nomatch == 1) {
-                keys_flat.push_back(id_max); // pad with no-match
-            } else if (nomatch == 2) {
+            if (mode == 1) {
+                keys_flat.push_back(id_max); // pad unmatched tokens
+            } else if (mode == 2) { // keep unmatched tokens
                 if (tokens[i] == 0) {
                     keys_flat.push_back(0);
                 } else {
-                    keys_flat.push_back(id_max + tokens[i]); // keep original token
+                    keys_flat.push_back(id_max + tokens[i]); 
                 }
             }
         }
@@ -142,7 +142,8 @@ Text lookup(Text tokens,
 * @param words_ list of dictionary values
 * @param keys_ IDs of dictionary keys
 * @param overlap ignore overlapped words: 1=local, 2=global, 3=none
-* @param nomatch determine how to treat unmached words: 0=remove, 1=pad; 2=keep
+* @param mode determine handling of original tokens: 
+*   0=remove unmached, 1=pad unmached with 'nomatch'; 2=keep unmached; 3=keep all
 * @param bypass_ select documents to modify: TRUE=modify, FALSE=don't modify
 */
 
@@ -152,11 +153,9 @@ TokensPtr cpp_tokens_lookup(TokensPtr xptr,
                                  const IntegerVector &keys_,
                                  const CharacterVector &types_,
                                  const int overlap,
-                                 const int nomatch,
+                                 const int mode,
                                  const LogicalVector bypass_,
                                  const int thread = -1) {
-    
-    //TODO: change nomatch to mode
     
     Texts texts = xptr->texts;
     Types types = Rcpp::as<Types>(types_);
@@ -170,7 +169,7 @@ TokensPtr cpp_tokens_lookup(TokensPtr xptr,
     
     std::vector<unsigned int> keys = Rcpp::as< std::vector<unsigned int> >(keys_);
     unsigned int id_max = 0;
-    if (nomatch == 2 || nomatch == 3) {
+    if (mode == 2 || mode == 3) {
         types.insert(types.end(), xptr->types.begin(), xptr->types.end());
         if (keys_.size() > 0)
             id_max = *max_element(keys.begin(), keys.end());
@@ -202,20 +201,20 @@ TokensPtr cpp_tokens_lookup(TokensPtr xptr,
     arena.execute([&]{
         tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
             for (int h = r.begin(); h < r.end(); ++h) {
-                texts[h] = lookup(texts[h], spans, id_max, overlap, nomatch, map_keys, bypass[h]);
+                texts[h] = lookup(texts[h], spans, id_max, overlap, mode, map_keys, bypass[h]);
             }    
         });
     });
 #else
     for (std::size_t h = 0; h < H; h++) {
-        texts[h] = lookup(texts[h], spans, id_max, overlap, nomatch, map_keys, bypass[h]);
+        texts[h] = lookup(texts[h], spans, id_max, overlap, mode, map_keys, bypass[h]);
     }
 #endif
     
     xptr->texts = texts;
     xptr->types = types;
     
-    if (nomatch == 0 || nomatch == 1) { // exclusive mode
+    if (mode == 0 || mode == 1) { // exclusive mode
         // NOTE: values might need to be reset
         xptr->recompiled = true;
     } else {
