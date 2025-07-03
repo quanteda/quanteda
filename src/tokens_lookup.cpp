@@ -41,7 +41,11 @@ Text lookup(Text tokens,
                         std::vector< bool > &flags_match_local = flags_match[id - 1];
                         bool flagged = std::any_of(flags_match_local.begin() + i, flags_match_local.begin() + i + span, [](bool v) { return v; });
                         if (!flagged) {
-                            keys[i].push_back(id); // keep multiple keys in the same position
+                            if (nomatch == 3) {
+                                keys[i + span - 1].push_back(id); // keep multiple keys in the same position
+                            } else {
+                                keys[i].push_back(id); // keep multiple keys in the same position
+                            }
                             std::fill(flags_match_local.begin() + i, flags_match_local.begin() + i + span, true); // for each key
                             match = true;
                             match_count++;
@@ -55,7 +59,11 @@ Text lookup(Text tokens,
                             std::vector< bool > &flags_match_local = flags_match[id - 1];
                             bool flagged = std::any_of(flags_match_local.begin() + i, flags_match_local.begin() + i + span, [](bool v) { return v; });
                             if (!flagged) {
-                                keys[i].push_back(id); // keep multiple keys in the same position
+                                if (nomatch == 3) {
+                                    keys[i + span - 1].push_back(id); // keep multiple keys in the same position
+                                } else {
+                                    keys[i].push_back(id); // keep multiple keys in the same position
+                                }
                                 std::fill(flags_match_local.begin() + i, flags_match_local.begin() + i + span, true); // for each key
                                 match = true;
                                 match_count++;
@@ -99,8 +107,13 @@ Text lookup(Text tokens,
         keys_flat.reserve(match_count);
     }
     for (size_t i = 0; i < keys.size(); i++) {
-        if (nomatch == 3)
-            keys_flat.push_back(id_max + tokens[i]); // keep original token always
+        if (nomatch == 3) {
+            if (tokens[i] == 0) {
+                keys_flat.push_back(0);
+            } else {
+                keys_flat.push_back(id_max + tokens[i]); // keep original token always
+            }
+        }
         if (flags_match_global[i]) {
             std::vector<unsigned int> key_sub = keys[i];
             if (key_sub.size() > 1) {
@@ -142,6 +155,8 @@ TokensPtr cpp_tokens_lookup(TokensPtr xptr,
                                  const int nomatch,
                                  const LogicalVector bypass_,
                                  const int thread = -1) {
+    
+    //TODO: change nomatch to mode
     
     Texts texts = xptr->texts;
     Types types = Rcpp::as<Types>(types_);
