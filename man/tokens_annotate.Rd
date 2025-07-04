@@ -37,7 +37,7 @@ exact matching. See \link{valuetype} for details.}
 \item{case_insensitive}{logical; if \code{TRUE}, ignore case when matching a
 \code{pattern} or \link{dictionary} values}
 
-\item{marker}{characters that are added before and after the dictionary keys.}
+\item{marker}{characters that are added before and after the dictionary keys to create tags.}
 
 \item{capkeys}{if \code{TRUE}, convert dictionary keys to uppercase to distinguish
 them from unmatched tokens.}

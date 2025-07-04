@@ -1,7 +1,7 @@
 #' Annotate a tokens object using a dictionary
 #'
 #' Insert dictionary keys as tags in a tokens object where the dictionary patterns are found.
-#' @param marker characters that are added before and after the dictionary keys.
+#' @param marker characters that are added before and after the dictionary keys to create tags.
 #' @inheritParams tokens_lookup
 #' @inheritParams apply_if
 #' @keywords tokens
