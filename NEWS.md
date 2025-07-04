@@ -2,7 +2,8 @@
 
 ## Changes and additions
 
-* Improve the speed of `tokens_trim()` when tokens are very large.
+* Improved the speed of `tokens_trim()` when tokens are very large.
+* Added `tokens_annotate()` to insert tags to a tokens object using a dictionary.
 
 ## Bug fixes
 
