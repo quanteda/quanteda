@@ -1,45 +1,21 @@
 #' Annotate a tokens object using a dictionary
 #'
-#' Insert tags to matched tokens using a dictionary object.
+#' Insert dictionary keys as tags in a tokens object where the dictionary patterns are found.
 #' @param marker characters that are added before and after the dictionary keys.
 #' @inheritParams tokens_lookup
 #' @inheritParams apply_if
 #' @keywords tokens
 #' @seealso tokens_lookup
 #' @examples
-#' toks1 <- tokens(data_corpus_inaugural)
-#' dict1 <- dictionary(list(country = "united states",
-#'                    law=c("law*", "constitution"),
-#'                    freedom=c("free*", "libert*")))
-#' dfm(tokens_annotate(toks1, dict1, valuetype = "glob", verbose = TRUE))
-#'
-#' dict2 <- dictionary(list(country = "united states",
-#'                        law = c("law", "constitution"),
-#'                        freedom = c("freedom", "liberty")))
-#' # dfm(applyDictionary(toks1, dict2, valuetype = "fixed"))
-#' dfm(tokens_annotate(toks1, dict2, valuetype = "fixed"))
-#'
-#' # hierarchical dictionary example
 #' txt <- c(d1 = "The United States has the Atlantic Ocean and the Pacific Ocean.",
 #'          d2 = "Britain and Ireland have the Irish Sea and the English Channel.")
-#' toks2 <- tokens(txt)
-#' dict3 <- dictionary(list(US = list(Countries = c("States"),
+#' toks <- tokens(txt)
+#' dict <- dictionary(list(US = list(Countries = c("States"),
 #'                                   oceans = c("Atlantic", "Pacific")),
 #'                         Europe = list(Countries = c("Britain", "Ireland"),
 #'                                       oceans = list(west = "Irish Sea",
 #'                                                     east = "English Channel"))))
-#' tokens_annotate(toks2, dict3, levels = 1)
-#' tokens_annotate(toks2, dict3, levels = 2)
-#' tokens_annotate(toks2, dict3, levels = 1:2)
-#' tokens_annotate(toks2, dict3, levels = 3)
-#' tokens_annotate(toks2, dict3, levels = c(1,3))
-#' tokens_annotate(toks2, dict3, levels = c(2,3))
-#'
-#' # nested matching differences
-#' dict4 <- dictionary(list(paper = "New York Times", city = "New York"))
-#' toks4 <- tokens("The New York Times is a New York paper.")
-#' tokens_annotate(toks4, dict4, nested_scope = "key", exclusive = FALSE)
-#' tokens_annotate(toks4, dict4, nested_scope = "dictionary", exclusive = FALSE)
+#' tokens_annotate(toks, dict)
 #'
 #' @export
 tokens_annotate <- function(x, dictionary, levels = 1:5,
