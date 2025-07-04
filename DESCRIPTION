@@ -134,6 +134,7 @@ Collate:
     'textstat.R'
     'tokens-methods.R'
     'tokens.R'
+    'tokens_annotate.R'
     'tokens_chunk.R'
     'tokens_compound.R'
     'tokens_group.R'
