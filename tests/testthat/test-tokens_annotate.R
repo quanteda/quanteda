@@ -20,6 +20,7 @@ test_that("tokens_annotate works()", {
              d2 = c("", "supreme", "court", "#INSTITUTIONS#", "", "", "united", "states", "#COUNTRIES#"),
              d3 = c("arsenal", "#TEAM.FOOTBALL#", "versus", "manchester", "united", "#TEAM.FOOTBALL#"))
     )
+    
     expect_equal(
         as.list(tokens_annotate(toks, dict, capkey = FALSE)),
         list(d1 = c("", "atlantic", "ocean", "#oceans#", "", "", "pacific", "ocean", "#oceans#", ""),
@@ -46,6 +47,27 @@ test_that("tokens_annotate works()", {
         list(d1 = c("", "atlantic", "ocean", "", "", "pacific", "ocean", ""),
              d2 = c("", "supreme", "court", "", "", "united", "states"),
              d3 = c("arsenal", "#FOOTBALL#", "versus", "manchester", "united", "#FOOTBALL#"))
+    )
+    
+    # nested patterns
+    dict2 <- c(dict, dictionary(list(oceans2 = "Ocean")))
+    expect_equal(
+        as.list(tokens_annotate(toks, dict2, nested_scope = "key")),
+        list(d1 = c("", "atlantic", "ocean", "#OCEANS#", "#OCEANS2#", "", "", "pacific", "ocean", "#OCEANS#", "#OCEANS2#", ""),
+             d2 = c("", "supreme", "court", "#INSTITUTIONS#", "", "", "united", "states", "#COUNTRIES#"),
+             d3 = c("arsenal", "#TEAM.FOOTBALL#", "versus", "manchester", "united", "#TEAM.FOOTBALL#"))
+    )
+    
+    expect_equal(
+        as.list(tokens_annotate(toks, dict2, nested_scope = "dictionary")),
+        list(d1 = c("", "atlantic", "ocean", "#OCEANS#", "", "", "pacific", "ocean", "#OCEANS#", ""),
+             d2 = c("", "supreme", "court", "#INSTITUTIONS#", "", "", "united", "states", "#COUNTRIES#"),
+             d3 = c("arsenal", "#TEAM.FOOTBALL#", "versus", "manchester", "united", "#TEAM.FOOTBALL#"))
+    )
+
+    expect_message(
+        tokens_annotate(toks, dict, verbose = TRUE),
+        "tokens_annotate() changed", fixed = TRUE
     )
     
     expect_error(
