@@ -155,8 +155,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // cpp_tokens_lookup
-TokensPtr cpp_tokens_lookup(TokensPtr xptr, const List& words_, const IntegerVector& keys_, const CharacterVector& types_, const int overlap, const int nomatch, const LogicalVector bypass_, const int thread);
-RcppExport SEXP _quanteda_cpp_tokens_lookup(SEXP xptrSEXP, SEXP words_SEXP, SEXP keys_SEXP, SEXP types_SEXP, SEXP overlapSEXP, SEXP nomatchSEXP, SEXP bypass_SEXP, SEXP threadSEXP) {
+TokensPtr cpp_tokens_lookup(TokensPtr xptr, const List& words_, const IntegerVector& keys_, const CharacterVector& types_, const int overlap, const int mode, const LogicalVector bypass_, const int thread);
+RcppExport SEXP _quanteda_cpp_tokens_lookup(SEXP xptrSEXP, SEXP words_SEXP, SEXP keys_SEXP, SEXP types_SEXP, SEXP overlapSEXP, SEXP modeSEXP, SEXP bypass_SEXP, SEXP threadSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -165,10 +165,10 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const IntegerVector& >::type keys_(keys_SEXP);
     Rcpp::traits::input_parameter< const CharacterVector& >::type types_(types_SEXP);
     Rcpp::traits::input_parameter< const int >::type overlap(overlapSEXP);
-    Rcpp::traits::input_parameter< const int >::type nomatch(nomatchSEXP);
+    Rcpp::traits::input_parameter< const int >::type mode(modeSEXP);
     Rcpp::traits::input_parameter< const LogicalVector >::type bypass_(bypass_SEXP);
     Rcpp::traits::input_parameter< const int >::type thread(threadSEXP);
-    rcpp_result_gen = Rcpp::wrap(cpp_tokens_lookup(xptr, words_, keys_, types_, overlap, nomatch, bypass_, thread));
+    rcpp_result_gen = Rcpp::wrap(cpp_tokens_lookup(xptr, words_, keys_, types_, overlap, mode, bypass_, thread));
     return rcpp_result_gen;
 END_RCPP
 }
