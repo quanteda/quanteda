@@ -1,9 +1,14 @@
+# quanteda 4.3.x
+
+## Changes and additions
+
+* Added `tokens_annotate()` to insert tags to a tokens object using a dictionary.
+
 # quanteda 4.3.1
 
 ## Changes and additions
 
 * Improved the speed of `tokens_trim()` when tokens are very large.
-* Added `tokens_annotate()` to insert tags to a tokens object using a dictionary.
 
 ## Bug fixes
 
