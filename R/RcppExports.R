@@ -25,6 +25,10 @@ cpp_serialize_add <- function(texts_, xptr, thread = -1L) {
     .Call(`_quanteda_cpp_serialize_add`, texts_, xptr, thread)
 }
 
+cpp_tokens_append <- function(xptr, tags_, types_, bypass_, thread = -1L) {
+    .Call(`_quanteda_cpp_tokens_append`, xptr, tags_, types_, bypass_, thread)
+}
+
 cpp_tokens_chunk <- function(xptr, size, overlap, thread = -1L) {
     .Call(`_quanteda_cpp_tokens_chunk`, xptr, size, overlap, thread)
 }

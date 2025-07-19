@@ -24,6 +24,7 @@ tokens_annotate <- function(x, dictionary, levels = 1:5,
                             marker = "#",
                             capkeys = TRUE,
                             nested_scope = c("key", "dictionary"),
+                            append_tag = NULL,
                             apply_if = NULL,
                             verbose = quanteda_options("verbose")) {
     UseMethod("tokens_annotate")
@@ -36,6 +37,7 @@ tokens_annotate.default <- function(x, dictionary, levels = 1:5,
                                     marker = "#",
                                     capkeys = TRUE,
                                     nested_scope = c("key", "dictionary"),
+                                    append_tag = NULL,
                                     apply_if = NULL,
                                     verbose = quanteda_options("verbose")) {
     check_class(class(x), "tokens_annotate")
@@ -48,43 +50,52 @@ tokens_annotate.tokens_xptr <- function(x, dictionary, levels = 1:5,
                                         marker = "#",
                                         capkeys = TRUE,
                                         nested_scope = c("key", "dictionary"),
+                                        append_tag = NULL,
                                         apply_if = NULL,
                                         verbose = quanteda_options("verbose")) {
-
-    if (!is.dictionary(dictionary))
-        stop("dictionary must be a dictionary object")
-    levels <- check_integer(levels, min = 1, max_len = Inf)
-    valuetype <- match.arg(valuetype)
-    capkeys <- check_logical(capkeys)
-    marker <- check_character(marker, max_len = 2)
-    nested_scope <- match.arg(nested_scope)
-    apply_if <- check_logical(apply_if, min_len = ndoc(x), max_len = ndoc(x),
-                               allow_null = TRUE, allow_na = TRUE)
-    verbose <- check_logical(verbose)
-        
-    attrs <- attributes(x)
-    type <- get_types(x)
-    ids <- object2id(dictionary, type, valuetype, case_insensitive,
-                     concatenator = field_object(attrs, "concatenator"), 
-                     levels = levels)
-    overlap <- match(nested_scope, c("key", "dictionary"))
-    if (is.null(apply_if))
-        apply_if <- rep(TRUE, length.out = ndoc(x))
     
-    key <- attr(ids, "key")
-    id_key <- match(names(ids), key)
-    if (capkeys)
-        key <- stri_trans_toupper(key)
+    marker <- check_character(marker, max_len = 2)
+    verbose <- check_logical(verbose)
+    
     if (length(marker) == 1)
         marker <- rep(marker, 2)
-    key <- paste0(marker[1], key, marker[2])
     
     if (verbose)
         before <- stats_tokens(x)
     
-    id_used <- unique(id_key)
-    result <- cpp_tokens_lookup(x, ids, match(id_key, id_used), key[id_used], overlap, 3,
-                                !apply_if, get_threads())
+    if (!is.null(append_tag)) {
+        append_tag <- check_character(append_tag, min_len = ndoc(x), max_len = ndoc(x))
+        tag <- paste0(marker[1], unique(append_tag), marker[2])
+        result <- cpp_tokens_append(x, seq_along(tag), tag, !apply_if, get_threads())
+    } else {
+        if (!is.dictionary(dictionary))
+            stop("dictionary must be a dictionary object")
+        levels <- check_integer(levels, min = 1, max_len = Inf)
+        valuetype <- match.arg(valuetype)
+        capkeys <- check_logical(capkeys)
+        nested_scope <- match.arg(nested_scope)
+        apply_if <- check_logical(apply_if, min_len = ndoc(x), max_len = ndoc(x),
+                                   allow_null = TRUE, allow_na = TRUE)
+        
+        attrs <- attributes(x)
+        type <- get_types(x)
+        ids <- object2id(dictionary, type, valuetype, case_insensitive,
+                         concatenator = field_object(attrs, "concatenator"), 
+                         levels = levels)
+        overlap <- match(nested_scope, c("key", "dictionary"))
+        if (is.null(apply_if))
+            apply_if <- rep(TRUE, length.out = ndoc(x))
+        
+        key <- attr(ids, "key")
+        id_key <- match(names(ids), key)
+        if (capkeys)
+            key <- stri_trans_toupper(key)
+        key <- paste0(marker[1], key, marker[2])
+        
+        id_used <- unique(id_key)
+        result <- cpp_tokens_lookup(x, ids, match(id_key, id_used), key[id_used], overlap, 3,
+                                    !apply_if, get_threads())
+    }
         
     result <- rebuild_tokens(result, attrs)
     if (verbose)
