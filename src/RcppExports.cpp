@@ -95,6 +95,21 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// cpp_tokens_append
+TokensPtr cpp_tokens_append(TokensPtr xptr, const IntegerVector& tags_, const CharacterVector& types_, const LogicalVector bypass_, const int thread);
+RcppExport SEXP _quanteda_cpp_tokens_append(SEXP xptrSEXP, SEXP tags_SEXP, SEXP types_SEXP, SEXP bypass_SEXP, SEXP threadSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< TokensPtr >::type xptr(xptrSEXP);
+    Rcpp::traits::input_parameter< const IntegerVector& >::type tags_(tags_SEXP);
+    Rcpp::traits::input_parameter< const CharacterVector& >::type types_(types_SEXP);
+    Rcpp::traits::input_parameter< const LogicalVector >::type bypass_(bypass_SEXP);
+    Rcpp::traits::input_parameter< const int >::type thread(threadSEXP);
+    rcpp_result_gen = Rcpp::wrap(cpp_tokens_append(xptr, tags_, types_, bypass_, thread));
+    return rcpp_result_gen;
+END_RCPP
+}
 // cpp_tokens_chunk
 TokensPtr cpp_tokens_chunk(TokensPtr xptr, const int size, const int overlap, const int thread);
 RcppExport SEXP _quanteda_cpp_tokens_chunk(SEXP xptrSEXP, SEXP sizeSEXP, SEXP overlapSEXP, SEXP threadSEXP) {
@@ -509,6 +524,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_quanteda_cpp_index_types", (DL_FUNC) &_quanteda_cpp_index_types, 3},
     {"_quanteda_cpp_serialize", (DL_FUNC) &_quanteda_cpp_serialize, 2},
     {"_quanteda_cpp_serialize_add", (DL_FUNC) &_quanteda_cpp_serialize_add, 3},
+    {"_quanteda_cpp_tokens_append", (DL_FUNC) &_quanteda_cpp_tokens_append, 5},
     {"_quanteda_cpp_tokens_chunk", (DL_FUNC) &_quanteda_cpp_tokens_chunk, 4},
     {"_quanteda_cpp_tokens_combine", (DL_FUNC) &_quanteda_cpp_tokens_combine, 3},
     {"_quanteda_cpp_tokens_compound", (DL_FUNC) &_quanteda_cpp_tokens_compound, 9},

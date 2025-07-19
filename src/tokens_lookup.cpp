@@ -140,7 +140,8 @@ Text lookup(Text tokens,
 * @used tokens_lookup()
 * @creator Kohei Watanabe
 * @param words_ list of dictionary values
-* @param keys_ IDs of dictionary keys
+* @param keys_ integer IDs of dictionary keys
+* @param types_ character expressions of dictionary keys
 * @param overlap ignore overlapped words: 1=local, 2=global, 3=none
 * @param mode determine handling of original tokens: 
 *   0=remove unmached, 1=pad unmached with 'nomatch'; 2=keep unmached; 3=keep all
