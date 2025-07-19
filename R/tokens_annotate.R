@@ -55,14 +55,18 @@ tokens_annotate.tokens_xptr <- function(x, dictionary, levels = 1:5,
                                         verbose = quanteda_options("verbose")) {
     
     marker <- check_character(marker, max_len = 2)
+    apply_if <- check_logical(apply_if, min_len = ndoc(x), max_len = ndoc(x),
+                              allow_null = TRUE, allow_na = TRUE)
     verbose <- check_logical(verbose)
     
     if (length(marker) == 1)
         marker <- rep(marker, 2)
-    
+    if (is.null(apply_if))
+        apply_if <- rep(TRUE, length.out = ndoc(x))
     if (verbose)
         before <- stats_tokens(x)
     
+    attrs <- attributes(x)
     if (!is.null(append_tag)) {
         append_tag <- check_character(append_tag, min_len = ndoc(x), max_len = ndoc(x))
         tag <- paste0(marker[1], unique(append_tag), marker[2])
@@ -74,18 +78,13 @@ tokens_annotate.tokens_xptr <- function(x, dictionary, levels = 1:5,
         valuetype <- match.arg(valuetype)
         capkeys <- check_logical(capkeys)
         nested_scope <- match.arg(nested_scope)
-        apply_if <- check_logical(apply_if, min_len = ndoc(x), max_len = ndoc(x),
-                                   allow_null = TRUE, allow_na = TRUE)
         
-        attrs <- attributes(x)
         type <- get_types(x)
         ids <- object2id(dictionary, type, valuetype, case_insensitive,
                          concatenator = field_object(attrs, "concatenator"), 
                          levels = levels)
         overlap <- match(nested_scope, c("key", "dictionary"))
-        if (is.null(apply_if))
-            apply_if <- rep(TRUE, length.out = ndoc(x))
-        
+
         key <- attr(ids, "key")
         id_key <- match(names(ids), key)
         if (capkeys)
