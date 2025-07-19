@@ -69,8 +69,9 @@ tokens_annotate.tokens_xptr <- function(x, dictionary, levels = 1:5,
     attrs <- attributes(x)
     if (!is.null(append_tag)) {
         append_tag <- check_character(append_tag, min_len = ndoc(x), max_len = ndoc(x))
-        tag <- paste0(marker[1], unique(append_tag), marker[2])
-        result <- cpp_tokens_append(x, seq_along(tag), tag, !apply_if, get_threads())
+        tag <- paste0(marker[1], append_tag, marker[2])
+        tag <- factor(tag, levels = unique(tag))
+        result <- cpp_tokens_append(x, as.integer(tag), levels(tag), !apply_if, get_threads())
     } else {
         if (!is.dictionary(dictionary))
             stop("dictionary must be a dictionary object")
