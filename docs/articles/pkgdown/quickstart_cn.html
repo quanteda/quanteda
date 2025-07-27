@@ -41,7 +41,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">4.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">4.3.1</span>
       </span>
     </div>
 
@@ -431,16 +431,16 @@ Count</a> 文本分析软件</li>
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu"><a href="../../reference/corpus_subset.html">corpus_subset</a></span><span class="op">(</span><span class="va">data_corpus_inaugural</span>, <span class="va">Year</span> <span class="op">&gt;</span> <span class="fl">1990</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Corpus consisting of 9 documents, showing 9 documents:</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">##            Text Types Tokens Sentences Year President FirstName      Party</span></span>
-<span><span class="co">##    1993-Clinton   642   1833        81 1993   Clinton      Bill Democratic</span></span>
-<span><span class="co">##    1997-Clinton   773   2436       111 1997   Clinton      Bill Democratic</span></span>
-<span><span class="co">##       2001-Bush   621   1806        97 2001      Bush George W. Republican</span></span>
-<span><span class="co">##       2005-Bush   772   2312        99 2005      Bush George W. Republican</span></span>
-<span><span class="co">##      2009-Obama   938   2689       110 2009     Obama    Barack Democratic</span></span>
-<span><span class="co">##      2013-Obama   814   2317        88 2013     Obama    Barack Democratic</span></span>
-<span><span class="co">##      2017-Trump   582   1660        88 2017     Trump Donald J. Republican</span></span>
-<span><span class="co">##      2025-Trump   812   2766       216 2021     Biden Joseph R. Democratic</span></span>
-<span><span class="co">##  2021-Biden.txt   812   2766       216 2025     Trump Donald J. Republican</span></span></code></pre>
+<span><span class="co">##          Text Types Tokens Sentences Year President FirstName      Party</span></span>
+<span><span class="co">##  1993-Clinton   642   1833        81 1993   Clinton      Bill Democratic</span></span>
+<span><span class="co">##  1997-Clinton   773   2436       111 1997   Clinton      Bill Democratic</span></span>
+<span><span class="co">##     2001-Bush   621   1806        97 2001      Bush George W. Republican</span></span>
+<span><span class="co">##     2005-Bush   772   2312        99 2005      Bush George W. Republican</span></span>
+<span><span class="co">##    2009-Obama   938   2689       110 2009     Obama    Barack Democratic</span></span>
+<span><span class="co">##    2013-Obama   814   2317        88 2013     Obama    Barack Democratic</span></span>
+<span><span class="co">##    2017-Trump   582   1660        88 2017     Trump Donald J. Republican</span></span>
+<span><span class="co">##    2021-Biden   812   2766       216 2021     Biden Joseph R. Democratic</span></span>
+<span><span class="co">##    2025-Trump  1000   3347       177 2025     Trump Donald J. Republican</span></span></code></pre>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu"><a href="../../reference/corpus_subset.html">corpus_subset</a></span><span class="op">(</span><span class="va">data_corpus_inaugural</span>, <span class="va">President</span> <span class="op">==</span> <span class="st">"Adams"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Corpus consisting of 2 documents, showing 2 documents:</span></span>
@@ -492,8 +492,8 @@ Count</a> 文本分析软件</li>
 <span><span class="co">##   [1997-Clinton, 1647]       maintain a strong defense against |  terror   |</span></span>
 <span><span class="co">##     [2009-Obama, 1619]          advance their aims by inducing |  terror   |</span></span>
 <span><span class="co">##     [2017-Trump, 1117] civilized world against radical Islamic | terrorism |</span></span>
-<span><span class="co">##      [2025-Trump, 544]             , white supremacy, domestic | terrorism |</span></span>
-<span><span class="co">##  [2021-Biden.txt, 544]             , white supremacy, domestic | terrorism |</span></span>
+<span><span class="co">##      [2021-Biden, 544]             , white supremacy, domestic | terrorism |</span></span>
+<span><span class="co">##     [2025-Trump, 1371]      designating the cartels as foreign | terrorist |</span></span>
 <span><span class="co">##                                   </span></span>
 <span><span class="co">##  , intrigue, or venality          </span></span>
 <span><span class="co">##  which paralyzes needed efforts to</span></span>
@@ -507,7 +507,7 @@ Count</a> 文本分析软件</li>
 <span><span class="co">##  and slaughtering innocents, we   </span></span>
 <span><span class="co">##  , which we will eradicate        </span></span>
 <span><span class="co">##  that we must confront and        </span></span>
-<span><span class="co">##  that we must confront and</span></span></code></pre>
+<span><span class="co">##  organizations. And by invoking</span></span></code></pre>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../../reference/kwic.html">kwic</a></span><span class="op">(</span><span class="va">data_tokens_inaugural</span>, pattern <span class="op">=</span> <span class="st">"communist*"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Keyword-in-context with 2 matches.                                                                  </span></span>
@@ -685,7 +685,7 @@ Count</a> 文本分析软件</li>
 <span>  <span class="fu"><a href="../../reference/tokens_wordstem.html">tokens_wordstem</a></span><span class="op">(</span><span class="st">"en"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../../reference/dfm.html">dfm</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">dfmat_inaug_post1990_stem</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></span></code></pre></div>
-<pre><code><span><span class="co">## Document-feature matrix of: 9 documents, 5 features (17.78% sparse) and 4 docvars.</span></span>
+<pre><code><span><span class="co">## Document-feature matrix of: 9 documents, 5 features (20.00% sparse) and 4 docvars.</span></span>
 <span><span class="co">##               features</span></span>
 <span><span class="co">## docs           fellow citizen today celebr mysteri</span></span>
 <span><span class="co">##   1993-Clinton      5       2    10      4       1</span></span>
@@ -795,7 +795,7 @@ pane中查看dfm,或者调用R的View功能。调用<code>plot</code>dfm将调�
 <span>  <span class="fu"><a href="../../reference/tokens_lookup.html">tokens_lookup</a></span><span class="op">(</span>dictionary <span class="op">=</span> <span class="va">dict</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../../reference/dfm.html">dfm</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">dfmat_inaug_post1991_dict</span></span></code></pre></div>
-<pre><code><span><span class="co">## Document-feature matrix of: 9 documents, 2 features (11.11% sparse) and 4 docvars.</span></span>
+<pre><code><span><span class="co">## Document-feature matrix of: 9 documents, 2 features (16.67% sparse) and 4 docvars.</span></span>
 <span><span class="co">##               features</span></span>
 <span><span class="co">## docs           terror economy</span></span>
 <span><span class="co">##   1993-Clinton      0       8</span></span>
@@ -835,19 +835,19 @@ pane中查看dfm,或者调用R的View功能。调用<code>plot</code>dfm将调�
 <span>                              margin <span class="op">=</span> <span class="st">"documents"</span>, method <span class="op">=</span> <span class="st">"cosine"</span><span class="op">)</span></span>
 <span><span class="va">tstat_obama</span></span></code></pre></div>
 <pre><code><span><span class="co">## textstat_simil object; method = "cosine"</span></span>
-<span><span class="co">##                2009-Obama 2013-Obama</span></span>
-<span><span class="co">## 1981-Reagan         0.622      0.637</span></span>
-<span><span class="co">## 1985-Reagan         0.643      0.662</span></span>
-<span><span class="co">## 1989-Bush           0.625      0.578</span></span>
-<span><span class="co">## 1993-Clinton        0.628      0.626</span></span>
-<span><span class="co">## 1997-Clinton        0.660      0.646</span></span>
-<span><span class="co">## 2001-Bush           0.601      0.617</span></span>
-<span><span class="co">## 2005-Bush           0.526      0.587</span></span>
-<span><span class="co">## 2009-Obama          1.000      0.681</span></span>
-<span><span class="co">## 2013-Obama          0.681      1.000</span></span>
-<span><span class="co">## 2017-Trump          0.519      0.516</span></span>
-<span><span class="co">## 2025-Trump          0.661      0.645</span></span>
-<span><span class="co">## 2021-Biden.txt      0.661      0.645</span></span></code></pre>
+<span><span class="co">##              2009-Obama 2013-Obama</span></span>
+<span><span class="co">## 1981-Reagan       0.622      0.637</span></span>
+<span><span class="co">## 1985-Reagan       0.643      0.662</span></span>
+<span><span class="co">## 1989-Bush         0.625      0.578</span></span>
+<span><span class="co">## 1993-Clinton      0.628      0.626</span></span>
+<span><span class="co">## 1997-Clinton      0.660      0.646</span></span>
+<span><span class="co">## 2001-Bush         0.601      0.617</span></span>
+<span><span class="co">## 2005-Bush         0.526      0.587</span></span>
+<span><span class="co">## 2009-Obama        1.000      0.681</span></span>
+<span><span class="co">## 2013-Obama        0.681      1.000</span></span>
+<span><span class="co">## 2017-Trump        0.519      0.516</span></span>
+<span><span class="co">## 2021-Biden        0.661      0.645</span></span>
+<span><span class="co">## 2025-Trump        0.493      0.477</span></span></code></pre>
 <div class="sourceCode" id="cb75"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># dotchart(as.list(obama_simil)$"2009-Obama", xlab = "Cosine similarity")</span></span></code></pre></div>
 <p>我们可以用这些距离来绘制树状图，聚类分析总统：</p>
@@ -1065,7 +1065,7 @@ pane中查看dfm,或者调用R的View功能。调用<code>plot</code>dfm将调�
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.2.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
 </div>
 
       </footer>

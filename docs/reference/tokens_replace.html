@@ -29,7 +29,7 @@ to replace dictionary values.'><!-- mathjax --><script src="https://cdnjs.cloudf
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">4.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">4.3.1</span>
       </span>
     </div>
 
@@ -220,20 +220,18 @@ after the function is applied. The number of tokens does not include paddings.</
 <span class="r-in"><span><span class="va">toks2</span> <span class="op">&lt;-</span> <span class="fu">tokens_replace</span><span class="op">(</span><span class="va">toks1</span>, <span class="va">taxwords</span>, <span class="va">lemma</span>, valuetype <span class="op">=</span> <span class="st">"fixed"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="kwic.html">kwic</a></span><span class="op">(</span><span class="va">toks2</span>, <span class="st">"TAX"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Keyword-in-context with 10 matches.                                                                        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1925-Coolidge, 3004]                     a living we must have | TAX |</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1925-Coolidge, 3116]               correct course to follow in | TAX |</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     [1981-Reagan, 273]                      for their labor by a | TAX |</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     [1981-Reagan, 290]             productivity But great as our | TAX |</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    [1981-Reagan, 1521]               and to lighten our punitive | TAX |</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     [1985-Reagan, 496]                were right to believe that | TAX |</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    [1985-Reagan, 1106]                lives We must simplify our | TAX |</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    [1985-Reagan, 1418] permanently control Government's power to | TAX |</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    [1985-Reagan, 1438]              spend its citizens money and | TAX |</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      [2013-Obama, 739]          remake our government revamp our | TAX |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Keyword-in-context with 10 matches.                                                                      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [1981-Reagan, 273]                      for their labor by a | TAX |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [1981-Reagan, 290]             productivity But great as our | TAX |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1981-Reagan, 1521]               and to lighten our punitive | TAX |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [1985-Reagan, 496]                were right to believe that | TAX |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1985-Reagan, 1106]                lives We must simplify our | TAX |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1985-Reagan, 1418] permanently control Government's power to | TAX |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1985-Reagan, 1438]              spend its citizens money and | TAX |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    [2013-Obama, 739]          remake our government revamp our | TAX |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [2025-Trump, 1536]           workers and families Instead of | TAX |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [2025-Trump, 1547]              countries we will tariff and | TAX |</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                               </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  reform The method of raising                 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  and all other economic legislation           </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  system which penalizes successful achievement</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  burden is it has not                         </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  burden And these will be                     </span>
@@ -242,6 +240,8 @@ after the function is applied. The number of tokens does not include paddings.</
 <span class="r-out co"><span class="r-pr">#&gt;</span>  and spend We must act                        </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  them into servitude when the                 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Code reform our schools and                  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  our citizens to enrich other                 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  foreign countries to enrich our              </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># stemming</span></span></span>
@@ -255,16 +255,18 @@ after the function is applied. The number of tokens does not include paddings.</
 <span class="r-in"><span><span class="va">toks4</span> <span class="op">&lt;-</span> <span class="fu">tokens_replace</span><span class="op">(</span><span class="va">toks1</span>, <span class="fu"><a href="phrase.html">phrase</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Supreme Court"</span><span class="op">)</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                        <span class="fu"><a href="phrase.html">phrase</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Supreme Court of the United States"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="kwic.html">kwic</a></span><span class="op">(</span><span class="va">toks4</span>, <span class="fu"><a href="phrase.html">phrase</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Supreme Court of the United States"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Keyword-in-context with 4 matches.                                                              </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Keyword-in-context with 5 matches.                                                              </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [1857-Buchanan, 441:446] which legitimately belongs to the |</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1861-Lincoln, 2323:2328]              to be decided by the |</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1861-Lincoln, 2465:2470]         fixed by decisions of the |</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [1889-Harrison, 408:413]        by the organization of the |</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        [2025-Trump, 27:32]   Justice Roberts justices of the |</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                                                        </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Supreme Court of the United States | of the United States before      </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Supreme Court of the United States | nor do I deny that               </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Supreme Court of the United States | the instant they are made        </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Supreme Court of the United States | shall have been suitably observed</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Supreme Court of the United States | of the United States President   </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 </code></pre></div>
     </div>
@@ -280,7 +282,7 @@ after the function is applied. The number of tokens does not include paddings.</
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
 </div>
 
       </footer></div>

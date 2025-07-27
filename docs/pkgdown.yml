@@ -1,5 +1,5 @@
 pandoc: 3.6.4
-pkgdown: 2.1.2
+pkgdown: 2.1.3
 pkgdown_sha: ~
 articles:
   pkgdown/benchmarks_xptr: pkgdown/benchmarks_xptr.html
@@ -22,7 +22,7 @@ articles:
   pkgdown/replication/text2vec: pkgdown/replication/text2vec.html
   pkgdown/tokens_xptr: pkgdown/tokens_xptr.html
   pkgdown/examples/twitter: pkgdown/examples/twitter.html
-last_built: 2025-05-21T12:50Z
+last_built: 2025-07-27T07:51Z
 urls:
   reference: https://quanteda.io/reference
   article: https://quanteda.io/articles

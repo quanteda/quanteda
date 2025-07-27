@@ -24,7 +24,7 @@ as a whole or separated by document."><!-- mathjax --><script src="https://cdnjs
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">4.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">4.3.1</span>
       </span>
     </div>
 
@@ -199,11 +199,11 @@ feature labels, or a list of these if <code>groups</code> is given.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># most frequent features</span></span></span>
 <span class="r-in"><span><span class="fu">topfeatures</span><span class="op">(</span><span class="va">dfmat1</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  the  and   of   we   to  our    a   in   is that </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1302 1119  915  715  714  651  518  421  358  341 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  the  and   of   to   we  our    a   in will   is </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1327 1167  929  736  712  679  522  408  360  358 </span>
 <span class="r-in"><span><span class="fu">topfeatures</span><span class="op">(</span><span class="va">dfmat2</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      us america    must  people     can  nation   world     new     one    time </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     219     134     119     108     104     103     103      99      91      81 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      us america  nation    must  people   world     new     can     one    time </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     194     134     110     110     107     105     102      90      83      80 </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># least frequent features</span></span></span>
 <span class="r-in"><span><span class="fu">topfeatures</span><span class="op">(</span><span class="va">dfmat2</span>, decreasing <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
@@ -239,14 +239,14 @@ feature labels, or a list of these if <code>groups</code> is given.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         52         29         25         23         22 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $Trump</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  america       us      one american   people </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       36       29       23       20       19 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  america    thank   nation  country american </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       36       26       25       24       24 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># features by document frequencies</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail</a></span><span class="op">(</span><span class="fu">topfeatures</span><span class="op">(</span><span class="va">dfmat1</span>, scheme <span class="op">=</span> <span class="st">"docfreq"</span>, n <span class="op">=</span> <span class="fl">200</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   schools america's     chief      vice       yet       two </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         9         9         8         8         8         8 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> greatest  believe     seek     made     born     back </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        8        8        8        8        8        8 </span>
 </code></pre></div>
     </div>
   </div>
@@ -261,7 +261,7 @@ feature labels, or a list of these if <code>groups</code> is given.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
 </div>
 
       </footer></div>
