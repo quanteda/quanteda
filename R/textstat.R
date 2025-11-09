@@ -9,7 +9,7 @@ NULL
 #' Check if an object is collocations
 #' 
 #' Function to check if an object is a collocations object, created by
-#' [quanteda.textstats::textstat_collocations()].
+#' `quanteda.textstats::textstat_collocations()`.
 #' @param x object to be checked
 #' @export
 #' @return `TRUE` if the object is of class `collocations`, `FALSE` otherwise

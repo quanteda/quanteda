@@ -65,6 +65,11 @@ test_that("tokens_chunk works", {
                                 stringsAsFactors = FALSE,
                                 check.names = FALSE))
     
+    expect_message(
+        tokens_chunk(toks, size = 5, verbose = TRUE),
+        "tokens_chunk() changed", fixed = TRUE
+    )
+
 })
 
 test_that("tokens_chunk raises error for invalid size", {

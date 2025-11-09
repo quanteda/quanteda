@@ -12,6 +12,7 @@
 #' [bootstrap_dfm()].
 #' @param x a [dfm]
 #' @param features character; the feature names to be matched in the output dfm
+#' @inheritParams messages
 #' @return 
 #' A [dfm] whose features are identical to those specified in
 #' `features`. 
@@ -34,20 +35,28 @@
 #' (dfmat3 <- dfm_match(dfmat1, featnames(dfmat2)))
 #' setequal(featnames(dfmat2), featnames(dfmat3))
 #' @export
-dfm_match <- function(x, features) {
+dfm_match <- function(x, features,
+                      verbose = quanteda_options("verbose")) {
     UseMethod("dfm_match")
 }
 
 #' @export
-dfm_match.default <- function(x, features) {
+dfm_match.default <- function(x, features,
+                              verbose = quanteda_options("verbose")) {
     check_class(class(x), "dfm_match")
 }
 
 #' @export
-dfm_match.dfm <- function(x, features) {
+dfm_match.dfm <- function(x, features,
+                          verbose = quanteda_options("verbose")) {
     x <- as.dfm(x)
     features <- check_character(features, min_len = 0, max_len = Inf)
     attrs <- attributes(x)
+    if (verbose)
+        before <- stats_dfm(x)
     x <- pad_dfm(x, features)
-    rebuild_dfm(x, attrs)
+    result <- rebuild_dfm(x, attrs)
+    if (verbose)
+        message_dfm("dfm_match()", before, stats_dfm(result))
+    return(result)
 }

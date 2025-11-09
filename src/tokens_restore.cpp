@@ -10,7 +10,7 @@ Text join_mark(Text tokens,
     
     if (tokens.empty()) return {}; // return empty vector for empty text
     
-    std::vector< std::vector<unsigned int> > tokens_multi(tokens.size()); 
+    std::vector< Text > tokens_multi(tokens.size()); 
     std::vector< bool > flags_match(tokens.size(), false); // flag matched tokens
     std::size_t match = 0;
 
@@ -90,13 +90,13 @@ TokensPtr cpp_tokens_restore(TokensPtr xptr,
     MapNgrams map_comps; // for ID generation
     map_comps.max_load_factor(GLOBAL_NGRAMS_MAX_LOAD_FACTOR);
 
-    Ngrams marks_left = Rcpp::as<Ngrams>(marks_left_);
+    Ngrams marks_left = to_ngrams(marks_left_);
     for (std::size_t g = 0; g < marks_left.size(); g++) {
         Ngram value = marks_left[g];
         unsigned int key = 1; // 1 for left
         map_marks.insert(std::pair<Ngram, unsigned int>(value, key));
     }
-    Ngrams marks_right = Rcpp::as<Ngrams>(marks_right_);
+    Ngrams marks_right = to_ngrams(marks_right_);
     for (std::size_t g = 0; g < marks_right.size(); g++) {
         Ngram value = marks_right[g];
         unsigned int key = 2; // 2 for right

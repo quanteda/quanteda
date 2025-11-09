@@ -22,6 +22,8 @@
 #'   Guthrie et al (2006).
 #' @param concatenator character for combining words, default is `_`
 #'   (underscore) character
+#' @inheritParams apply_if
+#' @inheritParams messages
 #' @details Normally, these functions will be called through
 #'   `[tokens](x, ngrams = , ...)`, but these functions are provided
 #'   in case a user wants to perform lower-level n-gram construction on tokenized
@@ -35,12 +37,18 @@
 #' tokens_ngrams(toks, n = 1:3)
 #' tokens_ngrams(toks, n = c(2,4), concatenator = " ")
 #' tokens_ngrams(toks, n = c(2,4), skip = 1, concatenator = " ")
-tokens_ngrams <- function(x, n = 2L, skip = 0L, concatenator = concat(x)) {
+tokens_ngrams <- function(x, n = 2L, skip = 0L, 
+                          concatenator = concat(x),
+                          apply_if = NULL,
+                          verbose = quanteda_options("verbose")) {
     UseMethod("tokens_ngrams")
 }
 
 #' @export
-tokens_ngrams.default <- function(x, n = 2L, skip = 0L, concatenator = concat(x)) {
+tokens_ngrams.default <- function(x, n = 2L, skip = 0L, 
+                                  concatenator = concat(x),
+                                  apply_if = NULL,
+                                  verbose = quanteda_options("verbose")) {
     check_class(class(x), "tokens_ngrams")
 }
 
@@ -77,20 +85,33 @@ char_ngrams.character <- function(x, n = 2L, skip = 0L, concatenator = "_") {
 #' toks <- tokens(txt)
 #' tokens_ngrams(toks, n = 2:3)
 #' @export
-tokens_ngrams.tokens_xptr <- function(x, n = 2L, skip = 0L, concatenator = concat(x)) {
+tokens_ngrams.tokens_xptr <- function(x, n = 2L, skip = 0L, concatenator = concat(x),
+                                      apply_if = NULL,
+                                      verbose = quanteda_options("verbose")) {
 
     n <- check_integer(n, min = 1, max_len = Inf)
     skip <- check_integer(skip, min_len = 1, max_len = Inf, min = 0)
     concatenator <- check_character(concatenator)
+    apply_if <- check_logical(apply_if, min_len = ndoc(x), max_len = ndoc(x),
+                              allow_null = TRUE, allow_na = TRUE)
+    verbose <- check_logical(verbose)
 
     attrs <- attributes(x)
     if (identical(n, 1L) && identical(skip, 0L))
         return(x)
-    result <- cpp_tokens_ngrams(x, concatenator, n, skip, get_threads())
+    if (is.null(apply_if))
+        apply_if <- rep(TRUE, length.out = ndoc(x))
+    if (verbose)
+        before <- stats_tokens(x)
+    
+    result <- cpp_tokens_ngrams(x, concatenator, n, skip, !apply_if, get_threads())
     field_object(attrs, "ngram") <- n
     field_object(attrs, "skip") <- skip
     field_object(attrs, "concatenator") <- concatenator
-    rebuild_tokens(result, attrs)
+    result <- rebuild_tokens(result, attrs)
+    if (verbose)
+        message_tokens("tokens_ngrams()", before, stats_tokens(result))
+    return(result)
 }
 
 #' @export
@@ -117,22 +138,22 @@ tokens_ngrams.tokens <- function(x, ...) {
 #' tokens_skipgrams(toks, n = 2, skip = 0:1, concatenator = " ")
 #' tokens_skipgrams(toks, n = 2, skip = 0:2, concatenator = " ")
 #' tokens_skipgrams(toks, n = 3, skip = 0:2, concatenator = " ")
-tokens_skipgrams <- function(x, n, skip, concatenator = concat(x)) {
+tokens_skipgrams <- function(x, n, skip, concatenator = concat(x),
+                             apply_if = NULL,
+                             verbose = quanteda_options("verbose")) {
     UseMethod("tokens_skipgrams")
 }
 
 #' @export
-tokens_skipgrams.default <- function(x, n, skip, concatenator = concat(x)) {
+tokens_skipgrams.default <- function(x, n, skip, concatenator = concat(x),
+                                     apply_if = NULL,
+                                     verbose = quanteda_options("verbose")) {
     check_class(class(x), "tokens_skipgrams")
 }
 
 #' @export
-tokens_skipgrams.tokens <- function(x, n, skip, concatenator = concat(x)) {
-    tokens_ngrams(x, n = n, skip = skip, concatenator = concatenator)
-}
+tokens_skipgrams.tokens <- tokens_ngrams.tokens
 
 #' @export
-tokens_skipgrams.tokens_xptr <- function(x, n, skip, concatenator = concat(x)) {
-    tokens_ngrams(x, n = n, skip = skip, concatenator = concatenator)
-}
+tokens_skipgrams.tokens_xptr <- tokens_ngrams.tokens_xptr
 

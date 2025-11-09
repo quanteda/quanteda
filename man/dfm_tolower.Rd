@@ -7,13 +7,13 @@
 \alias{fcm_toupper}
 \title{Convert the case of the features of a dfm and combine}
 \usage{
-dfm_tolower(x, keep_acronyms = FALSE)
+dfm_tolower(x, keep_acronyms = FALSE, verbose = quanteda_options("verbose"))
 
-dfm_toupper(x)
+dfm_toupper(x, verbose = quanteda_options("verbose"))
 
-fcm_tolower(x, keep_acronyms = FALSE)
+fcm_tolower(x, keep_acronyms = FALSE, verbose = quanteda_options("verbose"))
 
-fcm_toupper(x)
+fcm_toupper(x, verbose = quanteda_options("verbose"))
 }
 \arguments{
 \item{x}{the input object whose character/tokens/feature elements will be
@@ -21,6 +21,9 @@ case-converted}
 
 \item{keep_acronyms}{logical; if \code{TRUE}, do not lowercase any
 all-uppercase words (applies only to \verb{*_tolower()} functions)}
+
+\item{verbose}{if \code{TRUE} print the number of tokens and documents before and
+after the function is applied. The number of tokens does not include paddings.}
 }
 \description{
 \code{dfm_tolower()} and \code{dfm_toupper()} convert the features of the dfm or

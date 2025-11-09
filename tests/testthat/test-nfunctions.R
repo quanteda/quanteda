@@ -8,15 +8,22 @@ test_that("test ntoken on sentences", {
 })
 
 test_that("test ntype with dfm (#748)", {
-    d <- dfm(tokens(c(doc1 = "one two three",
-                      doc2 = "one one one")))
-    expect_identical(
-        ntype(d),
-        c(doc1 = 3L, doc2 = 1L)
-    )
-    expect_identical(
-        ntoken(d),
-        c(doc1 = 3L, doc2 = 3L)
+    
+    txt <- c(d1 = "a b c a b c", 
+             d2 = "a b c d e",
+             d3 = "")
+    corp <- corpus(txt)
+    toks <- tokens(corp)
+    dfmt <- dfm(toks)
+    dfmt2 <- dfm_remove(dfmt, "a", padding = TRUE)
+    
+    expect_identical(ntype(dfmt, remove_padding = TRUE), c(d1 = 3L, d2 = 5L, d3 = 0L))
+    expect_identical(ntype(dfmt, remove_padding = FALSE), c(d1 = 3L, d2 = 5L, d3 = 0L))
+    expect_identical(ntype(dfmt2, remove_padding = TRUE), c(d1 = 2L, d2 = 4L, d3 = 0L))
+    expect_identical(ntype(dfmt2, remove_padding = FALSE), c(d1 = 3L, d2 = 5L, d3 = 0L))
+    expect_error(
+        ntype(dfmt, remove_padding = c(TRUE, FALSE)),
+        "The length of remove_padding must be 1"
     )
 })
 
@@ -31,14 +38,17 @@ test_that("test ntype with dfm (#748)", {
 
 test_that("test ntoken.tokens", {
     txt <- c(d1 = "a b c a b c", 
-             d2 = "a b c d e")
+             d2 = "a b c d e",
+             d3 = "")
     corp <- corpus(txt)
     toks <- tokens(corp)
     toks2 <- tokens_remove(toks, "a", padding = TRUE)
     
-    expect_identical(ntoken(toks), c(d1 = 6L, d2 = 5L))
-    expect_identical(ntoken(toks, remove_padding = TRUE), c(d1 = 6L, d2 = 5L))
-    expect_identical(ntoken(toks2, remove_padding = TRUE), c(d1 = 4L, d2 = 4L))
+    expect_identical(ntoken(toks), c(d1 = 6L, d2 = 5L, d3 = 0L))
+    expect_identical(ntoken(toks, remove_padding = TRUE), c(d1 = 6L, d2 = 5L, d3 = 0L))
+    expect_identical(ntoken(toks, remove_padding = FALSE), c(d1 = 6L, d2 = 5L, d3 = 0L))
+    expect_identical(ntoken(toks2, remove_padding = TRUE), c(d1 = 4L, d2 = 4L, d3 = 0L))
+    expect_identical(ntoken(toks2, remove_padding = FALSE), c(d1 = 6L, d2 = 5L, d3 = 0L))
     expect_error(
         ntoken(toks2, remove_padding = c(TRUE, FALSE)),
         "The length of remove_padding must be 1"
@@ -47,14 +57,17 @@ test_that("test ntoken.tokens", {
 
 test_that("test ntype.tokens", {
     txt <- c(d1 = "a b c a b c", 
-             d2 = "a b c d e")
+             d2 = "a b c d e",
+             d3 = "")
     corp <- corpus(txt)
     toks <- tokens(corp)
     toks2 <- tokens_remove(toks, "a", padding = TRUE)
     
-    expect_identical(ntype(toks), c(d1 = 3L, d2 = 5L))
-    expect_identical(ntype(toks, remove_padding = TRUE), c(d1 = 3L, d2 = 5L))
-    expect_identical(ntype(toks2, remove_padding = TRUE), c(d1 = 2L, d2 = 4L))
+    expect_identical(ntype(toks), c(d1 = 3L, d2 = 5L, d3 = 0L))
+    expect_identical(ntype(toks, remove_padding = TRUE), c(d1 = 3L, d2 = 5L, d3 = 0L))
+    expect_identical(ntype(toks, remove_padding = FALSE), c(d1 = 3L, d2 = 5L, d3 = 0L))
+    expect_identical(ntype(toks2, remove_padding = TRUE), c(d1 = 2L, d2 = 4L, d3 = 0L))
+    expect_identical(ntype(toks2, remove_padding = FALSE), c(d1 = 3L, d2 = 5L, d3 = 0L))
     expect_error(
         ntype(toks2, remove_padding = c(TRUE, FALSE)),
         "The length of remove_padding must be 1"

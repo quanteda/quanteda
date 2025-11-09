@@ -501,7 +501,7 @@ test_that("empty tokens are removed correctly", {
 test_that("combined tokens objects have all the attributes", {
 
     toks1 <- tokens(c(text1 = "a b c"))
-    toks2 <- tokens_compound(tokens(c(text2 = "d e f")), phrase("e f"), concatenator = "+")
+    toks2 <- tokens(c(text2 = "d e f"), concatenator = "+")
     toks3 <- tokens(c(text3 = "d e f"), what = "sentence")
     expect_warning(
         toks4 <- tokens(c(text4 = "d e f"), ngram = 1:2, skip = 2),
@@ -625,6 +625,17 @@ test_that("tokens.tokens warns about unused arguments", {
     )
 })
 
+test_that("tokens.tokens print complete message", {
+    expect_message(
+        tokens(tokens("one two three"), verbose = TRUE),
+        "Creating a tokens from a tokens object..."
+    )
+    expect_message(
+        tokens(tokens("one two three"), verbose = TRUE),
+        "Finished constructing tokens from 1 document"
+    )
+})
+
 test_that("tokens.tokens(x, split_hyphens = TRUE, verbose = TRUE) works as expected  (#1683)", {
     expect_message(
         tokens(tokens("No hyphens here."), split_hyphens = TRUE, verbose = TRUE),
@@ -706,7 +717,7 @@ test_that("tokens.tokens(x, remove_symbols = TRUE, verbose = TRUE) works as expe
 })
 
 test_that("tokens.tokens(x, remove_separators = TRUE, verbose = TRUE) works as expected (#1683)", {
-    skip("the verbose message has been changed")
+    
     expect_message(
         tokens(tokens("Removing separators", remove_separators = FALSE, what = "word1"),
                remove_separators = TRUE, verbose = TRUE),
@@ -866,14 +877,54 @@ test_that("tokens printing works", {
                '[1] "a" "b" "c" "d"'),
         fixed = TRUE
     )
+    expect_output(
+        print(tokens("a b c d"), quote = FALSE),
+        paste0('Tokens consisting of 1 document.\n',
+               'text1 :\n',
+               '[1] a b c d'),
+        fixed = TRUE
+    )
 })
 
 test_that("tokens.list() works", {
+    
     lis <- list(d1 = c("one", "two-three", "@test"), d2 = c("four", "."))
+    
     expect_identical(as.list(tokens(lis)), lis)
     expect_identical(as.list(tokens(lis, split_hyphens = TRUE)),
                      list(d1 = c("one", "two", "-", "three", "@test"),
                           d2 = c("four", ".")))
+    
+    expect_message(
+        tokens(lis, verbose = TRUE),
+        "Creating a tokens from a list object..."
+    )
+    
+    expect_message(
+        tokens(lis, verbose = TRUE, xptr = TRUE),
+        "Creating a tokens_xptr from a list object..."
+    )
+})
+
+test_that("tokens.tokens_xptr() works", {
+    
+    lis <- list(d1 = c("one", "two-three", "@test"), d2 = c("four", "."))
+    xtoks <- tokens(lis, xptr = TRUE)
+    
+    expect_identical(as.list(tokens(xtoks)), lis)
+    expect_identical(as.list(tokens(xtoks, split_hyphens = TRUE)),
+                     list(d1 = c("one", "two", "-", "three", "@test"),
+                          d2 = c("four", ".")))
+    
+    expect_message(
+        tokens(xtoks, verbose = TRUE),
+        "Creating a tokens_xptr from a tokens_xptr object..."
+    )
+    
+    expect_message(
+        tokens(xtoks, verbose = TRUE),
+        "Creating a tokens_xptr from a tokens_xptr object..."
+    )
 })
 
 test_that("tokens.character(x, padding = TRUE) works", {
@@ -1147,24 +1198,24 @@ test_that("cancatenator is working", {
     # compound
     dict <- dictionary(list(Countries = c("* States", "Federal Republic of *"),
                             Oceans = c("* Ocean")), tolower = FALSE)
-    toks <- tokens_compound(toks, dict, concatenator = "_")
+    toks <- tokens_compound(toks, dict)
     expect_equal(
         concatenator(toks),
-        "_"
+        " "
     )
     expect_equal(
         concat(toks),
-        "_"
+        " "
     )
     expect_equal(
-        ntoken(tokens_select(toks, c("United_States"))),
+        ntoken(tokens_select(toks, c("United States"))),
         c(d1 = 1, d2 = 1)
     )
     
     # update
     toks <- tokens(toks, concatenator = "+")
     expect_error(
-        tokens(toks, concatenator = c(" ", " ")),
+        tokens(toks, concatenator = c("+", "+")),
         "The length of concatenator must be 1"
     )
     expect_equal(

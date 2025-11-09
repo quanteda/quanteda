@@ -5,7 +5,7 @@ using namespace quanteda;
 
 /* 
  * Function to combine tokens objects
- * @used tokens_segment()
+ * @used c()
  * @creator Kohei Watanabe
  */
 
@@ -14,43 +14,44 @@ TokensPtr cpp_tokens_combine(TokensPtr xptr1,
                              TokensPtr xptr2,
                              const int thread = -1) {
     
-    Types types;
-    types.reserve(xptr1->types.size() + xptr2->types.size());
-    types.insert(types.end(), xptr1->types.begin(), xptr1->types.end());
-    types.insert(types.end(), xptr2->types.begin(), xptr2->types.end());
-    
+    //dev::Timer timer;
+
     std::size_t V = xptr1->types.size();
+    std::size_t W = xptr2->types.size();
+    std::size_t G = xptr1->texts.size(); 
     std::size_t H = xptr2->texts.size(); 
-    Texts texts = xptr2->texts;
     
+    xptr1->texts.resize(G + H);
+    xptr1->types.reserve(V + W);
+    xptr1->types.insert(xptr1->types.end(), xptr2->types.begin(), xptr2->types.end());
+
+    //dev::start_timer("Combine", timer);
 #if QUANTEDA_USE_TBB
     tbb::task_arena arena(thread);
     arena.execute([&]{
         tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
             for (int h = r.begin(); h < r.end(); ++h) {
-                for (std::size_t i = 0; i < texts[h].size(); i++) {
-                    if (texts[h][i] != 0)
-                        texts[h][i] += V;
+                Text text = xptr2->texts[h];
+                for (std::size_t i = 0; i < text.size(); i++) {
+                    if (text[i] != 0)
+                        text[i] += V;
                 }
+                xptr1->texts[G + h] = text;
             }
         });
     });
 #else
     for (std::size_t h = 0; h < H; h++) {
-        for (std::size_t i = 0; i < texts[h].size(); i++) {
-            if (texts[h][i] != 0)
-                texts[h][i] += V;
+        Text text = xptr2->texts[h];
+        for (std::size_t i = 0; i < text.size(); i++) {
+            if (text[i] != 0)
+                text[i] += V;
         }
+        xptr1->texts[G + h] = text;
     }
 #endif
-
-    Texts temp;
-    temp.reserve(xptr1->texts.size() + texts.size());
-    temp.insert(temp.end(), xptr1->texts.begin(), xptr1->texts.end());
-    temp.insert(temp.end(), texts.begin(), texts.end());
-    
-    TokensObj *ptr = new TokensObj(temp, types, false);
-    return TokensPtr(ptr, true);
+    //dev::stop_timer("Combine", timer);
+    return xptr1;
 }
 
 /***R

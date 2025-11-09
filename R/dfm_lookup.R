@@ -31,10 +31,10 @@
 #' @seealso dfm_replace
 #' @examples
 #' dict <- dictionary(list(christmas = c("Christmas", "Santa", "holiday"),
-#'                           opposition = c("Opposition", "reject", "notincorpus"),
-#'                           taxglob = "tax*",
-#'                           taxregex = "tax.+$",
-#'                           country = c("United_States", "Sweden")))
+#'                         opposition = c("Opposition", "reject", "notincorpus"),
+#'                         taxglob = "tax*",
+#'                         taxregex = "tax.+$",
+#'                         country = c("United_States", "Sweden")))
 #' dfmat <- dfm(tokens(c("My Christmas was ruined by your opposition tax plan.",
 #'                       "Does the United_States or Sweden have more progressive taxation?")))
 #' dfmat
@@ -103,7 +103,9 @@ dfm_lookup.dfm <- function(x, dictionary, levels = 1:5,
              if (length(dictionary) > 1L) "s" else "", "\n", sep = "")
 
     ids <- object2id(dictionary, type, valuetype, case_insensitive,
-                        field_object(attrs, "concatenator"), levels)
+                     concatenator = field_object(attrs, "concatenator"), 
+                     levels = levels,
+                     match_pattern = "single")
     
     # flag nested patterns
     if (length(ids)) {
@@ -136,18 +138,18 @@ dfm_lookup.dfm <- function(x, dictionary, levels = 1:5,
         } else {
             if (!is.null(nomatch))
                 warning("nomatch only applies if exclusive = TRUE")
-            col_new <- type
+            
+            r <- order(id)
+            id <- id[r]
+            id_key <- id_key[r]
             
             # repeat columns for multiple keys
-            if (any(duplicated(id))) {
-                ids_rep <- as.list(seq_len(nfeat(x)))
-                ids_rep[unique(id)] <- split(id, id)
-                id_rep <- unlist(ids_rep, use.names = FALSE)
-            } else {
-                id_rep <- seq_len(nfeat(x))
-            }
-            col_new <- col_new[id_rep]
-            col_new[id_rep %in% id] <- key[id_key] 
+            id_rep <- seq_along(type)
+            id_rep <- sort(c(id, id_rep[!id_rep %in% id]))
+            
+            col_new <- type[id_rep]
+            # shift index for repeated columns
+            col_new[id + cumsum(duplicated(id))] <- key[id_key]
             x <- x[,id_rep]
             
             set_dfm_featnames(x) <- col_new

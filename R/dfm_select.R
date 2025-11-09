@@ -116,7 +116,9 @@ dfm_select.dfm <-  function(x, pattern = NULL,
                 field_object(attrs, "concatenator")
             )
         }
-        ids_pat <- pattern2id(pattern, feat, valuetype, case_insensitive)
+        ids_pat <- object2id(pattern, feat, valuetype, case_insensitive,
+                             concatenator = field_object(attrs, "concatenator"),
+                             match_pattern = "single")
         id_pat <- unlist_integer(ids_pat, unique = TRUE, use.names = FALSE)
         if ("" %in% feat) id_pat[id_pat == 0] <- 1L
     }
@@ -136,6 +138,8 @@ dfm_select.dfm <-  function(x, pattern = NULL,
         id_out <- which(is_short | is_long)
         id <- setdiff(id, id_out)
     }
+    if (verbose)
+        before <- stats_dfm(x)
     if (padding) {
         n <- rowSums(x)
         x <- x[, id]
@@ -150,14 +154,9 @@ dfm_select.dfm <-  function(x, pattern = NULL,
     } else {
         x <- x[, id]
     }
-
-    if (verbose) {
-        if ("keep" == selection) {
-            message_select("keep", nfeat(x), 0)
-        } else {
-            message_select("remove", length(feat) - nfeat(x), 0)
-        }
-    }
+    if (verbose)
+        message_dfm(ifelse(selection == "keep", "dfm_keep()", "dfm_remove()"), 
+                    before, stats_dfm(x))
     return(x)
 }
 

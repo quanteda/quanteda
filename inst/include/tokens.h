@@ -1,4 +1,5 @@
-#include <RcppArmadillo.h>
+//#include <RcppArmadillo.h>
+#include <Rcpp.h>
 // [[Rcpp::plugins(cpp11)]]
 using namespace Rcpp;
 
@@ -10,6 +11,9 @@ typedef std::vector<unsigned int> Ids;
 
 class TokensObj {
     public:
+        TokensObj(bool recompiled_ = false, bool padded_ = false): 
+                  recompiled(recompiled_), padded(padded_) {}
+        
         TokensObj(Texts texts_, Types types_, 
                   bool recompiled_ = false, bool padded_ = false): 
                   texts(texts_), types(types_), 
@@ -46,13 +50,18 @@ inline void TokensObj::recompile() {
     std::size_t G = types.size();
     std::size_t H = texts.size();
     unsigned int id_limit = G;
+    unsigned int id_unused = id_limit + 1;
     
     //Rcout << "Re-index tokens\n";
     
     // Re-index tokens -------------------
     
     unsigned int id = 1;
-    std::vector<unsigned int> ids(G, 0);
+    std::vector<unsigned int> ids(G, id_unused);
+    for (std::size_t g = 0; g < G; g++) {
+        if (types[g] == "") 
+            ids[g] = 0; // padding
+    }
     int count_pad = 0;
     for (std::size_t h = 0; h < H; h++) {
         std::size_t I = texts[h].size();
@@ -62,13 +71,15 @@ inline void TokensObj::recompile() {
                 throw std::range_error("Invalid tokens object");
             if (texts[h][i] == 0) {
                 text_new[i] = 0;
-                count_pad++;
             } else {
-                if (ids[texts[h][i] - 1] == 0) {
+                if (ids[texts[h][i] - 1] == id_unused) {
                     ids[texts[h][i] - 1] = id;
                     id++;
                 }
                 text_new[i] = ids[texts[h][i] - 1];
+            }
+            if (text_new[i] == 0) {
+                count_pad++;
             }
         }
         texts[h] = text_new;
@@ -77,7 +88,7 @@ inline void TokensObj::recompile() {
     // sort types
     Types types_new(G);
     for (std::size_t g = 0; g < G; g++) {
-        if (ids[g] != 0) // zero if the types are not used
+        if (ids[g] != 0 && ids[g] != id_unused)
             types_new[ids[g] - 1] = types[g];
     }
     types = types_new;

@@ -10,6 +10,7 @@ dfm_subset(
   min_ntoken = NULL,
   max_ntoken = NULL,
   drop_docid = TRUE,
+  verbose = quanteda_options("verbose"),
   ...
 )
 }
@@ -23,6 +24,9 @@ values are taken as false.}
 
 \item{drop_docid}{if \code{TRUE}, \code{docid} for documents are removed as the result
 of subsetting.}
+
+\item{verbose}{if \code{TRUE} print the number of tokens and documents before and
+after the function is applied. The number of tokens does not include paddings.}
 
 \item{...}{not used}
 }
@@ -39,12 +43,6 @@ using non-standard evaluation to evaluate conditions based on the
 }
 \details{
 To select or subset \emph{features}, see \code{\link[=dfm_select]{dfm_select()}} instead.
-
-When \code{select} is a dfm, then the returned dfm will be equal in
-document dimension and order to the dfm used for selection.  This is the
-document-level version of using \code{\link[=dfm_select]{dfm_select()}} where
-\code{pattern} is a dfm: that function matches features, while
-\code{dfm_subset} will match documents.
 }
 \examples{
 corp <- corpus(c(d1 = "a b c d", d2 = "a a b e",
@@ -55,8 +53,5 @@ dfmat <- dfm(tokens(corp))
 dfm_subset(dfmat, grp > 1)
 # selecting on a supplied vector
 dfm_subset(dfmat, c(TRUE, FALSE, TRUE, FALSE))
-}
-\seealso{
-\code{\link[=subset.data.frame]{subset.data.frame()}}
 }
 \keyword{dfm}

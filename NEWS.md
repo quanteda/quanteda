@@ -1,3 +1,74 @@
+# quanteda 4.3.x
+
+## Changes and additions
+
+* Added `tokens_annotate()` to insert tags to a tokens object using a dictionary.
+
+# quanteda 4.3.1
+
+## Changes and additions
+
+* Improved the speed of `tokens_trim()` when tokens are very large.
+
+## Bug fixes
+
+* Fixed the Trump 2025 speech in `data_corpus_inaugural`, which was mistakenly a duplicate of Biden 2021.
+
+
+# quanteda 4.3.0
+
+## Changes and additions
+
+* Added `corpus_chunk()` for chunking texts into smaller documents.
+
+* Significantly reduce the memory usage for the `c` operation on large `tokens` and `tokens_xptr` objects.
+
+* Further improvements to the verbose messages for corpus, tokens, dfm and fcm objects.
+
+* `tokens_ngrams()` now includes a new argument `apply_if`, functioning similar to this argument
+in `tokens_compound()` and `tokens_lookup()` (#2390).
+
+* Replaced `remove_unigram` with `match_pattern` in `object2id()` to control the matching of single-word patterns or multi-word patterns.
+
+* `data_corpus_inaugural` now updated for Trump 2025.
+
+
+# quanteda 4.2.0
+
+## Changes and additions
+
+* Made the `c` operation on `tokens` and `tokens_xptr` objects significantly faster.
+
+* New, and more consistent verbose messages for tokens and dfm objects.
+
+* Preserve the default `concatenator` of tokens objects in `tokens_compound()` (#2432).
+
+* Make the `c` operation on `tokens` and `tokens_xptr` objects significantly faster. 
+
+## Bug fixes and stability enhancements
+
+* Fix a bug in `dfm_lookup()` that leads to wrong feature names when `exclusive = TRUE` (#2424).
+
+
+# quanteda 4.1
+
+## Bug fixes and stability enhancements
+
+* Improved the handling of invisible control characters causing some tokens operations to crash (#2407).
+
+* Addressed #2358 and #2359 more thoroughly, at the C++ level, to convert list(integer(), integer(),...) to std::vector<std::vector<unsigned int>. This function removes negative values and NA_INTEGER.
+
+* Removed **RcppArmadillo** as a dependency in an effort to avoid UBSAN warnings in #2417.
+
+## Changes and additions
+
+* Added `tokens_trim()` function similar to `dfm_trim()` (#2419).
+
+* Added `keep_unigrams` argument to `tokens_compound()`, to keep in the returned object the unigrams that are to be compounded (#2399).
+
+* `print.tokens()` now allows passing arguments to base `print()` via `...`, providing for instance the ability to print tokens without surround quotes using `quote = FALSE` (#2381).
+
+
 # quanteda 4.0.2
 
 ## Bug fixes and stability enhancements
@@ -791,7 +862,7 @@ The full listing of deprecations is:
 * Argument passing through `dfm()` to `tokens()` is now robust, and preserves variables defined in the calling environment (#721).
 * Fixed issues related to dictionaries failing when applying `str()`, `names()`, or other indexing operations, which started happening on Linux and Windows platforms following the CRAN move to 3.4.0. (#744)
 * Dictionary import using the LIWC format is more robust to improperly formatted input files (#685).
-* Weights applied using `dfm_weight()` now print friendlier error messages when the weight vector contains features not found in the dfm.  See [this Stack Overflow question](https://stackoverflow.com/questions/44132313/can-the-anew-dictionary-be-used-for-sentiment-analysis-in-quanteda/) for the use case that sparked this improvement.
+* Weights applied using `dfm_weight()` now print friendlier error messages when the weight vector contains features not found in the dfm.  See [this Stack Overflow question](https://stackoverflow.com/q/44132313) for the use case that sparked this improvement.
 
 # quanteda 0.9.9-24
 

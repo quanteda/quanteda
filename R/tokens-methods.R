@@ -41,7 +41,7 @@ is.tokens <- function(x) "tokens" %in% class(x)
 #' @return `unlist` returns a simple vector of characters from a
 #'   [tokens] object.
 #' @param recursive a required argument for [unlist] but inapplicable to
-#'   [tokens] objects
+#'   [tokens] objects.
 #' @method unlist tokens
 #' @keywords internal
 #' @export
@@ -52,8 +52,7 @@ unlist.tokens <- function(x, recursive = FALSE, use.names = TRUE) {
 #' @rdname print-methods
 #' @method print tokens
 #' @param max_ntoken max number of tokens to print; default is from the
-#'   `print_tokens_max_ntoken` setting of [quanteda_options()]
-#' @param ... not used
+#'   `print_tokens_max_ntoken` setting of [quanteda_options()].
 #' @export
 print.tokens <- function(x, max_ndoc = quanteda_options("print_tokens_max_ndoc"),
                          max_ntoken = quanteda_options("print_tokens_max_ntoken"),
@@ -63,7 +62,6 @@ print.tokens <- function(x, max_ndoc = quanteda_options("print_tokens_max_ndoc")
     max_ndoc <- check_integer(max_ndoc, min = -1)
     max_ntoken <- check_integer(max_ntoken, min = -1)
     show_summary <- check_logical(show_summary)
-    check_dots(...)
     
     docvars <- docvars(x)
     ndoc <- ndoc(x)
@@ -71,13 +69,13 @@ print.tokens <- function(x, max_ndoc = quanteda_options("print_tokens_max_ndoc")
         max_ndoc <- ndoc(x)
 
     if (show_summary) {
-        cat("Tokens consisting of ", format(ndoc, big.mark = ","), " document",
-            if (ndoc != 1L) "s" else "", sep = "")
+        cat(msg("Tokens consisting of %s %s",
+                ndoc, if (ndoc == 1) "document" else "documents"))
         if (ncol(docvars))
-            cat(" and ", format(ncol(docvars), big.mark = ","), " docvar",
-                if (ncol(docvars) != 1L) "s" else "", sep = "")
+            cat(msg(" and %s %s",
+                    ncol(docvars), if (ncol(docvars) == 1) "docvar" else "docvars"))
         if (is.tokens_xptr(x))
-            cat(" (pointer to ", address(x), ")", sep = "")
+            cat(msg(" (pointer to %s)", address(x)))
         cat(".\n")
     }
 
@@ -91,15 +89,16 @@ print.tokens <- function(x, max_ndoc = quanteda_options("print_tokens_max_ndoc")
         x <- lapply(unclass(x), function(y) types[head(y, max_ntoken) + 1]) # shift index to show padding
         for (i in seq_along(label)) {
             cat(label[i], "\n", sep = "")
-            print(x[[i]])
+            print(x[[i]], ...)
             if (len[i] > max_ntoken)
-                cat("[ ... and ",  format(len[i] - max_ntoken, big.mark = ","), " more ]\n", sep = "")
+                cat(msg("[ ... and %s more ]\n", 
+                        len[i] - max_ntoken))
             cat("\n", sep = "")
         }
         ndoc_rem <- ndoc - max_ndoc
         if (ndoc_rem > 0)
-            cat("[ reached max_ndoc ... ", format(ndoc_rem, big.mark = ","), " more document",
-                if (ndoc_rem > 1) "s", " ]\n", sep = "")
+            cat(msg("[ reached max_ndoc ... %s more %s ]",
+                    ndoc_rem, if (ndoc_rem == 1) "document" else "documents"))
     }
 }
 
@@ -241,23 +240,17 @@ c.tokens <- function(...) {
 
 combine_tokens <- function(...) {
     x <- list(...)
-    if (length(x) == 1) 
-        return(x[[1]])
-    result <- cpp_tokens_combine(x[[1]], x[[2]], get_threads())
-    if (length(x) == 2) return(result)
-    for (i in seq(3, length(x)))
-        result <- combine_tokens(result, x[[i]])
+    result <- cpp_xptr()
+    for (i in seq_along(x))
+        result <- cpp_tokens_combine(result, x[[i]], get_threads())
     return(result)
 }
 
 combine_docvars <- function(...) {
     x <- list(...)
-    if (length(x) == 1) 
-        return(x[[1]])
-    result <- rbind_fill(x[[1]], x[[2]])
-    if (length(x) == 2) return(result)
-    for (i in seq(3, length(x)))
-        result <- combine_docvars(result, x[[i]])
+    result <- data.frame()
+    for (i in seq_along(x))
+        result <- rbind_fill(result, x[[i]])
     return(result)
 }
 

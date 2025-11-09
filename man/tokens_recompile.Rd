@@ -11,10 +11,6 @@ tokens_recompile(x, method = c("C++", "R"))
 
 \item{method}{\code{"C++"} for C++ implementation or \code{"R"} for an older
 R-based method}
-
-\item{gap}{if \code{TRUE}, remove gaps between token IDs}
-
-\item{dup}{if \code{TRUE}, merge duplicated token types into the same ID}
 }
 \description{
 This function recompiles a serialized tokens object when the vocabulary has

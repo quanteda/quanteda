@@ -62,12 +62,12 @@
 #' @details
 #'  Additional features of \pkg{quanteda} include:
 #' * powerful, flexible tools for working with [dictionaries][dictionary];
-#' * the ability to identify [keywords][quanteda.textstats::textstat_keyness]
+#' * the ability to identify [keywords][kwic]
 #'   associated with documents or groups of documents;
-#' * the ability to explore texts using [key-words-in-context][kwic];
-#' * quick computation of word or document
-#'   [similarities][quanteda.textstats::textstat_simil], for clustering or to
-#'   compute distances for other purposes;
+#' * the ability to explore texts using [keywords-in-context][kwic];
+#' * quick computation of word or document statistics, using the 
+#'   \pkg{quanteda.textstats} package, for clustering or to compute distances
+#'   for other purposes;
 #' * a comprehensive suite of [descriptive statistics on text][summary.corpus]
 #'   such as the number of sentences, words, characters, or syllables per
 #'   document; and
@@ -207,6 +207,8 @@ NULL
 #'   `print_*_max_ndoc` setting of [quanteda_options()]
 #' @param show_summary print a brief summary indicating the number of documents
 #'   and other characteristics of the object, such as docvars or sparsity.
+#' @param ... passed to [base::print()] for [tokens]; unused for all other
+#'   objects.
 #' @seealso [quanteda_options()]
 #' @examples
 #' corp <- corpus(data_char_ukimmig2010)

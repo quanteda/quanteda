@@ -96,7 +96,7 @@ ntype.tokens_xptr <- function(x, remove_padding = FALSE, ...) {
     remove_padding <- check_logical(remove_padding)
     if (length(list(...)))
         x <- tokens(as.tokens_xptr(x), ...) 
-    structure(cpp_ntype(x, !remove_padding), names = docnames(x))
+    structure(cpp_ntype(x, remove_padding), names = docnames(x))
 }
 
 #' @export
@@ -104,7 +104,7 @@ ntoken.tokens_xptr <- function(x, remove_padding = FALSE, ...) {
     remove_padding <- check_logical(remove_padding)
     if (length(list(...)))
         x <- tokens(as.tokens_xptr(x), ...) 
-    structure(cpp_ntoken(x, !remove_padding), names = docnames(x))
+    structure(cpp_ntoken(x, remove_padding), names = docnames(x))
 }
 
 # #' @export
@@ -126,7 +126,7 @@ ntoken.tokens_xptr <- function(x, remove_padding = FALSE, ...) {
 #' @export
 as.tokens.tokens_xptr <- function(x, ...) {
     attrs <- attributes(x)
-    result <- cpp_as_list(x)
+    result <- cpp_as_tokens(x)
     build_tokens(result, 
                  types = attr(result, "types"), 
                  padding = TRUE, 
@@ -216,7 +216,7 @@ tokens_subset.tokens_xptr <- function(x, subset, min_ntoken = NULL, max_ntoken =
 tokens_tolower.tokens_xptr <- function(x, keep_acronyms = FALSE) {
     keep_acronyms <- check_logical(keep_acronyms)
     # NOTE: consider removing keep_acronyms
-    set_types(x) <- lowercase_types(get_types(x), keep_acronyms) 
+    set_types(x) <- lowercase_types(get_types(x), keep_acronyms)
     return(x)
 }
 

@@ -1,5 +1,5 @@
 Package: quanteda
-Version: 4.0.2
+Version: 4.3.1
 Title: Quantitative Analysis of Textual Data
 Description: A fast, flexible, and comprehensive framework for 
     quantitative text analysis in R.  Provides functionality for corpus management,
@@ -23,7 +23,7 @@ Authors@R: c(
     )
 License: GPL-3
 Depends:
-    R (>= 3.5.0),
+    R (>= 4.1.0),
     methods
 Imports:
     fastmatch,
@@ -37,7 +37,7 @@ Imports:
     stringi,
     xml2,
     yaml
-LinkingTo: Rcpp, RcppArmadillo (>= 0.7.600.1.0)
+LinkingTo: Rcpp
 NeedsCompilation: yes
 Suggests:
     rmarkdown,
@@ -66,7 +66,7 @@ BugReports: https://github.com/quanteda/quanteda/issues
 LazyData: TRUE
 VignetteBuilder: knitr
 Language: en-GB
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
 Roxygen: list(markdown = TRUE)
 Collate: 
     'RcppExports.R'
@@ -81,6 +81,7 @@ Collate:
     'corpus-addsummary-metadata.R'
     'corpus-methods.R'
     'corpus.R'
+    'corpus_chunk.R'
     'corpus_group.R'
     'corpus_reshape.R'
     'corpus_sample.R'
@@ -133,6 +134,7 @@ Collate:
     'textstat.R'
     'tokens-methods.R'
     'tokens.R'
+    'tokens_annotate.R'
     'tokens_chunk.R'
     'tokens_compound.R'
     'tokens_group.R'
@@ -145,6 +147,7 @@ Collate:
     'tokens_select.R'
     'tokens_split.R'
     'tokens_subset.R'
+    'tokens_trim.R'
     'tokens_xptr.R'
     'utils.R'
     'validator.R'

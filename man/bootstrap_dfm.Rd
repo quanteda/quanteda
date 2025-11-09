@@ -31,12 +31,13 @@ sentences is done strictly within document, so that every resampled
 document will contain at least some of its original tokens.
 }
 \examples{
-# bootstrapping from the original text
 set.seed(10)
 txt <- c(textone = "This is a sentence.  Another sentence.  Yet another.",
          texttwo = "Premiere phrase.  Deuxieme phrase.")
-dfmat <- dfm(tokens(txt))
-bootstrap_dfm(dfmat, n = 3, verbose = TRUE)
+dfmat <- corpus_reshape(corpus(txt), to = "sentences") |>
+    tokens() |>
+    dfm()
+bootstrap_dfm(dfmat, n = 3)
 
 }
 \author{

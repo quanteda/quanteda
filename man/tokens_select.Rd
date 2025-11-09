@@ -75,8 +75,8 @@ repeated to make them equal in length.}
 \item{apply_if}{logical vector of length \code{ndoc(x)}; documents are modified
 only when corresponding values are \code{TRUE}, others are left unchanged.}
 
-\item{verbose}{if \code{TRUE} print messages about how many tokens were selected
-or removed}
+\item{verbose}{if \code{TRUE} print the number of tokens and documents before and
+after the function is applied. The number of tokens does not include paddings.}
 
 \item{...}{additional arguments passed by \code{tokens_remove} and
 \code{tokens_keep} to \code{tokens_select}. Cannot include

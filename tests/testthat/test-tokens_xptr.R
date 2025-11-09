@@ -285,6 +285,37 @@ test_that("cpp_serialize is working", {
     )
 })
 
+test_that("cpp_get_freq is working", {
+    
+    txt <- c("a b c d !", "a ? b c a b . c")
+    
+    xtoks <- tokens(txt, remove_punct = TRUE, padding = TRUE, xptr = TRUE)
+    expect_equal(
+        quanteda:::cpp_get_freq(xtoks),
+        structure(c(3L, 3L, 3L, 3L, 1L),
+                  names = c("", "a", "b", "c", "d"))
+    )
+    
+    expect_equal(
+        quanteda:::cpp_get_freq(xtoks, no_padding = TRUE),
+        structure(c(3L, 3L, 3L, 1L),
+                  names = c("a", "b", "c", "d"))
+    )
+    
+    expect_equal(
+        quanteda:::cpp_get_freq(xtoks, boolean = TRUE),
+        structure(c(2L, 2L, 2L, 2L, 1L),
+                  names = c("", "a", "b", "c", "d"))
+    )
+    
+    expect_equal(
+        quanteda:::cpp_get_freq(xtoks, boolean = TRUE, no_padding = TRUE),
+        structure(c(2L, 2L, 2L, 1L),
+                  names = c("a", "b", "c", "d"))
+    )
+
+})
+
 test_that("returns shallow or deep copy x", {
   
   # shallow copy
@@ -364,8 +395,9 @@ test_that("lengths works on tokens xptr objects", {
 test_that("test low-level validation", {
     
     xtoks <- tokens("a b c", xptr = TRUE)
-    dict <- list(c(1, 2))
     
+    # integer patterns
+    dict <- list(c(1L, 2L))
     expect_error(
         quanteda:::cpp_tokens_select(as.tokens_xptr(xtoks), 
                                      dict, 2, TRUE, 0, 0, c(1, 1), 3, FALSE),
@@ -383,7 +415,7 @@ test_that("test low-level validation", {
     )
     expect_error(
         quanteda:::cpp_tokens_compound(as.tokens_xptr(xtoks), 
-                                     dict, "-", TRUE, 0, 0, c(FALSE, TRUE)),
+                                      dict, "-", TRUE, FALSE, 0, 0, c(FALSE, TRUE)),
         "Invalid bypass"
     )
     expect_error(
@@ -432,6 +464,27 @@ test_that("test low-level validation", {
         "Invalid index"
     )
     
+    # not-integer patterns
+    expect_error(
+        quanteda:::cpp_tokens_select(as.tokens_xptr(xtoks), 
+                                     list(c(1, 2)), 
+                                     2, TRUE, 0, 0, 1, 3, FALSE),
+        "Invalid patterns"
+    )
+    
+    # negative patterns
+    expect_silent(
+        quanteda:::cpp_tokens_select(as.tokens_xptr(xtoks), 
+                                     list(c(1L, -1L)), 
+                                     2, TRUE, 0, 0, 1, 3, FALSE)
+    )
+    
+    # NA in patterns
+    expect_silent(
+        quanteda:::cpp_tokens_select(as.tokens_xptr(xtoks), 
+                                     list(c(1L, NA_integer_)), 
+                                     2, TRUE, 0, 0, 1, 3, FALSE)
+    )
+    
 })
-
 

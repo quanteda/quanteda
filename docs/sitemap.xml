@@ -1,963 +1,319 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://quanteda.io/404.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/CONDUCT.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/articles/design.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/articles/pkgdown/benchmarks_xptr.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/articles/pkgdown/design.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/articles/pkgdown/examples/chinese.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/articles/pkgdown/examples/japanese_speech_ja.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/articles/pkgdown/examples/japanese_twitter_ja.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/articles/pkgdown/examples/lsa.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/articles/pkgdown/examples/phrase.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/articles/pkgdown/examples/plotting.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/articles/pkgdown/examples/twitter.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/articles/pkgdown/quickstart_cn.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/articles/pkgdown/quickstart_es.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/articles/pkgdown/quickstart_further_examples.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/articles/pkgdown/quickstart_hi.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/articles/pkgdown/quickstart_ja.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/articles/pkgdown/replication/digital-humanities.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/articles/pkgdown/replication/qss.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/articles/pkgdown/replication/text2vec.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/articles/pkgdown/tokens_xptr.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/articles/quickstart.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/index.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/news/index.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/news/news-0.5.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/news/news-0.6.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/news/news-0.7.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/news/news-0.8.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/news/news-0.9.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/news/news-0.99.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/news/news-1.0.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/news/news-1.1.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/news/news-1.2.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/news/news-1.3.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/news/news-1.4.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/news/news-1.5.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/news/news-2.0.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/news/news-2.1.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/news/news-3.0.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/news/news-3.1.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/news/news-3.2.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/news/news-3.3.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/news/news-4.0.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/news/news-dev.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/news/news-unreleased.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/View.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/affinity.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/apply_if.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/as.character.corpus.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/as.coefficients_textmodel.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/as.corpus.corpuszip.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/as.corpus.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/as.data.frame.dfm.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/as.dfm.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/as.dictionary.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/as.dist.dist.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/as.fcm.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/as.igraph.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/as.list.dist.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/as.list.dist_selection.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/as.matrix.dfm.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/as.matrix.dist_selection.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/as.matrix.simil.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/as.matrix.textstat_simil_sparse.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/as.network.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/as.statistics_textmodel.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/as.summary.textmodel.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/as.tokens.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/as.tokens_xptr.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/as.yaml.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/attributes-set.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/bootstrap_dfm.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/cbind.dfm.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/char_select.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/char_tolower.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/check_class.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/check_dots.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/check_font.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/check_integer.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/coef.textmodel.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/coef.textmodel_ca.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/collocationsdev.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/compute_lexdiv_stats.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/compute_mattr.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/compute_msttr.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/concat.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/convert-wrappers.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/convert.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/copy.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/corpus-class.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/corpus.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/corpus_group.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/corpus_reshape.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/corpus_sample.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/corpus_segment.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/corpus_subset.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/corpus_trim.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/corpus_trimsentences.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/create.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/data-deprecated.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/data-internal.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/data-relocated.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/data_char_sampletext.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/data_char_ukimmig2010.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/data_corpus_dailnoconf1991.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/data_corpus_inaugural.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/data_corpus_irishbudget2010.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/data_dfm_lbgexample.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/data_dictionary_LSD2015.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/data_download.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/dfm-class.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/dfm-internal.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/dfm.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/dfm2lsa.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/dfm_compress.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/dfm_group.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/dfm_lookup.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/dfm_match.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/dfm_replace.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/dfm_sample.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/dfm_select.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/dfm_sort.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/dfm_split_hyphenated_features.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/dfm_subset.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/dfm_tfidf.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/dfm_tolower.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/dfm_trim.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/dfm_weight.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/diag2na.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/dictionary-class.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/dictionary.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/dictionary_edit.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/docfreq.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/docnames.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/docvars-internal.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/docvars.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/escape_regex.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/expand.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/fcm-class.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/fcm.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/fcm_sort.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/featfreq.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/featnames.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/field_system.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/flatten_dictionary.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/flatten_id.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/flatten_list.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/format_sparsity.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/friendly_class_undefined_message.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/generate_groups.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/get_docvars.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/get_object_version.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/groups.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/head.corpus.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/head.dfm.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/head.textstat_proxy.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/index-topic.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/influence.predict.textmodel_affinity.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/influence.textmodel_affinity_predicted.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/info_tbb.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/is.collocations.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/is.dfm.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/is_glob.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/is_indexed.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/is_regex.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/keyness.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/kwic.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/lexdiv.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/list2dictionary.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/lowercase_dictionary_values.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/make_docvars.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/make_meta.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/matrix2dfm.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/matrix2fcm.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/merge_dictionary_values.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/message_error.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/meta.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/meta_system.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/metacorpus.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/metadoc.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/msg.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/names-quanteda.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/ndoc.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/nest_dictionary.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/nfeature.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/nscrabble.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/nsentence.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/nsyllable.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/ntoken.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/object-builders.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/object2id.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/pattern.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/pattern2id.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/pattern2list.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/phrase.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/pipe.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/predict.textmodel.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/predict.textmodel_affinity.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/predict.textmodel_affinity_fitted.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/predict.textmodel_nb.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/predict.textmodel_wordfish.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/predict.textmodel_wordscores.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/print-method.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/print-methods.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/print-quanteda.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/print.coefficients_textmodel.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/print.dfm.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/print.dist_selection.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/print.phrases.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/print.statistics_textmodel.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/print.summary.textmodel.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/print.textmodel_wordfish.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/quanteda-package.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/quanteda_options.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/read_dict_functions.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/read_dict_lexicoder.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/read_dict_liwc.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/read_dict_wordstat.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/read_dict_yoshikoder.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/readtext-methods.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/reexports.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/regex2id.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/remove_empty_keys.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/replace_dictionary_values.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/resample.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/reshape_docvars.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/sample_bygroup.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/scrabble.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/search_glob.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/search_index.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/serialize_tokens.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/set_dfm_dimnames.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/set_dfm_slots-set.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/set_dfm_slots.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/set_fcm_slots-set.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/set_fcm_slots.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/settings.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/slots-set.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/spacyr-methods.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/sparsity.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/split_values.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/stopwords.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/summarize_texts.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/summary.character.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/summary.corpus.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/summary.textmodel_nb.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/summary.textmodel_wordfish.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/summary_character.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/summary_metadata.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/textmodel-internal.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/textmodel.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/textmodel_affinity-internal.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/textmodel_affinity.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/textmodel_ca.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/textmodel_fitted-class.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/textmodel_lsa-postestimation.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/textmodel_lsa.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/textmodel_nb.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/textmodel_wordfish.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/textmodel_wordscores.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/textmodel_wordshoal.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/textmodels.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/textplot_influence.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/textplot_keyness.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/textplot_network.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/textplot_scale1d.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/textplot_wordcloud.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/textplot_xray.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/textplots.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/texts.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/textstat_collocations.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/textstat_collocationsdev.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/textstat_entropy.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/textstat_frequency.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/textstat_keyness.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/textstat_lexdiv.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/textstat_proxy-class.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/textstat_proxy.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/textstat_readability.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/textstat_select.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/textstat_simil.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/textstat_simil_old.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/textstat_summary.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/textstats.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/tf.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/tfidf.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/tokenize_custom.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/tokenize_internal.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/tokens-class.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/tokens.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/tokens_chunk.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/tokens_compound.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/tokens_group.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/tokens_lookup.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/tokens_ngrams.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/tokens_recompile.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/tokens_replace.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/tokens_restore.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/tokens_sample.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/tokens_segment.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/tokens_select.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/tokens_serialize.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/tokens_split.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/tokens_subset.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/tokens_tolower.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/tokens_tortl.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/tokens_wordstem.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/tokens_xptr.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/topfeatures.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/types.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/unlist_character.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/unlist_integer.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/unused_dots.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/valuetype.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/wordcloud.html</loc>
-  </url>
-  <url>
-    <loc>https://quanteda.io/reference/wordcloud_comparison.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://quanteda.io/404.html</loc></url>
+<url><loc>https://quanteda.io/CONDUCT.html</loc></url>
+<url><loc>https://quanteda.io/LICENSE-text.html</loc></url>
+<url><loc>https://quanteda.io/articles/design.html</loc></url>
+<url><loc>https://quanteda.io/articles/index.html</loc></url>
+<url><loc>https://quanteda.io/articles/pkgdown/benchmarks_xptr.html</loc></url>
+<url><loc>https://quanteda.io/articles/pkgdown/design.html</loc></url>
+<url><loc>https://quanteda.io/articles/pkgdown/examples/chinese.html</loc></url>
+<url><loc>https://quanteda.io/articles/pkgdown/examples/japanese_speech_ja.html</loc></url>
+<url><loc>https://quanteda.io/articles/pkgdown/examples/japanese_twitter_ja.html</loc></url>
+<url><loc>https://quanteda.io/articles/pkgdown/examples/lsa.html</loc></url>
+<url><loc>https://quanteda.io/articles/pkgdown/examples/phrase.html</loc></url>
+<url><loc>https://quanteda.io/articles/pkgdown/examples/plotting.html</loc></url>
+<url><loc>https://quanteda.io/articles/pkgdown/examples/twitter.html</loc></url>
+<url><loc>https://quanteda.io/articles/pkgdown/parallelisation.html</loc></url>
+<url><loc>https://quanteda.io/articles/pkgdown/quickstart_cn.html</loc></url>
+<url><loc>https://quanteda.io/articles/pkgdown/quickstart_es.html</loc></url>
+<url><loc>https://quanteda.io/articles/pkgdown/quickstart_further_examples.html</loc></url>
+<url><loc>https://quanteda.io/articles/pkgdown/quickstart_hi.html</loc></url>
+<url><loc>https://quanteda.io/articles/pkgdown/quickstart_ja.html</loc></url>
+<url><loc>https://quanteda.io/articles/pkgdown/replication/digital-humanities.html</loc></url>
+<url><loc>https://quanteda.io/articles/pkgdown/replication/qss.html</loc></url>
+<url><loc>https://quanteda.io/articles/pkgdown/replication/text2vec.html</loc></url>
+<url><loc>https://quanteda.io/articles/pkgdown/tokens_xptr.html</loc></url>
+<url><loc>https://quanteda.io/articles/quickstart.html</loc></url>
+<url><loc>https://quanteda.io/authors.html</loc></url>
+<url><loc>https://quanteda.io/index.html</loc></url>
+<url><loc>https://quanteda.io/news/index.html</loc></url>
+<url><loc>https://quanteda.io/news/news-0.5.html</loc></url>
+<url><loc>https://quanteda.io/news/news-0.6.html</loc></url>
+<url><loc>https://quanteda.io/news/news-0.7.html</loc></url>
+<url><loc>https://quanteda.io/news/news-0.8.html</loc></url>
+<url><loc>https://quanteda.io/news/news-0.9.html</loc></url>
+<url><loc>https://quanteda.io/news/news-0.99.html</loc></url>
+<url><loc>https://quanteda.io/news/news-1.0.html</loc></url>
+<url><loc>https://quanteda.io/news/news-1.1.html</loc></url>
+<url><loc>https://quanteda.io/news/news-1.2.html</loc></url>
+<url><loc>https://quanteda.io/news/news-1.3.html</loc></url>
+<url><loc>https://quanteda.io/news/news-1.4.html</loc></url>
+<url><loc>https://quanteda.io/news/news-1.5.html</loc></url>
+<url><loc>https://quanteda.io/news/news-2.0.html</loc></url>
+<url><loc>https://quanteda.io/news/news-2.1.html</loc></url>
+<url><loc>https://quanteda.io/news/news-3.0.html</loc></url>
+<url><loc>https://quanteda.io/news/news-3.1.html</loc></url>
+<url><loc>https://quanteda.io/news/news-3.2.html</loc></url>
+<url><loc>https://quanteda.io/news/news-3.3.html</loc></url>
+<url><loc>https://quanteda.io/news/news-4.0.html</loc></url>
+<url><loc>https://quanteda.io/news/news-dev.html</loc></url>
+<url><loc>https://quanteda.io/news/news-unreleased.html</loc></url>
+<url><loc>https://quanteda.io/reference/View.html</loc></url>
+<url><loc>https://quanteda.io/reference/affinity.html</loc></url>
+<url><loc>https://quanteda.io/reference/apply_if.html</loc></url>
+<url><loc>https://quanteda.io/reference/as.character.corpus.html</loc></url>
+<url><loc>https://quanteda.io/reference/as.coefficients_textmodel.html</loc></url>
+<url><loc>https://quanteda.io/reference/as.corpus.corpuszip.html</loc></url>
+<url><loc>https://quanteda.io/reference/as.data.frame.dfm.html</loc></url>
+<url><loc>https://quanteda.io/reference/as.dfm.html</loc></url>
+<url><loc>https://quanteda.io/reference/as.dictionary.html</loc></url>
+<url><loc>https://quanteda.io/reference/as.dist.dist.html</loc></url>
+<url><loc>https://quanteda.io/reference/as.fcm.html</loc></url>
+<url><loc>https://quanteda.io/reference/as.igraph.html</loc></url>
+<url><loc>https://quanteda.io/reference/as.list.dist.html</loc></url>
+<url><loc>https://quanteda.io/reference/as.list.dist_selection.html</loc></url>
+<url><loc>https://quanteda.io/reference/as.matrix.dfm.html</loc></url>
+<url><loc>https://quanteda.io/reference/as.matrix.dist_selection.html</loc></url>
+<url><loc>https://quanteda.io/reference/as.matrix.simil.html</loc></url>
+<url><loc>https://quanteda.io/reference/as.matrix.textstat_simil_sparse.html</loc></url>
+<url><loc>https://quanteda.io/reference/as.network.html</loc></url>
+<url><loc>https://quanteda.io/reference/as.statistics_textmodel.html</loc></url>
+<url><loc>https://quanteda.io/reference/as.summary.textmodel.html</loc></url>
+<url><loc>https://quanteda.io/reference/as.tokens.html</loc></url>
+<url><loc>https://quanteda.io/reference/as.yaml.html</loc></url>
+<url><loc>https://quanteda.io/reference/attributes-set.html</loc></url>
+<url><loc>https://quanteda.io/reference/bootstrap_dfm.html</loc></url>
+<url><loc>https://quanteda.io/reference/cbind.dfm.html</loc></url>
+<url><loc>https://quanteda.io/reference/char_select.html</loc></url>
+<url><loc>https://quanteda.io/reference/char_tolower.html</loc></url>
+<url><loc>https://quanteda.io/reference/check_class.html</loc></url>
+<url><loc>https://quanteda.io/reference/check_dots.html</loc></url>
+<url><loc>https://quanteda.io/reference/check_font.html</loc></url>
+<url><loc>https://quanteda.io/reference/check_integer.html</loc></url>
+<url><loc>https://quanteda.io/reference/coef.textmodel.html</loc></url>
+<url><loc>https://quanteda.io/reference/coef.textmodel_ca.html</loc></url>
+<url><loc>https://quanteda.io/reference/collocationsdev.html</loc></url>
+<url><loc>https://quanteda.io/reference/compute_lexdiv_stats.html</loc></url>
+<url><loc>https://quanteda.io/reference/compute_mattr.html</loc></url>
+<url><loc>https://quanteda.io/reference/compute_msttr.html</loc></url>
+<url><loc>https://quanteda.io/reference/concat.html</loc></url>
+<url><loc>https://quanteda.io/reference/convert-wrappers.html</loc></url>
+<url><loc>https://quanteda.io/reference/convert.html</loc></url>
+<url><loc>https://quanteda.io/reference/copy.html</loc></url>
+<url><loc>https://quanteda.io/reference/corpus-class.html</loc></url>
+<url><loc>https://quanteda.io/reference/corpus.html</loc></url>
+<url><loc>https://quanteda.io/reference/corpus_chunk.html</loc></url>
+<url><loc>https://quanteda.io/reference/corpus_group.html</loc></url>
+<url><loc>https://quanteda.io/reference/corpus_reshape.html</loc></url>
+<url><loc>https://quanteda.io/reference/corpus_sample.html</loc></url>
+<url><loc>https://quanteda.io/reference/corpus_segment.html</loc></url>
+<url><loc>https://quanteda.io/reference/corpus_subset.html</loc></url>
+<url><loc>https://quanteda.io/reference/corpus_trim.html</loc></url>
+<url><loc>https://quanteda.io/reference/corpus_trimsentences.html</loc></url>
+<url><loc>https://quanteda.io/reference/create.html</loc></url>
+<url><loc>https://quanteda.io/reference/data-deprecated.html</loc></url>
+<url><loc>https://quanteda.io/reference/data-internal.html</loc></url>
+<url><loc>https://quanteda.io/reference/data-relocated.html</loc></url>
+<url><loc>https://quanteda.io/reference/data_char_sampletext.html</loc></url>
+<url><loc>https://quanteda.io/reference/data_char_ukimmig2010.html</loc></url>
+<url><loc>https://quanteda.io/reference/data_corpus_inaugural.html</loc></url>
+<url><loc>https://quanteda.io/reference/data_dfm_lbgexample.html</loc></url>
+<url><loc>https://quanteda.io/reference/data_dictionary_LSD2015.html</loc></url>
+<url><loc>https://quanteda.io/reference/data_download.html</loc></url>
+<url><loc>https://quanteda.io/reference/dfm-class.html</loc></url>
+<url><loc>https://quanteda.io/reference/dfm-internal.html</loc></url>
+<url><loc>https://quanteda.io/reference/dfm.html</loc></url>
+<url><loc>https://quanteda.io/reference/dfm2lsa.html</loc></url>
+<url><loc>https://quanteda.io/reference/dfm_compress.html</loc></url>
+<url><loc>https://quanteda.io/reference/dfm_group.html</loc></url>
+<url><loc>https://quanteda.io/reference/dfm_lookup.html</loc></url>
+<url><loc>https://quanteda.io/reference/dfm_match.html</loc></url>
+<url><loc>https://quanteda.io/reference/dfm_replace.html</loc></url>
+<url><loc>https://quanteda.io/reference/dfm_sample.html</loc></url>
+<url><loc>https://quanteda.io/reference/dfm_select.html</loc></url>
+<url><loc>https://quanteda.io/reference/dfm_sort.html</loc></url>
+<url><loc>https://quanteda.io/reference/dfm_split_hyphenated_features.html</loc></url>
+<url><loc>https://quanteda.io/reference/dfm_subset.html</loc></url>
+<url><loc>https://quanteda.io/reference/dfm_tfidf.html</loc></url>
+<url><loc>https://quanteda.io/reference/dfm_tolower.html</loc></url>
+<url><loc>https://quanteda.io/reference/dfm_trim.html</loc></url>
+<url><loc>https://quanteda.io/reference/dfm_weight.html</loc></url>
+<url><loc>https://quanteda.io/reference/diag2na.html</loc></url>
+<url><loc>https://quanteda.io/reference/dictionary-class.html</loc></url>
+<url><loc>https://quanteda.io/reference/dictionary.html</loc></url>
+<url><loc>https://quanteda.io/reference/dictionary_edit.html</loc></url>
+<url><loc>https://quanteda.io/reference/docfreq.html</loc></url>
+<url><loc>https://quanteda.io/reference/docnames.html</loc></url>
+<url><loc>https://quanteda.io/reference/docvars-internal.html</loc></url>
+<url><loc>https://quanteda.io/reference/docvars.html</loc></url>
+<url><loc>https://quanteda.io/reference/escape_regex.html</loc></url>
+<url><loc>https://quanteda.io/reference/expand.html</loc></url>
+<url><loc>https://quanteda.io/reference/fcm-class.html</loc></url>
+<url><loc>https://quanteda.io/reference/fcm.html</loc></url>
+<url><loc>https://quanteda.io/reference/fcm_sort.html</loc></url>
+<url><loc>https://quanteda.io/reference/featfreq.html</loc></url>
+<url><loc>https://quanteda.io/reference/featnames.html</loc></url>
+<url><loc>https://quanteda.io/reference/field_system.html</loc></url>
+<url><loc>https://quanteda.io/reference/flatten_dictionary.html</loc></url>
+<url><loc>https://quanteda.io/reference/flatten_id.html</loc></url>
+<url><loc>https://quanteda.io/reference/flatten_list.html</loc></url>
+<url><loc>https://quanteda.io/reference/format_sparsity.html</loc></url>
+<url><loc>https://quanteda.io/reference/friendly_class_undefined_message.html</loc></url>
+<url><loc>https://quanteda.io/reference/generate_groups.html</loc></url>
+<url><loc>https://quanteda.io/reference/get_docvars.html</loc></url>
+<url><loc>https://quanteda.io/reference/get_object_version.html</loc></url>
+<url><loc>https://quanteda.io/reference/groups.html</loc></url>
+<url><loc>https://quanteda.io/reference/head.corpus.html</loc></url>
+<url><loc>https://quanteda.io/reference/head.dfm.html</loc></url>
+<url><loc>https://quanteda.io/reference/head.textstat_proxy.html</loc></url>
+<url><loc>https://quanteda.io/reference/index-topic.html</loc></url>
+<url><loc>https://quanteda.io/reference/index.html</loc></url>
+<url><loc>https://quanteda.io/reference/influence.predict.textmodel_affinity.html</loc></url>
+<url><loc>https://quanteda.io/reference/influence.textmodel_affinity_predicted.html</loc></url>
+<url><loc>https://quanteda.io/reference/info_tbb.html</loc></url>
+<url><loc>https://quanteda.io/reference/is.collocations.html</loc></url>
+<url><loc>https://quanteda.io/reference/is_glob.html</loc></url>
+<url><loc>https://quanteda.io/reference/is_indexed.html</loc></url>
+<url><loc>https://quanteda.io/reference/is_regex.html</loc></url>
+<url><loc>https://quanteda.io/reference/keyness.html</loc></url>
+<url><loc>https://quanteda.io/reference/kwic.html</loc></url>
+<url><loc>https://quanteda.io/reference/lexdiv.html</loc></url>
+<url><loc>https://quanteda.io/reference/list2dictionary.html</loc></url>
+<url><loc>https://quanteda.io/reference/lowercase_dictionary_values.html</loc></url>
+<url><loc>https://quanteda.io/reference/make_docvars.html</loc></url>
+<url><loc>https://quanteda.io/reference/make_meta.html</loc></url>
+<url><loc>https://quanteda.io/reference/matrix2dfm.html</loc></url>
+<url><loc>https://quanteda.io/reference/matrix2fcm.html</loc></url>
+<url><loc>https://quanteda.io/reference/merge_dictionary_values.html</loc></url>
+<url><loc>https://quanteda.io/reference/message_corpus.html</loc></url>
+<url><loc>https://quanteda.io/reference/message_dfm.html</loc></url>
+<url><loc>https://quanteda.io/reference/message_error.html</loc></url>
+<url><loc>https://quanteda.io/reference/message_tokens.html</loc></url>
+<url><loc>https://quanteda.io/reference/messages.html</loc></url>
+<url><loc>https://quanteda.io/reference/meta.html</loc></url>
+<url><loc>https://quanteda.io/reference/meta_system.html</loc></url>
+<url><loc>https://quanteda.io/reference/metacorpus.html</loc></url>
+<url><loc>https://quanteda.io/reference/metadoc.html</loc></url>
+<url><loc>https://quanteda.io/reference/msg.html</loc></url>
+<url><loc>https://quanteda.io/reference/names-quanteda.html</loc></url>
+<url><loc>https://quanteda.io/reference/ndoc.html</loc></url>
+<url><loc>https://quanteda.io/reference/nest_dictionary.html</loc></url>
+<url><loc>https://quanteda.io/reference/nfeature.html</loc></url>
+<url><loc>https://quanteda.io/reference/nscrabble.html</loc></url>
+<url><loc>https://quanteda.io/reference/nsentence.html</loc></url>
+<url><loc>https://quanteda.io/reference/nsyllable.html</loc></url>
+<url><loc>https://quanteda.io/reference/ntoken.html</loc></url>
+<url><loc>https://quanteda.io/reference/object-builders.html</loc></url>
+<url><loc>https://quanteda.io/reference/object2id.html</loc></url>
+<url><loc>https://quanteda.io/reference/pattern.html</loc></url>
+<url><loc>https://quanteda.io/reference/pattern2id.html</loc></url>
+<url><loc>https://quanteda.io/reference/pattern2list.html</loc></url>
+<url><loc>https://quanteda.io/reference/phrase.html</loc></url>
+<url><loc>https://quanteda.io/reference/pipe.html</loc></url>
+<url><loc>https://quanteda.io/reference/predict.textmodel.html</loc></url>
+<url><loc>https://quanteda.io/reference/predict.textmodel_affinity.html</loc></url>
+<url><loc>https://quanteda.io/reference/predict.textmodel_affinity_fitted.html</loc></url>
+<url><loc>https://quanteda.io/reference/predict.textmodel_nb.html</loc></url>
+<url><loc>https://quanteda.io/reference/predict.textmodel_wordfish.html</loc></url>
+<url><loc>https://quanteda.io/reference/predict.textmodel_wordscores.html</loc></url>
+<url><loc>https://quanteda.io/reference/print-method.html</loc></url>
+<url><loc>https://quanteda.io/reference/print-methods.html</loc></url>
+<url><loc>https://quanteda.io/reference/print-quanteda.html</loc></url>
+<url><loc>https://quanteda.io/reference/print.coefficients_textmodel.html</loc></url>
+<url><loc>https://quanteda.io/reference/print.dist_selection.html</loc></url>
+<url><loc>https://quanteda.io/reference/print.phrases.html</loc></url>
+<url><loc>https://quanteda.io/reference/print.statistics_textmodel.html</loc></url>
+<url><loc>https://quanteda.io/reference/print.summary.textmodel.html</loc></url>
+<url><loc>https://quanteda.io/reference/print.textmodel_wordfish.html</loc></url>
+<url><loc>https://quanteda.io/reference/quanteda-package.html</loc></url>
+<url><loc>https://quanteda.io/reference/quanteda_options.html</loc></url>
+<url><loc>https://quanteda.io/reference/read_dict_functions.html</loc></url>
+<url><loc>https://quanteda.io/reference/readtext-methods.html</loc></url>
+<url><loc>https://quanteda.io/reference/reexports.html</loc></url>
+<url><loc>https://quanteda.io/reference/regex2id.html</loc></url>
+<url><loc>https://quanteda.io/reference/remove_empty_keys.html</loc></url>
+<url><loc>https://quanteda.io/reference/replace_dictionary_values.html</loc></url>
+<url><loc>https://quanteda.io/reference/resample.html</loc></url>
+<url><loc>https://quanteda.io/reference/reshape_docvars.html</loc></url>
+<url><loc>https://quanteda.io/reference/sample_bygroup.html</loc></url>
+<url><loc>https://quanteda.io/reference/scrabble.html</loc></url>
+<url><loc>https://quanteda.io/reference/search_glob.html</loc></url>
+<url><loc>https://quanteda.io/reference/search_index.html</loc></url>
+<url><loc>https://quanteda.io/reference/serialize_tokens.html</loc></url>
+<url><loc>https://quanteda.io/reference/set_dfm_dimnames.html</loc></url>
+<url><loc>https://quanteda.io/reference/set_dfm_slots-set.html</loc></url>
+<url><loc>https://quanteda.io/reference/set_dfm_slots.html</loc></url>
+<url><loc>https://quanteda.io/reference/set_fcm_slots-set.html</loc></url>
+<url><loc>https://quanteda.io/reference/set_fcm_slots.html</loc></url>
+<url><loc>https://quanteda.io/reference/settings.html</loc></url>
+<url><loc>https://quanteda.io/reference/slots-set.html</loc></url>
+<url><loc>https://quanteda.io/reference/spacyr-methods.html</loc></url>
+<url><loc>https://quanteda.io/reference/sparsity.html</loc></url>
+<url><loc>https://quanteda.io/reference/split_values.html</loc></url>
+<url><loc>https://quanteda.io/reference/summarize_texts.html</loc></url>
+<url><loc>https://quanteda.io/reference/summary.character.html</loc></url>
+<url><loc>https://quanteda.io/reference/summary.corpus.html</loc></url>
+<url><loc>https://quanteda.io/reference/summary.textmodel_nb.html</loc></url>
+<url><loc>https://quanteda.io/reference/summary.textmodel_wordfish.html</loc></url>
+<url><loc>https://quanteda.io/reference/summary_character.html</loc></url>
+<url><loc>https://quanteda.io/reference/summary_metadata.html</loc></url>
+<url><loc>https://quanteda.io/reference/textmodel-internal.html</loc></url>
+<url><loc>https://quanteda.io/reference/textmodel.html</loc></url>
+<url><loc>https://quanteda.io/reference/textmodel_affinity-internal.html</loc></url>
+<url><loc>https://quanteda.io/reference/textmodel_affinity.html</loc></url>
+<url><loc>https://quanteda.io/reference/textmodel_ca.html</loc></url>
+<url><loc>https://quanteda.io/reference/textmodel_fitted-class.html</loc></url>
+<url><loc>https://quanteda.io/reference/textmodel_lsa-postestimation.html</loc></url>
+<url><loc>https://quanteda.io/reference/textmodel_lsa.html</loc></url>
+<url><loc>https://quanteda.io/reference/textmodel_nb.html</loc></url>
+<url><loc>https://quanteda.io/reference/textmodel_wordfish.html</loc></url>
+<url><loc>https://quanteda.io/reference/textmodel_wordscores.html</loc></url>
+<url><loc>https://quanteda.io/reference/textmodel_wordshoal.html</loc></url>
+<url><loc>https://quanteda.io/reference/textmodels.html</loc></url>
+<url><loc>https://quanteda.io/reference/textplot_influence.html</loc></url>
+<url><loc>https://quanteda.io/reference/textplot_keyness.html</loc></url>
+<url><loc>https://quanteda.io/reference/textplot_network.html</loc></url>
+<url><loc>https://quanteda.io/reference/textplot_scale1d.html</loc></url>
+<url><loc>https://quanteda.io/reference/textplot_wordcloud.html</loc></url>
+<url><loc>https://quanteda.io/reference/textplot_xray.html</loc></url>
+<url><loc>https://quanteda.io/reference/textplots.html</loc></url>
+<url><loc>https://quanteda.io/reference/texts.html</loc></url>
+<url><loc>https://quanteda.io/reference/textstat_collocations.html</loc></url>
+<url><loc>https://quanteda.io/reference/textstat_collocationsdev.html</loc></url>
+<url><loc>https://quanteda.io/reference/textstat_entropy.html</loc></url>
+<url><loc>https://quanteda.io/reference/textstat_frequency.html</loc></url>
+<url><loc>https://quanteda.io/reference/textstat_keyness.html</loc></url>
+<url><loc>https://quanteda.io/reference/textstat_lexdiv.html</loc></url>
+<url><loc>https://quanteda.io/reference/textstat_proxy-class.html</loc></url>
+<url><loc>https://quanteda.io/reference/textstat_proxy.html</loc></url>
+<url><loc>https://quanteda.io/reference/textstat_readability.html</loc></url>
+<url><loc>https://quanteda.io/reference/textstat_select.html</loc></url>
+<url><loc>https://quanteda.io/reference/textstat_simil.html</loc></url>
+<url><loc>https://quanteda.io/reference/textstat_simil_old.html</loc></url>
+<url><loc>https://quanteda.io/reference/textstat_summary.html</loc></url>
+<url><loc>https://quanteda.io/reference/textstats.html</loc></url>
+<url><loc>https://quanteda.io/reference/tf.html</loc></url>
+<url><loc>https://quanteda.io/reference/tfidf.html</loc></url>
+<url><loc>https://quanteda.io/reference/tokenize_custom.html</loc></url>
+<url><loc>https://quanteda.io/reference/tokenize_internal.html</loc></url>
+<url><loc>https://quanteda.io/reference/tokens-class.html</loc></url>
+<url><loc>https://quanteda.io/reference/tokens.html</loc></url>
+<url><loc>https://quanteda.io/reference/tokens_chunk.html</loc></url>
+<url><loc>https://quanteda.io/reference/tokens_compound.html</loc></url>
+<url><loc>https://quanteda.io/reference/tokens_group.html</loc></url>
+<url><loc>https://quanteda.io/reference/tokens_lookup.html</loc></url>
+<url><loc>https://quanteda.io/reference/tokens_ngrams.html</loc></url>
+<url><loc>https://quanteda.io/reference/tokens_recompile.html</loc></url>
+<url><loc>https://quanteda.io/reference/tokens_replace.html</loc></url>
+<url><loc>https://quanteda.io/reference/tokens_restore.html</loc></url>
+<url><loc>https://quanteda.io/reference/tokens_sample.html</loc></url>
+<url><loc>https://quanteda.io/reference/tokens_segment.html</loc></url>
+<url><loc>https://quanteda.io/reference/tokens_select.html</loc></url>
+<url><loc>https://quanteda.io/reference/tokens_serialize.html</loc></url>
+<url><loc>https://quanteda.io/reference/tokens_split.html</loc></url>
+<url><loc>https://quanteda.io/reference/tokens_subset.html</loc></url>
+<url><loc>https://quanteda.io/reference/tokens_tolower.html</loc></url>
+<url><loc>https://quanteda.io/reference/tokens_tortl.html</loc></url>
+<url><loc>https://quanteda.io/reference/tokens_trim.html</loc></url>
+<url><loc>https://quanteda.io/reference/tokens_wordstem.html</loc></url>
+<url><loc>https://quanteda.io/reference/tokens_xptr.html</loc></url>
+<url><loc>https://quanteda.io/reference/topfeatures.html</loc></url>
+<url><loc>https://quanteda.io/reference/types.html</loc></url>
+<url><loc>https://quanteda.io/reference/unlist_character.html</loc></url>
+<url><loc>https://quanteda.io/reference/unlist_integer.html</loc></url>
+<url><loc>https://quanteda.io/reference/unused_dots.html</loc></url>
+<url><loc>https://quanteda.io/reference/valuetype.html</loc></url>
+<url><loc>https://quanteda.io/reference/wordcloud.html</loc></url>
+<url><loc>https://quanteda.io/reference/wordcloud_comparison.html</loc></url>
 </urlset>
+

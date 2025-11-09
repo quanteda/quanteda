@@ -75,9 +75,9 @@
 #'   and Speech Recognition*. Draft of September 23, 2018 (Chapter 6, Vector
 #'   Semantics). Available at <https://web.stanford.edu/~jurafsky/slp3/>.
 #'
-#'  Church, K. W. & P. Hanks (1990). [Word association norms, mutual
-#'  information, and lexicography](https://dl.acm.org/doi/10.5555/89086.89095).
-#'  *Computational Linguistics*, 16(1), 22-29.
+#'  Church, K. W. & P. Hanks (1990). Word association norms, mutual information,
+#'  and lexicography.
+#'  *Computational Linguistics*, 16(1), 22-29. https://aclanthology.org/J90-1003/
 #' @examples
 #' # see http://bit.ly/29b2zOA
 #' toks1 <- tokens(c("A D A C E A D F E B A C E D"))
@@ -116,7 +116,7 @@ fcm.default <- function(x, ...) {
 #' @export
 fcm.character <- function(x, ...) {
     lifecycle::deprecate_stop(
-        when = "3.0", 
+        when = "3.0",
         what = "fcm.character()",
         details = 'Please apply `tokens()` to the object first.'
     )
@@ -126,7 +126,7 @@ fcm.character <- function(x, ...) {
 #' @export
 fcm.corpus <- function(x, ...) {
     lifecycle::deprecate_stop(
-        when = "3.0", 
+        when = "3.0",
         what = "fcm.corpus()",
         details = 'Please apply `tokens()` to the object first.'
     )

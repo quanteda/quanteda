@@ -27,6 +27,10 @@ test_that("test default corpus* methods", {
         corpus_subset(1),
         "corpus_subset\\(\\) only works on corpus objects"
     )
+    expect_error(
+      corpus_chunk(1),
+      "corpus_chunk\\(\\) only works on corpus objects"
+    )
 })
 
 test_that("test detault n-methods", {
@@ -129,7 +133,7 @@ test_that("phrase default works", {
         phrase(TRUE),
         "phrase\\(\\) only works on character, collocations, dictionary2, list, tokens objects"
     )
-    
+
     expect_error(
         as.phrase(TRUE),
         "phrase\\(\\) only works on collocations, dictionary2, list, tokens objects"
@@ -286,6 +290,14 @@ test_that("test token default methods", {
     expect_error(
         tokens_keep(TRUE),
         "tokens_select\\(\\) only works on tokens, tokens_xptr objects"
+    )
+    expect_error(
+        tokens_segment(TRUE),
+        "tokens_segment\\(\\) only works on tokens, tokens_xptr objects"
+    )
+    expect_error(
+        tokens_chunk(TRUE),
+        "tokens_chunk\\(\\) only works on tokens, tokens_xptr objects"
     )
     expect_error(
         tokens_lookup(TRUE),

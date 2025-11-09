@@ -6,11 +6,11 @@ using namespace quanteda;
 Text replace(Text tokens, 
              const std::vector<std::size_t> &spans,
              MapNgrams &map_pat,
-             Ngrams &ids_repls){
+             Ngrams &reps){
     
     if (tokens.empty()) return {}; // return empty vector for empty text
     
-    std::vector< std::vector<unsigned int> > tokens_multi(tokens.size()); 
+    std::vector< Text > tokens_multi(tokens.size()); 
     std::vector< bool > flags_match(tokens.size(), false); // flag matched tokens
     std::size_t match = 0;
     bool none = true;
@@ -23,8 +23,8 @@ Text replace(Text tokens,
             auto it = map_pat.find(ngram);
             if (it != map_pat.end()) {
                 std::fill(flags_match.begin() + i, flags_match.begin() + i + span, true); // mark tokens matched
-                tokens_multi[i].insert(tokens_multi[i].end(), ids_repls[it->second].begin(), ids_repls[it->second].end());
-                match += ids_repls[it->second].size();
+                tokens_multi[i].insert(tokens_multi[i].end(), reps[it->second].begin(), reps[it->second].end());
+                match += reps[it->second].size();
                 none = false;
             }
         }
@@ -71,9 +71,6 @@ TokensPtr cpp_tokens_replace(TokensPtr xptr,
                              const int thread = -1) {
     
     Texts texts = xptr->texts;
-    Ngrams ids_repls = Rcpp::as<Ngrams>(replacements_);
-    //dev::Timer timer;
-    //dev::start_timer("Map construction", timer);
 
     if (bypass_.size() != (int)texts.size())
         throw std::range_error("Invalid bypass");
@@ -81,9 +78,11 @@ TokensPtr cpp_tokens_replace(TokensPtr xptr,
     
     MapNgrams map_pat;
     map_pat.max_load_factor(GLOBAL_PATTERN_MAX_LOAD_FACTOR);
-    Ngrams pats = Rcpp::as<Ngrams>(patterns_);
+    
+    Ngrams reps = to_ngrams(replacements_);
+    Ngrams pats = to_ngrams(patterns_);
 
-    size_t len = std::min(pats.size(), ids_repls.size());
+    size_t len = std::min(pats.size(), reps.size());
     std::vector<std::size_t> spans(len);
     for (size_t g = 0; g < len; g++) {
         Ngram pat = pats[g];
@@ -104,7 +103,7 @@ TokensPtr cpp_tokens_replace(TokensPtr xptr,
             for (int h = r.begin(); h < r.end(); ++h) {
                 if (bypass[h])
                     continue;
-                texts[h] = replace(texts[h], spans, map_pat, ids_repls);
+                texts[h] = replace(texts[h], spans, map_pat, reps);
             }    
         });
     });
@@ -112,7 +111,7 @@ TokensPtr cpp_tokens_replace(TokensPtr xptr,
     for (std::size_t h = 0; h < H; h++) {
         if (bypass[h])
             continue;
-        texts[h] = replace(texts[h], spans, map_pat, ids_repls);
+        texts[h] = replace(texts[h], spans, map_pat, reps);
     }
 #endif
     xptr->texts = texts;

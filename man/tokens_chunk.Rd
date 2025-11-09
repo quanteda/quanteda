@@ -4,7 +4,13 @@
 \alias{tokens_chunk}
 \title{Segment tokens object by chunks of a given size}
 \usage{
-tokens_chunk(x, size, overlap = 0, use_docvars = TRUE)
+tokens_chunk(
+  x,
+  size,
+  overlap = 0,
+  use_docvars = TRUE,
+  verbose = quanteda_options("verbose")
+)
 }
 \arguments{
 \item{x}{\link{tokens} object whose token elements will be segmented into
@@ -17,6 +23,9 @@ last \code{overlap} tokens from the preceding chunk}
 
 \item{use_docvars}{if \code{TRUE}, repeat the docvar values for each chunk;
 if \code{FALSE}, drop the docvars in the chunked tokens}
+
+\item{verbose}{if \code{TRUE} print the number of tokens and documents before and
+after the function is applied. The number of tokens does not include paddings.}
 }
 \value{
 A \link{tokens} object whose documents have been split into chunks of

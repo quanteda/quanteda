@@ -4,7 +4,14 @@
 \alias{dfm_sample}
 \title{Randomly sample documents from a dfm}
 \usage{
-dfm_sample(x, size = NULL, replace = FALSE, prob = NULL, by = NULL)
+dfm_sample(
+  x,
+  size = NULL,
+  replace = FALSE,
+  prob = NULL,
+  by = NULL,
+  verbose = quanteda_options("verbose")
+)
 }
 \arguments{
 \item{x}{the \link{dfm} object whose documents will be sampled}
@@ -24,6 +31,9 @@ vector being sampled.  May not be applied when \code{by} is used.}
 the docvars data.frame, so that docvars may be referred to by name without
 quoting.  This also changes previous behaviours for \code{by}.
 See \code{news(Version >= "2.9", package = "quanteda")} for details.}
+
+\item{verbose}{if \code{TRUE} print the number of tokens and documents before and
+after the function is applied. The number of tokens does not include paddings.}
 }
 \value{
 a \link{dfm} object (re)sampled on the documents, containing the document

@@ -7,16 +7,19 @@
 #' subsequently as single tokens, for instance in constructing a [dfm].
 #' @param x an input [tokens] object
 #' @inheritParams pattern
-#' @inheritParams tokens
 #' @inheritParams valuetype
+#' @inheritParams messages
 #' @param join logical; if `TRUE`, join overlapping compounds into a single
 #'   compound; otherwise, form these separately.  See examples.
+#' @param keep_unigrams if `TRUE`, keep the original tokens.
 #' @param window integer; a vector of length 1 or 2 that specifies size of the
 #'   window of tokens adjacent to `pattern` that will be compounded with matches
 #'   to `pattern`.  The window can be asymmetric if two elements are specified,
 #'   with the first giving the window size before `pattern` and the second the
 #'   window size after.  If paddings (empty `""` tokens) are found, window will
 #'   be shrunk to exclude them.
+#' @param concatenator character; the concatenation character that will connect
+#'   the tokens making up a multi-token sequence.
 #' @inheritParams apply_if
 #' @return A [tokens] object in which the token sequences matching `pattern`
 #'   have been replaced by new compounded "tokens" joined by the concatenator.
@@ -65,8 +68,11 @@ tokens_compound <- function(x, pattern,
                             valuetype = c("glob", "regex", "fixed"),
                             concatenator = concat(x),
                             window = 0L,
-                            case_insensitive = TRUE, join = TRUE,
-                            apply_if = NULL) {
+                            case_insensitive = TRUE, 
+                            join = TRUE,
+                            keep_unigrams = FALSE,
+                            apply_if = NULL,
+                            verbose = quanteda_options("verbose")) {
     UseMethod("tokens_compound")
 }
 
@@ -75,8 +81,11 @@ tokens_compound.default <- function(x, pattern,
                                     valuetype = c("glob", "regex", "fixed"),
                                     concatenator = concat(x),
                                     window = 0L,
-                                    case_insensitive = TRUE, join = TRUE,
-                                    apply_if = NULL) {
+                                    case_insensitive = TRUE, 
+                                    join = TRUE,
+                                    keep_unigrams = FALSE,
+                                    apply_if = NULL,
+                                    verbose = quanteda_options("verbose")) {
     check_class(class(x), "tokens_compound")
 }
 
@@ -85,8 +94,11 @@ tokens_compound.tokens_xptr <- function(x, pattern,
                                         valuetype = c("glob", "regex", "fixed"),
                                         concatenator = concat(x),
                                         window = 0L,
-                                        case_insensitive = TRUE, join = TRUE,
-                                        apply_if = NULL) {
+                                        case_insensitive = TRUE, 
+                                        join = TRUE,
+                                        keep_unigrams = FALSE,
+                                        apply_if = NULL,
+                                        verbose = quanteda_options("verbose")) {
 
     valuetype <- match.arg(valuetype)
     concatenator <- check_character(concatenator)
@@ -94,18 +106,26 @@ tokens_compound.tokens_xptr <- function(x, pattern,
     join <- check_logical(join)
     apply_if <- check_logical(apply_if, min_len = ndoc(x), max_len = ndoc(x),
                                allow_null = TRUE, allow_na = TRUE)
+    verbose <- check_logical(verbose)
+    keep_unigrams <- check_logical(keep_unigrams)
 
     attrs <- attributes(x)
     type <- get_types(x)
 
-    ids <- object2id(pattern, type, valuetype, case_insensitive, remove_unigram = all(window == 0))
+    ids <- object2id(pattern, type, valuetype, case_insensitive, 
+                     concatenator = field_object(attrs, "concatenator"),
+                     match_pattern = if (all(window == 0)) "multi" else "any")
     if (length(window) == 1) window <- rep(window, 2)
     if (is.null(apply_if))
         apply_if <- rep(TRUE, length.out = ndoc(x))
-    result <- cpp_tokens_compound(x, ids, concatenator, join, window[1], window[2], !apply_if,
-                                  get_threads())
-    field_object(attrs, "concatenator") <- concatenator
-    rebuild_tokens(result, attrs)
+    if (verbose)
+        before <- stats_tokens(x)
+    result <- cpp_tokens_compound(x, ids, concatenator, join, keep_unigrams,
+                                  window[1], window[2], !apply_if, get_threads())
+    result <- rebuild_tokens(result, attrs)
+    if (verbose)
+        message_tokens("tokens_compound()", before, stats_tokens(result))
+    return(result)
 }
 
 #' @export

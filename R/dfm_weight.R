@@ -139,11 +139,9 @@ dfm_weight.dfm <- function(x,
         weights <- weights[!ignore]
         weight[match(names(weights), names(weight))] <- weights
 
-        weight <- Diagonal(x = weight)
-        colnames(weight) <- colnames(x)
-        result <- x %*% weight
-        dimnames(result) <- dimnames(x)
-        return(result)
+        m <- dimnames(x)
+        x <- matrix2dfm(x %*% Diagonal(x = weight))
+        dimnames(x) <- m
 
     } else {
         ### for scheme weights
@@ -263,8 +261,8 @@ dfm_weight.dfm <- function(x,
             field_object(attrs, "weight_tf")$estimate_zeros <- estimate_zeros
         }
         field_object(attrs, "weight_tf")$scheme <- scheme
-        rebuild_dfm(x, attrs)
     }
+    rebuild_dfm(x, attrs)
 }
 
 

@@ -42,6 +42,11 @@ test_that("tokens_compound join tokens correctly", {
              c("aaa", "bbb", "ccc", "ddd", "eee", "fff", "ggg"),
              c("a_b", "b_c", "c_d", "d_e_e_f", "f_g"))
     )
+    
+    expect_message(
+        tokens_compound(toks, seqs, verbose = TRUE),
+        "tokens_compound() changed", fixed = TRUE
+    )
   
 })
 
@@ -62,13 +67,48 @@ test_that("tokens_compound join a sequences of sequences", {
         list(text1 = c("a_b", "b_c_d", "e_f", "f_g"),
              text2 = c("A_B", "B_C_D", "E_F", "F_G"))
     )
+    
+    expect_error(
+        tokens_compound(toks, seqs, join = c(TRUE, FALSE)),
+        "The length of join must be 1"
+    )
+})
 
-    txts <- "we like high quality sound"
-    seqs <- phrase(c("high quality", "quality sound"))
-    expect_equal(as.list(tokens_compound(tokens(txts), seqs, join = TRUE)),
-                      list(text1 = c("we", "like", "high_quality_sound")))
-    expect_equal(as.list(tokens_compound(tokens(txts), seqs, join = FALSE)),
-                      list(text1 = c("we", "like", "high_quality", "quality_sound")))
+test_that("keep_unigrams works", {
+    
+    txt <- "we like high quality sound"
+    toks <- tokens(txt)
+    
+    # overlapped
+    pat <- phrase(c("high quality", "quality sound"))
+    expect_equal(as.list(tokens_compound(toks, pat, join = TRUE)),
+                 list(text1 = c("we", "like", "high_quality_sound")))
+    expect_equal(as.list(tokens_compound(toks, pat, join = FALSE)),
+                 list(text1 = c("we", "like", "high_quality", "quality_sound")))
+    expect_equal(as.list(tokens_compound(toks, pat, join = TRUE, keep_unigrams = TRUE)),
+                 list(text1 = c("we", "like", "high", "quality", "sound",
+                                "high_quality_sound")))
+    expect_equal(as.list(tokens_compound(toks, pat, join = FALSE, keep_unigrams = TRUE)),
+                 list(text1 = c("we", "like", "high", "quality", "high_quality",
+                                "sound", "quality_sound")))
+    
+    # nested
+    pat2 <- phrase(c("high quality", "quality sound", "high quality sound"))
+    expect_equal(as.list(tokens_compound(toks, pat2, join = TRUE)),
+                 list(text1 = c("we", "like", "high_quality_sound")))
+    expect_equal(as.list(tokens_compound(toks, pat2, join = FALSE)),
+                 list(text1 = c("we", "like", "high_quality_sound")))
+    expect_equal(as.list(tokens_compound(toks, pat2, join = TRUE, keep_unigrams = TRUE)),
+                 list(text1 = c("we", "like", "high", "quality", "sound",
+                                "high_quality_sound")))
+    expect_equal(as.list(tokens_compound(toks, pat2, join = FALSE, keep_unigrams = TRUE)),
+                 list(text1 = c("we", "like", "high", "quality", "sound",
+                                "high_quality_sound")))
+    
+    expect_error(
+        tokens_compound(toks, seqs, keep_unigrams = c(TRUE, FALSE)),
+        "The length of keep_unigrams must be 1"
+    )
 
 })
 
@@ -99,20 +139,20 @@ test_that("tokens_compound works with padded tokens", {
 })
 
 test_that("tokens_compound works with different concatenators", {
-  toks <- tokens(c(doc1 = "a b c d e f g"))
+  toks <- tokens(c(doc1 = "a b c d e f g"), concatenator = " ")
   
   toks1 <- tokens_compound(toks, phrase("c d"), concatenator = "+")
+  expect_equal(meta(toks1, field = "concatenator", type = "object"), " ")
   expect_equal(sort(attr(toks1, "types")),
                sort(c("a", "b", "c+d", "e", "f", "g")))
-  expect_equal(meta(toks1, field = "concatenator", type = "object"), "+")
   
   toks2 <- tokens_compound(toks, phrase("c d"), concatenator = "&&")
-  expect_equal(meta(toks2, field = "concatenator", type = "object"), "&&")
+  expect_equal(meta(toks2, field = "concatenator", type = "object"), " ")
   expect_equal(sort(attr(toks2, "types")),
                sort(c("a", "b", "c&&d", "e", "f", "g")))
   
   toks3 <- tokens_compound(toks, phrase("c d"), concatenator = "")
-  expect_equal(meta(toks3, field = "concatenator", type = "object"), "")
+  expect_equal(meta(toks3, field = "concatenator", type = "object"), " ")
   expect_equal(sort(attr(toks3, "types")),
                sort(c("a", "b", "cd", "e", "f", "g")))
   expect_error(tokens_compound(toks, phrase("c d"), concatenator = character()),
@@ -120,42 +160,41 @@ test_that("tokens_compound works with different concatenators", {
   
   # update concatenator even without matches
   toks4 <- tokens_compound(toks, phrase("xxxx yyy"), concatenator = "++")
+  expect_equal(meta(toks4, field = "concatenator", type = "object"), " ")
   expect_equal(sort(attr(toks4, "types")),
                sort(c("a", "b", "c", "d", "e", "f", "g")))
-  expect_equal(meta(toks4, field = "concatenator", type = "object"), "++")
+ 
 })
 
-test_that("tokens_compound works as expected with nested tokens", {
-
+test_that("tokens_compound works with nested tokens", {
+    
+    toks <- tokens("a b c d")
+    pat <- phrase(c("a b", "b c", "a b c"))
     expect_equal(
-        as.character(tokens_compound(tokens("a b c d"), phrase(c("a b", "a b c")),
-                     join = FALSE)),
+        as.character(tokens_compound(toks, pat, join = FALSE)),
         c("a_b_c", "d")
     )
     expect_equal(
-        as.character(tokens_compound(tokens("a b c d"), phrase(c("a b", "a b c")),
-                     join = TRUE)),
+        as.character(tokens_compound(toks, pat, join = TRUE)),
         c("a_b_c", "d")
     )
 })
 
-test_that("tokens_compound works as expected with nested and overlapping tokens", {
-
+test_that("tokens_compound works with nested and overlapping tokens", {
+    
+    toks <- tokens("a b c d e")
+    pat <- phrase(c("a b", "a b c", "c d"))
     expect_equal(
-        as.character(tokens_compound(tokens("a b c d e"),
-                                     phrase(c("a b", "a b c", "c d")),
-                                     join = FALSE)),
+        as.character(tokens_compound(toks, pat, join = FALSE)),
         c("a_b_c", "c_d", "e")
     )
     expect_equal(
-        as.character(tokens_compound(tokens("a b c d e"),
-                                     phrase(c("a b", "a b c", "c d")),
-                                     join = TRUE)),
+        as.character(tokens_compound(toks, pat, join = TRUE)),
         c("a_b_c_d", "e")
     )
 })
 
-test_that("tokens_compound works as expected with dictionaries", {
+test_that("tokens_compound works with dictionaries", {
     dict <- dictionary(list(taxcgt = c("capital gains tax*"), taxit = "inheritance tax*"))
     toks <- tokens("The new law included capital gains taxes and inheritance taxes.")
     expect_equal(
@@ -262,7 +301,7 @@ test_that("tokens_compound window is working", {
   )
   expect_equal(
     as.list(tokens_compound(toks_pad1, pat, join = FALSE, window = 2)),
-    list(text1 = c("a_b_c_d", "a_b_c_d", "", "f_g"))
+    list(text1 = c("a_b_c_d", "", "f_g"))
   )
 
   toks_pad2 <- tokens_remove(toks, c("a", "e"), padding = TRUE)

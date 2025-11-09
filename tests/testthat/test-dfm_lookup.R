@@ -102,14 +102,16 @@ test_that("dfm_lookup raises error when dictionary has multi-word entries", {
 })
 
 test_that("dfm_lookup works with multi-word keys, issue #704", {
-    dict <- dictionary(list("en" = list("foreign policy" = "foreign", "domestic politics" = "domestic")))
+    dict <- dictionary(list("en" = list("foreign policy" = "foreign", 
+                                        "domestic politics" = "domestic")))
     testdfm <- dfm(tokens(data_corpus_inaugural[1:5]))
     expect_equal(featnames(dfm_lookup(testdfm, dict)),
                  c("en.foreign policy", "en.domestic politics"))
 })
 
 test_that("dfm_lookup return dfm even if no matches, issue #704", {
-    dict <- dictionary(list("en" = list("foreign policy" = "aaaaa", "domestic politics" = "bbbbb")))
+    dict <- dictionary(list("en" = list("foreign policy" = "aaaaa", 
+                                        "domestic politics" = "bbbbb")))
     dfmt <- dfm(tokens(data_corpus_inaugural[1:5]))
     expect_identical(
         featnames(dfm_lookup(dfmt, dict)),
@@ -239,16 +241,16 @@ test_that("dfm_lookup with nomatch works with key that do not appear in the text
 
 test_that("dfm_lookup works exclusive = TRUE and FALSE, #970", {
     
-    dfmat <- dfm(tokens("say good bye to Hollywood"), tolower = FALSE)
+    dfmt <- dfm(tokens("say good bye to Hollywood"), tolower = FALSE)
     dict <- dictionary(list(pos = "good", farewell = "bye"))
     
-    dfmat_ex <- dfm_lookup(dfmat, dict, exclusive = TRUE)
-    expect_true(dfmat_ex@meta$object$what == "dictionary")
-    expect_equal(featnames(dfmat_ex), c("pos", "farewell"))
+    dfmt_ex <- dfm_lookup(dfmt, dict, exclusive = TRUE)
+    expect_true(dfmt_ex@meta$object$what == "dictionary")
+    expect_equal(featnames(dfmt_ex), c("pos", "farewell"))
     
-    dfmat_ne <- dfm_lookup(dfmat, dict, exclusive = FALSE)
-    expect_true(dfmat_ne@meta$object$what == "word")
-    expect_equal(featnames(dfmat_ne), c("say", "POS", "FAREWELL", "to", "Hollywood"))
+    dfmt_ne <- dfm_lookup(dfmt, dict, exclusive = FALSE)
+    expect_true(dfmt_ne@meta$object$what == "word")
+    expect_equal(featnames(dfmt_ne), c("say", "POS", "FAREWELL", "to", "Hollywood"))
     
 })
 
@@ -257,16 +259,56 @@ test_that("dfm_lookup handle nested patterns correctly, #2159", {
     dict <- dictionary(list(irish = c("ire*", "ireland", "irish"),
                             anger = c("ire*", "mad")))
     toks <- tokens("I am mad about Ireland")
-    dfmat <- dfm(toks)
+    dfmt <- dfm(toks)
     expect_equal(
-        as.matrix(dfm_lookup(dfmat, dict, exclusive = TRUE)),
-        matrix(c(1, 2), nrow = 1, dimnames = list(docs = "text1", features = c("irish", "anger")))
+        as.matrix(dfm_lookup(dfmt, dict, exclusive = TRUE)),
+        matrix(c(1, 2), nrow = 1, 
+               dimnames = list(docs = "text1", features = c("irish", "anger")))
     )
     
     expect_equal(
-        as.matrix(dfm_lookup(dfmat, dict, exclusive = FALSE)),
-        matrix(c(1, 1, 1, 2, 1), nrow = 1,
+        as.matrix(dfm_lookup(dfmt, dict, exclusive = FALSE)),
+        matrix(c(1, 1, 2, 1, 1), nrow = 1,
                dimnames = list(docs = "text1",
-                               features = c("i", "am", "IRISH", "ANGER", "about")))
+                               features = c("i", "am", "ANGER", "about", "IRISH")))
     )
+    
+    expect_equal(
+        as.matrix(dfm_lookup(dfmt, dict, exclusive = FALSE)),
+        as.matrix(dfm_lookup(dfmt, rev(dict), exclusive = FALSE))
+    )
+})
+
+
+test_that("dfm_lookup produce the same result regardlress of the order of keys, #2424", {
+    
+    dict <- dictionary(list(apple = c("apple*"),
+                            banana = c("banana*")))
+    
+    toks <- tokens(c("I like apples, but I don't like apple pie. Bananas are OK",
+                     "I like bananas, but I don't like banana fritter."))
+    dfmt <- dfm(toks)
+    
+    expect_equal(
+        as.matrix(dfm_sort(dfm_lookup(dfmt, dictionary = dict, exclusive = TRUE))),
+        as.matrix(dfm_sort(dfm_lookup(dfmt, dictionary = rev(dict), exclusive = TRUE)))
+    )
+    
+    expect_equal(
+        as.matrix(dfm_sort(dfm_lookup(dfmt, dictionary = dict, exclusive = FALSE))),
+        as.matrix(dfm_sort(dfm_lookup(dfmt, dictionary = rev(dict), exclusive = FALSE)))
+    )
+    
+    dict2 <- dictionary(list(freedom = "freedom",
+                             liberty = c("free*", "liberal"),
+                             states = "states",
+                             country = c("state*", "country")))
+    toks2 <- toks <- tokens(data_corpus_inaugural[1:5])
+    dfmt2 <- dfm(toks2)
+    
+    expect_equal(
+        as.matrix(dfm_lookup(dfmt2, dictionary = dict2, exclusive = FALSE)),
+        as.matrix(dfm_lookup(dfmt2, dictionary = rev(dict2), exclusive = FALSE))
+    )
+    
 })

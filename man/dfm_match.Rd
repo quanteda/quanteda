@@ -4,12 +4,15 @@
 \alias{dfm_match}
 \title{Match the feature set of a dfm to given feature names}
 \usage{
-dfm_match(x, features)
+dfm_match(x, features, verbose = quanteda_options("verbose"))
 }
 \arguments{
 \item{x}{a \link{dfm}}
 
 \item{features}{character; the feature names to be matched in the output dfm}
+
+\item{verbose}{if \code{TRUE} print the number of tokens and documents before and
+after the function is applied. The number of tokens does not include paddings.}
 }
 \value{
 A \link{dfm} whose features are identical to those specified in

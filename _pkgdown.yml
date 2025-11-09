@@ -28,9 +28,11 @@ navbar:
       href: reference/index.html
     - text: "Features"
       menu:
+        - text: "Parallel computing"
+          href: articles/pkgdown/parallelisation.html
         - text: "External pointer tokens objects"
           href: articles/pkgdown/tokens_xptr.html
-        - text: "Performance benchmarks for v4"
+        - text: "Performance benchmarks"
           href: articles/pkgdown/benchmarks_xptr.html
         - text: "Package design"
           href: articles/pkgdown/design.html

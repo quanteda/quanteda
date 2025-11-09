@@ -8,6 +8,7 @@
 #'
 #' @param x [tokens] object to be subsetted.
 #' @param min_ntoken,max_ntoken minimum and maximum lengths of the documents to extract.
+#' @inheritParams messages
 #' @inheritParams corpus_subset
 #' @return [tokens] object, with a subset of documents (and docvars)
 #'   selected according to arguments
@@ -24,23 +25,24 @@
 #' # selecting on a supplied vector
 #' tokens_subset(toks, c(TRUE, FALSE, TRUE, FALSE))
 tokens_subset <- function(x, subset, min_ntoken = NULL, max_ntoken = NULL, 
-                          drop_docid = TRUE, ...) {
+                          drop_docid = TRUE, verbose = quanteda_options("verbose"), ...) {
     UseMethod("tokens_subset")
 }
     
 #' @export
 tokens_subset.default <- function(x, subset, min_ntoken = NULL, max_ntoken = NULL, 
-                                  drop_docid = TRUE, ...) {
+                                  drop_docid = TRUE, verbose = quanteda_options("verbose"), ...) {
     check_class(class(x), "tokens_subset")
 }
     
 #' @export
 tokens_subset.tokens <- function(x, subset, min_ntoken = NULL, max_ntoken = NULL, 
-                                 drop_docid = TRUE, ...) {
+                                 drop_docid = TRUE, verbose = quanteda_options("verbose"), ...) {
     
     x <- as.tokens(x)
     min_ntoken <- check_integer(min_ntoken, min = 0, allow_null = TRUE)
     max_ntoken <- check_integer(max_ntoken, min = 0, allow_null = TRUE)
+    verbose <- check_logical(verbose)
     check_dots(...)
     
     attrs <- attributes(x)
@@ -61,6 +63,10 @@ tokens_subset.tokens <- function(x, subset, min_ntoken = NULL, max_ntoken = NULL
         if (is.null(max_ntoken)) max_ntoken <- max(n)
         min_ntoken <= n & n <= max_ntoken
     }
-    
-    return(x[r & l, drop_docid = drop_docid])
+    if (verbose)
+        before <- stats_tokens(x)
+    x <- x[r & l, drop_docid = drop_docid]
+    if (verbose)
+        message_tokens("tokens_subset()", before, stats_tokens(x))
+    return(x)
 }

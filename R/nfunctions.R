@@ -162,14 +162,18 @@ ntype.corpus <- function(x, ...) {
 }
 
 #' @export
-ntype.dfm <- function(x, ...) {
+ntype.dfm <- function(x, remove_padding = FALSE, ...) {
     x <- as.dfm(x)
+    remove_padding <- check_logical(remove_padding)
     check_dots(...)
+    
+    if (remove_padding)
+        x <- dfm_remove(x, "")
     
     # only returns total non-zero features
     result <- as.integer(rowSums(x > 0))
     names(result) <- docnames(x)
-    result
+    return(result)
 }
 
 #' @export

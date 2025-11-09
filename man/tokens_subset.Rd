@@ -10,6 +10,7 @@ tokens_subset(
   min_ntoken = NULL,
   max_ntoken = NULL,
   drop_docid = TRUE,
+  verbose = quanteda_options("verbose"),
   ...
 )
 }
@@ -23,6 +24,9 @@ values are taken as false.}
 
 \item{drop_docid}{if \code{TRUE}, \code{docid} for documents are removed as the result
 of subsetting.}
+
+\item{verbose}{if \code{TRUE} print the number of tokens and documents before and
+after the function is applied. The number of tokens does not include paddings.}
 
 \item{...}{not used}
 }

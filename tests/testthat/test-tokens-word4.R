@@ -106,11 +106,10 @@ test_that("tokens works as expected for what = character", {
 
 test_that("tokens works with unusual hiragana #554", {
     skip_on_cran()
-    skip_on_os("windows")
     skip_on_os("mac")
-    txts <- c("づいﾞ", "゛んﾞ", "たーﾟ")
-    expect_equivalent(as.list(tokens(txts)),
-                      list(c("づ", "いﾞ"), c("゛", "んﾞ"), c("た", "ーﾟ")))
+    txt <- c("づいﾞ", "゛んﾞ", "たーﾟ")
+    expect_equivalent(as.list(tokens(txt)),
+                      list(c("づ", "いﾞ"), c("゛んﾞ"), c("た", "ーﾟ")))
 })
 
 test_that("types attribute is a character vector", {
@@ -120,19 +119,23 @@ test_that("types attribute is a character vector", {
 })
 
 test_that("remove_url works as expected", {
-    txt <- c("The URL was http://t.co/something.",
-             "The URL was http://quanteda.io",
-             "https://github.com/quanteda/quanteda/issue/1 is another URL",
-             "www.r-project.org/about.html is a specific page without protocol",
-             "https://www.google.com/search?q=quanteda+package is a google search",
-             "ftp://user@host/foo/bar.txt is a FTP-hosted file",
-             "kohei.watanabe@quanteda.org is an email address",
-             "The U.S. is not an url")
+    txt <- c(text1 = "The URL was http://t.co/something.",
+             text2 = "The URL was http://quanteda.io",
+             text2a = "The URL was irc://t.co/something.",
+             text2b = "The URL was file://quanteda.io",
+             text3 = "https://github.com/quanteda/quanteda/issue/1 is another URL",
+             text4 = "www.r-project.org/about.html is a specific page without protocol",
+             text5 = "https://www.google.com/search?q=quanteda+package is a google search",
+             text6 = "ftp://user@host.org/foo/bar.txt is a FTP-hosted file",
+             text7 = "kohei.watanabe@quanteda.org is an email address",
+             text8 = "The U.S. is not an url")
     toks <- tokens(txt, remove_url = TRUE)
     expect_equal(
         as.list(toks),
         list(text1 = c("The", "URL", "was"),
              text2 = c("The", "URL", "was"),
+             text2a = c("The", "URL", "was"),
+             text2b = c("The", "URL", "was"),
              text3 = c("is", "another", "URL"),
              text4 = c("is", "a", "specific", "page", "without", "protocol"),
              text5 = c("is", "a", "google", "search"),
@@ -440,7 +443,7 @@ test_that("empty tokens are removed correctly", {
 test_that("combined tokens objects have all the attributes", {
 
     toks1 <- tokens(c(text1 = "a b c"))
-    toks2 <- tokens_compound(tokens(c(text2 = "d e f")), phrase("e f"), concatenator = "+")
+    toks2 <- tokens(c(text2 = "d e f"), concatenator = "+")
     toks3 <- tokens(c(text3 = "d e f"), what = "sentence")
     expect_warning(
         toks4 <- tokens(c(text4 = "d e f"), ngram = 1:2, skip = 2),

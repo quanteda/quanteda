@@ -40,7 +40,7 @@ ORCID
 Pennebaker
 Provalis
 QUANTESS
-Quant
+RHEL
 RStudio
 RTools
 Raghavan
@@ -60,6 +60,7 @@ TTR
 TX
 TermDocumentMatrix
 Tokenizers
+UBSAN
 Unlist
 VCorpus
 Vm
@@ -257,6 +258,8 @@ twitteR
 uXXXX
 underdispersion
 unescaped
+unigram
+unigrams
 valuetype
 vocab
 vol
@@ -276,3 +279,13 @@ RuleBasedBreakIterator
 yml
 RcppParallel
 RcppArmadillo
+XCode
+config
+gfortran
+pkg
+UBSAN
+LLM
+LLMs
+LLM's
+LLaMA's
+SentencePiece

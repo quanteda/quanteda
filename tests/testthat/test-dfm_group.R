@@ -377,3 +377,19 @@ test_that("tokens_group drop document for NA", {
                             stringsAsFactors = FALSE))
 })
 
+test_that("dfm_group() verbose messages work", {
+    corp <- corpus(c("a a b", "a b c c", "a c d d", "a c c d", "c c b d"),
+                   docvars = data.frame(grp = c("grp1", "grp1", "grp2", "grp2", "grp3")))
+    dfmat <- dfm(tokens(corp))
+    
+    expect_message(
+        dfm_group(dfmat, groups = grp, verbose = TRUE),
+        "dfm_group() changed from 4 features (5 documents) to 4 features (3 documents)",
+        fixed = TRUE
+    )
+    expect_message(
+        dfm_group(dfmat, groups = c(1, 1, 2, 2, 1), verbose = TRUE),
+        "dfm_group() changed from 4 features (5 documents) to 4 features (2 documents)",
+        fixed = TRUE
+    )
+})

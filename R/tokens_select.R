@@ -15,8 +15,7 @@
 #' @param selection whether to `"keep"` or `"remove"` the tokens matching
 #'   `pattern`
 #' @inheritParams valuetype
-#' @param verbose if `TRUE` print messages about how many tokens were selected
-#'   or removed
+#' @inheritParams messages
 #' @param padding if `TRUE`, leave an empty string where the removed tokens
 #'   previously existed.  This is useful if a positional match is needed between
 #'   the pre- and post-selected tokens, for instance if a window of adjacency
@@ -44,6 +43,7 @@
 #'   `NULL` for no limits.  These are applied after (and hence, in addition to)
 #'   any selection based on pattern matches.
 #' @inheritParams apply_if
+#' @inheritParams messages
 #' @return a [tokens] object with tokens selected or removed based on their
 #'   match to `pattern`
 #' @export
@@ -161,7 +161,7 @@ tokens_select.tokens_xptr <- function(x, pattern = NULL,
         }
     } else {
         ids <- object2id(pattern, type, valuetype, case_insensitive,
-                         field_object(attrs, "concatenator"))
+                         concatenator = field_object(attrs, "concatenator"))
     }
 
     # selection by nchar
@@ -191,15 +191,15 @@ tokens_select.tokens_xptr <- function(x, pattern = NULL,
         }
     }
 
-    if (verbose) message_select(selection, length(ids), 0)
     if (length(window) == 1) window <- rep(window, 2)
-
     startpos <- rep(startpos, length.out = ndoc(x))
     endpos <- rep(endpos, length.out = ndoc(x))
 
     if (is.null(apply_if))
         apply_if <- rep(TRUE, length.out = ndoc(x))
-
+    
+    if (verbose)
+        before <- stats_tokens(x)
     if (selection == "keep") {
         result <- cpp_tokens_select(x, ids, 1, padding, window[1], window[2], startpos, endpos, !apply_if,
                                     get_threads())
@@ -207,7 +207,11 @@ tokens_select.tokens_xptr <- function(x, pattern = NULL,
         result <- cpp_tokens_select(x, ids, 2, padding, window[1], window[2], startpos, endpos, !apply_if,
                                     get_threads())
     }
-    rebuild_tokens(result, attrs)
+    result <- rebuild_tokens(result, attrs)
+    if (verbose)
+        message_tokens(ifelse(selection == "keep", "tokens_keep()", "tokens_remove()"), 
+                              before, stats_tokens(result))
+    return(result)
 }
 
 

@@ -18,15 +18,11 @@ setMethod("print", signature(x = "dfm"),
               
               if (show_summary) {
                   docvars <- docvars(x)
-                  cat(msg("Document-feature matrix of: %d %s, %d %s (%s sparse) and %d %s.\n",
-                          list(ndoc(x), c("document", "documents"),
-                               nfeat(x), c("feature", "features"),
-                               format_sparsity(sparsity(x)),
-                               ncol(docvars), c("docvar", "docvars")
-                               ),
-                          list(NULL, ndoc(x) != 1, NULL, nfeat(x) != 1, NULL, 
-                               NULL, ncol(docvars) != 1)
-                          ))
+                  cat(msg("Document-feature matrix of: %s %s, %s %s (%s sparse) and %s %s.\n",
+                          ndoc(x), if (ndoc(x) == 1) "document" else "documents",
+                          nfeat(x), if (nfeat(x) == 1) "feature" else "features",
+                          format_sparsity(sparsity(x)),
+                          ncol(docvars), if (ncol(docvars) == 1) "docvar" else "docvars"))
               }
               if (max_ndoc < 0) 
                   max_ndoc <- ndoc(x)
@@ -62,14 +58,14 @@ print_dfm <- function(x, max_ndoc, max_nfeat, show_summary, ...) {
     if (ndoc_rem > 0 || nfeat_rem > 0) {
         cat("[", sep = "") 
         if (ndoc_rem > 0) {
-            cat(" reached max_ndoc ... ", format(ndoc_rem, big.mark = ","), " more document", sep = "") 
-            if (ndoc_rem > 1) cat("s", sep = "")
+            cat(msg(" reached max_ndoc ... %s more %s",
+                    ndoc_rem, if (ndoc_rem == 1) "document" else "documents"))
         }
         if (ndoc_rem > 0 && nfeat_rem > 0) 
             cat(",", sep = "")
         if (nfeat_rem > 0) {
-            cat(" reached max_nfeat ... ", format(nfeat_rem, big.mark = ","), " more feature", sep = "") 
-            if (nfeat_rem > 1) cat("s", sep = "")
+            cat(msg(" reached max_nfeat ... %s more %s",
+                    nfeat_rem, if (nfeat_rem == 1) "feature" else "features"))
         }
         cat(" ]\n", sep = "") 
     }
