@@ -250,11 +250,10 @@ dfm_weight.dfm <- function(x,
             x@x <- vapply(1:length(x@i), function(doc) plist[[x@i[doc] + 1L]][as.character(x@x[doc])], numeric(1))
 
             if (estimate_zeros){
-              x_dense <- as(x, "dgCMatrix")
-              for (doc in 1:nrow(x_dense)) {
-                x_dense[doc,x_dense[doc,] == 0] <- plist[[doc]]["P0"]/sum(x_dense[doc,] == 0)
-              }
-              x <- matrix2dfm(x_dense, x@docvars, x@meta)
+              x_dense <- t(as(x, "dgCMatrix"))
+              doc_zeros <- colSums(x_dense==0)
+              x_dense[x_dense == 0] <- rep.int(sapply(plist, \(p) p["P0"])/doc_zeros, doc_zeros)
+              x <- matrix2dfm(t(x_dense), x@docvars, x@meta)
             }
             
             field_object(attrs, "weight_tf")$crit <- crit
