@@ -32,3 +32,5 @@ quanteda.pdf
 ^tests/data_creation$
 ^\.github$
 ^CRAN-SUBMISSION$
+^CLAUDE\.md$
+^\.claude$

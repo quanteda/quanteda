@@ -1273,4 +1273,48 @@ test_that("cancatenator is passed to the downstream", {
     expect_identical(concat(toks_comp2), "*")
     
 })
+
+test_that("as.tensor.tokens works correctly", {
+    skip_if_not_installed("torch")
+
+    # Check if torch is actually functional (not just installed)
+    skip_if(inherits(try(torch::torch_tensor(1L), silent = TRUE), "try-error"),
+            "torch is not fully configured")
+
+    toks <- tokens(c(doc1 = "a b c d e f g",
+                     doc2 = "a b c g",
+                     doc3 = ""))
+
+    # Test basic conversion
+    tensor <- as.tensor(toks)
+    expect_s3_class(tensor, "torch_tensor")
+    expect_true(tensor$is_sparse())
+
+    # Test with length parameter
+    tensor_len <- as.tensor(toks, length = 10)
+    expect_equal(tensor_len$size(), c(3, 10))
+
+    # Test empty tokens
+    toks_empty <- tokens(c(doc1 = "", doc2 = ""))
+    tensor_empty <- as.tensor(toks_empty)
+    expect_s3_class(tensor_empty, "torch_tensor")
+    expect_true(tensor_empty$is_sparse())
+
+    # Test single document
+    toks_single <- tokens(c(doc1 = "a b c"))
+    tensor_single <- as.tensor(toks_single)
+    expect_s3_class(tensor_single, "torch_tensor")
+    expect_true(tensor_single$is_sparse())
+})
+
+test_that("as.tensor.tokens requires torch package", {
+    skip_if(requireNamespace("torch", quietly = TRUE), "torch is installed")
+
+    toks <- tokens(c(doc1 = "a b c"))
+    expect_error(
+        as.tensor(toks),
+        "Package 'torch' is required"
+    )
+})
+
 quanteda_options(reset = TRUE)

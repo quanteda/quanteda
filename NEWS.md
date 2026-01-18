@@ -2,6 +2,8 @@
 
 ## Changes and additions
 
+* Added `as.tensor()` method for tokens objects to convert tokens to sparse tensors compatible with the \pkg{torch} package (#2474).
+
 * Added `tokens_annotate()` to insert tags to a tokens object using a dictionary.
 
 # quanteda 4.3.1

@@ -35,6 +35,71 @@ as.character.tokens <- function(x, use.names = FALSE, ...) {
 #'   tokens, `FALSE` otherwise.
 is.tokens <- function(x) "tokens" %in% class(x)
 
+#' @rdname as.tokens
+#' @param length optional integer specifying the maximum length (number of
+#'   positions) for the sparse tensor. If `NULL` (default), the length is
+#'   inferred from the maximum token position across all documents.
+#' @return `as.tensor` returns a sparse COO tensor from a [tokens] object,
+#'   compatible with the \pkg{torch} package. Each document is represented as
+#'   a row, and token positions as columns. Values are the integer token IDs.
+#' @export
+#' @examples
+#' \dontrun{
+#' library(torch)
+#' toks <- tokens(c(doc1 = "a b c d e f g",
+#'                  doc2 = "a b c g",
+#'                  doc3 = ""))
+#' as.tensor(toks)
+#' }
+as.tensor <- function(x, ...) {
+    UseMethod("as.tensor")
+}
+
+#' @rdname as.tokens
+#' @method as.tensor tokens
+#' @export
+as.tensor.tokens <- function(x, length = NULL, ...) {
+    if (!requireNamespace("torch", quietly = TRUE)) {
+        stop("Package 'torch' is required for as.tensor(). ",
+             "Install it with install.packages('torch').",
+             call. = FALSE)
+    }
+
+    torch <- asNamespace("torch")
+
+    lis <- as.list(unclass(x))
+    l <- lengths(lis)
+
+    if (sum(l) == 0L) {
+        # no tokens anywhere: return an empty sparse tensor
+        i <- torch$torch_empty(c(2L, 0L), dtype = torch$torch_int64())
+        v <- torch$torch_empty(0L, dtype = torch$torch_int64())
+        return(torch$torch_sparse_coo_tensor(indices = i, values = v))
+    }
+
+    i <- torch$torch_tensor(
+        rbind(rep(seq_along(l), l), unlist(lapply(lis, seq_along))),
+        dtype = torch$torch_int64()
+    )
+    v <- torch$torch_tensor(
+        unlist(lis, use.names = FALSE),
+        dtype = torch$torch_int64()
+    )
+
+    if (!is.null(length)) {
+        length <- check_integer(length, min = 1)
+        result <- torch$torch_sparse_coo_tensor(
+            indices = i,
+            values = v,
+            size = c(length(l), length)
+        )
+    } else {
+        result <- torch$torch_sparse_coo_tensor(indices = i, values = v)
+    }
+
+    return(result)
+}
+
 # extension of generics for tokens -----------
 
 #' @rdname tokens-class

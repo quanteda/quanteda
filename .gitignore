@@ -18,6 +18,8 @@ API_notes.md
 # Tests
 /revdep/.cache.rds
 *Rcheck*
+tests/testthat/_problems/
+tests/testthat/testthat-problems.rds
 # R or RStudio
 *.Rproj
 .Rproj.user
@@ -37,3 +39,5 @@ vignettes/quickstart.html
 revdep/
 /doc/
 /Meta/
+CLAUDE.md
+.claude
