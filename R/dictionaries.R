@@ -742,8 +742,12 @@ tokenize_dictionary_values <- function(dict, separator) {
             dict[[i]] <- tokenize_dictionary_values(dict[[i]], separator)
         } else {
             if (is.character(dict[[i]])) {
-                toks <- quanteda:::tokenize_word4(dict[[i]], verbose = FALSE)
-                dict[[i]] <- unlist(lapply(toks, paste, collapse = separator))
+                toks <- tokenize_word4(dict[[i]], verbose = FALSE)
+                v <- unlist(lapply(toks, paste, collapse = separator))
+                # restore separated wildcard
+                v <- stri_replace_all_regex(v, paste0("([?*])", separator), "$1")
+                v <- stri_replace_all_regex(v, paste0(separator, "([?*])"), "$1")
+                dict[[i]] <- v
             }
         }
     }
