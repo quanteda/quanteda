@@ -591,7 +591,8 @@ test_that("flatten_dictionary() is working", {
 test_that("tokenize is working", {
     
     dict1 <- dictionary(list(ASIA = list("IN" = "印度", 
-                                         "ID" = "印度尼西亚")), tokenize = FALSE)
+                                         "ID" = "印度尼西亚")), 
+                        tokenize = FALSE)
     expect_equivalent(
         dict1,
         list(ASIA = list("IN" = "印度", 
@@ -599,17 +600,29 @@ test_that("tokenize is working", {
     )
     
     dict2 <- dictionary(list(ASIA = list("IN" = "印度", 
-                                         "ID" = "印度尼西亚")), tokenize = TRUE)
+                                         "ID" = "印度尼西亚")), 
+                        tokenize = TRUE)
     expect_equivalent(
         dict2,
         list(ASIA = list("IN" = "印度", 
                          "ID" = "印度 尼西亚"))
     )
     
+    # update existing object
     dict3 <- dictionary(dict1, tokenize = TRUE)
     expect_equivalent(
         dict2,
         dict3
+    )
+    
+    # different separator
+    dict4 <- dictionary(list(ASIA = list("IN" = "印度", 
+                                "ID" = "印度尼西亚")), 
+                        separator = "_", tokenize = TRUE)
+    expect_equivalent(
+        dict4,
+        list(ASIA = list("IN" = "印度", 
+                         "ID" = "印度_尼西亚"))
     )
 })
 
