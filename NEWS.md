@@ -3,6 +3,7 @@
 ## Changes and additions
 
 * Added `tokens_annotate()` to insert tags to a tokens object using a dictionary.
+* Added `tokenize` to `dictionary()` to match dictionary values and tokens more easily in Japanese and Chinese.
 
 # quanteda 4.3.1
 
