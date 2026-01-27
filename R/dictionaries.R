@@ -71,7 +71,7 @@ check_entries <- function(dict) {
 #' supplied as part of the LIWC 2001, 2007, and 2015 software (see References).
 #' @param x a named list of character vector dictionary entries, including
 #'   [valuetype] pattern matches, and including multi-word expressions
-#'   separated by `concatenator`.  See examples. This argument may be
+#'   separated by `separator`.  See examples. This argument may be
 #'   omitted if the dictionary is read from `file`.
 #' @param file file identifier for a foreign dictionary
 #' @param format character identifier for the format of the foreign dictionary.
@@ -84,6 +84,8 @@ check_entries <- function(dict) {
 #'   \item{`"YAML"`}{the standard YAML format}}
 #' @param separator the character in between multi-word dictionary values. This
 #'   defaults to `" "`.
+#' @param tokenize if `TRUE` segment dictionary values by separators to using 
+#'   the built-in tokenizer. Useful for Japanese and Chinese dictionaries.
 #' @param encoding additional optional encoding value for reading in imported
 #'   dictionaries. This uses the [iconv] labels for encoding.  See the
 #'   "Encoding" section of the help for [file].
@@ -151,8 +153,8 @@ check_entries <- function(dict) {
 #' }
 #' @export
 dictionary <- function(x, file = NULL, format = NULL,
-                       separator = " ",
-                       tolower = TRUE, encoding = "utf-8") {
+                       separator = " ", tolower = TRUE, 
+                       tokenize = FALSE, encoding = "utf-8") {
     UseMethod("dictionary")
 }
 
@@ -160,13 +162,14 @@ dictionary <- function(x, file = NULL, format = NULL,
 #' @importFrom stringi stri_trans_tolower
 #' @export
 dictionary.default <- function(x, file = NULL, format = NULL,
-                               separator = " ",
-                               tolower = TRUE, encoding = "utf-8") {
+                               separator = " ", tolower = TRUE, 
+                               tokenize = FALSE, encoding = "utf-8") {
     
     if (!missing(x) & is.null(file))
         stop("x must be a list if file is not specified")
     separator <- check_character(separator, min_nchar = 1)
     tolower <- check_logical(tolower)
+    tokenize <- check_logical(tokenize)
     
     formats <- c(cat = "wordstat",
                  dic = "LIWC",
@@ -201,8 +204,11 @@ dictionary.default <- function(x, file = NULL, format = NULL,
         x <- yaml::yaml.load_file(file, as.named.list = TRUE)
         x <- list2dictionary(x)
     }
-    if (tolower) x <- lowercase_dictionary_values(x)
+    if (tolower) 
+        x <- lowercase_dictionary_values(x)
     x <- merge_dictionary_values(x)
+    if (tokenize) 
+        x <- tokenize_dictionary_values(x, separator)
     build_dictionary2(x, separator = separator)
 }
 
@@ -210,27 +216,33 @@ dictionary.default <- function(x, file = NULL, format = NULL,
 #' @export
 dictionary.list <- function(x, file = NULL, format = NULL,
                             separator = " ",
-                            tolower = TRUE, encoding = "utf-8") {
+                            tolower = TRUE, tokenize = FALSE,
+                            encoding = "utf-8") {
     
     separator <- check_character(separator, min_nchar = 1)
     tolower <- check_logical(tolower)
+    tokenize <- check_logical(tokenize)
     
     if (!is.null(file) || !is.null(format) || encoding != "utf-8")
         stop("cannot specify file, format, or encoding when x is a list")
     x <- list2dictionary(x)
-    if (tolower) x <- lowercase_dictionary_values(x)
+    if (tolower) 
+        x <- lowercase_dictionary_values(x)
     x <- replace_dictionary_values(x, separator, " ")
     x <- merge_dictionary_values(x)
+    if (tokenize)
+        x <- tokenize_dictionary_values(x, separator)
     build_dictionary2(x, separator = separator)
 }
 
 #' @export
 dictionary.dictionary2 <- function(x, file = NULL, format = NULL,
                                    separator = " ",
-                                   tolower = TRUE, encoding = "utf-8") {
+                                   tolower = TRUE, tokenize = FALSE,
+                                   encoding = "utf-8") {
     x <- as.dictionary(x)
     dictionary(as.list(x), separator = separator, tolower = tolower,
-               encoding = encoding)
+               tokenize = tokenize, encoding = encoding)
 }
 
 # coercion and checking methods -----------
@@ -708,6 +720,30 @@ list2dictionary <- function(dict) {
                 dict[[i]] <- list(unique(stri_trim_both(stri_enc_toutf8(dict[[i]]))))
             } else {
                 dict[[i]] <- list(dict[[i]])
+            }
+        }
+    }
+    return(dict)
+}
+
+#' Internal function to tokenize dictionary values
+#' @param dict list of object
+#' @importFrom stringi stri_trim_both stri_enc_toutf8
+#' @keywords internal
+#' @examples
+#' dict <- dictionary(list(ASIA = list("IN" = "印度", 
+#'                                     "ID" = "印度尼西亚")))
+#' quanteda:::tokenize_dictionary_values(dict, " ")
+tokenize_dictionary_values <- function(dict, separator) {
+    
+    dict <- unclass(dict)
+    for (i in seq_along(dict)) {
+        if (is.list(dict[[i]])) {
+            dict[[i]] <- tokenize_dictionary_values(dict[[i]], separator)
+        } else {
+            if (is.character(dict[[i]])) {
+                toks <- quanteda:::tokenize_word4(dict[[i]], verbose = FALSE)
+                dict[[i]] <- unlist(lapply(toks, paste, collapse = separator))
             }
         }
     }
