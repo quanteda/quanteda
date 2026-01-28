@@ -630,7 +630,7 @@ test_that("tokenize is working", {
     
     # different separator
     dict4 <- dictionary(list(ASIA = list("IN" = "印度", 
-                                "ID" = "印度尼西亚")), 
+                                         "ID" = "印度尼西亚")), 
                         separator = "_", tokenize = TRUE)
     expect_equivalent(
         dict4,
@@ -679,8 +679,8 @@ test_that("tokenize is working", {
     )
     
     expect_error(
-        dictionary(list(ASIA = list("MY" = "Kuala Lumpur", 
-                                    "ID" = "Indonasia")), 
+        dictionary(list(ASIA = list("IN" = "印度", 
+                                    "ID" = "印度尼西亚")), 
                    tokenize = c(TRUE, FALSE)),
         "The length of tokenize must be 1"
     )
