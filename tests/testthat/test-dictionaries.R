@@ -27,6 +27,12 @@ test_that("dictionary constructors checks values", {
 })
 
 test_that("dictionary constructor ignores extra arguments", {
+    
+    expect_error(
+        dictionary(list(first =  c("a", "b"), second = "c"), encoding = "UTF-8"),
+        "Cannot specify file, format, or encoding when x is a list"
+    )
+    
     expect_error(
         dictionary(list(first =  c("a", "b"), second = "c"), something = TRUE),
         "unused argument \\(something = TRUE\\)"
@@ -559,7 +565,7 @@ test_that("flatten_dictionary() is working", {
                 "D" = NULL)
     
     expect_error(flatten_dictionary(lis), 
-                 "dictionary must be a dictionary object")
+                 "Dictionary must be a dictionary object")
     
     dict <- dictionary(lis, tolower = FALSE)
     dict_flat1 <- flatten_dictionary(dict)
@@ -652,12 +658,24 @@ test_that("tokenize is working", {
                          "ID" = "Indonasia"))
     )
     
+    # with a file
+    dict7 <- dictionary(file = "../data/dictionaries/newsmap.yml",
+                        tokenize = TRUE)
+    expect_equivalent(
+        dict7,
+        list(AFRICA = list(
+            "CD" ="コンゴ 民主 共和国",
+            "CF" = "中央 アフリカ",
+            "CI" = "コート ジボワール"
+        ))
+    )
+    
     # error with separator
     expect_error(
         dictionary(list(ASIA = list("MY" = "Kuala Lumpur", 
                                     "ID" = "Indonasia")), 
                         tokenize = TRUE),
-        "dictionary values are already tokenized"
+        "Dictionary values are already tokenized"
     )
     
     expect_error(
