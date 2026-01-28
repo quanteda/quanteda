@@ -744,7 +744,7 @@ tokenize_dictionary_values <- function(dict, separator) {
             if (is.character(dict[[i]])) {
                 if (any(stri_detect_fixed(dict[[i]], separator)))
                     stop("Dictionary values are already tokenized")
-                toks <- tokenize_word4(dict[[i]], verbose = FALSE)
+                toks <- as.list(tokens(dict[[i]], verbose = FALSE))
                 v <- unlist(lapply(toks, paste, collapse = separator))
                 # restore separated wildcard
                 v <- stri_replace_all_regex(v, paste0("([?*])", separator), "$1")
