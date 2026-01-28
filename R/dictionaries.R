@@ -560,7 +560,7 @@ split_values <- function(dict, concatenator_dictionary, concatenator_tokens) {
 flatten_dictionary <- function(dictionary, levels = 1:100) {
     
     if (!is.dictionary(dictionary))
-        stop("Dictionary must be a dictionary object")
+        stop("Dictionary object must be provided")
     levels <- check_integer(levels, max_len = 100, min = 1, max = 100)
     attrs <- attributes(dictionary)
     temp <- flatten_list(unclass(dictionary), levels)

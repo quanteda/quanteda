@@ -565,7 +565,7 @@ test_that("flatten_dictionary() is working", {
                 "D" = NULL)
     
     expect_error(flatten_dictionary(lis), 
-                 "Dictionary must be a dictionary object")
+                 "Dictionary object must be provided")
     
     dict <- dictionary(lis, tolower = FALSE)
     dict_flat1 <- flatten_dictionary(dict)
