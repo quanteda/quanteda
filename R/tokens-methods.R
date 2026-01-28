@@ -75,12 +75,17 @@ as.tensor.tokens <- function(x, length = NULL, ...) {
 
     lis <- as.list(unclass(as.tokens(x)))
     l <- lengths(lis)
+    ndoc <- length(l)
 
     if (sum(l) == 0L) {
         # no tokens anywhere: return an empty sparse tensor
         i <- torch$torch_empty(c(2L, 0L), dtype = torch$torch_int64())
         v <- torch$torch_empty(0L, dtype = torch$torch_int64())
-        return(torch$torch_sparse_coo_tensor(indices = i, values = v))
+        if (!is.null(length)) {
+            return(torch$torch_sparse_coo_tensor(indices = i, values = v, size = c(ndoc, length)))
+        } else {
+            return(torch$torch_sparse_coo_tensor(indices = i, values = v))
+        }
     }
 
     i <- torch$torch_tensor(
@@ -92,7 +97,11 @@ as.tensor.tokens <- function(x, length = NULL, ...) {
         dtype = torch$torch_int64()
     )
 
-    result <- torch$torch_sparse_coo_tensor(indices = i, values = v)
+    if (!is.null(length)) {
+        result <- torch$torch_sparse_coo_tensor(indices = i, values = v, size = c(ndoc, length))
+    } else {
+        result <- torch$torch_sparse_coo_tensor(indices = i, values = v)
+    }
 
     return(result)
 }
