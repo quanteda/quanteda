@@ -224,7 +224,7 @@ dictionary.list <- function(x, file = NULL, format = NULL,
     tokenize <- check_logical(tokenize)
     
     if (!is.null(file) || !is.null(format) || encoding != "utf-8")
-        stop("cannot specify file, format, or encoding when x is a list")
+        stop("Cannot specify file, format, or encoding when x is a list")
     x <- list2dictionary(x)
     if (tolower) 
         x <- lowercase_dictionary_values(x)
@@ -560,7 +560,7 @@ split_values <- function(dict, concatenator_dictionary, concatenator_tokens) {
 flatten_dictionary <- function(dictionary, levels = 1:100) {
     
     if (!is.dictionary(dictionary))
-        stop("dictionary must be a dictionary object")
+        stop("Dictionary must be a dictionary object")
     levels <- check_integer(levels, max_len = 100, min = 1, max = 100)
     attrs <- attributes(dictionary)
     temp <- flatten_list(unclass(dictionary), levels)
@@ -743,7 +743,7 @@ tokenize_dictionary_values <- function(dict, separator) {
         } else {
             if (is.character(dict[[i]])) {
                 if (any(stri_detect_fixed(dict[[i]], separator)))
-                    stop("dictionary values are already tokenized")
+                    stop("Dictionary values are already tokenized")
                 toks <- tokenize_word4(dict[[i]], verbose = FALSE)
                 v <- unlist(lapply(toks, paste, collapse = separator))
                 # restore separated wildcard
