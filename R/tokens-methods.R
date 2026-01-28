@@ -65,7 +65,7 @@ as.tensor.tokens <- function(x, length = NULL, ...) {
              call. = FALSE)
     }
 
-    torch <- asNamespace("torch")
+    torch <- loadNamespace("torch")
 
     lis <- as.list(unclass(as.tokens(x)))
     l <- lengths(lis)
