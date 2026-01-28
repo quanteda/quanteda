@@ -30,6 +30,19 @@ jobs:
           extra-packages: any::covr, any::xml2
           needs: coverage
 
+      - name: Install torch backend
+        run: |
+          if (requireNamespace("torch", quietly = TRUE)) {
+            tryCatch({
+              torch::install_torch()
+              cat("torch backend installed successfully\n")
+            }, error = function(e) {
+              cat("Warning: torch backend installation failed:", conditionMessage(e), "\n")
+              cat("torch tests will be skipped\n")
+            })
+          }
+        shell: Rscript {0}
+
       - name: Test coverage
         run: |
           cov <- covr::package_coverage(
