@@ -28,8 +28,8 @@ tokens(
 
 \item{what}{character; which tokenizer to use.  The default \code{what = "word"}
 is the current version of the \pkg{quanteda} tokenizer, set by
-\code{quanteda_options(okens_tokenizer_word)}. Legacy tokenizers (version < 2)
-are also supported, including the default \code{what = "word1"}. See the Details
+\code{quanteda_options(tokens_tokenizer_word)}. Legacy tokenizers (version < 2)
+are also supported, including the default \code{what = "word4"}. See the Details
 and quanteda Tokenizers below.}
 
 \item{remove_punct}{logical; if \code{TRUE} remove all characters in the Unicode
@@ -123,7 +123,7 @@ from social media (including hashtags and usernames).
 
 \section{quanteda Tokenizers}{
  The default word tokenizer \code{what = "word"} is
-updated in major version 4.  It is even smarter than the v3 and v4
+updated in major version 4.  It is even smarter than the v2 and v3
 versions, with additional options for customization.  See
 \code{\link[=tokenize_word4]{tokenize_word4()}} for full details.
 

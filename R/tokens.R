@@ -16,8 +16,8 @@
 #'   [character] object to tokenize.
 #' @param what character; which tokenizer to use.  The default `what = "word"`
 #'   is the current version of the \pkg{quanteda} tokenizer, set by
-#'   `quanteda_options(okens_tokenizer_word)`. Legacy tokenizers (version < 2)
-#'   are also supported, including the default `what = "word1"`. See the Details
+#'   `quanteda_options(tokens_tokenizer_word)`. Legacy tokenizers (version < 2)
+#'   are also supported, including the default `what = "word4"`. See the Details
 #'   and quanteda Tokenizers below.
 #' @param remove_punct logical; if `TRUE` remove all characters in the Unicode
 #'   "Punctuation" `[P]` class, with exceptions for those used as prefixes for
@@ -76,10 +76,10 @@
 #'   from social media (including hashtags and usernames).
 #'
 #' @section quanteda Tokenizers: The default word tokenizer `what = "word"` is
-#'   updated in major version 4.  It is even smarter than the v3 and v4
+#'   updated in major version 4.  It is even smarter than the v2 and v3
 #'   versions, with additional options for customization.  See
 #'   [tokenize_word4()] for full details.
-#' 
+#'
 #'   The default tokenizer splits tokens using [stri_split_boundaries(x, type =
 #'   "word")][stringi::stri_split_boundaries] but by default preserves infix
 #'   hyphens (e.g. "self-funding"), URLs, and social media "tag" characters
@@ -91,8 +91,8 @@
 #'   for usernames.
 #'
 #'   For backward compatibility, the following older tokenizers are also
-#'   supported through `what`: 
-#'   \describe{ 
+#'   supported through `what`:
+#'   \describe{
 #'   \item{`"word1"`}{(legacy) implements
 #'   similar behaviour to the version of `what = "word"` found in pre-version 2.
 #'   (It preserves social media tags and infix hyphens, but splits URLs.)
@@ -103,7 +103,7 @@
 #'   can be had using the `split_tags` argument and selective tokens removals.}
 #'   \item{`"word2", "word3"`}{(legacy) implements
 #'   similar behaviour to the versions of "word" found in \pkg{quanteda} versions
-#'   3 and 4.} 
+#'   3 and 4.}
 #'   \item{`"fasterword"`}{(legacy) splits
 #'   on whitespace and control characters, using
 #'   `stringi::stri_split_charclass(x, "[\\p{Z}\\p{C}]+")`}
@@ -150,7 +150,7 @@
 #'     "The quick brown fox.  It jumped over the lazy dog.") |>
 #'     tokens()
 #' }
-#' 
+#'
 tokens <-  function(x,
                     what = "word",
                     remove_punct = FALSE,
@@ -194,12 +194,12 @@ tokens.list <- function(x,
                         verbose = quanteda_options("verbose"),
                         ...,
                         xptr = FALSE) {
-    
+
     if (is_verbose(verbose, ...)) {
         message_create("list", if (xptr) "tokens_xptr" else "tokens")
-        proc_time <- proc.time()   
+        proc_time <- proc.time()
     }
-    
+
     x <- tokens(as.tokens_xptr(as.tokens(x)),
                 remove_punct = remove_punct,
                 remove_symbols = remove_symbols,
@@ -214,10 +214,10 @@ tokens.list <- function(x,
                 ...)
     if (!xptr)
         x <- as.tokens(x)
-    
-    if (is_verbose(verbose, ...)) 
+
+    if (is_verbose(verbose, ...))
         message_finish(x, proc_time)
-    
+
     return(x)
 }
 
@@ -239,12 +239,12 @@ tokens.character <- function(x,
                              verbose = quanteda_options("verbose"),
                              ...,
                              xptr = FALSE) {
-    
+
     if (is_verbose(verbose, ...)) {
         message_create("character", if (xptr) "tokens_xptr" else "tokens")
-        proc_time <- proc.time()   
+        proc_time <- proc.time()
     }
-    
+
     result <- tokens(corpus(x),
                      what = what,
                      remove_punct = remove_punct,
@@ -262,9 +262,9 @@ tokens.character <- function(x,
                      internal = TRUE,
                      ...)
 
-    if (is_verbose(verbose, ...)) 
+    if (is_verbose(verbose, ...))
         message_finish(result, proc_time)
-    
+
     return(result)
 }
 
@@ -287,14 +287,14 @@ tokens.corpus <- function(x,
                           verbose = quanteda_options("verbose"),
                           ...,
                           xptr = FALSE)  {
-    
+
     if (is_verbose(verbose, ...)) {
         message_create("corpus", if (xptr) "tokens_xptr" else "tokens")
-        proc_time <- proc.time()   
+        proc_time <- proc.time()
     }
-    
+
     x <- as.corpus(x)
-    what <- match.arg(what, c("word", paste0("word", 1:4), 
+    what <- match.arg(what, c("word", paste0("word", 1:4),
                               "sentence", "character",
                               "fasterword", "fastestword"))
     remove_punct <- check_logical(remove_punct)
@@ -309,12 +309,12 @@ tokens.corpus <- function(x,
     concatenator <- check_character(concatenator)
     verbose <- check_logical(verbose)
     check_dots(..., method = c("tokens", "tokenize_word4"))
-    
+
     attrs <- attributes(x)
-    
+
     # call the appropriate tokenizer function
     if (verbose) catm(" ...starting tokenization\n")
-    
+
     tokenizer <- switch(what,
                         word = paste0("tokenize_", quanteda_options("tokens_tokenizer_word")),
                         sentence = "tokenize_sentence",
@@ -324,19 +324,19 @@ tokens.corpus <- function(x,
                         word3 = "tokenize_word2",
                         word2 = "tokenize_word2",
                         word1 = "tokenize_word1",
-                        fasterword = "tokenize_fasterword", 
+                        fasterword = "tokenize_fasterword",
                         fastestword = "tokenize_fastestword")
-    
+
     tokenizer_fn <- tryCatch(
         getFromNamespace(tokenizer, ns = "quanteda"),
         error = function(e) {
         stop("Invalid value in tokens_tokenizer_word", call. = FALSE)
     })
-    
-    if (!remove_separators && tokenizer %in% 
+
+    if (!remove_separators && tokenizer %in%
         paste0("tokenize_", c("fasterword", "fastestword", "sentence")))
         warning("remove_separators is always TRUE for this type")
-    
+
     if (tokenizer == "tokenize_word1") {
         x <- preserve_special1(x, split_hyphens = split_hyphens,
                                split_tags = split_tags, verbose = verbose)
@@ -345,28 +345,28 @@ tokens.corpus <- function(x,
                               split_tags = split_tags, verbose = verbose)
         special <- attr(x, "special")
     }
-    
+
     # split x into smaller blocks to reduce peak memory consumption
     x <- as.character(x)
     x <- split(x, factor(ceiling(seq_along(x) / quanteda_options("tokens_block_size"))))
-    
+
     result <- cpp_serialize(list())
     for (i in seq_along(x)) {
         if (verbose) catm(" ...tokenizing", i, "of", length(x), "blocks\n")
-        temp <- tokenizer_fn(x[[i]], split_hyphens = split_hyphens, split_tags = split_tags, 
+        temp <- tokenizer_fn(x[[i]], split_hyphens = split_hyphens, split_tags = split_tags,
                              verbose = verbose, ...)
         result <- cpp_serialize_add(temp, result, get_threads())
     }
     result <- build_tokens(
-        result, 
-        types = NULL, 
+        result,
+        types = NULL,
         what = what,
         tokenizer = tokenizer,
         concatenator = concatenator,
         docvars = select_docvars(attrs[["docvars"]], user = include_docvars, system = TRUE),
         meta = attrs[["meta"]]
     )
-    
+
     if (tokenizer == "tokenize_word1") {
         result <- restore_special1(result, split_hyphens = split_hyphens,
                                    split_tags = split_tags)
@@ -375,7 +375,7 @@ tokens.corpus <- function(x,
     } else if (tokenizer == "tokenize_word4") {
         result <- tokens_restore(result)
     }
-    
+
     result <- tokens(result,
                      remove_punct = remove_punct,
                      remove_symbols = remove_symbols,
@@ -389,13 +389,13 @@ tokens.corpus <- function(x,
                      concatenator = concatenator,
                      verbose = verbose,
                      internal = TRUE)
-    
+
     if (!xptr)
         result <- as.tokens(result)
-    
-    if (is_verbose(verbose, ...)) 
+
+    if (is_verbose(verbose, ...))
         message_finish(result, proc_time)
-    
+
     return(result)
 }
 
@@ -422,7 +422,7 @@ tokens.tokens_xptr <-  function(x,
         message_create("tokens_xptr", "tokens_xptr")
         proc_time <- proc.time()
     }
-    
+
     remove_punct <- check_logical(remove_punct)
     remove_symbols <- check_logical(remove_symbols)
     remove_numbers <- check_logical(remove_numbers)
@@ -435,7 +435,7 @@ tokens.tokens_xptr <-  function(x,
     concatenator <- check_character(concatenator)
     verbose <- check_logical(verbose)
     check_dots(..., method = c("tokens", "tokenize_word4"))
-    
+
     # splits
     if (split_hyphens) {
         if (verbose) catm(" ...splitting hyphens\n")
@@ -444,7 +444,7 @@ tokens.tokens_xptr <-  function(x,
     if (split_tags) {
         warning("split_tags argument is not used", call. = FALSE)
     }
-    
+
     # removals
     removals <- removals_regex(separators = remove_separators,
                                punct = remove_punct,
@@ -465,7 +465,7 @@ tokens.tokens_xptr <-  function(x,
                            verbose = FALSE)
         removals["separators"] <- NULL
     }
-    
+
     if (length(removals)) {
         x <- tokens_remove(x, paste(unlist(removals), collapse = "|"),
                            valuetype = "regex",  padding = padding,
@@ -474,18 +474,18 @@ tokens.tokens_xptr <-  function(x,
 
     if (!include_docvars)
         docvars(x) <- NULL
-    
+
     if (!identical(get_concatenator(x), concatenator)) {
-        #warning('concatenator changed from "', 
+        #warning('concatenator changed from "',
         #        get_concatenator(x), '" to "', concatenator, '"', call. = FALSE)
-        set_types(x) <- stri_replace_all_fixed(get_types(x), get_concatenator(x), 
+        set_types(x) <- stri_replace_all_fixed(get_types(x), get_concatenator(x),
                                                concatenator)
         set_concatenator(x) <- concatenator
     }
-    
+
     if (is_verbose(verbose, ...))
         message_finish(x, proc_time)
-    
+
     return(x)
 }
 
@@ -493,7 +493,7 @@ tokens.tokens_xptr <-  function(x,
 tokens.tokens <- function(x, ...) {
     if (is_verbose(...)) {
         message_create("tokens", "tokens")
-        proc_time <- proc.time()   
+        proc_time <- proc.time()
     }
     result <- as.tokens(tokens(as.tokens_xptr(x), internal = TRUE, ...))
     if (is_verbose(...))
@@ -603,7 +603,7 @@ removals_regex <- function(separators = FALSE,
         regex[["symbols"]] <- "^\\p{S}$"
     if (numbers) # includes currency amounts and those containing , or . digit separators, and 100bn
         regex[["numbers"]] <- "^\\p{Sc}{0,1}\\p{N}+([.,]*\\p{N})*\\p{Sc}{0,1}$"
-    if (url) 
+    if (url)
         regex[["url"]] <- "^([-a-zA-Z0-9+.]{2,20}://|www\\.)|^([-+a-zA-Z0-9_.]+@[-a-zA-Z0-9]+(\\.[-a-zA-Z0-9]+)*\\.[a-z]+)$"
     return(regex)
 }
@@ -720,7 +720,7 @@ tokens_recompile <- function(x, method = c("C++", "R")) {
             attributes(x) <- attrs
             type <- type_unique
         }
-    
+
         Encoding(type) <- "UTF-8"
         attr(x, "types") <- type
         x <- rebuild_tokens(x, attrs)
@@ -760,7 +760,7 @@ types.tokens <- function(x) {
 # "types<-.tokens" <- function(x, value) {
 #     set_types(x) <- value
 # }
-# 
+#
 # "types<-.tokens_xptr" <- function(x, value) {
 #     set_types(x) <- value
 # }
@@ -786,7 +786,7 @@ types.tokens <- function(x) {
 #' @examples
 #' toks <- tokens(data_corpus_inaugural[1:5])
 #' concat(toks)
-#' 
+#'
 concat <- function(x) {
     UseMethod("concat")
 }
