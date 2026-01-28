@@ -742,6 +742,8 @@ tokenize_dictionary_values <- function(dict, separator) {
             dict[[i]] <- tokenize_dictionary_values(dict[[i]], separator)
         } else {
             if (is.character(dict[[i]])) {
+                if (any(stri_detect_fixed(dict[[i]], separator)))
+                    stop("dictionary values are already tokenized")
                 toks <- tokenize_word4(dict[[i]], verbose = FALSE)
                 v <- unlist(lapply(toks, paste, collapse = separator))
                 # restore separated wildcard
