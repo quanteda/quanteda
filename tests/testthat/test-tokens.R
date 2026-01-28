@@ -209,12 +209,12 @@ test_that("c() works with tokens", {
     toks2 <- tokens(c(d3 = "And the third document."))
     toks3 <- tokens(c(d4 = "This is sample document 4."))
     toks4 <- tokens(c(d5 = "This is sample document five!"))
-    
+
     expect_error(
         c(toks1, list()),
         "Cannot combine different types of objects"
     )
-    
+
     expect_equal(
         c(toks1),
         toks1
@@ -717,7 +717,7 @@ test_that("tokens.tokens(x, remove_symbols = TRUE, verbose = TRUE) works as expe
 })
 
 test_that("tokens.tokens(x, remove_separators = TRUE, verbose = TRUE) works as expected (#1683)", {
-    
+
     expect_message(
         tokens(tokens("Removing separators", remove_separators = FALSE, what = "word1"),
                remove_separators = TRUE, verbose = TRUE),
@@ -887,19 +887,19 @@ test_that("tokens printing works", {
 })
 
 test_that("tokens.list() works", {
-    
+
     lis <- list(d1 = c("one", "two-three", "@test"), d2 = c("four", "."))
-    
+
     expect_identical(as.list(tokens(lis)), lis)
     expect_identical(as.list(tokens(lis, split_hyphens = TRUE)),
                      list(d1 = c("one", "two", "-", "three", "@test"),
                           d2 = c("four", ".")))
-    
+
     expect_message(
         tokens(lis, verbose = TRUE),
         "Creating a tokens from a list object..."
     )
-    
+
     expect_message(
         tokens(lis, verbose = TRUE, xptr = TRUE),
         "Creating a tokens_xptr from a list object..."
@@ -907,20 +907,20 @@ test_that("tokens.list() works", {
 })
 
 test_that("tokens.tokens_xptr() works", {
-    
+
     lis <- list(d1 = c("one", "two-three", "@test"), d2 = c("four", "."))
     xtoks <- tokens(lis, xptr = TRUE)
-    
+
     expect_identical(as.list(tokens(xtoks)), lis)
     expect_identical(as.list(tokens(xtoks, split_hyphens = TRUE)),
                      list(d1 = c("one", "two", "-", "three", "@test"),
                           d2 = c("four", ".")))
-    
+
     expect_message(
         tokens(xtoks, verbose = TRUE),
         "Creating a tokens_xptr from a tokens_xptr object..."
     )
-    
+
     expect_message(
         tokens(xtoks, verbose = TRUE),
         "Creating a tokens_xptr from a tokens_xptr object..."
@@ -1018,12 +1018,12 @@ test_that("tokens.tokens(x, padding = TRUE) works", {
 
 test_that("special1 functions are working", {
     expect_identical(
-        quanteda:::preserve_special1("#quanteda #q-x #q_y #q100 #q", 
+        quanteda:::preserve_special1("#quanteda #q-x #q_y #q100 #q",
                                      split_hyphens = TRUE, split_tags = FALSE),
         "_ht_quanteda _ht_q-x _ht_q_y _ht_q100 _ht_q"
     )
     expect_identical(
-        quanteda:::preserve_special1("#quanteda #q-x #q_y #q100 #q", 
+        quanteda:::preserve_special1("#quanteda #q-x #q_y #q100 #q",
                                      split_hyphens = FALSE, split_tags = FALSE),
         "_ht_quanteda _ht_q_hy_x _ht_q_y _ht_q100 _ht_q"
     )
@@ -1096,7 +1096,7 @@ test_that("emails address is preserved", {
 })
 
 test_that("split_tags works", {
-  
+
     txt1 <- c(d1 = "@quanteda @koheiw7 @QUANTEDA_INITIATIVE")
     expect_identical(
         as.list(tokens(txt1, what = "word")),
@@ -1106,7 +1106,7 @@ test_that("split_tags works", {
     #     as.list(tokens(txt1, what = "word", split_tags = TRUE)),
     #     list(d1 = c("@", "quanteda", "@", "koheiw7", "@", "QUANTEDA_INITIATIVE"))
     # )
-    
+
     txt2 <- c(d1 = "#quanteda #q-x #q_y #q100 #q")
     expect_identical(
         as.list(tokens(txt2, what = "word")),
@@ -1131,7 +1131,7 @@ test_that("old preserve_special works", {
 })
 
 test_that("output is correct for word1", {
-    
+
     expect_message(
         toks <- tokens(data_char_ukimmig2010, what = "word1", split_hyphens = FALSE, verbose = TRUE),
         "preserving hyphens"
@@ -1176,10 +1176,10 @@ test_that("edge case usernames are correctly recognized", {
 })
 
 test_that("cancatenator is working", {
-    
+
     txt <- c(d1 = "The United States is bordered by the Atlantic Ocean and the Pacific Ocean.",
              d2 = "The Supreme Court of the United States is seldom in a united state.")
-    
+
     # construct
     toks <- tokens(txt, remove_punct = TRUE, concatenator = " ")
     expect_error(
@@ -1194,7 +1194,7 @@ test_that("cancatenator is working", {
         concat(toks),
         " "
     )
-    
+
     # compound
     dict <- dictionary(list(Countries = c("* States", "Federal Republic of *"),
                             Oceans = c("* Ocean")), tolower = FALSE)
@@ -1211,7 +1211,7 @@ test_that("cancatenator is working", {
         ntoken(tokens_select(toks, c("United States"))),
         c(d1 = 1, d2 = 1)
     )
-    
+
     # update
     toks <- tokens(toks, concatenator = "+")
     expect_error(
@@ -1233,45 +1233,45 @@ test_that("cancatenator is working", {
 })
 
 test_that("cancatenator is passed to the downstream", {
-    
+
     txt <- c(d1 = "The United States is bordered by the Atlantic Ocean and the Pacific Ocean.",
              d2 = "The Supreme Court of the United States is seldom in a united state.")
-    
+
     dict <- dictionary(list(Countries = c("* States", "Federal Republic of *"),
                             Oceans = c("* Ocean")), tolower = FALSE)
-    
+
     # construct
-    
+
     toks <- tokens(txt, remove_punct = TRUE, concatenator = "+")
-    
+
     toks_dict <- tokens_lookup(toks, dict, append_key = TRUE)
     expect_true("United+States/Countries" %in% types(toks_dict))
     expect_identical(concat(toks_dict), "+")
-    
+
     toks_ngram <- tokens_ngrams(toks)
     expect_true("United+States" %in% types(toks_ngram))
     expect_identical(concat(toks_ngram), "+")
-    
+
     toks_comp <- tokens_compound(toks, dict)
     expect_true("United+States" %in% types(toks_comp))
     expect_identical(concat(toks_comp), "+")
-    
+
     # re-construct with different concatantor
-    
+
     toks2 <- tokens(toks, remove_punct = TRUE, concatenator = "*")
-    
+
     toks_dict2 <- tokens_lookup(toks2, dict, append_key = TRUE)
     expect_true("United*States/Countries" %in% types(toks_dict2))
     expect_identical(concat(toks_dict2), "*")
-    
+
     toks_ngram2 <- tokens_ngrams(toks2)
     expect_true("United*States" %in% types(toks_ngram2))
     expect_identical(concat(toks_ngram2), "*")
-    
+
     toks_comp2 <- tokens_compound(toks2, dict)
     expect_true("United*States" %in% types(toks_comp2))
     expect_identical(concat(toks_comp2), "*")
-    
+
 })
 
 test_that("as.tensor.tokens works correctly", {
@@ -1287,7 +1287,7 @@ test_that("as.tensor.tokens works correctly", {
 
     # Test basic conversion
     tensor <- as.tensor(toks)
-    expect_s3_class(tensor, "torch_tensor")
+    expect_true(inherits(tensor, "torch_tensor"))
     expect_true(tensor$is_sparse())
 
     # Test with length parameter
@@ -1297,13 +1297,13 @@ test_that("as.tensor.tokens works correctly", {
     # Test empty tokens
     toks_empty <- tokens(c(doc1 = "", doc2 = ""))
     tensor_empty <- as.tensor(toks_empty)
-    expect_s3_class(tensor_empty, "torch_tensor")
+    expect_true(inherits(tensor_empty, "torch_tensor"))
     expect_true(tensor_empty$is_sparse())
 
     # Test single document
     toks_single <- tokens(c(doc1 = "a b c"))
     tensor_single <- as.tensor(toks_single)
-    expect_s3_class(tensor_single, "torch_tensor")
+    expect_true(inherits(tensor, "torch_tensor"))
     expect_true(tensor_single$is_sparse())
 })
 
