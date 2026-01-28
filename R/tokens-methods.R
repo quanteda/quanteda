@@ -67,6 +67,12 @@ as.tensor.tokens <- function(x, length = NULL, ...) {
 
     torch <- loadNamespace("torch")
 
+    # Truncate documents if length is specified
+    if (!is.null(length)) {
+        length <- check_integer(length, min = 1)
+        x <- tokens_select(x, endpos = length)
+    }
+
     lis <- as.list(unclass(as.tokens(x)))
     l <- lengths(lis)
 
@@ -86,16 +92,7 @@ as.tensor.tokens <- function(x, length = NULL, ...) {
         dtype = torch$torch_int64()
     )
 
-    if (!is.null(length)) {
-        length <- check_integer(length, min = 1)
-        result <- torch$torch_sparse_coo_tensor(
-            indices = i,
-            values = v,
-            size = c(length(l), length)
-        )
-    } else {
-        result <- torch$torch_sparse_coo_tensor(indices = i, values = v)
-    }
+    result <- torch$torch_sparse_coo_tensor(indices = i, values = v)
 
     return(result)
 }
