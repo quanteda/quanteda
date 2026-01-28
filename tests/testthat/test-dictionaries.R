@@ -670,6 +670,16 @@ test_that("tokenize is working", {
         ))
     )
     
+    # with tags
+    dict8 <- dictionary(list(olympic = c("#東京五輪", "東京五輪", 
+                                         "東京オリンピック")), tokenize = TRUE)
+    expect_equivalent(
+        dict8,
+        list(AFRICA = list(
+            "olymic" = c("#東京五輪", "東京 五輪", "東京 オリンピック")
+        ))
+    )
+    
     # error with separator
     expect_error(
         dictionary(list(ASIA = list("MY" = "Kuala Lumpur", 
