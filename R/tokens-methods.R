@@ -67,7 +67,7 @@ as.tensor.tokens <- function(x, length = NULL, ...) {
 
     torch <- asNamespace("torch")
 
-    lis <- as.list(unclass(x))
+    lis <- as.list(unclass(as.tokens(x)))
     l <- lengths(lis)
 
     if (sum(l) == 0L) {
