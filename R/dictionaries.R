@@ -245,6 +245,22 @@ dictionary.dictionary2 <- function(x, file = NULL, format = NULL,
                tokenize = tokenize, encoding = encoding)
 }
 
+#' Separate dictionary values using tokenizer
+#' 
+#' Apply [quanteda::tokens()] to dictionary values to improve pattern matching.
+#' @param dictionary a [quanteda::dictionary] object.
+#' @param ... passed to [quanteda::tokens()].
+#' @export
+dictionary_tokenize <- function(dictionary, ...) {
+    
+    if (!is.dictionary(dictionary))
+        stop("Dictionary object must be provided")
+    
+    attrs <- attributes(dictionary)
+    separator <- field_object(attrs, "separator")
+    tokenize_dictionary_values(dictionary, separator, ...)
+}
+
 # coercion and checking methods -----------
 
 #' @param flatten flatten the nested structure if `TRUE`
@@ -718,11 +734,11 @@ list2dictionary <- function(dict) {
 #' dict <- dictionary(list(ASIA = list("IN" = "印度", 
 #'                                     "ID" = "印度尼西亚")))
 #' quanteda:::tokenize_dictionary_values(dict, " ")
-tokenize_dictionary_values <- function(dict, separator) {
+tokenize_dictionary_values <- function(dict, separator, ...) {
     rapply(dict, function(x) {
         if (any(stri_detect_fixed(x, separator)))
             stop("Dictionary values are already tokenized")
-        toks <- as.list(tokens(x, verbose = FALSE))
+        toks <- as.list(tokens(x, verbose = FALSE, ...))
         v <- unlist_character(lapply(toks, paste, collapse = separator))
         # restore separated wildcard
         v <- stri_replace_all_regex(v, paste0("([?*])", separator), "$1")

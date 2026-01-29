@@ -4,7 +4,7 @@
 \alias{tokenize_dictionary_values}
 \title{Internal function to tokenize dictionary values}
 \usage{
-tokenize_dictionary_values(dict, separator)
+tokenize_dictionary_values(dict, separator, ...)
 }
 \arguments{
 \item{dict}{list of object}
