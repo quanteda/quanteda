@@ -629,17 +629,9 @@ flatten_list <- function(lis, levels = 1:100, level = 1, key_parent = "",
 #'                           SUBKEY6 = list(SUBKEY8 = c("L"))))
 #' quanteda:::lowercase_dictionary_values(dict)
 lowercase_dictionary_values <- function(dict) {
-    dict <- unclass(dict)
-    for (i in seq_along(dict)) {
-        if (is.list(dict[[i]])) {
-            dict[[i]] <- lowercase_dictionary_values(dict[[i]])
-        } else {
-            if (is.character(dict[[i]])) {
-                dict[[i]] <- stri_trans_tolower(dict[[i]])
-            }
-        }
-    }
-    dict
+    rapply(dict, function(x) {
+        stri_trans_tolower(x)
+    }, classes = "character", how = "replace")
 }
 
 #' Internal function to replace dictionary values
@@ -654,17 +646,9 @@ lowercase_dictionary_values <- function(dict) {
 #'                           SUBKEY6 = list(SUBKEY8 = list("L"))))
 #' quanteda:::replace_dictionary_values(dict, "_", " ")
 replace_dictionary_values <- function(dict, from, to) {
-    dict <- unclass(dict)
-    for (i in seq_along(dict)) {
-        if (is.list(dict[[i]])) {
-            dict[[i]] <- replace_dictionary_values(dict[[i]], from, to)
-        } else {
-            if (is.character(dict[[i]])) {
-                dict[[i]] <- stri_replace_all_fixed(dict[[i]], from, to)
-            }
-        }
-    }
-    return(dict)
+    rapply(dict, function(x) {
+        stri_replace_all_fixed(x, from, to)
+    }, classes = "character", how = "replace")
 }
 
 #' Internal function to merge values of duplicated keys
@@ -735,25 +719,16 @@ list2dictionary <- function(dict) {
 #'                                     "ID" = "印度尼西亚")))
 #' quanteda:::tokenize_dictionary_values(dict, " ")
 tokenize_dictionary_values <- function(dict, separator) {
-    
-    dict <- unclass(dict)
-    for (i in seq_along(dict)) {
-        if (is.list(dict[[i]])) {
-            dict[[i]] <- tokenize_dictionary_values(dict[[i]], separator)
-        } else {
-            if (is.character(dict[[i]])) {
-                if (any(stri_detect_fixed(dict[[i]], separator)))
-                    stop("Dictionary values are already tokenized")
-                toks <- as.list(tokens(dict[[i]], verbose = FALSE))
-                v <- unlist(lapply(toks, paste, collapse = separator))
-                # restore separated wildcard
-                v <- stri_replace_all_regex(v, paste0("([?*])", separator), "$1")
-                v <- stri_replace_all_regex(v, paste0(separator, "([?*])"), "$1")
-                dict[[i]] <- v
-            }
-        }
-    }
-    return(dict)
+    rapply(dict, function(x) {
+        if (any(stri_detect_fixed(x, separator)))
+            stop("Dictionary values are already tokenized")
+        toks <- as.list(tokens(x, verbose = FALSE))
+        v <- unlist_character(lapply(toks, paste, collapse = separator))
+        # restore separated wildcard
+        v <- stri_replace_all_regex(v, paste0("([?*])", separator), "$1")
+        v <- stri_replace_all_regex(v, paste0(separator, "([?*])"), "$1")
+        return(v)
+    }, classes = "character", how = "replace")
 }
 
 # import/export functions --------------
