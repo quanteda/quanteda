@@ -66,10 +66,11 @@ BugReports: https://github.com/quanteda/quanteda/issues
 LazyData: TRUE
 VignetteBuilder: knitr
 Language: en-GB
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 Roxygen: list(markdown = TRUE)
 Collate: 
     'RcppExports.R'
+    'Untitled.R'
     'tokenizers.R'
     'meta.R'
     'quanteda-documentation.R'
@@ -110,6 +111,7 @@ Collate:
     'fcm-classes.R'
     'docnames.R'
     'docvars.R'
+    'drop0.R'
     'fcm-methods.R'
     'fcm-print.R'
     'fcm-subsetting.R'
