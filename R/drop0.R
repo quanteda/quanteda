@@ -29,30 +29,30 @@ drop0 <- function(x, ...) {
 #'
 #' @export
 drop0.dfm <- function(x, tol = 0, ...) {
-  # ensure dfm
-  x <- quanteda::as.dfm(x)
-  
-  # store metadata
-  dv   <- quanteda::docvars(x)
-  fnts <- quanteda::featnames(x)
-  dnts <- quanteda::docnames(x)
-  
-  # underlying sparse matrix
-  sx <- methods::as(x, "dgCMatrix")
-  
-  # apply Matrix::drop0 to threshold values
-  sx <- Matrix::drop0(sx, tol = tol, ...)
-  
-  # back to dfm using as.dfm()
-  x2 <- quanteda::as.dfm(sx)
-  
-  # restore names and docvars using base setters
-  rownames(x2) <- dnts      # docnames
-  colnames(x2) <- fnts      # featnames
-  quanteda::docvars(x2) <- dv
-  
-  x2
+    # ensure dfm
+    x <- quanteda::as.dfm(x)
+
+    # save attributes like in dfm_compress()
+    attrs <- attributes(x)
+
+    # underlying sparse matrix
+    sx <- methods::as(x, "dgCMatrix")
+
+    # apply Matrix::drop0 to threshold values
+    sx <- Matrix::drop0(sx, tol = tol, ...)
+
+    # rebuild dfm using build_dfm(), like dfm_compress()
+    result <- build_dfm(
+        sx,
+        colnames(sx),
+        unit    = "documents",
+        docvars = attrs[["docvars"]],
+        meta    = attrs[["meta"]]
+    )
+
+    result
 }
+
 
 
 
