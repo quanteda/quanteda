@@ -141,6 +141,13 @@ corpseg3 <- corpus_segment(corp1, pattern = ".", valuetype = "fixed",
                            pattern_position = "after", extract_pattern = FALSE)
 cbind(corpseg3, docvars(corpseg3))
 
+# segment using a custom delimiter (e.g., pipe symbol)
+# this approach replaces the deprecated settings() function from older versions
+corp_text <- corpus("First section. | Second section. | Third section.")
+corp_custom <- corpus_segment(corp_text, pattern = "\\\\\\\\|", valuetype = "regex",
+                               pattern_position = "after", extract_pattern = FALSE)
+summary(corp_custom)
+
 ## segmenting a character vector
 
 # segment into paragraphs and removing the "- " bullet points

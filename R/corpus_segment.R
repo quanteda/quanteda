@@ -91,8 +91,16 @@
 #' corpseg3 <- corpus_segment(corp1, pattern = ".", valuetype = "fixed",
 #'                            pattern_position = "after", extract_pattern = FALSE)
 #' cbind(corpseg3, docvars(corpseg3))
-#' 
-#' @importFrom stringi stri_trim_both stri_replace_all_fixed stri_locate_last_fixed 
+#'
+#' # segment using a custom delimiter (e.g., pipe symbol)
+#' # this approach replaces the deprecated settings() function from older versions
+#' corp_text <- corpus("First section. | Second section. | Third section.")
+#' corp_custom <- corpus_segment(corp_text, pattern = "\\\\|", valuetype = "regex",
+#'                                pattern_position = "after", extract_pattern = FALSE)
+#' summary(corp_custom)
+
+#'
+#' @importFrom stringi stri_trim_both stri_replace_all_fixed stri_locate_last_fixed
 #'   stri_locate_first_fixed stri_sub
 #' @export
 corpus_segment <- function(x, pattern = "##*",
@@ -239,9 +247,9 @@ segment_texts <- function(x, pattern = NULL, valuetype = "regex",
                 valuetype <- "regex"
             }
         }
-        
+
         x <- stri_trim_both(x)
-        
+
         if (valuetype == "fixed") {
             if (pattern_position == "after") {
                 x <- stri_replace_all_fixed(x, pattern, stri_c(pattern, "\uE000"),
