@@ -19,7 +19,7 @@ test_that("dictionary_tokenize is working", {
     )))
     
     expect_equivalent(
-        dictonary_tokenize(dict2, remove_punct = FALSE),
+        dictionary_tokenize(dict2, remove_punct = FALSE),
         list(ASIA = list(
             "CD" ="コンゴ 民主 共和国",
             "CF" = "中央 アフリカ",
@@ -27,7 +27,7 @@ test_that("dictionary_tokenize is working", {
         ))
     )
     expect_equivalent(
-        dictonary_tokenize(dict2, remove_punct = TRUE),
+        dictionary_tokenize(dict2, remove_punct = TRUE),
         list(ASIA = list(
             "CD" ="コンゴ 民主 共和国",
             "CF" = "中央 アフリカ",
@@ -35,7 +35,7 @@ test_that("dictionary_tokenize is working", {
         ))
     )
     expect_equivalent(
-        dictonary_tokenize(dict2, remove_punct = TRUE, padding = TRUE),
+        dictionary_tokenize(dict2, remove_punct = TRUE, padding = TRUE),
         list(ASIA = list(
             "CD" ="コンゴ 民主 共和国",
             "CF" = "中央 アフリカ",
@@ -49,13 +49,13 @@ test_that("dictionary_tokenize is working", {
         "#東京五輪", "@都知事", "東京オリンピック"
     )))
     expect_equivalent(
-        dictonary_tokenize(dict3),
+        dictionary_tokenize(dict3),
         list(
             "olympic" = c("#東京五輪", "@都知事", "東京 オリンピック")
         )
     )
     expect_equivalent(
-        dictonary_tokenize(dict3, split_tags = TRUE),
+        dictionary_tokenize(dict3, split_tags = TRUE),
         list(
             "olympic" = c("# 東京五輪", "@ 都知事", "東京 オリンピック")
         )
