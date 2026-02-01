@@ -50,15 +50,15 @@ test_that("dictionary_tokenize is working", {
     )))
     expect_equivalent(
         dictionary_tokenize(dict3),
-        list(
+        list(list(
             "olympic" = c("#東京五輪", "@都知事", "東京 オリンピック")
-        )
+        ))
     )
     expect_equivalent(
         dictionary_tokenize(dict3, split_tags = TRUE),
-        list(
-            "olympic" = c("# 東京五輪", "@ 都知事", "東京 オリンピック")
-        )
+        list(list(
+            "olympic" = c("# 東京 五輪", "@ 都知事", "東京 オリンピック")
+        ))
     )
     quanteda_options(reset = TRUE)
 

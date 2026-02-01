@@ -675,10 +675,10 @@ test_that("tokenize is working", {
                                          "東京オリンピック")), tokenize = TRUE)
     expect_equivalent(
         dict8,
-        list(
+        list(list(
             "olymic" = c("#東京五輪", "東京 五輪", 
                          "東京 オリンピック")
-        )
+        ))
     )
     
     # error with separator
