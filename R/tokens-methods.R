@@ -67,7 +67,6 @@ as.tensor.tokens <- function(x, length = NULL, ...) {
              "Install it with install.packages('torch').",
              call. = FALSE)
     }
-    torch <- loadNamespace("torch")
 
     # truncate documents if length is specified
     if (!is.null(length))
@@ -80,23 +79,23 @@ as.tensor.tokens <- function(x, length = NULL, ...) {
 
     if (sum(l) == 0L) {
         # no tokens anywhere: return an empty sparse tensor
-        i <- torch$torch_empty(c(2L, 0L), dtype = torch$torch_int64())
-        v <- torch$torch_empty(0L, dtype = torch$torch_int64())
-        result <- torch$torch_sparse_coo_tensor(indices = i, values = v, 
+        i <- torch::torch_empty(c(2L, 0L), dtype = torch::torch_int64())
+        v <- torch::torch_empty(0L, dtype = torch::torch_int64())
+        result <- torch::torch_sparse_coo_tensor(indices = i, values = v, 
                                                 size = c(nr, nc))
         return(result)
     }
 
-    i <- torch$torch_tensor(
+    i <- torch::torch_tensor(
         rbind(rep(seq_along(l), l), unlist(lapply(lis, seq_along))),
-        dtype = torch$torch_int64()
+        dtype = torch::torch_int64()
     )
-    v <- torch$torch_tensor(
+    v <- torch::torch_tensor(
         unlist(lis, use.names = FALSE),
-        dtype = torch$torch_int64()
+        dtype = torch::torch_int64()
     )
-    result <- torch$torch_sparse_coo_tensor(indices = i, values = v, 
-                                            size = c(nr, nc))
+    result <- torch::torch_sparse_coo_tensor(indices = i, values = v, 
+                                             size = c(nr, nc))
 
     return(result)
 }
