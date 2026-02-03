@@ -73,7 +73,10 @@ test_that("as.tensor.tokens works correctly", {
     tens7 <- as.tensor(toks_inau)
     expect_true(inherits(tens7, "torch_tensor"))
     expect_true(tens7$is_sparse())
-    tens7$size(), c(ndoc(toks_inau), max(ntoken(toks_inau))))
+    expect_equal(
+        tens7$size(), 
+        c(ndoc(toks_inau), max(ntoken(toks_inau)))
+    )
 })
 
 test_that("as.tensor.tokens requires torch package", {
