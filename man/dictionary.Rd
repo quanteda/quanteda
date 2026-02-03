@@ -10,13 +10,14 @@ dictionary(
   format = NULL,
   separator = " ",
   tolower = TRUE,
+  tokenize = FALSE,
   encoding = "utf-8"
 )
 }
 \arguments{
 \item{x}{a named list of character vector dictionary entries, including
 \link{valuetype} pattern matches, and including multi-word expressions
-separated by \code{concatenator}.  See examples. This argument may be
+separated by \code{separator}.  See examples. This argument may be
 omitted if the dictionary is read from \code{file}.}
 
 \item{file}{file identifier for a foreign dictionary}
@@ -34,6 +35,9 @@ software} \item{\code{"lexicoder"}}{format used by Lexicoder}
 defaults to \code{" "}.}
 
 \item{tolower}{if \code{TRUE}, convert all dictionary values to lowercase}
+
+\item{tokenize}{if \code{TRUE} segment dictionary values by separators to using
+the built-in tokenizer. Useful for Japanese and Chinese dictionaries.}
 
 \item{encoding}{additional optional encoding value for reading in imported
 dictionaries. This uses the \link{iconv} labels for encoding.  See the
