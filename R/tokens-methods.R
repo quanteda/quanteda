@@ -74,7 +74,7 @@ as.tensor.tokens <- function(x, length = NULL, ...) {
     
     lis <- as.list(unclass(as.tokens(x)))
     l <- lengths(lis)
-    nc <- max(c(l, length, 0)) # number of columns
+    nc <- max(c(l, length, 0L)) # number of columns
     nr <- length(l) # number of rows
 
     if (sum(l) == 0L) {
