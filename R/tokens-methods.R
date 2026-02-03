@@ -59,33 +59,32 @@ as.tensor <- function(x, ...) {
 #' @method as.tensor tokens
 #' @export
 as.tensor.tokens <- function(x, length = NULL, ...) {
+    
+    length <- check_integer(length, min = 1, allow_null = TRUE)
+    
     if (!requireNamespace("torch", quietly = TRUE)) {
         stop("Package 'torch' is required for as.tensor(). ",
              "Install it with install.packages('torch').",
              call. = FALSE)
     }
-
     torch <- loadNamespace("torch")
 
-    # Truncate documents if length is specified
-    if (!is.null(length)) {
-        length <- check_integer(length, min = 1)
+    # truncate documents if length is specified
+    if (!is.null(length))
         x <- tokens_select(x, endpos = length)
-    }
-
+    
     lis <- as.list(unclass(as.tokens(x)))
     l <- lengths(lis)
-    ndoc <- length(l)
+    nc <- max(l) # number of columns
+    nr <- length(l) # number of rows
 
     if (sum(l) == 0L) {
         # no tokens anywhere: return an empty sparse tensor
         i <- torch$torch_empty(c(2L, 0L), dtype = torch$torch_int64())
         v <- torch$torch_empty(0L, dtype = torch$torch_int64())
-        if (!is.null(length)) {
-            return(torch$torch_sparse_coo_tensor(indices = i, values = v, size = c(ndoc, length)))
-        } else {
-            return(torch$torch_sparse_coo_tensor(indices = i, values = v))
-        }
+        result <- torch$torch_sparse_coo_tensor(indices = i, values = v, 
+                                                size = c(nr, nc))
+        return(result)
     }
 
     i <- torch$torch_tensor(
@@ -96,12 +95,8 @@ as.tensor.tokens <- function(x, length = NULL, ...) {
         unlist(lis, use.names = FALSE),
         dtype = torch$torch_int64()
     )
-
-    if (!is.null(length)) {
-        result <- torch$torch_sparse_coo_tensor(indices = i, values = v, size = c(ndoc, length))
-    } else {
-        result <- torch$torch_sparse_coo_tensor(indices = i, values = v)
-    }
+    result <- torch$torch_sparse_coo_tensor(indices = i, values = v, 
+                                            size = c(nr, nc))
 
     return(result)
 }
