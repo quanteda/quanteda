@@ -48,7 +48,8 @@ Suggests:
     knitr,
     lsa,
     rlang,
-    slam
+    slam,
+    torch
 Enhances:
     dplyr,
     lda,
