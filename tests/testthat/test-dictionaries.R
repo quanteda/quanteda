@@ -1,25 +1,38 @@
-test_that("dictionary constructors fail if all elements unnamed: explicit", {
-    expect_error(dictionary(list(c("a", "b"), "c")),
-                 "Dictionary elements must be named: a b c")
-    expect_error(dictionary(list(first =  c("a", "b"), "c")),
-                 "Unnamed dictionary entry: c")
-})
-
-test_that("dictionary constructors fail if all elements unnamed: implicit", {
-    expect_error(dictionary(list(c("a", "b"), "c")),
-                 "Dictionary elements must be named: a b c")
-    expect_error(dictionary(list(first =  c("a", "b"), "c")),
-                 "Unnamed dictionary entry: c")
-})
-
-test_that("dictionary constructors fail if a value is numeric", {
-    expect_error(dictionary(list(first =  c("a", "b"), second = 2016)),
-                 "Non-character entries found in dictionary key 'second'")
-    expect_error(dictionary(list(first =  c("a", "b"), second = c("c", NA))),
-                 "Non-character entries found in dictionary key 'second'")
+test_that("dictionary constructors checks values", {
+    
+    expect_error(
+        dictionary(letters),
+        "x must be a list if file is not specified"
+    )
+    
+    # all elements unnamed
+    expect_error(
+        dictionary(list(c("a", "b"), "c")),
+        "Dictionary elements must be named: a b c"
+    )
+    expect_error(
+        dictionary(list(first =  c("a", "b"), "c")),
+        "Unnamed dictionary entry: c"
+    )
+   
+    # numeric elements
+    expect_error(
+        dictionary(list(first =  c("a", "b"), second = 2016)),
+        "Non-character entries found in dictionary key 'second'"
+    )
+    expect_error(
+        dictionary(list(first =  c("a", "b"), second = c("c", NA))),
+        "Non-character entries found in dictionary key 'second'"
+    )
 })
 
 test_that("dictionary constructor ignores extra arguments", {
+    
+    expect_error(
+        dictionary(list(first =  c("a", "b"), second = "c"), encoding = "UTF-8"),
+        "Cannot specify file, format, or encoding when x is a list"
+    )
+    
     expect_error(
         dictionary(list(first =  c("a", "b"), second = "c"), something = TRUE),
         "unused argument \\(something = TRUE\\)"
@@ -552,7 +565,7 @@ test_that("flatten_dictionary() is working", {
                 "D" = NULL)
     
     expect_error(flatten_dictionary(lis), 
-                 "dictionary must be a dictionary object")
+                 "Dictionary object must be provided")
     
     dict <- dictionary(lis, tolower = FALSE)
     dict_flat1 <- flatten_dictionary(dict)
@@ -585,6 +598,103 @@ test_that("flatten_dictionary() is working", {
                  character())
     expect_equal(names(quanteda:::flatten_list(list())),
                  character())
+    
+})
+
+test_that("tokenize is working", {
+    
+    dict1 <- dictionary(list(ASIA = list("IN" = "印度", 
+                                         "ID" = "印度尼西亚")), 
+                        tokenize = FALSE)
+    expect_equivalent(
+        dict1,
+        list(ASIA = list("IN" = "印度", 
+                         "ID" = "印度尼西亚"))
+    )
+    
+    dict2 <- dictionary(list(ASIA = list("IN" = "印度", 
+                                         "ID" = "印度尼西亚")), 
+                        tokenize = TRUE)
+    expect_equivalent(
+        dict2,
+        list(ASIA = list("IN" = "印度", 
+                         "ID" = "印度 尼西亚"))
+    )
+    
+    # update existing object
+    dict3 <- dictionary(dict1, tokenize = TRUE)
+    expect_equivalent(
+        dict2,
+        dict3
+    )
+    
+    # different separator
+    dict4 <- dictionary(list(ASIA = list("IN" = "印度", 
+                                         "ID" = "印度尼西亚")), 
+                        separator = "_", tokenize = TRUE)
+    expect_equivalent(
+        dict4,
+        list(ASIA = list("IN" = "印度", 
+                         "ID" = "印度_尼西亚"))
+    )
+    
+    # with wildcard
+    dict5 <- dictionary(list(ASIA = list("IN" = "印度*", 
+                                         "ID" = "印度尼西亚?")), 
+                        tokenize = TRUE)
+    expect_equivalent(
+        dict5,
+        list(ASIA = list("IN" = "印度*", 
+                         "ID" = "印度 尼西亚?"))
+    )
+    
+    # with English
+    dict6 <- dictionary(list(ASIA = list("IN" = "India", 
+                                         "ID" = "Indonasia")), 
+                        tokenize = TRUE, tolower = FALSE)
+    expect_equivalent(
+        dict6,
+        list(ASIA = list("IN" = "India", 
+                         "ID" = "Indonasia"))
+    )
+    
+    # with a file
+    dict7 <- dictionary(file = "../data/dictionaries/newsmap.yml",
+                        tokenize = TRUE)
+    expect_equivalent(
+        dict7,
+        list(AFRICA = list(
+            "CD" ="コンゴ 民主 共和国",
+            "CF" = "中央 アフリカ",
+            "CI" = "コート ジボワール"
+        ))
+    )
+    
+    # with tags
+    dict8 <- dictionary(list(olympic = c("#東京五輪", "東京五輪", 
+                                         "東京オリンピック")), tokenize = TRUE)
+    expect_equivalent(
+        dict8,
+        list(list(
+            "olymic" = c("#東京五輪", "東京 五輪", 
+                         "東京 オリンピック")
+        ))
+    )
+    
+    # error with separator
+    expect_error(
+        dictionary(list(ASIA = list("MY" = "Kuala Lumpur", 
+                                    "ID" = "Indonasia")), 
+                        tokenize = TRUE),
+        "Dictionary values are already tokenized"
+    )
+    
+    expect_error(
+        dictionary(list(ASIA = list("IN" = "印度", 
+                                    "ID" = "印度尼西亚")), 
+                   tokenize = c(TRUE, FALSE)),
+        "The length of tokenize must be 1"
+    )
     
 })
 
