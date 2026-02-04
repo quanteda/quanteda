@@ -4,6 +4,8 @@
 \alias{as.list.tokens}
 \alias{as.character.tokens}
 \alias{is.tokens}
+\alias{as.tensor}
+\alias{as.tensor.tokens}
 \alias{as.tokens}
 \alias{as.tokens.spacyr_parsed}
 \title{Coercion, checking, and combining functions for tokens objects}
@@ -13,6 +15,10 @@
 \method{as.character}{tokens}(x, use.names = FALSE, ...)
 
 is.tokens(x)
+
+as.tensor(x, ...)
+
+\method{as.tensor}{tokens}(x, length = NULL, ...)
 
 as.tokens(x, concatenator = "_", ...)
 
@@ -35,6 +41,10 @@ is.tokens(x)
 \item{use.names}{logical; preserve names if \code{TRUE}.  For
 \code{as.character} and \code{unlist} only.}
 
+\item{length}{optional integer specifying the maximum length (number of
+positions) for the sparse tensor. If \code{NULL} (default), the length is
+inferred from the maximum token position across all documents.}
+
 \item{concatenator}{character; the concatenation character that will connect
 the tokens making up a multi-token sequence.}
 
@@ -55,6 +65,10 @@ token}
 
 \code{is.tokens} returns \code{TRUE} if the object is of class
 tokens, \code{FALSE} otherwise.
+
+\code{as.tensor} returns a sparse COO tensor from a \link{tokens} object,
+compatible with the \pkg{torch} package. Each document is represented as
+a row, and token positions as columns. Values are the integer token IDs.
 
 \code{as.tokens} returns a quanteda \link{tokens} object.
 
@@ -78,6 +92,13 @@ inter-word delimiter, when reading in the elements that will become the
 tokens.
 }
 \examples{
+\dontrun{
+library(torch)
+toks <- tokens(c(doc1 = "a b c d e f g",
+                 doc2 = "a b c g",
+                 doc3 = ""))
+as.tensor(toks)
+}
 
 # create tokens object from list of characters with custom concatenator
 dict <- dictionary(list(country = "United States",
