@@ -30,6 +30,26 @@ test_that("dfm_weight works", {
     # print(matrix(c(0, 0, 0, 0, 0.120412, 0, 0.060206, 0, 0, 0.08600857, 0, 0.1290129), nrow = 2,
     #              dimnames = list(docs = c("text1", "text2"),
     #                              features = c("this", "is", "a", "sample", "another", "example"))))
+    
+    # expected values calculated with the `simple-good-turing` Python library
+    str <- c("I like to test my function because my function is buggy", "but unfortunately existing tests need way way too much text")
+    sgtdfm <- dfm(tokens(str))
+    expect_equivalent(
+        round(as.matrix(dfm_weight(sgtdfm, scheme = "goodturing_count")), 3),
+        matrix(c(0.332, 0, 0.332, 0, 0.332, 0, 0.332, 0, 0.838, 0, 0.838, 0, 0.332, 0, 0.332, 0, 0.332, 0, 0, 0.173, 0, 0.173, 0, 0.173, 0, 0.173, 0, 0.173, 0, 0.615, 0, 0.173, 0, 0.173, 0, 0.173), nrow = 2)
+    )
+    expect_equivalent(
+      round(as.matrix(dfm_weight(sgtdfm, scheme = "goodturing_count", estimate_zeros = TRUE)), 3),
+      matrix(c(0.332, 0.889, 0.332, 0.889, 0.332, 0.889, 0.332, 0.889, 0.838, 0.889, 0.838, 0.889, 0.332, 0.889, 0.332, 0.889, 0.332, 0.889, 0.778, 0.173, 0.778, 0.173, 0.778, 0.173, 0.778, 0.173, 0.778, 0.173, 0.778, 0.615, 0.778, 0.173, 0.778, 0.173, 0.778, 0.173), nrow = 2)
+    )
+    expect_equivalent(
+      round(as.matrix(dfm_weight(sgtdfm, scheme = "goodturing_prop")), 3),
+      matrix(c(0.030, 0, 0.030, 0, 0.030, 0, 0.030, 0, 0.076, 0, 0.076, 0, 0.030, 0, 0.030, 0, 0.030, 0, 0, 0.017, 0, 0.017, 0, 0.017, 0, 0.017, 0, 0.017, 0, 0.062, 0, 0.017, 0, 0.017, 0, 0.017), nrow = 2)
+    )
+    expect_equivalent(
+      round(as.matrix(dfm_weight(sgtdfm, scheme = "goodturing_prop", estimate_zeros = TRUE)), 3),
+      matrix(c(0.030, 0.089, 0.030, 0.089, 0.030, 0.089, 0.030, 0.089, 0.076, 0.089, 0.076, 0.089, 0.030, 0.089, 0.030, 0.089, 0.030, 0.089, 0.071, 0.017, 0.071, 0.017, 0.071, 0.017, 0.071, 0.017, 0.071, 0.017, 0.071, 0.062, 0.071, 0.017, 0.071, 0.017, 0.071, 0.017), nrow = 2)
+    )
 })
 
 test_that("dfm_weight works with weights", {
@@ -143,6 +163,47 @@ test_that("tfidf works with different log base", {
             as.matrix(dfm_tfidf(dfmt, base = 2))
         )
     )
+})
+
+test_that("goodturing works with different switching criterion", {
+  sampletext_dfm <- dfm(tokens(data_char_sampletext))
+  sampletext_dfm_sgt <- dfm_weight(sampletext_dfm, scheme = "goodturing_count")
+  sampletext_dfm_sgt_newcrit <- dfm_weight(sampletext_dfm, scheme = "goodturing_count", crit = .5)
+  expect_equal(
+    as.numeric(names(sort(lapply(split(sampletext_dfm_sgt@x, sampletext_dfm_sgt@i), table)[[1]], decreasing = TRUE))),
+    c(0.2709534764429325, 1.3332215216996022, 2.2622143132335153, 3.2270783083222403, 4.209939071887706, 5.203104894290868, 
+      6.202720318759163, 7.206639784094425, 8.213574361264547, 10.233478108463693, 13.272392502445745, 14.286874718500478, 
+      15.30189035910026, 19.365764296925104, 36.66589098973531, 45.831581076522305),
+    tol = .0001
+  )
+  expect_equal(
+    as.numeric(names(sort(lapply(split(sampletext_dfm_sgt_newcrit@x, sampletext_dfm_sgt_newcrit@i), table)[[1]], decreasing = TRUE))),
+    c(0.2628479519184065, 1.934093861705855, 2.899708130439, 1.7973397502721076, 4.083999501589802, 5.047454947008355,
+      6.01716705580604, 6.991054450862116, 7.967866761224695, 9.927345451048527, 12.875351267396793, 13.859485430383975,
+      14.844137060616866, 18.786440940363644, 35.569037454093404, 44.46053757012243),
+    tol = .0001
+  )
+})
+
+test_that("goodturing gracefully deals with short texts", {
+  str <- c("I like to test my function", "but unfortunately existing tests need way way too much text")
+  sgtdfm <- dfm(tokens(str))
+  expect_warning(
+    dfm_weight(sgtdfm, scheme = "goodturing_count"),
+    "Document has only one unique term frequency, or does not contain hapax legomena. Returning raw counts."
+  )
+  suppressWarnings(
+    expect_equivalent(
+      round(as.matrix(dfm_weight(sgtdfm, scheme = "goodturing_count")), 3),
+      matrix(c(1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0.173, 0, 0.173, 0, 0.173, 0, 0.173, 0, 0.173, 0, 0.615, 0, 0.173, 0, 0.173, 0, 0.173), nrow = 2)
+    )
+  )
+  suppressWarnings(
+    expect_equivalent(
+      round(as.matrix(dfm_weight(sgtdfm, scheme = "goodturing_count", estimate_zeros = TRUE)), 3),
+      matrix(c(1, 1.333, 1, 1.333, 1, 1.333, 1, 1.333, 1, 1.333, 1, 1.333, 0, 0.173, 0, 0.173, 0, 0.173, 0, 0.173, 0, 0.173, 0, 0.615, 0, 0.173, 0, 0.173, 0, 0.173), nrow = 2)
+    )
+  )
 })
 
 test_that("docfreq works when features have duplicated names (#829)", {
