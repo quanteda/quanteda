@@ -92,7 +92,7 @@ test_that("corpus_reshape preserve empty documents (#1978)", {
 
 test_that("corpus_reshape works with paragraphs (#2468)", {
     corp <- corpus(c(textone = "TITLE\n\nThis is a sentence.  Another sentence.\n\nYet another.", 
-                     texttwo = "URGENT\n\nPremiere phrase.  Deuxieme phrase."))
+                     texttwo = "URGENT\n\n\n\nPremiere phrase.  Deuxieme phrase."))
     
     expect_equivalent(
         corpus_reshape(corp, to = "sentence"),
@@ -116,5 +116,30 @@ test_that("corpus_reshape works with paragraphs (#2468)", {
               texttwo.2 = "Premiere phrase.  Deuxieme phrase." )
         )
     )
+    
+    
 })
+
+test_that("corpus_reshape ignores hard wrapping", {
+    corp <- corpus(c(textone = "This is a sentence\nwith hard wrapping.", 
+                     texttwo = "This is another\nsentence\nwith hard wrapping."))
+    
+    expect_equivalent(
+        corpus_reshape(corp, to = "sentence"),
+        corpus(
+            c(textone = "This is a sentence with hard wrapping.", 
+              texttwo = "This is another sentence with hard wrapping.")
+        )
+    )
+    
+    expect_equivalent(
+        corpus_reshape(corp, to = "paragraph"),
+        corpus(
+            c(textone = "This is a sentence with\nhard wrapping.", 
+              texttwo = "This is another\nsentence\nwith hard wrapping.")
+        )
+    )
+})
+
+
 
