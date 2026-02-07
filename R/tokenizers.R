@@ -354,6 +354,16 @@ tokenize_sentence <- function(x, verbose = FALSE, ...) {
 }
 
 #' @rdname tokenize_internal
+#' @export
+tokenize_paragraph <- function(x, verbose = FALSE, ...) {
+    if (verbose) catm(" ...segmenting into paragraphs\n")
+    m <- names(x)
+    x <- stri_split_fixed(x, pattern = "\n\n", omit_empty = FALSE)
+    x <- lapply(x, function(y) if (length(y)) stri_trim_right(y) else "")
+    structure(x, names = m)
+}
+
+#' @rdname tokenize_internal
 #' @importFrom stringi stri_split_regex
 #' @export
 tokenize_fasterword <- function(x, ...) {
