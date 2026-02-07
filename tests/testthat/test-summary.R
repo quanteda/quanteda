@@ -12,7 +12,7 @@ test_that("summary and print.summary work", {
         "Corpus consisting of 2 documents, showing 2 documents:
 
             Text Types Tokens Sentences Year  President FirstName Party
- 1789-Washington   625   1537        23 1789 Washington    George  none
+ 1789-Washington   625   1537        24 1789 Washington    George  none
  1793-Washington    96    147         4 1793 Washington    George  none"
     )
 })
