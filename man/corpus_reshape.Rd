@@ -8,21 +8,24 @@ corpus_reshape(
   x,
   to = c("sentences", "paragraphs", "documents"),
   use_docvars = TRUE,
+  verbose = FALSE,
   ...
 )
 }
 \arguments{
-\item{x}{corpus whose document units will be reshaped}
+\item{x}{corpus whose document units will be reshaped.}
 
-\item{to}{new document units in which the corpus will be recast}
+\item{to}{new document units in which the corpus will be recast.}
 
 \item{use_docvars}{if \code{TRUE}, repeat the docvar values for each
 segmented text; if \code{FALSE}, drop the docvars in the segmented corpus.
 Dropping the docvars might be useful in order to conserve space or if these
 are not desired for the segmented corpus.}
 
+\item{verbose}{if \code{TRUE}, print timing messages to the console,}
+
 \item{...}{additional arguments passed to \code{\link[=tokens]{tokens()}}, since the
-syntactic segmenter uses this function)}
+syntactic segmenter uses this function).}
 }
 \value{
 A corpus object with the documents defined as the new units,

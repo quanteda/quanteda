@@ -93,7 +93,7 @@ summarize <- function(x, tolower = FALSE, ...) {
 
     if (is.corpus(x)) {
         result$chars <- stringi::stri_length(x)
-        result$sents <- ntoken(tokens(x, what = "sentence"))
+        result$sents <- lengths(tokenize_sentence(x))
     }
 
     return(result)
