@@ -89,3 +89,32 @@ test_that("corpus_reshape preserve empty documents (#1978)", {
         docnames(corpus_reshape(corp_reshaped, to = "documents"))
     )
 })
+
+test_that("corpus_reshape works with paragraphs (#2468)", {
+    corp <- corpus(c(textone = "TITLE\n\nThis is a sentence.  Another sentence.\n\nYet another.", 
+                     texttwo = "URGENT\n\nPremiere phrase.  Deuxieme phrase."))
+    
+    expect_equivalent(
+        corpus_reshape(corp, to = "sentence"),
+        corpus(
+            c(textone.1 = "TITLE", 
+              textone.2 = "This is a sentence.", 
+              textone.3 = "Another sentence.",  
+              textone.4 = "Yet another.",
+              texttwo.1 = "URGENT", 
+              texttwo.2 = "Premiere phrase.",  
+              texttwo.3 = "Deuxieme phrase.")
+        )
+    )
+    
+    expect_equivalent(
+        corpus_reshape(corp, to = "paragraph"),
+        corpus(
+            c(textone.1 = "TITLE", 
+              textone.2 = "This is a sentence.  Another sentence.",  textone.3 = "Yet another.", 
+              texttwo.1 = "URGENT", 
+              texttwo.2 = "Premiere phrase.  Deuxieme phrase." )
+        )
+    )
+})
+
