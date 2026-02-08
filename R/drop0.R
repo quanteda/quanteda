@@ -1,4 +1,4 @@
-#' Drop small values from an object
+﻿#' Drop small values from an object
 #'
 #' Generic for dropping small values (hard thresholding).
 #'
@@ -27,32 +27,18 @@ drop0 <- function(x, ...) {
 #' it increases the number of zero cells but does not change the dfm
 #' dimensions. For removing features entirely, use \code{\link{dfm_trim}}.
 #'
+#' @keywords internal
 #' @export
 drop0.dfm <- function(x, tol = 0, ...) {
-    # ensure dfm
     x <- quanteda::as.dfm(x)
 
-    # save attributes like in dfm_compress()
+    # save all attributes
     attrs <- attributes(x)
 
-    # underlying sparse matrix
-    sx <- methods::as(x, "dgCMatrix")
+    # coerce to dgCMatrix and apply thresholding
+    x <- methods::as(x, "dgCMatrix")
+    x <- Matrix::drop0(x, tol = tol, ...)
 
-    # apply Matrix::drop0 to threshold values
-    sx <- Matrix::drop0(sx, tol = tol, ...)
-
-    # rebuild dfm using build_dfm(), like dfm_compress()
-    result <- build_dfm(
-        sx,
-        colnames(sx),
-        unit    = "documents",
-        docvars = attrs[["docvars"]],
-        meta    = attrs[["meta"]]
-    )
-
-    result
+    # rebuild dfm preserving all original attributes
+    rebuild_dfm(x, attrs)
 }
-
-
-
-

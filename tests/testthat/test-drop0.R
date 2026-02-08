@@ -45,3 +45,17 @@ test_that("drop0.dfm with tol = 0 leaves dfm unchanged", {
   expect_identical(docvars(dfmt_drop), docvars(dfmt))
 })
 
+
+test_that("drop0.dfm preserves all attributes", {
+  toks <- tokens(data_corpus_inaugural[1:3])
+  dfmt <- dfm(toks)
+
+  attrs_before <- attributes(dfmt)
+
+  dfmt_drop <- drop0(dfmt, tol = 2)
+  attrs_after <- attributes(dfmt_drop)
+
+  expect_identical(names(attrs_after), names(attrs_before))
+  expect_identical(attr(dfmt_drop, "meta"), attr(dfmt, "meta"))
+  expect_identical(docvars(dfmt_drop), docvars(dfmt))
+})

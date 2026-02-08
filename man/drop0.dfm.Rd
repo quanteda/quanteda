@@ -26,15 +26,4 @@ This performs "hard thresholding" (matrix sparsification) on the dfm:
 it increases the number of zero cells but does not change the dfm
 dimensions. For removing features entirely, use \code{\link{dfm_trim}}.
 }
-\examples{
-\donttest{
-library(quanteda)
-toks <- tokens(data_corpus_inaugural[1:3])
-dfmt <- dfm(toks)
-
-# Zero out counts below 2 but keep docvars
-dfmt2 <- drop0(dfmt, tol = 2)
-names(docvars(dfmt2))
-}
-
-}
+\keyword{internal}
