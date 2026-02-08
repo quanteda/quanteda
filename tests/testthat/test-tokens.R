@@ -1274,4 +1274,20 @@ test_that("cancatenator is passed to the downstream", {
 
 })
 
+test_that("characters are normalized (#2480)", {
+    
+    txt <- c("I’m am easy\u2010going.",
+             "It\u201Bs called \u201Cdemocracy\u201D.",
+             "Keep \u301c and \u2E3B")
+    
+    toks <- tokens(txt)
+    expect_equal(
+        as.list(toks),
+        list(text1 = c("I'm", "am", "easy-going", "."), 
+             text2 = c("It's",  "called", "\"", "democracy", "\"", "."), 
+             text3 = c("Keep", "\u301c",  "and", "\u2E3B"))
+    )
+    
+})
+
 quanteda_options(reset = TRUE)
