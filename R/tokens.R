@@ -348,6 +348,7 @@ tokens.corpus <- function(x,
 
     # split x into smaller blocks to reduce peak memory consumption
     x <- as.character(x)
+    x <- normalize_characters(x)
     x <- split(x, factor(ceiling(seq_along(x) / quanteda_options("tokens_block_size"))))
 
     result <- cpp_serialize(list())
