@@ -1277,7 +1277,7 @@ test_that("cancatenator is passed to the downstream", {
 test_that("characters are normalized (#2480)", {
     
     txt <- c("I’m am easy\u2010going.",
-             "It\u201Bs called \u201Cdemocracy\u201D.",
+             "It\u2019s called \u201Cdemocracy\u201D.",
              "Keep \u301c and \u2E3B")
     
     toks <- tokens(txt)
