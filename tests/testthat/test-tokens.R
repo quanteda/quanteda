@@ -1276,14 +1276,22 @@ test_that("cancatenator is passed to the downstream", {
 
 test_that("characters are normalized (#2480)", {
     
-    txt <- c("I’m am easy\u2010going.",
+    txt <- c("I am easy\u2010going.",
              "It\u2019s called \u201Cdemocracy\u201D.",
              "Keep \u301c and \u2E3B")
     
     toks <- tokens(txt)
     expect_equal(
         as.list(toks),
-        list(text1 = c("I'm", "am", "easy-going", "."), 
+        list(text1 = c("I", "am", "easy-going", "."), 
+             text2 = c("It's",  "called", "\"", "democracy", "\"", "."), 
+             text3 = c("Keep", "\u301c",  "and", "\u2E3B"))
+    )
+    
+    toks2 <- tokens(txt, split_hyphens = TRUE)
+    expect_equal(
+        as.list(toks2),
+        list(text1 = c("I", "am", "easy", "-", "going", "."), 
              text2 = c("It's",  "called", "\"", "democracy", "\"", "."), 
              text3 = c("Keep", "\u301c",  "and", "\u2E3B"))
     )
