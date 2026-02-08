@@ -1276,15 +1276,23 @@ test_that("cancatenator is passed to the downstream", {
 
 test_that("characters are normalized (#2480)", {
     
-    txt <- c("I am easy\u2010going.",
-             "It\u2019s called \u201Cdemocracy\u201D.",
+    txt <- c("I am easy\u002Dgoing.",
+             "It\u2019s called \u201Cnon\u002Ddemocracy\u201D.",
              "Keep \u301c and \u2E3B")
+    corp <- corpus(txt)
     
-    toks <- tokens(txt)
+    # original characters in corpus
+    expect_equivalent(
+        txt,
+        as.character(corp)
+    )
+    toks <- tokens(corp)
+    
+    # normalized characters in tokens
     expect_equal(
         as.list(toks),
         list(text1 = c("I", "am", "easy-going", "."), 
-             text2 = c("It's",  "called", "\"", "democracy", "\"", "."), 
+             text2 = c("It's",  "called", "\"", "non-democracy", "\"", "."), 
              text3 = c("Keep", "\u301c",  "and", "\u2E3B"))
     )
     
@@ -1292,7 +1300,7 @@ test_that("characters are normalized (#2480)", {
     expect_equal(
         as.list(toks2),
         list(text1 = c("I", "am", "easy", "-", "going", "."), 
-             text2 = c("It's",  "called", "\"", "democracy", "\"", "."), 
+             text2 = c("It's",  "called", "\"", "non", "-", "democracy", "\"", "."), 
              text3 = c("Keep", "\u301c",  "and", "\u2E3B"))
     )
     
