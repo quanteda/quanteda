@@ -367,7 +367,9 @@ tokenize_fastestword <- function(x, ...) {
     stri_split_regex(x, " ")
 }
 
-
+#' @rdname tokenize_internal
+#' @importFrom stringi stri_replace_all_fixed
+#' @export
 normalize_characters <- function(x) {
     
     # convert the dreaded "curly quotes" to ASCII equivalents
