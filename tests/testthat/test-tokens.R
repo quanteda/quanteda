@@ -1296,7 +1296,7 @@ test_that("normalize is working (#2480)", {
              text3 = c("Keep", "\u301c",  "and", "\u2E3B"))
     )
     
-    # normalized characters in tokens
+    # characters are normalized
     toks1 <- tokens(toks0, normalize = TRUE)
     expect_equal(
         as.list(toks1),
