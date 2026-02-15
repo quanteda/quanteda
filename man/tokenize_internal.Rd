@@ -9,6 +9,7 @@
 \alias{tokenize_word1}
 \alias{tokenize_character}
 \alias{tokenize_sentence}
+\alias{tokenize_paragraph}
 \alias{tokenize_fasterword}
 \alias{tokenize_fastestword}
 \alias{normalize_characters}
@@ -48,6 +49,8 @@ tokenize_character(x, ...)
 
 tokenize_sentence(x, verbose = FALSE, ...)
 
+tokenize_paragraph(x, verbose = FALSE, ...)
+
 tokenize_fasterword(x, ...)
 
 tokenize_fastestword(x, ...)
@@ -61,9 +64,9 @@ normalize_characters(x)
 connected by hyphenation and hyphenation-like characters in between words,
 e.g. \code{"self-aware"} becomes \code{c("self", "-", "aware")}}
 
-\item{verbose}{if \code{TRUE}, print timing messages to the console}
+\item{verbose}{if \code{TRUE}, print timing messages to the console.}
 
-\item{...}{used to pass arguments among the functions}
+\item{...}{used to pass arguments among the functions.}
 
 \item{split_tags}{logical; if \code{FALSE}, do not split social media tags defined
 in \code{quanteda_options()}. The default patterns are \code{pattern_hashtag = "#\\\\w+#?"} and \code{pattern_username = "@[a-zA-Z0-9_]+"}.}
