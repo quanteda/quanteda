@@ -41,9 +41,9 @@
 #' @param concatenator character; the concatenation character that will connect
 #'   the tokens making up a multi-token sequence.
 #' @inheritParams tokens_select
-#' @param xptr if `TRUE`, returns a `tokens_xptr` class object
-#' @param verbose if `TRUE`, print timing messages to the console
-#' @param ... used to pass arguments among the functions
+#' @param xptr if `TRUE`, returns a `tokens_xptr` class object.
+#' @param verbose if `TRUE`, print timing messages to the console.
+#' @param ... used to pass arguments among the functions.
 #' @section Details: As of version 2, the choice of tokenizer is left more to
 #'   the user, and `tokens()` is treated more as a constructor (from a named
 #'   list) than a tokenizer. This allows users to use any other tokenizer that
