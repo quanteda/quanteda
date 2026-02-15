@@ -14,6 +14,7 @@ tokens(
   remove_separators = TRUE,
   split_hyphens = FALSE,
   split_tags = FALSE,
+  normalize = FALSE,
   include_docvars = TRUE,
   padding = FALSE,
   concatenator = "_",
@@ -54,6 +55,9 @@ e.g. \code{"self-aware"} becomes \code{c("self", "-", "aware")}}
 
 \item{split_tags}{logical; if \code{FALSE}, do not split social media tags defined
 in \code{quanteda_options()}. The default patterns are \code{pattern_hashtag = "#\\\\w+#?"} and \code{pattern_username = "@[a-zA-Z0-9_]+"}.}
+
+\item{normalize}{logical; if \code{TRUE}, Unicode quotation marks and hyphens are
+replaced by their ASCII equivalent. See details.}
 
 \item{include_docvars}{if \code{TRUE}, pass docvars through to the tokens object.
 Does not apply when the input is a character data or a list of characters.}
@@ -119,6 +123,12 @@ splits infix hyphens, or \pkg{spacyr}.  The default tokenizer in
 \strong{quanteda} is very smart, however, and if you do not have special
 requirements, it works extremely well for most languages as well as text
 from social media (including hashtags and usernames).
+
+If \code{normalize = TRUE}, Unicode characters are replaced by their ASCII
+equivalent to make pattern matching (e.g. stop words) easier:
+\verb{[\\u201C\\u201D\\u201F]} to the double quotation; \verb{[\\u2018\\u201B\\u2019]} to
+the single quotation mark; and \verb{\\u002D\\u2010\\u2011\\u2012\\u2013\\u2014\\u2015]}
+to a hyphen.
 }
 
 \section{quanteda Tokenizers}{

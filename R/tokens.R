@@ -36,6 +36,8 @@
 #' @param split_tags logical; if `FALSE`, do not split social media tags defined
 #'   in `quanteda_options()`. The default patterns are `pattern_hashtag =
 #'   "#\\w+#?"` and `pattern_username = "@[a-zA-Z0-9_]+"`.
+#' @param normalize logical; if `TRUE`, Unicode quotation marks and hyphens are 
+#'   replaced by their ASCII equivalent. See details.
 #' @param include_docvars if `TRUE`, pass docvars through to the tokens object.
 #'   Does not apply when the input is a character data or a list of characters.
 #' @param concatenator character; the concatenation character that will connect
@@ -74,6 +76,12 @@
 #'   **quanteda** is very smart, however, and if you do not have special
 #'   requirements, it works extremely well for most languages as well as text
 #'   from social media (including hashtags and usernames).
+#'   
+#'   If `normalize = TRUE`, Unicode characters are replaced by their ASCII 
+#'   equivalent to make pattern matching (e.g. stop words) easier: 
+#'   `[\u201C\u201D\u201F]` to the double quotation; `[\u2018\u201B\u2019]` to 
+#'   the single quotation mark; and `\u002D\u2010\u2011\u2012\u2013\u2014\u2015]` 
+#'   to a hyphen.
 #'
 #' @section quanteda Tokenizers: The default word tokenizer `what = "word"` is
 #'   updated in major version 4.  It is even smarter than the v2 and v3
@@ -114,6 +122,7 @@
 #'   additional rules to avoid splits on words like "Mr." that would otherwise
 #'   incorrectly be detected as sentence boundaries.  For better sentence
 #'   tokenization, consider using \pkg{spacyr}.} }
+#'   
 #' @return \pkg{quanteda} `tokens` class object, by default a serialized list of
 #'   integers corresponding to a vector of types.
 #' @seealso [tokens_ngrams()], [tokens_skipgrams()], [tokens_compound()],
@@ -160,6 +169,7 @@ tokens <-  function(x,
                     remove_separators = TRUE,
                     split_hyphens = FALSE,
                     split_tags = FALSE,
+                    normalize = FALSE,
                     include_docvars = TRUE,
                     padding = FALSE,
                     concatenator = "_",
@@ -188,6 +198,7 @@ tokens.list <- function(x,
                         remove_separators = TRUE,
                         split_hyphens = FALSE,
                         split_tags = FALSE,
+                        normalize = FALSE,
                         include_docvars = TRUE,
                         padding = FALSE,
                         concatenator = "_",
@@ -233,6 +244,7 @@ tokens.character <- function(x,
                              remove_separators = TRUE,
                              split_hyphens = FALSE,
                              split_tags = FALSE,
+                             normalize = FALSE,
                              include_docvars = TRUE,
                              padding = FALSE,
                              concatenator = "_",
@@ -254,6 +266,7 @@ tokens.character <- function(x,
                      remove_separators = remove_separators,
                      split_hyphens = split_hyphens,
                      split_tags = split_tags,
+                     normalize = normalize,
                      include_docvars = include_docvars,
                      padding = padding,
                      concatenator = concatenator,
@@ -281,6 +294,7 @@ tokens.corpus <- function(x,
                           remove_separators = TRUE,
                           split_hyphens = FALSE,
                           split_tags = FALSE,
+                          normalize = FALSE,
                           include_docvars = TRUE,
                           padding = FALSE,
                           concatenator = "_",
@@ -348,7 +362,6 @@ tokens.corpus <- function(x,
 
     # split x into smaller blocks to reduce peak memory consumption
     x <- as.character(x)
-    x <- normalize_characters(x)
     x <- split(x, factor(ceiling(seq_along(x) / quanteda_options("tokens_block_size"))))
 
     result <- cpp_serialize(list())
@@ -385,6 +398,7 @@ tokens.corpus <- function(x,
                      remove_separators = remove_separators,
                      split_hyphens = FALSE,
                      split_tags = FALSE,
+                     normalize = normalize,
                      include_docvars = TRUE,
                      padding = padding,
                      concatenator = concatenator,
@@ -413,6 +427,7 @@ tokens.tokens_xptr <-  function(x,
                            remove_separators = TRUE,
                            split_hyphens = FALSE,
                            split_tags = FALSE,
+                           normalize = FALSE,
                            include_docvars = TRUE,
                            padding = FALSE,
                            concatenator = "_",
@@ -472,6 +487,9 @@ tokens.tokens_xptr <-  function(x,
                            valuetype = "regex",  padding = padding,
                            verbose = FALSE)
     }
+    
+    if (normalize)
+        set_types(x) <- normalize_characters(get_types(x))
 
     if (!include_docvars)
         docvars(x) <- NULL
