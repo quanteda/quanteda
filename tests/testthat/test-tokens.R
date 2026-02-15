@@ -1286,8 +1286,9 @@ test_that("normalize is working (#2480)", {
         txt,
         as.character(corp)
     )
-    toks0 <- tokens(corp)
+    
     # characters are not normalized
+    toks0 <- tokens(corp)
     expect_equal(
         as.list(toks0),
         list(text1 = c("I", "am", "easy\u002Dgoing", "."), 
@@ -1295,10 +1296,8 @@ test_that("normalize is working (#2480)", {
              text3 = c("Keep", "\u301c",  "and", "\u2E3B"))
     )
     
-    
-    
-    toks1 <- tokens(toks0, normalize = TRUE)
     # normalized characters in tokens
+    toks1 <- tokens(toks0, normalize = TRUE)
     expect_equal(
         as.list(toks1),
         list(text1 = c("I", "am", "easy-going", "."), 
