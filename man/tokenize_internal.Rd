@@ -12,6 +12,7 @@
 \alias{tokenize_paragraph}
 \alias{tokenize_fasterword}
 \alias{tokenize_fastestword}
+\alias{normalize_characters}
 \title{quanteda tokenizers}
 \usage{
 tokenize_word2(
@@ -53,6 +54,8 @@ tokenize_paragraph(x, verbose = FALSE, ...)
 tokenize_fasterword(x, ...)
 
 tokenize_fastestword(x, ...)
+
+normalize_characters(x)
 }
 \arguments{
 \item{x}{(named) character; input texts}
