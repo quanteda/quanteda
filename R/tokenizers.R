@@ -347,8 +347,19 @@ tokenize_character <- function(x, ...) {
 tokenize_sentence <- function(x, verbose = FALSE, ...) {
     if (verbose) catm(" ...segmenting into sentences\n")
     m <- names(x)
-    x <- stri_replace_all_fixed(x, "\n", " ") # TODO consider removing
+    x <- stri_replace_all_regex(x, "(?<!\\n)\\n", " ") # ignore hard wrapping
+    x <- stri_replace_all_regex(x, "\\n+", "\n")       # remove empty lines
     x <- stri_split_boundaries(x, type = "sentence", locale = quanteda_options("tokens_locale"))
+    x <- lapply(x, function(y) if (length(y)) stri_trim_right(y) else "")
+    structure(x, names = m)
+}
+
+#' @rdname tokenize_internal
+#' @export
+tokenize_paragraph <- function(x, verbose = FALSE, ...) {
+    if (verbose) catm(" ...segmenting into paragraphs\n")
+    m <- names(x)
+    x <- stri_split_regex(x, pattern = "\\n\\n+", omit_empty = FALSE)
     x <- lapply(x, function(y) if (length(y)) stri_trim_right(y) else "")
     structure(x, names = m)
 }
@@ -367,8 +378,11 @@ tokenize_fastestword <- function(x, ...) {
     stri_split_regex(x, " ")
 }
 
-
+#' @rdname tokenize_internal
+#' @importFrom stringi stri_replace_all_fixed
+#' @export
 normalize_characters <- function(x) {
+    
     # convert the dreaded "curly quotes" to ASCII equivalents
     x <- stri_replace_all_fixed(x,
                                 c("\u201C", "\u201D", "\u201F",
@@ -377,10 +391,10 @@ normalize_characters <- function(x) {
                                   "\'", "\'", "\'"), vectorize_all = FALSE)
 
     # replace all hyphens with simple hyphen
-    x <- stri_replace_all_fixed(x, c("\u2012", "\u2013", "\u2014", "\u2015", "\u2053"), "--",
-                                vectorize_all = FALSE)
-    x <- stri_replace_all_regex(x, c("\\p{Pd}", "\\p{Pd}{2,}"), c("-", " - "),
+    x <- stri_replace_all_fixed(x, c("\u002D", "\u2010", "\u2011", "\u2012", 
+                                     "\u2013", "\u2014", "\u2015"), "-",
                                 vectorize_all = FALSE)
 
     return(x)
 }
+

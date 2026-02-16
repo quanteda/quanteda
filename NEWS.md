@@ -2,10 +2,11 @@
 
 ## Changes and additions
 
+* Added `normalize` argument to `tokens()` to replace Unicode quotation marks and hyphens with their ASCII equivalent (#2480).
 * Added `as.tensor()` method for tokens objects to convert tokens to sparse tensors compatible with the \pkg{torch} package (#2474).
-
 * Added `tokens_annotate()` to insert tags to a tokens object using a dictionary.
 * Added `tokenize` argument to `dictionary()` to match dictionary values and tokens more easily in Japanese and Chinese (#2476).
+* Update `corpus_reshape()` to segment paragraphs more accurately (#2468).
 
 # quanteda 4.3.1
 
