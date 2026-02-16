@@ -17,16 +17,26 @@ void index(Text tokens,
     
     if (tokens.empty()) return;
     
+    // Match flag for each token
+    std::vector<bool> flags_match_global(tokens.size(), false);
+    
     for (std::size_t span : spans) { // substitution starts from the longest sequences
         if (tokens.size() < span) continue;
         for (std::size_t i = 0; i < tokens.size() - (span - 1); i++) {
             Ngram ngram(tokens.begin() + i, tokens.begin() + i + span);
             auto range = map_pats.equal_range(ngram);
-            for (auto it = range.first; it != range.second; ++it) {
-                unsigned int pat = it->second;
-                Match match = std::make_tuple(pat, document, i, i + span - 1);
-                matches.push_back(match);
+            bool matched = false;
+            bool flagged = std::all_of(flags_match_global.begin() + i, flags_match_global.begin() + i + span, [](bool v) { return v; });
+            if (!flagged) {
+                for (auto it = range.first; it != range.second; ++it) {
+                    unsigned int pat = it->second;
+                    Match match = std::make_tuple(pat, document, i, i + span - 1);
+                    matches.push_back(match);
+                    matched = true;
+                }
             }
+            if (matched)
+                std::fill(flags_match_global.begin() + i, flags_match_global.begin() + i + span, true); // for all keys
         }
     }
 }
