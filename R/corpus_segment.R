@@ -227,15 +227,12 @@ segment_texts <- function(x, pattern = NULL, valuetype = "regex",
 
     # use preset regex pattern
     if (what == "paragraphs") {
-        pattern <- "\\n\\n"
-        valuetype <- "regex"
+        x <- tokenize_paragraph(x, ...)
+    } else if (what == "sentences") {
+        x <- tokenize_sentence(x, ...)
     }
 
-    if (is.null(pattern)) {
-        if (what == "sentences")
-            x <- tokenize_sentence(x, ...)
-    } else {
-
+    if (!is.null(pattern)) {
         if (valuetype == "glob") {
             # treat as fixed if no glob character is detected
             if (!any(stri_detect_charclass(pattern, c("[*?]")))) {

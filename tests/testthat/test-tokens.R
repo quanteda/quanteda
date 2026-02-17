@@ -1274,4 +1274,45 @@ test_that("cancatenator is passed to the downstream", {
 
 })
 
+test_that("normalize is working (#2480)", {
+    
+    txt <- c("I am easy\u002Dgoing.",
+             "It\u2019s called \u201Cnon\u002Ddemocracy\u201D.",
+             "Keep \u301c and \u2E3B")
+    corp <- corpus(txt)
+
+    # original characters in corpus
+    expect_equivalent(
+        txt,
+        as.character(corp)
+    )
+    
+    # characters are not normalized
+    toks0 <- tokens(corp)
+    expect_equal(
+        as.list(toks0),
+        list(text1 = c("I", "am", "easy\u002Dgoing", "."), 
+             text2 = c("It\u2019s",  "called", "\u201C", "non\u002Ddemocracy", "\u201D", "."), 
+             text3 = c("Keep", "\u301c",  "and", "\u2E3B"))
+    )
+    
+    # characters are normalized
+    toks1 <- tokens(toks0, normalize = TRUE)
+    expect_equal(
+        as.list(toks1),
+        list(text1 = c("I", "am", "easy-going", "."), 
+             text2 = c("It's",  "called", "\"", "non-democracy", "\"", "."), 
+             text3 = c("Keep", "\u301c",  "and", "\u2E3B"))
+    )
+    
+    toks2 <- tokens(txt, split_hyphens = TRUE, normalize = TRUE)
+    expect_equal(
+        as.list(toks2),
+        list(text1 = c("I", "am", "easy", "-", "going", "."), 
+             text2 = c("It's",  "called", "\"", "non", "-", "democracy", "\"", "."), 
+             text3 = c("Keep", "\u301c",  "and", "\u2E3B"))
+    )
+    
+})
+
 quanteda_options(reset = TRUE)
