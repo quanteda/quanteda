@@ -111,6 +111,7 @@ Collate:
     'fcm-classes.R'
     'docnames.R'
     'docvars.R'
+    'drop0.R'
     'fcm-methods.R'
     'fcm-print.R'
     'fcm-subsetting.R'
