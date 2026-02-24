@@ -29,8 +29,7 @@ void index(Text tokens,
             bool flagged = std::all_of(flags_match_global.begin() + i, flags_match_global.begin() + i + span, [](bool v) { return v; });
             if (!flagged) {
                 for (auto it = range.first; it != range.second; ++it) {
-                    unsigned int pat = it->second;
-                    Match match = std::make_tuple(pat, document, i, i + span - 1);
+                    Match match = std::make_tuple(it->second, document, i, i + span - 1);
                     matches.push_back(match);
                     matched = true;
                 }
