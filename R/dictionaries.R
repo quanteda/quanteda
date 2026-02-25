@@ -217,6 +217,7 @@ dictionary.default <- function(x, file = NULL, format = NULL,
 dictionary.list <- function(x, file = NULL, format = NULL,
                             separator = " ",
                             tolower = TRUE, tokenize = FALSE,
+                            levels = 1:100,
                             encoding = "utf-8") {
     
     separator <- check_character(separator, min_nchar = 1)
@@ -630,6 +631,38 @@ flatten_list <- function(lis, levels = 1:100, level = 1, key_parent = "",
     result <- lapply(split(temp, g), unlist, use.names = FALSE)
     return(result)
 }
+
+#' lis <- list("A" = list("B" = c("b", "B"), c("a", "A", "aa")))
+#' shorten_list(lis, 1:2)
+#' quanteda:::flatten_list(lis, 1)
+shrink_list <- function(lis, levels = 1:100, level = 1) {
+    
+    #is_value <- sapply(lis, names) == ""
+    #cat("level", level, " ------------\n")
+    result <- lapply(lis, function(x) {
+        is_value <- names(x) == ""
+        temp <- shrink_list(x[!is_value], levels, level + 1)
+        if (level %in% levels) {
+            if (is.null(names(x))) { # only values
+                temp <- c(temp, unlist(x, use.names = FALSE))
+            } else {
+                temp <- c(temp, unlist(x[is_value], use.names = FALSE))
+            }
+        }
+        return(temp)
+    })
+    return(result[lengths(result) > 0])
+}
+
+lis <- list("US" = list("MA" = c("Boston"),
+                        "CA" = c("Sacramento"),
+                        "Washingon DC"),
+            "JP" = list("Tokyo"))
+shrink_list(lis, 1:2)
+shrink_list(lis, 1)
+as.dictionary(shrink_list(lis, 3))
+
+shrink_list(lis, 2)
 
 #' Internal function to lowercase dictionary values
 #'
