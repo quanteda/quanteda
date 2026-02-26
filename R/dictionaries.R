@@ -251,7 +251,7 @@ dictionary.dictionary2 <- function(x, file = NULL, format = NULL,
                                    tolower = TRUE, tokenize = FALSE,
                                    levels = 1:100, encoding = "utf-8") {
     x <- as.dictionary(x)
-    dictionary(as.list(x), separator = separator, tolower = tolower,
+    dictionary(unclass(x), separator = separator, tolower = tolower,
                tokenize = tokenize, levels = levels, encoding = encoding)
 }
 
@@ -350,7 +350,7 @@ as.dictionary.list <- function(x, separator = " ", tolower = TRUE, ...) {
 #'   [dictionary]; current legal values are a data.frame with the fields
 #'   `word` and `sentiment` (as per the **tidytext** package)
 #' @inheritParams dictionary
-#' @method as.dictionary data.frame
+#' @method as.dictionary data.frame.
 #' @export
 as.dictionary.data.frame <- function(x, format = c("tidytext"), 
                                      separator = " ", tolower = FALSE, ...) {
@@ -1087,7 +1087,7 @@ dictionary_depth <- function(dict, depth = -1) {
     # http://stackoverflow.com/a/13433689/1270695
     dict <- unclass(dict)
     if (is.list(dict) && length(dict) > 0) {
-        return(max(unlist(lapply(dict, dictionary_depth, depth = depth + 1))))
+        return(max(sapply(dict, dictionary_depth, depth = depth + 1)))
     } else {
         return(depth)
     }
