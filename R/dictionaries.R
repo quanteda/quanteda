@@ -1072,7 +1072,7 @@ simplify_dictionary <- function(entry, omit = TRUE, dict = list()) {
                     dict[[names(category[i])]] <-
                         simplify_dictionary(category[[i]], TRUE, dict)
                 }
-                dict[["__"]] <- unlist(entry[!is_category], use.names = FALSE)
+                dict[[""]] <- unlist(entry[!is_category], use.names = FALSE)
             } else {
                 dict <- unlist(entry, use.names = FALSE)
             }

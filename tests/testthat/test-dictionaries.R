@@ -427,7 +427,8 @@ test_that("dictionary constructor works with LIWC format w/extra codes and nesti
 test_that("dictionary works with yoshicoder, issue 819", {
     expect_equal(
         as.list(dictionary(file = "../data/dictionaries/issue-819.ykd")),
-        list("Dictionary" = list("pos" = list("A" = "a word", "B" = "b word"))))
+        list("Dictionary" = list("pos" = list("A" = "a word", "B" = "b word")))
+    )
 })
 
 test_that("dictionary constructor works on a dictionary", {
@@ -700,22 +701,21 @@ test_that("tokenize is working", {
 
 test_that("levels is working", {
     
-    lis <- list("US" = list("MA" = "Boston",
-                            "CA" = "Sacramento",
-                            "Washingon DC"),
-                "JP" = list("Tokyo"))
-    
-    dict <- dictionary(lis, tolower = FALSE)
-    
+    dict <- dictionary(file = "../data/dictionaries/newsmap2.yml", 
+                       tolower = FALSE, levels = 1:2)
+
     # dictionary
     expect_equivalent(
-        dictionary(dict, levels = 1:2, tolower = FALSE),
-        lis
+        dict,
+        list("US" = list("Washingon DC",
+                         "MA" = "Boston",
+                         "CA" = "Sacramento"),
+             "JP" = list("Tokyo"))
     )
     expect_equivalent(
         dictionary(dict, levels = 1, tolower = FALSE),
-        list("US" = list("Washingon DC"),
-             "JP" = list("Tokyo"))
+        list("US" = "Washingon DC",
+             "JP" = "Tokyo")
     )
     expect_equivalent(
         dictionary(dict, levels = 2, tolower = FALSE),
@@ -729,24 +729,54 @@ test_that("levels is working", {
     
     expect_equivalent(
         dictionary(lis, levels = 1, tolower = FALSE),
-        list("US" = list("Washingon DC"),
-             "JP" = list("Tokyo"))
+        list("US" = "Washingon DC",
+             "JP" = "Tokyo")
     )
     
     # list 
+    lis <- list("US" = list("Washingon DC",
+                            "MA" = "Boston",
+                            "CA" = "Sacramento"),
+                "JP" = list("Tokyo"))
+    
     expect_equivalent(
         dictionary(lis, levels = 1:2, tolower = FALSE),
-        lis
+        list("US" = list("Washingon DC",
+                         "MA" = list("Boston"),
+                         "CA" = list("Sacramento")),
+             "JP" = list("Tokyo"))
+    )
+    expect_equivalent(
+        dictionary(lis, levels = 1, tolower = FALSE),
+        list("US" = list("Washingon DC"),
+             "JP" = list("Tokyo"))
     )
     expect_equivalent(
         dictionary(lis, levels = 2, tolower = FALSE),
         list("MA" = "Boston",
              "CA" = "Sacramento")
     )
-    
     expect_error(
         dictionary(lis, levels = 3, tolower = FALSE),
         "Dictionary elements must be named"
     )
     
+})
+
+test_that("as.yaml is commutative", {
+
+    dict <- dictionary(
+        list("US" = list("Washingon DC",
+                         "MA" = "Boston",
+                         "CA" = "Sacramento"),
+             "JP" = list("Tokyo")), tolower = FALSE)
+    
+    # write and read
+    f <- paste0(tempfile(), ".yml")
+    cat(as.yaml(dict), file = f)
+    
+    expect_identical(
+        dict, 
+        dictionary(file = f, tolower = FALSE)
+    )
 })
