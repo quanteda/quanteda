@@ -8,7 +8,7 @@
 \usage{
 as.dictionary(x, ...)
 
-\method{as.dictionary}{data.framefas.}(x, format = c("tidytext"), separator = " ", tolower = FALSE, ...)
+\method{as.dictionary}{data.frame}(x, format = c("tidytext"), separator = " ", tolower = FALSE, ...)
 
 is.dictionary(x)
 }
