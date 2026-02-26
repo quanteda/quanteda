@@ -637,8 +637,6 @@ flatten_list <- function(lis, levels = 1:100, level = 1, key_parent = "",
 #' quanteda:::flatten_list(lis, 1)
 shrink_list <- function(lis, levels = 1:100, level = 1) {
     
-    #is_value <- sapply(lis, names) == ""
-    #cat("level", level, " ------------\n")
     result <- lapply(lis, function(x) {
         is_value <- names(x) == ""
         temp <- shrink_list(x[!is_value], levels, level + 1)
@@ -651,7 +649,9 @@ shrink_list <- function(lis, levels = 1:100, level = 1) {
         }
         return(temp)
     })
-    return(result[lengths(result) > 0])
+    if (!level %in% levels)
+        result <- unlist(unname(result), recursive = FALSE) # omit levels
+    return(result)
 }
 
 lis <- list("US" = list("MA" = c("Boston"),
@@ -660,9 +660,9 @@ lis <- list("US" = list("MA" = c("Boston"),
             "JP" = list("Tokyo"))
 shrink_list(lis, 1:2)
 shrink_list(lis, 1)
-as.dictionary(shrink_list(lis, 3))
-
+shrink_list(lis, 1:2)
 shrink_list(lis, 2)
+shrink_list(lis, 3)
 
 #' Internal function to lowercase dictionary values
 #'
