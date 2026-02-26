@@ -8,7 +8,7 @@
 \usage{
 as.dictionary(x, ...)
 
-\method{as.dictionary}{data.frame}(x, format = c("tidytext"), separator = " ", tolower = FALSE, ...)
+\method{as.dictionary}{data.framefas.}(x, format = c("tidytext"), separator = " ", tolower = FALSE, ...)
 
 is.dictionary(x)
 }
@@ -24,7 +24,7 @@ is.dictionary(x)
 \item{separator}{the character in between multi-word dictionary values. This
 defaults to \code{" "}.}
 
-\item{tolower}{if \code{TRUE}, convert all dictionary values to lowercase}
+\item{tolower}{if \code{TRUE}, convert all dictionary values to lowercase.}
 }
 \value{
 \code{as.dictionary} returns a \pkg{quanteda} \link{dictionary}

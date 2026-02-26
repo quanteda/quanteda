@@ -7,7 +7,7 @@
 lowercase_dictionary_values(dict)
 }
 \arguments{
-\item{dict}{the dictionary whose values will be lowercased}
+\item{dict}{a dictionary object}
 }
 \description{
 Internal function to lowercase dictionary values

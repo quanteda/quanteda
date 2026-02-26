@@ -2,7 +2,7 @@
 % Please edit documentation in R/dictionaries.R
 \name{dictionary}
 \alias{dictionary}
-\title{Create a dictionary}
+\title{Create a dictionary object}
 \usage{
 dictionary(
   x,
@@ -11,6 +11,7 @@ dictionary(
   separator = " ",
   tolower = TRUE,
   tokenize = FALSE,
+  levels = 1:100,
   encoding = "utf-8"
 )
 }
@@ -20,7 +21,7 @@ dictionary(
 separated by \code{separator}.  See examples. This argument may be
 omitted if the dictionary is read from \code{file}.}
 
-\item{file}{file identifier for a foreign dictionary}
+\item{file}{file identifier for a foreign dictionary.}
 
 \item{format}{character identifier for the format of the foreign dictionary.
 If not supplied, the format is guessed from the dictionary file's
@@ -34,10 +35,13 @@ software} \item{\code{"lexicoder"}}{format used by Lexicoder}
 \item{separator}{the character in between multi-word dictionary values. This
 defaults to \code{" "}.}
 
-\item{tolower}{if \code{TRUE}, convert all dictionary values to lowercase}
+\item{tolower}{if \code{TRUE}, convert all dictionary values to lowercase.}
 
 \item{tokenize}{if \code{TRUE} segment dictionary values by separators to using
 the built-in tokenizer. Useful for Japanese and Chinese dictionaries.}
+
+\item{levels}{integers specifying the levels of entries in \code{x} or \code{file} to be
+included in the object.}
 
 \item{encoding}{additional optional encoding value for reading in imported
 dictionaries. This uses the \link{iconv} labels for encoding.  See the
@@ -48,7 +52,7 @@ A dictionary class object, essentially a specially classed named list
 of characters.
 }
 \description{
-Create a \pkg{quanteda} dictionary class object, either from a list or by
+Create a \pkg{quanteda} dictionary object, either from a list or by
 importing from a foreign format.  Currently supported input file formats are
 the WordStat, LIWC, Lexicoder v2 and v3, and Yoshikoder formats.  The import
 using the LIWC format works with all currently available dictionary files
