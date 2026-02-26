@@ -350,7 +350,7 @@ as.dictionary.list <- function(x, separator = " ", tolower = TRUE, ...) {
 #'   [dictionary]; current legal values are a data.frame with the fields
 #'   `word` and `sentiment` (as per the **tidytext** package)
 #' @inheritParams dictionary
-#' @method as.dictionary data.frame.
+#' @method as.dictionary data.frame
 #' @export
 as.dictionary.data.frame <- function(x, format = c("tidytext"), 
                                      separator = " ", tolower = FALSE, ...) {
