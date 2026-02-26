@@ -734,7 +734,7 @@ test_that("levels is working", {
     )
     
     expect_equivalent(
-        dictionary(lis, levels = 1, tolower = FALSE),
+        dictionary(dict, levels = 1, tolower = FALSE),
         list("US" = "Washingon DC",
              "JP" = "Tokyo")
     )
