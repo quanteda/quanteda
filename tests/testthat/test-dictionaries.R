@@ -698,4 +698,55 @@ test_that("tokenize is working", {
     
 })
 
-
+test_that("levels is working", {
+    
+    lis <- list("US" = list("MA" = "Boston",
+                            "CA" = "Sacramento",
+                            "Washingon DC"),
+                "JP" = list("Tokyo"))
+    
+    dict <- dictionary(lis, tolower = FALSE)
+    
+    # dictionary
+    expect_equivalent(
+        dictionary(dict, levels = 1:2, tolower = FALSE),
+        lis
+    )
+    expect_equivalent(
+        dictionary(dict, levels = 1, tolower = FALSE),
+        list("US" = list("Washingon DC"),
+             "JP" = list("Tokyo"))
+    )
+    expect_equivalent(
+        dictionary(dict, levels = 2, tolower = FALSE),
+        list("MA" = "Boston",
+             "CA" = "Sacramento")
+    )
+    expect_error(
+        dictionary(dict, levels = 3, tolower = FALSE),
+        "Dictionary elements must be named"
+    )
+    
+    expect_equivalent(
+        dictionary(lis, levels = 1, tolower = FALSE),
+        list("US" = list("Washingon DC"),
+             "JP" = list("Tokyo"))
+    )
+    
+    # list 
+    expect_equivalent(
+        dictionary(lis, levels = 1:2, tolower = FALSE),
+        lis
+    )
+    expect_equivalent(
+        dictionary(lis, levels = 2, tolower = FALSE),
+        list("MA" = "Boston",
+             "CA" = "Sacramento")
+    )
+    
+    expect_error(
+        dictionary(lis, levels = 3, tolower = FALSE),
+        "Dictionary elements must be named"
+    )
+    
+})
