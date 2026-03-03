@@ -9,39 +9,43 @@
 \usage{
 docnames(x)
 
-docnames(x) <- value
+docnames(x, unique_docnames = TRUE) <- value
 
 docid(x)
 
 segid(x)
 }
 \arguments{
-\item{x}{the object with docnames}
+\item{x}{\link{corpus}, \link{tokens}, \link{tokens_xptr}, or \link{dfm} object.}
 
 \item{value}{a character vector of the same length as \code{x}}
+
+\item{unique_docnames}{logical; if \code{TRUE}, enforce strict uniqueness in
+\code{docnames}; otherwise, rename duplicated docnames using an added serial
+number, and treat them as segments of the same document.}
 }
 \value{
-\code{docnames} returns a character vector of the document names
+\code{docnames()} returns a character vector of the unique document names.
 
 \verb{docnames <-} assigns new values to the document names of an object.
 docnames can only be character, so any non-character value assigned to be a
 docname will be coerced to mode \code{character}.
 
-\code{docid} returns an internal variable denoting the original "docname"
-from which a document came.  If an object has been reshaped (e.g.
+\code{docid()} returns an internal factor variable that records the original
+\code{doc_id}.  If an object has been reshaped (e.g.
 \code{\link[=corpus_reshape]{corpus_reshape()}} or segmented (e.g. \code{\link[=corpus_segment]{corpus_segment()}}), \code{docid(x)} returns
-the original docnames but \code{segid(x)} does the serial number of those segments
-within the original document.
+the original \code{doc_id} but \code{segid(x)} does the serial number of those segments
+within the original \code{doc_id}.
 }
 \description{
-Get or set the document names of a \link{corpus}, \link{tokens}, or \link{dfm} object.
+Get or set document names
 }
 \note{
-\code{docid} and \code{segid} are designed primarily for developers, not for end users.  In
-most cases, you will want \code{docnames} instead.  It is, however, the
+\code{docid()} and \code{segid()} are designed primarily for developers, not for end users.  In
+most cases, you will want \code{docnames()} instead.  It is, however, the
 default for \link{groups}, so that documents that have been previously reshaped
 (e.g. \code{\link[=corpus_reshape]{corpus_reshape()}} or segmented (e.g.
-\code{\link[=corpus_segment]{corpus_segment()}}) will be regrouped into their original \code{docnames} when
+\code{\link[=corpus_segment]{corpus_segment()}}) will be regrouped into their original \code{doc_id} when
 \code{groups = docid(x)}.
 }
 \examples{
