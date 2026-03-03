@@ -106,12 +106,14 @@ make_docvars <- function(n, docname = NULL, unique = TRUE, drop_docid = TRUE) {
                              "segid_" = integer(),
                               stringsAsFactors = FALSE)
     } else {
-        if (unique && any(duplicated(docname))) {
-            segid <- stats::ave(docname == docname, docname, FUN = cumsum)
-            docid <- paste0(docname, ".", segid)
-        } else {
+        if (unique) {
+            if (any(duplicated(docname)))
+                stop("docnames must be unique")
             segid <- rep(1L, n)
             docid <- as.character(docname)
+        } else {
+            segid <- stats::ave(docname == docname, docname, FUN = cumsum)
+            docid <- paste0(docname, ".", segid)
         }
         result <- data.frame("docname_" = docid,
                              "docid_" = docname,
