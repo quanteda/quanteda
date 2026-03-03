@@ -35,7 +35,7 @@ test_that("test rbind.dfm with different columns", {
 test_that("test rbind.dfm with different columns, three args and repeated words", {
     dfmt1 <- dfm(tokens(c(doc1 = "What does the?"), remove_punct = TRUE))
     dfmt2 <- dfm(tokens(c(doc2 = "fox say fox"), remove_punct = TRUE))
-    dfmt3 <- dfm(tokens(c(doc3, "The quick brown fox"), remove_punct = TRUE))
+    dfmt3 <- dfm(tokens(c(doc3 = "The quick brown fox"), remove_punct = TRUE))
     dfmt4 <- rbind(dfmt1, dfmt2, dfmt3)
 
     dfmt5 <- as.dfm(matrix(
