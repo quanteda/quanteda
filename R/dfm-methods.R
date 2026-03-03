@@ -138,7 +138,7 @@ matrix2dfm <- function(x, docvars = NULL, meta = NULL) {
         featname <- paste0(quanteda_options("base_featname"), seq_len(ncol(x)))
 
     if (is.null(docvars))
-        docvars <- make_docvars(nrow(x), docname, FALSE)
+        docvars <- make_docvars(nrow(x), docname, unique = TRUE)
     if (is.null(meta))
         meta <- make_meta("dfm")
     
