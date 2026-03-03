@@ -45,6 +45,7 @@ docnames.tokens <- function(x) {
 # docnames<- ----------
 
 #' @param value a character vector of the same length as `x`
+#' @inheritParams corpus
 #' @return `docnames <-` assigns new values to the document names of an object.  
 #' docnames can only be character, so any non-character value assigned to be a
 #' docname will be coerced to mode `character`.
@@ -55,20 +56,20 @@ docnames.tokens <- function(x) {
 #' docnames(corp) <- paste0("Speech", seq_len(ndoc(corp)))
 #' 
 #' @rdname docnames
-"docnames<-" <- function(x, value) {
+"docnames<-" <- function(x, value, unique_docnames = TRUE) {
     UseMethod("docnames<-")
 }
 
 #' @export
-"docnames<-.default" <- function(x, value) {
+"docnames<-.default" <- function(x, value, unique_docnames = TRUE) {
     check_class(class(x), "docnames<-")
 }
 
 #' @noRd
 #' @export
-"docnames<-.corpus" <- function(x, value) {
+"docnames<-.corpus" <- function(x, value, unique_docnames = TRUE) {
     x <- as.corpus(x)
-    temp <- make_docvars(length(value), value, unique = TRUE)
+    temp <- make_docvars(length(value), value, unique = unique_docnames)
     attr(x, "docvars")[c("docname_", "docid_", "segid_")] <- temp
     attr(x, "names") <- temp[["docname_"]]
     return(x)
@@ -76,9 +77,9 @@ docnames.tokens <- function(x) {
 
 #' @noRd
 #' @export
-"docnames<-.tokens" <- function(x, value) {
+"docnames<-.tokens" <- function(x, value, unique_docnames = TRUE) {
     x <- as.tokens(x)
-    temp <- make_docvars(length(value), value, unique = TRUE)
+    temp <- make_docvars(length(value), value, unique = unique_docnames)
     attr(x, "docvars")[c("docname_", "docid_", "segid_")] <- temp
     attr(x, "names") <- temp[["docname_"]]
     return(x)
@@ -86,9 +87,9 @@ docnames.tokens <- function(x) {
 
 #' @noRd
 #' @export
-"docnames<-.dfm" <- function(x, value) {
+"docnames<-.dfm" <- function(x, value, unique_docnames = TRUE) {
     x <- as.dfm(x)
-    temp <- make_docvars(length(value), value, unique = TRUE)
+    temp <- make_docvars(length(value), value, unique = unique_docnames)
     x@docvars[c("docname_", "docid_", "segid_")] <- temp
     x@Dimnames[["docs"]] <- temp[["docname_"]]
     return(x)
