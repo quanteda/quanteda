@@ -33,16 +33,16 @@ test_that("test rbind.dfm with different columns", {
 })
 
 test_that("test rbind.dfm with different columns, three args and repeated words", {
-    dfmt1 <- dfm(tokens("What does the?", remove_punct = TRUE))
-    dfmt2 <- dfm(tokens("fox say fox", remove_punct = TRUE))
-    dfmt3 <- dfm(tokens("The quick brown fox", remove_punct = TRUE))
+    dfmt1 <- dfm(tokens(c(doc1 = "What does the?"), remove_punct = TRUE))
+    dfmt2 <- dfm(tokens(c(doc2 = "fox say fox"), remove_punct = TRUE))
+    dfmt3 <- dfm(tokens(c(doc3, "The quick brown fox"), remove_punct = TRUE))
     dfmt4 <- rbind(dfmt1, dfmt2, dfmt3)
 
     dfmt5 <- as.dfm(matrix(
         c(0, 0, 1, 1, 0, 0, 0, 2, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 0),
         nrow = 3,
         dimnames = list(
-            c("text1", "text1", "text1"),
+            c("doc1", "doc2", "doc3"),
             c("brown", "does", "fox", "quick", "say", "the", "what")
         )
     ))
