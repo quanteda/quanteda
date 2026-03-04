@@ -64,15 +64,10 @@ check_entries <- function(dict) {
 
 #' Create a dictionary object
 #'
-#' Create a \pkg{quanteda} dictionary object, either from a list or by
-#' importing from a foreign format.  Currently supported input file formats are
-#' the WordStat, LIWC, Lexicoder v2 and v3, and Yoshikoder formats.  The import
-#' using the LIWC format works with all currently available dictionary files
-#' supplied as part of the LIWC 2001, 2007, and 2015 software (see References).
-#' @param x a named list of character vector dictionary entries, including
-#'   [valuetype] pattern matches, and including multi-word expressions
-#'   separated by `separator`.  See examples. This argument may be
-#'   omitted if the dictionary is read from `file`.
+#' Create a \pkg{quanteda} dictionary object to perform pattern matching on [tokens], 
+#' [dfm] and [fcm]. 
+#' @param x a named list of [valuetype] patterns or an existing dictionary 
+#'   object. See examples. This argument should be omitted if `file` is speficied.
 #' @param file file identifier for a foreign dictionary.
 #' @param format character identifier for the format of the foreign dictionary.
 #'   If not supplied, the format is guessed from the dictionary file's
@@ -94,15 +89,26 @@ check_entries <- function(dict) {
 #'   included in the object.
 #' @return A dictionary class object, essentially a specially classed named list
 #'   of characters.
-#' @details Dictionaries can be subsetted using
+#' @details 
+  
+#'   A dictionary object can include multi-word expressions segmented by 
+#'   `separator`. When it is applied to tokens object, they match both sequences 
+#'   of separate tokens and compounded tokens.
+#' 
+#'   Dictionary objects can be subsetted using
 #'   \code{\link[=dictionary2-class]{[}} and
 #'   \code{\link[=dictionary2-class]{[[}}, operating the same as the equivalent
-#'   [list][dictionary2-class] operators.
+#'   [list][dictionary2-class] operators. If `dictionary()` is applied to existing 
+#'   objects, it is possible to select `levels`.
 #'
-#'   Dictionaries can be coerced from lists using [as.dictionary()],
-#'   coerced to named lists of characters using
-#'   [`as.list()`][dictionary2-class], and checked using
-#'   [is.dictionary()].
+#'   Dictionary objects can be coerced from and to lists using [as.dictionary()] 
+#'   and [`as.list()`][dictionary2-class], and checked using [is.dictionary()].
+#'   
+#'   Currently supported input file formats are
+#'   the WordStat, LIWC, Lexicoder v2 and v3, and Yoshikoder formats.  The import
+#'   using the LIWC format works with all currently available dictionary files
+#'   supplied as part of the LIWC 2001, 2007, and 2015 software (see References).
+#'   
 #' @references WordStat dictionaries page, from Provalis Research
 #'   <https://provalisresearch.com/products/content-analysis-software/wordstat-dictionary/>.
 #'
@@ -118,40 +124,45 @@ check_entries <- function(dict) {
 #' @seealso [as.dictionary()],
 #'   [`as.list()`][dictionary2-class], [is.dictionary()]
 #' @examples
-#' corp <- corpus_subset(data_corpus_inaugural, Year>1900)
-#' dict <- dictionary(list(christmas = c("Christmas", "Santa", "holiday"),
-#'                           opposition = c("Opposition", "reject", "notincorpus"),
-#'                           taxing = "taxing",
-#'                           taxation = "taxation",
-#'                           taxregex = "tax*",
-#'                           country = "america"))
-#' tokens(corp) |>
-#'     tokens_lookup(dictionary = dict) |>
+#' corp <- corpus_subset(data_corpus_inaugural, Year > 2000)
+#' toks <- tokens(corp)
+#' 
+#' dict <- dictionary(list(
+#'    tax = c("tax", "taxes", "taxing"),         # fixed patterns
+#'    economy = list("econom*",                  # glob patterns
+#'                   job = c("work*", "job*")),  # nested keys
+#'    health = c("health care", "public health") # multi-word expressions
+#' ))
+#' 
+#' # compound tokens
+#' tokens_compound(toks, pattern = dict) |>
+#'     dfm() |>
+#'     dfm_select(dict) 
+#'                           
+#' tokens_lookup(toks, dictionary = dict, levels = 1) |>
 #'     dfm()
 #'
 #' # subset a dictionary
 #' dict[1:2]
-#' dict[c("christmas", "opposition")]
-#' dict[["opposition"]]
-#'
-#' # combine dictionaries
-#' c(dict["christmas"], dict["country"])
+#' dict[c("economy")]
+#' 
+#' # update a dictionary
+#' dictionary(dict, levels = 2)
 #'
 #' \dontrun{
 #' dfmat <- dfm(tokens(data_corpus_inaugural))
 #' 
 #' # import the Laver-Garry dictionary from Provalis Research
-#' dictfile <- tempfile()
 #' download.file("https://provalisresearch.com/Download/LaverGarry.zip",
-#'               dictfile, mode = "wb")
-#' unzip(dictfile, exdir = (td <- tempdir()))
-#' dictlg <- dictionary(file = paste(td, "LaverGarry.cat", sep = "/"))
-#' dfm_lookup(dfmat, dictlg)
+#'               tf <- tempfile(), mode = "wb")
+#' unzip(tf, exdir = (td <- tempdir()))
+#' dict_lg <- dictionary(file = paste(td, "LaverGarry.cat", sep = "/"))
+#' dfm_lookup(dfmat, dict_lg)
 #'
 #' # import a LIWC formatted dictionary from http://www.moralfoundations.org
 #' download.file("http://bit.ly/37cV95h", tf <- tempfile())
-#' dictliwc <- dictionary(file = tf, format = "LIWC")
-#' dfm_lookup(dfmat, dictliwc)
+#' dict_liwc <- dictionary(file = tf, format = "LIWC")
+#' dfm_lookup(dfmat, dict_liwc)
 #' }
 #' @export
 dictionary <- function(x, file = NULL, format = NULL,
