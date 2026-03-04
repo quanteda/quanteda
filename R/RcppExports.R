@@ -13,6 +13,10 @@ cpp_kwic <- function(xptr, documents_, pos_from_, pos_to_, window, delim_ = " ",
     .Call(`_quanteda_cpp_kwic`, xptr, documents_, pos_from_, pos_to_, window, delim_, thread)
 }
 
+cpp_ngrams <- function(texts_, size, thread = -1L) {
+    .Call(`_quanteda_cpp_ngrams`, texts_, size, thread)
+}
+
 cpp_index_types <- function(patterns_, types_, glob = TRUE) {
     .Call(`_quanteda_cpp_index_types`, patterns_, types_, glob)
 }

@@ -57,6 +57,19 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// cpp_ngrams
+IntegerVector cpp_ngrams(const List& texts_, unsigned int size, const int thread);
+RcppExport SEXP _quanteda_cpp_ngrams(SEXP texts_SEXP, SEXP sizeSEXP, SEXP threadSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const List& >::type texts_(texts_SEXP);
+    Rcpp::traits::input_parameter< unsigned int >::type size(sizeSEXP);
+    Rcpp::traits::input_parameter< const int >::type thread(threadSEXP);
+    rcpp_result_gen = Rcpp::wrap(cpp_ngrams(texts_, size, thread));
+    return rcpp_result_gen;
+END_RCPP
+}
 // cpp_index_types
 List cpp_index_types(const CharacterVector& patterns_, const CharacterVector& types_, const bool glob);
 RcppExport SEXP _quanteda_cpp_index_types(SEXP patterns_SEXP, SEXP types_SEXP, SEXP globSEXP) {
@@ -506,6 +519,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_quanteda_cpp_fcm", (DL_FUNC) &_quanteda_cpp_fcm, 6},
     {"_quanteda_cpp_index", (DL_FUNC) &_quanteda_cpp_index, 3},
     {"_quanteda_cpp_kwic", (DL_FUNC) &_quanteda_cpp_kwic, 7},
+    {"_quanteda_cpp_ngrams", (DL_FUNC) &_quanteda_cpp_ngrams, 3},
     {"_quanteda_cpp_index_types", (DL_FUNC) &_quanteda_cpp_index_types, 3},
     {"_quanteda_cpp_serialize", (DL_FUNC) &_quanteda_cpp_serialize, 2},
     {"_quanteda_cpp_serialize_add", (DL_FUNC) &_quanteda_cpp_serialize_add, 3},

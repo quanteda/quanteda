@@ -33,6 +33,7 @@ IntegerVector cpp_ngrams(const List &texts_,
     
     std::size_t H = texts.size();
 #if QUANTEDA_USE_TBB
+    tbb::task_arena arena(thread);
     arena.execute([&]{
         tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
             for (int h = r.begin(); h < r.end(); ++h) {
