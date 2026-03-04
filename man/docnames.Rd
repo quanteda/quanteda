@@ -9,7 +9,7 @@
 \usage{
 docnames(x)
 
-docnames(x) <- value
+docnames(x, unique_docnames = TRUE) <- value
 
 docid(x)
 
@@ -17,6 +17,9 @@ segid(x)
 }
 \arguments{
 \item{x}{\link{corpus}, \link{tokens}, \link{tokens_xptr}, or \link{dfm} object.}
+\item{unique_docnames}{logical; if \code{TRUE}, enforce strict uniqueness in
+\code{docnames}; otherwise, rename duplicated docnames using an added serial
+number, and treat them as segments of the same document.}
 
 \item{value}{a character vector of the same length as \code{x}}
 }
