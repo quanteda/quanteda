@@ -58,6 +58,7 @@ pattern2id <- function(pattern, types, valuetype = c("glob", "fixed", "regex"),
     temp <- vector("list", length(pattern)) 
     for (i in seq_along(pattern)) {
         if (length(pattern[[i]]) > 1) {
+            # NOTE: consider returning a list of lists and expand in object2id() using using cpp_ngrams()
             if (valuetype == "regex") {
                 temp[[i]] <- search_regex_multi(pattern[[i]], types_search, case_insensitive)
             } else if (valuetype == "glob") {
