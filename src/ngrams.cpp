@@ -3,27 +3,27 @@
 #include <bitset>
 using namespace quanteda;
 
-#ifdef QUANTEDA
-float GLOBAL_PATTERN_MAX_LOAD_FACTOR = 0.05;
-float GLOBAL_NGRAMS_MAX_LOAD_FACTOR = 0.25;
-#endif
+// #ifdef QUANTEDA
+// float GLOBAL_PATTERN_MAX_LOAD_FACTOR = 0.05;
+// float GLOBAL_NGRAMS_MAX_LOAD_FACTOR = 0.25;
+// #endif
 
-#if QUANTEDA_USE_TBB
-#if TBB_VERSION_MAJOR >= 2021
-typedef std::atomic<unsigned int> UintAtomic; //oneAPI TBB
-#else
-typedef tbb::atomic<unsigned int> UintAtomic; //old TBB
-#endif
-typedef tbb::concurrent_unordered_map<Ngram, std::pair<UintAtomic, UintAtomic>, hash_ngram, equal_ngram> MapNgramsPair;
-#else
-typedef std::atomic<unsigned int> UintAtomic;
-typedef std::unordered_map<Ngram, std::pair<UintAtomic, UintAtomic>, hash_ngram, equal_ngram> MapNgramsPair;
-#endif
+// #if QUANTEDA_USE_TBB
+// #if TBB_VERSION_MAJOR >= 2021
+// typedef std::atomic<unsigned int> UintAtomic; //oneAPI TBB
+// #else
+// typedef tbb::atomic<unsigned int> UintAtomic; //old TBB
+// #endif
+// typedef tbb::concurrent_unordered_map<Ngram, UintAtomic, hash_ngram, equal_ngram> MapNgrams0;
+// #else
+// typedef std::atomic<unsigned int> UintAtomic;
+// typedef std::unordered_map<Ngram, UintAtomic, hash_ngram, equal_ngram> MapNgrams0;
+// #endif
 typedef std::vector<std::pair<Ngram, unsigned int>> VecNgramsPair;
 
 
 void counts2(Text text,
-             MapNgramsPair &map_seqs,
+             MapNgrams &map_seqs,
              const std::vector<unsigned int> &sizes){
     
     for (auto size : sizes) { // start from the largest size
@@ -33,7 +33,7 @@ void counts2(Text text,
             //Rcout << "@" << i << " " <<  nested << ": ";
             //dev::print_ngram(text_sub);
             auto &count = map_seqs[text_sub];
-            count.first++;
+            count++;
         }
     }
 }
@@ -58,7 +58,7 @@ DataFrame cpp_ngrams(const List &texts_,
     std::vector<unsigned int> sizes = as< std::vector<unsigned int> >(sizes_);
     std::sort(sizes.begin(), sizes.end(), std::greater<unsigned int>()); // sort in descending order
 
-    MapNgramsPair map_seqs;
+    MapNgrams map_seqs;
     map_seqs.max_load_factor(GLOBAL_PATTERN_MAX_LOAD_FACTOR);
     
     //dev::Timer timer;
@@ -83,7 +83,7 @@ DataFrame cpp_ngrams(const List &texts_,
     // for estimation
     VecNgramsPair seqs_count; // all the collocation
     seqs_count.reserve(N);
-    VecNgrams seqs; // only eligible collocation 
+    VecNgramsPair seqs; // only eligible collocation 
     seqs.reserve(N);
     
     // for output
@@ -93,12 +93,15 @@ DataFrame cpp_ngrams(const List &texts_,
     
     for (auto it = map_seqs.begin(); it != map_seqs.end(); ++it) {
         // convert to a vector for faster iteration
-        seqs_count.push_back(std::make_pair(it->first, (unsigned int)it->second.first));
+        seqs_count.push_back(std::make_pair(it->first, (unsigned int)it->second));
+        
+        // NOTE: join all ngrams with max lengths to make matrix
+        
         // estimate only sequences without padding
         if (std::none_of(it->first.begin(), it->first.end(), [](unsigned int v){ return v == 0; })) {
-            seqs.push_back(it->first);
+            //seqs.push_back(it->first);
             lengths.push_back(it->first.size());
-            counts.push_back(it->second.first);
+            counts.push_back(it->second);
         }
     }
     
@@ -120,9 +123,9 @@ require(quanteda)
 toks <- tokens(data_corpus_inaugural)
 toks <- tokens_select(toks, stopwords("english"), "remove", padding = TRUE)
 i <- seq_along(types(toks))
-i <- seq(100)
+i <- seq(1000)
 microbenchmark::microbenchmark(
-    col = cpp_ngrams(toks, 2, 1),
+    col = cpp_ngrams(toks, 2, -1),
     exp = expand.grid(i, i),
     times = 10
 )
