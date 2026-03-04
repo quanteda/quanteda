@@ -67,7 +67,7 @@ check_entries <- function(dict) {
 #' Create a \pkg{quanteda} dictionary object to perform pattern matching on [tokens], 
 #' [dfm] and [fcm]. 
 #' @param x a named list of [valuetype] patterns or an existing dictionary 
-#'   object. See examples. This argument should be omitted if `file` is speficied.
+#'   object. See examples. This argument should be omitted if `file` is specified.
 #' @param file file identifier for a foreign dictionary.
 #' @param format character identifier for the format of the foreign dictionary.
 #'   If not supplied, the format is guessed from the dictionary file's

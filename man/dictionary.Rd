@@ -17,7 +17,7 @@ dictionary(
 }
 \arguments{
 \item{x}{a named list of \link{valuetype} patterns or an existing dictionary
-object. See examples. This argument should be omitted if \code{file} is speficied.}
+object. See examples. This argument should be omitted if \code{file} is specified.}
 
 \item{file}{file identifier for a foreign dictionary.}
 
