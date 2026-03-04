@@ -709,7 +709,7 @@ test_that("levels is working", {
     # fails mysteriously
     # expect_equivalent(
     #     dict,
-    #     list("US" = list("Washingon DC",
+    #     list("US" = list("Washington DC",
     #                      "MA" = "Boston",
     #                      "CA" = "Sacramento"),
     #          "JP" = "Tokyo")
@@ -720,7 +720,7 @@ test_that("levels is working", {
     )
     expect_equivalent(
         dictionary(dict, levels = 1, tolower = FALSE),
-        list("US" = "Washingon DC",
+        list("US" = "Washington DC",
              "JP" = "Tokyo")
     )
     expect_equivalent(
@@ -735,12 +735,12 @@ test_that("levels is working", {
     
     expect_equivalent(
         dictionary(dict, levels = 1, tolower = FALSE),
-        list("US" = "Washingon DC",
+        list("US" = "Washington DC",
              "JP" = "Tokyo")
     )
     
     # list 
-    lis <- list("US" = list("Washingon DC",
+    lis <- list("US" = list("Washington DC",
                             "MA" = "Boston",
                             "CA" = "Sacramento"),
                 "JP" = "Tokyo")
@@ -748,7 +748,7 @@ test_that("levels is working", {
     # fails mysteriously
     # expect_equivalent(
     #     dictionary(lis, levels = 1:2, tolower = FALSE),
-    #     list("US" = list("Washingon DC",
+    #     list("US" = list("Washington DC",
     #                      "MA" = list("Boston"),
     #                      "CA" = list("Sacramento")),
     #          "JP" = list("Tokyo"))
@@ -759,7 +759,7 @@ test_that("levels is working", {
     )
     expect_equivalent(
         dictionary(lis, levels = 1, tolower = FALSE),
-        list("US" = list("Washingon DC"),
+        list("US" = list("Washington DC"),
              "JP" = list("Tokyo"))
     )
     expect_equivalent(
@@ -777,7 +777,7 @@ test_that("levels is working", {
 test_that("as.yaml is commutative", {
 
     dict <- dictionary(
-        list("US" = list("Washingon DC",
+        list("US" = list("Washington DC",
                          "MA" = "Boston",
                          "CA" = "Sacramento"),
              "JP" = list("Tokyo")), tolower = FALSE)
