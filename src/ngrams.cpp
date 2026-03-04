@@ -28,7 +28,7 @@ IntegerVector cpp_ngrams(const List &texts_,
     
     Texts texts = as<Texts>(texts_);
 
-    MapNgrams map_seqs;
+    MapNgrams map_seqs; // can be used for pre-scan
     map_seqs.max_load_factor(GLOBAL_PATTERN_MAX_LOAD_FACTOR);
     
     std::size_t H = texts.size();
@@ -67,9 +67,19 @@ require(quanteda)
 toks <- tokens(data_corpus_inaugural)
 toks <- tokens_select(toks, stopwords("english"), "remove", padding = TRUE)
 i <- seq_along(types(toks))
+mat <- cpp_ngrams(toks, 3, -1)
+
+lis <- list(c(166, 215), c(167,4291), i)
+expand2 <- function(elem, mat) { 
+    for (j in seq_along(elem)) {
+        mat <- mat[mat[,j] %in% elem[[j]],, drop = FALSE]
+    }
+    return(mat)
+}
 microbenchmark::microbenchmark(
-    col = cpp_ngrams(toks, 3, -1),
-    exp = expand.grid(1:2, i, 1:2),
+    expand2(lis, mat),
+    quanteda:::expand(lis),
     times = 10
 )
+
 */
