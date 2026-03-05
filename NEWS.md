@@ -3,6 +3,7 @@
 ## Changes and additions
 
 * Added `levels` argument to `dictionary()` to select levels (#2001).
+
 * Added `normalize` argument to `tokens()` to replace Unicode quotation marks and hyphens with their ASCII equivalent (#2480).
 
 * Added `as.tensor()` method for tokens objects to convert tokens to sparse tensors compatible with the \pkg{torch} package (#2474).
