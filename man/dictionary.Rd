@@ -2,7 +2,7 @@
 % Please edit documentation in R/dictionaries.R
 \name{dictionary}
 \alias{dictionary}
-\title{Create a dictionary}
+\title{Create a dictionary object}
 \usage{
 dictionary(
   x,
@@ -11,16 +11,15 @@ dictionary(
   separator = " ",
   tolower = TRUE,
   tokenize = FALSE,
+  levels = 1:100,
   encoding = "utf-8"
 )
 }
 \arguments{
-\item{x}{a named list of character vector dictionary entries, including
-\link{valuetype} pattern matches, and including multi-word expressions
-separated by \code{separator}.  See examples. This argument may be
-omitted if the dictionary is read from \code{file}.}
+\item{x}{a named list of \link{valuetype} patterns or an existing dictionary
+object. See examples. This argument should be omitted if \code{file} is specified.}
 
-\item{file}{file identifier for a foreign dictionary}
+\item{file}{file identifier for a foreign dictionary.}
 
 \item{format}{character identifier for the format of the foreign dictionary.
 If not supplied, the format is guessed from the dictionary file's
@@ -34,10 +33,13 @@ software} \item{\code{"lexicoder"}}{format used by Lexicoder}
 \item{separator}{the character in between multi-word dictionary values. This
 defaults to \code{" "}.}
 
-\item{tolower}{if \code{TRUE}, convert all dictionary values to lowercase}
+\item{tolower}{if \code{TRUE}, convert all dictionary values to lowercase.}
 
 \item{tokenize}{if \code{TRUE} segment dictionary values by separators to using
 the built-in tokenizer. Useful for Japanese and Chinese dictionaries.}
+
+\item{levels}{integers specifying the levels of entries in \code{x} or \code{file} to be
+included in the object.}
 
 \item{encoding}{additional optional encoding value for reading in imported
 dictionaries. This uses the \link{iconv} labels for encoding.  See the
@@ -48,58 +50,68 @@ A dictionary class object, essentially a specially classed named list
 of characters.
 }
 \description{
-Create a \pkg{quanteda} dictionary class object, either from a list or by
-importing from a foreign format.  Currently supported input file formats are
+Create a \pkg{quanteda} dictionary object to perform pattern matching on \link{tokens},
+\link{dfm} and \link{fcm}.
+}
+\details{
+A dictionary object can include multi-word expressions segmented by
+\code{separator}. When it is applied to tokens object, they match both sequences
+of separate tokens and compounded tokens.
+
+Dictionary objects can be subsetted using
+\code{\link[=dictionary2-class]{[}} and
+\code{\link[=dictionary2-class]{[[}}, operating the same as the equivalent
+\link[=dictionary2-class]{list} operators. If \code{dictionary()} is applied to existing
+objects, it is possible to select \code{levels}.
+
+Dictionary objects can be coerced from and to lists using \code{\link[=as.dictionary]{as.dictionary()}}
+and \code{\link[=dictionary2-class]{as.list()}}, and checked using \code{\link[=is.dictionary]{is.dictionary()}}.
+
+Currently supported input file formats are
 the WordStat, LIWC, Lexicoder v2 and v3, and Yoshikoder formats.  The import
 using the LIWC format works with all currently available dictionary files
 supplied as part of the LIWC 2001, 2007, and 2015 software (see References).
 }
-\details{
-Dictionaries can be subsetted using
-\code{\link[=dictionary2-class]{[}} and
-\code{\link[=dictionary2-class]{[[}}, operating the same as the equivalent
-\link[=dictionary2-class]{list} operators.
-
-Dictionaries can be coerced from lists using \code{\link[=as.dictionary]{as.dictionary()}},
-coerced to named lists of characters using
-\code{\link[=dictionary2-class]{as.list()}}, and checked using
-\code{\link[=is.dictionary]{is.dictionary()}}.
-}
 \examples{
-corp <- corpus_subset(data_corpus_inaugural, Year>1900)
-dict <- dictionary(list(christmas = c("Christmas", "Santa", "holiday"),
-                          opposition = c("Opposition", "reject", "notincorpus"),
-                          taxing = "taxing",
-                          taxation = "taxation",
-                          taxregex = "tax*",
-                          country = "america"))
-tokens(corp) |>
-    tokens_lookup(dictionary = dict) |>
+corp <- corpus_subset(data_corpus_inaugural, Year > 2000)
+toks <- tokens(corp)
+
+dict <- dictionary(list(
+   tax = c("tax", "taxes", "taxing"),         # fixed patterns
+   economy = list("econom*",                  # glob patterns
+                  job = c("work*", "job*")),  # nested keys
+   health = c("health care", "public health") # multi-word expressions
+))
+
+# compound tokens
+tokens_compound(toks, pattern = dict) |>
+    dfm() |>
+    dfm_select(dict) 
+                          
+tokens_lookup(toks, dictionary = dict, levels = 1) |>
     dfm()
 
 # subset a dictionary
 dict[1:2]
-dict[c("christmas", "opposition")]
-dict[["opposition"]]
+dict[c("economy")]
 
-# combine dictionaries
-c(dict["christmas"], dict["country"])
+# update a dictionary
+dictionary(dict, levels = 2)
 
 \dontrun{
 dfmat <- dfm(tokens(data_corpus_inaugural))
 
 # import the Laver-Garry dictionary from Provalis Research
-dictfile <- tempfile()
 download.file("https://provalisresearch.com/Download/LaverGarry.zip",
-              dictfile, mode = "wb")
-unzip(dictfile, exdir = (td <- tempdir()))
-dictlg <- dictionary(file = paste(td, "LaverGarry.cat", sep = "/"))
-dfm_lookup(dfmat, dictlg)
+              tf <- tempfile(), mode = "wb")
+unzip(tf, exdir = (td <- tempdir()))
+dict_lg <- dictionary(file = paste(td, "LaverGarry.cat", sep = "/"))
+dfm_lookup(dfmat, dict_lg)
 
 # import a LIWC formatted dictionary from http://www.moralfoundations.org
 download.file("http://bit.ly/37cV95h", tf <- tempfile())
-dictliwc <- dictionary(file = tf, format = "LIWC")
-dfm_lookup(dfmat, dictliwc)
+dict_liwc <- dictionary(file = tf, format = "LIWC")
+dfm_lookup(dfmat, dict_liwc)
 }
 }
 \references{

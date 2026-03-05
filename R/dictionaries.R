@@ -62,18 +62,13 @@ check_entries <- function(dict) {
     }
 }
 
-#' Create a dictionary
+#' Create a dictionary object
 #'
-#' Create a \pkg{quanteda} dictionary class object, either from a list or by
-#' importing from a foreign format.  Currently supported input file formats are
-#' the WordStat, LIWC, Lexicoder v2 and v3, and Yoshikoder formats.  The import
-#' using the LIWC format works with all currently available dictionary files
-#' supplied as part of the LIWC 2001, 2007, and 2015 software (see References).
-#' @param x a named list of character vector dictionary entries, including
-#'   [valuetype] pattern matches, and including multi-word expressions
-#'   separated by `separator`.  See examples. This argument may be
-#'   omitted if the dictionary is read from `file`.
-#' @param file file identifier for a foreign dictionary
+#' Create a \pkg{quanteda} dictionary object to perform pattern matching on [tokens], 
+#' [dfm] and [fcm]. 
+#' @param x a named list of [valuetype] patterns or an existing dictionary 
+#'   object. See examples. This argument should be omitted if `file` is specified.
+#' @param file file identifier for a foreign dictionary.
 #' @param format character identifier for the format of the foreign dictionary.
 #'   If not supplied, the format is guessed from the dictionary file's
 #'   extension. Available options are: \describe{
@@ -89,18 +84,31 @@ check_entries <- function(dict) {
 #' @param encoding additional optional encoding value for reading in imported
 #'   dictionaries. This uses the [iconv] labels for encoding.  See the
 #'   "Encoding" section of the help for [file].
-#' @param tolower if `TRUE`, convert all dictionary values to lowercase
+#' @param tolower if `TRUE`, convert all dictionary values to lowercase.
+#' @param levels integers specifying the levels of entries in `x` or `file` to be 
+#'   included in the object.
 #' @return A dictionary class object, essentially a specially classed named list
 #'   of characters.
-#' @details Dictionaries can be subsetted using
+#' @details 
+  
+#'   A dictionary object can include multi-word expressions segmented by 
+#'   `separator`. When it is applied to tokens object, they match both sequences 
+#'   of separate tokens and compounded tokens.
+#' 
+#'   Dictionary objects can be subsetted using
 #'   \code{\link[=dictionary2-class]{[}} and
 #'   \code{\link[=dictionary2-class]{[[}}, operating the same as the equivalent
-#'   [list][dictionary2-class] operators.
+#'   [list][dictionary2-class] operators. If `dictionary()` is applied to existing 
+#'   objects, it is possible to select `levels`.
 #'
-#'   Dictionaries can be coerced from lists using [as.dictionary()],
-#'   coerced to named lists of characters using
-#'   [`as.list()`][dictionary2-class], and checked using
-#'   [is.dictionary()].
+#'   Dictionary objects can be coerced from and to lists using [as.dictionary()] 
+#'   and [`as.list()`][dictionary2-class], and checked using [is.dictionary()].
+#'   
+#'   Currently supported input file formats are
+#'   the WordStat, LIWC, Lexicoder v2 and v3, and Yoshikoder formats.  The import
+#'   using the LIWC format works with all currently available dictionary files
+#'   supplied as part of the LIWC 2001, 2007, and 2015 software (see References).
+#'   
 #' @references WordStat dictionaries page, from Provalis Research
 #'   <https://provalisresearch.com/products/content-analysis-software/wordstat-dictionary/>.
 #'
@@ -116,45 +124,51 @@ check_entries <- function(dict) {
 #' @seealso [as.dictionary()],
 #'   [`as.list()`][dictionary2-class], [is.dictionary()]
 #' @examples
-#' corp <- corpus_subset(data_corpus_inaugural, Year>1900)
-#' dict <- dictionary(list(christmas = c("Christmas", "Santa", "holiday"),
-#'                           opposition = c("Opposition", "reject", "notincorpus"),
-#'                           taxing = "taxing",
-#'                           taxation = "taxation",
-#'                           taxregex = "tax*",
-#'                           country = "america"))
-#' tokens(corp) |>
-#'     tokens_lookup(dictionary = dict) |>
+#' corp <- corpus_subset(data_corpus_inaugural, Year > 2000)
+#' toks <- tokens(corp)
+#' 
+#' dict <- dictionary(list(
+#'    tax = c("tax", "taxes", "taxing"),         # fixed patterns
+#'    economy = list("econom*",                  # glob patterns
+#'                   job = c("work*", "job*")),  # nested keys
+#'    health = c("health care", "public health") # multi-word expressions
+#' ))
+#' 
+#' # compound tokens
+#' tokens_compound(toks, pattern = dict) |>
+#'     dfm() |>
+#'     dfm_select(dict) 
+#'                           
+#' tokens_lookup(toks, dictionary = dict, levels = 1) |>
 #'     dfm()
 #'
 #' # subset a dictionary
 #' dict[1:2]
-#' dict[c("christmas", "opposition")]
-#' dict[["opposition"]]
-#'
-#' # combine dictionaries
-#' c(dict["christmas"], dict["country"])
+#' dict[c("economy")]
+#' 
+#' # update a dictionary
+#' dictionary(dict, levels = 2)
 #'
 #' \dontrun{
 #' dfmat <- dfm(tokens(data_corpus_inaugural))
 #' 
 #' # import the Laver-Garry dictionary from Provalis Research
-#' dictfile <- tempfile()
 #' download.file("https://provalisresearch.com/Download/LaverGarry.zip",
-#'               dictfile, mode = "wb")
-#' unzip(dictfile, exdir = (td <- tempdir()))
-#' dictlg <- dictionary(file = paste(td, "LaverGarry.cat", sep = "/"))
-#' dfm_lookup(dfmat, dictlg)
+#'               tf <- tempfile(), mode = "wb")
+#' unzip(tf, exdir = (td <- tempdir()))
+#' dict_lg <- dictionary(file = paste(td, "LaverGarry.cat", sep = "/"))
+#' dfm_lookup(dfmat, dict_lg)
 #'
 #' # import a LIWC formatted dictionary from http://www.moralfoundations.org
 #' download.file("http://bit.ly/37cV95h", tf <- tempfile())
-#' dictliwc <- dictionary(file = tf, format = "LIWC")
-#' dfm_lookup(dfmat, dictliwc)
+#' dict_liwc <- dictionary(file = tf, format = "LIWC")
+#' dfm_lookup(dfmat, dict_liwc)
 #' }
 #' @export
 dictionary <- function(x, file = NULL, format = NULL,
-                       separator = " ", tolower = TRUE, 
-                       tokenize = FALSE, encoding = "utf-8") {
+                       separator = " ", 
+                       tolower = TRUE, tokenize = FALSE, 
+                       levels = 1:100, encoding = "utf-8") {
     UseMethod("dictionary")
 }
 
@@ -162,14 +176,16 @@ dictionary <- function(x, file = NULL, format = NULL,
 #' @importFrom stringi stri_trans_tolower
 #' @export
 dictionary.default <- function(x, file = NULL, format = NULL,
-                               separator = " ", tolower = TRUE, 
-                               tokenize = FALSE, encoding = "utf-8") {
+                               separator = " ", 
+                               tolower = TRUE, tokenize = FALSE, 
+                               levels = 1:100, encoding = "utf-8") {
     
     if (!missing(x) & is.null(file))
         stop("x must be a list if file is not specified")
     separator <- check_character(separator, min_nchar = 1)
     tolower <- check_logical(tolower)
     tokenize <- check_logical(tokenize)
+    levels <- check_integer(levels, min = 1, max_len = Inf)
     
     formats <- c(cat = "wordstat",
                  dic = "LIWC",
@@ -204,6 +220,8 @@ dictionary.default <- function(x, file = NULL, format = NULL,
         x <- yaml::yaml.load_file(file, as.named.list = TRUE)
         x <- list2dictionary(x)
     }
+    if (!identical(levels, 1L:100L))
+        x <- select_dictionary_levels(x, levels)
     if (tolower) 
         x <- lowercase_dictionary_values(x)
     x <- merge_dictionary_values(x)
@@ -217,15 +235,18 @@ dictionary.default <- function(x, file = NULL, format = NULL,
 dictionary.list <- function(x, file = NULL, format = NULL,
                             separator = " ",
                             tolower = TRUE, tokenize = FALSE,
-                            encoding = "utf-8") {
+                            levels = 1:100, encoding = "utf-8") {
     
     separator <- check_character(separator, min_nchar = 1)
     tolower <- check_logical(tolower)
     tokenize <- check_logical(tokenize)
+    levels <- check_integer(levels, min = 1, max_len = Inf)
     
     if (!is.null(file) || !is.null(format) || encoding != "utf-8")
         stop("Cannot specify file, format, or encoding when x is a list")
     x <- list2dictionary(x)
+    if (!identical(levels, 1L:100L))
+        x <- select_dictionary_levels(x, levels)
     if (tolower) 
         x <- lowercase_dictionary_values(x)
     x <- replace_dictionary_values(x, separator, " ")
@@ -239,10 +260,10 @@ dictionary.list <- function(x, file = NULL, format = NULL,
 dictionary.dictionary2 <- function(x, file = NULL, format = NULL,
                                    separator = " ",
                                    tolower = TRUE, tokenize = FALSE,
-                                   encoding = "utf-8") {
+                                   levels = 1:100, encoding = "utf-8") {
     x <- as.dictionary(x)
-    dictionary(as.list(x), separator = separator, tolower = tolower,
-               tokenize = tokenize, encoding = encoding)
+    dictionary(unclass(x), separator = separator, tolower = tolower,
+               tokenize = tokenize, levels = levels, encoding = encoding)
 }
 
 #' Separate dictionary values using tokenizer
@@ -631,9 +652,38 @@ flatten_list <- function(lis, levels = 1:100, level = 1, key_parent = "",
     return(result)
 }
 
+#' Internal function to select dictionary nested levels
+#' @param dict a dictionary object
+#' @param levels an integer vector indicating levels to select
+#' @param level an internal argument to pass current levels
+#' @keywords internal
+#' @examples
+#' dict <- list("A" = list("B" = c("b", "B"), c("a", "A", "aa")))
+#' quanteda:::select_dictionary_levels(dict, 1:2)
+#' quanteda:::select_dictionary_levels(dict, 1)
+#' quanteda:::select_dictionary_levels(dict, 2)
+select_dictionary_levels <- function(dict, levels = 1:100, level = 1) {
+    
+    result <- lapply(dict, function(x) {
+        is_value <- names(x) == ""
+        temp <- select_dictionary_levels(x[!is_value], levels, level + 1)
+        if (level %in% levels) {
+            if (is.null(names(x))) { # only values
+                temp <- c(temp, x)
+            } else {
+                temp <- c(temp, x[is_value])
+            }
+        }
+        return(temp)
+    })
+    if (!level %in% levels)
+        result <- unlist(unname(result), recursive = FALSE) # omit levels
+    return(result)
+}
+
 #' Internal function to lowercase dictionary values
 #'
-#' @param dict the dictionary whose values will be lowercased
+#' @param dict a dictionary object
 #' @keywords dictionary internal
 #' @importFrom stringi stri_trans_tolower
 #' @examples
@@ -1033,7 +1083,7 @@ simplify_dictionary <- function(entry, omit = TRUE, dict = list()) {
                     dict[[names(category[i])]] <-
                         simplify_dictionary(category[[i]], TRUE, dict)
                 }
-                dict[["__"]] <- unlist(entry[!is_category], use.names = FALSE)
+                dict[[""]] <- unlist(entry[!is_category], use.names = FALSE)
             } else {
                 dict <- unlist(entry, use.names = FALSE)
             }
@@ -1048,7 +1098,7 @@ dictionary_depth <- function(dict, depth = -1) {
     # http://stackoverflow.com/a/13433689/1270695
     dict <- unclass(dict)
     if (is.list(dict) && length(dict) > 0) {
-        return(max(unlist(lapply(dict, dictionary_depth, depth = depth + 1))))
+        return(max(sapply(dict, dictionary_depth, depth = depth + 1)))
     } else {
         return(depth)
     }

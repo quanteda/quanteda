@@ -17,7 +17,6 @@ segid(x)
 }
 \arguments{
 \item{x}{\link{corpus}, \link{tokens}, \link{tokens_xptr}, or \link{dfm} object.}
-
 \item{unique_docnames}{logical; if \code{TRUE}, enforce strict uniqueness in
 \code{docnames}; otherwise, rename duplicated docnames using an added serial
 number, and treat them as segments of the same document.}
