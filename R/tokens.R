@@ -529,6 +529,7 @@ tokens.tokens <- function(x, ...) {
 #' objects.
 #' @param x object to be coerced or checked
 #' @inheritParams tokens
+#' @inheritParams corups
 #' @param ... additional arguments used by specific methods.  For
 #'   [c.tokens], these are the [tokens] objects to be concatenated.
 #' @return `as.tokens` returns a quanteda [tokens] object.
@@ -564,12 +565,12 @@ as.tokens.default <- function(x, concatenator = "_", ...) {
 
 #' @importFrom stringi stri_trans_nfc
 #' @export
-as.tokens.list <- function(x, concatenator = "_", ...) {
+as.tokens.list <- function(x, concatenator = "_", unique_docnames = TRUE, ...) {
     result <- build_tokens(
         cpp_serialize(lapply(x, as.character), get_threads()),
         types = NULL,
         concatenator = concatenator,
-        docvars = make_docvars(length(x), names(x))
+        docvars = make_docvars(length(x), names(x), unique = unique_docnames)
     )
     as.tokens(result)
 }
