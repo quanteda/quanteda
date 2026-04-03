@@ -1,4 +1,4 @@
-# quanteda 4.3.x
+# quanteda 4.4
 
 ## Changes and additions
 
@@ -17,6 +17,7 @@
 * Update `index()` and `kwic()` to skip nested matches in a similar way as `tokens_lookup()` (#2063).
 
 * Update `corpus()` to always append segment numbers to docnames when `unique_docnames = FALSE`. This argument is also added to `as.tokens()` and `docnames<-` for the same behaviour (#2486).
+
 
 # quanteda 4.3.1
 
