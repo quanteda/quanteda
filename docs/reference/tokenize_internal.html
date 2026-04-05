@@ -24,7 +24,7 @@ text segmentation."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/aj
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">4.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">4.4</span>
       </span>
     </div>
 
@@ -179,9 +179,13 @@ text segmentation.</p>
 <span></span>
 <span><span class="fu">tokenize_sentence</span><span class="op">(</span><span class="va">x</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
+<span><span class="fu">tokenize_paragraph</span><span class="op">(</span><span class="va">x</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
 <span><span class="fu">tokenize_fasterword</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">tokenize_fastestword</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">tokenize_fastestword</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">normalize_characters</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -199,11 +203,11 @@ e.g. <code>"self-aware"</code> becomes <code>c("self", "-", "aware")</code></p><
 
 
 <dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>
-<dd><p>if <code>TRUE</code>, print timing messages to the console</p></dd>
+<dd><p>if <code>TRUE</code>, print timing messages to the console.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
-<dd><p>used to pass arguments among the functions</p></dd>
+<dd><p>used to pass arguments among the functions.</p></dd>
 
 
 <dt id="arg-split-tags">split_tags<a class="anchor" aria-label="anchor" href="#arg-split-tags"></a></dt>
@@ -257,7 +261,7 @@ identical to <code>tokenize_word2()</code>.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
       </footer></div>

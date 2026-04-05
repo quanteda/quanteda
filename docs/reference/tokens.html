@@ -31,7 +31,7 @@ effect."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mat
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">4.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">4.4</span>
       </span>
     </div>
 
@@ -169,6 +169,7 @@ effect.</p>
 <span>  remove_separators <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  split_hyphens <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  split_tags <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  normalize <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  include_docvars <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  padding <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  concatenator <span class="op">=</span> <span class="st">"_"</span>,</span>
@@ -190,8 +191,8 @@ effect.</p>
 <dt id="arg-what">what<a class="anchor" aria-label="anchor" href="#arg-what"></a></dt>
 <dd><p>character; which tokenizer to use.  The default <code>what = "word"</code>
 is the current version of the <span class="pkg">quanteda</span> tokenizer, set by
-<code>quanteda_options(okens_tokenizer_word)</code>. Legacy tokenizers (version &lt; 2)
-are also supported, including the default <code>what = "word1"</code>. See the Details
+<code>quanteda_options(tokens_tokenizer_word)</code>. Legacy tokenizers (version &lt; 2)
+are also supported, including the default <code>what = "word4"</code>. See the Details
 and quanteda Tokenizers below.</p></dd>
 
 
@@ -232,6 +233,11 @@ e.g. <code>"self-aware"</code> becomes <code>c("self", "-", "aware")</code></p><
 in <code><a href="quanteda_options.html">quanteda_options()</a></code>. The default patterns are <code>pattern_hashtag = "#\\w+#?"</code> and <code>pattern_username = "@[a-zA-Z0-9_]+"</code>.</p></dd>
 
 
+<dt id="arg-normalize">normalize<a class="anchor" aria-label="anchor" href="#arg-normalize"></a></dt>
+<dd><p>logical; if <code>TRUE</code>, Unicode quotation marks and hyphens are
+replaced by their ASCII equivalent. See details.</p></dd>
+
+
 <dt id="arg-include-docvars">include_docvars<a class="anchor" aria-label="anchor" href="#arg-include-docvars"></a></dt>
 <dd><p>if <code>TRUE</code>, pass docvars through to the tokens object.
 Does not apply when the input is a character data or a list of characters.</p></dd>
@@ -250,15 +256,15 @@ the tokens making up a multi-token sequence.</p></dd>
 
 
 <dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>
-<dd><p>if <code>TRUE</code>, print timing messages to the console</p></dd>
+<dd><p>if <code>TRUE</code>, print timing messages to the console.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
-<dd><p>used to pass arguments among the functions</p></dd>
+<dd><p>used to pass arguments among the functions.</p></dd>
 
 
 <dt id="arg-xptr">xptr<a class="anchor" aria-label="anchor" href="#arg-xptr"></a></dt>
-<dd><p>if <code>TRUE</code>, returns a <code>tokens_xptr</code> class object</p></dd>
+<dd><p>if <code>TRUE</code>, returns a <code>tokens_xptr</code> class object.</p></dd>
 
 </dl></div>
     <div id="value">
@@ -294,11 +300,16 @@ splits infix hyphens, or <span class="pkg">spacyr</span>.  The default tokenizer
 <strong>quanteda</strong> is very smart, however, and if you do not have special
 requirements, it works extremely well for most languages as well as text
 from social media (including hashtags and usernames).</p>
+<p>If <code>normalize = TRUE</code>, Unicode characters are replaced by their ASCII
+equivalent to make pattern matching (e.g. stop words) easier:
+<code>[\u201C\u201D\u201F]</code> to the double quotation; <code>[\u2018\u201B\u2019]</code> to
+the single quotation mark; and <code>\u002D\u2010\u2011\u2012\u2013\u2014\u2015]</code>
+to a hyphen.</p>
     </div>
     <div id="quanteda-tokenizers">
     <h2>quanteda Tokenizers</h2>
     <p>The default word tokenizer <code>what = "word"</code> is
-updated in major version 4.  It is even smarter than the v3 and v4
+updated in major version 4.  It is even smarter than the v2 and v3
 versions, with additional options for customization.  See
 <code><a href="tokenize_internal.html">tokenize_word4()</a></code> for full details.</p>
 <p>The default tokenizer splits tokens using <a href="https://rdrr.io/pkg/stringi/man/stri_split_boundaries.html" class="external-link">stri_split_boundaries(x, type = "word")</a> but by default preserves infix
@@ -487,7 +498,7 @@ tokenization, consider using <span class="pkg">spacyr</span>.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
       </footer></div>

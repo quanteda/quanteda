@@ -41,7 +41,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">4.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">4.4</span>
       </span>
     </div>
 
@@ -233,7 +233,7 @@ version 4.0 and 3.3 (“v4” and “v3” in the plots, respectively).</p>
 <span>                remove_symbols <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
 <span>    times <span class="op">=</span> <span class="fl">10</span></span>
 <span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span>log <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="benchmarks_xptr_files/figure-html/tokenising-corpus-1.png" width="1200"></p>
+<p><img src="benchmarks_xptr_files/figure-html/tokenising-corpus-1.png" class="r-plt" alt="" width="1200"></p>
 </div>
 <div class="section level2">
 <h2 id="modifying-tokens-objects">Modifying tokens objects<a class="anchor" aria-label="anchor" href="#modifying-tokens-objects"></a>
@@ -248,7 +248,7 @@ keep the original <code>tokens_xptr</code> object intact.</p>
 <span>        <span class="fu"><a href="../../reference/tokens_ngrams.html">tokens_ngrams</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>    times <span class="op">=</span> <span class="fl">10</span></span>
 <span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span>log <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="benchmarks_xptr_files/figure-html/modifying-tokens-1.png" width="1200"></p>
+<p><img src="benchmarks_xptr_files/figure-html/modifying-tokens-1.png" class="r-plt" alt="" width="1200"></p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># lookup dictionary keywords</span></span>
@@ -258,7 +258,7 @@ keep the original <code>tokens_xptr</code> object intact.</p>
 <span>        <span class="fu"><a href="../../reference/tokens_lookup.html">tokens_lookup</a></span><span class="op">(</span>dictionary <span class="op">=</span> <span class="va">data_dictionary_LSD2015</span><span class="op">)</span>,</span>
 <span>    times <span class="op">=</span> <span class="fl">10</span></span>
 <span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span>log <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="benchmarks_xptr_files/figure-html/modifying-tokens-2.png" width="1200"></p>
+<p><img src="benchmarks_xptr_files/figure-html/modifying-tokens-2.png" class="r-plt" alt="" width="1200"></p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># remove stop words</span></span>
@@ -268,7 +268,7 @@ keep the original <code>tokens_xptr</code> object intact.</p>
 <span>        <span class="fu"><a href="../../reference/tokens_select.html">tokens_remove</a></span><span class="op">(</span>pattern <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html" class="external-link">stopwords</a></span><span class="op">(</span><span class="st">"en"</span><span class="op">)</span>, padding <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
 <span>    times <span class="op">=</span> <span class="fl">10</span></span>
 <span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span>log <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="benchmarks_xptr_files/figure-html/modifying-tokens-3.png" width="1200"></p>
+<p><img src="benchmarks_xptr_files/figure-html/modifying-tokens-3.png" class="r-plt" alt="" width="1200"></p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># compound tokens</span></span>
@@ -278,7 +278,7 @@ keep the original <code>tokens_xptr</code> object intact.</p>
 <span>        <span class="fu"><a href="../../reference/tokens_compound.html">tokens_compound</a></span><span class="op">(</span>pattern <span class="op">=</span> <span class="st">"&amp;"</span>, window <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>,</span>
 <span>    times <span class="op">=</span> <span class="fl">10</span></span>
 <span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span>log <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="benchmarks_xptr_files/figure-html/modifying-tokens-4.png" width="1200"></p>
+<p><img src="benchmarks_xptr_files/figure-html/modifying-tokens-4.png" class="r-plt" alt="" width="1200"></p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># group sentences to articles</span></span>
@@ -287,7 +287,7 @@ keep the original <code>tokens_xptr</code> object intact.</p>
 <span>    v4 <span class="op">=</span> <span class="fu"><a href="../../reference/tokens_group.html">tokens_group</a></span><span class="op">(</span><span class="va">xtoks</span><span class="op">)</span>,</span>
 <span>    times <span class="op">=</span> <span class="fl">10</span></span>
 <span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span>log <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="benchmarks_xptr_files/figure-html/modifying-tokens-5.png" width="1200"></p>
+<p><img src="benchmarks_xptr_files/figure-html/modifying-tokens-5.png" class="r-plt" alt="" width="1200"></p>
 </div>
 <div class="section level2">
 <h2 id="combining-tokens-objects">Combining tokens objects<a class="anchor" aria-label="anchor" href="#combining-tokens-objects"></a>
@@ -311,7 +311,7 @@ faster.</p>
 <span>    v4 <span class="op">=</span> <span class="fu">quanteda</span><span class="fu">:::</span><span class="fu"><a href="../../reference/tokens-class.html">c.tokens_xptr</a></span><span class="op">(</span><span class="va">xtoks1</span>, <span class="va">xtoks2</span><span class="op">)</span>,</span>
 <span>    times <span class="op">=</span> <span class="fl">10</span></span>
 <span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span>log <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="benchmarks_xptr_files/figure-html/combining-tokens-1.png" width="1200"></p>
+<p><img src="benchmarks_xptr_files/figure-html/combining-tokens-1.png" class="r-plt" alt="" width="1200"></p>
 </div>
 <div class="section level2">
 <h2 id="constructing-a-document-feature-matrix">Constructing a document-feature matrix<a class="anchor" aria-label="anchor" href="#constructing-a-document-feature-matrix"></a>
@@ -324,7 +324,7 @@ faster.</p>
 <span>    v4 <span class="op">=</span> <span class="fu"><a href="../../reference/dfm.html">dfm</a></span><span class="op">(</span><span class="va">xtoks</span><span class="op">)</span>,</span>
 <span>    times <span class="op">=</span> <span class="fl">10</span></span>
 <span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span>log <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="benchmarks_xptr_files/figure-html/dfm-from-tokens-1.png" width="1200"></p>
+<p><img src="benchmarks_xptr_files/figure-html/dfm-from-tokens-1.png" class="r-plt" alt="" width="1200"></p>
 </div>
 <div class="section level2">
 <h2 id="simple-pipeline-tokenising-a-corpus-and-creating-a-document-feature-matrix">Simple pipeline: tokenising a corpus and creating a document-feature
@@ -340,7 +340,7 @@ matrix<a class="anchor" aria-label="anchor" href="#simple-pipeline-tokenising-a-
 <span>        <span class="fu"><a href="../../reference/dfm.html">dfm</a></span><span class="op">(</span>remove_padding <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
 <span>    times <span class="op">=</span> <span class="fl">10</span></span>
 <span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span>log <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="benchmarks_xptr_files/figure-html/simple-pipeline-1.png" width="1200"></p>
+<p><img src="benchmarks_xptr_files/figure-html/simple-pipeline-1.png" class="r-plt" alt="" width="1200"></p>
 </div>
   </div>
 
@@ -359,7 +359,7 @@ matrix<a class="anchor" aria-label="anchor" href="#simple-pipeline-tokenising-a-
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.2.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
       </footer>
