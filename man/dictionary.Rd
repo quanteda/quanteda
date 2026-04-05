@@ -86,8 +86,8 @@ dict <- dictionary(list(
 # compound tokens
 tokens_compound(toks, pattern = dict) |>
     dfm() |>
-    dfm_select(dict) 
-                          
+    dfm_select(dict)
+
 tokens_lookup(toks, dictionary = dict, levels = 1) |>
     dfm()
 

@@ -14,3 +14,6 @@ dictionary_tokenize(dictionary, ...)
 \description{
 Apply \code{\link[=tokens]{tokens()}} to dictionary values to improve pattern matching.
 }
+\keyword{development}
+\keyword{dictionary}
+\keyword{internal}
