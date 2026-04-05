@@ -5,7 +5,7 @@ and maintained by [Kenneth Benoit](https://kenbenoit.net) and [Kohei
 Watanabe](https://blog.koheiw.net/). Its creation was funded by the
 European Research Council grant ERC-2011-StG 283794-QUANTESS and its
 continued development is supported by the [Quanteda Initiative
-CIC](https://quanteda.org).
+CIC](https://github.com/quanteda).
 
 The package is designed for R users needing to apply natural language
 processing to texts, from documents to final analysis. Its capabilities

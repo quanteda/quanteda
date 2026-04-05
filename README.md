@@ -23,7 +23,7 @@ and maintained by [Kenneth Benoit](https://kenbenoit.net) and [Kohei
 Watanabe](https://blog.koheiw.net/). Its creation was funded by the
 European Research Council grant ERC-2011-StG 283794-QUANTESS and its
 continued development is supported by the [Quanteda Initiative
-CIC](https://quanteda.org).
+CIC](https://github.com/quanteda).
 
 For more details, see <https://quanteda.io>.
 
