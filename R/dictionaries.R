@@ -433,6 +433,7 @@ setMethod("print", signature(x = "dictionary2"),
 setMethod("show", signature(object = "dictionary2"), function(object) print(object))
 
 # Internal function to print dictionary
+#' @importFrom stringi stri_wrap stri_dup
 print_dictionary <- function(entry, level = 1,
                              max_nkey, max_nval, show_summary, ...) {
 
@@ -444,24 +445,28 @@ print_dictionary <- function(entry, level = 1,
     if (!length(entry)) return()
     is_category <- vapply(entry, is.list, logical(1))
     category <- entry[is_category]
-    pad <- rep("  ", level - 1)
     word <- unlist(entry[!is_category], use.names = FALSE)
+    pad0 <- stri_dup(" ", (level - 1) * 2)
+    pad1 <- paste0(pad0, "- ") # first lines
+    pad <- paste0(pad0, "  ")
     if (length(word)) {
         if (max_nval < 0)
             max_nval <- length(word)
-        cat(pad, "- ", paste(head(word, max_nval), collapse = ", "), sep = "")
+        line <- paste0(head(word, max_nval), collapse = ", ")
+        line <- stri_wrap(line, floor(0.9 * getOption("width")) - level * 2)
+        cat(paste0(c(pad1, rep(pad, length(line) - 1)), line), sep = "\n")
         nval_rem <- length(word) - max_nval
         if (nval_rem > 0)
-            cat(" [ ... and ",  format(nval_rem, big.mark = ","), " more ]", sep = "")
-        cat("\n", sep = "")
+            cat(pad, "[ ... and ",  format(nval_rem, big.mark = ","), " more ]\n", sep = "")
+        #cat("\n", sep = "")
     }
     for (i in seq_along(category)) {
-            cat(pad, "- [", names(category[i]), "]:\n", sep = "")
+            cat(pad1, "[", names(category[i]), "]:\n", sep = "")
         print_dictionary(category[[i]], level + 1, max_nkey, max_nval, show_summary)
     }
     nkey_rem <- nkey - length(entry)
     if (nkey_rem > 0) {
-        cat(pad, "[ reached max_nkey ... ", format(nkey_rem, big.mark = ","), " more key",
+        cat(pad0, "[ reached max_nkey ... ", format(nkey_rem, big.mark = ","), " more key",
             if (nkey_rem > 1) "s", " ]\n", sep = "")
     }
 }
@@ -1109,3 +1114,4 @@ dictionary_depth <- function(dict, depth = -1) {
 has_multiword <- function(dict) {
     any(stri_detect_fixed(unlist(dict, use.names = FALSE), attr(dict, "concatenator")))
 }
+
