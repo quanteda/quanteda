@@ -226,8 +226,9 @@ dictionary.default <- function(x, file = NULL, format = NULL,
         x <- lowercase_dictionary_values(x)
     if (tokenize)
         x <- tokenize_dictionary_values(x, separator)
+    if (separator != " ")
+        x <- replace_dictionary_values(x, separator, " ")
     x <- merge_dictionary_values(x)
-    x <- replace_dictionary_values(x, separator, " ")
     build_dictionary2(x, separator = separator)
 }
 
@@ -252,8 +253,9 @@ dictionary.list <- function(x, file = NULL, format = NULL,
         x <- lowercase_dictionary_values(x)
     if (tokenize)
         x <- tokenize_dictionary_values(x, separator)
+    if (separator != " ")
+        x <- replace_dictionary_values(x, separator, " ")
     x <- merge_dictionary_values(x)
-    x <- replace_dictionary_values(x, separator, " ")
     build_dictionary2(x, separator = separator)
 }
 
