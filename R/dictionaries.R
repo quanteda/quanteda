@@ -276,7 +276,7 @@ dictionary.dictionary2 <- function(x, file = NULL, format = NULL,
 #' @param ... passed to [quanteda::tokens()].
 #' @keywords dictionary development internal
 #' @export
-dictionary_tokenize <- function(dictionary, ...) {
+tokenize_dictionary <- function(dictionary, ...) {
 
     if (!is.dictionary(dictionary))
         stop("Dictionary object must be provided")

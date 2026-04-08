@@ -1,12 +1,12 @@
 
-test_that("dictionary_tokenize is working", {
+test_that("tokenize_dictionary is working", {
     
     dict1 <- dictionary(list(ASIA = list(
         "IN" = "印度", 
         "ID" = "印度尼西亚"
     )))
     expect_equivalent(
-        dictionary_tokenize(dict1),
+        tokenize_dictionary(dict1),
         list(ASIA = list("IN" = "印度", 
                          "ID" = "印度 尼西亚"))
     )
@@ -19,7 +19,7 @@ test_that("dictionary_tokenize is working", {
     )))
     
     expect_equivalent(
-        dictionary_tokenize(dict2, remove_punct = FALSE),
+        tokenize_dictionary(dict2, remove_punct = FALSE),
         list(ASIA = list(
             "CD" ="コンゴ 民主 共和国",
             "CF" = "中央 アフリカ",
@@ -27,7 +27,7 @@ test_that("dictionary_tokenize is working", {
         ))
     )
     expect_equivalent(
-        dictionary_tokenize(dict2, remove_punct = TRUE),
+        tokenize_dictionary(dict2, remove_punct = TRUE),
         list(ASIA = list(
             "CD" ="コンゴ 民主 共和国",
             "CF" = "中央 アフリカ",
@@ -35,7 +35,7 @@ test_that("dictionary_tokenize is working", {
         ))
     )
     expect_equivalent(
-        dictionary_tokenize(dict2, remove_punct = TRUE, padding = TRUE),
+        tokenize_dictionary(dict2, remove_punct = TRUE, padding = TRUE),
         list(ASIA = list(
             "CD" ="コンゴ 民主 共和国",
             "CF" = "中央 アフリカ",
@@ -49,13 +49,13 @@ test_that("dictionary_tokenize is working", {
         "#東京五輪", "@都知事", "東京オリンピック"
     )))
     expect_equivalent(
-        dictionary_tokenize(dict3),
+        tokenize_dictionary(dict3),
         list(list(
             "olympic" = c("#東京五輪", "@都知事", "東京 オリンピック")
         ))
     )
     expect_equivalent(
-        dictionary_tokenize(dict3, split_tags = TRUE),
+        tokenize_dictionary(dict3, split_tags = TRUE),
         list(list(
             "olympic" = c("# 東京 五輪", "@ 都知事", "東京 オリンピック")
         ))
