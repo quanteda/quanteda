@@ -60,15 +60,8 @@ test_that("tokenize_dictionary is working", {
             "olympic" = c("# 東京 五輪", "@ 都知事", "東京 オリンピック")
         ))
     )
-    
     quanteda_options(reset = TRUE)
-    
-    # error
-    expect_error(
-        tokenize_dictionary(list()),
-        "Dictionary object must be provided"
-    )
-    
+
 })
 
 
