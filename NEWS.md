@@ -1,5 +1,9 @@
 # quanteda 4.4.1
 
+## Bug fixes
+
+* Fix `dictionary()` to handle `separator` correctly when a YAML file is provided.
+
 ## Changes and additions
 
 * Improve `print.dictionary2()` to wrap a long list of dictionary values. 
