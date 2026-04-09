@@ -185,7 +185,8 @@ test_that("dictionary printing works", {
         paste0(
             "Dictionary object with 2 key entries.\n",
             "- [one]:\n",
-            "  - a [ ... and 1 more ]\n",
+            "  - a\n",
+            "    [ ... and 1 more ]\n",
             "[ reached max_nkey ... 1 more key ]"
         ),
         fixed = TRUE
@@ -195,7 +196,8 @@ test_that("dictionary printing works", {
         print(dict, max_nkey = 1, max_nval = 1, show_summary = FALSE),
         paste0(
             "- [one]:\n",
-            "  - a [ ... and 1 more ]\n",
+            "  - a\n",
+            "    [ ... and 1 more ]\n",
             "[ reached max_nkey ... 1 more key ]"
         ),
         fixed = TRUE
@@ -228,6 +230,12 @@ test_that("dictionary printing works", {
       print(dict, 0, 0),
       "Dictionary object with 2 key entries.",
       fixed = TRUE
+    )
+    
+    # lines wrapping
+    expect_output(
+      print(data_dictionary_LSD2015),
+      "(.{0,90}\n)+"
     )
 })
 

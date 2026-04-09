@@ -1,3 +1,9 @@
+# quanteda 4.4.1
+
+## Changes and additions
+
+* Improve `print.dictionary2()` to wrap a long list of dictionary values. 
+
 # quanteda 4.4
 
 ## Changes and additions
