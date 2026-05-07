@@ -20,9 +20,18 @@ msg <- function(format, ..., pretty = TRUE, append = "") {
     paste0(append, do.call(stringi::stri_sprintf, args))
 }
 
+#' Wrap and print long lines
+#' 
+#' @keywords internal development
+#' @importFrom stringi stri_wrap
+wrap <- function(x) {
+    cat(stri_wrap(x, floor(0.9 * getOption("width"))), sep = "\n")
+}
+
 # rdname catm
 # messages() with some of the same syntax as cat(): takes a sep argument and
 # does not append a newline by default
+# NOTE: consider changing to message0() with wrapping
 catm <- function(..., sep = " ", appendLF = FALSE) {
     message(paste(..., sep = sep), appendLF = appendLF)
 }
