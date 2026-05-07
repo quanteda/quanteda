@@ -134,14 +134,15 @@ print.tokens <- function(x, max_ndoc = quanteda_options("print_tokens_max_ndoc")
         max_ndoc <- ndoc(x)
 
     if (show_summary) {
-        cat(msg("Tokens consisting of %s %s",
-                ndoc, if (ndoc == 1) "document" else "documents"))
+        line <- msg("Tokens consisting of %s %s",
+                    ndoc, if (ndoc == 1) "document" else "documents")
         if (ncol(docvars))
-            cat(msg(" and %s %s",
-                    ncol(docvars), if (ncol(docvars) == 1) "docvar" else "docvars"))
+            line <- msg(" and %s %s",
+                        ncol(docvars), if (ncol(docvars) == 1) "docvar" else "docvars",
+                        append = line)
         if (is.tokens_xptr(x))
-            cat(msg(" (pointer to %s)", address(x)))
-        cat(".\n")
+            line <- msg(" (pointer to %s)", address(x), append = line)
+        wrap(line)
     }
 
     if (max_ndoc > 0 && ndoc(x) > 0) {
@@ -151,19 +152,18 @@ print.tokens <- function(x, max_ndoc = quanteda_options("print_tokens_max_ndoc")
         len <- lengths(x)
         if (max_ntoken < 0)
             max_ntoken <- max(len)
-        x <- lapply(unclass(x), function(y) types[head(y, max_ntoken) + 1]) # shift index to show padding
+        # shift index to show padding
+        x <- lapply(unclass(x), function(y) types[head(y, max_ntoken) + 1]) 
         for (i in seq_along(label)) {
-            cat(label[i], "\n", sep = "")
+            wrap(label[i])
             print(x[[i]], ...)
             if (len[i] > max_ntoken)
-                cat(msg("[ ... and %s more ]\n", 
-                        len[i] - max_ntoken))
-            cat("\n", sep = "")
+                wrap(msg("[ ... and %s more ]", len[i] - max_ntoken))
         }
         ndoc_rem <- ndoc - max_ndoc
         if (ndoc_rem > 0)
-            cat(msg("[ reached max_ndoc ... %s more %s ]",
-                    ndoc_rem, if (ndoc_rem == 1) "document" else "documents"))
+            wrap(msg("[ reached max_ndoc ... %s more %s ]",
+                     ndoc_rem, if (ndoc_rem == 1) "document" else "documents"))
     }
 }
 
