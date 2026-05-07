@@ -4,11 +4,12 @@
 #'
 #' @inheritParams stringi::stri_sprintf
 #' @param pretty if `TRUE`, message is passed to [base::prettyNum()].
+#' @param append message is appended to the character.
 #' @keywords internal development
 #' @seealso [stringi::stri_sprintf]
 #' @examples
 #' quanteda:::msg("you cannot delete %s %s", 2000, "documents")
-msg <- function(format, ..., pretty = TRUE) {
+msg <- function(format, ..., pretty = TRUE, append = "") {
     args <- list(...)
     if (pretty) {
         args <- lapply(args, prettyNum, big.mark = ",")
@@ -16,7 +17,7 @@ msg <- function(format, ..., pretty = TRUE) {
         args <- lapply(args, as.character)
     }
     args$format <- format
-    do.call(stringi::stri_sprintf, args)
+    paste0(append, do.call(stringi::stri_sprintf, args))
 }
 
 # rdname catm

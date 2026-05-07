@@ -18,11 +18,12 @@ setMethod("print", signature(x = "dfm"),
               
               if (show_summary) {
                   docvars <- docvars(x)
-                  cat(msg("Document-feature matrix of: %s %s, %s %s (%s sparse) and %s %s.\n",
-                          ndoc(x), if (ndoc(x) == 1) "document" else "documents",
-                          nfeat(x), if (nfeat(x) == 1) "feature" else "features",
-                          format_sparsity(sparsity(x)),
-                          ncol(docvars), if (ncol(docvars) == 1) "docvar" else "docvars"))
+                  out <- msg("Document-feature matrix of: %s %s, %s %s (%s sparse) and %s %s.\n",
+                              ndoc(x), if (ndoc(x) == 1) "document" else "documents",
+                              nfeat(x), if (nfeat(x) == 1) "feature" else "features",
+                              format_sparsity(sparsity(x)),
+                              ncol(docvars), if (ncol(docvars) == 1) "docvar" else "docvars")
+                  cat(stri_wrap(out, floor(0.9 * getOption("width"))), sep = "\n")
               }
               if (max_ndoc < 0) 
                   max_ndoc <- ndoc(x)
@@ -56,18 +57,21 @@ print_dfm <- function(x, max_ndoc, max_nfeat, show_summary, ...) {
     ndoc_rem <- ndoc - max_ndoc
     nfeat_rem <- nfeat - max_nfeat
     if (ndoc_rem > 0 || nfeat_rem > 0) {
-        cat("[", sep = "") 
+        out <- "[ "
         if (ndoc_rem > 0) {
-            cat(msg(" reached max_ndoc ... %s more %s",
-                    ndoc_rem, if (ndoc_rem == 1) "document" else "documents"))
+            line <- msg("reached max_ndoc ... %s more %s",
+                        ndoc_rem, if (ndoc_rem == 1) "document" else "documents",
+                        append = out)
         }
         if (ndoc_rem > 0 && nfeat_rem > 0) 
-            cat(",", sep = "")
+            out <- paste0(out, ",")
         if (nfeat_rem > 0) {
-            cat(msg(" reached max_nfeat ... %s more %s",
-                    nfeat_rem, if (nfeat_rem == 1) "feature" else "features"))
+            out <- msg(" reached max_nfeat ... %s more %s",
+                        nfeat_rem, if (nfeat_rem == 1) "feature" else "features",
+                        append = out)
         }
-        cat(" ]\n", sep = "") 
+        out <- paste0(out, " ]")
+        cat(stri_wrap(out, floor(0.9 * getOption("width"))), sep = "\n")
     }
 }
 
