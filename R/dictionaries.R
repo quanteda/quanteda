@@ -460,8 +460,7 @@ print_dictionary <- function(entry, level = 1,
         cat(paste0(c(pad1, rep(pad, length(line) - 1)), line), sep = "\n")
         nval_rem <- length(word) - max_nval
         if (nval_rem > 0)
-            cat(pad, "[ ... and ",  format(nval_rem, big.mark = ","), " more ]\n", sep = "")
-        #cat("\n", sep = "")
+            wrap(msg("[ ... and %s more ]", nval_rem, append = pad))
     }
     for (i in seq_along(category)) {
             cat(pad1, "[", names(category[i]), "]:\n", sep = "")
@@ -469,8 +468,9 @@ print_dictionary <- function(entry, level = 1,
     }
     nkey_rem <- nkey - length(entry)
     if (nkey_rem > 0) {
-        cat(pad0, "[ reached max_nkey ... ", format(nkey_rem, big.mark = ","), " more key",
-            if (nkey_rem > 1) "s", " ]\n", sep = "")
+        wrap(msg("[ reached max_nkey ... %s more %s ]", 
+             nval_rem, if (nkey_rem > 1) "keys" else "key",
+             append = pad))
     }
 }
 
