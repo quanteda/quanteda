@@ -242,7 +242,7 @@ test_that("fcm print works as expected", {
     expect_output(print(fcmt, max_nfeat = 6, show_summary = TRUE),
                   paste0("^Feature co-occurrence matrix of: 634 by 634 features\\.",
                          ".*",
-                         "\\[ reached max_nfeat \\.\\.\\. 628 more features, reached max_nfeat \\.\\.\\. 628 more features \\]$")
+                         "\\[ reached max_nfeat \\.\\.\\. 628 more features, reached max_nfeat \\.\\.\\. 628\nmore features \\]$")
     )
     expect_output(print(fcmt[1:5, 1:5], max_nfeat = 6, show_summary = TRUE),
                   paste0("^Feature co-occurrence matrix of: 5 by 5 features\\.",
@@ -267,7 +267,7 @@ test_that("fcm print works as expected", {
     expect_output(print(fcmt, max_nfeat = 6, show_summary = FALSE),
                   paste0("^\\s+features",
                          ".*",
-                         "\\[ reached max_nfeat \\.\\.\\. 628 more features, reached max_nfeat \\.\\.\\. 628 more features \\]$")
+                         "\\[ reached max_nfeat \\.\\.\\. 628 more features, reached max_nfeat \\.\\.\\. 628\nmore features \\]$")
     )
 })
 

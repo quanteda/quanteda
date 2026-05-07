@@ -63,9 +63,9 @@ print_dfm <- function(x, max_ndoc, max_nfeat, show_summary, ...) {
                         append = line)
         }
         if (ndoc_rem > 0 && nfeat_rem > 0) 
-            line <- paste0(line, ",")
+            line <- paste0(line, ", ")
         if (nfeat_rem > 0) {
-            line <- msg(" reached max_nfeat ... %s more %s",
+            line <- msg("reached max_nfeat ... %s more %s",
                         nfeat_rem, if (nfeat_rem == 1) "feature" else "features",
                         append = line)
         }
