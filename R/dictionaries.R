@@ -419,15 +419,16 @@ setMethod("print", signature(x = "dictionary2"),
               max_nval <- check_integer(max_nval, min = -1)
               show_summary <- check_logical(show_summary)
               check_dots(...)
-
               if (show_summary) {
                   depth <- dictionary_depth(x)
-                  lev <- if (depth > 1L) " primary" else ""
                   nkey <- length(names(x))
-                  cat("Dictionary object with ", nkey, lev, " key entr",
-                      if (nkey == 1L) "y" else "ies", sep = "")
-                  if (lev != "") cat(" and ", depth, " nested levels", sep = "")
-                  cat(".\n")
+                  if (depth == 1L) {
+                      wrap(msg("Dictionary object with %s key %s.", 
+                               nkey, plural(nkey, "entry")))
+                  } else {
+                      wrap(msg("Dictionary object with %s primary key %s and %s nested levels.", 
+                               nkey, plural(nkey, "entry"), depth))
+                  }
               }
               invisible(print_dictionary(x, 1, max_nkey, max_nval, show_summary, ...))
           })
@@ -449,28 +450,27 @@ print_dictionary <- function(entry, level = 1,
     is_category <- vapply(entry, is.list, logical(1))
     category <- entry[is_category]
     word <- unlist(entry[!is_category], use.names = FALSE)
-    pad0 <- stri_dup(" ", (level - 1) * 2)
-    pad1 <- paste0(pad0, "- ") # first lines
-    pad <- paste0(pad0, "  ")
+    indent <- (level - 1) * 2
     if (length(word)) {
         if (max_nval < 0)
             max_nval <- length(word)
         line <- paste0(head(word, max_nval), collapse = ", ")
-        line <- stri_wrap(line, floor(0.9 * getOption("width")) - level * 2)
-        cat(paste0(c(pad1, rep(pad, length(line) - 1)), line), sep = "\n")
+        line <- paste0("- ", line)
         nval_rem <- length(word) - max_nval
         if (nval_rem > 0)
-            wrap(msg("[ ... and %s more ]", nval_rem, append = pad))
+            line <- msg(" [ ... and %s more ]", nval_rem, append = line)
+        wrap(line, indent = indent, exdent = indent + 2)
     }
     for (i in seq_along(category)) {
-            cat(pad1, "[", names(category[i]), "]:\n", sep = "")
+        wrap(paste0("- [", names(category[i]), "]:"), 
+             indent = indent, exdent = indent + 2)
         print_dictionary(category[[i]], level + 1, max_nkey, max_nval, show_summary)
     }
     nkey_rem <- nkey - length(entry)
     if (nkey_rem > 0) {
         wrap(msg("[ reached max_nkey ... %s more %s ]", 
-             nval_rem, if (nkey_rem > 1) "keys" else "key",
-             append = pad))
+                 nkey_rem, plural(nkey_rem, "key")),
+             indent = indent, exdent = indent)
     }
 }
 
@@ -1016,8 +1016,7 @@ read_dict_liwc <- function(path, encoding = "utf-8") {
         dict <- nest_dictionary(dict, depth)
     }
     dict <- remove_empty_keys(dict)
-
-    dict
+    return(dict)
 }
 
 #' @rdname read_dict_functions
