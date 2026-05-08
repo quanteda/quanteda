@@ -19,10 +19,10 @@ setMethod("print", signature(x = "dfm"),
               if (show_summary) {
                   docvars <- docvars(x)
                   wrap(msg("Document-feature matrix of: %s %s, %s %s (%s sparse) and %s %s.\n",
-                           ndoc(x), if (ndoc(x) == 1) "document" else "documents",
-                           nfeat(x), if (nfeat(x) == 1) "feature" else "features",
+                           ndoc(x), plural(ndoc(x), "document"),
+                           nfeat(x), plural(nfeat(x), "feature"),
                            format_sparsity(sparsity(x)),
-                           ncol(docvars), if (ncol(docvars) == 1) "docvar" else "docvars"))
+                           ncol(docvars), plural(ncol(docvars), "docvar")))
               }
               if (max_ndoc < 0) 
                   max_ndoc <- ndoc(x)
@@ -59,14 +59,14 @@ print_dfm <- function(x, max_ndoc, max_nfeat, show_summary, ...) {
         line <- "[ "
         if (ndoc_rem > 0) {
             line <- msg("reached max_ndoc ... %s more %s",
-                        ndoc_rem, if (ndoc_rem == 1) "document" else "documents",
+                        ndoc_rem, plural(ndoc_rem, "document"),
                         append = line)
         }
         if (ndoc_rem > 0 && nfeat_rem > 0) 
             line <- paste0(line, ", ")
         if (nfeat_rem > 0) {
             line <- msg("reached max_nfeat ... %s more %s",
-                        nfeat_rem, if (nfeat_rem == 1) "feature" else "features",
+                        nfeat_rem, plural(nfeat_rem, "feature"),
                         append = line)
         }
         line <- paste0(line, " ]")

@@ -135,14 +135,14 @@ print.tokens <- function(x, max_ndoc = quanteda_options("print_tokens_max_ndoc")
 
     if (show_summary) {
         line <- msg("Tokens consisting of %s %s",
-                    ndoc, if (ndoc == 1) "document" else "documents")
+                    ndoc, plural(ndoc, "document"))
         if (ncol(docvars))
             line <- msg(" and %s %s",
-                        ncol(docvars), if (ncol(docvars) == 1) "docvar" else "docvars",
+                        ncol(docvars), plural(ncol(docvars), "docvar"),
                         append = line)
         if (is.tokens_xptr(x))
             line <- msg(" (pointer to %s)", address(x), append = line)
-        wrap(line)
+        wrap(paste0(line, "."))
     }
 
     if (max_ndoc > 0 && ndoc(x) > 0) {
@@ -159,11 +159,12 @@ print.tokens <- function(x, max_ndoc = quanteda_options("print_tokens_max_ndoc")
             print(x[[i]], ...)
             if (len[i] > max_ntoken)
                 wrap(msg("[ ... and %s more ]", len[i] - max_ntoken))
+            cat("\n")
         }
         ndoc_rem <- ndoc - max_ndoc
         if (ndoc_rem > 0)
             wrap(msg("[ reached max_ndoc ... %s more %s ]",
-                     ndoc_rem, if (ndoc_rem == 1) "document" else "documents"))
+                     ndoc_rem, plural(ndoc_rem, "document")))
     }
 }
 

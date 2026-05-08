@@ -5,8 +5,7 @@ setMethod("print", signature(x = "fcm"),
                    show_summary = TRUE, ...) {
               if (show_summary) {
                   wrap(msg("Feature co-occurrence matrix of: %s by %s %s.\n",
-                           nrow(x), ncol(x), 
-                           if (nrow(x) == 1 && ncol(x) == 1) "feature" else "features"))
+                           nrow(x), ncol(x), plural(nrow(x) * ncol(x), "feature")))
               }
               print_fcm(x, max_nfeat, show_summary, ...)
           })
@@ -41,14 +40,14 @@ print_fcm <- function(x, max_nfeat, show_summary, ...) {
       line <- "[ "
       if (nrow_rem > 0) {
           line <- msg("reached max_nfeat ... %s more %s",
-                      nrow_rem, if (nrow_rem == 1) "feature" else "features",
+                      nrow_rem, plural(nrow_rem, "feature"),
                       append = line)
       }
       if (nrow_rem > 0 && ncol_rem > 0) 
           line <- paste0(line, ", ")
       if (ncol_rem > 0) {
           line <- msg("reached max_nfeat ... %s more %s",
-                      ncol_rem, if (ncol_rem == 1) "feature" else "features",
+                      ncol_rem, plural(ncol_rem, "feature"),
                       append = line)
       }
       line <- paste0(line, " ]")
