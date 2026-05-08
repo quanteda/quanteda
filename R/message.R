@@ -12,7 +12,11 @@
 msg <- function(format, ..., pretty = TRUE, append = "") {
     args <- list(...)
     if (pretty) {
-        args <- lapply(args, prettyNum, big.mark = ",")
+        args <- lapply(args, function(x) {
+            if (is.numeric(x))
+                x <- prettyNum(x, big.mark = ",")
+            return(x)
+            })
     } else {
         args <- lapply(args, as.character)
     }
@@ -22,10 +26,30 @@ msg <- function(format, ..., pretty = TRUE, append = "") {
 
 #' Wrap and print long lines
 #' 
+#' @param x a character string to wrap.
+#' @param ... extra arguments passed to [stringi::stri_wrap]`.
 #' @keywords internal development
 #' @importFrom stringi stri_wrap
-wrap <- function(x) {
-    cat(stri_wrap(x, floor(0.9 * getOption("width"))), sep = "\n")
+wrap <- function(x, ...) {
+    cat(stri_wrap(x, getOption("width"), ...), sep = "\n")
+}
+
+#' Return plural forms of words
+
+#' @param n the number of elements.
+#' @param word singular form of the word.
+#' @keywords internal development
+plural <- function(n, word) {
+    v <- c("document" = "documents",
+           "feature" = "features",
+           "docvar" = "docvars",
+           "token" = "tokens",
+           "entry" = "entries",
+           "key" = "keys")
+    if (n == 1)
+        return(word)
+    return(v[word])
+    
 }
 
 # rdname catm
