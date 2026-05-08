@@ -4,14 +4,16 @@
 \alias{msg}
 \title{Conditionally format messages}
 \usage{
-msg(format, ..., pretty = TRUE)
+msg(format, ..., prepend = "", append = "")
 }
 \arguments{
 \item{format}{character vector of format strings}
 
 \item{...}{vectors (coercible to integer, real, or character)}
 
-\item{pretty}{if \code{TRUE}, message is passed to \code{\link[base:formatc]{base::prettyNum()}}.}
+\item{prepend}{text is added before the message}
+
+\item{append}{text is added after the message}
 }
 \description{
 Conditionally format messages
