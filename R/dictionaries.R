@@ -424,10 +424,10 @@ setMethod("print", signature(x = "dictionary2"),
                   nkey <- length(names(x))
                   if (depth == 1L) {
                       wrap(msg("Dictionary object with %s key %s.", 
-                               nkey, plural(nkey, "entry")))
+                               nkey, inflect("entry", nkey)))
                   } else {
                       wrap(msg("Dictionary object with %s primary key %s and %s nested levels.", 
-                               nkey, plural(nkey, "entry"), depth))
+                               nkey, inflect("entry", nkey), depth))
                   }
               }
               invisible(print_dictionary(x, 1, max_nkey, max_nval, show_summary, ...))
@@ -458,7 +458,7 @@ print_dictionary <- function(entry, level = 1,
         line <- paste0("- ", line)
         nval_rem <- length(word) - max_nval
         if (nval_rem > 0)
-            line <- msg(" [ ... and %s more ]", nval_rem, append = line)
+            line <- msg(" [ ... and %s more ]", nval_rem, prepend = line)
         wrap(line, indent = indent, exdent = indent + 2)
     }
     for (i in seq_along(category)) {
@@ -469,7 +469,7 @@ print_dictionary <- function(entry, level = 1,
     nkey_rem <- nkey - length(entry)
     if (nkey_rem > 0) {
         wrap(msg("[ reached max_nkey ... %s more %s ]", 
-                 nkey_rem, plural(nkey_rem, "key")),
+                 nkey_rem, inflect("key", nkey_rem)),
              indent = indent, exdent = indent)
     }
 }

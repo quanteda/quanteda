@@ -3,25 +3,23 @@
 #' Conditionally format messages
 #'
 #' @inheritParams stringi::stri_sprintf
-#' @param pretty if `TRUE`, message is passed to [base::prettyNum()].
-#' @param append message is appended to the character.
+#' @param prepend text is added before the message
+#' @param append text is added after the message
 #' @keywords internal development
 #' @seealso [stringi::stri_sprintf]
 #' @examples
 #' quanteda:::msg("you cannot delete %s %s", 2000, "documents")
-msg <- function(format, ..., pretty = TRUE, append = "") {
+msg <- function(format, ..., prepend = "", append = "") {
     args <- list(...)
-    if (pretty) {
-        args <- lapply(args, function(x) {
-            if (is.numeric(x))
-                x <- prettyNum(x, big.mark = ",")
-            return(x)
-            })
-    } else {
-        args <- lapply(args, as.character)
-    }
+    args <- lapply(args, function(x) {
+        if (is.numeric(x)) {
+            prettyNum(x, big.mark = ",")
+        } else {
+            as.character(x)
+        }
+    })
     args$format <- format
-    paste0(append, do.call(stringi::stri_sprintf, args))
+    paste0(prepend, do.call(stringi::stri_sprintf, args), append)
 }
 
 #' Wrap and print long lines
@@ -34,12 +32,12 @@ wrap <- function(x, ...) {
     cat(stri_wrap(x, getOption("width"), ...), sep = "\n")
 }
 
-#' Return plural forms of words
+#' Return inflected forms of words
 
 #' @param n the number of elements.
 #' @param word singular form of the word.
 #' @keywords internal development
-plural <- function(n, word) {
+inflect <- function(word, n) {
     v <- c("document" = "documents",
            "feature" = "features",
            "docvar" = "docvars",
