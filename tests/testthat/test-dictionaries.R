@@ -136,11 +136,13 @@ test_that("indexing for dictionary objects works", {
 
     expect_output(
         print(testdict),
-        "Dictionary object with 9 primary key entries and 2 nested levels\\."
+        "Dictionary object with 9 primary key entries and 2 nested levels.",
+        fixed = TRUE
     )
     expect_output(
         print(testdict[1]),
-        "Dictionary object with 1 primary key entry and 2 nested levels\\."
+        "Dictionary object with 1 primary key entry and 2 nested levels.",
+        fixed = TRUE
     )
 })
 
