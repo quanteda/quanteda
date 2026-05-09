@@ -191,7 +191,7 @@ get_options_default <- function() {
                  print_dictionary_max_nkey = 6L,
                  print_dictionary_max_nval = 20L,
                  print_dictionary_summary = TRUE,
-                 print_kwic_max_nrow = 1000L,
+                 print_kwic_max_nrow = 100L,
                  print_kwic_summary = TRUE,
                  base_docname = "text",
                  base_featname = "feat",
