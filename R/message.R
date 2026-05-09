@@ -43,7 +43,8 @@ inflect <- function(word, n) {
            "docvar" = "docvars",
            "token" = "tokens",
            "entry" = "entries",
-           "key" = "keys")
+           "key" = "keys",
+           "match" = "matches")
     if (n == 1)
         return(word)
     return(v[word])
