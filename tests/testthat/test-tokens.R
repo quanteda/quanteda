@@ -822,6 +822,11 @@ test_that("tokens printing works", {
         fixed = TRUE
     )
     expect_output(
+        print(as.tokens_xptr(toks), max_ndoc = 0, max_ntoken = 0, show_summary = TRUE),
+        "Tokens consisting of 14 documents and 4 docvars \\(pointer to [0-9a-z]+\\)\\.",
+        fixed = FALSE
+    )
+    expect_output(
         print(toks, max_ndoc = 2, max_ntoken = 3, show_summary = TRUE),
         paste0('Tokens consisting of 14 documents and 4 docvars.\n',
                '1789-Washington :\n',
