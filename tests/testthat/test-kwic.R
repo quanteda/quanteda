@@ -279,8 +279,9 @@ test_that("print method works as expected", {
                         "[1805-Jefferson, 2367] shall | secure  | to",
                         "[ reached max_nrow ... 3 more matches ]", sep = "\\s*"))
     expect_output(print(kwic(toks, "secured", window = 1)),
-                  "Keyword-in-context with 1 match.                                            
- [1797-Adams, 1512] and | secured | immortal", fixed = TRUE)
+                  paste("Keyword-in-context with 1 match.",
+                        "[1797-Adams, 1512] and | secured | immortal", 
+                        sep = "\\s*"))
     expect_output(print(kwic(toks, "XXX", window = 1)),
                   "Keyword-in-context with 0 matches.")
 })

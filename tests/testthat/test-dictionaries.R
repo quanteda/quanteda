@@ -136,11 +136,13 @@ test_that("indexing for dictionary objects works", {
 
     expect_output(
         print(testdict),
-        "Dictionary object with 9 primary key entries and 2 nested levels"
+        "Dictionary object with 9 primary key entries and 2 nested levels.",
+        fixed = TRUE
     )
     expect_output(
         print(testdict[1]),
-        "Dictionary object with 1 primary key entry and 2 nested levels"
+        "Dictionary object with 1 primary key entry and 2 nested levels.",
+        fixed = TRUE
     )
 })
 
@@ -185,8 +187,7 @@ test_that("dictionary printing works", {
         paste0(
             "Dictionary object with 2 key entries.\n",
             "- [one]:\n",
-            "  - a\n",
-            "    [ ... and 1 more ]\n",
+            "  - a [ ... and 1 more ]\n",
             "[ reached max_nkey ... 1 more key ]"
         ),
         fixed = TRUE
@@ -196,8 +197,7 @@ test_that("dictionary printing works", {
         print(dict, max_nkey = 1, max_nval = 1, show_summary = FALSE),
         paste0(
             "- [one]:\n",
-            "  - a\n",
-            "    [ ... and 1 more ]\n",
+            "  - a [ ... and 1 more ]\n",
             "[ reached max_nkey ... 1 more key ]"
         ),
         fixed = TRUE

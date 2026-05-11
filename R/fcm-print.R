@@ -4,9 +4,8 @@ setMethod("print", signature(x = "fcm"),
           function(x, max_nfeat = quanteda_options("print_dfm_max_nfeat"), 
                    show_summary = TRUE, ...) {
               if (show_summary) {
-                  cat(msg("Feature co-occurrence matrix of: %s by %s %s.\n",
-                          nrow(x), ncol(x), 
-                          if (nrow(x) == 1 && ncol(x) == 1) "feature" else "features"))
+                  wrap(msg("Feature co-occurrence matrix of: %s by %s %s.\n",
+                           nrow(x), ncol(x), inflect("feature", nrow(x) * ncol(x))))
               }
               print_fcm(x, max_nfeat, show_summary, ...)
           })
@@ -38,17 +37,20 @@ print_fcm <- function(x, max_nfeat, show_summary, ...) {
     nrow_rem <- nrow - max_nrow
     ncol_rem <- ncol - max_ncol
     if (nrow_rem > 0 || ncol_rem > 0) {
-      cat("[", sep = "") 
+      line <- "[ "
       if (nrow_rem > 0) {
-          cat(msg(" reached max_nfeat ... %s more %s",
-                  nrow_rem, if (nrow_rem == 1) "feature" else "features"))
+          line <- msg("reached max_nfeat ... %s more %s",
+                      nrow_rem, inflect("feature", nrow_rem),
+                      prepend = line)
       }
       if (nrow_rem > 0 && ncol_rem > 0) 
-          cat(",", sep = "")
+          line <- paste0(line, ", ")
       if (ncol_rem > 0) {
-          cat(msg(" reached max_nfeat ... %s more %s",
-                  ncol_rem, if (ncol_rem == 1) "feature" else "features"))
+          line <- msg("reached max_nfeat ... %s more %s",
+                      ncol_rem, inflect("feature", ncol_rem),
+                      prepend = line)
       }
-      cat(" ]\n", sep = "") 
+      line <- paste0(line, " ]")
+      wrap(line)
     }
 }
