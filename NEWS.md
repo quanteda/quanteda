@@ -6,7 +6,7 @@
 
 ## Changes and additions
 
-* Improve `print` methods for corpus, tokens, dfm, fcm, dictionary2 and kwic objects to wrap long lines at `getOption("width")`.
+* Improve `print` methods for corpus, tokens, dfm, fcm, dictionary and kwic objects to wrap long lines at `getOption("width")`.
 
 # quanteda 4.4
 
