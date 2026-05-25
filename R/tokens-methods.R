@@ -87,17 +87,57 @@ as.tensor.tokens <- function(x, length = NULL, ...) {
     }
 
     i <- torch::torch_tensor(
-        rbind(rep(seq_along(l), l), unlist(lapply(lis, seq_along))),
+        rbind(rep(seq_along(l), l), unlist_integer(lapply(lis, seq_along))),
         dtype = torch::torch_int64()
     )
     v <- torch::torch_tensor(
-        unlist(lis, use.names = FALSE),
+        unlist_integer(lis, use.names = FALSE),
         dtype = torch::torch_int64()
     )
     result <- torch::torch_sparse_coo_tensor(indices = i, values = v, 
                                              size = c(nr, nc))
 
     return(result)
+}
+
+#' @rdname as.tokens
+#' @return `as.Matrix` returns a sparse matrix from the \pkg{Matrix}. Each document 
+#' is represented as a row, and token positions as columns. Values are the integer token IDs.
+#' @export
+#' @examples
+#' toks <- tokens(c(doc1 = "a b c d e f g",
+#'                  doc2 = "a b c g",
+#'                  doc3 = ""))
+#' as.Matrix(toks)
+as.Matrix <- function(x, ...) {
+    UseMethod("as.Matrix")
+}
+
+#' @rdname as.tokens
+#' @param ... unused
+#' @method as.Matrix tokens
+#' @importFrom Matrix sparseMatrix
+#' @export
+as.Matrix.tokens <- function(x, length = NULL, ...) {
+    
+    length <- check_integer(length, min = 1, allow_null = TRUE)
+    
+    # truncate documents if length is specified
+    if (!is.null(length)) {
+        x <- tokens_select(x, endpos = length)
+    } else {
+        length <- max(c(ntoken(x), 0))
+    }
+    
+    name <- docnames(x)
+    lis <- as.list(unclass(as.tokens(x)))
+    len <- lengths(lis)
+    sparseMatrix(j = unlist_integer(sapply(len, seq_len)), 
+                 p = c(0, cumsum(len)), 
+                 x = unlist_integer(lis, use.names = FALSE),
+                 dims = c(length(lis), length),
+                 dimnames = list(name, NULL),
+                 repr = "R")
 }
 
 # extension of generics for tokens -----------

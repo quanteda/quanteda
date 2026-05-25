@@ -6,6 +6,8 @@
 \alias{is.tokens}
 \alias{as.tensor}
 \alias{as.tensor.tokens}
+\alias{as.Matrix}
+\alias{as.Matrix.tokens}
 \alias{as.tokens}
 \alias{as.tokens.spacyr_parsed}
 \title{Coercion, checking, and combining functions for tokens objects}
@@ -19,6 +21,10 @@ is.tokens(x)
 as.tensor(x, ...)
 
 \method{as.tensor}{tokens}(x, length = NULL, ...)
+
+as.Matrix(x, ...)
+
+\method{as.Matrix}{tokens}(x, length = NULL, ...)
 
 as.tokens(x, concatenator = "_", ...)
 
@@ -70,6 +76,9 @@ tokens, \code{FALSE} otherwise.
 compatible with the \pkg{torch} package. Each document is represented as
 a row, and token positions as columns. Values are the integer token IDs.
 
+\code{as.Matrix} returns a sparse matrix from the \pkg{Matrix}. Each document
+is represented as a row, and token positions as columns. Values are the integer token IDs.
+
 \code{as.tokens} returns a quanteda \link{tokens} object.
 
 \code{is.tokens} returns \code{TRUE} if the object is of class
@@ -99,6 +108,10 @@ toks <- tokens(c(doc1 = "a b c d e f g",
                  doc3 = ""))
 as.tensor(toks)
 }
+toks <- tokens(c(doc1 = "a b c d e f g",
+                 doc2 = "a b c g",
+                 doc3 = ""))
+as.Matrix(toks)
 
 # create tokens object from list of characters with custom concatenator
 dict <- dictionary(list(country = "United States",
