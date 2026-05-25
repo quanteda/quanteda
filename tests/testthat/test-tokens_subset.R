@@ -101,13 +101,13 @@ test_that("recompile is working", {
         c("a", "aa", "b", "bb", "bbb")
     )
     
-    expect_equal(
-        as.list(tokens_subset(toks, recompile = FALSE, var == "A")),
-        list(text1 = c("a", "aa", "aa"))
+    expect_equivalent(
+        unclass(tokens_subset(toks, recompile = FALSE, var == "A")),
+        list(text1 = c(1, 2, 2))
     )
-    expect_equal(
-        as.list(tokens_subset(toks, recompile = FALSE, var == "B")),
-        list(text2 = c("b", "bb", "bbb"))
+    expect_equivalent(
+        unclass(tokens_subset(toks, recompile = FALSE, var == "B")),
+        list(text2 = c(3, 4, 5))
     )
 })
 
