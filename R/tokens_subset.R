@@ -8,6 +8,7 @@
 #'
 #' @param x [tokens] object to be subsetted.
 #' @param min_ntoken,max_ntoken minimum and maximum lengths of the documents to extract.
+#' @param recompile if `TRUE`, reassign integer token IDs to tokens after extraction.
 #' @inheritParams messages
 #' @inheritParams corpus_subset
 #' @return [tokens] object, with a subset of documents (and docvars)
@@ -25,19 +26,22 @@
 #' # selecting on a supplied vector
 #' tokens_subset(toks, c(TRUE, FALSE, TRUE, FALSE))
 tokens_subset <- function(x, subset, min_ntoken = NULL, max_ntoken = NULL, 
-                          drop_docid = TRUE, verbose = quanteda_options("verbose"), ...) {
+                          drop_docid = TRUE, recompile = TRUE,
+                          verbose = quanteda_options("verbose"), ...) {
     UseMethod("tokens_subset")
 }
     
 #' @export
 tokens_subset.default <- function(x, subset, min_ntoken = NULL, max_ntoken = NULL, 
-                                  drop_docid = TRUE, verbose = quanteda_options("verbose"), ...) {
+                                  drop_docid = TRUE, recompile = TRUE,
+                                  verbose = quanteda_options("verbose"), ...) {
     check_class(class(x), "tokens_subset")
 }
     
 #' @export
 tokens_subset.tokens <- function(x, subset, min_ntoken = NULL, max_ntoken = NULL, 
-                                 drop_docid = TRUE, verbose = quanteda_options("verbose"), ...) {
+                                 drop_docid = TRUE, recompile = TRUE,
+                                 verbose = quanteda_options("verbose"), ...) {
     
     x <- as.tokens(x)
     min_ntoken <- check_integer(min_ntoken, min = 0, allow_null = TRUE)
@@ -65,7 +69,7 @@ tokens_subset.tokens <- function(x, subset, min_ntoken = NULL, max_ntoken = NULL
     }
     if (verbose)
         before <- stats_tokens(x)
-    x <- x[r & l, drop_docid = drop_docid]
+    x <- x[r & l, drop_docid = drop_docid, recompile = recompile]
     if (verbose)
         message_tokens("tokens_subset()", before, stats_tokens(x))
     return(x)

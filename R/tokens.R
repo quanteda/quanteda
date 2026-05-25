@@ -662,18 +662,14 @@ serialize_tokens <- function(x, types_reserved = NULL, ...) {
     return(x)
 }
 
-#' recompile a serialized tokens object
+#' recompile a tokens object
 #'
-#' This function recompiles a serialized tokens object when the vocabulary has
-#' been changed in a way that makes some of its types identical, such as
-#' lowercasing when a lowercased version of the type already exists in the type
-#' table, or introduces gaps in the integer map of the types.  It also
-#' re-indexes the types attribute to account for types that may have become
-#' duplicates, through a procedure such as stemming or lowercasing; or the
-#' addition of new tokens through compounding.
-#' @param x the [tokens] object to be recompiled
+#' This function reassign integer IDs to tokens when some of its types has become 
+#' identical or unused as a result of case-changes, stemming removal, or compounding 
+#' operations.
+#' @param x the [tokens] object to be recompiled.
 #' @param method `"C++"` for C++ implementation or `"R"` for an older
-#'   R-based method
+#'   R-based method.
 #' @examples
 #' # lowercasing
 #' toks1 <- tokens(c(one = "a b c d A B C D",

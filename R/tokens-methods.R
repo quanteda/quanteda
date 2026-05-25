@@ -174,12 +174,13 @@ print.tokens <- function(x, max_ndoc = quanteda_options("print_tokens_max_ndoc")
 #' @param i document names or indices for documents to extract.
 #' @param drop_docid if `TRUE`, `docid` for documents are removed as the result
 #'   of extraction.
+#' @param recompile if `TRUE`, reassign integer IDs to tokens after extraction.
 #' @export
 #' @examples
 #' toks <- tokens(c(d1 = "one two three", d2 = "four five six", d3 = "seven eight"))
 #' str(toks)
 #' toks[c(1,3)]
-"[.tokens" <- function(x, i, drop_docid = TRUE) {
+"[.tokens" <- function(x, i, drop_docid = TRUE, recompile = TRUE) {
 
     if (missing(i)) return(x)
     x <- as.tokens(x)
@@ -198,7 +199,9 @@ print.tokens <- function(x, max_ndoc = quanteda_options("print_tokens_max_ndoc")
         meta = attrs[["meta"]],
         class = attrs[["class"]]
     )
-    tokens_recompile(result)
+    if (recompile)
+        result <- tokens_recompile(result)
+    return(result)
 }
 
 #' @rdname tokens-class
