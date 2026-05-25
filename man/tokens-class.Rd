@@ -11,7 +11,7 @@
 \usage{
 \method{unlist}{tokens}(x, recursive = FALSE, use.names = TRUE)
 
-\method{[}{tokens}(x, i, drop_docid = TRUE)
+\method{[}{tokens}(x, i, drop_docid = TRUE, recomile = TRUE)
 
 \method{+}{tokens}(t1, t2)
 
@@ -33,6 +33,8 @@ of extraction.}
 \item{t1}{tokens one to be added}
 
 \item{t2}{tokens two to be added}
+
+\item{recompile}{if \code{TRUE}, reassign integer IDs to tokens after extraction.}
 }
 \value{
 \code{unlist} returns a simple vector of characters from a
