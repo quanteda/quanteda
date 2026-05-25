@@ -2,24 +2,20 @@
 % Please edit documentation in R/tokens.R
 \name{tokens_recompile}
 \alias{tokens_recompile}
-\title{recompile a serialized tokens object}
+\title{recompile a tokens object}
 \usage{
 tokens_recompile(x, method = c("C++", "R"))
 }
 \arguments{
-\item{x}{the \link{tokens} object to be recompiled}
+\item{x}{the \link{tokens} object to be recompiled.}
 
 \item{method}{\code{"C++"} for C++ implementation or \code{"R"} for an older
-R-based method}
+R-based method.}
 }
 \description{
-This function recompiles a serialized tokens object when the vocabulary has
-been changed in a way that makes some of its types identical, such as
-lowercasing when a lowercased version of the type already exists in the type
-table, or introduces gaps in the integer map of the types.  It also
-re-indexes the types attribute to account for types that may have become
-duplicates, through a procedure such as stemming or lowercasing; or the
-addition of new tokens through compounding.
+This function reassign integer IDs to tokens when some of its types has become
+identical or unused as a result of case-changes, stemming removal, or compounding
+operations.
 }
 \examples{
 # lowercasing
