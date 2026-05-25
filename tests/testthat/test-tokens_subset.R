@@ -77,3 +77,37 @@ test_that("tokens_subset works with min_ntoken and max_ntoken", {
     )
 })
 
+test_that("recompile is working", {
+    
+    corp <- corpus(data.frame(text = c("a aa aa", "b bb bbb"),
+                              var = c("A", "B")))
+    toks <- tokens(corp)
+    
+    expect_equal(
+        types(tokens_subset(toks, recompile = TRUE, var == "A")),
+        c("a", "aa")
+    )
+    expect_equal(
+        types(tokens_subset(toks, recompile = TRUE, var == "B")),
+        c("b", "bb", "bbb")
+    )
+    
+    expect_equal(
+        types(tokens_subset(toks, recompile = FALSE, var == "A")),
+        c("a", "aa", "b", "bb", "bbb")
+    )
+    expect_equal(
+        types(tokens_subset(toks, recompile = FALSE, var == "B")),
+        c("a", "aa", "b", "bb", "bbb")
+    )
+    
+    expect_equal(
+        as.list(tokens_subset(toks, recompile = FALSE, var == "A")),
+        list(text1 = c("a", "aa", "aa"))
+    )
+    expect_equal(
+        as.list(tokens_subset(toks, recompile = FALSE, var == "B")),
+        list(text2 = c("b", "bb", "bbb"))
+    )
+})
+
