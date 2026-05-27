@@ -122,15 +122,15 @@ as.Matrix.tokens <- function(x, length = NULL, ...) {
     
     length <- check_integer(length, min = 1, allow_null = TRUE)
     
+    x <- as.tokens_xptr(x)
     # truncate documents if length is specified
     if (!is.null(length)) {
         x <- tokens_select(x, endpos = length)
     } else {
         length <- max(c(ntoken(x), 0))
     }
-    
     name <- docnames(x)
-    lis <- as.list(unclass(as.tokens(x)))
+    lis <- cpp_as_list(x) # does not recompile
     len <- lengths(lis)
     sparseMatrix(j = unlist_integer(sapply(len, seq_len)), 
                  p = c(0, cumsum(len)), 

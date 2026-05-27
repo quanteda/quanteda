@@ -26,13 +26,13 @@ test_that("as.Matrix.tokens works correctly", {
               doc3 = c(0, 0, 0, 0, 0, 0, 0, 0))
     )
     
-    mat3 <- as.Matrix(toks, length = 5)
+    mat3 <- as.Matrix(toks, length = 3)
     expect_true(inherits(mat3, "dgRMatrix"))
     expect_equal(
         as.matrix(mat3),
-        rbind(doc1 = c(1, 2, 3, 4, 5),
-              doc2 = c(6, 4, 5, 5, 0),
-              doc3 = c(0, 0, 0, 0, 0))
+        rbind(doc1 = c(1, 2, 3),
+              doc2 = c(7, 4, 5),
+              doc3 = c(0, 0, 0))
     )
     
     # Test empty tokens
