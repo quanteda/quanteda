@@ -67,12 +67,13 @@ as.tensor.tokens <- function(x, length = NULL, ...) {
              "Install it with install.packages('torch').",
              call. = FALSE)
     }
-
+    
+    x <- as.tokens_xptr(x)
     # truncate documents if length is specified
     if (!is.null(length))
         x <- tokens_select(x, endpos = length)
     
-    lis <- as.list(unclass(as.tokens(x)))
+    lis <- cpp_as_list(x) # does not recompile
     l <- lengths(lis)
     nc <- max(c(l, length, 0L)) # number of columns
     nr <- length(l) # number of rows
