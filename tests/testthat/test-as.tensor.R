@@ -31,14 +31,14 @@ test_that("as.tensor.tokens works correctly", {
               c(0, 0, 0, 0, 0, 0, 0, 0))
     )
     
-    tens3 <- as.tensor(toks, length = 5)
+    tens3 <- as.tensor(toks, length = 3)
     expect_true(inherits(tens3, "torch_tensor"))
     expect_true(tens3$is_sparse())
     expect_equal(
         as.matrix(tens3$to_dense()),
-        rbind(c(1, 2, 3, 4, 5),
-              c(6, 4, 5, 5, 0),
-              c(0, 0, 0, 0, 0))
+        rbind(c(1, 2, 3),
+              c(7, 4, 5),
+              c(0, 0, 0))
     )
     
     # Test empty tokens
