@@ -10,6 +10,7 @@ test_that("tokens indexing works as expected", {
     expect_equal(as.list(toks["d2"]), list(d2 = c("four", "five", "six")))
     expect_equal(as.list(toks[2]), list(d2 = c("four", "five", "six")))
     expect_equal(as.list(toks[c(-1, -3)]), list(d2 = c("four", "five", "six"))) # issue #1830
+    expect_equal(toks[], toks)
 
     # issue #370
     expect_equal(attr(toks[1], "types"), c("one", "two", "three"))
