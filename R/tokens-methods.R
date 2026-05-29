@@ -63,22 +63,13 @@ as.tensor <- function(x, ...) {
 #' @export
 as.tensor.tokens <- function(x, length = NULL, extract = NULL, ...) {
     
-    length <- check_integer(length, min = 1, allow_null = TRUE)
-    extract <- check_integer(extract, max_len = Inf, allow_null = TRUE)
-    
     if (!requireNamespace("torch", quietly = TRUE)) {
         stop("Package 'torch' is required for as.tensor(). ",
              "Install it with install.packages('torch').",
              call. = FALSE)
     }
-    if (!is.tokens_xptr(x))
-        x <- as.tokens_xptr(x)
-    if (is.null(extract))
-        extract <- seq_along(x)
-    if (is.null(length))
-        length <- max(c(ntoken(x), 0))
-    mat <- cpp_as_matrix(x, length, extract_ = extract)
-    torch::torch_tensor(cpp_as_matrix(x, length) + 1L, ...)
+    result <- as.matrix(x, length, extract = extract, drop = FALSE)
+    torch::torch_tensor(result + 1L, ...)
 }
 
 #' @rdname as.tokens
@@ -88,7 +79,7 @@ as.tensor.tokens <- function(x, length = NULL, extract = NULL, ...) {
 as.matrix.tokens <- function(x, length = NULL, extract = NULL, drop = TRUE, ...) {
     
     length <- check_integer(length, min = 1, allow_null = TRUE)
-    extract <- check_integer(extract, min = 1, max = ndoc(x),
+    extract <- check_integer(extract, min = 1, max = ndoc(x), max_len = Inf,
                              allow_null = TRUE)
     drop <- check_logical(drop)
     
