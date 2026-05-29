@@ -18,7 +18,7 @@ is.tokens(x)
 
 as.tensor(x, ...)
 
-\method{as.tensor}{tokens}(x, length = NULL, ...)
+\method{as.tensor}{tokens}(x, length = NULL, index = NULL, ...)
 
 as.tokens(x, concatenator = "_", ...)
 
@@ -42,8 +42,10 @@ is.tokens(x)
 \code{as.character} and \code{unlist} only.}
 
 \item{length}{optional integer specifying the maximum length (number of
-positions) for the sparse tensor. If \code{NULL} (default), the length is
+positions) for the tensor. If \code{NULL} (default), the length is
 inferred from the maximum token position across all documents.}
+
+\item{index}{indices for documents to be included in the tensor.}
 
 \item{concatenator}{character; the concatenation character that will connect
 the tokens making up a multi-token sequence.}
@@ -66,7 +68,7 @@ token}
 \code{is.tokens} returns \code{TRUE} if the object is of class
 tokens, \code{FALSE} otherwise.
 
-\code{as.tensor} returns a sparse COO tensor from a \link{tokens} object,
+\code{as.tensor} returns a tensor from a \link{tokens} object,
 compatible with the \pkg{torch} package. Each document is represented as
 a row, and token positions as columns. Values are the integer token IDs.
 
