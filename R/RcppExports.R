@@ -125,8 +125,8 @@ cpp_dfm <- function(xptr, asis = TRUE) {
     .Call(`_quanteda_cpp_dfm`, xptr, asis)
 }
 
-cpp_as_matrix <- function(xptr, length, asis = TRUE) {
-    .Call(`_quanteda_cpp_as_matrix`, xptr, length, asis)
+cpp_as_matrix <- function(xptr, length, extract_, asis = TRUE) {
+    .Call(`_quanteda_cpp_as_matrix`, xptr, length, extract_, asis)
 }
 
 cpp_is_grouped_numeric <- function(values_, groups_) {
