@@ -253,7 +253,7 @@ IntegerMatrix cpp_as_matrix(TokensPtr xptr, std::size_t length,
     
     std::size_t G = extract_.size();
     std::size_t H = xptr->texts.size();
-    std::vector<int> vec(G * length, 0); 
+    IntegerVector vec_(G * length, 0); 
     for (std::size_t g = 0; g < G; g++) {
         if (extract_[g] < 0 || (int)H < extract_[g])
             throw std::range_error("Invalid document index");
@@ -261,10 +261,9 @@ IntegerMatrix cpp_as_matrix(TokensPtr xptr, std::size_t length,
         Text text = xptr->texts[h];
         for (std::size_t i = 0; i < length; i++) {
             if (i < text.size())
-                vec[g + (G * i)] = text[i];
+                vec_[g + (G * i)] = text[i];
         }
     }
-    IntegerVector vec_ = Rcpp::wrap(vec);
     IntegerMatrix mat_(G, length, vec_.begin());
     return(mat_);
 }
