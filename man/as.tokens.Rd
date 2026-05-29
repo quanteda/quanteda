@@ -6,6 +6,7 @@
 \alias{is.tokens}
 \alias{as.tensor}
 \alias{as.tensor.tokens}
+\alias{as.matrix.tokens}
 \alias{as.tokens}
 \alias{as.tokens.spacyr_parsed}
 \title{Coercion, checking, and combining functions for tokens objects}
@@ -18,7 +19,9 @@ is.tokens(x)
 
 as.tensor(x, ...)
 
-\method{as.tensor}{tokens}(x, length = NULL, index = NULL, ...)
+\method{as.tensor}{tokens}(x, length = NULL, extract = NULL, ...)
+
+\method{as.matrix}{tokens}(x, length = NULL, extract = NULL, drop = TRUE, ...)
 
 as.tokens(x, concatenator = "_", ...)
 
@@ -45,7 +48,7 @@ is.tokens(x)
 positions) for the tensor. If \code{NULL} (default), the length is
 inferred from the maximum token position across all documents.}
 
-\item{index}{indices for documents to be included in the tensor.}
+\item{extract}{indices for documents to be extracted from \code{x}.}
 
 \item{concatenator}{character; the concatenation character that will connect
 the tokens making up a multi-token sequence.}
@@ -70,7 +73,7 @@ tokens, \code{FALSE} otherwise.
 
 \code{as.tensor} returns a tensor from a \link{tokens} object,
 compatible with the \pkg{torch} package. Each document is represented as
-a row, and token positions as columns. Values are the integer token IDs.
+a row, and token positions as columns. The integer token IDs in the resulting
 
 \code{as.tokens} returns a quanteda \link{tokens} object.
 
