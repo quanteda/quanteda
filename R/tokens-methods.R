@@ -39,10 +39,11 @@ is.tokens <- function(x) "tokens" %in% class(x)
 #' @param length optional integer specifying the maximum length (number of
 #'   positions) for the tensor. If `NULL` (default), the length is
 #'   inferred from the maximum token position across all documents.
-#' @param index indices for documents to be included in the tensor.
+#' @param extract indices for documents to be extracted from `x`.
 #' @return `as.tensor` returns a tensor from a [tokens] object,
 #'   compatible with the \pkg{torch} package. Each document is represented as
-#'   a row, and token positions as columns. Values are the integer token IDs.
+#'   a row, and token positions as columns. The integer token IDs in the resulting 
+#    tensor is shifted by one to comply with 1-base indexing in R.
 #' @export
 #' @examples
 #' \dontrun{
@@ -59,10 +60,10 @@ as.tensor <- function(x, ...) {
 #' @rdname as.tokens
 #' @method as.tensor tokens
 #' @export
-as.tensor.tokens <- function(x, length = NULL, index = NULL, ...) {
+as.tensor.tokens <- function(x, length = NULL, extract = NULL, ...) {
     
     length <- check_integer(length, min = 1, allow_null = TRUE)
-    index <- check_integer(index, max_len = Inf, allow_null = TRUE)
+    extract <- check_integer(extract, max_len = Inf, allow_null = TRUE)
     
     if (!requireNamespace("torch", quietly = TRUE)) {
         stop("Package 'torch' is required for as.tensor(). ",
@@ -71,11 +72,12 @@ as.tensor.tokens <- function(x, length = NULL, index = NULL, ...) {
     }
     if (!is.tokens_xptr(x))
         x <- as.tokens_xptr(x)
-    if (!is.null(index))
-        x <- x[index] # does not recompile
+    if (!is.null(extract))
+        x <- x[extract] # does not recompile
     if (is.null(length))
         length <- max(c(ntoken(x), 0))
-    torch::torch_tensor(cpp_as_matrix(x, length))
+    mat <- cpp_as_matrix(x, length)
+    torch::torch_tensor(cpp_as_matrix(x, length) + 1L)
 }
 
 # extension of generics for tokens -----------

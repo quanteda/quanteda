@@ -16,7 +16,7 @@ test_that("as.tensor.tokens works correctly", {
         as.matrix(tens1),
         rbind(c(1, 2, 3, 4, 5, 6, 7),
               c(7, 4, 5, 5, 0, 0, 0),
-              c(0, 0, 0, 0, 0, 0, 0))
+              c(0, 0, 0, 0, 0, 0, 0)) + 1
     )
     
     # Test with length parameter
@@ -26,7 +26,7 @@ test_that("as.tensor.tokens works correctly", {
         as.matrix(tens2),
         rbind(c(1, 2, 3, 4, 5, 6, 7, 0),
               c(7, 4, 5, 5, 0, 0, 0, 0),
-              c(0, 0, 0, 0, 0, 0, 0, 0))
+              c(0, 0, 0, 0, 0, 0, 0, 0)) + 1
     )
     
     tens3 <- as.tensor(toks, length = 5)
@@ -35,7 +35,7 @@ test_that("as.tensor.tokens works correctly", {
         as.matrix(tens3),
         rbind(c(1, 2, 3, 4, 5),
               c(7, 4, 5, 5, 0),
-              c(0, 0, 0, 0, 0))
+              c(0, 0, 0, 0, 0)) + 1
     )
     
     # Test empty tokens
@@ -51,7 +51,7 @@ test_that("as.tensor.tokens works correctly", {
     expect_true(inherits(tens5, "torch_tensor"))
     expect_equal(
         as.matrix(tens5),
-        rbind(c(1, 2, 3))
+        rbind(c(1, 2, 3)) + 1
     )
     
     # Test empty tokens
@@ -71,20 +71,20 @@ test_that("as.tensor.tokens works correctly", {
         c(ndoc(toks_inau), max(ntoken(toks_inau)))
     )
     
-    # Test index
-    tens8 <- as.tensor(toks, length = 5, index = c(1, 3))
+    # Test extract
+    tens8 <- as.tensor(toks, length = 5, extract = c(1, 3))
     expect_true(inherits(tens8, "torch_tensor"))
     expect_equal(
         as.matrix(tens8),
         rbind(c(1, 2, 3, 4, 5),
-              c(0, 0, 0, 0, 0))
+              c(0, 0, 0, 0, 0)) + 1
     )
     
-    tens9 <- as.tensor(toks, length = 5, index = 2)
+    tens9 <- as.tensor(toks, length = 5, extract = 2)
     expect_true(inherits(tens9, "torch_tensor"))
     expect_equal(
         as.matrix(tens9),
-        rbind(c(7, 4, 5, 5, 0))
+        rbind(c(7, 4, 5, 5, 0)) + 1
     )
 })
 
