@@ -245,30 +245,28 @@ S4 cpp_dfm(TokensPtr xptr, bool asis = true) {
 }
 
 // [[Rcpp::export]]
-IntegerMatrix cpp_as_matrix(TokensPtr xptr, std::size_t length, bool asis = true) {
+IntegerMatrix cpp_as_matrix(TokensPtr xptr, std::size_t length, 
+                            const IntegerVector extract_, bool asis = true) {
     
     xptr->recompiled = asis;
     xptr->recompile();
     
+    std::size_t G = extract_.size();
     std::size_t H = xptr->texts.size();
-    std::vector<int> vec;
-    vec.reserve(H * length);
-    for (std::size_t h = 0; h < H; h++) {
+    std::vector<int> vec(G * length, 0); 
+    for (std::size_t g = 0; g < G; g++) {
+        if (extract_[g] < 0 || (int)H < extract_[g])
+            throw std::range_error("Invalid document index");
+        std::size_t h = extract_[g] - 1;
         Text text = xptr->texts[h];
-        Text temp;
-        temp.reserve(length);
         for (std::size_t i = 0; i < length; i++) {
-            if (i < text.size()) {
-                temp.push_back(text[i]);
-            } else {
-                temp.push_back(0);
-            }
+            if (i < text.size())
+                vec[g + (G * i)] = text[i];
         }
-        vec.insert(vec.end(), temp.begin(), temp.end());
     }
     IntegerVector vec_ = Rcpp::wrap(vec);
-    IntegerMatrix mat_(length, H, vec_.begin());
-    return(transpose(mat_));
+    IntegerMatrix mat_(G, length, vec_.begin());
+    return(mat_);
 }
 
 
@@ -277,6 +275,6 @@ require(quanteda)
 toks <- tokens(c("b c b a,", "a b a c."), remove_punct = FALSE, padding = TRUE)
 xtoks <- as.tokens_xptr(toks)
 cpp_as_list(xtoks)
-cpp_as_matrix(xtoks, 2)
-cpp_as_matrix(xtoks, 10)
+cpp_as_matrix(xtoks, 3, 1:2)
+cpp_as_matrix(xtoks, 10, 1)
 */

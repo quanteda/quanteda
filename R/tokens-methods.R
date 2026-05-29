@@ -73,11 +73,11 @@ as.tensor.tokens <- function(x, length = NULL, extract = NULL, ...) {
     }
     if (!is.tokens_xptr(x))
         x <- as.tokens_xptr(x)
-    if (!is.null(extract))
-        x <- x[extract] # does not recompile
+    if (is.null(extract))
+        extract <- seq_along(x)
     if (is.null(length))
         length <- max(c(ntoken(x), 0))
-    mat <- cpp_as_matrix(x, length)
+    mat <- cpp_as_matrix(x, length, extract_ = extract)
     torch::torch_tensor(cpp_as_matrix(x, length) + 1L, ...)
 }
 
@@ -88,20 +88,21 @@ as.tensor.tokens <- function(x, length = NULL, extract = NULL, ...) {
 as.matrix.tokens <- function(x, length = NULL, extract = NULL, drop = TRUE, ...) {
     
     length <- check_integer(length, min = 1, allow_null = TRUE)
-    extract <- check_integer(extract, max_len = Inf, allow_null = TRUE)
+    extract <- check_integer(extract, min = 1, max = ndoc(x),
+                             allow_null = TRUE)
     drop <- check_logical(drop)
     
     if (!is.tokens_xptr(x))
         x <- as.tokens_xptr(x)
-    if (!is.null(extract))
-        x <- x[extract] # does not recompile
+    if (is.null(extract))
+        extract <- seq_len(ndoc(x))
     if (is.null(length))
         length <- max(c(ntoken(x), 0))
-    result <- cpp_as_matrix(x, length)
+    result <- cpp_as_matrix(x, length, extract_ = extract)
     if (drop && nrow(result) == 1) {
         result <- drop(result)
     } else {
-        rownames(result) <- docnames(x)
+        rownames(result) <- docnames(x)[extract]
     }
     return(result)
 }
