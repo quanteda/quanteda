@@ -40,6 +40,7 @@ is.tokens <- function(x) "tokens" %in% class(x)
 #'   positions) for the tensor. If `NULL` (default), the length is
 #'   inferred from the maximum token position across all documents.
 #' @param extract indices for documents to be extracted from `x`.
+#' @param ... additional arguments passed to [torch::torch_tensor].
 #' @return `as.tensor` returns a tensor from a [tokens] object,
 #'   compatible with the \pkg{torch} package. Each document is represented as
 #'   a row, and token positions as columns. The integer token IDs in the resulting 
@@ -77,7 +78,7 @@ as.tensor.tokens <- function(x, length = NULL, extract = NULL, ...) {
     if (is.null(length))
         length <- max(c(ntoken(x), 0))
     mat <- cpp_as_matrix(x, length)
-    torch::torch_tensor(cpp_as_matrix(x, length) + 1L)
+    torch::torch_tensor(cpp_as_matrix(x, length) + 1L, ...)
 }
 
 # extension of generics for tokens -----------

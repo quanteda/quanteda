@@ -86,6 +86,11 @@ test_that("as.tensor.tokens works correctly", {
         as.matrix(tens9),
         rbind(c(7, 4, 5, 5, 0)) + 1
     )
+    
+    # Test additional arguments
+    tens10 <- as.tensor(toks, length = 5, dtype = torch::torch_float32())
+    expect_equal(as.character(tens10$dtype),
+                 "Float")
 })
 
 test_that("as.tensor.tokens requires torch package", {
