@@ -50,6 +50,8 @@ inferred from the maximum token position across all documents.}
 
 \item{extract}{indices for documents to be extracted from \code{x}.}
 
+\item{drop}{if \code{TRUE} returns a vector instead of a matrix with only one row.}
+
 \item{concatenator}{character; the concatenation character that will connect
 the tokens making up a multi-token sequence.}
 

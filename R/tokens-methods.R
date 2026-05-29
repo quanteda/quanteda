@@ -82,12 +82,14 @@ as.tensor.tokens <- function(x, length = NULL, extract = NULL, ...) {
 }
 
 #' @rdname as.tokens
+#' @param drop if `TRUE` returns a vector instead of a matrix with only one row. 
 #' @method as.matrix tokens
 #' @export
 as.matrix.tokens <- function(x, length = NULL, extract = NULL, drop = TRUE, ...) {
     
     length <- check_integer(length, min = 1, allow_null = TRUE)
     extract <- check_integer(extract, max_len = Inf, allow_null = TRUE)
+    drop <- check_logical(drop)
     
     if (!is.tokens_xptr(x))
         x <- as.tokens_xptr(x)
@@ -97,7 +99,7 @@ as.matrix.tokens <- function(x, length = NULL, extract = NULL, drop = TRUE, ...)
         length <- max(c(ntoken(x), 0))
     result <- cpp_as_matrix(x, length)
     if (drop && nrow(result) == 1) {
-        result <- as.vector(result)
+        result <- drop(result)
     } else {
         rownames(result) <- docnames(x)
     }
