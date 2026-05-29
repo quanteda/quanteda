@@ -81,6 +81,29 @@ as.tensor.tokens <- function(x, length = NULL, extract = NULL, ...) {
     torch::torch_tensor(cpp_as_matrix(x, length) + 1L, ...)
 }
 
+#' @rdname as.tokens
+#' @method as.matrix tokens
+#' @export
+as.matrix.tokens <- function(x, length = NULL, extract = NULL, drop = TRUE, ...) {
+    
+    length <- check_integer(length, min = 1, allow_null = TRUE)
+    extract <- check_integer(extract, max_len = Inf, allow_null = TRUE)
+    
+    if (!is.tokens_xptr(x))
+        x <- as.tokens_xptr(x)
+    if (!is.null(extract))
+        x <- x[extract] # does not recompile
+    if (is.null(length))
+        length <- max(c(ntoken(x), 0))
+    result <- cpp_as_matrix(x, length)
+    if (drop && nrow(result) == 1) {
+        result <- as.vector(result)
+    } else {
+        rownames(result) <- docnames(x)
+    }
+    return(result)
+}
+
 # extension of generics for tokens -----------
 
 #' @rdname tokens-class
