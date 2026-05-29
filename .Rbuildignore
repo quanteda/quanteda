@@ -34,3 +34,4 @@ quanteda.pdf
 ^CRAN-SUBMISSION$
 ^CLAUDE\.md$
 ^\.claude$
+^\.positai$
