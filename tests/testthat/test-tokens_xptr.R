@@ -169,6 +169,23 @@ test_that("tokens_subset works", {
 
 })
 
+test_that("tokens are not recompiled", {
+    
+    set.seed(1234)
+    b <- sample(c(FALSE, TRUE), ndoc(xtoks), replace = TRUE)
+    lis <- quanteda:::cpp_as_list(xtoks)
+    
+    expect_equivalent(
+        quanteda:::cpp_as_list(xtoks[b]),
+        lis[b]
+    )
+    
+    expect_equivalent(
+        quanteda:::cpp_as_list(tokens_subset(xtoks, b)),
+        lis[b]
+    )
+})
+
 test_that("all the meta fields are copied", {
     
     toks_dict <- tokens_lookup(toks, data_dictionary_LSD2015[1:2])
