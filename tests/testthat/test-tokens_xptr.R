@@ -457,6 +457,11 @@ test_that("test low-level validation", {
     )
     
     expect_error(
+        quanteda:::cpp_as_matrix(as.tokens_xptr(xtoks), 2, extract_ = 1:5),
+        "Invalid document index"
+    )
+    
+    expect_error(
         quanteda:::cpp_tokens_group(as.tokens_xptr(xtoks), 2),
         "Invalid groups"
     )
@@ -502,6 +507,5 @@ test_that("test low-level validation", {
                                      list(c(1L, NA_integer_)), 
                                      2, TRUE, 0, 0, 1, 3, FALSE)
     )
-    
 })
 
