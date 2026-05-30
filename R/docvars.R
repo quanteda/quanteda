@@ -303,6 +303,13 @@ docvars.dfm <- function(x, field = NULL) {
 
 #' @export
 "docvars<-.tokens" <- function(x, field = NULL, value) {
+    x <- as.tokens(x)
+    set_docvars(attr(x, "docvars"), field) <- value
+    return(x)
+}
+
+#' @export
+"docvars<-.tokens_xptr" <- function(x, field = NULL, value) {
     set_docvars(attr(x, "docvars"), field) <- value
     return(x)
 }
