@@ -693,11 +693,11 @@ test_that("tokenize is working", {
     # works with separator
     expect_equivalent(
         dictionary(list(CARIB = list("TC" = "Turks&Caicos Islands", 
-                                     "SX" = "St. maarten")), 
+                                     "SX" = "St. Maarten")), 
                         tokenize = TRUE),
         list(AFRICA = list(
             "TC" =  "turks & caicos islands",
-            "SX" = "st . maarten",
+            "SX" = "st . maarten"
         ))
     )
     
