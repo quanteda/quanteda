@@ -42,9 +42,9 @@ is.tokens <- function(x) "tokens" %in% class(x)
 #' @param extract indices for documents to be extracted from `x`.
 #' @param ... additional arguments passed to [torch::torch_tensor].
 #' @return `as.tensor` returns a tensor from a [tokens] object,
-#'   compatible with the \pkg{torch} package. Each document is represented as
-#'   a row, and token positions as columns. The integer token IDs in the resulting 
-#    tensor is shifted by one to comply with 1-base indexing in R.
+#'   compatible with the \pkg{torch} package. Each document is represented as a
+#'   row, and token positions as columns. The integer token IDs in the resulting
+#'   tensor are shifted by one to comply with 1-based indexing in R.
 #' @export
 #' @examples
 #' \dontrun{
@@ -62,7 +62,7 @@ as.tensor <- function(x, ...) {
 #' @method as.tensor tokens
 #' @export
 as.tensor.tokens <- function(x, length = NULL, extract = NULL, ...) {
-    
+
     if (!requireNamespace("torch", quietly = TRUE)) {
         stop("Package 'torch' is required for as.tensor(). ",
              "Install it with install.packages('torch').",
@@ -73,16 +73,16 @@ as.tensor.tokens <- function(x, length = NULL, extract = NULL, ...) {
 }
 
 #' @rdname as.tokens
-#' @param drop if `TRUE` returns a vector instead of a matrix with only one row. 
+#' @param drop if `TRUE` returns a vector instead of a matrix with only one row.
 #' @method as.matrix tokens
 #' @export
 as.matrix.tokens <- function(x, length = NULL, extract = NULL, drop = TRUE, ...) {
-    
+
     length <- check_integer(length, min = 1, allow_null = TRUE)
     extract <- check_integer(extract, min = 1, max = ndoc(x), max_len = Inf,
                              allow_null = TRUE)
     drop <- check_logical(drop)
-    
+
     if (!is.tokens_xptr(x))
         x <- as.tokens_xptr(x)
     if (is.null(extract))
@@ -121,11 +121,11 @@ print.tokens <- function(x, max_ndoc = quanteda_options("print_tokens_max_ndoc")
                          max_ntoken = quanteda_options("print_tokens_max_ntoken"),
                          show_summary = quanteda_options("print_tokens_summary"),
                          ...) {
-    
+
     max_ndoc <- check_integer(max_ndoc, min = -1)
     max_ntoken <- check_integer(max_ntoken, min = -1)
     show_summary <- check_logical(show_summary)
-    
+
     docvars <- docvars(x)
     ndoc <- ndoc(x)
     if (max_ndoc < 0)
@@ -151,7 +151,7 @@ print.tokens <- function(x, max_ndoc = quanteda_options("print_tokens_max_ndoc")
         if (max_ntoken < 0)
             max_ntoken <- max(len)
         # shift index to show padding
-        x <- lapply(unclass(x), function(y) types[head(y, max_ntoken) + 1]) 
+        x <- lapply(unclass(x), function(y) types[head(y, max_ntoken) + 1])
         for (i in seq_along(label)) {
             wrap(label[i])
             print(x[[i]], ...)
@@ -253,31 +253,31 @@ lengths.tokens <- function(x, use.names = TRUE) {
 #' @rdname tokens-class
 #' @export
 c.tokens_xptr <- function(...) {
-    
+
     x <- list(...)
-    
-    if (!all(unlist(lapply(x, is.tokens_xptr)))) 
+
+    if (!all(unlist(lapply(x, is.tokens_xptr))))
         stop("Cannot combine different types of objects", call. = FALSE)
-    
+
     if (any(duplicated(unlist(lapply(x, docnames)))))
         stop("Cannot combine tokens with duplicated document names", call. = FALSE)
- 
+
     docvars <- lapply(x, function(x) get_docvars(x, user = TRUE, system = TRUE))
     attrs <- lapply(x, attributes)
     what <- unlist(lapply(attrs, field_object, "what"))
     conct <- unlist(lapply(attrs, field_object, "concatenator"))
-    
+
     if (length(unique(what))> 1)
         stop("Cannot combine tokens in different tokenization units", call. = FALSE)
     if (length(unique(conct))> 1)
         stop("Cannot combine tokens with different concatenators", call. = FALSE)
-    
+
     ngram <- unlist(lapply(attrs, field_object, "ngram"))
     skip <- unlist(lapply(attrs, field_object, "skip"))
-    
+
     temp <- combine_tokens(...)
     cpp_recompile(temp)
-    
+
     build_tokens(
         temp, types = NULL,
         what = field_object(attrs[[1]], "what"),
@@ -293,12 +293,12 @@ c.tokens_xptr <- function(...) {
 #' @rdname tokens-class
 #' @export
 c.tokens <- function(...) {
-    
+
     x <- list(...)
-    
-    if (!all(unlist(lapply(x, is.tokens)))) 
+
+    if (!all(unlist(lapply(x, is.tokens))))
         stop("Cannot combine different types of objects", call. = FALSE)
-    
+
     as.tokens(do.call(c, lapply(x, as.tokens_xptr)))
 }
 

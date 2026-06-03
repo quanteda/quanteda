@@ -74,8 +74,9 @@ token}
 tokens, \code{FALSE} otherwise.
 
 \code{as.tensor} returns a tensor from a \link{tokens} object,
-compatible with the \pkg{torch} package. Each document is represented as
-a row, and token positions as columns. The integer token IDs in the resulting
+compatible with the \pkg{torch} package. Each document is represented as a
+row, and token positions as columns. The integer token IDs in the resulting
+tensor are shifted by one to comply with 1-based indexing in R.
 
 \code{as.tokens} returns a quanteda \link{tokens} object.
 
