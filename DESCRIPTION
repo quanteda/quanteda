@@ -67,7 +67,6 @@ BugReports: https://github.com/quanteda/quanteda/issues
 LazyData: TRUE
 VignetteBuilder: knitr
 Language: en-GB
-RoxygenNote: 7.3.3
 Roxygen: list(markdown = TRUE)
 Collate: 
     'RcppExports.R'
@@ -154,3 +153,4 @@ Collate:
     'validator.R'
     'wordstem.R'
     'zzz.R'
+Config/roxygen2/version: 8.0.0

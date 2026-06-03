@@ -244,18 +244,36 @@ S4 cpp_dfm(TokensPtr xptr, bool asis = true) {
     return(dfm_);
 }
 
+// [[Rcpp::export]]
+IntegerMatrix cpp_as_matrix(TokensPtr xptr, std::size_t length, 
+                            const IntegerVector extract_, bool asis = true) {
+    
+    xptr->recompiled = asis;
+    xptr->recompile();
+    
+    std::size_t G = extract_.size();
+    std::size_t H = xptr->texts.size();
+    IntegerVector vec_(G * length, 0); 
+    for (std::size_t g = 0; g < G; g++) {
+        if (extract_[g] < 0 || (int)H < extract_[g])
+            throw std::range_error("Invalid document index");
+        std::size_t h = extract_[g] - 1;
+        Text text = xptr->texts[h];
+        for (std::size_t i = 0; i < length; i++) {
+            if (i < text.size())
+                vec_[g + (G * i)] = text[i];
+        }
+    }
+    IntegerMatrix mat_(G, length, vec_.begin());
+    return(mat_);
+}
+
 
 /***R
 require(quanteda)
 toks <- tokens(c("b c b a,", "a b a c."), remove_punct = FALSE, padding = TRUE)
 xtoks <- as.tokens_xptr(toks)
-xtoks_dict <- tokens_lookup(xtoks, dictionary(list(A = "a", Z = "z", B = "b")))
-#xtoks_dict <- tokens_lookup(xtoks, dictionary(list(A = "a", B = "b")))
-quanteda:::cpp_get_attributes(xtoks_dict)
-quanteda:::cpp_get_types(xtoks_dict)
-print(xtoks_dict)
-cpp_dfm(as.tokens_xptr(xtoks_dict), FALSE)
-cpp_dfm(as.tokens_xptr(xtoks_dict), TRUE)
-
-
+cpp_as_list(xtoks)
+cpp_as_matrix(xtoks, 3, 1:2)
+cpp_as_matrix(xtoks, 10, 1)
 */

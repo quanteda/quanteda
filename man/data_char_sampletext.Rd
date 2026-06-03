@@ -13,7 +13,7 @@ Dáil Éireann Debate,
 7 December 2011.  vol. 749, no. 1.
 }
 \usage{
-data_char_sampletext
+data(data_char_sampletext)
 }
 \description{
 This is a long paragraph (2,914 characters) of text taken from a debate on
