@@ -14,7 +14,7 @@ A \link{dictionary} of four keys containing glob-style \link[=valuetype]{pattern
 }
 }
 \usage{
-data_dictionary_LSD2015
+data(data_dictionary_LSD2015)
 }
 \description{
 The 2015 Lexicoder Sentiment Dictionary in \pkg{quanteda} \link{dictionary}
