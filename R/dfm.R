@@ -127,8 +127,13 @@ dfm.tokens_xptr <- function(x,
 dfm.dfm <- function(x,
                     tolower = TRUE,
                     remove_padding = FALSE,
+                    trim = TRUE,
                     verbose = quanteda_options("verbose"),
                     ...) {
+    
+    tolower <- check_logical(tolower)
+    remove_padding <- check_logical(remove_padding)
+    trim <- check_logical(trim)
     
     if (is_verbose(verbose, ...)) {
         message_create("dfm", "dfm")
@@ -143,9 +148,10 @@ dfm.dfm <- function(x,
         x <- dfm_tolower(x)
     }
 
-    remove_padding <- check_logical(remove_padding)
     if (remove_padding)
         x <- dfm_remove(x, "", valuetype = "fixed")
+    if (trim)
+        x <- dfm_trim(x)
 
     # remove any NA named columns
     is_na <- is.na(featnames(x))

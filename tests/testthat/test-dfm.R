@@ -114,6 +114,16 @@ test_that("dfm.dfm works as expected", {
     expect_identical(dfmt, dfm(dfmt, tolower = FALSE))
     expect_identical(dfm_tolower(dfmt), dfm(dfmt, tolower = TRUE))
 
+    # make dfm with empty columns
+    feat <- featnames(dfmt)
+    dfmt2 <- dfm_trim(dfmt, min_termfreq = 100) %>% 
+        dfm_match(feat)
+    
+    expect_identical(
+        dfm(dfmt2, tolower = FALSE, trim = TRUE),
+        dfm_trim(dfmt2)
+    )
+    
     # REMOVED in v3
     # expect_true({
     #     sum(suppressWarnings(dfm(tokens(corp), select = c("The", "a", "an")))) >
