@@ -170,6 +170,7 @@ TokensPtr cpp_set_types(TokensPtr xptr, const CharacterVector types_) {
 
 // [[Rcpp::export]]
 void cpp_recompile(TokensPtr xptr) {
+    xptr->recompiled = false;
     xptr->recompile();
 }
 
