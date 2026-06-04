@@ -2,38 +2,29 @@
 % Please edit documentation in R/tokens_match.R
 \name{tokens_match}
 \alias{tokens_match}
-\title{Replace tokens in a tokens object}
+\title{Match the tokens IDs with given types}
 \usage{
 tokens_match(x, types, verbose = quanteda_options("verbose"))
 }
 \arguments{
-\item{x}{\link{tokens} object whose token elements will be replaced}
+\item{x}{the \link{tokens} object.}
+
+\item{types}{character vector for the token types to be matched in the resulting
+\link{tokens}. Tokens not included in \code{types} are all removed.}
 
 \item{verbose}{if \code{TRUE} print the number of tokens and documents before and
 after the function is applied. The number of tokens does not include paddings.}
-
-\item{pattern}{a character vector or list of character vectors.  See
-\link{pattern} for more details.}
-
-\item{replacement}{a character vector or (if \code{pattern} is a list) list
-of character vectors of the same length as \code{pattern}}
 }
 \description{
-Substitute token types based on vectorized one-to-one matching. Since this
-function is created for lemmatization or user-defined stemming. It supports
-substitution of multi-word features by multi-word features, but substitution
-is fastest when \code{pattern} and \code{replacement} are character vectors
-and \code{valuetype = "fixed"} as the function only substitute types of
-tokens. Please use \code{\link[=tokens_lookup]{tokens_lookup()}} with \code{exclusive = FALSE}
-to replace \link{dictionary} values.
+Match the token types and IDs of multiple \link{tokens} objects using a character vector.
 }
 \examples{
-txt <- c("This is text one", "The second text", "This is text three")
-(toks1 <- tokens(txt))
+txt <- c("This is text one", "The text two", "This is text three")
+(toks1 <- tokens(txt[1:2]))
 (toks2 <- tokens(txt[2:3]))
-(toks3 <- tokens_match(toks2, types(toks1)))
-setequal(types(toks2), types(toks3))
+(toks3 <- tokens_match(toks1, types(toks2)))
+identical(types(toks2), types(toks3))
 }
 \seealso{
-tokens_lookup
+dfm_match
 }

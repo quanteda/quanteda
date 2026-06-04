@@ -4,6 +4,7 @@
 #' @param x the [tokens] object.
 #' @param types character vector for the token types to be matched in the resulting 
 #'  [tokens]. Tokens not included in `types` are all removed.
+#' @inheritParams messages
 #' @export
 #' @seealso dfm_match
 #' @examples
@@ -42,7 +43,6 @@ tokens_match.tokens_xptr <- function(x, types,
     id[is.na(id)] <- -1L
     
     result <- cpp_tokens_match(x, id, get_threads())
-    
     result <- rebuild_tokens(result, attrs)
     if (verbose)
         message_tokens("tokens_match()", before, stats_tokens(result))
