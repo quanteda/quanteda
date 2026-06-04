@@ -46,7 +46,7 @@ dfm_match.default <- function(x, features,
 dfm_match.dfm <- function(x, features,
                           verbose = quanteda_options("verbose")) {
     x <- as.dfm(x)
-    features <- check_character(features, min_len = 0, max_len = Inf)
+    features <- check_character(features, min_len = 0, max_len = Inf, normalize = TRUE)
     attrs <- attributes(x)
     if (verbose)
         before <- stats_dfm(x)

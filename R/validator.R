@@ -94,7 +94,8 @@ check_logical <- function(x, min_len = 1, max_len = 1, strict = FALSE,
 
 #' @param min_nchar minimum character length of values in the vector.
 #' @param max_nchar maximum character length of values in the vector.
-#' @param normalize if `TRUE`, normalize Unicode characters.
+#' @param normalize if `TRUE`, normalize Unicode characters by applying 
+#'    [stringi][stri_trans_nfc()].
 #' @rdname check_integer
 #' @export
 check_character <- function(x, min_len = 1, max_len = 1, min_nchar = 0, max_nchar = Inf, 
