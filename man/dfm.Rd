@@ -25,7 +25,7 @@ calling \code{\link[=tokens]{tokens()}} or \code{\link[=tokens_remove]{tokens_re
 \item{...}{not used.}
 }
 \value{
-a \link[=dfm-class]{dfm} object
+a \linkS4class{dfm} object
 }
 \description{
 Construct a sparse document-feature matrix from a \link{tokens} or \link{dfm} object.
@@ -55,6 +55,6 @@ dfm(toks) |>
 dfm(toks, tolower = FALSE)
 }
 \seealso{
-\code{\link[=as.dfm]{as.dfm()}}, \code{\link[=dfm_select]{dfm_select()}}, \link[=dfm-class]{dfm}
+\code{\link[=as.dfm]{as.dfm()}}, \code{\link[=dfm_select]{dfm_select()}}, \linkS4class{dfm}
 }
 \keyword{dfm}

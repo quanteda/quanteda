@@ -43,27 +43,30 @@ check_character(
   min_nchar = 0,
   max_nchar = Inf,
   strict = FALSE,
-  allow_null = FALSE
+  allow_null = FALSE,
+  normalize = FALSE
 )
 }
 \arguments{
-\item{min_len}{minimum length of the vector}
+\item{min_len}{minimum length of the vector.}
 
-\item{max_len}{maximum length of the vector}
+\item{max_len}{maximum length of the vector.}
 
-\item{min}{minimum value in the vector}
+\item{min}{minimum value in the vector.}
 
-\item{max}{maximum value in the vector}
+\item{max}{maximum value in the vector.}
 
-\item{strict}{raise error when \code{x} is a different type}
+\item{strict}{raise error when \code{x} is a different type.}
 
-\item{allow_null}{if \code{TRUE}, returns \code{NULL} when \code{is.null(x)}}
+\item{allow_null}{if \code{TRUE}, returns \code{NULL} when \code{is.null(x)}.}
 
 \item{allow_na}{if \code{TRUE}, convert \code{NA} to \code{FALSE}}
 
-\item{min_nchar}{minimum character length of values in the vector}
+\item{min_nchar}{minimum character length of values in the vector.}
 
-\item{max_nchar}{maximum character length of values in the vector}
+\item{max_nchar}{maximum character length of values in the vector.}
+
+\item{normalize}{if \code{TRUE}, normalize Unicode characters.}
 }
 \description{
 Check the range of values and the length of input vectors

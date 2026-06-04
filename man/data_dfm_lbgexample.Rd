@@ -8,7 +8,7 @@
 A \link{dfm} object with 6 documents and 37 features.
 }
 \usage{
-data(data_dfm_lbgexample)
+data_dfm_lbgexample
 }
 \description{
 Constructed example data to demonstrate the Wordscores algorithm, from Laver

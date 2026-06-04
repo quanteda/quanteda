@@ -39,6 +39,6 @@ do not.
 }
 \seealso{
 \code{\link[utils:glob2rx]{utils::glob2rx()}}, \href{https://en.wikipedia.org/wiki/Glob_(programming)}{glob pattern matching (Wikipedia)},
-\code{\link[stringi:stringi-search-regex]{stringi::stringi-search-regex()}}, \code{\link[stringi:stringi-search-fixed]{stringi::stringi-search-fixed()}}
+\code{\link[stringi:about_search_regex]{stringi::stringi-search-regex()}}, \code{\link[stringi:about_search_fixed]{stringi::stringi-search-fixed()}}
 }
 \keyword{internal}
