@@ -16,7 +16,7 @@ TokensPtr cpp_as_xptr(const List text_,
 
     Texts texts = Rcpp::as<Texts>(text_);
     Types types = Rcpp::as<Types>(types_);
-    TokensObj *ptr = new TokensObj(texts, types);
+    TokensObj *ptr = new TokensObj(texts, types, true);
     return TokensPtr(ptr, true);
 }
 
