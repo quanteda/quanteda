@@ -70,3 +70,47 @@ test_that("tokens_match verbose works", {
         fixed = TRUE
     )
 })
+
+test_that("tokens_match works with as.matrix()", {
+
+    txt <- c("a b c", "b b b a", "c c b")
+    toks <- tokens(txt)
+    xtoks <- as.tokens_xptr(toks)
+    
+    mat <- rbind(text2 = c(2L, 2L, 2L, 1L), 
+                 text3 = c(3L, 3L, 2L, 0L))
+    
+    # tokens
+    expect_identical(
+        as.matrix(tokens_match(toks, c("a", "b", "c", "x")))[2:3,],
+        mat
+    )
+    
+    expect_identical(
+        as.matrix(tokens_match(toks, c("a", "b", "c", "x")), extract = 2:3),
+        mat
+    )
+    
+    expect_identical(
+        as.matrix(tokens_match(toks[2:3], c("a", "b", "c", "x"))),
+        mat
+    )
+    
+    # tokens_xptr
+    expect_identical(
+        as.matrix(tokens_match(xtoks, c("a", "b", "c", "x")))[2:3,],
+        mat
+    )
+    
+    expect_identical(
+        as.matrix(tokens_match(xtoks, c("a", "b", "c", "x")), extract = 2:3),
+        mat
+    )
+    
+    expect_identical(
+        as.matrix(tokens_match(xtoks[2:3], c("a", "b", "c", "x"))),
+        mat
+    )
+    
+})
+
