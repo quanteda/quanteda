@@ -343,6 +343,10 @@ test_that("test token default methods", {
         tokens_group(TRUE),
         "tokens_group\\(\\) only works on tokens, tokens_xptr objects"
     )
+    expect_error(
+        tokens_match(TRUE),
+        "tokens_match\\(\\) only works on tokens, tokens_xptr objects"
+    )
 })
 
 test_that("test token_xptr default methods", {
