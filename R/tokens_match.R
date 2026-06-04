@@ -38,10 +38,10 @@ tokens_match.tokens_xptr <- function(x, types,
     type <- get_types(x)
     set_types(x) <- types
     
-    index <- match(type, types)
-    index[is.na(index)] <- -1L
+    id <- match(type, types)
+    id[is.na(id)] <- -1L
     
-    result <-  cpp_tokens_match(x, index, get_threads())
+    result <- cpp_tokens_match(x, id, get_threads())
     
     result <- rebuild_tokens(result, attrs)
     if (verbose)
