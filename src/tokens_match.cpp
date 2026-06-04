@@ -27,12 +27,10 @@ Text match(Text tokens,
 }
 
 /* 
-* Function to replace tokens
-* @used tokens_replace()
+* Function to reassign tokens IDs
+* @used tokens_match()
 * @creator Kohei Watanabe
-* @param patterns_ IDs of patterns
-* @param replacements_ IDs to replace patterns. Must be the same length as patterns_
-* @param mode 1: keep unmatched; 2: remove unmatched
+* @param ids_ token IDs to be reassigned. Tokens with negative IDs are removed. 
 */
 
 
