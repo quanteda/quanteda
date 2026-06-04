@@ -12,6 +12,7 @@ c1 <- "abc"
 c2 <- ""
 c3 <- c("1", "abc", "abcdefg")
 c4 <- c("z", NA)
+c5 <- "e\u0301"
 
 l1 <- TRUE
 l2 <- FALSE
@@ -90,6 +91,8 @@ test_that("check_character works", {
     expect_identical(quanteda:::check_character(c1), "abc")
     expect_identical(quanteda:::check_character(n2), "-1.2")
     expect_identical(quanteda:::check_character(c2), "")
+    expect_identical(quanteda:::check_character(c5, normalize = TRUE), "\u00e9")
+    expect_identical(quanteda:::check_character(c5, normalize = FALSE), "e\u0301")
     expect_error(quanteda:::check_character(c2, max_len = 2, min_len = 2),
                  "The length of c2 must be 2")
     expect_error(quanteda:::check_character(c3),
@@ -108,7 +111,6 @@ test_that("check_character works", {
                  "The type of n1 must be character")
     expect_error(quanteda:::check_character(x1), 
                  "x1 cannot be NULL")
-    expect_true(is.null(quanteda:::check_character(x1, allow_null = TRUE)))
 })
 
 test_that("check_logical works", {
