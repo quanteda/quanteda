@@ -928,3 +928,19 @@ test_that("dfm works with no-breaking space (#2407)", {
         )
     )
 })
+
+test_that("trim is working", { 
+
+    txt <- c("a b c", "b b b a", "c c b")
+    toks <- tokens(txt)
+    
+    expect_equal(
+        dfm(toks) ,
+        dfm(tokens_match(toks, c("a", "b", "c", "x"))) 
+    )
+    
+    expect_equal(
+        dfm_match(dfm(toks), c("a", "b", "c", "x")) ,
+        dfm(tokens_match(toks, c("a", "b", "c", "x")), trim = FALSE) 
+    )
+})
