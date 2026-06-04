@@ -13,14 +13,15 @@ Text match(Text tokens,
     for (std::size_t i = 0; i < tokens.size(); i++) {
         //Rcout << tokens[i] << ": ";
         if (tokens[i] <= 0) {
-            //Rcout << 0 << "\n";
+            //Rcout << 0;
             tokens_new.push_back(0);
-        } else if (tokens[i] < ids.size()) {
+        } else if (tokens[i] <= ids.size()) {
             int id = ids[tokens[i] - 1];
-            //Rcout << id << "\n";
+            //Rcout << id;
             if (id >= 0)
                 tokens_new.push_back(id);
         }
+        //Rcout << "\n";
     }
     return tokens_new;
 }
@@ -65,11 +66,13 @@ TokensPtr cpp_tokens_match(TokensPtr xptr,
 
 /***R
 
-lis <- list(letters[1:10], letters[10:15])
-toks <- as.tokens_xptr(as.tokens(c(lis)))
-index <- rev(seq(0, 15))
-index <- 6:10
+toks <- tokens(c("a b c", "b b b a", "c c b"), xptr = TRUE)
+quanteda:::cpp_as_list(toks)
 
-cpp_tokens_match(toks, index)
-
+id <- match(c("a", "b", "c"), quanteda:::cpp_get_types(toks))
+match(c("a", "b", "c"), quanteda:::cpp_get_types(toks))
+id <- match(quanteda:::cpp_get_types(toks), c("a", "b", "c"))
+id[is.na(id)] <- -1
+cpp_tokens_match(toks, id)
+quanteda:::cpp_set_types(toks, c("a", "b", "c"))
 */
