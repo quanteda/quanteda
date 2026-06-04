@@ -1,37 +1,43 @@
 test_that("tokens_match works", {
+    
     txt <- c(doc1 = "aa bb BB cc DD ee",
              doc2 = "aa bb cc DD ee")
+    
     toks <- tokens(txt) %>% 
         tokens_tolower()
 
     toks_conf1 <- tokens_match(toks, c("aa", "zz", "xx", "bb"))
+    expect_equal(
+        as.list(toks_conf1),
+        list(doc1 = c("aa", "bb", "bb"),
+             doc2 = c("aa", "bb"))
+    )
     expect_identical(
         types(toks_conf1),
         c("aa", "zz", "xx", "bb")
     )
-    expect_identical(
-        docnames(toks_conf1),
-        c("doc1", "doc2")
-    )
-
+    
     toks_conf2 <- tokens_match(toks, types(tokens("aa zz xx bb")))
+    expect_equal(
+        as.list(toks_conf2),
+        list(doc1 = c("aa", "bb", "bb"),
+             doc2 = c("aa", "bb"))
+    )
     expect_identical(
         types(toks_conf2),
         c("aa", "zz", "xx", "bb")
     )
-    expect_identical(
-        docnames(toks_conf2),
-        c("doc1", "doc2")
-    )
     
     toks_conf3 <- tokens_match(toks, character())
+    expect_equal(
+        as.list(toks_conf3),
+        list(doc1 = character(),
+             doc2 = character())
+    )
     expect_identical(
         types(toks_conf3), character()
     )
-    expect_identical(
-        docnames(toks_conf3),
-        c("doc1", "doc2")
-    )
+    
 })
 
 test_that("tokens_match works with padding", {
