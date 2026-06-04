@@ -21,6 +21,8 @@
 * Added `docvars()` and `docvars<-()` methods for `tokens_xptr` objects,
   allowing document variables to be read and assigned without recompiling the
   tokens. (#2497)
+  
+* Added `trim` to `dfm()` to allow users to disable trimming of features.
 
 # quanteda 4.4
 
