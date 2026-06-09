@@ -20,6 +20,8 @@
   allowing document variables to be read and assigned without recompiling the
   tokens. (#2497)
 
+* Add the `drop0()` method for dfm and fcm (#2460).
+
 # quanteda 4.4
 
 ## Changes and additions
