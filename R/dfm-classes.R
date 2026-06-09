@@ -105,6 +105,18 @@ setMethod("Arith", signature(e1 = "numeric", e2 = "dfm"),
               )
           })
 
+#' @rdname dfm-class
+setMethod("drop0", signature = (x = "dfm"), 
+          function(x, tol = 0) {
+              x <- as.dfm(x)
+              attrs <- attributes(x)
+              x <- Matrix::drop0(as(x, "dgCMatrix"), tol = tol)
+              build_dfm(x, colnames(x),
+                        docvars = group_docvars(attrs[["docvars"]]),
+                        meta = attrs[["meta"]]
+              )
+          })
+
 #' Coerce a dfm to a matrix or data.frame
 #'
 #' Methods for coercing a [dfm] object to a matrix or data.frame object.
