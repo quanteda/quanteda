@@ -795,8 +795,6 @@ list2dictionary <- function(dict) {
 #' quanteda:::tokenize_dictionary_values(dict, " ")
 tokenize_dictionary_values <- function(dict, separator, ...) {
     rapply(dict, function(x) {
-        if (any(stri_detect_fixed(x, separator)))
-            stop("Dictionary values are already tokenized")
         toks <- as.list(tokens(x, verbose = FALSE, ...))
         v <- unlist_character(lapply(toks, paste, collapse = separator))
         # restore separated wildcard
