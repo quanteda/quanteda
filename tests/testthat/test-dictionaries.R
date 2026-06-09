@@ -690,14 +690,18 @@ test_that("tokenize is working", {
         ))
     )
     
-    # error with separator
-    expect_error(
-        dictionary(list(ASIA = list("MY" = "Kuala Lumpur", 
-                                    "ID" = "Indonasia")), 
+    # works with separator
+    expect_equivalent(
+        dictionary(list(CARIB = list("TC" = "Turks&Caicos Islands", 
+                                     "SX" = "St. Maarten")), 
                         tokenize = TRUE),
-        "Dictionary values are already tokenized"
+        list(AFRICA = list(
+            "TC" =  "turks & caicos islands",
+            "SX" = "st . maarten"
+        ))
     )
     
+    # errors
     expect_error(
         dictionary(list(ASIA = list("IN" = "印度", 
                                     "ID" = "印度尼西亚")), 
