@@ -8,6 +8,18 @@
 
 * Improve `print` methods for corpus, tokens, dfm, fcm, dictionary and kwic objects to wrap long lines at `getOption("width")`.
 
+* Added an `as.matrix()` method for `tokens` objects, returning a dense
+  [document × position] integer matrix of token IDs, with `length`, `extract`,
+  and `drop` arguments. (#2497)
+
+* `as.tensor()` for `tokens` now returns a dense tensor rather than a sparse COO
+  tensor, gains an `extract` argument for selecting documents, and passes `...`
+  through to `torch::torch_tensor()`. (#2497)
+
+* Added `docvars()` and `docvars<-()` methods for `tokens_xptr` objects,
+  allowing document variables to be read and assigned without recompiling the
+  tokens. (#2497)
+
 # quanteda 4.4
 
 ## Changes and additions

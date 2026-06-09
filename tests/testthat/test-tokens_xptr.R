@@ -169,6 +169,23 @@ test_that("tokens_subset works", {
 
 })
 
+test_that("tokens are not recompiled", {
+    
+    set.seed(1234)
+    b <- sample(c(FALSE, TRUE), ndoc(xtoks), replace = TRUE)
+    lis <- quanteda:::cpp_as_list(xtoks)
+    
+    expect_equivalent(
+        quanteda:::cpp_as_list(xtoks[b]),
+        lis[b]
+    )
+    
+    expect_equivalent(
+        quanteda:::cpp_as_list(tokens_subset(xtoks, b)),
+        lis[b]
+    )
+})
+
 test_that("all the meta fields are copied", {
     
     toks_dict <- tokens_lookup(toks, data_dictionary_LSD2015[1:2])
@@ -440,6 +457,11 @@ test_that("test low-level validation", {
     )
     
     expect_error(
+        quanteda:::cpp_as_matrix(as.tokens_xptr(xtoks), 2, extract_ = 1:5),
+        "Invalid document index"
+    )
+    
+    expect_error(
         quanteda:::cpp_tokens_group(as.tokens_xptr(xtoks), 2),
         "Invalid groups"
     )
@@ -485,6 +507,5 @@ test_that("test low-level validation", {
                                      list(c(1L, NA_integer_)), 
                                      2, TRUE, 0, 0, 1, 3, FALSE)
     )
-    
 })
 

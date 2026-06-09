@@ -247,6 +247,12 @@ docvars.tokens <- function(x, field = NULL) {
 
 #' @noRd
 #' @export
+docvars.tokens_xptr <- function(x, field = NULL) {
+    select_docvars(attr(x, "docvars"), field, user = TRUE, system = FALSE, drop = TRUE)
+}
+
+#' @noRd
+#' @export
 docvars.dfm <- function(x, field = NULL) {
     x <- as.dfm(x)
     select_docvars(x@docvars, field, user = TRUE, system = FALSE, drop = TRUE)
@@ -297,6 +303,13 @@ docvars.dfm <- function(x, field = NULL) {
 
 #' @export
 "docvars<-.tokens" <- function(x, field = NULL, value) {
+    x <- as.tokens(x)
+    set_docvars(attr(x, "docvars"), field) <- value
+    return(x)
+}
+
+#' @export
+"docvars<-.tokens_xptr" <- function(x, field = NULL, value) {
     set_docvars(attr(x, "docvars"), field) <- value
     return(x)
 }
