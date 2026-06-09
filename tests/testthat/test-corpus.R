@@ -55,18 +55,18 @@ test_that("corpus constructors works for kwic", {
     # split_context = FALSE, extract_keyword = TRUE
     expect_identical(
         docnames(corpus(kw, split_context = FALSE, extract_keyword = TRUE)),
-        paste0("text1.L", as.character(kw[["from"]]))
+        paste0("text1.", seq_len(nrow(kw)))
     )
     # split_context = FALSE, extract_keyword = FALSE
     expect_identical(
         docnames(corpus(kw, split_context = FALSE, extract_keyword = FALSE)),
-        paste0("text1.L", as.character(kw[["from"]]))
+        paste0("text1.", seq_len(nrow(kw)))
     )
     # split_context = TRUE, extract_keyword = FALSE
     expect_identical(
         docnames(corpus(kw, split_context = TRUE, extract_keyword = FALSE)),
-        c(paste0("text1.", seq_len(nrow(kw)), ".pre"),
-          paste0("text1.", seq_len(nrow(kw)), ".post"))
+        c(paste0("text1.pre.", seq_len(nrow(kw))),
+          paste0("text1.post.", seq_len(nrow(kw))))
     )
 
     # test text handling for punctuation - there should be no space before the ?
@@ -75,7 +75,7 @@ test_that("corpus constructors works for kwic", {
       corpus(split_context = FALSE, extract_keyword = FALSE, concatenator = "")
     expect_identical(
         as.character(corp1)[2],
-        c("text1.L390" = "it is decimating the domestic economy? As we are tired ")
+        c("text1.2" = "it is decimating the domestic economy? As we are tired ")
     )
     
     # concatenator is working
@@ -84,7 +84,7 @@ test_that("corpus constructors works for kwic", {
         corpus(split_context = FALSE, extract_keyword = FALSE)
     expect_identical(
         as.character(corp2)[2],
-        c("text1.L202" = "it is decimating the domestic economy ? As we are tired")
+        c("text1.2" = "it is decimating the domestic economy ? As we are tired")
     )
 
     # ; and !
@@ -214,9 +214,9 @@ test_that("test corpus constructor works for VCorpus with one document (#445)", 
 })
 
 test_that("test corpus constructor works for complex VCorpus (#849)", {
-   skip("not implemented yet")
-   skip_if_not_installed("tm")
-    require(tm)
+    skip("not implemented yet")
+    skip_if_not_installed("tm")
+    
     load("../data/corpora/complex_Corpus.rda")
     corp <- corpus(complex_Corpus)
     expect_equal(

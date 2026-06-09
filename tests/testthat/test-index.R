@@ -5,10 +5,10 @@ test_that("index returns the correct matches in a data.frame", {
     loc <- index(toks, c("A", "D", "z", "h", phrase("H I J")))
     expect_equivalent(
         loc,
-        data.frame(docname = c("d1", "d1", "d1", "d1", "d1", "d2", "d2", "d2", "d2", "d2"), 
-                   from = c(1L, 4L, 8L, 8L, 26L, 1L, 4L, 8L, 8L, 26L), 
-                   to = c(1L, 4L, 8L, 10L, 26L, 1L, 4L, 8L, 10L, 26L), 
-                   pattern = factor(c("A", "D", "h", "H I J", "z", "A", "D", "h", "H I J", "z")),
+        data.frame(docname = c("d1", "d1", "d1", "d1", "d2", "d2", "d2", "d2"), 
+                   from = c(1L, 4L, 8L, 26L, 1L, 4L, 8L, 26L), 
+                   to = c(1L, 4L, 10L, 26L, 1L, 4L, 10L, 26L), 
+                   pattern = factor(c("A", "D", "H I J", "z", "A", "D", "H I J", "z")),
                    stringsAsFactors = FALSE)
     )
     

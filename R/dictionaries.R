@@ -62,18 +62,13 @@ check_entries <- function(dict) {
     }
 }
 
-#' Create a dictionary
+#' Create a dictionary object
 #'
-#' Create a \pkg{quanteda} dictionary class object, either from a list or by
-#' importing from a foreign format.  Currently supported input file formats are
-#' the WordStat, LIWC, Lexicoder v2 and v3, and Yoshikoder formats.  The import
-#' using the LIWC format works with all currently available dictionary files
-#' supplied as part of the LIWC 2001, 2007, and 2015 software (see References).
-#' @param x a named list of character vector dictionary entries, including
-#'   [valuetype] pattern matches, and including multi-word expressions
-#'   separated by `separator`.  See examples. This argument may be
-#'   omitted if the dictionary is read from `file`.
-#' @param file file identifier for a foreign dictionary
+#' Create a \pkg{quanteda} dictionary object to perform pattern matching on [tokens],
+#' [dfm] and [fcm].
+#' @param x a named list of [valuetype] patterns or an existing dictionary
+#'   object. See examples. This argument should be omitted if `file` is specified.
+#' @param file file identifier for a foreign dictionary.
 #' @param format character identifier for the format of the foreign dictionary.
 #'   If not supplied, the format is guessed from the dictionary file's
 #'   extension. Available options are: \describe{
@@ -84,23 +79,36 @@ check_entries <- function(dict) {
 #'   \item{`"YAML"`}{the standard YAML format}}
 #' @param separator the character in between multi-word dictionary values. This
 #'   defaults to `" "`.
-#' @param tokenize if `TRUE` segment dictionary values by separators to using 
+#' @param tokenize if `TRUE` segment dictionary values by separators to using
 #'   the built-in tokenizer. Useful for Japanese and Chinese dictionaries.
 #' @param encoding additional optional encoding value for reading in imported
 #'   dictionaries. This uses the [iconv] labels for encoding.  See the
 #'   "Encoding" section of the help for [file].
-#' @param tolower if `TRUE`, convert all dictionary values to lowercase
+#' @param tolower if `TRUE`, convert all dictionary values to lowercase.
+#' @param levels integers specifying the levels of entries in `x` or `file` to be
+#'   included in the object.
 #' @return A dictionary class object, essentially a specially classed named list
 #'   of characters.
-#' @details Dictionaries can be subsetted using
+#' @details
+
+#'   A dictionary object can include multi-word expressions segmented by
+#'   `separator`. When it is applied to tokens object, they match both sequences
+#'   of separate tokens and compounded tokens.
+#'
+#'   Dictionary objects can be subsetted using
 #'   \code{\link[=dictionary2-class]{[}} and
 #'   \code{\link[=dictionary2-class]{[[}}, operating the same as the equivalent
-#'   [list][dictionary2-class] operators.
+#'   [list][dictionary2-class] operators. If `dictionary()` is applied to existing
+#'   objects, it is possible to select `levels`.
 #'
-#'   Dictionaries can be coerced from lists using [as.dictionary()],
-#'   coerced to named lists of characters using
-#'   [`as.list()`][dictionary2-class], and checked using
-#'   [is.dictionary()].
+#'   Dictionary objects can be coerced from and to lists using [as.dictionary()]
+#'   and [`as.list()`][dictionary2-class], and checked using [is.dictionary()].
+#'
+#'   Currently supported input file formats are
+#'   the WordStat, LIWC, Lexicoder v2 and v3, and Yoshikoder formats.  The import
+#'   using the LIWC format works with all currently available dictionary files
+#'   supplied as part of the LIWC 2001, 2007, and 2015 software (see References).
+#'
 #' @references WordStat dictionaries page, from Provalis Research
 #'   <https://provalisresearch.com/products/content-analysis-software/wordstat-dictionary/>.
 #'
@@ -116,45 +124,51 @@ check_entries <- function(dict) {
 #' @seealso [as.dictionary()],
 #'   [`as.list()`][dictionary2-class], [is.dictionary()]
 #' @examples
-#' corp <- corpus_subset(data_corpus_inaugural, Year>1900)
-#' dict <- dictionary(list(christmas = c("Christmas", "Santa", "holiday"),
-#'                           opposition = c("Opposition", "reject", "notincorpus"),
-#'                           taxing = "taxing",
-#'                           taxation = "taxation",
-#'                           taxregex = "tax*",
-#'                           country = "america"))
-#' tokens(corp) |>
-#'     tokens_lookup(dictionary = dict) |>
+#' corp <- corpus_subset(data_corpus_inaugural, Year > 2000)
+#' toks <- tokens(corp)
+#'
+#' dict <- dictionary(list(
+#'    tax = c("tax", "taxes", "taxing"),         # fixed patterns
+#'    economy = list("econom*",                  # glob patterns
+#'                   job = c("work*", "job*")),  # nested keys
+#'    health = c("health care", "public health") # multi-word expressions
+#' ))
+#'
+#' # compound tokens
+#' tokens_compound(toks, pattern = dict) |>
+#'     dfm() |>
+#'     dfm_select(dict)
+#'
+#' tokens_lookup(toks, dictionary = dict, levels = 1) |>
 #'     dfm()
 #'
 #' # subset a dictionary
 #' dict[1:2]
-#' dict[c("christmas", "opposition")]
-#' dict[["opposition"]]
+#' dict[c("economy")]
 #'
-#' # combine dictionaries
-#' c(dict["christmas"], dict["country"])
+#' # update a dictionary
+#' dictionary(dict, levels = 2)
 #'
 #' \dontrun{
 #' dfmat <- dfm(tokens(data_corpus_inaugural))
-#' 
+#'
 #' # import the Laver-Garry dictionary from Provalis Research
-#' dictfile <- tempfile()
 #' download.file("https://provalisresearch.com/Download/LaverGarry.zip",
-#'               dictfile, mode = "wb")
-#' unzip(dictfile, exdir = (td <- tempdir()))
-#' dictlg <- dictionary(file = paste(td, "LaverGarry.cat", sep = "/"))
-#' dfm_lookup(dfmat, dictlg)
+#'               tf <- tempfile(), mode = "wb")
+#' unzip(tf, exdir = (td <- tempdir()))
+#' dict_lg <- dictionary(file = paste(td, "LaverGarry.cat", sep = "/"))
+#' dfm_lookup(dfmat, dict_lg)
 #'
 #' # import a LIWC formatted dictionary from http://www.moralfoundations.org
 #' download.file("http://bit.ly/37cV95h", tf <- tempfile())
-#' dictliwc <- dictionary(file = tf, format = "LIWC")
-#' dfm_lookup(dfmat, dictliwc)
+#' dict_liwc <- dictionary(file = tf, format = "LIWC")
+#' dfm_lookup(dfmat, dict_liwc)
 #' }
 #' @export
 dictionary <- function(x, file = NULL, format = NULL,
-                       separator = " ", tolower = TRUE, 
-                       tokenize = FALSE, encoding = "utf-8") {
+                       separator = " ",
+                       tolower = TRUE, tokenize = FALSE,
+                       levels = 1:100, encoding = "utf-8") {
     UseMethod("dictionary")
 }
 
@@ -162,15 +176,17 @@ dictionary <- function(x, file = NULL, format = NULL,
 #' @importFrom stringi stri_trans_tolower
 #' @export
 dictionary.default <- function(x, file = NULL, format = NULL,
-                               separator = " ", tolower = TRUE, 
-                               tokenize = FALSE, encoding = "utf-8") {
-    
+                               separator = " ",
+                               tolower = TRUE, tokenize = FALSE,
+                               levels = 1:100, encoding = "utf-8") {
+
     if (!missing(x) & is.null(file))
         stop("x must be a list if file is not specified")
     separator <- check_character(separator, min_nchar = 1)
     tolower <- check_logical(tolower)
     tokenize <- check_logical(tokenize)
-    
+    levels <- check_integer(levels, min = 1, max_len = Inf)
+
     formats <- c(cat = "wordstat",
                  dic = "LIWC",
                  ykd = "yoshikoder",
@@ -204,11 +220,15 @@ dictionary.default <- function(x, file = NULL, format = NULL,
         x <- yaml::yaml.load_file(file, as.named.list = TRUE)
         x <- list2dictionary(x)
     }
-    if (tolower) 
+    if (!identical(levels, 1L:100L))
+        x <- select_dictionary_levels(x, levels)
+    if (tolower)
         x <- lowercase_dictionary_values(x)
-    x <- merge_dictionary_values(x)
-    if (tokenize) 
+    if (tokenize)
         x <- tokenize_dictionary_values(x, separator)
+    if (separator != " ")
+        x <- replace_dictionary_values(x, separator, " ")
+    x <- merge_dictionary_values(x)
     build_dictionary2(x, separator = separator)
 }
 
@@ -217,21 +237,25 @@ dictionary.default <- function(x, file = NULL, format = NULL,
 dictionary.list <- function(x, file = NULL, format = NULL,
                             separator = " ",
                             tolower = TRUE, tokenize = FALSE,
-                            encoding = "utf-8") {
-    
+                            levels = 1:100, encoding = "utf-8") {
+
     separator <- check_character(separator, min_nchar = 1)
     tolower <- check_logical(tolower)
     tokenize <- check_logical(tokenize)
-    
+    levels <- check_integer(levels, min = 1, max_len = Inf)
+
     if (!is.null(file) || !is.null(format) || encoding != "utf-8")
         stop("Cannot specify file, format, or encoding when x is a list")
     x <- list2dictionary(x)
-    if (tolower) 
+    if (!identical(levels, 1L:100L))
+        x <- select_dictionary_levels(x, levels)
+    if (tolower)
         x <- lowercase_dictionary_values(x)
-    x <- replace_dictionary_values(x, separator, " ")
-    x <- merge_dictionary_values(x)
     if (tokenize)
         x <- tokenize_dictionary_values(x, separator)
+    if (separator != " ")
+        x <- replace_dictionary_values(x, separator, " ")
+    x <- merge_dictionary_values(x)
     build_dictionary2(x, separator = separator)
 }
 
@@ -239,23 +263,24 @@ dictionary.list <- function(x, file = NULL, format = NULL,
 dictionary.dictionary2 <- function(x, file = NULL, format = NULL,
                                    separator = " ",
                                    tolower = TRUE, tokenize = FALSE,
-                                   encoding = "utf-8") {
+                                   levels = 1:100, encoding = "utf-8") {
     x <- as.dictionary(x)
-    dictionary(as.list(x), separator = separator, tolower = tolower,
-               tokenize = tokenize, encoding = encoding)
+    dictionary(unclass(x), separator = separator, tolower = tolower,
+               tokenize = tokenize, levels = levels, encoding = encoding)
 }
 
 #' Separate dictionary values using tokenizer
-#' 
+#'
 #' Apply [quanteda::tokens()] to dictionary values to improve pattern matching.
 #' @param dictionary a [quanteda::dictionary] object.
 #' @param ... passed to [quanteda::tokens()].
+#' @keywords dictionary development internal
 #' @export
-dictionary_tokenize <- function(dictionary, ...) {
-    
+tokenize_dictionary <- function(dictionary, ...) {
+
     if (!is.dictionary(dictionary))
         stop("Dictionary object must be provided")
-    
+
     attrs <- attributes(dictionary)
     separator <- field_object(attrs, "separator")
     tokenize_dictionary_values(dictionary, separator, ...)
@@ -342,9 +367,9 @@ as.dictionary.list <- function(x, separator = " ", tolower = TRUE, ...) {
 #' @inheritParams dictionary
 #' @method as.dictionary data.frame
 #' @export
-as.dictionary.data.frame <- function(x, format = c("tidytext"), 
+as.dictionary.data.frame <- function(x, format = c("tidytext"),
                                      separator = " ", tolower = FALSE, ...) {
-    
+
     check_dots(...)
     format <- match.arg(format)
 
@@ -388,21 +413,22 @@ setMethod("print", signature(x = "dictionary2"),
                    max_nval = quanteda_options("print_dictionary_max_nval"),
                    show_summary = quanteda_options("print_dictionary_summary"),
                    ...) {
-              
+
               x <- as.dictionary(x)
               max_nkey <- check_integer(max_nkey, min = -1)
               max_nval <- check_integer(max_nval, min = -1)
               show_summary <- check_logical(show_summary)
               check_dots(...)
-              
               if (show_summary) {
                   depth <- dictionary_depth(x)
-                  lev <- if (depth > 1L) " primary" else ""
                   nkey <- length(names(x))
-                  cat("Dictionary object with ", nkey, lev, " key entr",
-                      if (nkey == 1L) "y" else "ies", sep = "")
-                  if (lev != "") cat(" and ", depth, " nested levels", sep = "")
-                  cat(".\n")
+                  if (depth == 1L) {
+                      wrap(msg("Dictionary object with %s key %s.", 
+                               nkey, inflect("entry", nkey)))
+                  } else {
+                      wrap(msg("Dictionary object with %s primary key %s and %s nested levels.", 
+                               nkey, inflect("entry", nkey), depth))
+                  }
               }
               invisible(print_dictionary(x, 1, max_nkey, max_nval, show_summary, ...))
           })
@@ -411,9 +437,10 @@ setMethod("print", signature(x = "dictionary2"),
 setMethod("show", signature(object = "dictionary2"), function(object) print(object))
 
 # Internal function to print dictionary
+#' @importFrom stringi stri_wrap stri_dup
 print_dictionary <- function(entry, level = 1,
                              max_nkey, max_nval, show_summary, ...) {
-    
+
     nkey <- length(entry)
     entry <- unclass(entry)
     if (max_nkey >= 0)
@@ -422,25 +449,28 @@ print_dictionary <- function(entry, level = 1,
     if (!length(entry)) return()
     is_category <- vapply(entry, is.list, logical(1))
     category <- entry[is_category]
-    pad <- rep("  ", level - 1)
     word <- unlist(entry[!is_category], use.names = FALSE)
+    indent <- (level - 1) * 2
     if (length(word)) {
         if (max_nval < 0)
             max_nval <- length(word)
-        cat(pad, "- ", paste(head(word, max_nval), collapse = ", "), sep = "")
+        line <- paste0(head(word, max_nval), collapse = ", ")
+        line <- paste0("- ", line)
         nval_rem <- length(word) - max_nval
         if (nval_rem > 0)
-            cat(" [ ... and ",  format(nval_rem, big.mark = ","), " more ]", sep = "")
-        cat("\n", sep = "")
+            line <- msg(" [ ... and %s more ]", nval_rem, prepend = line)
+        wrap(line, indent = indent, exdent = indent + 2)
     }
     for (i in seq_along(category)) {
-            cat(pad, "- [", names(category[i]), "]:\n", sep = "")
+        wrap(paste0("- [", names(category[i]), "]:"), 
+             indent = indent, exdent = indent + 2)
         print_dictionary(category[[i]], level + 1, max_nkey, max_nval, show_summary)
     }
     nkey_rem <- nkey - length(entry)
     if (nkey_rem > 0) {
-        cat(pad, "[ reached max_nkey ... ", format(nkey_rem, big.mark = ","), " more key",
-            if (nkey_rem > 1) "s", " ]\n", sep = "")
+        wrap(msg("[ reached max_nkey ... %s more %s ]", 
+                 nkey_rem, inflect("key", nkey_rem)),
+             indent = indent, exdent = indent)
     }
 }
 
@@ -515,27 +545,27 @@ setMethod("c",
 
 #' Internal function for special handling of multi-word dictionary values
 #' @param dict a flatten dictionary
-#' @param concatenator_dictionary concatenator from a dictionary object
-#' @param concatenator_tokens concatenator from a tokens object
+#' @param separator separator from a dictionary object
+#' @param concatenator concatenator from a tokens object
 #' @keywords internal
 #' @importFrom stringi stri_detect_fixed stri_split_fixed stri_replace_all_fixed
-split_values <- function(dict, concatenator_dictionary, concatenator_tokens) {
+split_values <- function(dict, separator, concatenator) {
 
     key <- rep(names(dict), lengths(dict))
     value <- unlist(dict, use.names = FALSE)
-    is_multi <- stri_detect_fixed(value, concatenator_dictionary)
+    is_multi <- stri_detect_fixed(value, separator)
     if (any(is_multi)) {
         result <- vector("list", length(value) + sum(is_multi))
         l <- !seq_along(result) %in% (seq_along(value) + cumsum(is_multi))
-        result[l] <- stri_split_fixed(value[is_multi], concatenator_dictionary)
+        result[l] <- stri_split_fixed(value[is_multi], separator)
         result[!l] <- as.list(stri_replace_all_fixed(value,
-                                                     concatenator_dictionary,
-                                                     concatenator_tokens))
+                                                     separator,
+                                                     concatenator))
         names(result) <- key[rep(seq_along(value), 1 + is_multi)]
     } else {
         result <- as.list(stri_replace_all_fixed(value,
-                                                 concatenator_dictionary,
-                                                 concatenator_tokens))
+                                                 separator,
+                                                 concatenator))
         names(result) <- key
     }
     return(result)
@@ -549,7 +579,7 @@ split_values <- function(dict, concatenator_dictionary, concatenator_tokens) {
 #'
 #' @param dictionary a [dictionary]-class object to be flattened
 #' @param levels an integer vector indicating levels in the dictionary
-#' @return A named list of character vectors  
+#' @return A named list of character vectors
 #' @keywords dictionary development internal
 #' @export
 #' @examples
@@ -572,9 +602,9 @@ split_values <- function(dict, concatenator_dictionary, concatenator_tokens) {
 #' flatten_dictionary(dict2)
 #' flatten_dictionary(dict2, 2)
 #' flatten_dictionary(dict2, 1:2)
-#' 
+#'
 flatten_dictionary <- function(dictionary, levels = 1:100) {
-    
+
     if (!is.dictionary(dictionary))
         stop("Dictionary object must be provided")
     levels <- check_integer(levels, max_len = 100, min = 1, max = 100)
@@ -596,9 +626,9 @@ flatten_dictionary <- function(dictionary, levels = 1:100) {
 #' lis <- list("A" = list("B" = c("b", "B"), c("a", "A", "aa")))
 #' quanteda:::flatten_list(lis, 1:2)
 #' quanteda:::flatten_list(lis, 1)
-flatten_list <- function(lis, levels = 1:100, level = 1, key_parent = "", 
+flatten_list <- function(lis, levels = 1:100, level = 1, key_parent = "",
                          lis_flat = list()) {
-    
+
     temp <- mapply(function(elem, key) {
         if (level %in% levels) {
             if (key_parent == "") {
@@ -620,20 +650,49 @@ flatten_list <- function(lis, levels = 1:100, level = 1, key_parent = "",
         }
         return(result)
     }, unclass(lis), names(lis), SIMPLIFY = FALSE, USE.NAMES = FALSE)
-    
+
     temp <- unlist(temp, recursive = FALSE)
     temp <- temp[names(temp) != ""] # out-of-level value have no names
     temp <- c(lis_flat, temp)
-    
+
     m <- names(temp)
     g <- factor(m, unique(m))
     result <- lapply(split(temp, g), unlist, use.names = FALSE)
     return(result)
 }
 
+#' Internal function to select dictionary nested levels
+#' @param dict a dictionary object
+#' @param levels an integer vector indicating levels to select
+#' @param level an internal argument to pass current levels
+#' @keywords internal
+#' @examples
+#' dict <- list("A" = list("B" = c("b", "B"), c("a", "A", "aa")))
+#' quanteda:::select_dictionary_levels(dict, 1:2)
+#' quanteda:::select_dictionary_levels(dict, 1)
+#' quanteda:::select_dictionary_levels(dict, 2)
+select_dictionary_levels <- function(dict, levels = 1:100, level = 1) {
+
+    result <- lapply(dict, function(x) {
+        is_value <- names(x) == ""
+        temp <- select_dictionary_levels(x[!is_value], levels, level + 1)
+        if (level %in% levels) {
+            if (is.null(names(x))) { # only values
+                temp <- c(temp, x)
+            } else {
+                temp <- c(temp, x[is_value])
+            }
+        }
+        return(temp)
+    })
+    if (!level %in% levels)
+        result <- unlist(unname(result), recursive = FALSE) # omit levels
+    return(result)
+}
+
 #' Internal function to lowercase dictionary values
 #'
-#' @param dict the dictionary whose values will be lowercased
+#' @param dict a dictionary object
 #' @keywords dictionary internal
 #' @importFrom stringi stri_trans_tolower
 #' @examples
@@ -677,7 +736,7 @@ replace_dictionary_values <- function(dict, from, to) {
 #'              "A" = list("aa"))
 #' quanteda:::merge_dictionary_values(dict)
 merge_dictionary_values <- function(dict) {
-    
+
     if (is.null(names(dict))) return(dict)
     if (any(duplicated(names(dict)))) {
         m <- names(dict)
@@ -695,7 +754,7 @@ merge_dictionary_values <- function(dict) {
             dict[[i]] <- merge_dictionary_values(dict_temp[!is_value])
             if (any(is_value)) {
                 dict[[i]] <- c(
-                    dict[[i]], 
+                    dict[[i]],
                     list(unlist_character(dict_temp[is_value], use.names = FALSE))
                 )
             }
@@ -731,8 +790,8 @@ list2dictionary <- function(dict) {
 #' @importFrom stringi stri_trim_both stri_enc_toutf8
 #' @keywords internal
 #' @examples
-#' dict <- dictionary(list(ASIA = list("IN" = "印度", 
-#'                                     "ID" = "印度尼西亚")))
+#' dict <- dictionary(list(ASIA = list("IN" = "\u5370\u5ea6",
+#'                                     "ID" = "\u5370\u5ea6\u5c3c\u897f\u4e9a")))
 #' quanteda:::tokenize_dictionary_values(dict, " ")
 tokenize_dictionary_values <- function(dict, separator, ...) {
     rapply(dict, function(x) {
@@ -957,8 +1016,7 @@ read_dict_liwc <- function(path, encoding = "utf-8") {
         dict <- nest_dictionary(dict, depth)
     }
     dict <- remove_empty_keys(dict)
-
-    dict
+    return(dict)
 }
 
 #' @rdname read_dict_functions
@@ -1033,7 +1091,7 @@ simplify_dictionary <- function(entry, omit = TRUE, dict = list()) {
                     dict[[names(category[i])]] <-
                         simplify_dictionary(category[[i]], TRUE, dict)
                 }
-                dict[["__"]] <- unlist(entry[!is_category], use.names = FALSE)
+                dict[[""]] <- unlist(entry[!is_category], use.names = FALSE)
             } else {
                 dict <- unlist(entry, use.names = FALSE)
             }
@@ -1048,7 +1106,7 @@ dictionary_depth <- function(dict, depth = -1) {
     # http://stackoverflow.com/a/13433689/1270695
     dict <- unclass(dict)
     if (is.list(dict) && length(dict) > 0) {
-        return(max(unlist(lapply(dict, dictionary_depth, depth = depth + 1))))
+        return(max(sapply(dict, dictionary_depth, depth = depth + 1)))
     } else {
         return(depth)
     }
@@ -1058,3 +1116,4 @@ dictionary_depth <- function(dict, depth = -1) {
 has_multiword <- function(dict) {
     any(stri_detect_fixed(unlist(dict, use.names = FALSE), attr(dict, "concatenator")))
 }
+

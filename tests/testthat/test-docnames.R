@@ -1,27 +1,32 @@
-test_that("docnames always return names even if there aren't", {
-    corp <- corpus(c("aaa", "bbb", "ccc"))
-    expect_equal(length(docnames(corp)), ndoc(corp))
-
-    toks <- as.tokens(list("aaa", "bbb", "ccc"))
-    expect_equal(length(docnames(toks)), ndoc(toks))
-})
-
 test_that("docnames<- works with corpus, tokens and dfm (#987)", {
     corp <- corpus(c("aaa", "bbb", "ccc"))
     toks <- tokens(corp)
-    mx <- dfm(toks)
+    dfmt <- dfm(toks)
 
     name_new <- c("doc1", "doc2", "doc3")
     docnames(corp) <- name_new
     docnames(toks) <- name_new
-    docnames(mx) <- name_new
+    docnames(dfmt) <- name_new
 
     expect_equal(docnames(corp), name_new)
     expect_equal(docnames(toks), name_new)
-    expect_equal(docnames(mx), name_new)
+    expect_equal(docnames(dfmt), name_new)
     expect_equal(attr(corp, "docvars")[["docname_"]], name_new)
     expect_equal(attr(toks, "docvars")[["docname_"]], name_new)
-    expect_equal(attr(mx, "docvars")[["docname_"]], name_new)
+    expect_equal(attr(dfmt, "docvars")[["docname_"]], name_new)
+    
+    expect_error(
+        docnames(corp) <- c("doc1", "doc1", "doc3"),
+        "docnames must be unique"
+    )
+    expect_error(
+        docnames(toks) <- c("doc1", "doc1", "doc3"),
+        "docnames must be unique"
+    )
+    expect_error(
+        docnames(dfmt) <- c("doc1", "doc1", "doc3"),
+        "docnames must be unique"
+    )
 })
 
 test_that("docnames are character", {
@@ -69,9 +74,10 @@ test_that("docnames are alwyas unique", {
     corp <- data_corpus_inaugural
     toks <- tokens(corp)
     dfmat <- dfm(toks)
-
+    
+    # corpus
     corp1 <- corp
-    docnames(corp1) <- docvars(corp1, "Party")
+    docnames(corp1, unique_docnames = FALSE) <- docvars(corp1, "Party")
     expect_false(any(duplicated((docnames(corp1)))))
     expect_false(any(duplicated((attr(corp1, "names")))))
 
@@ -82,9 +88,10 @@ test_that("docnames are alwyas unique", {
     corp3 <- corp[c("1805-Jefferson", "1805-Jefferson")]
     expect_false(any(duplicated((docnames(corp3)))))
     expect_identical(docnames(corp3), attr(corp3, "names"))
-
+    
+    # tokens
     toks1 <- toks
-    docnames(toks1) <- docvars(toks1, "Party")
+    docnames(toks1, unique_docnames = FALSE) <- docvars(toks1, "Party")
     expect_false(any(duplicated((docnames(toks1)))))
     expect_identical(docnames(toks1), attr(toks1, "names"))
 
@@ -95,9 +102,10 @@ test_that("docnames are alwyas unique", {
     toks3 <- toks[c("1805-Jefferson", "1805-Jefferson")]
     expect_false(any(duplicated((docnames(toks3)))))
     expect_identical(docnames(toks3), attr(toks3, "names"))
-
+    
+    # dfm
     dfmat1 <- dfmat
-    docnames(dfmat1) <- docvars(dfmat1, "Party")
+    docnames(dfmat1, unique_docnames = FALSE) <- docvars(dfmat1, "Party")
     expect_false(any(duplicated((docnames(dfmat1)))))
     expect_identical(docnames(dfmat1), dfmat1@Dimnames[["docs"]])
 
@@ -108,6 +116,33 @@ test_that("docnames are alwyas unique", {
     dfmat3 <- dfmat[c("1805-Jefferson", "1805-Jefferson"), ]
     expect_false(any(duplicated((docnames(dfmat3)))))
     expect_identical(docnames(dfmat3), dfmat3@Dimnames[["docs"]])
+})
+
+test_that("as.tokens works with unique_docnames", {
+    
+    txt <- c("Z" = "z", "A" = "a b", "A" = "a b c")
+    toks0 <- tokens(corpus(txt, unique_docname = FALSE))
+    
+    lis <- list("Z" = "z", 
+                "A" = c("a", "b"), 
+                "A" = c("a", "b", "c"))
+    toks <- as.tokens(lis, unique_docname = FALSE) 
+    
+    expect_identical(
+        docid(toks),
+        docid(toks0)
+    )
+    
+    expect_identical(
+        docnames(toks),
+        docnames(toks0)
+    )
+    
+    expect_error(
+        as.tokens(lis, unique_docname = TRUE),
+        "docnames must be unique"
+    )
+    
 })
 
 

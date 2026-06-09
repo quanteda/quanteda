@@ -41,7 +41,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">4.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">4.4</span>
       </span>
     </div>
 
@@ -190,8 +190,31 @@ and Akitaka Matsuo</h4>
 </h3>
 <p>本例で用いる衆議院外務委員会の議事録は，1947年から2017年の間のすべての発言を含んでいる．このコーパスは<strong>quanteda.corpora</strong>を用いてダウンロードできる．</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"quanteda/quanteda.corpora"</span><span class="op">)</span></span>
-<span><span class="va">full_corp</span> <span class="op">&lt;-</span> <span class="fu">quanteda.corpora</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/quanteda.corpora/man/download.html" class="external-link">download</a></span><span class="op">(</span><span class="st">"data_corpus_foreignaffairscommittee"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/install-deprecated.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"quanteda/quanteda.corpora"</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Warning: `install_github()` was deprecated in devtools 2.5.0.</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">ℹ</span> Please use pak::pak("user/repo") instead.</span></span>
+<span><span class="co">## <span style="color: #555555;">This warning is displayed once per session.</span></span></span>
+<span><span class="co">## <span style="color: #555555;">Call `lifecycle::last_lifecycle_warnings()` to see where this warning was</span></span></span>
+<span><span class="co">## <span style="color: #555555;">generated.</span></span></span></code></pre>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">## <span style="color: #00BBBB;">──</span> <span style="color: #00BBBB;">R CMD build</span> <span style="color: #00BBBB;">─────────────────────────────────────────────────────────────────</span></span></span>
+<span><span class="co">## * checking for file ‘/private/var/folders/rs/y2dgxlys0cs4xcxxdnnxhyj80000gn/T/RtmpwRPJrO/remotes13000395c1c3/quanteda-quanteda.corpora-5259da4/DESCRIPTION’ ... OK</span></span>
+<span><span class="co">## * preparing ‘quanteda.corpora’:</span></span>
+<span><span class="co">## * checking DESCRIPTION meta-information ... OK</span></span>
+<span><span class="co">## Warning: bad markup (extra space?) at data_corpus_irishbudgets.Rd:31:2</span></span>
+<span><span class="co">## Warning: /private/var/folders/rs/y2dgxlys0cs4xcxxdnnxhyj80000gn/T/Rtmpe7nLGj/Rbuild1303e23762020/quanteda.corpora/man/data_corpus_irishbudgets.Rd:32: unexpected section header '\keyword'</span></span>
+<span><span class="co">## Warning: /private/var/folders/rs/y2dgxlys0cs4xcxxdnnxhyj80000gn/T/Rtmpe7nLGj/Rbuild1303e23762020/quanteda.corpora/man/data_corpus_irishbudgets.Rd:33: unexpected END_OF_INPUT '</span></span>
+<span><span class="co">## '</span></span>
+<span><span class="co">## * checking for LF line-endings in source and make files and shell scripts</span></span>
+<span><span class="co">## * checking for empty or unneeded directories</span></span>
+<span><span class="co">## Removed empty directory ‘quanteda.corpora/sources’</span></span>
+<span><span class="co">## Warning: bad markup (extra space?) at data_corpus_irishbudgets.Rd:31:2</span></span>
+<span><span class="co">## Warning: /private/var/folders/rs/y2dgxlys0cs4xcxxdnnxhyj80000gn/T/Rtmpe7nLGj/Rbuild1303e23762020/quanteda.corpora/man/data_corpus_irishbudgets.Rd:32: unexpected section header '\keyword'</span></span>
+<span><span class="co">## Warning: /private/var/folders/rs/y2dgxlys0cs4xcxxdnnxhyj80000gn/T/Rtmpe7nLGj/Rbuild1303e23762020/quanteda.corpora/man/data_corpus_irishbudgets.Rd:33: unexpected END_OF_INPUT '</span></span>
+<span><span class="co">## '</span></span>
+<span><span class="co">## * building ‘quanteda.corpora_0.9.3.tar.gz’</span></span></code></pre>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">full_corp</span> <span class="op">&lt;-</span> <span class="fu">quanteda.corpora</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/quanteda.corpora/man/download.html" class="external-link">download</a></span><span class="op">(</span><span class="st">"data_corpus_foreignaffairscommittee"</span><span class="op">)</span></span></code></pre></div>
 <div class="section level4">
 <h4 id="how-to-make-corpus">コーパスの作成手順<a class="anchor" aria-label="anchor" href="#how-to-make-corpus"></a>
 </h4>
@@ -200,8 +223,8 @@ and Akitaka Matsuo</h4>
 <h5 id="download-speeches">議事録をダウンロード<a class="anchor" aria-label="anchor" href="#download-speeches"></a>
 </h5>
 <p>国会会議録のダウンロードには<strong>kaigiroku</strong>パッケージを使う．APIが応答しない場合に途中からダウンロードをやり直す必要がないように，年ごとにファイルに保存し，それらを最後に連結すると良い．</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"amatsuo/kaigiroku"</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/install-deprecated.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"amatsuo/kaigiroku"</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/amatsuo/kaigiroku" class="external-link">kaigiroku</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># 年ごとに議事録をダウンロード</span></span>
@@ -224,7 +247,7 @@ and Akitaka Matsuo</h4>
 <div class="section level5">
 <h5 id="create-corpus">コーパスの作成<a class="anchor" aria-label="anchor" href="#create-corpus"></a>
 </h5>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/load.html" class="external-link">load</a></span><span class="op">(</span><span class="st">"temp/committee_speeches.rda"</span><span class="op">)</span></span>
 <span><span class="va">full_corp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/corpus.html">corpus</a></span><span class="op">(</span><span class="va">foreign_affairs_committee_speeches</span>, text_field <span class="op">=</span> <span class="st">"speech"</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -233,10 +256,10 @@ and Akitaka Matsuo</h4>
 <div class="section level3">
 <h3 id="number-of-speeches">議事録の数と期間を取得<a class="anchor" aria-label="anchor" href="#number-of-speeches"></a>
 </h3>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../../../reference/ndoc.html">ndoc</a></span><span class="op">(</span><span class="va">full_corp</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 287298</span></span></code></pre>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/range.html" class="external-link">range</a></span><span class="op">(</span><span class="fu"><a href="../../../reference/docvars.html">docvars</a></span><span class="op">(</span><span class="va">full_corp</span>, <span class="st">"date"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] "1947-06-30" "2017-11-29"</span></span></code></pre>
 </div>
@@ -244,7 +267,7 @@ and Akitaka Matsuo</h4>
 <h2 id="pre-processing">前処理<a class="anchor" aria-label="anchor" href="#pre-processing"></a>
 </h2>
 <p>発言者のいないレコード（典型的には各議事録の0番目の出席者，議題等の部分）を取り除く，また，各発言の冒頭は発言者の氏名と役職名なので，その部分から役職名を取り出して新しい<code>docvar</code>を作る．</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">full_corp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/corpus_subset.html">corpus_subset</a></span><span class="op">(</span><span class="va">full_corp</span>, <span class="va">speaker</span> <span class="op">!=</span> <span class="st">""</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## capacity変数の作成</span></span>
@@ -347,12 +370,12 @@ and Akitaka Matsuo</h4>
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../../../reference/docvars.html">docvars</a></span><span class="op">(</span><span class="va">full_corp</span>, <span class="st">"capacity"</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">capacity</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="select-speeches-1991-2010">1991から2010年までの期間の議事録を選択<a class="anchor" aria-label="anchor" href="#select-speeches-1991-2010"></a>
 </h3>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../../../reference/docvars.html">docvars</a></span><span class="op">(</span><span class="va">full_corp</span>, <span class="st">"year"</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/docvars.html">docvars</a></span><span class="op">(</span><span class="va">full_corp</span>, <span class="st">"date"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://lubridate.tidyverse.org/reference/year.html" class="external-link">year</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">corp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/corpus_subset.html">corpus_subset</a></span><span class="op">(</span><span class="va">full_corp</span>, <span class="fl">1991</span> <span class="op">&lt;=</span> <span class="va">year</span> <span class="op">&amp;</span> <span class="va">year</span> <span class="op">&lt;=</span> <span class="fl">2010</span><span class="op">)</span></span>
 <span></span>
@@ -362,7 +385,7 @@ and Akitaka Matsuo</h4>
 <div class="section level3">
 <h3 id="select-speeches-ministers">委員，大臣，副大臣の発言を選択<a class="anchor" aria-label="anchor" href="#select-speeches-ministers"></a>
 </h3>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">corp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/corpus_subset.html">corpus_subset</a></span><span class="op">(</span><span class="va">corp</span>, <span class="va">capacity</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"委員"</span>, <span class="st">"大臣"</span>, <span class="st">"副大臣"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../../../reference/ndoc.html">ndoc</a></span><span class="op">(</span><span class="va">corp</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 46890</span></span></code></pre>
@@ -371,7 +394,7 @@ and Akitaka Matsuo</h4>
 <h3 id="tokenization">トークン化<a class="anchor" aria-label="anchor" href="#tokenization"></a>
 </h3>
 <p>日本語の分析では，形態素解析ツールを用いて分かち書きを行うことが多いが，<strong>quanteda</strong>の<code><a href="../../../reference/tokens.html">tokens()</a></code>は，<a href="http://site.icu-project.org/" class="external-link">ICU</a>で定義された規則に従って文を語に分割することができる．さらに，漢字やカタカナの連続的共起を<code><a href="https://quanteda.io/reference/textstat_collocations.html">textstat_collocations()</a></code>を用いて抽出し，<code><a href="../../../reference/tokens_compound.html">tokens_compound()</a></code>によって統計的に優位な組み合わせを結合すると，より質の高いトークン化を実現できる．<code><a href="https://quanteda.io/reference/textstat_collocations.html">textstat_collocations()</a></code>を用いる場合は，事前に<code><a href="../../../reference/tokens_select.html">tokens_select()</a></code>と正規表現で，対象とする語だけを選択する．この際，<code>padding = TRUE</code>とし，語の間の距離が維持されるように注意する</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">toks</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/tokens.html">tokens</a></span><span class="op">(</span><span class="va">corp</span><span class="op">)</span></span>
 <span><span class="va">toks</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/tokens_select.html">tokens_select</a></span><span class="op">(</span><span class="va">toks</span>, <span class="st">"^[０-９ぁ-んァ-ヶー一-龠]+$"</span>, valuetype <span class="op">=</span> <span class="st">"regex"</span>, padding <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="va">toks</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/tokens_select.html">tokens_remove</a></span><span class="op">(</span><span class="va">toks</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"御"</span>, <span class="st">"君"</span><span class="op">)</span>, padding <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
@@ -398,7 +421,7 @@ and Akitaka Matsuo</h4>
 <h3 id="create-dfm">文書行列の作成<a class="anchor" aria-label="anchor" href="#create-dfm"></a>
 </h3>
 <p><code><a href="../../../reference/dfm.html">dfm()</a></code>によって文書行列を作成した後でも，<code>dfm_*()</code>と命名された関数を用いると分析に必要な文書の特徴を自由に選択できる．ここでは，平仮名のみもしくは一語のみから構成されたトークンを<code><a href="../../../reference/dfm_select.html">dfm_remove()</a></code>によって，頻度が極端に低い語もしくは高い語を<code><a href="../../../reference/dfm_trim.html">dfm_trim()</a></code>によって削除している．</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">speech_dfm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/dfm.html">dfm</a></span><span class="op">(</span><span class="va">toks</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="../../../reference/dfm_select.html">dfm_remove</a></span><span class="op">(</span><span class="st">""</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>    <span class="fu"><a href="../../../reference/dfm_select.html">dfm_remove</a></span><span class="op">(</span><span class="st">"^[ぁ-ん]+$"</span>, valuetype <span class="op">=</span> <span class="st">"regex"</span>, min_nchar <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
@@ -412,7 +435,7 @@ and Akitaka Matsuo</h4>
 <h3 id="keyness">相対頻度分析<a class="anchor" aria-label="anchor" href="#keyness"></a>
 </h3>
 <p><code><a href="https://quanteda.io/reference/textstat_keyness.html">textstat_keyness()</a></code>は語の頻度を文書のグループ間で比較し，統計的に有意に頻度が高いものを選択する．ここでは，同時多発テロが発生した2001年以降に頻度が高くなった30語を示してある．</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">key</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://quanteda.io/reference/textstat_keyness.html">textstat_keyness</a></span><span class="op">(</span><span class="va">speech_dfm</span>, <span class="fu"><a href="../../../reference/docvars.html">docvars</a></span><span class="op">(</span><span class="va">speech_dfm</span>, <span class="st">"year"</span><span class="op">)</span> <span class="op">&gt;=</span> <span class="fl">2001</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">key</span>, <span class="fl">20</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
@@ -567,7 +590,7 @@ and Akitaka Matsuo</h4>
 </tbody>
 </table>
 <p>上の表では，委員会出席者の名前が多く含まれるので，それらを取り除くと議論の主題が明確になる．</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">key</span> <span class="op">&lt;-</span> <span class="va">key</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html" class="external-link">str_detect</a></span><span class="op">(</span><span class="va">key</span><span class="op">$</span><span class="va">feature</span>, <span class="fu"><a href="https://stringr.tidyverse.org/reference/modifiers.html" class="external-link">regex</a></span><span class="op">(</span><span class="st">"委員|大臣"</span><span class="op">)</span><span class="op">)</span>,<span class="op">]</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">key</span>, <span class="fl">20</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
@@ -747,7 +770,7 @@ and Akitaka Matsuo</h4>
 <h3 id="network">共起ネットワーク分析<a class="anchor" aria-label="anchor" href="#network"></a>
 </h3>
 <p><code><a href="../../../reference/fcm.html">fcm()</a></code>によって作成した共起行列に対して，<code><a href="https://rdrr.io/pkg/quanteda.textplots/man/textplot_network.html" class="external-link">textplot_network()</a></code>を用いると語の関係が視覚化でき，文書の内容の全体像を容易に把握できる．</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">"quanteda.textplots"</span><span class="op">)</span></span>
 <span><span class="va">feat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">key</span><span class="op">$</span><span class="va">feature</span>, <span class="fl">50</span><span class="op">)</span></span>
 <span><span class="va">speech_fcm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/dfm_select.html">dfm_select</a></span><span class="op">(</span><span class="va">speech_dfm</span>, <span class="va">feat</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="../../../reference/fcm.html">fcm</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -755,26 +778,26 @@ and Akitaka Matsuo</h4>
 <span><span class="fu"><a href="https://rdrr.io/pkg/quanteda.textplots/man/textplot_network.html" class="external-link">textplot_network</a></span><span class="op">(</span><span class="va">speech_fcm</span>, min_freq <span class="op">=</span> <span class="fl">0.85</span>, edge_alpha <span class="op">=</span> <span class="fl">0.9</span>, </span>
 <span>                 vertex_size <span class="op">=</span> <span class="va">size</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">size</span><span class="op">)</span> <span class="op">*</span> <span class="fl">3</span>,</span>
 <span>                 vertex_labelfont <span class="op">=</span> <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.info.html" class="external-link">Sys.info</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="st">"sysname"</span><span class="op">]</span> <span class="op">==</span> <span class="st">"Darwin"</span><span class="op">)</span> <span class="st">"SimHei"</span> <span class="kw">else</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
-<p><img src="japanese_speech_ja_files/figure-html/unnamed-chunk-14-1.png" width="700"></p>
+<p><img src="japanese_speech_ja_files/figure-html/unnamed-chunk-14-1.png" class="r-plt" alt="" width="700"></p>
 </div>
 <div class="section level3">
 <h3 id="topicmodel">トピックモデル<a class="anchor" aria-label="anchor" href="#topicmodel"></a>
 </h3>
 <p><strong>quanteda</strong>のdfmを<code><a href="../../../reference/convert.html">convert()</a></code>で変換し，<strong>topicmodels</strong>をパッケージを用いて潜在的な話題を推定する．</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span></span>
 <span><span class="va">lda</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/topicmodels/man/lda.html" class="external-link">LDA</a></span><span class="op">(</span><span class="fu"><a href="../../../reference/convert.html">convert</a></span><span class="op">(</span><span class="va">speech_dfm</span>, to <span class="op">=</span> <span class="st">"topicmodels"</span><span class="op">)</span>, k <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/topicmodels/man/get.html" class="external-link">get_terms</a></span><span class="op">(</span><span class="va">lda</span>, <span class="fl">10</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <table style="width:100%;" class="table">
 <colgroup>
-<col width="10%">
-<col width="8%">
-<col width="8%">
-<col width="14%">
-<col width="8%">
-<col width="10%">
 <col width="12%">
 <col width="10%">
+<col width="8%">
+<col width="8%">
+<col width="10%">
+<col width="7%">
+<col width="14%">
+<col width="8%">
 <col width="8%">
 <col width="8%">
 </colgroup>
@@ -792,130 +815,130 @@ and Akitaka Matsuo</h4>
 </tr></thead>
 <tbody>
 <tr class="odd">
+<td align="left">インドネシア</td>
+<td align="left">繁栄</td>
+<td align="left">前向き</td>
+<td align="left">両国間</td>
+<td align="left">租税条約</td>
+<td align="left">大きい</td>
+<td align="left">準備</td>
+<td align="left">イラン</td>
+<td align="left">国内法</td>
+<td align="left">定義</td>
+</tr>
+<tr class="even">
+<td align="left">関与</td>
+<td align="left">計上</td>
+<td align="left">配慮</td>
+<td align="left">同様</td>
+<td align="left">防止</td>
+<td align="left">前回</td>
 <td align="left">地雷</td>
-<td align="left">公開</td>
-<td align="left">ある程度</td>
-<td align="left">パキスタン</td>
-<td align="left">経費</td>
-<td align="left">彼ら</td>
-<td align="left">管理</td>
-<td align="left">信頼</td>
-<td align="left">教育</td>
-<td align="left">成果</td>
+<td align="left">漁業</td>
+<td align="left">行使</td>
+<td align="left">詰め</td>
+</tr>
+<tr class="odd">
+<td align="left">自身</td>
+<td align="left">輸出</td>
+<td align="left">法案</td>
+<td align="left">促進</td>
+<td align="left">ミャンマー</td>
+<td align="left">意義</td>
+<td align="left">旅券</td>
+<td align="left">何度</td>
+<td align="left">沖縄県民</td>
+<td align="left">人道的</td>
+</tr>
+<tr class="even">
+<td align="left">資金</td>
+<td align="left">エネルギー</td>
+<td align="left">センター</td>
+<td align="left">資する</td>
+<td align="left">相手国</td>
+<td align="left">採択</td>
+<td align="left">ポト派</td>
+<td align="left">安保条約</td>
+<td align="left">過程</td>
+<td align="left">局長</td>
+</tr>
+<tr class="odd">
+<td align="left">常任理事国</td>
+<td align="left">果たす</td>
+<td align="left">生活</td>
+<td align="left">業務</td>
+<td align="left">課税</td>
+<td align="left">出席</td>
+<td align="left">アフガニスタン</td>
+<td align="left">部隊</td>
+<td align="left">日米関係</td>
+<td align="left">入札</td>
 </tr>
 <tr class="even">
 <td align="left">ミャンマー</td>
-<td align="left">出る</td>
-<td align="left">国内法</td>
-<td align="left">イギリス</td>
-<td align="left">速やか</td>
-<td align="left">写真</td>
-<td align="left">インドネシア</td>
-<td align="left">コメント</td>
-<td align="left">フランス</td>
-<td align="left">引き渡し</td>
-</tr>
-<tr class="odd">
-<td align="left">タイ</td>
-<td align="left">出席</td>
-<td align="left">コメント</td>
-<td align="left">核実験</td>
-<td align="left">香港</td>
-<td align="left">経過</td>
-<td align="left">国内法</td>
-<td align="left">沖縄県民</td>
-<td align="left">基準</td>
-<td align="left">沖縄県</td>
-</tr>
-<tr class="even">
-<td align="left">拒否</td>
-<td align="left">部隊</td>
-<td align="left">配慮</td>
-<td align="left">アフガニスタン</td>
-<td align="left">防止</td>
-<td align="left">入る</td>
-<td align="left">ドル</td>
-<td align="left">皆様</td>
-<td align="left">学校</td>
-<td align="left">身柄</td>
-</tr>
-<tr class="odd">
-<td align="left">被害</td>
-<td align="left">継続</td>
-<td align="left">前回</td>
-<td align="left">広島</td>
-<td align="left">提案理由</td>
-<td align="left">相談</td>
-<td align="left">規制</td>
-<td align="left">基本</td>
-<td align="left">農業</td>
-<td align="left">局長</td>
-</tr>
-<tr class="even">
-<td align="left">済み</td>
-<td align="left">査察</td>
-<td align="left">完全</td>
-<td align="left">準備</td>
-<td align="left">文化</td>
-<td align="left">イスラエル</td>
-<td align="left">資源</td>
-<td align="left">軽減</td>
-<td align="left">与える</td>
-<td align="left">仮に</td>
-</tr>
-<tr class="odd">
-<td align="left">在日米軍</td>
-<td align="left">密約</td>
-<td align="left">二国間</td>
-<td align="left">一年</td>
-<td align="left">議題</td>
-<td align="left">パレスチナ</td>
-<td align="left">背景</td>
-<td align="left">抑止力</td>
-<td align="left">雇用</td>
-<td align="left">現場</td>
-</tr>
-<tr class="even">
-<td align="left">朝鮮半島</td>
-<td align="left">決まって</td>
-<td align="left">児童</td>
-<td align="left">インドネシア</td>
-<td align="left">図る</td>
-<td align="left">女性</td>
-<td align="left">エネルギー</td>
-<td align="left">パキスタン</td>
-<td align="left">児童</td>
-<td align="left">生活</td>
-</tr>
-<tr class="odd">
-<td align="left">配慮</td>
-<td align="left">軽減</td>
-<td align="left">利用</td>
-<td align="left">経過</td>
-<td align="left">促進</td>
-<td align="left">被害</td>
-<td align="left">人権</td>
-<td align="left">ドル</td>
-<td align="left">周辺</td>
-<td align="left">民主党</td>
-</tr>
-<tr class="even">
-<td align="left">再開</td>
-<td align="left">進める</td>
-<td align="left">進める</td>
-<td align="left">長い</td>
 <td align="left">採択</td>
-<td align="left">前向き</td>
-<td align="left">イラン</td>
-<td align="left">現時点</td>
-<td align="left">資源</td>
+<td align="left">教育</td>
+<td align="left">一層</td>
+<td align="left">所得</td>
+<td align="left">関係者</td>
+<td align="left">部隊</td>
+<td align="left">会合</td>
+<td align="left">地方</td>
+<td align="left">背景</td>
+</tr>
+<tr class="odd">
+<td align="left">再開</td>
+<td align="left">二国間</td>
+<td align="left">難民</td>
+<td align="left">提案理由</td>
+<td align="left">国内法</td>
+<td align="left">専門家</td>
+<td align="left">核実験</td>
+<td align="left">自身</td>
+<td align="left">禁止</td>
+<td align="left">首脳会談</td>
+</tr>
+<tr class="even">
+<td align="left">イニシアチブ</td>
+<td align="left">構築</td>
+<td align="left">禁止</td>
+<td align="left">日本国</td>
+<td align="left">回避</td>
+<td align="left">に対し</td>
+<td align="left">イギリス</td>
+<td align="left">一生懸命</td>
+<td align="left">本条約</td>
+<td align="left">信頼</td>
+</tr>
+<tr class="odd">
+<td align="left">ドル</td>
+<td align="left">図る</td>
+<td align="left">建設</td>
+<td align="left">開始</td>
+<td align="left">租税</td>
 <td align="left">警察</td>
+<td align="left">写真</td>
+<td align="left">在日米軍</td>
+<td align="left">真剣</td>
+<td align="left">普天間</td>
+</tr>
+<tr class="even">
+<td align="left">要素</td>
+<td align="left">加盟</td>
+<td align="left">全力</td>
+<td align="left">ベトナム</td>
+<td align="left">経過</td>
+<td align="left">人権</td>
+<td align="left">武装解除</td>
+<td align="left">区域</td>
+<td align="left">不安</td>
+<td align="left">来る</td>
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/topicmodels/man/get.html" class="external-link">get_topics</a></span><span class="op">(</span><span class="va">lda</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/graphics/barplot.html" class="external-link">barplot</a></span><span class="op">(</span>xlab <span class="op">=</span> <span class="st">"Topic"</span>, ylab <span class="op">=</span> <span class="st">"Frequency"</span><span class="op">)</span> </span></code></pre></div>
-<p><img src="japanese_speech_ja_files/figure-html/unnamed-chunk-15-1.png" width="700"></p>
+<p><img src="japanese_speech_ja_files/figure-html/unnamed-chunk-15-1.png" class="r-plt" alt="" width="700"></p>
 </div>
 </div>
   </div>
@@ -935,7 +958,7 @@ and Akitaka Matsuo</h4>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.2.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
       </footer>

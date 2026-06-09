@@ -24,7 +24,7 @@ is.dictionary(x)
 \item{separator}{the character in between multi-word dictionary values. This
 defaults to \code{" "}.}
 
-\item{tolower}{if \code{TRUE}, convert all dictionary values to lowercase}
+\item{tolower}{if \code{TRUE}, convert all dictionary values to lowercase.}
 }
 \value{
 \code{as.dictionary} returns a \pkg{quanteda} \link{dictionary}

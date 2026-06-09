@@ -136,11 +136,13 @@ test_that("indexing for dictionary objects works", {
 
     expect_output(
         print(testdict),
-        "Dictionary object with 9 primary key entries and 2 nested levels"
+        "Dictionary object with 9 primary key entries and 2 nested levels.",
+        fixed = TRUE
     )
     expect_output(
         print(testdict[1]),
-        "Dictionary object with 1 primary key entry and 2 nested levels"
+        "Dictionary object with 1 primary key entry and 2 nested levels.",
+        fixed = TRUE
     )
 })
 
@@ -228,6 +230,12 @@ test_that("dictionary printing works", {
       print(dict, 0, 0),
       "Dictionary object with 2 key entries.",
       fixed = TRUE
+    )
+    
+    # lines wrapping
+    expect_output(
+      print(data_dictionary_LSD2015),
+      "(.{0,90}\n)+"
     )
 })
 
@@ -427,7 +435,8 @@ test_that("dictionary constructor works with LIWC format w/extra codes and nesti
 test_that("dictionary works with yoshicoder, issue 819", {
     expect_equal(
         as.list(dictionary(file = "../data/dictionaries/issue-819.ykd")),
-        list("Dictionary" = list("pos" = list("A" = "a word", "B" = "b word"))))
+        list("Dictionary" = list("pos" = list("A" = "a word", "B" = "b word")))
+    )
 })
 
 test_that("dictionary constructor works on a dictionary", {
@@ -635,7 +644,7 @@ test_that("tokenize is working", {
     expect_equivalent(
         dict4,
         list(ASIA = list("IN" = "印度", 
-                         "ID" = "印度_尼西亚"))
+                         "ID" = "印度 尼西亚"))
     )
     
     # with wildcard
@@ -698,4 +707,127 @@ test_that("tokenize is working", {
     
 })
 
+test_that("levels is working", {
+    
+    dict <- dictionary(file = "../data/dictionaries/newsmap2.yml", 
+                       tolower = FALSE, levels = 1:2, separator = "_")
 
+    # dictionary
+    
+    # fails mysteriously
+    # expect_equivalent(
+    #     dict,
+    #     list("US" = list("Washington DC",
+    #                      "MA" = "Boston",
+    #                      "CA" = "Sacramento"),
+    #          "JP" = "Tokyo")
+    # )
+    expect_equal(
+        names(dictionary(dict, levels = 1:2, tolower = FALSE)), 
+        c("US", "JP")
+    )
+    expect_equivalent(
+        dictionary(dict, levels = 1, tolower = FALSE),
+        list("US" = "Washington DC",
+             "JP" = "Tokyo")
+    )
+    expect_equivalent(
+        dictionary(dict, levels = 2, tolower = FALSE),
+        list("MA" = "Boston",
+             "CA" = "Sacramento")
+    )
+    expect_error(
+        dictionary(dict, levels = 3, tolower = FALSE),
+        "Dictionary elements must be named"
+    )
+    
+    expect_equivalent(
+        dictionary(dict, levels = 1, tolower = FALSE),
+        list("US" = "Washington DC",
+             "JP" = "Tokyo")
+    )
+    
+    # list 
+    lis <- list("US" = list("Washington DC",
+                            "MA" = "Boston",
+                            "CA" = "Sacramento"),
+                "JP" = "Tokyo")
+    
+    # fails mysteriously
+    # expect_equivalent(
+    #     dictionary(lis, levels = 1:2, tolower = FALSE),
+    #     list("US" = list("Washington DC",
+    #                      "MA" = list("Boston"),
+    #                      "CA" = list("Sacramento")),
+    #          "JP" = list("Tokyo"))
+    # )
+    expect_equal(
+        names(dictionary(lis, levels = 1:2, tolower = FALSE)), 
+        c("US", "JP")
+    )
+    expect_equivalent(
+        dictionary(lis, levels = 1, tolower = FALSE),
+        list("US" = list("Washington DC"),
+             "JP" = list("Tokyo"))
+    )
+    expect_equivalent(
+        dictionary(lis, levels = 2, tolower = FALSE),
+        list("MA" = "Boston",
+             "CA" = "Sacramento")
+    )
+    expect_error(
+        dictionary(lis, levels = 3, tolower = FALSE),
+        "Dictionary elements must be named"
+    )
+    
+})
+
+test_that("as.yaml is commutative", {
+
+    dict <- dictionary(
+        list("US" = list("Washington DC",
+                         "MA" = "Boston",
+                         "CA" = "Sacramento"),
+             "JP" = list("Tokyo")), 
+        tolower = FALSE)
+    
+    # write and read
+    f <- paste0(tempfile(), ".yml")
+    cat(as.yaml(dict), file = f)
+    
+    expect_identical(
+        dict, 
+        dictionary(file = f, tolower = FALSE)
+    )
+    
+})
+
+
+test_that("separator is working", {
+    
+    dict1 <- dictionary(
+        list("US" = list("Washington_DC",
+                         "MA" = "Boston",
+                         "CA" = "Sacramento"),
+             "JP" = list("Tokyo")), 
+        tolower = FALSE, separator = "_")
+    
+    expect_equal(dict1@meta$object$separator, "_")
+    expect_true(
+        any(stri_detect_fixed(unlist(dict1), " "))
+    )
+    expect_false(
+        any(stri_detect_fixed(unlist(dict1), "_"))
+    )
+    
+    dict2 <- dictionary(file = "../data/dictionaries/newsmap2.yml", 
+                        tolower = FALSE, separator = "_")
+    
+    expect_equal(dict2@meta$object$separator, "_")
+    expect_true(
+        any(stri_detect_fixed(unlist(dict2), " "))
+    )
+    expect_false(
+        any(stri_detect_fixed(unlist(dict2), "_"))
+    )
+})

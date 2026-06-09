@@ -113,11 +113,11 @@ test_that("test detault fcm* methods", {
 test_that("test default docvars methods", {
     expect_error(
         docvars(0),
-        "docvars\\(\\) only works on corpus.*tokens objects"
+        "docvars\\(\\) only works on corpus, dfm, tokens, tokens_xptr objects"
     )
     expect_error(
         docvars(data_char_sampletext) <- "X",
-        "docvars<-\\(\\) only works on corpus.*tokens objects"
+        "docvars<-\\(\\) only works on corpus, dfm, tokens, tokens_xptr objects"
     )
 })
 

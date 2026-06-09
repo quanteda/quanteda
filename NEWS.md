@@ -1,12 +1,45 @@
-# quanteda 4.3.x
+# quanteda 4.4.1
+
+## Bug fixes
+
+* Fix `dictionary()` to handle `separator` correctly when a YAML file is provided.
 
 ## Changes and additions
 
+* Improve `print` methods for corpus, tokens, dfm, fcm, dictionary and kwic objects to wrap long lines at `getOption("width")`.
+
+* Added an `as.matrix()` method for `tokens` objects, returning a dense
+  [document × position] integer matrix of token IDs, with `length`, `extract`,
+  and `drop` arguments. (#2497)
+
+* `as.tensor()` for `tokens` now returns a dense tensor rather than a sparse COO
+  tensor, gains an `extract` argument for selecting documents, and passes `...`
+  through to `torch::torch_tensor()`. (#2497)
+
+* Added `docvars()` and `docvars<-()` methods for `tokens_xptr` objects,
+  allowing document variables to be read and assigned without recompiling the
+  tokens. (#2497)
+
+# quanteda 4.4
+
+## Changes and additions
+
+* Added `levels` argument to `dictionary()` to select levels (#2001).
+
 * Added `normalize` argument to `tokens()` to replace Unicode quotation marks and hyphens with their ASCII equivalent (#2480).
+
 * Added `as.tensor()` method for tokens objects to convert tokens to sparse tensors compatible with the \pkg{torch} package (#2474).
+
 * Added `tokens_annotate()` to insert tags to a tokens object using a dictionary.
+
 * Added `tokenize` argument to `dictionary()` to match dictionary values and tokens more easily in Japanese and Chinese (#2476).
+
 * Update `corpus_reshape()` to segment paragraphs more accurately (#2468).
+
+* Update `index()` and `kwic()` to skip nested matches in a similar way as `tokens_lookup()` (#2063).
+
+* Update `corpus()` to always append segment numbers to docnames when `unique_docnames = FALSE`. This argument is also added to `as.tokens()` and `docnames<-` for the same behaviour (#2486).
+
 
 # quanteda 4.3.1
 

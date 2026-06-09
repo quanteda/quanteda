@@ -5,7 +5,7 @@ and maintained by [Kenneth Benoit](https://kenbenoit.net) and [Kohei
 Watanabe](https://blog.koheiw.net/). Its creation was funded by the
 European Research Council grant ERC-2011-StG 283794-QUANTESS and its
 continued development is supported by the [Quanteda Initiative
-CIC](https://quanteda.org).
+CIC](https://github.com/quanteda).
 
 The package is designed for R users needing to apply natural language
 processing to texts, from documents to final analysis. Its capabilities
@@ -43,24 +43,23 @@ We completed the trend of splitting **quanteda** into modular packages
 with the release of v3. The quanteda family of packages includes the
 following:
 
--   **quanteda**: contains all of the core natural language processing
-    and textual data management functions
--   **quanteda.textmodels**: contains all of the text models and
-    supporting functions, namely the `textmodel_*()` functions. This was
-    split from the main package with the v2 release
--   **quanteda.textstats**: statistics for textual data, namely the
-    `textstat_*()` functions, split with the v3 release
--   **quanteda.textplots**: plots for textual data, namely the
-    `textplot_*()` functions, split with the v3 release
+- **quanteda**: contains all of the core natural language processing and
+  textual data management functions
+- **quanteda.textmodels**: contains all of the text models and
+  supporting functions, namely the `textmodel_*()` functions. This was
+  split from the main package with the v2 release
+- **quanteda.textstats**: statistics for textual data, namely the
+  `textstat_*()` functions, split with the v3 release
+- **quanteda.textplots**: plots for textual data, namely the
+  `textplot_*()` functions, split with the v3 release
 
 We are working on additional package releases, available in the meantime
 from our GitHub pages:
 
--   **quanteda.sentiment**: Functions and lexicons for sentiment
-    analysis using dictionaries
--   **quanteda.tidy**: Extensions for manipulating document variables in
-    core **quanteda** objects using your favourite **tidyverse**
-    functions
+- **quanteda.sentiment**: Functions and lexicons for sentiment analysis
+  using dictionaries
+- **quanteda.tidy**: Extensions for manipulating document variables in
+  core **quanteda** objects using your favourite **tidyverse** functions
 
 ## How To…
 
@@ -96,9 +95,17 @@ You will also need to install TBB:
 
 **macOS:**
 
-After installing [Homebrew](https://brew.sh):
+First, you will need to install XCode command line tools.
 
-    brew install tbb
+    xcode-select --install
+
+Then install the TBB libraries and the pkg-config utility: (after
+installing [Homebrew](https://brew.sh)):
+
+    brew install tbb pkg-config
+
+Finally, you will need to install
+[gfortran](https://github.com/fxcoudert/gfortran-for-macOS/releases).
 
 **Windows:**
 
@@ -113,10 +120,10 @@ guide](https://quanteda.io/articles/quickstart.html) to learn how to use
 
 ### Get Help
 
--   Read out documentation at <https://quanteda.io>.
--   Submit a question on the [**quanteda** channel on
-    StackOverflow](https://stackoverflow.com/questions/tagged/quanteda).
--   See our [tutorial site](https://tutorials.quanteda.io/).
+- Read out documentation at <https://quanteda.io>.
+- Submit a question on the [**quanteda** channel on
+  StackOverflow](https://stackoverflow.com/questions/tagged/quanteda).
+- See our [tutorial site](https://tutorials.quanteda.io/).
 
 ### Cite the package
 
@@ -140,14 +147,14 @@ testimonial here](https://github.com/quanteda/quanteda/issues/461).
 Contributions in the form of feedback, comments, code, and bug reports
 are most welcome. How to contribute:
 
--   Fork the source code, modify, and issue a [pull
-    request](https://help.github.com/articles/creating-a-pull-request-from-a-fork/)
-    through the [project GitHub
-    page](https://github.com/quanteda/quanteda). See our [Contributor
-    Code of
-    Conduct](https://github.com/quanteda/quanteda/blob/master/CONDUCT.md)
-    and the all-important **quanteda** [Style
-    Guide](https://github.com/quanteda/quanteda/wiki/Style-guide).
--   Issues, bug reports, and wish lists: [File a GitHub
-    issue](https://github.com/quanteda/quanteda/issues).
--   Contact [the maintainer](mailto:kbenoit@lse.ac.uk) by email.
+- Fork the source code, modify, and issue a [pull
+  request](https://help.github.com/articles/creating-a-pull-request-from-a-fork/)
+  through the [project GitHub
+  page](https://github.com/quanteda/quanteda). See our [Contributor Code
+  of
+  Conduct](https://github.com/quanteda/quanteda/blob/master/CONDUCT.md)
+  and the all-important **quanteda** [Style
+  Guide](https://github.com/quanteda/quanteda/wiki/Style-guide).
+- Issues, bug reports, and wish lists: [File a GitHub
+  issue](https://github.com/quanteda/quanteda/issues).
+- Contact [the maintainer](mailto:kbenoit@lse.ac.uk) by email.

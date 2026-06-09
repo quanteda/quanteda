@@ -131,15 +131,15 @@ corpus.character <- function(x, docnames = NULL, docvars = NULL,
     } else if (!is.null(names(x))) {
         docnames <- names(x)
     }
-    if (any(duplicated(docnames)) && unique_docnames)
-        stop("docnames must be unique")
+    
     if (!is.null(docvars)) {
         row.names(docvars) <- NULL
         if (any(is_system(names(docvars))))
             stop(message_error("docvars_invalid"))
-        docvars <- cbind(make_docvars(length(x), docnames), docvars)
+        docvars <- cbind(make_docvars(length(x), docnames, unique_docnames), 
+                         docvars)
     } else {
-        docvars <- make_docvars(length(x), docnames)
+        docvars <- make_docvars(length(x), docnames, unique_docnames)
     }
 
     # normalize Unicode
@@ -262,25 +262,26 @@ corpus.kwic <- function(x, split_context = TRUE,
     x <- as.data.frame(x)
     
     if (split_context) {
-        pre <- corpus(x[, c("docname", "from", "to", "pre", "keyword")],
-                      docid_field = "docname", text_field = "pre", meta = meta, unique_docnames = FALSE)
+        pre <- corpus(data.frame(doc_id = paste0(x$docname, ".pre"), text = x$pre,
+                                 x[, c("from", "to", "keyword")]), 
+                      meta = meta, unique_docnames = FALSE)
         docvars(pre, "context") <- "pre"
-        docnames(pre) <- paste0(docnames(pre), ".pre")
-
-        post <- corpus(x[, c("docname", "from", "to", "post", "keyword")],
-                       docid_field = "docname", text_field = "post",
+        post <- corpus(data.frame(doc_id = paste0(x$docname, ".post"), text = x$post,
+                                  x[, c("from", "to", "keyword")]),
                        meta = meta, unique_docnames = FALSE)
         docvars(post, "context") <- "post"
-        docnames(post) <- paste0(docnames(post), ".post")
-        result <- pre + post
-        if (!extract_keyword) docvars(result, "keyword") <- NULL
+        
+        result <- c(pre, post)
+        if (!extract_keyword) 
+            docvars(result, "keyword") <- NULL
     } else {
-        result <- corpus(paste(x[["pre"]], x[["keyword"]], x[["post"]], sep = concatenator),
-                         docnames = x[["docname"]], meta = meta, unique_docnames = FALSE)
-        docnames(result) <- paste0(x[["docname"]], ".L", x[["from"]])
-        if (extract_keyword) docvars(result, "keyword") <- x[["keyword"]]
+        x <- data.frame(doc_id = x$docname,
+                        text = paste(x$pre, x$keyword, x$post, sep = concatenator),
+                        x[, c("from", "to", "keyword")])
+        result <- corpus(x, meta = meta, unique_docnames = FALSE)
+        if (extract_keyword) 
+            docvars(result, "keyword") <- x$keyword
     }
-
     meta_system(result, "source") <- "kwic"
     return(result)
 }

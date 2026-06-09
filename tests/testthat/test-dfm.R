@@ -33,16 +33,16 @@ test_that("test rbind.dfm with different columns", {
 })
 
 test_that("test rbind.dfm with different columns, three args and repeated words", {
-    dfmt1 <- dfm(tokens("What does the?", remove_punct = TRUE))
-    dfmt2 <- dfm(tokens("fox say fox", remove_punct = TRUE))
-    dfmt3 <- dfm(tokens("The quick brown fox", remove_punct = TRUE))
+    dfmt1 <- dfm(tokens(c(doc1 = "What does the?"), remove_punct = TRUE))
+    dfmt2 <- dfm(tokens(c(doc2 = "fox say fox"), remove_punct = TRUE))
+    dfmt3 <- dfm(tokens(c(doc3 = "The quick brown fox"), remove_punct = TRUE))
     dfmt4 <- rbind(dfmt1, dfmt2, dfmt3)
 
     dfmt5 <- as.dfm(matrix(
         c(0, 0, 1, 1, 0, 0, 0, 2, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 0),
         nrow = 3,
         dimnames = list(
-            c("text1", "text1", "text1"),
+            c("doc1", "doc2", "doc3"),
             c("brown", "does", "fox", "quick", "say", "the", "what")
         )
     ))
@@ -374,29 +374,29 @@ test_that("dfm print works with options as expected", {
                 remove_punct = FALSE, remove_numbers = FALSE, split_hyphens = TRUE))
     expect_output(
         print(dfmt, max_ndoc = 6, max_nfeat = 10, show_summary = TRUE),
-        paste0("^Document-feature matrix of: 14 documents, 4,452 features \\(81\\.97% sparse\\) and 4 docvars",
+        paste0("^Document-feature matrix of: 14 documents, 4,452 features \\(81\\.97% sparse\\) and 4\ndocvars",
                ".*",
-               "\\[ reached max_ndoc \\.\\.\\. 8 more documents, reached max_nfeat \\.\\.\\. 4,442 more features \\]$")
+               "\\[ reached max_ndoc \\.\\.\\. 8 more documents, reached max_nfeat \\.\\.\\. 4,442 more\nfeatures \\]$")
     )
     expect_output(
         print(dfmt[1:5, 1:5], max_ndoc = 6, max_nfeat = 10, show_summary = TRUE),
-        paste0("^Document-feature matrix of: 5 documents, 5 features \\(4\\.00% sparse\\) and 4 docvars\\.",
+        paste0("^Document-feature matrix of: 5 documents, 5 features \\(4\\.00% sparse\\) and 4\ndocvars\\.",
                ".*",
                "1789-Washington\\s+3\\s+2\\s+5\\s+71\\s+116")
     )
     expect_output(
         print(dfmt[1:5, 1:5], max_ndoc = -1, max_nfeat = -1, show_summary = TRUE),
-        paste0("^Document-feature matrix of: 5 documents, 5 features \\(4\\.00% sparse\\) and 4 docvars\\.",
+        paste0("^Document-feature matrix of: 5 documents, 5 features \\(4\\.00% sparse\\) and 4\ndocvars\\.",
                ".*",
                "1805-Jefferson\\s+8\\s+1\\s+10\\s+101\\s+143")
     )
     expect_output(
         print(dfmt[1:5, 1:5], max_ndoc = 0, max_nfeat = -1, show_summary = TRUE),
-        "^Document-feature matrix of: 5 documents, 5 features \\(4\\.00% sparse\\) and 4 docvars\\.$"
+        "^Document-feature matrix of: 5 documents, 5 features \\(4\\.00% sparse\\) and 4\ndocvars\\.$"
     )
     expect_output(
         print(dfmt[1:5, 1:5], max_ndoc = -1, max_nfeat = 0, show_summary = TRUE),
-        paste0("^Document-feature matrix of: 5 documents, 5 features \\(4\\.00% sparse\\) and 4 docvars\\.",
+        paste0("^Document-feature matrix of: 5 documents, 5 features \\(4\\.00% sparse\\) and 4\ndocvars\\.",
                "\\n",
                "\\[ reached max_nfeat \\.\\.\\. 5 more features ]$")
     )
@@ -404,7 +404,7 @@ test_that("dfm print works with options as expected", {
         print(dfmt, max_ndoc = 6, max_nfeat = 10, show_summary = FALSE),
         paste0("^\\s+features",
                ".*",
-               "\\[ reached max_ndoc \\.\\.\\. 8 more documents, reached max_nfeat \\.\\.\\. 4,442 more features \\]$")
+               "\\[ reached max_ndoc \\.\\.\\. 8 more documents, reached max_nfeat \\.\\.\\. 4,442 more\nfeatures \\]$")
     )
     expect_error(print(dfmt, max_ndoc = -2),
                  "The value of max_ndoc must be between -1 and Inf")
@@ -560,7 +560,7 @@ test_that("test null dfm is handled properly", {
     expect_equal(cbind(mx, mx), mx)
 
     expect_output(print(mx),
-                  "Document-feature matrix of: 0 documents, 0 features (0.00% sparse) and 0 docvars.", fixed = TRUE)
+                  "Document-feature matrix of: 0 documents, 0 features (0.00% sparse) and 0\ndocvars.", fixed = TRUE)
 })
 
 test_that("test empty dfm is handled properly (#1419)", {

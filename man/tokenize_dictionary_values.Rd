@@ -13,8 +13,8 @@ tokenize_dictionary_values(dict, separator, ...)
 Internal function to tokenize dictionary values
 }
 \examples{
-dict <- dictionary(list(ASIA = list("IN" = "印度", 
-                                    "ID" = "印度尼西亚")))
+dict <- dictionary(list(ASIA = list("IN" = "\u5370\u5ea6",
+                                    "ID" = "\u5370\u5ea6\u5c3c\u897f\u4e9a")))
 quanteda:::tokenize_dictionary_values(dict, " ")
 }
 \keyword{internal}

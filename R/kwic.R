@@ -160,9 +160,8 @@ print.kwic <- function(x, max_nrow = quanteda_options("print_kwic_max_nrow"),
 
     x <- head(x, max_nrow)
     if (show_summary) {
-        cat(msg("Keyword-in-context with %s %s.",
-                nrow(x) + nrem,
-                if (nrow(x) + nrem == 1) "match" else "matches"))
+        wrap(msg("Keyword-in-context with %s %s.",
+                 nrow(x) + nrem, inflect("match", nrow(x) + nrem)))
     }
 
     if (nrow(x)) {
@@ -180,15 +179,13 @@ print.kwic <- function(x, max_nrow = quanteda_options("print_kwic_max_nrow"),
             post = format(stri_replace_all_regex(x$post, "(\\p{L}*) (\\p{Po})", "$1$2"), justify = "left")
         )
         colnames(result) <- NULL
-        print(result, row.names = FALSE)
+        print(result, row.names = FALSE, max = nrow(result) * ncol(result))
 
         if (nrem > 0) {
-            cat(msg("[ reached max_nrow ... %s more %s]",
-                    nrem,
-                    if (nrem == 1) "match" else "matches"))
+            wrap(msg("[ reached max_nrow ... %s more %s]",
+                     nrem, inflect("match", nrem)))
         }
     }
-    cat("\n", sep = "")
 }
 
 #' @method [ kwic

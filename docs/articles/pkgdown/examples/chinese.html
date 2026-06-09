@@ -41,7 +41,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">4.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">4.4</span>
       </span>
     </div>
 
@@ -232,7 +232,7 @@ and 2017. You can download the corpus using the
 <span>                   min_size <span class="op">=</span> <span class="fl">0.5</span>, max_size <span class="op">=</span> <span class="fl">2.8</span>,</span>
 <span>                   font <span class="op">=</span> <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.info.html" class="external-link">Sys.info</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="st">'sysname'</span><span class="op">]</span> <span class="op">==</span> <span class="st">"Darwin"</span><span class="op">)</span> <span class="st">"SimHei"</span> <span class="kw">else</span> <span class="cn">NULL</span>,</span>
 <span>                   color <span class="op">=</span> <span class="fu">RColorBrewer</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/RColorBrewer/man/ColorBrewer.html" class="external-link">brewer.pal</a></span><span class="op">(</span><span class="fl">8</span>, <span class="st">"Dark2"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="chinese_files/figure-html/unnamed-chunk-6-1.png" width="480" style="display: block; margin: auto;"></p>
+<p><img src="chinese_files/figure-html/unnamed-chunk-6-1.png" class="r-plt" alt="" width="480" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level3">
 <h3 id="feature-co-occurrence-matrix">Feature co-occurrence matrix<a class="anchor" aria-label="anchor" href="#feature-co-occurrence-matrix"></a>
@@ -263,7 +263,7 @@ unspervised document scaling method to Chinese texts.</p>
 <span><span class="va">y</span> <span class="op">&lt;-</span> <span class="va">y</span><span class="op">[</span><span class="va">y</span> <span class="op">&lt;=</span> <span class="fl">1964</span> <span class="op">|</span> <span class="va">y</span> <span class="op">&gt;=</span> <span class="fl">1975</span><span class="op">]</span></span>
 <span><span class="va">y</span> <span class="op">&lt;-</span> <span class="va">y</span><span class="op">[</span><span class="op">!</span><span class="va">y</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1963</span>, <span class="fl">1961</span>, <span class="fl">1962</span>, <span class="fl">1976</span>, <span class="fl">1977</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">y</span>, <span class="va">tmod_wf</span><span class="op">$</span><span class="va">theta</span>, xlab <span class="op">=</span> <span class="st">"Year"</span>, ylab <span class="op">=</span> <span class="st">"Position"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="chinese_files/figure-html/fig2-1.png" width="576" style="display: block; margin: auto;"></p>
+<p><img src="chinese_files/figure-html/fig2-1.png" class="r-plt" alt="" width="576" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level3">
 <h3 id="collocations">Collocations<a class="anchor" aria-label="anchor" href="#collocations"></a>
@@ -481,7 +481,7 @@ unspervised document scaling method to Chinese texts.</p>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.2.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
       </footer>

@@ -42,7 +42,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">4.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">4.4</span>
       </span>
     </div>
 
@@ -224,8 +224,11 @@
 <p>Because this compiles some C++ and Fortran source code, you will need to have installed the appropriate compilers to build the development version.</p>
 <p>You will also need to install TBB:</p>
 <p><strong>macOS:</strong></p>
-<p>After installing <a href="https://brew.sh" class="external-link">Homebrew</a>:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>brew install tbb</span></code></pre></div>
+<p>First, you will need to install XCode command line tools.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>xcode<span class="sc">-</span>select <span class="sc">--</span>install</span></code></pre></div>
+<p>Then install the TBB libraries and the pkg-config utility: (after installing <a href="https://brew.sh" class="external-link">Homebrew</a>):</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>brew install tbb pkg<span class="sc">-</span>config</span></code></pre></div>
+<p>Finally, you will need to install <a href="https://github.com/fxcoudert/gfortran-for-macOS/releases" class="external-link">gfortran</a>.</p>
 <p><strong>Windows:</strong></p>
 <p>Install <a href="https://cran.r-project.org/bin/windows/Rtools/" class="external-link">RTools</a>, which includes the TBB libraries.</p>
 </div>
@@ -323,7 +326,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.2.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
       </footer>

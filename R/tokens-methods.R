@@ -37,11 +37,14 @@ is.tokens <- function(x) "tokens" %in% class(x)
 
 #' @rdname as.tokens
 #' @param length optional integer specifying the maximum length (number of
-#'   positions) for the sparse tensor. If `NULL` (default), the length is
+#'   positions) for the tensor. If `NULL` (default), the length is
 #'   inferred from the maximum token position across all documents.
-#' @return `as.tensor` returns a sparse COO tensor from a [tokens] object,
-#'   compatible with the \pkg{torch} package. Each document is represented as
-#'   a row, and token positions as columns. Values are the integer token IDs.
+#' @param extract indices for documents to be extracted from `x`.
+#' @param ... additional arguments passed to [torch::torch_tensor].
+#' @return `as.tensor` returns a tensor from a [tokens] object,
+#'   compatible with the \pkg{torch} package. Each document is represented as a
+#'   row, and token positions as columns. The integer token IDs in the resulting
+#'   tensor are shifted by one to comply with 1-based indexing in R.
 #' @export
 #' @examples
 #' \dontrun{
@@ -58,45 +61,40 @@ as.tensor <- function(x, ...) {
 #' @rdname as.tokens
 #' @method as.tensor tokens
 #' @export
-as.tensor.tokens <- function(x, length = NULL, ...) {
-    
-    length <- check_integer(length, min = 1, allow_null = TRUE)
-    
+as.tensor.tokens <- function(x, length = NULL, extract = NULL, ...) {
+
     if (!requireNamespace("torch", quietly = TRUE)) {
         stop("Package 'torch' is required for as.tensor(). ",
              "Install it with install.packages('torch').",
              call. = FALSE)
     }
+    result <- as.matrix(x, length, extract = extract, drop = FALSE)
+    torch::torch_tensor(result + 1L, ...)
+}
 
-    # truncate documents if length is specified
-    if (!is.null(length))
-        x <- tokens_select(x, endpos = length)
-    
-    lis <- as.list(unclass(as.tokens(x)))
-    l <- lengths(lis)
-    nc <- max(c(l, length, 0L)) # number of columns
-    nr <- length(l) # number of rows
+#' @rdname as.tokens
+#' @param drop if `TRUE` returns a vector instead of a matrix with only one row.
+#' @method as.matrix tokens
+#' @export
+as.matrix.tokens <- function(x, length = NULL, extract = NULL, drop = TRUE, ...) {
 
-    if (sum(l) == 0L) {
-        # no tokens anywhere: return an empty sparse tensor
-        i <- torch::torch_empty(c(2L, 0L), dtype = torch::torch_int64())
-        v <- torch::torch_empty(0L, dtype = torch::torch_int64())
-        result <- torch::torch_sparse_coo_tensor(indices = i, values = v, 
-                                                size = c(nr, nc))
-        return(result)
+    length <- check_integer(length, min = 1, allow_null = TRUE)
+    extract <- check_integer(extract, min = 1, max = ndoc(x), max_len = Inf,
+                             allow_null = TRUE)
+    drop <- check_logical(drop)
+
+    if (!is.tokens_xptr(x))
+        x <- as.tokens_xptr(x)
+    if (is.null(extract))
+        extract <- seq_len(ndoc(x))
+    if (is.null(length))
+        length <- max(c(ntoken(x), 0))
+    result <- cpp_as_matrix(x, length, extract_ = extract)
+    if (drop && nrow(result) == 1) {
+        result <- drop(result)
+    } else {
+        rownames(result) <- docnames(x)[extract]
     }
-
-    i <- torch::torch_tensor(
-        rbind(rep(seq_along(l), l), unlist(lapply(lis, seq_along))),
-        dtype = torch::torch_int64()
-    )
-    v <- torch::torch_tensor(
-        unlist(lis, use.names = FALSE),
-        dtype = torch::torch_int64()
-    )
-    result <- torch::torch_sparse_coo_tensor(indices = i, values = v, 
-                                             size = c(nr, nc))
-
     return(result)
 }
 
@@ -123,25 +121,26 @@ print.tokens <- function(x, max_ndoc = quanteda_options("print_tokens_max_ndoc")
                          max_ntoken = quanteda_options("print_tokens_max_ntoken"),
                          show_summary = quanteda_options("print_tokens_summary"),
                          ...) {
-    
+
     max_ndoc <- check_integer(max_ndoc, min = -1)
     max_ntoken <- check_integer(max_ntoken, min = -1)
     show_summary <- check_logical(show_summary)
-    
+
     docvars <- docvars(x)
     ndoc <- ndoc(x)
     if (max_ndoc < 0)
         max_ndoc <- ndoc(x)
 
     if (show_summary) {
-        cat(msg("Tokens consisting of %s %s",
-                ndoc, if (ndoc == 1) "document" else "documents"))
+        line <- msg("Tokens consisting of %s %s",
+                    ndoc, inflect("document", ndoc))
         if (ncol(docvars))
-            cat(msg(" and %s %s",
-                    ncol(docvars), if (ncol(docvars) == 1) "docvar" else "docvars"))
+            line <- msg(" and %s %s",
+                        ncol(docvars), inflect("docvar", ncol(docvars)),
+                        prepend = line)
         if (is.tokens_xptr(x))
-            cat(msg(" (pointer to %s)", address(x)))
-        cat(".\n")
+            line <- msg(" (pointer to %s)", address(x), prepend = line)
+        wrap(paste0(line, "."))
     }
 
     if (max_ndoc > 0 && ndoc(x) > 0) {
@@ -151,19 +150,19 @@ print.tokens <- function(x, max_ndoc = quanteda_options("print_tokens_max_ndoc")
         len <- lengths(x)
         if (max_ntoken < 0)
             max_ntoken <- max(len)
-        x <- lapply(unclass(x), function(y) types[head(y, max_ntoken) + 1]) # shift index to show padding
+        # shift index to show padding
+        x <- lapply(unclass(x), function(y) types[head(y, max_ntoken) + 1])
         for (i in seq_along(label)) {
-            cat(label[i], "\n", sep = "")
+            wrap(label[i])
             print(x[[i]], ...)
             if (len[i] > max_ntoken)
-                cat(msg("[ ... and %s more ]\n", 
-                        len[i] - max_ntoken))
-            cat("\n", sep = "")
+                wrap(msg("[ ... and %s more ]", len[i] - max_ntoken))
+            cat("\n")
         }
         ndoc_rem <- ndoc - max_ndoc
         if (ndoc_rem > 0)
-            cat(msg("[ reached max_ndoc ... %s more %s ]",
-                    ndoc_rem, if (ndoc_rem == 1) "document" else "documents"))
+            wrap(msg("[ reached max_ndoc ... %s more %s ]",
+                     ndoc_rem, inflect("document", ndoc_rem)))
     }
 }
 
@@ -254,31 +253,31 @@ lengths.tokens <- function(x, use.names = TRUE) {
 #' @rdname tokens-class
 #' @export
 c.tokens_xptr <- function(...) {
-    
+
     x <- list(...)
-    
-    if (!all(unlist(lapply(x, is.tokens_xptr)))) 
+
+    if (!all(unlist(lapply(x, is.tokens_xptr))))
         stop("Cannot combine different types of objects", call. = FALSE)
-    
+
     if (any(duplicated(unlist(lapply(x, docnames)))))
         stop("Cannot combine tokens with duplicated document names", call. = FALSE)
- 
+
     docvars <- lapply(x, function(x) get_docvars(x, user = TRUE, system = TRUE))
     attrs <- lapply(x, attributes)
     what <- unlist(lapply(attrs, field_object, "what"))
     conct <- unlist(lapply(attrs, field_object, "concatenator"))
-    
+
     if (length(unique(what))> 1)
         stop("Cannot combine tokens in different tokenization units", call. = FALSE)
     if (length(unique(conct))> 1)
         stop("Cannot combine tokens with different concatenators", call. = FALSE)
-    
+
     ngram <- unlist(lapply(attrs, field_object, "ngram"))
     skip <- unlist(lapply(attrs, field_object, "skip"))
-    
+
     temp <- combine_tokens(...)
     cpp_recompile(temp)
-    
+
     build_tokens(
         temp, types = NULL,
         what = field_object(attrs[[1]], "what"),
@@ -294,12 +293,12 @@ c.tokens_xptr <- function(...) {
 #' @rdname tokens-class
 #' @export
 c.tokens <- function(...) {
-    
+
     x <- list(...)
-    
-    if (!all(unlist(lapply(x, is.tokens)))) 
+
+    if (!all(unlist(lapply(x, is.tokens))))
         stop("Cannot combine different types of objects", call. = FALSE)
-    
+
     as.tokens(do.call(c, lapply(x, as.tokens_xptr)))
 }
 

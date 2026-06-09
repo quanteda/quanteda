@@ -265,14 +265,16 @@ test_that("dfm_remove/keep fail if selection argument is used", {
 test_that("dfm_remove works when selection is a dfm (#1320)", {
     d1 <- dfm(tokens("a b b c c c d d d d"))
     d2 <- dfm(tokens("d d d a a"))
-    expect_error({
-        d3 <- dfm_remove(d1, pattern = d2)
-    }, "The `pattern` argument of `dfm_select()` cannot be a dfm",
-    fixed = TRUE)
-    expect_error({
-        d4 <- dfm_select(d1, pattern = d2, selection = "remove")
-    }, "The `pattern` argument of `dfm_select()` cannot be a dfm",
-    fixed = TRUE)
+    expect_error(
+        dfm_remove(d1, pattern = d2),
+        "The `pattern` argument of `dfm_select()` cannot be a dfm",
+        fixed = TRUE
+    )
+    expect_error(
+        dfm_select(d1, pattern = d2, selection = "remove"), 
+        "The `pattern` argument of `dfm_select()` cannot be a dfm",
+        fixed = TRUE
+    )
 })
 
 test_that("really long words are not removed in tokens() (#1713)", {

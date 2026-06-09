@@ -8,7 +8,7 @@
 A named character vector of plain ASCII texts
 }
 \usage{
-data_char_ukimmig2010
+data(data_char_ukimmig2010)
 }
 \description{
 Extracts from the election manifestos of 9 UK political parties from 2010, related

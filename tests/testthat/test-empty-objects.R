@@ -88,7 +88,7 @@ test_that("empty DFM works", {
     expect_equal(docvars(dfmat3),
                  data.frame(var1 = integer(), var2 = numeric()))
     expect_output(print(dfmat3),
-                  "Document-feature matrix of: 0 documents, 0 features (0.00% sparse) and 2 docvars.",
+                  "Document-feature matrix of: 0 documents, 0 features (0.00% sparse) and 2\ndocvars.",
                   fixed = TRUE)
 
     # works with dfm methods

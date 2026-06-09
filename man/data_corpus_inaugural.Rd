@@ -18,7 +18,7 @@ a \link{corpus} object with the following docvars:
 \url{https://www.presidency.ucsb.edu/documents/presidential-documents-archive-guidebook/inaugural-addresses}.
 }
 \usage{
-data_corpus_inaugural
+data(data_corpus_inaugural)
 }
 \description{
 US presidential inaugural address texts, and metadata (for the corpus), from

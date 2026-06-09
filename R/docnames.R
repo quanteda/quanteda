@@ -2,10 +2,9 @@
 
 #' Get or set document names
 #' 
-#' Get or set the document names of a [corpus], [tokens], or [dfm] object.
-#' @param x the object with docnames
+#' @param x [corpus], [tokens], [tokens_xptr], or [dfm] object.
 #' @export
-#' @return `docnames` returns a character vector of the document names
+#' @return `docnames()` returns a character vector of the unique document names.
 #' @seealso [featnames()]
 #' @examples
 #' # get and set doument names to a corpus
@@ -46,6 +45,7 @@ docnames.tokens <- function(x) {
 # docnames<- ----------
 
 #' @param value a character vector of the same length as `x`
+#' @inheritParams corpus
 #' @return `docnames <-` assigns new values to the document names of an object.  
 #' docnames can only be character, so any non-character value assigned to be a
 #' docname will be coerced to mode `character`.
@@ -56,20 +56,20 @@ docnames.tokens <- function(x) {
 #' docnames(corp) <- paste0("Speech", seq_len(ndoc(corp)))
 #' 
 #' @rdname docnames
-"docnames<-" <- function(x, value) {
+"docnames<-" <- function(x, unique_docnames = TRUE, value) {
     UseMethod("docnames<-")
 }
 
 #' @export
-"docnames<-.default" <- function(x, value) {
+"docnames<-.default" <- function(x, unique_docnames = TRUE, value) {
     check_class(class(x), "docnames<-")
 }
 
 #' @noRd
 #' @export
-"docnames<-.corpus" <- function(x, value) {
+"docnames<-.corpus" <- function(x, unique_docnames = TRUE, value) {
     x <- as.corpus(x)
-    temp <- make_docvars(length(value), value, unique = TRUE)
+    temp <- make_docvars(length(value), value, unique = unique_docnames)
     attr(x, "docvars")[c("docname_", "docid_", "segid_")] <- temp
     attr(x, "names") <- temp[["docname_"]]
     return(x)
@@ -77,9 +77,9 @@ docnames.tokens <- function(x) {
 
 #' @noRd
 #' @export
-"docnames<-.tokens" <- function(x, value) {
+"docnames<-.tokens" <- function(x, unique_docnames = TRUE, value) {
     x <- as.tokens(x)
-    temp <- make_docvars(length(value), value, unique = TRUE)
+    temp <- make_docvars(length(value), value, unique = unique_docnames)
     attr(x, "docvars")[c("docname_", "docid_", "segid_")] <- temp
     attr(x, "names") <- temp[["docname_"]]
     return(x)
@@ -87,9 +87,9 @@ docnames.tokens <- function(x) {
 
 #' @noRd
 #' @export
-"docnames<-.dfm" <- function(x, value) {
+"docnames<-.dfm" <- function(x, unique_docnames = TRUE, value) {
     x <- as.dfm(x)
-    temp <- make_docvars(length(value), value, unique = TRUE)
+    temp <- make_docvars(length(value), value, unique = unique_docnames)
     x@docvars[c("docname_", "docid_", "segid_")] <- temp
     x@Dimnames[["docs"]] <- temp[["docname_"]]
     return(x)
@@ -145,16 +145,16 @@ setMethod("rownames<-",
 # docid -------------
 
 #' @rdname docnames
-#' @return `docid` returns an internal variable denoting the original "docname"
-#'   from which a document came.  If an object has been reshaped (e.g.
+#' @return `docid()` returns an internal factor variable that records the original
+#'   `doc_id`.  If an object has been reshaped (e.g.
 #'   [corpus_reshape()] or segmented (e.g. [corpus_segment()]), `docid(x)` returns 
-#'   the original docnames but `segid(x)` does the serial number of those segments 
-#'   within the original document. 
-#' @note `docid` and `segid` are designed primarily for developers, not for end users.  In
-#'   most cases, you will want `docnames` instead.  It is, however, the
+#'   the original `doc_id` but `segid(x)` does the serial number of those segments 
+#'   within the original `doc_id`. 
+#' @note `docid()` and `segid()` are designed primarily for developers, not for end users.  In
+#'   most cases, you will want `docnames()` instead.  It is, however, the
 #'   default for [groups], so that documents that have been previously reshaped
 #'   (e.g. [corpus_reshape()] or segmented (e.g.
-#'   [corpus_segment()]) will be regrouped into their original `docnames` when
+#'   [corpus_segment()]) will be regrouped into their original `doc_id` when
 #'   `groups = docid(x)`.
 #' @export
 #' @examples 

@@ -10,7 +10,8 @@ test_that("tokens indexing works as expected", {
     expect_equal(as.list(toks["d2"]), list(d2 = c("four", "five", "six")))
     expect_equal(as.list(toks[2]), list(d2 = c("four", "five", "six")))
     expect_equal(as.list(toks[c(-1, -3)]), list(d2 = c("four", "five", "six"))) # issue #1830
-
+    expect_equal(toks[], toks)
+    
     # issue #370
     expect_equal(attr(toks[1], "types"), c("one", "two", "three"))
     expect_equal(attr(toks[2], "types"), c("four", "five", "six"))
@@ -820,6 +821,11 @@ test_that("tokens printing works", {
         print(toks, max_ndoc = 0, max_ntoken = 0, show_summary = TRUE),
         "Tokens consisting of 14 documents and 4 docvars.",
         fixed = TRUE
+    )
+    expect_output(
+        print(as.tokens_xptr(toks), max_ndoc = 0, max_ntoken = 0, show_summary = TRUE),
+        "Tokens consisting of 14 documents and 4 docvars \\(pointer to [0-9a-z]+\\)\\.",
+        fixed = FALSE
     )
     expect_output(
         print(toks, max_ndoc = 2, max_ntoken = 3, show_summary = TRUE),
