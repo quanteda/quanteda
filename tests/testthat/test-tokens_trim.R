@@ -33,6 +33,10 @@ test_that("tokens_trim works", {
     expect_equal(length(types(tokens_trim(toks, max_docfreq = 2, docfreq_type = "rank"))), 4)
     expect_equal(length(types(tokens_trim(toks, max_docfreq = 2))), 4)
     
+    expect_equal(types(tokens_trim(toks, max_n = 3)), c("b", "e", "f"))
+    expect_equal(length(types(tokens_trim(toks, max_n = 4))), 4)
+    expect_equal(length(types(tokens_trim(toks, max_termfreq = 3, max_n = 4))), 3)
+    
 })
 
 test_that("tokens_trim works with padding", {

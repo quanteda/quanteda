@@ -1,38 +1,42 @@
 test_that("dfm_trim works", {
-    mydfm <- dfm(tokens(c(d1 = "a b c d e", d2 = "a a b b e f", d3 = "b c e e f f f")))
-    s <- sum(mydfm)
+    dfmt <- dfm(tokens(c(d1 = "a b c d e", d2 = "a a b b e f", d3 = "b c e e f f f")))
+    s <- sum(dfmt)
     
-    expect_equal(nfeat(dfm_trim(mydfm, min_termfreq = 0.5, termfreq_type = "quantile")), 4)
-    expect_equal(nfeat(dfm_trim(mydfm, min_termfreq = 3 / s, termfreq_type = "prop")), 4)
-    expect_equal(nfeat(dfm_trim(mydfm, min_termfreq = 3)), 4)
+    expect_equal(nfeat(dfm_trim(dfmt, min_termfreq = 0.5, termfreq_type = "quantile")), 4)
+    expect_equal(nfeat(dfm_trim(dfmt, min_termfreq = 3 / s, termfreq_type = "prop")), 4)
+    expect_equal(nfeat(dfm_trim(dfmt, min_termfreq = 3)), 4)
     
-    expect_equal(nfeat(dfm_trim(mydfm, max_termfreq = 0.8, termfreq_type = "quantile")), 6)
-    expect_equal(nfeat(dfm_trim(mydfm, max_termfreq = 4 / s, termfreq_type = "prop")), 6)
-    expect_equal(nfeat(dfm_trim(mydfm, max_termfreq = 4)), 6)
+    expect_equal(nfeat(dfm_trim(dfmt, max_termfreq = 0.8, termfreq_type = "quantile")), 6)
+    expect_equal(nfeat(dfm_trim(dfmt, max_termfreq = 4 / s, termfreq_type = "prop")), 6)
+    expect_equal(nfeat(dfm_trim(dfmt, max_termfreq = 4)), 6)
 
-    expect_equal(nfeat(dfm_trim(mydfm, min_docfreq = 0.5, docfreq_type = "quantile")), 5)
-    expect_equal(nfeat(dfm_trim(mydfm, min_docfreq = 2 / 3, docfreq_type = "prop")), 5)
-    expect_equal(nfeat(dfm_trim(mydfm, min_docfreq = 2)), 5)
+    expect_equal(nfeat(dfm_trim(dfmt, min_docfreq = 0.5, docfreq_type = "quantile")), 5)
+    expect_equal(nfeat(dfm_trim(dfmt, min_docfreq = 2 / 3, docfreq_type = "prop")), 5)
+    expect_equal(nfeat(dfm_trim(dfmt, min_docfreq = 2)), 5)
     
-    expect_equal(nfeat(dfm_trim(mydfm, max_docfreq = 0.5, docfreq_type = "quantile")), 4)
-    expect_equal(nfeat(dfm_trim(mydfm, max_docfreq = 2 / 3, docfreq_type = "prop")), 4)
-    expect_equal(nfeat(dfm_trim(mydfm, max_docfreq = 2)), 4)
+    expect_equal(nfeat(dfm_trim(dfmt, max_docfreq = 0.5, docfreq_type = "quantile")), 4)
+    expect_equal(nfeat(dfm_trim(dfmt, max_docfreq = 2 / 3, docfreq_type = "prop")), 4)
+    expect_equal(nfeat(dfm_trim(dfmt, max_docfreq = 2)), 4)
     
-    expect_equal(nfeat(dfm_trim(mydfm, min_termfreq = 2, termfreq_type = "rank")), 3)
-    expect_equal(nfeat(dfm_trim(mydfm, min_termfreq = 4)), 3)
+    expect_equal(nfeat(dfm_trim(dfmt, min_termfreq = 2, termfreq_type = "rank")), 3)
+    expect_equal(nfeat(dfm_trim(dfmt, min_termfreq = 4)), 3)
     
-    expect_equal(nfeat(dfm_trim(mydfm, max_termfreq = 4, termfreq_type = "rank")), 3)
-    expect_equal(nfeat(dfm_trim(mydfm, max_termfreq = 3)), 3)
+    expect_equal(nfeat(dfm_trim(dfmt, max_termfreq = 4, termfreq_type = "rank")), 3)
+    expect_equal(nfeat(dfm_trim(dfmt, max_termfreq = 3)), 3)
     
-    expect_equal(nfeat(dfm_trim(mydfm, min_docfreq = 1, docfreq_type = "rank")), 2)
-    expect_equal(nfeat(dfm_trim(mydfm, min_docfreq = 3)), 2)
+    expect_equal(nfeat(dfm_trim(dfmt, min_docfreq = 1, docfreq_type = "rank")), 2)
+    expect_equal(nfeat(dfm_trim(dfmt, min_docfreq = 3)), 2)
     
-    expect_equal(nfeat(dfm_trim(mydfm, max_docfreq = 2, docfreq_type = "rank")), 4)
-    expect_equal(nfeat(dfm_trim(mydfm, max_docfreq = 2)), 4)
+    expect_equal(nfeat(dfm_trim(dfmt, max_docfreq = 2, docfreq_type = "rank")), 4)
+    expect_equal(nfeat(dfm_trim(dfmt, max_docfreq = 2)), 4)
     
-    expect_equal(nfeat(dfm_trim(mydfm, sparsity = 0.0)), 2)
-    expect_equal(nfeat(dfm_trim(mydfm, sparsity = 0.5)), 5)
-    expect_equal(nfeat(dfm_trim(mydfm, sparsity = 1.0)), 6)
+    expect_equal(nfeat(dfm_trim(dfmt, sparsity = 0.0)), 2)
+    expect_equal(nfeat(dfm_trim(dfmt, sparsity = 0.5)), 5)
+    expect_equal(nfeat(dfm_trim(dfmt, sparsity = 1.0)), 6)
+    
+    expect_equal(featnames(dfm_trim(dfmt, max_n = 3)), c("b", "e", "f"))
+    expect_equal(nfeat(dfm_trim(dfmt, max_n = 4)), 4)
+    expect_equal(nfeat(dfm_trim(dfmt, max_termfreq = 3, max_n = 4)), 3)
     
 })
 
@@ -62,28 +66,28 @@ test_that("dfm_trim works", {
 # })
 
 test_that("dfm_trim works without trimming arguments #509", {
-    mydfm <- dfm(tokens(c("This is a sentence.", "This is a second sentence.", "Third sentence.")))
-    expect_equal(dim(mydfm[-2, ]), c(2, 7))
-    expect_equal(dim(dfm_trim(mydfm[-2, ], verbose = FALSE)), c(2, 6))
+    dfmt <- dfm(tokens(c("This is a sentence.", "This is a second sentence.", "Third sentence.")))
+    expect_equal(dim(dfmt[-2, ]), c(2, 7))
+    expect_equal(dim(dfm_trim(dfmt[-2, ], verbose = FALSE)), c(2, 6))
 })
 
 test_that("dfm_trim works with duplicated feature names (#829)", {
-    mydfm <- dfm(tokens(c(d1 = "a b c d e", d2 = "a a b b e f", d3 = "b c e e f f f")))
-    colnames(mydfm)[3] <- "b"
+    dfmt <- dfm(tokens(c(d1 = "a b c d e", d2 = "a a b b e f", d3 = "b c e e f f f")))
+    colnames(dfmt)[3] <- "b"
     expect_equal(
-        as.matrix(dfm_trim(mydfm, min_termfreq = 1)),
+        as.matrix(dfm_trim(dfmt, min_termfreq = 1)),
         matrix(c(1,1,1,1,1,0, 2,2,0,0,1,1, 0,1,1,0,2,3), byrow = TRUE, nrow = 3,
                dimnames = list(docs = c("d1", "d2", "d3"), 
                                features = c(letters[c(1,2,2,4:6)])))
     )
     expect_equal(
-        as.matrix(dfm_trim(mydfm, min_termfreq = 2)),
+        as.matrix(dfm_trim(dfmt, min_termfreq = 2)),
         matrix(c(1,1,1,1,0, 2,2,0,1,1, 0,1,1,2,3), byrow = TRUE, nrow = 3,
                dimnames = list(docs = c("d1", "d2", "d3"), 
                                features = c(letters[c(1,2,2,5:6)])))
     )
     # expect_equal(
-    #     as.matrix(dfm_trim(mydfm, min_termfreq = 3)),
+    #     as.matrix(dfm_trim(dfmt, min_termfreq = 3)),
     #     matrix(c(1,1,1,0, 2,2,1,1, 0,1,2,3), byrow = TRUE, nrow = 3,
     #            dimnames = list(docs = c("d1", "d2", "d3"), 
     #                            features = c(letters[c(1,2,5:6)])))
@@ -91,11 +95,11 @@ test_that("dfm_trim works with duplicated feature names (#829)", {
 })
 
 test_that("dfm_trim works with min_termfreq larger than total number (#1181)", {
-    testdfm <- dfm(tokens(c(d1 = "a a a a b b", d2 = "a b b c")))
-    expect_equal(dimnames(dfm_trim(testdfm, min_termfreq = 6)), 
+    dfmt <- dfm(tokens(c(d1 = "a a a a b b", d2 = "a b b c")))
+    expect_equal(dimnames(dfm_trim(dfmt, min_termfreq = 6)), 
                 list(docs = c("d1", "d2"), features = character())
     )
-    expect_equal(dimnames(dfm_trim(testdfm, min_docfreq = 3)), 
+    expect_equal(dimnames(dfm_trim(dfmt, min_docfreq = 3)), 
                  list(docs = c("d1", "d2"), features = character())
     )
 
@@ -204,6 +208,12 @@ test_that("dfm_trim error with invalid input", {
     expect_error(
         dfm_trim(dfmat, max_docfreq = 0, docfreq_type = "rank"),
         "The value of max_docfreq must be between 1 and Inf"
+    )
+    
+    # max_n
+    expect_error(
+        dfm_trim(dfmat, max_n = -1),
+        "The value of max_n must be between 0 and Inf"
     )
 })
 
