@@ -20,8 +20,6 @@
   allowing document variables to be read and assigned without recompiling the
   tokens. (#2497)
   
-* Add `max_n` to limit the number of features in dfm and tokens (#2496).
-
 # quanteda 4.4
 
 ## Changes and additions
