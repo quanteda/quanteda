@@ -32,7 +32,7 @@
 #'   highest document frequencies, and so on; `"quantile"` sets the cutoffs
 #'   according to the quantiles (see [quantile()]) of document
 #'   frequencies.
-#' @param max_n the maximum number of the feature. Features are selected based 
+#' @param max_n the maximum number of features. Features are selected based 
 #'   on their frequencies, but the earlier elements in [featnames] or [types] 
 #'   are chosen when the frequencies are equal.
 #' @param sparsity equivalent to `1 - min_docfreq`, included for comparison
