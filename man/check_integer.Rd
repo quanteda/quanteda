@@ -67,7 +67,7 @@ check_character(
 \item{max_nchar}{maximum character length of values in the vector.}
 
 \item{normalize}{if \code{TRUE}, normalize Unicode characters by applying
-\link[stringi:stri_trans_nf]{stringi}.}
+\link[stringi:stri_trans_nfc]{stringi}.}
 }
 \description{
 Check the range of values and the length of input vectors
