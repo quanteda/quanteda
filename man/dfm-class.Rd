@@ -10,6 +10,7 @@
 \alias{rowMeans,dfm-method}
 \alias{Arith,dfm,numeric-method}
 \alias{Arith,numeric,dfm-method}
+\alias{drop0,dfm-method}
 \alias{[,dfm,index,index,missing-method}
 \alias{[,dfm,index,index,logical-method}
 \alias{[,dfm,missing,missing,missing-method}
@@ -33,6 +34,8 @@
 \S4method{Arith}{dfm,numeric}(e1, e2)
 
 \S4method{Arith}{numeric,dfm}(e1, e2)
+
+\S4method{drop0}{dfm}(x, tol = 0)
 
 \S4method{[}{dfm,index,index,missing}(x, i, j, ..., drop = TRUE)
 

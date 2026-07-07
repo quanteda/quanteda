@@ -53,3 +53,12 @@ setMethod("Arith", signature(e1 = "numeric", e2 = "fcm"),
                  `^` = matrix2fcm(e1 ^ as(e2, "dgCMatrix"), e2@meta)
               )
           })
+
+#' @rdname fcm-class
+setMethod("drop0", signature = (x = "fcm"), 
+          function(x, tol = 0) {
+              x <- as.fcm(x)
+              attrs <- attributes(x)
+              x <- Matrix::drop0(as(x, "dgCMatrix"), tol = tol)
+              build_fcm(x, colnames(x), meta = attrs[["meta"]])
+          })
