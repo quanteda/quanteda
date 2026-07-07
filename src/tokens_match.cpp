@@ -4,7 +4,7 @@
 using namespace quanteda;
 
 Text match_type(const Text &tokens, 
-                std::vector<int> &ids){
+                const std::vector<int> &ids){
     
     if (tokens.empty()) return {}; // return empty vector for empty text
     
