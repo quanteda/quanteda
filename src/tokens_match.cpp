@@ -3,8 +3,8 @@
 
 using namespace quanteda;
 
-Text match(const Text &tokens, 
-           std::vector<int> &ids){
+Text match_type(const Text &tokens, 
+                std::vector<int> &ids){
     
     if (tokens.empty()) return {}; // return empty vector for empty text
     
@@ -48,13 +48,13 @@ TokensPtr cpp_tokens_match(TokensPtr xptr,
     arena.execute([&]{
         tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
             for (int h = r.begin(); h < r.end(); ++h) {
-                texts[h] = match(texts[h], ids);
+                texts[h] = match_type(texts[h], ids);
             }    
         });
     });
 #else
     for (std::size_t h = 0; h < H; h++) {
-        texts[h] = match(texts[h], ids);
+        texts[h] = match_type(texts[h], ids);
     }
 #endif
     xptr->texts = texts;
