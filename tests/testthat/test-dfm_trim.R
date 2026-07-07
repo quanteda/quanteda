@@ -37,7 +37,10 @@ test_that("dfm_trim works", {
     expect_equal(featnames(dfm_trim(dfmt, max_n = 3)), c("b", "e", "f"))
     expect_equal(nfeat(dfm_trim(dfmt, max_n = 4)), 4)
     expect_equal(nfeat(dfm_trim(dfmt, max_termfreq = 3, max_n = 4)), 3)
-    
+    # ties (b, e, f all have frequency 4) are broken by feature order
+    expect_equal(featnames(dfm_trim(dfmt, max_n = 2)), c("b", "e"))
+    expect_equal(nfeat(dfm_trim(dfmt, max_n = 0)), 0)
+
 })
 
 # test_that("dfm_trim works as expected", {
