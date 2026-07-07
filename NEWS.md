@@ -22,7 +22,9 @@
   allowing document variables to be read and assigned without recompiling the
   tokens. (#2497)
   
-* Added `trim` to `dfm()` to allow users to disable trimming of features.
+* Added `trim = TRUE` to `dfm()` to allow users to disable trimming of features.
+
+* Add the `drop0()` method for dfm and fcm (#2460).
 
 # quanteda 4.4
 
