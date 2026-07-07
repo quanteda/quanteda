@@ -12,7 +12,7 @@ Text match(const Text &tokens,
     tokens_new.reserve(tokens.size());
     for (std::size_t i = 0; i < tokens.size(); i++) {
         //Rcout << tokens[i] << ": ";
-        if (tokens[i] <= 0) {
+        if (tokens[i] == 0) {
             //Rcout << 0;
             tokens_new.push_back(0);
         } else if (tokens[i] <= ids.size()) {
