@@ -3,7 +3,7 @@
 
 using namespace quanteda;
 
-Text lookup(Text tokens, 
+Text lookup(const Text &tokens, 
             const std::vector<std::size_t> &spans,
             const unsigned int &id_max,
             const int &overlap,

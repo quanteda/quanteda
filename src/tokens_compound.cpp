@@ -23,7 +23,7 @@ bool is_nested(std::vector<bool> &flags, int begin, int end) {
     return(true);
 }
 
-Text join_comp(Text tokens, 
+Text join_comp(const Text &tokens, 
                const std::vector<std::size_t> &spans,
                const SetNgrams &set_comps,
                MapNgrams &map_comps,
@@ -82,7 +82,7 @@ Text join_comp(Text tokens,
     return tokens_flat;
 }
 
-Text match_comp(Text tokens, 
+Text match_comp(const Text &tokens, 
                 const std::vector<std::size_t> &spans,
                 const SetNgrams &set_comps,
                 MapNgrams &map_comps,

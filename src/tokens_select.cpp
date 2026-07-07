@@ -5,12 +5,12 @@ using namespace quanteda;
 typedef std::pair<int, int> Position;
 typedef std::vector<Position> Positions;
 
-Text keep_token(Text tokens, 
-          const std::vector<std::size_t> &spans,
-          const SetNgrams &set_words,
-          const bool &padding,
-          const std::pair<int, int> &window,
-          const std::pair<int, int> &pos){
+Text keep_token(const Text &tokens, 
+                const std::vector<std::size_t> &spans,
+                const SetNgrams &set_words,
+                const bool &padding,
+                const std::pair<int, int> &window,
+                const std::pair<int, int> &pos){
     
     if (tokens.empty()) return {}; // return empty vector for empty text
     
@@ -67,12 +67,12 @@ Text keep_token(Text tokens,
     return tokens_copy;
 }
 
-Text remove_token(Text tokens, 
-            const std::vector<std::size_t> &spans,
-            const SetNgrams &set_words,
-            const bool &padding,
-            const std::pair<int, int> &window,
-            const std::pair<int, int> &pos){
+Text remove_token(const Text &tokens, 
+                  const std::vector<std::size_t> &spans,
+                  const SetNgrams &set_words,
+                  const bool &padding,
+                  const std::pair<int, int> &window,
+                  const std::pair<int, int> &pos){
 
     if (tokens.empty()) return {}; // return empty vector for empty text
     

@@ -3,7 +3,7 @@
 
 using namespace quanteda;
 
-Text replace(Text tokens, 
+Text replace(const Text &tokens, 
              const std::vector<std::size_t> &spans,
              MapNgrams &map_pat,
              Ngrams &reps){

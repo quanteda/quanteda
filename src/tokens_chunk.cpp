@@ -2,7 +2,7 @@
 //#include "dev.h"
 using namespace quanteda;
 
-Texts chunk(Text &tokens,
+Texts chunk(const Text &tokens,
             UintParam &N,
             const int size,
             const int overlap){

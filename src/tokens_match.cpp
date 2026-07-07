@@ -3,7 +3,7 @@
 
 using namespace quanteda;
 
-Text match(Text tokens, 
+Text match(const Text &tokens, 
            std::vector<int> &ids){
     
     if (tokens.empty()) return {}; // return empty vector for empty text

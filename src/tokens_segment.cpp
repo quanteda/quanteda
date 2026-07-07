@@ -8,12 +8,12 @@ typedef std::vector<Target> Targets;
 typedef std::tuple<int, int, int, int> Segment;
 typedef std::vector<Segment> Segments;
 
-Segments segment(Text tokens,
+Segments segment(const Text &tokens,
                  UintParam &N,
-                const std::vector<std::size_t> &spans,
-                const SetNgrams &set_patterns,
-                const bool &remove,
-                const int &position){
+                 const std::vector<std::size_t> &spans,
+                 const SetNgrams &set_patterns,
+                 const bool &remove,
+                 const int &position){
     
     if(tokens.empty()) return {}; // return empty vector for empty text
     
