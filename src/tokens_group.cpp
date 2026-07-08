@@ -18,12 +18,11 @@ TokensPtr cpp_tokens_group(TokensPtr xptr,
                            List groups_,
                            const int thread = -1) {
     
-    Texts texts = xptr->texts;
     Groups groups = Rcpp::as<Groups>(groups_);
 
     // pre-allocate memory
     std::size_t G = groups.size();
-    std::size_t H = texts.size();
+    std::size_t H = xptr->texts.size();
     std::vector<size_t> sizes(G);
     
     Texts temp(G);
@@ -32,7 +31,7 @@ TokensPtr cpp_tokens_group(TokensPtr xptr,
         for (std::size_t h: groups[g]) {
             if (h < 1 || H < h)
                 throw std::range_error("Invalid groups");
-            size += texts[h - 1].size();
+            size += xptr->texts[h - 1].size();
         }
         temp[g].reserve(size);  
     }
@@ -43,7 +42,7 @@ TokensPtr cpp_tokens_group(TokensPtr xptr,
        tbb::parallel_for(tbb::blocked_range<int>(0, G), [&](tbb::blocked_range<int> r) {
           for (int g = r.begin(); g < r.end(); ++g) {
               for (std::size_t h: groups[g]) {
-                  temp[g].insert(temp[g].end(), texts[h - 1].begin(), texts[h - 1].end());
+                  temp[g].insert(temp[g].end(), xptr->texts[h - 1].begin(), xptr->texts[h - 1].end());
               }
           }
        });
@@ -51,14 +50,13 @@ TokensPtr cpp_tokens_group(TokensPtr xptr,
 #else
     for (std::size_t g = 0; g < G; g++) {
         for (std::size_t h: groups[g]) {
-            temp[g].insert(temp[g].end(), texts[h - 1].begin(), texts[h - 1].end());
+            temp[g].insert(temp[g].end(), xptr->texts[h - 1].begin(), xptr->texts[h - 1].end());
         }
     }
 #endif
     
     TokensObj *ptr_new = new TokensObj(temp, xptr->types, xptr->recompiled);
     TokensPtr xptr_new = TokensPtr(ptr_new, true);
-    
     return xptr_new;
 }
 

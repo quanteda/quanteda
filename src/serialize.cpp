@@ -2,15 +2,15 @@
 //#include "dev.h"
 using namespace quanteda;
 
-typedef std::vector<std::string> StringText;
-typedef std::vector<StringText> StringTexts;
+typedef std::vector<std::string> CharText;
+typedef std::vector<CharText> CharTexts;
 #if QUANTEDA_USE_TBB
 typedef tbb::concurrent_unordered_map<std::string, unsigned int> MapTypes;
 #else
 typedef std::unordered_map<std::string, unsigned int> MapTypes;
 #endif
 
-Text serialize(const StringText &text, 
+Text serialize(const CharText &text, 
                MapTypes &map, 
                UintParam &id,
                bool padding) {
@@ -43,7 +43,7 @@ TokensPtr cpp_serialize(List texts_,
                         const int thread = -1) {
     
     //dev::Timer timer;
-    StringTexts texts = Rcpp::as<StringTexts>(texts_);
+    CharTexts texts = Rcpp::as<CharTexts>(texts_);
     MapTypes map;
     
     //dev::start_timer("Serialize", timer);
@@ -81,7 +81,7 @@ TokensPtr cpp_serialize_add(List texts_,
     
     //dev::Timer timer;
     Types types = xptr->types;
-    StringTexts texts = Rcpp::as<StringTexts>(texts_);
+    CharTexts texts = Rcpp::as<CharTexts>(texts_);
     
     //dev::start_timer("Register", timer);
     MapTypes map;
@@ -114,10 +114,10 @@ TokensPtr cpp_serialize_add(List texts_,
     for (std::pair<std::string, unsigned int> it : map) {
         types_new[it.second - 1] = it.first;
     }
+    xptr->types = types_new;
     //dev::stop_timer("Serialize", timer);
 
     xptr->texts.insert(xptr->texts.end(), temp.begin(), temp.end());
-    xptr->types = types_new;
     return xptr;
 }
 
