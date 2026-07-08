@@ -12,18 +12,17 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
 // cpp_fcm
-S4 cpp_fcm(TokensPtr xptr, const int n_types, const NumericVector& weights_, const bool boolean, const bool ordered, const int thread);
-RcppExport SEXP _quanteda_cpp_fcm(SEXP xptrSEXP, SEXP n_typesSEXP, SEXP weights_SEXP, SEXP booleanSEXP, SEXP orderedSEXP, SEXP threadSEXP) {
+S4 cpp_fcm(TokensPtr xptr, const NumericVector& weights_, const bool boolean, const bool ordered, const int thread);
+RcppExport SEXP _quanteda_cpp_fcm(SEXP xptrSEXP, SEXP weights_SEXP, SEXP booleanSEXP, SEXP orderedSEXP, SEXP threadSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< TokensPtr >::type xptr(xptrSEXP);
-    Rcpp::traits::input_parameter< const int >::type n_types(n_typesSEXP);
     Rcpp::traits::input_parameter< const NumericVector& >::type weights_(weights_SEXP);
     Rcpp::traits::input_parameter< const bool >::type boolean(booleanSEXP);
     Rcpp::traits::input_parameter< const bool >::type ordered(orderedSEXP);
     Rcpp::traits::input_parameter< const int >::type thread(threadSEXP);
-    rcpp_result_gen = Rcpp::wrap(cpp_fcm(xptr, n_types, weights_, boolean, ordered, thread));
+    rcpp_result_gen = Rcpp::wrap(cpp_fcm(xptr, weights_, boolean, ordered, thread));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -530,7 +529,7 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_quanteda_cpp_fcm", (DL_FUNC) &_quanteda_cpp_fcm, 6},
+    {"_quanteda_cpp_fcm", (DL_FUNC) &_quanteda_cpp_fcm, 5},
     {"_quanteda_cpp_index", (DL_FUNC) &_quanteda_cpp_index, 3},
     {"_quanteda_cpp_kwic", (DL_FUNC) &_quanteda_cpp_kwic, 7},
     {"_quanteda_cpp_index_types", (DL_FUNC) &_quanteda_cpp_index_types, 3},

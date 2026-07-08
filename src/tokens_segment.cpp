@@ -104,8 +104,8 @@ TokensPtr cpp_tokens_segment(TokensPtr xptr,
                              const int &position,
                              const int thread = -1) {
     
-    Texts texts = xptr->texts;
-    Types types = xptr->types;
+    //Texts texts = xptr->texts;
+    //Types types = xptr->types;
     UintParam N(0);
     SetNgrams set_patterns;
     std::vector<std::size_t> spans = register_ngrams(patterns_, set_patterns);
@@ -113,20 +113,20 @@ TokensPtr cpp_tokens_segment(TokensPtr xptr,
     // dev::Timer timer;
 
     // dev::start_timer("Dictionary detect", timer);
-    std::size_t H = texts.size();
+    std::size_t H = xptr->texts.size();
     std::vector<Segments> temp(H);
 #if QUANTEDA_USE_TBB
     tbb::task_arena arena(thread);
     arena.execute([&]{
         tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
             for (int h = r.begin(); h < r.end(); ++h) {
-                temp[h] = segment(texts[h], N, spans, set_patterns, remove, position);
+                temp[h] = segment(xptr->texts[h], N, spans, set_patterns, remove, position);
             }    
         });
     });
 #else
     for (std::size_t h = 0; h < texts.size(); h++) {
-        temp[h] = segment(texts[h], N, spans, set_patterns, remove, position);
+        temp[h] = segment(xptr->texts[h], N, spans, set_patterns, remove, position);
     }
 #endif
     
@@ -138,13 +138,13 @@ TokensPtr cpp_tokens_segment(TokensPtr xptr,
     for (std::size_t h = 0; h < temp.size(); h++) {
         Segments targets = temp[h];
         if (targets.empty()) continue;
-        Text tokens = texts[h];
+        Text text = xptr->texts[h];
         for (size_t i = 0; i < targets.size(); i++) {
             Segment target = targets[i];
             
             // extract text segments
-            if (0 <= std::get<0>(target) && std::get<1>(target) < (int)tokens.size()) {
-                Text segment(tokens.begin() + std::get<0>(target), tokens.begin() + std::get<1>(target) + 1);
+            if (0 <= std::get<0>(target) && std::get<1>(target) < (int)text.size()) {
+                Text segment(text.begin() + std::get<0>(target), text.begin() + std::get<1>(target) + 1);
                 segments[j] = segment;
             } else {
                 segments[j] = {};
@@ -152,8 +152,8 @@ TokensPtr cpp_tokens_segment(TokensPtr xptr,
             
             // extract matched patterns
             if (remove && 0 <= std::get<2>(target) && 0 <= std::get<3>(target)) {
-                Text match(tokens.begin() + std::get<2>(target), tokens.begin() + std::get<3>(target) + 1);
-                matches[j] = join_strings(match, types, " ");
+                Text match(text.begin() + std::get<2>(target), text.begin() + std::get<3>(target) + 1);
+                matches[j] = join_strings(match, xptr->types, " ");
             } else {
                 matches[j] = "";
             }

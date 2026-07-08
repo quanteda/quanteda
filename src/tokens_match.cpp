@@ -39,25 +39,23 @@ TokensPtr cpp_tokens_match(TokensPtr xptr,
                            const IntegerVector &ids_,
                            const int thread = -1) {
     
-    Texts texts = xptr->texts;
     std::vector<int> ids = Rcpp::as< std::vector<int> >(ids_);
     
-    std::size_t H = texts.size();
+    std::size_t H = xptr->texts.size();
 #if QUANTEDA_USE_TBB
     tbb::task_arena arena(thread);
     arena.execute([&]{
         tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
             for (int h = r.begin(); h < r.end(); ++h) {
-                texts[h] = match_type(texts[h], ids);
+                xptr->texts[h] = match_type(xptr->texts[h], ids);
             }    
         });
     });
 #else
     for (std::size_t h = 0; h < H; h++) {
-        texts[h] = match_type(texts[h], ids);
+        xptr->texts[h] = match_type(xptr->texts[h], ids);
     }
 #endif
-    xptr->texts = texts;
     xptr->recompiled = true; // avoid changes in token IDs
     return xptr;
 }

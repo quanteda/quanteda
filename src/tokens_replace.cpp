@@ -70,9 +70,9 @@ TokensPtr cpp_tokens_replace(TokensPtr xptr,
                              const LogicalVector bypass_,
                              const int thread = -1) {
     
-    Texts texts = xptr->texts;
+    //Texts texts = xptr->texts;
 
-    if (bypass_.size() != (int)texts.size())
+    if (bypass_.size() != (int)xptr->texts.size())
         throw std::range_error("Invalid bypass");
     std::vector<bool> bypass = Rcpp::as< std::vector<bool> >(bypass_);
     
@@ -95,7 +95,7 @@ TokensPtr cpp_tokens_replace(TokensPtr xptr,
     //dev::stop_timer("Map construction", timer);
     
     //dev::start_timer("Pattern replace", timer);
-    std::size_t H = texts.size();
+    std::size_t H = xptr->texts.size();
 #if QUANTEDA_USE_TBB
     tbb::task_arena arena(thread);
     arena.execute([&]{
@@ -103,7 +103,7 @@ TokensPtr cpp_tokens_replace(TokensPtr xptr,
             for (int h = r.begin(); h < r.end(); ++h) {
                 if (bypass[h])
                     continue;
-                texts[h] = replace(texts[h], spans, map_pat, reps);
+                xptr->texts[h] = replace(xptr->texts[h], spans, map_pat, reps);
             }    
         });
     });
@@ -111,10 +111,10 @@ TokensPtr cpp_tokens_replace(TokensPtr xptr,
     for (std::size_t h = 0; h < H; h++) {
         if (bypass[h])
             continue;
-        texts[h] = replace(texts[h], spans, map_pat, reps);
+        xptr->texts[h] = replace(xptr->texts[h], spans, map_pat, reps);
     }
 #endif
-    xptr->texts = texts;
+    //xptr->texts = texts;
     xptr->recompiled = false;
     return xptr;
 }

@@ -41,8 +41,8 @@ DataFrame cpp_kwic(TokensPtr xptr,
                    const String delim_ = " ",
                    const int thread = -1) {
 
-    Texts texts = xptr->texts;
-    Types types = xptr->types;
+    //Texts texts = xptr->texts;
+    //Types types = xptr->types;
     std::string delim = delim_;
     
     if (pos_from_.size() != documents_.size())
@@ -57,7 +57,7 @@ DataFrame cpp_kwic(TokensPtr xptr,
     // dev::Timer timer;
     // dev::start_timer("Kwic", timer);
     std::size_t G = documents.size();
-    std::size_t H = texts.size();
+    std::size_t H = xptr->texts.size();
     std::vector<std::string> pre(G), keyword(G), post(G);
 #if QUANTEDA_USE_TBB
     tbb::task_arena arena(thread);
@@ -67,9 +67,9 @@ DataFrame cpp_kwic(TokensPtr xptr,
                 int h = documents[g] - 1;
                 if (h < 0 || (int)H <= h)
                     throw std::range_error("Invalid documents");
-                keyword[g] = kwic(texts[h], types, delim, pos_from[g], pos_to[g]);
-                pre[g] = kwic(texts[h], types, delim, pos_from[g] - window, pos_from[g] - 1L);
-                post[g] = kwic(texts[h], types, delim, pos_to[g] + 1L, pos_to[g] + window);
+                keyword[g] = kwic(xptr->texts[h], xptr->types, delim, pos_from[g], pos_to[g]);
+                pre[g] = kwic(xptr->texts[h], xptr->types, delim, pos_from[g] - window, pos_from[g] - 1L);
+                post[g] = kwic(xptr->texts[h], xptr->types, delim, pos_to[g] + 1L, pos_to[g] + window);
             }
         });
     });
@@ -79,9 +79,9 @@ DataFrame cpp_kwic(TokensPtr xptr,
         int h = documents[g] - 1L;
         if (h < 0 || (int)H <= h)
             throw std::range_error("Invalid documents");
-        keyword[g] = kwic(texts[h], types, delim, pos_from[g], pos_to[g]);
-        pre[g] = kwic(texts[h], types, delim, pos_from[g] - window, pos_from[g] - 1L);
-        post[g] = kwic(texts[h], types, delim, pos_to[g] + 1L, pos_to[g] + window);
+        keyword[g] = kwic(xptr->texts[h], xptr->types, delim, pos_from[g], pos_to[g]);
+        pre[g] = kwic(xptr->texts[h], xptr->types, delim, pos_from[g] - window, pos_from[g] - 1L);
+        post[g] = kwic(xptr->texts[h], xptr->types, delim, pos_to[g] + 1L, pos_to[g] + window);
     }
 #endif
     

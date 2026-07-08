@@ -52,8 +52,8 @@ DataFrame cpp_index(TokensPtr xptr,
                     const List &words_,
                     const int thread = -1) {
     
-    Texts texts = xptr->texts;
-    Types types = xptr->types;
+    //Texts texts = xptr->texts;
+    //Types types = xptr->types;
 
     MultiMapNgrams map_pats;
     map_pats.max_load_factor(GLOBAL_PATTERN_MAX_LOAD_FACTOR);
@@ -74,19 +74,19 @@ DataFrame cpp_index(TokensPtr xptr,
     Matches matches;
     
     //dev::start_timer("Search keywords", timer);
-    std::size_t H = texts.size();
+    std::size_t H = xptr->texts.size();
 #if QUANTEDA_USE_TBB
     tbb::task_arena arena(thread);
     arena.execute([&]{
         tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
             for (int h = r.begin(); h < r.end(); ++h) {
-                index(texts[h], h, spans, map_pats, matches);
+                index(xptr->texts[h], h, spans, map_pats, matches);
             }
         });
     });
 #else
     for (std::size_t h = 0; h < H; h++) {
-        index(texts[h], h, spans, map_pats, matches);
+        index(xptr->texts[h], h, spans, map_pats, matches);
     }
 #endif
     //dev::stop_timer("Search keywords", timer);

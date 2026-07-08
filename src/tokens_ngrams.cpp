@@ -52,8 +52,8 @@ TokensPtr cpp_tokens_ngrams(TokensPtr xptr,
                             const LogicalVector bypass_,
                             const int thread = -1) {
     
-    Texts texts = xptr->texts;
-    Types types = xptr->types;
+    //Texts texts = xptr->texts;
+    //Types types = xptr->types;
     std::string delim = delim_;
     std::vector<unsigned int> ns = Rcpp::as< std::vector<unsigned int> >(ns_);
     std::vector<unsigned int> skips = Rcpp::as< std::vector<unsigned int> >(skips_);
@@ -62,13 +62,13 @@ TokensPtr cpp_tokens_ngrams(TokensPtr xptr,
     MapNgrams map_ngram;
     map_ngram.max_load_factor(GLOBAL_NGRAMS_MAX_LOAD_FACTOR);
     
-    if (bypass_.size() != (int)texts.size())
+    if (bypass_.size() != (int)xptr->texts.size())
         throw std::range_error("Invalid bypass");
     std::vector<bool> bypass = Rcpp::as< std::vector<bool> >(bypass_);
     
     //dev::Timer timer;
     //dev::start_timer("Ngram generation", timer);
-    std::size_t H = texts.size();
+    std::size_t H = xptr->texts.size();
     IdNgram id_ngram(1);
 #if QUANTEDA_USE_TBB
     tbb::task_arena arena(thread);
@@ -76,9 +76,9 @@ TokensPtr cpp_tokens_ngrams(TokensPtr xptr,
         tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
             for (int h = r.begin(); h < r.end(); ++h) {
                 if (bypass[h]) {
-                    texts[h] = skipgram(texts[h], {1L}, {0L}, map_ngram, id_ngram);
+                    xptr->texts[h] = skipgram(xptr->texts[h], {1L}, {0L}, map_ngram, id_ngram);
                 } else {
-                    texts[h] = skipgram(texts[h], ns, skips, map_ngram, id_ngram);
+                    xptr->texts[h] = skipgram(xptr->texts[h], ns, skips, map_ngram, id_ngram);
                 }
             }    
         });
@@ -86,9 +86,9 @@ TokensPtr cpp_tokens_ngrams(TokensPtr xptr,
 #else
     for (std::size_t h = 0; h < H; h++) {
         if (bypass[h]) {
-            texts[h] = skipgram(texts[h], {1L}, {0L}, map_ngram, id_ngram);
+            xptr->texts[h] = skipgram(xptr->texts[h], {1L}, {0L}, map_ngram, id_ngram);
         } else {
-            texts[h] = skipgram(texts[h], ns, skips, map_ngram, id_ngram);
+            xptr->texts[h] = skipgram(xptr->texts[h], ns, skips, map_ngram, id_ngram);
         }
     }
 #endif
@@ -108,17 +108,17 @@ TokensPtr cpp_tokens_ngrams(TokensPtr xptr,
     arena.execute([&]{
         tbb::parallel_for(tbb::blocked_range<int>(0, I), [&](tbb::blocked_range<int> r) {
           for (int i = r.begin(); i < r.end(); ++i) {
-              types_new[i] = join_strings(keys_ngram[i], types, delim);
+              types_new[i] = join_strings(keys_ngram[i], xptr->types, delim);
           }    
         });
     });
 #else
     for (std::size_t i = 0; i < I; i++) {
-        types_new[i] = join_strings(keys_ngram[i], types, delim);
+        types_new[i] = join_strings(keys_ngram[i], xptr->types, delim);
     }
 #endif
     
-    xptr->texts = texts;
+    //xptr->texts = texts;
     xptr->types = types_new;
     xptr->recompiled = false;
     return xptr;
