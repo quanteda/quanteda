@@ -28,6 +28,8 @@
 
 * Added the `max_n` argument to `dfm_trim()` and `tokens_trim()` to keep only
   the most frequent features, with ties broken by feature order. (#2496)
+  
+* Improved the C++ code for `tokens` and `tokens_xptr` objects to reduce memory usage.
 
 # quanteda 4.4
 
