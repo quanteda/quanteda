@@ -139,6 +139,7 @@ Collate:
     'tokens_compound.R'
     'tokens_group.R'
     'tokens_lookup.R'
+    'tokens_match.R'
     'tokens_ngrams.R'
     'tokens_replace.R'
     'tokens_restore.R'
@@ -154,3 +155,4 @@ Collate:
     'wordstem.R'
     'zzz.R'
 Config/roxygen2/version: 8.0.0
+RoxygenNote: 7.3.3

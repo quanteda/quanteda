@@ -3,7 +3,7 @@
 //#include "dev.h"
 using namespace quanteda;
 
-int adjust_window(Text &tokens, int begin, int end) {
+int adjust_window(const Text &tokens, int begin, int end) {
     int i = begin; 
     if (end < begin) {
         while (i - 1 >= 0 && i - 1 >= end && tokens[i - 1] != 0) i--;
@@ -23,7 +23,7 @@ bool is_nested(std::vector<bool> &flags, int begin, int end) {
     return(true);
 }
 
-Text join_comp(Text tokens, 
+Text join_comp(const Text &tokens, 
                const std::vector<std::size_t> &spans,
                const SetNgrams &set_comps,
                MapNgrams &map_comps,
@@ -82,7 +82,7 @@ Text join_comp(Text tokens,
     return tokens_flat;
 }
 
-Text match_comp(Text tokens, 
+Text match_comp(const Text &tokens, 
                 const std::vector<std::size_t> &spans,
                 const SetNgrams &set_comps,
                 MapNgrams &map_comps,
@@ -158,21 +158,15 @@ TokensPtr cpp_tokens_compound(TokensPtr xptr,
                               const LogicalVector bypass_,
                               const int thread = -1) {
     
-    Texts texts = xptr->texts;
-    Types types = xptr->types;
     std::string delim = delim_;
     std::pair<int, int> window(window_left, window_right);
     
-    if (bypass_.size() != (int)texts.size())
+    if (bypass_.size() != (int)xptr->texts.size())
         throw std::range_error("Invalid bypass");
     std::vector<bool> bypass = Rcpp::as< std::vector<bool> >(bypass_);
     
-    unsigned int id_last = types.size();
-//#if QUANTEDA_USE_TBB
+    unsigned int id_last = xptr->types.size();
     IdNgram id_comp(id_last + 1);
-// #else
-//     IdNgram id_comp = id_last + 1;
-// #endif
 
     SetNgrams set_comps; // for matching
     set_comps.max_load_factor(GLOBAL_PATTERN_MAX_LOAD_FACTOR);
@@ -180,24 +174,7 @@ TokensPtr cpp_tokens_compound(TokensPtr xptr,
     map_comps.max_load_factor(GLOBAL_NGRAMS_MAX_LOAD_FACTOR);
     
     std::vector<std::size_t> spans = register_ngrams(compounds_, set_comps, true);
-    
-    // Ngrams comps = Rcpp::as<Ngrams>(compounds_);
-    // std::vector<std::size_t> spans(comps.size());
-    // for (std::size_t g = 0; g < comps.size(); g++) {
-    //     Ngram comp = comps[g];
-    //     // ignore patterns with paddings
-    //     if (std::find(comp.begin(), comp.end(), 0) == comp.end()) {
-    //         set_comps.insert(comp);
-    //         spans[g] = comp.size();
-    //     }
-    // }
-    // sort(spans.begin(), spans.end());
-    // spans.erase(unique(spans.begin(), spans.end()), spans.end());
-    // std::reverse(std::begin(spans), std::end(spans));
-     
-    // dev::Timer timer;
-    // dev::start_timer("Token compound", timer);
-    std::size_t H = texts.size();
+    std::size_t H = xptr->texts.size();
 #if QUANTEDA_USE_TBB
     tbb::task_arena arena(thread);
     arena.execute([&]{
@@ -206,11 +183,11 @@ TokensPtr cpp_tokens_compound(TokensPtr xptr,
                 if (bypass[h])
                     continue;
                 if (join) {
-                    texts[h] = join_comp(texts[h], spans, set_comps, map_comps, id_comp, 
-                                         keep, window);
+                    xptr->texts[h] = join_comp(xptr->texts[h], spans, set_comps, 
+                                               map_comps, id_comp, keep, window);
                 } else {
-                    texts[h] = match_comp(texts[h], spans, set_comps, map_comps, id_comp, 
-                                          keep, window);
+                    xptr->texts[h] = match_comp(xptr->texts[h], spans, set_comps, map_comps, 
+                                                id_comp, keep, window);
                 }
             }    
         });
@@ -220,9 +197,11 @@ TokensPtr cpp_tokens_compound(TokensPtr xptr,
         if (bypass[h])
             continue;
         if (join) {
-            texts[h] = join_comp(texts[h], spans, set_comps, map_comps, id_comp, keep, window);
+            xptr->texts[h] = join_comp(xptr->texts[h], spans, set_comps, map_comps, 
+                                       id_comp, keep, window);
         } else {
-            texts[h] = match_comp(texts[h], spans, set_comps, map_comps, id_comp, keep, window);
+            xptr->texts[h] = match_comp(xptr->texts[h], spans, set_comps, map_comps, 
+                                        id_comp, keep, window);
         }
     }
 #endif
@@ -239,13 +218,11 @@ TokensPtr cpp_tokens_compound(TokensPtr xptr,
     // Create compound types
     Types types_comp(ids_comp.size());
     for (std::size_t i = 0; i < ids_comp.size(); i++) {
-        types_comp[i] = join_strings(ids_comp[i], types, delim);
+        types_comp[i] = join_strings(ids_comp[i], xptr->types, delim);
     }
-    types.insert(types.end(), types_comp.begin(), types_comp.end());
+    xptr->types.insert(xptr->types.end(), types_comp.begin(), types_comp.end());
     
     // dev::stop_timer("Token compound", timer);
-    xptr->texts = texts;
-    xptr->types = types;
     xptr->recompiled = false;
     return xptr;
 }

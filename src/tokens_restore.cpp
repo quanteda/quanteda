@@ -74,16 +74,9 @@ TokensPtr cpp_tokens_restore(TokensPtr xptr,
                         const String &delim_,
                         const int thread = -1) {
     
-    Texts texts = xptr->texts;
-    Types types = xptr->types;
     std::string delim = delim_;
-
-    unsigned int id_last = types.size();
-//#if QUANTEDA_USE_TBB
+    unsigned int id_last = xptr->types.size();
     IdNgram id_comp(id_last + 1);
-// #else
-//     IdNgram id_comp = id_last + 1;
-// #endif
 
     MapNgrams map_marks; // for matching
     map_marks.max_load_factor(GLOBAL_PATTERN_MAX_LOAD_FACTOR);
@@ -105,19 +98,19 @@ TokensPtr cpp_tokens_restore(TokensPtr xptr,
      
     // dev::Timer timer;
     // dev::start_timer("Token compound", timer);
-    std::size_t H = texts.size();
+    std::size_t H = xptr->texts.size();
 #if QUANTEDA_USE_TBB
     tbb::task_arena arena(thread);
         arena.execute([&]{
         tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
             for (int h = r.begin(); h < r.end(); ++h) {
-                texts[h] = join_mark(texts[h], map_marks, map_comps, id_comp);
+                xptr->texts[h] = join_mark(xptr->texts[h], map_marks, map_comps, id_comp);
             }    
         });
     });
 #else
     for (std::size_t h = 0; h < H; h++) {
-        texts[h] = join_mark(texts[h], map_marks, map_comps, id_comp);
+        xptr->texts[h] = join_mark(xptr->texts[h], map_marks, map_comps, id_comp);
     }
 #endif
 
@@ -133,13 +126,11 @@ TokensPtr cpp_tokens_restore(TokensPtr xptr,
     // Create compound types
     Types types_comp(ids_comp.size());
     for (std::size_t i = 0; i < ids_comp.size(); i++) {
-        types_comp[i] = join_strings(ids_comp[i], types, delim);
+        types_comp[i] = join_strings(ids_comp[i], xptr->types, delim);
     }
-    types.insert(types.end(), types_comp.begin(), types_comp.end());
+    xptr->types.insert(xptr->types.end(), types_comp.begin(), types_comp.end());
     
     // dev::stop_timer("Token compound", timer);
-    xptr->texts = texts;
-    xptr->types = types;
     xptr->recompiled = false;
     return xptr;
 }
