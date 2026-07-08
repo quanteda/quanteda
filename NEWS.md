@@ -26,6 +26,9 @@
 
 * Add the `drop0()` method for dfm and fcm (#2460).
 
+* Added the `max_n` argument to `dfm_trim()` and `tokens_trim()` to keep only
+  the most frequent features, with ties broken by feature order. (#2496)
+
 # quanteda 4.4
 
 ## Changes and additions

@@ -938,8 +938,7 @@ nest_dictionary <- function(dict, depth) {
 #' @rdname read_dict_functions
 #' @description `read_dict_liwc` imports LIWC dictionary files in the
 #'   `.dic` format.
-#' @importFrom stringi stri_extract_first_regex stri_extract_last_regex stri_replace_first_regex
-#' stri_read_lines stri_extract_first_regex
+#' @importFrom stringi stri_extract_first_regex stri_extract_last_regex stri_replace_first_regex stri_read_lines
 #' @examples
 #'
 #' dict <- quanteda:::read_dict_liwc(

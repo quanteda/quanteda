@@ -32,6 +32,9 @@
 #'   highest document frequencies, and so on; `"quantile"` sets the cutoffs
 #'   according to the quantiles (see [quantile()]) of document
 #'   frequencies.
+#' @param max_n the maximum number of features. Features are selected based 
+#'   on their frequencies, but the earlier elements in [featnames] or [types] 
+#'   are chosen when the frequencies are equal.
 #' @param sparsity equivalent to `1 - min_docfreq`, included for comparison
 #'   with \pkg{tm}
 #' @inheritParams messages
@@ -75,6 +78,7 @@ dfm_trim <- function(x,
                      termfreq_type = c("count", "prop", "rank", "quantile"),
                      min_docfreq = NULL, max_docfreq = NULL, 
                      docfreq_type = c("count", "prop", "rank", "quantile"),
+                     max_n = NULL,
                      sparsity = NULL,
                      verbose = quanteda_options("verbose")) {
     UseMethod("dfm_trim")
@@ -86,6 +90,7 @@ dfm_trim.default <- function(x,
                              termfreq_type = c("count", "prop", "rank", "quantile"),
                              min_docfreq = NULL, max_docfreq = NULL,
                              docfreq_type = c("count", "prop", "rank", "quantile"),
+                             max_n = NULL,
                              sparsity = NULL,
                              verbose = quanteda_options("verbose")) {
     check_class(class(x), "dfm_trim")
@@ -97,6 +102,7 @@ dfm_trim.dfm <- function(x,
                          termfreq_type = c("count", "prop", "rank", "quantile"),
                          min_docfreq = NULL, max_docfreq = NULL,
                          docfreq_type = c("count", "prop", "rank", "quantile"),
+                         max_n = NULL,
                          sparsity = NULL,
                          verbose = quanteda_options("verbose")) {
 
@@ -128,7 +134,8 @@ dfm_trim.dfm <- function(x,
     
     f <- trim_features(colSums(x), docfreq(x), ndoc(x),
                        min_termfreq, max_termfreq, termfreq_type, 
-                       min_docfreq, max_docfreq, docfreq_type)
+                       min_docfreq, max_docfreq, docfreq_type, 
+                       max_n)
     
     if (verbose)
         before <- stats_dfm(x)
@@ -141,7 +148,8 @@ dfm_trim.dfm <- function(x,
 
 trim_features <- function(termfreq, docfreq, n,
                           min_termfreq, max_termfreq, termfreq_type, 
-                          min_docfreq, max_docfreq, docfreq_type) {
+                          min_docfreq, max_docfreq, docfreq_type,
+                          max_n) {
     
     s <- sum(termfreq)
     if (termfreq_type == "count") {
@@ -256,5 +264,10 @@ trim_features <- function(termfreq, docfreq, n,
     b4 <- docfreq > max_docfreq
     b <- b1 | b2 | b3 | b4
     
-    return(names(b[!b]))
+    f <- termfreq[!b]
+    if (!is.null(max_n)) {
+        max_n <- check_integer(max_n, min = 0)
+        f <- f[head(order(f, decreasing = TRUE), max_n)]
+    }
+    return(names(f))
 }
