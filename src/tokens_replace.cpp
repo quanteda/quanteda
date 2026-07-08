@@ -70,8 +70,6 @@ TokensPtr cpp_tokens_replace(TokensPtr xptr,
                              const LogicalVector bypass_,
                              const int thread = -1) {
     
-    //Texts texts = xptr->texts;
-
     if (bypass_.size() != (int)xptr->texts.size())
         throw std::range_error("Invalid bypass");
     std::vector<bool> bypass = Rcpp::as< std::vector<bool> >(bypass_);

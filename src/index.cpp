@@ -52,9 +52,6 @@ DataFrame cpp_index(TokensPtr xptr,
                     const List &words_,
                     const int thread = -1) {
     
-    //Texts texts = xptr->texts;
-    //Types types = xptr->types;
-
     MultiMapNgrams map_pats;
     map_pats.max_load_factor(GLOBAL_PATTERN_MAX_LOAD_FACTOR);
     Ngrams words = to_ngrams(words_);

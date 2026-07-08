@@ -104,14 +104,11 @@ TokensPtr cpp_tokens_segment(TokensPtr xptr,
                              const int &position,
                              const int thread = -1) {
     
-    //Texts texts = xptr->texts;
-    //Types types = xptr->types;
-    UintParam N(0);
     SetNgrams set_patterns;
     std::vector<std::size_t> spans = register_ngrams(patterns_, set_patterns);
+    UintParam N(0);
     
     // dev::Timer timer;
-
     // dev::start_timer("Dictionary detect", timer);
     std::size_t H = xptr->texts.size();
     std::vector<Segments> temp(H);
@@ -162,7 +159,6 @@ TokensPtr cpp_tokens_segment(TokensPtr xptr,
         }
     }
     
-  
     TokensObj *ptr_new = new TokensObj(segments, xptr->types, xptr->recompiled);
     TokensPtr xptr_new = TokensPtr(ptr_new, true);
     

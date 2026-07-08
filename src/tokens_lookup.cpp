@@ -157,7 +157,7 @@ TokensPtr cpp_tokens_lookup(TokensPtr xptr,
                             const LogicalVector bypass_,
                             const int thread = -1) {
     
-    Types types_new = Rcpp::as<Types>(types_);
+    Types types = Rcpp::as<Types>(types_);
     std::size_t H = xptr->texts.size();
     
     if (words_.size() != keys_.size())
@@ -169,12 +169,15 @@ TokensPtr cpp_tokens_lookup(TokensPtr xptr,
     std::vector<unsigned int> keys = Rcpp::as< std::vector<unsigned int> >(keys_);
     unsigned int id_max = 0;
     if (mode == 2 || mode == 3) { // non-exclusive mode
-        types_new.insert(types_new.end(), xptr->types.begin(), xptr->types.end());
+        // insert dictionary keys before words
+        xptr->types.insert(xptr->types.begin(), types.begin(), types.end()); 
         if (keys_.size() > 0)
             id_max = *max_element(keys.begin(), keys.end());
     } else {
-        id_max = types_new.size();
+        xptr->types = types;
+        id_max = types.size();
     }
+
     MultiMapNgrams map_keys;
     map_keys.max_load_factor(GLOBAL_PATTERN_MAX_LOAD_FACTOR);
     Ngrams words = to_ngrams(words_);
@@ -211,7 +214,6 @@ TokensPtr cpp_tokens_lookup(TokensPtr xptr,
     }
 #endif
     
-    xptr->types = types_new;
     if (mode == 2 || mode == 3) { // non-exclusive mode
         xptr->recompiled = false;
     } else {

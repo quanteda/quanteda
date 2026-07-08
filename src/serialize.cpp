@@ -114,10 +114,10 @@ TokensPtr cpp_serialize_add(List texts_,
     for (std::pair<std::string, unsigned int> it : map) {
         types_new[it.second - 1] = it.first;
     }
+    xptr->types = types_new;
     //dev::stop_timer("Serialize", timer);
 
     xptr->texts.insert(xptr->texts.end(), temp.begin(), temp.end());
-    xptr->types = types_new;
     return xptr;
 }
 

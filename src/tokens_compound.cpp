@@ -158,8 +158,6 @@ TokensPtr cpp_tokens_compound(TokensPtr xptr,
                               const LogicalVector bypass_,
                               const int thread = -1) {
     
-    //Texts texts = xptr->texts;
-    //Types types = xptr->types;
     std::string delim = delim_;
     std::pair<int, int> window(window_left, window_right);
     
@@ -168,11 +166,7 @@ TokensPtr cpp_tokens_compound(TokensPtr xptr,
     std::vector<bool> bypass = Rcpp::as< std::vector<bool> >(bypass_);
     
     unsigned int id_last = xptr->types.size();
-//#if QUANTEDA_USE_TBB
     IdNgram id_comp(id_last + 1);
-// #else
-//     IdNgram id_comp = id_last + 1;
-// #endif
 
     SetNgrams set_comps; // for matching
     set_comps.max_load_factor(GLOBAL_PATTERN_MAX_LOAD_FACTOR);
@@ -229,8 +223,6 @@ TokensPtr cpp_tokens_compound(TokensPtr xptr,
     xptr->types.insert(xptr->types.end(), types_comp.begin(), types_comp.end());
     
     // dev::stop_timer("Token compound", timer);
-    //xptr->texts = texts;
-    //xptr->types = types;
     xptr->recompiled = false;
     return xptr;
 }

@@ -41,8 +41,6 @@ DataFrame cpp_kwic(TokensPtr xptr,
                    const String delim_ = " ",
                    const int thread = -1) {
 
-    //Texts texts = xptr->texts;
-    //Types types = xptr->types;
     std::string delim = delim_;
     
     if (pos_from_.size() != documents_.size())

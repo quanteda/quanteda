@@ -138,21 +138,19 @@ Text remove_token(const Text &tokens,
 
 // [[Rcpp::export]]
 TokensPtr cpp_tokens_select(TokensPtr xptr,
-                                 const List &words_,
-                                 int mode,
-                                 bool padding,
-                                 int window_left,
-                                 int window_right,
-                                 const IntegerVector pos_from_,
-                                 const IntegerVector pos_to_,
-                                 const LogicalVector bypass_,
-                                 const int thread = -1) {
+                            const List &words_,
+                            int mode,
+                            bool padding,
+                            int window_left,
+                            int window_right,
+                            const IntegerVector pos_from_,
+                            const IntegerVector pos_to_,
+                            const LogicalVector bypass_,
+                            const int thread = -1) {
 
-    //Texts texts = xptr->texts;
-    std::pair<int, int> window(window_left, window_right);
-    
     SetNgrams set_words;
     std::vector<std::size_t> spans = register_ngrams(words_, set_words);
+    std::pair<int, int> window(window_left, window_right);
     
     std::size_t H = xptr->texts.size();
     if (pos_from_.size() != (int)H)
@@ -197,7 +195,6 @@ TokensPtr cpp_tokens_select(TokensPtr xptr,
     }
 #endif
     // dev::stop_timer("Token select", timer);
-    //xptr->texts = texts;
     xptr->recompiled = false;
     xptr->padded = padding;
     return xptr;

@@ -74,10 +74,7 @@ TokensPtr cpp_tokens_restore(TokensPtr xptr,
                         const String &delim_,
                         const int thread = -1) {
     
-    //Texts texts = xptr->texts;
-    //Types types = xptr->types;
     std::string delim = delim_;
-
     unsigned int id_last = xptr->types.size();
     IdNgram id_comp(id_last + 1);
 
@@ -131,13 +128,9 @@ TokensPtr cpp_tokens_restore(TokensPtr xptr,
     for (std::size_t i = 0; i < ids_comp.size(); i++) {
         types_comp[i] = join_strings(ids_comp[i], xptr->types, delim);
     }
-    
-    Types types_new = xptr->types;
-    types_new.insert(types_new.end(), types_comp.begin(), types_comp.end());
+    xptr->types.insert(xptr->types.end(), types_comp.begin(), types_comp.end());
     
     // dev::stop_timer("Token compound", timer);
-    //xptr->texts = texts;
-    xptr->types = types_new;
     xptr->recompiled = false;
     return xptr;
 }

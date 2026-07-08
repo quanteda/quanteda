@@ -35,12 +35,11 @@ TokensPtr cpp_tokens_chunk(TokensPtr xptr,
                            const int overlap,
                            const int thread = -1) {
     
-    //Texts texts = xptr->texts;
-    //Types types = xptr->types;
-    UintParam N(0);
     // dev::Timer timer;
     std::size_t H = xptr->texts.size();
     std::vector<Texts> temp(H);
+    UintParam N(0);
+
 #if QUANTEDA_USE_TBB
     tbb::task_arena arena(thread);
     arena.execute([&]{

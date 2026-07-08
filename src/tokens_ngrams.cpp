@@ -52,19 +52,17 @@ TokensPtr cpp_tokens_ngrams(TokensPtr xptr,
                             const LogicalVector bypass_,
                             const int thread = -1) {
     
-    //Texts texts = xptr->texts;
-    //Types types = xptr->types;
     std::string delim = delim_;
     std::vector<unsigned int> ns = Rcpp::as< std::vector<unsigned int> >(ns_);
     std::vector<unsigned int> skips = Rcpp::as< std::vector<unsigned int> >(skips_);
     
-    // Register both ngram (key) and unigram (value) IDs in a hash table
-    MapNgrams map_ngram;
-    map_ngram.max_load_factor(GLOBAL_NGRAMS_MAX_LOAD_FACTOR);
-    
     if (bypass_.size() != (int)xptr->texts.size())
         throw std::range_error("Invalid bypass");
     std::vector<bool> bypass = Rcpp::as< std::vector<bool> >(bypass_);
+    
+    // Register both ngram (key) and unigram (value) IDs in a hash table
+    MapNgrams map_ngram;
+    map_ngram.max_load_factor(GLOBAL_NGRAMS_MAX_LOAD_FACTOR);
     
     //dev::Timer timer;
     //dev::start_timer("Ngram generation", timer);
@@ -103,23 +101,22 @@ TokensPtr cpp_tokens_ngrams(TokensPtr xptr,
     //dev::start_timer("Token generation", timer);
     // Create ngram types
     std::size_t I = keys_ngram.size();
-    Types types_new(I);
+    Types types(I);
 #if QUANTEDA_USE_TBB
     arena.execute([&]{
         tbb::parallel_for(tbb::blocked_range<int>(0, I), [&](tbb::blocked_range<int> r) {
           for (int i = r.begin(); i < r.end(); ++i) {
-              types_new[i] = join_strings(keys_ngram[i], xptr->types, delim);
+              types[i] = join_strings(keys_ngram[i], xptr->types, delim);
           }    
         });
     });
 #else
     for (std::size_t i = 0; i < I; i++) {
-        types_new[i] = join_strings(keys_ngram[i], xptr->types, delim);
+        types[i] = join_strings(keys_ngram[i], xptr->types, delim);
     }
 #endif
     
-    //xptr->texts = texts;
-    xptr->types = types_new;
+    xptr->types = types;
     xptr->recompiled = false;
     return xptr;
 
