@@ -23,13 +23,13 @@
 \usage{
 \S4method{t}{dfm}(x)
 
-\S4method{colSums}{dfm}(x, na.rm = FALSE, dims = 1L, ...)
+\S4method{colSums}{dfm}(x, na.rm = FALSE, dims = 1, ...)
 
-\S4method{rowSums}{dfm}(x, na.rm = FALSE, dims = 1L, ...)
+\S4method{rowSums}{dfm}(x, na.rm = FALSE, dims = 1, ...)
 
-\S4method{colMeans}{dfm}(x, na.rm = FALSE, dims = 1L, ...)
+\S4method{colMeans}{dfm}(x, na.rm = FALSE, dims = 1, ...)
 
-\S4method{rowMeans}{dfm}(x, na.rm = FALSE, dims = 1L, ...)
+\S4method{rowMeans}{dfm}(x, na.rm = FALSE, dims = 1, ...)
 
 \S4method{Arith}{dfm,numeric}(e1, e2)
 

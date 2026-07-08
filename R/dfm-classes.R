@@ -105,7 +105,9 @@ setMethod("Arith", signature(e1 = "numeric", e2 = "dfm"),
               )
           })
 
+#' @method drop0 dfm
 #' @rdname dfm-class
+#' @export
 setMethod("drop0", signature = (x = "dfm"), 
           function(x, tol = 0) {
               x <- as.dfm(x)
