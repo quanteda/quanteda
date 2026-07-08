@@ -55,8 +55,9 @@ TokensPtr cpp_tokens_ngrams(TokensPtr xptr,
     std::string delim = delim_;
     std::vector<unsigned int> ns = Rcpp::as< std::vector<unsigned int> >(ns_);
     std::vector<unsigned int> skips = Rcpp::as< std::vector<unsigned int> >(skips_);
+    std::size_t H = xptr->texts.size();
     
-    if (bypass_.size() != (int)xptr->texts.size())
+    if (bypass_.size() != (int)H)
         throw std::range_error("Invalid bypass");
     std::vector<bool> bypass = Rcpp::as< std::vector<bool> >(bypass_);
     
@@ -66,7 +67,6 @@ TokensPtr cpp_tokens_ngrams(TokensPtr xptr,
     
     //dev::Timer timer;
     //dev::start_timer("Ngram generation", timer);
-    std::size_t H = xptr->texts.size();
     IdNgram id_ngram(1);
 #if QUANTEDA_USE_TBB
     tbb::task_arena arena(thread);
