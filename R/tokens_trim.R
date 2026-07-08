@@ -27,6 +27,7 @@ tokens_trim <- function(x,
                      termfreq_type = c("count", "prop", "rank", "quantile"),
                      min_docfreq = NULL, max_docfreq = NULL, 
                      docfreq_type = c("count", "prop", "rank", "quantile"),
+                     max_n = NULL,
                      padding = FALSE,
                      verbose = quanteda_options("verbose")) {
     UseMethod("tokens_trim")
@@ -38,6 +39,7 @@ tokens_trim.default <- function(x,
                              termfreq_type = c("count", "prop", "rank", "quantile"),
                              min_docfreq = NULL, max_docfreq = NULL,
                              docfreq_type = c("count", "prop", "rank", "quantile"),
+                             max_n = NULL,
                              padding = FALSE,
                              verbose = quanteda_options("verbose")) {
     check_class(class(x), "tokens_trim")
@@ -49,6 +51,7 @@ tokens_trim.tokens_xptr <- function(x,
                                     termfreq_type = c("count", "prop", "rank", "quantile"),
                                     min_docfreq = NULL, max_docfreq = NULL,
                                     docfreq_type = c("count", "prop", "rank", "quantile"),
+                                    max_n = NULL,
                                     padding = FALSE,
                                     verbose = quanteda_options("verbose")) {
     
@@ -60,7 +63,8 @@ tokens_trim.tokens_xptr <- function(x,
                        cpp_get_freq(x, no_padding = TRUE, boolean = TRUE),
                        cpp_ndoc(x),
                        min_termfreq, max_termfreq, termfreq_type, 
-                       min_docfreq, max_docfreq, docfreq_type)
+                       min_docfreq, max_docfreq, docfreq_type,
+                       max_n)
 
     result <- tokens_select(x, f, valuetype = "fixed", case_insensitive = FALSE,
                             padding = padding, verbose = FALSE)
