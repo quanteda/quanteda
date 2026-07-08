@@ -99,11 +99,6 @@ tokens_replace.tokens <- function(x, ...) {
 replace_type <- function(type, pattern, replacement, case_insensitive) {
 
     if (!length(type)) return(character())
-
-    # normalize unicode
-    pattern <- stri_trans_nfc(pattern)
-    replacement <- stri_trans_nfc(replacement)
-
     if (case_insensitive) {
         type_new <- replacement[match(stri_trans_tolower(type), stri_trans_tolower(pattern))]
     } else {
