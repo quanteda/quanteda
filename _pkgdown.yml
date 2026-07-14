@@ -28,6 +28,8 @@ navbar:
       href: reference/index.html
     - text: "Features"
       menu:
+        - text: "Multi-word expressions"
+          href: articles/pkgdown/phrase.html
         - text: "Parallel computing"
           href: articles/pkgdown/parallelisation.html
         - text: "External pointer tokens objects"
