@@ -1,5 +1,5 @@
 ---
-title: "Example: Social media analysis (Twitter)"
+title: "Example: Social media analysis (X formerly Twitter)"
 author: "Kohei Watanabe"
 output: 
   html_document:
@@ -20,27 +20,31 @@ library(quanteda)
 ```
 
 ## Load sample data
+
 ```{r}
 load("data/data_corpus_tweets.rda")
 ```
 
 ## Construct a document-feature matrix of Twitter posts
+
 ```{r}
 dfmat_tweets <- tokens(data_corpus_tweets, remove_punct = TRUE) |>
     dfm()
 head(dfmat_tweets)
 ```
 
-# Hashtags
+## Hashtags
 
-## Extract most common hashtags
+### Extract most common hashtags
+
 ```{r}
 dfmat_tag <- dfm_select(dfmat_tweets, pattern = "#*")
 toptag <- names(topfeatures(dfmat_tag, 50))
 head(toptag)
 ```
 
-## Construct feature-occurrence matrix of hashtags
+### Construct feature-occurrence matrix of hashtags
+
 ```{r}
 library("quanteda.textplots")
 fcmat_tag <- fcm(dfmat_tag)
@@ -49,16 +53,18 @@ fcmat_topgat <- fcm_select(fcmat_tag, pattern = toptag)
 textplot_network(fcmat_topgat, min_freq = 0.1, edge_alpha = 0.8, edge_size = 5)
 ```
 
-# Usernames
+## Usernames
 
-## Extract most frequently mentioned usernames 
+### Extract most frequently mentioned usernames 
+
 ```{r}
 dfmtat_users <- dfm_select(dfmat_tweets, pattern = "@*")
 topuser <- names(topfeatures(dfmtat_users, 50))
 head(topuser)
 ```
 
-## Construct feature-occurrence matrix of usernames
+### Construct feature-occurrence matrix of usernames
+
 ```{r}
 fcmat_users <- fcm(dfmtat_users)
 head(fcmat_users)

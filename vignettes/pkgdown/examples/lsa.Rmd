@@ -7,17 +7,13 @@ output:
     number_sections: true
 ---
 
-In this vignette, we show how to perform Latent Semantic Analysis using the **quanteda** package based on Grossman and Frieder's  [*Information Retrieval, Algorithms and Heuristics*](http://www1.se.cuhk.edu.hk/%7Eseem5680/lecture/LSI-Eg.pdf).
-
-LSA decomposes document-feature matrix into a reduced vector space that is assumed to reflect semantic structure.
-
-New documents or queries can be 'folded-in' to this constructed latent semantic space for downstream tasks. 
+In this vignette, we show how to perform Latent Semantic Analysis using the **quanteda** package based on Grossman and Frieder's  [*Information Retrieval, Algorithms and Heuristics*](http://www1.se.cuhk.edu.hk/%7Eseem5680/lecture/LSI-Eg.pdf). We can reduce the dimensions of document-feature matrix while keeping the essential semantic structure.
 
 ```{r, message = FALSE}
 library("quanteda")
 ```
 
-# Create a document-feature matrix
+## Create a document-feature matrix
 
 ```{r}
 txt <- c(d1 = "Shipment of gold damaged in a fire",
@@ -30,20 +26,23 @@ dfmat <- txt |>
 dfmat
 ```
 
-# Construct the LSA model
+## Fit the LSA model
+
 ```{r}
 library("quanteda.textmodels")
 tmod_lsa <- textmodel_lsa(dfmat)
 ```
 
 The new document vector coordinates in the reduced 2-dimensional space is:
+
 ```{r}
 tmod_lsa$docs[, 1:2]
 ```
 
-# Apply the constructed LSA model to new data
+## Apply the model to new data
+
 Now the new unseen document can be represented in the reduced 2-dimensional space.
-The unseen query document:
+
 ```{r}
 dfmat_test <- tokens("gold silver truck") |> 
     dfm() |> 
