@@ -19,7 +19,8 @@ This is intended to show how **quanteda** can be used with the [**text2vec**](ht
 
 ## Download the corpus
 
-Download a corpus comprising the texts used in the [**text2vec** vignette](http://text2vec.org/glove.html):
+Download a corpus comprising the texts used in the [**text2vec** vignette](http://text2vec.org/glove.html).
+
 ```{r eval = TRUE}
 wiki_corp <- quanteda.corpora::download(url = "https://www.dropbox.com/s/9mubqwpgls3qi9t/data_corpus_wiki.rds?dl=1")
 ```
@@ -27,7 +28,7 @@ wiki_corp <- quanteda.corpora::download(url = "https://www.dropbox.com/s/9mubqwp
 ## Select features
 
 First, we tokenize the corpus, and then get the names of the features that occur five times or more.
-Trimming the features before constructing the fcm:
+
 ```{r}
 wiki_toks <- tokens(wiki_corp)
 feats <- dfm(wiki_toks, verbose = TRUE) |>
