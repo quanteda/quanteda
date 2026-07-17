@@ -10,13 +10,11 @@ output:
 knitr::opts_chunk$set(collapse = TRUE, comment = "##")
 ```
 
+In this vignette we show how the **quanteda** package can be used to replicate the text analysis part (Chapter 5.1) from Kosuke Imai's book [*Quantitative Social Science: An Introduction*](http://qss.princeton.press) (Princeton: Princeton University Press, 2017).
     
 ```{r, message=FALSE}
 library("quanteda")
 ```
-
-
-In this vignette we show how the **quanteda** package can be used to replicate the text analysis part (Chapter 5.1) from Kosuke Imai's book [*Quantitative Social Science: An Introduction*](http://qss.princeton.press) (Princeton: Princeton University Press, 2017).
 
 ## Download the Corpus
 

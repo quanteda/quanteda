@@ -10,12 +10,11 @@ output:
 knitr::opts_chunk$set(collapse = TRUE, comment = "##")
 ```
 
-    
+This is intended to show how **quanteda** can be used with the [**text2vec**](http://text2vec.org) package in order to replicate its [gloVe example](http://text2vec.org/glove.html).
+
 ```{r, message=FALSE}
 library("quanteda")
 ```
-
-This is intended to show how **quanteda** can be used with the [**text2vec**](http://text2vec.org) package in order to replicate its [gloVe example](http://text2vec.org/glove.html).
 
 ## Download the corpus
 

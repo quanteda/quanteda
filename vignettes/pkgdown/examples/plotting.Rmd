@@ -11,12 +11,12 @@ output:
 knitr::opts_chunk$set(collapse = TRUE, comment = "##")
 ```
 
+This vignette walks through various plot options available in **quanteda.textplots** through the `textplot_*` functions.
+
 ```{r, message=FALSE}
 library("quanteda")
 library("quanteda.textplots")
 ```
-
-This vignette walks through various plot options available in **quanteda.textplots** through the `textplot_*` functions.
 
 ## Wordcloud 
 

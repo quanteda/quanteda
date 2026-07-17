@@ -164,7 +164,6 @@ tokeninfo[which.max(tokeninfo$Tokens), ]
 `+`运算符提供了一个连接两个语料库对象的简单方法。如果它们包含了不同的文档级别的变量，这些也将被合并起来以保证不丢失任何信息。语料库级别的元数据也被连接在一起。
 
 ```{r}
-library(quanteda)
 corp1 <- corpus(data_corpus_inaugural[1:5])
 corp2 <- corpus(data_corpus_inaugural[53:58])
 corp3 <- corp1 + corp2

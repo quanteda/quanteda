@@ -167,4 +167,4 @@ microbenchmark::microbenchmark(
 ) |> autoplot(log = FALSE)
 ```
 
-We explore further benchmarks and comparisons for `tokens_xptr` usage in a [separate article](./articles/pkgdown/benchmarks_xptr.html).
+We explore further benchmarks and comparisons for `tokens_xptr` usage in a [separate article](./benchmarks_xptr.html).

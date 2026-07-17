@@ -10,6 +10,8 @@ output:
 knitr::opts_chunk$set(collapse = TRUE, comment = "##")
 ```
 
+This vignette demonstrates that **quanteda** can be used for analysis of Chinese language texts.
+
 ```{r, message=FALSE, warnings=FALSE}
 library("quanteda")
 ```

@@ -166,7 +166,6 @@ tokeninfo[which.max(tokeninfo$Tokens), ]
 `+`演算子を用いると，簡単に二個のコーパスを連結できます．コーパスが異なる構造を持つ場合でも，文書変数が失われることはなく，コーパスのメタデータも引き継がれる．
 
 ```{r}
-library(quanteda)
 corp1 <- corpus(data_corpus_inaugural[1:5])
 corp2 <- corpus(data_corpus_inaugural[53:58])
 corp3 <- corp1 + corp2
