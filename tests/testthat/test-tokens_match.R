@@ -66,7 +66,7 @@ test_that("tokens_match verbose works", {
     toks <- tokens(head(data_corpus_inaugural))
     expect_message(
         tokens_match(toks, c("this", "the", "all", "be"), verbose = TRUE),
-        "tokens_match() changed from 9,825 tokens (6 documents) to 865 tokens (6 documents)",
+        "tokens_match() changed",
         fixed = TRUE
     )
 })

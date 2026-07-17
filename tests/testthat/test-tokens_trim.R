@@ -39,11 +39,16 @@ test_that("tokens_trim works", {
     # ties (b, e, f all have frequency 4) are broken by type order
     expect_equal(types(tokens_trim(toks, max_n = 2)), c("b", "e"))
     
-    expect_message(
-        tokens_trim(toks, max_n = 3, verbose = TRUE),
-        "tokens_trim() changed", fixed = TRUE
-    )
+})
 
+test_that("tokens_trim verbose works", {
+    
+    toks <- tokens(head(data_corpus_inaugural))
+    expect_message(
+        tokens_trim(toks, max_n = 10, verbose = TRUE),
+        "tokens_trim() changed",
+        fixed = TRUE
+    )
 })
 
 test_that("tokens_trim works with padding", {
