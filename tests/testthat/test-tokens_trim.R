@@ -38,6 +38,11 @@ test_that("tokens_trim works", {
     expect_equal(length(types(tokens_trim(toks, max_termfreq = 3, max_n = 4))), 3)
     # ties (b, e, f all have frequency 4) are broken by type order
     expect_equal(types(tokens_trim(toks, max_n = 2)), c("b", "e"))
+    
+    expect_message(
+        tokens_trim(toks, max_n = 3, verbose = TRUE),
+        "tokens_trim() changed", fixed = TRUE
+    )
 
 })
 
