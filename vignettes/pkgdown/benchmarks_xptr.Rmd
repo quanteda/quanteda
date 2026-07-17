@@ -11,10 +11,10 @@ editor_options:
 ```{r include=FALSE}
 knitr::opts_chunk$set(
     collapse = TRUE,
-    message=FALSE,
+    message = FALSE,
     comment = "##",
-    fig.width=8, 
-    fig.height=2, 
+    fig.width = 8, 
+    fig.height = 2, 
     dpi = 150,
     warning = FALSE
 )

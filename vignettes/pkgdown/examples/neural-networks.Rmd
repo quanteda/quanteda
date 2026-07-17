@@ -10,12 +10,12 @@ editor_options:
 ---
 
 ```{r, echo=FALSE}
-knitr::opts_chunk$set(collapse = TRUE, comment = "##")
+knitr::opts_chunk$set(collapse = TRUE, comment = "##", cache = TRUE)
 ```
 
 In this vignette, we show how to implement neural networks using the **quanteda** and **torch** packages. In the version 4.4.1 of **quanteda**, we added multiple functions to make it an infrastructure for developing neural networks. This example focuses on a convolution neural network (CNN) but other types of models such as recurrent neural networks (RNN) and transformers can be also implemented with the aid of the **luz** package.
 
-The code below is based on [an example](https://mlverse.github.io/luz/articles/examples/text-classification.html) published in the website for **luz**, but the CNN model is trained on **quanteda**'s tokens object. This makes neural network models consistent with other analysis and even more efficient in textual data analysis projects.
+The code below is based on [an example](https://mlverse.github.io/luz/articles/examples/text-classification.html) published in the website for **luz**, but the CNN model is trained on **quanteda**'s tokens object. This makes the neural network models consistent with other text analyses tools and easier to integrate in existing pipelines.
 
 ```{r, message=FALSE}
 library(quanteda)
@@ -36,7 +36,7 @@ untar(tmp, exdir = tempdir(check = TRUE))
 
 ## Construct corpus
 
-File paths contain information about train/test split and sentiment labels. HTML tags are also be removed from the texts. 
+Extract information about the train/test split and sentiment labels from the file paths. HTML tags should be removed from the texts. 
 
 ```{r}
 file <- list.files(file.path(tempdir(), "aclImdb"), recursive = TRUE, full.names = TRUE)
@@ -54,7 +54,7 @@ corp <- corpus(dat)
 
 ## Tokenize texts
 
-We tokenize texts using `tokens()` and lower-case them using `tokens_tolower()`. To limit the complexity of the data, we apply `tokens_trim()` with the new `max_n` argument. This limits the size of the vocabulary (unique token types) to the top 20,000 most frequent words in the object.
+We tokenize texts using `tokens()`, remove only punctuations, and lower-case them using `tokens_tolower()`. To limit the complexity of the data, we apply `tokens_trim()` with the new `max_n` argument. This limits the size of the vocabulary (unique token types) to the top 20,000 most frequent words in the object.
 
 ```{r}
 vocab_size <- 20000 # maximum size of the vocabulary
@@ -66,9 +66,9 @@ toks <- tokens(corp, remove_punct = TRUE, verbose = TRUE) %>%
 
 ## Define data loader
 
-We use `dataset()` to feed data from the tokens object to neural network models. We can directly access to the documents in the tokens object using `as.matrix()` with the `extract` argument. The function returns all the documents in the same length: when the documents are longer than `length`, the vectors are truncated; if they are shorter, the vectors are padded by zero. Since the indices in `torch_tensor` is one-based, we shift token IDs by adding one (the ID for padding is zero in tokens objects).
+We use `dataset()` to feed data from the tokens object to neural network models. We can quickly access the documents in the tokens object using `as.matrix()` with the `extract` argument. The function returns the documents in the same length: when the documents are longer than `length`, the vectors are truncated; if they are shorter, the vectors are padded by zero. Since the indices in `torch_tensor` is one-based, we shift token IDs by adding one (the ID for padding is zero in tokens objects).
 
-Importantly, before separating the tokens object into training and test sets using `tokens_subset()`, we have to convert it to a  [tokens_xptr](../tokens_xptr.html) object. This in not only for accessing the documents more quickly but also for preserving the original token IDs. Alternatively, we can match the token IDs between the training and test sets using `tokens_match()`.
+Importantly, before separating the tokens object into training and test sets using `tokens_subset()`, we have to convert it to a  [tokens_xptr](../tokens_xptr.html) object. This in not only for the quickly accessing the documents but also for preserving the original token IDs (`tokens_subset()` reassign tokens IDs when the list based tokens object is provided). Alternatively, we can match the token IDs between the training and test sets using `tokens_match()`.
 
 ```{r}
 text_length <- 200 # maximum number length of the texts
@@ -100,14 +100,14 @@ movie_dataset <- dataset(
   }
 )
 
-xtoks <- as.tokens_xptr(toks)
+xtoks <- as.tokens_xptr(toks) # important!
 train_ds <- movie_dataset(tokens_subset(xtoks, split == "train"), text_length)
 test_ds <- movie_dataset(tokens_subset(xtoks, split == "test"), text_length)
 ```
 
 ## Build CNN model
 
-The code is identical to the original except that `num_embeddings` is `vocab_size + 1L` for padding. The model starts with a module for word vectors in the embedding layer `nn_embedding`, followed by modules convolution layers `nn_conv1d()`: the first layer captures the sequence tokens such as phrases; the second layer further abstract the occurrences of groups of sequences. Finally, the dense feed-forward network `nn_linear()` predict the sentiment of documents. 
+The code is identical to the original example except that `num_embeddings` is `vocab_size + 1L` for padding. The model starts with a module for word vectors in the embedding layer `nn_embedding`, followed by modules for convolution layers `nn_conv1d()`: the first layer captures the sequence tokens such as phrases; the second layer further abstract the occurrences sequences. Finally, the dense feed-forward network `nn_linear()` predict the sentiment of documents. 
 
 ```{r}
 embedding_dim <- 128 # size of the embedding vectors
