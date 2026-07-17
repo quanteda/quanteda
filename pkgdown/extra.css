@@ -25,6 +25,10 @@ b, strong, th {
     color: rgba(0, 0, 0, 0);
 }
 
+.navbar-brand:hover {
+    color: rgba(0, 0, 0, 0);
+}
+
 div#overview div.page-header h1 {
     margin-top: 22px;
     padding: 0;
