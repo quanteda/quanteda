@@ -55,8 +55,6 @@ navbar:
           href: news/index.html
     - text: "Examples"
       menu:
-        - text: "Multi-word expressions"
-          href: articles/pkgdown/examples/phrase.html
         - text: "Textual data visualization"
           href: articles/pkgdown/examples/plotting.html
         - text: "Latent Semantic Analysis (LSA)"
@@ -66,7 +64,7 @@ navbar:
         - text: "Social media analysis"
           href: articles/pkgdown/examples/twitter.html
         - text: "Neural network models"
-          href: articles/pkgdown/examples/neural-network.html
+          href: articles/pkgdown/examples/neural-networks.html
     - text: "Replications"
       menu:
         - text: "Text Analysis with R for Students of Literature"
