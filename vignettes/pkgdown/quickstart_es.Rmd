@@ -74,6 +74,7 @@ summary(corp_uk)
 Si quisiéramos, también podríamos incorporar también a este corpus algunas variables a nivel documento -- lo que quanteda llama *docvars*.
 
 Esto lo hacemos utilizando la función de R llamada `names()` para obtener los nombres del vector de tipo character de `data_char_ukimmig2010` y asignárselos a una variable de documento (`docvar`).
+
 ```{r}
 docvars(corp_uk, "Party") <- names(data_char_ukimmig2010)
 docvars(corp_uk, "Year") <- 2010
@@ -287,6 +288,7 @@ Para acceder a la lista de los atributos más frecuentes es posible utilizar `to
 ```{r}
 topfeatures(dfmat_uk, 20) # 20 most frequent words
 ```
+
 Para un objeto `dfm` se puede graficar una nube de palabras usando `textplot_wordcloud()`. Esta función pasa argumentos a `wordcloud()` del paquete **wordcloud** y puede embellecer el gráfico usando los mismos argumentos:
 
 ```{r warning=FALSE, fig.width = 7, fig.height = 7}
@@ -370,7 +372,7 @@ tstat_obama
 Se puede utilizar estas distancias para graficar un dendrograma, armando clusters por presidente:
 
 ```{r, fig.width = 10, fig.height = 7, eval = TRUE}
-data_corpus_sotu <- readRDS(url("https://quanteda.org/data/data_corpus_sotu.rds"))
+library(quanteda.corpora)
 
 dfmat_sotu <- corpus_subset(data_corpus_sotu, Date > as.Date("1980-01-01")) |>
     tokens(remove_punct = TRUE) |>
@@ -389,6 +391,7 @@ pres_cluster$labels <- docnames(dfmat_sotu)
 plot(pres_cluster, xlab = "", sub = "",
      main = "Euclidean Distance on Normalized Token Frequency")
 ```
+
 También se puede observar similitudes de los términos:
 
 ```{r}

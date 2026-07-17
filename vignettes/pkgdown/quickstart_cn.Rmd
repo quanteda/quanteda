@@ -3,6 +3,8 @@ title: "快速入门指南"
 output: 
   html_document:
     toc: true
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r, echo = FALSE}
@@ -230,6 +232,7 @@ tokens(txt, remove_numbers = FALSE, remove_punct = FALSE, remove_separators = FA
 ```
 
 也可以按字符分词：
+
 ```{r}
 tokens("Great website: http://textasdata.com?page=123.", what = "character")
 tokens("Great website: http://textasdata.com?page=123.", what = "character",
@@ -237,6 +240,7 @@ tokens("Great website: http://textasdata.com?page=123.", what = "character",
 ```
 
 以及按句子分词：
+
 ```{r}
 # sentence level         
 tokens(c("Kurt Vongeut said; only assholes use semi-colons.",
@@ -317,6 +321,7 @@ dfmat_ire <- tokens(data_corpus_irishbudget2010, remove_punct = TRUE) |>
 ```
 
 我们可以对这个dfm进行排序，并查看：
+
 ```{r}
 dfm_sort(dfmat_ire)[, 1:10]
 ```
@@ -334,12 +339,14 @@ corp_inaug_post1991 <- corpus_subset(data_corpus_inaugural, Year > 1991)
 ```
 
 现在我们定义一个用于展示的字典：
+
 ```{r}
 dict <- dictionary(list(terror = c("terrorism", "terrorists", "threat"),
                         economy = c("jobs", "business", "grow", "work")))
 ```
 
 我们也可在构建dfm时使用字典：
+
 ```{r}
 dfmat_inaug_post1991_dict <- tokens(corp_inaug_post1991) |>
   tokens_lookup(dictionary = dict) |>
@@ -376,8 +383,9 @@ tstat_obama
 ```
 
 我们可以用这些距离来绘制树状图，聚类分析总统：
+
 ```{r, fig.width = 10, fig.height = 7, eval = TRUE}
-data_corpus_sotu <- readRDS(url("https://quanteda.org/data/data_corpus_sotu.rds"))
+library(quanteda.corpora)
 
 dfmat_sotu <- corpus_subset(data_corpus_sotu, Date > as.Date("1980-01-01")) |>
   tokens(remove_punct = TRUE) |>
@@ -398,6 +406,7 @@ plot(pres_cluster, xlab = "", sub = "",
 ```
 
 我们也可查看特征相似度:
+
 ```{r}
 tstat_sim <- textstat_simil(dfmat_sotu, dfmat_sotu[, c("fair", "health", "terror")],
                       method = "cosine", margin = "features")
@@ -459,6 +468,7 @@ tokens("中华人民共和国成立于1949 年") |>
 ## 例子：中国总理的“政府工作报告” {#chinese-government-report}
 
 四十九份中国总理的“政府工作报告”，1954 - 2017
+
 ```{r fig1, fig.height = 7, fig.width = 7, fig.align = "center"}
 # 读取文件
 load("examples/data/data_corpus_chinesegovreport.rda")
@@ -502,4 +512,5 @@ plot(y, wfm$theta, xlab = "Year", ylab = "Position")
 tstat_col <- textstat_collocations(toks_china, size = 2, min_count = 20, tolower = TRUE)
 head(tstat_col, 10)
 ```
+
 注：以上这部分介绍翻译于[英文版](https://quanteda.io/articles/pkgdown/examples/chinese.html).

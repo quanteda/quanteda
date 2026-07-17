@@ -25,8 +25,8 @@ library(topicmodels)
 
 本例で用いる衆議院外務委員会の議事録は，1947年から2017年の間のすべての発言を含んでいる．このコーパスは**quanteda.corpora**を用いてダウンロードできる．
 
-```{r, message=FALSE}
-devtools::install_github("quanteda/quanteda.corpora")
+```{r, message = FALSE}
+#devtools::install_github("quanteda/quanteda.corpora")
 full_corp <- quanteda.corpora::download("data_corpus_foreignaffairscommittee")
 ```
 

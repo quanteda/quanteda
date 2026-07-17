@@ -1,5 +1,5 @@
 ---
-title: "Replication: word embedding (gloVe/word2vec)"
+title: "Replication: word embedding"
 author: Kenneth Benoit, Haiyan Wang and Kohei Watanabe
 output: 
   html_document:

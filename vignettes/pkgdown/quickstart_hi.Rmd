@@ -69,6 +69,7 @@ library(quanteda)
 सबसे सरल है आर की मेमरी में रखे हुए टेक्स्ट के वेक्टर से कॉर्पस बनाना। यह R के उन्नत उपयोगकर्ता को टेक्स्ट इनपुट्स चुनाव करने की पूरी आज़ादी देता है, क्योंकि इसमें टेक्स्ट के वेक्टर को प्राप्त करने के लगभग अंतहीन तरीके हैं।
 
 यदि हमारे पास पहले से ही इस रूप में टेक्स्ट हैं, तो हम सीधे कॉरपस कंस्ट्रक्टर फ़ंक्शन को कॉल कर सकते हैं। हम ब्रिटेन के राजनीतिक दलों के 2010 के चुनाव के घोषणापत्रं (`data_char_ukimmig2010`) से निकाला किया गया आव्रजन नीति के बारे में टेक्स्ट के बिल्ट इन करैक्टर ऑब्जेक्ट पर इसका प्रदर्शन कर सकते है।
+
 ```{r}
 corp_uk <- corpus(data_char_ukimmig2010)  # build a new corpus from the texts
 summary(corp_uk)
@@ -237,6 +238,7 @@ tokens(txt, remove_numbers = FALSE, remove_punct = FALSE, remove_separators = FA
 ```
 
 हमारे पास करैक्टरों को tokenize करने का विकल्प भी है:
+
 ```{r}
 tokens("Great website: http://textasdata.com?page=123.", what = "character")
 tokens("Great website: http://textasdata.com?page=123.", what = "character",
@@ -244,6 +246,7 @@ tokens("Great website: http://textasdata.com?page=123.", what = "character",
 ```
 
 और वाक्यों का भी:
+
 ```{r}
 # sentence level         
 tokens(c("Kurt Vongeut said; only assholes use semi-colons.",
@@ -272,6 +275,7 @@ dfmat_inaug_post1990[, 1:5]
 ```
 
 `dfm()` के अन्य विकल्पों में स्टॉपवर्ड्स को हटाना और टोकन को स्टेम करना शामिल है।
+
 ```{r}
 # make a dfm, removing stopwords and applying stemming
 dfmat_inaug_post1990 <- tokens(corp_inaug_post1990, remove_punct = TRUE) |>
@@ -282,6 +286,7 @@ dfmat_inaug_post1990[, 1:5]
 ```
 
 `remove` नामक विकल्प, ऐसे टोकंज़ की सूची प्रदान करता है जिन्हें अनदेखा किया जा सकता है। काफ़ी users पूर्व-परिभाषित"स्टॉप वर्ड्स" की एक सूची देंगे, जो कई भाषाओं मे परिभाषित होंगे, और इन्हे हम `stopwords()` फ़ंक्शन के माध्यम से अभिगम कर सकते है:
+
 ```{r}
 head(stopwords("en"), 20)
 head(stopwords("ru"), 10)
@@ -300,6 +305,7 @@ dfmat_uk
 ```
 
 अक्सर आने वाले फीचर्स की एक सूची को ऐक्सेस करने के लिए, हम `topfeatures()` का उपयोग कर सकते हैं:
+
 ```{r}
 topfeatures(dfmat_uk, 20) # 20 most frequent words
 ```
@@ -327,6 +333,7 @@ dfmat_pres <- tail(data_corpus_inaugural, 20) |>
 ```
 
 हम इस dfm को सॉर्ट कर सकते हैं, और इसका निरीक्षण कर सकते हैं:
+
 ```{r}
 dfm_sort(dfmat_pres)
 ```
@@ -342,6 +349,7 @@ corp_inaug_post1991 <- corpus_subset(data_corpus_inaugural, Year > 1991)
 ```
 
 अब हम एक डेमोंस्ट्रेशन शब्दकोश को बनाते हैं :
+
 ```{r}
 dict <- dictionary(list(terror = c("terrorism", "terrorists", "threat"),
                         economy = c("jobs", "business", "grow", "work")))
@@ -350,6 +358,7 @@ dict <- dictionary(list(terror = c("terrorism", "terrorists", "threat"),
 
 
 हम dfm बनाते समय शब्दकोश का उपयोग कर सकते हैं:
+
 ```{r}
 dfmat_inaug_post1991_dict <- tokens(corp_inaug_post1991) |>
     tokens_lookup(dict) |>
@@ -387,8 +396,10 @@ tstat_obama
 ```
 
 हम इन दूरियों का उपयोग करके एक डेंड्रोग्राम की प्लाटिंग कर सकते हैं, और राष्ट्रपतियों का क्लस्टर बना सकते हैं:
+
 ```{r, fig.width = 10, fig.height = 7, eval = TRUE}
-data_corpus_sotu <- readRDS(url("https://quanteda.org/data/data_corpus_sotu.rds"))
+library(quanteda.corpora)
+
 dfmat_sotu <- data_corpus_sotu |>
     corpus_subset(Date > as.Date("1980-01-01")) |>
     tokens(remove_punct = TRUE) |>
@@ -409,6 +420,7 @@ plot(pres_cluster, xlab = "", sub = "",
 ```
 
 हम टर्म समानताओं को भी देख सकते हैं:
+
 ```{r}
 tstat_sim <- textstat_simil(dfmat_sotu, dfmat_sotu[, c("fair", "health", "terror")],
                             method = "cosine", margin = "features")
@@ -418,6 +430,7 @@ lapply(as.list(tstat_sim), head, 10)
 ##डॉक्युमेंट पोज़िशन को स्केल करना 
 
 यहाँ 'अन्सूपर्वायज़्ड डॉक्युमेंट स्केलिंग' की तुलना की गयी है "वोर्डफ़िश" मॉडल से:
+
 ```{r fig.width = 7, fig.height = 5}
 if (require("quanteda.textmodels")) {
     dfmat_ire <- dfm(tokens(data_corpus_irishbudget2010))

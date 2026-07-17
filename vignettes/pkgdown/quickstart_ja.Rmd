@@ -379,8 +379,9 @@ tstat_obama
 ```
 
 上記の文書間の類似性から樹形図を作成して，大統領を階層的に分類することができる．
+
 ```{r, fig.width = 10, fig.height = 7, eval = TRUE}
-data_corpus_sotu <- readRDS(url("https://quanteda.org/data/data_corpus_sotu.rds"))
+library(quanteda.corpora)
 
 dfmat_sotu <- data_corpus_sotu |>
     corpus_subset(Date > as.Date("1980-01-01")) |>
@@ -403,6 +404,7 @@ plot(pres_cluster, xlab = "", sub = "",
 ```
 
 文書間と同様に用語間の類似性も測定できる．
+
 ```{r}
 tstat_sim <- textstat_simil(dfmat_sotu, dfmat_sotu[, c("fair", "health", "terror")],
                           method = "cosine", margin = "features")
