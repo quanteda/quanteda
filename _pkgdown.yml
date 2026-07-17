@@ -1,11 +1,26 @@
 url: https://quanteda.io
 template:
-  params:
-    bootswatch: readable
-    ganalytics: G-0F398Z98L1
-    docsearch:
-      api_key: 9b4ef7fd791dc6075154d3ebd7b12acf
-      index_name: quanteda
+  bootstrap: 5
+  bootswatch: simplex
+  bslib:
+    bg: "#ffffff"
+    fg: "#333333"
+    primary: "#4582ec"
+  docsearch:
+    api_key: 9b4ef7fd791dc6075154d3ebd7b12acf
+    index_name: quanteda
+  includes:
+    in_header: |
+       <!-- Global site tag (gtag.js) - Google Analytics -->
+       <script async src="https://www.googletagmanager.com/gtag/js?id=G-0F398Z98L1" ></script>
+       <script>
+         window.dataLayer = window.dataLayer || [];
+         function gtag(){dataLayer.push(arguments);}
+         gtag('js', new Date());
+
+         gtag('config', 'G-0F398Z98L1');
+       </script>
+       <!-- Google tag (gtag.js) -->
 news:
 - one_page: false
 navbar:
@@ -34,8 +49,6 @@ navbar:
           href: articles/pkgdown/parallelisation.html
         - text: "External pointer tokens objects"
           href: articles/pkgdown/tokens_xptr.html
-        - text: "Performance benchmarks"
-          href: articles/pkgdown/benchmarks_xptr.html
         - text: "Package design"
           href: articles/pkgdown/design.html
         - text: "Changelog"
@@ -52,17 +65,20 @@ navbar:
           href: articles/pkgdown/examples/chinese.html
         - text: "Social media analysis"
           href: articles/pkgdown/examples/twitter.html
+        - text: "Neural network models"
+          href: articles/pkgdown/examples/neural-network.html
     - text: "Replications"
       menu:
         - text: "Text Analysis with R for Students of Literature"
           href: articles/pkgdown/replication/digital-humanities.html
-        - text: "Word embedding (word2vec)"
+        - text: "Word embedding"
           href: articles/pkgdown/replication/text2vec.html
         - text: "Quantitative Social Science Ch. 5.1"
           href: articles/pkgdown/replication/qss.html
   right:
     - icon: fa-github fa-lg
       href: https://github.com/quanteda/quanteda
+      aria-label: View on Github
 reference:
 - title: Package-level
   contents:

@@ -19,25 +19,10 @@ b, strong, th {
 .navbar-brand {
     background-image: url(https://cdn.rawgit.com/quanteda/quanteda/0489b2dd/images/quanteda_logo_small.svg);
     background-repeat: no-repeat;
-    background-position: 12.5px 12.5px;
+    background-position: 0px 5px;
     background-size: 150px auto;
-    width: 220px;
-}
-.navbar-brand > .navbar-link {
-    opacity: 0;
-    width: 0;
-    height: 0;
-    display: block;
-    font-size: 1.7em;
-    line-height: 1em;
-}
-
-.navbar-brand > .label {
-    margin-left: 150px;
-}
-
-.navbar .navbar-nav > li > a {
-    padding: 8px 8px;
+    width: 150px;
+    color: rgba(0, 0, 0, 0);
 }
 
 div#overview div.page-header h1 {
@@ -52,8 +37,9 @@ div#system-requirements th {
 }
 
 div.page-header h1 {
-    font-size: 250%;
+    font-size: 220%;
     color: dimgray;
+    padding-top: 50px;
 }
 
 div.page-header h4 {
