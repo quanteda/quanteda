@@ -61,7 +61,7 @@ vocab_size <- 20000 # maximum size of the vocabulary
 
 toks <- tokens(corp, remove_punct = TRUE, verbose = TRUE) %>% 
   tokens_tolower() %>% 
-  tokens_trim(max_n = vocab_size)
+  tokens_trim(max_n = vocab_size, verbose = TRUE)
 ```
 
 ## Define data loader
