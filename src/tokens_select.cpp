@@ -5,12 +5,12 @@ using namespace quanteda;
 typedef std::pair<int, int> Position;
 typedef std::vector<Position> Positions;
 
-Text keep_token(Text tokens, 
-          const std::vector<std::size_t> &spans,
-          const SetNgrams &set_words,
-          const bool &padding,
-          const std::pair<int, int> &window,
-          const std::pair<int, int> &pos){
+Text keep_token(const Text &tokens, 
+                const std::vector<std::size_t> &spans,
+                const SetNgrams &set_words,
+                const bool &padding,
+                const std::pair<int, int> &window,
+                const std::pair<int, int> &pos){
     
     if (tokens.empty()) return {}; // return empty vector for empty text
     
@@ -67,12 +67,12 @@ Text keep_token(Text tokens,
     return tokens_copy;
 }
 
-Text remove_token(Text tokens, 
-            const std::vector<std::size_t> &spans,
-            const SetNgrams &set_words,
-            const bool &padding,
-            const std::pair<int, int> &window,
-            const std::pair<int, int> &pos){
+Text remove_token(const Text &tokens, 
+                  const std::vector<std::size_t> &spans,
+                  const SetNgrams &set_words,
+                  const bool &padding,
+                  const std::pair<int, int> &window,
+                  const std::pair<int, int> &pos){
 
     if (tokens.empty()) return {}; // return empty vector for empty text
     
@@ -138,38 +138,36 @@ Text remove_token(Text tokens,
 
 // [[Rcpp::export]]
 TokensPtr cpp_tokens_select(TokensPtr xptr,
-                                 const List &words_,
-                                 int mode,
-                                 bool padding,
-                                 int window_left,
-                                 int window_right,
-                                 const IntegerVector pos_from_,
-                                 const IntegerVector pos_to_,
-                                 const LogicalVector bypass_,
-                                 const int thread = -1) {
+                            const List &words_,
+                            int mode,
+                            bool padding,
+                            int window_left,
+                            int window_right,
+                            const IntegerVector pos_from_,
+                            const IntegerVector pos_to_,
+                            const LogicalVector bypass_,
+                            const int thread = -1) {
 
-    Texts texts = xptr->texts;
-    std::pair<int, int> window(window_left, window_right);
-    
     SetNgrams set_words;
     std::vector<std::size_t> spans = register_ngrams(words_, set_words);
+    std::pair<int, int> window(window_left, window_right);
     
-    if (pos_from_.size() != (int)texts.size())
+    std::size_t H = xptr->texts.size();
+    if (pos_from_.size() != (int)H)
         throw std::range_error("Invalid pos_from");
-    if (pos_to_.size() != (int)texts.size())
+    if (pos_to_.size() != (int)H)
         throw std::range_error("Invalid pos_to");
-    Positions pos(texts.size());
-    for (size_t g = 0; g < texts.size(); g++) {
-        pos[g] = std::make_pair(pos_from_[g], pos_to_[g]);
-    }
     
-    if (bypass_.size() != (int)texts.size())
+    Positions pos(H);
+    for (std::size_t h = 0; h < H; h++) {
+        pos[h] = std::make_pair(pos_from_[h], pos_to_[h]);
+    }
+    if (bypass_.size() != (int)H)
         throw std::range_error("Invalid bypass");
     std::vector<bool> bypass = Rcpp::as< std::vector<bool> >(bypass_);
     
     // dev::Timer timer;
     // dev::start_timer("Token select", timer);
-    std::size_t H = texts.size();
 #if QUANTEDA_USE_TBB
     tbb::task_arena arena(thread);
     arena.execute([&]{
@@ -178,9 +176,9 @@ TokensPtr cpp_tokens_select(TokensPtr xptr,
                 if (bypass[h])
                     continue;
                 if (mode == 1) {
-                    texts[h] = keep_token(texts[h], spans, set_words, padding, window, pos[h]);
+                    xptr->texts[h] = keep_token(xptr->texts[h], spans, set_words, padding, window, pos[h]);
                 } else if(mode == 2) {
-                    texts[h] = remove_token(texts[h], spans, set_words, padding, window, pos[h]);
+                    xptr->texts[h] = remove_token(xptr->texts[h], spans, set_words, padding, window, pos[h]);
                 }
             }    
         });
@@ -190,14 +188,13 @@ TokensPtr cpp_tokens_select(TokensPtr xptr,
         if (bypass[h])
             continue;
         if (mode == 1) {
-            texts[h] = keep_token(texts[h], spans, set_words, padding, window, pos[h]);
+            xptr->texts[h] = keep_token(xptr->texts[h], spans, set_words, padding, window, pos[h]);
         } else if(mode == 2) {
-            texts[h] = remove_token(texts[h], spans, set_words, padding, window, pos[h]);
+            xptr->texts[h] = remove_token(xptr->texts[h], spans, set_words, padding, window, pos[h]);
         }
     }
 #endif
     // dev::stop_timer("Token select", timer);
-    xptr->texts = texts;
     xptr->recompiled = false;
     xptr->padded = padding;
     return xptr;

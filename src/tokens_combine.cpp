@@ -22,9 +22,10 @@ TokensPtr cpp_tokens_combine(TokensPtr xptr1,
     std::size_t H = xptr2->texts.size(); 
     
     xptr1->texts.resize(G + H);
+    bool shift = V > 0 && xptr1->types != xptr2->types;
     xptr1->types.reserve(V + W);
     xptr1->types.insert(xptr1->types.end(), xptr2->types.begin(), xptr2->types.end());
-
+    
     //dev::start_timer("Combine", timer);
 #if QUANTEDA_USE_TBB
     tbb::task_arena arena(thread);
@@ -32,9 +33,11 @@ TokensPtr cpp_tokens_combine(TokensPtr xptr1,
         tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
             for (int h = r.begin(); h < r.end(); ++h) {
                 Text text = xptr2->texts[h];
-                for (std::size_t i = 0; i < text.size(); i++) {
-                    if (text[i] != 0)
-                        text[i] += V;
+                if (shift) {
+                    for (std::size_t i = 0; i < text.size(); i++) {
+                        if (text[i] != 0)
+                            text[i] += V;
+                    }
                 }
                 xptr1->texts[G + h] = text;
             }
@@ -43,9 +46,11 @@ TokensPtr cpp_tokens_combine(TokensPtr xptr1,
 #else
     for (std::size_t h = 0; h < H; h++) {
         Text text = xptr2->texts[h];
-        for (std::size_t i = 0; i < text.size(); i++) {
-            if (text[i] != 0)
-                text[i] += V;
+        if (shift) {
+            for (std::size_t i = 0; i < text.size(); i++) {
+                if (text[i] != 0)
+                    text[i] += V;
+            }
         }
         xptr1->texts[G + h] = text;
     }

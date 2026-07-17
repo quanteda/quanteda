@@ -8,6 +8,8 @@
 
 * Improve `print` methods for corpus, tokens, dfm, fcm, dictionary and kwic objects to wrap long lines at `getOption("width")`.
 
+* Added `tokens_match()` to match token IDs in separately tokenized objects.
+
 * Added an `as.matrix()` method for `tokens` objects, returning a dense
   [document × position] integer matrix of token IDs, with `length`, `extract`,
   and `drop` arguments. (#2497)
@@ -19,11 +21,15 @@
 * Added `docvars()` and `docvars<-()` methods for `tokens_xptr` objects,
   allowing document variables to be read and assigned without recompiling the
   tokens. (#2497)
+  
+* Added `trim = TRUE` to `dfm()` to allow users to disable trimming of features.
 
 * Add the `drop0()` method for dfm and fcm (#2460).
 
 * Added the `max_n` argument to `dfm_trim()` and `tokens_trim()` to keep only
   the most frequent features, with ties broken by feature order. (#2496)
+  
+* Improved the C++ code for `tokens` and `tokens_xptr` objects to reduce memory usage.
 
 # quanteda 4.4
 

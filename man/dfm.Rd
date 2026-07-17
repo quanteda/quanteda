@@ -8,6 +8,7 @@ dfm(
   x,
   tolower = TRUE,
   remove_padding = FALSE,
+  trim = TRUE,
   verbose = quanteda_options("verbose"),
   ...
 )
@@ -19,6 +20,9 @@ dfm(
 
 \item{remove_padding}{logical; if \code{TRUE}, remove the "pads" left as empty tokens after
 calling \code{\link[=tokens]{tokens()}} or \code{\link[=tokens_remove]{tokens_remove()}} with \code{padding = TRUE}.}
+
+\item{trim}{logical; if \code{TRUE}, remove columns for features with all zeros.
+This is always \code{FALSE} when \code{x} records dictionary keys.}
 
 \item{verbose}{display messages if \code{TRUE}.}
 
