@@ -114,13 +114,14 @@ stats_corpus <- function(x) {
 #' @inheritParams messages
 #' @keywords message internal
 message_tokens <- function(operation, before, after) {
-    message(msg("%s changed from %s tokens (%s documents) to %s tokens (%s documents)",
-                operation, before$ntoken, before$ndoc, after$ntoken, after$ndoc))
+    message(msg("%s changed from %s types (%s documents, %s tokens) to %s types (%s documents, %s tokens)",
+                operation, before$ntype, before$ndoc, before$ntoken, after$ntype, after$ndoc, after$ntoken))
 }
 
 stats_tokens <- function(x) {
     list(ndoc = ndoc(x),
-         ntoken = sum(ntoken(x, remove_padding = TRUE)))
+         ntoken = sum(ntoken(x, remove_padding = TRUE)),
+         ntype = length(types(x)))
 }
 
 #' Print messages in dfm methods
