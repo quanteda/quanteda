@@ -9,11 +9,15 @@ editor_options:
   chunk_output_type: console
 ---
 
+```{r, echo=FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "##")
+```
+
 In this vignette, we show how to implement neural networks using the **quanteda** and **torch** packages. In the version 4.4.1 of **quanteda**, we added multiple functions to make it an infrastructure for developing neural networks. This example focuses on a convolution neural network (CNN) but other types of models such as recurrent neural networks (RNN) and transformers can be also implemented with the aid of the **luz** package.
 
 The code below is based on [an example](https://mlverse.github.io/luz/articles/examples/text-classification.html) published in the website for **luz**, but the CNN model is trained on **quanteda**'s tokens object. This makes neural network models consistent with other analysis and even more efficient in textual data analysis projects.
 
-```{r, message = FALSE}
+```{r, message=FALSE}
 library(quanteda)
 library(torch)
 library(luz)

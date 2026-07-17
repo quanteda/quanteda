@@ -5,16 +5,15 @@ output:
    toc: true
 ---
 
-```{r, echo = FALSE}
-knitr::opts_chunk$set(collapse = FALSE,
-                     comment = "##")
+```{r, echo=FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "##")
 ```
 
 # Instalando el paquete
 
 Desde que **quanteda** está disponible en [CRAN](https://CRAN.R-project.org/package=quanteda), lo puedes instalar usando tu instalador de paquetes en R GUI's o ejecutar las siguientes líneas:
 
-```{r, eval = FALSE}
+```{r, eval=FALSE}
 install.packages("quanteda")
 ```
 Ver instrucciones (en inglés) en https://github.com/quanteda/quanteda para instalar la versión de GitHub.
@@ -26,11 +25,11 @@ Los siguientes paquetes funcionan bien con con **quanteda** o lo complementan y 
 *  [**readtext**](https://github.com/quanteda/readtext):  una manera sencilla de leer data de texto casi con cualquier formato con R,.
 *  [**spacyr**](https://github.com/kbenoit/spacyr): NLP usando la librería [spaCy](https://spacy.io), incluyendo etiquetado part-of-speech, entity recognition y dependency parsing.
 *  [**quanteda.corpora**](https://github.com/quanteda/quanteda.corpora): data textual adicional para uso con **quanteda**.
-    ```{r, eval = FALSE}
+    ```{r, eval=FALSE}
     devtools::install_github("quanteda/quanteda.corpora")
     ```
 *  [**LIWCalike**](https://github.com/kbenoit/quanteda.dictionaries): una implementación en R del abordaje de análisis de texto [Linguistic Inquiry and Word Count](http://liwc.wpengine.com).
-    ```{r, eval = FALSE}
+    ```{r, eval=FALSE}
     devtools::install_github("kbenoit/quanteda.dictionaries")
     ```
 
@@ -38,7 +37,7 @@ Los siguientes paquetes funcionan bien con con **quanteda** o lo complementan y 
 
 Cargas el paquete para acceder a funciones y data en el paquete.
 
-```{r, message = FALSE}
+```{r, message=FALSE}
 library(quanteda)
 ```
 
@@ -141,7 +140,7 @@ summary(data_corpus_irishbudget2010)
 
 Se puede guardar el output del comando summary como un data frame y graficar algunos estadísticos descriptivos con esta información:
 
-```{r, fig.width = 8}
+```{r, fig.width=8}
 tokeninfo <- summary(data_corpus_inaugural)
 if (require(ggplot2))
     ggplot(data = tokeninfo, aes(x = Year, y = Tokens, group = 1)) +
@@ -275,7 +274,7 @@ head(stopwords("ar", source = "misc"), 10)
 
 El dfm puede ser inspeccionado en el panel de 'Environment' en Rstudio o llamando la función `View` en R. Llamando la función `plot` en un dfm se presentará una nube de palabras usando el paquete [wordcloud package](https://cran.r-project.org/web/packages/wordcloud)
 
-```{r fig.width = 8, fig.height = 8}
+```{r fig.width=8, fig.height=8}
 dfmat_uk <- data_char_ukimmig2010 |>
     tokens(remove_punct = TRUE) |>
     tokens_remove(stopwords("english")) |>
@@ -291,7 +290,7 @@ topfeatures(dfmat_uk, 20) # 20 most frequent words
 
 Para un objeto `dfm` se puede graficar una nube de palabras usando `textplot_wordcloud()`. Esta función pasa argumentos a `wordcloud()` del paquete **wordcloud** y puede embellecer el gráfico usando los mismos argumentos:
 
-```{r warning=FALSE, fig.width = 7, fig.height = 7}
+```{r warning=FALSE, fig.width=7, fig.height=7}
 set.seed(100)
 library("quanteda.textplots")
 textplot_wordcloud(dfmat_uk, min_freq = 6, random_order = FALSE,
@@ -343,7 +342,7 @@ dfmat_inaug_post1991_dict
 
 El constructor de la función `dictionary()` también funciona con el formato de dos diccionarios externos comunes: los formatos LIWC y Provalis Research's Wordstat. Por ejemplo, es posible cargar el LIWC y aplicarlo al corpus de discursos inaugurales de presidentes:
 
-```{r, eval = FALSE}
+```{r, eval=FALSE}
 dictliwc <- dictionary(file = "~/Dropbox/QUANTESS/dictionaries/LIWC/LIWC2001_English.dic",
                        format = "LIWC")
 dfmat_inaug_subset <- dfm(data_corpus_inaugural[52:58], dictionary = dictliwc)
@@ -354,7 +353,7 @@ dfmat_inaug_subset[, 1:10]
 
 ## Similitudes entre textos
 
-```{r fig.width = 6}
+```{r fig.width=6}
 dfmat_inaug_post1980 <- data_corpus_inaugural |>
     corpus_subset(Year > 1980) |>
     tokens(remove_punct = TRUE) |>
@@ -371,7 +370,7 @@ tstat_obama
 
 Se puede utilizar estas distancias para graficar un dendrograma, armando clusters por presidente:
 
-```{r, fig.width = 10, fig.height = 7, eval = TRUE}
+```{r, fig.width=10, fig.height=7, eval=TRUE}
 library(quanteda.corpora)
 
 dfmat_sotu <- corpus_subset(data_corpus_sotu, Date > as.Date("1980-01-01")) |>

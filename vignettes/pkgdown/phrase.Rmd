@@ -6,16 +6,13 @@ output:
     toc: true
 ---
 
-```{r, echo = FALSE}
-knitr::opts_chunk$set(
-  collapse = FALSE,
-  comment = "##"
-)
+```{r include=FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "##")
 ```
 
 **quanteda** has the functionality to select, remove or compound multi-word expressions, such as phrasal verbs ("try on", "wake up" etc.) and place names ("New York", "South Korea" etc.). 
 
-```{r, message = FALSE}
+```{r, message=FALSE}
 library(quanteda)
 ```
 

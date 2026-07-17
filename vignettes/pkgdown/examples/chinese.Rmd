@@ -6,11 +6,8 @@ output:
     toc: true
 ---
 
-```{r, echo = FALSE}
-knitr::opts_chunk$set(
-  collapse = FALSE,
-  comment = "##"
-)
+```{r, echo=FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "##")
 ```
 
 ```{r, message=FALSE, warnings=FALSE}
@@ -21,7 +18,7 @@ library("quanteda")
 
 Download corpus constructed from *Report on the Work of the Government* published by Premier of the State Council between 1954 and 2017. You can download the corpus using the **quanteda.corpora** package.
 
-```{r, message=FALSE,eval=FALSE}
+```{r, message=FALSE, eval=FALSE}
 # read text files
 remotes::install_github("quanteda/quanteda.corpora")
 ```
@@ -53,7 +50,7 @@ topfeatures(dfmat_ch)
 
 ### Word cloud
 
-```{r, fig.height = 5, fig.width = 5, fig.align = "center"}
+```{r, fig.height=5, fig.width=5, fig.align="center"}
 # Plot a word cloud
 set.seed(100)
 
@@ -86,7 +83,7 @@ fcmat_ch <- corp_ch17 |>
 
 In this example, we run a Wordfish model to show how to apply an unspervised document scaling method to Chinese texts.
 
-```{r fig2, fig.height = 4, fig.width = 6, fig.align = "center"}
+```{r fig2, fig.height=4, fig.width=6, fig.align="center"}
 library("quanteda.textmodels")
 
 tmod_wf <- textmodel_wordfish(dfmat_ch)

@@ -6,13 +6,12 @@ output:
     toc: true
 ---
 
-```{r, echo = FALSE}
-knitr::opts_chunk$set(collapse = FALSE, 
-                      comment = "##")
+```{r, echo=FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "##")
 ```
 
     
-```{r, message = FALSE}
+```{r, message=FALSE}
 library("quanteda")
 ```
 
@@ -23,7 +22,7 @@ In this vignette we show how the **quanteda** package can be used to replicate t
 
 To get the textual data, you need to install and load the **qss** package first that comes with the book. 
 
-```{r eval = FALSE}
+```{r eval=FALSE}
 remotes::install_github("kosukeimai/qss-package", build_vignettes = TRUE)
 ```
 
@@ -93,7 +92,7 @@ head(dfm_papers, nf = 8)
 
 We can use the `textplot_wordcloud()` function to plot word clouds of the most frequent words in Papers 12 and 24.
 
-```{r warning=FALSE, fig.width = 8, fig.height = 8}
+```{r warning=FALSE, fig.width=8, fig.height=8}
 set.seed(100)
 library("quanteda.textplots")
 textplot_wordcloud(dfm_papers[c("No. 12", "No. 24"), ], 
@@ -218,7 +217,7 @@ author_data$prediction # predicted values
 
 Finally, we plot the fitted values for each Federalist paper with the **ggplot2** package.
 
-```{r, fig.width = 8, fig.height = 6}
+```{r, fig.width=8, fig.height=6}
 author_data$author_plot <- ifelse(is.na(author_data$author), "unknown", as.character(author_data$author))
 
 library(ggplot2)

@@ -6,6 +6,11 @@ output:
     toc: true
 ---
 
+
+```{r, echo=FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "##")
+```
+
 ```{r, message=FALSE}
 library("quanteda")
 library("quanteda.textplots")

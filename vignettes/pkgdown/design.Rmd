@@ -6,11 +6,8 @@ output:
     toc: true
 ---
 
-```{r setup, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "##"
-)
+```{r include=FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "##")
 ```
 
 See https://quanteda.io for additional tutorials, examples, and general documentation.

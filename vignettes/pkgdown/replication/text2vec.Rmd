@@ -6,12 +6,12 @@ output:
     toc: true
 ---
 
-```{r, echo = FALSE}
-knitr::opts_chunk$set(collapse = FALSE, comment = "##")
+```{r, echo=FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "##")
 ```
 
     
-```{r, message = FALSE}
+```{r, message=FALSE}
 library("quanteda")
 ```
 
@@ -21,7 +21,7 @@ This is intended to show how **quanteda** can be used with the [**text2vec**](ht
 
 Download a corpus comprising the texts used in the [**text2vec** vignette](http://text2vec.org/glove.html).
 
-```{r eval = TRUE}
+```{r eval=TRUE}
 wiki_corp <- quanteda.corpora::download(url = "https://www.dropbox.com/s/9mubqwpgls3qi9t/data_corpus_wiki.rds?dl=1")
 ```
 
@@ -49,7 +49,7 @@ wiki_fcm <- fcm(wiki_toks, context = "window", count = "weighted", weights = 1 /
 
 Fit the [GloVe model](https://nlp.stanford.edu/pubs/glove.pdf) using [**rsparse**](http://text2vec.org).
 
-```{r, message = FALSE}
+```{r, message=FALSE}
 library("text2vec")
 ```
 

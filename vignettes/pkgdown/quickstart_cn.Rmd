@@ -7,17 +7,15 @@ editor_options:
   chunk_output_type: console
 ---
 
-```{r, echo = FALSE}
-knitr::opts_chunk$set(collapse = FALSE,
-                      comment = "##")
-
+```{r include=FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "##")
 ```
 
 # 软件包安装 {#installing-the-package}
 
 **quanteda**已上传在[CRAN](https://CRAN.R-project.org/package=quanteda)上，所以可以使用GUI的R软件包安装程序进行安装，或执行：
 
-```{r, eval = FALSE}
+```{r, eval=FALSE}
 install.packages("quanteda")
 ```
 请参阅https://github.com/quanteda/quanteda上的说明来安装GitHub版本。 
@@ -30,12 +28,12 @@ install.packages("quanteda")
 *  [**spacyr**](https://github.com/quanteda/spacyr): 使用[spaCy](http://spacy.io)库的NLP，包括词性标注，命名实体和依存语法
 *  [**quanteda.corpora**](https://github.com/quanteda/quanteda.corpora): 用于**quanteda**的附加文本数据
 
-```{r eval = FALSE}
+```{r eval=FALSE}
 devtools::install_github("quanteda/quanteda.corpora")
 ```
 *  [**quanteda.dictionaries**](https://github.com/kbenoit/quanteda.dictionaries): R版[Linguistic Inquiry and Word Count](http://liwc.wpengine.com) 文本分析软件
 
-```{r eval = FALSE}
+```{r eval=FALSE}
 devtools::install_github("kbenoit/quanteda.dictionaries")
 ```
 
@@ -43,7 +41,7 @@ devtools::install_github("kbenoit/quanteda.dictionaries")
 
 加载**quanteda**以便使用软件包中的数据和功能。
 
-```{r, message = FALSE}
+```{r, message=FALSE}
 library(quanteda)
 ```
 
@@ -146,7 +144,7 @@ summary(data_corpus_irishbudget2010)
 
 我们可以将汇总命令的输出保存为data.frame，并用这些信息绘制出一些基本的描述性统计信息：
 
-```{r, fig.width = 8}
+```{r, fig.width=8}
 tokeninfo <- summary(data_corpus_inaugural)
 if (require(ggplot2))
     ggplot(data = tokeninfo, aes(x = Year, y = Tokens, group = 1)) +
@@ -286,7 +284,7 @@ head(stopwords("ar", source = "misc"), 10)
 
 可以在RStudio 的Enviroment pane中查看dfm,或者调用R的View功能。调用`plot`dfm将调用[wordcloud软件包](https://cran.r-project.org/web/packages/wordcloud/index.html)绘制词云图。
 
-```{r warning=FALSE, fig.width = 8, fig.height = 8}
+```{r warning=FALSE, fig.width=8, fig.height=8}
 dfmat_uk <- tokens(data_char_ukimmig2010, remove_punct = TRUE) |>
   tokens_remove(stopwords("en")) |>
   dfm()
@@ -301,7 +299,7 @@ topfeatures(dfmat_uk, 20)  # 20 词频最高的词
 
 使用`textplot_wordcloud()`可以绘制`dfm`对象的词云图。这个函数将参数传递给**wordcloud**包的`wordcloud()`函数，并且可以使用相同的参数来对图进行美化：
 
-```{r warning=FALSE, fig.width = 7, fig.height = 7}
+```{r warning=FALSE, fig.width=7, fig.height=7}
 set.seed(100)
 library("quanteda.textplots")
 textplot_wordcloud(dfmat_uk, min_count = 6, random_order = FALSE,
@@ -356,7 +354,7 @@ dfmat_inaug_post1991_dict
 
 构造函数`dictionary()`也适用于两种常见的“外来”字典格式：LIWC 和 Provalis Research' Wordstat。例如，我们可以加载 LIWC 并将其应用于总统就职演讲语料库：
 
-```{r, eval = FALSE}
+```{r, eval=FALSE}
 dictliwc <- dictionary(file = "~/Dropbox/QUANTESS/dictionaries/LIWC/LIWC2001_English.dic",
                        format = "LIWC")
 dfmat_inaug_subset <- dfm(tokens(data_corpus_inaugural[52:58]), dictionary = dicliwc)
@@ -367,7 +365,7 @@ dfmat_inaug_subset[, 1:10]
 
 ## 文本之间的相似度 {#similarities-between-texts}
 
-```{r fig.width = 6}
+```{r fig.width=6}
 dfmat_inaug_post1980 <- corpus_subset(data_corpus_inaugural, Year > 1980) |>
   tokens(remove_punct = TRUE) |>
   tokens_remove(stopwords("english")) |>
@@ -384,7 +382,7 @@ tstat_obama
 
 我们可以用这些距离来绘制树状图，聚类分析总统：
 
-```{r, fig.width = 10, fig.height = 7, eval = TRUE}
+```{r, fig.width=10, fig.height=7, eval=TRUE}
 library(quanteda.corpora)
 
 dfmat_sotu <- corpus_subset(data_corpus_sotu, Date > as.Date("1980-01-01")) |>
@@ -439,7 +437,7 @@ quant_dfm <- dfm_trim(quant_dfm, min_termfreq = 4, max_docfreq = 10)
 quant_dfm
 ```
 
-```{r fig.width = 7, fig.height = 5}
+```{r fig.width=7, fig.height=5}
 set.seed(100)
 if (require("stm")) {
     my_lda_fit20 <- stm(quant_dfm, K = 20, verbose = FALSE)
@@ -469,7 +467,7 @@ tokens("中华人民共和国成立于1949 年") |>
 
 四十九份中国总理的“政府工作报告”，1954 - 2017
 
-```{r fig1, fig.height = 7, fig.width = 7, fig.align = "center"}
+```{r fig1, fig.height=7, fig.width=7, fig.align="center"}
 # 读取文件
 load("examples/data/data_corpus_chinesegovreport.rda")
 summary(data_corpus_chinesegovreport, 10)
@@ -498,7 +496,7 @@ textplot_wordcloud(dfmat_china_trim, min_count = 6,
 
 ## 文本缩放模型 {#wordfish}
 
-```{r fig2, fig.height = 4, fig.width = 6, fig.align = "center"}
+```{r fig2, fig.height=4, fig.width=6, fig.align="center"}
 wfm <- textmodel_wordfish(dfmat_china)
 y <- 1954:2017
 y <- y[-which(y == 1963 | y == 1961 | y == 1962 | (y > 1964 & y < 1975) | y == 1976 | y == 1977)]
