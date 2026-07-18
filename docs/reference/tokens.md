@@ -1,0 +1,339 @@
+# Construct a tokens object
+
+Construct a tokens object, either by importing a named list of
+characters from an external tokenizer, or by calling the internal
+quanteda tokenizer.
+
+`tokens()` can also be applied to tokens class objects, which means that
+the removal rules can be applied post-tokenization, although it should
+be noted that it will not be possible to remove things that are not
+present. For instance, if the `tokens` object has already had
+punctuation removed, then `tokens(x, remove_punct = TRUE)` will have no
+additional effect.
+
+## Usage
+
+``` r
+tokens(
+  x,
+  what = "word",
+  remove_punct = FALSE,
+  remove_symbols = FALSE,
+  remove_numbers = FALSE,
+  remove_url = FALSE,
+  remove_separators = TRUE,
+  split_hyphens = FALSE,
+  split_tags = FALSE,
+  normalize = FALSE,
+  include_docvars = TRUE,
+  padding = FALSE,
+  concatenator = "_",
+  verbose = quanteda_options("verbose"),
+  ...,
+  xptr = FALSE
+)
+```
+
+## Arguments
+
+- x:
+
+  the input object to the tokens constructor; a tokens,
+  [corpus](https://quanteda.io/reference/corpus.md) or
+  [character](https://rdrr.io/r/base/character.html) object to tokenize.
+
+- what:
+
+  character; which tokenizer to use. The default `what = "word"` is the
+  current version of the quanteda tokenizer, set by
+  `quanteda_options(tokens_tokenizer_word)`. Legacy tokenizers (version
+  \< 2) are also supported, including the default `what = "word4"`. See
+  the Details and quanteda Tokenizers below.
+
+- remove_punct:
+
+  logical; if `TRUE` remove all characters in the Unicode "Punctuation"
+  `[P]` class, with exceptions for those used as prefixes for valid
+  social media tags if `preserve_tags = TRUE`
+
+- remove_symbols:
+
+  logical; if `TRUE` remove all characters in the Unicode "Symbol" `[S]`
+  class
+
+- remove_numbers:
+
+  logical; if `TRUE` remove tokens that consist only of numbers, but not
+  words that start with digits, e.g. `2day`
+
+- remove_url:
+
+  logical; if `TRUE` removes URLs (http, https, ftp, sftp) and email
+  addresses.
+
+- remove_separators:
+
+  logical; if `TRUE` remove separators and separator characters (Unicode
+  "Separator" `[Z]` and "Control" `[C]` categories)
+
+- split_hyphens:
+
+  logical; if `FALSE`, do not split words that are connected by
+  hyphenation and hyphenation-like characters in between words, e.g.
+  `"self-aware"` becomes `c("self", "-", "aware")`
+
+- split_tags:
+
+  logical; if `FALSE`, do not split social media tags defined in
+  [`quanteda_options()`](https://quanteda.io/reference/quanteda_options.md).
+  The default patterns are `pattern_hashtag = "#\\w+#?"` and
+  `pattern_username = "@[a-zA-Z0-9_]+"`.
+
+- normalize:
+
+  logical; if `TRUE`, Unicode quotation marks and hyphens are replaced
+  by their ASCII equivalent. See details.
+
+- include_docvars:
+
+  if `TRUE`, pass docvars through to the tokens object. Does not apply
+  when the input is a character data or a list of characters.
+
+- padding:
+
+  if `TRUE`, leave an empty string where the removed tokens previously
+  existed. This is useful if a positional match is needed between the
+  pre- and post-selected tokens, for instance if a window of adjacency
+  needs to be computed.
+
+- concatenator:
+
+  character; the concatenation character that will connect the tokens
+  making up a multi-token sequence.
+
+- verbose:
+
+  if `TRUE`, print timing messages to the console.
+
+- ...:
+
+  used to pass arguments among the functions.
+
+- xptr:
+
+  if `TRUE`, returns a `tokens_xptr` class object.
+
+## Value
+
+quanteda `tokens` class object, by default a serialized list of integers
+corresponding to a vector of types.
+
+## Details
+
+As of version 2, the choice of tokenizer is left more to the user, and
+`tokens()` is treated more as a constructor (from a named list) than a
+tokenizer. This allows users to use any other tokenizer that returns a
+named list, and to use this as an input to `tokens()`, with removal and
+splitting rules applied after this has been constructed (passed as
+arguments). These removal and splitting rules are conservative and will
+not remove or split anything, however, unless the user requests it.
+
+You usually do not want to split hyphenated words or social media tags,
+but extra steps required to preserve such special tokens. If there are
+many random characters in your texts, you should `split_hyphens = TRUE`
+and `split_tags = TRUE` to avoid a slowdown in tokenization.
+
+Using external tokenizers is best done by piping the output from these
+other tokenizers into the `tokens()` constructor, with additional
+removal and splitting options applied at the construction stage. These
+will only have an effect, however, if the tokens exist for which removal
+is specified at in the `tokens()` call. For instance, it is impossible
+to remove punctuation if the input list to `tokens()` already had its
+punctuation tokens removed at the external tokenization stage.
+
+To construct a tokens object from a list with no additional processing,
+call [`as.tokens()`](https://quanteda.io/reference/as.tokens.md) instead
+of `tokens()`.
+
+Recommended tokenizers are those from the tokenizers package, which are
+generally faster than the default (built-in) tokenizer but always splits
+infix hyphens, or spacyr. The default tokenizer in **quanteda** is very
+smart, however, and if you do not have special requirements, it works
+extremely well for most languages as well as text from social media
+(including hashtags and usernames).
+
+If `normalize = TRUE`, Unicode characters are replaced by their ASCII
+equivalent to make pattern matching (e.g. stop words) easier:
+`[\u201C\u201D\u201F]` to the double quotation; `[\u2018\u201B\u2019]`
+to the single quotation mark; and
+`\u002D\u2010\u2011\u2012\u2013\u2014\u2015]` to a hyphen.
+
+## quanteda Tokenizers
+
+The default word tokenizer `what = "word"` is updated in major version
+4. It is even smarter than the v2 and v3 versions, with additional
+options for customization. See
+[`tokenize_word4()`](https://quanteda.io/reference/tokenize_internal.md)
+for full details.
+
+The default tokenizer splits tokens using [stri_split_boundaries(x, type
+= "word")](https://rdrr.io/pkg/stringi/man/stri_split_boundaries.html)
+but by default preserves infix hyphens (e.g. "self-funding"), URLs, and
+social media "tag" characters (#hashtags and @usernames), and email
+addresses. The rules defining a valid "tag" can be found at
+https://www.hashtags.org/featured/what-characters-can-a-hashtag-include/
+for hashtags and at
+https://help.twitter.com/en/managing-your-account/twitter-username-rules
+for usernames.
+
+For backward compatibility, the following older tokenizers are also
+supported through `what`:
+
+- `"word1"`:
+
+  (legacy) implements similar behaviour to the version of
+  `what = "word"` found in pre-version 2. (It preserves social media
+  tags and infix hyphens, but splits URLs.) "word1" is also slower than
+  "word2" and "word4". In "word1", the argument `remove_twitter`
+  controlled whether social media tags were preserved or removed, even
+  when `remove_punct = TRUE`. This argument is not longer functional in
+  versions \>= 2, but equivalent control can be had using the
+  `split_tags` argument and selective tokens removals.
+
+- `"word2", "word3"`:
+
+  (legacy) implements similar behaviour to the versions of "word" found
+  in quanteda versions 3 and 4.
+
+- `"fasterword"`:
+
+  (legacy) splits on whitespace and control characters, using
+  `stringi::stri_split_charclass(x, "[\\p{Z}\\p{C}]+")`
+
+- `"fastestword"`:
+
+  (legacy) splits on the space character, using
+  `stringi::stri_split_fixed(x, " ")`
+
+- `"character"`:
+
+  tokenization into individual characters
+
+- `"sentence"`:
+
+  sentence segmenter based on
+  [stri_split_boundaries](https://rdrr.io/pkg/stringi/man/stri_split_boundaries.html),
+  but with additional rules to avoid splits on words like "Mr." that
+  would otherwise incorrectly be detected as sentence boundaries. For
+  better sentence tokenization, consider using spacyr.
+
+## See also
+
+[`tokens_ngrams()`](https://quanteda.io/reference/tokens_ngrams.md),
+[`tokens_skipgrams()`](https://quanteda.io/reference/tokens_ngrams.md),
+[`tokens_compound()`](https://quanteda.io/reference/tokens_compound.md),
+[`tokens_lookup()`](https://quanteda.io/reference/tokens_lookup.md),
+[`concat()`](https://quanteda.io/reference/concat.md),
+[`as.list.tokens()`](https://quanteda.io/reference/as.tokens.md),
+[`as.tokens()`](https://quanteda.io/reference/as.tokens.md)
+
+## Examples
+
+``` r
+txt <- c(doc1 = "A sentence, showing how tokens() works.",
+         doc2 = "@quantedainit and #textanalysis https://example.com?p=123.",
+         doc3 = "Self-documenting code??",
+         doc4 = "£1,000,000 for 50¢ is gr8 4ever \U0001f600")
+tokens(txt)
+#> Tokens consisting of 4 documents.
+#> doc1 :
+#>  [1] "A"        "sentence" ","        "showing"  "how"      "tokens"  
+#>  [7] "("        ")"        "works"    "."       
+#> 
+#> doc2 :
+#> [1] "@quantedainit"              "and"                       
+#> [3] "#textanalysis"              "https://example.com?p=123."
+#> 
+#> doc3 :
+#> [1] "Self-documenting" "code"             "?"                "?"               
+#> 
+#> doc4 :
+#> [1] "£"         "1,000,000" "for"       "50"        "¢"         "is"       
+#> [7] "gr8"       "4ever"     "😀"       
+#> 
+tokens(txt, what = "word1")
+#> Tokens consisting of 4 documents.
+#> doc1 :
+#>  [1] "A"        "sentence" ","        "showing"  "how"      "tokens"  
+#>  [7] "("        ")"        "works"    "."       
+#> 
+#> doc2 :
+#>  [1] "@quantedainit" "and"           "#textanalysis" "https"        
+#>  [5] ":"             "/"             "/"             "example.com"  
+#>  [9] "?"             "p"             "="             "123"          
+#> [ ... and 1 more ]
+#> 
+#> doc3 :
+#> [1] "Self-documenting" "code"             "?"                "?"               
+#> 
+#> doc4 :
+#> [1] "£"         "1,000,000" "for"       "50"        "¢"         "is"       
+#> [7] "gr8"       "4ever"     "😀"       
+#> 
+
+# removing punctuation marks but keeping tags and URLs
+tokens(txt[1:2], remove_punct = TRUE)
+#> Tokens consisting of 2 documents.
+#> doc1 :
+#> [1] "A"        "sentence" "showing"  "how"      "tokens"   "works"   
+#> 
+#> doc2 :
+#> [1] "@quantedainit"              "and"                       
+#> [3] "#textanalysis"              "https://example.com?p=123."
+#> 
+
+# splitting hyphenated words
+tokens(txt[3])
+#> Tokens consisting of 1 document.
+#> doc3 :
+#> [1] "Self-documenting" "code"             "?"                "?"               
+#> 
+tokens(txt[3], split_hyphens = TRUE)
+#> Tokens consisting of 1 document.
+#> doc3 :
+#> [1] "Self"        "-"           "documenting" "code"        "?"          
+#> [6] "?"          
+#> 
+
+# symbols and numbers
+tokens(txt[4])
+#> Tokens consisting of 1 document.
+#> doc4 :
+#> [1] "£"         "1,000,000" "for"       "50"        "¢"         "is"       
+#> [7] "gr8"       "4ever"     "😀"       
+#> 
+tokens(txt[4], remove_numbers = TRUE)
+#> Tokens consisting of 1 document.
+#> doc4 :
+#> [1] "£"     "for"   "¢"     "is"    "gr8"   "4ever" "😀"   
+#> 
+tokens(txt[4], remove_numbers = TRUE, remove_symbols = TRUE)
+#> Tokens consisting of 1 document.
+#> doc4 :
+#> [1] "for"   "is"    "gr8"   "4ever"
+#> 
+
+if (FALSE) # using other tokenizers
+tokens(tokenizers::tokenize_words(txt[4]), remove_symbols = TRUE)
+tokenizers::tokenize_words(txt, lowercase = FALSE, strip_punct = FALSE) |>
+    tokens(remove_symbols = TRUE)
+#> Error in loadNamespace(x): there is no package called 'tokenizers'
+tokenizers::tokenize_characters(txt[3], strip_non_alphanum = FALSE) |>
+    tokens(remove_punct = TRUE)
+#> Error in loadNamespace(x): there is no package called 'tokenizers'
+tokenizers::tokenize_sentences(
+    "The quick brown fox.  It jumped over the lazy dog.") |>
+    tokens()
+#> Error in loadNamespace(x): there is no package called 'tokenizers'
+ # \dontrun{}
+```

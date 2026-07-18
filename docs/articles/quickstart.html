@@ -4,175 +4,99 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Quick Start Guide • quanteda</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
-<script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><!-- docsearch --><script src="../docsearch.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.3/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous">
-<link href="../docsearch.css" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script><link href="../extra.css" rel="stylesheet">
+<script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
 <script src="../extra.js"></script><meta property="og:title" content="Quick Start Guide">
-<!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
-<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]--><!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-0F398Z98L1"></script><script>
+<!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-0F398Z98L1"></script><script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
   gtag('config', 'G-0F398Z98L1');
-</script>
+</script><!-- Google tag (gtag.js) -->
 </head>
-<body data-spy="scroll" data-target="#toc">
+<body>
+    <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
-    <div class="container template-article">
-      <header><div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">quanteda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">4.3.0</span>
-      </span>
-    </div>
+    <nav class="navbar navbar-expand-lg fixed-top bg-light" data-bs-theme="inverse" aria-label="Site navigation"><div class="container">
 
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Quick Start
+    <a class="navbar-brand me-2" href="../index.html">quanteda</a>
 
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-<li>
-      <a href="../articles/quickstart.html">Quick Start Guide</a>
-    </li>
-    <li>
-      <a href="../articles/pkgdown/quickstart_es.html">Guía de Inicio Rápido</a>
-    </li>
-    <li>
-      <a href="../articles/pkgdown/quickstart_cn.html">快速入门指南</a>
-    </li>
-    <li>
-      <a href="../articles/pkgdown/quickstart_ja.html">クイック・スタートガイド</a>
-    </li>
-    <li>
-      <a href="../articles/pkgdown/quickstart_hi.html">त्वरित आरंभ </a>
-    </li>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">4.4.1</small>
+
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div id="navbar" class="collapse navbar-collapse ms-3">
+      <ul class="navbar-nav me-auto">
+<li class="active nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-quick-start" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Quick Start</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-quick-start">
+<li><a class="dropdown-item" href="../articles/quickstart.html">Quick Start Guide</a></li>
+    <li><a class="dropdown-item" href="../articles/pkgdown/quickstart_es.html">Guía de Inicio Rápido</a></li>
+    <li><a class="dropdown-item" href="../articles/pkgdown/quickstart_cn.html">快速入门指南</a></li>
+    <li><a class="dropdown-item" href="../articles/pkgdown/quickstart_ja.html">クイック・スタートガイド</a></li>
+    <li><a class="dropdown-item" href="../articles/pkgdown/quickstart_hi.html">त्वरित आरंभ </a></li>
   </ul>
 </li>
-<li>
-  <a href="../reference/index.html">Reference</a>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Features
-
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-<li>
-      <a href="../articles/pkgdown/parallelisation.html">Parallel computing</a>
-    </li>
-    <li>
-      <a href="../articles/pkgdown/tokens_xptr.html">External pointer tokens objects</a>
-    </li>
-    <li>
-      <a href="../articles/pkgdown/benchmarks_xptr.html">Performance benchmarks</a>
-    </li>
-    <li>
-      <a href="../articles/pkgdown/design.html">Package design</a>
-    </li>
-    <li>
-      <a href="../news/index.html">Changelog</a>
-    </li>
+<li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-features" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Features</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-features">
+<li><a class="dropdown-item" href="../articles/pkgdown/phrase.html">Multi-word expressions</a></li>
+    <li><a class="dropdown-item" href="../articles/pkgdown/parallelisation.html">Parallel computing</a></li>
+    <li><a class="dropdown-item" href="../articles/pkgdown/tokens_xptr.html">External pointer tokens objects</a></li>
+    <li><a class="dropdown-item" href="../articles/pkgdown/design.html">Package design</a></li>
+    <li><a class="dropdown-item" href="../news/index.html">Changelog</a></li>
   </ul>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Examples
-
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-<li>
-      <a href="../articles/pkgdown/examples/phrase.html">Multi-word expressions</a>
-    </li>
-    <li>
-      <a href="../articles/pkgdown/examples/plotting.html">Textual data visualization</a>
-    </li>
-    <li>
-      <a href="../articles/pkgdown/examples/lsa.html">Latent Semantic Analysis (LSA)</a>
-    </li>
-    <li>
-      <a href="../articles/pkgdown/examples/chinese.html">Chinese text analysis</a>
-    </li>
-    <li>
-      <a href="../articles/pkgdown/examples/twitter.html">Social media analysis</a>
-    </li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-examples" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Examples</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-examples">
+<li><a class="dropdown-item" href="../articles/pkgdown/examples/plotting.html">Textual data visualization</a></li>
+    <li><a class="dropdown-item" href="../articles/pkgdown/examples/lsa.html">Latent Semantic Analysis (LSA)</a></li>
+    <li><a class="dropdown-item" href="../articles/pkgdown/examples/chinese.html">Chinese text analysis</a></li>
+    <li><a class="dropdown-item" href="../articles/pkgdown/examples/twitter.html">Social media analysis</a></li>
+    <li><a class="dropdown-item" href="../articles/pkgdown/examples/neural-networks.html">Neural network models</a></li>
   </ul>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Replications
-
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-<li>
-      <a href="../articles/pkgdown/replication/digital-humanities.html">Text Analysis with R for Students of Literature</a>
-    </li>
-    <li>
-      <a href="../articles/pkgdown/replication/text2vec.html">Word embedding (word2vec)</a>
-    </li>
-    <li>
-      <a href="../articles/pkgdown/replication/qss.html">Quantitative Social Science Ch. 5.1</a>
-    </li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-replications" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Replications</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-replications">
+<li><a class="dropdown-item" href="../articles/pkgdown/replication/digital-humanities.html">Text Analysis with R for Students of Literature</a></li>
+    <li><a class="dropdown-item" href="../articles/pkgdown/replication/text2vec.html">Word embedding</a></li>
+    <li><a class="dropdown-item" href="../articles/pkgdown/replication/qss.html">Quantitative Social Science Ch. 5.1</a></li>
   </ul>
 </li>
       </ul>
-<ul class="nav navbar-nav navbar-right">
-<li>
-  <a href="https://github.com/quanteda/quanteda" class="external-link">
-    <span class="fa fa-github fa-lg"></span>
-
-  </a>
-</li>
+<ul class="navbar-nav">
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/quanteda/quanteda" aria-label="View on Github"><span class="fa fa-github fa-lg"></span></a></li>
       </ul>
-<form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
-        <div class="form-group">
-          <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
 </div>
-      </form>
 
-    </div>
-<!--/.nav-collapse -->
+
   </div>
-<!--/.container -->
-</div>
-<!--/.navbar -->
+</nav><div class="container template-article">
 
 
 
-      </header><div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Quick Start Guide</h1>
+
+<div class="row">
+  <main id="main" class="col-md-9"><div class="page-header">
+
+      <h1>Quick Start Guide</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/quanteda/quanteda/blob/HEAD/vignettes/quickstart.Rmd" class="external-link"><code>vignettes/quickstart.Rmd</code></a></small>
-      <div class="hidden name"><code>quickstart.Rmd</code></div>
-
+      <div class="d-none name"><code>quickstart.Rmd</code></div>
     </div>
 
     
@@ -245,11 +169,11 @@ package.</p>
 </h3>
 <p><strong>quanteda</strong> has a simple and powerful companion package
 for loading texts: <a href="https://github.com/quanteda/readtext" class="external-link"><strong>readtext</strong></a>.
-The main function in this package, <code><a href="https://rdrr.io/pkg/readtext/man/readtext.html" class="external-link">readtext()</a></code>, takes a file
+The main function in this package, <code><a href="https://readtext.quanteda.io/reference/readtext.html" class="external-link">readtext()</a></code>, takes a file
 or fileset from disk or a URL, and returns a type of data.frame that can
 be used directly with the <code><a href="../reference/corpus.html">corpus()</a></code> constructor function, to
 create a <strong>quanteda</strong> corpus object.</p>
-<p><code><a href="https://rdrr.io/pkg/readtext/man/readtext.html" class="external-link">readtext()</a></code> works on:</p>
+<p><code><a href="https://readtext.quanteda.io/reference/readtext.html" class="external-link">readtext()</a></code> works on:</p>
 <ul>
 <li>text (<code>.txt</code>) files;</li>
 <li>comma-separated-value (<code>.csv</code>) files;</li>
@@ -286,15 +210,15 @@ the 2010 election manifestos of the UK political parties (called
 <pre><code><span><span class="co">## Corpus consisting of 9 documents, showing 9 documents:</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">##          Text Types Tokens Sentences</span></span>
-<span><span class="co">##           BNP  1125   3280        88</span></span>
-<span><span class="co">##     Coalition   142    260         4</span></span>
-<span><span class="co">##  Conservative   251    499        15</span></span>
-<span><span class="co">##        Greens   322    679        21</span></span>
-<span><span class="co">##        Labour   298    683        29</span></span>
-<span><span class="co">##        LibDem   251    483        14</span></span>
+<span><span class="co">##           BNP  1125   3280       136</span></span>
+<span><span class="co">##     Coalition   142    260        12</span></span>
+<span><span class="co">##  Conservative   251    499        21</span></span>
+<span><span class="co">##        Greens   322    679        30</span></span>
+<span><span class="co">##        Labour   298    683        33</span></span>
+<span><span class="co">##        LibDem   251    483        26</span></span>
 <span><span class="co">##            PC    77    114         5</span></span>
 <span><span class="co">##           SNP    88    134         4</span></span>
-<span><span class="co">##          UKIP   346    723        26</span></span></code></pre>
+<span><span class="co">##          UKIP   346    723        37</span></span></code></pre>
 <p>If we wanted, we could add some document-level variables – what
 quanteda calls <em>docvars</em> – to this corpus.</p>
 <p>We can do this using the R’s <code><a href="https://rdrr.io/r/base/names.html" class="external-link">names()</a></code> function to get the
@@ -307,54 +231,54 @@ assign this to a document variable (<em>docvar</em>).</p>
 <pre><code><span><span class="co">## Corpus consisting of 9 documents, showing 9 documents:</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">##          Text Types Tokens Sentences        Party Year</span></span>
-<span><span class="co">##           BNP  1125   3280        88          BNP 2010</span></span>
-<span><span class="co">##     Coalition   142    260         4    Coalition 2010</span></span>
-<span><span class="co">##  Conservative   251    499        15 Conservative 2010</span></span>
-<span><span class="co">##        Greens   322    679        21       Greens 2010</span></span>
-<span><span class="co">##        Labour   298    683        29       Labour 2010</span></span>
-<span><span class="co">##        LibDem   251    483        14       LibDem 2010</span></span>
+<span><span class="co">##           BNP  1125   3280       136          BNP 2010</span></span>
+<span><span class="co">##     Coalition   142    260        12    Coalition 2010</span></span>
+<span><span class="co">##  Conservative   251    499        21 Conservative 2010</span></span>
+<span><span class="co">##        Greens   322    679        30       Greens 2010</span></span>
+<span><span class="co">##        Labour   298    683        33       Labour 2010</span></span>
+<span><span class="co">##        LibDem   251    483        26       LibDem 2010</span></span>
 <span><span class="co">##            PC    77    114         5           PC 2010</span></span>
 <span><span class="co">##           SNP    88    134         4          SNP 2010</span></span>
-<span><span class="co">##          UKIP   346    723        26         UKIP 2010</span></span></code></pre>
+<span><span class="co">##          UKIP   346    723        37         UKIP 2010</span></span></code></pre>
 </div>
 <div class="section level4">
 <h4 id="loading-in-files-using-the-readtext-package">Loading in files using the readtext package<a class="anchor" aria-label="anchor" href="#loading-in-files-using-the-readtext-package"></a>
 </h4>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://github.com/quanteda/readtext" class="external-link">readtext</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://readtext.quanteda.io/" class="external-link">readtext</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Twitter json</span></span>
-<span><span class="va">dat_json</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/readtext/man/readtext.html" class="external-link">readtext</a></span><span class="op">(</span><span class="st">"social_media/zombies/tweets.json"</span><span class="op">)</span></span>
+<span><span class="va">dat_json</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readtext.quanteda.io/reference/readtext.html" class="external-link">readtext</a></span><span class="op">(</span><span class="st">"social_media/zombies/tweets.json"</span><span class="op">)</span></span>
 <span><span class="va">corp_twitter</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/corpus.html">corpus</a></span><span class="op">(</span><span class="va">dat_json</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">corp_twitter</span>, <span class="fl">5</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># generic json - needs a textfield specifier</span></span>
-<span><span class="va">dat_sotu</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/readtext/man/readtext.html" class="external-link">readtext</a></span><span class="op">(</span><span class="st">"corpora/sotu/sotu.json"</span>, text_field <span class="op">=</span> <span class="st">"text"</span><span class="op">)</span></span>
+<span><span class="va">dat_sotu</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readtext.quanteda.io/reference/readtext.html" class="external-link">readtext</a></span><span class="op">(</span><span class="st">"corpora/sotu/sotu.json"</span>, text_field <span class="op">=</span> <span class="st">"text"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu"><a href="../reference/corpus.html">corpus</a></span><span class="op">(</span><span class="va">dat_sotu</span><span class="op">)</span>, <span class="fl">5</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># text file</span></span>
-<span><span class="va">dat_txtone</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/readtext/man/readtext.html" class="external-link">readtext</a></span><span class="op">(</span><span class="st">"corpora/project_gutenberg/pg2701.txt"</span><span class="op">)</span></span>
+<span><span class="va">dat_txtone</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readtext.quanteda.io/reference/readtext.html" class="external-link">readtext</a></span><span class="op">(</span><span class="st">"corpora/project_gutenberg/pg2701.txt"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu"><a href="../reference/corpus.html">corpus</a></span><span class="op">(</span><span class="va">dat_txtone</span><span class="op">)</span>, <span class="fl">5</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># multiple text files</span></span>
-<span><span class="va">dat_txtmultiple1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/readtext/man/readtext.html" class="external-link">readtext</a></span><span class="op">(</span><span class="st">"corpora/inaugural/*.txt"</span><span class="op">)</span></span>
+<span><span class="va">dat_txtmultiple1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readtext.quanteda.io/reference/readtext.html" class="external-link">readtext</a></span><span class="op">(</span><span class="st">"corpora/inaugural/*.txt"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu"><a href="../reference/corpus.html">corpus</a></span><span class="op">(</span><span class="va">dat_txtmultiple1</span><span class="op">)</span>, <span class="fl">5</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># multiple text files with docvars from filenames</span></span>
-<span><span class="va">dat_txtmultiple2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/readtext/man/readtext.html" class="external-link">readtext</a></span><span class="op">(</span><span class="st">"corpora/inaugural/*.txt"</span>,</span>
+<span><span class="va">dat_txtmultiple2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readtext.quanteda.io/reference/readtext.html" class="external-link">readtext</a></span><span class="op">(</span><span class="st">"corpora/inaugural/*.txt"</span>,</span>
 <span>                             docvarsfrom <span class="op">=</span> <span class="st">"filenames"</span>, sep <span class="op">=</span> <span class="st">"-"</span>,</span>
 <span>                             docvarnames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Year"</span>, <span class="st">"President"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu"><a href="../reference/corpus.html">corpus</a></span><span class="op">(</span><span class="va">dat_txtmultiple2</span><span class="op">)</span>, <span class="fl">5</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># XML data</span></span>
-<span><span class="va">dat_xml</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/readtext/man/readtext.html" class="external-link">readtext</a></span><span class="op">(</span><span class="st">"xmlData/plant_catalog.xml"</span>, text_field <span class="op">=</span> <span class="st">"COMMON"</span><span class="op">)</span></span>
+<span><span class="va">dat_xml</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readtext.quanteda.io/reference/readtext.html" class="external-link">readtext</a></span><span class="op">(</span><span class="st">"xmlData/plant_catalog.xml"</span>, text_field <span class="op">=</span> <span class="st">"COMMON"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu"><a href="../reference/corpus.html">corpus</a></span><span class="op">(</span><span class="va">dat_xml</span><span class="op">)</span>, <span class="fl">5</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># csv file</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>inaug_speech <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">data_corpus_inaugural</span><span class="op">)</span>,</span>
 <span>                     <span class="fu"><a href="../reference/docvars.html">docvars</a></span><span class="op">(</span><span class="va">data_corpus_inaugural</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>          file <span class="op">=</span> <span class="st">"/tmp/inaug_texts.csv"</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="va">dat_csv</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/readtext/man/readtext.html" class="external-link">readtext</a></span><span class="op">(</span><span class="st">"/tmp/inaug_texts.csv"</span>, text_field <span class="op">=</span> <span class="st">"inaug_speech"</span><span class="op">)</span></span>
+<span><span class="va">dat_csv</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readtext.quanteda.io/reference/readtext.html" class="external-link">readtext</a></span><span class="op">(</span><span class="st">"/tmp/inaug_texts.csv"</span>, text_field <span class="op">=</span> <span class="st">"inaug_speech"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu"><a href="../reference/corpus.html">corpus</a></span><span class="op">(</span><span class="va">dat_csv</span><span class="op">)</span>, <span class="fl">5</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
@@ -418,10 +342,10 @@ attributes, use <code><a href="https://rdrr.io/r/base/character.html" class="ext
 <pre><code><span><span class="co">## Corpus consisting of 60 documents, showing 5 documents:</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">##             Text Types Tokens Sentences Year  President FirstName</span></span>
-<span><span class="co">##  1789-Washington   625   1537        23 1789 Washington    George</span></span>
-<span><span class="co">##  1793-Washington    96    147         4 1793 Washington    George</span></span>
+<span><span class="co">##  1789-Washington   625   1537        24 1789 Washington    George</span></span>
+<span><span class="co">##  1793-Washington    96    147         5 1793 Washington    George</span></span>
 <span><span class="co">##       1797-Adams   826   2577        37 1797      Adams      John</span></span>
-<span><span class="co">##   1801-Jefferson   717   1923        41 1801  Jefferson    Thomas</span></span>
+<span><span class="co">##   1801-Jefferson   717   1923        43 1801  Jefferson    Thomas</span></span>
 <span><span class="co">##   1805-Jefferson   804   2380        45 1805  Jefferson    Thomas</span></span>
 <span><span class="co">##                  Party</span></span>
 <span><span class="co">##                   none</span></span>
@@ -435,7 +359,7 @@ plot some basic descriptive statistics with this information:</p>
 <code class="sourceCode R"><span><span class="va">tokeninfo</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">data_corpus_inaugural</span><span class="op">)</span></span>
 <span><span class="va">tokeninfo</span><span class="op">$</span><span class="va">Year</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/docvars.html">docvars</a></span><span class="op">(</span><span class="va">data_corpus_inaugural</span>, <span class="st">"Year"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="va">tokeninfo</span>, <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">Year</span>, <span class="va">Tokens</span>, type <span class="op">=</span> <span class="st">"b"</span>, pch <span class="op">=</span> <span class="fl">19</span>, cex <span class="op">=</span> <span class="fl">.7</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="quickstart_files/figure-html/unnamed-chunk-13-1.png" width="768"></p>
+<p><img src="quickstart_files/figure-html/unnamed-chunk-13-1.png" class="r-plt" alt="" width="768"></p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># longest inaugural address: William Henry Harrison</span></span>
 <span><span class="va">tokeninfo</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/which.min.html" class="external-link">which.max</a></span><span class="op">(</span><span class="va">tokeninfo</span><span class="op">$</span><span class="va">Tokens</span><span class="op">)</span>, <span class="op">]</span></span></code></pre></div>
@@ -462,10 +386,10 @@ also concatenated.</p>
 <pre><code><span><span class="co">## Corpus consisting of 4 documents, showing 4 documents:</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">##             Text Types Tokens Sentences Year  President FirstName      Party</span></span>
-<span><span class="co">##  1789-Washington   625   1537        23 1789 Washington    George       none</span></span>
-<span><span class="co">##  1793-Washington    96    147         4 1793 Washington    George       none</span></span>
-<span><span class="co">##       2025-Trump   812   2766       216 2021      Biden Joseph R. Democratic</span></span>
-<span><span class="co">##   2021-Biden.txt   812   2766       216 2025      Trump Donald J. Republican</span></span></code></pre>
+<span><span class="co">##  1789-Washington   625   1537        24 1789 Washington    George       none</span></span>
+<span><span class="co">##  1793-Washington    96    147         5 1793 Washington    George       none</span></span>
+<span><span class="co">##       2021-Biden   812   2766       229 2021      Biden Joseph R. Democratic</span></span>
+<span><span class="co">##       2025-Trump  1000   3347       177 2025      Trump Donald J. Republican</span></span></code></pre>
 </div>
 <div class="section level4">
 <h4 id="subsetting-corpus-objects">Subsetting corpus objects<a class="anchor" aria-label="anchor" href="#subsetting-corpus-objects"></a>
@@ -477,23 +401,23 @@ logical conditions applied to <em>docvars</em>:</p>
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu"><a href="../reference/corpus_subset.html">corpus_subset</a></span><span class="op">(</span><span class="va">data_corpus_inaugural</span>, <span class="va">Year</span> <span class="op">&gt;</span> <span class="fl">1990</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Corpus consisting of 9 documents, showing 9 documents:</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">##            Text Types Tokens Sentences Year President FirstName      Party</span></span>
-<span><span class="co">##    1993-Clinton   642   1833        81 1993   Clinton      Bill Democratic</span></span>
-<span><span class="co">##    1997-Clinton   773   2436       111 1997   Clinton      Bill Democratic</span></span>
-<span><span class="co">##       2001-Bush   621   1806        97 2001      Bush George W. Republican</span></span>
-<span><span class="co">##       2005-Bush   772   2312        99 2005      Bush George W. Republican</span></span>
-<span><span class="co">##      2009-Obama   938   2689       110 2009     Obama    Barack Democratic</span></span>
-<span><span class="co">##      2013-Obama   814   2317        88 2013     Obama    Barack Democratic</span></span>
-<span><span class="co">##      2017-Trump   582   1660        88 2017     Trump Donald J. Republican</span></span>
-<span><span class="co">##      2025-Trump   812   2766       216 2021     Biden Joseph R. Democratic</span></span>
-<span><span class="co">##  2021-Biden.txt   812   2766       216 2025     Trump Donald J. Republican</span></span></code></pre>
+<span><span class="co">##          Text Types Tokens Sentences Year President FirstName      Party</span></span>
+<span><span class="co">##  1993-Clinton   642   1833        82 1993   Clinton      Bill Democratic</span></span>
+<span><span class="co">##  1997-Clinton   773   2436       113 1997   Clinton      Bill Democratic</span></span>
+<span><span class="co">##     2001-Bush   621   1806        98 2001      Bush George W. Republican</span></span>
+<span><span class="co">##     2005-Bush   772   2312        99 2005      Bush George W. Republican</span></span>
+<span><span class="co">##    2009-Obama   938   2689       112 2009     Obama    Barack Democratic</span></span>
+<span><span class="co">##    2013-Obama   814   2317        90 2013     Obama    Barack Democratic</span></span>
+<span><span class="co">##    2017-Trump   582   1660        89 2017     Trump Donald J. Republican</span></span>
+<span><span class="co">##    2021-Biden   812   2766       229 2021     Biden Joseph R. Democratic</span></span>
+<span><span class="co">##    2025-Trump  1000   3347       177 2025     Trump Donald J. Republican</span></span></code></pre>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu"><a href="../reference/corpus_subset.html">corpus_subset</a></span><span class="op">(</span><span class="va">data_corpus_inaugural</span>, <span class="va">President</span> <span class="op">==</span> <span class="st">"Adams"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Corpus consisting of 2 documents, showing 2 documents:</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">##        Text Types Tokens Sentences Year President   FirstName</span></span>
 <span><span class="co">##  1797-Adams   826   2577        37 1797     Adams        John</span></span>
-<span><span class="co">##  1825-Adams  1003   3147        74 1825     Adams John Quincy</span></span>
+<span><span class="co">##  1825-Adams  1003   3147        75 1825     Adams John Quincy</span></span>
 <span><span class="co">##                  Party</span></span>
 <span><span class="co">##             Federalist</span></span>
 <span><span class="co">##  Democratic-Republican</span></span></code></pre>
@@ -508,7 +432,8 @@ occurs:</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data_tokens_inaugural</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tokens.html">tokens</a></span><span class="op">(</span><span class="va">data_corpus_inaugural</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/kwic.html">kwic</a></span><span class="op">(</span><span class="va">data_tokens_inaugural</span>, pattern <span class="op">=</span> <span class="st">"terror"</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Keyword-in-context with 8 matches.                                                                    </span></span>
+<pre><code><span><span class="co">## Keyword-in-context with 8 matches.</span></span>
+<span><span class="co">##                                                                     </span></span>
 <span><span class="co">##     [1797-Adams, 1324]              fraud or violence, by | terror |</span></span>
 <span><span class="co">##  [1933-Roosevelt, 111] nameless, unreasoning, unjustified | terror |</span></span>
 <span><span class="co">##  [1941-Roosevelt, 285]      seemed frozen by a fatalistic | terror |</span></span>
@@ -531,7 +456,8 @@ patterns (the default), regular expressions, or fixed expressions, set
 through the <code>valuetype</code> argument.</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/kwic.html">kwic</a></span><span class="op">(</span><span class="va">data_tokens_inaugural</span>, pattern <span class="op">=</span> <span class="st">"terror"</span>, valuetype <span class="op">=</span> <span class="st">"regex"</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Keyword-in-context with 13 matches.                                                                            </span></span>
+<pre><code><span><span class="co">## Keyword-in-context with 13 matches.</span></span>
+<span><span class="co">##                                                                             </span></span>
 <span><span class="co">##     [1797-Adams, 1324]                   fraud or violence, by |  terror   |</span></span>
 <span><span class="co">##  [1933-Roosevelt, 111]      nameless, unreasoning, unjustified |  terror   |</span></span>
 <span><span class="co">##  [1941-Roosevelt, 285]           seemed frozen by a fatalistic |  terror   |</span></span>
@@ -543,8 +469,8 @@ through the <code>valuetype</code> argument.</p>
 <span><span class="co">##   [1997-Clinton, 1647]       maintain a strong defense against |  terror   |</span></span>
 <span><span class="co">##     [2009-Obama, 1619]          advance their aims by inducing |  terror   |</span></span>
 <span><span class="co">##     [2017-Trump, 1117] civilized world against radical Islamic | terrorism |</span></span>
-<span><span class="co">##      [2025-Trump, 544]             , white supremacy, domestic | terrorism |</span></span>
-<span><span class="co">##  [2021-Biden.txt, 544]             , white supremacy, domestic | terrorism |</span></span>
+<span><span class="co">##      [2021-Biden, 544]             , white supremacy, domestic | terrorism |</span></span>
+<span><span class="co">##     [2025-Trump, 1371]      designating the cartels as foreign | terrorist |</span></span>
 <span><span class="co">##                                   </span></span>
 <span><span class="co">##  , intrigue, or venality          </span></span>
 <span><span class="co">##  which paralyzes needed efforts to</span></span>
@@ -558,10 +484,11 @@ through the <code>valuetype</code> argument.</p>
 <span><span class="co">##  and slaughtering innocents, we   </span></span>
 <span><span class="co">##  , which we will eradicate        </span></span>
 <span><span class="co">##  that we must confront and        </span></span>
-<span><span class="co">##  that we must confront and</span></span></code></pre>
+<span><span class="co">##  organizations. And by invoking</span></span></code></pre>
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/kwic.html">kwic</a></span><span class="op">(</span><span class="va">data_tokens_inaugural</span>, pattern <span class="op">=</span> <span class="st">"communist*"</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Keyword-in-context with 2 matches.                                                                  </span></span>
+<pre><code><span><span class="co">## Keyword-in-context with 2 matches.</span></span>
+<span><span class="co">##                                                                   </span></span>
 <span><span class="co">##   [1949-Truman, 832] the actions resulting from the | Communist  |</span></span>
 <span><span class="co">##  [1961-Kennedy, 510]     required - not because the | Communists |</span></span>
 <span><span class="co">##                            </span></span>
@@ -573,7 +500,8 @@ expressions.</p>
 <code class="sourceCode R"><span><span class="co"># show context of the first six occurrences of "United States"</span></span>
 <span><span class="fu"><a href="../reference/kwic.html">kwic</a></span><span class="op">(</span><span class="va">data_tokens_inaugural</span>, pattern <span class="op">=</span> <span class="fu"><a href="../reference/phrase.html">phrase</a></span><span class="op">(</span><span class="st">"United States"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Keyword-in-context with 6 matches.                                                                             </span></span>
+<pre><code><span><span class="co">## Keyword-in-context with 6 matches.</span></span>
+<span><span class="co">##                                                                              </span></span>
 <span><span class="co">##  [1789-Washington, 433:434]            of the people of the | United States |</span></span>
 <span><span class="co">##  [1789-Washington, 529:530]          more than those of the | United States |</span></span>
 <span><span class="co">##       [1797-Adams, 524:525]     saw the Constitution of the | United States |</span></span>
@@ -832,7 +760,8 @@ default: converting the texts to lower case, via the default
 <span>    <span class="fu"><a href="../reference/tokens.html">tokens</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="../reference/dfm.html">dfm</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">dfmat_inaug_post1990</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Document-feature matrix of: 9 documents, 2,691 features (73.67% sparse) and 4 docvars.</span></span>
+<pre><code><span><span class="co">## Document-feature matrix of: 9 documents, 3,070 features (76.17% sparse) and 4</span></span>
+<span><span class="co">## docvars.</span></span>
 <span><span class="co">##               features</span></span>
 <span><span class="co">## docs           my fellow citizens   , today we celebrate the mystery  of</span></span>
 <span><span class="co">##   1993-Clinton  7      5        2 139    10 52         3  89       1  46</span></span>
@@ -841,7 +770,8 @@ default: converting the texts to lower case, via the default
 <span><span class="co">##   2005-Bush     2      3        6 120     3 37         1 142       0 116</span></span>
 <span><span class="co">##   2009-Obama    2      1        1 130     6 62         0 135       0  82</span></span>
 <span><span class="co">##   2013-Obama    3      3        6  99     4 68         0 104       0  69</span></span>
-<span><span class="co">## [ reached max_ndoc ... 3 more documents, reached max_nfeat ... 2,681 more features ]</span></span></code></pre>
+<span><span class="co">## [ reached max_ndoc ... 3 more documents, reached max_nfeat ... 3,060 more</span></span>
+<span><span class="co">## features ]</span></span></code></pre>
 <div class="section level4">
 <h4 id="analysing-the-document-feature-matrix">Analysing the document-feature matrix<a class="anchor" aria-label="anchor" href="#analysing-the-document-feature-matrix"></a>
 </h4>
@@ -853,7 +783,8 @@ calling R’s <code><a href="https://rdrr.io/r/utils/View.html" class="external-
 <span>  <span class="fu"><a href="../reference/tokens_select.html">tokens_remove</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html" class="external-link">stopwords</a></span><span class="op">(</span><span class="st">"en"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/dfm.html">dfm</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">dfmat_uk</span></span></code></pre></div>
-<pre><code><span><span class="co">## Document-feature matrix of: 9 documents, 1,547 features (83.78% sparse) and 0 docvars.</span></span>
+<pre><code><span><span class="co">## Document-feature matrix of: 9 documents, 1,547 features (83.78% sparse) and 0</span></span>
+<span><span class="co">## docvars.</span></span>
 <span><span class="co">##               features</span></span>
 <span><span class="co">## docs           immigration unparalleled crisis bnp can solve current birth</span></span>
 <span><span class="co">##   BNP                   21            1      2  13   1     2       4     4</span></span>
@@ -870,7 +801,8 @@ calling R’s <code><a href="https://rdrr.io/r/utils/View.html" class="external-
 <span><span class="co">##   Greens           0          0</span></span>
 <span><span class="co">##   Labour           0          0</span></span>
 <span><span class="co">##   LibDem           0          0</span></span>
-<span><span class="co">## [ reached max_ndoc ... 3 more documents, reached max_nfeat ... 1,537 more features ]</span></span></code></pre>
+<span><span class="co">## [ reached max_ndoc ... 3 more documents, reached max_nfeat ... 1,537 more</span></span>
+<span><span class="co">## features ]</span></span></code></pre>
 <p>To access a list of the most frequently occurring features, we can
 use <code><a href="../reference/topfeatures.html">topfeatures()</a></code>:</p>
 <div class="sourceCode" id="cb67"><pre class="downlit sourceCode r">
@@ -905,12 +837,13 @@ dfm, then they can be referred to directly.</p>
 frequency first, and inspect it:</p>
 <div class="sourceCode" id="cb70"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/dfm_sort.html">dfm_sort</a></span><span class="op">(</span><span class="va">dfmat_pres</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Document-feature matrix of: 2 documents, 4,341 features (30.42% sparse) and 1 docvar.</span></span>
+<pre><code><span><span class="co">## Document-feature matrix of: 2 documents, 4,614 features (32.47% sparse) and 1</span></span>
+<span><span class="co">## docvar.</span></span>
 <span><span class="co">##             features</span></span>
-<span><span class="co">## docs          us world can people must america new nation freedom one</span></span>
-<span><span class="co">##   Democratic 148    87  93     79   91      65  87     73      36  43</span></span>
-<span><span class="co">##   Republican 167   115 100     98   78     101  69     74      84  75</span></span>
-<span><span class="co">## [ reached max_nfeat ... 4,331 more features ]</span></span></code></pre>
+<span><span class="co">## docs          us world can people america must new nation freedom time</span></span>
+<span><span class="co">##   Democratic 148    87  93     79      65   91  87     73      36   51</span></span>
+<span><span class="co">##   Republican 142   117  86     97     101   69  72     81      87   61</span></span>
+<span><span class="co">## [ reached max_nfeat ... 4,604 more features ]</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="dictionary-functions">Dictionary functions<a class="anchor" aria-label="anchor" href="#dictionary-functions"></a>
@@ -939,7 +872,8 @@ Clinton:</p>
 <span>  <span class="fu"><a href="../reference/tokens_lookup.html">tokens_lookup</a></span><span class="op">(</span>dictionary <span class="op">=</span> <span class="va">dict</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/dfm.html">dfm</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">dfmat_inaug_post1991_dict</span></span></code></pre></div>
-<pre><code><span><span class="co">## Document-feature matrix of: 9 documents, 2 features (11.11% sparse) and 4 docvars.</span></span>
+<pre><code><span><span class="co">## Document-feature matrix of: 9 documents, 2 features (16.67% sparse) and 4</span></span>
+<span><span class="co">## docvars.</span></span>
 <span><span class="co">##               features</span></span>
 <span><span class="co">## docs           terror economy</span></span>
 <span><span class="co">##   1993-Clinton      0       8</span></span>
@@ -976,44 +910,26 @@ this to the Presidential inaugural speech corpus:</p>
 </h2>
 <p>See the Further Examples article at <a href="https://quanteda.io" class="uri">https://quanteda.io</a>.</p>
 </div>
-  </div>
-
-  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
-
-      </div>
-
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 
 
-      <footer><div class="copyright">
-  <p></p>
-<p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p>
+    <footer><div class="pkgdown-footer-left">
+  <p>Developed by Kenneth Benoit, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng, Stefan Müller, Akitaka Matsuo, William Lowe, European Research Council.</p>
 </div>
 
-<div class="pkgdown">
-  <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.2.</p>
+<div class="pkgdown-footer-right">
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
-      </footer>
+    </footer>
 </div>
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.js" integrity="sha256-GKvGqXDznoRYHCwKXGnuchvKSwmx9SRMrZOTh2g4Sb0=" crossorigin="anonymous"></script><script>
-  docsearch({
 
 
-    apiKey: '9b4ef7fd791dc6075154d3ebd7b12acf',
-    indexName: 'quanteda',
-    inputSelector: 'input#search-input.form-control',
-    transformData: function(hits) {
-      return hits.map(function (hit) {
-        hit.url = updateHitURL(hit);
-        return hit;
-      });
-    }
-  });
-</script>
-</body>
+
+  </body>
 </html>

@@ -1,0 +1,538 @@
+# quanteda: Quantitative Analysis of Textual Data
+
+**quanteda** is an R package for managing and analyzing text, created
+and maintained by [Kenneth Benoit](https://kenbenoit.net) and [Kohei
+Watanabe](https://blog.koheiw.net/). Its creation was funded by the
+European Research Council grant ERC-2011-StG 283794-QUANTESS and its
+continued development is supported by the [Quanteda Initiative
+CIC](https://github.com/quanteda).
+
+The package is designed for R users needing to apply natural language
+processing to texts, from documents to final analysis. Its capabilities
+match or exceed those provided in many end-user software applications,
+many of which are expensive and not open source. The package is
+therefore of great benefit to researchers, students, and other analysts
+with fewer financial resources. While using **quanteda** requires R
+programming knowledge, its API is designed to enable powerful, efficient
+analysis with a minimum of steps. By emphasizing consistent design,
+furthermore, **quanteda** lowers the barriers to learning and using NLP
+and quantitative text analysis even for proficient R programmers.
+
+## **quanteda** version 4
+
+The **quanteda** 4.0 is a major release that improves functionality and
+performance and further improves function consistency by removing
+previously deprecated functions. It also includes significant new
+tokeniser rules that makes the default tokeniser smarter than ever
+before, with new Unicode and ICU-compliant rules that enable it to work
+more consistently with even more languages.
+
+We describe more fully these significant changes in: \* an [article
+about the new external pointer tokens
+objects](https://quanteda.io/articles/pkgdown/tokens_xptr.html); \* an
+[article showing performance
+benchmarks](https://quanteda.io/articles/pkgdown/benchmarks_xptr.html)
+for the new external pointer tokens objects, as well as some of the
+tokeniser improvements in v4; and \* the [changelog for
+v4](https://github.com/quanteda/quanteda/blob/master/NEWS.md#quanteda-40)
+a full listing of the changes, improvements, and deprecations in v4.
+
+## The **quanteda** family of packages
+
+We completed the trend of splitting **quanteda** into modular packages
+with the release of v3. The quanteda family of packages includes the
+following:
+
+- **quanteda**: contains all of the core natural language processing and
+  textual data management functions
+- **quanteda.textmodels**: contains all of the text models and
+  supporting functions, namely the `textmodel_*()` functions. This was
+  split from the main package with the v2 release
+- **quanteda.textstats**: statistics for textual data, namely the
+  `textstat_*()` functions, split with the v3 release
+- **quanteda.textplots**: plots for textual data, namely the
+  `textplot_*()` functions, split with the v3 release
+
+We are working on additional package releases, available in the meantime
+from our GitHub pages:
+
+- **quanteda.sentiment**: Functions and lexicons for sentiment analysis
+  using dictionaries
+- **quanteda.tidy**: Extensions for manipulating document variables in
+  core **quanteda** objects using your favourite **tidyverse** functions
+
+## How To…
+
+### Install (binaries) from CRAN
+
+The normal way from CRAN, using your R GUI or
+
+``` R
+install.packages("quanteda") 
+```
+
+**(New for quanteda v4.0)** For Linux users: Because all installations
+on Linux are compiled, Linux users will first need to install the Intel
+oneAPI Threading Building Blocks for parallel computing for installation
+to work.
+
+To install TBB on Linux:
+
+``` R
+# Fedora, CentOS, RHEL
+sudo yum install tbb-devel
+
+# Debian and Ubuntu
+sudo apt install libtbb-dev
+```
+
+Windows or macOS users do not have to install TBB or any other packages
+to enable parallel computing when installing **quanteda** from CRAN.
+
+### Compile from source (macOS and Windows)
+
+Because this compiles some C++ and Fortran source code, you will need to
+have installed the appropriate compilers to build the development
+version.
+
+You will also need to install TBB:
+
+**macOS:**
+
+First, you will need to install XCode command line tools.
+
+``` R
+xcode-select --install
+```
+
+Then install the TBB libraries and the pkg-config utility: (after
+installing [Homebrew](https://brew.sh)):
+
+``` R
+brew install tbb pkg-config
+```
+
+Finally, you will need to install
+[gfortran](https://github.com/fxcoudert/gfortran-for-macOS/releases).
+
+**Windows:**
+
+Install [RTools](https://cran.r-project.org/bin/windows/Rtools/), which
+includes the TBB libraries.
+
+### Use **quanteda**
+
+See the [quick start
+guide](https://quanteda.io/articles/quickstart.html) to learn how to use
+**quanteda**.
+
+### Get Help
+
+- Read out documentation at <https://quanteda.io>.
+- Submit a question on the [**quanteda** channel on
+  StackOverflow](https://stackoverflow.com/questions/tagged/quanteda).
+- See our [tutorial site](https://tutorials.quanteda.io/).
+
+### Cite the package
+
+Benoit, Kenneth, Kohei Watanabe, Haiyan Wang, Paul Nulty, Adam Obeng,
+Stefan Müller, and Akitaka Matsuo. (2018) “[quanteda: An R package for
+the quantitative analysis of textual
+data](https://www.theoj.org/joss-papers/joss.00774/10.21105.joss.00774.pdf)”.
+*Journal of Open Source Software*. 3(30), 774.
+<https://doi.org/10.21105/joss.00774>.
+
+For a BibTeX entry, use the output from
+`citation(package = "quanteda")`.
+
+### Leave Feedback
+
+If you like **quanteda**, please consider leaving [feedback or a
+testimonial here](https://github.com/quanteda/quanteda/issues/461).
+
+### Contribute
+
+Contributions in the form of feedback, comments, code, and bug reports
+are most welcome. How to contribute:
+
+- Fork the source code, modify, and issue a [pull
+  request](https://help.github.com/articles/creating-a-pull-request-from-a-fork/)
+  through the [project GitHub
+  page](https://github.com/quanteda/quanteda). See our [Contributor Code
+  of
+  Conduct](https://github.com/quanteda/quanteda/blob/master/CONDUCT.md)
+  and the all-important **quanteda** [Style
+  Guide](https://github.com/quanteda/quanteda/wiki/Style-guide).
+- Issues, bug reports, and wish lists: [File a GitHub
+  issue](https://github.com/quanteda/quanteda/issues).
+- Contact [the maintainer](mailto:kbenoit@lse.ac.uk) by email.
+
+# Package index
+
+## Package-level
+
+- [`quanteda-package`](https://quanteda.io/reference/quanteda-package.md)
+  [`quanteda`](https://quanteda.io/reference/quanteda-package.md) : An R
+  package for the quantitative analysis of textual data
+- [`quanteda_options()`](https://quanteda.io/reference/quanteda_options.md)
+  : Get or set package options for quanteda
+
+## Data
+
+Built-in data objects.
+
+- [`data_char_sampletext`](https://quanteda.io/reference/data_char_sampletext.md)
+  : A paragraph of text for testing various text-based functions
+- [`data_char_ukimmig2010`](https://quanteda.io/reference/data_char_ukimmig2010.md)
+  : Immigration-related sections of 2010 UK party manifestos
+- [`data_corpus_inaugural`](https://quanteda.io/reference/data_corpus_inaugural.md)
+  : US presidential inaugural address texts
+- [`data_dfm_lbgexample`](https://quanteda.io/reference/data_dfm_lbgexample.md)
+  : dfm from data in Table 1 of Laver, Benoit, and Garry (2003)
+- [`data_dictionary_LSD2015`](https://quanteda.io/reference/data_dictionary_LSD2015.md)
+  : Lexicoder Sentiment Dictionary (2015)
+- [`data-relocated`](https://quanteda.io/reference/data-relocated.md)
+  [`data_corpus_dailnoconf1991`](https://quanteda.io/reference/data-relocated.md)
+  [`data_corpus_irishbudget2010`](https://quanteda.io/reference/data-relocated.md)
+  : Formerly included data objects
+
+## Corpus functions
+
+Functions for constructing and manipulating corpus class objects.
+
+- [`corpus()`](https://quanteda.io/reference/corpus.md) : Construct a
+  corpus object
+- [`corpus_chunk()`](https://quanteda.io/reference/corpus_chunk.md) :
+  Segment a corpus into chunks of a given size
+- [`corpus_group()`](https://quanteda.io/reference/corpus_group.md) :
+  Combine documents in corpus by a grouping variable
+- [`corpus_reshape()`](https://quanteda.io/reference/corpus_reshape.md)
+  : Recast the document units of a corpus
+- [`corpus_sample()`](https://quanteda.io/reference/corpus_sample.md) :
+  Randomly sample documents from a corpus
+- [`corpus_segment()`](https://quanteda.io/reference/corpus_segment.md)
+  [`char_segment()`](https://quanteda.io/reference/corpus_segment.md) :
+  Segment texts on a pattern match
+- [`corpus_subset()`](https://quanteda.io/reference/corpus_subset.md) :
+  Extract a subset of a corpus
+- [`corpus_trim()`](https://quanteda.io/reference/corpus_trim.md)
+  [`char_trim()`](https://quanteda.io/reference/corpus_trim.md) : Remove
+  sentences based on their token lengths or a pattern match
+- [`docvars()`](https://quanteda.io/reference/docvars.md)
+  [`` `docvars<-`() ``](https://quanteda.io/reference/docvars.md)
+  [`` `$`( ``*`<corpus>`*`)`](https://quanteda.io/reference/docvars.md)
+  [`` `$<-`( ``*`<corpus>`*`)`](https://quanteda.io/reference/docvars.md)
+  [`` `$`( ``*`<tokens>`*`)`](https://quanteda.io/reference/docvars.md)
+  [`` `$<-`( ``*`<tokens>`*`)`](https://quanteda.io/reference/docvars.md)
+  [`` `$`( ``*`<dfm>`*`)`](https://quanteda.io/reference/docvars.md)
+  [`` `$<-`( ``*`<dfm>`*`)`](https://quanteda.io/reference/docvars.md) :
+  Get or set document-level variables
+- [`as.character(`*`<corpus>`*`)`](https://quanteda.io/reference/as.character.corpus.md)
+  [`is.corpus()`](https://quanteda.io/reference/as.character.corpus.md)
+  [`as.corpus()`](https://quanteda.io/reference/as.character.corpus.md)
+  : Coercion and checking methods for corpus objects
+
+## Tokens functions
+
+Functions for constructing and manipulating tokens class objects.
+
+- [`tokens()`](https://quanteda.io/reference/tokens.md) : Construct a
+  tokens object
+- [`tokens_annotate()`](https://quanteda.io/reference/tokens_annotate.md)
+  : Annotate a tokens object using a dictionary
+- [`tokens_chunk()`](https://quanteda.io/reference/tokens_chunk.md) :
+  Segment tokens object by chunks of a given size
+- [`tokens_compound()`](https://quanteda.io/reference/tokens_compound.md)
+  : Convert token sequences into compound tokens
+- [`tokens_group()`](https://quanteda.io/reference/tokens_group.md) :
+  Combine documents in a tokens object by a grouping variable
+- [`tokens_lookup()`](https://quanteda.io/reference/tokens_lookup.md) :
+  Apply a dictionary to a tokens object
+- [`tokens_match()`](https://quanteda.io/reference/tokens_match.md) :
+  Match the tokens IDs with given types
+- [`tokens_ngrams()`](https://quanteda.io/reference/tokens_ngrams.md)
+  [`char_ngrams()`](https://quanteda.io/reference/tokens_ngrams.md)
+  [`tokens_skipgrams()`](https://quanteda.io/reference/tokens_ngrams.md)
+  : Create n-grams and skip-grams from tokens
+- [`tokens_replace()`](https://quanteda.io/reference/tokens_replace.md)
+  : Replace tokens in a tokens object
+- [`tokens_sample()`](https://quanteda.io/reference/tokens_sample.md) :
+  Randomly sample documents from a tokens object
+- [`tokens_segment()`](https://quanteda.io/reference/tokens_segment.md)
+  : Segment tokens object by patterns
+- [`tokens_select()`](https://quanteda.io/reference/tokens_select.md)
+  [`tokens_remove()`](https://quanteda.io/reference/tokens_select.md)
+  [`tokens_keep()`](https://quanteda.io/reference/tokens_select.md) :
+  Select or remove tokens from a tokens object
+- [`tokens_split()`](https://quanteda.io/reference/tokens_split.md) :
+  Split tokens by a separator pattern
+- [`tokens_subset()`](https://quanteda.io/reference/tokens_subset.md) :
+  Extract a subset of a tokens
+- [`tokens_tolower()`](https://quanteda.io/reference/tokens_tolower.md)
+  [`tokens_toupper()`](https://quanteda.io/reference/tokens_tolower.md)
+  : Convert the case of tokens
+- [`tokens_trim()`](https://quanteda.io/reference/tokens_trim.md) : Trim
+  tokens using frequency threshold-based feature selection
+- [`tokens_wordstem()`](https://quanteda.io/reference/tokens_wordstem.md)
+  [`char_wordstem()`](https://quanteda.io/reference/tokens_wordstem.md)
+  [`dfm_wordstem()`](https://quanteda.io/reference/tokens_wordstem.md) :
+  Stem the terms in an object
+- [`is.tokens_xptr()`](https://quanteda.io/reference/tokens_xptr.md)
+  [`as.tokens_xptr()`](https://quanteda.io/reference/tokens_xptr.md) :
+  Methods for tokens_xptr objects
+- [`types()`](https://quanteda.io/reference/types.md) : Get word types
+  from a tokens object
+- [`concat()`](https://quanteda.io/reference/concat.md)
+  [`concatenator()`](https://quanteda.io/reference/concat.md) : Return
+  the concatenator character from an object
+- [`as.list(`*`<tokens>`*`)`](https://quanteda.io/reference/as.tokens.md)
+  [`as.character(`*`<tokens>`*`)`](https://quanteda.io/reference/as.tokens.md)
+  [`is.tokens()`](https://quanteda.io/reference/as.tokens.md)
+  [`as.tensor()`](https://quanteda.io/reference/as.tokens.md)
+  [`as.matrix(`*`<tokens>`*`)`](https://quanteda.io/reference/as.tokens.md)
+  [`as.tokens()`](https://quanteda.io/reference/as.tokens.md) :
+  Coercion, checking, and combining functions for tokens objects
+
+## Character functions
+
+Functions for constructing and manipulating character objects.
+
+- [`char_tolower()`](https://quanteda.io/reference/char_tolower.md)
+  [`char_toupper()`](https://quanteda.io/reference/char_tolower.md) :
+  Convert the case of character objects
+- [`corpus_segment()`](https://quanteda.io/reference/corpus_segment.md)
+  [`char_segment()`](https://quanteda.io/reference/corpus_segment.md) :
+  Segment texts on a pattern match
+- [`tokens_ngrams()`](https://quanteda.io/reference/tokens_ngrams.md)
+  [`char_ngrams()`](https://quanteda.io/reference/tokens_ngrams.md)
+  [`tokens_skipgrams()`](https://quanteda.io/reference/tokens_ngrams.md)
+  : Create n-grams and skip-grams from tokens
+- [`char_select()`](https://quanteda.io/reference/char_select.md)
+  [`char_remove()`](https://quanteda.io/reference/char_select.md)
+  [`char_keep()`](https://quanteda.io/reference/char_select.md) : Select
+  or remove elements from a character vector
+- [`corpus_trim()`](https://quanteda.io/reference/corpus_trim.md)
+  [`char_trim()`](https://quanteda.io/reference/corpus_trim.md) : Remove
+  sentences based on their token lengths or a pattern match
+- [`tokens_wordstem()`](https://quanteda.io/reference/tokens_wordstem.md)
+  [`char_wordstem()`](https://quanteda.io/reference/tokens_wordstem.md)
+  [`dfm_wordstem()`](https://quanteda.io/reference/tokens_wordstem.md) :
+  Stem the terms in an object
+
+## Text matrix functions
+
+Functions for constructing and manipulating a document-feature matrix
+(dfm) or feature co-occurrence matrix object.
+
+- [`dfm()`](https://quanteda.io/reference/dfm.md) : Create a
+  document-feature matrix
+
+- [`dfm_compress()`](https://quanteda.io/reference/dfm_compress.md)
+  [`fcm_compress()`](https://quanteda.io/reference/dfm_compress.md) :
+  Recombine a dfm or fcm by combining identical dimension elements
+
+- [`dfm_group()`](https://quanteda.io/reference/dfm_group.md) : Combine
+  documents in a dfm by a grouping variable
+
+- [`dfm_lookup()`](https://quanteda.io/reference/dfm_lookup.md) : Apply
+  a dictionary to a dfm
+
+- [`dfm_match()`](https://quanteda.io/reference/dfm_match.md) : Match
+  the dfm columns with given features
+
+- [`dfm_replace()`](https://quanteda.io/reference/dfm_replace.md) :
+  Replace features in dfm
+
+- [`dfm_sample()`](https://quanteda.io/reference/dfm_sample.md) :
+  Randomly sample documents from a dfm
+
+- [`dfm_select()`](https://quanteda.io/reference/dfm_select.md)
+  [`dfm_remove()`](https://quanteda.io/reference/dfm_select.md)
+  [`dfm_keep()`](https://quanteda.io/reference/dfm_select.md)
+  [`fcm_select()`](https://quanteda.io/reference/dfm_select.md)
+  [`fcm_remove()`](https://quanteda.io/reference/dfm_select.md)
+  [`fcm_keep()`](https://quanteda.io/reference/dfm_select.md) : Select
+  features from a dfm or fcm
+
+- [`dfm_sort()`](https://quanteda.io/reference/dfm_sort.md) : Sort a dfm
+  by frequency of one or more margins
+
+- [`dfm_subset()`](https://quanteda.io/reference/dfm_subset.md) :
+  Extract a subset of a dfm
+
+- [`dfm_tfidf()`](https://quanteda.io/reference/dfm_tfidf.md) :
+
+  Weight a dfm by *tf-idf*
+
+- [`dfm_tolower()`](https://quanteda.io/reference/dfm_tolower.md)
+  [`dfm_toupper()`](https://quanteda.io/reference/dfm_tolower.md)
+  [`fcm_tolower()`](https://quanteda.io/reference/dfm_tolower.md)
+  [`fcm_toupper()`](https://quanteda.io/reference/dfm_tolower.md) :
+  Convert the case of the features of a dfm and combine
+
+- [`dfm_trim()`](https://quanteda.io/reference/dfm_trim.md) : Trim a dfm
+  using frequency threshold-based feature selection
+
+- [`dfm_weight()`](https://quanteda.io/reference/dfm_weight.md)
+  [`dfm_smooth()`](https://quanteda.io/reference/dfm_weight.md) : Weight
+  the feature frequencies in a dfm
+
+- [`tokens_wordstem()`](https://quanteda.io/reference/tokens_wordstem.md)
+  [`char_wordstem()`](https://quanteda.io/reference/tokens_wordstem.md)
+  [`dfm_wordstem()`](https://quanteda.io/reference/tokens_wordstem.md) :
+  Stem the terms in an object
+
+- [`docfreq()`](https://quanteda.io/reference/docfreq.md) : Compute the
+  (weighted) document frequency of a feature
+
+- [`featfreq()`](https://quanteda.io/reference/featfreq.md) : Compute
+  the frequencies of features
+
+- [`head(`*`<dfm>`*`)`](https://quanteda.io/reference/head.dfm.md)
+  [`tail(`*`<dfm>`*`)`](https://quanteda.io/reference/head.dfm.md) :
+  Return the first or last part of a dfm
+
+- [`as.dfm()`](https://quanteda.io/reference/as.dfm.md)
+  [`is.dfm()`](https://quanteda.io/reference/as.dfm.md) : Coercion and
+  checking functions for dfm objects
+
+- [`as.matrix(`*`<dfm>`*`)`](https://quanteda.io/reference/as.matrix.dfm.md)
+  : Coerce a dfm to a matrix or data.frame
+
+- [`fcm()`](https://quanteda.io/reference/fcm.md) : Create a feature
+  co-occurrence matrix
+
+- [`fcm_sort()`](https://quanteda.io/reference/fcm_sort.md) : Sort an
+  fcm in alphabetical order of the features
+
+- [`as.fcm()`](https://quanteda.io/reference/as.fcm.md) : Coercion and
+  checking functions for fcm objects
+
+## Dictionary functions
+
+Constructor and utility functions for working with dictionaries.
+
+- [`dictionary()`](https://quanteda.io/reference/dictionary.md) : Create
+  a dictionary object
+- [`as.dictionary()`](https://quanteda.io/reference/as.dictionary.md)
+  [`is.dictionary()`](https://quanteda.io/reference/as.dictionary.md) :
+  Coercion and checking functions for dictionary objects
+- [`as.yaml()`](https://quanteda.io/reference/as.yaml.md) : Convert
+  quanteda dictionary objects to the YAML format
+
+## Phrase discovery functions
+
+Functions for exploring and detecting keywords and phrases.
+
+- [`is.collocations()`](https://quanteda.io/reference/is.collocations.md)
+  : Check if an object is collocations
+- [`kwic()`](https://quanteda.io/reference/kwic.md)
+  [`is.kwic()`](https://quanteda.io/reference/kwic.md)
+  [`as.data.frame(`*`<kwic>`*`)`](https://quanteda.io/reference/kwic.md)
+  : Locate keywords-in-context
+
+## Utility functions
+
+R-like functions to return counts and object information.
+
+- [`index()`](https://quanteda.io/reference/index-topic.md)
+  [`is.index()`](https://quanteda.io/reference/index-topic.md) : Locate
+  a pattern in a tokens object
+- [`ndoc()`](https://quanteda.io/reference/ndoc.md)
+  [`nfeat()`](https://quanteda.io/reference/ndoc.md) : Count the number
+  of documents or features
+- [`nsentence()`](https://quanteda.io/reference/nsentence.md)
+  **\[deprecated\]** : Count the number of sentences
+- [`ntoken()`](https://quanteda.io/reference/ntoken.md)
+  [`ntype()`](https://quanteda.io/reference/ntoken.md) : Count the
+  number of tokens or types
+- [`print(`*`<corpus>`*`)`](https://quanteda.io/reference/print-methods.md)
+  [`print(`*`<dfm>`*`)`](https://quanteda.io/reference/print-methods.md)
+  [`print(`*`<dictionary2>`*`)`](https://quanteda.io/reference/print-methods.md)
+  [`print(`*`<fcm>`*`)`](https://quanteda.io/reference/print-methods.md)
+  [`print(`*`<kwic>`*`)`](https://quanteda.io/reference/print-methods.md)
+  [`print(`*`<tokens>`*`)`](https://quanteda.io/reference/print-methods.md)
+  : Print methods for quanteda core objects
+- [`docnames()`](https://quanteda.io/reference/docnames.md)
+  [`` `docnames<-`() ``](https://quanteda.io/reference/docnames.md)
+  [`docid()`](https://quanteda.io/reference/docnames.md)
+  [`segid()`](https://quanteda.io/reference/docnames.md) : Get or set
+  document names
+- [`featnames()`](https://quanteda.io/reference/featnames.md) : Get the
+  feature labels from a dfm
+
+## Miscellaneous functions
+
+- [`phrase()`](https://quanteda.io/reference/phrase.md)
+  [`as.phrase()`](https://quanteda.io/reference/phrase.md)
+  [`is.phrase()`](https://quanteda.io/reference/phrase.md) : Declare a
+  pattern to be a sequence of separate patterns
+- [`convert()`](https://quanteda.io/reference/convert.md) : Convert
+  quanteda objects to non-quanteda formats
+- [`bootstrap_dfm()`](https://quanteda.io/reference/bootstrap_dfm.md) :
+  Bootstrap a dfm
+- [`meta()`](https://quanteda.io/reference/meta.md)
+  [`` `meta<-`() ``](https://quanteda.io/reference/meta.md) : Get or set
+  object metadata
+- [`spacyr-methods`](https://quanteda.io/reference/spacyr-methods.md) :
+  Extensions for and from spacy_parse objects
+
+## Statistics, models, and plots
+
+Functions for computing statistics, fitting models, and producing
+visualisations models from text.
+
+- [`sparsity()`](https://quanteda.io/reference/sparsity.md) : Compute
+  the sparsity of a document-feature matrix
+- [`topfeatures()`](https://quanteda.io/reference/topfeatures.md) :
+  Identify the most frequent features in a dfm
+- [`textmodels`](https://quanteda.io/reference/textmodels.md) : Models
+  for scaling and classification of textual data
+- [`textplots`](https://quanteda.io/reference/textplots.md) : Plots for
+  textual data
+- [`textstats`](https://quanteda.io/reference/textstats.md) : Statistics
+  for textual data
+
+# Articles
+
+### All vignettes
+
+- [Performance
+  improvements](https://quanteda.io/articles/pkgdown/benchmarks_xptr.md):
+- [Example: Chinese text
+  analysis](https://quanteda.io/articles/pkgdown/examples/chinese.md):
+- [The Structure of
+  quanteda](https://quanteda.io/articles/pkgdown/design.md):
+- [Replication: Text Analysis with R for Students of
+  Literature](https://quanteda.io/articles/pkgdown/replication/digital-humanities.md):
+- [事例:
+  衆議院外務委員会の議事録](https://quanteda.io/articles/pkgdown/examples/japanese_speech_ja.md):
+- [事例:
+  2017年総選挙に関するツイート](https://quanteda.io/articles/pkgdown/examples/japanese_twitter_ja.md):
+- [Example: Latent Semantic Analysis
+  (LSA)](https://quanteda.io/articles/pkgdown/examples/lsa.md):
+- [Example: Convolutional Neural
+  Network](https://quanteda.io/articles/pkgdown/examples/neural-networks.md):
+- [Parallel
+  computing](https://quanteda.io/articles/pkgdown/parallelisation.md):
+- [Working with multi-word
+  expressions](https://quanteda.io/articles/pkgdown/phrase.md):
+- [Example: textual data
+  visualization](https://quanteda.io/articles/pkgdown/examples/plotting.md):
+- [Replication of Chapter 5 of \_Quantitative Social Science: An
+  Introduction\_](https://quanteda.io/articles/pkgdown/replication/qss.md):
+- [Quick Start Guide](https://quanteda.io/articles/quickstart.md):
+- [快速入门指南](https://quanteda.io/articles/pkgdown/quickstart_cn.md):
+- [Guía de Inicio
+  Rápido](https://quanteda.io/articles/pkgdown/quickstart_es.md):
+- [Quickstart: Further
+  Examples](https://quanteda.io/articles/pkgdown/quickstart_further_examples.md):
+- [क्विक आरंभ
+  गाइड](https://quanteda.io/articles/pkgdown/quickstart_hi.md):
+- [クイック・スタートガイド](https://quanteda.io/articles/pkgdown/quickstart_ja.md):
+- [Replication: word
+  embedding](https://quanteda.io/articles/pkgdown/replication/text2vec.md):
+- [External pointer-based tokens
+  objects](https://quanteda.io/articles/pkgdown/tokens_xptr.md):
+- [Example: Social media analysis (X formerly
+  Twitter)](https://quanteda.io/articles/pkgdown/examples/twitter.md):
