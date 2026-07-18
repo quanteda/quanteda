@@ -109,8 +109,8 @@ cpp_get_freq <- function(xptr, no_padding = FALSE, boolean = FALSE) {
     .Call(`_quanteda_cpp_get_freq`, xptr, no_padding, boolean)
 }
 
-cpp_get_types <- function(xptr, recompile = TRUE) {
-    .Call(`_quanteda_cpp_get_types`, xptr, recompile)
+cpp_get_types <- function(xptr, all = TRUE) {
+    .Call(`_quanteda_cpp_get_types`, xptr, all)
 }
 
 cpp_set_types <- function(xptr, types_) {

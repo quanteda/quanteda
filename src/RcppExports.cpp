@@ -380,14 +380,14 @@ BEGIN_RCPP
 END_RCPP
 }
 // cpp_get_types
-CharacterVector cpp_get_types(TokensPtr xptr, bool recompile);
-RcppExport SEXP _quanteda_cpp_get_types(SEXP xptrSEXP, SEXP recompileSEXP) {
+CharacterVector cpp_get_types(TokensPtr xptr, bool all);
+RcppExport SEXP _quanteda_cpp_get_types(SEXP xptrSEXP, SEXP allSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< TokensPtr >::type xptr(xptrSEXP);
-    Rcpp::traits::input_parameter< bool >::type recompile(recompileSEXP);
-    rcpp_result_gen = Rcpp::wrap(cpp_get_types(xptr, recompile));
+    Rcpp::traits::input_parameter< bool >::type all(allSEXP);
+    rcpp_result_gen = Rcpp::wrap(cpp_get_types(xptr, all));
     return rcpp_result_gen;
 END_RCPP
 }
