@@ -153,9 +153,9 @@ IntegerVector cpp_get_freq(TokensPtr xptr, bool no_padding = false,
 
 
 // [[Rcpp::export]]
-CharacterVector cpp_get_types(TokensPtr xptr, bool recompile = true) {
+CharacterVector cpp_get_types(TokensPtr xptr, bool all = true) {
 
-    if (!recompile)
+    if (all)
         return encode(xptr->types);
     
     std::size_t G = xptr->types.size();
