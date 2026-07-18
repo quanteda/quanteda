@@ -153,11 +153,31 @@ IntegerVector cpp_get_freq(TokensPtr xptr, bool no_padding = false,
 
 
 // [[Rcpp::export]]
-CharacterVector cpp_get_types(TokensPtr xptr, bool recompile = false) {
-    //Rcout << "cpp_types()\n";
-    if (recompile)
-        xptr->recompile();
-    return encode(xptr->types);
+CharacterVector cpp_get_types(TokensPtr xptr, bool recompile = true) {
+
+    if (!recompile)
+        return encode(xptr->types);
+    
+    std::size_t G = xptr->types.size();
+    std::vector<bool> flag(G);
+    std::vector<std::string> types;
+    types.reserve(G);
+    
+    std::size_t H = xptr->texts.size();
+    for (std::size_t h = 0; h < H; h++) {
+        Text text = xptr->texts[h];
+        std::size_t I = text.size();
+        for (std::size_t i = 0; i < I; i++) {
+            unsigned int id = text[i];
+            if (id != 0)
+                flag[id - 1] = true;
+        }
+    }
+    for (std::size_t g = 0; g < G; g++) {
+        if (flag[g])
+            types.push_back(xptr->types[g]);
+    }
+    return encode(types);
 }
 
 // [[Rcpp::export]]
