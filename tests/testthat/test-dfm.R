@@ -114,6 +114,16 @@ test_that("dfm.dfm works as expected", {
     expect_identical(dfmt, dfm(dfmt, tolower = FALSE))
     expect_identical(dfm_tolower(dfmt), dfm(dfmt, tolower = TRUE))
 
+    # make dfm with empty columns
+    feat <- featnames(dfmt)
+    dfmt2 <- dfm_trim(dfmt, min_termfreq = 100) %>% 
+        dfm_match(feat)
+    
+    expect_identical(
+        dfm(dfmt2, tolower = FALSE, trim = TRUE),
+        dfm_trim(dfmt2)
+    )
+    
     # REMOVED in v3
     # expect_true({
     #     sum(suppressWarnings(dfm(tokens(corp), select = c("The", "a", "an")))) >
@@ -926,5 +936,21 @@ test_that("dfm works with no-breaking space (#2407)", {
         matrix(c(1, 1, 1), nrow = 1, 
                dimnames = list(docs = "text1", features = c("AAA", "aaa", "\U0001f600"))
         )
+    )
+})
+
+test_that("trim is working", { 
+
+    txt <- c("a b c", "b b b a", "c c b")
+    toks <- tokens(txt)
+    
+    expect_equal(
+        dfm(toks) ,
+        dfm(tokens_match(toks, c("a", "b", "c", "x"))) 
+    )
+    
+    expect_equal(
+        dfm_match(dfm(toks), c("a", "b", "c", "x")) ,
+        dfm(tokens_match(toks, c("a", "b", "c", "x")), trim = FALSE) 
     )
 })

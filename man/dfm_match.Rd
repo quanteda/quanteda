@@ -2,14 +2,15 @@
 % Please edit documentation in R/dfm_match.R
 \name{dfm_match}
 \alias{dfm_match}
-\title{Match the feature set of a dfm to given feature names}
+\title{Match the dfm columns with given features}
 \usage{
 dfm_match(x, features, verbose = quanteda_options("verbose"))
 }
 \arguments{
-\item{x}{a \link{dfm}}
+\item{x}{the \link{dfm} object.}
 
-\item{features}{character; the feature names to be matched in the output dfm}
+\item{features}{character vector for the feature names to be matched in the
+resulting \link{dfm}. Columns not included in \code{features} are removed.}
 
 \item{verbose}{if \code{TRUE} print the number of tokens and documents before and
 after the function is applied. The number of tokens does not include paddings.}
@@ -19,17 +20,12 @@ A \link{dfm} whose features are identical to those specified in
 \code{features}.
 }
 \description{
-Match the feature set of a \link{dfm} to a specified vector of feature names.
-For existing features in \code{x} for which there is an exact match for an
-element of \code{features}, these will be included.  Any features in \code{x}
-not \code{features} will be discarded, and any feature names specified in
-\code{features} but not found in \code{x} will be added with all zero counts.
+Match the columns of multiple \link{dfm} objects using a character vector.
 }
 \details{
-Selecting on another \link{dfm}'s \code{\link[=featnames]{featnames()}} is useful when you
-have trained a model on one dfm, and need to project this onto a test set
-whose features must be identical. It is also used in
-\code{\link[=bootstrap_dfm]{bootstrap_dfm()}}.
+Matching the dfm columns is necessary when you split a corpus into two: you fit
+a model on the test set and evaluation it on the test set whose features must be
+identical. It is also used in \code{\link[=bootstrap_dfm]{bootstrap_dfm()}}.
 }
 \note{
 Unlike \code{\link[=dfm_select]{dfm_select()}}, this function will add feature names
@@ -44,11 +40,11 @@ dfm_match(data_dfm_lbgexample, c("A", "B", "Z"))
 dfm_match(data_dfm_lbgexample, c("B", "newfeat1", "A", "newfeat2"))
 
 # matching one dfm to another
-txt <- c("This is text one", "The second text", "This is text three")
-(dfmat1 <- dfm(tokens(txt[1:2])))
-(dfmat2 <- dfm(tokens(txt[2:3])))
-(dfmat3 <- dfm_match(dfmat1, featnames(dfmat2)))
-setequal(featnames(dfmat2), featnames(dfmat3))
+txt <- c("This is text one", "The text two", "This is text three")
+(dfmt1 <- dfm(tokens(txt[1:2])))
+(dfmt2 <- dfm(tokens(txt[2:3])))
+(dfmt3 <- dfm(dfm_match(dfmt1, featnames(dfmt2))))
+identical(featnames(dfmt2), featnames(dfmt3))
 }
 \seealso{
 \code{\link[=dfm_select]{dfm_select()}}

@@ -457,6 +457,11 @@ test_that("test low-level validation", {
         "Invalid bypass"
     )
     expect_error(
+        quanteda:::cpp_tokens_ngrams(as.tokens_xptr(xtoks), 
+                                     "_", 2, 0, c(FALSE, TRUE)),
+        "Invalid bypass"
+    )
+    expect_error(
         quanteda:::cpp_tokens_lookup(as.tokens_xptr(xtoks), 
                                      dict, c(1, 2), "A", 1, 1, c(FALSE)),
         "Invalid words and keys"

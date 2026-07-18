@@ -5,6 +5,8 @@
 #' @param tolower convert all features to lowercase.
 #' @param remove_padding logical; if `TRUE`, remove the "pads" left as empty tokens after
 #' calling [tokens()] or [tokens_remove()] with `padding = TRUE`.
+#' @param trim logical; if `TRUE`, remove columns for features with all zeros. 
+#'   This is always `FALSE` when `x` records dictionary keys.
 #' @param verbose display messages if `TRUE`.
 #' @param ... not used.
 #' @section Changes in version 3:
@@ -36,6 +38,7 @@
 dfm <- function(x,
                 tolower = TRUE,
                 remove_padding = FALSE,
+                trim = TRUE,
                 verbose = quanteda_options("verbose"),
                 ...) {
     
@@ -58,6 +61,7 @@ dfm.default <- function(x, ...) {
 dfm.tokens <- function(x,
                        tolower = TRUE,
                        remove_padding = FALSE,
+                       trim = TRUE,
                        verbose = quanteda_options("verbose"),
                        ...) {
     
@@ -69,6 +73,7 @@ dfm.tokens <- function(x,
     result <- dfm(as.tokens_xptr(x), 
                   tolower = tolower,
                   remove_padding = remove_padding, 
+                  trim = trim,
                   verbose = verbose, 
                   internal = TRUE, ...)
     
@@ -84,6 +89,7 @@ dfm.tokens <- function(x,
 dfm.tokens_xptr <- function(x,
                             tolower = TRUE,
                             remove_padding = FALSE,
+                            trim = TRUE,
                             verbose = quanteda_options("verbose"),
                             ...) {
     
@@ -101,7 +107,9 @@ dfm.tokens_xptr <- function(x,
     if (remove_padding)
         x <- tokens_remove(x, "", valuetype = "fixed")
     attrs <- attributes(x)
-    temp <- t(cpp_dfm(x, attrs$meta$object$what == "dictionary"))
+    if (attrs$meta$object$what == "dictionary")
+        trim <- FALSE
+    temp <- t(cpp_dfm(x, asis = !trim))
     result <- build_dfm(temp, colnames(temp),
                         docvars = get_docvars(x, user = TRUE, system = TRUE),
                         meta = attrs[["meta"]])
@@ -119,8 +127,13 @@ dfm.tokens_xptr <- function(x,
 dfm.dfm <- function(x,
                     tolower = TRUE,
                     remove_padding = FALSE,
+                    trim = TRUE,
                     verbose = quanteda_options("verbose"),
                     ...) {
+    
+    tolower <- check_logical(tolower)
+    remove_padding <- check_logical(remove_padding)
+    trim <- check_logical(trim)
     
     if (is_verbose(verbose, ...)) {
         message_create("dfm", "dfm")
@@ -135,9 +148,10 @@ dfm.dfm <- function(x,
         x <- dfm_tolower(x)
     }
 
-    remove_padding <- check_logical(remove_padding)
     if (remove_padding)
         x <- dfm_remove(x, "", valuetype = "fixed")
+    if (trim)
+        x <- dfm_trim(x)
 
     # remove any NA named columns
     is_na <- is.na(featnames(x))
