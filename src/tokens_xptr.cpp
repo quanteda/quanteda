@@ -80,11 +80,6 @@ int cpp_ndoc(TokensPtr xptr) {
 // [[Rcpp::export]]
 IntegerVector cpp_ntoken(TokensPtr xptr, bool no_padding = false) {
     
-#ifdef QUANTEDA_DEBUG
-    Rcout << "call cpp_ntoken()\n";
-#endif
-    
-    xptr->recompile();
     std::size_t H = xptr->texts.size();
     IntegerVector ls_(H, 0);
     if (no_padding) {
