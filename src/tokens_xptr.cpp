@@ -79,6 +79,10 @@ int cpp_ndoc(TokensPtr xptr) {
 
 // [[Rcpp::export]]
 IntegerVector cpp_ntoken(TokensPtr xptr, bool no_padding = false) {
+
+#ifdef QUANTEDA_DEBUG
+    Rcout << "call cpp_ntoken()\n";
+#endif
     
     std::size_t H = xptr->texts.size();
     IntegerVector ls_(H, 0);
@@ -106,7 +110,6 @@ IntegerVector cpp_ntype(TokensPtr xptr, bool no_padding = false) {
     Rcout << "call cpp_ntype()\n";
 #endif
     
-    xptr->recompile();
     std::size_t H = xptr->texts.size();
     IntegerVector ns_(H);
     for (std::size_t h = 0; h < H; h++) {
@@ -207,7 +210,7 @@ CharacterVector cpp_get_types(TokensPtr xptr, bool all = true) {
 TokensPtr cpp_set_types(TokensPtr xptr, const CharacterVector types_) {
     Types types = Rcpp::as<Types>(types_);
     xptr->types = types;
-    xptr->recompiled = false;
+    xptr->recompile(); // to avoid duplicated types
     return xptr;
 }
 
