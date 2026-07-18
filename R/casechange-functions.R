@@ -35,6 +35,10 @@ lowercase_types <- function(type, keep_acronyms) {
     return(type)
 }
 
+uppercase_types <- function(type) {
+    stri_trans_toupper(type)
+}
+
 #' @rdname tokens_tolower
 #' @importFrom stringi stri_trans_toupper
 #' @export

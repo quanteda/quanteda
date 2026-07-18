@@ -223,7 +223,7 @@ tokens_tolower.tokens_xptr <- function(x, keep_acronyms = FALSE) {
 #' @noRd
 #' @export
 tokens_toupper.tokens_xptr <- function(x) {
-    set_types(x) <- char_toupper(types(x, TRUE))
+    set_types(x) <- uppercase_types(get_types(x, TRUE))
     return(x)
 }
 
