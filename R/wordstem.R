@@ -48,13 +48,13 @@ tokens_wordstem.tokens_xptr <- function(x, language = quanteda_options("language
     if (verbose)
         before <- stats_tokens(x)
     if (identical(field_object(attrs, "ngram"), 1L)) {
-        set_types(x) <- char_wordstem(get_types(x), language = language, check_whitespace = FALSE)
+        set_types(x) <- char_wordstem(get_types(x), language = language, 
+                                      check_whitespace = FALSE)
     } else {
         set_types(x) <- wordstem_ngrams(
             get_types(x),
             concatenator = field_object(attrs, "concatenator"),
-            language = language
-            )
+            language = language)
     }
     result <- rebuild_tokens(x, attrs)
     if (verbose)

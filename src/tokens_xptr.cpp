@@ -291,9 +291,12 @@ IntegerMatrix cpp_as_matrix(TokensPtr xptr, std::size_t length,
 
 /***R
 require(quanteda)
-toks <- tokens(c("b c b a,", "a b a c."), remove_punct = FALSE, padding = TRUE)
+toks <- tokens(c("b c b a,", "a b a d."), remove_punct = FALSE, padding = TRUE)
 xtoks <- as.tokens_xptr(toks)
 cpp_as_list(xtoks)
-cpp_as_matrix(xtoks, 3, 1:2)
-cpp_as_matrix(xtoks, 10, 1)
+cpp_get_types(xtoks)
+cpp_get_types(cpp_subset(xtoks, 1))
+cpp_get_types(cpp_subset(xtoks, 2))
+cpp_get_types(cpp_subset(xtoks, 1), all = TRUE)
+cpp_get_types(cpp_subset(xtoks, 2), all = TRUE)
 */

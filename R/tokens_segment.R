@@ -78,7 +78,6 @@ tokens_segment.tokens_xptr <- function(x, pattern,
         docvars(x) <- NULL
     attrs <- attributes(x)
     type <- get_types(x)
-
     ids <- object2id(pattern, type, valuetype, case_insensitive,
                      concatenator = field_object(attrs, "concatenator"))
     if ("" %in% pattern) ids <- c(ids, list(0)) # append padding index
