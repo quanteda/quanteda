@@ -38,6 +38,11 @@ List cpp_get_attributes(TokensPtr xptr) {
 
 // [[Rcpp::export]]
 List cpp_as_tokens(TokensPtr xptr) {
+    
+#ifdef QUANTEDA_DEBUG
+    Rcout << "call cpp_as_tokens()\n";
+#endif
+    
     xptr->recompile();
     List texts_ = as_list(xptr->texts);
     texts_.attr("types") = encode(xptr->types);
@@ -74,6 +79,11 @@ int cpp_ndoc(TokensPtr xptr) {
 
 // [[Rcpp::export]]
 IntegerVector cpp_ntoken(TokensPtr xptr, bool no_padding = false) {
+    
+#ifdef QUANTEDA_DEBUG
+    Rcout << "call cpp_ntoken()\n";
+#endif
+    
     xptr->recompile();
     std::size_t H = xptr->texts.size();
     IntegerVector ls_(H, 0);
@@ -96,6 +106,11 @@ IntegerVector cpp_ntoken(TokensPtr xptr, bool no_padding = false) {
 
 // [[Rcpp::export]]
 IntegerVector cpp_ntype(TokensPtr xptr, bool no_padding = false) {
+    
+#ifdef QUANTEDA_DEBUG
+    Rcout << "call cpp_ntype()\n";
+#endif
+    
     xptr->recompile();
     std::size_t H = xptr->texts.size();
     IntegerVector ns_(H);
@@ -118,6 +133,11 @@ IntegerVector cpp_ntype(TokensPtr xptr, bool no_padding = false) {
 // [[Rcpp::export]]
 IntegerVector cpp_get_freq(TokensPtr xptr, bool no_padding = false,
                            bool boolean = false) {
+    
+#ifdef QUANTEDA_DEBUG
+    Rcout << "call cpp_get_freq()\n";
+#endif
+    
     xptr->recompile();
     std::size_t G = xptr->types.size();
     if (!no_padding)
@@ -154,7 +174,15 @@ IntegerVector cpp_get_freq(TokensPtr xptr, bool no_padding = false,
 
 // [[Rcpp::export]]
 CharacterVector cpp_get_types(TokensPtr xptr, bool all = true) {
-
+    
+    #ifdef QUANTEDA_DEBUG
+        Rcout << "call cpp_get_types()\n";
+    #endif
+    
+    // if (recompile)
+    //     xptr->recompile();
+    // return encode(xptr->types);
+    
     if (all)
         return encode(xptr->types);
     
@@ -190,6 +218,11 @@ TokensPtr cpp_set_types(TokensPtr xptr, const CharacterVector types_) {
 
 // [[Rcpp::export]]
 void cpp_recompile(TokensPtr xptr) {
+
+#ifdef QUANTEDA_DEBUG
+    Rcout << "call cpp_recompile()\n";
+#endif
+    
     xptr->recompiled = false;
     xptr->recompile();
 }
