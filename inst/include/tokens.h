@@ -44,16 +44,18 @@ inline bool TokensObj::is_duplicated(Types types) {
 }
 
 inline void TokensObj::recompile() {
-    
+
     if (recompiled) return; // do nothing
     
     std::size_t G = types.size();
     std::size_t H = texts.size();
     unsigned int id_limit = G;
     unsigned int id_unused = id_limit + 1;
-    
-    //Rcout << "Re-index tokens\n";
-    
+
+#ifdef QUANTEDA_DEBUG
+    Rcout << "run recompile()\n";
+#endif    
+
     // Re-index tokens -------------------
     
     unsigned int id = 1;
