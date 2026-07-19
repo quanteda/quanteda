@@ -451,7 +451,10 @@ tokens.tokens_xptr <-  function(x,
     concatenator <- check_character(concatenator)
     verbose <- check_logical(verbose)
     check_dots(..., method = c("tokens", "tokenize_word4"))
-
+    
+    # NOTE: consider using quanteda_options()
+    global$recompile <- FALSE
+    
     # splits
     if (split_hyphens) {
         if (verbose) catm(" ...splitting hyphens\n")
@@ -460,7 +463,7 @@ tokens.tokens_xptr <-  function(x,
     if (split_tags) {
         warning("split_tags argument is not used", call. = FALSE)
     }
-
+    
     # removals
     removals <- removals_regex(separators = remove_separators,
                                punct = remove_punct,
@@ -475,7 +478,7 @@ tokens.tokens_xptr <-  function(x,
                                       vectorize_all = FALSE)
         catm(" ...removing", paste(msg, collapse = ", "), "\n")
     }
-
+    
     if (length(removals[["separators"]])) {
         x <- tokens_remove(x, removals[["separators"]], valuetype = "regex",
                            verbose = FALSE)
@@ -495,12 +498,11 @@ tokens.tokens_xptr <-  function(x,
         docvars(x) <- NULL
 
     if (!identical(get_concatenator(x), concatenator)) {
-        #warning('concatenator changed from "',
-        #        get_concatenator(x), '" to "', concatenator, '"', call. = FALSE)
         set_types(x) <- stri_replace_all_fixed(get_types(x), get_concatenator(x),
                                                concatenator)
         set_concatenator(x) <- concatenator
     }
+    global$recompile <- TRUE
     
     x <- cpp_recompile(x, force = TRUE)
     if (is_verbose(verbose, ...))
