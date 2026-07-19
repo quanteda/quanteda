@@ -102,7 +102,7 @@ dfm.tokens_xptr <- function(x,
     x <- as.tokens_xptr(x) # avoid modifying the original tokens
     if (tolower) {
         if (verbose) catm(" ...lowercasing\n", sep = "")
-        x <- tokens_tolower(x)
+        x <- tokens_tolower(x) # should not recompile dictionary keys
     }
     if (remove_padding)
         x <- tokens_remove(x, "", valuetype = "fixed")
