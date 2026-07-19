@@ -502,7 +502,7 @@ tokens.tokens_xptr <-  function(x,
         set_concatenator(x) <- concatenator
     }
     
-    x <- tokens_recompile(x)
+    x <- tokens_recompile(x, force = TRUE)
     if (is_verbose(verbose, ...))
         message_finish(x, proc_time)
 

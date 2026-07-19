@@ -1,9 +1,12 @@
 #' Remove redundant or unused tokens IDs
 #'
-#' This function update tokens IDs after changes in removal or transformation of 
-#' tokens. It reassign IDs for tokens to ensure that them are unique and dense. 
-#' Usually, this function is only used for [tokens_xptr] object.
+#' This function reassign tokens IDs after changes in removal or transformation of 
+#' tokens. It update token IDs to ensure that they are unique and dense. 
+#' Usually, this function is only applied to [tokens_xptr] objects at the end of 
+#' text pre-processing.
 #' @param x the [tokens_xptr] object.
+#' @param force if `TRUE`, update tokens IDs even when it may not be necessary.
+#' @keywords tokens internal
 #' @export
 #' @examples
 #' toks <- tokens(c(one = "a b c d A B C D",
@@ -11,22 +14,22 @@
 #' toks <- tokens_tolower(toks)
 #' types(toks)
 #' types(tokens_recompile(toks))
-tokens_recompile <- function(x) {
+tokens_recompile <- function(x, force = FALSE) {
     UseMethod("tokens_recompile")
 }
 
 #' @export
-tokens_recompile.default <- function(x) {
+tokens_recompile.default <- function(x, force = FALSE) {
     check_class(class(x), "tokens_recompile")
 }
 
 #' @export
-tokens_recompile.tokens_xptr <- function(x) {
-    cpp_recompile(x)
+tokens_recompile.tokens_xptr <- function(x, force = FALSE) {
+    cpp_recompile(x, force = force)
     return(x)
 }
 
 #' @export
-tokens_recompile.tokens <- function(x) {
-    as.tokens(tokens_recompile(as.tokens_xptr(x)))
+tokens_recompile.tokens <- function(x, force = FALSE) {
+    as.tokens(tokens_recompile(as.tokens_xptr(x), force))
 }
