@@ -196,7 +196,7 @@ print.tokens <- function(x, max_ndoc = quanteda_options("print_tokens_max_ndoc")
         meta = attrs[["meta"]],
         class = attrs[["class"]]
     )
-    tokens_recompile(result)
+    tokens_recompile(result, force = TRUE)
 }
 
 #' @rdname tokens-class
