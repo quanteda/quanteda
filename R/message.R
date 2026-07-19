@@ -121,7 +121,7 @@ message_tokens <- function(operation, before, after) {
 stats_tokens <- function(x) {
     list(ndoc = ndoc(x),
          ntoken = sum(ntoken(x, remove_padding = TRUE)),
-         ntype = length(types(x)))
+         ntype = length(unique(types(x))))
 }
 
 #' Print messages in dfm methods
