@@ -30,7 +30,7 @@ test_that("tokens_recompile combine duplicates is working", {
     expect_equivalent(attr(tokens_tolower(toks), "types"),
                       c("a", "b", "c", "d"))
     attr(toks, "types") <- char_tolower(attr(toks, "types"))
-    expect_equivalent(attr(quanteda:::tokens_recompile(toks), "types"),
+    expect_equivalent(attr(tokens_recompile(toks, force = TRUE), "types"),
                       c("a", "b", "c", "d"))
 
 })
