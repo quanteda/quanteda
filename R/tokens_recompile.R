@@ -26,7 +26,6 @@ tokens_recompile.default <- function(x, force = FALSE) {
 #' @export
 tokens_recompile.tokens_xptr <- function(x, force = FALSE) {
     cpp_recompile(x, force = force)
-    return(x)
 }
 
 #' @export

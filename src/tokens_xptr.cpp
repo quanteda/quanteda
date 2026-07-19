@@ -214,7 +214,7 @@ TokensPtr cpp_set_types(TokensPtr xptr, const CharacterVector types_) {
 }
 
 // [[Rcpp::export]]
-void cpp_recompile(TokensPtr xptr, bool force = false) {
+TokensPtr cpp_recompile(TokensPtr xptr, bool force = false) {
 
 #ifdef QUANTEDA_DEBUG
     Rcout << "call cpp_recompile(force = " << force << ")\n";
@@ -222,6 +222,7 @@ void cpp_recompile(TokensPtr xptr, bool force = false) {
     if (force)
         xptr->recompiled = false;
     xptr->recompile();
+    return(xptr);
 }
 
 

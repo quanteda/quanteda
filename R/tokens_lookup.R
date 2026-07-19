@@ -201,7 +201,7 @@ tokens_lookup.tokens_xptr <- function(x, dictionary, levels = 1:5,
                                     !apply_if, get_threads())
     }
     if (append_key)
-        cpp_recompile(result)
+        result <- cpp_recompile(result)
     if (exclusive)
         field_object(attrs, "what") <- "dictionary"
     result <- rebuild_tokens(result, attrs)
