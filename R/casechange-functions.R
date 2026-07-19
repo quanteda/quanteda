@@ -57,6 +57,31 @@ tokens_toupper.tokens <- function(x, verbose = quanteda_options("verbose")) {
     as.tokens(tokens_toupper(as.tokens_xptr(x), verbose))
 }
 
+#' @export
+tokens_tolower.tokens_xptr <- function(x, keep_acronyms = FALSE, verbose = quanteda_options("verbose")) {
+    keep_acronyms <- check_logical(keep_acronyms)
+    if (verbose)
+        before <- stats_tokens(x)
+    # NOTE: consider removing keep_acronyms
+    set_types(x) <- lowercase_types(get_types(x), keep_acronyms)
+    x <- tokens_recompile(x)
+    if (verbose)
+        message_tokens("tokens_tolower()", before, stats_tokens(x))
+    return(x)
+}
+
+#' @noRd
+#' @export
+tokens_toupper.tokens_xptr <- function(x, verbose = quanteda_options("verbose")) {
+    if (verbose)
+        before <- stats_tokens(x)
+    set_types(x) <- uppercase_types(get_types(x))
+    x <- tokens_recompile(x)
+    if (verbose)
+        message_tokens("tokens_toupper()", before, stats_tokens(x))
+    return(x)
+}
+
 
 #' Convert the case of character objects
 #'
