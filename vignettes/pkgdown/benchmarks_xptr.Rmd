@@ -49,8 +49,8 @@ toks <- tokens(corp, remove_punct = FALSE, remove_numbers = FALSE,
 # transform tokens object to tokens_xptr object
 xtoks <- as.tokens_xptr(toks)
 
-ndoc(toks) # the number of sentences
-sum(ntoken(toks)) # the total number of tokens
+ndoc(xtoks) # the number of sentences
+sum(ntoken(xtoks)) # the total number of tokens
 ```
 
 ## Tokenising a corpus
