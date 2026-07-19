@@ -172,13 +172,9 @@ IntegerVector cpp_get_freq(TokensPtr xptr, bool no_padding = false,
 // [[Rcpp::export]]
 CharacterVector cpp_get_types(TokensPtr xptr, bool all = true) {
     
-    #ifdef QUANTEDA_DEBUG
-        Rcout << "call cpp_get_types()\n";
-    #endif
-    
-    // if (recompile)
-    //     xptr->recompile();
-    // return encode(xptr->types);
+#ifdef QUANTEDA_DEBUG
+    Rcout << "call cpp_get_types(all = " << all << ")\n";
+#endif
     
     if (all)
         return encode(xptr->types);
