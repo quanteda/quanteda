@@ -213,17 +213,25 @@ tokens_subset.tokens_xptr <- function(x, subset, min_ntoken = NULL, max_ntoken =
 
 
 #' @export
-tokens_tolower.tokens_xptr <- function(x, keep_acronyms = FALSE) {
+tokens_tolower.tokens_xptr <- function(x, keep_acronyms = FALSE, verbose = quanteda_options("verbose")) {
     keep_acronyms <- check_logical(keep_acronyms)
+    if (verbose)
+        before <- stats_tokens(x)
     # NOTE: consider removing keep_acronyms
     set_types(x) <- lowercase_types(get_types(x), keep_acronyms)
+    if (verbose)
+        message_tokens("tokens_tolower()", before, stats_tokens(result))
     return(x)
 }
 
 #' @noRd
 #' @export
-tokens_toupper.tokens_xptr <- function(x) {
+tokens_toupper.tokens_xptr <- function(x, verbose = quanteda_options("verbose")) {
+    if (verbose)
+        before <- stats_tokens(x)
     set_types(x) <- uppercase_types(get_types(x))
+    if (verbose)
+        message_tokens("tokens_upper()", before, stats_tokens(result))
     return(x)
 }
 
