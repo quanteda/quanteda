@@ -52,10 +52,6 @@ inline void TokensObj::recompile() {
     unsigned int id_limit = G;
     unsigned int id_unused = id_limit + 1;
 
-#ifdef QUANTEDA_DEBUG
-    Rcout << "run recompile()\n";
-#endif    
-
     // Re-index tokens -------------------
     
     unsigned int id = 1;
