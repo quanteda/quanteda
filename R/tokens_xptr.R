@@ -78,7 +78,7 @@ ndoc.tokens_xptr <- function(x) {
 
 #' @export
 types.tokens_xptr <- function(x) {
-    get_types(x, all = FALSE)
+    get_types(x, all = TRUE)
 }
 
 #' @export
