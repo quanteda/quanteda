@@ -136,7 +136,6 @@ IntegerVector cpp_get_freq(TokensPtr xptr, bool no_padding = false,
     Rcout << "call cpp_get_freq()\n";
 #endif
     
-    xptr->recompile();
     std::size_t G = xptr->types.size();
     if (!no_padding)
         G++;
@@ -215,13 +214,13 @@ TokensPtr cpp_set_types(TokensPtr xptr, const CharacterVector types_) {
 }
 
 // [[Rcpp::export]]
-void cpp_recompile(TokensPtr xptr) {
+void cpp_recompile(TokensPtr xptr, bool force = false) {
 
 #ifdef QUANTEDA_DEBUG
-    Rcout << "call cpp_recompile()\n";
+    Rcout << "call cpp_recompile(force = " << force << ")\n";
 #endif
-    
-    xptr->recompiled = false;
+    if (force)
+        xptr->recompiled = false;
     xptr->recompile();
 }
 
