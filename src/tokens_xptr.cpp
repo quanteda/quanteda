@@ -143,11 +143,11 @@ IntegerVector cpp_get_freq(TokensPtr xptr, bool no_padding = false,
     std::vector<bool> flag(G);
     std::size_t H = xptr->texts.size();
     for (std::size_t h = 0; h < H; h++) {
-        const Text text &= xptr->texts[h];
+        const Text &text = xptr->texts[h];
         std::fill(flag.begin(), flag.end(), false);
         std::size_t I = text.size();
         for (std::size_t i = 0; i < I; i++) {
-            const unsigned int id &= text[i];
+            unsigned int id = text[i];
             // ignore paddings
             if (no_padding) {
                 if (id == 0)
@@ -186,10 +186,10 @@ CharacterVector cpp_get_types(TokensPtr xptr, bool all = true) {
     
     std::size_t H = xptr->texts.size();
     for (std::size_t h = 0; h < H; h++) {
-        const Text text &= xptr->texts[h];
+        const Text &text = xptr->texts[h];
         std::size_t I = text.size();
         for (std::size_t i = 0; i < I; i++) {
-            const unsigned int id &= text[i];
+            const unsigned int id = text[i];
             if (id != 0)
                 flag[id - 1] = true;
         }

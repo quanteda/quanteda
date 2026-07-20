@@ -62,8 +62,8 @@ inline void TokensObj::recompile() {
     }
     int count_pad = 0;
     for (std::size_t h = 0; h < H; h++) {
+        Text &text_new = texts[h];
         std::size_t I = texts[h].size();
-        Text text_new(I);
         for (std::size_t i = 0; i < I; i++) {
             if (texts[h][i] > id_limit) 
                 throw std::range_error("Invalid tokens object");
@@ -80,7 +80,7 @@ inline void TokensObj::recompile() {
                 count_pad++;
             }
         }
-        texts[h] = text_new;
+        //texts[h] = text_new;
     }
 
     // sort types
@@ -116,13 +116,13 @@ inline void TokensObj::recompile() {
         }
     
         for (std::size_t h = 0; h < H; h++) {
+            Text &text_new = texts[h];
             std::size_t I = texts[h].size();
-            Text text_new(I);
             for (std::size_t i = 0; i < I; i++) {
                 if (texts[h][i] != 0)
                     text_new[i] = ids[texts[h][i] - 1];
             }
-            texts[h] = text_new;
+            //texts[h] = text_new;
         }
         
         Types types_new;
