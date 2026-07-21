@@ -72,7 +72,7 @@ message_finish <- function(x, time) {
         message(msg("Finished constructing a %s x %s sparse dfm.",
                     nrow(x), ncol(x)))
     } else {
-        m <- length(get_types(x))
+        m <- count_types(x)
         n <- ndoc(x)
         message(msg(" ...%s unique %s",
                     m, if (m == 1) "type" else "types"))
