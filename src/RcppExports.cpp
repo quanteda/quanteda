@@ -12,14 +12,13 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
 // cpp_dfm
-S4 cpp_dfm(TokensPtr xptr, bool asis);
-RcppExport SEXP _quanteda_cpp_dfm(SEXP xptrSEXP, SEXP asisSEXP) {
+S4 cpp_dfm(TokensPtr xptr);
+RcppExport SEXP _quanteda_cpp_dfm(SEXP xptrSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< TokensPtr >::type xptr(xptrSEXP);
-    Rcpp::traits::input_parameter< bool >::type asis(asisSEXP);
-    rcpp_result_gen = Rcpp::wrap(cpp_dfm(xptr, asis));
+    rcpp_result_gen = Rcpp::wrap(cpp_dfm(xptr));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -554,7 +553,7 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_quanteda_cpp_dfm", (DL_FUNC) &_quanteda_cpp_dfm, 2},
+    {"_quanteda_cpp_dfm", (DL_FUNC) &_quanteda_cpp_dfm, 1},
     {"_quanteda_cpp_as_matrix", (DL_FUNC) &_quanteda_cpp_as_matrix, 4},
     {"_quanteda_cpp_fcm", (DL_FUNC) &_quanteda_cpp_fcm, 5},
     {"_quanteda_cpp_index", (DL_FUNC) &_quanteda_cpp_index, 3},
