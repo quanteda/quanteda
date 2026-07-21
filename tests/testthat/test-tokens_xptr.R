@@ -190,11 +190,6 @@ test_that("tokens are not recompiled", {
                   quanteda:::cpp_get_types(tokens_subset(xtoks, b)))
     )
     
-    expect_false(
-        identical(quanteda:::cpp_get_types(xtoks, all = FALSE),
-                  quanteda:::cpp_get_types(tokens_subset(xtoks, b), all = FALSE))
-    )
-    
 })
 
 test_that("all the meta fields are copied", {

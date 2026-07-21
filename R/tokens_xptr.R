@@ -78,7 +78,7 @@ ndoc.tokens_xptr <- function(x) {
 
 #' @export
 types.tokens_xptr <- function(x) {
-    cpp_get_types(x, all = TRUE)
+    cpp_get_types(x)
 }
 
 #' @export
@@ -218,18 +218,32 @@ tokens_subset.tokens_xptr <- function(x, subset, min_ntoken = NULL, max_ntoken =
 #    select_docvars(attr(x, "docvars"), field, user, system, drop)
 #}
 
-get_types <- function(x, all = TRUE) {
+get_types <- function(x) {
     UseMethod("get_types")
 }
 
 #' @method get_types tokens
-get_types.tokens <- function(x, all = TRUE) {
+get_types.tokens <- function(x) {
     attr(x, "types")
 }
 
 #' @method get_types tokens_xptr
-get_types.tokens_xptr <- function(x, all = TRUE) {
-    cpp_get_types(x, all)
+get_types.tokens_xptr <- function(x) {
+    cpp_get_types(x)
+}
+
+count_types <- function(x) {
+    UseMethod("count_types")
+}
+
+#' @method get_types tokens
+count_types.tokens <- function(x) {
+    length(attr(x, "types"))
+}
+
+#' @method get_types tokens_xptr
+count_types.tokens_xptr <- function(x) {
+    cpp_count_types(x)
 }
 
 "set_types<-" <- function(x, value) {

@@ -170,35 +170,23 @@ IntegerVector cpp_get_freq(TokensPtr xptr, bool no_padding = false,
 
 
 // [[Rcpp::export]]
-CharacterVector cpp_get_types(TokensPtr xptr, bool all = true) {
+CharacterVector cpp_get_types(TokensPtr xptr) {
     
 #ifdef QUANTEDA_DEBUG
-    Rcout << "call cpp_get_types(all = " << all << ")\n";
+    Rcout << "call cpp_get_types()\n";
+#endif
+
+    return encode(xptr->types);
+}
+
+// [[Rcpp::export]]
+int cpp_count_types(TokensPtr xptr) {
+    
+#ifdef QUANTEDA_DEBUG
+    Rcout << "call cpp_count_types()\n";
 #endif
     
-    if (all)
-        return encode(xptr->types);
-    
-    std::size_t G = xptr->types.size();
-    std::vector<bool> flag(G);
-    std::vector<std::string> types;
-    types.reserve(G);
-    
-    std::size_t H = xptr->texts.size();
-    for (std::size_t h = 0; h < H; h++) {
-        const Text &text = xptr->texts[h];
-        std::size_t I = text.size();
-        for (std::size_t i = 0; i < I; i++) {
-            const unsigned int id = text[i];
-            if (id != 0)
-                flag[id - 1] = true;
-        }
-    }
-    for (std::size_t g = 0; g < G; g++) {
-        if (flag[g])
-            types.push_back(xptr->types[g]);
-    }
-    return encode(types);
+    return xptr->types.size();
 }
 
 // [[Rcpp::export]]
@@ -244,6 +232,6 @@ cpp_as_list(xtoks)
 cpp_get_types(xtoks)
 cpp_get_types(cpp_subset(xtoks, 1))
 cpp_get_types(cpp_subset(xtoks, 2))
-cpp_get_types(cpp_subset(xtoks, 1), all = TRUE)
-cpp_get_types(cpp_subset(xtoks, 2), all = TRUE)
+cpp_get_types(cpp_subset(xtoks, 1))
+cpp_get_types(cpp_subset(xtoks, 2))
 */

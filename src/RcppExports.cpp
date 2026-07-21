@@ -417,14 +417,24 @@ BEGIN_RCPP
 END_RCPP
 }
 // cpp_get_types
-CharacterVector cpp_get_types(TokensPtr xptr, bool all);
-RcppExport SEXP _quanteda_cpp_get_types(SEXP xptrSEXP, SEXP allSEXP) {
+CharacterVector cpp_get_types(TokensPtr xptr);
+RcppExport SEXP _quanteda_cpp_get_types(SEXP xptrSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< TokensPtr >::type xptr(xptrSEXP);
-    Rcpp::traits::input_parameter< bool >::type all(allSEXP);
-    rcpp_result_gen = Rcpp::wrap(cpp_get_types(xptr, all));
+    rcpp_result_gen = Rcpp::wrap(cpp_get_types(xptr));
+    return rcpp_result_gen;
+END_RCPP
+}
+// cpp_count_types
+int cpp_count_types(TokensPtr xptr);
+RcppExport SEXP _quanteda_cpp_count_types(SEXP xptrSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< TokensPtr >::type xptr(xptrSEXP);
+    rcpp_result_gen = Rcpp::wrap(cpp_count_types(xptr));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -583,7 +593,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_quanteda_cpp_ntoken", (DL_FUNC) &_quanteda_cpp_ntoken, 2},
     {"_quanteda_cpp_ntype", (DL_FUNC) &_quanteda_cpp_ntype, 2},
     {"_quanteda_cpp_get_freq", (DL_FUNC) &_quanteda_cpp_get_freq, 3},
-    {"_quanteda_cpp_get_types", (DL_FUNC) &_quanteda_cpp_get_types, 2},
+    {"_quanteda_cpp_get_types", (DL_FUNC) &_quanteda_cpp_get_types, 1},
+    {"_quanteda_cpp_count_types", (DL_FUNC) &_quanteda_cpp_count_types, 1},
     {"_quanteda_cpp_set_types", (DL_FUNC) &_quanteda_cpp_set_types, 2},
     {"_quanteda_cpp_set_recompiled", (DL_FUNC) &_quanteda_cpp_set_recompiled, 2},
     {"_quanteda_cpp_get_recompiled", (DL_FUNC) &_quanteda_cpp_get_recompiled, 1},
