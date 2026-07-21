@@ -229,7 +229,7 @@ TokensPtr cpp_recompile(TokensPtr xptr, bool force = false) {
     if (force)
         xptr->recompiled = false;
     xptr->recompile();
-    return(xptr);
+    return xptr;
 }
 
 

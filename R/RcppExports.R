@@ -129,6 +129,14 @@ cpp_set_types <- function(xptr, types_) {
     .Call(`_quanteda_cpp_set_types`, xptr, types_)
 }
 
+cpp_set_recompiled <- function(xptr, recompiled) {
+    .Call(`_quanteda_cpp_set_recompiled`, xptr, recompiled)
+}
+
+cpp_get_recompiled <- function(xptr) {
+    .Call(`_quanteda_cpp_get_recompiled`, xptr)
+}
+
 cpp_recompile <- function(xptr, force = FALSE) {
     .Call(`_quanteda_cpp_recompile`, xptr, force)
 }

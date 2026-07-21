@@ -441,6 +441,29 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// cpp_set_recompiled
+TokensPtr cpp_set_recompiled(TokensPtr xptr, bool recompiled);
+RcppExport SEXP _quanteda_cpp_set_recompiled(SEXP xptrSEXP, SEXP recompiledSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< TokensPtr >::type xptr(xptrSEXP);
+    Rcpp::traits::input_parameter< bool >::type recompiled(recompiledSEXP);
+    rcpp_result_gen = Rcpp::wrap(cpp_set_recompiled(xptr, recompiled));
+    return rcpp_result_gen;
+END_RCPP
+}
+// cpp_get_recompiled
+bool cpp_get_recompiled(TokensPtr xptr);
+RcppExport SEXP _quanteda_cpp_get_recompiled(SEXP xptrSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< TokensPtr >::type xptr(xptrSEXP);
+    rcpp_result_gen = Rcpp::wrap(cpp_get_recompiled(xptr));
+    return rcpp_result_gen;
+END_RCPP
+}
 // cpp_recompile
 TokensPtr cpp_recompile(TokensPtr xptr, bool force);
 RcppExport SEXP _quanteda_cpp_recompile(SEXP xptrSEXP, SEXP forceSEXP) {
@@ -563,6 +586,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_quanteda_cpp_get_freq", (DL_FUNC) &_quanteda_cpp_get_freq, 3},
     {"_quanteda_cpp_get_types", (DL_FUNC) &_quanteda_cpp_get_types, 2},
     {"_quanteda_cpp_set_types", (DL_FUNC) &_quanteda_cpp_set_types, 2},
+    {"_quanteda_cpp_set_recompiled", (DL_FUNC) &_quanteda_cpp_set_recompiled, 2},
+    {"_quanteda_cpp_get_recompiled", (DL_FUNC) &_quanteda_cpp_get_recompiled, 1},
     {"_quanteda_cpp_recompile", (DL_FUNC) &_quanteda_cpp_recompile, 2},
     {"_quanteda_cpp_is_grouped_numeric", (DL_FUNC) &_quanteda_cpp_is_grouped_numeric, 2},
     {"_quanteda_cpp_is_grouped_character", (DL_FUNC) &_quanteda_cpp_is_grouped_character, 2},
