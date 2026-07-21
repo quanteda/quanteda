@@ -664,7 +664,7 @@ test_that("dfm keeps non-existent types, #1278", {
     expect_equal(types(toks_key), c("A", "B", "Z"))
 
     expect_equal(featnames(dfm(toks_key, tolower = TRUE)),
-                 c("a", "b", "z"))
+                 c("A", "B", "Z"))
 
     expect_equal(featnames(dfm(toks_key, tolower = FALSE)),
                  c("A", "B", "Z"))
@@ -951,6 +951,6 @@ test_that("trim is working", {
     
     expect_equal(
         dfm_match(dfm(toks), c("a", "b", "c", "x")) ,
-        dfm(tokens_match(toks, c("a", "b", "c", "x")), trim = FALSE) 
+        dfm(tokens_match(toks, c("a", "b", "c", "x")), trim = FALSE, tolower = FALSE) 
     )
 })
