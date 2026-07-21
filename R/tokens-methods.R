@@ -189,14 +189,13 @@ print.tokens <- function(x, max_ndoc = quanteda_options("print_tokens_max_ndoc")
     if (any(is.na(index)))
         stop("Subscript out of bounds")
 
-    result <- build_tokens(
+    build_tokens(
         unclass(x)[index],
         attrs[["types"]],
         docvars = reshape_docvars(attrs[["docvars"]], index, drop_docid = drop_docid),
         meta = attrs[["meta"]],
         class = attrs[["class"]]
     )
-    tokens_recompile(result, force = TRUE)
 }
 
 #' @rdname tokens-class

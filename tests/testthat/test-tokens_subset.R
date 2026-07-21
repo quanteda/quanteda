@@ -17,6 +17,10 @@ test_that("tokens_subset works in a basic way", {
         c("1993-Clinton", "1997-Clinton")
     )
     expect_equal(
+        types(tokens_subset(toks, President == "Clinton")),
+        types(toks)
+    )
+    expect_equal(
         docnames(tokens_subset(toks, c(TRUE, TRUE, rep(FALSE, 8)))),
         c("1981-Reagan", "1985-Reagan")
     )

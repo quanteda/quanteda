@@ -1,26 +1,4 @@
 
-test_that("remove unused types", {
-    
-    toks <- tokens(c(one = "a b c d",
-                     two = "x y z"))
-    expect_equal(
-        types(toks[1]),
-        c("a", "b", "c", "d")
-    )
-    
-    expect_equal(
-        types(toks[2]),
-        c("x", "y", "z")
-    )
-    
-    toks_rm <- tokens_remove(toks, "*")
-    expect_equal(
-        types(toks_rm),
-        character()
-    )
-    
-})
-
 test_that("raise error when tokens are invalid", {
 
     toks <- quanteda:::build_tokens(

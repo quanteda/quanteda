@@ -11,10 +11,6 @@ test_that("tokens indexing works as expected", {
     expect_equal(as.list(toks[2]), list(d2 = c("four", "five", "six")))
     expect_equal(as.list(toks[c(-1, -3)]), list(d2 = c("four", "five", "six"))) # issue #1830
 
-    # issue #370
-    expect_equal(attr(toks[1], "types"), c("one", "two", "three"))
-    expect_equal(attr(toks[2], "types"), c("four", "five", "six"))
-
     # issue #1308
     expect_error(toks[4], "Subscript out of bounds")
     expect_error(toks[1:4], "Subscript out of bounds")
