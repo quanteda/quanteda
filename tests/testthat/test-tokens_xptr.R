@@ -341,7 +341,11 @@ test_that("cpp_get_freq is working", {
         structure(c(2L, 2L, 2L, 1L),
                   names = c("a", "b", "c", "d"))
     )
-
+    
+    expect_false(
+        quanteda:::cpp_get_recompiled(quanteda:::cpp_set_recompiled(xtoks, FALSE))
+    )
+    
 })
 
 test_that("returns shallow or deep copy x", {
