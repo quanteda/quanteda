@@ -664,7 +664,7 @@ test_that("dfm keeps non-existent types, #1278", {
     expect_equal(types(toks_key), c("A", "B", "Z"))
 
     expect_equal(featnames(dfm(toks_key, tolower = TRUE)),
-                 c("A", "B", "Z"))
+                 c("a", "b", "z"))
 
     expect_equal(featnames(dfm(toks_key, tolower = FALSE)),
                  c("A", "B", "Z"))

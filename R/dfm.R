@@ -2,7 +2,7 @@
 #'
 #' Construct a sparse document-feature matrix from a [tokens] or [dfm] object.
 #' @param x a [tokens] or [dfm] object.
-#' @param tolower convert all features to lowercase; ignored when tokens are dictionary keys.
+#' @param tolower convert all features to lowercase.
 #' @param remove_padding logical; if `TRUE`, remove the "pads" left as empty tokens after
 #' calling [tokens()] or [tokens_remove()] with `padding = TRUE`.
 #' @param trim logical; if `TRUE`, remove columns for features with all zeros. 
@@ -101,17 +101,17 @@ dfm.tokens_xptr <- function(x,
     check_dots(...)
     attrs <- attributes(x)
     x <- as.tokens_xptr(x) # avoid modifying the original tokens
-    if (tolower && attrs$meta$object$what != "dictionary") {
+    if (tolower) {
         if (verbose) catm(" ...lowercasing\n", sep = "")
-        x <- tokens_tolower(x) # should not recompile dictionary keys
+        x <- tokens_tolower(x, verbose = FALSE) # should not recompile dictionary keys
     }
     if (remove_padding)
         x <- tokens_remove(x, "", valuetype = "fixed")
-    if (attrs$meta$object$what == "dictionary")
+    if (identical(attrs$meta$object$what, "dictionary"))
         trim <- FALSE
-    temp <- cpp_set_recompiled(!trim)
-    temp <- t(cpp_dfm(x))
-    result <- build_dfm(temp, colnames(temp),
+    x <- cpp_set_recompiled(x, !trim)
+    result <- t(cpp_dfm(x))
+    result <- build_dfm(result, colnames(result),
                         docvars = get_docvars(x, user = TRUE, system = TRUE),
                         meta = attrs[["meta"]])
 
