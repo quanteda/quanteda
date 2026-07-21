@@ -2,7 +2,7 @@
 #'
 #' Construct a sparse document-feature matrix from a [tokens] or [dfm] object.
 #' @param x a [tokens] or [dfm] object.
-#' @param tolower convert all features to lowercase.
+#' @param tolower convert all features to lowercase; ignored when tokens are dictionary keys.
 #' @param remove_padding logical; if `TRUE`, remove the "pads" left as empty tokens after
 #' calling [tokens()] or [tokens_remove()] with `padding = TRUE`.
 #' @param trim logical; if `TRUE`, remove columns for features with all zeros. 
