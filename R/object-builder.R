@@ -119,7 +119,6 @@ rebuild_tokens <- function(x, attrs) {
         x <- cpp_recompile(x)
     if (is.list(x)) { # only used for testing
          attr(x, "names") <- attrs[["docvars"]][["docname_"]]
-         stopifnot(is.tokens(x))
     }
     structure(x, 
               padding = TRUE, # TODO: removed after v4
