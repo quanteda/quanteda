@@ -209,10 +209,8 @@ make_meta <- function(class, inherit = NULL, ...) {
         "object" = list(),
         "user" = list()
     )
-
-    suppressWarnings({
-        result$system <- make_meta_system(inherit$system)
-    })
+    result$system <- make_meta_system(inherit$system, warn = FALSE)
+    
     if (class == "corpus") {
         result$object <- make_meta_corpus(inherit$object, ...)
     } else if (class == "tokens") {
@@ -222,7 +220,7 @@ make_meta <- function(class, inherit = NULL, ...) {
     } else if (class == "fcm") {
         result$object <- make_meta_fcm(inherit$object, ...)
     } else if (class == "dictionary2") {
-        result$object <- make_meta_dictionary2(inherit, ...)
+        result$object <- make_meta_dictionary2(inherit$object, ...)
     }
 
     if ("user" %in% names(inherit))
@@ -233,7 +231,7 @@ make_meta <- function(class, inherit = NULL, ...) {
 
 # newer version of meta_system_defaults
 #' @rdname make_meta
-make_meta_system <- function(inherit = NULL) {
+make_meta_system <- function(inherit = NULL, ...) {
     if (is.null(inherit))
         inherit <- list()
     default <- list(
@@ -243,7 +241,7 @@ make_meta_system <- function(inherit = NULL) {
         "directory" = getwd(),
         "created" = Sys.Date()
     )
-    update_meta(default, inherit)
+    update_meta(default, inherit, ...)
 }
 
 #' @rdname make_meta
@@ -330,7 +328,7 @@ update_meta <- function(default, inherit, ..., warn = TRUE) {
     update <- list(...)
     for (m in setdiff(union(names(inherit), names(update)), names(default))) {
         if (warn)
-            warning(m, " is ignored.")
+            warning(m, " is ignored.", immediate. = TRUE)
     }
     for (m in names(default)) {
         if (length(update) && m %in% names(update)) {

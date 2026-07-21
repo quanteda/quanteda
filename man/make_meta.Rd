@@ -13,7 +13,7 @@
 \usage{
 make_meta(class, inherit = NULL, ...)
 
-make_meta_system(inherit = NULL)
+make_meta_system(inherit = NULL, ...)
 
 make_meta_corpus(inherit = NULL, ...)
 

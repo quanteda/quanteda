@@ -99,7 +99,6 @@ dfm.tokens_xptr <- function(x,
     }
     
     check_dots(...)
-    attrs <- attributes(x)
     x <- as.tokens_xptr(x) # avoid modifying the original tokens
     if (tolower) {
         if (verbose) catm(" ...lowercasing\n", sep = "")
@@ -107,6 +106,7 @@ dfm.tokens_xptr <- function(x,
     }
     if (remove_padding)
         x <- tokens_remove(x, "", valuetype = "fixed")
+    attrs <- attributes(x)
     if (identical(attrs$meta$object$what, "dictionary"))
         trim <- FALSE
     x <- cpp_set_recompiled(x, !trim)
