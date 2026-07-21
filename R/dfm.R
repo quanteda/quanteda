@@ -109,7 +109,8 @@ dfm.tokens_xptr <- function(x,
         x <- tokens_remove(x, "", valuetype = "fixed")
     if (attrs$meta$object$what == "dictionary")
         trim <- FALSE
-    temp <- t(cpp_dfm(x, asis = !trim))
+    temp <- cpp_set_recompiled(!trim)
+    temp <- t(cpp_dfm(x))
     result <- build_dfm(temp, colnames(temp),
                         docvars = get_docvars(x, user = TRUE, system = TRUE),
                         meta = attrs[["meta"]])

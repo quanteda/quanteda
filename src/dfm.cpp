@@ -3,9 +3,8 @@
 using namespace quanteda;
 
 // [[Rcpp::export]]
-S4 cpp_dfm(TokensPtr xptr, bool asis = true) {
+S4 cpp_dfm(TokensPtr xptr) {
     
-    xptr->recompiled = asis;
     xptr->recompile();
     std::size_t H = xptr->texts.size();
     std::size_t G = xptr->types.size();
