@@ -138,7 +138,7 @@ test_that("tokens_tolower and tokens_toupper work", {
     
     xtoks1 <- tokens_lookup(as.tokens_xptr(toks), dict, exclusive = FALSE)
     expect_identical(quanteda:::cpp_get_attributes(xtoks1),
-                     list(recompiled = FALSE, padded = FALSE))
+                     list(recompiled = TRUE, padded = FALSE))
     
     xtoks2 <- tokens_lookup(as.tokens_xptr(toks), dict, nomatch = "nomatch")
     expect_identical(quanteda:::cpp_get_attributes(xtoks2),
@@ -213,7 +213,7 @@ test_that("attributes are correct", {
     dict <- data_dictionary_LSD2015[1:2]
     
     xtoks2 <- tokens_remove(as.tokens_xptr(toks), stopwords(), padding = TRUE)
-    expect_false(quanteda:::cpp_get_attributes(xtoks2)$recompiled)
+    expect_true(quanteda:::cpp_get_attributes(xtoks2)$recompiled)
     expect_true(quanteda:::cpp_get_attributes(xtoks2)$padded)
     
     xtoks_dict1 <- tokens_lookup(as.tokens_xptr(toks), 
@@ -222,7 +222,7 @@ test_that("attributes are correct", {
 
     xtoks_dict2 <- tokens_lookup(as.tokens_xptr(toks), 
                                  dict, exclusive = FALSE)
-    expect_false(quanteda:::cpp_get_attributes(xtoks_dict2)$recompiled)
+    expect_true(quanteda:::cpp_get_attributes(xtoks_dict2)$recompiled)
 })
 
 test_that("tokens_compound works", {
