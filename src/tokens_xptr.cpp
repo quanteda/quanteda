@@ -205,7 +205,19 @@ CharacterVector cpp_get_types(TokensPtr xptr, bool all = true) {
 TokensPtr cpp_set_types(TokensPtr xptr, const CharacterVector types_) {
     Types types = Rcpp::as<Types>(types_);
     xptr->types = types;
+    xptr->recompiled = false;
     return xptr;
+}
+
+// [[Rcpp::export]]
+TokensPtr cpp_set_recompiled(TokensPtr xptr, bool recompiled) {
+    xptr->recompiled = recompiled;
+    return xptr;
+}
+
+// [[Rcpp::export]]
+bool cpp_get_recompiled(TokensPtr xptr) {
+    return xptr->recompiled;
 }
 
 // [[Rcpp::export]]
