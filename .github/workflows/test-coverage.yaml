@@ -16,7 +16,8 @@ jobs:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
-	  - run: 'sudo apt install libtbb-dev'
+	  - name: Install TBB
+	    run: 'sudo apt install libtbb-dev'
 	  
       - uses: actions/checkout@v6
 
