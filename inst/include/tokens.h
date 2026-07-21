@@ -1,5 +1,6 @@
 //#include <RcppArmadillo.h>
 #include <Rcpp.h>
+#include "dev.h"
 // [[Rcpp::plugins(cpp11)]]
 using namespace Rcpp;
 
@@ -29,16 +30,15 @@ class TokensObj {
         void recompile();
 
     private:
-        bool is_duplicated(Types types);
+        bool is_duplicated(Types types); // NOTE: consider removing
 };
 
 inline bool TokensObj::is_duplicated(Types types) {
-    std::sort(types.begin(), types.end());
-    if (types.size() <= 1) return false;
+    std::unordered_set<std::string> set;
     for (std::size_t i = 0; i < types.size() - 1; i++) {
-        if (types[i] == "" || types[i] == types[i + 1]) {
+        auto it = set.insert(types[i]);
+        if (types[i] == "" || !it.second)
             return true;
-        }
     }
     return false;
 }
@@ -47,8 +47,8 @@ inline void TokensObj::recompile() {
 
     if (recompiled) return; // do nothing
     
-    std::size_t G = types.size();
-    std::size_t H = texts.size();
+    const std::size_t G = types.size();
+    const std::size_t H = texts.size();
     unsigned int id_limit = G;
     unsigned int id_unused = id_limit + 1;
 
@@ -56,6 +56,7 @@ inline void TokensObj::recompile() {
     
     unsigned int id = 1;
     std::vector<unsigned int> ids(G, id_unused);
+    
     for (std::size_t g = 0; g < G; g++) {
         if (types[g] == "") 
             ids[g] = 0; // padding
@@ -92,29 +93,40 @@ inline void TokensObj::recompile() {
     types = types_new;
     padded = count_pad > 0;
     
+    // dev::Timer timer;
+    // dev::start_timer("is_duplicated", timer);
+    // is_duplicated(types);
+    // dev::stop_timer("is_duplicated", timer);
+    
     // Merge duplicated types -------------------
     
-    if (is_duplicated(types)) {
-        //Rcout << "Merge duplicate types\n";
-        
-        // Check duplicated or empty types
-        unsigned int id = 1;
-        std::vector<unsigned int> ids(G, 0);
-        std::vector<bool> unique(G);
-        std::unordered_map<std::string, unsigned int> map;
-        for (std::size_t g = 0; g < G; g++) {
-            if (types[g] == "") {
-                ids[g] = 0;
+    //dev::start_timer("deduplication", timer);
+    
+    // Reset 
+    id = 1; 
+    std::fill(ids.begin(), ids.end(), 0);
+    
+    // Check duplicated or empty types
+    bool duplicated;
+    std::vector<bool> unique(G);
+    std::unordered_map<std::string, unsigned int> map;
+    for (std::size_t g = 0; g < G; g++) {
+        if (types[g] == "") {
+            ids[g] = 0;
+        } else {
+            auto it = map.insert(std::pair<std::string, unsigned int>(types[g], id));
+            ids[g] = it.first->second;
+            if (it.second) {
+                unique[g] = true;
+                id++; // increment iff there is no gap
             } else {
-                auto it = map.insert(std::pair<std::string, unsigned int>(types[g], id));
-                ids[g] = it.first->second;
-                if (it.second) {
-                    unique[g] = true;
-                    id++; // increment iff there is no gap
-                }
+                duplicated = true;
             }
         }
+    }
+    //dev::stop_timer("deduplication", timer);
     
+    if (duplicated) {
         for (std::size_t h = 0; h < H; h++) {
             Text &text_new = texts[h];
             std::size_t I = texts[h].size();
@@ -133,7 +145,7 @@ inline void TokensObj::recompile() {
         }
         types = types_new;
     }
-    
+
     recompiled = true;
     return;
 }
