@@ -107,12 +107,13 @@ inline void TokensObj::recompile() {
     std::fill(ids.begin(), ids.end(), 0);
     
     // Check duplicated or empty types
-    bool duplicated;
+    bool duplicated = false;
     std::vector<bool> unique(G);
     std::unordered_map<std::string, unsigned int> map;
     for (std::size_t g = 0; g < G; g++) {
         if (types[g] == "") {
             ids[g] = 0;
+            duplicated = true;
         } else {
             auto it = map.insert(std::pair<std::string, unsigned int>(types[g], id));
             ids[g] = it.first->second;
