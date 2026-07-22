@@ -874,22 +874,22 @@ if (require(topicmodels)) {
     get_terms(my_lda_fit20, 5)
 }
 ## Loading required package: topicmodels
-##      Topic 1  Topic 2    Topic 3  Topic 4  Topic 5     Topic 6   Topic 7      
-## [1,] "care"   "much"     "high"   "famili" "enterpris" "bank"    "altern"     
-## [2,] "welfar" "today"    "system" "fianna" "equal"     "benefit" "citizenship"
-## [3,] "famili" "recoveri" "rate"   "privat" "sens"      "child"   "break"      
-## [4,] "hospit" "say"      "food"   "worker" "difficult" "societi" "suggest"    
-## [5,] "carer"  "share"    "welfar" "hit"    "say"       "today"   "adjust"     
-##      Topic 8     Topic 9  Topic 10   Topic 11  Topic 12 Topic 13  Topic 14 
-## [1,] "taoiseach" "fianna" "fail"     "societi" "welfar" "increas" "invest" 
-## [2,] "bank"      "fáil"   "strategi" "creat"   "system" "pension" "support"
-## [3,] "case"      "side"   "ask"      "happen"  "fáil"   "scheme"  "million"
-## [4,] "fine"      "level"  "creat"    "vision"  "fianna" "million" "increas"
-## [5,] "gael"      "third"  "address"  "keep"    "bank"   "reduc"   "welfar" 
-##      Topic 15  Topic 16  Topic 17  Topic 18    Topic 19 Topic 20   
-## [1,] "reduct"  "levi"    "fáil"    "taoiseach" "kind"   "develop"  
-## [2,] "fund"    "import"  "fianna"  "refer"     "creat"  "creat"    
-## [3,] "recent"  "carbon"  "support" "employe"   "tackl"  "measur"   
-## [4,] "increas" "sustain" "irish"   "debat"     "imagin" "enterpris"
-## [5,] "intern"  "million" "creat"   "problem"   "author" "recoveri"
+##      Topic 1    Topic 2    Topic 3     Topic 4     Topic 5   Topic 6  
+## [1,] "fail"     "per"      "taoiseach" "enterpris" "banker"  "pension"
+## [2,] "strategi" "welfar"   "refer"     "societi"   "fáil"    "million"
+## [3,] "ask"      "unemploy" "rate"      "sens"      "fianna"  "increas"
+## [4,] "happen"   "million"  "problem"   "equal"     "support" "measur" 
+## [5,] "address"  "care"     "employe"   "difficult" "adjust"  "reduc"  
+##      Topic 7   Topic 8   Topic 9  Topic 10    Topic 11  Topic 12 Topic 13    
+## [1,] "invest"  "fianna"  "fianna" "taoiseach" "reduct"  "kind"   "creat"     
+## [2,] "support" "fáil"    "invest" "carer"     "scheme"  "creat"  "action"    
+## [3,] "million" "support" "creat"  "bank"      "increas" "tackl"  "leadership"
+## [4,] "increas" "irish"   "side"   "respect"   "support" "imagin" "bank"      
+## [5,] "develop" "creat"   "noth"   "depart"    "level"   "author" "modern"    
+##      Topic 14 Topic 15    Topic 16 Topic 17 Topic 18   Topic 19  Topic 20 
+## [1,] "famili" "taoiseach" "welfar" "fianna" "vision"   "levi"    "benefit"
+## [2,] "care"   "bank"      "system" "fáil"   "bank"     "sustain" "bank"   
+## [3,] "child"  "may"       "bank"   "side"   "start"    "million" "child"  
+## [4,] "worker" "fine"      "taxat"  "level"  "strategi" "carbon"  "today"  
+## [5,] "measur" "gael"      "worst"  "third"  "creat"    "import"  "day"
 ```

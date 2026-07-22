@@ -68,7 +68,7 @@ print(toks, 0, 0)
 ## Tokens consisting of 60 documents and 4 docvars.
 xtoks <- as.tokens_xptr(toks)
 print(xtoks, 0, 0)
-## Tokens consisting of 60 documents and 4 docvars (pointer to 0x2398fd19c08).
+## Tokens consisting of 60 documents and 4 docvars (pointer to 0x24d45e89ea8).
 ```
 
 Second, this step can be performed by setting `xptr = TRUE` argument in
@@ -78,7 +78,7 @@ Second, this step can be performed by setting `xptr = TRUE` argument in
 
 xtoks2 <- tokens(data_corpus_inaugural, xptr = TRUE)
 print(xtoks2, 0, 0)
-## Tokens consisting of 60 documents and 4 docvars (pointer to 0x23990207268).
+## Tokens consisting of 60 documents and 4 docvars (pointer to 0x24d464325b8).
 ```
 
 When `xtoks` object is printed, the address of its underlying data is
@@ -110,12 +110,12 @@ toks <- data_corpus_inaugural |>
 
 xtoks <- as.tokens_xptr(toks)
 print(xtoks, 0, 0)
-## Tokens consisting of 5,473 documents and 4 docvars (pointer to 0x2399180a7e8).
+## Tokens consisting of 5,473 documents and 4 docvars (pointer to 0x24d3be4bd98).
 
 # shallow copy
 xtoks_copy <- xtoks
 print(xtoks_copy, 0, 0)
-## Tokens consisting of 5,473 documents and 4 docvars (pointer to 0x2399180a7e8).
+## Tokens consisting of 5,473 documents and 4 docvars (pointer to 0x24d3be4bd98).
 ```
 
 As an external pointer object, the underlying data of the copy of the
@@ -126,7 +126,7 @@ copying (shallow copy).
 ``` r
 
 print(xtoks, max_ndoc = 1)
-## Tokens consisting of 5,473 documents and 4 docvars (pointer to 0x2399180a7e8).
+## Tokens consisting of 5,473 documents and 4 docvars (pointer to 0x24d3be4bd98).
 ## 1789-Washington.1 :
 ##  [1] "Fellow-Citizens" "of"              "the"             "Senate"         
 ##  [5] "and"             "of"              "the"             "House"          
@@ -139,7 +139,7 @@ xtoks_copy <- xtoks_copy |>
     tokens_tolower()
 
 print(xtoks, max_ndoc = 1)
-## Tokens consisting of 5,473 documents and 4 docvars (pointer to 0x2399180a7e8).
+## Tokens consisting of 5,473 documents and 4 docvars (pointer to 0x24d3be4bd98).
 ## 1789-Washington.1 :
 ## [1] "fellow-citizens" "senate"          "house"           "representatives"
 ## [5] ":"              
@@ -160,7 +160,7 @@ If you want to copy the underlying data of a `tokens_xptr` object (a
 
 # deep copy
 print(as.tokens_xptr(xtoks), 0, 0)
-## Tokens consisting of 5,473 documents and 4 docvars (pointer to 0x2398e4611c8).
+## Tokens consisting of 5,473 documents and 4 docvars (pointer to 0x24d445a7ea8).
 ```
 
 Each of these has a different memory address from that of the `xtoks`
@@ -192,17 +192,17 @@ the pointer `(pointer to xxxx)` when using `tokens_xptr` objects.
 ``` r
 
 print(xtoks, 0, 0)
-## Tokens consisting of 5,473 documents and 4 docvars (pointer to 0x2399180a7e8).
+## Tokens consisting of 5,473 documents and 4 docvars (pointer to 0x24d3be4bd98).
 
 # shallow copy
 xtoks2 <- tokens_remove(xtoks, stopwords("en"))
 print(xtoks2, 0, 0)
-## Tokens consisting of 5,473 documents and 4 docvars (pointer to 0x2399180a7e8).
+## Tokens consisting of 5,473 documents and 4 docvars (pointer to 0x24d3be4bd98).
 
 # deep copy
 xtoks3 <- tokens_subset(xtoks, lengths(toks) > 150)
 print(xtoks3, 0, 0)
-## Tokens consisting of 11 documents and 4 docvars (pointer to 0x2398f597dc8).
+## Tokens consisting of 11 documents and 4 docvars (pointer to 0x24d453c26d0).
 ```
 
 ## Saving tokens_xptr objects

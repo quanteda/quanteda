@@ -71,6 +71,6 @@ quanteda:::meta_system(corp)
 #> [1] "C:/Users/watan/Repo/quanteda/docs/reference"
 #> 
 #> $created
-#> [1] "2026-07-18"
+#> [1] "2026-07-22"
 #> 
 ```

@@ -63,7 +63,7 @@ unclass(toks1)
 #> [1] "C:/Users/watan/Repo/quanteda/docs/reference"
 #> 
 #> attr(,"meta")$system$created
-#> [1] "2026-07-18"
+#> [1] "2026-07-22"
 #> 
 #> 
 #> attr(,"meta")$object
@@ -99,13 +99,13 @@ unclass(toks1)
 #> 
 unclass(quanteda:::tokens_recompile(toks1))
 #> $one
-#> [1] 1 2 3 4 1 2 3 4
+#> [1] 1 2 3 4 5 6 7 8
 #> 
 #> $two
-#> [1] 1 2 3 4
+#> [1] 5 6 7 4
 #> 
 #> attr(,"types")
-#> [1] "a" "b" "c" "d"
+#> [1] "a" "b" "c" "d" "a" "b" "c" "d"
 #> attr(,"padding")
 #> [1] TRUE
 #> attr(,"docvars")
@@ -128,7 +128,7 @@ unclass(quanteda:::tokens_recompile(toks1))
 #> [1] "C:/Users/watan/Repo/quanteda/docs/reference"
 #> 
 #> attr(,"meta")$system$created
-#> [1] "2026-07-18"
+#> [1] "2026-07-22"
 #> 
 #> 
 #> attr(,"meta")$object
@@ -192,7 +192,7 @@ unclass(toks2)
 #> [1] "C:/Users/watan/Repo/quanteda/docs/reference"
 #> 
 #> attr(,"meta")$system$created
-#> [1] "2026-07-18"
+#> [1] "2026-07-22"
 #> 
 #> 
 #> attr(,"meta")$object
@@ -253,7 +253,7 @@ unclass(quanteda:::tokens_recompile(tokens_wordstem(toks2)))
 #> [1] "C:/Users/watan/Repo/quanteda/docs/reference"
 #> 
 #> attr(,"meta")$system$created
-#> [1] "2026-07-18"
+#> [1] "2026-07-22"
 #> 
 #> 
 #> attr(,"meta")$object
@@ -317,7 +317,7 @@ unclass(toks3)
 #> [1] "C:/Users/watan/Repo/quanteda/docs/reference"
 #> 
 #> attr(,"meta")$system$created
-#> [1] "2026-07-18"
+#> [1] "2026-07-22"
 #> 
 #> 
 #> attr(,"meta")$object
@@ -378,7 +378,7 @@ unclass(tokens_compound(toks3, "two three"))
 #> [1] "C:/Users/watan/Repo/quanteda/docs/reference"
 #> 
 #> attr(,"meta")$system$created
-#> [1] "2026-07-18"
+#> [1] "2026-07-22"
 #> 
 #> 
 #> attr(,"meta")$object
@@ -442,7 +442,7 @@ unclass(tokens_lookup(toks3, dict))
 #> [1] "C:/Users/watan/Repo/quanteda/docs/reference"
 #> 
 #> attr(,"meta")$system$created
-#> [1] "2026-07-18"
+#> [1] "2026-07-22"
 #> 
 #> 
 #> attr(,"meta")$object
@@ -505,7 +505,7 @@ unclass(tokens_select(toks3, dict))
 #> [1] "C:/Users/watan/Repo/quanteda/docs/reference"
 #> 
 #> attr(,"meta")$system$created
-#> [1] "2026-07-18"
+#> [1] "2026-07-22"
 #> 
 #> 
 #> attr(,"meta")$object
@@ -566,7 +566,7 @@ unclass(tokens_select(toks3, dict, padding = TRUE))
 #> [1] "C:/Users/watan/Repo/quanteda/docs/reference"
 #> 
 #> attr(,"meta")$system$created
-#> [1] "2026-07-18"
+#> [1] "2026-07-22"
 #> 
 #> 
 #> attr(,"meta")$object
@@ -630,7 +630,7 @@ unclass(tokens_ngrams(toks3, n = 2:3))
 #> [1] "C:/Users/watan/Repo/quanteda/docs/reference"
 #> 
 #> attr(,"meta")$system$created
-#> [1] "2026-07-18"
+#> [1] "2026-07-22"
 #> 
 #> 
 #> attr(,"meta")$object

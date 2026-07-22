@@ -160,9 +160,10 @@ the object.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">vocab_size</span> <span class="op">&lt;-</span> <span class="fl">20000</span> <span class="co"># maximum size of the vocabulary</span></span>
 <span></span>
-<span><span class="va">toks</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/tokens.html">tokens</a></span><span class="op">(</span><span class="va">corp</span>, remove_punct <span class="op">=</span> <span class="cn">TRUE</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="../../../reference/pipe.html">%&gt;%</a></span> </span>
+<span><span class="fu"><a href="../../../reference/quanteda_options.html">quanteda_options</a></span><span class="op">(</span>verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">toks</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../../reference/tokens.html">tokens</a></span><span class="op">(</span><span class="va">corp</span>, remove_punct <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="../../../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="../../../reference/tokens_tolower.html">tokens_tolower</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../../../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="../../../reference/tokens_trim.html">tokens_trim</a></span><span class="op">(</span>max_n <span class="op">=</span> <span class="va">vocab_size</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="../../../reference/tokens_trim.html">tokens_trim</a></span><span class="op">(</span>max_n <span class="op">=</span> <span class="va">vocab_size</span><span class="op">)</span></span>
 <span><span class="co">## Creating a tokens from a corpus object...</span></span>
 <span><span class="co">##  ...starting tokenization</span></span>
 <span><span class="co">##  ...tokenizing 1 of 1 blocks</span></span>
@@ -171,8 +172,9 @@ the object.</p>
 <span><span class="co">##  ...preserving social media tags (#, @)</span></span>
 <span><span class="co">##  ...removing separators, punctuation</span></span>
 <span><span class="co">##  ...177,293 unique types</span></span>
-<span><span class="co">##  ...complete, elapsed time: 20.6 seconds.</span></span>
+<span><span class="co">##  ...complete, elapsed time: 9.94 seconds.</span></span>
 <span><span class="co">## Finished constructing tokens from 50,000 documents</span></span>
+<span><span class="co">## tokens_tolower() changed from 177,293 types (50,000 documents, 11,454,169 tokens) to 147,281 types (50,000 documents, 11,454,169 tokens)</span></span>
 <span><span class="co">## tokens_trim() changed from 147,281 types (50,000 documents, 11,454,169 tokens) to 20,000 types (50,000 documents, 11,072,518 tokens)</span></span></code></pre></div>
 </div>
 <div class="section level2">
@@ -301,8 +303,8 @@ with hyper-parameters, <code>vocab_size</code> and
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">## A `luz_module_evaluation`</span></span>
 <span><span class="co">## ── Results ─────────────────────────────────────────────────────────────────────</span></span>
-<span><span class="co">## loss: 0.3868</span></span>
-<span><span class="co">## acc: 0.8246</span></span></code></pre></div>
+<span><span class="co">## loss: 0.4043</span></span>
+<span><span class="co">## acc: 0.8183</span></span></code></pre></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

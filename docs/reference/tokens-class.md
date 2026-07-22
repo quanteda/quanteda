@@ -83,7 +83,7 @@ str(toks)
 #>   .. ..$ system         : Named chr [1:3] "Windows" "x86-64" "watan"
 #>   .. .. ..- attr(*, "names")= chr [1:3] "sysname" "machine" "user"
 #>   .. ..$ directory      : chr "C:/Users/watan/Repo/quanteda/docs/reference"
-#>   .. ..$ created        : Date[1:1], format: "2026-07-18"
+#>   .. ..$ created        : Date[1:1], format: "2026-07-22"
 #>   ..$ object:List of 7
 #>   .. ..$ unit        : chr "documents"
 #>   .. ..$ what        : chr "word"
