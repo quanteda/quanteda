@@ -74,9 +74,9 @@ functions and data objects:
   exception. The list, however, is short:
 
   - [`convert()`](https://quanteda.io/reference/convert.md): converts
-    from a dfm to foreign package formats  
+    from a dfm to foreign package formats\
   - [`sparsity()`](https://quanteda.io/reference/sparsity.md): returns
-    the sparsity (as a proportion) of a dfm  
+    the sparsity (as a proportion) of a dfm\
   - [`topfeatures()`](https://quanteda.io/reference/topfeatures.md):
     returns a named vector of the counts of the most frequently
     occurring features in a `dfm`.
@@ -92,9 +92,9 @@ behaviour in many of the core R objects, such as
 
 Core object types and their constructor functions:
 
-- `corpus`  
+- `corpus`\
 - `tokens`
-- `dfm`  
+- `dfm`\
 - `fcm`
 - `kwic`
 - `dictionary`

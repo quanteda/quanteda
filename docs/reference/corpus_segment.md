@@ -128,7 +128,7 @@ end of the pattern.
 For more advanced pattern matches that could include whitespace or
 newlines, a regex pattern type can be used, for instance a text such as
 
-`Mr. Smith: Text`  
+`Mr. Smith: Text`\
 `Mrs. Jones: More text`
 
 could have as `pattern = "\\b[A-Z].+\\.\\s[A-Z][a-z]+:"`, which would

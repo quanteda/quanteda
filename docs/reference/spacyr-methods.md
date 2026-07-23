@@ -1,8 +1,11 @@
 # Extensions for and from spacy_parse objects
 
 These functions provide quanteda methods for spacyr objects, and also
-extend spacy_parse and spacy_tokenize to work directly with
-[corpus](https://quanteda.io/reference/corpus.md) objects.
+extend [spacy_parse](http://spacyr.quanteda.io/reference/spacy_parse.md)
+and
+[spacy_tokenize](http://spacyr.quanteda.io/reference/spacy_tokenize.md)
+to work directly with [corpus](https://quanteda.io/reference/corpus.md)
+objects.
 
 ## Arguments
 

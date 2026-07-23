@@ -24,7 +24,7 @@
 - **Olivier Delmarcelle**. Contributor.
   [](https://orcid.org/0000-0003-4347-070X)
 
-- **European Research Council**. Funder.  
+- **European Research Council**. Funder.\
   ERC-2011-StG 283794-QUANTESS
 
 ## Citation

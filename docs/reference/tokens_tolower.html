@@ -15,7 +15,7 @@ tokens object and re-index the types."><!-- Global site tag (gtag.js) - Google A
 
     <a class="navbar-brand me-2" href="../index.html">quanteda</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">4.4.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">4.5.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -75,9 +75,9 @@ tokens object and re-index the types."><!-- Global site tag (gtag.js) - Google A
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">tokens_tolower</span><span class="op">(</span><span class="va">x</span>, keep_acronyms <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">tokens_tolower</span><span class="op">(</span><span class="va">x</span>, keep_acronyms <span class="op">=</span> <span class="cn">FALSE</span>, verbose <span class="op">=</span> <span class="fu"><a href="quanteda_options.html">quanteda_options</a></span><span class="op">(</span><span class="st">"verbose"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">tokens_toupper</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">tokens_toupper</span><span class="op">(</span><span class="va">x</span>, verbose <span class="op">=</span> <span class="fu"><a href="quanteda_options.html">quanteda_options</a></span><span class="op">(</span><span class="st">"verbose"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -92,6 +92,11 @@ case-converted</p></dd>
 <dt id="arg-keep-acronyms">keep_acronyms<a class="anchor" aria-label="anchor" href="#arg-keep-acronyms"></a></dt>
 <dd><p>logical; if <code>TRUE</code>, do not lowercase any
 all-uppercase words (applies only to <code>*_tolower()</code> functions)</p></dd>
+
+
+<dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>
+<dd><p>if <code>TRUE</code> print the number of tokens and documents before and
+after the function is applied. The number of tokens does not include paddings.</p></dd>
 
 </dl></div>
 

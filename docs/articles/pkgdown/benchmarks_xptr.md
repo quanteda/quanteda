@@ -3,16 +3,15 @@
 ## Overview and benchmarking approach
 
 **quanteda** version 4.0 can process textual data significantly faster
-than its earlier versions thanks to the `tokens_xptr object` and a new
+than its earlier versions thanks to the `tokens_xptr` object and a new
 glob pattern matching mechanism. More information on the features and
 advantages of the new xptr object are available in a [separate
 vignette](https://quanteda.io/articles/pkgdown/articles/pkgdown/tokens_xptr.md).
 
-How we performed the comparison: We created the **quanteda3** package
-from **quanteda** version 3.3 and compared it with version 4.0 on a
-Windows desktop with Intel Core i7 processor (20 cores). We used
-sentences from 10,000 English-language news articles in this
-benchmarking.
+How we performed the comparison: we compare the `tokens` and
+`tokens_xptr` on a Windows laptop with AMD Ryzen 7 PRO processor (8
+cores). We used sentences from 10,000 English-language news articles in
+this benchmarking.
 
 We repeated the same operation using different versions of the same
 functions to get the distribution of execution time. The result shows
@@ -35,47 +34,26 @@ toks <- tokens(corp, remove_punct = FALSE, remove_numbers = FALSE,
 # transform tokens object to tokens_xptr object
 xtoks <- as.tokens_xptr(toks)
 
-ndoc(toks) # the number of sentences
+ndoc(xtoks) # the number of sentences
 ## [1] 200254
-sum(ntoken(toks)) # the total number of tokens
+sum(ntoken(xtoks)) # the total number of tokens
 ## [1] 5322321
 ```
-
-## Tokenising a corpus
-
-Although the v4 tokenizer is more flexible, its speed is roughly the
-same as v3 tokenizer. The shorter execution time of the version 4 is due
-to the faster removal of punctuation marks, numbers and symbols. We
-compare the performance by tokenizing the corpus with the
-[`tokens()`](https://quanteda.io/reference/tokens.md) function from
-**quanteda** version version 4.0 and 3.3 (“v4” and “v3” in the plots,
-respectively).
-
-``` r
-
-microbenchmark::microbenchmark(
-    v3 = quanteda3::tokens(corp, remove_punct = TRUE, remove_numbers = TRUE, 
-                           remove_symbols = TRUE),
-    v4 = tokens(corp, remove_punct = TRUE, remove_numbers = TRUE, 
-                remove_symbols = TRUE),
-    times = 10
-) |> autoplot(log = FALSE)
-```
-
-![](benchmarks_xptr_files/figure-html/tokenising-corpus-1.png)
 
 ## Modifying tokens objects
 
 [`as.tokens_xptr()`](https://quanteda.io/reference/tokens_xptr.md) is
-inserted before the v4 functions to keep the original `tokens_xptr`
-object intact.
+inserted before functions calls to deep-copy the original object. This
+is only necessary to repeat the same operation in benchmarking, so the
+performance advantage of the `tokens_xptr` object is even greater in
+actual pipeline.
 
 ``` r
 
 # generate n-grams
 microbenchmark::microbenchmark(
-    v3 = quanteda3::tokens_ngrams(toks),
-    v4 = as.tokens_xptr(xtoks) |> 
+    tokens = tokens_ngrams(toks),
+    tokens_xptr = as.tokens_xptr(xtoks) |> 
         tokens_ngrams(),
     times = 10
 ) |> autoplot(log = FALSE)
@@ -88,8 +66,8 @@ microbenchmark::microbenchmark(
 
 # lookup dictionary keywords
 microbenchmark::microbenchmark(
-    v3 = quanteda3::tokens_lookup(toks, dictionary =  data_dictionary_LSD2015),
-    v4 = as.tokens_xptr(xtoks) |> 
+    tokens = tokens_lookup(toks, dictionary = data_dictionary_LSD2015),
+    tokens_xptr = as.tokens_xptr(xtoks) |> 
         tokens_lookup(dictionary = data_dictionary_LSD2015),
     times = 10
 ) |> autoplot(log = FALSE)
@@ -102,8 +80,8 @@ microbenchmark::microbenchmark(
 
 # remove stop words
 microbenchmark::microbenchmark(
-    v3 = quanteda3::tokens_remove(toks, pattern = stopwords("en"), padding = TRUE),
-    v4 = as.tokens_xptr(xtoks) |> 
+    tokens = tokens_remove(toks, pattern = stopwords("en"), padding = TRUE),
+    tokens_xptr = as.tokens_xptr(xtoks) |> 
         tokens_remove(pattern = stopwords("en"), padding = TRUE),
     times = 10
 ) |> autoplot(log = FALSE)
@@ -116,8 +94,8 @@ microbenchmark::microbenchmark(
 
 # compound tokens
 microbenchmark::microbenchmark(
-    v3 = quanteda3::tokens_compound(toks,  pattern = "&", window = 1),
-    v4 = as.tokens_xptr(xtoks) |> 
+    tokens = tokens_compound(toks,  pattern = "&", window = 1),
+    tokens_xptr = as.tokens_xptr(xtoks) |> 
         tokens_compound(pattern = "&", window = 1),
     times = 10
 ) |> autoplot(log = FALSE)
@@ -130,8 +108,8 @@ microbenchmark::microbenchmark(
 
 # group sentences to articles
 microbenchmark::microbenchmark(
-    v3 = quanteda3::tokens_group(toks),
-    v4 = tokens_group(xtoks),
+    tokens = tokens_group(toks),
+    tokens_xptr = tokens_group(xtoks),
     times = 10
 ) |> autoplot(log = FALSE)
 ```
@@ -157,8 +135,8 @@ xtoks2 <- as.tokens_xptr(toks2)
 
 # combine tokens objects
 microbenchmark::microbenchmark(
-    v3 = quanteda3:::c.tokens(toks1, toks2),
-    v4 = quanteda:::c.tokens_xptr(xtoks1, xtoks2),
+    tokens = c(toks1, toks2),
+    tokens_xptr = c(xtoks1, xtoks2),
     times = 10
 ) |> autoplot(log = FALSE)
 ```
@@ -173,8 +151,8 @@ We also compare the speed of constructing a document-feature matrix
 ``` r
 
 microbenchmark::microbenchmark(
-    v3 = quanteda3::dfm(toks),
-    v4 = dfm(xtoks),
+    tokens = dfm(toks),
+    tokens_xptr = dfm(xtoks),
     times = 10
 ) |> autoplot(log = FALSE)
 ```
@@ -186,10 +164,10 @@ microbenchmark::microbenchmark(
 ``` r
 
 microbenchmark::microbenchmark(
-    v3 = quanteda3::tokens(corp) |> 
-        quanteda3::tokens_remove(stopwords("en"), padding = TRUE) |> 
-        quanteda3::dfm(remove_padding = TRUE),
-    v4 = tokens(corp, xptr = TRUE) |> 
+    tokens = tokens(corp) |> 
+        tokens_remove(stopwords("en"), padding = TRUE) |> 
+        dfm(remove_padding = TRUE),
+    tokens_xptr = tokens(corp, xptr = TRUE) |> 
         tokens_remove(stopwords("en"), padding = TRUE) |> 
         dfm(remove_padding = TRUE),
     times = 10

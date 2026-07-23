@@ -28,7 +28,7 @@
 
     <a class="navbar-brand me-2" href="../../../index.html">quanteda</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">4.4.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">4.5.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -140,7 +140,7 @@ website</a>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data_char_mobydick</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="fu">readtext</span><span class="fu">::</span><span class="fu"><a href="https://readtext.quanteda.io/reference/readtext.html" class="external-link">readtext</a></span><span class="op">(</span><span class="st">"http://www.gutenberg.org/cache/epub/2701/pg2701.txt"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">data_char_mobydick</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"Moby Dick"</span></span></code></pre></div>
-<p>The <code>readtext()</code> function from the
+<p>The <code><a href="https://readtext.quanteda.io/reference/readtext.html" class="external-link">readtext()</a></code> function from the
 <strong>readtext</strong> package loads the text files into a
 <code>data.frame</code> object. We can access the text from a
 <code>data.frame</code> object (and also, as we will see, a
@@ -925,30 +925,30 @@ Latent Dirichlet Allocation.</p>
 <span></span>
 <span><span class="co"># get top five terms per topic</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/topicmodels/man/get.html" class="external-link">get_terms</a></span><span class="op">(</span><span class="va">LDA_fit_20</span>, <span class="fl">5</span><span class="op">)</span></span>
-<span><span class="co">##      Topic 1     Topic 2   Topic 3    Topic 4  Topic 5     Topic 6       </span></span>
-<span><span class="co">## [1,] "fianna"    "child"   "national" "fianna" "care"      "welfare"     </span></span>
-<span><span class="co">## [2,] "fáil"      "benefit" "irish"    "fáil"   "welfare"   "taxation"    </span></span>
-<span><span class="co">## [3,] "irish"     "day"     "benefit"  "side"   "per"       "worst"       </span></span>
-<span><span class="co">## [4,] "taoiseach" "bank"    "support"  "level"  "allowance" "government's"</span></span>
-<span><span class="co">## [5,] "national"  "today"   "measures" "third"  "hit"       "fianna"      </span></span>
-<span><span class="co">##      Topic 7     Topic 8      Topic 9    Topic 10      Topic 11     </span></span>
-<span><span class="co">## [1,] "taoiseach" "businesses" "poor"     "alternative" "kind"       </span></span>
-<span><span class="co">## [2,] "fine"      "strategy"   "fáil"     "citizenship" "imagination"</span></span>
-<span><span class="co">## [3,] "gael"      "fianna"     "support"  "wealth"      "policies"   </span></span>
-<span><span class="co">## [4,] "may"       "ministers"  "strategy" "adjustment"  "wit"        </span></span>
-<span><span class="co">## [5,] "irish"     "employment" "instead"  "breaks"      "create"     </span></span>
-<span><span class="co">##      Topic 12       Topic 13    Topic 14    Topic 15     Topic 16     Topic 17 </span></span>
-<span><span class="co">## [1,] "society"      "failed"    "providing" "million"    "welfare"    "system" </span></span>
-<span><span class="co">## [2,] "enterprising" "ministers" "welfare"   "support"    "investment" "welfare"</span></span>
-<span><span class="co">## [3,] "sense"        "adopted"   "measures"  "employment" "enterprise" "back"   </span></span>
-<span><span class="co">## [4,] "equal"        "change"    "able"      "scheme"     "back"       "create" </span></span>
-<span><span class="co">## [5,] "nation"       "today"     "increase"  "continue"   "irish"      "fáil"   </span></span>
-<span><span class="co">##      Topic 18   Topic 19    Topic 20  </span></span>
-<span><span class="co">## [1,] "strategy" "taoiseach" "million" </span></span>
-<span><span class="co">## [2,] "needed"   "employees" "spending"</span></span>
-<span><span class="co">## [3,] "confront" "rate"      "measures"</span></span>
-<span><span class="co">## [4,] "vision"   "referred"  "review"  </span></span>
-<span><span class="co">## [5,] "face"     "debate"    "scheme"</span></span></code></pre></div>
+<span><span class="co">##      Topic 1     Topic 2        Topic 3    Topic 4    Topic 5      Topic 6    </span></span>
+<span><span class="co">## [1,] "million"   "government's" "needed"   "welfare"  "million"    "taoiseach"</span></span>
+<span><span class="co">## [2,] "measures"  "welfare"      "rebuild"  "back"     "support"    "fine"     </span></span>
+<span><span class="co">## [3,] "reduction" "fianna"       "change"   "scheme"   "investment" "gael"     </span></span>
+<span><span class="co">## [4,] "level"     "proposals"    "address"  "hospital" "energy"     "may"      </span></span>
+<span><span class="co">## [5,] "pension"   "sinn"         "strategy" "stimulus" "employment" "irish"    </span></span>
+<span><span class="co">##      Topic 7    Topic 8  Topic 9     Topic 10  Topic 11   Topic 12   </span></span>
+<span><span class="co">## [1,] "fianna"   "fianna" "failed"    "child"   "scheme"   "care"     </span></span>
+<span><span class="co">## [2,] "per"      "fáil"   "strategy"  "society" "spending" "allowance"</span></span>
+<span><span class="co">## [3,] "measures" "side"   "ministers" "bank"    "measures" "hospital" </span></span>
+<span><span class="co">## [4,] "say"      "level"  "vision"    "face"    "create"   "child"    </span></span>
+<span><span class="co">## [5,] "claims"   "third"  "confront"  "benefit" "per"      "million"  </span></span>
+<span><span class="co">##      Topic 13   Topic 14   Topic 15  Topic 16      Topic 17    Topic 18      </span></span>
+<span><span class="co">## [1,] "welfare"  "fianna"   "levy"    "kind"        "taoiseach" "society"     </span></span>
+<span><span class="co">## [2,] "system"   "fáil"     "million" "imagination" "employees" "enterprising"</span></span>
+<span><span class="co">## [3,] "taxation" "national" "carbon"  "policies"    "rate"      "sense"       </span></span>
+<span><span class="co">## [4,] "child"    "irish"    "change"  "wit"         "referred"  "equal"       </span></span>
+<span><span class="co">## [5,] "deficit"  "support"  "welfare" "create"      "debate"    "nation"      </span></span>
+<span><span class="co">##      Topic 19  Topic 20     </span></span>
+<span><span class="co">## [1,] "benefit" "alternative"</span></span>
+<span><span class="co">## [2,] "child"   "citizenship"</span></span>
+<span><span class="co">## [3,] "day"     "wealth"     </span></span>
+<span><span class="co">## [4,] "know"    "adjustment" </span></span>
+<span><span class="co">## [5,] "let"     "breaks"</span></span></code></pre></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

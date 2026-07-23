@@ -26,7 +26,6 @@
   visualization](https://quanteda.io/articles/pkgdown/examples/plotting.md):
 - [Replication of Chapter 5 of \_Quantitative Social Science: An
   Introduction\_](https://quanteda.io/articles/pkgdown/replication/qss.md):
-- [Quick Start Guide](https://quanteda.io/articles/quickstart.md):
 - [快速入门指南](https://quanteda.io/articles/pkgdown/quickstart_cn.md):
 - [Guía de Inicio
   Rápido](https://quanteda.io/articles/pkgdown/quickstart_es.md):
@@ -35,6 +34,7 @@
 - [क्विक आरंभ
   गाइड](https://quanteda.io/articles/pkgdown/quickstart_hi.md):
 - [クイック・スタートガイド](https://quanteda.io/articles/pkgdown/quickstart_ja.md):
+- [Quick Start Guide](https://quanteda.io/articles/quickstart.md):
 - [Replication: word
   embedding](https://quanteda.io/articles/pkgdown/replication/text2vec.md):
 - [External pointer-based tokens

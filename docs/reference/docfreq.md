@@ -33,25 +33,24 @@ docfreq(
 
   `count`
 
-  :   \\df_j\\, the number of documents for which \\n\_{ij} \>
-      threshold\\
+  : \\df_j\\, the number of documents for which \\n\_{ij} \> threshold\\
 
   `inverse`
 
-  :   \$\$\textrm{log}\_{base}\left(s + \frac{N}{k + df_j}\right)\$\$
+  : \$\$\textrm{log}\_{base}\left(s + \frac{N}{k + df_j}\right)\$\$
 
   `inversemax`
 
-  :   \$\$\textrm{log}\_{base}\left(s + \frac{\textrm{max}(df_j)}{k +
-      df_j}\right)\$\$
+  : \$\$\textrm{log}\_{base}\left(s + \frac{\textrm{max}(df_j)}{k +
+    df_j}\right)\$\$
 
   `inverseprob`
 
-  :   \$\$\textrm{log}\_{base}\left(\frac{N - df_j}{k + df_j}\right)\$\$
+  : \$\$\textrm{log}\_{base}\left(\frac{N - df_j}{k + df_j}\right)\$\$
 
   `unary`
 
-  :   1 for each feature
+  : 1 for each feature
 
 - base:
 

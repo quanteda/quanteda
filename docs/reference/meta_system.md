@@ -58,19 +58,19 @@ corp <- corpus(c(d1 = "one two three", d2 = "two three four"))
 # quanteda:::`meta_system<-`(corp, value = quanteda:::meta_system_defaults("example"))
 quanteda:::meta_system(corp)
 #> $`package-version`
-#> [1] '4.4.1'
+#> [1] ‘4.5.0.9000’
 #> 
 #> $`r-version`
-#> [1] '4.6.1'
+#> [1] ‘4.6.0’
 #> 
 #> $system
 #>   sysname   machine      user 
-#> "Windows"  "x86-64"   "watan" 
+#>  "Darwin"   "arm64" "kbenoit" 
 #> 
 #> $directory
-#> [1] "C:/Users/watan/Repo/quanteda/docs/reference"
+#> [1] "/Users/kbenoit/Dropbox/GitHub/quanteda/quanteda/docs/reference"
 #> 
 #> $created
-#> [1] "2026-07-22"
+#> [1] "2026-07-23"
 #> 
 ```

@@ -137,7 +137,7 @@ Currently available options are:
 ``` r
 (opt <- quanteda_options())
 #> $threads
-#> [1] 28
+#> [1] 10
 #> 
 #> $verbose
 #> [1] FALSE
@@ -215,7 +215,7 @@ Currently available options are:
 quanteda_options(verbose = TRUE)
 quanteda_options("verbose" = FALSE)
 quanteda_options("threads")
-#> [1] 28
+#> [1] 10
 quanteda_options(print_dfm_max_ndoc = 50L)
 # reset to defaults
 quanteda_options(reset = TRUE)
