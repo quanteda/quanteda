@@ -9,7 +9,7 @@ character vector with one element
 }
 \source{
 Dáil Éireann Debate,
-\href{https://www.oireachtas.ie/en/debates/find/}{Financial Resolution No. 13: General (Resumed).}
+\href{https://www.oireachtas.ie/en/debates/debate/dail/2011-12-07/6/}{Financial Resolution No. 13: General (Resumed).}
 7 December 2011.  vol. 749, no. 1.
 }
 \usage{
