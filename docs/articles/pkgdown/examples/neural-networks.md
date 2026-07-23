@@ -1,0 +1,248 @@
+# Example: Convolutional Neural Network
+
+In this vignette, we show how to implement neural networks using the
+**quanteda** and **torch** packages. In the version 4.4.1 of
+**quanteda**, we added multiple functions to make it an infrastructure
+for developing neural networks. This example focuses on a convolution
+neural network (CNN) but other types of models such as recurrent neural
+networks (RNN) and transformers can be also implemented with the aid of
+the **luz** package.
+
+The code below is based on [an
+example](https://mlverse.github.io/luz/articles/examples/text-classification.html)
+published in the website for **luz**, but the CNN model is trained on
+**quanteda**’s tokens object. This makes the neural network models
+consistent with other text analyses tools and easier to integrate in
+existing pipelines.
+
+``` r
+
+library(quanteda)
+library(torch)
+library(luz)
+```
+
+## Download example data
+
+Download the movie review texts with sentiment annotation, and
+decompress them in an temporary directory.
+
+``` r
+
+tmp <- tempfile()
+if (!file.exists(tmp))
+    download.file("https://ai.stanford.edu/~amaas/data/sentiment/aclImdb_v1.tar.gz", tmp)
+untar(tmp, exdir = tempdir(check = TRUE))
+```
+
+## Construct corpus
+
+Extract information about the train/test split and sentiment labels from
+the file paths. HTML tags should be removed from the texts.
+
+``` r
+
+file <- list.files(file.path(tempdir(), "aclImdb"), recursive = TRUE, full.names = TRUE)
+file <- stringi::stri_subset_regex(file, "(neg|pos)\\/\\d+_\\d+\\.txt")
+
+txt <- sapply(file, function(f) paste0(readLines(f, warn = FALSE), collapse = "\n"))
+txt <- stringi::stri_replace_all_fixed(txt, "<br />", " ")
+
+m <- stringi::stri_match_first_regex(file, "(train|test)\\/(neg|pos)")
+dat <- data.frame(text = txt, 
+                  split = factor(m[,2], levels = c("train", "test")),
+                  sentiment = match(m[,3], c("neg", "pos")) - 1)
+corp <- corpus(dat)
+```
+
+## Tokenize texts
+
+We tokenize texts using
+[`tokens()`](https://quanteda.io/reference/tokens.md), remove only
+punctuations, and lower-case them using
+[`tokens_tolower()`](https://quanteda.io/reference/tokens_tolower.md).
+To limit the complexity of the data, we apply
+[`tokens_trim()`](https://quanteda.io/reference/tokens_trim.md) with the
+new `max_n` argument. This limits the size of the vocabulary (unique
+token types) to the top 20,000 most frequent words in the object.
+
+``` r
+
+vocab_size <- 20000 # maximum size of the vocabulary
+
+quanteda_options(verbose = TRUE)
+toks <- tokens(corp, remove_punct = TRUE) %>% 
+  tokens_tolower() %>% 
+  tokens_trim(max_n = vocab_size)
+## Creating a tokens from a corpus object...
+##  ...starting tokenization
+##  ...tokenizing 1 of 1 blocks
+##  ...preserving hyphens
+##  ...preserving elisions
+##  ...preserving social media tags (#, @)
+##  ...removing separators, punctuation
+##  ...177,293 unique types
+##  ...complete, elapsed time: 8.03 seconds.
+## Finished constructing tokens from 50,000 documents
+## tokens_tolower() changed from 177,293 types (50,000 documents, 11,454,169 tokens) to 147,281 types (50,000 documents, 11,454,169 tokens)
+## tokens_trim() changed from 147,281 types (50,000 documents, 11,454,169 tokens) to 20,000 types (50,000 documents, 11,072,518 tokens)
+```
+
+## Define data loader
+
+We use
+[`dataset()`](https://torch.mlverse.org/docs/reference/dataset.html) to
+feed data from the tokens object to neural network models. We can
+quickly access the documents in the tokens object using
+[`as.matrix()`](https://rdrr.io/r/base/matrix.html) with the `extract`
+argument. The function returns the documents in the same length: when
+the documents are longer than `length`, the vectors are truncated; if
+they are shorter, the vectors are padded by zero. Since the indices in
+`torch_tensor` is one-based, we shift token IDs by adding one (the ID
+for padding is zero in tokens objects).
+
+Importantly, before separating the tokens object into training and test
+sets using
+[`tokens_subset()`](https://quanteda.io/reference/tokens_subset.md), we
+have to convert it to a
+[tokens_xptr](https://quanteda.io/articles/pkgdown/tokens_xptr.md)
+object. This in not only for the quickly accessing the documents but
+also for preserving the original token IDs
+([`tokens_subset()`](https://quanteda.io/reference/tokens_subset.md)
+reassign tokens IDs when the list based tokens object is provided).
+Alternatively, we can match the token IDs between the training and test
+sets using
+[`tokens_match()`](https://quanteda.io/reference/tokens_match.md).
+
+``` r
+
+text_length <- 200 # maximum number length of the texts
+
+movie_dataset <- dataset(
+  name = "movie_dataset",
+  
+  initialize = function(data, text_length) {
+    self$toks <- data
+    self$dvars <- docvars(data)
+  },
+  .getitem = function(i) {
+    list(
+      x = as.matrix(self$toks, length = text_length, extract = i) + 1L,
+      y = self$dvars$sentiment[i]
+    )
+  },
+  .getbatch = function(i) {
+    list(
+      x = as.matrix(self$toks, length = text_length, extract = i, drop = FALSE) + 1L,
+      y = self$dvars$sentiment[i]
+      # alternatively
+      #x = as.tensor(self$toks, length = text_length, extract = i),
+      #y = torch_tensor(self$dvars$sentiment[i])
+    )
+  },
+  .length = function() {
+    ndoc(self$toks)
+  }
+)
+
+xtoks <- as.tokens_xptr(toks) # important!
+train_ds <- movie_dataset(tokens_subset(xtoks, split == "train"), text_length)
+test_ds <- movie_dataset(tokens_subset(xtoks, split == "test"), text_length)
+```
+
+## Build CNN model
+
+The code is identical to the original example except that
+`num_embeddings` is `vocab_size + 1L` for padding. The model starts with
+a module for word vectors in the embedding layer `nn_embedding`,
+followed by modules for convolution layers
+[`nn_conv1d()`](https://torch.mlverse.org/docs/reference/nn_conv1d.html):
+the first layer captures the sequence tokens such as phrases; the second
+layer further abstract the occurrences sequences. Finally, the dense
+feed-forward network
+[`nn_linear()`](https://torch.mlverse.org/docs/reference/nn_linear.html)
+predict the sentiment of documents.
+
+``` r
+
+embedding_dim <- 128 # size of the embedding vectors
+
+model <- nn_module(
+    initialize = function(vocab_size, embedding_dim) {
+        self$embedding <- nn_sequential(
+            nn_embedding(num_embeddings = vocab_size + 1L, embedding_dim = embedding_dim),
+            nn_dropout(0.5)
+        )
+        
+        self$convs <- nn_sequential(
+            nn_conv1d(embedding_dim, 128, kernel_size = 7, stride = 3, padding = "valid"),
+            nn_relu(),
+            nn_conv1d(128, 128, kernel_size = 7, stride = 3, padding = "valid"),
+            nn_relu(),
+            nn_adaptive_max_pool2d(c(128, 1)) # reduces the length dimension
+        )
+        
+        self$classifier <- nn_sequential(
+            nn_flatten(),
+            nn_linear(128, 128),
+            nn_relu(),
+            nn_dropout(0.5),
+            nn_linear(128, 1)
+        )
+    },
+    forward = function(x) {
+        emb <- self$embedding(x)
+        out <- emb$transpose(2, 3) %>% 
+            self$convs() %>% 
+            self$classifier()
+        # we drop the last so we get (B) instead of (B, 1)
+        out$squeeze(2)
+    }
+)
+```
+
+## Train the model
+
+The hierarchical CNN model is trained trained over three iterations with
+hyper-parameters, `vocab_size` and `embedding_dim`.
+
+``` r
+
+fitted_model <- model %>% 
+    setup(
+        loss = nnf_binary_cross_entropy_with_logits,
+        optimizer = optim_adam,
+        metrics = luz_metric_binary_accuracy_with_logits()
+    ) %>% 
+    set_hparams(vocab_size = vocab_size, embedding_dim = embedding_dim) %>% 
+    fit(train_ds, epochs = 3)
+## Warning: Some torch operators might not yet be implemented for the MPS device. A
+## temporary fix is to set the `PYTORCH_ENABLE_MPS_FALLBACK=1` to use the CPU as a
+## fall back for those operators:
+## ℹ Add `PYTORCH_ENABLE_MPS_FALLBACK=1` to your `.Renviron` file, for example use
+##   `usethis::edit_r_environ()`.
+## ✖ Using `Sys.setenv()` doesn't work because the env var must be set before R
+##   starts.
+```
+
+## Test the model
+
+Evaluate the fitted model using the test set.
+
+``` r
+
+fitted_model %>% 
+    evaluate(test_ds) %>% 
+    print()
+## Warning: Some torch operators might not yet be implemented for the MPS device. A
+## temporary fix is to set the `PYTORCH_ENABLE_MPS_FALLBACK=1` to use the CPU as a
+## fall back for those operators:
+## ℹ Add `PYTORCH_ENABLE_MPS_FALLBACK=1` to your `.Renviron` file, for example use
+##   `usethis::edit_r_environ()`.
+## ✖ Using `Sys.setenv()` doesn't work because the env var must be set before R
+##   starts.
+## A `luz_module_evaluation`
+## ── Results ─────────────────────────────────────────────────────────────────────
+## loss: 0.3851
+## acc: 0.824
+```

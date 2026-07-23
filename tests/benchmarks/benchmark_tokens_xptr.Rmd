@@ -5,11 +5,10 @@ date: "2023-04-13"
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(collapse = TRUE, comment = "##", cache = TRUE)
 ```
 
 ```{r}
-
 #devtools::install_github("quanteda/quanteda3")
 require(quanteda)
 corp <- #readRDS('/home/kohei/Dropbox/Public/data_corpus_guardian2016-10k.rds') |> 

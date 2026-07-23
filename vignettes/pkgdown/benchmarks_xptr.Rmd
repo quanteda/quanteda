@@ -8,7 +8,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-```{r setup, include=FALSE}
+```{r include=FALSE}
 knitr::opts_chunk$set(
     collapse = TRUE,
     message = FALSE,
@@ -16,7 +16,8 @@ knitr::opts_chunk$set(
     fig.width = 8, 
     fig.height = 2, 
     dpi = 150,
-    warning = FALSE
+    warning = FALSE,
+    cache = TRUE
 )
 ```
 

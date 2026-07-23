@@ -6,14 +6,11 @@ output:
     toc: true
 ---
 
-```{r, echo = FALSE}
-knitr::opts_chunk$set(
-  collapse = FALSE,
-  comment = "##"
-)
+```{r, echo=FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "##")
 ```
 
-```{r, message = FALSE}
+```{r, message=FALSE}
 library(quanteda)
 library(stringr)
 library(dplyr)
@@ -26,7 +23,7 @@ library(topicmodels)
 本例で用いる衆議院外務委員会の議事録は，1947年から2017年の間のすべての発言を含んでいる．このコーパスは**quanteda.corpora**を用いてダウンロードできる．
 
 ```{r, message=FALSE}
-devtools::install_github("quanteda/quanteda.corpora")
+#devtools::install_github("quanteda/quanteda.corpora")
 full_corp <- quanteda.corpora::download("data_corpus_foreignaffairscommittee")
 ```
 
@@ -38,7 +35,7 @@ full_corp <- quanteda.corpora::download("data_corpus_foreignaffairscommittee")
 
 国会会議録のダウンロードには**kaigiroku**パッケージを使う．APIが応答しない場合に途中からダウンロードをやり直す必要がないように，年ごとにファイルに保存し，それらを最後に連結すると良い．
 
-```{r eval = FALSE}
+```{r eval=FALSE}
 devtools::install_github("amatsuo/kaigiroku")
 library(kaigiroku)
 
@@ -62,7 +59,7 @@ saveRDS(speech, file = paste0(folder_download, "committee_speeches.rds"))
 
 #### コーパスの作成 {#create-corpus}
 
-```{r eval = FALSE}
+```{r eval=FALSE}
 load("temp/committee_speeches.rda")
 full_corp <- corpus(foreign_affairs_committee_speeches, text_field = "speech")
 
