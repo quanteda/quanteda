@@ -472,7 +472,7 @@ test_that("pre and post for phrases are working", {
                        from = c(4L, 2L), to = c(5L, 3L), 
                        pre = c("a a", "a"), keyword = c("b c", "b c"), 
                        post = c("d d", "d e"), 
-                       pattern = structure(c(1L, 1L), .Label = "b c", class = "factor")), 
+                       pattern = structure(c(1L, 1L), levels = "b c", class = "factor")),
                   class = "data.frame", row.names = c(NA, -2L))
     )
 })
