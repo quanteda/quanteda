@@ -11,18 +11,18 @@
 #' toks <- tokens(c(txt1 = "b A A", txt2 = "C C a b B"))
 #' tokens_tolower(toks)
 #' tokens_toupper(toks)
-tokens_tolower <- function(x, keep_acronyms = FALSE) {
+tokens_tolower <- function(x, keep_acronyms = FALSE, verbose = quanteda_options("verbose")) {
     UseMethod("tokens_tolower")
 }
 
 #' @export
-tokens_tolower.default <- function(x, keep_acronyms = FALSE) {
+tokens_tolower.default <- function(x, keep_acronyms = FALSE, verbose = quanteda_options("verbose")) {
     check_class(class(x), "tokens_tolower")
 }
 
 #' @export
-tokens_tolower.tokens <- function(x, keep_acronyms = FALSE) {
-    as.tokens(tokens_tolower(as.tokens_xptr(x), keep_acronyms))
+tokens_tolower.tokens <- function(x, keep_acronyms = FALSE, verbose = quanteda_options("verbose")) {
+    as.tokens(tokens_tolower(as.tokens_xptr(x), keep_acronyms, verbose))
 }
 
 lowercase_types <- function(type, keep_acronyms) {
@@ -35,22 +35,56 @@ lowercase_types <- function(type, keep_acronyms) {
     return(type)
 }
 
+uppercase_types <- function(type) {
+    stri_trans_toupper(type)
+}
+
 #' @rdname tokens_tolower
 #' @importFrom stringi stri_trans_toupper
 #' @export
-tokens_toupper <- function(x) {
+tokens_toupper <- function(x, verbose = quanteda_options("verbose")) {
     UseMethod("tokens_toupper")
 }
     
 #' @export
-tokens_toupper.default <- function(x) {
+tokens_toupper.default <- function(x, verbose = quanteda_options("verbose")) {
     check_class(class(x), "tokens_toupper")
 }
 
 #' @noRd
 #' @export
-tokens_toupper.tokens <- function(x) {
-    as.tokens(tokens_toupper(as.tokens_xptr(x)))
+tokens_toupper.tokens <- function(x, verbose = quanteda_options("verbose")) {
+    as.tokens(tokens_toupper(as.tokens_xptr(x), verbose))
+}
+
+#' @export
+tokens_tolower.tokens_xptr <- function(x, keep_acronyms = FALSE, verbose = quanteda_options("verbose")) {
+    keep_acronyms <- check_logical(keep_acronyms) # NOTE: consider removing
+    if (verbose)
+        before <- stats_tokens(x)
+    attrs <- attributes(x)
+    set_types(x) <- lowercase_types(get_types(x), keep_acronyms)
+    if (identical(attrs$meta$object$what, "dictionary"))
+        x <- cpp_set_recompiled(x, TRUE)
+    x <- rebuild_tokens(x, attrs)
+    if (verbose)
+        message_tokens("tokens_tolower()", before, stats_tokens(x))
+    return(x)
+}
+
+#' @noRd
+#' @export
+tokens_toupper.tokens_xptr <- function(x, verbose = quanteda_options("verbose")) {
+    if (verbose)
+        before <- stats_tokens(x)
+    attrs <- attributes(x)
+    set_types(x) <- uppercase_types(get_types(x))
+    if (identical(attrs$meta$object$what, "dictionary"))
+        x <- cpp_set_recompiled(x, TRUE)
+    x <- rebuild_tokens(x, attrs)
+    if (verbose)
+        message_tokens("tokens_toupper()", before, stats_tokens(x))
+    return(x)
 }
 
 

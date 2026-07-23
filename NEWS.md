@@ -1,10 +1,17 @@
-# quanteda 4.4.1
+# quanteda 4.5
 
 ## Bug fixes
 
 * Fix `dictionary()` to handle `separator` correctly when a YAML file is provided.
 
 ## Changes and additions
+
+* Added `tokens_recompile()` to reassign token IDs and remove duplicate or
+  unused types from `tokens` and `tokens_xptr` objects. (#2506)
+
+* Query functions such as `types()`, `ntype()`, and `ntoken()` no longer
+  recompile `tokens_xptr` objects. Subsetting documents now preserves the
+  complete type table, consistently with `dfm` objects. (#2506)
 
 * Improve `print` methods for corpus, tokens, dfm, fcm, dictionary and kwic objects to wrap long lines at `getOption("width")`.
 
@@ -1927,4 +1934,3 @@ more complete documentation
 
 * quanteda.pdf provides a pdf version of the function documentation in one easy-to-access
   document
-

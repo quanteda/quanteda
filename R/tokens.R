@@ -451,7 +451,10 @@ tokens.tokens_xptr <-  function(x,
     concatenator <- check_character(concatenator)
     verbose <- check_logical(verbose)
     check_dots(..., method = c("tokens", "tokenize_word4"))
-
+    
+    # NOTE: consider using quanteda_options()
+    global$recompile <- FALSE
+    
     # splits
     if (split_hyphens) {
         if (verbose) catm(" ...splitting hyphens\n")
@@ -460,7 +463,7 @@ tokens.tokens_xptr <-  function(x,
     if (split_tags) {
         warning("split_tags argument is not used", call. = FALSE)
     }
-
+    
     # removals
     removals <- removals_regex(separators = remove_separators,
                                punct = remove_punct,
@@ -475,7 +478,7 @@ tokens.tokens_xptr <-  function(x,
                                       vectorize_all = FALSE)
         catm(" ...removing", paste(msg, collapse = ", "), "\n")
     }
-
+    
     if (length(removals[["separators"]])) {
         x <- tokens_remove(x, removals[["separators"]], valuetype = "regex",
                            verbose = FALSE)
@@ -495,13 +498,13 @@ tokens.tokens_xptr <-  function(x,
         docvars(x) <- NULL
 
     if (!identical(get_concatenator(x), concatenator)) {
-        #warning('concatenator changed from "',
-        #        get_concatenator(x), '" to "', concatenator, '"', call. = FALSE)
         set_types(x) <- stri_replace_all_fixed(get_types(x), get_concatenator(x),
                                                concatenator)
         set_concatenator(x) <- concatenator
     }
-
+    global$recompile <- TRUE
+    
+    x <- cpp_recompile(x, force = TRUE)
     if (is_verbose(verbose, ...))
         message_finish(x, proc_time)
 
@@ -659,92 +662,6 @@ serialize_tokens <- function(x, types_reserved = NULL, ...) {
 
     attributes(x) <- attrs
     attr(x, "types") <- types
-    return(x)
-}
-
-#' recompile a serialized tokens object
-#'
-#' This function recompiles a serialized tokens object when the vocabulary has
-#' been changed in a way that makes some of its types identical, such as
-#' lowercasing when a lowercased version of the type already exists in the type
-#' table, or introduces gaps in the integer map of the types.  It also
-#' re-indexes the types attribute to account for types that may have become
-#' duplicates, through a procedure such as stemming or lowercasing; or the
-#' addition of new tokens through compounding.
-#' @param x the [tokens] object to be recompiled
-#' @param method `"C++"` for C++ implementation or `"R"` for an older
-#'   R-based method
-#' @examples
-#' # lowercasing
-#' toks1 <- tokens(c(one = "a b c d A B C D",
-#'                  two = "A B C d"))
-#' attr(toks1, "types") <- char_tolower(attr(toks1, "types"))
-#' unclass(toks1)
-#' unclass(quanteda:::tokens_recompile(toks1))
-#'
-#' # stemming
-#' toks2 <- tokens("Stemming stemmed many word stems.")
-#' unclass(toks2)
-#' unclass(quanteda:::tokens_recompile(tokens_wordstem(toks2)))
-#'
-#' # compounding
-#' toks3 <- tokens("One two three four.")
-#' unclass(toks3)
-#' unclass(tokens_compound(toks3, "two three"))
-#'
-#' # lookup
-#' dict <- dictionary(list(test = c("one", "three")))
-#' unclass(tokens_lookup(toks3, dict))
-#'
-#' # empty pads
-#' unclass(tokens_select(toks3, dict))
-#' unclass(tokens_select(toks3, dict, padding = TRUE))
-#'
-#' # ngrams
-#' unclass(tokens_ngrams(toks3, n = 2:3))
-#'
-#' @keywords internal tokens
-tokens_recompile <- function(x, method = c("C++", "R")) {
-
-    method <- match.arg(method)
-    attrs <- attributes(x)
-    type <- attr(x, "types")
-    if (method == "C++") {
-        x <- as.tokens_xptr(x)
-        cpp_recompile(x)
-        x <- as.tokens(x)
-    } else {
-
-        # Check for padding
-        index_unique <- unique(unlist(unclass(x), use.names = FALSE))
-        padding <- index_unique == 0
-        attrs[["padding"]] <- any(padding) # add padding flag
-        index_unique <- index_unique[!padding] # exclude padding
-
-        # Remove gaps in the type index, if any, remap index
-        if (any(is.na(match(seq_len(length(type)), index_unique)))) {
-            type_new <- type[index_unique]
-            index_new <- c(0, seq_along(index_unique)) # padding index is zero but not in types
-            index_unique <- c(0, index_unique) # padding index is zero but not in types
-            x <- lapply(unclass(x), function(y) index_new[fastmatch::fmatch(y, index_unique)])
-            attributes(x) <- attrs
-            type <- type_new
-        }
-
-        # Reindex duplicates, if any
-        if (any(duplicated(type))) {
-            type_unique <- unique(type)
-            index_mapping <- match(type, type_unique)
-            index_mapping <- c(0, index_mapping) # padding index is zero but not in types
-            x <- lapply(unclass(x), function(y) index_mapping[y + 1]) # shift index for padding
-            attributes(x) <- attrs
-            type <- type_unique
-        }
-
-        Encoding(type) <- "UTF-8"
-        attr(x, "types") <- type
-        x <- rebuild_tokens(x, attrs)
-    }
     return(x)
 }
 

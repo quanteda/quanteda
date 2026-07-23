@@ -56,6 +56,7 @@ TokensPtr cpp_tokens_combine(TokensPtr xptr1,
     }
 #endif
     //dev::stop_timer("Combine", timer);
+    xptr1->recompiled = false;
     return xptr1;
 }
 

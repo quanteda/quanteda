@@ -5,9 +5,9 @@
 \alias{tokens_toupper}
 \title{Convert the case of tokens}
 \usage{
-tokens_tolower(x, keep_acronyms = FALSE)
+tokens_tolower(x, keep_acronyms = FALSE, verbose = quanteda_options("verbose"))
 
-tokens_toupper(x)
+tokens_toupper(x, verbose = quanteda_options("verbose"))
 }
 \arguments{
 \item{x}{the input object whose character/tokens/feature elements will be
@@ -15,6 +15,9 @@ case-converted}
 
 \item{keep_acronyms}{logical; if \code{TRUE}, do not lowercase any
 all-uppercase words (applies only to \verb{*_tolower()} functions)}
+
+\item{verbose}{if \code{TRUE} print the number of tokens and documents before and
+after the function is applied. The number of tokens does not include paddings.}
 }
 \description{
 \code{tokens_tolower()} and \code{tokens_toupper()} convert the features of a

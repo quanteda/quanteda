@@ -9,7 +9,7 @@ typedef tbb::concurrent_vector<Match> Matches;
 typedef std::vector<Match> Matches;
 #endif
 
-void index(Text tokens,
+void index(const Text &tokens,
            const int document,
            const std::vector<std::size_t> &spans,
            const MultiMapNgrams &map_pats,

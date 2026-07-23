@@ -102,15 +102,16 @@ dfm.tokens_xptr <- function(x,
     x <- as.tokens_xptr(x) # avoid modifying the original tokens
     if (tolower) {
         if (verbose) catm(" ...lowercasing\n", sep = "")
-        x <- tokens_tolower(x)
+        x <- tokens_tolower(x, verbose = FALSE) # should not recompile dictionary keys
     }
     if (remove_padding)
         x <- tokens_remove(x, "", valuetype = "fixed")
     attrs <- attributes(x)
-    if (attrs$meta$object$what == "dictionary")
+    if (identical(attrs$meta$object$what, "dictionary"))
         trim <- FALSE
-    temp <- t(cpp_dfm(x, asis = !trim))
-    result <- build_dfm(temp, colnames(temp),
+    x <- cpp_set_recompiled(x, !trim)
+    result <- t(cpp_dfm(x))
+    result <- build_dfm(result, colnames(result),
                         docvars = get_docvars(x, user = TRUE, system = TRUE),
                         meta = attrs[["meta"]])
 

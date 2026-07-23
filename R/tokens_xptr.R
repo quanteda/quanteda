@@ -78,7 +78,7 @@ ndoc.tokens_xptr <- function(x) {
 
 #' @export
 types.tokens_xptr <- function(x) {
-    cpp_get_types(x, TRUE)
+    cpp_get_types(x)
 }
 
 #' @export
@@ -211,22 +211,6 @@ tokens_subset.tokens_xptr <- function(x, subset, min_ntoken = NULL, max_ntoken =
     return(x[r & l, drop_docid = drop_docid])
 }
 
-
-#' @export
-tokens_tolower.tokens_xptr <- function(x, keep_acronyms = FALSE) {
-    keep_acronyms <- check_logical(keep_acronyms)
-    # NOTE: consider removing keep_acronyms
-    set_types(x) <- lowercase_types(get_types(x), keep_acronyms)
-    return(x)
-}
-
-#' @noRd
-#' @export
-tokens_toupper.tokens_xptr <- function(x) {
-    set_types(x) <- char_toupper(types(x))
-    return(x)
-}
-
 # internal functions ----------------------------------------
 
 # #' @method get_docvars tokens_xptr
@@ -246,6 +230,20 @@ get_types.tokens <- function(x) {
 #' @method get_types tokens_xptr
 get_types.tokens_xptr <- function(x) {
     cpp_get_types(x)
+}
+
+count_types <- function(x) {
+    UseMethod("count_types")
+}
+
+#' @method get_types tokens
+count_types.tokens <- function(x) {
+    length(attr(x, "types"))
+}
+
+#' @method get_types tokens_xptr
+count_types.tokens_xptr <- function(x) {
+    cpp_count_types(x)
 }
 
 "set_types<-" <- function(x, value) {

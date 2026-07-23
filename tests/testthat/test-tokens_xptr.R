@@ -138,7 +138,7 @@ test_that("tokens_tolower and tokens_toupper work", {
     
     xtoks1 <- tokens_lookup(as.tokens_xptr(toks), dict, exclusive = FALSE)
     expect_identical(quanteda:::cpp_get_attributes(xtoks1),
-                     list(recompiled = FALSE, padded = FALSE))
+                     list(recompiled = TRUE, padded = FALSE))
     
     xtoks2 <- tokens_lookup(as.tokens_xptr(toks), dict, nomatch = "nomatch")
     expect_identical(quanteda:::cpp_get_attributes(xtoks2),
@@ -184,6 +184,12 @@ test_that("tokens are not recompiled", {
         quanteda:::cpp_as_list(tokens_subset(xtoks, b)),
         lis[b]
     )
+    
+    expect_true(
+        identical(quanteda:::cpp_get_types(xtoks),
+                  quanteda:::cpp_get_types(tokens_subset(xtoks, b)))
+    )
+    
 })
 
 test_that("all the meta fields are copied", {
@@ -202,7 +208,7 @@ test_that("attributes are correct", {
     dict <- data_dictionary_LSD2015[1:2]
     
     xtoks2 <- tokens_remove(as.tokens_xptr(toks), stopwords(), padding = TRUE)
-    expect_false(quanteda:::cpp_get_attributes(xtoks2)$recompiled)
+    expect_true(quanteda:::cpp_get_attributes(xtoks2)$recompiled)
     expect_true(quanteda:::cpp_get_attributes(xtoks2)$padded)
     
     xtoks_dict1 <- tokens_lookup(as.tokens_xptr(toks), 
@@ -211,7 +217,7 @@ test_that("attributes are correct", {
 
     xtoks_dict2 <- tokens_lookup(as.tokens_xptr(toks), 
                                  dict, exclusive = FALSE)
-    expect_false(quanteda:::cpp_get_attributes(xtoks_dict2)$recompiled)
+    expect_true(quanteda:::cpp_get_attributes(xtoks_dict2)$recompiled)
 })
 
 test_that("tokens_compound works", {
@@ -330,7 +336,11 @@ test_that("cpp_get_freq is working", {
         structure(c(2L, 2L, 2L, 1L),
                   names = c("a", "b", "c", "d"))
     )
-
+    
+    expect_false(
+        quanteda:::cpp_get_recompiled(quanteda:::cpp_set_recompiled(xtoks, FALSE))
+    )
+    
 })
 
 test_that("returns shallow or deep copy x", {
