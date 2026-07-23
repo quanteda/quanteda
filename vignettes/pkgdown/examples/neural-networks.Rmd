@@ -13,9 +13,9 @@ editor_options:
 knitr::opts_chunk$set(collapse = TRUE, comment = "##", cache = TRUE)
 ```
 
-In this vignette, we show how to implement neural networks using the **quanteda** and **torch** packages. In the version 4.4.1 of **quanteda**, we added multiple functions to make it an infrastructure for developing neural networks. This example focuses on a convolution neural network (CNN) but other types of models such as recurrent neural networks (RNN) and transformers can be also implemented with the aid of the **luz** package.
+In this vignette, we show how to implement neural networks using the **quanteda** and **torch** packages. In the version 4.5.0 of **quanteda**, we added multiple functions to make it an infrastructure for developing neural networks. This example focuses on a convolution neural network (CNN) but other types of models such as recurrent neural networks (RNN) and transformers can be also implemented with the aid of the **luz** package.
 
-The code below is based on [an example](https://mlverse.github.io/luz/articles/examples/text-classification.html) published in the website for **luz**, but the CNN model is trained on **quanteda**'s tokens object. This makes the neural network models consistent with other text analyses tools and easier to integrate in existing pipelines.
+The code below is based on [an example](https://mlverse.github.io/luz/articles/examples/text-classification.html) published on **luz**'s website, but the CNN model is trained on **quanteda**'s tokens object. This makes the neural network models consistent with other text analyses tools and easier to integrate in existing pipelines.
 
 ```{r, message=FALSE}
 library(quanteda)
@@ -69,7 +69,7 @@ toks <- tokens(corp, remove_punct = TRUE) %>%
 
 We use `dataset()` to feed data from the tokens object to neural network models. We can quickly access the documents in the tokens object using `as.matrix()` with the `extract` argument. The function returns the documents in the same length: when the documents are longer than `length`, the vectors are truncated; if they are shorter, the vectors are padded by zero. Since the indices in `torch_tensor` is one-based, we shift token IDs by adding one (the ID for padding is zero in tokens objects).
 
-Importantly, before separating the tokens object into training and test sets using `tokens_subset()`, we have to convert it to a  [tokens_xptr](../tokens_xptr.html) object. This in not only for the quickly accessing the documents but also for preserving the original token IDs (`tokens_subset()` reassign tokens IDs when the list based tokens object is provided). Alternatively, we can match the token IDs between the training and test sets using `tokens_match()`.
+Importantly, before separating the tokens object into training and test sets using `tokens_subset()`, we have to convert it to a  [tokens_xptr](../tokens_xptr.html) object. This is not only for the quickly accessing the documents but also for preserving the original token IDs (`tokens_subset()` reassign tokens IDs when the list based tokens object is provided). Alternatively, we can match the token IDs between the training and test sets using `tokens_match()`.
 
 ```{r}
 text_length <- 200 # maximum number length of the texts
@@ -108,7 +108,7 @@ test_ds <- movie_dataset(tokens_subset(xtoks, split == "test"), text_length)
 
 ## Build CNN model
 
-The code is identical to the original example except that `num_embeddings` is `vocab_size + 1L` for padding. The model starts with a module for word vectors in the embedding layer `nn_embedding`, followed by modules for convolution layers `nn_conv1d()`: the first layer captures the sequence tokens such as phrases; the second layer further abstract the occurrences sequences. Finally, the dense feed-forward network `nn_linear()` predict the sentiment of documents. 
+The code is identical to the original example except that `num_embeddings` is `vocab_size + 1L` for padding. The model starts with a module for word vectors in the embedding layer `nn_embedding`, followed by modules for convolution layers `nn_conv1d()`: the first layer captures the sequence of tokens such as phrases; the second layer further abstracts the occurrences sequences. Finally, the dense feed-forward network `nn_linear()` predicts the sentiment of documents. 
 
 ```{r}
 embedding_dim <- 128 # size of the embedding vectors
@@ -150,7 +150,7 @@ model <- nn_module(
 
 ## Train the model
 
-The hierarchical CNN model is trained trained over three iterations with hyper-parameters, `vocab_size` and `embedding_dim`. 
+The hierarchical CNN model is trained over three iterations with hyper-parameters, `vocab_size` and `embedding_dim`. 
 
 ```{r}
 fitted_model <- model %>% 
