@@ -2,7 +2,7 @@
 //#include "dev.h"
 using namespace quanteda;
 
-std::string kwic(Text tokens, 
+std::string kwic(const Text &tokens, 
                  const std::vector<std::string> &types,
                  const std::string delim,
                  int from,

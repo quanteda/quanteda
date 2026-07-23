@@ -23,6 +23,11 @@ using namespace oneapi; // only Windows R 4.3.x or later
 #define QUANTEDA_USE_TBB false
 #endif
 
+
+// #ifndef QUANTEDA_DEBUG
+// #define QUANTEDA_DEBUG
+// #endif
+
 // [[Rcpp::plugins(cpp11)]]
 using namespace Rcpp;
 

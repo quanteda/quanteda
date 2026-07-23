@@ -62,6 +62,7 @@ tokens_trim.tokens_xptr <- function(x,
     if (verbose)
         before <- stats_tokens(x)
     
+    x <- cpp_recompile(x)
     f <- trim_features(cpp_get_freq(x, no_padding = TRUE), 
                        cpp_get_freq(x, no_padding = TRUE, boolean = TRUE),
                        cpp_ndoc(x),

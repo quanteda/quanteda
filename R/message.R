@@ -72,7 +72,7 @@ message_finish <- function(x, time) {
         message(msg("Finished constructing a %s x %s sparse dfm.",
                     nrow(x), ncol(x)))
     } else {
-        m <- length(types(x))
+        m <- count_types(x)
         n <- ndoc(x)
         message(msg(" ...%s unique %s",
                     m, if (m == 1) "type" else "types"))
@@ -121,7 +121,7 @@ message_tokens <- function(operation, before, after) {
 stats_tokens <- function(x) {
     list(ndoc = ndoc(x),
          ntoken = sum(ntoken(x, remove_padding = TRUE)),
-         ntype = length(types(x)))
+         ntype = count_types(x))
 }
 
 #' Print messages in dfm methods

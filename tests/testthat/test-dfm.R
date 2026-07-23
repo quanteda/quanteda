@@ -951,6 +951,6 @@ test_that("trim is working", {
     
     expect_equal(
         dfm_match(dfm(toks), c("a", "b", "c", "x")) ,
-        dfm(tokens_match(toks, c("a", "b", "c", "x")), trim = FALSE) 
+        dfm(tokens_match(toks, c("a", "b", "c", "x")), trim = FALSE, tolower = FALSE) 
     )
 })

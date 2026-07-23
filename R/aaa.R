@@ -9,3 +9,5 @@ global <- new.env(parent = emptyenv())
 breakrules_reset("word")
 breakrules_reset("sentence")
 
+# tokens_xptr
+global$recompile <- TRUE
