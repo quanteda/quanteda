@@ -222,12 +222,12 @@ get_types <- function(x) {
     UseMethod("get_types")
 }
 
-#' @method get_types tokens
+#' @exportS3Method get_types tokens
 get_types.tokens <- function(x) {
     attr(x, "types")
 }
 
-#' @method get_types tokens_xptr
+#' @exportS3Method get_types tokens_xptr
 get_types.tokens_xptr <- function(x) {
     cpp_get_types(x)
 }
@@ -236,12 +236,12 @@ count_types <- function(x) {
     UseMethod("count_types")
 }
 
-#' @method get_types tokens
+#' @exportS3Method count_types tokens
 count_types.tokens <- function(x) {
     length(attr(x, "types"))
 }
 
-#' @method get_types tokens_xptr
+#' @exportS3Method count_types tokens_xptr
 count_types.tokens_xptr <- function(x) {
     cpp_count_types(x)
 }
@@ -252,13 +252,13 @@ count_types.tokens_xptr <- function(x) {
     UseMethod("set_types<-")
 }
 
-#' @method set_types tokens
+#' @exportS3Method "set_types<-" tokens
 "set_types<-.tokens" <- function(x, value) { # TODO: remove types<-.tokens
     attr(x, "types") <- value
     return(x)
 }
 
-#' @method set_types tokens_xptr
+#' @exportS3Method "set_types<-" tokens_xptr
 "set_types<-.tokens_xptr" <- function(x, value) {
     cpp_set_types(x, value)
 }

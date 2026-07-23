@@ -147,6 +147,7 @@ meta_system <- function(x, field = NULL)
 }
 
 #' @rdname meta_system
+#' @exportS3Method "meta_system<-" corpus
 `meta_system<-.corpus` <- function(x, field = NULL, value) {
     if (is.null(field) && !missing(value)) {
         attr(x, "meta")$system <- value
@@ -157,6 +158,7 @@ meta_system <- function(x, field = NULL)
 }
 
 #' @rdname meta_system
+#' @exportS3Method "meta_system<-" tokens
 `meta_system<-.tokens` <- function(x, field = NULL, value) {
     if (is.null(field) && !missing(value)) {
         attr(x, "meta")$system <- value
@@ -167,6 +169,7 @@ meta_system <- function(x, field = NULL)
 }
 
 #' @rdname meta_system
+#' @exportS3Method "meta_system<-" dfm
 `meta_system<-.dfm` <- function(x, field = NULL, value) {
     if (is.null(field)) {
         x@meta$system <- value
@@ -177,6 +180,7 @@ meta_system <- function(x, field = NULL)
 }
 
 #' @rdname meta_system
+#' @exportS3Method "meta_system<-" dictionary
 `meta_system<-.dictionary` <- `meta_system<-.dfm`
 
 #' @rdname meta_system
