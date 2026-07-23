@@ -44,17 +44,17 @@ get_docvars <- function(x, field = NULL, user = TRUE, system = FALSE, drop = FAL
     UseMethod("get_docvars")
 }
 
-#' @method get_docvars corpus
+#' @exportS3Method get_docvars corpus
 get_docvars.corpus <- function(x, field = NULL, user = TRUE, system = FALSE, drop = FALSE) {
     select_docvars(attr(x, "docvars"), field, user, system, drop)
 }
 
-#' @method get_docvars tokens
+#' @exportS3Method get_docvars tokens
 get_docvars.tokens <- function(x, field = NULL, user = TRUE, system = FALSE, drop = FALSE) {
     select_docvars(attr(x, "docvars"), field, user, system, drop)
 }
 
-#' @method get_docvars dfm
+#' @exportS3Method get_docvars dfm
 get_docvars.dfm <- function(x, field = NULL, user = TRUE, system = FALSE, drop = FALSE) {
     select_docvars(x@docvars, field, user, system, drop)
 }
