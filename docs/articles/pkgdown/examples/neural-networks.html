@@ -28,7 +28,7 @@
 
     <a class="navbar-brand me-2" href="../../../index.html">quanteda</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">4.4.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">4.5.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -172,7 +172,7 @@ the object.</p>
 <span><span class="co">##  ...preserving social media tags (#, @)</span></span>
 <span><span class="co">##  ...removing separators, punctuation</span></span>
 <span><span class="co">##  ...177,293 unique types</span></span>
-<span><span class="co">##  ...complete, elapsed time: 9.94 seconds.</span></span>
+<span><span class="co">##  ...complete, elapsed time: 8.03 seconds.</span></span>
 <span><span class="co">## Finished constructing tokens from 50,000 documents</span></span>
 <span><span class="co">## tokens_tolower() changed from 177,293 types (50,000 documents, 11,454,169 tokens) to 147,281 types (50,000 documents, 11,454,169 tokens)</span></span>
 <span><span class="co">## tokens_trim() changed from 147,281 types (50,000 documents, 11,454,169 tokens) to 20,000 types (50,000 documents, 11,072,518 tokens)</span></span></code></pre></div>
@@ -291,7 +291,14 @@ with hyper-parameters, <code>vocab_size</code> and
 <span>        metrics <span class="op">=</span> <span class="fu"><a href="https://mlverse.github.io/luz/reference/luz_metric_binary_accuracy_with_logits.html" class="external-link">luz_metric_binary_accuracy_with_logits</a></span><span class="op">(</span><span class="op">)</span></span>
 <span>    <span class="op">)</span> <span class="op"><a href="../../../reference/pipe.html">%&gt;%</a></span> </span>
 <span>    <span class="fu"><a href="https://mlverse.github.io/luz/reference/set_hparams.html" class="external-link">set_hparams</a></span><span class="op">(</span>vocab_size <span class="op">=</span> <span class="va">vocab_size</span>, embedding_dim <span class="op">=</span> <span class="va">embedding_dim</span><span class="op">)</span> <span class="op"><a href="../../../reference/pipe.html">%&gt;%</a></span> </span>
-<span>    <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit</a></span><span class="op">(</span><span class="va">train_ds</span>, epochs <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></code></pre></div>
+<span>    <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit</a></span><span class="op">(</span><span class="va">train_ds</span>, epochs <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
+<span><span class="co">## Warning: Some torch operators might not yet be implemented for the MPS device. A</span></span>
+<span><span class="co">## temporary fix is to set the `PYTORCH_ENABLE_MPS_FALLBACK=1` to use the CPU as a</span></span>
+<span><span class="co">## fall back for those operators:</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">ℹ</span> Add `PYTORCH_ENABLE_MPS_FALLBACK=1` to your `.Renviron` file, for example use</span></span>
+<span><span class="co">##   `usethis::edit_r_environ()`.</span></span>
+<span><span class="co">## <span style="color: #BB0000;">✖</span> Using `Sys.setenv()` doesn't work because the env var must be set before R</span></span>
+<span><span class="co">##   starts.</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="test-the-model">Test the model<a class="anchor" aria-label="anchor" href="#test-the-model"></a>
@@ -301,10 +308,17 @@ with hyper-parameters, <code>vocab_size</code> and
 <code class="sourceCode R"><span><span class="va">fitted_model</span> <span class="op"><a href="../../../reference/pipe.html">%&gt;%</a></span> </span>
 <span>    <span class="fu"><a href="https://mlverse.github.io/luz/reference/evaluate.html" class="external-link">evaluate</a></span><span class="op">(</span><span class="va">test_ds</span><span class="op">)</span> <span class="op"><a href="../../../reference/pipe.html">%&gt;%</a></span> </span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">## Warning: Some torch operators might not yet be implemented for the MPS device. A</span></span>
+<span><span class="co">## temporary fix is to set the `PYTORCH_ENABLE_MPS_FALLBACK=1` to use the CPU as a</span></span>
+<span><span class="co">## fall back for those operators:</span></span>
+<span><span class="co">## <span style="color: #00BBBB;">ℹ</span> Add `PYTORCH_ENABLE_MPS_FALLBACK=1` to your `.Renviron` file, for example use</span></span>
+<span><span class="co">##   `usethis::edit_r_environ()`.</span></span>
+<span><span class="co">## <span style="color: #BB0000;">✖</span> Using `Sys.setenv()` doesn't work because the env var must be set before R</span></span>
+<span><span class="co">##   starts.</span></span>
 <span><span class="co">## A `luz_module_evaluation`</span></span>
 <span><span class="co">## ── Results ─────────────────────────────────────────────────────────────────────</span></span>
-<span><span class="co">## loss: 0.4043</span></span>
-<span><span class="co">## acc: 0.8183</span></span></code></pre></div>
+<span><span class="co">## loss: 0.3851</span></span>
+<span><span class="co">## acc: 0.824</span></span></code></pre></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

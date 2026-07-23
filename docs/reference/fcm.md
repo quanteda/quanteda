@@ -42,18 +42,18 @@ fcm(
 
   `"frequency"`
 
-  :   count the number of co-occurrences within the context
+  : count the number of co-occurrences within the context
 
   `"boolean"`
 
-  :   count only the co-occurrence or not within the context,
-      irrespective of how many times it occurs.
+  : count only the co-occurrence or not within the context, irrespective
+    of how many times it occurs.
 
   `"weighted"`
 
-  :   count a weighted function of counts, typically as a function of
-      distance from the target feature. Only makes sense for
-      `context = "window"`.
+  : count a weighted function of counts, typically as a function of
+    distance from the target feature. Only makes sense for
+    `context = "window"`.
 
 - window:
 

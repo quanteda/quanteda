@@ -7,9 +7,9 @@ the types.
 ## Usage
 
 ``` r
-tokens_tolower(x, keep_acronyms = FALSE)
+tokens_tolower(x, keep_acronyms = FALSE, verbose = quanteda_options("verbose"))
 
-tokens_toupper(x)
+tokens_toupper(x, verbose = quanteda_options("verbose"))
 ```
 
 ## Arguments
@@ -23,6 +23,12 @@ tokens_toupper(x)
 
   logical; if `TRUE`, do not lowercase any all-uppercase words (applies
   only to `*_tolower()` functions)
+
+- verbose:
+
+  if `TRUE` print the number of tokens and documents before and after
+  the function is applied. The number of tokens does not include
+  paddings.
 
 ## Examples
 

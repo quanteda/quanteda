@@ -978,28 +978,28 @@ LDA_fit_20 <- convert(dfm_speeches, to = "topicmodels") |>
 
 # get top five terms per topic
 get_terms(LDA_fit_20, 5)
-##      Topic 1     Topic 2   Topic 3    Topic 4  Topic 5     Topic 6       
-## [1,] "fianna"    "child"   "national" "fianna" "care"      "welfare"     
-## [2,] "fáil"      "benefit" "irish"    "fáil"   "welfare"   "taxation"    
-## [3,] "irish"     "day"     "benefit"  "side"   "per"       "worst"       
-## [4,] "taoiseach" "bank"    "support"  "level"  "allowance" "government's"
-## [5,] "national"  "today"   "measures" "third"  "hit"       "fianna"      
-##      Topic 7     Topic 8      Topic 9    Topic 10      Topic 11     
-## [1,] "taoiseach" "businesses" "poor"     "alternative" "kind"       
-## [2,] "fine"      "strategy"   "fáil"     "citizenship" "imagination"
-## [3,] "gael"      "fianna"     "support"  "wealth"      "policies"   
-## [4,] "may"       "ministers"  "strategy" "adjustment"  "wit"        
-## [5,] "irish"     "employment" "instead"  "breaks"      "create"     
-##      Topic 12       Topic 13    Topic 14    Topic 15     Topic 16     Topic 17 
-## [1,] "society"      "failed"    "providing" "million"    "welfare"    "system" 
-## [2,] "enterprising" "ministers" "welfare"   "support"    "investment" "welfare"
-## [3,] "sense"        "adopted"   "measures"  "employment" "enterprise" "back"   
-## [4,] "equal"        "change"    "able"      "scheme"     "back"       "create" 
-## [5,] "nation"       "today"     "increase"  "continue"   "irish"      "fáil"   
-##      Topic 18   Topic 19    Topic 20  
-## [1,] "strategy" "taoiseach" "million" 
-## [2,] "needed"   "employees" "spending"
-## [3,] "confront" "rate"      "measures"
-## [4,] "vision"   "referred"  "review"  
-## [5,] "face"     "debate"    "scheme"
+##      Topic 1     Topic 2    Topic 3  Topic 4       Topic 5 Topic 6    Topic 7  
+## [1,] "failed"    "welfare"  "fianna" "irish"       "face"  "today"    "levy"   
+## [2,] "strategy"  "care"     "fáil"   "employment"  "bank"  "measures" "million"
+## [3,] "needed"    "families" "side"   "welfare"     "much"  "benefit"  "carbon" 
+## [4,] "ministers" "workers"  "level"  "sustainable" "just"  "child"    "change" 
+## [5,] "system"    "hit"      "third"  "creating"    "debt"  "taxes"    "welfare"
+##      Topic 8       Topic 9      Topic 10   Topic 11  Topic 12   Topic 13    
+## [1,] "alternative" "measures"   "fianna"   "child"   "hospital" "million"   
+## [2,] "citizenship" "spending"   "fáil"     "benefit" "fianna"   "support"   
+## [3,] "wealth"      "changes"    "national" "day"     "modest"   "investment"
+## [4,] "adjustment"  "welfare"    "irish"    "society" "benefit"  "back"      
+## [5,] "breaks"      "investment" "support"  "fianna"  "family"   "welfare"   
+##      Topic 14    Topic 15    Topic 16       Topic 17   Topic 18    Topic 19   
+## [1,] "taoiseach" "review"    "society"      "measures" "taoiseach" "allowance"
+## [2,] "fine"      "million"   "enterprising" "welfare"  "employees" "per"      
+## [3,] "gael"      "reduction" "create"       "million"  "rate"      "care"     
+## [4,] "may"       "scheme"    "kind"         "reduce"   "referred"  "hit"      
+## [5,] "irish"     "reduced"   "sense"        "create"   "debate"    "million"  
+##      Topic 20  
+## [1,] "system"  
+## [2,] "taxation"
+## [3,] "fianna"  
+## [4,] "fáil"    
+## [5,] "stimulus"
 ```

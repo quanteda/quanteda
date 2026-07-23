@@ -70,9 +70,10 @@ token types) to the top 20,000 most frequent words in the object.
 
 vocab_size <- 20000 # maximum size of the vocabulary
 
-toks <- tokens(corp, remove_punct = TRUE, verbose = TRUE) %>% 
+quanteda_options(verbose = TRUE)
+toks <- tokens(corp, remove_punct = TRUE) %>% 
   tokens_tolower() %>% 
-  tokens_trim(max_n = vocab_size, verbose = TRUE)
+  tokens_trim(max_n = vocab_size)
 ## Creating a tokens from a corpus object...
 ##  ...starting tokenization
 ##  ...tokenizing 1 of 1 blocks
@@ -81,8 +82,9 @@ toks <- tokens(corp, remove_punct = TRUE, verbose = TRUE) %>%
 ##  ...preserving social media tags (#, @)
 ##  ...removing separators, punctuation
 ##  ...177,293 unique types
-##  ...complete, elapsed time: 20.6 seconds.
+##  ...complete, elapsed time: 8.03 seconds.
 ## Finished constructing tokens from 50,000 documents
+## tokens_tolower() changed from 177,293 types (50,000 documents, 11,454,169 tokens) to 147,281 types (50,000 documents, 11,454,169 tokens)
 ## tokens_trim() changed from 147,281 types (50,000 documents, 11,454,169 tokens) to 20,000 types (50,000 documents, 11,072,518 tokens)
 ```
 
@@ -214,6 +216,13 @@ fitted_model <- model %>%
     ) %>% 
     set_hparams(vocab_size = vocab_size, embedding_dim = embedding_dim) %>% 
     fit(train_ds, epochs = 3)
+## Warning: Some torch operators might not yet be implemented for the MPS device. A
+## temporary fix is to set the `PYTORCH_ENABLE_MPS_FALLBACK=1` to use the CPU as a
+## fall back for those operators:
+## ℹ Add `PYTORCH_ENABLE_MPS_FALLBACK=1` to your `.Renviron` file, for example use
+##   `usethis::edit_r_environ()`.
+## ✖ Using `Sys.setenv()` doesn't work because the env var must be set before R
+##   starts.
 ```
 
 ## Test the model
@@ -225,8 +234,15 @@ Evaluate the fitted model using the test set.
 fitted_model %>% 
     evaluate(test_ds) %>% 
     print()
+## Warning: Some torch operators might not yet be implemented for the MPS device. A
+## temporary fix is to set the `PYTORCH_ENABLE_MPS_FALLBACK=1` to use the CPU as a
+## fall back for those operators:
+## ℹ Add `PYTORCH_ENABLE_MPS_FALLBACK=1` to your `.Renviron` file, for example use
+##   `usethis::edit_r_environ()`.
+## ✖ Using `Sys.setenv()` doesn't work because the env var must be set before R
+##   starts.
 ## A `luz_module_evaluation`
 ## ── Results ─────────────────────────────────────────────────────────────────────
-## loss: 0.3868
-## acc: 0.8246
+## loss: 0.3851
+## acc: 0.824
 ```

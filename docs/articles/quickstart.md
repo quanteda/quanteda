@@ -21,9 +21,9 @@ part of **quanteda**, and we recommend that you always install them
 along with **quanteda**:
 
 - [**quanteda.textmodels**](https://github.com/quanteda/quanteda.textmodels):
-  Functions for scaling and classifying textual data.  
+  Functions for scaling and classifying textual data.\
 - [**quanteda.textstats**](https://github.com/quanteda/quanteda.textstats):
-  Statistics for textual data.  
+  Statistics for textual data.\
 - [**quanteda.textplots**](https://github.com/quanteda/quanteda.textplots):
   Statistics for textual data.
 

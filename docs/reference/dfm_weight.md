@@ -31,42 +31,42 @@ dfm_smooth(x, smoothing = 1)
 
   `count`
 
-  :   \\tf\_{ij}\\, an integer feature count (default when a dfm is
-      created)
+  : \\tf\_{ij}\\, an integer feature count (default when a dfm is
+    created)
 
   `prop`
 
-  :   the proportion of the feature counts of total feature counts (aka
-      relative frequency), calculated as \\tf\_{ij} / \sum_j tf\_{ij}\\
+  : the proportion of the feature counts of total feature counts (aka
+    relative frequency), calculated as \\tf\_{ij} / \sum_j tf\_{ij}\\
 
   `propmax`
 
-  :   the proportion of the feature counts of the highest feature count
-      in a document, \\tf\_{ij} / \textrm{max}\_j tf\_{ij}\\
+  : the proportion of the feature counts of the highest feature count in
+    a document, \\tf\_{ij} / \textrm{max}\_j tf\_{ij}\\
 
   `logcount`
 
-  :   take the 1 + the logarithm of each count, for the given base, or 0
-      if the count was zero: \\1 + \textrm{log}\_{base}(tf\_{ij})\\ if
-      \\tf\_{ij} \> 0\\, or 0 otherwise.
+  : take the 1 + the logarithm of each count, for the given base, or 0
+    if the count was zero: \\1 + \textrm{log}\_{base}(tf\_{ij})\\ if
+    \\tf\_{ij} \> 0\\, or 0 otherwise.
 
   `boolean`
 
-  :   recode all non-zero counts as 1
+  : recode all non-zero counts as 1
 
   `augmented`
 
-  :   equivalent to \\k + (1 - k) \*\\ `dfm_weight(x, "propmax")`
+  : equivalent to \\k + (1 - k) \*\\ `dfm_weight(x, "propmax")`
 
   `logave`
 
-  :   (1 + the log of the counts) / (1 + log of the average count within
-      document), or \$\$\frac{1 + \textrm{log}\_{base} tf\_{ij}}{1 +
-      \textrm{log}\_{base}(\sum_j tf\_{ij} / N_i)}\$\$
+  : (1 + the log of the counts) / (1 + log of the average count within
+    document), or \$\$\frac{1 + \textrm{log}\_{base} tf\_{ij}}{1 +
+    \textrm{log}\_{base}(\sum_j tf\_{ij} / N_i)}\$\$
 
   `logsmooth`
 
-  :   log of the counts + `smooth`, or \\tf\_{ij} + s\\
+  : log of the counts + `smooth`, or \\tf\_{ij} + s\\
 
 - weights:
 

@@ -327,13 +327,37 @@ if (FALSE) # using other tokenizers
 tokens(tokenizers::tokenize_words(txt[4]), remove_symbols = TRUE)
 tokenizers::tokenize_words(txt, lowercase = FALSE, strip_punct = FALSE) |>
     tokens(remove_symbols = TRUE)
-#> Error in loadNamespace(x): there is no package called 'tokenizers'
+#> Tokens consisting of 4 documents.
+#> doc1 :
+#>  [1] "A"        "sentence" ","        "showing"  "how"      "tokens"  
+#>  [7] "("        ")"        "works"    "."       
+#> 
+#> doc2 :
+#>  [1] "@"            "quantedainit" "and"          "#"            "textanalysis"
+#>  [6] "https"        ":"            "/"            "/"            "example.com" 
+#> [11] "?"            "p"           
+#> [ ... and 2 more ]
+#> 
+#> doc3 :
+#> [1] "Self"        "-"           "documenting" "code"        "?"          
+#> [6] "?"          
+#> 
+#> doc4 :
+#> [1] "1,000,000" "for"       "50"        "is"        "gr8"       "4ever"    
+#> 
 tokenizers::tokenize_characters(txt[3], strip_non_alphanum = FALSE) |>
     tokens(remove_punct = TRUE)
-#> Error in loadNamespace(x): there is no package called 'tokenizers'
+#> Tokens consisting of 1 document.
+#> doc3 :
+#>  [1] "s" "e" "l" "f" "d" "o" "c" "u" "m" "e" "n" "t"
+#> [ ... and 7 more ]
+#> 
 tokenizers::tokenize_sentences(
     "The quick brown fox.  It jumped over the lazy dog.") |>
     tokens()
-#> Error in loadNamespace(x): there is no package called 'tokenizers'
+#> Tokens consisting of 1 document.
+#> text1 :
+#> [1] "The quick brown fox."         "It jumped over the lazy dog."
+#> 
  # \dontrun{}
 ```

@@ -13,7 +13,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">quanteda</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">4.4.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">4.5.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -66,14 +66,16 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="4.4.1" id="quanteda-441">quanteda 4.4.1<a class="anchor" aria-label="anchor" href="#quanteda-441"></a></h2>
+<h2 class="pkg-version" data-toc-text="4.5" id="quanteda-45">quanteda 4.5<a class="anchor" aria-label="anchor" href="#quanteda-45"></a></h2>
 <div class="section level3">
-<h3 id="bug-fixes-4-4-1">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-4-4-1"></a></h3>
+<h3 id="bug-fixes-4-5">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-4-5"></a></h3>
 <ul><li>Fix <code><a href="../reference/dictionary.html">dictionary()</a></code> to handle <code>separator</code> correctly when a YAML file is provided.</li>
 </ul></div>
 <div class="section level3">
-<h3 id="changes-and-additions-4-4-1">Changes and additions<a class="anchor" aria-label="anchor" href="#changes-and-additions-4-4-1"></a></h3>
-<ul><li><p>Improve <code>print</code> methods for corpus, tokens, dfm, fcm, dictionary and kwic objects to wrap long lines at <code>getOption("width")</code>.</p></li>
+<h3 id="changes-and-additions-4-5">Changes and additions<a class="anchor" aria-label="anchor" href="#changes-and-additions-4-5"></a></h3>
+<ul><li><p>Added <code><a href="../reference/tokens_recompile.html">tokens_recompile()</a></code> to reassign token IDs and remove duplicate or unused types from <code>tokens</code> and <code>tokens_xptr</code> objects. (<a href="https://github.com/quanteda/quanteda/issues/2506" class="external-link">#2506</a>)</p></li>
+<li><p>Query functions such as <code><a href="../reference/types.html">types()</a></code>, <code><a href="../reference/ntoken.html">ntype()</a></code>, and <code><a href="../reference/ntoken.html">ntoken()</a></code> no longer recompile <code>tokens_xptr</code> objects. Subsetting documents now preserves the complete type table, consistently with <code>dfm</code> objects. (<a href="https://github.com/quanteda/quanteda/issues/2506" class="external-link">#2506</a>)</p></li>
+<li><p>Improve <code>print</code> methods for corpus, tokens, dfm, fcm, dictionary and kwic objects to wrap long lines at <code>getOption("width")</code>.</p></li>
 <li><p>Added <code><a href="../reference/tokens_match.html">tokens_match()</a></code> to match token IDs in separately tokenized objects.</p></li>
 <li><p>Added an <code><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix()</a></code> method for <code>tokens</code> objects, returning a dense [document × position] integer matrix of token IDs, with <code>length</code>, <code>extract</code>, and <code>drop</code> arguments. (<a href="https://github.com/quanteda/quanteda/issues/2497" class="external-link">#2497</a>)</p></li>
 <li><p><code><a href="../reference/as.tokens.html">as.tensor()</a></code> for <code>tokens</code> now returns a dense tensor rather than a sparse COO tensor, gains an <code>extract</code> argument for selecting documents, and passes <code>...</code> through to <code><a href="https://torch.mlverse.org/docs/reference/torch_tensor.html" class="external-link">torch::torch_tensor()</a></code>. (<a href="https://github.com/quanteda/quanteda/issues/2497" class="external-link">#2497</a>)</p></li>
@@ -525,7 +527,7 @@
 <li><p>All textmodels and related functions have been moved to a new package <strong>quanteda.textmodels</strong>. This makes them easier to maintain and update, and keeps the size of the core package down.</p></li>
 <li>
 <p><strong>quanteda</strong> v2 implements major changes to the <code><a href="../reference/tokens.html">tokens()</a></code> constructor. These are designed to simplify the code and its maintenance in <strong>quanteda</strong>, to allow users to work with other (external) tokenizers, and to improve consistency across the tokens processing options. Changes include:</p>
-<ul><li><p>A new method <code>tokens.list(x, ...)</code> constructs a <code>tokens</code> object from named list of characters, allowing users to tokenize texts using some other function (or package) such as <code>tokenize_words()</code>, <code>tokenize_sentences()</code>, or <code>tokenize_tweets()</code> from the <strong>tokenizers</strong> package, or the list returned by <code>spacyr::spacy_tokenize()</code>. This allows users to use their choice of tokenizer, as long as it returns a named list of characters. With <code>tokens.list()</code>, all tokens processing (<code>remove_*</code>) options can be applied, or the list can be converted directly to a <code>tokens</code> object without processing using <code>as.tokens.list()</code>.</p></li>
+<ul><li><p>A new method <code>tokens.list(x, ...)</code> constructs a <code>tokens</code> object from named list of characters, allowing users to tokenize texts using some other function (or package) such as <code>tokenize_words()</code>, <code>tokenize_sentences()</code>, or <code>tokenize_tweets()</code> from the <strong>tokenizers</strong> package, or the list returned by <code><a href="http://spacyr.quanteda.io/reference/spacy_tokenize.html" class="external-link">spacyr::spacy_tokenize()</a></code>. This allows users to use their choice of tokenizer, as long as it returns a named list of characters. With <code>tokens.list()</code>, all tokens processing (<code>remove_*</code>) options can be applied, or the list can be converted directly to a <code>tokens</code> object without processing using <code>as.tokens.list()</code>.</p></li>
 <li><p>All tokens options are now <em>intervention</em> options, to split or remove things that by default are not split or removed. All <code>remove_*</code> options to <code><a href="../reference/tokens.html">tokens()</a></code> now remove them from tokens objects by calling <code>tokens.tokens()</code>, after constructing the object. “Pre-processing” is now actually post-processing using <code>tokens_*()</code> methods internally, after a conservative tokenization on token boundaries. This both improves performance and improves consistency in handling special characters (e.g. Twitter characters) across different tokenizer engines. (<a href="https://github.com/quanteda/quanteda/issues/1503" class="external-link">#1503</a>, <a href="https://github.com/quanteda/quanteda/issues/1446" class="external-link">#1446</a>, <a href="https://github.com/quanteda/quanteda/issues/1801" class="external-link">#1801</a>)</p></li>
 </ul><p>Note that <code>tokens.tokens()</code> will remove what is found, but cannot “undo” a removal – for instance it cannot replace missing punctuation characters if these have already been removed.</p>
 <ul><li><p>The option <code>remove_hyphens</code> is removed and deprecated, but replaced by <code>split_hyphens</code>. This preserves infix (internal) hyphens rather than splitting them. This behaviour is implemented in both the <code>what = "word"</code> and <code>what = "word2"</code> tokenizer options. This option is <code>FALSE</code> by default.</p></li>

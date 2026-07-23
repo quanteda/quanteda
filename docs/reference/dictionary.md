@@ -41,23 +41,23 @@ dictionary(
 
   `"wordstat"`
 
-  :   format used by Provalis Research's WordStat software
+  : format used by Provalis Research's WordStat software
 
   `"LIWC"`
 
-  :   format used by the Linguistic Inquiry and Word Count software
+  : format used by the Linguistic Inquiry and Word Count software
 
   `"yoshikoder"`
 
-  :   format used by Yoshikoder software
+  : format used by Yoshikoder software
 
   `"lexicoder"`
 
-  :   format used by Lexicoder
+  : format used by Lexicoder
 
   `"YAML"`
 
-  :   the standard YAML format
+  : the standard YAML format
 
 - separator:
 

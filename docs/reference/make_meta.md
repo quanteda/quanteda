@@ -7,7 +7,7 @@ Internal functions to create a list of the meta fields
 ``` r
 make_meta(class, inherit = NULL, ...)
 
-make_meta_system(inherit = NULL)
+make_meta_system(inherit = NULL, ...)
 
 make_meta_corpus(inherit = NULL, ...)
 

@@ -77,13 +77,13 @@ str(toks)
 #>  - attr(*, "meta")=List of 3
 #>   ..$ system:List of 5
 #>   .. ..$ package-version:Classes 'package_version', 'numeric_version'  hidden list of 1
-#>   .. .. ..$ : int [1:3] 4 4 1
+#>   .. .. ..$ : int [1:4] 4 5 0 9000
 #>   .. ..$ r-version      :Classes 'R_system_version', 'package_version', 'numeric_version'  hidden list of 1
-#>   .. .. ..$ : int [1:3] 4 6 1
-#>   .. ..$ system         : Named chr [1:3] "Windows" "x86-64" "watan"
+#>   .. .. ..$ : int [1:3] 4 6 0
+#>   .. ..$ system         : Named chr [1:3] "Darwin" "arm64" "kbenoit"
 #>   .. .. ..- attr(*, "names")= chr [1:3] "sysname" "machine" "user"
-#>   .. ..$ directory      : chr "C:/Users/watan/Repo/quanteda/docs/reference"
-#>   .. ..$ created        : Date[1:1], format: "2026-07-22"
+#>   .. ..$ directory      : chr "/Users/kbenoit/Dropbox/GitHub/quanteda/quanteda/docs/reference"
+#>   .. ..$ created        : Date[1:1], format: "2026-07-23"
 #>   ..$ object:List of 7
 #>   .. ..$ unit        : chr "documents"
 #>   .. ..$ what        : chr "word"

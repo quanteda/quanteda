@@ -42,54 +42,53 @@ convert(x, to = c("data.frame", "json"), pretty = FALSE, ...)
 
   `"lda"`
 
-  :   a list with components "documents" and "vocab" as needed by the
-      function
-      [lda.collapsed.gibbs.sampler](https://rdrr.io/pkg/lda/man/lda.collapsed.gibbs.sampler.html)
-      from the lda package
+  : a list with components "documents" and "vocab" as needed by the
+    function
+    [lda.collapsed.gibbs.sampler](https://rdrr.io/pkg/lda/man/lda.collapsed.gibbs.sampler.html)
+    from the lda package
 
   `"tm"`
 
-  :   a DocumentTermMatrix from the tm package. Note: The tm package
-      version of `as.TermDocumentMatrix()` allows a `weighting`
-      argument, which supplies a weighting function for
-      `TermDocumentMatrix()`. Here the default is for term frequency
-      weighting. If you want a different weighting, apply the weights
-      after converting using one of the tm functions. For other
-      available weighting functions from the tm package, see
-      TermDocumentMatrix.
+  : a DocumentTermMatrix from the tm package. Note: The tm package
+    version of `as.TermDocumentMatrix()` allows a `weighting` argument,
+    which supplies a weighting function for `TermDocumentMatrix()`. Here
+    the default is for term frequency weighting. If you want a different
+    weighting, apply the weights after converting using one of the tm
+    functions. For other available weighting functions from the tm
+    package, see TermDocumentMatrix.
 
   `"stm"`
 
-  :   the format for the stm package
+  : the format for the stm package
 
   `"austin"`
 
-  :   the `wfm` format from the **austin** package
+  : the `wfm` format from the **austin** package
 
   `"topicmodels"`
 
-  :   the "dtm" format as used by the topicmodels package
+  : the "dtm" format as used by the topicmodels package
 
   `"lsa"`
 
-  :   the "textmatrix" format as used by the lsa package
+  : the "textmatrix" format as used by the lsa package
 
   `"data.frame"`
 
-  :   a data.frame of without row.names, in which documents are rows,
-      and each feature is a variable (for a dfm), or each text and its
-      document variables form a row (for a corpus)
+  : a data.frame of without row.names, in which documents are rows, and
+    each feature is a variable (for a dfm), or each text and its
+    document variables form a row (for a corpus)
 
   `"json"`
 
-  :   (corpus only) convert a corpus and its document variables into
-      JSON format, using the format described in
-      [jsonlite::toJSON()](https://jeroen.r-universe.dev/jsonlite/reference/fromJSON.html)
+  : (corpus only) convert a corpus and its document variables into JSON
+    format, using the format described in
+    [jsonlite::toJSON()](https://jeroen.r-universe.dev/jsonlite/reference/fromJSON.html)
 
   `"tripletlist"`
 
-  :   a named "triplet" format list consisting of `document`, `feature`,
-      and `frequency`
+  : a named "triplet" format list consisting of `document`, `feature`,
+    and `frequency`
 
 - ...:
 
