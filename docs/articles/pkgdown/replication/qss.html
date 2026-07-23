@@ -28,7 +28,7 @@
 
     <a class="navbar-brand me-2" href="../../../index.html">quanteda</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">4.4.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">4.5.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -127,6 +127,8 @@ Federalist Papers as a data frame and create a <strong>quanteda</strong>
 corpus.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># use readtext package to import all documents as a dataframe</span></span>
+<span><span class="co"># need first to install this: </span></span>
+<span><span class="co"># pak::pak("kosukeimai/qss-package", build_vignettes = TRUE)</span></span>
 <span><span class="va">corpus_texts</span> <span class="op">&lt;-</span> <span class="fu">readtext</span><span class="fu">::</span><span class="fu"><a href="https://readtext.quanteda.io/reference/readtext.html" class="external-link">readtext</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/federalist/"</span>, package <span class="op">=</span> <span class="st">"qss"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># create docvar with number of paper</span></span>
