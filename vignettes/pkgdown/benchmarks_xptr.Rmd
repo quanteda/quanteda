@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
     fig.height = 2, 
     dpi = 150,
     warning = FALSE,
-    cache = TRUE
+    cache = FALSE
 )
 ```
 
@@ -31,12 +31,11 @@ data_corpus_guardian <- quanteda.corpora::download("data_corpus_guardian")
 
 **quanteda** version 4.0 can process textual data significantly faster than its earlier versions thanks to the `tokens_xptr` object and a new glob pattern matching mechanism. More information on the features and advantages of the new xptr object are available in a [separate vignette](./articles/pkgdown/tokens_xptr.html).
 
-How we performed the comparison: we compare the `tokens` and `tokens_xptr` on a Windows laptop with AMD Ryzen 7 PRO processor (8 cores). We used sentences from 10,000 English-language news articles in this benchmarking.
+How we performed the comparison: we compare the `tokens` and `tokens_xptr` on a Windows desktop with Core i7 processor (20 cores). We used sentences from 6,000 English-language news articles in this benchmarking.
 
-We repeated the same operation using different versions of the same functions to get the distribution of execution time. The result shows that the execution time of many v4.0 functions is about half of their version 3.3 counterparts.
+We repeated the same operation on `tokens` and `tokens_xptr` objects to get the distribution of execution time. The result shows that operations on the new object is significantly faster than on the old object.
 
 ```{r getting-started}
-# remotes::install_github("quanteda/quanteda3")
 library("quanteda")
 library("ggplot2")
 
@@ -56,7 +55,7 @@ sum(ntoken(xtoks)) # the total number of tokens
 
 ## Modifying tokens objects
 
-`as.tokens_xptr()` is inserted before functions calls to deep-copy the original object. This is only necessary to repeat the same operation in benchmarking, so the performance advantage of the `tokens_xptr` object is even greater in actual pipeline.
+`as.tokens_xptr()` is inserted before functions calls to deep-copy the original object. This is necessary only to repeat the same operation in benchmarking, so the performance advantage of the `tokens_xptr` object is even greater in actual projects.
 
 ```{r modifying-tokens}
 # generate n-grams
@@ -134,15 +133,21 @@ microbenchmark::microbenchmark(
 ) |> autoplot(log = FALSE)
 ```
 
-## Simple pipeline: tokenising a corpus and creating a document-feature matrix
+## Simple pipeline
+
+Selecting features, generating n-grams, grouping documents and creating a document-feature matrix.
 
 ```{r simple-pipeline}
 microbenchmark::microbenchmark(
-    tokens = tokens(corp) |> 
+    tokens = toks |> 
         tokens_remove(stopwords("en"), padding = TRUE) |> 
+        tokens_ngrams() |>
+        tokens_group() |>
         dfm(remove_padding = TRUE),
-    tokens_xptr = tokens(corp, xptr = TRUE) |> 
+    tokens_xptr = as.tokens_xptr(xtoks) |> 
         tokens_remove(stopwords("en"), padding = TRUE) |> 
+        tokens_ngrams() |>
+        tokens_group() |>
         dfm(remove_padding = TRUE),
     times = 10
 ) |> autoplot(log = FALSE)
