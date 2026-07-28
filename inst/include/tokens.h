@@ -24,7 +24,7 @@ class TokensObj {
         Texts texts;
         Types types;
         bool recompiled;
-        bool padded;
+        bool padded; // NOTE: consider removing
         
         // functions
         void recompile();
