@@ -53,13 +53,13 @@ tokens_lookup(tokens(txt), dictionary = data_dictionary_LSD2015, exclusive = FAL
 ## text1 :
 ## [1] "This"   "NEGATIVE"   "policy"   "will"   "NEG_POSITIVE"   "POSITIVE"   "POSITIVE" "."
 
-# notice that double-counting of negated and non-negated terms is avoided 
+# notice that double-counting of negated and non-negated terms is avoided
 # when using nested_scope = "dictionary"
-tokens_lookup(tokens(txt), dictionary = data_dictionary_LSD2015, 
+tokens_lookup(tokens(txt), dictionary = data_dictionary_LSD2015,
               exclusive = FALSE, nested_scope = "dictionary")
 ## tokens from 1 document.
 ## text1 :
-## [1] "This"   "NEGATIVE"   "policy"   "will"   "NEG_POSITIVE" "POSITIVE."   
+## [1] "This"   "NEGATIVE"   "policy"   "will"   "NEG_POSITIVE" "POSITIVE."
 
 # compound neg_negative and neg_positive tokens before creating a dfm object
 toks <- tokens_compound(tokens(txt), data_dictionary_LSD2015)
