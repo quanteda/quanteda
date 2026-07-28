@@ -941,16 +941,37 @@ test_that("dfm works with no-breaking space (#2407)", {
 
 test_that("trim is working", { 
 
-    txt <- c("a b c", "b b b a", "c c b")
-    toks <- tokens(txt)
+    txt <- c("a b , c", "b b b a", "c , c b")
+    toks <- tokens(txt, remove_punct = TRUE, padding = TRUE)
     
     expect_equal(
-        dfm(toks) ,
+        dfm(toks),
         dfm(tokens_match(toks, c("a", "b", "c", "x"))) 
     )
     
     expect_equal(
-        dfm_match(dfm(toks), c("a", "b", "c", "x")) ,
-        dfm(tokens_match(toks, c("a", "b", "c", "x")), trim = FALSE, tolower = FALSE) 
+        dfm_match(dfm(toks), c("a", "b", "c", "x")),
+        dfm(tokens_match(toks, c("a", "b", "c", "x")), remove_padding = TRUE, trim = FALSE)
     )
+    
+    expect_equal(
+        featnames(dfm(toks[3], remove_padding = FALSE, trim = FALSE)),
+        c("", "a", "b", "c")
+    )
+    
+    expect_equal(
+        featnames(dfm(toks[3], remove_padding = TRUE, trim = FALSE)),
+        c("a", "b", "c")
+    )
+    
+    expect_equal(
+        featnames(dfm(toks[3], remove_padding = FALSE, trim = TRUE)),
+        c("", "c", "b")
+    )
+    
+    expect_equal(
+        featnames(dfm(toks[3], remove_padding = TRUE, trim = TRUE)),
+        c("c", "b")
+    )
+
 })

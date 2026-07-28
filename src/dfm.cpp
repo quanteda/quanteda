@@ -3,7 +3,7 @@
 using namespace quanteda;
 
 // [[Rcpp::export]]
-S4 cpp_dfm(TokensPtr xptr) {
+S4 cpp_dfm(TokensPtr xptr, bool padding = true) {
     
     xptr->recompile();
     std::size_t H = xptr->texts.size();
@@ -17,6 +17,7 @@ S4 cpp_dfm(TokensPtr xptr) {
     slot_i.reserve(N);
     slot_x.reserve(N);
     slot_p.reserve(H + 1);
+    bool padded = false;
     int p = 0;
     
     slot_p.push_back(p);
@@ -29,6 +30,13 @@ S4 cpp_dfm(TokensPtr xptr) {
         std::sort(text.begin(), text.end()); // rows must be sorted in dgCMatrix
         int n = 1;
         for (std::size_t i = 0; i < I; i++) {
+            if (text[i] == 0) {
+                if (padding) {
+                    padded = true;
+                } else {
+                    continue;
+                }
+            }
             if (i + 1 == text.size() || text[i] != text[i + 1]) {
                 slot_i.push_back(text[i]);
                 slot_x.push_back(n);
@@ -42,23 +50,27 @@ S4 cpp_dfm(TokensPtr xptr) {
     }
     IntegerVector slot_p_ = Rcpp::wrap(slot_p);
     slot_p.clear();
+    slot_p.shrink_to_fit();
     //Rcout << "p: " << slot_p_ << "\n";
+    
     DoubleVector slot_x_ = Rcpp::wrap(slot_x);
     slot_x.clear();
+    slot_x.shrink_to_fit();
     //Rcout << "x: " << slot_x_ << "\n";
+    
     IntegerVector slot_i_ = Rcpp::wrap(slot_i);
     slot_i.clear();
+    slot_i.shrink_to_fit();
     //Rcout << "i: " << slot_i_ << "\n";
+    
     CharacterVector types_ = encode(xptr->types);
-    
-    //Rcout << "types: " << types_ << "\n";
-    
-    if (!xptr->padded) {
+    if (!padded) {
         slot_i_ = slot_i_ - 1; // use zero for other tokens
     } else {
         G++;
         types_.push_front("");
     }
+    //Rcout << "types: " << types_ << "\n";
     
     IntegerVector dim_ = IntegerVector::create(G, H);
     List dimnames_ = List::create(types_, R_NilValue);
