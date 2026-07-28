@@ -12,28 +12,29 @@ jobs:
   R-CMD-check:
     runs-on: ${{ matrix.config.os }}
 
-    name: ${{ matrix.config.os }} (${{ matrix.config.r }})
+    name: ${{ matrix.config.os }} (${{ matrix.config.r }}, ${{ matrix.config.lib}})
 
     strategy:
       fail-fast: false
       matrix:
         config:
-          - {os: macos-latest,   r: 'release'}
-          - {os: windows-latest, r: 'release'}
-          - {os: ubuntu-latest,   r: 'devel', http-user-agent: 'release'}
-          - {os: ubuntu-latest,   r: 'release'}
-          - {os: ubuntu-latest,   r: 'oldrel-1'}
+          - {os: macos-latest,   r: 'release', lib: "tbb"}
+          - {os: windows-latest, r: 'release', lib: "tbb"}
+          - {os: ubuntu-latest,   r: 'devel', http-user-agent: 'release', lib: "tbb"}
+          - {os: ubuntu-latest,   r: 'release',  lib: "tbb"}
+          - {os: ubuntu-latest,   r: 'oldrel-1', lib: "tbb"}
+          - {os: ubuntu-latest,   r: 'release',  lib: "no-tbb"}
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       R_KEEP_PKG_SOURCE: yes
     
     steps:
-      - if: matrix.config.os == 'ubuntu-latest'
+      - if: matrix.config.os == 'ubuntu-latest' && matrix.config.lib == 'tbb'
         run: |
             sudo apt update
             sudo apt install libtbb-dev
-      - if: matrix.config.os == 'macos-latest'
+      - if: matrix.config.os == 'macos-latest' && matrix.config.lib == 'tbb'
         run: |
             brew update
             brew install tbb
