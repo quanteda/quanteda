@@ -122,7 +122,7 @@ TokensPtr cpp_tokens_segment(TokensPtr xptr,
         });
     });
 #else
-    for (std::size_t h = 0; h < texts.size(); h++) {
+    for (std::size_t h = 0; h < H; h++) {
         temp[h] = segment(xptr->texts[h], N, spans, set_patterns, remove, position);
     }
 #endif
