@@ -20,16 +20,17 @@ jobs:
         config:
           - {os: macos-latest,   r: 'release'}
           - {os: windows-latest, r: 'release'}
-          - {os: ubuntu-latest,   r: 'devel', http-user-agent: 'release'}
-          - {os: ubuntu-latest,   r: 'release'}
-          - {os: ubuntu-latest,   r: 'oldrel-1'}
+          - {os: ubuntu-latest,   r: 'devel', http-user-agent: 'release', tbb = true}
+          - {os: ubuntu-latest,   r: 'release',  tbb = true}
+          - {os: ubuntu-latest,   r: 'oldrel-1', tbb = true}
+          - {os: ubuntu-latest,   r: 'release',  tbb = false}
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       R_KEEP_PKG_SOURCE: yes
     
     steps:
-      - if: matrix.config.os == 'ubuntu-latest'
+      - if: matrix.config.os == 'ubuntu-latest' && matrix.config.tbb
         run: |
             sudo apt update
             sudo apt install libtbb-dev
