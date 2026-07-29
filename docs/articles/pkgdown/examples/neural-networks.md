@@ -1,7 +1,7 @@
 # Example: Convolutional Neural Network
 
 In this vignette, we show how to implement neural networks using the
-**quanteda** and **torch** packages. In the version 4.4.1 of
+**quanteda** and **torch** packages. In the version 4.5.0 of
 **quanteda**, we added multiple functions to make it an infrastructure
 for developing neural networks. This example focuses on a convolution
 neural network (CNN) but other types of models such as recurrent neural
@@ -10,7 +10,7 @@ the **luz** package.
 
 The code below is based on [an
 example](https://mlverse.github.io/luz/articles/examples/text-classification.html)
-published in the website for **luz**, but the CNN model is trained on
+published on **luz**’s website, but the CNN model is trained on
 **quanteda**’s tokens object. This makes the neural network models
 consistent with other text analyses tools and easier to integrate in
 existing pipelines.
@@ -82,7 +82,7 @@ toks <- tokens(corp, remove_punct = TRUE) %>%
 ##  ...preserving social media tags (#, @)
 ##  ...removing separators, punctuation
 ##  ...177,293 unique types
-##  ...complete, elapsed time: 8.03 seconds.
+##  ...complete, elapsed time: 9.94 seconds.
 ## Finished constructing tokens from 50,000 documents
 ## tokens_tolower() changed from 177,293 types (50,000 documents, 11,454,169 tokens) to 147,281 types (50,000 documents, 11,454,169 tokens)
 ## tokens_trim() changed from 147,281 types (50,000 documents, 11,454,169 tokens) to 20,000 types (50,000 documents, 11,072,518 tokens)
@@ -106,7 +106,7 @@ sets using
 [`tokens_subset()`](https://quanteda.io/reference/tokens_subset.md), we
 have to convert it to a
 [tokens_xptr](https://quanteda.io/articles/pkgdown/tokens_xptr.md)
-object. This in not only for the quickly accessing the documents but
+object. This is not only for the quickly accessing the documents but
 also for preserving the original token IDs
 ([`tokens_subset()`](https://quanteda.io/reference/tokens_subset.md)
 reassign tokens IDs when the list based tokens object is provided).
@@ -157,11 +157,11 @@ The code is identical to the original example except that
 a module for word vectors in the embedding layer `nn_embedding`,
 followed by modules for convolution layers
 [`nn_conv1d()`](https://torch.mlverse.org/docs/reference/nn_conv1d.html):
-the first layer captures the sequence tokens such as phrases; the second
-layer further abstract the occurrences sequences. Finally, the dense
-feed-forward network
+the first layer captures the sequence of tokens such as phrases; the
+second layer further abstracts the occurrences sequences. Finally, the
+dense feed-forward network
 [`nn_linear()`](https://torch.mlverse.org/docs/reference/nn_linear.html)
-predict the sentiment of documents.
+predicts the sentiment of documents.
 
 ``` r
 
@@ -203,7 +203,7 @@ model <- nn_module(
 
 ## Train the model
 
-The hierarchical CNN model is trained trained over three iterations with
+The hierarchical CNN model is trained over three iterations with
 hyper-parameters, `vocab_size` and `embedding_dim`.
 
 ``` r
@@ -216,13 +216,6 @@ fitted_model <- model %>%
     ) %>% 
     set_hparams(vocab_size = vocab_size, embedding_dim = embedding_dim) %>% 
     fit(train_ds, epochs = 3)
-## Warning: Some torch operators might not yet be implemented for the MPS device. A
-## temporary fix is to set the `PYTORCH_ENABLE_MPS_FALLBACK=1` to use the CPU as a
-## fall back for those operators:
-## ℹ Add `PYTORCH_ENABLE_MPS_FALLBACK=1` to your `.Renviron` file, for example use
-##   `usethis::edit_r_environ()`.
-## ✖ Using `Sys.setenv()` doesn't work because the env var must be set before R
-##   starts.
 ```
 
 ## Test the model
@@ -234,15 +227,8 @@ Evaluate the fitted model using the test set.
 fitted_model %>% 
     evaluate(test_ds) %>% 
     print()
-## Warning: Some torch operators might not yet be implemented for the MPS device. A
-## temporary fix is to set the `PYTORCH_ENABLE_MPS_FALLBACK=1` to use the CPU as a
-## fall back for those operators:
-## ℹ Add `PYTORCH_ENABLE_MPS_FALLBACK=1` to your `.Renviron` file, for example use
-##   `usethis::edit_r_environ()`.
-## ✖ Using `Sys.setenv()` doesn't work because the env var must be set before R
-##   starts.
 ## A `luz_module_evaluation`
 ## ── Results ─────────────────────────────────────────────────────────────────────
-## loss: 0.3851
-## acc: 0.824
+## loss: 0.4043
+## acc: 0.8183
 ```

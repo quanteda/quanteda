@@ -990,28 +990,28 @@ if (require(topicmodels)) {
     get_terms(my_lda_fit20, 5)
 }
 ## Loading required package: topicmodels
-##      Topic 1   Topic 2       Topic 3      Topic 4     Topic 5     Topic 6     
-## [1,] "levy"    "alternative" "system"     "taoiseach" "taoiseach" "million"   
-## [2,] "million" "citizenship" "leadership" "fine"      "employees" "support"   
-## [3,] "carbon"  "wealth"      "ministers"  "gael"      "rate"      "welfare"   
-## [4,] "change"  "adjustment"  "plan"       "may"       "referred"  "investment"
-## [5,] "welfare" "breaks"      "hit"        "irish"     "debate"    "back"      
-##      Topic 7  Topic 8       Topic 9   Topic 10   Topic 11   Topic 12 
-## [1,] "fianna" "kind"        "worst"   "families" "measures" "child"  
-## [2,] "fáil"   "imagination" "earners" "real"     "election" "benefit"
-## [3,] "side"   "policies"    "welfare" "workers"  "hear"     "day"    
-## [4,] "level"  "wit"         "want"    "water"    "person"   "bank"   
-## [5,] "third"  "create"      "still"   "family"   "benefit"  "today"  
-##      Topic 13       Topic 14   Topic 15  Topic 16   Topic 17     Topic 18   
-## [1,] "society"      "fianna"   "welfare" "failed"   "million"    "care"     
-## [2,] "enterprising" "fáil"     "system"  "strategy" "reduced"    "welfare"  
-## [3,] "sense"        "national" "fáil"    "needed"   "investment" "allowance"
-## [4,] "equal"        "irish"    "child"   "vision"   "increases"  "per"      
-## [5,] "nation"       "support"  "fianna"  "seen"     "spending"   "hospital" 
-##      Topic 19    Topic 20  
-## [1,] "taoiseach" "measures"
-## [2,] "coherent"  "level"   
-## [3,] "family"    "million" 
-## [4,] "society"   "welfare" 
-## [5,] "proposed"  "spending"
+##      Topic 1      Topic 2        Topic 3  Topic 4    Topic 5     Topic 6    
+## [1,] "measures"   "society"      "fianna" "change"   "day"       "care"     
+## [2,] "million"    "enterprising" "fáil"   "scheme"   "benefit"   "welfare"  
+## [3,] "rate"       "sense"        "side"   "million"  "bank"      "per"      
+## [4,] "investment" "equal"        "level"  "rate"     "back"      "allowance"
+## [5,] "set"        "nation"       "third"  "measures" "ministers" "hit"      
+##      Topic 7   Topic 8       Topic 9     Topic 10       Topic 11   Topic 12   
+## [1,] "benefit" "kind"        "taoiseach" "welfare"      "system"   "taoiseach"
+## [2,] "child"   "imagination" "rate"      "fáil"         "welfare"  "fine"     
+## [3,] "day"     "policies"    "problem"   "government's" "child"    "gael"     
+## [4,] "bank"    "wit"         "employees" "fianna"       "taxation" "irish"    
+## [5,] "fianna"  "create"      "referred"  "stimulus"     "deficit"  "may"      
+##      Topic 13   Topic 14    Topic 15      Topic 16  Topic 17   Topic 18 
+## [1,] "fianna"   "failed"    "confidence"  "levy"    "spending" "burden" 
+## [2,] "fáil"     "strategy"  "employment"  "million" "review"   "today's"
+## [3,] "national" "needed"    "welfare"     "carbon"  "million"  "per"    
+## [4,] "support"  "ministers" "development" "change"  "pension"  "today"  
+## [5,] "irish"    "system"    "continue"    "welfare" "reduce"   "widows" 
+##      Topic 19 Topic 20    
+## [1,] "fianna" "million"   
+## [2,] "fáil"   "support"   
+## [3,] "world"  "investment"
+## [4,] "irish"  "welfare"   
+## [5,] "ensure" "back"
 ```
