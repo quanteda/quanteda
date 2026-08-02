@@ -64,13 +64,11 @@ test_that("kwic deprecations work as expected", {
 })
 
 test_that("texts produces a defunct message", {
-    expect_error(
-        texts(data_corpus_inaugural),
-        "`texts\\(\\)` was deprecated in quanteda 3\\.0 and is now.*defunct\\."
+    lifecycle::expect_defunct(
+        texts(data_corpus_inaugural)
     )
-    expect_error(
-        texts(data_corpus_inaugural, groups = Party),
-        "`texts\\(x, groups = \\.\\.\\.\\)` was deprecated in quanteda 3\\.0.*defunct\\."
+    lifecycle::expect_defunct(
+        texts(data_corpus_inaugural, groups = Party)
     )
 })
 
@@ -89,13 +87,11 @@ test_that("nsentence produces a deprecated message", {
     
     lifecycle::expect_deprecated(
         nsentence("This is one.  And two."),
-        "`nsentence()` was deprecated in quanteda 4.0",
+        "`nsentence()` was deprecated in quanteda 4.0.",
         fixed = TRUE
     )
-    expect_error(
-        texts(data_corpus_inaugural, groups = Party),
-        "`texts(x, groups = ...)` was deprecated in quanteda 3.0 and is now defunct",
-        fixed = TRUE
+    lifecycle::expect_defunct(
+        texts(data_corpus_inaugural, groups = Party)
     )
     
     rlang::local_options(lifecycle_verbosity = "default")
@@ -107,12 +103,12 @@ test_that("ntoken produces a deprecated message", {
     
     lifecycle::expect_deprecated(
         ntoken("This is one.  And two."),
-        "`ntoken.character()` was deprecated in quanteda 4.0",
+        "`ntoken.character()` was deprecated in quanteda 4.0.",
         fixed = TRUE
     )
     lifecycle::expect_deprecated(
         ntoken(corpus("This is one.  And two.")),
-        "`ntoken.corpus()` was deprecated in quanteda 4.0",
+        "`ntoken.corpus()` was deprecated in quanteda 4.0.",
         fixed = TRUE
     )
     
@@ -125,12 +121,12 @@ test_that("ntype produces a deprecated message", {
     
     lifecycle::expect_deprecated(
         ntype("This is one.  And two."),
-        "`ntype.character()` was deprecated in quanteda 4.0",
+        "`ntype.character()` was deprecated in quanteda 4.0.",
         fixed = TRUE
     )
     lifecycle::expect_deprecated(
         ntype(corpus("This is one.  And two.")),
-        "`ntype.corpus()` was deprecated in quanteda 4.0",
+        "`ntype.corpus()` was deprecated in quanteda 4.0.",
         fixed = TRUE
     )
     
