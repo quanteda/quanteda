@@ -1,27 +1,17 @@
 # Extensions for and from spacy_parse objects
 
 These functions provide quanteda methods for spacyr objects, and also
-extend [spacy_parse](http://spacyr.quanteda.io/reference/spacy_parse.md)
-and
-[spacy_tokenize](http://spacyr.quanteda.io/reference/spacy_tokenize.md)
-to work directly with [corpus](https://quanteda.io/reference/corpus.md)
-objects.
-
-## Arguments
-
-- x:
-
-  an object returned by `spacy_parse`, or (for `spacy_parse`) a
-  [corpus](https://quanteda.io/reference/corpus.md) object
-
-- ...:
-
-  not used for these functions
+extend spacy_parse and spacy_tokenize to work directly with
+[corpus](https://quanteda.io/reference/corpus.md) objects.
 
 ## Details
 
 `spacy_parse(x, ...)` and `spacy_tokenize(x, ...)` work directly on
 quanteda [corpus](https://quanteda.io/reference/corpus.md) objects.
+
+In the methods below, `x` is an object returned by `spacy_parse` (or,
+for `spacy_parse`, a [corpus](https://quanteda.io/reference/corpus.md)
+object), and `...` is not used.
 
 `docnames(x)` returns the document names
 

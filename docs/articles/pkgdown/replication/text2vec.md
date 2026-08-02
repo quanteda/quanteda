@@ -32,7 +32,7 @@ feats <- dfm(wiki_toks, verbose = TRUE) |>
     featnames()
 ## Creating a dfm from a tokens object...
 ##  ...lowercasing
-##  ...complete, elapsed time: 0.81 seconds.
+##  ...complete, elapsed time: 0.8 seconds.
 ## Finished constructing a 1 x 253,854 sparse dfm.
 
 # leave the pads so that non-adjacent words will not become adjacent

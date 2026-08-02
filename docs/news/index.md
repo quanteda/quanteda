@@ -340,7 +340,7 @@ CRAN release: 2024-04-04
   that require a temporary tokenisation are now deprecated. This
   includes:
   - [`nsentence()`](https://quanteda.io/reference/nsentence.md) – use
-    `lengths(tokens(x, what = "sentence"))` instead;\
+    `lengths(tokens(x, what = "sentence"))` instead;  
   - [`ntype()`](https://quanteda.io/reference/ntoken.md) – use
     `ntype(tokens(x))` instead; and.
   - [`ntoken()`](https://quanteda.io/reference/ntoken.md) – use
@@ -402,7 +402,7 @@ CRAN release: 2023-04-07
     - the URL pattern
   - creates a new tokens_restore(), implemented in C++, to replace the
     older `preserve_special()` that rejoined splits created by the
-    default stringi tokeniser machinery.\
+    default stringi tokeniser machinery.  
   - makes some technical improvements to internal tokenisation
     functions, such as moving the ellipsis to the end of the function,
     to allow more modularity in developing future tokenisers.
@@ -1040,12 +1040,11 @@ CRAN release: 2020-03-18
       using some other function (or package) such as `tokenize_words()`,
       `tokenize_sentences()`, or `tokenize_tweets()` from the
       **tokenizers** package, or the list returned by
-      [`spacyr::spacy_tokenize()`](http://spacyr.quanteda.io/reference/spacy_tokenize.md).
-      This allows users to use their choice of tokenizer, as long as it
-      returns a named list of characters. With `tokens.list()`, all
-      tokens processing (`remove_*`) options can be applied, or the list
-      can be converted directly to a `tokens` object without processing
-      using `as.tokens.list()`.
+      `spacyr::spacy_tokenize()`. This allows users to use their choice
+      of tokenizer, as long as it returns a named list of characters.
+      With `tokens.list()`, all tokens processing (`remove_*`) options
+      can be applied, or the list can be converted directly to a
+      `tokens` object without processing using `as.tokens.list()`.
 
     - All tokens options are now *intervention* options, to split or
       remove things that by default are not split or removed. All
@@ -1237,7 +1236,7 @@ CRAN release: 2019-07-04
   [`textstat_simil()`](https://quanteda.io/reference/textstat_simil.html)
   because these were either not symmetric or not invariant to document
   or feature ordering. Finally, the `selection` argument has been
-  deprecated in favour of a new `y` argument.\
+  deprecated in favour of a new `y` argument.  
 - [`textstat_readability()`](https://quanteda.io/reference/textstat_readability.html)
   now defaults to `measure = "Flesch"` if no measure is supplied. This
   makes it consistent with
@@ -1452,15 +1451,15 @@ CRAN release: 2018-07-15
   ([\#1387](https://github.com/quanteda/quanteda/issues/1387))
 - More robust handling in `predict.textmodel_worscores()` when training
   and test feature sets are difference
-  ([\#1380](https://github.com/quanteda/quanteda/issues/1380)).\
+  ([\#1380](https://github.com/quanteda/quanteda/issues/1380)).  
 - [`char_segment()`](https://quanteda.io/reference/corpus_segment.md)
   and
   [`corpus_segment()`](https://quanteda.io/reference/corpus_segment.md)
   are more robust to whitespace characters preceding a pattern
-  ([\#1394](https://github.com/quanteda/quanteda/issues/1394)).\
+  ([\#1394](https://github.com/quanteda/quanteda/issues/1394)).  
 - [`tokens_ngrams()`](https://quanteda.io/reference/tokens_ngrams.md) is
   more robust to handling large numbers of documents
-  ([\#1395](https://github.com/quanteda/quanteda/issues/1395)).\
+  ([\#1395](https://github.com/quanteda/quanteda/issues/1395)).  
 - [`corpus.data.frame()`](https://quanteda.io/reference/corpus.md) is
   now robust to handling data.frame inputs with improper or missing
   variable names
@@ -1639,7 +1638,7 @@ CRAN release: 2018-01-28
   [`textplot_network()`](https://rdrr.io/pkg/quanteda.textplots/man/textplot_network.html).
 - Added
   [`textmodel_lsa()`](https://rdrr.io/pkg/quanteda.textmodels/man/textmodel_lsa.html)
-  for Latent Semantic Analysis models.\
+  for Latent Semantic Analysis models.  
 - Added
   [`textmodel_affinity()`](https://rdrr.io/pkg/quanteda.textmodels/man/textmodel_affinity.html)
   for the Perry and Benoit (2017) class affinity scaling model.
@@ -1779,7 +1778,7 @@ CRAN release: 2017-08-15
 - Added **magrittr** pipe support
   ([\#927](https://github.com/quanteda/quanteda/issues/927)). `%>%` can
   now be used with **quanteda** without needing to attach **magrittr**
-  (or, as many users apparently believe, the entire tidyverse.)\
+  (or, as many users apparently believe, the entire tidyverse.)  
 - [`corpus_segment()`](https://quanteda.io/reference/corpus_segment.md)
   now behaves more logically and flexibly, and is clearly differentiated
   from
@@ -1966,7 +1965,7 @@ CRAN release: 2017-05-26
   we corrected the word matching, and lambda and z calculation methods,
   which were slightly incorrect before. We also removed the chi2, G2,
   and pmi statistics, because these were incorrectly calculated for size
-  \> 2.\
+  \> 2.  
 - LIWC-formatted dictionary import now robust to assignment to term
   assignment to missing categories.
 - `textmodel_NB(x, y, distribution = "Bernoulli")` was previously
@@ -2129,7 +2128,7 @@ CRAN release: 2017-02-13
   docvars through to to tokens and dfm objects, and added
   [`docvars()`](https://quanteda.io/reference/docvars.md) and
   `metadoc()` methods for tokens and dfm class objects. Overall, the
-  code for docvars and metadoc is now more robust and consistent.\
+  code for docvars and metadoc is now more robust and consistent.  
 - [`docvars()`](https://quanteda.io/reference/docvars.md) on eligible
   objects that contain no docvars now returns an empty 0 x 0 data.frame
   (in the spirit of
@@ -2264,7 +2263,7 @@ CRAN release: 2017-01-27
   [\#532](https://github.com/quanteda/quanteda/issues/532),
   [\#535](https://github.com/quanteda/quanteda/issues/535)), in addition
   to safeguarding against other compiler warnings across a variety of
-  new tested undefined behaviours.\
+  new tested undefined behaviours.  
 - Fixed a bug in `convert(x, to = "lsa")` that transposed row and column
   names ([\#526](https://github.com/quanteda/quanteda/issues/526))
 - Added missing [`fcm()`](https://quanteda.io/reference/fcm.md) method
@@ -2281,7 +2280,7 @@ CRAN release: 2017-01-27
   documents. ([\#438](https://github.com/quanteda/quanteda/issues/438))
 - Fixed a bug in
   `tokens(x, what = "character", removeSeparators = TRUE)` that returned
-  an empty string.\
+  an empty string.  
 - Fixed a bug in `corpus.VCorpus` if the VCorpus contains a single
   document. ([\#445](https://github.com/quanteda/quanteda/issues/445))
 - Fixed a bug in `dfm_compress` in which the function failed on
@@ -2299,9 +2298,9 @@ CRAN release: 2017-01-27
   [`textstat_keyness()`](https://quanteda.io/reference/textstat_keyness.html)
   discovers words that occur at differential rates between partitions of
   a dfm (using chi-squared, Fisher’s exact test, and the G^2 likelihood
-  ratio test to measure the strength of associations).\
+  ratio test to measure the strength of associations).  
 - Added 2017-Trump to the inaugural corpus datasets
-  (`data_corpus_inaugual` and `data_char_inaugural`).\
+  (`data_corpus_inaugual` and `data_char_inaugural`).  
 - Improved the `groups` argument in
   [`texts()`](https://quanteda.io/reference/texts.md) (and in
   [`dfm()`](https://quanteda.io/reference/dfm.md) that uses this
@@ -2310,16 +2309,16 @@ CRAN release: 2017-01-27
 - Added a dfm constructor from dfm objects, with the option of
   collapsing by groups.
 - Added new arguments to `sequences()`: `ordered` and `max_length`, the
-  latter to prevent memory leaks from extremely long sequences.\
+  latter to prevent memory leaks from extremely long sequences.  
 - [`dictionary()`](https://quanteda.io/reference/dictionary.md) now
   accepts YAML as an input file format.
 - `dfm_lookup` and `tokens_lookup` now accept a `levels` argument to
   determine which level of a hierarchical dictionary should be applied.
-- Added `min_nchar` and `max_nchar` arguments to `dfm_select`.\
+- Added `min_nchar` and `max_nchar` arguments to `dfm_select`.  
 - [`dictionary()`](https://quanteda.io/reference/dictionary.md) can now
   be called on the argument of a
   [`list()`](https://rdrr.io/r/base/list.html) without explicitly
-  wrapping it in [`list()`](https://rdrr.io/r/base/list.html).\
+  wrapping it in [`list()`](https://rdrr.io/r/base/list.html).  
 - `fcm` now works directly on a dfm object when `context = "documents"`.
 
 This release has some **major changes to the API**, described below.
@@ -2429,11 +2428,11 @@ functions):
 
 - `to = "lsa"` functionality added to
   [`convert()`](https://quanteda.io/reference/convert.md)
-  ([\#414](https://github.com/quanteda/quanteda/issues/414))\
+  ([\#414](https://github.com/quanteda/quanteda/issues/414))  
 - Much faster pattern matching in general, through an overhaul of how
-  `valuetype` matches work for many functions.\
+  `valuetype` matches work for many functions.  
 - Added experimental `View` methods for `kwic` objects, based on
-  Javascript Datatables.\
+  Javascript Datatables.  
 - `kwic` is completely rewritten, now uses fast hashed index matching in
   C++ and fully implements vectorized matches
   ([\#306](https://github.com/quanteda/quanteda/issues/306)) and all
@@ -2442,7 +2441,7 @@ functions):
 - `tokens_lookup`, `tokens_select`, and `tokens_remove` are faster and
   use parallelization (based on the TBB library).
 - `textstat_dist` and `textstat_simil` add fast, sparse, and parallel
-  computation of many new distance and similarity matrices.\
+  computation of many new distance and similarity matrices.  
 - Added `textmodel_wordshoal` fitting function.
 - Add `max_docfreq` and `min_docfreq` arguments, and better verbose
   output, to `dfm_trim`
@@ -2450,15 +2449,15 @@ functions):
 - Added support for batch hashing of tokens through
   [`tokens()`](https://quanteda.io/reference/tokens.md), for more
   memory-efficient token hashing when dealing with very large numbers of
-  documents.\
+  documents.  
 - Added support for in-memory compressed corpus objects.
 - Consolidated corpus-level metadata arguments in
   [`corpus()`](https://quanteda.io/reference/corpus.md) through the
-  `metacorpus` list argument.\
+  `metacorpus` list argument.  
 - Added Greek stopwords. (See
-  [\#282](https://github.com/quanteda/quanteda/issues/282)).\
+  [\#282](https://github.com/quanteda/quanteda/issues/282)).  
 - Added index handling `[`, `[[`, and `$` for (hashed) `tokens`
-  objects.\
+  objects.  
 - Now using ggplot2.
 - Added tokens methods for `collocations()` and
   [`kwic()`](https://quanteda.io/reference/kwic.md).
@@ -2474,7 +2473,7 @@ functions):
   from a hashed `tokens` object is now 4-5 times faster than the older
   `tokenizedTexts` object.
 - Added new (hashed) `tokens` class object.
-- Added plot method for fitted `textmodel_wordscores objects`.\
+- Added plot method for fitted `textmodel_wordscores objects`.  
 - Added fast
   [`tokens_lookup()`](https://quanteda.io/reference/tokens_lookup.md)
   method (formerly `applyDictionary()`), that also works with
@@ -2491,21 +2490,21 @@ CRAN release: 2016-07-28
 
 ### New Features
 
-- Improved the performance of `selectFeatures.tokenizedTexts()`.\
+- Improved the performance of `selectFeatures.tokenizedTexts()`.  
 - Improved the performance of
-  [`rbind.dfm()`](https://quanteda.io/reference/cbind.dfm.md).\
+  [`rbind.dfm()`](https://quanteda.io/reference/cbind.dfm.md).  
 - Added support for different docvars when importing multiple files
   using `textfile()`.
-  ([\#147](https://github.com/quanteda/quanteda/issues/147))\
+  ([\#147](https://github.com/quanteda/quanteda/issues/147))  
 - Added support for comparison dispersion plots in `plot.kwic()`.
-  ([\#146](https://github.com/quanteda/quanteda/issues/146))\
-- Added a corpus constructor method for kwic objects.\
+  ([\#146](https://github.com/quanteda/quanteda/issues/146))  
+- Added a corpus constructor method for kwic objects.  
 - Substantially improved the performance of `convert(x, to = "stm")` for
   dfm export, including adding an argument for meta-data (docvars, in
   quanteda parlance).
-  ([\#209](https://github.com/quanteda/quanteda/issues/209))\
+  ([\#209](https://github.com/quanteda/quanteda/issues/209))  
 - Internal rewrite of `textfile()`, now supports more file types, more
-  wildcard patterns, and is far more robust generally.\
+  wildcard patterns, and is far more robust generally.  
 - Add support for loading external dictionary formats:
 - Yoshikoder,
 - Lexicoder v2 and v3
@@ -2518,7 +2517,7 @@ CRAN release: 2016-07-28
   - Use httr to get remote files
   - Use [`messages()`](https://quanteda.io/reference/messages.md) to
     display messages rather than `print` or `cat`
-  - Reorganise sections in README file\
+  - Reorganise sections in README file  
 - Added new `punctuation` argument to `collocations()` to provide new
   options for handling collocations separated by punctuation characters
   ([\#220](https://github.com/quanteda/quanteda/issues/220)).
@@ -2542,19 +2541,19 @@ CRAN release: 2016-07-28
   wrong computation; correct the documentation for this function.
 - (0.9.8.2) Fixed a bug in textfile() causing all texts to have the same
   name, for types using the “textField” argument (a single file
-  containing multiple documents).\
+  containing multiple documents).  
 - Fixed bug in `phrasetotoken()` where if pattern included a `+` for
   `valuetype = c("glob", "fixed")` it threw a regex error.
-  [\#239](https://github.com/quanteda/quanteda/issues/239)\
+  [\#239](https://github.com/quanteda/quanteda/issues/239)  
 - Fixed bug in `textfile()` where source is a remote .zip set.
-  ([\#172](https://github.com/quanteda/quanteda/issues/172))\
+  ([\#172](https://github.com/quanteda/quanteda/issues/172))  
 - Fixed bug in `wordstem.dfm()` that caused an error if supplied a dfm
   with a feature whose total frequency count was zero, or with a feature
   whose total docfreq was zero. Fixes
-  [\#181](https://github.com/quanteda/quanteda/issues/181).\
+  [\#181](https://github.com/quanteda/quanteda/issues/181).  
 - Fix [\#214](https://github.com/quanteda/quanteda/issues/214)
   “mysterious stemmed token” bug in `wordstem.dfm()`, introduced in
-  fixing [\#181](https://github.com/quanteda/quanteda/issues/181).\
+  fixing [\#181](https://github.com/quanteda/quanteda/issues/181).  
 - Fixed previously non-functional `toLower =` argument in
   `dfm.tokenizedTexts()`.
 - Fixed some errors in the computation of a few readability formulas
@@ -2627,7 +2626,7 @@ CRAN release: 2016-07-28
 - added version information when package is attached.
 
 - improved rbind() and cbind() methods for dfm. Both now take any length
-  sequence of dfms and perform better type checking.\
+  sequence of dfms and perform better type checking.  
   rbind.dfm() also knits together dfms with different features, which
   can be useful for information and retrieval purposes or machine
   learning.
@@ -2999,14 +2998,14 @@ CRAN release: 2016-02-21
   any text, applying any summary numerical function.
 
 - dfm() now 2x faster, replacing previous data.table matching with
-  direct construction of sparse matrix from match().\
+  direct construction of sparse matrix from match().  
   Code is also much simpler, based on using three new functions that are
   also available directly:
 
-  - new “dfm” method for removeFeatures()\
+  - new “dfm” method for removeFeatures()  
   - new “dfm” method: selectFeatures() that is now how features can be
     added or removed from a dfm, based on vectors of regular
-    expressions, globs, or fixed matching\
+    expressions, globs, or fixed matching  
   - new “dfm” method: applyDictionary() that can replace features
     through matching with values in key-value lists from a dictionary
     class objects, based on vectors of regular expressions, globs, or
@@ -3346,7 +3345,7 @@ Many major changes to the syntax in this version.
   features as vector representations
 
 - begun: implementing dfm resample methods, but this will need more time
-  to work.\
+  to work.  
   (Solution: a three way table where the third dim is the resampled
   text.)
 
@@ -3409,7 +3408,7 @@ Many major changes to the syntax in this version.
 ## quanteda 0.5.1
 
 - Fixed all the remaining issues causing warnings in R CMD CHECK, now
-  all are fixed.\
+  all are fixed.  
   Mostly these related to documentation.
 
 - Fixed corpus.directory to better implementing naming of docvars, if
