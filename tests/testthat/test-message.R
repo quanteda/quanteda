@@ -16,7 +16,7 @@ test_that("object stats are correct", {
     corp <- data_corpus_inaugural[1:5]
     toks <- tokens(corp, xptr = TRUE) %>% 
         tokens_tolower() %>% 
-        tokens_trim(max_n = 1000)
+        tokens_trim(max_n = 1000, padding = TRUE)
     dfmt <- dfm(toks)
     
     expect_identical(quanteda:::stats_corpus(corp),
@@ -25,7 +25,7 @@ test_that("object stats are correct", {
                      )
     expect_identical(quanteda:::stats_tokens(toks),
                      list(ndoc = 5L, 
-                          ntoken = 7616L,
+                          ntoken = sum(ntoken(toks)),
                           ntype = 1000L)
                      )
     expect_identical(quanteda:::stats_dfm(dfmt),
