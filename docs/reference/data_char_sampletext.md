@@ -15,9 +15,9 @@ character vector with one element
 
 ## Source
 
-Dáil Éireann Debate, [Financial Resolution No. 13: General
-(Resumed).](https://www.oireachtas.ie/en/debates/find/) 7 December 2011.
-vol. 749, no. 1.
+Dáil Éireann Debate, Financial Resolution No. 13: General (Resumed).
+`https://www.oireachtas.ie/en/debates/debate/dail/2011-12-07/6/`. 7
+December 2011. vol. 749, no. 1.
 
 ## Examples
 

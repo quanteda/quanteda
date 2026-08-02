@@ -9,18 +9,16 @@ advantages of the new xptr object are available in a [separate
 vignette](https://quanteda.io/articles/pkgdown/articles/pkgdown/tokens_xptr.md).
 
 How we performed the comparison: we compare the `tokens` and
-`tokens_xptr` on a Windows laptop with AMD Ryzen 7 PRO processor (8
-cores). We used sentences from 10,000 English-language news articles in
-this benchmarking.
+`tokens_xptr` on a Windows desktop with Core i7 processor (20 cores). We
+used sentences from 6,000 English-language news articles in this
+benchmarking.
 
-We repeated the same operation using different versions of the same
-functions to get the distribution of execution time. The result shows
-that the execution time of many v4.0 functions is about half of their
-version 3.3 counterparts.
+We repeated the same operation on `tokens` and `tokens_xptr` objects to
+get the distribution of execution time. The result shows that operations
+on the new object is significantly faster than on the old object.
 
 ``` r
 
-# remotes::install_github("quanteda/quanteda3")
 library("quanteda")
 library("ggplot2")
 
@@ -35,18 +33,18 @@ toks <- tokens(corp, remove_punct = FALSE, remove_numbers = FALSE,
 xtoks <- as.tokens_xptr(toks)
 
 ndoc(xtoks) # the number of sentences
-## [1] 200254
+## [1] 202011
 sum(ntoken(xtoks)) # the total number of tokens
-## [1] 5322321
+## [1] 5177518
 ```
 
 ## Modifying tokens objects
 
 [`as.tokens_xptr()`](https://quanteda.io/reference/tokens_xptr.md) is
 inserted before functions calls to deep-copy the original object. This
-is only necessary to repeat the same operation in benchmarking, so the
+is necessary only to repeat the same operation in benchmarking, so the
 performance advantage of the `tokens_xptr` object is even greater in
-actual pipeline.
+actual projects.
 
 ``` r
 
@@ -159,16 +157,23 @@ microbenchmark::microbenchmark(
 
 ![](benchmarks_xptr_files/figure-html/dfm-from-tokens-1.png)
 
-## Simple pipeline: tokenising a corpus and creating a document-feature matrix
+## Simple pipeline
+
+Selecting features, generating n-grams, grouping documents and creating
+a document-feature matrix.
 
 ``` r
 
 microbenchmark::microbenchmark(
-    tokens = tokens(corp) |> 
+    tokens = toks |> 
         tokens_remove(stopwords("en"), padding = TRUE) |> 
+        tokens_ngrams() |>
+        tokens_group() |>
         dfm(remove_padding = TRUE),
-    tokens_xptr = tokens(corp, xptr = TRUE) |> 
+    tokens_xptr = as.tokens_xptr(xtoks) |> 
         tokens_remove(stopwords("en"), padding = TRUE) |> 
+        tokens_ngrams() |>
+        tokens_group() |>
         dfm(remove_padding = TRUE),
     times = 10
 ) |> autoplot(log = FALSE)

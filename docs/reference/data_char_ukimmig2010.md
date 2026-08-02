@@ -16,8 +16,8 @@ A named character vector of plain ASCII texts
 ## Examples
 
 ``` r
-data_corpus_ukimmig2010 <- 
-    corpus(data_char_ukimmig2010, 
+data_corpus_ukimmig2010 <-
+    corpus(data_char_ukimmig2010,
            docvars = data.frame(party = names(data_char_ukimmig2010)))
 summary(data_corpus_ukimmig2010, showmeta = TRUE)
 #> Corpus consisting of 9 documents, showing 9 documents:
