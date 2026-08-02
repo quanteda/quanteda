@@ -86,6 +86,7 @@ test_that("char_ngrams produces a deprecated message", {
 test_that("nsentence produces a deprecated message", {
     skip_if_not_installed("rlang")
     rlang::local_options(lifecycle_verbosity = "warning")
+    
     lifecycle::expect_deprecated(
         nsentence("This is one.  And two."),
         "`nsentence()` was deprecated in quanteda 4.0",
@@ -93,7 +94,45 @@ test_that("nsentence produces a deprecated message", {
     )
     expect_error(
         texts(data_corpus_inaugural, groups = Party),
-        "`texts\\(x, groups = \\.\\.\\.\\)` was deprecated in quanteda 3.0.*defunct\\.",
+        "`texts(x, groups = ...)` was deprecated in quanteda 3.0 and is now defunct",
+        fixed = TRUE
     )
+    
+    rlang::local_options(lifecycle_verbosity = "default")
+})
+
+test_that("ntoken produces a deprecated message", {
+    skip_if_not_installed("rlang")
+    rlang::local_options(lifecycle_verbosity = "warning")
+    
+    lifecycle::expect_deprecated(
+        ntoken("This is one.  And two."),
+        "`ntoken.character()` was deprecated in quanteda 4.0",
+        fixed = TRUE
+    )
+    lifecycle::expect_deprecated(
+        ntoken(corpus("This is one.  And two.")),
+        "`ntoken.corpus()` was deprecated in quanteda 4.0",
+        fixed = TRUE
+    )
+    
+    rlang::local_options(lifecycle_verbosity = "default")
+})
+
+test_that("ntype produces a deprecated message", {
+    skip_if_not_installed("rlang")
+    rlang::local_options(lifecycle_verbosity = "warning")
+    
+    lifecycle::expect_deprecated(
+        ntype("This is one.  And two."),
+        "`ntype.character()` was deprecated in quanteda 4.0",
+        fixed = TRUE
+    )
+    lifecycle::expect_deprecated(
+        ntype(corpus("This is one.  And two.")),
+        "`ntype.corpus()` was deprecated in quanteda 4.0",
+        fixed = TRUE
+    )
+    
     rlang::local_options(lifecycle_verbosity = "default")
 })
