@@ -120,7 +120,7 @@ message_tokens <- function(operation, before, after) {
 
 stats_tokens <- function(x) {
     list(ndoc = ndoc(x),
-         ntoken = sum(ntoken(x, remove_padding = TRUE)),
+         ntoken = sum(ntoken(x, remove_padding = FALSE)),
          ntype = count_types(x))
 }
 
