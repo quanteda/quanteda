@@ -29,6 +29,8 @@ as a data frame and create a **quanteda** corpus.
 ``` r
 
 # use readtext package to import all documents as a dataframe
+# need first to install this: 
+# pak::pak("kosukeimai/qss-package", build_vignettes = TRUE)
 corpus_texts <- readtext::readtext(system.file("extdata/federalist/", package = "qss"))
 
 # create docvar with number of paper

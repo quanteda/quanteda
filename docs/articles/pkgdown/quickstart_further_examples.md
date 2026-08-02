@@ -3,7 +3,7 @@
 ``` r
 
 library("quanteda")
-## Package version: 4.4.1
+## Package version: 4.5.0
 ## Unicode version: 15.1
 ## ICU version: 74.1
 ## Parallel computing: 28 of 28 threads used.
