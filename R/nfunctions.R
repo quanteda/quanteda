@@ -102,14 +102,14 @@ ntoken.default <- function(x, ...) {
 
 #' @export
 ntoken.corpus <- function(x, ...) {
+    lifecycle::deprecate_warn("4.0", 'ntoken.corpus()', I('`ntoken(tokens(x))`'))
     x <- as.corpus(x)
-    ntoken(as.character(x), ...)
+    ntoken(tokens(x, ...))
 }
 
 #' @export
 ntoken.character <- function(x, ...) {
-    lifecycle::deprecate_soft("4.0.0", I('ntoken.character()/ntype.corpus()'), 
-                              I('ntoken(tokens(x))'))
+    lifecycle::deprecate_warn("4.0", 'ntoken.character()', I('`ntoken(tokens(x))`'))
     ntoken(tokens(x, ...))
 }
 
@@ -146,19 +146,15 @@ ntype.default <- function(x, ...) {
 
 #' @export
 ntype.character <- function(x, ...) {
-    lifecycle::deprecate_soft("4.0.0", 
-                              I('ntype.character()/ntype.corpus()'), 
-                              I('ntoken(tokens(x))'))
-    if (length(list(...)))
-        ntype(tokens(x, ...))
-    else
-        ntype(tokens(x))
+    lifecycle::deprecate_warn("4.0", 'ntype.character()', I('`ntoken(tokens(x))`'))
+    ntype(tokens(x, ...))
 }
 
 #' @export
 ntype.corpus <- function(x, ...) {
+    lifecycle::deprecate_warn("4.0", 'ntype.corpus()', I('`ntoken(tokens(x))`'))
     x <- as.corpus(x)
-    ntype(as.character(x), ...)
+    ntype(tokens(x, ...))
 }
 
 #' @export
