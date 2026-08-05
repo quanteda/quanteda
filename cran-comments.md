@@ -1,5 +1,9 @@
 # Submission notes
 
+## Resubmission
+
+We worked with the authors of the **sentopics** package to fix a breaking change that affected that package. They have resubmitted their package and we have verified that our new version works with it now.
+
 ## Purpose
 
 Feature updates and bug fixes.  See NEWS.md for details.
@@ -18,6 +22,4 @@ All checks are clean, locally and on GitHub's CI for all the platforms.
 
 We checked all reverse dependencies using `revdepcheck::revdep_check()`.
 
-There is a single clash with the package **sentopics** but we have issue a pull request fixing this. https://github.com/odelmarcelle/sentopics/pull/6
-
-When that has been merged and **sentopics** resubmitted, we will resubmit **quanteda** 4.5.0 to CRAN.
+There was a single previous clash with the package **sentopics** but we have fixed that, and the **sentopics** authors have published the fixed version now on CRAN.
