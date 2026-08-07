@@ -107,7 +107,8 @@ message_corpus <- function(operation, before, after) {
 
 stats_corpus <- function(x) {
     list(ndoc = ndoc(x),
-         nchar = sum(nchar(x)))
+         nchar = sum(nchar(x)),
+         ndocvar = ncol(docvars(x)))
 }
 
 #' Print messages in tokens methods
@@ -121,7 +122,8 @@ message_tokens <- function(operation, before, after) {
 stats_tokens <- function(x) {
     list(ndoc = ndoc(x),
          ntoken = sum(ntoken(x, remove_padding = FALSE)),
-         ntype = count_types(x))
+         ntype = count_types(x),
+         ndocvar = ncol(docvars(x)))
 }
 
 #' Print messages in dfm methods
@@ -134,5 +136,44 @@ message_dfm <- function(operation, before, after) {
 
 stats_dfm <- function(x) {
     list(ndoc = ndoc(x),
-         nfeat = nfeat(dfm_remove(x, "", verbose = FALSE)))
+         nfeat = nfeat(dfm_remove(x, "", verbose = FALSE)),
+         ndocvar = ncol(docvars(x)))
 }
+
+summary_corpus <- function(x) {
+    s <- stats_corpus(x)
+    line <- msg("Corpus consisting of %s %s",
+                s$ndoc, inflect("document", s$ndoc))
+    if (s$ndocvar)
+        line <- msg(" and %s %s",
+                    s$ndocvar, inflect("docvar", s$ndocvar),
+                    prepend = line)
+    wrap(paste0(line, "."))
+}
+
+summary_tokens <- function(x) {
+    s <- stats_tokens(x)
+    line <- msg("Tokens consisting of %s %s", s$ndoc, inflect("document", s$ndoc))
+    if (s$ndocvar)
+        line <- msg(" and %s %s",
+                    s$ndocvar, inflect("docvar", s$ndocvar),
+                    prepend = line)
+    if (is.tokens_xptr(x))
+        line <- msg(" (pointer to %s)", address(x), prepend = line)
+    wrap(paste0(line, "."))
+}
+
+summary_dfm <- function(x) {
+    s <- stats_dfm(x)
+    line <- msg("Document-feature matrix of: %s %s, %s %s (%s sparse)",
+                s$ndoc, inflect("document", s$ndoc),
+                s$nfeat, inflect("feature", s$nfeat),
+                format_sparsity(sparsity(x)))
+    if (s$ndocvar)
+        line <- msg(" and %s %s", 
+                    s$ndocvar, inflect("docvar", s$ndocvar),
+                    prepend = line)
+    wrap(paste0(line, "."))
+}
+
+
