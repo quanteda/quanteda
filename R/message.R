@@ -44,6 +44,7 @@ inflect <- function(word, n) {
            "docvar" = "docvars",
            "token" = "tokens",
            "character" = "characters",
+           "occurrence" = "occurrences",
            "co-occurrence" = "co-occurrences",
            "entry" = "entries",
            "key" = "keys",
@@ -140,7 +141,7 @@ message_dfm <- function(operation, before, after) {
 stats_dfm <- function(x) {
     x <- dfm_remove(x, "", verbose = FALSE)
     list(ndoc = ndoc(x),
-         ntoken = sum(x),
+         nocc = sum(x),
          nfeat = nfeat(x),
          ndocvar = ncol(docvars(x)))
 }
@@ -190,7 +191,7 @@ summary_dfm <- function(x) {
     line <- msg("Document-feature matrix of %s %s (%s %s, %s %s)",
                 s$ndoc, inflect("document", s$ndoc),
                 s$nfeat, inflect("feature", s$nfeat),
-                s$ntoken, inflect("token", s$ntoken))
+                s$nocc, inflect("occurrence", s$nocc))
     if (s$ndocvar)
         line <- msg(" and %s %s", 
                     s$ndocvar, inflect("docvar", s$ndocvar),
