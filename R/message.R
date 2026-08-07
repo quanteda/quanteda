@@ -40,8 +40,10 @@ wrap <- function(x, ...) {
 inflect <- function(word, n) {
     v <- c("document" = "documents",
            "feature" = "features",
+           "type" = "types",
            "docvar" = "docvars",
            "token" = "tokens",
+           "character" = "characters",
            "entry" = "entries",
            "key" = "keys",
            "match" = "matches")
@@ -135,15 +137,18 @@ message_dfm <- function(operation, before, after) {
 }
 
 stats_dfm <- function(x) {
+    x <- dfm_remove(x, "", verbose = FALSE)
     list(ndoc = ndoc(x),
-         nfeat = nfeat(dfm_remove(x, "", verbose = FALSE)),
+         ntoken = sum(x),
+         nfeat = nfeat(x),
          ndocvar = ncol(docvars(x)))
 }
 
 summary_corpus <- function(x) {
     s <- stats_corpus(x)
-    line <- msg("Corpus consisting of %s %s",
-                s$ndoc, inflect("document", s$ndoc))
+    line <- msg("Corpus of %s %s (%s %s)",
+                s$ndoc, inflect("document", s$ndoc),
+                s$nchar, inflect("character", s$nchar))
     if (s$ndocvar)
         line <- msg(" and %s %s",
                     s$ndocvar, inflect("docvar", s$ndocvar),
@@ -153,22 +158,32 @@ summary_corpus <- function(x) {
 
 summary_tokens <- function(x) {
     s <- stats_tokens(x)
-    line <- msg("Tokens consisting of %s %s", s$ndoc, inflect("document", s$ndoc))
+    
+    if (is.tokens_xptr(x)) {
+        line <- msg("Tokens_xptr [%s] of %s %s (%s %s, %s %s)", 
+                    address(x),
+                    s$ndoc, inflect("document", s$ndoc),
+                    s$ntype, inflect("type", s$ntype),
+                    s$ntoken, inflect("token", s$ntoken))
+    } else {
+        line <- msg("Tokens of %s %s (%s %s, %s %s)", 
+                    s$ndoc, inflect("document", s$ndoc),
+                    s$ntype, inflect("type", s$ntype),
+                    s$ntoken, inflect("token", s$ntoken))
+    }
     if (s$ndocvar)
         line <- msg(" and %s %s",
                     s$ndocvar, inflect("docvar", s$ndocvar),
                     prepend = line)
-    if (is.tokens_xptr(x))
-        line <- msg(" (pointer to %s)", address(x), prepend = line)
     wrap(paste0(line, "."))
 }
 
 summary_dfm <- function(x) {
     s <- stats_dfm(x)
-    line <- msg("Document-feature matrix of: %s %s, %s %s (%s sparse)",
+    line <- msg("Document-feature matrix of %s %s (%s %s, %s %s)",
                 s$ndoc, inflect("document", s$ndoc),
                 s$nfeat, inflect("feature", s$nfeat),
-                format_sparsity(sparsity(x)))
+                s$ntoken, inflect("token", s$ntoken))
     if (s$ndocvar)
         line <- msg(" and %s %s", 
                     s$ndocvar, inflect("docvar", s$ndocvar),
