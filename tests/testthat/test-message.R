@@ -21,15 +21,18 @@ test_that("object stats are correct", {
     
     expect_identical(quanteda:::stats_corpus(corp),
                      list(ndoc = 5L, 
-                          nchar = sum(nchar(corp)))
+                          nchar = sum(nchar(corp)),
+                          ndocvar = 4L)
                      )
     expect_identical(quanteda:::stats_tokens(toks),
                      list(ndoc = 5L, 
                           ntoken = sum(ntoken(toks)),
-                          ntype = 1000L)
+                          ntype = 1000L,
+                          ndocvar = 4L)
                      )
     expect_identical(quanteda:::stats_dfm(dfmt),
                      list(ndoc = 5L, 
-                          nfeat = 1000L)
+                          nfeat = 1000L,
+                          ndocvar = 4L)
                     )
 })
