@@ -44,6 +44,7 @@ inflect <- function(word, n) {
            "docvar" = "docvars",
            "token" = "tokens",
            "character" = "characters",
+           "co-occurrence" = "co-occurrences",
            "entry" = "entries",
            "key" = "keys",
            "match" = "matches")
@@ -144,6 +145,13 @@ stats_dfm <- function(x) {
          ndocvar = ncol(docvars(x)))
 }
 
+stats_fcm <- function(x) {
+    x <- fcm_remove(x, "", verbose = FALSE)
+    list(ncoo = sum(x),
+         nrow = nrow(x),
+         ncol = ncol(x))
+}
+
 summary_corpus <- function(x) {
     s <- stats_corpus(x)
     line <- msg("Corpus of %s %s (%s %s)",
@@ -158,7 +166,6 @@ summary_corpus <- function(x) {
 
 summary_tokens <- function(x) {
     s <- stats_tokens(x)
-    
     if (is.tokens_xptr(x)) {
         line <- msg("Tokens_xptr [%s] of %s %s (%s %s, %s %s)", 
                     address(x),
@@ -191,4 +198,11 @@ summary_dfm <- function(x) {
     wrap(paste0(line, "."))
 }
 
+summary_fcm <- function(x) {
+    s <- stats_fcm(x)
+    wrap(msg("Feature co-occurrence matrix of %s and %s %s (%s %s).\n",
+             s$nrow, s$ncol, inflect("feature", s$nrow * s$ncol),
+             s$ncoo, inflect("co-occurrence", s$ncoo))
+    )
+}
 
