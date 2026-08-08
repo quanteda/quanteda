@@ -149,8 +149,8 @@ stats_dfm <- function(x) {
 stats_fcm <- function(x) {
     x <- fcm_remove(x, "", verbose = FALSE)
     list(ncoo = sum(x),
-         nrow = nrow(x),
-         ncol = ncol(x))
+         nfeat1 = nrow(x),
+         nfeat2 = ncol(x))
 }
 
 summary_corpus <- function(x) {
@@ -163,6 +163,7 @@ summary_corpus <- function(x) {
                     s$ndocvar, inflect("docvar", s$ndocvar),
                     prepend = line)
     wrap(paste0(line, "."))
+    invisible(s)
 }
 
 summary_tokens <- function(x) {
@@ -184,6 +185,7 @@ summary_tokens <- function(x) {
                     s$ndocvar, inflect("docvar", s$ndocvar),
                     prepend = line)
     wrap(paste0(line, "."))
+    invisible(s)
 }
 
 summary_dfm <- function(x) {
@@ -197,13 +199,15 @@ summary_dfm <- function(x) {
                     s$ndocvar, inflect("docvar", s$ndocvar),
                     prepend = line)
     wrap(paste0(line, "."))
+    invisible(s)
 }
 
 summary_fcm <- function(x) {
     s <- stats_fcm(x)
     wrap(msg("Feature co-occurrence matrix of %s and %s %s (%s %s).\n",
-             s$nrow, s$ncol, inflect("feature", s$nrow * s$ncol),
+             s$nfeat1, s$nfeat2, inflect("feature", s$nfeat1 * s$nfeat2),
              s$ncoo, inflect("co-occurrence", s$ncoo))
     )
+    invisible(s)
 }
 
