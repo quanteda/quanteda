@@ -146,9 +146,17 @@ stats_dfm <- function(x) {
          ndocvar = ncol(docvars(x)))
 }
 
+#' Print messages in fcm methods
+#' @inheritParams messages
+#' @keywords message internal
+message_fcm <- function(operation, before, after) {
+    message(msg("Changed to %s and %s features (%s co-occurrences) in %s",
+                after$nrow, after$ncol, after$nocc, operation))
+}
+
 stats_fcm <- function(x) {
     x <- fcm_remove(x, "", verbose = FALSE)
-    list(ncoo = sum(x),
+    list(nocc = sum(x),
          nrow = nrow(x),
          ncol = ncol(x))
 }
@@ -203,7 +211,7 @@ summary_fcm <- function(x) {
     s <- stats_fcm(x)
     wrap(msg("Feature co-occurrence matrix of %s and %s %s (%s %s).\n",
              s$nrow, s$ncol, inflect("feature", s$nrow * s$ncol),
-             s$ncoo, inflect("co-occurrence", s$ncoo))
+             s$ncoo, inflect("co-occurrence", s$nocc))
     )
 }
 

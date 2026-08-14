@@ -264,10 +264,10 @@ fcm_tolower.fcm <- function(x, keep_acronyms = FALSE,
     keep_acronyms <- check_logical(keep_acronyms)
     set_fcm_featnames(x) <- lowercase_types(featnames(x), keep_acronyms)
     if (verbose)
-        before <- stats_dfm(x)
+        before <- stats_fcm(x)
     x <- fcm_compress(x)
     if (verbose)
-        message_dfm("fcm_tolower()", before, stats_dfm(x))    
+        message_fcm("fcm_tolower()", before, stats_fcm(x))    
     return(x)
 }
 
@@ -291,9 +291,9 @@ fcm_toupper.fcm <- function(x,
     x <- as.fcm(x)
     set_fcm_featnames(x) <- char_toupper(colnames(x))
     if (verbose)
-        before <- stats_dfm(x)
+        before <- stats_fcm(x)
     x <- fcm_compress(x)
     if (verbose)
-        message_dfm("fcm_toupper()", before, stats_dfm(x))    
+        message_fcm("fcm_toupper()", before, stats_fcm(x))    
     return(x)
 }
