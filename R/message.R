@@ -105,8 +105,8 @@ NULL
 #' @inheritParams messages
 #' @keywords message internal
 message_corpus <- function(operation, before, after) {
-    message(msg("%s changed from %s documents (%s characters) to %s documents (%s characters)",
-                operation, before$ndoc, before$nchar, after$ndoc, after$nchar))
+    message(msg("Changed to %s documents (%s characters) in %s",
+                after$ndoc, after$nchar, operation))
 }
 
 stats_corpus <- function(x) {
@@ -119,8 +119,8 @@ stats_corpus <- function(x) {
 #' @inheritParams messages
 #' @keywords message internal
 message_tokens <- function(operation, before, after) {
-    message(msg("%s changed from %s documents (%s types, %s tokens) to %s documents (%s types, %s tokens)",
-                operation, before$ndoc, before$ntype, before$ntoken, after$ndoc, after$ntype, after$ntoken))
+    message(msg("Changed to %s documents (%s types, %s tokens) in %s",
+                after$ndoc, after$ntype, after$ntoken, operation))
 }
 
 stats_tokens <- function(x) {
@@ -134,8 +134,8 @@ stats_tokens <- function(x) {
 #' @inheritParams messages
 #' @keywords message internal
 message_dfm <- function(operation, before, after) {
-    message(msg("%s changed from %s documents (%s features, %s occurrences) to %s documents (%s features, %s occurrences)",
-                operation, before$ndoc, before$nfeat, before$nocc, after$ndoc, after$nfeat, after$nocc))
+    message(msg("Changed to %s documents (%s features, %s occurrences) in %s",
+                after$ndoc, after$nfeat, after$nocc, operation))
 }
 
 stats_dfm <- function(x) {
