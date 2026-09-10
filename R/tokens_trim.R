@@ -59,9 +59,6 @@ tokens_trim.tokens_xptr <- function(x,
     docfreq_type <- match.arg(docfreq_type)
     verbose <- check_logical(verbose)
     
-    if (verbose)
-        before <- stats_tokens(x)
-    
     x <- cpp_recompile(x)
     f <- trim_features(cpp_get_freq(x, no_padding = TRUE), 
                        cpp_get_freq(x, no_padding = TRUE, boolean = TRUE),
@@ -74,7 +71,7 @@ tokens_trim.tokens_xptr <- function(x,
                             padding = padding, verbose = FALSE)
     
     if (verbose)
-        message_tokens("tokens_trim()", before, stats_tokens(result))
+        message_tokens("tokens_trim()", stats_tokens(result))
     
     return(result)
 }

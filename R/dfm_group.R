@@ -71,9 +71,6 @@ dfm_group.dfm <- function(x, groups = docid(x), fill = FALSE, force = FALSE,
     if (ndoc(x) != length(groups))
         stop("groups must have length ndoc(x)", call. = FALSE)
 
-    if (verbose)
-        before <- stats_dfm(x)
-    
     # remove NA groups
     x <- dfm_subset(x, !is.na(groups))
     attrs <- attributes(x)
@@ -86,7 +83,7 @@ dfm_group.dfm <- function(x, groups = docid(x), fill = FALSE, force = FALSE,
                         meta = attrs[["meta"]]
     )
     if (verbose)
-        message_dfm("dfm_group()", before, stats_dfm(result))
+        message_dfm("dfm_group()", stats_dfm(result))
     return(result)
 }
 

@@ -117,13 +117,11 @@ tokens_compound.tokens_xptr <- function(x, pattern,
     if (length(window) == 1) window <- rep(window, 2)
     if (is.null(apply_if))
         apply_if <- rep(TRUE, length.out = ndoc(x))
-    if (verbose)
-        before <- stats_tokens(x)
     result <- cpp_tokens_compound(x, ids, concatenator, join, keep_unigrams,
                                   window[1], window[2], !apply_if, get_threads())
     result <- rebuild_tokens(result, attrs)
     if (verbose)
-        message_tokens("tokens_compound()", before, stats_tokens(result))
+        message_tokens("tokens_compound()", stats_tokens(result))
     return(result)
 }
 

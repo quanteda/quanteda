@@ -96,7 +96,7 @@ message_finish <- function(x, time) {
 #' @name messages
 #' @param verbose if `TRUE` print the number of tokens and documents before and
 #'   after the function is applied. The number of tokens does not include paddings.
-#' @param before,after object statistics before and after the operation.
+#' @param stat object statistics after the operation.
 #' @seealso message_tokens() message_dfm()
 #' @keywords internal
 NULL
@@ -104,9 +104,9 @@ NULL
 #' Print messages in corpus methods
 #' @inheritParams messages
 #' @keywords message internal
-message_corpus <- function(operation, before, after) {
+message_corpus <- function(operation, stat) {
     message(msg("Return %s documents (%s characters) by %s",
-                after$ndoc, after$nchar, operation))
+                stat$ndoc, stat$nchar, operation))
 }
 
 stats_corpus <- function(x) {
@@ -118,9 +118,9 @@ stats_corpus <- function(x) {
 #' Print messages in tokens methods
 #' @inheritParams messages
 #' @keywords message internal
-message_tokens <- function(operation, before, after) {
+message_tokens <- function(operation, stat) {
     message(msg("Return %s documents (%s types, %s tokens) by %s",
-                after$ndoc, after$ntype, after$ntoken, operation))
+                stat$ndoc, stat$ntype, stat$ntoken, operation))
 }
 
 stats_tokens <- function(x) {
@@ -133,9 +133,9 @@ stats_tokens <- function(x) {
 #' Print messages in dfm methods
 #' @inheritParams messages
 #' @keywords message internal
-message_dfm <- function(operation, before, after) {
+message_dfm <- function(operation, stat) {
     message(msg("Return %s documents (%s features, %s occurrences) by %s",
-                after$ndoc, after$nfeat, after$nocc, operation))
+                stat$ndoc, stat$nfeat, stat$nocc, operation))
 }
 
 stats_dfm <- function(x) {
@@ -149,9 +149,9 @@ stats_dfm <- function(x) {
 #' Print messages in fcm methods
 #' @inheritParams messages
 #' @keywords message internal
-message_fcm <- function(operation, before, after) {
+message_fcm <- function(operation, stat) {
     message(msg("Return %s and %s features (%s co-occurrences) by %s",
-                after$nrow, after$ncol, after$nocc, operation))
+                stat$nrow, stat$ncol, stat$nocc, operation))
 }
 
 stats_fcm <- function(x) {

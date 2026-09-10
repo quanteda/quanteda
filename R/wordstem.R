@@ -45,8 +45,6 @@ tokens_wordstem.tokens_xptr <- function(x, language = quanteda_options("language
 
     verbose <- check_logical(verbose)
     attrs <- attributes(x)
-    if (verbose)
-        before <- stats_tokens(x)
     if (identical(field_object(attrs, "ngram"), 1L)) {
         set_types(x) <- char_wordstem(get_types(x), language = language, 
                                       check_whitespace = FALSE)
@@ -58,7 +56,7 @@ tokens_wordstem.tokens_xptr <- function(x, language = quanteda_options("language
     }
     result <- rebuild_tokens(x, attrs)
     if (verbose)
-        message_tokens("tokens_wordstem()", before, stats_tokens(result))
+        message_tokens("tokens_wordstem()", stats_tokens(result))
     return(result)
 }
 
@@ -138,11 +136,9 @@ dfm_wordstem.dfm <- function(x, language = quanteda_options("language_stemmer"),
         )
     }
 
-    if (verbose)
-        before <- stats_dfm(x)
     x <- dfm_compress(x, margin = "features")
     if (verbose)
-        message_dfm("dfm_wordstem()", before, stats_dfm(x))
+        message_dfm("dfm_wordstem()", stats_dfm(x))
     return(x)
 }
 
