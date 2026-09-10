@@ -815,7 +815,7 @@ test_that("tokens printing works", {
     )
     expect_output(
         print(toks, max_ndoc = 0, max_ntoken = 0, show_summary = TRUE),
-        "Tokens of 14 documents (4,699 types, 38,595 tokens) and 4 docvars.",
+        "Tokens of 14 documents (4,701 types, 38,593 tokens) and 4 docvars.",
         fixed = TRUE
     )
     expect_output(
@@ -825,7 +825,7 @@ test_that("tokens printing works", {
     )
     expect_output(
         print(toks, max_ndoc = 2, max_ntoken = 3, show_summary = TRUE),
-        paste0('Tokens of 14 documents (4,699 types, 38,595 tokens) and 4 docvars.\n',
+        paste0('Tokens of 14 documents (4,701 types, 38,593 tokens) and 4 docvars.\n',
                '1789-Washington :\n',
                '[1] "Fellow-Citizens" "of"              "the"            \n',
                '[ ... and 1,534 more ]\n\n',

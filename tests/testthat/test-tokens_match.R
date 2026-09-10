@@ -66,7 +66,7 @@ test_that("tokens_match verbose works", {
     toks <- tokens(head(data_corpus_inaugural))
     expect_message(
         tokens_match(toks, c("this", "the", "all", "be"), verbose = TRUE),
-        "Return .* documents \\(.* types, .* tokens\\) by tokens_match\(\\)"
+        "Return .* documents \\(.* types, .* tokens\\) by tokens_match\\(\\)"
     )
 })
 
