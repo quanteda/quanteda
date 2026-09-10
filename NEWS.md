@@ -1,3 +1,9 @@
+# quanteda 4.5.x
+
+## Changes and additions
+
+* Improved verbose messages from `corpus`, `tokens`, `dfm` and `fcm` methods.
+
 # quanteda 4.5
 
 ## Bug fixes
