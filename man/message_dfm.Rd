@@ -4,10 +4,10 @@
 \alias{message_dfm}
 \title{Print messages in dfm methods}
 \usage{
-message_dfm(operation, before, after)
+message_dfm(operation, stat)
 }
 \arguments{
-\item{before, after}{object statistics before and after the operation.}
+\item{stat}{object statistics after the operation.}
 }
 \description{
 Print messages in dfm methods

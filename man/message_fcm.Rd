@@ -4,10 +4,10 @@
 \alias{message_fcm}
 \title{Print messages in fcm methods}
 \usage{
-message_fcm(operation, before, after)
+message_fcm(operation, stat)
 }
 \arguments{
-\item{before, after}{object statistics before and after the operation.}
+\item{stat}{object statistics after the operation.}
 }
 \description{
 Print messages in fcm methods

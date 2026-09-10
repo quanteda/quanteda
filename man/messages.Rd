@@ -7,7 +7,7 @@
 \item{verbose}{if \code{TRUE} print the number of tokens and documents before and
 after the function is applied. The number of tokens does not include paddings.}
 
-\item{before, after}{object statistics before and after the operation.}
+\item{stat}{object statistics after the operation.}
 }
 \description{
 Used in printing verbose messages for message_tokens() and message_dfm()
