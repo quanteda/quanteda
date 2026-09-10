@@ -5,21 +5,24 @@ test_that("empty corpus works", {
   expect_equal(docvars(corp1),
                data.frame(var1 = integer()))
   expect_output(print(corp1),
-                "Corpus consisting of 0 documents and 1 docvar.")
+                "Corpus of 0 documents (0 characters) and 1 docvar.",
+                fixed = TRUE)
   
   corp2 <- corpus(data.frame(text = character(), var2 = numeric()))
   expect_equal(ndoc(corp2), 0)
   expect_equal(docvars(corp2),
                data.frame(var2 = numeric()))
   expect_output(print(corp2),
-                "Corpus consisting of 0 documents and 1 docvar.")
+                "Corpus of 0 documents (0 characters) and 1 docvar.",
+                fixed = TRUE)
   
   corp3 <- c(corp1, corp2)
   expect_equal(ndoc(corp3), 0)
   expect_equal(docvars(corp3),
                data.frame(var1 = integer(), var2 = numeric()))
   expect_output(print(corp3),
-                "Corpus consisting of 0 documents and 2 docvars.")
+                "Corpus of 0 documents (0 characters) and 2 docvars.",
+                fixed = TRUE)
   
   # works with corpus methods
   expect_s3_class(corpus(corp3), "corpus")
@@ -38,18 +41,21 @@ test_that("empty tokens works", {
   
   toks1 <- tokens(corp1)
   expect_output(print(toks1),
-                "Tokens consisting of 0 documents and 1 docvar.")
+                "Tokens of 0 documents (0 types, 0 tokens) and 1 docvar.",
+                fixed = TRUE)
   
   toks2 <- tokens(corp2)
   expect_output(print(toks2),
-                "Tokens consisting of 0 documents and 1 docvar.")
+                "Tokens of 0 documents (0 types, 0 tokens) and 1 docvar.",
+                fixed = TRUE)
   
   toks3 <- c(toks1, toks2)
   expect_equal(ndoc(toks3), 0)
   expect_equal(docvars(toks3),
                data.frame(var1 = integer(), var2 = numeric()))
   expect_output(print(toks3),
-                "Tokens consisting of 0 documents and 2 docvars.")
+                "Tokens of 0 documents (0 types, 0 tokens) and 2 docvars.",
+                fixed = TRUE)
   
   # works with tokens methods
   expect_s3_class(tokens(toks3), "tokens")
@@ -74,12 +80,12 @@ test_that("empty DFM works", {
     
     dfmat1 <- dfm(toks1)
     expect_output(print(dfmat1),
-                  "Document-feature matrix of: 0 documents, 0 features (0.00% sparse) and 1 docvar.", 
+                  "Document-feature matrix of 0 documents (0 features, 0 occurrences) and 1 docvar.", 
                   fixed = TRUE)
     
     dfmat2 <- dfm(toks2)
     expect_output(print(dfmat2),
-                  "Document-feature matrix of: 0 documents, 0 features (0.00% sparse) and 1 docvar.", 
+                  "Document-feature matrix of 0 documents (0 features, 0 occurrences) and 1 docvar.", 
                   fixed = TRUE)
     
     dfmat3 <- rbind(dfmat1, dfmat2)
@@ -88,7 +94,7 @@ test_that("empty DFM works", {
     expect_equal(docvars(dfmat3),
                  data.frame(var1 = integer(), var2 = numeric()))
     expect_output(print(dfmat3),
-                  "Document-feature matrix of: 0 documents, 0 features (0.00% sparse) and 2\ndocvars.",
+                  "Document-feature matrix of 0 documents (0 features, 0 occurrences) and 2\ndocvars.",
                   fixed = TRUE)
 
     # works with dfm methods

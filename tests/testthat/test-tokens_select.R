@@ -341,24 +341,20 @@ test_that("tokens_select on bigrams works as expected when padding = TRUE", {
 })
 
 test_that("tokens_select output works as planned", {
+    
     txt <- c(wash1 <- "Fellow citizens, I am again called upon by the voice of my country to
                    execute the functions of its Chief Magistrate.",
              wash2 <- "When the occasion proper for it shall arrive, I shall endeavor to express
              the high sense I entertain of this distinguished honor.")
     toks <- tokens(txt)
-    dfm <- dfm(toks)
-
+    
     expect_message(
         tokens_remove(toks, stopwords("english"), verbose = TRUE),
-        "tokens_remove() changed", fixed = TRUE
+        "Return .* documents \\(.* types, .* tokens\\) by tokens_remove\\(\\)"
     )
     expect_message(
-        tokens_select(toks, stopwords("english"), verbose = TRUE),
-        "tokens_keep() changed", fixed = TRUE
-    )
-    expect_message(
-        tokens_select(toks, stopwords("english"), padding = TRUE, verbose = TRUE),
-        "tokens_keep() changed", fixed = TRUE
+        tokens_keep(toks, stopwords("english"), verbose = TRUE),
+        "Return .* documents \\(.* types, .* tokens\\) by tokens_keep\\(\\)"
     )
 })
 

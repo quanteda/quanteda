@@ -17,12 +17,7 @@ setMethod("print", signature(x = "dfm"),
               show_summary <- check_logical(show_summary)
               
               if (show_summary) {
-                  docvars <- docvars(x)
-                  wrap(msg("Document-feature matrix of: %s %s, %s %s (%s sparse) and %s %s.\n",
-                           ndoc(x), inflect("document", ndoc(x)),
-                           nfeat(x), inflect("feature", nfeat(x)),
-                           format_sparsity(sparsity(x)),
-                           ncol(docvars), inflect("docvar", ncol(docvars))))
+                  summary_dfm(x)
               }
               if (max_ndoc < 0) 
                   max_ndoc <- ndoc(x)

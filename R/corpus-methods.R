@@ -29,13 +29,7 @@ print.corpus <- function(x, max_ndoc = quanteda_options("print_corpus_max_ndoc")
         max_ndoc <- ndoc(x)
 
     if (show_summary) {
-        line <- msg("Corpus consisting of %s %s",
-                    ndoc, inflect("document", ndoc))
-        if (ncol(docvars))
-            line <- msg(" and %s %s",
-                        ncol(docvars), inflect("docvar", ncol(docvars)),
-                        prepend = line)
-        wrap(paste0(line, "."))
+        summary_corpus(x)
     }
 
     if (max_ndoc > 0 && ndoc(x) > 0) {

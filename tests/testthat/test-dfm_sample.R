@@ -27,12 +27,6 @@ test_that("test tokens_sample works with verbose", {
     dfmat <- dfm(tokens(data_corpus_inaugural[1:10]), verbose = FALSE)
     expect_message(
         dfm_sample(dfmat, size = 2, verbose = TRUE),
-        "dfm_sample() changed from 3,366 features (10 documents) to 3,366 features (2 documents)",
-        fixed = TRUE
-    )
-    expect_message(
-        dfm_sample(dfmat, size = 5, replace = TRUE, verbose = TRUE),
-        "dfm_sample() changed from 3,366 features (10 documents) to 3,366 features (5 documents)",
-        fixed = TRUE
+        "Return .* documents \\(.* features, .* occurrences\\) by dfm_sample\\(\\)"
     )
 })

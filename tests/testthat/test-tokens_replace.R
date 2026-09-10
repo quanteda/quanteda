@@ -68,7 +68,7 @@ test_that("tokens_replace works with regular pattern and replacement", {
     
     expect_message(
         tokens_replace(toks_test, c('aa', 'bb'), c('a', 'b'), verbose = TRUE),
-        "tokens_replace() changed", fixed = TRUE
+        "Return .* documents \\(.* types, .* tokens\\) by tokens_replace\\(\\)"
     )
     
 })

@@ -40,8 +40,12 @@ wrap <- function(x, ...) {
 inflect <- function(word, n) {
     v <- c("document" = "documents",
            "feature" = "features",
+           "type" = "types",
            "docvar" = "docvars",
            "token" = "tokens",
+           "character" = "characters",
+           "occurrence" = "occurrences",
+           "co-occurrence" = "co-occurrences",
            "entry" = "entries",
            "key" = "keys",
            "match" = "matches")
@@ -92,7 +96,7 @@ message_finish <- function(x, time) {
 #' @name messages
 #' @param verbose if `TRUE` print the number of tokens and documents before and
 #'   after the function is applied. The number of tokens does not include paddings.
-#' @param before,after object statistics before and after the operation.
+#' @param stat object statistics after the operation.
 #' @seealso message_tokens() message_dfm()
 #' @keywords internal
 NULL
@@ -100,39 +104,114 @@ NULL
 #' Print messages in corpus methods
 #' @inheritParams messages
 #' @keywords message internal
-message_corpus <- function(operation, before, after) {
-    message(msg("%s changed from %s characters (%s documents) to %s characters (%s documents)",
-                operation, before$nchar, before$ndoc, after$nchar, after$ndoc))
+message_corpus <- function(operation, stat) {
+    message(msg("Return %s documents (%s characters) by %s",
+                stat$ndoc, stat$nchar, operation))
 }
 
 stats_corpus <- function(x) {
     list(ndoc = ndoc(x),
-         nchar = sum(nchar(x)))
+         nchar = sum(nchar(x)),
+         ndocvar = ncol(docvars(x)))
 }
 
 #' Print messages in tokens methods
 #' @inheritParams messages
 #' @keywords message internal
-message_tokens <- function(operation, before, after) {
-    message(msg("%s changed from %s types (%s documents, %s tokens) to %s types (%s documents, %s tokens)",
-                operation, before$ntype, before$ndoc, before$ntoken, after$ntype, after$ndoc, after$ntoken))
+message_tokens <- function(operation, stat) {
+    message(msg("Return %s documents (%s types, %s tokens) by %s",
+                stat$ndoc, stat$ntype, stat$ntoken, operation))
 }
 
 stats_tokens <- function(x) {
     list(ndoc = ndoc(x),
          ntoken = sum(ntoken(x, remove_padding = FALSE)),
-         ntype = count_types(x))
+         ntype = count_types(x),
+         ndocvar = ncol(docvars(x)))
 }
 
 #' Print messages in dfm methods
 #' @inheritParams messages
 #' @keywords message internal
-message_dfm <- function(operation, before, after) {
-    message(msg("%s changed from %s features (%s documents) to %s features (%s documents)",
-                operation, before$nfeat, before$ndoc, after$nfeat, after$ndoc))
+message_dfm <- function(operation, stat) {
+    message(msg("Return %s documents (%s features, %s occurrences) by %s",
+                stat$ndoc, stat$nfeat, stat$nocc, operation))
 }
 
 stats_dfm <- function(x) {
+    x <- dfm_remove(x, "", verbose = FALSE)
     list(ndoc = ndoc(x),
-         nfeat = nfeat(dfm_remove(x, "", verbose = FALSE)))
+         nocc = sum(x),
+         nfeat = nfeat(x),
+         ndocvar = ncol(docvars(x)))
 }
+
+#' Print messages in fcm methods
+#' @inheritParams messages
+#' @keywords message internal
+message_fcm <- function(operation, stat) {
+    message(msg("Return %s and %s features (%s co-occurrences) by %s",
+                stat$nrow, stat$ncol, stat$nocc, operation))
+}
+
+stats_fcm <- function(x) {
+    x <- fcm_remove(x, "", verbose = FALSE)
+    list(nocc = sum(x),
+         nrow = nrow(x),
+         ncol = ncol(x))
+}
+
+summary_corpus <- function(x) {
+    s <- stats_corpus(x)
+    line <- msg("Corpus of %s %s (%s %s)",
+                s$ndoc, inflect("document", s$ndoc),
+                s$nchar, inflect("character", s$nchar))
+    if (s$ndocvar)
+        line <- msg(" and %s %s",
+                    s$ndocvar, inflect("docvar", s$ndocvar),
+                    prepend = line)
+    wrap(paste0(line, "."))
+}
+
+summary_tokens <- function(x) {
+    s <- stats_tokens(x)
+    if (is.tokens_xptr(x)) {
+        line <- msg("Tokens_xptr [%s] of %s %s (%s %s, %s %s)", 
+                    address(x),
+                    s$ndoc, inflect("document", s$ndoc),
+                    s$ntype, inflect("type", s$ntype),
+                    s$ntoken, inflect("token", s$ntoken))
+    } else {
+        line <- msg("Tokens of %s %s (%s %s, %s %s)", 
+                    s$ndoc, inflect("document", s$ndoc),
+                    s$ntype, inflect("type", s$ntype),
+                    s$ntoken, inflect("token", s$ntoken))
+    }
+    if (s$ndocvar)
+        line <- msg(" and %s %s",
+                    s$ndocvar, inflect("docvar", s$ndocvar),
+                    prepend = line)
+    wrap(paste0(line, "."))
+}
+
+summary_dfm <- function(x) {
+    s <- stats_dfm(x)
+    line <- msg("Document-feature matrix of %s %s (%s %s, %s %s)",
+                s$ndoc, inflect("document", s$ndoc),
+                s$nfeat, inflect("feature", s$nfeat),
+                s$nocc, inflect("occurrence", s$nocc))
+    if (s$ndocvar)
+        line <- msg(" and %s %s", 
+                    s$ndocvar, inflect("docvar", s$ndocvar),
+                    prepend = line)
+    wrap(paste0(line, "."))
+}
+
+summary_fcm <- function(x) {
+    s <- stats_fcm(x)
+    wrap(msg("Feature co-occurrence matrix of %s and %s %s (%s %s).\n",
+             s$nrow, s$ncol, inflect("feature", s$nrow * s$ncol),
+             s$nocc, inflect("co-occurrence", s$nocc))
+    )
+}
+

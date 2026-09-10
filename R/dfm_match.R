@@ -48,11 +48,9 @@ dfm_match.dfm <- function(x, features,
     x <- as.dfm(x)
     features <- check_character(features, min_len = 0, max_len = Inf, normalize = TRUE)
     attrs <- attributes(x)
-    if (verbose)
-        before <- stats_dfm(x)
     x <- pad_dfm(x, features)
     result <- rebuild_dfm(x, attrs)
     if (verbose)
-        message_dfm("dfm_match()", before, stats_dfm(result))
+        message_dfm("dfm_match()", stats_dfm(result))
     return(result)
 }

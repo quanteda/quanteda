@@ -198,8 +198,6 @@ tokens_select.tokens_xptr <- function(x, pattern = NULL,
     if (is.null(apply_if))
         apply_if <- rep(TRUE, length.out = ndoc(x))
     
-    if (verbose)
-        before <- stats_tokens(x)
     if (selection == "keep") {
         result <- cpp_tokens_select(x, ids, 1, padding, window[1], window[2], startpos, endpos, !apply_if,
                                     get_threads())
@@ -210,7 +208,7 @@ tokens_select.tokens_xptr <- function(x, pattern = NULL,
     result <- rebuild_tokens(result, attrs)
     if (verbose)
         message_tokens(ifelse(selection == "keep", "tokens_keep()", "tokens_remove()"), 
-                              before, stats_tokens(result))
+                       stats_tokens(result))
     return(result)
 }
 

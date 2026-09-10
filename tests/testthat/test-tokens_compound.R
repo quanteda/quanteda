@@ -45,7 +45,7 @@ test_that("tokens_compound join tokens correctly", {
     
     expect_message(
         tokens_compound(toks, seqs, verbose = TRUE),
-        "tokens_compound() changed", fixed = TRUE
+        "Return .* documents \\(.* types, .* tokens\\) by tokens_compound\\(\\)"
     )
   
 })
