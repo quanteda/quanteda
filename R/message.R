@@ -211,7 +211,7 @@ summary_fcm <- function(x) {
     s <- stats_fcm(x)
     wrap(msg("Feature co-occurrence matrix of %s and %s %s (%s %s).\n",
              s$nrow, s$ncol, inflect("feature", s$nrow * s$ncol),
-             s$ncoo, inflect("co-occurrence", s$nocc))
+             s$nocc, inflect("co-occurrence", s$nocc))
     )
 }
 
