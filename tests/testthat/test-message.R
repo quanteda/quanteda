@@ -32,6 +32,7 @@ test_that("object stats are correct", {
                      )
     expect_identical(quanteda:::stats_dfm(dfmt),
                      list(ndoc = 5L, 
+                          nocc = sum(dfm_remove(dfmt, "")),
                           nfeat = 1000L,
                           ndocvar = 4L)
                     )

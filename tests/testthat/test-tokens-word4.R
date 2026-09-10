@@ -632,12 +632,12 @@ test_that("tokens printing works", {
     )
     expect_output(
         print(toks, max_ndoc = 0, max_ntoken = 0, show_summary = TRUE),
-        "Tokens consisting of 14 documents and 4 docvars.",
+        "Tokens of 14 documents (4,699 types, 38,595 tokens) and 4 docvars.",
         fixed = TRUE
     )
     expect_output(
         print(toks, max_ndoc = 2, max_ntoken = 3, show_summary = TRUE),
-        paste0('Tokens consisting of 14 documents and 4 docvars.\n',
+        paste0('Tokens of 14 documents (4,699 types, 38,595 tokens) and 4 docvars.\n',
                '1789-Washington :\n',
                '[1] "Fellow-Citizens" "of"              "the"            \n',
                '[ ... and 1,534 more ]\n\n',
@@ -671,7 +671,7 @@ test_that("tokens printing works", {
 
     expect_output(
         print(tokens("a b c d"), max_ndoc = -1, max_ntoken = 2),
-        paste0('Tokens consisting of 1 document.\n',
+        paste0('Tokens of 1 document (4 types, 4 tokens).\n',
                'text1 :\n',
                '[1] "a" "b"\n',
                '[ ... and 2 more ]\n'),
@@ -679,14 +679,14 @@ test_that("tokens printing works", {
     )
     expect_output(
         print(tokens("a b c d"), max_ndoc = -1, max_ntoken = 4),
-        paste0('Tokens consisting of 1 document.\n',
+        paste0('Tokens of 1 document (4 types, 4 tokens).\n',
                'text1 :\n',
                '[1] "a" "b" "c" "d"'),
         fixed = TRUE
     )
     expect_output(
         print(tokens("a b c d"), max_ndoc = -1, max_ntoken = -1),
-        paste0('Tokens consisting of 1 document.\n',
+        paste0('Tokens of 1 document (4 types, 4 tokens).\n',
                'text1 :\n',
                '[1] "a" "b" "c" "d"'),
         fixed = TRUE
