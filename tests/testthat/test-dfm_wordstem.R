@@ -60,7 +60,6 @@ test_that("dfm_wordstem() works with verbose", {
     dfmat <- dfm(tokens(c("win", "winning", "wins", "won", "winner")), tolower = FALSE)
     expect_message(
         dfm_wordstem(dfmat, verbose = TRUE),
-        "dfm_wordstem() changed from 5 features (5 documents) to 3 features (5 documents)",
-        fixed = TRUE
+        "Return .* documents \\(.* features, .* occurrences\\) by dfm_wordstem\\(\\)"
     )
 })

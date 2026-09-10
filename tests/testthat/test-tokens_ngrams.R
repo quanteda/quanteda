@@ -2,7 +2,7 @@ test_that("tokens_ngrams works", {
     toks <- tokens(c('insurgents killed in ongoing fighting'))
     expect_message(
         tokens_ngrams(toks, n = 1:2, verbose = TRUE),
-        "tokens_ngrams() changed", fixed = TRUE
+        "Return .* documents \\(.* types, .* tokens\\) by tokens_ngrams\\(\\)"
     )
 })
 

@@ -39,11 +39,11 @@ test_that("test dfm_select, fixed", {
     )
     expect_message(
         dfm_keep(dfmt_test, c("a", "b", "c"), verbose = TRUE),
-        "dfm_keep() changed", fixed = TRUE
+        "Return .* documents \\(.* features, .* occurrences\\) by dfm_keep\\(\\)"
     )
     expect_message(
         dfm_remove(dfmt_test, c("a", "b", "c"), verbose = TRUE),
-        "dfm_remove() changed", fixed = TRUE
+        "Return .* documents \\(.* features, .* occurrences\\) by dfm_remove\\(\\)"
     )
 })
 

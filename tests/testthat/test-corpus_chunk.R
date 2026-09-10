@@ -38,7 +38,7 @@ test_that("corpus_chunk works", {
 
   expect_message(
       corpus_chunk(corp, size = 2, verbose = TRUE),
-      "corpus_chunk() changed", fixed = TRUE
+      "Return .* documents \\(.* characters\\) by corpus_chunk\\(\\)"
   )
 
 })

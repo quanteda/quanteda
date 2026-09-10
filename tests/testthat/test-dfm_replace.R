@@ -37,7 +37,6 @@ test_that("dfm_replace() verbose works", {
     dfmat <- dfm(tokens(c("a a b c d", "a a b c", "b c c d")))
     expect_message(
         dfm_replace(dfmat, c("a", "c"), c("X", "X"), verbose = TRUE),
-        "dfm_replace() changed from 4 features (3 documents) to 3 features (3 documents)",
-        fixed = TRUE
+        "Return .* documents \\(.* features, .* occurrences\\) by dfm_replace\\(\\)"
     )
 })

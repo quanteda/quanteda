@@ -24,7 +24,7 @@ test_that("tokens_wordstem works", {
                       d2 = c("one", "two", "three")))
     expect_message(
         tokens_wordstem(toks, "english", verbose = TRUE),
-        "tokens_wordstem() changed", fixed = TRUE
+        "Return .* documents \\(.* types, .* tokens\\) by tokens_wordstem\\(\\)"
     )
 })
 

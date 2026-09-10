@@ -43,7 +43,7 @@ test_that("test that tokens_group is working", {
     
     expect_message(
         tokens_group(toks, verbose = TRUE),
-        "tokens_group() changed", fixed = TRUE
+        "Return .* documents \\(.* types, .* tokens\\) by tokens_group\\(\\)"
     )
 })
 

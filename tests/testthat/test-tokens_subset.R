@@ -26,7 +26,7 @@ test_that("tokens_subset works in a basic way", {
     )
     expect_message(
         tokens_subset(toks, Year > 2000, verbose = TRUE),
-        "tokens_subset() changed", fixed = TRUE
+        "Return .* documents \\(.* types, .* tokens\\) by tokens_subset\\(\\)"
     )
     expect_warning(
         tokens_subset(toks, Year > 2000, something = 10),

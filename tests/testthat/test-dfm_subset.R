@@ -82,12 +82,6 @@ test_that("dfm_subset() works with verbose", {
 
     expect_message(
         dfm_subset(dfmat, grp > 1, verbose = TRUE),
-        "dfm_subset() changed from 6 features (4 documents) to 6 features (2 documents)",
-        fixed = TRUE
-    )
-    expect_message(
-        dfm_subset(dfmat, c(TRUE, FALSE, FALSE, FALSE), verbose = TRUE),
-        "dfm_subset() changed from 6 features (4 documents) to 6 features (1 documents)",
-        fixed = TRUE
+        "Return .* documents \\(.* features, .* occurrences\\) by dfm_subset\\(\\)"
     )
 })

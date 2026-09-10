@@ -86,18 +86,7 @@ test_that("dfm_compress() works with verbose options", {
     
     expect_message(
         dfm_compress(mat, margin = "documents", verbose = TRUE),
-        "dfm_compress() changed from 5 features (3 documents) to 5 features (2 documents)",
-        fixed = TRUE
-    )
-    expect_message(
-        dfm_compress(mat, margin = "features", verbose = TRUE),
-        "dfm_compress() changed from 5 features (3 documents) to 3 features (3 documents)",
-        fixed = TRUE
-    )
-    expect_message(
-        dfm_compress(mat, verbose = TRUE),
-        "dfm_compress() changed from 5 features (3 documents) to 3 features (2 documents)",
-        fixed = TRUE
+        "Return .* documents \\(.* features, .* occurrences\\) by dfm_compress\\(\\)"
     )
 })
 

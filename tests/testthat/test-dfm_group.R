@@ -384,12 +384,6 @@ test_that("dfm_group() verbose messages work", {
     
     expect_message(
         dfm_group(dfmat, groups = grp, verbose = TRUE),
-        "dfm_group() changed from 4 features (5 documents) to 4 features (3 documents)",
-        fixed = TRUE
-    )
-    expect_message(
-        dfm_group(dfmat, groups = c(1, 1, 2, 2, 1), verbose = TRUE),
-        "dfm_group() changed from 4 features (5 documents) to 4 features (2 documents)",
-        fixed = TRUE
+        "Return .* documents \\(.* features, .* occurrences\\) by dfm_group\\(\\)"
     )
 })

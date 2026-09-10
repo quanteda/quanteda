@@ -240,13 +240,13 @@ test_that("more cbind tests for dfms", {
 })
 
 test_that("cbind.dfm keeps attributes of the dfm", {
-    mx1 <- as.dfm(matrix(c(0, 0, 0, 0, 1, 2), nrow = 2,
+    dfmt1 <- as.dfm(matrix(c(0, 0, 0, 0, 1, 2), nrow = 2,
                          dimnames = list(c("doc1", "doc2"), c("aa", "bb", "cc"))))
-    mx2 <- as.dfm(matrix(c(2, 3, 0, 0, 0, 0), nrow = 2,
+    dfmt2 <- as.dfm(matrix(c(2, 3, 0, 0, 0, 0), nrow = 2,
                          dimnames = list(c("doc1", "doc2"), c("dd", "ee", "ff"))))
-    meta(mx1, "settings") <- list(somesetting = "somevalue")
-    mx3 <- cbind(mx1, mx2)
-    expect_equal(meta(mx3), list(settings = list(somesetting = "somevalue")))
+    meta(dfmt1, "settings") <- list(somesetting = "somevalue")
+    dfmt3 <- cbind(dfmt1, dfmt2)
+    expect_equal(meta(dfmt3), list(settings = list(somesetting = "somevalue")))
 })
 
 test_that("rbind.dfm works as expected", {
@@ -384,29 +384,29 @@ test_that("dfm print works with options as expected", {
                 remove_punct = FALSE, remove_numbers = FALSE, split_hyphens = TRUE))
     expect_output(
         print(dfmt, max_ndoc = 6, max_nfeat = 10, show_summary = TRUE),
-        paste0("^Document-feature matrix of: 14 documents, 4,452 features \\(81\\.97% sparse\\) and 4\ndocvars",
+        paste0("^Document-feature matrix of 14 documents \\(4,452 features, 38,693 occurrences\\) and\n4 docvars",
                ".*",
                "\\[ reached max_ndoc \\.\\.\\. 8 more documents, reached max_nfeat \\.\\.\\. 4,442 more\nfeatures \\]$")
     )
     expect_output(
         print(dfmt[1:5, 1:5], max_ndoc = 6, max_nfeat = 10, show_summary = TRUE),
-        paste0("^Document-feature matrix of: 5 documents, 5 features \\(4\\.00% sparse\\) and 4\ndocvars\\.",
+        paste0("^Document-feature matrix of 5 documents \\(5 features, 1,057 occurrences\\) and 4\ndocvars\\.",
                ".*",
                "1789-Washington\\s+3\\s+2\\s+5\\s+71\\s+116")
     )
     expect_output(
         print(dfmt[1:5, 1:5], max_ndoc = -1, max_nfeat = -1, show_summary = TRUE),
-        paste0("^Document-feature matrix of: 5 documents, 5 features \\(4\\.00% sparse\\) and 4\ndocvars\\.",
+        paste0("^Document-feature matrix of 5 documents \\(5 features, 1,057 occurrences\\) and 4\ndocvars\\.",
                ".*",
                "1805-Jefferson\\s+8\\s+1\\s+10\\s+101\\s+143")
     )
     expect_output(
         print(dfmt[1:5, 1:5], max_ndoc = 0, max_nfeat = -1, show_summary = TRUE),
-        "^Document-feature matrix of: 5 documents, 5 features \\(4\\.00% sparse\\) and 4\ndocvars\\.$"
+        "^Document-feature matrix of 5 documents \\(5 features, 1,057 occurrences\\) and 4\ndocvars\\.$"
     )
     expect_output(
         print(dfmt[1:5, 1:5], max_ndoc = -1, max_nfeat = 0, show_summary = TRUE),
-        paste0("^Document-feature matrix of: 5 documents, 5 features \\(4\\.00% sparse\\) and 4\ndocvars\\.",
+        paste0("^Document-feature matrix of 5 documents \\(5 features, 1,057 occurrences\\) and 4\ndocvars\\.",
                "\\n",
                "\\[ reached max_nfeat \\.\\.\\. 5 more features ]$")
     )
@@ -523,136 +523,138 @@ test_that("test sparsity", {
 })
 
 test_that("test null dfm is handled properly", {
-    mx <- quanteda:::make_null_dfm()
+    dfmt <- quanteda:::make_null_dfm()
 
     # constructor
-    expect_equal(dfm(mx), mx)
+    expect_equal(dfm(dfmt), dfmt)
 
     # selection and grouping
-    expect_equal(dfm_select(mx), mx)
-    expect_equal(dfm_select(mx, "a"), mx)
-    expect_equal(dfm_trim(mx), mx)
-    expect_equal(dfm_sample(mx), mx)
-    expect_equal(dfm_subset(mx), mx)
-    expect_equal(dfm_compress(mx, "both"), mx)
-    expect_equal(dfm_compress(mx, "features"), mx)
-    expect_equal(dfm_compress(mx, "documents"), mx)
-    expect_equal(dfm_sort(mx, margin = "both"), mx)
-    expect_equal(dfm_sort(mx, margin = "features"), mx)
-    expect_equal(dfm_sort(mx, margin = "documents"), mx)
-    expect_equal(dfm_lookup(mx, dictionary(list(A = "a"))), mx)
-    expect_equal(dfm_group(mx), mx)
-    expect_equal(dfm_replace(mx, "A", "a"), mx)
-    expect_equal(head(mx), mx)
-    expect_equal(tail(mx), mx)
+    expect_equal(dfm_select(dfmt), dfmt)
+    expect_equal(dfm_select(dfmt, "a"), dfmt)
+    expect_equal(dfm_trim(dfmt), dfmt)
+    expect_equal(dfm_sample(dfmt), dfmt)
+    expect_equal(dfm_subset(dfmt), dfmt)
+    expect_equal(dfm_compress(dfmt, "both"), dfmt)
+    expect_equal(dfm_compress(dfmt, "features"), dfmt)
+    expect_equal(dfm_compress(dfmt, "documents"), dfmt)
+    expect_equal(dfm_sort(dfmt, margin = "both"), dfmt)
+    expect_equal(dfm_sort(dfmt, margin = "features"), dfmt)
+    expect_equal(dfm_sort(dfmt, margin = "documents"), dfmt)
+    expect_equal(dfm_lookup(dfmt, dictionary(list(A = "a"))), dfmt)
+    expect_equal(dfm_group(dfmt), dfmt)
+    expect_equal(dfm_replace(dfmt, "A", "a"), dfmt)
+    expect_equal(head(dfmt), dfmt)
+    expect_equal(tail(dfmt), dfmt)
 
     # weighting
-    expect_equal(topfeatures(mx), numeric())
-    expect_equal(dfm_weight(mx, "count"), mx)
-    expect_equal(dfm_weight(mx, "prop"), mx)
-    expect_equal(dfm_weight(mx, "propmax"), mx)
-    expect_equal(dfm_weight(mx, "logcount"), mx)
-    expect_equal(dfm_weight(mx), mx)
-    expect_equal(dfm_weight(mx, "augmented"), mx)
-    expect_equal(dfm_weight(mx, "boolean"), mx)
-    expect_equal(dfm_weight(mx, "logave"), mx)
-    expect_equal(dfm_tfidf(mx), mx)
-    expect_equal(docfreq(mx), numeric())
-    expect_equal(dfm_smooth(mx), mx)
+    expect_equal(topfeatures(dfmt), numeric())
+    expect_equal(dfm_weight(dfmt, "count"), dfmt)
+    expect_equal(dfm_weight(dfmt, "prop"), dfmt)
+    expect_equal(dfm_weight(dfmt, "propmax"), dfmt)
+    expect_equal(dfm_weight(dfmt, "logcount"), dfmt)
+    expect_equal(dfm_weight(dfmt), dfmt)
+    expect_equal(dfm_weight(dfmt, "augmented"), dfmt)
+    expect_equal(dfm_weight(dfmt, "boolean"), dfmt)
+    expect_equal(dfm_weight(dfmt, "logave"), dfmt)
+    expect_equal(dfm_tfidf(dfmt), dfmt)
+    expect_equal(docfreq(dfmt), numeric())
+    expect_equal(dfm_smooth(dfmt), dfmt)
 
     # transformation
-    expect_equal(dfm_tolower(mx), mx)
-    expect_equal(dfm_toupper(mx), mx)
-    expect_equal(dfm_wordstem(mx), mx)
+    expect_equal(dfm_tolower(dfmt), dfmt)
+    expect_equal(dfm_toupper(dfmt), dfmt)
+    expect_equal(dfm_wordstem(dfmt), dfmt)
 
     # binding
-    expect_equal(rbind(mx, mx), mx)
-    expect_equal(cbind(mx, mx), mx)
+    expect_equal(rbind(dfmt, dfmt), dfmt)
+    expect_equal(cbind(dfmt, dfmt), dfmt)
 
-    expect_output(print(mx),
-                  "Document-feature matrix of: 0 documents, 0 features (0.00% sparse).", fixed = TRUE)
+    expect_output(print(dfmt),
+                  "Document-feature matrix of 0 documents (0 features, 0 occurrences).", 
+                  fixed = TRUE)
 })
 
 test_that("test empty dfm is handled properly (#1419)", {
-    mx <- dfm_trim(data_dfm_lbgexample, 1000)
-    docvars(mx) <- data.frame(var = c(1, 5, 3, 6, 6, 4))
+    
+    dfmt <- dfm_trim(data_dfm_lbgexample, 1000)
+    docvars(dfmt) <- data.frame(var = c(1, 5, 3, 6, 6, 4))
 
     # constructor
-    expect_equal(dfm(mx), mx)
+    expect_equal(dfm(dfmt), dfmt)
 
     # selection and grouping
-    expect_equal(dfm_select(mx), mx)
-    expect_equal(dfm_select(mx, "a"), mx)
-    expect_equal(dfm_trim(mx), mx)
-    expect_equal(ndoc(dfm_sample(mx)), ndoc(mx))
-    expect_equal(dfm_subset(mx, var > 5), mx[4:5, ])
-    expect_equal(dfm_compress(mx, "both"), mx)
-    expect_equal(dfm_compress(mx, "features"), mx)
-    expect_equal(dfm_compress(mx, "documents"), mx)
-    expect_equal(dfm_sort(mx, margin = "both"), mx)
-    expect_equal(dfm_sort(mx, margin = "features"), mx)
-    expect_equal(dfm_sort(mx, margin = "documents"), mx)
-    expect_equal(dfm_lookup(mx, dictionary(list(A = "a"))), mx)
-    expect_equal(dfm_group(mx), mx)
-    expect_equal(dfm_replace(mx, "A", "a"), mx)
-    expect_equal(head(mx), mx)
-    expect_equal(tail(mx), mx)
+    expect_equal(dfm_select(dfmt), dfmt)
+    expect_equal(dfm_select(dfmt, "a"), dfmt)
+    expect_equal(dfm_trim(dfmt), dfmt)
+    expect_equal(ndoc(dfm_sample(dfmt)), ndoc(dfmt))
+    expect_equal(dfm_subset(dfmt, var > 5), dfmt[4:5, ])
+    expect_equal(dfm_compress(dfmt, "both"), dfmt)
+    expect_equal(dfm_compress(dfmt, "features"), dfmt)
+    expect_equal(dfm_compress(dfmt, "documents"), dfmt)
+    expect_equal(dfm_sort(dfmt, margin = "both"), dfmt)
+    expect_equal(dfm_sort(dfmt, margin = "features"), dfmt)
+    expect_equal(dfm_sort(dfmt, margin = "documents"), dfmt)
+    expect_equal(dfm_lookup(dfmt, dictionary(list(A = "a"))), dfmt)
+    expect_equal(dfm_group(dfmt), dfmt)
+    expect_equal(dfm_replace(dfmt, "A", "a"), dfmt)
+    expect_equal(head(dfmt), dfmt)
+    expect_equal(tail(dfmt), dfmt)
 
     # weighting
-    expect_equal(topfeatures(mx), numeric())
-    expect_equal(dfm_weight(mx, "count"), mx)
-    expect_equal(dfm_weight(mx, "prop"), mx)
-    expect_equal(dfm_weight(mx, "propmax"), mx)
-    expect_equal(dfm_weight(mx, "logcount"), mx)
-    expect_equal(dfm_weight(mx), mx)
-    expect_equal(dfm_weight(mx, "augmented"), mx)
-    expect_equal(dfm_weight(mx, "boolean"), mx)
-    expect_equal(dfm_weight(mx, "logave"), mx)
-    expect_equal(dfm_tfidf(mx), mx)
-    expect_equal(docfreq(mx), numeric())
-    expect_equal(dfm_smooth(mx), mx)
+    expect_equal(topfeatures(dfmt), numeric())
+    expect_equal(dfm_weight(dfmt, "count"), dfmt)
+    expect_equal(dfm_weight(dfmt, "prop"), dfmt)
+    expect_equal(dfm_weight(dfmt, "propmax"), dfmt)
+    expect_equal(dfm_weight(dfmt, "logcount"), dfmt)
+    expect_equal(dfm_weight(dfmt), dfmt)
+    expect_equal(dfm_weight(dfmt, "augmented"), dfmt)
+    expect_equal(dfm_weight(dfmt, "boolean"), dfmt)
+    expect_equal(dfm_weight(dfmt, "logave"), dfmt)
+    expect_equal(dfm_tfidf(dfmt), dfmt)
+    expect_equal(docfreq(dfmt), numeric())
+    expect_equal(dfm_smooth(dfmt), dfmt)
 
     # transformation
-    expect_equal(dfm_tolower(mx), mx)
-    expect_equal(dfm_toupper(mx), mx)
-    expect_equal(dfm_wordstem(mx), mx)
+    expect_equal(dfm_tolower(dfmt), dfmt)
+    expect_equal(dfm_toupper(dfmt), dfmt)
+    expect_equal(dfm_wordstem(dfmt), dfmt)
 
     # binding
-    expect_equal(ndoc(rbind(mx, mx)), ndoc(mx) * 2)
-    expect_equal(ndoc(cbind(mx, mx)), ndoc(mx))
+    expect_equal(ndoc(rbind(dfmt, dfmt)), ndoc(dfmt) * 2)
+    expect_equal(ndoc(cbind(dfmt, dfmt)), ndoc(dfmt))
 
-    expect_output(print(mx),
-                  "Document-feature matrix of: 6 documents, 0 features (0.00% sparse) and 1 docvar.", fixed = TRUE)
+    expect_output(print(dfmt),
+                  "Document-feature matrix of 6 documents (0 features, 0 occurrences) and 1 docvar.", fixed = TRUE)
 })
 
 test_that("dfm raise nicer error message, #1267", {
     txt <- c(d1 = "one two three", d2 = "two three four", d3 = "one three four")
-    mx <- dfm(tokens(txt))
-    expect_error(mx["d4"], "Subscript out of bounds")
-    expect_error(mx["d4", ], "Subscript out of bounds")
-    expect_error(mx[4], "Subscript out of bounds")
-    expect_error(mx[4, ], "Subscript out of bounds")
-    expect_error(mx["d4", , TRUE], "Subscript out of bounds")
-    expect_error(mx[4, , TRUE], "Subscript out of bounds")
-    expect_error(mx[1:4, , TRUE], "Subscript out of bounds")
-    expect_error(mx[1:4, , TRUE], "Subscript out of bounds")
+    dfmt <- dfm(tokens(txt))
+    expect_error(dfmt["d4"], "Subscript out of bounds")
+    expect_error(dfmt["d4", ], "Subscript out of bounds")
+    expect_error(dfmt[4], "Subscript out of bounds")
+    expect_error(dfmt[4, ], "Subscript out of bounds")
+    expect_error(dfmt["d4", , TRUE], "Subscript out of bounds")
+    expect_error(dfmt[4, , TRUE], "Subscript out of bounds")
+    expect_error(dfmt[1:4, , TRUE], "Subscript out of bounds")
+    expect_error(dfmt[1:4, , TRUE], "Subscript out of bounds")
 
-    expect_error(mx["five"], "Subscript out of bounds")
-    expect_error(mx[, "five"], "Subscript out of bounds")
-    expect_error(mx[5], "Subscript out of bounds")
-    expect_error(mx[, 5], "Subscript out of bounds")
-    expect_error(mx[, 1:5], "Subscript out of bounds")
-    expect_error(mx["d4", "five"], "Subscript out of bounds")
-    expect_error(mx[, "five", TRUE], "Subscript out of bounds")
-    expect_error(mx[, 5, TRUE], "Subscript out of bounds")
-    expect_error(mx[, 1:5, TRUE], "Subscript out of bounds")
-    expect_error(mx["d4", "five", TRUE], "Subscript out of bounds")
+    expect_error(dfmt["five"], "Subscript out of bounds")
+    expect_error(dfmt[, "five"], "Subscript out of bounds")
+    expect_error(dfmt[5], "Subscript out of bounds")
+    expect_error(dfmt[, 5], "Subscript out of bounds")
+    expect_error(dfmt[, 1:5], "Subscript out of bounds")
+    expect_error(dfmt["d4", "five"], "Subscript out of bounds")
+    expect_error(dfmt[, "five", TRUE], "Subscript out of bounds")
+    expect_error(dfmt[, 5, TRUE], "Subscript out of bounds")
+    expect_error(dfmt[, 1:5, TRUE], "Subscript out of bounds")
+    expect_error(dfmt["d4", "five", TRUE], "Subscript out of bounds")
 
-    expect_error(mx[4, 5], "Subscript out of bounds")
-    expect_error(mx[4:5], "Subscript out of bounds")
-    expect_error(mx[1:4, 1:5], "Subscript out of bounds")
-    expect_error(mx[4, 5, TRUE], "Subscript out of bounds")
-    expect_error(mx[1:4, 1:5, TRUE], "Subscript out of bounds")
+    expect_error(dfmt[4, 5], "Subscript out of bounds")
+    expect_error(dfmt[4:5], "Subscript out of bounds")
+    expect_error(dfmt[1:4, 1:5], "Subscript out of bounds")
+    expect_error(dfmt[4, 5, TRUE], "Subscript out of bounds")
+    expect_error(dfmt[1:4, 1:5, TRUE], "Subscript out of bounds")
 
 })
 
