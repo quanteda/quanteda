@@ -77,6 +77,18 @@ test_that("works with empty objects (#2142)", {
 
 })
 
+test_that("tokens_toupper() and tokens_tolower() work with verbose", {
+    toks <- tokens(c("b A A", "C C a b B"))
+    expect_message(
+        tokens_tolower(toks, verbose = TRUE),
+        "Return .* documents \\(.* types, .* tokens\\) by tokens_tolower\\(\\)"
+    )
+    expect_message(
+        tokens_toupper(toks, verbose = TRUE),
+        "Return .* documents \\(.* types, .* tokens\\) by tokens_toupper\\(\\)"
+    )
+})
+
 test_that("dfm_toupper() and dfm_tolower() work with verbose", {
     dfmat <- dfm(tokens(c("b A A", "C C a b B")), tolower = FALSE)
     expect_message(
