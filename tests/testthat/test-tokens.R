@@ -1244,7 +1244,10 @@ test_that("cancatenator is working", {
         concatenator(toks2),
         "_"
     )
-    
+    expect_equal(
+        types(toks2)[1:4],
+        c("アメリカ", "合衆国", "は", "大西洋")
+    )
 })
 
 test_that("cancatenator is passed to the downstream", {
