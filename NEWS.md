@@ -1,3 +1,7 @@
+# quanteda 4.5.1
+
+* Fixed tests that failed under tm 0.7-20, which no longer attaches the **NLP** package, causing CRAN check errors on r-devel.
+
 # quanteda 4.5
 
 ## Bug fixes

@@ -200,7 +200,9 @@ test_that("test corpus constructor works for tm objects", {
         "Cannot construct a corpus from this tm OtherCorpus object"
     )
     detach("package:tm", unload = FALSE, force = TRUE)
-    detach("package:NLP", unload = FALSE, force = TRUE)
+    # tm >= 0.7-20 imports NLP rather than attaching it
+    if ("package:NLP" %in% search())
+        detach("package:NLP", unload = FALSE, force = TRUE)
 })
 
 test_that("test corpus constructor works for VCorpus with one document (#445)", {
@@ -210,7 +212,8 @@ test_that("test corpus constructor works for VCorpus with one document (#445)", 
     corp <- corpus(vcorp)
     expect_equivalent(as.character(corp)[1], as.character(data_corpus_inaugural)[2])
     detach("package:tm", unload = FALSE, force = TRUE)
-    detach("package:NLP", unload = FALSE, force = TRUE)
+    if ("package:NLP" %in% search())
+        detach("package:NLP", unload = FALSE, force = TRUE)
 })
 
 test_that("test corpus constructor works for complex VCorpus (#849)", {
