@@ -73,7 +73,7 @@
 #'   
 #'   ## concatenator
 #'   
-#'   The choice of `concatenator` does not change tokenization immidiately but 
+#'   The choice of `concatenator` does not change tokenization immediately but 
 #'   affects operations in the downstream. Tokens sequences are concatenated with 
 #'   the `concatenator` by [quanteda::tokens_compound] into a single tokens. It is
 #'   possible to change the `concatenator` by reconstructing the object using 
