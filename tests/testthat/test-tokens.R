@@ -1232,6 +1232,22 @@ test_that("cancatenator is working", {
         ntoken(tokens_select(toks, "United+States")),
         c(d1 = 1, d2 = 1)
     )
+    
+    # empty concatenator
+    txt2 <- c(d1 = "アメリカ合衆国は、大西洋と太平洋に面しています。",
+              d2 = "アメリカの最高裁判所が一致団結していることは、めったにない。")
+    toks2 <- tokens(txt2, remove_punct = TRUE, concatenator = "")
+    
+    # update
+    toks2 <- tokens(toks2, concatenator = "_")
+    expect_equal(
+        concatenator(toks2),
+        "_"
+    )
+    expect_equal(
+        types(toks2)[1:4],
+        c("アメリカ", "合衆国", "は", "大西洋")
+    )
 })
 
 test_that("cancatenator is passed to the downstream", {
