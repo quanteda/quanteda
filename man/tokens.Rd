@@ -68,7 +68,7 @@ the pre- and post-selected tokens, for instance if a window of adjacency
 needs to be computed.}
 
 \item{concatenator}{character; the concatenation character that will connect
-the tokens making up a multi-token sequence.}
+the tokens making up a multi-token sequence. See details.}
 
 \item{verbose}{if \code{TRUE}, print timing messages to the console.}
 
@@ -92,8 +92,8 @@ present.  For instance, if the \code{tokens} object has already had punctuation
 removed, then \code{tokens(x, remove_punct = TRUE)} will have no additional
 effect.
 }
-\section{Details}{
- As of version 2, the choice of tokenizer is left more to
+\details{
+As of version 2, the choice of tokenizer is left more to
 the user, and \code{tokens()} is treated more as a constructor (from a named
 list) than a tokenizer. This allows users to use any other tokenizer that
 returns a named list, and to use this as an input to \code{tokens()}, with
@@ -106,23 +106,9 @@ extra steps required to preserve such special tokens. If there are many
 random characters in your texts, you should \code{split_hyphens = TRUE} and
 \code{split_tags = TRUE} to avoid a slowdown in tokenization.
 
-Using external tokenizers is best done by piping the output from these
-other tokenizers into the \code{tokens()} constructor, with additional removal
-and splitting options applied at the construction stage.  These will only
-have an effect, however, if the tokens exist for which removal is specified
-at in the \code{tokens()} call.  For instance, it is impossible to remove
-punctuation if the input list to \code{tokens()} already had its punctuation
-tokens removed at the external tokenization stage.
-
 To construct a tokens object from a list with no additional processing,
 call \code{\link[=as.tokens]{as.tokens()}} instead of \code{tokens()}.
-
-Recommended tokenizers are those from the \pkg{tokenizers} package, which
-are generally faster than the default (built-in) tokenizer but always
-splits infix hyphens, or \pkg{spacyr}.  The default tokenizer in
-\strong{quanteda} is very smart, however, and if you do not have special
-requirements, it works extremely well for most languages as well as text
-from social media (including hashtags and usernames).
+\subsection{normalize}{
 
 If \code{normalize = TRUE}, Unicode characters are replaced by their ASCII
 equivalent to make pattern matching (e.g. stop words) easier:
@@ -131,11 +117,37 @@ the single quotation mark; and \verb{\\u002D\\u2010\\u2011\\u2012\\u2013\\u2014\
 to a hyphen.
 }
 
-\section{quanteda Tokenizers}{
- The default word tokenizer \code{what = "word"} is
-updated in major version 4.  It is even smarter than the v2 and v3
-versions, with additional options for customization.  See
-\code{\link[=tokenize_word4]{tokenize_word4()}} for full details.
+\subsection{concatenator}{
+
+The choice of \code{concatenator} does not change tokenization immidiately but
+affects operations in the downstream. Tokens sequences are concatenated with
+the \code{concatenator} by \link{tokens_compound} into a single tokens. It is
+possible to change the \code{concatenator} by reconstructing the object using
+\code{tokens()}, but it should be done with caution when the \code{concatenator}
+is an empty character "" (typically in Chinese and Japanese) because the old
+concatenator cannot be replaced with the new one.
+}
+
+\subsection{tokenizers}{
+
+Using external tokenizers is best done by piping the output from these
+other tokenizers into the \code{tokens()} constructor, with additional removal
+and splitting options applied at the construction stage.  These will only
+have an effect, however, if the tokens exist for which removal is specified
+at in the \code{tokens()} call.  For instance, it is impossible to remove
+punctuation if the input list to \code{tokens()} already had its punctuation
+tokens removed at the external tokenization stage.
+
+Recommended tokenizers are those from the \pkg{tokenizers} package, which
+are generally faster than the default (built-in) tokenizer but always
+splits infix hyphens, or \pkg{spacyr}.  The default tokenizer in
+\strong{quanteda} is very smart, however, and if you do not have special
+requirements, it works extremely well for most languages as well as text
+from social media (including hashtags and usernames).
+
+The default word tokenizer \code{what = "word"} is updated in major version 4.
+It is even smarter than the v2 and v3 versions, with additional options for
+customization.  See \code{\link[=tokenize_word4]{tokenize_word4()}} for full details.
 
 The default tokenizer splits tokens using \link[stringi:stri_split_boundaries]{stri_split_boundaries(x, type = "word")} but by default preserves infix
 hyphens (e.g. "self-funding"), URLs, and social media "tag" characters
@@ -171,7 +183,7 @@ additional rules to avoid splits on words like "Mr." that would otherwise
 incorrectly be detected as sentence boundaries.  For better sentence
 tokenization, consider using \pkg{spacyr}.} }
 }
-
+}
 \examples{
 txt <- c(doc1 = "A sentence, showing how tokens() works.",
          doc2 = "@quantedainit and #textanalysis https://example.com?p=123.",
