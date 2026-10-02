@@ -196,10 +196,11 @@ summary_tokens <- function(x) {
 
 summary_dfm <- function(x) {
     s <- stats_dfm(x)
-    line <- msg("Document-feature matrix of %s %s (%s %s, %s %s)",
+    line <- msg("Document-feature matrix of %s %s (%s %s, %s %s, %s sparse)",
                 s$ndoc, inflect("document", s$ndoc),
                 s$nfeat, inflect("feature", s$nfeat),
-                s$nocc, inflect("occurrence", s$nocc))
+                s$nocc, inflect("occurrence", s$nocc),
+                format_sparsity(sparsity(x)))
     if (s$ndocvar)
         line <- msg(" and %s %s", 
                     s$ndocvar, inflect("docvar", s$ndocvar),
