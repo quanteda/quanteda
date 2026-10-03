@@ -67,7 +67,7 @@ test_that("tokens_annotate works()", {
 
     expect_message(
         tokens_annotate(toks, dict, verbose = TRUE),
-        "tokens_annotate() changed", fixed = TRUE
+        "Returning tokens of .* documents \\(.* types, .* tokens\\) from tokens_annotate\\(\\)"
     )
     
     expect_error(

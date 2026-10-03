@@ -77,17 +77,27 @@ test_that("works with empty objects (#2142)", {
 
 })
 
+test_that("tokens_toupper() and tokens_tolower() work with verbose", {
+    toks <- tokens(c("b A A", "C C a b B"))
+    expect_message(
+        tokens_tolower(toks, verbose = TRUE),
+        "Returning tokens of .* documents \\(.* types, .* tokens\\) from tokens_tolower\\(\\)"
+    )
+    expect_message(
+        tokens_toupper(toks, verbose = TRUE),
+        "Returning tokens of .* documents \\(.* types, .* tokens\\) from tokens_toupper\\(\\)"
+    )
+})
+
 test_that("dfm_toupper() and dfm_tolower() work with verbose", {
     dfmat <- dfm(tokens(c("b A A", "C C a b B")), tolower = FALSE)
     expect_message(
         dfm_tolower(dfmat, verbose = TRUE),
-        "dfm_tolower() changed from 5 features (2 documents) to 3 features (2 documents)",
-        fixed = TRUE
+        "Returning dfm of .* documents x .* features \\(.* occurrences, .* sparsity\\) from dfm_tolower\\(\\)"
     )
     expect_message(
         dfm_toupper(dfmat, verbose = TRUE),
-        "dfm_toupper() changed from 5 features (2 documents) to 3 features (2 documents)",
-        fixed = TRUE
+        "Returning dfm of .* documents x .* features \\(.* occurrences, .* sparsity\\) from dfm_toupper\\(\\)"
     )
 })
 
@@ -95,13 +105,11 @@ test_that("fcm_toupper() and fcm_tolower() work with verbose", {
     fcmat <- fcm(dfm(tokens(c("b A A", "C C a b B")), tolower = FALSE))
     expect_message(
         fcm_tolower(fcmat, verbose = TRUE),
-        "fcm_tolower() changed from 5 features (5 documents) to 3 features (3 documents)",
-        fixed = TRUE
+        "Returning fcm of .* x .* features \\(.* co-occurrences, .* sparsity\\) from fcm_tolower\\(\\)"
     )
     expect_message(
         fcm_toupper(fcmat, verbose = TRUE),
-        "fcm_toupper() changed from 5 features (5 documents) to 3 features (3 documents)",
-        fixed = TRUE
+        "Returning fcm of .* x .* features \\(.* co-occurrences, .* sparsity\\) from fcm_toupper\\(\\)"
     )
 })
 

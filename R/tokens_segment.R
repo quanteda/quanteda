@@ -81,9 +81,7 @@ tokens_segment.tokens_xptr <- function(x, pattern,
     ids <- object2id(pattern, type, valuetype, case_insensitive,
                      concatenator = field_object(attrs, "concatenator"))
     if ("" %in% pattern) ids <- c(ids, list(0)) # append padding index
-    
-    if (verbose)
-        before <- stats_tokens(x)
+
     if (pattern_position == "before") {
         result <- cpp_tokens_segment(x, ids, extract_pattern, 1, get_threads())
     } else {
@@ -98,7 +96,7 @@ tokens_segment.tokens_xptr <- function(x, pattern,
         attrs[["docvars"]][["pattern"]] <- attr(result, "matches")
     result <- rebuild_tokens(result, attrs)
     if (verbose)
-        message_tokens("tokens_segment()", before, stats_tokens(result))
+        message_tokens("tokens_segment()", stats_tokens(result))
     return(result)
 }
 

@@ -1,7 +1,14 @@
 # quanteda 4.5.1
 
+## Bug fixes
+
 * Fixed tests that failed under tm 0.7-20, which no longer attaches the **NLP** package, causing CRAN check errors on r-devel.
 * Fixed a bug in `tokens()` when the object's concatenator is an empty character. 
+
+## Changes and additions
+
+* Improved verbose messages from `corpus`, `tokens`, `dfm` and `fcm` methods.
+
 
 # quanteda 4.5
 

@@ -53,7 +53,7 @@ test_that("quanteda functions work if package is not attached (#864)", {
     detach("package:quanteda", unload = TRUE)
     expect_output(
         print(quanteda::dfm(c("a b c d", "a c d e f"))),
-        "Document-feature matrix of: 2 documents, 6 features"
+        "dfm 2 documents, 6 features"
     )
     require(quanteda)
 })

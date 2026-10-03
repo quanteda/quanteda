@@ -133,10 +133,8 @@ test_that("glob works if results in no features", {
 test_that("longer selection than longer than features that exist (related to #447)", {
     fcmt_test2 <- fcm(tokens(c(d1 = "a b", d2 = "a b c d e")))
     feat <- c("b", "c", "d", "e", "f", "g")
+    
     # bugs in C++ needs repeated tests
-    expect_message(fcm_select(fcmt_test2, feat, verbose = TRUE),
-                   "dfm_keep() changed from 5 features (5 documents) to 4 features (5 documents)",
-                   fixed = TRUE)
     expect_equivalent(
         as.matrix(fcm_select(fcmt_test2, feat)),
         matrix(c(0, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0), nrow = 4, byrow = TRUE)

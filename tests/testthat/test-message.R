@@ -19,17 +19,21 @@ test_that("object stats are correct", {
         tokens_trim(max_n = 1000, padding = TRUE)
     dfmt <- dfm(toks)
     
-    expect_identical(quanteda:::stats_corpus(corp),
-                     list(ndoc = 5L, 
-                          nchar = sum(nchar(corp)))
-                     )
-    expect_identical(quanteda:::stats_tokens(toks),
-                     list(ndoc = 5L, 
-                          ntoken = sum(ntoken(toks)),
-                          ntype = 1000L)
-                     )
-    expect_identical(quanteda:::stats_dfm(dfmt),
-                     list(ndoc = 5L, 
-                          nfeat = 1000L)
-                    )
+    expect_equal(quanteda:::stats_corpus(corp),
+                 list(ndoc = 5L, 
+                      nchar = sum(nchar(corp)),
+                      ndocvar = 4L)
+                 )
+    expect_equal(quanteda:::stats_tokens(toks),
+                 list(ndoc = 5L, 
+                      ntoken = sum(ntoken(toks)),
+                      ntype = 1000L,
+                      ndocvar = 4L)
+                 )
+    expect_equal(quanteda:::stats_dfm(dfmt),
+                 list(ndoc = 5L, 
+                      nocc = sum(dfm_remove(dfmt, "")),
+                      nfeat = 1000L,
+                      ndocvar = 4L,
+                      spar = sparsity(dfmt)), tolerance = 0.001)
 })

@@ -33,9 +33,6 @@ tokens_match.tokens_xptr <- function(x, types,
                              normalize = TRUE)
     
     attrs <- attributes(x)
-    if (verbose)
-        before <- stats_tokens(x)
-    
     type <- get_types(x)
     set_types(x) <- types
     
@@ -45,7 +42,7 @@ tokens_match.tokens_xptr <- function(x, types,
     result <- cpp_tokens_match(x, id, get_threads())
     result <- rebuild_tokens(result, attrs)
     if (verbose)
-        message_tokens("tokens_match()", before, stats_tokens(result))
+        message_tokens("tokens_match()", stats_tokens(result))
     return(result)
 }
 
