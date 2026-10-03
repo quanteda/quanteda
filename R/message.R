@@ -105,7 +105,7 @@ NULL
 #' @inheritParams messages
 #' @keywords message internal
 message_corpus <- function(operation, stat) {
-    message(msg("Return %s documents (%s characters) by %s",
+    message(msg("Returning corpus of %s documents (%s characters) from %s",
                 stat$ndoc, stat$nchar, operation))
 }
 
@@ -119,7 +119,7 @@ stats_corpus <- function(x) {
 #' @inheritParams messages
 #' @keywords message internal
 message_tokens <- function(operation, stat) {
-    message(msg("Return %s documents (%s types, %s tokens) by %s",
+    message(msg("Returning tokens of %s documents (%s types, %s tokens) from %s",
                 stat$ndoc, stat$ntype, stat$ntoken, operation))
 }
 
@@ -134,7 +134,7 @@ stats_tokens <- function(x) {
 #' @inheritParams messages
 #' @keywords message internal
 message_dfm <- function(operation, stat) {
-    message(msg("Return %s documents (%s features, %s occurrences) by %s",
+    message(msg("Returning dfm of %s documents x %s features (%s occurrences) from %s",
                 stat$ndoc, stat$nfeat, stat$nocc, operation))
 }
 
@@ -150,7 +150,7 @@ stats_dfm <- function(x) {
 #' @inheritParams messages
 #' @keywords message internal
 message_fcm <- function(operation, stat) {
-    message(msg("Return %s and %s features (%s co-occurrences) by %s",
+    message(msg("Returning fcm of %s x %s features (%s co-occurrences) from %s",
                 stat$nrow, stat$ncol, stat$nocc, operation))
 }
 
