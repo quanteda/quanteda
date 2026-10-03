@@ -46,7 +46,7 @@ test_that("multi-word dictionary keys are counted correctly", {
     
     expect_message(
         tokens_lookup(toks, dict_mw_fixed, verbose = TRUE),
-        "Return .* documents \\(.* types, .* tokens\\) by tokens_lookup\\(\\)"
+        "Returning tokens of .* documents \\(.* types, .* tokens\\) from tokens_lookup\\(\\)"
     )
     
 })

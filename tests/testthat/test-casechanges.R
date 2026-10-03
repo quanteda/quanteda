@@ -81,11 +81,11 @@ test_that("tokens_toupper() and tokens_tolower() work with verbose", {
     toks <- tokens(c("b A A", "C C a b B"))
     expect_message(
         tokens_tolower(toks, verbose = TRUE),
-        "Return .* documents \\(.* types, .* tokens\\) by tokens_tolower\\(\\)"
+        "Returning tokens of .* documents \\(.* types, .* tokens\\) from tokens_tolower\\(\\)"
     )
     expect_message(
         tokens_toupper(toks, verbose = TRUE),
-        "Return .* documents \\(.* types, .* tokens\\) by tokens_toupper\\(\\)"
+        "Returning tokens of .* documents \\(.* types, .* tokens\\) from tokens_toupper\\(\\)"
     )
 })
 
@@ -93,11 +93,11 @@ test_that("dfm_toupper() and dfm_tolower() work with verbose", {
     dfmat <- dfm(tokens(c("b A A", "C C a b B")), tolower = FALSE)
     expect_message(
         dfm_tolower(dfmat, verbose = TRUE),
-        "Return .* documents \\(.* features, .* occurrences\\) by dfm_tolower\\(\\)"
+        "Returning dfm of .* documents x .* features \\(.* occurrences\\) from dfm_tolower\\(\\)"
     )
     expect_message(
         dfm_toupper(dfmat, verbose = TRUE),
-        "Return .* documents \\(.* features, .* occurrences\\) by dfm_toupper\\(\\)"
+        "Returning dfm of .* documents x .* features \\(.* occurrences\\) from dfm_toupper\\(\\)"
     )
 })
 
@@ -105,11 +105,11 @@ test_that("fcm_toupper() and fcm_tolower() work with verbose", {
     fcmat <- fcm(dfm(tokens(c("b A A", "C C a b B")), tolower = FALSE))
     expect_message(
         fcm_tolower(fcmat, verbose = TRUE),
-        "Return .* and .* features \\(.* co-occurrences\\) by fcm_tolower\\(\\)"
+        "Returning fcm of .* x .* features \\(.* co-occurrences\\) from fcm_tolower\\(\\)"
     )
     expect_message(
         fcm_toupper(fcmat, verbose = TRUE),
-        "Return .* and .* features \\(.* co-occurrences\\) by fcm_toupper\\(\\)"
+        "Returning fcm of .* x .* features \\(.* co-occurrences\\) from fcm_toupper\\(\\)"
     )
 })
 

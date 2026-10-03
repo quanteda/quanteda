@@ -224,6 +224,6 @@ test_that("dfm_trim() verbose works", {
     dfmat <- dfm(tokens(data_corpus_inaugural[1:2]))
     expect_message(
         dfm_trim(dfmat, min_termfreq = 10, min_docfreq = 2, verbose = TRUE),
-        "Return .* documents \\(.* features, .* occurrences\\) by dfm_trim\\(\\)"
+        "Returning dfm of .* documents x .* features \\(.* occurrences\\) from dfm_trim\\(\\)"
     )
 })

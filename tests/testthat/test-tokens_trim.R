@@ -46,7 +46,7 @@ test_that("tokens_trim verbose works", {
     toks <- tokens(head(data_corpus_inaugural))
     expect_message(
         tokens_trim(toks, max_n = 10, verbose = TRUE),
-        "Return .* documents \\(.* types, .* tokens\\) by tokens_trim\\(\\)"
+        "Returning tokens of .* documents \\(.* types, .* tokens\\) from tokens_trim\\(\\)"
     )
 })
 
