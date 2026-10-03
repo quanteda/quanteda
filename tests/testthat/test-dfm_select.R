@@ -39,11 +39,11 @@ test_that("test dfm_select, fixed", {
     )
     expect_message(
         dfm_keep(dfmt_test, c("a", "b", "c"), verbose = TRUE),
-        "Returning dfm of .* documents x .* features \\(.* occurrences\\) from dfm_keep\\(\\)"
+        "Returning dfm of .* documents x .* features \\(.* occurrences, .* sparsity\\) from dfm_keep\\(\\)"
     )
     expect_message(
         dfm_remove(dfmt_test, c("a", "b", "c"), verbose = TRUE),
-        "Returning dfm of .* documents x .* features \\(.* occurrences\\) from dfm_remove\\(\\)"
+        "Returning dfm of .* documents x .* features \\(.* occurrences, .* sparsity\\) from dfm_remove\\(\\)"
     )
 })
 
