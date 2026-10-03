@@ -134,8 +134,8 @@ stats_tokens <- function(x) {
 #' @inheritParams messages
 #' @keywords message internal
 message_dfm <- function(operation, stat) {
-    message(msg("Returning dfm of %s documents x %s features (%s occurrences) from %s",
-                stat$ndoc, stat$nfeat, stat$nocc, operation))
+    message(msg("Returning dfm of %s documents x %s features (%s occurrences, %s sparsity) from %s",
+                stat$ndoc, stat$nfeat, stat$nocc, format_sparsity(stat$spar), operation))
 }
 
 stats_dfm <- function(x) {
@@ -143,27 +143,29 @@ stats_dfm <- function(x) {
     list(ndoc = ndoc(x),
          nocc = sum(x),
          nfeat = nfeat(x),
-         ndocvar = ncol(docvars(x)))
+         ndocvar = ncol(docvars(x)),
+         spar = sparsity(x))
 }
 
 #' Print messages in fcm methods
 #' @inheritParams messages
 #' @keywords message internal
 message_fcm <- function(operation, stat) {
-    message(msg("Returning fcm of %s x %s features (%s co-occurrences) from %s",
-                stat$nrow, stat$ncol, stat$nocc, operation))
+    message(msg("Returning fcm of %s x %s features (%s co-occurrences, %s sparsity) from %s",
+                stat$nrow, stat$ncol, stat$nocc, format_sparsity(stat$spar), operation))
 }
 
 stats_fcm <- function(x) {
     x <- fcm_remove(x, "", verbose = FALSE)
     list(nocc = sum(x),
          nrow = nrow(x),
-         ncol = ncol(x))
+         ncol = ncol(x),
+         spar = sparsity(x))
 }
 
 summary_corpus <- function(x) {
     s <- stats_corpus(x)
-    line <- msg("Corpus of %s %s (%s %s)",
+    line <- msg("corpus of %s %s (%s %s)",
                 s$ndoc, inflect("document", s$ndoc),
                 s$nchar, inflect("character", s$nchar))
     if (s$ndocvar)
@@ -176,13 +178,13 @@ summary_corpus <- function(x) {
 summary_tokens <- function(x) {
     s <- stats_tokens(x)
     if (is.tokens_xptr(x)) {
-        line <- msg("Tokens_xptr [%s] of %s %s (%s %s, %s %s)", 
+        line <- msg("tokens_xptr [%s] of %s %s (%s %s, %s %s)", 
                     address(x),
                     s$ndoc, inflect("document", s$ndoc),
                     s$ntype, inflect("type", s$ntype),
                     s$ntoken, inflect("token", s$ntoken))
     } else {
-        line <- msg("Tokens of %s %s (%s %s, %s %s)", 
+        line <- msg("tokens of %s %s (%s %s, %s %s)", 
                     s$ndoc, inflect("document", s$ndoc),
                     s$ntype, inflect("type", s$ntype),
                     s$ntoken, inflect("token", s$ntoken))
@@ -196,10 +198,11 @@ summary_tokens <- function(x) {
 
 summary_dfm <- function(x) {
     s <- stats_dfm(x)
-    line <- msg("Document-feature matrix of %s %s (%s %s, %s %s)",
+    line <- msg("dfm of %s %s x %s %s (%s %s, %s sparsity)",
                 s$ndoc, inflect("document", s$ndoc),
                 s$nfeat, inflect("feature", s$nfeat),
-                s$nocc, inflect("occurrence", s$nocc))
+                s$nocc, inflect("occurrence", s$nocc),
+                format_sparsity(s$spar))
     if (s$ndocvar)
         line <- msg(" and %s %s", 
                     s$ndocvar, inflect("docvar", s$ndocvar),
@@ -209,9 +212,10 @@ summary_dfm <- function(x) {
 
 summary_fcm <- function(x) {
     s <- stats_fcm(x)
-    wrap(msg("Feature co-occurrence matrix of %s and %s %s (%s %s).\n",
+    wrap(msg("fcm of %s x %s %s (%s %s, %s sparsity).\n",
              s$nrow, s$ncol, inflect("feature", s$nrow * s$ncol),
-             s$nocc, inflect("co-occurrence", s$nocc))
+             s$nocc, inflect("co-occurrence", s$nocc),
+             format_sparsity(s$spar))
     )
 }
 
