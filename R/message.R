@@ -173,6 +173,7 @@ summary_corpus <- function(x) {
                     s$ndocvar, inflect("docvar", s$ndocvar),
                     prepend = line)
     wrap(paste0(line, "."))
+    invisible(s)
 }
 
 summary_tokens <- function(x) {
@@ -194,6 +195,7 @@ summary_tokens <- function(x) {
                     s$ndocvar, inflect("docvar", s$ndocvar),
                     prepend = line)
     wrap(paste0(line, "."))
+    invisible(s)
 }
 
 summary_dfm <- function(x) {
@@ -208,6 +210,7 @@ summary_dfm <- function(x) {
                     s$ndocvar, inflect("docvar", s$ndocvar),
                     prepend = line)
     wrap(paste0(line, "."))
+    invisible(s)
 }
 
 summary_fcm <- function(x) {
@@ -217,5 +220,6 @@ summary_fcm <- function(x) {
              s$nocc, inflect("co-occurrence", s$nocc),
              format_sparsity(s$spar))
     )
+    invisible(s)
 }
 
