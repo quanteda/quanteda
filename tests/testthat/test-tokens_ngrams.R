@@ -2,7 +2,7 @@ test_that("tokens_ngrams works", {
     toks <- tokens(c('insurgents killed in ongoing fighting'))
     expect_message(
         tokens_ngrams(toks, n = 1:2, verbose = TRUE),
-        "Returning tokens of .* documents \\(.* types, .* tokens\\) from tokens_ngrams\\(\\)"
+        "Returning tokens of .* documents \\(.* tokens, .* types\\) from tokens_ngrams\\(\\)"
     )
 })
 

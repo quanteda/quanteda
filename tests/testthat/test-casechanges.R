@@ -81,11 +81,11 @@ test_that("tokens_toupper() and tokens_tolower() work with verbose", {
     toks <- tokens(c("b A A", "C C a b B"))
     expect_message(
         tokens_tolower(toks, verbose = TRUE),
-        "Returning tokens of .* documents \\(.* types, .* tokens\\) from tokens_tolower\\(\\)"
+        "Returning tokens of .* documents \\(.* tokens, .* types\\) from tokens_tolower\\(\\)"
     )
     expect_message(
         tokens_toupper(toks, verbose = TRUE),
-        "Returning tokens of .* documents \\(.* types, .* tokens\\) from tokens_toupper\\(\\)"
+        "Returning tokens of .* documents \\(.* tokens, .* types\\) from tokens_toupper\\(\\)"
     )
 })
 

@@ -67,7 +67,7 @@ test_that("tokens_chunk works", {
     
     expect_message(
         tokens_chunk(toks, size = 5, verbose = TRUE),
-        "Returning tokens of .* documents \\(.* types, .* tokens\\) from tokens_chunk\\(\\)"
+        "Returning tokens of .* documents \\(.* tokens, .* types\\) from tokens_chunk\\(\\)"
     )
 
 })

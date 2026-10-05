@@ -41,12 +41,12 @@ test_that("empty tokens works", {
   
   toks1 <- tokens(corp1)
   expect_output(print(toks1),
-                "tokens of 0 documents (0 types, 0 tokens) and 1 docvar.",
+                "tokens of 0 documents (0 tokens, 0 types) and 1 docvar.",
                 fixed = TRUE)
   
   toks2 <- tokens(corp2)
   expect_output(print(toks2),
-                "tokens of 0 documents (0 types, 0 tokens) and 1 docvar.",
+                "tokens of 0 documents (0 tokens, 0 types) and 1 docvar.",
                 fixed = TRUE)
   
   toks3 <- c(toks1, toks2)
@@ -54,7 +54,7 @@ test_that("empty tokens works", {
   expect_equal(docvars(toks3),
                data.frame(var1 = integer(), var2 = numeric()))
   expect_output(print(toks3),
-                "tokens of 0 documents (0 types, 0 tokens) and 2 docvars.",
+                "tokens of 0 documents (0 tokens, 0 types) and 2 docvars.",
                 fixed = TRUE)
   
   # works with tokens methods
