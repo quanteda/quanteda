@@ -45,7 +45,7 @@ test_that("tokens_compound join tokens correctly", {
     
     expect_message(
         tokens_compound(toks, seqs, verbose = TRUE),
-        "Returning tokens of .* documents \\(.* types, .* tokens\\) from tokens_compound\\(\\)"
+        "Returning tokens of .* documents \\(.* tokens, .* types\\) from tokens_compound\\(\\)"
     )
   
 })

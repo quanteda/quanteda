@@ -119,14 +119,14 @@ stats_corpus <- function(x) {
 #' @inheritParams messages
 #' @keywords message internal
 message_tokens <- function(operation, stat) {
-    message(msg("Returning tokens of %s documents (%s types, %s tokens) from %s",
+    message(msg("Returning tokens of %s documents (%s tokens, %s types) from %s",
                 stat$ndoc, stat$ntype, stat$ntoken, operation))
 }
 
 stats_tokens <- function(x) {
     list(ndoc = ndoc(x),
-         ntoken = sum(ntoken(x, remove_padding = FALSE)),
          ntype = count_types(x),
+         ntoken = sum(ntoken(x, remove_padding = FALSE)),
          ndocvar = ncol(docvars(x)))
 }
 
@@ -141,10 +141,10 @@ message_dfm <- function(operation, stat) {
 stats_dfm <- function(x) {
     x <- dfm_remove(x, "", verbose = FALSE)
     list(ndoc = ndoc(x),
-         nocc = sum(x),
          nfeat = nfeat(x),
-         ndocvar = ncol(docvars(x)),
-         spar = sparsity(x))
+         nocc = sum(x),
+         spar = sparsity(x),
+         ndocvar = ncol(docvars(x)))
 }
 
 #' Print messages in fcm methods
@@ -157,9 +157,9 @@ message_fcm <- function(operation, stat) {
 
 stats_fcm <- function(x) {
     x <- fcm_remove(x, "", verbose = FALSE)
-    list(nocc = sum(x),
-         nrow = nrow(x),
+    list(nrow = nrow(x),
          ncol = ncol(x),
+         nocc = sum(x),
          spar = sparsity(x))
 }
 
@@ -182,13 +182,13 @@ summary_tokens <- function(x) {
         line <- msg("tokens_xptr [%s] of %s %s (%s %s, %s %s)", 
                     address(x),
                     s$ndoc, inflect("document", s$ndoc),
-                    s$ntype, inflect("type", s$ntype),
-                    s$ntoken, inflect("token", s$ntoken))
+                    s$ntoken, inflect("token", s$ntoken),
+                    s$ntype, inflect("type", s$ntype))
     } else {
         line <- msg("tokens of %s %s (%s %s, %s %s)", 
                     s$ndoc, inflect("document", s$ndoc),
-                    s$ntype, inflect("type", s$ntype),
-                    s$ntoken, inflect("token", s$ntoken))
+                    s$ntoken, inflect("token", s$ntoken),
+                    s$ntype, inflect("type", s$ntype))
     }
     if (s$ndocvar)
         line <- msg(" and %s %s",

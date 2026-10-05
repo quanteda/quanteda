@@ -350,11 +350,11 @@ test_that("tokens_select output works as planned", {
     
     expect_message(
         tokens_remove(toks, stopwords("english"), verbose = TRUE),
-        "Returning tokens of .* documents \\(.* types, .* tokens\\) from tokens_remove\\(\\)"
+        "Returning tokens of .* documents \\(.* tokens, .* types\\) from tokens_remove\\(\\)"
     )
     expect_message(
         tokens_keep(toks, stopwords("english"), verbose = TRUE),
-        "Returning tokens of .* documents \\(.* types, .* tokens\\) from tokens_keep\\(\\)"
+        "Returning tokens of .* documents \\(.* tokens, .* types\\) from tokens_keep\\(\\)"
     )
 })
 

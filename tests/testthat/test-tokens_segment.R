@@ -17,7 +17,7 @@ test_that("tokens_segment works for sentences", {
     expect_message(
         tokens_segment(toks, "\\p{Sterm}", valuetype = "regex", pattern_position = "after",
                        verbose = TRUE),
-        "Returning tokens of .* documents \\(.* types, .* tokens\\) from tokens_segment\\(\\)"
+        "Returning tokens of .* documents \\(.* tokens, .* types\\) from tokens_segment\\(\\)"
     )
 
 })
