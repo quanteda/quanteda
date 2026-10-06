@@ -157,12 +157,6 @@ To summarize the texts from a corpus, we can call a `summary()` method defined f
 summary(data_corpus_inaugural, n = 5)
 ```
 
-```{r}
-# longest inaugural address: William Henry Harrison
-tokeninfo[which.max(tokeninfo$Tokens), ]
-```
-
-
 ## Tools for handling corpus objects
 
 ### Adding two corpus objects together
