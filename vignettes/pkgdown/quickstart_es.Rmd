@@ -138,21 +138,6 @@ data(data_corpus_irishbudget2010, package = "quanteda.textmodels")
 summary(data_corpus_irishbudget2010)
 ```
 
-Se puede guardar el output del comando summary como un data frame y graficar algunos estadísticos descriptivos con esta información:
-
-```{r, fig.width=8}
-tokeninfo <- summary(data_corpus_inaugural)
-if (require(ggplot2))
-    ggplot(data = tokeninfo, aes(x = Year, y = Tokens, group = 1)) +
-    geom_line() +
-    geom_point() +
-    scale_x_continuous(labels = c(seq(1789, 2017, 12)), breaks = seq(1789, 2017, 12)) +
-    theme_bw()
-
-# El discurso inaugural más largo: William Henry Harrison
-tokeninfo[which.max(tokeninfo$Tokens), ]
-```
-
 ## Herramientas para manejar objetos de corpus
 
 ### Juntando dos objetos de corpus
