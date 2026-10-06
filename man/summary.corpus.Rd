@@ -16,7 +16,7 @@
 \method{summary}{fcm}(object, ...)
 }
 \arguments{
-\item{object}{a object to be summarized.}
+\item{object}{an object to be summarized.}
 
 \item{...}{not used.}
 }
@@ -28,5 +28,12 @@ Displays information about a corpus, including attributes and metadata such
 as date of number of texts, creation and source.
 }
 \examples{
-summary(data_corpus_inaugural)
+corp <- data_corpus_inaugural
+summary(corp)
+toks <- tokens(data_corpus_inaugural)
+summary(toks)
+dfmt <- dfm(toks)
+summary(dfmt)
+fcmt <- fcm(dfmt)
+summary(fcmt)
 }
