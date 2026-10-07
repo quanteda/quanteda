@@ -29,8 +29,8 @@ test_that("object stats are correct", {
     expect_equal(
         quanteda:::stats_tokens(toks),
         list(ndoc = 5L,
-             ntype = 1000L,
              ntoken = sum(ntoken(toks)),
+             ntype = 1000L,
              ndocvar = 4L)
     )
     expect_equal(

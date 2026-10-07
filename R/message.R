@@ -73,8 +73,9 @@ message_finish <- function(x, time) {
     if (is.dfm(x)) {
         message(msg(" ...complete, elapsed time: %s seconds.",
                     format((proc.time() - time)[3], digits = 3)))
-        message(msg("Finished constructing a %s x %s sparse dfm.",
-                    nrow(x), ncol(x)))
+        message(msg("Finished constructing dfm of %s %s x %s %s.",
+                    ndoc(x), inflect("document", ndoc(x)),
+                    nfeat(x), inflect("feature", nfeat(x))))
     } else {
         m <- count_types(x)
         n <- ndoc(x)
@@ -82,9 +83,9 @@ message_finish <- function(x, time) {
                     m, if (m == 1) "type" else "types"))
         message(msg(" ...complete, elapsed time: %s seconds.",
                     format((proc.time() - time)[3], digits = 3)))
-        message(msg("Finished constructing %s from %s %s",
+        message(msg("Finished constructing %s of %s %s.",
                     class(x)[1],
-                    n, if (n == 1) "document" else "documents"))
+                    n, inflect("document", n)))
     }
 }
 
@@ -127,8 +128,8 @@ message_tokens <- function(operation, stat) {
 
 stats_tokens <- function(x) {
     list(ndoc = ndoc(x),
-         ntype = count_types(x),
          ntoken = sum(ntoken(x, remove_padding = FALSE)),
+         ntype = count_types(x),
          ndocvar = ncol(docvars(x)))
 }
 

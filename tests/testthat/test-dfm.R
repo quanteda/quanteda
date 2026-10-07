@@ -807,7 +807,7 @@ test_that("dfm verbose = TRUE works as expected", {
     )
     expect_message(
         dfm(toks, verbose = TRUE),
-        "Finished constructing a 3 x 1,\\d{3} sparse dfm"
+        "Finished constructing dfm of 3 documents x 1,\\d{3} features"
     )
 })
 
@@ -821,7 +821,7 @@ test_that("dfm.dfm print complete message", {
     )
     expect_message(
         dfm(dfm(toks), verbose = TRUE),
-        "Finished constructing a 3 x 1,\\d{3} sparse dfm"
+        "Finished constructing dfm of 3 documents x 1,\\d{3} features"
     )
 })
 
