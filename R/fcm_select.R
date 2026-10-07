@@ -1,13 +1,13 @@
 #' @rdname dfm_select
 #' @export
-#' @examples 
+#' @examples
 #' toks <- tokens(c("this contains lots of stopwords",
 #'                  "no if, and, or but about it: lots"),
 #'                remove_punct = TRUE)
 #' fcmat <- fcm(toks)
 #' fcmat
 #' fcm_remove(fcmat, stopwords("english"))
-fcm_select <- function(x, pattern = NULL, selection = c("keep", "remove"), 
+fcm_select <- function(x, pattern = NULL, selection = c("keep", "remove"),
                        valuetype = c("glob", "regex", "fixed"),
                        case_insensitive = TRUE,
                        verbose = quanteda_options("verbose"), ...) {
@@ -15,8 +15,8 @@ fcm_select <- function(x, pattern = NULL, selection = c("keep", "remove"),
 }
 
 #' @export
-fcm_select.default <- function(x, pattern = NULL, 
-                               selection = c("keep", "remove"), 
+fcm_select.default <- function(x, pattern = NULL,
+                               selection = c("keep", "remove"),
                                valuetype = c("glob", "regex", "fixed"),
                                case_insensitive = TRUE,
                                verbose = quanteda_options("verbose"), ...) {
@@ -24,19 +24,25 @@ fcm_select.default <- function(x, pattern = NULL,
 }
 
 #' @export
-fcm_select.fcm <- function(x, pattern = NULL, 
-                           selection = c("keep", "remove"), 
+fcm_select.fcm <- function(x, pattern = NULL,
+                           selection = c("keep", "remove"),
                            valuetype = c("glob", "regex", "fixed"),
                            case_insensitive = TRUE,
                            verbose = quanteda_options("verbose"), ...) {
-    
-    x <- as.fcm(x)
-    attrs <- attributes(x)
-    x <- t(dfm_select(x, pattern, selection, valuetype, 
-                      case_insensitive, verbose = verbose, ...))
-    x <- t(dfm_select(x, pattern, selection, valuetype, 
-                      case_insensitive, verbose = FALSE, ...))
-    build_fcm(x, colnames(x), meta = attrs[["meta"]])
+
+  x <- as.fcm(x)
+  selection <- match.arg(selection)
+  verbose <- check_logical(verbose)
+  attrs <- attributes(x)
+  x <- t(dfm_select(x, pattern, selection, valuetype,
+                    case_insensitive, verbose = FALSE, ...))
+  x <- t(dfm_select(x, pattern, selection, valuetype,
+                    case_insensitive, verbose = FALSE, ...))
+  result <- build_fcm(x, colnames(x), meta = attrs[["meta"]])
+  if (verbose)
+    message_fcm(ifelse(selection == "keep", "fcm_keep()", "fcm_remove()"),
+                stats_fcm(result))
+  return(result)
 }
 
 #' @rdname dfm_select
