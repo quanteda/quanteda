@@ -35,8 +35,10 @@ log counts (when a dfm has been weighted by \code{"logcount"} for instance using
 \code{\link[=dfm_weight]{dfm_weight()}}).  Not needed when the term weight schemes "count" and
 "prop".}
 
-\item{verbose}{if \code{TRUE} print the number of tokens and documents before and
-after the function is applied. The number of tokens does not include paddings.}
+\item{verbose}{if \code{TRUE} print a summary of the object returned by the
+function: the number of documents and, depending on the object, the number
+of characters, tokens and types, or features and occurrences. The number of
+tokens includes paddings, but the number of features excludes them.}
 }
 \value{
 \code{dfm_group} returns a \link{dfm} whose documents are equal to

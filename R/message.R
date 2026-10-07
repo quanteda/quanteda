@@ -94,8 +94,10 @@ message_finish <- function(x, time) {
 #'
 #' Used in printing verbose messages for message_tokens() and message_dfm()
 #' @name messages
-#' @param verbose if `TRUE` print the number of tokens and documents before and
-#'   after the function is applied. The number of tokens does not include paddings.
+#' @param verbose if `TRUE` print a summary of the object returned by the
+#'   function: the number of documents and, depending on the object, the number
+#'   of characters, tokens and types, or features and occurrences. The number of
+#'   tokens includes paddings, but the number of features excludes them.
 #' @param stat object statistics after the operation.
 #' @seealso message_tokens() message_dfm()
 #' @keywords internal
