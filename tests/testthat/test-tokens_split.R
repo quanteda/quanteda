@@ -19,7 +19,7 @@ test_that("tokens_split works", {
     
     expect_message(
         tokens_split(toks, separator = "-", verbose = TRUE),
-        "Return .* documents \\(.* types, .* tokens\\) by tokens_split\\(\\)"
+        "Returning tokens of .* documents \\(.* tokens, .* types\\) from tokens_split\\(\\)"
     )
 
 })

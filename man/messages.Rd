@@ -4,8 +4,10 @@
 \alias{messages}
 \title{Message parameter documentation}
 \arguments{
-\item{verbose}{if \code{TRUE} print the number of tokens and documents before and
-after the function is applied. The number of tokens does not include paddings.}
+\item{verbose}{if \code{TRUE} print a summary of the object returned by the
+function: the number of documents and, depending on the object, the number
+of characters, tokens and types, or features and occurrences. The number of
+tokens includes paddings, but the number of features excludes them.}
 
 \item{stat}{object statistics after the operation.}
 }
@@ -13,6 +15,7 @@ after the function is applied. The number of tokens does not include paddings.}
 Used in printing verbose messages for message_tokens() and message_dfm()
 }
 \seealso{
-message_tokens() message_dfm()
+\code{\link[=message_corpus]{message_corpus()}}, \code{\link[=message_tokens]{message_tokens()}}, \code{\link[=message_dfm]{message_dfm()}},
+\code{\link[=message_fcm]{message_fcm()}}
 }
 \keyword{internal}

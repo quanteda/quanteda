@@ -27,6 +27,6 @@ test_that("test tokens_sample works with verbose", {
     dfmat <- dfm(tokens(data_corpus_inaugural[1:10]), verbose = FALSE)
     expect_message(
         dfm_sample(dfmat, size = 2, verbose = TRUE),
-        "Return .* documents \\(.* features, .* occurrences\\) by dfm_sample\\(\\)"
+        "Returning dfm of .* documents x .* features \\(.* occurrences, .* sparsity\\) from dfm_sample\\(\\)"
     )
 })

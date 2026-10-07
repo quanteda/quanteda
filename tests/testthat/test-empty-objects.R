@@ -5,7 +5,7 @@ test_that("empty corpus works", {
   expect_equal(docvars(corp1),
                data.frame(var1 = integer()))
   expect_output(print(corp1),
-                "Corpus of 0 documents (0 characters) and 1 docvar.",
+                "corpus of 0 documents (0 characters) and 1 docvar.",
                 fixed = TRUE)
   
   corp2 <- corpus(data.frame(text = character(), var2 = numeric()))
@@ -13,7 +13,7 @@ test_that("empty corpus works", {
   expect_equal(docvars(corp2),
                data.frame(var2 = numeric()))
   expect_output(print(corp2),
-                "Corpus of 0 documents (0 characters) and 1 docvar.",
+                "corpus of 0 documents (0 characters) and 1 docvar.",
                 fixed = TRUE)
   
   corp3 <- c(corp1, corp2)
@@ -21,7 +21,7 @@ test_that("empty corpus works", {
   expect_equal(docvars(corp3),
                data.frame(var1 = integer(), var2 = numeric()))
   expect_output(print(corp3),
-                "Corpus of 0 documents (0 characters) and 2 docvars.",
+                "corpus of 0 documents (0 characters) and 2 docvars.",
                 fixed = TRUE)
   
   # works with corpus methods
@@ -41,12 +41,12 @@ test_that("empty tokens works", {
   
   toks1 <- tokens(corp1)
   expect_output(print(toks1),
-                "Tokens of 0 documents (0 types, 0 tokens) and 1 docvar.",
+                "tokens of 0 documents (0 tokens, 0 types) and 1 docvar.",
                 fixed = TRUE)
   
   toks2 <- tokens(corp2)
   expect_output(print(toks2),
-                "Tokens of 0 documents (0 types, 0 tokens) and 1 docvar.",
+                "tokens of 0 documents (0 tokens, 0 types) and 1 docvar.",
                 fixed = TRUE)
   
   toks3 <- c(toks1, toks2)
@@ -54,7 +54,7 @@ test_that("empty tokens works", {
   expect_equal(docvars(toks3),
                data.frame(var1 = integer(), var2 = numeric()))
   expect_output(print(toks3),
-                "Tokens of 0 documents (0 types, 0 tokens) and 2 docvars.",
+                "tokens of 0 documents (0 tokens, 0 types) and 2 docvars.",
                 fixed = TRUE)
   
   # works with tokens methods
@@ -80,12 +80,12 @@ test_that("empty DFM works", {
     
     dfmat1 <- dfm(toks1)
     expect_output(print(dfmat1),
-                  "Document-feature matrix of 0 documents (0 features, 0 occurrences) and 1 docvar.", 
+                  "dfm of 0 documents x 0 features (0 occurrences, 0.00% sparsity) and 1 docvar.", 
                   fixed = TRUE)
     
     dfmat2 <- dfm(toks2)
     expect_output(print(dfmat2),
-                  "Document-feature matrix of 0 documents (0 features, 0 occurrences) and 1 docvar.", 
+                  "dfm of 0 documents x 0 features (0 occurrences, 0.00% sparsity) and 1 docvar.", 
                   fixed = TRUE)
     
     dfmat3 <- rbind(dfmat1, dfmat2)
@@ -94,7 +94,7 @@ test_that("empty DFM works", {
     expect_equal(docvars(dfmat3),
                  data.frame(var1 = integer(), var2 = numeric()))
     expect_output(print(dfmat3),
-                  "Document-feature matrix of 0 documents (0 features, 0 occurrences) and 2\ndocvars.",
+                  "dfm of 0 documents x 0 features (0 occurrences, 0.00% sparsity) and 2 docvars.",
                   fixed = TRUE)
 
     # works with dfm methods

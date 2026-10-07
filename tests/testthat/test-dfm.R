@@ -384,29 +384,29 @@ test_that("dfm print works with options as expected", {
                 remove_punct = FALSE, remove_numbers = FALSE, split_hyphens = TRUE))
     expect_output(
         print(dfmt, max_ndoc = 6, max_nfeat = 10, show_summary = TRUE),
-        paste0("^Document-feature matrix of 14 documents \\(4,452 features, 38,693 occurrences\\) and\n4 docvars",
+        paste0("^dfm of 14 documents x 4,452 features \\(38,693 occurrences, 81\\.97% sparsity\\) and 4\ndocvars\\.",
                ".*",
                "\\[ reached max_ndoc \\.\\.\\. 8 more documents, reached max_nfeat \\.\\.\\. 4,442 more\nfeatures \\]$")
     )
     expect_output(
         print(dfmt[1:5, 1:5], max_ndoc = 6, max_nfeat = 10, show_summary = TRUE),
-        paste0("^Document-feature matrix of 5 documents \\(5 features, 1,057 occurrences\\) and 4\ndocvars\\.",
+        paste0("^dfm of 5 documents x 5 features \\(1,057 occurrences, 4\\.00% sparsity\\) and 4\ndocvars\\.",
                ".*",
                "1789-Washington\\s+3\\s+2\\s+5\\s+71\\s+116")
     )
     expect_output(
         print(dfmt[1:5, 1:5], max_ndoc = -1, max_nfeat = -1, show_summary = TRUE),
-        paste0("^Document-feature matrix of 5 documents \\(5 features, 1,057 occurrences\\) and 4\ndocvars\\.",
+        paste0("^dfm of 5 documents x 5 features \\(1,057 occurrences, 4\\.00% sparsity\\) and 4\ndocvars\\.",
                ".*",
                "1805-Jefferson\\s+8\\s+1\\s+10\\s+101\\s+143")
     )
     expect_output(
         print(dfmt[1:5, 1:5], max_ndoc = 0, max_nfeat = -1, show_summary = TRUE),
-        "^Document-feature matrix of 5 documents \\(5 features, 1,057 occurrences\\) and 4\ndocvars\\.$"
+        "^dfm of 5 documents x 5 features \\(1,057 occurrences, 4\\.00% sparsity\\) and 4\ndocvars\\.$"
     )
     expect_output(
         print(dfmt[1:5, 1:5], max_ndoc = -1, max_nfeat = 0, show_summary = TRUE),
-        paste0("^Document-feature matrix of 5 documents \\(5 features, 1,057 occurrences\\) and 4\ndocvars\\.",
+        paste0("^dfm of 5 documents x 5 features \\(1,057 occurrences, 4\\.00% sparsity\\) and 4\ndocvars\\.",
                "\\n",
                "\\[ reached max_nfeat \\.\\.\\. 5 more features ]$")
     )
@@ -570,7 +570,7 @@ test_that("test null dfm is handled properly", {
     expect_equal(cbind(dfmt, dfmt), dfmt)
 
     expect_output(print(dfmt),
-                  "Document-feature matrix of 0 documents (0 features, 0 occurrences).", 
+                  "dfm of 0 documents x 0 features (0 occurrences, 0.00% sparsity).", 
                   fixed = TRUE)
 })
 
@@ -624,7 +624,7 @@ test_that("test empty dfm is handled properly (#1419)", {
     expect_equal(ndoc(cbind(dfmt, dfmt)), ndoc(dfmt))
 
     expect_output(print(dfmt),
-                  "Document-feature matrix of 6 documents (0 features, 0 occurrences) and 1 docvar.", fixed = TRUE)
+                  "dfm of 6 documents x 0 features (0 occurrences, 0.00% sparsity) and 1 docvar.", fixed = TRUE)
 })
 
 test_that("dfm raise nicer error message, #1267", {
@@ -807,7 +807,7 @@ test_that("dfm verbose = TRUE works as expected", {
     )
     expect_message(
         dfm(toks, verbose = TRUE),
-        "Finished constructing a 3 x 1,\\d{3} sparse dfm"
+        "Finished constructing dfm of 3 documents x 1,\\d{3} features"
     )
 })
 
@@ -821,7 +821,7 @@ test_that("dfm.dfm print complete message", {
     )
     expect_message(
         dfm(dfm(toks), verbose = TRUE),
-        "Finished constructing a 3 x 1,\\d{3} sparse dfm"
+        "Finished constructing dfm of 3 documents x 1,\\d{3} features"
     )
 })
 

@@ -82,6 +82,6 @@ test_that("dfm_subset() works with verbose", {
 
     expect_message(
         dfm_subset(dfmat, grp > 1, verbose = TRUE),
-        "Return .* documents \\(.* features, .* occurrences\\) by dfm_subset\\(\\)"
+        "Returning dfm of .* documents x .* features \\(.* occurrences, .* sparsity\\) from dfm_subset\\(\\)"
     )
 })

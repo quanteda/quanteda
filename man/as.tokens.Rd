@@ -53,7 +53,7 @@ inferred from the maximum token position across all documents.}
 \item{drop}{if \code{TRUE} returns a vector instead of a matrix with only one row.}
 
 \item{concatenator}{character; the concatenation character that will connect
-the tokens making up a multi-token sequence.}
+the tokens making up a multi-token sequence. See details.}
 
 \item{include_pos}{character; whether and which part-of-speech tag to use:
 \code{"none"} do not use any part of speech indicator, \code{"pos"} use the

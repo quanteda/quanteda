@@ -86,7 +86,7 @@ test_that("dfm_compress() works with verbose options", {
     
     expect_message(
         dfm_compress(mat, margin = "documents", verbose = TRUE),
-        "Return .* documents \\(.* features, .* occurrences\\) by dfm_compress\\(\\)"
+        "Returning dfm of .* documents x .* features \\(.* occurrences, .* sparsity\\) from dfm_compress\\(\\)"
     )
 })
 

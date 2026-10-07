@@ -384,6 +384,6 @@ test_that("dfm_group() verbose messages work", {
     
     expect_message(
         dfm_group(dfmat, groups = grp, verbose = TRUE),
-        "Return .* documents \\(.* features, .* occurrences\\) by dfm_group\\(\\)"
+        "Returning .* documents x .* features \\(.* occurrences, .* sparsity\\) from dfm_group\\(\\)"
     )
 })

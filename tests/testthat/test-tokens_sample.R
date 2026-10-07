@@ -25,7 +25,7 @@ test_that("test tokens_sample works", {
     
     expect_message(
         tokens_sample(toks_sent, replace = TRUE, verbose = TRUE),
-        "Return .* documents \\(.* types, .* tokens\\) by tokens_sample\\(\\)"
+        "Returning tokens of .* documents \\(.* tokens, .* types\\) from tokens_sample\\(\\)"
     )
 })
 

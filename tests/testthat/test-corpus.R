@@ -1,26 +1,26 @@
 test_that("print works", {
     expect_output(
         print(corpus(c("The"))),
-        "Corpus of 1 document."
+        "corpus of 1 document."
     )
     expect_output(
         print(corpus(c("The", "quick", "brown", "fox"))),
-        "Corpus of 4 documents \\(16 characters\\)."
+        "corpus of 4 documents \\(16 characters\\)."
     )
     expect_output(
         print(corpus(c("The", "quick", "brown", "fox"),
                      docvars = data.frame(list(test = 1:4)))),
-        "Corpus of 4 documents \\(16 characters\\) and 1 docvar."
+        "corpus of 4 documents \\(16 characters\\) and 1 docvar."
     )
     expect_output(
         print(corpus(c("The", "quick", "brown", "fox"),
                     docvars = data.frame(list(test = 1:4)))),
-        "Corpus of 4 documents \\(16 characters\\) and 1 docvar."
+        "corpus of 4 documents \\(16 characters\\) and 1 docvar."
     )
     expect_output(
         print(corpus(c("The", "quick", "brown", "fox"),
                     docvars = data.frame(list(test = 1:4, test2 = 1:4)))),
-        "Corpus of 4 documents \\(16 characters\\) and 2 docvars."
+        "corpus of 4 documents \\(16 characters\\) and 2 docvars."
     )
     expect_error(
         print(corpus(c("The", "quick", "brown", "fox")), max_ndoc = "xyz"),
@@ -200,7 +200,9 @@ test_that("test corpus constructor works for tm objects", {
         "Cannot construct a corpus from this tm OtherCorpus object"
     )
     detach("package:tm", unload = FALSE, force = TRUE)
-    detach("package:NLP", unload = FALSE, force = TRUE)
+    # tm >= 0.7-20 imports NLP rather than attaching it
+    if ("package:NLP" %in% search())
+        detach("package:NLP", unload = FALSE, force = TRUE)
 })
 
 test_that("test corpus constructor works for VCorpus with one document (#445)", {
@@ -210,7 +212,8 @@ test_that("test corpus constructor works for VCorpus with one document (#445)", 
     corp <- corpus(vcorp)
     expect_equivalent(as.character(corp)[1], as.character(data_corpus_inaugural)[2])
     detach("package:tm", unload = FALSE, force = TRUE)
-    detach("package:NLP", unload = FALSE, force = TRUE)
+    if ("package:NLP" %in% search())
+        detach("package:NLP", unload = FALSE, force = TRUE)
 })
 
 test_that("test corpus constructor works for complex VCorpus (#849)", {
@@ -229,7 +232,7 @@ test_that("test corpus constructor works for complex VCorpus (#849)", {
     )
     expect_output(
         print(corp),
-        "Corpus of 8,230 documents and 16 docvars\\."
+        "corpus of 8,230 documents and 16 docvars\\."
     )
 })
 
@@ -289,7 +292,7 @@ test_that("corpus works on dplyr grouped data.frames (#1232)", {
         dplyr::mutate(n_group = dplyr::n())
     expect_output(
         print(corpus(df_grouped)),
-        "Corpus of 6 documents (132 characters) and 3 docvars.",
+        "corpus of 6 documents (132 characters) and 3 docvars.",
         fixed = TRUE
     )
 })
@@ -524,11 +527,11 @@ test_that("corpus printing works", {
     )
     expect_output(
         print(corp, max_ndoc = 0, max_nchar = 0, show_summary = TRUE),
-        "Corpus of 14 documents \\(.* characters\\) and 4 docvars."
+        "corpus of 14 documents \\(.* characters\\) and 4 docvars."
     )
     expect_output(
         print(corp, max_ndoc = 2, max_nchar = 10, show_summary = TRUE),
-        paste0('Corpus of 14 documents (211,469 characters) and 4 docvars.\n',
+        paste0('corpus of 14 documents (211,469 characters) and 4 docvars.\n',
                '1789-Washington :\n',
                '"Fellow-Cit..."\n\n',
                '1793-Washington :\n',
@@ -555,21 +558,21 @@ test_that("corpus printing works", {
     )
     expect_output(
         print(corpus("a b c d"), max_ndoc = -1, max_nchar = 2),
-        paste0('Corpus of 1 document (7 characters).\n',
+        paste0('corpus of 1 document (7 characters).\n',
                'text1 :\n',
                '"a ..."\n'),
         fixed = TRUE
     )
     expect_output(
       print(corpus("a b c d"), max_ndoc = -1, max_nchar = 10),
-      paste0('Corpus of 1 document (7 characters).\n',
+      paste0('corpus of 1 document (7 characters).\n',
              'text1 :\n',
              '"a b c d"\n'),
       fixed = TRUE
     )
     expect_output(
         print(corpus("a b c d"), max_ndoc = -1, max_nchar = -1),
-        paste0('Corpus of 1 document (7 characters).\n',
+        paste0('corpus of 1 document (7 characters).\n',
                'text1 :\n',
                '"a b c d"\n'),
         fixed = TRUE
@@ -629,7 +632,7 @@ test_that("printing a corpus works that has no documents", {
     corp <- corpus(c("one", "two", "three"), docvars = data.frame(dv = 1:3))
     expect_output(
       print(corpus_subset(corp, rep(FALSE, 3))),
-      "Corpus of 0 documents (0 characters) and 1 docvar.",
+      "corpus of 0 documents (0 characters) and 1 docvar.",
       fixed = TRUE
     )
 })
