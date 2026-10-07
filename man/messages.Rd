@@ -15,6 +15,7 @@ tokens includes paddings, but the number of features excludes them.}
 Used in printing verbose messages for message_tokens() and message_dfm()
 }
 \seealso{
-message_tokens() message_dfm()
+\code{\link[=message_corpus]{message_corpus()}}, \code{\link[=message_tokens]{message_tokens()}}, \code{\link[=message_dfm]{message_dfm()}},
+\code{\link[=message_fcm]{message_fcm()}}
 }
 \keyword{internal}

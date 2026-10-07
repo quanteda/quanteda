@@ -126,7 +126,6 @@ print.tokens <- function(x, max_ndoc = quanteda_options("print_tokens_max_ndoc")
     max_ntoken <- check_integer(max_ntoken, min = -1)
     show_summary <- check_logical(show_summary)
 
-    docvars <- docvars(x)
     ndoc <- ndoc(x)
     if (max_ndoc < 0)
         max_ndoc <- ndoc(x)

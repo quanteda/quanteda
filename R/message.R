@@ -100,7 +100,8 @@ message_finish <- function(x, time) {
 #'   of characters, tokens and types, or features and occurrences. The number of
 #'   tokens includes paddings, but the number of features excludes them.
 #' @param stat object statistics after the operation.
-#' @seealso message_tokens() message_dfm()
+#' @seealso [message_corpus()], [message_tokens()], [message_dfm()],
+#'   [message_fcm()]
 #' @keywords internal
 NULL
 
@@ -215,7 +216,7 @@ summary_dfm <- function(x) {
 
 summary_fcm <- function(x) {
     s <- stats_fcm(x)
-    wrap(msg("fcm of %s x %s %s (%s %s, %s sparsity).\n",
+    wrap(msg("fcm of %s x %s %s (%s %s, %s sparsity).",
              s$nrow, s$ncol, inflect("feature", s$nrow * s$ncol),
              s$nocc, inflect("co-occurrence", s$nocc),
              format_sparsity(s$spar))
