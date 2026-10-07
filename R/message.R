@@ -23,7 +23,7 @@ msg <- function(format, ..., prepend = "", append = "") {
 }
 
 #' Wrap and print long lines
-#'
+#' 
 #' @param x a character string to wrap.
 #' @param ... extra arguments passed to [stringi::stri_wrap]`.
 #' @keywords internal development
@@ -52,7 +52,7 @@ inflect <- function(word, n) {
     if (n == 1)
         return(word)
     return(v[word])
-
+    
 }
 
 # rdname catm
@@ -93,7 +93,8 @@ message_finish <- function(x, time) {
 
 #' Message parameter documentation
 #'
-#' Used in printing verbose messages for message_tokens() and message_dfm()
+#' Used in printing verbose messages for message_corpus(), message_tokens(),
+#' message_dfm() and message_fcm().
 #' @name messages
 #' @param verbose if `TRUE` print a summary of the object returned by the
 #'   function: the number of documents and, depending on the object, the number
@@ -182,13 +183,13 @@ summary_corpus <- function(x) {
 summary_tokens <- function(x) {
     s <- stats_tokens(x)
     if (is.tokens_xptr(x)) {
-        line <- msg("tokens_xptr [%s] of %s %s (%s %s, %s %s)",
+        line <- msg("tokens_xptr [%s] of %s %s (%s %s, %s %s)", 
                     address(x),
                     s$ndoc, inflect("document", s$ndoc),
                     s$ntoken, inflect("token", s$ntoken),
                     s$ntype, inflect("type", s$ntype))
     } else {
-        line <- msg("tokens of %s %s (%s %s, %s %s)",
+        line <- msg("tokens of %s %s (%s %s, %s %s)", 
                     s$ndoc, inflect("document", s$ndoc),
                     s$ntoken, inflect("token", s$ntoken),
                     s$ntype, inflect("type", s$ntype))
@@ -208,7 +209,7 @@ summary_dfm <- function(x) {
                 s$nocc, inflect("occurrence", s$nocc),
                 format_sparsity(s$spar))
     if (s$ndocvar)
-        line <- msg(" and %s %s",
+        line <- msg(" and %s %s", 
                     s$ndocvar, inflect("docvar", s$ndocvar),
                     prepend = line)
     wrap(paste0(line, "."))
