@@ -28,7 +28,7 @@ test_that("output is correct for word1", {
     )
     expect_message(
         tmp <- tokens(data_char_ukimmig2010, what = "word1", split_hyphens = FALSE, verbose = TRUE),
-        "Finished constructing tokens from 9 documents"
+        "Finished constructing tokens of 9 documents"
     )
     expect_message(
         tmp <- tokens(data_char_ukimmig2010, what = "word1", split_hyphens = FALSE, verbose = TRUE),

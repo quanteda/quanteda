@@ -25,8 +25,10 @@ values are taken as false.}
 \item{drop_docid}{if \code{TRUE}, \code{docid} for documents are removed as the result
 of subsetting.}
 
-\item{verbose}{if \code{TRUE} print the number of tokens and documents before and
-after the function is applied. The number of tokens does not include paddings.}
+\item{verbose}{if \code{TRUE} print a summary of the object returned by the
+function: the number of documents and, depending on the object, the number
+of characters, tokens and types, or features and occurrences. The number of
+tokens includes paddings, but the number of features excludes them.}
 
 \item{...}{not used}
 }
