@@ -242,7 +242,7 @@ test_that("fcm print works as expected", {
     expect_output(print(fcmt, max_nfeat = 6, show_summary = TRUE),
                   paste0("^fcm of 634 x 634 features \\(1,194,222 co-occurrences, 54\\.33% sparsity\\)\\.",
                          ".*",
-                         "\\[ reached max_nfeat \\.\\.\\. 628 more features, reached max_nfeat \\.\\.\\. 628 more\nfeatures \\]$")
+                         "\\[ reached max_nfeat \\.\\.\\. 628 more features \\]$")
     )
     expect_output(print(fcmt[1:5, 1:5], max_nfeat = 6, show_summary = TRUE),
                   paste0("^fcm of 5 x 5 features \\(19,631 co-occurrences, 40\\.00% sparsity\\)\\.",
@@ -264,10 +264,13 @@ test_that("fcm print works as expected", {
                          ".*",
                          ":\\s+0\\s+0$")
     )
+    expect_output(print(fcmt[1:10, 1:8], max_nfeat = 6, show_summary = FALSE),
+                  "\\[ reached max_nfeat \\.\\.\\. 4 more features, reached max_nfeat \\.\\.\\. 2 more\\s+features \\]$"
+    )
     expect_output(print(fcmt, max_nfeat = 6, show_summary = FALSE),
                   paste0("^\\s+features",
                          ".*",
-                         "\\[ reached max_nfeat \\.\\.\\. 628 more features, reached max_nfeat \\.\\.\\. 628 more\nfeatures \\]$")
+                         "\\[ reached max_nfeat \\.\\.\\. 628 more features \\]$")
     )
 })
 
