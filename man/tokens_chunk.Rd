@@ -24,8 +24,10 @@ last \code{overlap} tokens from the preceding chunk}
 \item{use_docvars}{if \code{TRUE}, repeat the docvar values for each chunk;
 if \code{FALSE}, drop the docvars in the chunked tokens}
 
-\item{verbose}{if \code{TRUE} print the number of tokens and documents before and
-after the function is applied. The number of tokens does not include paddings.}
+\item{verbose}{if \code{TRUE} print a summary of the object returned by the
+function: the number of documents and, depending on the object, the number
+of characters, tokens and types, or features and occurrences. The number of
+tokens includes paddings, but the number of features excludes them.}
 }
 \value{
 A \link{tokens} object whose documents have been split into chunks of

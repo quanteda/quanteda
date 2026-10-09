@@ -31,12 +31,18 @@ fcm_select.fcm <- function(x, pattern = NULL,
                            verbose = quanteda_options("verbose"), ...) {
     
     x <- as.fcm(x)
+    selection <- match.arg(selection)
+    verbose <- check_logical(verbose)
     attrs <- attributes(x)
     x <- t(dfm_select(x, pattern, selection, valuetype, 
-                      case_insensitive, verbose = verbose, ...))
+                      case_insensitive, verbose = FALSE, ...))
     x <- t(dfm_select(x, pattern, selection, valuetype, 
                       case_insensitive, verbose = FALSE, ...))
-    build_fcm(x, colnames(x), meta = attrs[["meta"]])
+    result <- build_fcm(x, colnames(x), meta = attrs[["meta"]])
+    if (verbose)
+        message_fcm(ifelse(selection == "keep", "fcm_keep()", "fcm_remove()"),
+                    stats_fcm(result))
+    return(result)
 }
 
 #' @rdname dfm_select

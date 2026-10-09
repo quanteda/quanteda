@@ -40,6 +40,19 @@ txt <- c(doc1 = "a B c D e",
          doc3 = "Aaaa BBB cc")
 fcmt_test2 <- fcm(tokens(txt), context = "document", count = "frequency", tri = TRUE)
 
+test_that("fcm_select works with verbose", {
+    expect_message(
+        fcm_keep(fcmt_test2, c("a", "b", "c"), valuetype = "fixed", verbose = TRUE),
+        "Returning fcm of 3 x 3 features (4 co-occurrences, 66.67% sparsity) from fcm_keep()",
+        fixed = TRUE
+    )
+    expect_message(
+        fcm_remove(fcmt_test2, c("a", "b", "c"), valuetype = "fixed", verbose = TRUE),
+        "Returning fcm of 5 x 5 features (7 co-occurrences, 76.00% sparsity) from fcm_remove()",
+        fixed = TRUE
+    )
+})
+
 test_that("test fcm_select, fixed", {
     expect_equal(
         featnames(fcm_select(fcmt_test2, c("a", "b", "c"), selection = "keep", valuetype = "fixed", verbose = FALSE)),

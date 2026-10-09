@@ -29,8 +29,8 @@ test_that("object stats are correct", {
     expect_equal(
         quanteda:::stats_tokens(toks),
         list(ndoc = 5L, 
-             ntype = 1000L,
              ntoken = sum(ntoken(toks)),
+             ntype = 1000L,
              ndocvar = 4L)
     )
     expect_equal(
@@ -49,5 +49,14 @@ test_that("object stats are correct", {
              nocc = sum(fcm_remove(fcmt, "")),
              spar = sparsity(fcmt)),
         tolerance = 0.001
+    )
+})
+
+test_that("verbose messages report object stats in the correct order", {
+    toks <- tokens(c(d1 = "a b c a", d2 = "b d d d"))
+    expect_message(
+        tokens_remove(toks, "c", verbose = TRUE),
+        "Returning tokens of 2 documents (7 tokens, 3 types) from tokens_remove()",
+        fixed = TRUE
     )
 })

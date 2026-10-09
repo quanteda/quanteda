@@ -2,6 +2,7 @@ test_that("summary works", {
     
     corp <- data_corpus_inaugural
     expect_output(
+
         stat_corp <- summary(corp),
         "corpus of 60 documents (823,688 characters) and 4 docvars.", 
         fixed = TRUE
@@ -13,7 +14,7 @@ test_that("summary works", {
              ndocvar = 4
         )
     )
-    
+
     toks <- tokens(data_corpus_inaugural)
     expect_output(
         stat_toks <- summary(toks),

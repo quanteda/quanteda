@@ -73,8 +73,9 @@ message_finish <- function(x, time) {
     if (is.dfm(x)) {
         message(msg(" ...complete, elapsed time: %s seconds.",
                     format((proc.time() - time)[3], digits = 3)))
-        message(msg("Finished constructing a %s x %s sparse dfm.",
-                    nrow(x), ncol(x)))
+        message(msg("Finished constructing dfm of %s %s x %s %s.",
+                    ndoc(x), inflect("document", ndoc(x)),
+                    nfeat(x), inflect("feature", nfeat(x))))
     } else {
         m <- count_types(x)
         n <- ndoc(x)
@@ -82,9 +83,9 @@ message_finish <- function(x, time) {
                     m, if (m == 1) "type" else "types"))
         message(msg(" ...complete, elapsed time: %s seconds.",
                     format((proc.time() - time)[3], digits = 3)))
-        message(msg("Finished constructing %s from %s %s",
+        message(msg("Finished constructing %s of %s %s.",
                     class(x)[1],
-                    n, if (n == 1) "document" else "documents"))
+                    n, inflect("document", n)))
     }
 }
 
@@ -92,12 +93,16 @@ message_finish <- function(x, time) {
 
 #' Message parameter documentation
 #'
-#' Used in printing verbose messages for message_tokens() and message_dfm()
+#' Used in printing verbose messages for message_corpus(), message_tokens(),
+#' message_dfm() and message_fcm().
 #' @name messages
-#' @param verbose if `TRUE` print the number of tokens and documents before and
-#'   after the function is applied. The number of tokens does not include paddings.
+#' @param verbose if `TRUE` print a summary of the object returned by the
+#'   function: the number of documents and, depending on the object, the number
+#'   of characters, tokens and types, or features and occurrences. The number of
+#'   tokens includes paddings, but the number of features excludes them.
 #' @param stat object statistics after the operation.
-#' @seealso message_tokens() message_dfm()
+#' @seealso [message_corpus()], [message_tokens()], [message_dfm()],
+#'   [message_fcm()]
 #' @keywords internal
 NULL
 
@@ -120,13 +125,13 @@ stats_corpus <- function(x) {
 #' @keywords message internal
 message_tokens <- function(operation, stat) {
     message(msg("Returning tokens of %s documents (%s tokens, %s types) from %s",
-                stat$ndoc, stat$ntype, stat$ntoken, operation))
+                stat$ndoc, stat$ntoken, stat$ntype, operation))
 }
 
 stats_tokens <- function(x) {
     list(ndoc = ndoc(x),
-         ntype = count_types(x),
          ntoken = sum(ntoken(x, remove_padding = FALSE)),
+         ntype = count_types(x),
          ndocvar = ncol(docvars(x)))
 }
 
@@ -215,7 +220,7 @@ summary_dfm <- function(x) {
 
 summary_fcm <- function(x) {
     s <- stats_fcm(x)
-    wrap(msg("fcm of %s x %s %s (%s %s, %s sparsity).\n",
+    wrap(msg("fcm of %s x %s %s (%s %s, %s sparsity).",
              s$nrow, s$ncol, inflect("feature", s$nrow * s$ncol),
              s$nocc, inflect("co-occurrence", s$nocc),
              format_sparsity(s$spar))

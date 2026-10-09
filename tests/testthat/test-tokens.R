@@ -629,7 +629,7 @@ test_that("tokens.tokens print complete message", {
     )
     expect_message(
         tokens(tokens("one two three"), verbose = TRUE),
-        "Finished constructing tokens from 1 document"
+        "Finished constructing tokens of 1 document"
     )
 })
 
@@ -1140,7 +1140,7 @@ test_that("output is correct for word1", {
     )
     expect_message(
         toks <- tokens(data_char_ukimmig2010, what = "word1", split_hyphens = FALSE, verbose = TRUE),
-        "Finished constructing tokens from 9 documents"
+        "Finished constructing tokens of 9 documents"
     )
     expect_message(
         toks <- tokens(data_char_ukimmig2010, what = "word1", split_hyphens = FALSE, verbose = TRUE),

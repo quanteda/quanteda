@@ -390,7 +390,7 @@ dfmat_inaug_subset <- tokens(data_corpus_inaugural[52:58]) |>
 dfmat_inaug_subset[, 1:10]
 ```
 ```
-## Document-feature matrix of: 7 documents, 10 features (1.43% sparse) and 4 docvars.
+## dfm of 7 documents x 10 features (1.43% sparsity) and 4 docvars.
 ##               features
 ## docs           Pronoun  I  We Self You Other Negate Assent Article Preps
 ##   1993-Clinton     179 15 124  139  12    12     25      2     115   211
