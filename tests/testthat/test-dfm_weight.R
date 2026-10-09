@@ -277,7 +277,7 @@ test_that("featfreq() and docfreq() work", {
     )
     expect_identical(
         docfreq(toks),
-        structure(c(2L, 2L, 1L, 1L), names = c("a", "b", "x", "c"))
+        structure(c(2, 2, 1, 1), names = c("a", "b", "x", "c"))
     )
     expect_equal(
         docfreq(toks, scheme = "inverse"),
@@ -292,7 +292,7 @@ test_that("featfreq() and docfreq() work", {
     )
     expect_identical(
         docfreq(dfmat),
-        structure(c(2L, 2L, 1L, 1L), names = c("a", "b", "x", "c"))
+        structure(c(2, 2, 1, 1), names = c("a", "b", "x", "c"))
     )
     expect_equal(
         docfreq(dfmat, scheme = "inverse"),
