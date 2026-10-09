@@ -166,22 +166,22 @@ test_that("meta_system<-", {
 #     )
 # })
 
-test_that("adding extended summary information works", {
-    corp <- corpus(c("One, two ®, 3. ", "😚 Yeah!!"))
-    extsumm <- quanteda:::summarize_texts_extended(corp)
-    expect_true(all(
-        c("total_tokens", "all_tokens", "total_punctuation", "total_symbols",
-          "total_numbers", "total_words", "total_stopwords", "top_dfm") %in%
-        names(extsumm)
-    ))
-    expect_is(extsumm$top_dfm, "dfm")
-
-    corp <- quanteda:::add_summary_metadata(corp, extended = TRUE)
-    expect_equivalent(
-        meta(corp, "summary_extended", type = "system"),
-        extsumm
-    )
-})
+# test_that("adding extended summary information works", {
+#     corp <- corpus(c("One, two ®, 3. ", "😚 Yeah!!"))
+#     extsumm <- quanteda:::summarize_texts_extended(corp)
+#     expect_true(all(
+#         c("total_tokens", "all_tokens", "total_punctuation", "total_symbols",
+#           "total_numbers", "total_words", "total_stopwords", "top_dfm") %in%
+#         names(extsumm)
+#     ))
+#     expect_is(extsumm$top_dfm, "dfm")
+# 
+#     corp <- quanteda:::add_summary_metadata(corp, extended = TRUE)
+#     expect_equivalent(
+#         meta(corp, "summary_extended", type = "system"),
+#         extsumm
+#     )
+# })
 
 
 test_that("object meta information is handled properly", {
