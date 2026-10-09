@@ -73,6 +73,20 @@ ndoc.tokens_xptr <- function(x) {
     cpp_ndoc(x)
 }
 
+#' @export
+featfreq.tokens_xptr <- function(x) {
+    v <- cpp_get_freq(x)
+    if (v[1] == 0) v <- v[-1] # drop padding
+    return(v * 1.0) # return numeric
+}
+
+#' @export
+docfreq.tokens_xptr <- function(x, scheme = "count", ...) {
+    v <- cpp_get_freq(x, boolean = TRUE)
+    if (v[1] == 0) v <- v[-1] # drop padding
+    return(v * 1.0) # return numeric
+}
+
 # -------------------------------------------------------------------------
 
 

@@ -267,11 +267,111 @@ test_that("dfm_weight invalid scheme produces error", {
     )
 })
 
-test_that("featfreq() works", {
-    dfmat <- dfm(tokens(c(d1 = "a a a b", d2 = "a b c")))
+test_that("featfreq() and docfreq() work", {
+    
+    toks <- tokens(c(d1 = "a a a b", d2 = "a b x c"))
+    
+    expect_identical(
+        featfreq(toks),
+        structure(c(4, 2, 1, 1), names = c("a", "b", "x", "c"))
+    )
+    expect_identical(
+        docfreq(toks),
+        structure(c(2, 2, 1, 1), names = c("a", "b", "x", "c"))
+    )
+    expect_equal(
+        docfreq(toks, scheme = "inverse"),
+        structure(c(0, 0, 0.301, 0.301), names = c("a", "b", "x", "c")),
+        tolerance = 0.001
+    )
+    
+    dfmat <- dfm(toks)
     expect_identical(
         featfreq(dfmat),
-        c(a = 4, b = 2, c = 1)
+        structure(c(4, 2, 1, 1), names = c("a", "b", "x", "c"))
+    )
+    expect_identical(
+        docfreq(dfmat),
+        structure(c(2, 2, 1, 1), names = c("a", "b", "x", "c"))
+    )
+    expect_equal(
+        docfreq(dfmat, scheme = "inverse"),
+        structure(c(0, 0, 0.301, 0.301), names = c("a", "b", "x", "c")),
+        tolerance = 0.001
+    )
+    
+    # with padding
+    toks_pad <- tokens_remove(toks, "x", padding = TRUE)
+    
+    expect_identical(
+        featfreq(toks_pad),
+        structure(c(1, 4, 2, 1), names = c("", "a", "b", "c"))
+    )
+    expect_identical(
+        docfreq(toks_pad),
+        structure(c(1, 2, 2, 1), names = c("", "a", "b", "c"))
+    )
+    expect_equal(
+        docfreq(toks_pad, scheme = "inverse"),
+        structure(c(0.301, 0, 0, 0.301), names = c("", "a", "b", "c")),
+        tolerance = 0.001
+    )
+    
+    dfmat_pad <- dfm(toks_pad)
+    expect_identical(
+        featfreq(dfmat_pad),
+        structure(c(1, 4, 2, 1), names = c("", "a", "b", "c"))
+    )
+    expect_identical(
+        docfreq(dfmat_pad),
+        structure(c(1, 2, 2, 1), names = c("", "a", "b", "c"))
+    )
+    expect_equal(
+        docfreq(dfmat_pad, scheme = "inverse"),
+        structure(c(0.301, 0, 0, 0.301), names = c("", "a", "b", "c")),
+        tolerance = 0.001
+    )
+    
+    # base, smoothing, and k
+    expect_identical(
+        docfreq(dfmat, scheme = "inverse", base = 2, smoothing = 1, k = 5),
+        docfreq(toks, scheme = "inverse", base = 2, smoothing = 1, k = 5)
+    )
+    expect_identical(
+        docfreq(dfmat_pad, scheme = "inverse", base = 2, smoothing = 1, k = 5),
+        docfreq(toks_pad, scheme = "inverse", base = 2, smoothing = 1, k = 5)
+    )
+    
+    # errors
+    expect_error(
+        docfreq(dfmat, base = -1),
+        "The value of base must be between 0 and Inf"
+    )
+    expect_error(
+        docfreq(dfmat, smoothing = -0.1),
+        "The value of smoothing must be between 0 and Inf"
+    )
+    expect_error(
+        docfreq(dfmat, k = -5),
+        "The value of k must be between 0 and Inf"
+    )
+    expect_error(
+        docfreq(dfmat, threshold = -1),
+        "The value of threshold must be between 0 and Inf"
+    )
+    expect_error(
+        docfreq(toks, base = -1),
+        "The value of base must be between 0 and Inf"
+    )
+    expect_error(
+        docfreq(toks, smoothing = -0.1),
+        "The value of smoothing must be between 0 and Inf"
+    )
+    expect_error(
+        docfreq(toks, k = -5),
+        "The value of k must be between 0 and Inf"
     )
 })
+
+
 
