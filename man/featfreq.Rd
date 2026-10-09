@@ -7,14 +7,14 @@
 featfreq(x)
 }
 \arguments{
-\item{x}{a \link{dfm}}
+\item{x}{a \link{dfm}, \link{tokens}, or \link{tokens_xptr} objects.}
 }
 \value{
-a (named) numeric vector of feature frequencies
+a (named) numeric vector of feature frequencies.
 }
 \description{
-For a \link{dfm} object, returns a frequency for each feature, computed
-across all documents in the dfm. This is equivalent to \code{colSums(x)}.
+Returns a frequency for each feature, computed across all documents.
+This is equivalent to \code{colSums(x)} when \code{x} is a dfm.
 }
 \examples{
 dfmat <- dfm(tokens(data_char_sampletext))

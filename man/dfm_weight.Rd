@@ -52,7 +52,7 @@ named features.  Any features not named will be assigned a weight of 1.0
 \item{k}{the k for the augmentation when \code{scheme = "augmented"}}
 
 \item{smoothing}{constant added to the dfm cells for smoothing, default is 1
-for \code{dfm_smooth()} and 0.5 for \code{dfm_weight()}}
+for \code{dfm_smooth()} and 0.5 for \code{dfm_weight()}.}
 
 \item{force}{logical; if \code{TRUE}, apply weighting scheme even if the dfm
 has been weighted before.  This can result in invalid weights, such as as

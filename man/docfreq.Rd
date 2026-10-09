@@ -2,7 +2,7 @@
 % Please edit documentation in R/dfm_weight.R
 \name{docfreq}
 \alias{docfreq}
-\title{Compute the (weighted) document frequency of a feature}
+\title{Compute the (weighted) document frequencies of features}
 \usage{
 docfreq(
   x,
@@ -14,7 +14,7 @@ docfreq(
 )
 }
 \arguments{
-\item{x}{a \link{dfm}}
+\item{x}{a \link{dfm}, \link{tokens}, or \link{tokens_xptr} objects.}
 
 \item{scheme}{type of document frequency weighting, computed as
 follows, where \eqn{N} is defined as the number of documents in the dfm and
@@ -45,11 +45,10 @@ documents in which it occurs greater than zero times.}
 a numeric vector of document frequencies for each feature
 }
 \description{
-For a \link{dfm} object, returns a (weighted) document frequency for each
-term.  The default is a simple count of the number of documents in which a
-feature occurs more than a given frequency threshold.  (The default threshold
-is  zero, meaning that any feature occurring at least once in a document will
-be counted.)
+Returns a (weighted) document frequency for each term.  The default is a simple
+count of the number of documents in which a feature occurs more than a given
+frequency threshold.  (The default threshold is  zero, meaning that any feature
+occurring at least once in a document will be counted.)
 }
 \examples{
 dfmat1 <- dfm(tokens(data_corpus_inaugural))
