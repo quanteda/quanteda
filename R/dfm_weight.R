@@ -170,7 +170,7 @@ dfm_weight.dfm <- function(x,
 
 #' @rdname dfm_weight
 #' @param smoothing constant added to the dfm cells for smoothing, default is 1 
-#'   for `dfm_smooth()` and 0.5 for `dfm_weight()`
+#'   for `dfm_smooth()` and 0.5 for `dfm_weight()`.
 #' @return `dfm_smooth` returns a dfm whose values have been smoothed by
 #'   adding the `smoothing` amount. Note that this effectively converts a
 #'   matrix from sparse to dense format, so may exceed memory requirements
@@ -204,14 +204,13 @@ dfm_smooth.dfm <- function(x, smoothing = 1) {
 
 # docfreq -------------
 
-#' Compute the (weighted) document frequency of a feature
+#' Compute the (weighted) document frequencies of features
 #'
-#' For a [dfm] object, returns a (weighted) document frequency for each
-#' term.  The default is a simple count of the number of documents in which a
-#' feature occurs more than a given frequency threshold.  (The default threshold
-#' is  zero, meaning that any feature occurring at least once in a document will
-#' be counted.)
-#' @param x a [dfm]
+#' Returns a (weighted) document frequency for each term.  The default is a simple 
+#' count of the number of documents in which a feature occurs more than a given 
+#' frequency threshold.  (The default threshold is  zero, meaning that any feature 
+#' occurring at least once in a document will be counted.)
+#' @param x a [dfm], [tokens], or [tokens_xptr] objects.
 #' @param scheme type of document frequency weighting, computed as
 #' follows, where \eqn{N} is defined as the number of documents in the dfm and
 #' \eqn{s} is the smoothing constant:
@@ -307,14 +306,19 @@ docfreq.dfm <- function(x, scheme = c("count", "inverse", "inversemax",
     return(result)
 }
 
+#' @export
+docfreq.tokens <- function(x, scheme = "count") {
+    docfreq(as.tokens_xptr(x))         
+}
+
 # featfreq -------------
 
 #' Compute the frequencies of features
 #'
-#' For a [dfm] object, returns a frequency for each feature, computed
-#' across all documents in the dfm. This is equivalent to `colSums(x)`.
-#' @param x a [dfm]
-#' @return a (named) numeric vector of feature frequencies
+#' Returns a frequency for each feature, computed across all documents. 
+#' This is equivalent to `colSums(x)` when `x` is a dfm.
+#' @param x a [dfm], [tokens], or [tokens_xptr] objects.
+#' @return a (named) numeric vector of feature frequencies.
 #' @keywords weighting dfm
 #' @seealso [dfm_tfidf()], [dfm_weight()]
 #' @export
@@ -333,6 +337,11 @@ featfreq.default <- function(x) {
 #' @export
 featfreq.dfm <- function(x) {
     colSums(x)
+}
+
+#' @export
+featfreq.tokens <- function(x) {
+    featfreq(as.tokens_xptr(x))
 }
 
 # dfm_tfidf ---------------

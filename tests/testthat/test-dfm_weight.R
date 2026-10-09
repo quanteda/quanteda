@@ -267,11 +267,51 @@ test_that("dfm_weight invalid scheme produces error", {
     )
 })
 
-test_that("featfreq() works", {
-    dfmat <- dfm(tokens(c(d1 = "a a a b", d2 = "a b c")))
+test_that("featfreq() and docfreq() work", {
+    
+    toks <- tokens(c(d1 = "a a a b", d2 = "a b x c"))
+    
+    expect_identical(
+        featfreq(toks),
+        structure(c(4, 2, 1, 1), names = c("a", "b", "x", "c"))
+    )
+    expect_identical(
+        docfreq(toks),
+        structure(c(2L, 2L, 1L, 1L), names = c("a", "b", "x", "c"))
+    )
+    
+    dfmat <- dfm(toks)
     expect_identical(
         featfreq(dfmat),
-        c(a = 4, b = 2, c = 1)
+        structure(c(4, 2, 1, 1), names = c("a", "b", "x", "c"))
+    )
+    expect_identical(
+        docfreq(dfmat),
+        structure(c(2L, 2L, 1L, 1L), names = c("a", "b", "x", "c"))
+    )
+    
+    # with padding
+    toks_pad <- tokens_remove(toks, "x", padding = TRUE)
+    
+    expect_identical(
+        featfreq(toks_pad),
+        structure(c(1, 4, 2, 1), names = c("", "a", "b", "c"))
+    )
+    expect_identical(
+        docfreq(toks_pad),
+        structure(c(1L, 2L, 2L, 1L), names = c("", "a", "b", "c"))
+    )
+    
+    dfmat_pad <- dfm(toks_pad)
+    expect_identical(
+        featfreq(dfmat_pad),
+        structure(c(1, 4, 2, 1), names = c("", "a", "b", "c"))
+    )
+    expect_identical(
+        docfreq(dfmat_pad),
+        structure(c(1L, 2L, 2L, 1L), names = c("", "a", "b", "c"))
     )
 })
+
+
 
