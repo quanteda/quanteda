@@ -258,7 +258,11 @@ test_that("test new dfm methods", {
     )
     expect_error(
         docfreq(TRUE),
-        "docfreq\\(\\) only works on dfm objects"
+        "docfreq\\(\\) only works on dfm, tokens, tokens_xptr objects"
+    )
+    expect_error(
+        featfreq(TRUE),
+        "featfreq\\(\\) only works on dfm, tokens, tokens_xptr objects"
     )
 })
 
@@ -404,13 +408,6 @@ test_that("test segid methods", {
     segid(0),
     "segid() only works on corpus, dfm, tokens objects.", fixed = TRUE
   )
-})
-
-test_that("friendly_class_undefined_message for featfreq()", {
-    expect_error(
-        featfreq(tokens(data_char_sampletext)),
-        "featfreq\\(\\) only works on dfm objects"
-    )
 })
 
 test_that("friendly_class_undefined_message for char_select()", {
