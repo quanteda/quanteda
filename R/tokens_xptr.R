@@ -81,10 +81,10 @@ featfreq.tokens_xptr <- function(x) {
 }
 
 #' @export
-docfreq.tokens_xptr <- function(x, scheme = "count") {
+docfreq.tokens_xptr <- function(x, scheme = "count", ...) {
     v <- cpp_get_freq(x, boolean = TRUE)
     if (v[1] == 0) v <- v[-1] # drop padding
-    return(v) # return integer
+    return(v * 1.0) # return numeric
 }
 
 # -------------------------------------------------------------------------

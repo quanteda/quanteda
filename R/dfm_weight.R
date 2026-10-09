@@ -277,6 +277,11 @@ docfreq.dfm <- function(x, scheme = c("count", "inverse", "inversemax",
                         base = 10, smoothing = 0, k = 0, threshold = 0) {
 
     x <- as.dfm(x)
+    base <- check_double(base, min = 0)
+    smoothing <- check_double(smoothing, min = 0)
+    k <- check_double(k, min = 0)
+    threshold <- check_double(threshold, min = 0)
+    
     if (!nfeat(x) || !ndoc(x)) return(numeric())
     
     scheme <- match.arg(scheme)
@@ -292,9 +297,9 @@ docfreq.dfm <- function(x, scheme = c("count", "inverse", "inversemax",
         stop("k must be >= 0")
 
     if (scheme == "unary") {
-        result <- rep(1, nfeat(x))
+        result <- rep(1.0, nfeat(x))
     } else if (scheme == "count") {
-        result <- colSums(x > threshold)
+        result <- colSums(x > threshold) * 1.0
     } else if (scheme == "inverse") {
         d <- docfreq(x, "count")
         result <- log(smoothing + (ndoc(x) / (k + d)), base = base)
@@ -315,6 +320,10 @@ docfreq.tokens <- function(x, scheme = c("count", "inverse"),
                            ...) {
     
     scheme <- match.arg(scheme)
+    base <- check_double(base, min = 0)
+    smoothing <- check_double(smoothing, min = 0)
+    k <- check_double(k, min = 0)
+    
     d <- docfreq(as.tokens_xptr(x))
     if (scheme == "count") {
         result <- d
