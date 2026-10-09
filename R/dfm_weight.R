@@ -274,12 +274,14 @@ docfreq.default <- function(x, scheme = c("count", "inverse", "inversemax",
 #' @export
 docfreq.dfm <- function(x, scheme = c("count", "inverse", "inversemax",
                                       "inverseprob", "unary"),
-                    base = 10, smoothing = 0, k = 0, threshold = 0) {
+                        base = 10, smoothing = 0, k = 0, threshold = 0) {
 
     x <- as.dfm(x)
     if (!nfeat(x) || !ndoc(x)) return(numeric())
+    
     scheme <- match.arg(scheme)
     args <- as.list(match.call(expand.dots = FALSE))
+    
     if ("base" %in% names(args) & !(substring(scheme, 1, 7) == "inverse"))
         warning("base not used for this scheme")
     if ("k" %in% names(args) & !(substring(scheme, 1, 7) == "inverse"))
@@ -294,21 +296,32 @@ docfreq.dfm <- function(x, scheme = c("count", "inverse", "inversemax",
     } else if (scheme == "count") {
         result <- colSums(x > threshold)
     } else if (scheme == "inverse") {
-        result <- log(smoothing + (ndoc(x) / (k + docfreq(x, "count"))), base = base)
+        d <- docfreq(x, "count")
+        result <- log(smoothing + (ndoc(x) / (k + d)), base = base)
     } else if (scheme == "inversemax") {
-        temp <- docfreq(x, "count")
-        result <- log(smoothing + (max(temp) / (k + temp)), base = base)
+        d <- docfreq(x, "count")
+        result <- log(smoothing + (max(d) / (k + d)), base = base)
     } else if (scheme == "inverseprob") {
-        temp <- docfreq(x, "count")
-        result <- pmax(0, log((ndoc(x) - temp) / (k + temp), base = base))
+        d <- docfreq(x, "count")
+        result <- pmax(0, log((ndoc(x) - d) / (k + d), base = base))
     }
     names(result) <- featnames(x)
     return(result)
 }
 
 #' @export
-docfreq.tokens <- function(x, scheme = "count") {
-    docfreq(as.tokens_xptr(x))         
+docfreq.tokens <- function(x, scheme = c("count", "inverse"), 
+                           base = 10, smoothing = 0, k = 0,
+                           ...) {
+    
+    scheme <- match.arg(scheme)
+    d <- docfreq(as.tokens_xptr(x))
+    if (scheme == "count") {
+        result <- d
+    } else if (scheme == "inverse") {
+        result <- log(smoothing + (ndoc(x) / (k + d)), base = base)
+    }
+    return(result)
 }
 
 # featfreq -------------

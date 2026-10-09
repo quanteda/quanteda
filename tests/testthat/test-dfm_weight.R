@@ -279,6 +279,11 @@ test_that("featfreq() and docfreq() work", {
         docfreq(toks),
         structure(c(2L, 2L, 1L, 1L), names = c("a", "b", "x", "c"))
     )
+    expect_equal(
+        docfreq(toks, scheme = "inverse"),
+        structure(c(0, 0, 0.301, 0.301), names = c("a", "b", "x", "c")),
+        tolerance = 0.001
+    )
     
     dfmat <- dfm(toks)
     expect_identical(
@@ -288,6 +293,11 @@ test_that("featfreq() and docfreq() work", {
     expect_identical(
         docfreq(dfmat),
         structure(c(2L, 2L, 1L, 1L), names = c("a", "b", "x", "c"))
+    )
+    expect_equal(
+        docfreq(dfmat, scheme = "inverse"),
+        structure(c(0, 0, 0.301, 0.301), names = c("a", "b", "x", "c")),
+        tolerance = 0.001
     )
     
     # with padding
@@ -301,6 +311,11 @@ test_that("featfreq() and docfreq() work", {
         docfreq(toks_pad),
         structure(c(1L, 2L, 2L, 1L), names = c("", "a", "b", "c"))
     )
+    expect_equal(
+        docfreq(toks_pad, scheme = "inverse"),
+        structure(c(0.301, 0, 0, 0.301), names = c("", "a", "b", "c")),
+        tolerance = 0.001
+    )
     
     dfmat_pad <- dfm(toks_pad)
     expect_identical(
@@ -311,6 +326,22 @@ test_that("featfreq() and docfreq() work", {
         docfreq(dfmat_pad),
         structure(c(1L, 2L, 2L, 1L), names = c("", "a", "b", "c"))
     )
+    expect_equal(
+        docfreq(dfmat_pad, scheme = "inverse"),
+        structure(c(0.301, 0, 0, 0.301), names = c("", "a", "b", "c")),
+        tolerance = 0.001
+    )
+    
+    # base, smoothing, and k
+    expect_identical(
+        docfreq(dfmat, scheme = "inverse", base = 2, smoothing = 1, k = 5),
+        docfreq(toks, scheme = "inverse", base = 2, smoothing = 1, k = 5)
+    )
+    expect_identical(
+        docfreq(dfmat_pad, scheme = "inverse", base = 2, smoothing = 1, k = 5),
+        docfreq(toks_pad, scheme = "inverse", base = 2, smoothing = 1, k = 5)
+    )
+    
 })
 
 
