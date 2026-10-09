@@ -24,8 +24,8 @@ test_that("summary works", {
     expect_equal(
         stat_toks,
         list(ndoc = 60,
-             ntoken = 154888,
              ntype = 10332,
+             ntoken = 154888,
              ndocvar = 4
         )
     )
