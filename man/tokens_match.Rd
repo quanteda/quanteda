@@ -12,8 +12,10 @@ tokens_match(x, types, verbose = quanteda_options("verbose"))
 \item{types}{character vector for the token types to be matched in the resulting
 \link{tokens}. Tokens not included in \code{types} are all removed.}
 
-\item{verbose}{if \code{TRUE} print the number of tokens and documents before and
-after the function is applied. The number of tokens does not include paddings.}
+\item{verbose}{if \code{TRUE} print a summary of the object returned by the
+function: the number of documents and, depending on the object, the number
+of characters, tokens and types, or features and occurrences. The number of
+tokens includes paddings, but the number of features excludes them.}
 }
 \description{
 Match the token types and IDs of multiple \link{tokens} objects using a character vector.

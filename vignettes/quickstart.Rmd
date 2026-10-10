@@ -152,22 +152,10 @@ as.character(data_corpus_inaugural)[2]
 ```
 
 To summarize the texts from a corpus, we can call a `summary()` method defined for a corpus.
+
 ```{r}
 summary(data_corpus_inaugural, n = 5)
 ```
-
-We can save the output from the summary command as a data frame, and plot some basic descriptive statistics with this information:
-```{r, fig.width = 8}
-tokeninfo <- summary(data_corpus_inaugural)
-tokeninfo$Year <- docvars(data_corpus_inaugural, "Year")
-with(tokeninfo, plot(Year, Tokens, type = "b", pch = 19, cex = .7))
-```
-
-```{r}
-# longest inaugural address: William Henry Harrison
-tokeninfo[which.max(tokeninfo$Tokens), ]
-```
-
 
 ## Tools for handling corpus objects
 
@@ -402,7 +390,7 @@ dfmat_inaug_subset <- tokens(data_corpus_inaugural[52:58]) |>
 dfmat_inaug_subset[, 1:10]
 ```
 ```
-## Document-feature matrix of: 7 documents, 10 features (1.43% sparse) and 4 docvars.
+## dfm of 7 documents x 10 features (1.43% sparsity) and 4 docvars.
 ##               features
 ## docs           Pronoun  I  We Self You Other Negate Assent Article Preps
 ##   1993-Clinton     179 15 124  139  12    12     25      2     115   211

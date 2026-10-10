@@ -1,44 +1,64 @@
-test_that("summary and print.summary work", {
+test_that("summary works", {
     
-    # a second time for the cache
-    summ <- summary(data_corpus_inaugural[1:2])
-    expect_is(summ, "data.frame")
-    expect_equal(
-        names(summ),
-        c("Text", "Types", "Tokens", "Sentences", "Year", "President", "FirstName", "Party")
-    )
+    corp <- data_corpus_inaugural
     expect_output(
-        print(summ),
-        paste(c(
-        "Corpus consisting of 2 documents, showing 2 documents:",
-        "",
-        "            Text Types Tokens Sentences Year  President FirstName Party",
-        " 1789-Washington   625   1537        24 1789 Washington    George  none",
-        " 1793-Washington    96    147         5 1793 Washington    George  none"
-    ), collapse = "\n"), fixed = TRUE)
-    
-})
 
-test_that("summary is consistent with other functions", {
-    
-    # a second time for the cache
-    summ <- summary(data_corpus_inaugural)
+        stat_corp <- summary(corp),
+        "corpus of 60 documents (823,688 characters) and 4 docvars.", 
+        fixed = TRUE
+    )
+    expect_equal(
+        stat_corp,
+        list(ndoc = 60,
+             nchar = 823688,
+             ndocvar = 4
+        )
+    )
+
     toks <- tokens(data_corpus_inaugural)
-    corp <- corpus_reshape(data_corpus_inaugural)
-    
-    expect_equivalent(
-        summ$Types,
-        as.integer(ntype(toks))
+    expect_output(
+        stat_toks <- summary(toks),
+        "tokens of 60 documents (154,888 tokens, 10,332 types) and 4 docvars.", 
+        fixed = TRUE
+    )
+    expect_equal(
+        stat_toks,
+        list(ndoc = 60,
+             ntoken = 154888,
+             ntype = 10332,
+             ndocvar = 4
+        )
     )
     
-    expect_equivalent(
-        summ$Tokens,
-        as.integer(ntoken(toks))
+    dfmt <- dfm(toks)
+    expect_output(
+        stat_dfmt <- summary(dfmt),
+        "dfm of 60 documents x 9,591 features (154,888 occurrences, 91.94% sparsity) and\n4 docvars.", 
+        fixed = TRUE
+    )
+    expect_equal(
+        stat_dfmt,
+        list(ndoc = 60,
+             nfeat = 9591,
+             nocc = 154888,
+             spar = 0.9193,
+             ndocvar = 4
+        ), tolerance = 0.01
     )
     
-    expect_equivalent(
-        summ$Sentences,
-        as.integer(table(docid(corp)))
+    fcmt <- fcm(dfmt)
+    expect_output(
+        stat_fcmt <- summary(fcmt),
+        "fcm of 9,591 x 9,591 features (263,431,760 co-occurrences, 88.58% sparsity).", 
+        fixed = TRUE
     )
+    expect_equal(
+        stat_fcmt,
+        list(nrow = 9591,
+             ncol = 9591,
+             nocc = 263431760,
+             spar = 0.8858
+        ), tolerance = 0.01
+    )
+    
 })
-

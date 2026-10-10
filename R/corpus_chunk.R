@@ -58,8 +58,6 @@ corpus_chunk.corpus <- function(x, size,
     docvars(x) <- NULL
 
   attrs <- attributes(x)
-  if (verbose)
-      before <- stats_corpus(x)
   n <- stri_count_boundaries(x)
   n[n == 0] <- 1L
   avg <- stri_length(x) / n # average token length
@@ -77,6 +75,6 @@ corpus_chunk.corpus <- function(x, size,
                                         drop_docid = FALSE)
   result <- rebuild_corpus(unlist(lis, use.names = FALSE), attrs)
   if (verbose)
-      message_corpus("corpus_chunk()", before, stats_corpus(result))
+      message_corpus("corpus_chunk()", stats_corpus(result))
   return(result)
 }

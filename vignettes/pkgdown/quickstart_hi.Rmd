@@ -141,21 +141,6 @@ as.character(data_corpus_inaugural)[2]
 summary(data_corpus_inaugural, n = 5)
 ```
 
-हम समरी कमांड से डेटा फ्रेम के रूप में आउटपुट को सेव कर सकते हैं, और इस सूचना के साथ कुछ बुनियादी वर्णनात्मक आँकड़े प्लॉट कर सकते हैं:
-    
-```{r, fig.width=8}
-tokeninfo <- summary(data_corpus_inaugural)
-if (require(ggplot2))
-    ggplot(data = tokeninfo, aes(x = Year, y = Tokens, group = 1)) +
-    geom_line() +
-    geom_point() +
-    scale_x_continuous(labels = c(seq(1789, 2017, 12)), breaks = seq(1789, 2017, 12)) +
-    theme_bw()
-
-# Longest inaugural address: William Henry Harrison
-tokeninfo[which.max(tokeninfo$Tokens), ]
-```
-
 ## कॉर्पस के ऑब्जेक्ट्स को हैंडल करने के तरीक़े
 
 ### दो कॉर्पस ऑब्जेक्ट्स को योग करने के लिए निर्देश
