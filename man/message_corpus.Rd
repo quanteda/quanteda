@@ -4,10 +4,10 @@
 \alias{message_corpus}
 \title{Print messages in corpus methods}
 \usage{
-message_corpus(operation, before, after)
+message_corpus(operation, stat)
 }
 \arguments{
-\item{before, after}{object statistics before and after the operation.}
+\item{stat}{object statistics after the operation.}
 }
 \description{
 Print messages in corpus methods

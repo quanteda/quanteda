@@ -50,11 +50,9 @@ tokens_sample.tokens_xptr <- function(x, size = NULL, replace = FALSE, prob = NU
         if (is.factor(by)) by <- droplevels(by)
     }
     i <- resample(seq_len(ndoc(x)), size = size, replace = replace, prob = prob, by = by)
-    if (verbose)
-        before <- stats_tokens(x)
     result <- x[i]
     if (verbose)
-        message_tokens("tokens_sample()", before, stats_tokens(result))
+        message_tokens("tokens_sample()", stats_tokens(result))
     return(result)
 }
 

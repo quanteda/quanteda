@@ -32,8 +32,10 @@ variable(s) are not factors.}
 \item{env}{an environment or a list object in which \code{x} is searched.
 Passed to \link{substitute} for non-standard evaluation.}
 
-\item{verbose}{if \code{TRUE} print the number of tokens and documents before and
-after the function is applied. The number of tokens does not include paddings.}
+\item{verbose}{if \code{TRUE} print a summary of the object returned by the
+function: the number of documents and, depending on the object, the number
+of characters, tokens and types, or features and occurrences. The number of
+tokens includes paddings, but the number of features excludes them.}
 }
 \value{
 a \link{tokens} object whose documents are equal to the unique group

@@ -60,30 +60,26 @@ tokens_toupper.tokens <- function(x, verbose = quanteda_options("verbose")) {
 #' @export
 tokens_tolower.tokens_xptr <- function(x, keep_acronyms = FALSE, verbose = quanteda_options("verbose")) {
     keep_acronyms <- check_logical(keep_acronyms) # NOTE: consider removing
-    if (verbose)
-        before <- stats_tokens(x)
     attrs <- attributes(x)
     set_types(x) <- lowercase_types(get_types(x), keep_acronyms)
     if (identical(attrs$meta$object$what, "dictionary"))
         x <- cpp_set_recompiled(x, TRUE)
     x <- rebuild_tokens(x, attrs)
     if (verbose)
-        message_tokens("tokens_tolower()", before, stats_tokens(x))
+        message_tokens("tokens_tolower()", stats_tokens(x))
     return(x)
 }
 
 #' @noRd
 #' @export
 tokens_toupper.tokens_xptr <- function(x, verbose = quanteda_options("verbose")) {
-    if (verbose)
-        before <- stats_tokens(x)
     attrs <- attributes(x)
     set_types(x) <- uppercase_types(get_types(x))
     if (identical(attrs$meta$object$what, "dictionary"))
         x <- cpp_set_recompiled(x, TRUE)
     x <- rebuild_tokens(x, attrs)
     if (verbose)
-        message_tokens("tokens_toupper()", before, stats_tokens(x))
+        message_tokens("tokens_toupper()", stats_tokens(x))
     return(x)
 }
 
@@ -197,11 +193,9 @@ dfm_tolower.dfm <- function(x, keep_acronyms = FALSE,
     keep_acronyms <- check_logical(keep_acronyms)
     if (!nfeat(x)) return(x)
     set_dfm_featnames(x) <- lowercase_types(featnames(x), keep_acronyms)
-    if (verbose)
-        before <- stats_dfm(x)
     x <- dfm_compress(x, margin = "features")
     if (verbose)
-        message_dfm("dfm_tolower()", before, stats_dfm(x))    
+        message_dfm("dfm_tolower()", stats_dfm(x))    
     return(x)
 }
 
@@ -225,11 +219,9 @@ dfm_toupper.dfm <- function(x,
     x <- as.dfm(x)
     if (!nfeat(x)) return(x)
     set_dfm_featnames(x) <- char_toupper(featnames(x))
-    if (verbose)
-        before <- stats_dfm(x)
     x <- dfm_compress(x, margin = "features")
     if (verbose)
-        message_dfm("dfm_toupper()", before, stats_dfm(x))    
+        message_dfm("dfm_toupper()", stats_dfm(x))    
     return(x)
 }
 
@@ -263,11 +255,9 @@ fcm_tolower.fcm <- function(x, keep_acronyms = FALSE,
     x <- as.fcm(x)
     keep_acronyms <- check_logical(keep_acronyms)
     set_fcm_featnames(x) <- lowercase_types(featnames(x), keep_acronyms)
-    if (verbose)
-        before <- stats_dfm(x)
     x <- fcm_compress(x)
     if (verbose)
-        message_dfm("fcm_tolower()", before, stats_dfm(x))    
+        message_fcm("fcm_tolower()", stats_fcm(x))    
     return(x)
 }
 
@@ -290,10 +280,8 @@ fcm_toupper.fcm <- function(x,
                             verbose = quanteda_options("verbose")) {
     x <- as.fcm(x)
     set_fcm_featnames(x) <- char_toupper(colnames(x))
-    if (verbose)
-        before <- stats_dfm(x)
     x <- fcm_compress(x)
     if (verbose)
-        message_dfm("fcm_toupper()", before, stats_dfm(x))    
+        message_fcm("fcm_toupper()", stats_fcm(x))    
     return(x)
 }

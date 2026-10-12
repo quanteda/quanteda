@@ -137,12 +137,10 @@ dfm_trim.dfm <- function(x,
                        min_docfreq, max_docfreq, docfreq_type, 
                        max_n)
     
-    if (verbose)
-        before <- stats_dfm(x)
     x <- dfm_select(x, f, valuetype = "fixed", case_insensitive = FALSE, 
                     verbose = FALSE)
     if (verbose)
-        message_dfm("dfm_trim()", before, stats_dfm(x))    
+        message_dfm("dfm_trim()", stats_dfm(x))    
     return(x)
 }
 

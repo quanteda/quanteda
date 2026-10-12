@@ -70,9 +70,7 @@ tokens_replace.tokens_xptr <- function(x, pattern, replacement, valuetype = "glo
 
     if (is.null(apply_if))
         apply_if <- rep(TRUE, length.out = ndoc(x))
-    if (verbose)
-        before <- stats_tokens(x)
-    
+
     ids_pat <- object2id(pattern, type, valuetype, case_insensitive, 
                          concatenator = conc, keep_nomatch = FALSE)
     ids_rep <- object2id(replacement, type, "fixed", FALSE, 
@@ -83,7 +81,7 @@ tokens_replace.tokens_xptr <- function(x, pattern, replacement, valuetype = "glo
                                  get_threads())
     result <- rebuild_tokens(result, attrs)
     if (verbose)
-        message_tokens("tokens_replace()", before, stats_tokens(result))
+        message_tokens("tokens_replace()", stats_tokens(result))
     return(result)
 }
 

@@ -98,10 +98,6 @@ dfm_lookup.dfm <- function(x, dictionary, levels = 1:5,
     type <- colnames(x)
     attrs <- attributes(x)
 
-    if (verbose)
-        catm("applying a dictionary consisting of ", length(dictionary), " key",
-             if (length(dictionary) > 1L) "s" else "", "\n", sep = "")
-
     ids <- object2id(dictionary, type, valuetype, case_insensitive,
                      concatenator = field_object(attrs, "concatenator"), 
                      levels = levels,
@@ -134,7 +130,8 @@ dfm_lookup.dfm <- function(x, dictionary, levels = 1:5,
             x <- x[, id]
             set_dfm_featnames(x) <- col_new
             # merge identical keys and add non-existent keys
-            result <- dfm_match(dfm_compress(x, margin = "features"), key)
+            result <- dfm_match(dfm_compress(x, margin = "features", verbose = FALSE),
+                                key, verbose = FALSE)
         } else {
             if (!is.null(nomatch))
                 warning("nomatch only applies if exclusive = TRUE")
@@ -153,7 +150,7 @@ dfm_lookup.dfm <- function(x, dictionary, levels = 1:5,
             x <- x[,id_rep]
             
             set_dfm_featnames(x) <- col_new
-            result <- dfm_compress(x, margin = "features")
+            result <- dfm_compress(x, margin = "features", verbose = FALSE)
         }
 
     } else {
@@ -171,5 +168,8 @@ dfm_lookup.dfm <- function(x, dictionary, levels = 1:5,
     }
     if (exclusive)
         field_object(attrs, "what") <- "dictionary"
-    rebuild_dfm(result, attrs)
+    result <- rebuild_dfm(result, attrs)
+    if (verbose)
+        message_dfm("dfm_lookup()", stats_dfm(result))
+    return(result)
 }

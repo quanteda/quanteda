@@ -4,8 +4,7 @@ setMethod("print", signature(x = "fcm"),
           function(x, max_nfeat = quanteda_options("print_dfm_max_nfeat"), 
                    show_summary = TRUE, ...) {
               if (show_summary) {
-                  wrap(msg("Feature co-occurrence matrix of: %s by %s %s.\n",
-                           nrow(x), ncol(x), inflect("feature", nrow(x) * ncol(x))))
+                  summary_fcm(x)
               }
               print_fcm(x, max_nfeat, show_summary, ...)
           })
@@ -36,21 +35,13 @@ print_fcm <- function(x, max_nfeat, show_summary, ...) {
                           col.names = TRUE, zero.print = 0)
     nrow_rem <- nrow - max_nrow
     ncol_rem <- ncol - max_ncol
-    if (nrow_rem > 0 || ncol_rem > 0) {
-      line <- "[ "
-      if (nrow_rem > 0) {
-          line <- msg("reached max_nfeat ... %s more %s",
-                      nrow_rem, inflect("feature", nrow_rem),
-                      prepend = line)
-      }
-      if (nrow_rem > 0 && ncol_rem > 0) 
-          line <- paste0(line, ", ")
-      if (ncol_rem > 0) {
-          line <- msg("reached max_nfeat ... %s more %s",
-                      ncol_rem, inflect("feature", ncol_rem),
-                      prepend = line)
-      }
-      line <- paste0(line, " ]")
-      wrap(line)
+    # rows and columns are both features, so report a shared count only once
+    rem <- unique(c(nrow_rem, ncol_rem))
+    rem <- rem[rem > 0]
+    if (length(rem)) {
+        line <- vapply(rem, function(n) {
+            msg("reached max_nfeat ... %s more %s", n, inflect("feature", n))
+        }, character(1))
+        wrap(paste0("[ ", paste(line, collapse = ", "), " ]"))
     }
 }

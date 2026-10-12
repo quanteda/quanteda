@@ -45,10 +45,8 @@ dfm_sample.dfm <- function(x, size = NULL, replace = FALSE, prob = NULL, by = NU
 
     i <- resample(seq_len(ndoc(x)), size = size, replace = replace, prob = prob, by = by)
 
-    if (verbose)
-        before <- stats_dfm(x)
     result <- x[i, ]
     if (verbose)
-        message_dfm("dfm_sample()", before, stats_dfm(result))
+        message_dfm("dfm_sample()", stats_dfm(result))
     return(result)    
 }

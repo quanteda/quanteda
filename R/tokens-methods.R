@@ -126,21 +126,12 @@ print.tokens <- function(x, max_ndoc = quanteda_options("print_tokens_max_ndoc")
     max_ntoken <- check_integer(max_ntoken, min = -1)
     show_summary <- check_logical(show_summary)
 
-    docvars <- docvars(x)
     ndoc <- ndoc(x)
     if (max_ndoc < 0)
         max_ndoc <- ndoc(x)
 
     if (show_summary) {
-        line <- msg("Tokens consisting of %s %s",
-                    ndoc, inflect("document", ndoc))
-        if (ncol(docvars))
-            line <- msg(" and %s %s",
-                        ncol(docvars), inflect("docvar", ncol(docvars)),
-                        prepend = line)
-        if (is.tokens_xptr(x))
-            line <- msg(" (pointer to %s)", address(x), prepend = line)
-        wrap(paste0(line, "."))
+        summary_tokens(x)
     }
 
     if (max_ndoc > 0 && ndoc(x) > 0) {

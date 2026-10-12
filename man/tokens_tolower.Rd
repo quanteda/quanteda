@@ -16,8 +16,10 @@ case-converted}
 \item{keep_acronyms}{logical; if \code{TRUE}, do not lowercase any
 all-uppercase words (applies only to \verb{*_tolower()} functions)}
 
-\item{verbose}{if \code{TRUE} print the number of tokens and documents before and
-after the function is applied. The number of tokens does not include paddings.}
+\item{verbose}{if \code{TRUE} print a summary of the object returned by the
+function: the number of documents and, depending on the object, the number
+of characters, tokens and types, or features and occurrences. The number of
+tokens includes paddings, but the number of features excludes them.}
 }
 \description{
 \code{tokens_tolower()} and \code{tokens_toupper()} convert the features of a

@@ -10,7 +10,7 @@ test_that("summary and print.summary work", {
     expect_output(
         print(summ),
         paste(c(
-        "Corpus consisting of 2 documents, showing 2 documents:",
+        "corpus of 2 documents, showing 2 documents:",
         "",
         "            Text Types Tokens Sentences Year  President FirstName Party",
         " 1789-Washington   625   1537        24 1789 Washington    George  none",
