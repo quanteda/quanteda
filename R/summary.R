@@ -42,6 +42,12 @@ summary.fcm <- function(object, ...) {
     invisible(summary_fcm(as.fcm(object)))
 }
 
+#' @export
+setMethod("summary", signature(object = "dfm"), summary.dfm)
+
+#' @export
+setMethod("summary", signature(object = "fcm"), summary.fcm)
+
 
 summarize <- function(x, tolower = FALSE, ...) {
     patterns <- removals_regex(punct = TRUE, symbols = TRUE,
