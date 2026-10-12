@@ -42,9 +42,11 @@ summary.fcm <- function(object, ...) {
     invisible(summary_fcm(as.fcm(object)))
 }
 
+#' @rdname summary.corpus
 #' @export
 setMethod("summary", signature(object = "dfm"), summary.dfm)
 
+#' @rdname summary.corpus
 #' @export
 setMethod("summary", signature(object = "fcm"), summary.fcm)
 

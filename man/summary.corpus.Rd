@@ -5,6 +5,8 @@
 \alias{summary.tokens}
 \alias{summary.dfm}
 \alias{summary.fcm}
+\alias{summary,dfm-method}
+\alias{summary,fcm-method}
 \title{Summarize a corpus}
 \usage{
 \method{summary}{corpus}(object, ...)
@@ -14,6 +16,10 @@
 \method{summary}{dfm}(object, ...)
 
 \method{summary}{fcm}(object, ...)
+
+\S4method{summary}{dfm}(object, ...)
+
+\S4method{summary}{fcm}(object, ...)
 }
 \arguments{
 \item{object}{an object to be summarized.}
