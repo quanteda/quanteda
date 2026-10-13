@@ -138,8 +138,6 @@ dfm_select.dfm <-  function(x, pattern = NULL,
         id_out <- which(is_short | is_long)
         id <- setdiff(id, id_out)
     }
-    if (verbose)
-        before <- stats_dfm(x)
     if (padding) {
         n <- rowSums(x)
         x <- x[, id]
@@ -156,7 +154,7 @@ dfm_select.dfm <-  function(x, pattern = NULL,
     }
     if (verbose)
         message_dfm(ifelse(selection == "keep", "dfm_keep()", "dfm_remove()"), 
-                    before, stats_dfm(x))
+                    stats_dfm(x))
     return(x)
 }
 

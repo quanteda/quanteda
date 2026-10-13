@@ -4,10 +4,10 @@
 \alias{message_tokens}
 \title{Print messages in tokens methods}
 \usage{
-message_tokens(operation, before, after)
+message_tokens(operation, stat)
 }
 \arguments{
-\item{before, after}{object statistics before and after the operation.}
+\item{stat}{object statistics after the operation.}
 }
 \description{
 Print messages in tokens methods

@@ -79,16 +79,13 @@ tokens_annotate.tokens_xptr <- function(x, dictionary, levels = 1:5,
         marker <- rep(marker, 2)
     key <- paste0(marker[1], key, marker[2])
     
-    if (verbose)
-        before <- stats_tokens(x)
-    
     id_used <- unique(id_key)
     result <- cpp_tokens_lookup(x, ids, match(id_key, id_used), key[id_used], overlap, 3,
                                 !apply_if, get_threads())
         
     result <- rebuild_tokens(result, attrs)
     if (verbose)
-        message_tokens("tokens_annotate()", before, stats_tokens(result))
+        message_tokens("tokens_annotate()", stats_tokens(result))
     return(result)
 }
 

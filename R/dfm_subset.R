@@ -67,10 +67,8 @@ dfm_subset.dfm <- function(x, subset, min_ntoken = NULL, max_ntoken = NULL,
         if (is.null(max_ntoken)) max_ntoken <- max(n)
         min_ntoken <= n & n <= max_ntoken
     }
-    if (verbose)
-        before <- stats_dfm(x)
     x <- x[r & l,,drop_docid = drop_docid]
     if (verbose)
-        message_dfm("dfm_subset()", before, stats_dfm(x))
+        message_dfm("dfm_subset()", stats_dfm(x))
     return(x)
 }

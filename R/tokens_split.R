@@ -69,12 +69,10 @@ tokens_split.tokens_xptr <- function(x, separator = " ", valuetype = c("fixed", 
     }
 
     replacement <- stri_split_fixed(type, "\uE000", omit_empty = TRUE)
-    if (verbose)
-        before <- stats_tokens(x)
     result <- tokens_replace(x, pattern, replacement, "fixed", case_insensitive = FALSE,
                              apply_if = apply_if, verbose = FALSE)
     if (verbose)
-        message_tokens("tokens_split()", before, stats_tokens(result))
+        message_tokens("tokens_split()", stats_tokens(result))
     return(result)
 }
 
