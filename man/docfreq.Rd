@@ -14,7 +14,7 @@ docfreq(
 )
 }
 \arguments{
-\item{x}{a \link{dfm}, \link{tokens}, or \link{tokens_xptr} objects.}
+\item{x}{a \link{dfm}, \link{tokens}, or \link{tokens_xptr} object.}
 
 \item{scheme}{type of document frequency weighting, computed as
 follows, where \eqn{N} is defined as the number of documents in the dfm and

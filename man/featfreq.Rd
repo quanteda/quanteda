@@ -7,7 +7,7 @@
 featfreq(x)
 }
 \arguments{
-\item{x}{a \link{dfm}, \link{tokens}, or \link{tokens_xptr} objects.}
+\item{x}{a \link{dfm}, \link{tokens}, or \link{tokens_xptr} object.}
 }
 \value{
 a (named) numeric vector of feature frequencies.

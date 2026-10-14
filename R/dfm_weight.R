@@ -87,7 +87,7 @@ dfm_weight.dfm <- function(x,
     k <- check_double(k, min = 0, max = 1.0)
     smoothing <- check_double(smoothing)
     force <- check_logical(force)
-    
+
     if (!nfeat(x) || !ndoc(x)) return(x)
     attrs <- attributes(x)
 
@@ -169,7 +169,7 @@ dfm_weight.dfm <- function(x,
 # dfm_smooth --------------
 
 #' @rdname dfm_weight
-#' @param smoothing constant added to the dfm cells for smoothing, default is 1 
+#' @param smoothing constant added to the dfm cells for smoothing, default is 1
 #'   for `dfm_smooth()` and 0.5 for `dfm_weight()`.
 #' @return `dfm_smooth` returns a dfm whose values have been smoothed by
 #'   adding the `smoothing` amount. Note that this effectively converts a
@@ -191,10 +191,10 @@ dfm_smooth.default <- function(x, smoothing = 1) {
 
 #' @export
 dfm_smooth.dfm <- function(x, smoothing = 1) {
-    
+
     x <- as.dfm(x)
     smoothing <- check_double(smoothing)
-    
+
     if (!nfeat(x) || !ndoc(x)) return(x)
     attrs <- attributes(x)
     field_object(attrs, "smooth") <- field_object(attrs, "smooth") + smoothing
@@ -206,11 +206,11 @@ dfm_smooth.dfm <- function(x, smoothing = 1) {
 
 #' Compute the (weighted) document frequencies of features
 #'
-#' Returns a (weighted) document frequency for each term.  The default is a simple 
-#' count of the number of documents in which a feature occurs more than a given 
-#' frequency threshold.  (The default threshold is  zero, meaning that any feature 
+#' Returns a (weighted) document frequency for each term.  The default is a simple
+#' count of the number of documents in which a feature occurs more than a given
+#' frequency threshold.  (The default threshold is  zero, meaning that any feature
 #' occurring at least once in a document will be counted.)
-#' @param x a [dfm], [tokens], or [tokens_xptr] objects.
+#' @param x a [dfm], [tokens], or [tokens_xptr] object.
 #' @param scheme type of document frequency weighting, computed as
 #' follows, where \eqn{N} is defined as the number of documents in the dfm and
 #' \eqn{s} is the smoothing constant:
@@ -225,7 +225,7 @@ dfm_smooth.dfm <- function(x, smoothing = 1) {
 #'   frequency weightings are computed; default is 10 (see Manning, Raghavan,
 #'   and Schütze 2008, p123).
 #' @param smoothing added to the quotient before taking the logarithm
-#' @param k added to the denominator in the "inverse" weighting types, to 
+#' @param k added to the denominator in the "inverse" weighting types, to
 #'   prevent a zero document count for a term
 #' @param threshold numeric value of the threshold *above which* a feature
 #'   will considered in the computation of document frequency.  The default is
@@ -281,12 +281,12 @@ docfreq.dfm <- function(x, scheme = c("count", "inverse", "inversemax",
     smoothing <- check_double(smoothing, min = 0)
     k <- check_double(k, min = 0)
     threshold <- check_double(threshold, min = 0)
-    
+
     if (!nfeat(x) || !ndoc(x)) return(numeric())
-    
+
     scheme <- match.arg(scheme)
     args <- as.list(match.call(expand.dots = FALSE))
-    
+
     if ("base" %in% names(args) & !(substring(scheme, 1, 7) == "inverse"))
         warning("base not used for this scheme")
     if ("k" %in% names(args) & !(substring(scheme, 1, 7) == "inverse"))
@@ -320,18 +320,18 @@ docfreq.tokens <- function(x, ...) {
 }
 
 #' @export
-docfreq.tokens_xptr <- function(x, scheme = c("count", "inverse"), 
+docfreq.tokens_xptr <- function(x, scheme = c("count", "inverse"),
                                 base = 10, smoothing = 0, k = 0,
                                 ...) {
-    
+
     scheme <- match.arg(scheme)
     base <- check_double(base, min = 0)
     smoothing <- check_double(smoothing, min = 0)
     k <- check_double(k, min = 0)
-    
+
     if ("threshold" %in% names(list(...)))
         stop("Cannot use threshold when x is tokens or tokens_xptr")
-    
+
     d <- cpp_get_freq(x, boolean = TRUE) * 1.0
     if (d[1] == 0) d <- d[-1] # drop padding
     if (scheme == "count") {
@@ -346,9 +346,9 @@ docfreq.tokens_xptr <- function(x, scheme = c("count", "inverse"),
 
 #' Compute the frequencies of features
 #'
-#' Returns a frequency for each feature, computed across all documents. 
+#' Returns a frequency for each feature, computed across all documents.
 #' This is equivalent to `colSums(x)` when `x` is a dfm.
-#' @param x a [dfm], [tokens], or [tokens_xptr] objects.
+#' @param x a [dfm], [tokens], or [tokens_xptr] object.
 #' @return a (named) numeric vector of feature frequencies.
 #' @keywords weighting dfm
 #' @seealso [dfm_tfidf()], [dfm_weight()]
