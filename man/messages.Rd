@@ -12,7 +12,8 @@ tokens includes paddings, but the number of features excludes them.}
 \item{stat}{object statistics after the operation.}
 }
 \description{
-Used in printing verbose messages for message_tokens() and message_dfm()
+Used in printing verbose messages for message_corpus(), message_tokens(),
+message_dfm() and message_fcm().
 }
 \seealso{
 \code{\link[=message_corpus]{message_corpus()}}, \code{\link[=message_tokens]{message_tokens()}}, \code{\link[=message_dfm]{message_dfm()}},

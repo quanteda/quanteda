@@ -315,16 +315,25 @@ docfreq.dfm <- function(x, scheme = c("count", "inverse", "inversemax",
 }
 
 #' @export
-docfreq.tokens <- function(x, scheme = c("count", "inverse"), 
-                           base = 10, smoothing = 0, k = 0,
-                           ...) {
+docfreq.tokens <- function(x, ...) {
+    docfreq(as.tokens_xptr(x), ...)
+}
+
+#' @export
+docfreq.tokens_xptr <- function(x, scheme = c("count", "inverse"), 
+                                base = 10, smoothing = 0, k = 0,
+                                ...) {
     
     scheme <- match.arg(scheme)
     base <- check_double(base, min = 0)
     smoothing <- check_double(smoothing, min = 0)
     k <- check_double(k, min = 0)
     
-    d <- docfreq(as.tokens_xptr(x))
+    if ("threshold" %in% names(list(...)))
+        stop("Cannot use threshold when x is tokens or tokens_xptr")
+    
+    d <- cpp_get_freq(x, boolean = TRUE) * 1.0
+    if (d[1] == 0) d <- d[-1] # drop padding
     if (scheme == "count") {
         result <- d
     } else if (scheme == "inverse") {
@@ -364,6 +373,13 @@ featfreq.dfm <- function(x) {
 #' @export
 featfreq.tokens <- function(x) {
     featfreq(as.tokens_xptr(x))
+}
+
+#' @export
+featfreq.tokens_xptr <- function(x) {
+    v <- cpp_get_freq(x)
+    if (v[1] == 0) v <- v[-1] # drop padding
+    return(v * 1.0) # return numeric
 }
 
 # dfm_tfidf ---------------

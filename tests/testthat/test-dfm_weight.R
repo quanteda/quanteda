@@ -371,6 +371,16 @@ test_that("featfreq() and docfreq() work", {
         docfreq(toks, k = -5),
         "The value of k must be between 0 and Inf"
     )
+    expect_error(
+        docfreq(toks, threshold = 2),
+        "Cannot use threshold when x is tokens or tokens_xptr"
+    )
+    
+    xtoks <- as.tokens_xptr(toks)
+    expect_error(
+        docfreq(xtoks, threshold = 2),
+        "Cannot use threshold when x is tokens or tokens_xptr"
+    )
 })
 
 
