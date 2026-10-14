@@ -373,14 +373,21 @@ test_that("featfreq() and docfreq() work", {
     )
     expect_error(
         docfreq(toks, threshold = 2),
-        "Cannot use threshold when x is tokens or tokens_xptr"
+        "threshold is only supported when x is a dfm"
     )
     
     xtoks <- as.tokens_xptr(toks)
     expect_error(
         docfreq(xtoks, threshold = 2),
-        "Cannot use threshold when x is tokens or tokens_xptr"
+        "threshold is only supported when x is a dfm"
     )
+    expect_identical(docfreq(toks, threshold = 0), docfreq(dfmat))
+
+    # all schemes match the dfm method
+    for (s in c("count", "inverse", "inversemax", "inverseprob", "unary")) {
+        expect_equal(docfreq(toks, scheme = s), docfreq(dfmat, scheme = s))
+        expect_equal(docfreq(toks_pad, scheme = s), docfreq(dfmat_pad, scheme = s))
+    }
 })
 
 

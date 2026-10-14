@@ -17,7 +17,7 @@ docfreq(
 \item{x}{a \link{dfm}, \link{tokens}, or \link{tokens_xptr} object.}
 
 \item{scheme}{type of document frequency weighting, computed as
-follows, where \eqn{N} is defined as the number of documents in the dfm and
+follows, where \eqn{N} is defined as the number of documents in \code{x} and
 \eqn{s} is the smoothing constant:
 \describe{
 \item{\code{count}}{\eqn{df_j}, the number of documents for which \eqn{n_{ij} > threshold}}
@@ -39,7 +39,9 @@ prevent a zero document count for a term}
 \item{threshold}{numeric value of the threshold \emph{above which} a feature
 will considered in the computation of document frequency.  The default is
 0, meaning that a feature's document frequency will be the number of
-documents in which it occurs greater than zero times.}
+documents in which it occurs greater than zero times.  Only supported when
+\code{x} is a dfm; for tokens and tokens_xptr objects it must be 0 (the
+default).}
 }
 \value{
 a numeric vector of document frequencies for each feature

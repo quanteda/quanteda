@@ -23,6 +23,11 @@
   (tokens), occurrences (dfm), and co-occurrences and sparsity (fcm). Code
   or tests that match the old text will need updating. (#2518)
 
+* `featfreq()` and `docfreq()` now work on `tokens` and `tokens_xptr`
+  objects, computing feature and document frequencies directly without
+  first creating a dfm. `docfreq()` supports all weighting schemes for these
+  objects, but `threshold` is only supported for a dfm. (#2523)
+
 # quanteda 4.5
 
 ## Bug fixes

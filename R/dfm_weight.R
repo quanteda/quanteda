@@ -212,7 +212,7 @@ dfm_smooth.dfm <- function(x, smoothing = 1) {
 #' occurring at least once in a document will be counted.)
 #' @param x a [dfm], [tokens], or [tokens_xptr] object.
 #' @param scheme type of document frequency weighting, computed as
-#' follows, where \eqn{N} is defined as the number of documents in the dfm and
+#' follows, where \eqn{N} is defined as the number of documents in `x` and
 #' \eqn{s} is the smoothing constant:
 #' \describe{
 #' \item{`count`}{\eqn{df_j}, the number of documents for which \eqn{n_{ij} > threshold}}
@@ -230,7 +230,9 @@ dfm_smooth.dfm <- function(x, smoothing = 1) {
 #' @param threshold numeric value of the threshold *above which* a feature
 #'   will considered in the computation of document frequency.  The default is
 #'   0, meaning that a feature's document frequency will be the number of
-#'   documents in which it occurs greater than zero times.
+#'   documents in which it occurs greater than zero times.  Only supported when
+#'   `x` is a dfm; for tokens and tokens_xptr objects it must be 0 (the
+#'   default).
 #' @return a numeric vector of document frequencies for each feature
 #' @keywords weighting dfm
 #' @export
@@ -320,25 +322,29 @@ docfreq.tokens <- function(x, ...) {
 }
 
 #' @export
-docfreq.tokens_xptr <- function(x, scheme = c("count", "inverse"),
-                                base = 10, smoothing = 0, k = 0,
-                                ...) {
+docfreq.tokens_xptr <- function(x, scheme = c("count", "inverse", "inversemax",
+                                              "inverseprob", "unary"),
+                                base = 10, smoothing = 0, k = 0, threshold = 0) {
 
     scheme <- match.arg(scheme)
     base <- check_double(base, min = 0)
     smoothing <- check_double(smoothing, min = 0)
     k <- check_double(k, min = 0)
-
-    if ("threshold" %in% names(list(...)))
-        stop("Cannot use threshold when x is tokens or tokens_xptr")
+    threshold <- check_double(threshold, min = 0)
+    if (threshold > 0)
+        stop("threshold is only supported when x is a dfm")
 
     d <- cpp_get_freq(x, boolean = TRUE) * 1.0
     if (d[1] == 0) d <- d[-1] # drop padding
-    if (scheme == "count") {
-        result <- d
-    } else if (scheme == "inverse") {
-        result <- log(smoothing + (ndoc(x) / (k + d)), base = base)
-    }
+    if (!length(d)) return(d)
+    result <- switch(
+        scheme,
+        count = d,
+        inverse = log(smoothing + ndoc(x) / (k + d), base = base),
+        inversemax = log(smoothing + max(d) / (k + d), base = base),
+        inverseprob = pmax(log((ndoc(x) - d) / (k + d), base = base), 0),
+        unary = structure(rep(1.0, length(d)), names = names(d))
+    )
     return(result)
 }
 
