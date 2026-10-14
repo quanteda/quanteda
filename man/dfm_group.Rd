@@ -44,9 +44,8 @@ tokens includes paddings, but the number of features excludes them.}
 \code{dfm_group} returns a \link{dfm} whose documents are equal to
 the unique group combinations, and whose cell values are the sums of the
 previous values summed by group. Document-level variables that have no
-variation within groups are saved in \link{docvars}.  Document-level
-variables that are lists are dropped from grouping, even when these exhibit
-no variation within groups.
+variation within groups are saved in \link{docvars}.  Other document-level
+variables are replaced with \code{NA}.
 }
 \description{
 Combine documents in a \link{dfm} by a grouping variable, by summing the cell
