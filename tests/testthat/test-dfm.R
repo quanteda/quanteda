@@ -503,7 +503,7 @@ test_that("test topfeatures", {
     )
     expect_identical(
         topfeatures(dfmat, scheme = "docfreq"),
-        c(b = 3L, c = 2L, a = 1L, d = 1L)
+        c(b = 3, c = 2, a = 1, d = 1)
     )
     expect_identical(
         topfeatures(dfm_weight(dfmat, scheme = "prop"), groups = numdv),

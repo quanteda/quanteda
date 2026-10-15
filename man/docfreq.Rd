@@ -2,7 +2,7 @@
 % Please edit documentation in R/dfm_weight.R
 \name{docfreq}
 \alias{docfreq}
-\title{Compute the (weighted) document frequency of a feature}
+\title{Compute the (weighted) document frequencies of features}
 \usage{
 docfreq(
   x,
@@ -14,10 +14,10 @@ docfreq(
 )
 }
 \arguments{
-\item{x}{a \link{dfm}}
+\item{x}{a \link{dfm}, \link{tokens}, or \link{tokens_xptr} object.}
 
 \item{scheme}{type of document frequency weighting, computed as
-follows, where \eqn{N} is defined as the number of documents in the dfm and
+follows, where \eqn{N} is defined as the number of documents in \code{x} and
 \eqn{s} is the smoothing constant:
 \describe{
 \item{\code{count}}{\eqn{df_j}, the number of documents for which \eqn{n_{ij} > threshold}}
@@ -39,17 +39,18 @@ prevent a zero document count for a term}
 \item{threshold}{numeric value of the threshold \emph{above which} a feature
 will considered in the computation of document frequency.  The default is
 0, meaning that a feature's document frequency will be the number of
-documents in which it occurs greater than zero times.}
+documents in which it occurs greater than zero times.  Only supported when
+\code{x} is a dfm; for tokens and tokens_xptr objects it must be 0 (the
+default).}
 }
 \value{
 a numeric vector of document frequencies for each feature
 }
 \description{
-For a \link{dfm} object, returns a (weighted) document frequency for each
-term.  The default is a simple count of the number of documents in which a
-feature occurs more than a given frequency threshold.  (The default threshold
-is  zero, meaning that any feature occurring at least once in a document will
-be counted.)
+Returns a (weighted) document frequency for each term.  The default is a simple
+count of the number of documents in which a feature occurs more than a given
+frequency threshold.  (The default threshold is  zero, meaning that any feature
+occurring at least once in a document will be counted.)
 }
 \examples{
 dfmat1 <- dfm(tokens(data_corpus_inaugural))
