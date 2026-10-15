@@ -152,22 +152,34 @@ group_docvars <- function(x, group = NULL, field = NULL) {
     
     if (is.null(group))
         return(x)
-    l <- rep(FALSE, length(x))
+    l <- rep(TRUE, length(x))
     for (i in seq_along(l)) {
-        if (is_system(names(x)[i]) || is_grouped(x[[i]], group)) {
-            l[i] <- TRUE
-        }
+        if (is_system(names(x)[i]) || is_grouped(x[[i]], group))
+            l[i] <- FALSE
     }
     temp <- make_docvars(length(levels(group)), levels(group), unique = TRUE)
-    i <- match(levels(group), group)
-    result <- x[i, l, drop = FALSE]
+    x <- x[match(levels(group), group),]
+    x[,l] <- get_missing(x[,l, drop = FALSE])
     if (!is.null(field))
-        result[[field]] <- factor(levels(group), levels = levels(group))
-    result[c("docname_", "docid_", "segid_")] <- temp
-    rownames(result) <- NULL
-    return(result)
+        x[[field]] <- factor(levels(group), levels = levels(group))
+    x[c("docname_", "docid_", "segid_")] <- temp
+    rownames(x) <- NULL
+    return(x)
 }
 
+get_missing <- function(x) {
+    n <- nrow(x)
+    type <- sapply(x, typeof)
+    as.data.frame(lapply(type, function(y) {
+        switch(y, 
+            "character" = rep(NA_character_, n),
+            "integer"   = rep(NA_integer_, n),
+            "double"    = rep(NA_real_, n),
+            "complex"   = rep(NA_complex_, n),
+            rep(NA, n)
+        )
+    }))
+}
 
 # internal function to upgrade docvars to modern format
 upgrade_docvars <- function(x, docname = NULL) {

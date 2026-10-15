@@ -13,9 +13,8 @@
 #' @return `dfm_group` returns a [dfm] whose documents are equal to
 #'   the unique group combinations, and whose cell values are the sums of the
 #'   previous values summed by group. Document-level variables that have no
-#'   variation within groups are saved in [docvars].  Document-level
-#'   variables that are lists are dropped from grouping, even when these exhibit
-#'   no variation within groups.
+#'   variation within groups are saved in [docvars].  Other document-level
+#'   variables are replaced with `NA`.
 #' @export
 #' @examples
 #' corp <- corpus(c("a a b", "a b c c", "a c d d", "a c c d"),

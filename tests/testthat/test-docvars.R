@@ -646,3 +646,20 @@ test_that("docvars are combined along with the main objects", {
     expect_equal(docvars(rbind(dfmat1, dfmat2)), docvar)
 })
 
+test_that("get_missing is working", {
+    
+    dat <- data.frame(v1 = character(5),
+                      v2 = numeric(5),
+                      v3 = integer(5),
+                      v4 = logical(5),
+                      v5 = complex(5))
+    expect_equal(
+        nrow(dat),
+        5    
+    )
+    expect_equal(
+        sapply(quanteda:::get_missing(dat), typeof),
+        c(v1 = "character", v2 = "double", v3 = "integer", 
+          v4 = "logical",  v5 = "complex")
+    )
+})
