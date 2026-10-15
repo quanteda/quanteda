@@ -87,7 +87,7 @@ dfm_weight.dfm <- function(x,
     k <- check_double(k, min = 0, max = 1.0)
     smoothing <- check_double(smoothing)
     force <- check_logical(force)
-    
+
     if (!nfeat(x) || !ndoc(x)) return(x)
     attrs <- attributes(x)
 
@@ -169,8 +169,8 @@ dfm_weight.dfm <- function(x,
 # dfm_smooth --------------
 
 #' @rdname dfm_weight
-#' @param smoothing constant added to the dfm cells for smoothing, default is 1 
-#'   for `dfm_smooth()` and 0.5 for `dfm_weight()`
+#' @param smoothing constant added to the dfm cells for smoothing, default is 1
+#'   for `dfm_smooth()` and 0.5 for `dfm_weight()`.
 #' @return `dfm_smooth` returns a dfm whose values have been smoothed by
 #'   adding the `smoothing` amount. Note that this effectively converts a
 #'   matrix from sparse to dense format, so may exceed memory requirements
@@ -191,10 +191,10 @@ dfm_smooth.default <- function(x, smoothing = 1) {
 
 #' @export
 dfm_smooth.dfm <- function(x, smoothing = 1) {
-    
+
     x <- as.dfm(x)
     smoothing <- check_double(smoothing)
-    
+
     if (!nfeat(x) || !ndoc(x)) return(x)
     attrs <- attributes(x)
     field_object(attrs, "smooth") <- field_object(attrs, "smooth") + smoothing
@@ -204,16 +204,15 @@ dfm_smooth.dfm <- function(x, smoothing = 1) {
 
 # docfreq -------------
 
-#' Compute the (weighted) document frequency of a feature
+#' Compute the (weighted) document frequencies of features
 #'
-#' For a [dfm] object, returns a (weighted) document frequency for each
-#' term.  The default is a simple count of the number of documents in which a
-#' feature occurs more than a given frequency threshold.  (The default threshold
-#' is  zero, meaning that any feature occurring at least once in a document will
-#' be counted.)
-#' @param x a [dfm]
+#' Returns a (weighted) document frequency for each term.  The default is a simple
+#' count of the number of documents in which a feature occurs more than a given
+#' frequency threshold.  (The default threshold is  zero, meaning that any feature
+#' occurring at least once in a document will be counted.)
+#' @param x a [dfm], [tokens], or [tokens_xptr] object.
 #' @param scheme type of document frequency weighting, computed as
-#' follows, where \eqn{N} is defined as the number of documents in the dfm and
+#' follows, where \eqn{N} is defined as the number of documents in `x` and
 #' \eqn{s} is the smoothing constant:
 #' \describe{
 #' \item{`count`}{\eqn{df_j}, the number of documents for which \eqn{n_{ij} > threshold}}
@@ -226,12 +225,14 @@ dfm_smooth.dfm <- function(x, smoothing = 1) {
 #'   frequency weightings are computed; default is 10 (see Manning, Raghavan,
 #'   and Schütze 2008, p123).
 #' @param smoothing added to the quotient before taking the logarithm
-#' @param k added to the denominator in the "inverse" weighting types, to 
+#' @param k added to the denominator in the "inverse" weighting types, to
 #'   prevent a zero document count for a term
 #' @param threshold numeric value of the threshold *above which* a feature
 #'   will considered in the computation of document frequency.  The default is
 #'   0, meaning that a feature's document frequency will be the number of
-#'   documents in which it occurs greater than zero times.
+#'   documents in which it occurs greater than zero times.  Only supported when
+#'   `x` is a dfm; for tokens and tokens_xptr objects it must be 0 (the
+#'   default).
 #' @return a numeric vector of document frequencies for each feature
 #' @keywords weighting dfm
 #' @export
@@ -275,12 +276,19 @@ docfreq.default <- function(x, scheme = c("count", "inverse", "inversemax",
 #' @export
 docfreq.dfm <- function(x, scheme = c("count", "inverse", "inversemax",
                                       "inverseprob", "unary"),
-                    base = 10, smoothing = 0, k = 0, threshold = 0) {
+                        base = 10, smoothing = 0, k = 0, threshold = 0) {
 
     x <- as.dfm(x)
+    base <- check_double(base, min = 0)
+    smoothing <- check_double(smoothing, min = 0)
+    k <- check_double(k, min = 0)
+    threshold <- check_double(threshold, min = 0)
+
     if (!nfeat(x) || !ndoc(x)) return(numeric())
+
     scheme <- match.arg(scheme)
     args <- as.list(match.call(expand.dots = FALSE))
+
     if ("base" %in% names(args) & !(substring(scheme, 1, 7) == "inverse"))
         warning("base not used for this scheme")
     if ("k" %in% names(args) & !(substring(scheme, 1, 7) == "inverse"))
@@ -291,19 +299,52 @@ docfreq.dfm <- function(x, scheme = c("count", "inverse", "inversemax",
         stop("k must be >= 0")
 
     if (scheme == "unary") {
-        result <- rep(1, nfeat(x))
+        result <- rep(1.0, nfeat(x))
     } else if (scheme == "count") {
-        result <- colSums(x > threshold)
+        result <- colSums(x > threshold) * 1.0
     } else if (scheme == "inverse") {
-        result <- log(smoothing + (ndoc(x) / (k + docfreq(x, "count"))), base = base)
+        d <- docfreq(x, "count")
+        result <- log(smoothing + (ndoc(x) / (k + d)), base = base)
     } else if (scheme == "inversemax") {
-        temp <- docfreq(x, "count")
-        result <- log(smoothing + (max(temp) / (k + temp)), base = base)
+        d <- docfreq(x, "count")
+        result <- log(smoothing + (max(d) / (k + d)), base = base)
     } else if (scheme == "inverseprob") {
-        temp <- docfreq(x, "count")
-        result <- pmax(0, log((ndoc(x) - temp) / (k + temp), base = base))
+        d <- docfreq(x, "count")
+        result <- pmax(0, log((ndoc(x) - d) / (k + d), base = base))
     }
     names(result) <- featnames(x)
+    return(result)
+}
+
+#' @export
+docfreq.tokens <- function(x, ...) {
+    docfreq(as.tokens_xptr(x), ...)
+}
+
+#' @export
+docfreq.tokens_xptr <- function(x, scheme = c("count", "inverse", "inversemax",
+                                              "inverseprob", "unary"),
+                                base = 10, smoothing = 0, k = 0, threshold = 0) {
+
+    scheme <- match.arg(scheme)
+    base <- check_double(base, min = 0)
+    smoothing <- check_double(smoothing, min = 0)
+    k <- check_double(k, min = 0)
+    threshold <- check_double(threshold, min = 0)
+    if (threshold > 0)
+        stop("threshold is only supported when x is a dfm")
+
+    d <- cpp_get_freq(x, boolean = TRUE) * 1.0
+    if (d[1] == 0) d <- d[-1] # drop padding
+    if (!length(d)) return(d)
+    result <- switch(
+        scheme,
+        count = d,
+        inverse = log(smoothing + ndoc(x) / (k + d), base = base),
+        inversemax = log(smoothing + max(d) / (k + d), base = base),
+        inverseprob = pmax(log((ndoc(x) - d) / (k + d), base = base), 0),
+        unary = structure(rep(1.0, length(d)), names = names(d))
+    )
     return(result)
 }
 
@@ -311,10 +352,10 @@ docfreq.dfm <- function(x, scheme = c("count", "inverse", "inversemax",
 
 #' Compute the frequencies of features
 #'
-#' For a [dfm] object, returns a frequency for each feature, computed
-#' across all documents in the dfm. This is equivalent to `colSums(x)`.
-#' @param x a [dfm]
-#' @return a (named) numeric vector of feature frequencies
+#' Returns a frequency for each feature, computed across all documents.
+#' This is equivalent to `colSums(x)` when `x` is a dfm.
+#' @param x a [dfm], [tokens], or [tokens_xptr] object.
+#' @return a (named) numeric vector of feature frequencies.
 #' @keywords weighting dfm
 #' @seealso [dfm_tfidf()], [dfm_weight()]
 #' @export
@@ -333,6 +374,18 @@ featfreq.default <- function(x) {
 #' @export
 featfreq.dfm <- function(x) {
     colSums(x)
+}
+
+#' @export
+featfreq.tokens <- function(x) {
+    featfreq(as.tokens_xptr(x))
+}
+
+#' @export
+featfreq.tokens_xptr <- function(x) {
+    v <- cpp_get_freq(x)
+    if (v[1] == 0) v <- v[-1] # drop padding
+    return(v * 1.0) # return numeric
 }
 
 # dfm_tfidf ---------------
