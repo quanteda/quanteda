@@ -29,7 +29,8 @@
   objects, but `threshold` is only supported for a dfm. (#2523)
   
 * Reduce memory usage for constructing a `dfm` from a large `tokens` object
-  by removing paddings before allocating memory.
+  by excluding paddings from allocating memory when `remove_padding = TRUE`. 
+  If the object is too large, raise user-friendly error.
 
 # quanteda 4.5
 

@@ -12,6 +12,11 @@
 #' @section Changes in version 3:
 #' In \pkg{quanteda} v4, many convenience functions formerly available in
 #' `dfm()` were removed.
+#' @details
+#'   The total number of non-zero values in `dfm` is limited to 2 ^ 32, so users 
+#'   should select features in `tokens` objects before applying `dfm()` when the corpus 
+#'   is very large. If the total number of tokens is still too large, it raises an error.
+#'   
 #' @return a [dfm-class] object
 #' @import Matrix
 #' @export

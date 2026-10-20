@@ -34,6 +34,11 @@ a \link[=dfm-class]{dfm} object
 \description{
 Construct a sparse document-feature matrix from a \link{tokens} or \link{dfm} object.
 }
+\details{
+The total number of non-zero values in \code{dfm} is limited to 2 ^ 32, so users
+should select features in \code{tokens} objects before applying \code{dfm()} when the corpus
+is very large. If the total number of tokens is still too large, it raises an error.
+}
 \section{Changes in version 3}{
 
 In \pkg{quanteda} v4, many convenience functions formerly available in
