@@ -184,7 +184,7 @@ namespace quanteda{
             type_.set_encoding(CE_UTF8);
             types_[i] = type_;
         }
-        return(types_);
+        return types_;
     }
     
     inline bool has_na(IntegerVector vec_) {
@@ -258,7 +258,7 @@ namespace quanteda{
             }
             ngrams.push_back(ngram);
         }
-        return(ngrams);
+        return ngrams;
     }
     
     inline std::vector<std::size_t> register_ngrams(List patterns_, 
@@ -309,8 +309,8 @@ namespace quanteda{
         return spans;
     }
     
-    inline void remove_padding(Text &text) {
-        text.erase(std::remove(text.begin(), text.end(), 0), text.end()); 
+    inline unsigned int count_padding(Text &text) {
+        return std::count(text.begin(), text.end(), 0);
     }
     
 }

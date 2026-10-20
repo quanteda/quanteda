@@ -13,9 +13,10 @@ S4 cpp_dfm(TokensPtr xptr, bool padding = true) {
     
     std::size_t N = 0;
     for (std::size_t h = 0; h < H; h++) {
-        if (!padding)
-            remove_padding(xptr->texts[h]);
         N += xptr->texts[h].size();
+        if (!padding)
+            N -= count_padding(xptr->texts[h]);
+        
     }
     
     if (N > slot_x.max_size() || N > slot_i.max_size())
