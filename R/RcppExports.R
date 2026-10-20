@@ -173,3 +173,7 @@ cpp_tbb_enabled <- function() {
     .Call(`_quanteda_cpp_tbb_enabled`)
 }
 
+cpp_vector_limit <- function() {
+    .Call(`_quanteda_cpp_vector_limit`)
+}
+
