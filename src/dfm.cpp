@@ -16,11 +16,10 @@ S4 cpp_dfm(TokensPtr xptr, bool padding = true) {
         N += xptr->texts[h].size();
         if (!padding)
             N -= count_padding(xptr->texts[h]);
-        
     }
     
-    if (N > slot_x.max_size() || N > slot_i.max_size())
-        throw std::range_error("Tokens object is too large");
+    if (N > std::pow(2, 31))
+        throw std::range_error("The number of tokens exceedes the limit (2 ^ 31)");
     
     slot_i.reserve(N);
     slot_x.reserve(N);
