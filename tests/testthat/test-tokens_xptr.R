@@ -524,3 +524,12 @@ test_that("test low-level validation", {
     )
 })
 
+
+test_that("utility functions are working", {
+    
+    expect_true(
+        quanteda:::cpp_vector_limit() >= 2^32
+    )
+    
+})
+
