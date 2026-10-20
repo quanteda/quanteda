@@ -27,6 +27,9 @@
   objects, computing feature and document frequencies directly without
   first creating a dfm. `docfreq()` supports all weighting schemes for these
   objects, but `threshold` is only supported for a dfm. (#2523)
+  
+* Reduce memory usage for constructing a `dfm` from a large `tokens` object
+  by removing paddings before allocating memory.
 
 # quanteda 4.5
 
