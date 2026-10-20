@@ -309,6 +309,10 @@ namespace quanteda{
         return spans;
     }
     
+    inline void remove_padding(Text &text) {
+        text.erase(std::remove(text.begin(), text.end(), 0), text.end()); 
+    }
+    
 }
 
 #endif

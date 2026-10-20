@@ -8,12 +8,19 @@ S4 cpp_dfm(TokensPtr xptr, bool padding = true) {
     xptr->recompile();
     std::size_t H = xptr->texts.size();
     std::size_t G = xptr->types.size();
-    
-    int N = 0;
-    for (std::size_t h = 0; h < H; h++)
-        N += xptr->texts[h].size();
     std::vector<double> slot_x;
     std::vector<int> slot_i, slot_p;
+    
+    std::size_t N = 0;
+    for (std::size_t h = 0; h < H; h++) {
+        if (!padding)
+            remove_padding(xptr->texts[h]);
+        N += xptr->texts[h].size();
+    }
+    
+    if (N > slot_x.max_size() || N > slot_i.max_size())
+        throw std::range_error("Tokens object is too large");
+    
     slot_i.reserve(N);
     slot_x.reserve(N);
     slot_p.reserve(H + 1);
