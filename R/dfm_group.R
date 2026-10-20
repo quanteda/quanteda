@@ -14,7 +14,8 @@
 #'   the unique group combinations, and whose cell values are the sums of the
 #'   previous values summed by group. Document-level variables that have no
 #'   variation within groups are saved in [docvars].  Other document-level
-#'   variables are replaced with `NA`.
+#'   variables, including lists, are kept but their values are replaced with
+#'   `NA`, retaining their original class.
 #' @export
 #' @examples
 #' corp <- corpus(c("a a b", "a b c c", "a c d d", "a c c d"),

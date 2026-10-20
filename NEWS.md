@@ -28,6 +28,12 @@
   first creating a dfm. `docfreq()` supports all weighting schemes for these
   objects, but `threshold` is only supported for a dfm. (#2523)
 
+* `corpus_group()`, `tokens_group()`, `dfm_group()` and `dfm_compress()` now
+  keep document-level variables that vary within groups, replacing their
+  values with `NA` of the same class, instead of dropping them. This allows
+  the docvars of grouped and ungrouped objects to be combined with `rbind()`.
+  List variables are kept in the same way. (#2524)
+
 # quanteda 4.5
 
 ## Bug fixes

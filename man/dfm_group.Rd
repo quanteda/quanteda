@@ -45,7 +45,8 @@ tokens includes paddings, but the number of features excludes them.}
 the unique group combinations, and whose cell values are the sums of the
 previous values summed by group. Document-level variables that have no
 variation within groups are saved in \link{docvars}.  Other document-level
-variables are replaced with \code{NA}.
+variables, including lists, are kept but their values are replaced with
+\code{NA}, retaining their original class.
 }
 \description{
 Combine documents in a \link{dfm} by a grouping variable, by summing the cell

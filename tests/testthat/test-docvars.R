@@ -647,19 +647,21 @@ test_that("docvars are combined along with the main objects", {
 })
 
 test_that("get_missing is working", {
-    
-    dat <- data.frame(v1 = character(5),
-                      v2 = numeric(5),
-                      v3 = integer(5),
-                      v4 = logical(5),
-                      v5 = complex(5))
-    expect_equal(
-        nrow(dat),
-        5    
-    )
-    expect_equal(
-        sapply(quanteda:::get_missing(dat), typeof),
-        c(v1 = "character", v2 = "double", v3 = "integer", 
-          v4 = "logical",  v5 = "complex")
-    )
+    vars <- list(chr = c("a", "b"),
+                 dbl = c(1.5, 2),
+                 int = 1:2,
+                 lgl = c(TRUE, FALSE),
+                 cpl = complex(2),
+                 fac = factor(c("a", "b"), levels = c("a", "b", "c")),
+                 date = as.Date(c("2020-01-01", "2020-01-02")),
+                 lis = list(1:3, "a"))
+    for (v in vars) {
+        result <- quanteda:::get_missing(v)
+        expect_identical(typeof(result), typeof(v))
+        expect_identical(class(result), class(v))
+        expect_identical(length(result), length(v))
+        expect_true(all(is.na(result)))
+    }
+    expect_identical(levels(quanteda:::get_missing(vars$fac)), c("a", "b", "c"))
+    expect_identical(quanteda:::get_missing(character()), character())
 })
