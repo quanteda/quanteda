@@ -449,10 +449,9 @@ test_that("unused arguments works for fcm (#2103)", {
 test_that("fcm does not modify tokens_xptr", {
     
     txt <- c("A A B B C", "A A B C C D D")
-    toks <- tokens(txt) |> 
+    xtoks <- tokens(txt, xptr = TRUE) |> 
         tokens_match(c("A", "B", "C", "D", "E"))
-    xtoks <- as.tokens_xptr(toks)
-    
+
     expect_equal(
         types(xtoks),
         c("A", "B", "C", "D", "E")

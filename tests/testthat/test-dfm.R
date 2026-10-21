@@ -981,9 +981,8 @@ test_that("trim is working", {
 test_that("dfm does not modify tokens_xptr", {
     
     txt <- c("A A B B C", "A A B C C D D")
-    toks <- tokens(txt) |> 
+    xtoks <- tokens(txt, xptr = TRUE) |> 
         tokens_match(c("A", "B", "C", "D", "E"))
-    xtoks <- as.tokens_xptr(toks)
     
     expect_equal(
         types(xtoks),

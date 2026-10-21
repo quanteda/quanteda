@@ -102,7 +102,6 @@ dfm.tokens_xptr <- function(x,
 
 }
 
-# only for friendly error messages
 #' @export
 dfm.tokens <- dfm.tokens_xptr
 
