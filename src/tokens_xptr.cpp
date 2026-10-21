@@ -42,7 +42,6 @@ List cpp_as_tokens(TokensPtr xptr) {
 #ifdef QUANTEDA_DEBUG
     Rcout << "call cpp_as_tokens()\n";
 #endif
-    
     xptr->recompile();
     List texts_ = as_list(xptr->texts);
     texts_.attr("types") = encode(xptr->types);
@@ -76,31 +75,13 @@ int cpp_ndoc(TokensPtr xptr) {
     return xptr->texts.size();
 }
 
-
 // [[Rcpp::export]]
 IntegerVector cpp_ntoken(TokensPtr xptr, bool no_padding = false) {
 
 #ifdef QUANTEDA_DEBUG
     Rcout << "call cpp_ntoken()\n";
 #endif
-    
-    std::size_t H = xptr->texts.size();
-    IntegerVector ls_(H, 0);
-    if (no_padding) {
-        for (std::size_t h = 0; h < H; h++) {
-            std::size_t I = xptr->texts[h].size();
-            for (std::size_t i = 0; i < I; i++) {
-                // ignore paddings
-                if (xptr->texts[h][i] > 0)
-                    ls_[h]++;
-            }
-        }
-    } else {
-        for (std::size_t h = 0; h < H; h++) {
-            ls_[h] = xptr->texts[h].size();
-        }
-    }
-    return ls_;
+    return Rcpp::wrap(xptr->get_ntoken(no_padding));
 }
 
 // [[Rcpp::export]]
@@ -109,23 +90,7 @@ IntegerVector cpp_ntype(TokensPtr xptr, bool no_padding = false) {
 #ifdef QUANTEDA_DEBUG
     Rcout << "call cpp_ntype()\n";
 #endif
-    
-    std::size_t H = xptr->texts.size();
-    IntegerVector ns_(H);
-    for (std::size_t h = 0; h < H; h++) {
-        Text text = xptr->texts[h];
-        if (text.size() == 0) {
-            ns_[h] = 0;
-        } else {
-            std::sort(text.begin(), text.end());
-            text.erase(unique(text.begin(), text.end()), text.end());
-            int n = text.size();
-            if (text[0] == 0 && no_padding)
-                n--;
-            ns_[h] = n;
-        }
-    }
-    return ns_;
+    return Rcpp::wrap(xptr->get_ntype(no_padding));
 }
 
 // [[Rcpp::export]]
@@ -152,7 +117,6 @@ CharacterVector cpp_get_types(TokensPtr xptr) {
 #ifdef QUANTEDA_DEBUG
     Rcout << "call cpp_get_types()\n";
 #endif
-
     return encode(xptr->types);
 }
 
@@ -162,7 +126,6 @@ int cpp_count_types(TokensPtr xptr) {
 #ifdef QUANTEDA_DEBUG
     Rcout << "call cpp_count_types()\n";
 #endif
-    
     return xptr->types.size();
 }
 
