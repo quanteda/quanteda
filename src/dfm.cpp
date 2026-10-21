@@ -11,12 +11,9 @@ S4 cpp_dfm(TokensPtr xptr, bool padding = true) {
     std::vector<double> slot_x;
     std::vector<int> slot_i, slot_p;
     
-    std::size_t N = 0;
-    for (std::size_t h = 0; h < H; h++) {
-        N += xptr->texts[h].size();
-        if (!padding)
-            N -= count_padding(xptr->texts[h]);
-    }
+    // count unique tokens in each document
+    std::vector<int> f = xptr->get_freq(!padding, true);
+    int N = std::accumulate(f.begin(), f.end(), 0);
     
     try {
         slot_i.reserve(N);
