@@ -34,6 +34,7 @@
 #'   TRUE`, the argument `tri` has no effect.
 #' @param tri if `TRUE` return only upper triangle (including diagonal).
 #'   Ignored if `ordered = TRUE`.
+#' @param verbose display messages if `TRUE`.
 #' @param ... not used here
 #' @author Kenneth Benoit (R), Haiyan Wang (R, C++), Kohei Watanabe (C++)
 #' @import Matrix
