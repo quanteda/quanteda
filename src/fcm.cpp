@@ -37,7 +37,7 @@ void count_col(const Text &text,
                const unsigned int &window,
                const bool &ordered,
                const bool &boolean,
-               Triplets &fcm_tri) {
+               Triplets &tri) {
     
     SetPair set_pair;
     set_pair.max_load_factor(GLOBAL_NGRAMS_MAX_LOAD_FACTOR);
@@ -54,24 +54,24 @@ void count_col(const Text &text,
             if (ordered) {
                 if (!boolean || !exist(text[i] - 1, text[j] - 1, set_pair)) {
                     //Rcout << i << " " << j << "\n";
-                    Triplet tripl = std::make_tuple(text[i] - 1, text[j] - 1, weight);
-                    fcm_tri.push_back(tripl);
+                    Triplet t = std::make_tuple(text[i] - 1, text[j] - 1, weight);
+                    tri.push_back(t);
                 }
             } else {
                 if (text[i] < text[j]) {
                     if (!boolean || !exist(text[i] - 1, text[j] - 1, set_pair)) {
-                        Triplet tripl = std::make_tuple(text[i] - 1, text[j] - 1, weight);
-                        fcm_tri.push_back(tripl);
+                        Triplet t = std::make_tuple(text[i] - 1, text[j] - 1, weight);
+                        tri.push_back(t);
                     }
                 } else if (text[i] > text[j]){
                     if (!boolean || !exist(text[j] - 1, text[i] - 1, set_pair)) {
-                        Triplet tripl = std::make_tuple(text[j] - 1, text[i] - 1, weight);
-                        fcm_tri.push_back(tripl);
+                        Triplet t = std::make_tuple(text[j] - 1, text[i] - 1, weight);
+                        tri.push_back(t);
                     }
                 } else {
                     if (!boolean || !exist(text[i] - 1, text[j] - 1, set_pair)) {
-                        Triplet tripl = std::make_tuple(text[i] - 1, text[j] - 1, weight * 2);
-                        fcm_tri.push_back(tripl);
+                        Triplet t = std::make_tuple(text[i] - 1, text[j] - 1, weight * 2);
+                        tri.push_back(t);
                     }
                 } 
             }
@@ -94,7 +94,7 @@ S4 cpp_fcm(TokensPtr xptr,
     std::size_t G = xptr->types.size();
         
     // declare the vector returned by parallelized procedure
-    Triplets fcm_tri;
+    Triplets tri;
 
     //dev::Timer timer;
     //dev::start_timer("Count", timer);
@@ -103,26 +103,24 @@ S4 cpp_fcm(TokensPtr xptr,
     arena.execute([&]{
         tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
             for (int h = r.begin(); h < r.end(); ++h) {
-                count_col(xptr->texts[h], weights, window, ordered, boolean, fcm_tri);
+                count_col(xptr->texts[h], weights, window, ordered, boolean, tri);
             }    
         });
     });
 #else        
     for (std::size_t h = 0; h < H; h++) {
-        count_col(xptr->texts[h], weights, window, ordered, boolean, fcm_tri);
+        count_col(xptr->texts[h], weights, window, ordered, boolean, tri);
     }
 #endif
     
     //dev::stop_timer("Count", timer);
-    //dev::start_timer("Convert", timer);
-    //return to_matrix(fcm_tri, G, G, false);
     
-    std::size_t N = fcm_tri.size();
+    std::size_t N = tri.size();
     IntegerVector slot_i_(N), slot_j_(N);
     NumericVector slot_x_(N);
     
     std::size_t k = 0;
-    for (Triplet t : fcm_tri) {
+    for (Triplet t : tri) {
         slot_i_[k] = std::get<0>(t);
         slot_j_[k] = std::get<1>(t);
         slot_x_[k] = std::get<2>(t);
