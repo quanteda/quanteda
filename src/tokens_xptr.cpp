@@ -199,12 +199,6 @@ TokensPtr cpp_recompile(TokensPtr xptr, bool force = false) {
     return xptr;
 }
 
-// [[Rcpp::export]]
-std::size_t cpp_vector_limit(){
-    std::vector<int> v;
-    return(v.max_size());
-}
-
 
 /***R
 require(quanteda)

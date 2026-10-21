@@ -309,10 +309,6 @@ namespace quanteda{
         return spans;
     }
     
-    inline unsigned int count_padding(Text &text) {
-        return std::count(text.begin(), text.end(), 0);
-    }
-    
 }
 
 #endif
