@@ -13,9 +13,10 @@
 #' In \pkg{quanteda} v4, many convenience functions formerly available in
 #' `dfm()` were removed.
 #' @details
-#'   The total number of non-zero values in `dfm` is limited to 2 ^ 32, so users 
-#'   should select features in `tokens` objects before applying `dfm()` when the corpus 
-#'   is very large. If the total number of tokens is still too large, it raises an error.
+#'   The total number of non-zero values in `dfm` is constrained by the size of available 
+#'   space in RAM. If **quanteda** cannot allocate enough memory to construct a `dfm` from 
+#'   `tokens` object, users should apply `tokens_remove()` or `tokens_trim()` to reduce the 
+#'   size of the `tokens` objects before applying `dfm()`.
 #'   
 #' @return a [dfm-class] object
 #' @import Matrix
