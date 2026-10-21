@@ -28,6 +28,7 @@ class TokensObj {
         
         // functions
         void recompile();
+        std::vector<int> get_freq(bool no_padding, bool boolean);
 
     private:
         bool is_duplicated(Types types); // NOTE: consider removing
@@ -149,4 +150,33 @@ inline void TokensObj::recompile() {
 
     recompiled = true;
     return;
+}
+
+inline std::vector<int> TokensObj::get_freq(bool no_padding = false,
+                                            bool boolean = false) {
+    std::size_t G = types.size();
+    if (!no_padding)
+        G++;
+    std::vector<int> freq(G, 0);
+    std::vector<bool> flag(G);
+    std::size_t H = texts.size();
+    for (std::size_t h = 0; h < H; h++) {
+        const Text &text = texts[h];
+        std::fill(flag.begin(), flag.end(), false);
+        std::size_t I = text.size();
+        for (std::size_t i = 0; i < I; i++) {
+            unsigned int id = text[i];
+            // ignore paddings
+            if (no_padding) {
+                if (id == 0)
+                    continue;
+                id--;
+            }
+            if (boolean && flag[id])
+                continue;
+            freq[id]++;
+            flag[id] = true;
+        }
+    }
+    return freq;
 }
