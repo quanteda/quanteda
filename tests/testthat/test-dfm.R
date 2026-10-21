@@ -977,3 +977,32 @@ test_that("trim is working", {
     )
 
 })
+
+test_that("dfm does not modify the original tokens", {
+    
+    txt <- c("A A B B C", "A A B C C D D")
+    toks <- tokens(txt) |> tokens_remove("b", padding = TRUE)
+    xtoks <- as.tokens_xptr(toks)
+    
+    expect_equal(
+        featnames(dfm(toks, remove_padding = TRUE)),
+        c("a", "c", "d")
+    )
+    
+    expect_equal(
+        featnames(dfm(xtoks, remove_padding = TRUE)),
+        c("a", "c", "d")
+    )
+    
+    expect_setequal(
+        unlist(as.list(toks)),
+        c("", "A", "C", "D")
+    )
+    
+    expect_setequal(
+        unlist(as.list(xtoks)),
+        c("", "A", "C", "D")
+    )
+    
+})
+

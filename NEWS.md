@@ -6,6 +6,8 @@
 
 * Fixed a bug in `tokens()` when the object's concatenator is an empty character. 
 
+* Fixed a bug to create a redundant copy of `tokens_xptr` when `dfm` is constructed.
+
 ## Changes and additions
 
 * Verbose messages from `corpus`, `tokens`, `dfm` and `fcm` methods now
@@ -27,6 +29,10 @@
   objects, computing feature and document frequencies directly without
   first creating a dfm. `docfreq()` supports all weighting schemes for these
   objects, but `threshold` is only supported for a dfm. (#2523)
+  
+* Reduce memory usage for constructing a `dfm` from a large `tokens` object
+  by excluding paddings from allocating memory when `remove_padding = TRUE`. 
+  If the object is too large, raises a user-friendly error.
 
 * `corpus_group()`, `tokens_group()`, `dfm_group()` and `dfm_compress()` now
   keep document-level variables that vary within groups, replacing their
