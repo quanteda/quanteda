@@ -18,15 +18,17 @@ S4 cpp_dfm(TokensPtr xptr, bool padding = true) {
             N -= count_padding(xptr->texts[h]);
     }
     
-    if (N > std::pow(2, 31))
-        throw std::range_error("The number of tokens exceedes the limit (2 ^ 31)");
-    
-    slot_i.reserve(N);
-    slot_x.reserve(N);
-    slot_p.reserve(H + 1);
+    try {
+        slot_i.reserve(N);
+        slot_x.reserve(N);
+        slot_p.reserve(H + 1);
+    } 
+    catch (const std::bad_alloc& e) {
+        throw std::length_error("Cannot allocate enough memory to construct a dfm");
+    }
+
     bool padded = false;
     int p = 0;
-    
     slot_p.push_back(p);
     for (std::size_t h = 0; h < H; h++) {
         // assign new token IDs in the order of their occurrence
