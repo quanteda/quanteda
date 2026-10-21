@@ -115,7 +115,31 @@ S4 cpp_fcm(TokensPtr xptr,
     
     //dev::stop_timer("Count", timer);
     //dev::start_timer("Convert", timer);
-    return to_matrix(fcm_tri, G, G, false);
+    //return to_matrix(fcm_tri, G, G, false);
+    
+    std::size_t N = fcm_tri.size();
+    IntegerVector slot_i_(N), slot_j_(N);
+    NumericVector slot_x_(N);
+    
+    std::size_t k = 0;
+    for (Triplet t : fcm_tri) {
+        slot_i_[k] = std::get<0>(t);
+        slot_j_[k] = std::get<1>(t);
+        slot_x_[k] = std::get<2>(t);
+        k++;
+    }
+    
+    CharacterVector types_ = encode(xptr->types);
+    IntegerVector dim_ = IntegerVector::create(G, G);
+    List dimnames_ = List::create(types_, types_);
+    
+    S4 fcm_("dgTMatrix");
+    fcm_.slot("i") = slot_i_;
+    fcm_.slot("j") = slot_j_;
+    fcm_.slot("x") = slot_x_;
+    fcm_.slot("Dim") = dim_;
+    fcm_.slot("Dimnames") = dimnames_;
+    return(fcm_);
 }
 
 

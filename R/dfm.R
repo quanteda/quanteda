@@ -64,7 +64,7 @@ dfm.default <- function(x, ...) {
 }
 
 #' @export
-dfm.tokens <- function(x,
+dfm.tokens_xptr <- function(x,
                        tolower = TRUE,
                        remove_padding = FALSE,
                        trim = TRUE,
@@ -104,7 +104,7 @@ dfm.tokens <- function(x,
 
 # only for friendly error messages
 #' @export
-dfm.tokens_xptr <- dfm.tokens
+dfm.tokens <- dfm.tokens_xptr
 
 #' @importFrom stringi stri_trans_totitle
 #' @export

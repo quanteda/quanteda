@@ -215,6 +215,7 @@ fcm.tokens_xptr <- function(x, context = c("document", "window"),
     if (context == "document") {
         result <- fcm(dfm(x, tolower = FALSE, verbose = FALSE), count = count, tri = tri)
     } else {
+        x <- as.tokens_xptr(x)
         if (count == "weighted") {
             if (!is.null(weights)) {
                 weights <- check_double(weights, max_len = Inf)
@@ -226,7 +227,6 @@ fcm.tokens_xptr <- function(x, context = c("document", "window"),
         } else {
             weights <- rep(1, window)
         }
-        type <- get_types(x)
         boolean <- count == "boolean"
         temp <- cpp_fcm(x, weights, boolean, ordered,
                         get_threads())
@@ -240,7 +240,7 @@ fcm.tokens_xptr <- function(x, context = c("document", "window"),
         }
         result <- build_fcm(
             temp,
-            type,
+            colnames(temp),
             count = count, context = context, margin = featfreq(dfm(x, tolower = FALSE)),
             weights = weights, ordered = ordered, tri = tri,
             meta = attrs[["meta"]])
@@ -249,9 +249,7 @@ fcm.tokens_xptr <- function(x, context = c("document", "window"),
 }
 
 #' @export
-fcm.tokens <- function(x, ...) {
-    fcm(as.tokens_xptr(x), ...)
-}
+fcm.tokens <- fcm.tokens_xptr
 
 #' @noRd
 #' @rdname as.fcm

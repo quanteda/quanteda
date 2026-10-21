@@ -204,40 +204,40 @@ namespace quanteda{
       return texts_;
     }
     
-    inline S4 to_matrix(Triplets& tri, int nrow, int ncol, bool symmetric) {
-        
-        std::size_t l = tri.size();
-        IntegerVector dim_ = IntegerVector::create(nrow, ncol);
-        List dimnames_ = List::create(R_NilValue, R_NilValue);
-        IntegerVector i_(l), j_(l);
-        NumericVector x_(l);
-        
-        std::size_t k = 0;
-        for (Triplet t : tri) {
-            i_[k] = std::get<0>(t);
-            j_[k] = std::get<1>(t);
-            x_[k] = std::get<2>(t);
-            k++;
-        }
-        if (symmetric) {
-            S4 simil_("dsTMatrix");
-            simil_.slot("i") = i_;
-            simil_.slot("j") = j_;
-            simil_.slot("x") = x_;
-            simil_.slot("Dim") = dim_;
-            simil_.slot("Dimnames") = dimnames_;
-            simil_.slot("uplo") = "U";
-            return simil_;
-        } else {
-            S4 simil_("dgTMatrix");
-            simil_.slot("i") = i_;
-            simil_.slot("j") = j_;
-            simil_.slot("x") = x_;
-            simil_.slot("Dim") = dim_;
-            simil_.slot("Dimnames") = dimnames_;
-            return simil_;
-        }
-    }
+    // inline S4 to_matrix(Triplets& tri, int nrow, int ncol, bool symmetric) {
+    //     
+    //     std::size_t l = tri.size();
+    //     IntegerVector dim_ = IntegerVector::create(nrow, ncol);
+    //     List dimnames_ = List::create(R_NilValue, R_NilValue);
+    //     IntegerVector i_(l), j_(l);
+    //     NumericVector x_(l);
+    //     
+    //     std::size_t k = 0;
+    //     for (Triplet t : tri) {
+    //         i_[k] = std::get<0>(t);
+    //         j_[k] = std::get<1>(t);
+    //         x_[k] = std::get<2>(t);
+    //         k++;
+    //     }
+    //     if (symmetric) {
+    //         S4 simil_("dsTMatrix");
+    //         simil_.slot("i") = i_;
+    //         simil_.slot("j") = j_;
+    //         simil_.slot("x") = x_;
+    //         simil_.slot("Dim") = dim_;
+    //         simil_.slot("Dimnames") = dimnames_;
+    //         simil_.slot("uplo") = "U";
+    //         return simil_;
+    //     } else {
+    //         S4 simil_("dgTMatrix");
+    //         simil_.slot("i") = i_;
+    //         simil_.slot("j") = j_;
+    //         simil_.slot("x") = x_;
+    //         simil_.slot("Dim") = dim_;
+    //         simil_.slot("Dimnames") = dimnames_;
+    //         return simil_;
+    //     }
+    // }
     
     inline Ngrams to_ngrams(List patterns, bool no_padding = false) {
         Ngrams ngrams;
