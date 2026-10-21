@@ -103,6 +103,7 @@ dfm.tokens <- function(x,
 }
 
 # only for friendly error messages
+#' @export
 dfm.tokens_xptr <- dfm.tokens
 
 #' @importFrom stringi stri_trans_totitle
