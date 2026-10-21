@@ -30,7 +30,7 @@
   
 * Reduce memory usage for constructing a `dfm` from a large `tokens` object
   by excluding paddings from allocating memory when `remove_padding = TRUE`. 
-  If the object is too large, raise user-friendly error.
+  If the object is too large, raises a user-friendly error.
 
 # quanteda 4.5
 

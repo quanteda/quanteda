@@ -145,10 +145,6 @@ cpp_recompile <- function(xptr, force = FALSE) {
     .Call(`_quanteda_cpp_recompile`, xptr, force)
 }
 
-cpp_vector_limit <- function() {
-    .Call(`_quanteda_cpp_vector_limit`)
-}
-
 cpp_is_grouped_numeric <- function(values_, groups_) {
     .Call(`_quanteda_cpp_is_grouped_numeric`, values_, groups_)
 }

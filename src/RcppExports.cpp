@@ -486,16 +486,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// cpp_vector_limit
-std::size_t cpp_vector_limit();
-RcppExport SEXP _quanteda_cpp_vector_limit() {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(cpp_vector_limit());
-    return rcpp_result_gen;
-END_RCPP
-}
 // cpp_is_grouped_numeric
 bool cpp_is_grouped_numeric(NumericVector values_, IntegerVector groups_);
 RcppExport SEXP _quanteda_cpp_is_grouped_numeric(SEXP values_SEXP, SEXP groups_SEXP) {
@@ -610,7 +600,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_quanteda_cpp_set_recompiled", (DL_FUNC) &_quanteda_cpp_set_recompiled, 2},
     {"_quanteda_cpp_get_recompiled", (DL_FUNC) &_quanteda_cpp_get_recompiled, 1},
     {"_quanteda_cpp_recompile", (DL_FUNC) &_quanteda_cpp_recompile, 2},
-    {"_quanteda_cpp_vector_limit", (DL_FUNC) &_quanteda_cpp_vector_limit, 0},
     {"_quanteda_cpp_is_grouped_numeric", (DL_FUNC) &_quanteda_cpp_is_grouped_numeric, 2},
     {"_quanteda_cpp_is_grouped_character", (DL_FUNC) &_quanteda_cpp_is_grouped_character, 2},
     {"_quanteda_cpp_get_load_factor", (DL_FUNC) &_quanteda_cpp_get_load_factor, 0},
