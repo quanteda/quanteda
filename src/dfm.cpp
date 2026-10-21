@@ -8,18 +8,31 @@ S4 cpp_dfm(TokensPtr xptr, bool padding = true) {
     xptr->recompile();
     std::size_t H = xptr->texts.size();
     std::size_t G = xptr->types.size();
-    
-    int N = 0;
-    for (std::size_t h = 0; h < H; h++)
-        N += xptr->texts[h].size();
     std::vector<double> slot_x;
     std::vector<int> slot_i, slot_p;
-    slot_i.reserve(N);
-    slot_x.reserve(N);
-    slot_p.reserve(H + 1);
+    
+    // count unique tokens in each document
+    // std::vector<int> n = xptr->get_ntype(!padding);
+    // int N = std::accumulate(n.begin(), n.end(), 0);
+    
+    int N = 0;
+    for (std::size_t h = 0; h < H; h++) {
+        N += xptr->texts[h].size();
+        if (!padding)
+            N -= count_padding(xptr->texts[h]);
+    }
+    
+    try {
+        slot_i.reserve(N);
+        slot_x.reserve(N);
+        slot_p.reserve(H + 1);
+    } 
+    catch (const std::bad_alloc& e) {
+        throw std::length_error("Cannot allocate enough memory to construct a dfm");
+    }
+
     bool padded = false;
     int p = 0;
-    
     slot_p.push_back(p);
     for (std::size_t h = 0; h < H; h++) {
         // assign new token IDs in the order of their occurrence

@@ -34,6 +34,12 @@ a \link[=dfm-class]{dfm} object
 \description{
 Construct a sparse document-feature matrix from a \link{tokens} or \link{dfm} object.
 }
+\details{
+The total number of non-zero values in \code{dfm} is constrained by the size of available
+space in RAM. If \strong{quanteda} cannot allocate enough memory to construct a \code{dfm} from
+\code{tokens} object, users should apply \code{tokens_remove()} or \code{tokens_trim()} to reduce the
+size of the \code{tokens} objects before applying \code{dfm()}.
+}
 \section{Changes in version 3}{
 
 In \pkg{quanteda} v4, many convenience functions formerly available in

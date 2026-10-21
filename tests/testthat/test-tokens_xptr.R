@@ -523,4 +523,3 @@ test_that("test low-level validation", {
                                      2, TRUE, 0, 0, 1, 3, FALSE)
     )
 })
-

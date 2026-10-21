@@ -28,6 +28,9 @@ class TokensObj {
         
         // functions
         void recompile();
+        std::vector<int> get_ntoken(bool no_padding);
+        std::vector<int> get_ntype(bool no_padding);
+        std::vector<int> get_freq(bool no_padding, bool boolean);
 
     private:
         bool is_duplicated(Types types); // NOTE: consider removing
@@ -149,4 +152,74 @@ inline void TokensObj::recompile() {
 
     recompiled = true;
     return;
+}
+
+inline std::vector<int> TokensObj::get_ntoken(bool no_padding = false) {
+    
+    std::size_t H = texts.size();
+    std::vector<int> ls(H, 0);
+    if (no_padding) {
+        for (std::size_t h = 0; h < H; h++) {
+            std::size_t I = texts[h].size();
+            for (std::size_t i = 0; i < I; i++) {
+                // ignore paddings
+                if (texts[h][i] > 0)
+                    ls[h]++;
+            }
+        }
+    } else {
+        for (std::size_t h = 0; h < H; h++) {
+            ls[h] = texts[h].size();
+        }
+    }
+    return ls;
+}
+
+inline std::vector<int> TokensObj::get_ntype(bool no_padding = false) {
+    
+    std::size_t H = texts.size();
+    std::vector<int> ns(H);
+    for (std::size_t h = 0; h < H; h++) {
+        Text text = texts[h];
+        if (text.size() == 0) {
+            ns[h] = 0;
+        } else {
+            std::sort(text.begin(), text.end());
+            text.erase(unique(text.begin(), text.end()), text.end());
+            int n = text.size();
+            if (text[0] == 0 && no_padding)
+                n--;
+            ns[h] = n;
+        }
+    }
+    return ns;
+}
+
+inline std::vector<int> TokensObj::get_freq(bool no_padding = false,
+                                            bool boolean = false) {
+    std::size_t G = types.size();
+    if (!no_padding)
+        G++;
+    std::vector<int> freq(G, 0);
+    std::vector<bool> flag(G);
+    std::size_t H = texts.size();
+    for (std::size_t h = 0; h < H; h++) {
+        const Text &text = texts[h];
+        std::fill(flag.begin(), flag.end(), false);
+        std::size_t I = text.size();
+        for (std::size_t i = 0; i < I; i++) {
+            unsigned int id = text[i];
+            // ignore paddings
+            if (no_padding) {
+                if (id == 0)
+                    continue;
+                id--;
+            }
+            if (boolean && flag[id])
+                continue;
+            freq[id]++;
+            flag[id] = true;
+        }
+    }
+    return freq;
 }

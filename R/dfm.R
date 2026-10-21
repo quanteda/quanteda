@@ -12,6 +12,12 @@
 #' @section Changes in version 3:
 #' In \pkg{quanteda} v4, many convenience functions formerly available in
 #' `dfm()` were removed.
+#' @details
+#'   The total number of non-zero values in `dfm` is constrained by the size of available 
+#'   space in RAM. If **quanteda** cannot allocate enough memory to construct a `dfm` from 
+#'   `tokens` object, users should apply `tokens_remove()` or `tokens_trim()` to reduce the 
+#'   size of the `tokens` objects before applying `dfm()`.
+#'   
 #' @return a [dfm-class] object
 #' @import Matrix
 #' @export
@@ -66,35 +72,11 @@ dfm.tokens <- function(x,
                        ...) {
     
     if (is_verbose(verbose, ...)) {
-        message_create("tokens", "dfm")
-        proc_time <- proc.time()   
-    }
-    
-    result <- dfm(as.tokens_xptr(x), 
-                  tolower = tolower,
-                  remove_padding = remove_padding, 
-                  trim = trim,
-                  verbose = verbose, 
-                  internal = TRUE, ...)
-    
-    if (is_verbose(verbose, ...))
-        message_finish(result, proc_time)
-    
-    return(result)
-
-}
-
-#' @method dfm tokens_xptr
-#' @export
-dfm.tokens_xptr <- function(x,
-                            tolower = TRUE,
-                            remove_padding = FALSE,
-                            trim = TRUE,
-                            verbose = quanteda_options("verbose"),
-                            ...) {
-    
-    if (is_verbose(verbose, ...)) {
-        message_create("tokens_xptr", "dfm")
+        if (is.tokens_xptr(x)) {
+            message_create("tokens_xptr", "dfm")
+        } else {
+            message_create("tokens", "dfm")
+        }
         proc_time <- proc.time()   
     }
     
@@ -112,14 +94,17 @@ dfm.tokens_xptr <- function(x,
     result <- build_dfm(result, colnames(result),
                         docvars = get_docvars(x, user = TRUE, system = TRUE),
                         meta = attrs[["meta"]])
-
+    
     if (is_verbose(verbose, ...))
         message_finish(result, proc_time)
     
     return(result)
+
 }
 
-
+# only for friendly error messages
+#' @export
+dfm.tokens_xptr <- dfm.tokens
 
 #' @importFrom stringi stri_trans_totitle
 #' @export
