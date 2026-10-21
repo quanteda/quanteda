@@ -102,7 +102,8 @@ fcm <- function(x, context = c("document", "window"),
                 window = 5L,
                 weights = NULL,
                 ordered = FALSE,
-                tri = TRUE, ...) {
+                tri = TRUE, 
+                verbose = quanteda_options("verbose"), ...) {
     check_dots(...)
     UseMethod("fcm")
 }
@@ -139,7 +140,8 @@ fcm.dfm <- function(x, context = c("document", "window"),
                        window = 5L,
                        weights = NULL,
                        ordered = FALSE,
-                       tri = TRUE, ...) {
+                       tri = TRUE, 
+                       verbose = quanteda_options("verbose"), ...) {
 
     x <- as.dfm(x)
     context <- match.arg(context)
@@ -147,7 +149,12 @@ fcm.dfm <- function(x, context = c("document", "window"),
     window <- check_integer(window, min = 1)
     ordered <- check_logical(ordered)
     tri <- check_logical(tri)
-
+    
+    if (is_verbose(verbose, ...)) {
+        message_create("dfm", "fcm")
+        proc_time <- proc.time()   
+    }
+    
     attrs <- attributes(x)
     if (!nfeat(x)) {
         result <- build_fcm(
@@ -188,7 +195,10 @@ fcm.dfm <- function(x, context = c("document", "window"),
         count = count, context = context, margin = featfreq(x),
         weights = 1, tri = tri,
         meta = attrs[["meta"]])
-
+    
+    if (is_verbose(verbose, ...))
+        message_finish(result, proc_time)
+    
     return(result)
 }
 
@@ -201,14 +211,24 @@ fcm.tokens_xptr <- function(x, context = c("document", "window"),
                        window = 5L,
                        weights = NULL,
                        ordered = FALSE,
-                       tri = TRUE, ...) {
+                       tri = TRUE, 
+                       verbose = quanteda_options("verbose"), ...) {
 
     context <- match.arg(context)
     count <- match.arg(count)
     window <- check_integer(window, min = 1)
     ordered <- check_logical(ordered)
     tri <- check_logical(tri)
-
+    
+    if (is_verbose(verbose, ...)) {
+        if (is.tokens_xptr(x)) {
+            message_create("tokens_xptr", "fcm")
+        } else {
+            message_create("tokens", "fcm")
+        }
+        proc_time <- proc.time()   
+    }
+    
     attrs <- attributes(x)
     if (ordered)
         tri <- FALSE
@@ -245,6 +265,10 @@ fcm.tokens_xptr <- function(x, context = c("document", "window"),
             weights = weights, ordered = ordered, tri = tri,
             meta = attrs[["meta"]])
     }
+    
+    if (is_verbose(verbose, ...))
+        message_finish(result, proc_time)
+    
     return(result)
 }
 

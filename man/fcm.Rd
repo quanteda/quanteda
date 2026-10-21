@@ -13,6 +13,7 @@ fcm(
   weights = NULL,
   ordered = FALSE,
   tri = TRUE,
+  verbose = quanteda_options("verbose"),
   ...
 )
 }
