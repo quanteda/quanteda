@@ -444,3 +444,33 @@ test_that("unused arguments works for fcm (#2103)", {
         "notanargument argument is not used"
     )
 })
+
+
+test_that("fcm does not modify tokens_xptr", {
+    
+    txt <- c("A A B B C", "A A B C C D D")
+    toks <- tokens(txt) |> 
+        tokens_match(c("A", "B", "C", "D", "E"))
+    xtoks <- as.tokens_xptr(toks)
+    
+    expect_equal(
+        types(xtoks),
+        c("A", "B", "C", "D", "E")
+    )
+    
+    # enable recompilation in cpp_fcm()
+    xtoks <- quanteda:::cpp_set_recompiled(xtoks, FALSE) 
+    expect_equal(
+        featnames(fcm(xtoks, context = "window")),
+        c("A", "B", "C", "D")
+    )
+    
+    # tokens are not recompiled
+    expect_equal(
+        types(xtoks),
+        c("A", "B", "C", "D", "E")
+    )
+    
+})
+
+
