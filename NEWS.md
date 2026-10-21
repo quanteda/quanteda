@@ -6,6 +6,8 @@
 
 * Fixed a bug in `tokens()` when the object's concatenator is an empty character. 
 
+* Fixed a bug to create a redundant copy of `tokens_xptr` when `dfm` is constructed.
+
 ## Changes and additions
 
 * Verbose messages from `corpus`, `tokens`, `dfm` and `fcm` methods now

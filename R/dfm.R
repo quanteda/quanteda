@@ -72,43 +72,13 @@ dfm.tokens <- function(x,
                        ...) {
     
     if (is_verbose(verbose, ...)) {
-        message_create("tokens", "dfm")
+        if (is.tokens_xptr(x)) {
+            message_create("tokens_xptr", "dfm")
+        } else {
+            message_create("tokens", "dfm")
+        }
         proc_time <- proc.time()   
     }
-    result <- dfm_internal(x, tolower, remove_padding, trim, verbose, ...)
-    if (is_verbose(verbose, ...))
-        message_finish(result, proc_time)
-    
-    return(result)
-
-}
-
-#' @method dfm tokens_xptr
-#' @export
-dfm.tokens_xptr <- function(x,
-                            tolower = TRUE,
-                            remove_padding = FALSE,
-                            trim = TRUE,
-                            verbose = quanteda_options("verbose"),
-                            ...) {
-    
-    if (is_verbose(verbose, ...)) {
-        message_create("tokens_xptr", "dfm")
-        proc_time <- proc.time()   
-    }
-    result <- dfm_internal(x, tolower, remove_padding, trim, verbose, ...)
-    if (is_verbose(verbose, ...))
-        message_finish(result, proc_time)
-    
-    return(result)
-}
-
-dfm_internal <- function(x, 
-                         tolower = TRUE,
-                         remove_padding = FALSE,
-                         trim = TRUE,
-                         verbose = quanteda_options("verbose"),
-                         ...) {
     
     check_dots(...)
     x <- as.tokens_xptr(x) # avoid modifying the original tokens
@@ -124,10 +94,16 @@ dfm_internal <- function(x,
     result <- build_dfm(result, colnames(result),
                         docvars = get_docvars(x, user = TRUE, system = TRUE),
                         meta = attrs[["meta"]])
-    return(result)
     
+    if (is_verbose(verbose, ...))
+        message_finish(result, proc_time)
+    
+    return(result)
+
 }
 
+# only for friendly error messages
+dfm.tokens_xptr <- dfm.tokens
 
 #' @importFrom stringi stri_trans_totitle
 #' @export
