@@ -163,8 +163,11 @@ test_that("test dfm_group keeps group-level variables", {
                     "segid_" = c(1L, 1L, 1L),
                     grp = c("A", "C", "D"),
                     var1 = c(2, 2, 1),
-                    var3 = c("y", NA, "x"),
+                    var2 = c(NA_real_, NA_real_, NA_real_),
+                    var3 = c("y", NA_character_, "x"),
+                    var4 = c(NA_character_, NA_character_, NA_character_),
                     var5 = as.Date(c("2015-03-01", "2012-12-15", "2018-01-01")),
+                    var6 = as.Date(c(NA, NA, NA)),
                     stringsAsFactors = FALSE)
     )
     
@@ -175,10 +178,13 @@ test_that("test dfm_group keeps group-level variables", {
                    "docid_" = factor(c("A", "B", "C", "D"), 
                                        levels = c("A", "B", "C", "D")),
                    "segid_" = c(1L, 1L, 1L, 1L),
-                   grp = c("A", NA, "C", "D"),
-                   var1 = c(2, NA, 2, 1),
-                   var3 = c("y", NA, NA, "x"),
-                   var5 = as.Date(c("2015-03-01", NA, "2012-12-15", "2018-01-01")),
+                   grp = c("A", NA_character_, "C", "D"),
+                   var1 = c(2, NA_integer_, 2, 1),
+                   var2 = c(NA_real_, NA_real_, NA_real_, NA_real_),
+                   var3 = c("y", NA_character_, NA_character_, "x"),
+                   var4 = c(NA_character_, NA_character_, NA_character_, NA_character_),
+                   var5 = as.Date(c("2015-03-01", NA_real_, "2012-12-15", "2018-01-01")),
+                   var6 = as.Date(c(NA, NA, NA, NA)),
                    stringsAsFactors = FALSE)
     )
     
@@ -192,12 +198,36 @@ test_that("test dfm_group keeps group-level variables", {
                    grp = c("A", "C"),
                    var1 = c(2, 2),
                    var2 = c(2, 3),
-                   var3 = c("y", NA),
+                   var3 = c("y", NA_character_),
                    var4 = c("y", "x"),
                    var5 = as.Date(c("2015-03-01", "2012-12-15")),
                    var6 = as.Date(c("2015-03-01", "2012-12-15")),
                    stringsAsFactors = FALSE)
     )
+})
+
+test_that("grouped docvars keep their classes and can be rbind-ed", {
+    corp <- corpus(c("a b", "b c", "c d", "d e"),
+                   docvars = data.frame(grp = c("x", "x", "y", "y"),
+                                        fac = factor(c("u", "v", "w", "w")),
+                                        date = as.Date("2020-01-01") + 0:3,
+                                        time = as.POSIXct("2020-01-01", tz = "UTC") + 0:3,
+                                        stringsAsFactors = FALSE))
+    dfmat <- dfm(tokens(corp))
+    dfmat_grp <- dfm_group(dfmat, grp)
+    dv <- docvars(dfmat_grp)
+    expect_identical(levels(dv$fac), c("u", "v", "w"))
+    expect_true(all(is.na(dv$fac)))
+    expect_s3_class(dv$date, "Date")
+    expect_s3_class(dv$time, "POSIXct")
+    expect_true(all(is.na(dv$date)))
+    expect_true(all(is.na(dv$time)))
+
+    dv_all <- rbind(dv, docvars(dfmat))
+    expect_s3_class(dv_all$fac, "factor")
+    expect_s3_class(dv_all$date, "Date")
+    expect_s3_class(dv_all$time, "POSIXct")
+    expect_identical(tail(dv_all$date, 4), docvars(dfmat)$date)
 })
 
 test_that("is_grouped is working", {
@@ -265,21 +295,25 @@ test_that("force argument works as expected (#1545)", {
     expect_is(dfm_group(dfmat_tfidf, groups = grp, force = TRUE), "dfm")
 })
 
-test_that("group_docvar drops list column (#1553)", {
+test_that("group_docvars sets NA for list columns", {
     data <- data.frame("docname_" = c("A", "B", "C", "D"),
                        "docid_" = factor(c("text1", "text2", "text2", "text3")),
                        "segid_" = c(1L, 1L, 1L, 1L),
                        vec1 = c(1, 3, 3, 6),
                        vec2 = c("a", "b", "b", "c"),
+                       lis = c(NA, NA, NA, NA),
                        stringsAsFactors = FALSE)
     data$lis <- list(1:3, -5, 3:4, 1)
+    expected <- data.frame("docname_" = c("1", "2", "3"),
+                           "docid_" = factor(c("1", "2", "3")),
+                           "segid_" = c(1L, 1L, 1L),
+                           vec1 = c(1, 3, 6),
+                           vec2 = c("a", "b", "c"),
+                           lis = c(NA, NA, NA),
+                           stringsAsFactors = FALSE)
+    expected$lis <- list(NA, NA, NA)
     expect_equal(quanteda:::group_docvars(data, factor(c(1, 2, 2, 3))),
-                 data.frame("docname_" = c("1", "2", "3"),
-                            "docid_" = factor(c("1", "2", "3")),
-                            "segid_" = c(1L, 1L, 1L),
-                            vec1 = c(1, 3, 6),
-                            vec2 = c("a", "b", "c"),
-                            stringsAsFactors = FALSE))
+                 expected)
     
     corp <- corpus(c("a a c d", "s i k e", "k a i e", "z o p"),
                    docvars = data.frame(vec1 = c(1, 3, 3, 6),
