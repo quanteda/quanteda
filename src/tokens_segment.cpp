@@ -2,9 +2,11 @@
 //#include "dev.h"
 using namespace quanteda;
 
+// begin & end position of pattern matches
 typedef std::pair<size_t, size_t> Target;
 typedef std::vector<Target> Targets;
 
+// begin & end of new texts, begin * end of pattern matches
 typedef std::tuple<int, int, int, int> Segment;
 typedef std::vector<Segment> Segments;
 
@@ -20,7 +22,7 @@ Segments segment(const Text &tokens,
     Targets targets;
     for (std::size_t span : spans) { // substitution starts from the longest sequences
         if (tokens.size() < span) continue;
-        for (size_t i = 0; i < tokens.size() - (span - 1); i++) {
+        for (size_t i = 0; i < tokens.size() - (span - 1); i++) {// start from previous segmentation point?
             Ngram ngram(tokens.begin() + i, tokens.begin() + i + span);
             bool is_in = set_patterns.find(ngram) != set_patterns.end();
             if (is_in) {
@@ -127,29 +129,29 @@ TokensPtr cpp_tokens_segment(TokensPtr xptr,
     }
 #endif
     
-    Texts segments(N);
+    Texts texts_new(N);
     std::vector<int> index(N);
     std::vector<std::string> matches(N);
     
     std::size_t j = 0;
     for (std::size_t h = 0; h < temp.size(); h++) {
-        Segments targets = temp[h];
-        if (targets.empty()) continue;
+        Segments segments = temp[h];
+        if (segments.empty()) continue;
         Text text = xptr->texts[h];
-        for (size_t i = 0; i < targets.size(); i++) {
-            Segment target = targets[i];
+        for (size_t i = 0; i < segments.size(); i++) {
+            Segment segment = segments[i];
             
             // extract text segments
-            if (0 <= std::get<0>(target) && std::get<1>(target) < (int)text.size()) {
-                Text segment(text.begin() + std::get<0>(target), text.begin() + std::get<1>(target) + 1);
-                segments[j] = segment;
+            if (0 <= std::get<0>(segment) && std::get<1>(segment) < (int)text.size()) {
+                Text text_new(text.begin() + std::get<0>(segment), text.begin() + std::get<1>(segment) + 1);
+                texts_new[j] = text_new;
             } else {
-                segments[j] = {};
+                texts_new[j] = {};
             }
             
             // extract matched patterns
-            if (remove && 0 <= std::get<2>(target) && 0 <= std::get<3>(target)) {
-                Text match(text.begin() + std::get<2>(target), text.begin() + std::get<3>(target) + 1);
+            if (remove && 0 <= std::get<2>(segment) && 0 <= std::get<3>(segment)) {
+                Text match(text.begin() + std::get<2>(segment), text.begin() + std::get<3>(segment) + 1);
                 matches[j] = join_strings(match, xptr->types, " ");
             } else {
                 matches[j] = "";
@@ -159,7 +161,7 @@ TokensPtr cpp_tokens_segment(TokensPtr xptr,
         }
     }
     
-    TokensObj *ptr_new = new TokensObj(segments, xptr->types, xptr->recompiled);
+    TokensObj *ptr_new = new TokensObj(texts_new, xptr->types, xptr->recompiled);
     TokensPtr xptr_new = TokensPtr(ptr_new, true);
     
     xptr_new.attr("matches") = encode(matches);
@@ -173,22 +175,9 @@ TokensPtr cpp_tokens_segment(TokensPtr xptr,
 
 /***R
 
-toks <- tokens("aa bb cc")
-xtoks <- as.tokens_xptr(toks)
-#toks <- rep(list(rep(1:10, 1), rep(5:15, 1)), 1)
-#dict <- list(c(1, 2), c(5, 6), 10, 15, 20)
-#cpp_tokens_contexts(toks, dict, 2)
-#cpp_tokens_segment(toks, letters, list(c(5, 6), 10), TRUE, 2)
-out <- cpp_tokens_segment(xtoks, list(2), FALSE, 1)
+toks <- tokens("aa bb . cc", xptr = TRUE)
+out <- cpp_tokens_segment(toks, list(3L), FALSE, 1)
+quanteda:::cpp_as_list(out)
 attributes(out)
-#cpp_tokens_segment(toks, letters, list(c(5, 6), 10), FALSE, 2)
-
-# 
-# cpp_tokens_segment(toks, letters, list(10))
-# cpp_tokens_segment(toks, letters, list(c(3, 4), 7))
-# cpp_tokens_segment(toks, letters, list(c(3, 4), 7))
-# cpp_tokens_segment(toks, letters, c(3, 4, 7))
-# cpp_tokens_segment(toks, letters, c(3, 4, 7))
-
 
 */
