@@ -28,7 +28,7 @@
 
     <a class="navbar-brand me-2" href="../../index.html">quanteda</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">4.5.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">4.5.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -193,18 +193,7 @@ compitiendo en la elección del Reino Unido en 2010 (llamado
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">corp_uk</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/corpus.html">corpus</a></span><span class="op">(</span><span class="va">data_char_ukimmig2010</span><span class="op">)</span>  <span class="co"># build a new corpus from the texts</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">corp_uk</span><span class="op">)</span></span>
-<span><span class="co">## Corpus consisting of 9 documents, showing 9 documents:</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">##          Text Types Tokens Sentences</span></span>
-<span><span class="co">##           BNP  1125   3280       136</span></span>
-<span><span class="co">##     Coalition   142    260        12</span></span>
-<span><span class="co">##  Conservative   251    499        21</span></span>
-<span><span class="co">##        Greens   322    679        30</span></span>
-<span><span class="co">##        Labour   298    683        33</span></span>
-<span><span class="co">##        LibDem   251    483        26</span></span>
-<span><span class="co">##            PC    77    114         5</span></span>
-<span><span class="co">##           SNP    88    134         4</span></span>
-<span><span class="co">##          UKIP   346    723        37</span></span></code></pre></div>
+<span><span class="co">## corpus of 9 documents (38,612 characters).</span></span></code></pre></div>
 <p>Si quisiéramos, también podríamos incorporar también a este corpus
 algunas variables a nivel documento – lo que quanteda llama
 <em>docvars</em>.</p>
@@ -216,18 +205,7 @@ variable de documento (<code>docvar</code>).</p>
 <code class="sourceCode R"><span><span class="fu"><a href="../../reference/docvars.html">docvars</a></span><span class="op">(</span><span class="va">corp_uk</span>, <span class="st">"Party"</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">data_char_ukimmig2010</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../../reference/docvars.html">docvars</a></span><span class="op">(</span><span class="va">corp_uk</span>, <span class="st">"Year"</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fl">2010</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">corp_uk</span><span class="op">)</span></span>
-<span><span class="co">## Corpus consisting of 9 documents, showing 9 documents:</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">##          Text Types Tokens Sentences        Party Year</span></span>
-<span><span class="co">##           BNP  1125   3280       136          BNP 2010</span></span>
-<span><span class="co">##     Coalition   142    260        12    Coalition 2010</span></span>
-<span><span class="co">##  Conservative   251    499        21 Conservative 2010</span></span>
-<span><span class="co">##        Greens   322    679        30       Greens 2010</span></span>
-<span><span class="co">##        Labour   298    683        33       Labour 2010</span></span>
-<span><span class="co">##        LibDem   251    483        26       LibDem 2010</span></span>
-<span><span class="co">##            PC    77    114         5           PC 2010</span></span>
-<span><span class="co">##           SNP    88    134         4          SNP 2010</span></span>
-<span><span class="co">##          UKIP   346    723        37         UKIP 2010</span></span></code></pre></div>
+<span><span class="co">## corpus of 9 documents (38,612 characters) and 2 docvars.</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="cargando-archivos-usando-el-paquete-readtext">Cargando archivos usando el paquete readtext<a class="anchor" aria-label="anchor" href="#cargando-archivos-usando-el-paquete-readtext"></a>
@@ -300,56 +278,7 @@ al método <code><a href="https://rdrr.io/r/base/summary.html" class="external-l
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">data_corpus_irishbudget2010</span>, package <span class="op">=</span> <span class="st">"quanteda.textmodels"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">data_corpus_irishbudget2010</span><span class="op">)</span></span>
-<span><span class="co">## Corpus consisting of 14 documents, showing 14 documents:</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">##                       Text Types Tokens Sentences year debate number      foren</span></span>
-<span><span class="co">##        Lenihan, Brian (FF)  1953   8641       404 2010 BUDGET     01      Brian</span></span>
-<span><span class="co">##       Bruton, Richard (FG)  1040   4446       217 2010 BUDGET     02    Richard</span></span>
-<span><span class="co">##         Burton, Joan (LAB)  1624   6393       309 2010 BUDGET     03       Joan</span></span>
-<span><span class="co">##        Morgan, Arthur (SF)  1595   7107       345 2010 BUDGET     04     Arthur</span></span>
-<span><span class="co">##          Cowen, Brian (FF)  1629   6599       252 2010 BUDGET     05      Brian</span></span>
-<span><span class="co">##           Kenny, Enda (FG)  1148   4232       155 2010 BUDGET     06       Enda</span></span>
-<span><span class="co">##      ODonnell, Kieran (FG)   678   2297       133 2010 BUDGET     07     Kieran</span></span>
-<span><span class="co">##       Gilmore, Eamon (LAB)  1181   4177       203 2010 BUDGET     08      Eamon</span></span>
-<span><span class="co">##     Higgins, Michael (LAB)   488   1286        44 2010 BUDGET     09    Michael</span></span>
-<span><span class="co">##        Quinn, Ruairi (LAB)   439   1284        60 2010 BUDGET     10     Ruairi</span></span>
-<span><span class="co">##      Gormley, John (Green)   401   1030        50 2010 BUDGET     11       John</span></span>
-<span><span class="co">##        Ryan, Eamon (Green)   510   1643        90 2010 BUDGET     12      Eamon</span></span>
-<span><span class="co">##      Cuffe, Ciaran (Green)   442   1240        45 2010 BUDGET     13     Ciaran</span></span>
-<span><span class="co">##  OCaolain, Caoimhghin (SF)  1188   4044       177 2010 BUDGET     14 Caoimhghin</span></span>
-<span><span class="co">##      name party</span></span>
-<span><span class="co">##   Lenihan    FF</span></span>
-<span><span class="co">##    Bruton    FG</span></span>
-<span><span class="co">##    Burton   LAB</span></span>
-<span><span class="co">##    Morgan    SF</span></span>
-<span><span class="co">##     Cowen    FF</span></span>
-<span><span class="co">##     Kenny    FG</span></span>
-<span><span class="co">##  ODonnell    FG</span></span>
-<span><span class="co">##   Gilmore   LAB</span></span>
-<span><span class="co">##   Higgins   LAB</span></span>
-<span><span class="co">##     Quinn   LAB</span></span>
-<span><span class="co">##   Gormley Green</span></span>
-<span><span class="co">##      Ryan Green</span></span>
-<span><span class="co">##     Cuffe Green</span></span>
-<span><span class="co">##  OCaolain    SF</span></span></code></pre></div>
-<p>Se puede guardar el output del comando summary como un data frame y
-graficar algunos estadísticos descriptivos con esta información:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">tokeninfo</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">data_corpus_inaugural</span><span class="op">)</span></span>
-<span><span class="kw">if</span> <span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span><span class="op">)</span></span>
-<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">tokeninfo</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">Year</span>, y <span class="op">=</span> <span class="va">Tokens</span>, group <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_x_continuous</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1789</span>, <span class="fl">2017</span>, <span class="fl">12</span><span class="op">)</span><span class="op">)</span>, breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1789</span>, <span class="fl">2017</span>, <span class="fl">12</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">## Loading required package: ggplot2</span></span></code></pre></div>
-<p><img src="quickstart_es_files/figure-html/unnamed-chunk-11-1.png" class="r-plt" alt="" width="768"></p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="co"># El discurso inaugural más largo: William Henry Harrison</span></span>
-<span><span class="va">tokeninfo</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/which.min.html" class="external-link">which.max</a></span><span class="op">(</span><span class="va">tokeninfo</span><span class="op">$</span><span class="va">Tokens</span><span class="op">)</span>, <span class="op">]</span></span>
-<span><span class="co">##             Text Types Tokens Sentences Year President     FirstName Party</span></span>
-<span><span class="co">## 14 1841-Harrison  1896   9125       210 1841  Harrison William Henry  Whig</span></span></code></pre></div>
+<span><span class="co">## corpus of 14 documents (286,271 characters) and 6 docvars.</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level3">
@@ -362,37 +291,12 @@ graficar algunos estadísticos descriptivos con esta información:</p>
 dos objetos corpus. Si contenían diferentes sets de variables a nivel
 documento las unirá de manera que no se pierda nada de información. La
 meta-data a nivel corpus también queda concatenada.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">corp1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/corpus.html">corpus</a></span><span class="op">(</span><span class="va">data_corpus_inaugural</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="va">corp2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/corpus.html">corpus</a></span><span class="op">(</span><span class="va">data_corpus_inaugural</span><span class="op">[</span><span class="fl">53</span><span class="op">:</span><span class="fl">58</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="va">corp3</span> <span class="op">&lt;-</span> <span class="va">corp1</span> <span class="op">+</span> <span class="va">corp2</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">corp3</span><span class="op">)</span></span>
-<span><span class="co">## Corpus consisting of 11 documents, showing 11 documents:</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">##             Text Types Tokens Sentences Year  President FirstName</span></span>
-<span><span class="co">##  1789-Washington   625   1537        24 1789 Washington    George</span></span>
-<span><span class="co">##  1793-Washington    96    147         5 1793 Washington    George</span></span>
-<span><span class="co">##       1797-Adams   826   2577        37 1797      Adams      John</span></span>
-<span><span class="co">##   1801-Jefferson   717   1923        43 1801  Jefferson    Thomas</span></span>
-<span><span class="co">##   1805-Jefferson   804   2380        45 1805  Jefferson    Thomas</span></span>
-<span><span class="co">##     1997-Clinton   773   2436       113 1997    Clinton      Bill</span></span>
-<span><span class="co">##        2001-Bush   621   1806        98 2001       Bush George W.</span></span>
-<span><span class="co">##        2005-Bush   772   2312        99 2005       Bush George W.</span></span>
-<span><span class="co">##       2009-Obama   938   2689       112 2009      Obama    Barack</span></span>
-<span><span class="co">##       2013-Obama   814   2317        90 2013      Obama    Barack</span></span>
-<span><span class="co">##       2017-Trump   582   1660        89 2017      Trump Donald J.</span></span>
-<span><span class="co">##                  Party</span></span>
-<span><span class="co">##                   none</span></span>
-<span><span class="co">##                   none</span></span>
-<span><span class="co">##             Federalist</span></span>
-<span><span class="co">##  Democratic-Republican</span></span>
-<span><span class="co">##  Democratic-Republican</span></span>
-<span><span class="co">##             Democratic</span></span>
-<span><span class="co">##             Republican</span></span>
-<span><span class="co">##             Republican</span></span>
-<span><span class="co">##             Democratic</span></span>
-<span><span class="co">##             Democratic</span></span>
-<span><span class="co">##             Republican</span></span></code></pre></div>
+<span><span class="co">## corpus of 11 documents (113,383 characters) and 4 docvars.</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="armando-subsets-dentro-de-objetos-corpus">Armando subsets dentro de objetos corpus<a class="anchor" aria-label="anchor" href="#armando-subsets-dentro-de-objetos-corpus"></a>
@@ -400,29 +304,11 @@ meta-data a nivel corpus también queda concatenada.</p>
 <p>Hay un método de la función <code><a href="../../reference/corpus_subset.html">corpus_subset()</a></code> definida por
 objetos corpus, donde un nuevo corpus puede ser extraído en base a
 condiciones lógicas aplicadas a docvars:</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu"><a href="../../reference/corpus_subset.html">corpus_subset</a></span><span class="op">(</span><span class="va">data_corpus_inaugural</span>, <span class="va">Year</span> <span class="op">&gt;</span> <span class="fl">1990</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">## Corpus consisting of 9 documents, showing 9 documents:</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">##          Text Types Tokens Sentences Year President FirstName      Party</span></span>
-<span><span class="co">##  1993-Clinton   642   1833        82 1993   Clinton      Bill Democratic</span></span>
-<span><span class="co">##  1997-Clinton   773   2436       113 1997   Clinton      Bill Democratic</span></span>
-<span><span class="co">##     2001-Bush   621   1806        98 2001      Bush George W. Republican</span></span>
-<span><span class="co">##     2005-Bush   772   2312        99 2005      Bush George W. Republican</span></span>
-<span><span class="co">##    2009-Obama   938   2689       112 2009     Obama    Barack Democratic</span></span>
-<span><span class="co">##    2013-Obama   814   2317        90 2013     Obama    Barack Democratic</span></span>
-<span><span class="co">##    2017-Trump   582   1660        89 2017     Trump Donald J. Republican</span></span>
-<span><span class="co">##    2021-Biden   812   2766       229 2021     Biden Joseph R. Democratic</span></span>
-<span><span class="co">##    2025-Trump  1000   3347       177 2025     Trump Donald J. Republican</span></span>
+<span><span class="co">## corpus of 9 documents (106,372 characters) and 4 docvars.</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu"><a href="../../reference/corpus_subset.html">corpus_subset</a></span><span class="op">(</span><span class="va">data_corpus_inaugural</span>, <span class="va">President</span> <span class="op">==</span> <span class="st">"Adams"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">## Corpus consisting of 2 documents, showing 2 documents:</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">##        Text Types Tokens Sentences Year President   FirstName</span></span>
-<span><span class="co">##  1797-Adams   826   2577        37 1797     Adams        John</span></span>
-<span><span class="co">##  1825-Adams  1003   3147        75 1825     Adams John Quincy</span></span>
-<span><span class="co">##                  Party</span></span>
-<span><span class="co">##             Federalist</span></span>
-<span><span class="co">##  Democratic-Republican</span></span></code></pre></div>
+<span><span class="co">## corpus of 2 documents (31,622 characters) and 4 docvars.</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level3">
@@ -431,7 +317,7 @@ condiciones lógicas aplicadas a docvars:</p>
 <p>La función <code>kwic</code> (keywords-in-context) realiza una
 búsqueda de una palabra y permite visualizar los contextos en los que
 aparece:</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">toks</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/tokens.html">tokens</a></span><span class="op">(</span><span class="va">data_corpus_inaugural</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../../reference/kwic.html">kwic</a></span><span class="op">(</span><span class="va">toks</span>, pattern <span class="op">=</span> <span class="st">"terror"</span><span class="op">)</span></span>
 <span><span class="co">## Keyword-in-context with 8 matches.</span></span>
@@ -453,7 +339,7 @@ aparece:</p>
 <span><span class="co">##  . And they torment the           </span></span>
 <span><span class="co">##  and destruction. Our children    </span></span>
 <span><span class="co">##  and slaughtering innocents, we</span></span></code></pre></div>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../../reference/kwic.html">kwic</a></span><span class="op">(</span><span class="va">toks</span>, pattern <span class="op">=</span> <span class="st">"terror"</span>, valuetype <span class="op">=</span> <span class="st">"regex"</span><span class="op">)</span></span>
 <span><span class="co">## Keyword-in-context with 13 matches.</span></span>
 <span><span class="co">##                                                                             </span></span>
@@ -484,7 +370,7 @@ aparece:</p>
 <span><span class="co">##  , which we will eradicate        </span></span>
 <span><span class="co">##  that we must confront and        </span></span>
 <span><span class="co">##  organizations. And by invoking</span></span></code></pre></div>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../../reference/kwic.html">kwic</a></span><span class="op">(</span><span class="va">toks</span>, pattern <span class="op">=</span> <span class="st">"communist*"</span><span class="op">)</span></span>
 <span><span class="co">## Keyword-in-context with 2 matches.</span></span>
 <span><span class="co">##                                                                   </span></span>
@@ -497,7 +383,7 @@ aparece:</p>
 <code>President</code> (presidente) son variables asociadas a cada
 documento. Es posible acceder a dichas variables con la función
 ‘docvars()’</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># inspect the document-level variables</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="../../reference/docvars.html">docvars</a></span><span class="op">(</span><span class="va">data_corpus_inaugural</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">##   Year  President FirstName                 Party</span></span>
@@ -539,11 +425,11 @@ de input.</p>
 <p>El comando <code><a href="../../reference/tokens.html">tokens()</a></code> es deliberadamente conservador, es
 decir, que no remueve nada del texto excepto que se le especifique
 explícitamente que lo haga.</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">txt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>text1 <span class="op">=</span> <span class="st">"This is $10 in 999 different ways,\n up and down; left and right!"</span>,</span>
 <span>        text2 <span class="op">=</span> <span class="st">"@kenbenoit working: on #quanteda 2day\t4ever, http://textasdata.com?page=123."</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../../reference/tokens.html">tokens</a></span><span class="op">(</span><span class="va">txt</span><span class="op">)</span></span>
-<span><span class="co">## Tokens consisting of 2 documents.</span></span>
+<span><span class="co">## tokens of 2 documents (26 tokens, 24 types).</span></span>
 <span><span class="co">## text1 :</span></span>
 <span><span class="co">##  [1] "This"      "is"        "$"         "10"        "in"        "999"      </span></span>
 <span><span class="co">##  [7] "different" "ways"      ","         "up"        "and"       "down"     </span></span>
@@ -556,7 +442,7 @@ explícitamente que lo haga.</p>
 <span><span class="co">## [7] "4ever"                           ","                              </span></span>
 <span><span class="co">## [9] "http://textasdata.com?page=123."</span></span>
 <span><span class="fu"><a href="../../reference/tokens.html">tokens</a></span><span class="op">(</span><span class="va">txt</span>, remove_numbers <span class="op">=</span> <span class="cn">TRUE</span>,  remove_punct <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="co">## Tokens consisting of 2 documents.</span></span>
+<span><span class="co">## tokens of 2 documents (19 tokens, 18 types).</span></span>
 <span><span class="co">## text1 :</span></span>
 <span><span class="co">##  [1] "This"      "is"        "$"         "in"        "different" "ways"     </span></span>
 <span><span class="co">##  [7] "up"        "and"       "down"      "left"      "and"       "right"    </span></span>
@@ -567,7 +453,7 @@ explícitamente que lo haga.</p>
 <span><span class="co">## [5] "2day"                            "4ever"                          </span></span>
 <span><span class="co">## [7] "http://textasdata.com?page=123."</span></span>
 <span><span class="fu"><a href="../../reference/tokens.html">tokens</a></span><span class="op">(</span><span class="va">txt</span>, remove_numbers <span class="op">=</span> <span class="cn">FALSE</span>, remove_punct <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="co">## Tokens consisting of 2 documents.</span></span>
+<span><span class="co">## tokens of 2 documents (21 tokens, 20 types).</span></span>
 <span><span class="co">## text1 :</span></span>
 <span><span class="co">##  [1] "This"      "is"        "$"         "10"        "in"        "999"      </span></span>
 <span><span class="co">##  [7] "different" "ways"      "up"        "and"       "down"      "left"     </span></span>
@@ -579,7 +465,7 @@ explícitamente que lo haga.</p>
 <span><span class="co">## [5] "2day"                            "4ever"                          </span></span>
 <span><span class="co">## [7] "http://textasdata.com?page=123."</span></span>
 <span><span class="fu"><a href="../../reference/tokens.html">tokens</a></span><span class="op">(</span><span class="va">txt</span>, remove_numbers <span class="op">=</span> <span class="cn">TRUE</span>,  remove_punct <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="co">## Tokens consisting of 2 documents.</span></span>
+<span><span class="co">## tokens of 2 documents (24 tokens, 22 types).</span></span>
 <span><span class="co">## text1 :</span></span>
 <span><span class="co">##  [1] "This"      "is"        "$"         "in"        "different" "ways"     </span></span>
 <span><span class="co">##  [7] ","         "up"        "and"       "down"      ";"         "left"     </span></span>
@@ -592,7 +478,7 @@ explícitamente que lo haga.</p>
 <span><span class="co">## [7] "4ever"                           ","                              </span></span>
 <span><span class="co">## [9] "http://textasdata.com?page=123."</span></span>
 <span><span class="fu"><a href="../../reference/tokens.html">tokens</a></span><span class="op">(</span><span class="va">txt</span>, remove_numbers <span class="op">=</span> <span class="cn">FALSE</span>, remove_punct <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="co">## Tokens consisting of 2 documents.</span></span>
+<span><span class="co">## tokens of 2 documents (26 tokens, 24 types).</span></span>
 <span><span class="co">## text1 :</span></span>
 <span><span class="co">##  [1] "This"      "is"        "$"         "10"        "in"        "999"      </span></span>
 <span><span class="co">##  [7] "different" "ways"      ","         "up"        "and"       "down"     </span></span>
@@ -605,7 +491,7 @@ explícitamente que lo haga.</p>
 <span><span class="co">## [7] "4ever"                           ","                              </span></span>
 <span><span class="co">## [9] "http://textasdata.com?page=123."</span></span>
 <span><span class="fu"><a href="../../reference/tokens.html">tokens</a></span><span class="op">(</span><span class="va">txt</span>, remove_numbers <span class="op">=</span> <span class="cn">FALSE</span>, remove_punct <span class="op">=</span> <span class="cn">FALSE</span>, remove_separators <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="co">## Tokens consisting of 2 documents.</span></span>
+<span><span class="co">## tokens of 2 documents (45 tokens, 27 types).</span></span>
 <span><span class="co">## text1 :</span></span>
 <span><span class="co">##  [1] "This"      " "         "is"        " "         "$"         "10"       </span></span>
 <span><span class="co">##  [7] " "         "in"        " "         "999"       " "         "different"</span></span>
@@ -617,26 +503,26 @@ explícitamente que lo haga.</p>
 <span><span class="co">## [11] "\t"         "4ever"     </span></span>
 <span><span class="co">## [ ... and 3 more ]</span></span></code></pre></div>
 <p>También existe la opción de convertir en token los caracteres:</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../../reference/tokens.html">tokens</a></span><span class="op">(</span><span class="st">"Great website: http://textasdata.com?page=123."</span>, what <span class="op">=</span> <span class="st">"character"</span><span class="op">)</span></span>
-<span><span class="co">## Tokens consisting of 1 document.</span></span>
+<span><span class="co">## tokens of 1 document (44 tokens, 25 types).</span></span>
 <span><span class="co">## text1 :</span></span>
 <span><span class="co">##  [1] "G" "r" "e" "a" "t" "w" "e" "b" "s" "i" "t" "e"</span></span>
 <span><span class="co">## [ ... and 32 more ]</span></span>
 <span><span class="fu"><a href="../../reference/tokens.html">tokens</a></span><span class="op">(</span><span class="st">"Great website: http://textasdata.com?page=123."</span>, what <span class="op">=</span> <span class="st">"character"</span>,</span>
 <span>        remove_separators <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="co">## Tokens consisting of 1 document.</span></span>
+<span><span class="co">## tokens of 1 document (46 tokens, 26 types).</span></span>
 <span><span class="co">## text1 :</span></span>
 <span><span class="co">##  [1] "G" "r" "e" "a" "t" " " "w" "e" "b" "s" "i" "t"</span></span>
 <span><span class="co">## [ ... and 34 more ]</span></span></code></pre></div>
 <p>y las oraciones:</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># sentence level         </span></span>
 <span><span class="fu"><a href="../../reference/tokens.html">tokens</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Kurt Vongeut said; only assholes use semi-colons."</span>,</span>
 <span>          <span class="st">"Today is Thursday in Canberra:  It is yesterday in London."</span>,</span>
 <span>          <span class="st">"En el caso de que no puedas ir con ellos, ¿quieres ir con nosotros?"</span><span class="op">)</span>,</span>
 <span>         what <span class="op">=</span> <span class="st">"sentence"</span><span class="op">)</span></span>
-<span><span class="co">## Tokens consisting of 3 documents.</span></span>
+<span><span class="co">## tokens of 3 documents (3 tokens, 3 types).</span></span>
 <span><span class="co">## text1 :</span></span>
 <span><span class="co">## [1] "Kurt Vongeut said; only assholes use semi-colons."</span></span>
 <span><span class="co">## </span></span>
@@ -659,14 +545,14 @@ del enfoque conservador de <code><a href="../../reference/tokens.html">tokens()<
 <code><a href="https://rdrr.io/r/base/chartr.html" class="external-link">tolower()</a></code> – una función separada para transformar textos a
 minúsculas – y remueve puntuación. De todos modos, todas las opciones de
 <code><a href="../../reference/tokens.html">tokens()</a></code> se pueden pasar a <code><a href="../../reference/dfm.html">dfm()</a></code>.</p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">corp_inaug_post1990</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/corpus_subset.html">corpus_subset</a></span><span class="op">(</span><span class="va">data_corpus_inaugural</span>, <span class="va">Year</span> <span class="op">&gt;</span> <span class="fl">1990</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># make a dfm</span></span>
 <span><span class="va">dfmat_inaug_post1990</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/tokens.html">tokens</a></span><span class="op">(</span><span class="va">corp_inaug_post1990</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="../../reference/dfm.html">dfm</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">dfmat_inaug_post1990</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></span>
-<span><span class="co">## Document-feature matrix of: 9 documents, 5 features (0.00% sparse) and 4</span></span>
+<span><span class="co">## dfm of 9 documents x 5 features (1,376 occurrences, 0.00% sparsity) and 4</span></span>
 <span><span class="co">## docvars.</span></span>
 <span><span class="co">##               features</span></span>
 <span><span class="co">## docs           my fellow citizens   , today</span></span>
@@ -679,13 +565,13 @@ minúsculas – y remueve puntuación. De todos modos, todas las opciones de
 <span><span class="co">## [ reached max_ndoc ... 3 more documents ]</span></span></code></pre></div>
 <p>Otras opciones para incluyen remover las stopwords y realizar
 stemming de los tokens.</p>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># make a dfm, removing stopwords and applying stemming</span></span>
 <span><span class="va">dfmat_inaug_post1990</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/dfm.html">dfm</a></span><span class="op">(</span><span class="va">dfmat_inaug_post1990</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="../../reference/dfm_select.html">dfm_remove</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html" class="external-link">stopwords</a></span><span class="op">(</span><span class="st">"english"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="../../reference/tokens_wordstem.html">dfm_wordstem</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">dfmat_inaug_post1990</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></span>
-<span><span class="co">## Document-feature matrix of: 9 documents, 5 features (4.44% sparse) and 4</span></span>
+<span><span class="co">## dfm of 9 documents x 5 features (1,340 occurrences, 4.44% sparsity) and 4</span></span>
 <span><span class="co">## docvars.</span></span>
 <span><span class="co">##               features</span></span>
 <span><span class="co">## docs           fellow citizen   , today celebr</span></span>
@@ -700,7 +586,7 @@ stemming de los tokens.</p>
 mayoría de los usuarios proveerán una lista de ‘stop words’ predefinidas
 para varios idiomas, accediendo a través de la función
 <code><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html" class="external-link">stopwords()</a></code>:</p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html" class="external-link">stopwords</a></span><span class="op">(</span><span class="st">"en"</span><span class="op">)</span>, <span class="fl">20</span><span class="op">)</span></span>
 <span><span class="co">##  [1] "i"          "me"         "my"         "myself"     "we"        </span></span>
 <span><span class="co">##  [6] "our"        "ours"       "ourselves"  "you"        "your"      </span></span>
@@ -718,14 +604,13 @@ Rstudio o llamando la función <code>View</code> en R. Llamando la
 función <code>plot</code> en un dfm se presentará una nube de palabras
 usando el paquete <a href="https://cran.r-project.org/web/packages/wordcloud" class="external-link">wordcloud
 package</a></p>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dfmat_uk</span> <span class="op">&lt;-</span> <span class="va">data_char_ukimmig2010</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="../../reference/tokens.html">tokens</a></span><span class="op">(</span>remove_punct <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="../../reference/tokens_select.html">tokens_remove</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html" class="external-link">stopwords</a></span><span class="op">(</span><span class="st">"english"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="../../reference/dfm.html">dfm</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">dfmat_uk</span></span>
-<span><span class="co">## Document-feature matrix of: 9 documents, 1,547 features (83.78% sparse) and 0</span></span>
-<span><span class="co">## docvars.</span></span>
+<span><span class="co">## dfm of 9 documents x 1,547 features (3,461 occurrences, 83.78% sparsity).</span></span>
 <span><span class="co">##               features</span></span>
 <span><span class="co">## docs           immigration unparalleled crisis bnp can solve current birth</span></span>
 <span><span class="co">##   BNP                   21            1      2  13   1     2       4     4</span></span>
@@ -746,7 +631,7 @@ package</a></p>
 <span><span class="co">## features ]</span></span></code></pre></div>
 <p>Para acceder a la lista de los atributos más frecuentes es posible
 utilizar <code><a href="../../reference/topfeatures.html">topfeatures()</a></code>:</p>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../../reference/topfeatures.html">topfeatures</a></span><span class="op">(</span><span class="va">dfmat_uk</span>, <span class="fl">20</span><span class="op">)</span> <span class="co"># 20 most frequent words</span></span>
 <span><span class="co">## immigration     british      people      asylum     britain          uk </span></span>
 <span><span class="co">##          66          37          35          29          28          27 </span></span>
@@ -761,13 +646,13 @@ palabras usando <code><a href="https://rdrr.io/pkg/quanteda.textplots/man/textpl
 argumentos a <code>wordcloud()</code> del paquete
 <strong>wordcloud</strong> y puede embellecer el gráfico usando los
 mismos argumentos:</p>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">"quanteda.textplots"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/quanteda.textplots/man/textplot_wordcloud.html" class="external-link">textplot_wordcloud</a></span><span class="op">(</span><span class="va">dfmat_uk</span>, min_freq <span class="op">=</span> <span class="fl">6</span>, random_order <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>                  rotation <span class="op">=</span> <span class="fl">.25</span>,</span>
 <span>                  colors <span class="op">=</span> <span class="fu">RColorBrewer</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/RColorBrewer/man/ColorBrewer.html" class="external-link">brewer.pal</a></span><span class="op">(</span><span class="fl">8</span>, <span class="st">"Dark2"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="quickstart_es_files/figure-html/unnamed-chunk-26-1.png" class="r-plt" alt="" width="672"></p>
+<p><img src="quickstart_es_files/figure-html/unnamed-chunk-25-1.png" class="r-plt" alt="" width="672"></p>
 </div>
 <div class="section level4">
 <h4 id="agrupando-documentos-por-variable">Agrupando documentos por variable<a class="anchor" aria-label="anchor" href="#agrupando-documentos-por-variable"></a>
@@ -777,15 +662,15 @@ según factores sustantivos que pueden estar codificados en las variables
 de documento en vez de simplemente por los límites de los archivos. En
 esos casos es posible agrupar los documentos que comparten el mismo
 valor por variable de documento cuando se crea un dfm:</p>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dfmat_ire</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/tokens.html">tokens</a></span><span class="op">(</span><span class="va">data_corpus_irishbudget2010</span>, remove_punct <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="../../reference/tokens_select.html">tokens_remove</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html" class="external-link">stopwords</a></span><span class="op">(</span><span class="st">"en"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="../../reference/tokens_group.html">tokens_group</a></span><span class="op">(</span>groups <span class="op">=</span> <span class="va">party</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="../../reference/dfm.html">dfm</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>We can sort this dfm, and inspect it:</p>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../../reference/dfm_sort.html">dfm_sort</a></span><span class="op">(</span><span class="va">dfmat_ire</span><span class="op">)</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span></span>
-<span><span class="co">## Document-feature matrix of: 5 documents, 10 features (0.00% sparse) and 3</span></span>
+<span><span class="co">## dfm of 5 documents x 10 features (2,012 occurrences, 0.00% sparsity) and 3</span></span>
 <span><span class="co">## docvars.</span></span>
 <span><span class="co">##        features</span></span>
 <span><span class="co">## docs      € people budget government public minister tax economy pay jobs</span></span>
@@ -810,20 +695,19 @@ veces en que se utiliza agregándolas por clase.</p>
 palabras asociadas con la economía varían por presidente en el corpus de
 discursos inaugurales de presidentes de Estados Unidos. Del corpus
 original seleccionamos los presidentes desde Clinton:</p>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">corp_inaug_post1991</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/corpus_subset.html">corpus_subset</a></span><span class="op">(</span><span class="va">data_corpus_inaugural</span>, <span class="va">Year</span> <span class="op">&gt;</span> <span class="fl">1991</span><span class="op">)</span></span></code></pre></div>
 <p>Ahora definimos un diccionario de muestra:</p>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dict</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/dictionary.html">dictionary</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>terror <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"terrorism"</span>, <span class="st">"terrorists"</span>, <span class="st">"threat"</span><span class="op">)</span>,</span>
 <span>                        economy <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"jobs"</span>, <span class="st">"business"</span>, <span class="st">"grow"</span>, <span class="st">"work"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>Se puede usar el diccionario cuando creamos el dfm:</p>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dfmat_inaug_post1991_dict</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/tokens.html">tokens</a></span><span class="op">(</span><span class="va">corp_inaug_post1991</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="../../reference/tokens_lookup.html">tokens_lookup</a></span><span class="op">(</span>dictionary <span class="op">=</span> <span class="va">dict</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="../../reference/dfm.html">dfm</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">dfmat_inaug_post1991_dict</span></span>
-<span><span class="co">## Document-feature matrix of: 9 documents, 2 features (16.67% sparse) and 4</span></span>
-<span><span class="co">## docvars.</span></span>
+<span><span class="co">## dfm of 9 documents x 2 features (63 occurrences, 16.67% sparsity) and 4 docvars.</span></span>
 <span><span class="co">##               features</span></span>
 <span><span class="co">## docs           terror economy</span></span>
 <span><span class="co">##   1993-Clinton      0       8</span></span>
@@ -838,7 +722,7 @@ funciona con el formato de dos diccionarios externos comunes: los
 formatos LIWC y Provalis Research’s Wordstat. Por ejemplo, es posible
 cargar el LIWC y aplicarlo al corpus de discursos inaugurales de
 presidentes:</p>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dictliwc</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/dictionary.html">dictionary</a></span><span class="op">(</span>file <span class="op">=</span> <span class="st">"~/Dropbox/QUANTESS/dictionaries/LIWC/LIWC2001_English.dic"</span>,</span>
 <span>                       format <span class="op">=</span> <span class="st">"LIWC"</span><span class="op">)</span></span>
 <span><span class="va">dfmat_inaug_subset</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/dfm.html">dfm</a></span><span class="op">(</span><span class="va">data_corpus_inaugural</span><span class="op">[</span><span class="fl">52</span><span class="op">:</span><span class="fl">58</span><span class="op">]</span>, dictionary <span class="op">=</span> <span class="va">dictliwc</span><span class="op">)</span></span>
@@ -852,7 +736,7 @@ presidentes:</p>
 <div class="section level3">
 <h3 id="similitudes-entre-textos">Similitudes entre textos<a class="anchor" aria-label="anchor" href="#similitudes-entre-textos"></a>
 </h3>
-<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dfmat_inaug_post1980</span> <span class="op">&lt;-</span> <span class="va">data_corpus_inaugural</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="../../reference/corpus_subset.html">corpus_subset</a></span><span class="op">(</span><span class="va">Year</span> <span class="op">&gt;</span> <span class="fl">1980</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="../../reference/tokens.html">tokens</a></span><span class="op">(</span>remove_punct <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -881,7 +765,7 @@ presidentes:</p>
 <span><span class="co"># dotchart(as.list(tstat_obama)$"2009-Obama", xlab = "Cosine similarity")</span></span></code></pre></div>
 <p>Se puede utilizar estas distancias para graficar un dendrograma,
 armando clusters por presidente:</p>
-<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://github.com/quanteda/quanteda.corpora" class="external-link">quanteda.corpora</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">dfmat_sotu</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/corpus_subset.html">corpus_subset</a></span><span class="op">(</span><span class="va">data_corpus_sotu</span>, <span class="va">Date</span> <span class="op">&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"1980-01-01"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -900,9 +784,9 @@ armando clusters por presidente:</p>
 <span><span class="co"># plot as a dendrogram</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">pres_cluster</span>, xlab <span class="op">=</span> <span class="st">""</span>, sub <span class="op">=</span> <span class="st">""</span>,</span>
 <span>     main <span class="op">=</span> <span class="st">"Euclidean Distance on Normalized Token Frequency"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="quickstart_es_files/figure-html/unnamed-chunk-34-1.png" class="r-plt" alt="" width="960"></p>
+<p><img src="quickstart_es_files/figure-html/unnamed-chunk-33-1.png" class="r-plt" alt="" width="960"></p>
 <p>También se puede observar similitudes de los términos:</p>
-<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tstat_sim</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://quanteda.io/reference/textstat_simil.html">textstat_simil</a></span><span class="op">(</span><span class="va">dfmat_sotu</span>, <span class="va">dfmat_sotu</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"fair"</span>, <span class="st">"health"</span>, <span class="st">"terror"</span><span class="op">)</span><span class="op">]</span>,</span>
 <span>                          method <span class="op">=</span> <span class="st">"cosine"</span>, margin <span class="op">=</span> <span class="st">"features"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">as.list</a></span><span class="op">(</span><span class="va">tstat_sim</span><span class="op">)</span>, <span class="va">head</span>, <span class="fl">10</span><span class="op">)</span></span>
@@ -929,7 +813,7 @@ armando clusters por presidente:</p>
 </h3>
 <p>Aquí realizamos una demostración de escalamiento de documentos
 unsupervised comparado con el modelo “wordfish”:</p>
-<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/quanteda/quanteda.textmodels" class="external-link">"quanteda.textmodels"</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">"quanteda.textplots"</span><span class="op">)</span></span>
 <span><span class="va">dfmat_ire</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/tokens.html">tokens</a></span><span class="op">(</span><span class="va">data_corpus_irishbudget2010</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -938,20 +822,20 @@ unsupervised comparado con el modelo “wordfish”:</p>
 <span></span>
 <span><span class="co"># plot the Wordfish estimates by party</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/quanteda.textplots/man/textplot_scale1d.html" class="external-link">textplot_scale1d</a></span><span class="op">(</span><span class="va">tmod_wf</span>, groups <span class="op">=</span> <span class="fu"><a href="../../reference/docvars.html">docvars</a></span><span class="op">(</span><span class="va">dfmat_ire</span>, <span class="st">"party"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="quickstart_es_files/figure-html/unnamed-chunk-36-1.png" class="r-plt" alt="" width="700"></p>
+<p><img src="quickstart_es_files/figure-html/unnamed-chunk-35-1.png" class="r-plt" alt="" width="700"></p>
 </div>
 <div class="section level3">
 <h3 id="topic-models">Topic models<a class="anchor" aria-label="anchor" href="#topic-models"></a>
 </h3>
 <p><strong>quanteda</strong> hace muy sencillo ajustar topic models
 también. Por ejemplo:</p>
-<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dfmat_ire2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/tokens.html">tokens</a></span><span class="op">(</span><span class="va">data_corpus_irishbudget2010</span>, remove_punct <span class="op">=</span> <span class="cn">TRUE</span>, remove_numbers <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="../../reference/tokens_select.html">tokens_remove</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/stopwords/man/stopwords.html" class="external-link">stopwords</a></span><span class="op">(</span><span class="st">"english"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="../../reference/dfm.html">dfm</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">dfmat_ire2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../../reference/dfm_trim.html">dfm_trim</a></span><span class="op">(</span><span class="va">dfmat_ire2</span>, min_termfreq <span class="op">=</span> <span class="fl">4</span>, max_docfreq <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
 <span><span class="va">dfmat_ire2</span></span>
-<span><span class="co">## Document-feature matrix of: 14 documents, 1,263 features (64.52% sparse) and 6</span></span>
+<span><span class="co">## dfm of 14 documents x 1,263 features (13,735 occurrences, 64.52% sparsity) and 6</span></span>
 <span><span class="co">## docvars.</span></span>
 <span><span class="co">##                       features</span></span>
 <span><span class="co">## docs                   supplementary april said period severe today report</span></span>
@@ -978,30 +862,30 @@ también. Por ejemplo:</p>
 <span>    <span class="fu"><a href="https://rdrr.io/pkg/topicmodels/man/get.html" class="external-link">get_terms</a></span><span class="op">(</span><span class="va">my_lda_fit20</span>, <span class="fl">5</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span><span class="co">## Loading required package: topicmodels</span></span>
-<span><span class="co">##      Topic 1      Topic 2        Topic 3  Topic 4    Topic 5     Topic 6    </span></span>
-<span><span class="co">## [1,] "measures"   "society"      "fianna" "change"   "day"       "care"     </span></span>
-<span><span class="co">## [2,] "million"    "enterprising" "fáil"   "scheme"   "benefit"   "welfare"  </span></span>
-<span><span class="co">## [3,] "rate"       "sense"        "side"   "million"  "bank"      "per"      </span></span>
-<span><span class="co">## [4,] "investment" "equal"        "level"  "rate"     "back"      "allowance"</span></span>
-<span><span class="co">## [5,] "set"        "nation"       "third"  "measures" "ministers" "hit"      </span></span>
-<span><span class="co">##      Topic 7   Topic 8       Topic 9     Topic 10       Topic 11   Topic 12   </span></span>
-<span><span class="co">## [1,] "benefit" "kind"        "taoiseach" "welfare"      "system"   "taoiseach"</span></span>
-<span><span class="co">## [2,] "child"   "imagination" "rate"      "fáil"         "welfare"  "fine"     </span></span>
-<span><span class="co">## [3,] "day"     "policies"    "problem"   "government's" "child"    "gael"     </span></span>
-<span><span class="co">## [4,] "bank"    "wit"         "employees" "fianna"       "taxation" "irish"    </span></span>
-<span><span class="co">## [5,] "fianna"  "create"      "referred"  "stimulus"     "deficit"  "may"      </span></span>
-<span><span class="co">##      Topic 13   Topic 14    Topic 15      Topic 16  Topic 17   Topic 18 </span></span>
-<span><span class="co">## [1,] "fianna"   "failed"    "confidence"  "levy"    "spending" "burden" </span></span>
-<span><span class="co">## [2,] "fáil"     "strategy"  "employment"  "million" "review"   "today's"</span></span>
-<span><span class="co">## [3,] "national" "needed"    "welfare"     "carbon"  "million"  "per"    </span></span>
-<span><span class="co">## [4,] "support"  "ministers" "development" "change"  "pension"  "today"  </span></span>
-<span><span class="co">## [5,] "irish"    "system"    "continue"    "welfare" "reduce"   "widows" </span></span>
-<span><span class="co">##      Topic 19 Topic 20    </span></span>
-<span><span class="co">## [1,] "fianna" "million"   </span></span>
-<span><span class="co">## [2,] "fáil"   "support"   </span></span>
-<span><span class="co">## [3,] "world"  "investment"</span></span>
-<span><span class="co">## [4,] "irish"  "welfare"   </span></span>
-<span><span class="co">## [5,] "ensure" "back"</span></span></code></pre></div>
+<span><span class="co">##      Topic 1          Topic 2       Topic 3      Topic 4       Topic 5    </span></span>
+<span><span class="co">## [1,] "per"            "kind"        "million"    "alternative" "taoiseach"</span></span>
+<span><span class="co">## [2,] "million"        "imagination" "support"    "citizenship" "employees"</span></span>
+<span><span class="co">## [3,] "benefit"        "policies"    "welfare"    "wealth"      "rate"     </span></span>
+<span><span class="co">## [4,] "infrastructure" "wit"         "investment" "adjustment"  "referred" </span></span>
+<span><span class="co">## [5,] "workers"        "create"      "back"       "breaks"      "debate"   </span></span>
+<span><span class="co">##      Topic 6   Topic 7   Topic 8     Topic 9     Topic 10       Topic 11 </span></span>
+<span><span class="co">## [1,] "day"     "local"   "taxes"     "set"       "equal"        "benefit"</span></span>
+<span><span class="co">## [2,] "child"   "irish"   "benefit"   "want"      "society"      "child"  </span></span>
+<span><span class="co">## [3,] "benefit" "pension" "certainly" "local"     "enterprising" "today"  </span></span>
+<span><span class="co">## [4,] "fáil"    "welfare" "recovery"  "taoiseach" "nation"       "welfare"</span></span>
+<span><span class="co">## [5,] "banks"   "already" "another"   "system"    "sense"        "bank"   </span></span>
+<span><span class="co">##      Topic 12     Topic 13    Topic 14  Topic 15   Topic 16   Topic 17      </span></span>
+<span><span class="co">## [1,] "million"    "failed"    "much"    "fáil"     "fianna"   "welfare"     </span></span>
+<span><span class="co">## [2,] "spending"   "strategy"  "fáil"    "fianna"   "fáil"     "system"      </span></span>
+<span><span class="co">## [3,] "measures"   "needed"    "system"  "irish"    "strategy" "taxation"    </span></span>
+<span><span class="co">## [4,] "review"     "ministers" "welfare" "support"  "whether"  "worst"       </span></span>
+<span><span class="co">## [5,] "investment" "system"    "fianna"  "national" "national" "government's"</span></span>
+<span><span class="co">##      Topic 18    Topic 19    Topic 20 </span></span>
+<span><span class="co">## [1,] "taoiseach" "care"      "levy"   </span></span>
+<span><span class="co">## [2,] "fine"      "allowance" "million"</span></span>
+<span><span class="co">## [3,] "gael"      "welfare"   "carbon" </span></span>
+<span><span class="co">## [4,] "may"       "child"     "change" </span></span>
+<span><span class="co">## [5,] "irish"     "hospital"  "welfare"</span></span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
