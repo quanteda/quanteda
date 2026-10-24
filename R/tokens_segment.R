@@ -18,6 +18,10 @@
 #'   segmented text; if `FALSE`, drop the docvars in the segmented corpus.
 #'   Dropping the docvars might be useful in order to conserve space or if these
 #'   are not desired for the segmented corpus.
+#' @param min_size,max_size minimum or maximum sizes of segmented documents in 
+#'   number of tokens. If used, `pattern` is only detected within the range 
+#'   between `min_size` and `max_size` from the beginning of the documents or the 
+#'   previously matched tokens.
 #' @return `tokens_segment` returns a [tokens] object whose documents
 #'   have been split by patterns
 #' @keywords tokens
