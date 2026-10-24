@@ -18,6 +18,10 @@
 #'   segmented text; if `FALSE`, drop the docvars in the segmented corpus.
 #'   Dropping the docvars might be useful in order to conserve space or if these
 #'   are not desired for the segmented corpus.
+#' @param min_size,max_size minimum or maximum sizes of segmented documents in 
+#'   number of tokens. If used, `pattern` is only detected within the range 
+#'   between `min_size` and `max_size` from the beginning of the documents or the 
+#'   previously matched tokens.
 #' @return `tokens_segment` returns a [tokens] object whose documents
 #'   have been split by patterns
 #' @keywords tokens
@@ -41,6 +45,8 @@ tokens_segment <- function(x, pattern,
                            case_insensitive = TRUE,
                            extract_pattern = FALSE,
                            pattern_position = c("before", "after"),
+                           min_size = NULL, 
+                           max_size = NULL,
                            use_docvars = TRUE,
                            verbose = quanteda_options("verbose")) {
     UseMethod("tokens_segment")
@@ -52,6 +58,8 @@ tokens_segment.default <- function(x, pattern,
                                    case_insensitive = TRUE,
                                    extract_pattern = FALSE,
                                    pattern_position = c("before", "after"),
+                                   min_size = NULL, 
+                                   max_size = NULL, 
                                    use_docvars = TRUE,
                                    verbose = quanteda_options("verbose")) {
     check_class(class(x), "tokens_segment")
@@ -65,6 +73,8 @@ tokens_segment.tokens_xptr <- function(x, pattern,
                                   case_insensitive = TRUE,
                                   extract_pattern = FALSE,
                                   pattern_position = c("before", "after"),
+                                  min_size = NULL, 
+                                  max_size = NULL, 
                                   use_docvars = TRUE,
                                   verbose = quanteda_options("verbose")) {
 
@@ -73,6 +83,19 @@ tokens_segment.tokens_xptr <- function(x, pattern,
     pattern_position <- match.arg(pattern_position)
     use_docvars <- check_logical(use_docvars)
     verbose <- check_logical(verbose)
+    
+    if (!is.null(min_size)) {
+        min_size <- check_integer(min_size, min = 1)
+    } else {
+        min_size <- 1L;
+    }
+    if (!is.null(max_size)) {
+        max_size <- check_integer(max_size, min = 1)
+    } else {
+        max_size <- .Machine$integer.max;
+    }
+    if (min_size >= max_size)
+        stop("max_size must be greater than min_size")
     
     if (!use_docvars)
         docvars(x) <- NULL
@@ -83,9 +106,9 @@ tokens_segment.tokens_xptr <- function(x, pattern,
     if ("" %in% pattern) ids <- c(ids, list(0)) # append padding index
 
     if (pattern_position == "before") {
-        result <- cpp_tokens_segment(x, ids, extract_pattern, 1, get_threads())
+        result <- cpp_tokens_segment(x, ids, extract_pattern, 1, min_size, max_size, get_threads())
     } else {
-        result <- cpp_tokens_segment(x, ids, extract_pattern, 2, get_threads())
+        result <- cpp_tokens_segment(x, ids, extract_pattern, 2, min_size, max_size, get_threads())
     }
     field_object(attrs, "unit") <- "segments"
     attrs[["docvars"]] <- reshape_docvars(attrs[["docvars"]], 

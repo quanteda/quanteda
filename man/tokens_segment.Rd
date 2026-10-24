@@ -11,6 +11,8 @@ tokens_segment(
   case_insensitive = TRUE,
   extract_pattern = FALSE,
   pattern_position = c("before", "after"),
+  min_size = NULL,
+  max_size = NULL,
   use_docvars = TRUE,
   verbose = quanteda_options("verbose")
 )
@@ -34,6 +36,11 @@ exact matching. See \link{valuetype} for details.}
 \item{pattern_position}{either \code{"before"} or \code{"after"}, depending
 on whether the pattern precedes the text (as with a tag) or follows the
 text (as with punctuation delimiters)}
+
+\item{min_size, max_size}{minimum or maximum sizes of segmented documents in
+number of tokens. If used, \code{pattern} is only detected within the range
+between \code{min_size} and \code{max_size} from the beginning of the documents or the
+previously matched tokens.}
 
 \item{use_docvars}{if \code{TRUE}, repeat the docvar values for each
 segmented text; if \code{FALSE}, drop the docvars in the segmented corpus.

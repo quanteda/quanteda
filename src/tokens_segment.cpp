@@ -2,9 +2,11 @@
 //#include "dev.h"
 using namespace quanteda;
 
+// begin & end position of pattern matches
 typedef std::pair<size_t, size_t> Target;
 typedef std::vector<Target> Targets;
 
+// begin & end of new texts, begin * end of pattern matches
 typedef std::tuple<int, int, int, int> Segment;
 typedef std::vector<Segment> Segments;
 
@@ -13,20 +15,31 @@ Segments segment(const Text &tokens,
                  const std::vector<std::size_t> &spans,
                  const SetNgrams &set_patterns,
                  const bool &remove,
-                 const int &position){
+                 const int &position,
+                 const size_t &min_size,
+                 const size_t &max_size){
     
     if(tokens.empty()) return {}; // return empty vector for empty text
-    
+   
     Targets targets;
-    for (std::size_t span : spans) { // substitution starts from the longest sequences
-        if (tokens.size() < span) continue;
-        for (size_t i = 0; i < tokens.size() - (span - 1); i++) {
+    size_t i = (position == 1) ? 0 : min_size;
+    size_t size = i + 1;
+    while (i < tokens.size()) {
+        //Rcout << "i: " << i << " size: " << size << "\n";
+        for (std::size_t span : spans) {
+            if (tokens.size() < span) continue;
             Ngram ngram(tokens.begin() + i, tokens.begin() + i + span);
             bool is_in = set_patterns.find(ngram) != set_patterns.end();
-            if (is_in) {
+            if (is_in || size >= max_size) {
                 targets.push_back(std::make_pair(i, i + span - 1));
+                //Rcout << "target: " << i << " to " << (i + span - 1) << "\n";
+                size = min_size - 1;
+                i += min_size - 1;
+                break;
             }
         }
+        size++;
+        i++;
     }
     
     Segments segments;
@@ -95,6 +108,8 @@ Segments segment(const Text &tokens,
  * @param patterns_ list of target patterns
  * @param remove remove and save matched patterns if true
  * @param position determine position to split texts 1=before; 2=after
+ * @param min_size minimum size of segments
+ * @param max_size maximum size of segments
  */
 
 // [[Rcpp::export]]
@@ -102,6 +117,8 @@ TokensPtr cpp_tokens_segment(TokensPtr xptr,
                              const List &patterns_,
                              const bool &remove,
                              const int &position,
+                             const int min_size = 1, 
+                             const int max_size = 10000,
                              const int thread = -1) {
     
     SetNgrams set_patterns;
@@ -117,39 +134,39 @@ TokensPtr cpp_tokens_segment(TokensPtr xptr,
     arena.execute([&]{
         tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
             for (int h = r.begin(); h < r.end(); ++h) {
-                temp[h] = segment(xptr->texts[h], N, spans, set_patterns, remove, position);
+                temp[h] = segment(xptr->texts[h], N, spans, set_patterns, remove, position, min_size, max_size);
             }    
         });
     });
 #else
     for (std::size_t h = 0; h < H; h++) {
-        temp[h] = segment(xptr->texts[h], N, spans, set_patterns, remove, position);
+        temp[h] = segment(xptr->texts[h], N, spans, set_patterns, remove, position, min_size, max_size);
     }
 #endif
     
-    Texts segments(N);
+    Texts texts_new(N);
     std::vector<int> index(N);
     std::vector<std::string> matches(N);
     
     std::size_t j = 0;
     for (std::size_t h = 0; h < temp.size(); h++) {
-        Segments targets = temp[h];
-        if (targets.empty()) continue;
+        Segments segments = temp[h];
+        if (segments.empty()) continue;
         Text text = xptr->texts[h];
-        for (size_t i = 0; i < targets.size(); i++) {
-            Segment target = targets[i];
+        for (size_t i = 0; i < segments.size(); i++) {
+            Segment segment = segments[i];
             
             // extract text segments
-            if (0 <= std::get<0>(target) && std::get<1>(target) < (int)text.size()) {
-                Text segment(text.begin() + std::get<0>(target), text.begin() + std::get<1>(target) + 1);
-                segments[j] = segment;
+            if (0 <= std::get<0>(segment) && std::get<1>(segment) < (int)text.size()) {
+                Text text_new(text.begin() + std::get<0>(segment), text.begin() + std::get<1>(segment) + 1);
+                texts_new[j] = text_new;
             } else {
-                segments[j] = {};
+                texts_new[j] = {};
             }
             
             // extract matched patterns
-            if (remove && 0 <= std::get<2>(target) && 0 <= std::get<3>(target)) {
-                Text match(text.begin() + std::get<2>(target), text.begin() + std::get<3>(target) + 1);
+            if (remove && 0 <= std::get<2>(segment) && 0 <= std::get<3>(segment)) {
+                Text match(text.begin() + std::get<2>(segment), text.begin() + std::get<3>(segment) + 1);
                 matches[j] = join_strings(match, xptr->types, " ");
             } else {
                 matches[j] = "";
@@ -159,7 +176,7 @@ TokensPtr cpp_tokens_segment(TokensPtr xptr,
         }
     }
     
-    TokensObj *ptr_new = new TokensObj(segments, xptr->types, xptr->recompiled);
+    TokensObj *ptr_new = new TokensObj(texts_new, xptr->types, xptr->recompiled);
     TokensPtr xptr_new = TokensPtr(ptr_new, true);
     
     xptr_new.attr("matches") = encode(matches);
@@ -172,23 +189,10 @@ TokensPtr cpp_tokens_segment(TokensPtr xptr,
 
 
 /***R
-
-toks <- tokens("aa bb cc")
-xtoks <- as.tokens_xptr(toks)
-#toks <- rep(list(rep(1:10, 1), rep(5:15, 1)), 1)
-#dict <- list(c(1, 2), c(5, 6), 10, 15, 20)
-#cpp_tokens_contexts(toks, dict, 2)
-#cpp_tokens_segment(toks, letters, list(c(5, 6), 10), TRUE, 2)
-out <- cpp_tokens_segment(xtoks, list(2), FALSE, 1)
+library(quanteda)
+toks <- tokens("a b b . c c c c c . d", xptr = TRUE)
+out <- cpp_tokens_segment(toks, list(3L), FALSE, 2, min_size = 1, max_size = 2)
+quanteda:::cpp_as_list(out)
 attributes(out)
-#cpp_tokens_segment(toks, letters, list(c(5, 6), 10), FALSE, 2)
-
-# 
-# cpp_tokens_segment(toks, letters, list(10))
-# cpp_tokens_segment(toks, letters, list(c(3, 4), 7))
-# cpp_tokens_segment(toks, letters, list(c(3, 4), 7))
-# cpp_tokens_segment(toks, letters, c(3, 4, 7))
-# cpp_tokens_segment(toks, letters, c(3, 4, 7))
-
 
 */
