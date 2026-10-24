@@ -15,21 +15,43 @@ Segments segment(const Text &tokens,
                  const std::vector<std::size_t> &spans,
                  const SetNgrams &set_patterns,
                  const bool &remove,
-                 const int &position){
+                 const int &position,
+                 const size_t &min_size,
+                 const size_t &max_size){
     
     if(tokens.empty()) return {}; // return empty vector for empty text
-    
+   
     Targets targets;
-    for (std::size_t span : spans) { // substitution starts from the longest sequences
-        if (tokens.size() < span) continue;
-        for (size_t i = 0; i < tokens.size() - (span - 1); i++) {// start from previous segmentation point?
+    size_t size = 0;
+    size_t i = min_size;
+    while (i < tokens.size()) {
+        size++;
+        for (std::size_t span : spans) {
+            if (tokens.size() < span) continue;
             Ngram ngram(tokens.begin() + i, tokens.begin() + i + span);
             bool is_in = set_patterns.find(ngram) != set_patterns.end();
-            if (is_in) {
+            if (is_in || size >= max_size) {
                 targets.push_back(std::make_pair(i, i + span - 1));
+                Rcout << "target: " << i << " to " << (i + span - 1) << "\n";
+                size = 0;
+                i += min_size - 1;
+                break;
             }
         }
+        i++;
     }
+
+    // Targets targets;
+    // for (std::size_t span : spans) { // substitution starts from the longest sequences
+    //     if (tokens.size() < span) continue;
+    //     for (size_t i = 0; i < tokens.size() - (span - 1); i++) {// start from previous segmentation point?
+    //         Ngram ngram(tokens.begin() + i, tokens.begin() + i + span);
+    //         bool is_in = set_patterns.find(ngram) != set_patterns.end();
+    //         if (is_in) {
+    //             targets.push_back(std::make_pair(i, i + span - 1));
+    //         }
+    //     }
+    // }
     
     Segments segments;
     if (targets.empty()) {
@@ -97,6 +119,8 @@ Segments segment(const Text &tokens,
  * @param patterns_ list of target patterns
  * @param remove remove and save matched patterns if true
  * @param position determine position to split texts 1=before; 2=after
+ * @param min_size minimum size of segments
+ * @param max_size maximum size of segments
  */
 
 // [[Rcpp::export]]
@@ -104,6 +128,8 @@ TokensPtr cpp_tokens_segment(TokensPtr xptr,
                              const List &patterns_,
                              const bool &remove,
                              const int &position,
+                             const int min_size = 1, 
+                             const int max_size = 10000,
                              const int thread = -1) {
     
     SetNgrams set_patterns;
@@ -119,13 +145,13 @@ TokensPtr cpp_tokens_segment(TokensPtr xptr,
     arena.execute([&]{
         tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
             for (int h = r.begin(); h < r.end(); ++h) {
-                temp[h] = segment(xptr->texts[h], N, spans, set_patterns, remove, position);
+                temp[h] = segment(xptr->texts[h], N, spans, set_patterns, remove, position, min_size, max_size);
             }    
         });
     });
 #else
     for (std::size_t h = 0; h < H; h++) {
-        temp[h] = segment(xptr->texts[h], N, spans, set_patterns, remove, position);
+        temp[h] = segment(xptr->texts[h], N, spans, set_patterns, remove, position, min_size, max_size);
     }
 #endif
     
@@ -174,9 +200,9 @@ TokensPtr cpp_tokens_segment(TokensPtr xptr,
 
 
 /***R
-
-toks <- tokens("aa bb . cc", xptr = TRUE)
-out <- cpp_tokens_segment(toks, list(3L), FALSE, 1)
+library(quanteda)
+toks <- tokens("a b b . c c c c c . d", xptr = TRUE)
+out <- cpp_tokens_segment(toks, list(3L), TRUE, 2, min_size = 2, max_size = 5)
 quanteda:::cpp_as_list(out)
 attributes(out)
 
