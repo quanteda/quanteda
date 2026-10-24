@@ -978,30 +978,28 @@ test_that("trim is working", {
 
 })
 
-test_that("dfm does not modify the original tokens", {
+test_that("dfm does not modify tokens_xptr", {
     
     txt <- c("A A B B C", "A A B C C D D")
-    toks <- tokens(txt) |> tokens_remove("b", padding = TRUE)
-    xtoks <- as.tokens_xptr(toks)
+    xtoks <- tokens(txt, xptr = TRUE) |> 
+        tokens_match(c("A", "B", "C", "D", "E"))
     
     expect_equal(
-        featnames(dfm(toks, remove_padding = TRUE)),
-        c("a", "c", "d")
+        types(xtoks),
+        c("A", "B", "C", "D", "E")
     )
     
+    # enable recompilation in cpp_dfm()
+    quanteda:::cpp_set_recompiled(xtoks, FALSE) 
     expect_equal(
-        featnames(dfm(xtoks, remove_padding = TRUE)),
-        c("a", "c", "d")
+        featnames(dfm(xtoks)),
+        c("a", "b", "c", "d")
     )
     
-    expect_setequal(
-        unlist(as.list(toks)),
-        c("", "A", "C", "D")
-    )
-    
-    expect_setequal(
-        unlist(as.list(xtoks)),
-        c("", "A", "C", "D")
+    # tokens are not recompiled
+    expect_equal(
+        types(xtoks),
+        c("A", "B", "C", "D", "E")
     )
     
 })

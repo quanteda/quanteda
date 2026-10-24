@@ -29,17 +29,6 @@ test_that("compare the output feature co-occurrence matrix to that of the text2v
     expect_equivalent(as.matrix(fcm), tcm, tol = .00001)
 })
 
-test_that("fcm works with character and tokens in the same way", {
-    txt <- "A D A C E A D F E B A C E D"
-    fcmt_char <- fcm(tokens(txt), context = "window", count = "weighted",
-                     weights = c(3, 2, 1), window = 3)
-    toks <- tokens(txt)
-    fcmt_toks <- fcm(toks, context = "window", count = "weighted",
-                    weights = c(3, 2, 1), window = 3)
-    expect_equivalent(round(as.matrix(fcmt_char), 2),
-                      round(as.matrix(fcmt_toks), 2))
-})
-
 test_that("fcm works with dfm and tokens in the same way", {
     txt <- c("b a b c", "a a c b e", "a c e f g")
     toks <- tokens(txt)
@@ -274,6 +263,23 @@ test_that("fcm print works as expected", {
     )
 })
 
+test_that("verbose works", {
+    
+    txt <- c("a a a b b c", "a a c e", "a c e f g")
+    toks <- tokens(txt)
+    xtoks <- as.tokens_xptr(toks)
+    dfmt <- dfm(xtoks)
+
+    expect_message(fcm(toks, verbose = TRUE), 
+                   "Creating a fcm from a tokens object")
+    expect_message(fcm(xtoks, verbose = TRUE), 
+                   "Creating a fcm from a tokens_xptr object")
+    expect_message(fcm(dfmt, verbose = TRUE), 
+                   "Creating a fcm from a dfm object")
+
+})
+
+
 test_that("fcm expects error for wrong weight or window", {
     txt <- c("a a a b b c", "a a c e", "a c e f g")
     toks <- tokens(txt)
@@ -444,3 +450,32 @@ test_that("unused arguments works for fcm (#2103)", {
         "notanargument argument is not used"
     )
 })
+
+
+test_that("fcm does not modify tokens_xptr", {
+    
+    txt <- c("A A B B C", "A A B C C D D")
+    xtoks <- tokens(txt, xptr = TRUE) |> 
+        tokens_match(c("A", "B", "C", "D", "E"))
+
+    expect_equal(
+        types(xtoks),
+        c("A", "B", "C", "D", "E")
+    )
+    
+    # enable recompilation in cpp_fcm()
+    xtoks <- quanteda:::cpp_set_recompiled(xtoks, FALSE) 
+    expect_equal(
+        featnames(fcm(xtoks, context = "window")),
+        c("A", "B", "C", "D")
+    )
+    
+    # tokens are not recompiled
+    expect_equal(
+        types(xtoks),
+        c("A", "B", "C", "D", "E")
+    )
+    
+})
+
+
