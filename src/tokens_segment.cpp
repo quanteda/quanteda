@@ -22,9 +22,9 @@ Segments segment(const Text &tokens,
     if(tokens.empty()) return {}; // return empty vector for empty text
    
     Targets targets;
-    size_t size = 0;
-    size_t i = min_size;
+    size_t size = 0, i = 0;
     while (i < tokens.size()) {
+        //Rcout << "i: " << i << " size: " << size << "\n";
         size++;
         for (std::size_t span : spans) {
             if (tokens.size() < span) continue;
@@ -32,7 +32,7 @@ Segments segment(const Text &tokens,
             bool is_in = set_patterns.find(ngram) != set_patterns.end();
             if (is_in || size >= max_size) {
                 targets.push_back(std::make_pair(i, i + span - 1));
-                Rcout << "target: " << i << " to " << (i + span - 1) << "\n";
+                //Rcout << "target: " << i << " to " << (i + span - 1) << "\n";
                 size = 0;
                 i += min_size - 1;
                 break;
