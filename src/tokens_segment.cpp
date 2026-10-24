@@ -22,10 +22,10 @@ Segments segment(const Text &tokens,
     if(tokens.empty()) return {}; // return empty vector for empty text
    
     Targets targets;
-    size_t size = 0, i = 0;
+    size_t i = (position == 1) ? 0 : min_size;
+    size_t size = i + 1;
     while (i < tokens.size()) {
         //Rcout << "i: " << i << " size: " << size << "\n";
-        size++;
         for (std::size_t span : spans) {
             if (tokens.size() < span) continue;
             Ngram ngram(tokens.begin() + i, tokens.begin() + i + span);
@@ -33,25 +33,14 @@ Segments segment(const Text &tokens,
             if (is_in || size >= max_size) {
                 targets.push_back(std::make_pair(i, i + span - 1));
                 //Rcout << "target: " << i << " to " << (i + span - 1) << "\n";
-                size = 0;
+                size = min_size - 1;
                 i += min_size - 1;
                 break;
             }
         }
+        size++;
         i++;
     }
-
-    // Targets targets;
-    // for (std::size_t span : spans) { // substitution starts from the longest sequences
-    //     if (tokens.size() < span) continue;
-    //     for (size_t i = 0; i < tokens.size() - (span - 1); i++) {// start from previous segmentation point?
-    //         Ngram ngram(tokens.begin() + i, tokens.begin() + i + span);
-    //         bool is_in = set_patterns.find(ngram) != set_patterns.end();
-    //         if (is_in) {
-    //             targets.push_back(std::make_pair(i, i + span - 1));
-    //         }
-    //     }
-    // }
     
     Segments segments;
     if (targets.empty()) {
@@ -202,7 +191,7 @@ TokensPtr cpp_tokens_segment(TokensPtr xptr,
 /***R
 library(quanteda)
 toks <- tokens("a b b . c c c c c . d", xptr = TRUE)
-out <- cpp_tokens_segment(toks, list(3L), TRUE, 2, min_size = 2, max_size = 5)
+out <- cpp_tokens_segment(toks, list(3L), FALSE, 2, min_size = 1, max_size = 2)
 quanteda:::cpp_as_list(out)
 attributes(out)
 
