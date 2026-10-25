@@ -22,18 +22,6 @@ Segments segment(const Text &tokens,
     if(tokens.empty()) return {}; // return empty vector for empty text
    
     Targets targets;
-    
-    // for (std::size_t span : spans) { // substitution starts from the longest sequences
-    //     if (tokens.size() < span) continue;
-    //     for (size_t i = 0; i < tokens.size() - (span - 1); i++) {
-    //         Ngram ngram(tokens.begin() + i, tokens.begin() + i + span);
-    //         bool is_in = set_patterns.find(ngram) != set_patterns.end();
-    //         if (is_in) {
-    //             targets.push_back(std::make_pair(i, i + span - 1));
-    //         }
-    //     }
-    // }
-    
     size_t i = (position == 1) ? 0 : min_size;
     size_t size = i + 1;
     while (i < tokens.size()) {
@@ -56,7 +44,6 @@ Segments segment(const Text &tokens,
             size = min_size - 1;
             i += min_size - 1;
         }
-        
         size++;
         i++;
     }
