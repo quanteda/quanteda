@@ -43,7 +43,7 @@ Segments segment(const Text &tokens,
             Ngram ngram(tokens.begin() + i, tokens.begin() + i + span);
             bool is_in = set_patterns.find(ngram) != set_patterns.end();
             if (is_in) {
-                Rcout << "pattern: " << i << " to " << (i + span - 1) << "\n";
+                //Rcout << "pattern: " << i << " to " << (i + span - 1) << "\n";
                 targets.push_back(std::make_pair(i, i + span - 1));
                 size = min_size - 1;
                 i += min_size - 1;
@@ -51,7 +51,7 @@ Segments segment(const Text &tokens,
             } 
         }
         if (size >= max_size) {
-            Rcout << "size: " << i << " to " << i << "\n";
+            //Rcout << "size: " << i << " to " << i << "\n";
             targets.push_back(std::make_pair(i, i));
             size = min_size - 1;
             i += min_size - 1;
@@ -88,7 +88,7 @@ Segments segment(const Text &tokens,
             if (i < targets.size() - 1) {
                 to = targets[i + 1].first - 1;
             }
-            Rcout << "segment " << i << ": " << from << " " << to << "\n";
+            //Rcout << "segment " << i << ": " << from << " " << to << "\n";
             segments.push_back(std::make_tuple(from, to, targets[i].first, targets[i].second));
             N++;
         }
@@ -210,7 +210,7 @@ TokensPtr cpp_tokens_segment(TokensPtr xptr,
 library(quanteda)
 toks <- tokens("a b b . c c c c c . d", xptr = TRUE)
 out <- cpp_tokens_segment(toks, list(c(3L)), FALSE, 1, min_size = 1, max_size = 4)
-out <- cpp_tokens_segment(toks, list(c(3L, 4L)), FALSE, 1, min_size = 1, max_size = 4)
+out <- cpp_tokens_segment(toks, list(c(3L, 4L)), FALSE, 1, min_size = 1, max_size = 1)
 quanteda:::cpp_as_list(out)
 attributes(out)
 

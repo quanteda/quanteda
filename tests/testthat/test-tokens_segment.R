@@ -181,6 +181,7 @@ test_that("tokens_segment works with tags", {
 
 test_that("min_size and max_size work", {
     
+    ## patterns are after texts
     txt <- c(d1 = "Sentence one.  Second sentence is this one!\n
                    Here is the third sentence.",
              d2 = "Only sentence of doc2?  No there is another.")
@@ -205,7 +206,7 @@ test_that("min_size and max_size work", {
         ntoken(tokens_segment(toks, "[.!?]", valuetype = "regex",
                               pattern_position = "after",
                               min_size = 4, max_size = 6)),
-        c(d1.1 = 6L, d1.2 = 6L, d1.2 = 3L, d2.1 = 5L, d2.2 = 5L)
+        c(d1.1 = 6L, d1.2 = 6L, d1.3 = 3L, d2.1 = 5L, d2.2 = 5L)
     )
     
     expect_error(
@@ -223,6 +224,7 @@ test_that("min_size and max_size work", {
         "max_size must be greater than min_size"
     )
     
+    # patterns are before texts
     txt2 <- c(d1 = "1 Sentence one.  2 Second sentence is this one!\n
                     3 Here is the third sentence.",
              d2 = "1 Only sentence of doc2?  2 No there is another.")
@@ -239,15 +241,43 @@ test_that("min_size and max_size work", {
     expect_identical(
         ntoken(tokens_segment(toks2, "^\\d$", valuetype = "regex",
                               pattern_position = "before",
-                              min_size = 4)),
-        c(d1.1 = 4L, d1.2 = 7L, d1.3 = 7L, d2.1 = 6L, d2.2 = 6L)
+                              min_size = 5)),
+        c(d1.1 = 11L, d1.2 = 7L, d2.1 = 6L, d2.2 = 6L)
     )
     
     expect_identical(
         ntoken(tokens_segment(toks2, "^\\d$", valuetype = "regex",
                               pattern_position = "before",
-                              min_size = 4, max_size = 6)),
-        c(d1.1 = 4L, d1.2 = 6L, d1.3 = 6L, d1.4 = 2L, d2.1 = 6L, d2.2 = 6L)
+                              min_size = 5, max_size = 10)),
+        c(d1.1 = 10L, d1.2 = 8L, d2.1 = 6L, d2.2 = 6L)
+    )
+    
+    # multi-word patters before texts
+    txt3 <- c(a = "A-1 Sentence one.  A-2 Second sentence is this one!\n
+                    A-3 Here is the third sentence.",
+              b = "B-1 Only sentence of doc2?  B-2 No there is another.")
+    corp3 <- corpus(txt3)
+    toks3 <- tokens(corp3, split_hyphens = TRUE) |> 
+        tokens_remove("-")
+    
+    expect_identical(
+        ntoken(tokens_segment(toks3, phrase("^[AB]$ ^\\d$"), valuetype = "regex", 
+                              pattern_position = "before")),
+        c(a.1 = 5L, a.2 = 8L, a.3 = 8L, b.1 = 7L, b.2 = 7L)
+    )
+    
+    expect_identical(
+        ntoken(tokens_segment(toks3, phrase("^[AB]$ ^\\d$"), valuetype = "regex",
+                              pattern_position = "before",
+                              min_size = 6)),
+        c(a.1 = 13L, a.2 = 8L, b.1 = 7L, b.2 = 7L)
+    )
+    
+    expect_identical(
+        ntoken(tokens_segment(toks3, phrase("^[AB]$ ^\\d$"), valuetype = "regex",
+                              pattern_position = "before",
+                              min_size = 6, max_size = 10)),
+        c(a.1 = 10L, a.2 = 10L, a.3 = 1L, b.1 = 7L, b.2 = 7L)
     )
     
 })
