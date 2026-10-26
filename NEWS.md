@@ -36,6 +36,12 @@
   by excluding paddings from allocating memory when `remove_padding = TRUE`. 
   If the object is too large, raises a user-friendly error.
 
+* `corpus_group()`, `tokens_group()`, `dfm_group()` and `dfm_compress()` now
+  keep document-level variables that vary within groups, replacing their
+  values with `NA` of the same class, instead of dropping them. This allows
+  the docvars of grouped and ungrouped objects to be combined with `rbind()`.
+  List variables are kept in the same way. (#2524)
+
 # quanteda 4.5
 
 ## Bug fixes

@@ -41,8 +41,9 @@ tokens includes paddings, but the number of features excludes them.}
 a \link{tokens} object whose documents are equal to the unique group
 combinations, and whose tokens are the concatenations of the tokens by
 group. Document-level variables that have no variation within groups are
-saved in \link{docvars}.  Document-level variables that are lists are dropped
-from grouping, even when these exhibit no variation within groups.
+saved in \link{docvars}.  Other document-level variables, including lists, are
+kept but their values are replaced with \code{NA}, retaining their original
+class.
 }
 \description{
 Combine documents in a \link{tokens} object by a grouping variable, by

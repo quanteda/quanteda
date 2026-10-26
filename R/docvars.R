@@ -152,22 +152,27 @@ group_docvars <- function(x, group = NULL, field = NULL) {
     
     if (is.null(group))
         return(x)
-    l <- rep(FALSE, length(x))
+    l <- rep(TRUE, length(x))
     for (i in seq_along(l)) {
-        if (is_system(names(x)[i]) || is_grouped(x[[i]], group)) {
-            l[i] <- TRUE
-        }
+        if (is_system(names(x)[i]) || is_grouped(x[[i]], group))
+            l[i] <- FALSE
     }
     temp <- make_docvars(length(levels(group)), levels(group), unique = TRUE)
-    i <- match(levels(group), group)
-    result <- x[i, l, drop = FALSE]
+    x <- x[match(levels(group), group), , drop = FALSE]
+    x[l] <- lapply(x[l], get_missing)
     if (!is.null(field))
-        result[[field]] <- factor(levels(group), levels = levels(group))
-    result[c("docname_", "docid_", "segid_")] <- temp
-    rownames(result) <- NULL
-    return(result)
+        x[[field]] <- factor(levels(group), levels = levels(group))
+    x[c("docname_", "docid_", "segid_")] <- temp
+    rownames(x) <- NULL
+    return(x)
 }
 
+# Replace all values of a vector with NA, keeping its type and class
+# (e.g. factor levels, Date, POSIXct); list elements become NA
+get_missing <- function(x) {
+    x[seq_along(x)] <- NA
+    return(x)
+}
 
 # internal function to upgrade docvars to modern format
 upgrade_docvars <- function(x, docname = NULL) {

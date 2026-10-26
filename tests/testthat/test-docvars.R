@@ -646,3 +646,22 @@ test_that("docvars are combined along with the main objects", {
     expect_equal(docvars(rbind(dfmat1, dfmat2)), docvar)
 })
 
+test_that("get_missing is working", {
+    vars <- list(chr = c("a", "b"),
+                 dbl = c(1.5, 2),
+                 int = 1:2,
+                 lgl = c(TRUE, FALSE),
+                 cpl = complex(2),
+                 fac = factor(c("a", "b"), levels = c("a", "b", "c")),
+                 date = as.Date(c("2020-01-01", "2020-01-02")),
+                 lis = list(1:3, "a"))
+    for (v in vars) {
+        result <- quanteda:::get_missing(v)
+        expect_identical(typeof(result), typeof(v))
+        expect_identical(class(result), class(v))
+        expect_identical(length(result), length(v))
+        expect_true(all(is.na(result)))
+    }
+    expect_identical(levels(quanteda:::get_missing(vars$fac)), c("a", "b", "c"))
+    expect_identical(quanteda:::get_missing(character()), character())
+})
