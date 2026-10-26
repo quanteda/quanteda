@@ -152,7 +152,7 @@ TokensPtr cpp_tokens_segment(TokensPtr xptr,
     
     Texts texts_new(N);
     std::vector<int> index(N);
-    std::vector<std::string> matches(N);
+    std::vector<std::string> matches(N, "");
     
     std::size_t j = 0;
     for (std::size_t h = 0; h < temp.size(); h++) {
@@ -166,17 +166,14 @@ TokensPtr cpp_tokens_segment(TokensPtr xptr,
             if (0 <= std::get<0>(segment) && std::get<1>(segment) < (int)text.size()) {
                 Text text_new(text.begin() + std::get<0>(segment), text.begin() + std::get<1>(segment) + 1);
                 texts_new[j] = text_new;
-            } else {
-                texts_new[j] = {};
             }
             
             // extract matched patterns
             if (remove && 0 <= std::get<2>(segment) && 0 <= std::get<3>(segment)) {
                 Text match(text.begin() + std::get<2>(segment), text.begin() + std::get<3>(segment) + 1);
                 matches[j] = join_strings(match, xptr->types, " ");
-            } else {
-                matches[j] = "";
             }
+            
             index[j] = (int)h + 1;
             j++;
         }
