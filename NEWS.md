@@ -1,3 +1,10 @@
+# quanteda 4.6.0
+
+## Changes and additions
+
+* `tokens_segment()` now has `min_size` and `max_size` to normalize the lengths 
+  of documents. (#2519)
+
 # quanteda 4.5.1
 
 ## Bug fixes
@@ -39,9 +46,7 @@
   values with `NA` of the same class, instead of dropping them. This allows
   the docvars of grouped and ungrouped objects to be combined with `rbind()`.
   List variables are kept in the same way. (#2524)
-  
-* `tokens_segment()` now has `min_size` and `max_size` to normalize the lengths 
-  of documents. (#2519)
+
 
 # quanteda 4.5
 
