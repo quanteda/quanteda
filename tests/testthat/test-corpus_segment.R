@@ -50,9 +50,7 @@ test_that("corpus_segment works with blank before tag", {
                         "##INTRO Document ##NUMBER Two starts before ##NUMBER Three."))
     corp_seg <- corpus_segment(corp, "##[A-Z0-9]+", valuetype = "regex", 
                                pattern_position = "before", extract_pattern = TRUE)
-    summ <- summary(corp_seg)
-    expect_equal(summ[1, "Tokens"], 5)
-    expect_equal(as.character(summ[1, "Text"]), "text1.1")
+    expect_equal(corp_seg[[6]], "Three.")
 })
 
 test_that("corpus_segment works with use_docvars TRUE or FALSE", {
