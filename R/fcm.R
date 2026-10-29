@@ -34,6 +34,7 @@
 #'   TRUE`, the argument `tri` has no effect.
 #' @param tri if `TRUE` return only upper triangle (including diagonal).
 #'   Ignored if `ordered = TRUE`.
+#' @param verbose display messages if `TRUE`.
 #' @param ... not used here
 #' @author Kenneth Benoit (R), Haiyan Wang (R, C++), Kohei Watanabe (C++)
 #' @import Matrix
@@ -102,7 +103,8 @@ fcm <- function(x, context = c("document", "window"),
                 window = 5L,
                 weights = NULL,
                 ordered = FALSE,
-                tri = TRUE, ...) {
+                tri = TRUE, 
+                verbose = quanteda_options("verbose"), ...) {
     check_dots(...)
     UseMethod("fcm")
 }
@@ -139,7 +141,8 @@ fcm.dfm <- function(x, context = c("document", "window"),
                        window = 5L,
                        weights = NULL,
                        ordered = FALSE,
-                       tri = TRUE, ...) {
+                       tri = TRUE, 
+                       verbose = quanteda_options("verbose"), ...) {
 
     x <- as.dfm(x)
     context <- match.arg(context)
@@ -147,7 +150,12 @@ fcm.dfm <- function(x, context = c("document", "window"),
     window <- check_integer(window, min = 1)
     ordered <- check_logical(ordered)
     tri <- check_logical(tri)
-
+    
+    if (is_verbose(verbose, ...)) {
+        message_create("dfm", "fcm")
+        proc_time <- proc.time()   
+    }
+    
     attrs <- attributes(x)
     if (!nfeat(x)) {
         result <- build_fcm(
@@ -188,7 +196,10 @@ fcm.dfm <- function(x, context = c("document", "window"),
         count = count, context = context, margin = featfreq(x),
         weights = 1, tri = tri,
         meta = attrs[["meta"]])
-
+    
+    if (is_verbose(verbose, ...))
+        message_finish(result, proc_time)
+    
     return(result)
 }
 
@@ -201,20 +212,31 @@ fcm.tokens_xptr <- function(x, context = c("document", "window"),
                        window = 5L,
                        weights = NULL,
                        ordered = FALSE,
-                       tri = TRUE, ...) {
+                       tri = TRUE, 
+                       verbose = quanteda_options("verbose"), ...) {
 
     context <- match.arg(context)
     count <- match.arg(count)
     window <- check_integer(window, min = 1)
     ordered <- check_logical(ordered)
     tri <- check_logical(tri)
-
+    
+    if (is_verbose(verbose, ...)) {
+        if (is.tokens_xptr(x)) {
+            message_create("tokens_xptr", "fcm")
+        } else {
+            message_create("tokens", "fcm")
+        }
+        proc_time <- proc.time()   
+    }
+    
     attrs <- attributes(x)
     if (ordered)
         tri <- FALSE
     if (context == "document") {
         result <- fcm(dfm(x, tolower = FALSE, verbose = FALSE), count = count, tri = tri)
     } else {
+        x <- as.tokens_xptr(x)
         if (count == "weighted") {
             if (!is.null(weights)) {
                 weights <- check_double(weights, max_len = Inf)
@@ -226,7 +248,6 @@ fcm.tokens_xptr <- function(x, context = c("document", "window"),
         } else {
             weights <- rep(1, window)
         }
-        type <- get_types(x)
         boolean <- count == "boolean"
         temp <- cpp_fcm(x, weights, boolean, ordered,
                         get_threads())
@@ -240,18 +261,20 @@ fcm.tokens_xptr <- function(x, context = c("document", "window"),
         }
         result <- build_fcm(
             temp,
-            type,
+            colnames(temp),
             count = count, context = context, margin = featfreq(dfm(x, tolower = FALSE)),
             weights = weights, ordered = ordered, tri = tri,
             meta = attrs[["meta"]])
     }
+    
+    if (is_verbose(verbose, ...))
+        message_finish(result, proc_time)
+    
     return(result)
 }
 
 #' @export
-fcm.tokens <- function(x, ...) {
-    fcm(as.tokens_xptr(x), ...)
-}
+fcm.tokens <- fcm.tokens_xptr
 
 #' @noRd
 #' @rdname as.fcm
