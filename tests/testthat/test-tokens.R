@@ -1345,7 +1345,7 @@ test_that("as.character() is working (#2494)", {
         c(text1 = "A_aa_aaa_.", text2 = "B_bb_b_b_.")
     )    
     expect_identical(
-        as.character(toks2, separator = " "),
+        as.character(toks1, separator = " "),
         c(text1 = "A aa aaa .", text2 = "B bb b b .")
     )
     
