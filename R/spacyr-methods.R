@@ -10,13 +10,12 @@
 #' [spacy_tokenize][spacyr::spacy_tokenize] to work directly with [corpus]
 #' objects.
 #' @name spacyr-methods
-#' @details `spacy_parse(x, ...)` and `spacy_tokenize(x, ...)` work directly on 
+#' @details `spacy_parse(x, ...)` and `spacy_tokenize(x, ...)` work directly on
 #' \pkg{quanteda} [corpus] objects.
-#' 
-#' @param x an object returned by `spacy_parse`, or (for
-#'   `spacy_parse`) a [corpus] object
-#' @param ... not used for these functions
-#' @details 
+#'
+#' In the methods below, `x` is an object returned by `spacy_parse` (or, for
+#' `spacy_parse`, a [corpus] object), and `...` is not used.
+#'
 #' `docnames(x)` returns the document names
 #' 
 #' `ndoc(x)` returns the number of documents

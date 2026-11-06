@@ -18,6 +18,6 @@ These objects are imported from other packages. Follow the links
 below to see their documentation.
 
 \describe{
-  \item{stopwords}{\code{\link[stopwords]{stopwords}}}
+  \item{stopwords}{\code{\link[stopwords:stopwords]{stopwords()}}}
 }}
 

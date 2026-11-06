@@ -1,4 +1,46 @@
-# quanteda 4.4.1
+# quanteda 4.5.1
+
+## Bug fixes
+
+* Fixed tests that failed under tm 0.7-20, which no longer attaches the **NLP** package, causing CRAN check errors on r-devel.
+
+* Fixed a bug in `tokens()` when the object's concatenator is an empty character. 
+
+* Fixed a bug to create a redundant copy of `tokens_xptr` when `dfm` is constructed.
+
+## Changes and additions
+
+* Verbose messages from `corpus`, `tokens`, `dfm` and `fcm` methods now
+  summarise the object returned, in the form "Returning tokens of 5,394
+  documents (55,866 tokens, 1,000 types) from tokens_trim()", instead of
+  comparing counts before and after the operation. `fcm_select()`,
+  `fcm_keep()` and `fcm_remove()` now report on the fcm they return, not on
+  an intermediate dfm. (#2016, #2518)
+
+* The summary line printed by `print()` for `corpus`, `tokens`, `dfm` and
+  `fcm` objects now has a common format, e.g. "tokens of 9 documents (6,855
+  tokens, 1,812 types)." It replaces "Corpus consisting of", "Tokens
+  consisting of", "Document-feature matrix of:" and "Feature co-occurrence
+  matrix of:", and adds the number of characters (corpus), tokens and types
+  (tokens), occurrences (dfm), and co-occurrences and sparsity (fcm). Code
+  or tests that match the old text will need updating. (#2518)
+
+* `featfreq()` and `docfreq()` now work on `tokens` and `tokens_xptr`
+  objects, computing feature and document frequencies directly without
+  first creating a dfm. `docfreq()` supports all weighting schemes for these
+  objects, but `threshold` is only supported for a dfm. (#2523)
+  
+* Reduce memory usage for constructing a `dfm` from a large `tokens` object
+  by excluding paddings from allocating memory when `remove_padding = TRUE`. 
+  If the object is too large, raises a user-friendly error.
+
+* `corpus_group()`, `tokens_group()`, `dfm_group()` and `dfm_compress()` now
+  keep document-level variables that vary within groups, replacing their
+  values with `NA` of the same class, instead of dropping them. This allows
+  the docvars of grouped and ungrouped objects to be combined with `rbind()`.
+  List variables are kept in the same way. (#2524)
+
+# quanteda 4.5
 
 ## Bug fixes
 
@@ -6,7 +48,37 @@
 
 ## Changes and additions
 
+* Added `tokens_recompile()` to reassign token IDs and remove duplicate or
+  unused types from `tokens` and `tokens_xptr` objects. (#2506)
+
+* Query functions such as `types()`, `ntype()`, and `ntoken()` no longer
+  recompile `tokens_xptr` objects. Subsetting documents now preserves the
+  complete type table, consistently with `dfm` objects. (#2506)
+
 * Improve `print` methods for corpus, tokens, dfm, fcm, dictionary and kwic objects to wrap long lines at `getOption("width")`.
+
+* Added `tokens_match()` to match token IDs in separately tokenized objects.
+
+* Added an `as.matrix()` method for `tokens` objects, returning a dense
+  [document × position] integer matrix of token IDs, with `length`, `extract`,
+  and `drop` arguments. (#2497)
+
+* `as.tensor()` for `tokens` now returns a dense tensor rather than a sparse COO
+  tensor, gains an `extract` argument for selecting documents, and passes `...`
+  through to `torch::torch_tensor()`. (#2497)
+
+* Added `docvars()` and `docvars<-()` methods for `tokens_xptr` objects,
+  allowing document variables to be read and assigned without recompiling the
+  tokens. (#2497)
+  
+* Added `trim = TRUE` to `dfm()` to allow users to disable trimming of features.
+
+* Add the `drop0()` method for dfm and fcm (#2460).
+
+* Added the `max_n` argument to `dfm_trim()` and `tokens_trim()` to keep only
+  the most frequent features, with ties broken by feature order. (#2496)
+  
+* Improved the C++ code for `tokens` and `tokens_xptr` objects to reduce memory usage.
 
 # quanteda 4.4
 
@@ -1904,4 +1976,3 @@ more complete documentation
 
 * quanteda.pdf provides a pdf version of the function documentation in one easy-to-access
   document
-

@@ -17,8 +17,6 @@ knitr::opts_chunk$set(
 
 See https://quanteda.io for additional tutorials, examples, and general documentation.
 
-# Introduction
-
 # The logic of **quanteda**'s design
 
 ## Grammatical rules

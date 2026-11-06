@@ -12,6 +12,7 @@ tokens_trim(
   min_docfreq = NULL,
   max_docfreq = NULL,
   docfreq_type = c("count", "prop", "rank", "quantile"),
+  max_n = NULL,
   padding = FALSE,
   verbose = quanteda_options("verbose")
 )
@@ -42,11 +43,17 @@ highest document frequencies, and so on; \code{"quantile"} sets the cutoffs
 according to the quantiles (see \code{\link[=quantile]{quantile()}}) of document
 frequencies.}
 
+\item{max_n}{the maximum number of features. Features are selected based
+on their frequencies, but the earlier elements in \link{featnames} or \link{types}
+are chosen when the frequencies are equal.}
+
 \item{padding}{if \code{TRUE}, leave an empty string where the removed tokens
 previously existed.}
 
-\item{verbose}{if \code{TRUE} print the number of tokens and documents before and
-after the function is applied. The number of tokens does not include paddings.}
+\item{verbose}{if \code{TRUE} print a summary of the object returned by the
+function: the number of documents and, depending on the object, the number
+of characters, tokens and types, or features and occurrences. The number of
+tokens includes paddings, but the number of features excludes them.}
 }
 \value{
 A \link{tokens} object with reduced size.

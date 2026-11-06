@@ -81,7 +81,6 @@ void count_col(const Text &text,
 
 // [[Rcpp::export]]
 S4 cpp_fcm(TokensPtr xptr,
-           const int n_types,
            const NumericVector &weights_,
            const bool boolean,
            const bool ordered,
@@ -89,35 +88,34 @@ S4 cpp_fcm(TokensPtr xptr,
     
     // triplets are constructed according to tri & ordered settings to be efficient
     xptr->recompile();
-    Texts texts = xptr->texts;
-    Types types = xptr->types;
     std::vector<double> weights = Rcpp::as< std::vector<double> >(weights_);
-    unsigned int window = weights.size();
-
+    const unsigned int window = weights.size();
+    std::size_t H = xptr->texts.size();
+    std::size_t G = xptr->types.size();
+        
     // declare the vector returned by parallelized procedure
     Triplets fcm_tri;
 
     //dev::Timer timer;
     //dev::start_timer("Count", timer);
-    std::size_t H = texts.size();
 #if QUANTEDA_USE_TBB
     tbb::task_arena arena(thread);
     arena.execute([&]{
         tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
             for (int h = r.begin(); h < r.end(); ++h) {
-                count_col(texts[h], weights, window, ordered, boolean, fcm_tri);
+                count_col(xptr->texts[h], weights, window, ordered, boolean, fcm_tri);
             }    
         });
     });
 #else        
     for (std::size_t h = 0; h < H; h++) {
-        count_col(texts[h], weights, window, ordered, boolean, fcm_tri);
+        count_col(xptr->texts[h], weights, window, ordered, boolean, fcm_tri);
     }
 #endif
     
     //dev::stop_timer("Count", timer);
     //dev::start_timer("Convert", timer);
-    return to_matrix(fcm_tri, n_types, n_types, false);
+    return to_matrix(fcm_tri, G, G, false);
 }
 
 

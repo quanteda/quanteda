@@ -63,10 +63,8 @@ tokens_subset.tokens <- function(x, subset, min_ntoken = NULL, max_ntoken = NULL
         if (is.null(max_ntoken)) max_ntoken <- max(n)
         min_ntoken <= n & n <= max_ntoken
     }
-    if (verbose)
-        before <- stats_tokens(x)
     x <- x[r & l, drop_docid = drop_docid]
     if (verbose)
-        message_tokens("tokens_subset()", before, stats_tokens(x))
+        message_tokens("tokens_subset()", stats_tokens(x))
     return(x)
 }

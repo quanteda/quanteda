@@ -113,11 +113,11 @@ test_that("test detault fcm* methods", {
 test_that("test default docvars methods", {
     expect_error(
         docvars(0),
-        "docvars\\(\\) only works on corpus.*tokens objects"
+        "docvars\\(\\) only works on corpus, dfm, tokens, tokens_xptr objects"
     )
     expect_error(
         docvars(data_char_sampletext) <- "X",
-        "docvars<-\\(\\) only works on corpus.*tokens objects"
+        "docvars<-\\(\\) only works on corpus, dfm, tokens, tokens_xptr objects"
     )
 })
 
@@ -258,7 +258,11 @@ test_that("test new dfm methods", {
     )
     expect_error(
         docfreq(TRUE),
-        "docfreq\\(\\) only works on dfm objects"
+        "docfreq\\(\\) only works on dfm, tokens, tokens_xptr objects"
+    )
+    expect_error(
+        featfreq(TRUE),
+        "featfreq\\(\\) only works on dfm, tokens, tokens_xptr objects"
     )
 })
 
@@ -343,6 +347,10 @@ test_that("test token default methods", {
         tokens_group(TRUE),
         "tokens_group\\(\\) only works on tokens, tokens_xptr objects"
     )
+    expect_error(
+        tokens_match(TRUE),
+        "tokens_match\\(\\) only works on tokens, tokens_xptr objects"
+    )
 })
 
 test_that("test token_xptr default methods", {
@@ -400,13 +408,6 @@ test_that("test segid methods", {
     segid(0),
     "segid() only works on corpus, dfm, tokens objects.", fixed = TRUE
   )
-})
-
-test_that("friendly_class_undefined_message for featfreq()", {
-    expect_error(
-        featfreq(tokens(data_char_sampletext)),
-        "featfreq\\(\\) only works on dfm objects"
-    )
 })
 
 test_that("friendly_class_undefined_message for char_select()", {

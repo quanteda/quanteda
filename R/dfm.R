@@ -5,11 +5,19 @@
 #' @param tolower convert all features to lowercase.
 #' @param remove_padding logical; if `TRUE`, remove the "pads" left as empty tokens after
 #' calling [tokens()] or [tokens_remove()] with `padding = TRUE`.
+#' @param trim logical; if `TRUE`, remove columns for features with all zeros. 
+#'   This is always `FALSE` when `x` records dictionary keys.
 #' @param verbose display messages if `TRUE`.
 #' @param ... not used.
 #' @section Changes in version 3:
 #' In \pkg{quanteda} v4, many convenience functions formerly available in
 #' `dfm()` were removed.
+#' @details
+#'   The total number of non-zero values in `dfm` is constrained by the size of available 
+#'   space in RAM. If **quanteda** cannot allocate enough memory to construct a `dfm` from 
+#'   `tokens` object, users should apply `tokens_remove()` or `tokens_trim()` to reduce the 
+#'   size of the `tokens` objects before applying `dfm()`.
+#'   
 #' @return a [dfm-class] object
 #' @import Matrix
 #' @export
@@ -36,6 +44,7 @@
 dfm <- function(x,
                 tolower = TRUE,
                 remove_padding = FALSE,
+                trim = TRUE,
                 verbose = quanteda_options("verbose"),
                 ...) {
     
@@ -58,37 +67,16 @@ dfm.default <- function(x, ...) {
 dfm.tokens <- function(x,
                        tolower = TRUE,
                        remove_padding = FALSE,
+                       trim = TRUE,
                        verbose = quanteda_options("verbose"),
                        ...) {
     
     if (is_verbose(verbose, ...)) {
-        message_create("tokens", "dfm")
-        proc_time <- proc.time()   
-    }
-    
-    result <- dfm(as.tokens_xptr(x), 
-                  tolower = tolower,
-                  remove_padding = remove_padding, 
-                  verbose = verbose, 
-                  internal = TRUE, ...)
-    
-    if (is_verbose(verbose, ...))
-        message_finish(result, proc_time)
-    
-    return(result)
-
-}
-
-#' @method dfm tokens_xptr
-#' @export
-dfm.tokens_xptr <- function(x,
-                            tolower = TRUE,
-                            remove_padding = FALSE,
-                            verbose = quanteda_options("verbose"),
-                            ...) {
-    
-    if (is_verbose(verbose, ...)) {
-        message_create("tokens_xptr", "dfm")
+        if (is.tokens_xptr(x)) {
+            message_create("tokens_xptr", "dfm")
+        } else {
+            message_create("tokens", "dfm")
+        }
         proc_time <- proc.time()   
     }
     
@@ -96,31 +84,40 @@ dfm.tokens_xptr <- function(x,
     x <- as.tokens_xptr(x) # avoid modifying the original tokens
     if (tolower) {
         if (verbose) catm(" ...lowercasing\n", sep = "")
-        x <- tokens_tolower(x)
+        x <- tokens_tolower(x, verbose = FALSE) # should not recompile dictionary keys
     }
-    if (remove_padding)
-        x <- tokens_remove(x, "", valuetype = "fixed")
     attrs <- attributes(x)
-    temp <- t(cpp_dfm(x, attrs$meta$object$what == "dictionary"))
-    result <- build_dfm(temp, colnames(temp),
+    if (identical(attrs$meta$object$what, "dictionary"))
+        trim <- FALSE
+    x <- cpp_set_recompiled(x, !trim)
+    result <- t(cpp_dfm(x, !remove_padding))
+    result <- build_dfm(result, colnames(result),
                         docvars = get_docvars(x, user = TRUE, system = TRUE),
                         meta = attrs[["meta"]])
-
+    
     if (is_verbose(verbose, ...))
         message_finish(result, proc_time)
     
     return(result)
+
 }
 
-
+# only for friendly error messages
+#' @export
+dfm.tokens_xptr <- dfm.tokens
 
 #' @importFrom stringi stri_trans_totitle
 #' @export
 dfm.dfm <- function(x,
                     tolower = TRUE,
                     remove_padding = FALSE,
+                    trim = TRUE,
                     verbose = quanteda_options("verbose"),
                     ...) {
+    
+    tolower <- check_logical(tolower)
+    remove_padding <- check_logical(remove_padding)
+    trim <- check_logical(trim)
     
     if (is_verbose(verbose, ...)) {
         message_create("dfm", "dfm")
@@ -135,9 +132,10 @@ dfm.dfm <- function(x,
         x <- dfm_tolower(x)
     }
 
-    remove_padding <- check_logical(remove_padding)
     if (remove_padding)
         x <- dfm_remove(x, "", valuetype = "fixed")
+    if (trim)
+        x <- dfm_trim(x)
 
     # remove any NA named columns
     is_na <- is.na(featnames(x))

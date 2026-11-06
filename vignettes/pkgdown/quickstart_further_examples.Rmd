@@ -5,10 +5,8 @@ output:
     toc: true
 ---
 
-```{r, echo = FALSE}
-knitr::opts_chunk$set(collapse = FALSE,
-                      comment = "##")
-
+```{r, echo=FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "##")
 ```
 
 ```{r}
@@ -28,7 +26,7 @@ dfmat_uk <- tokens(data_char_ukimmig2010, remove_punct = TRUE) |>
 topfeatures(dfmat_uk, 50)
 ```
 
-```{r fig.width = 7, fig.height = 7}
+```{r fig.width=7, fig.height=7}
 set.seed(100)
 library("quanteda.textplots")
 textplot_wordcloud(dfmat_uk, min_count = 6, random_order = FALSE,
@@ -41,7 +39,7 @@ textplot_wordcloud(dfmat_uk, min_count = 6, random_order = FALSE,
 
 ## Similarities between texts
 
-```{r fig.width = 6, fig.height = 3, eval = FALSE}
+```{r fig.width=6, fig.height=3}
 library("quanteda.textstats")
 dfmat_inaug_post1980 <- corpus_subset(data_corpus_inaugural, Year > 1980) |>
   tokens(remove_punct = TRUE) |>
@@ -54,13 +52,12 @@ tstat_obama <- textstat_simil(dfmat_inaug_post1980,
 as.list(tstat_obama)
 dotchart(as.list(tstat_obama)$"2013-Obama", xlab = "Cosine similarity", pch = 19)
 ```
-<img src="images/fig1.png" width="700"/>
-
 
 We can use these distances to plot a dendrogram, clustering presidents.  
-First, load some data.
-```{r, eval = FALSE}
-data_corpus_sotu <- readRDS(url("https://quanteda.org/data/data_corpus_sotu.rds"))
+
+```{r, eval=FALSE}
+library(quanteda.corpora)
+
 dfmat_sotu <- corpus_subset(data_corpus_sotu, Date > as.Date("1980-01-01")) |>
   tokens(remove_punct = TRUE) |>
   tokens_wordstem(language = "en") |>
@@ -69,12 +66,13 @@ dfmat_sotu <- corpus_subset(data_corpus_sotu, Date > as.Date("1980-01-01")) |>
 dfmat_sotu <- dfm_trim(dfmat_sotu, min_termfreq = 5, min_docfreq = 3)
 ```
 
-```{r echo = FALSE}
+```{r echo=FALSE}
 load("../../tests/data/dfmat_sotu.rda")
 ```
 
 Now we compute clusters and plot the dendrogram:
-```{r, fig.width = 8, fig.height = 5, eval = FALSE}
+
+```{r, fig.width=8, fig.height=5}
 # hierarchical clustering - get distances on normalized dfm
 tstat_dist <- dfmat_sotu |>
     dfm_weight(scheme = "prop") |>
@@ -88,10 +86,9 @@ plot(pres_cluster, xlab = "", sub = "",
      main = "Euclidean Distance on Normalized Token Frequency")
 ```
 
-<img src="images/fig2.png" width="700"/>
-
 We can also look at term similarities:
-```{r, eval = FALSE}
+
+```{r, eval=FALSE}
 tstat_sim <- textstat_simil(dfmat_sotu, dfmat_sotu[, c("fair", "health", "terror")],
                           method = "cosine", margin = "features")
 lapply(as.list(tstat_sim), head, 10)
@@ -113,7 +110,8 @@ lapply(as.list(tstat_sim), head, 10)
 ## Scaling document positions
 
 Here is a demonstration of unsupervised document scaling comparing the "Wordfish" model: 
-```{r fig.width = 7, fig.height = 5}
+
+```{r fig.width=7, fig.height=5}
 if (require("quanteda.textmodels") && require("quanteda.textplots")) {
   dfmat_ire <- tokens(data_corpus_irishbudget2010) |> 
       dfm()
@@ -139,7 +137,8 @@ if (require("quanteda.textmodels")) {
 ```
 
 Now we can fit the topic model and plot it:
-```{r fig.width = 7, fig.height = 5}
+
+```{r fig.width=7, fig.height=5}
 if (require("stm") && require("quanteda.textmodels")) {
     set.seed(100)
     my_lda_fit20 <- stm(quant_dfm, K = 20, verbose = FALSE)

@@ -147,6 +147,7 @@ meta_system <- function(x, field = NULL)
 }
 
 #' @rdname meta_system
+#' @exportS3Method "meta_system<-" corpus
 `meta_system<-.corpus` <- function(x, field = NULL, value) {
     if (is.null(field) && !missing(value)) {
         attr(x, "meta")$system <- value
@@ -157,6 +158,7 @@ meta_system <- function(x, field = NULL)
 }
 
 #' @rdname meta_system
+#' @exportS3Method "meta_system<-" tokens
 `meta_system<-.tokens` <- function(x, field = NULL, value) {
     if (is.null(field) && !missing(value)) {
         attr(x, "meta")$system <- value
@@ -167,6 +169,7 @@ meta_system <- function(x, field = NULL)
 }
 
 #' @rdname meta_system
+#' @exportS3Method "meta_system<-" dfm
 `meta_system<-.dfm` <- function(x, field = NULL, value) {
     if (is.null(field)) {
         x@meta$system <- value
@@ -177,6 +180,7 @@ meta_system <- function(x, field = NULL)
 }
 
 #' @rdname meta_system
+#' @exportS3Method "meta_system<-" dictionary
 `meta_system<-.dictionary` <- `meta_system<-.dfm`
 
 #' @rdname meta_system
@@ -209,10 +213,8 @@ make_meta <- function(class, inherit = NULL, ...) {
         "object" = list(),
         "user" = list()
     )
-
-    suppressWarnings({
-        result$system <- make_meta_system(inherit$system)
-    })
+    result$system <- make_meta_system(inherit$system, warn = FALSE)
+    
     if (class == "corpus") {
         result$object <- make_meta_corpus(inherit$object, ...)
     } else if (class == "tokens") {
@@ -222,7 +224,7 @@ make_meta <- function(class, inherit = NULL, ...) {
     } else if (class == "fcm") {
         result$object <- make_meta_fcm(inherit$object, ...)
     } else if (class == "dictionary2") {
-        result$object <- make_meta_dictionary2(inherit, ...)
+        result$object <- make_meta_dictionary2(inherit$object, ...)
     }
 
     if ("user" %in% names(inherit))
@@ -233,7 +235,7 @@ make_meta <- function(class, inherit = NULL, ...) {
 
 # newer version of meta_system_defaults
 #' @rdname make_meta
-make_meta_system <- function(inherit = NULL) {
+make_meta_system <- function(inherit = NULL, ...) {
     if (is.null(inherit))
         inherit <- list()
     default <- list(
@@ -243,7 +245,7 @@ make_meta_system <- function(inherit = NULL) {
         "directory" = getwd(),
         "created" = Sys.Date()
     )
-    update_meta(default, inherit)
+    update_meta(default, inherit, ...)
 }
 
 #' @rdname make_meta
@@ -330,7 +332,7 @@ update_meta <- function(default, inherit, ..., warn = TRUE) {
     update <- list(...)
     for (m in setdiff(union(names(inherit), names(update)), names(default))) {
         if (warn)
-            warning(m, " is ignored.")
+            warning(m, " is ignored.", immediate. = TRUE)
     }
     for (m in names(default)) {
         if (length(update) && m %in% names(update)) {

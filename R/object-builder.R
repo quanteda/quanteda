@@ -112,28 +112,15 @@ build_tokens <- function(x, types, padding = TRUE,
 
 
 
-#' #' @rdname object-builders
-# rebuild_tokens <- function(x, attrs) {
-# 
-#     attr(x, "docvars") <- attrs[["docvars"]]
-#     attr(x, "meta") <- attrs[["meta"]]
-#     attr(x, "class") <- union(attrs[["class"]], "tokens")
-#     if (is.list(x))
-#         attr(x, "names") <- attrs[["docvars"]][["docname_"]]
-# 
-#     # drop extra attributes from tokens_segment
-#     try({attr(x, "docnum") <- NULL}, silent = TRUE)
-#     try({attr(x, "pattern") <- NULL}, silent = TRUE)
-# 
-#     return(x)
-# }
-
 #' @rdname object-builders
 rebuild_tokens <- function(x, attrs) {
 
-    if (is.list(x))
+    if (is.tokens_xptr(x) && global$recompile)
+        x <- cpp_recompile(x)
+    if (is.list(x)) { # only used for testing
          attr(x, "names") <- attrs[["docvars"]][["docname_"]]
-    structure(x,
+    }
+    structure(x, 
               padding = TRUE, # TODO: removed after v4
               docvars = attrs[["docvars"]],
               meta = attrs[["meta"]],

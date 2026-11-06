@@ -1,0 +1,111 @@
+# quanteda tokenizers
+
+Internal methods for tokenization providing default and legacy methods
+for text segmentation.
+
+## Usage
+
+``` r
+tokenize_word2(
+  x,
+  split_hyphens = FALSE,
+  verbose = quanteda_options("verbose"),
+  ...
+)
+
+tokenize_word3(
+  x,
+  split_hyphens = FALSE,
+  verbose = quanteda_options("verbose"),
+  ...
+)
+
+tokenize_word4(
+  x,
+  split_hyphens = FALSE,
+  split_tags = FALSE,
+  split_elisions = FALSE,
+  verbose = quanteda_options("verbose"),
+  ...
+)
+
+tokenize_word1(
+  x,
+  split_hyphens = FALSE,
+  verbose = quanteda_options("verbose"),
+  ...
+)
+
+tokenize_character(x, ...)
+
+tokenize_sentence(x, verbose = FALSE, ...)
+
+tokenize_paragraph(x, verbose = FALSE, ...)
+
+tokenize_fasterword(x, ...)
+
+tokenize_fastestword(x, ...)
+
+normalize_characters(x)
+```
+
+## Arguments
+
+- x:
+
+  (named) character; input texts
+
+- split_hyphens:
+
+  logical; if `FALSE`, do not split words that are connected by
+  hyphenation and hyphenation-like characters in between words, e.g.
+  `"self-aware"` becomes `c("self", "-", "aware")`
+
+- verbose:
+
+  if `TRUE`, print timing messages to the console.
+
+- ...:
+
+  used to pass arguments among the functions.
+
+- split_tags:
+
+  logical; if `FALSE`, do not split social media tags defined in
+  [`quanteda_options()`](https://quanteda.io/reference/quanteda_options.md).
+  The default patterns are `pattern_hashtag = "#\\w+#?"` and
+  `pattern_username = "@[a-zA-Z0-9_]+"`.
+
+## Value
+
+a list of characters corresponding to the (most conservative)
+tokenization, including whitespace where applicable; except for
+`tokenize_word1()`, which is a special tokenizer for Internet language
+that includes URLs, \#hashtags, @usernames, and email addresses.
+
+## Details
+
+Each of the word tokenizers corresponds to a major version of quanteda,
+kept here for backward compatibility and comparison. `tokenize_word3()`
+is identical to `tokenize_word2()`.
+
+## Examples
+
+``` r
+if (FALSE) { # \dontrun{
+txt <- c(doc1 = "Tweet https://quanteda.io using @quantedainit and #rstats.",
+         doc2 = "The £1,000,000 question.",
+         doc4 = "Line 1.\nLine2\n\nLine3.",
+         doc5 = "?",
+         doc6 = "Self-aware machines! \U0001f600",
+         doc7 = "Qu'est-ce que c'est?")
+tokenize_word2(txt)
+tokenize_word2(txt, split_hyphens = FALSE)
+tokenize_word1(txt, split_hyphens = FALSE)
+tokenize_word4(txt, split_hyphens = FALSE, split_elisions = TRUE)
+tokenize_fasterword(txt)
+tokenize_fastestword(txt)
+tokenize_sentence(txt)
+tokenize_character(txt[2])
+} # }
+```

@@ -30,8 +30,8 @@ documents.}
 a \link{corpus} object whose documents are equal to the unique group
 combinations, and whose texts are the concatenations of the texts by group.
 Document-level variables that have no variation within groups are saved in
-\link{docvars}.  Document-level variables that are lists are dropped from
-grouping, even when these exhibit no variation within groups.
+\link{docvars}.  Other document-level variables, including lists, are kept but
+their values are replaced with \code{NA}, retaining their original class.
 }
 \description{
 Combine documents in a \link{corpus} object by a grouping variable, by

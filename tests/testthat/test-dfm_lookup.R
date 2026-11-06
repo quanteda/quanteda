@@ -134,7 +134,8 @@ test_that("dfm_lookup verbose output works correctly", {
     expect_message(
         dfm_lookup(dfm(tokens(c(d1 = "a b c d", d2 = "c d e f g"))),
                    dictionary(list(one = "a", two = c("d", "e"))), verbose = TRUE),
-        "applying a dictionary consisting of 2 keys"
+        "Returning dfm of 2 documents x 2 features (4 occurrences, 25.00% sparsity) from dfm_lookup()",
+        fixed = TRUE
     )
     expect_silent(
         dfm_lookup(dfm(tokens(c(d1 = "a b c d", d2 = "c d e f g"))),

@@ -23,6 +23,11 @@ using namespace oneapi; // only Windows R 4.3.x or later
 #define QUANTEDA_USE_TBB false
 #endif
 
+
+// #ifndef QUANTEDA_DEBUG
+// #define QUANTEDA_DEBUG
+// #endif
+
 // [[Rcpp::plugins(cpp11)]]
 using namespace Rcpp;
 
@@ -179,7 +184,7 @@ namespace quanteda{
             type_.set_encoding(CE_UTF8);
             types_[i] = type_;
         }
-        return(types_);
+        return types_;
     }
     
     inline bool has_na(IntegerVector vec_) {
@@ -253,7 +258,7 @@ namespace quanteda{
             }
             ngrams.push_back(ngram);
         }
-        return(ngrams);
+        return ngrams;
     }
     
     inline std::vector<std::size_t> register_ngrams(List patterns_, 
@@ -302,6 +307,10 @@ namespace quanteda{
         spans.erase(unique(spans.begin(), spans.end()), spans.end());
         std::reverse(std::begin(spans), std::end(spans));
         return spans;
+    }
+    
+    inline unsigned int count_padding(Text &text) {
+        return std::count(text.begin(), text.end(), 0);
     }
     
 }

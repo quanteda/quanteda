@@ -92,7 +92,7 @@ therefore being twice the number of rows in the kwic.}
 \item{concatenator}{character between tokens, default is the whitespace.}
 }
 \value{
-A \linkS4class{corpus} class object containing the original texts,
+A \link[=corpus-class]{corpus} class object containing the original texts,
 document-level variables, document-level metadata, corpus-level metadata,
 and default settings for subsequent processing of the corpus.
 
@@ -162,7 +162,7 @@ summary(corpus(dat, text_field = "some_text",
 
 }
 \seealso{
-\linkS4class{corpus}, \code{\link[=docvars]{docvars()}},
+\link[=corpus-class]{corpus}, \code{\link[=docvars]{docvars()}},
 \code{\link[=meta]{meta()}}, \code{\link[=as.character.corpus]{as.character.corpus()}}, \code{\link[=ndoc]{ndoc()}},
 \code{\link[=docnames]{docnames()}}
 }

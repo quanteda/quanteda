@@ -29,12 +29,19 @@ S3method("docvars<-",corpus)
 S3method("docvars<-",default)
 S3method("docvars<-",dfm)
 S3method("docvars<-",tokens)
+S3method("docvars<-",tokens_xptr)
 S3method("meta<-",corpus)
 S3method("meta<-",dfm)
 S3method("meta<-",dictionary2)
 S3method("meta<-",tokens)
+S3method("meta_system<-",corpus)
+S3method("meta_system<-",dfm)
+S3method("meta_system<-",dictionary)
+S3method("meta_system<-",tokens)
 S3method("names<-",corpus)
 S3method("names<-",tokens)
+S3method("set_types<-",tokens)
+S3method("set_types<-",tokens_xptr)
 S3method("texts<-",corpus)
 S3method(as.character,corpus)
 S3method(as.character,tokens)
@@ -60,6 +67,7 @@ S3method(as.fcm,matrix)
 S3method(as.list,tokens)
 S3method(as.list,tokens_xptr)
 S3method(as.matrix,dfm)
+S3method(as.matrix,tokens)
 S3method(as.phrase,collocations)
 S3method(as.phrase,default)
 S3method(as.phrase,dictionary2)
@@ -122,6 +130,8 @@ S3method(corpus_segment,default)
 S3method(corpus_subset,corpus)
 S3method(corpus_subset,default)
 S3method(corpus_trim,corpus)
+S3method(count_types,tokens)
+S3method(count_types,tokens_xptr)
 S3method(dfm,character)
 S3method(dfm,corpus)
 S3method(dfm,default)
@@ -165,6 +175,8 @@ S3method(dictionary,dictionary2)
 S3method(dictionary,list)
 S3method(docfreq,default)
 S3method(docfreq,dfm)
+S3method(docfreq,tokens)
+S3method(docfreq,tokens_xptr)
 S3method(docid,corpus)
 S3method(docid,default)
 S3method(docid,dfm)
@@ -178,6 +190,7 @@ S3method(docvars,corpus)
 S3method(docvars,default)
 S3method(docvars,dfm)
 S3method(docvars,tokens)
+S3method(docvars,tokens_xptr)
 S3method(fcm,character)
 S3method(fcm,corpus)
 S3method(fcm,default)
@@ -196,7 +209,14 @@ S3method(fcm_toupper,default)
 S3method(fcm_toupper,fcm)
 S3method(featfreq,default)
 S3method(featfreq,dfm)
+S3method(featfreq,tokens)
+S3method(featfreq,tokens_xptr)
 S3method(featnames,dfm)
+S3method(get_docvars,corpus)
+S3method(get_docvars,dfm)
+S3method(get_docvars,tokens)
+S3method(get_types,tokens)
+S3method(get_types,tokens_xptr)
 S3method(head,dfm)
 S3method(head,tokens_xptr)
 S3method(index,default)
@@ -284,9 +304,15 @@ S3method(tokens_group,tokens_xptr)
 S3method(tokens_lookup,default)
 S3method(tokens_lookup,tokens)
 S3method(tokens_lookup,tokens_xptr)
+S3method(tokens_match,default)
+S3method(tokens_match,tokens)
+S3method(tokens_match,tokens_xptr)
 S3method(tokens_ngrams,default)
 S3method(tokens_ngrams,tokens)
 S3method(tokens_ngrams,tokens_xptr)
+S3method(tokens_recompile,default)
+S3method(tokens_recompile,tokens)
+S3method(tokens_recompile,tokens_xptr)
 S3method(tokens_replace,default)
 S3method(tokens_replace,tokens)
 S3method(tokens_replace,tokens_xptr)
@@ -454,7 +480,9 @@ export(tokens_compound)
 export(tokens_group)
 export(tokens_keep)
 export(tokens_lookup)
+export(tokens_match)
 export(tokens_ngrams)
+export(tokens_recompile)
 export(tokens_remove)
 export(tokens_replace)
 export(tokens_restore)
@@ -479,6 +507,7 @@ exportMethods(as.list)
 exportMethods(c)
 exportMethods(colMeans)
 exportMethods(colSums)
+exportMethods(drop0)
 exportMethods(print)
 exportMethods(rowMeans)
 exportMethods(rowSums)
@@ -487,45 +516,51 @@ import(Matrix)
 import(methods)
 importFrom(Rcpp,evalCpp)
 importFrom(fastmatch,fmatch)
-importFrom(lifecycle,deprecated)
-importFrom(lifecycle,signal_stage)
+importFrom(lifecycle,
+  deprecated,
+  signal_stage
+)
 importFrom(magrittr,"%>%")
 importFrom(stats,quantile)
 importFrom(stopwords,stopwords)
-importFrom(stringi,stri_c)
-importFrom(stringi,stri_c_list)
-importFrom(stringi,stri_count_boundaries)
-importFrom(stringi,stri_detect_charclass)
-importFrom(stringi,stri_detect_fixed)
-importFrom(stringi,stri_detect_regex)
-importFrom(stringi,stri_dup)
-importFrom(stringi,stri_enc_toutf8)
-importFrom(stringi,stri_endswith_fixed)
-importFrom(stringi,stri_extract_all_regex)
-importFrom(stringi,stri_extract_first_regex)
-importFrom(stringi,stri_extract_last_regex)
-importFrom(stringi,stri_length)
-importFrom(stringi,stri_locate_first_fixed)
-importFrom(stringi,stri_locate_first_regex)
-importFrom(stringi,stri_locate_last_fixed)
-importFrom(stringi,stri_locate_last_regex)
-importFrom(stringi,stri_paste_list)
-importFrom(stringi,stri_read_lines)
-importFrom(stringi,stri_replace_all_fixed)
-importFrom(stringi,stri_replace_all_regex)
-importFrom(stringi,stri_replace_first_regex)
-importFrom(stringi,stri_split_boundaries)
-importFrom(stringi,stri_split_charclass)
-importFrom(stringi,stri_split_fixed)
-importFrom(stringi,stri_split_regex)
-importFrom(stringi,stri_sub)
-importFrom(stringi,stri_trans_nfc)
-importFrom(stringi,stri_trans_tolower)
-importFrom(stringi,stri_trans_totitle)
-importFrom(stringi,stri_trans_toupper)
-importFrom(stringi,stri_trim_both)
-importFrom(stringi,stri_trim_right)
-importFrom(stringi,stri_wrap)
-importFrom(utils,combn)
-importFrom(utils,getFromNamespace)
+importFrom(stringi,
+  stri_c,
+  stri_c_list,
+  stri_count_boundaries,
+  stri_detect_charclass,
+  stri_detect_fixed,
+  stri_detect_regex,
+  stri_dup,
+  stri_enc_toutf8,
+  stri_endswith_fixed,
+  stri_extract_all_regex,
+  stri_extract_first_regex,
+  stri_extract_last_regex,
+  stri_length,
+  stri_locate_first_fixed,
+  stri_locate_first_regex,
+  stri_locate_last_fixed,
+  stri_locate_last_regex,
+  stri_paste_list,
+  stri_read_lines,
+  stri_replace_all_fixed,
+  stri_replace_all_regex,
+  stri_replace_first_regex,
+  stri_split_boundaries,
+  stri_split_charclass,
+  stri_split_fixed,
+  stri_split_regex,
+  stri_sub,
+  stri_trans_nfc,
+  stri_trans_tolower,
+  stri_trans_totitle,
+  stri_trans_toupper,
+  stri_trim_both,
+  stri_trim_right,
+  stri_wrap
+)
+importFrom(utils,
+  combn,
+  getFromNamespace
+)
 useDynLib(quanteda, .registration = TRUE)

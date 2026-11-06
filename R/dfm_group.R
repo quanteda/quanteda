@@ -13,9 +13,9 @@
 #' @return `dfm_group` returns a [dfm] whose documents are equal to
 #'   the unique group combinations, and whose cell values are the sums of the
 #'   previous values summed by group. Document-level variables that have no
-#'   variation within groups are saved in [docvars].  Document-level
-#'   variables that are lists are dropped from grouping, even when these exhibit
-#'   no variation within groups.
+#'   variation within groups are saved in [docvars].  Other document-level
+#'   variables, including lists, are kept but their values are replaced with
+#'   `NA`, retaining their original class.
 #' @export
 #' @examples
 #' corp <- corpus(c("a a b", "a b c c", "a c d d", "a c c d"),
@@ -71,9 +71,6 @@ dfm_group.dfm <- function(x, groups = docid(x), fill = FALSE, force = FALSE,
     if (ndoc(x) != length(groups))
         stop("groups must have length ndoc(x)", call. = FALSE)
 
-    if (verbose)
-        before <- stats_dfm(x)
-    
     # remove NA groups
     x <- dfm_subset(x, !is.na(groups))
     attrs <- attributes(x)
@@ -86,7 +83,7 @@ dfm_group.dfm <- function(x, groups = docid(x), fill = FALSE, force = FALSE,
                         meta = attrs[["meta"]]
     )
     if (verbose)
-        message_dfm("dfm_group()", before, stats_dfm(result))
+        message_dfm("dfm_group()", stats_dfm(result))
     return(result)
 }
 

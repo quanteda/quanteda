@@ -1,5 +1,6 @@
 //#include <RcppArmadillo.h>
 #include <Rcpp.h>
+#include "dev.h"
 // [[Rcpp::plugins(cpp11)]]
 using namespace Rcpp;
 
@@ -23,49 +24,50 @@ class TokensObj {
         Texts texts;
         Types types;
         bool recompiled;
-        bool padded;
+        bool padded; // NOTE: consider removing
         
         // functions
         void recompile();
+        std::vector<int> get_ntoken(bool no_padding);
+        std::vector<int> get_ntype(bool no_padding);
+        std::vector<int> get_freq(bool no_padding, bool boolean);
 
     private:
-        bool is_duplicated(Types types);
+        bool is_duplicated(Types types); // NOTE: consider removing
 };
 
 inline bool TokensObj::is_duplicated(Types types) {
-    std::sort(types.begin(), types.end());
-    if (types.size() <= 1) return false;
+    std::unordered_set<std::string> set;
     for (std::size_t i = 0; i < types.size() - 1; i++) {
-        if (types[i] == "" || types[i] == types[i + 1]) {
+        auto it = set.insert(types[i]);
+        if (types[i] == "" || !it.second)
             return true;
-        }
     }
     return false;
 }
 
 inline void TokensObj::recompile() {
-    
+
     if (recompiled) return; // do nothing
     
-    std::size_t G = types.size();
-    std::size_t H = texts.size();
+    const std::size_t G = types.size();
+    const std::size_t H = texts.size();
     unsigned int id_limit = G;
     unsigned int id_unused = id_limit + 1;
-    
-    //Rcout << "Re-index tokens\n";
-    
+
     // Re-index tokens -------------------
     
     unsigned int id = 1;
     std::vector<unsigned int> ids(G, id_unused);
+    
     for (std::size_t g = 0; g < G; g++) {
         if (types[g] == "") 
             ids[g] = 0; // padding
     }
     int count_pad = 0;
     for (std::size_t h = 0; h < H; h++) {
+        Text &text_new = texts[h];
         std::size_t I = texts[h].size();
-        Text text_new(I);
         for (std::size_t i = 0; i < I; i++) {
             if (texts[h][i] > id_limit) 
                 throw std::range_error("Invalid tokens object");
@@ -82,7 +84,7 @@ inline void TokensObj::recompile() {
                 count_pad++;
             }
         }
-        texts[h] = text_new;
+        //texts[h] = text_new;
     }
 
     // sort types
@@ -94,37 +96,49 @@ inline void TokensObj::recompile() {
     types = types_new;
     padded = count_pad > 0;
     
+    // dev::Timer timer;
+    // dev::start_timer("is_duplicated", timer);
+    // is_duplicated(types);
+    // dev::stop_timer("is_duplicated", timer);
+    
     // Merge duplicated types -------------------
     
-    if (is_duplicated(types)) {
-        //Rcout << "Merge duplicate types\n";
-        
-        // Check duplicated or empty types
-        unsigned int id = 1;
-        std::vector<unsigned int> ids(G, 0);
-        std::vector<bool> unique(G);
-        std::unordered_map<std::string, unsigned int> map;
-        for (std::size_t g = 0; g < G; g++) {
-            if (types[g] == "") {
-                ids[g] = 0;
+    //dev::start_timer("deduplication", timer);
+    
+    // Reset 
+    id = 1; 
+    std::fill(ids.begin(), ids.end(), 0);
+    
+    // Check duplicated or empty types
+    bool duplicated = false;
+    std::vector<bool> unique(G);
+    std::unordered_map<std::string, unsigned int> map;
+    for (std::size_t g = 0; g < G; g++) {
+        if (types[g] == "") {
+            ids[g] = 0;
+            duplicated = true;
+        } else {
+            auto it = map.insert(std::pair<std::string, unsigned int>(types[g], id));
+            ids[g] = it.first->second;
+            if (it.second) {
+                unique[g] = true;
+                id++; // increment iff there is no gap
             } else {
-                auto it = map.insert(std::pair<std::string, unsigned int>(types[g], id));
-                ids[g] = it.first->second;
-                if (it.second) {
-                    unique[g] = true;
-                    id++; // increment iff there is no gap
-                }
+                duplicated = true;
             }
         }
+    }
+    //dev::stop_timer("deduplication", timer);
     
+    if (duplicated) {
         for (std::size_t h = 0; h < H; h++) {
+            Text &text_new = texts[h];
             std::size_t I = texts[h].size();
-            Text text_new(I);
             for (std::size_t i = 0; i < I; i++) {
                 if (texts[h][i] != 0)
                     text_new[i] = ids[texts[h][i] - 1];
             }
-            texts[h] = text_new;
+            //texts[h] = text_new;
         }
         
         Types types_new;
@@ -135,7 +149,77 @@ inline void TokensObj::recompile() {
         }
         types = types_new;
     }
-    
+
     recompiled = true;
     return;
+}
+
+inline std::vector<int> TokensObj::get_ntoken(bool no_padding = false) {
+    
+    std::size_t H = texts.size();
+    std::vector<int> ls(H, 0);
+    if (no_padding) {
+        for (std::size_t h = 0; h < H; h++) {
+            std::size_t I = texts[h].size();
+            for (std::size_t i = 0; i < I; i++) {
+                // ignore paddings
+                if (texts[h][i] > 0)
+                    ls[h]++;
+            }
+        }
+    } else {
+        for (std::size_t h = 0; h < H; h++) {
+            ls[h] = texts[h].size();
+        }
+    }
+    return ls;
+}
+
+inline std::vector<int> TokensObj::get_ntype(bool no_padding = false) {
+    
+    std::size_t H = texts.size();
+    std::vector<int> ns(H);
+    for (std::size_t h = 0; h < H; h++) {
+        Text text = texts[h];
+        if (text.size() == 0) {
+            ns[h] = 0;
+        } else {
+            std::sort(text.begin(), text.end());
+            text.erase(unique(text.begin(), text.end()), text.end());
+            int n = text.size();
+            if (text[0] == 0 && no_padding)
+                n--;
+            ns[h] = n;
+        }
+    }
+    return ns;
+}
+
+inline std::vector<int> TokensObj::get_freq(bool no_padding = false,
+                                            bool boolean = false) {
+    std::size_t G = types.size();
+    if (!no_padding)
+        G++;
+    std::vector<int> freq(G, 0);
+    std::vector<bool> flag(G);
+    std::size_t H = texts.size();
+    for (std::size_t h = 0; h < H; h++) {
+        const Text &text = texts[h];
+        std::fill(flag.begin(), flag.end(), false);
+        std::size_t I = text.size();
+        for (std::size_t i = 0; i < I; i++) {
+            unsigned int id = text[i];
+            // ignore paddings
+            if (no_padding) {
+                if (id == 0)
+                    continue;
+                id--;
+            }
+            if (boolean && flag[id])
+                continue;
+            freq[id]++;
+            flag[id] = true;
+        }
+    }
+    return freq;
 }

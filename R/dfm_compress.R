@@ -59,8 +59,6 @@ dfm_compress.dfm <- function(x, margin = c("both", "documents", "features"),
     if (margin %in% c("both", "features"))
         features <- factor(featnames(x), levels = unique(featnames(x)))
     
-    if (verbose)
-        before <- stats_dfm(x)
     x <- group_matrix(x, documents, features)
     result <- build_dfm(x, colnames(x),
                         unit = "documents",
@@ -68,6 +66,6 @@ dfm_compress.dfm <- function(x, margin = c("both", "documents", "features"),
                         meta = attrs[["meta"]]
     )
     if (verbose)
-        message_dfm("dfm_compress()", before, stats_dfm(result))
+        message_dfm("dfm_compress()", stats_dfm(result))
     return(result)
 }

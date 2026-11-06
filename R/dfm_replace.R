@@ -41,8 +41,10 @@ dfm_replace.default <- function(x, pattern, replacement, case_insensitive = TRUE
 dfm_replace.dfm <- function(x, pattern, replacement, case_insensitive = TRUE,
                             verbose = quanteda_options("verbose")) {
     x <- as.dfm(x)
-    pattern <- check_character(pattern, min_len = 0, max_len = Inf, strict = TRUE)
-    replacement <- check_character(replacement, min_len = 0, max_len = Inf, strict = TRUE)
+    pattern <- check_character(pattern, min_len = 0, max_len = Inf, strict = TRUE,
+                               normalize = TRUE)
+    replacement <- check_character(replacement, min_len = 0, max_len = Inf, strict = TRUE,
+                                   normalize = TRUE)
     case_insensitive <- check_logical(case_insensitive)
     
     if (length(pattern) != length(replacement))
@@ -51,11 +53,9 @@ dfm_replace.dfm <- function(x, pattern, replacement, case_insensitive = TRUE,
 
     if (!length(pattern)) return(x)
     
-    if (verbose)
-        before <- stats_dfm(x)
     set_dfm_featnames(x) <- replace_type(featnames(x), pattern, replacement, case_insensitive)
     x <- dfm_compress(x, "features")
     if (verbose)
-        message_dfm("dfm_replace()", before, stats_dfm(x))
+        message_dfm("dfm_replace()", stats_dfm(x))
     return(x)
 }

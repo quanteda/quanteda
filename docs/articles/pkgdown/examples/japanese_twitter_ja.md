@@ -1,0 +1,111 @@
+# 事例: 2017年総選挙に関するツイート
+
+``` r
+
+library(quanteda)
+```
+
+### コーパスのダウンロード
+
+本コーパスは，2017年総選挙の際に収集されたツイートから構成されている．ツイートは，TwitterのStrem
+APIから、キーワード”選挙”を使い，10月20日から10月31日の期間にダウンロードした．インターネット上で収集されたテキストは，英数字の全半角が統一されていないので，[`stri_trans_nfkc()`](https://rdrr.io/pkg/stringi/man/stri_trans_nf.html)によって表記を標準化すると良い．
+
+``` r
+
+devtools::install_github("quanteda/quanteda.corpora")
+```
+
+``` r
+
+corp <- quanteda.corpora::download(url = "https://www.dropbox.com/s/co12wpj08pzqz71/data_corpus_election2017tweets.rds?dl=1")
+corp <- as.corpus(corp)
+corp[] <- stringi::stri_trans_nfkc(corp) # 表記を標準化
+```
+
+### 投稿の数と期間を取得
+
+``` r
+
+ndoc(corp)
+## [1] 132346
+range(docvars(corp, "created_at"))
+## [1] "2017-10-19 16:55:25 GMT" "2017-10-31 15:09:19 GMT"
+```
+
+## 前処理
+
+### トークン化
+
+ツイートのトークン化では，ハッシュタグの後に続く改行を保持するために`remove_separator = FALSE`とし，次の[`tokens_remove()`](https://quanteda.io/reference/tokens_select.md)で，語の位置関係を維持しながら，改行，空白，‘#’と’@’以外の記号を削除する．日本語のハッシュタグは，’#’とそれの続く語が分離されてしまうので，それらを[`tokens_compound()`](https://quanteda.io/reference/tokens_compound.md)で文書行列を作成する前に結合する．
+
+``` r
+
+toks <- tokens(corp, remove_separator = FALSE, remove_url = TRUE)
+toks <- tokens_select(toks, pattern = "^[\\w#@]+$", valuetype = "regex", padding = TRUE)
+
+min_count <- 10
+
+# 漢字
+library("quanteda.textstats")
+kanji_col <- tokens_keep(toks, pattern = "^[一-龠]+$", valuetype = "regex", padding = TRUE) |> 
+             textstat_collocations(min_count = min_count)
+toks <- tokens_compound(toks, kanji_col[kanji_col$z > 3,], concatenator = "")
+
+# カタカナ
+kana_col <- tokens_keep(toks, pattern = "^[ァ-ヶー]+$", valuetype = "regex", padding = TRUE) |> 
+            textstat_collocations(min_count = min_count)
+toks <- tokens_compound(toks, kana_col[kana_col$z > 3,], concatenator = "")
+
+# 漢字，カタカナおよび数字
+any_col <- tokens_select(toks, pattern = "^[0-9ァ-ヶー一-龠]+$", valuetype = "regex", padding = TRUE) |> 
+           textstat_collocations(min_count = min_count)
+toks <- tokens_compound(toks, pattern = any_col[any_col$z > 3,], concatenator = "")
+
+# ハッシュと語の結合
+toks <- tokens_compound(toks, pattern = phrase("# *"), concatenator = "") 
+
+tweet_dfm <- dfm(toks)
+```
+
+## 分析
+
+### タグの共起ネットワーク
+
+ここでは，[`dfm_select()`](https://quanteda.io/reference/dfm_select.md)によってハッシュタグを選択しているが，そこに多くに含まれる’#選挙’や’#衆院選’などのハッシュタグは，クラスターを明確にするために削除している．
+
+``` r
+
+library("quanteda.textplots")
+tag_dfm <- 
+    tweet_dfm |> 
+    dfm_select(pattern = "#*") |> 
+    dfm_remove(pattern = c("*選挙*", "*衆院選*", "*衆議院*", "*投票*"), min_nchar = 2) |> 
+    dfm_trim(min_termfreq = 10)
+tag_fcm <- fcm(tag_dfm)
+feat <- names(topfeatures(tag_dfm, 100))
+textplot_network(fcm_select(tag_fcm, pattern = feat), 
+                 min_freq = 0.8,
+                 vertex_labelfont = if (Sys.info()["sysname"] == "Darwin") "SimHei" else NULL)
+```
+
+![](japanese_twitter_ja_files/figure-html/unnamed-chunk-7-1.png)
+
+### 語の共起ネットワーク
+
+ツイートのメッセージを分析するためには，[`dfm_remove()`](https://quanteda.io/reference/dfm_select.md)でハッシュタグやユーザー名を削除する．ここでは，平仮名だけからなる特徴は文法的な要素であることが多く，話題を理解するのに役に立たないので削除している．
+
+``` r
+
+library("quanteda.textstats")
+msg_dfm <- tweet_dfm |> 
+    dfm_remove(pattern = c("#*", "@*")) |> 
+    dfm_remove(pattern = "^[ぁ-ん]+$", valuetype = "regex", min_nchar = 2) |> 
+    dfm_trim(min_termfreq = 10) |> 
+    dfm_toupper()
+msg_fcm <- fcm(msg_dfm)
+feat <- names(topfeatures(msg_dfm, 50))
+textplot_network(fcm_select(msg_fcm, pattern = feat), min_freq = 0.3,
+                 vertex_labelfont = if (Sys.info()["sysname"] == "Darwin") "SimHei" else NULL)
+```
+
+![](japanese_twitter_ja_files/figure-html/unnamed-chunk-8-1.png)

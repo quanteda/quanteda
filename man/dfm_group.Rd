@@ -35,16 +35,18 @@ log counts (when a dfm has been weighted by \code{"logcount"} for instance using
 \code{\link[=dfm_weight]{dfm_weight()}}).  Not needed when the term weight schemes "count" and
 "prop".}
 
-\item{verbose}{if \code{TRUE} print the number of tokens and documents before and
-after the function is applied. The number of tokens does not include paddings.}
+\item{verbose}{if \code{TRUE} print a summary of the object returned by the
+function: the number of documents and, depending on the object, the number
+of characters, tokens and types, or features and occurrences. The number of
+tokens includes paddings, but the number of features excludes them.}
 }
 \value{
 \code{dfm_group} returns a \link{dfm} whose documents are equal to
 the unique group combinations, and whose cell values are the sums of the
 previous values summed by group. Document-level variables that have no
-variation within groups are saved in \link{docvars}.  Document-level
-variables that are lists are dropped from grouping, even when these exhibit
-no variation within groups.
+variation within groups are saved in \link{docvars}.  Other document-level
+variables, including lists, are kept but their values are replaced with
+\code{NA}, retaining their original class.
 }
 \description{
 Combine documents in a \link{dfm} by a grouping variable, by summing the cell

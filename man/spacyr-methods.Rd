@@ -3,12 +3,6 @@
 \name{spacyr-methods}
 \alias{spacyr-methods}
 \title{Extensions for and from spacy_parse objects}
-\arguments{
-\item{x}{an object returned by \code{spacy_parse}, or (for
-\code{spacy_parse}) a \link{corpus} object}
-
-\item{...}{not used for these functions}
-}
 \description{
 These functions provide \pkg{quanteda} methods for \pkg{spacyr} objects, and
 also extend \link[spacyr:spacy_parse]{spacy_parse} and
@@ -18,6 +12,9 @@ objects.
 \details{
 \code{spacy_parse(x, ...)} and \code{spacy_tokenize(x, ...)} work directly on
 \pkg{quanteda} \link{corpus} objects.
+
+In the methods below, \code{x} is an object returned by \code{spacy_parse} (or, for
+\code{spacy_parse}, a \link{corpus} object), and \code{...} is not used.
 
 \code{docnames(x)} returns the document names
 

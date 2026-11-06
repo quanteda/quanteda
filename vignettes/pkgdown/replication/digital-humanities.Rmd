@@ -6,6 +6,10 @@ output:
     toc: true
 ---
 
+```{r, echo=FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "##")
+```
+
 In this vignette we show how the **quanteda** package can be used to replicate the analysis from Matthew Jockers' book [*Text Analysis with R for Students of Literature*](http://doi.org/10.1007/978-3-319-03164-4) (London: Springer, 2014). Most of the Jockers book consists of loading, transforming, and analyzing quantities derived from text and data from text.  Because **quanteda** has built in most of the code to perform these data transformations and analyses, it makes it possible to replicate the results from the book with far less code. Throughout this vignette, we name objects based on Jockers' book, but follow the **quanteda** [style guide](https://github.com/quanetda/quanteda/wiki/Style-guide).
 
 In what follows, each section corresponds to the respective chapter in the book.
@@ -152,7 +156,7 @@ textstat_frequency(moby_dfm, n = 10)
 ```
 
 Finally, if we wish to plot the most frequent (50) terms, we can supply the results of `textstat_frequency()` to `ggplot()` to plot their frequency by their rank:
-```{r fig.width = 8}
+```{r fig.width=8}
 # plot frequency of 50 most frequent terms 
 library("ggplot2")
 theme_set(theme_minimal())
@@ -401,13 +405,13 @@ ntoken(chapters_corp) |> head()
 
 Since the quotient of the number of tokens and number of types is a vector, we 
 can simply feed this to `plot()` using the pipe operator:
-```{r, fig.width = 8}
+```{r, fig.width=8}
 (ntoken(chapters_corp) / ntype(chapters_corp)) |>
     plot(type = "h", ylab = "Mean word frequency")
 ```
 
 For the scaled plot:
-```{r, fig.width = 8}
+```{r, fig.width=8}
 (ntoken(chapters_corp) / ntype(chapters_corp)) |>
     scale() |>
     plot(type = "h", ylab = "Scaled mean word frequency")
@@ -483,7 +487,7 @@ Now we can use `kwic()` to find out where in each novel this occurred:
 ```
 
 We can plot this easily too, as a lexical dispersion plot.  By specifying the scale as "absolute", we are looking at absolute token index position rather than relative position, and therefore we see that _Moby Dick_ is nearly twice as long as _Sense and Sensibility_.
-```{r, fig.width = 8, fig.height=3}
+```{r, fig.width=8, fig.height=3}
 textplot_xray(dogkwic, scale = "absolute")
 ```
 

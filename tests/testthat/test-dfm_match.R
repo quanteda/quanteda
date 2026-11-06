@@ -64,7 +64,6 @@ test_that("dfm_match coerce non-character feature", {
 test_that("dfm_match verbose works", {
     expect_message(
         dfm_match(data_dfm_lbgexample, c("B", "newfeat1", "A", "newfeat2"), verbose = TRUE),
-        "dfm_match() changed from 37 features (6 documents) to 4 features (6 documents)",
-        fixed = TRUE
+        "Returning dfm of .* documents x .* features \\(.* occurrences, .* sparsity\\) from dfm_match\\(\\)"
     )
 })

@@ -795,8 +795,6 @@ list2dictionary <- function(dict) {
 #' quanteda:::tokenize_dictionary_values(dict, " ")
 tokenize_dictionary_values <- function(dict, separator, ...) {
     rapply(dict, function(x) {
-        if (any(stri_detect_fixed(x, separator)))
-            stop("Dictionary values are already tokenized")
         toks <- as.list(tokens(x, verbose = FALSE, ...))
         v <- unlist_character(lapply(toks, paste, collapse = separator))
         # restore separated wildcard
@@ -940,8 +938,7 @@ nest_dictionary <- function(dict, depth) {
 #' @rdname read_dict_functions
 #' @description `read_dict_liwc` imports LIWC dictionary files in the
 #'   `.dic` format.
-#' @importFrom stringi stri_extract_first_regex stri_extract_last_regex stri_replace_first_regex
-#' stri_read_lines stri_extract_first_regex
+#' @importFrom stringi stri_extract_first_regex stri_extract_last_regex stri_replace_first_regex stri_read_lines
 #' @examples
 #'
 #' dict <- quanteda:::read_dict_liwc(

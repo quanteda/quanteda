@@ -2,12 +2,12 @@
 #' 
 #' Check the range of values and the length of input vectors
 #' before used in control flow or passed to C++ functions.
-#' @param min_len minimum length of the vector
-#' @param max_len maximum length of the vector
-#' @param min minimum value in the vector
-#' @param max maximum value in the vector
-#' @param strict raise error when `x` is a different type
-#' @param allow_null if `TRUE`, returns `NULL` when `is.null(x)`
+#' @param min_len minimum length of the vector.
+#' @param max_len maximum length of the vector.
+#' @param min minimum value in the vector.
+#' @param max maximum value in the vector.
+#' @param strict raise error when `x` is a different type.
+#' @param allow_null if `TRUE`, returns `NULL` when `is.null(x)`.
 #' @details Note that value checks are performed after coercion to expected input types. 
 #' @keywords internal development
 #' @export
@@ -92,12 +92,14 @@ check_logical <- function(x, min_len = 1, max_len = 1, strict = FALSE,
     return(x)
 }
 
-#' @param min_nchar minimum character length of values in the vector
-#' @param max_nchar maximum character length of values in the vector
+#' @param min_nchar minimum character length of values in the vector.
+#' @param max_nchar maximum character length of values in the vector.
+#' @param normalize if `TRUE`, normalize Unicode characters by applying 
+#'    [stringi][stri_trans_nfc()].
 #' @rdname check_integer
 #' @export
 check_character <- function(x, min_len = 1, max_len = 1, min_nchar = 0, max_nchar = Inf, 
-                            strict = FALSE, allow_null = FALSE) {
+                            strict = FALSE, allow_null = FALSE, normalize = FALSE) {
     arg <- deparse(substitute(x))
     if (allow_null) {
         if (is.null(x)) return(NULL)
@@ -120,6 +122,8 @@ check_character <- function(x, min_len = 1, max_len = 1, min_nchar = 0, max_ncha
             stop("The value of ", arg, " must be between " , min_nchar, " and ", max_nchar, " character\n", call. = FALSE)    
         }
     }
+    if (normalize)
+        x <- stringi::stri_trans_nfc(x)
     return(x)
 }
 

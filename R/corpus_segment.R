@@ -92,8 +92,7 @@
 #'                            pattern_position = "after", extract_pattern = FALSE)
 #' cbind(corpseg3, docvars(corpseg3))
 #' 
-#' @importFrom stringi stri_trim_both stri_replace_all_fixed stri_locate_last_fixed 
-#'   stri_locate_first_fixed stri_sub
+#' @importFrom stringi stri_trim_both stri_replace_all_fixed stri_locate_last_fixed stri_locate_first_fixed stri_sub
 #' @export
 corpus_segment <- function(x, pattern = "##*",
                            valuetype = c("glob", "regex", "fixed"),

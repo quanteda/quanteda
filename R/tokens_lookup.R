@@ -183,8 +183,6 @@ tokens_lookup.tokens_xptr <- function(x, dictionary, levels = 1:5,
         if (capkeys)
             key <- stri_trans_toupper(key)
     }
-    if (verbose)
-        before <- stats_tokens(x)
     if (exclusive) {
         if (!is.null(nomatch)) {
             result <- cpp_tokens_lookup(x, ids, id_key, c(key, nomatch), overlap, 1,
@@ -201,12 +199,12 @@ tokens_lookup.tokens_xptr <- function(x, dictionary, levels = 1:5,
                                     !apply_if, get_threads())
     }
     if (append_key)
-        cpp_recompile(result)
+        result <- cpp_recompile(result)
     if (exclusive)
         field_object(attrs, "what") <- "dictionary"
     result <- rebuild_tokens(result, attrs)
     if (verbose)
-        message_tokens("tokens_lookup()", before, stats_tokens(result))
+        message_tokens("tokens_lookup()", stats_tokens(result))
     return(result)
 }
 

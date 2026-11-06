@@ -43,9 +43,9 @@ print.summary.corpus <- function(x, ...) {
     ndoc_all <- attr(x, "ndoc_all")
     ndoc_show <- attr(x, "ndoc_show")
 
-    cat("Corpus consisting of ", ndoc_all, " document", if (ndoc_all > 1) "s" else "", sep = "")
+    cat(msg("corpus of %s %s", ndoc_all, inflect("document", ndoc_all)))
     if (!is.null(ndoc_show))
-        cat(", showing ", ndoc_show, " document", if (ndoc_show > 1) "s" else "", sep = "")
+        cat(msg(", showing %s %s", ndoc_show, inflect("document", ndoc_show)))
     cat(":\n\n")
     print.data.frame(x, row.names = FALSE)
     cat("\n")

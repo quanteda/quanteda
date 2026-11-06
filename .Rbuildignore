@@ -32,6 +32,7 @@ quanteda.pdf
 ^tests/data_creation$
 ^\.github$
 ^CRAN-SUBMISSION$
+^AGENTS\.md$
 ^CLAUDE\.md$
 ^\.claude$
 ^\.positai$

@@ -20,8 +20,10 @@ fcm_compress(x)
 \code{"documents"}, \code{"features"}, or \code{"both"} (default).  For fcm
 objects, \code{"documents"} has no effect.}
 
-\item{verbose}{if \code{TRUE} print the number of tokens and documents before and
-after the function is applied. The number of tokens does not include paddings.}
+\item{verbose}{if \code{TRUE} print a summary of the object returned by the
+function: the number of documents and, depending on the object, the number
+of characters, tokens and types, or features and occurrences. The number of
+tokens includes paddings, but the number of features excludes them.}
 }
 \value{
 \code{dfm_compress} returns a \link{dfm} whose dimensions have been

@@ -6,22 +6,21 @@ output:
     toc: true
 ---
 
-```{r, echo = FALSE}
-knitr::opts_chunk$set(
-  collapse = FALSE,
-  comment = "##"
-)
+```{r, echo=FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "##")
 ```
+
+This vignette demonstrates that **quanteda** can be used for analysis of Chinese language texts.
 
 ```{r, message=FALSE, warnings=FALSE}
 library("quanteda")
 ```
 
-# Download corpus
+## Download corpus
 
 Download corpus constructed from *Report on the Work of the Government* published by Premier of the State Council between 1954 and 2017. You can download the corpus using the **quanteda.corpora** package.
 
-```{r, message=FALSE,eval=FALSE}
+```{r, message=FALSE, eval=FALSE}
 # read text files
 remotes::install_github("quanteda/quanteda.corpora")
 ```
@@ -31,7 +30,7 @@ library("quanteda.corpora")
 corp <- quanteda.corpora::download(url = "https://www.dropbox.com/s/37ojd5knz1qeyul/data_corpus_chinesegovreport.rds?dl=1")
 ```
 
-# Tokenization
+## Tokenization
 
 ```{r}
 # Chinese stopwords
@@ -49,11 +48,11 @@ dfmat_ch <- dfm(toks_ch)
 topfeatures(dfmat_ch)
 ```
 
-# Analysis
+## Analysis
 
-## Word cloud
+### Word cloud
 
-```{r, fig.height = 5, fig.width = 5, fig.align = "center"}
+```{r, fig.height=5, fig.width=5, fig.align="center"}
 # Plot a word cloud
 set.seed(100)
 
@@ -66,7 +65,7 @@ textplot_wordcloud(dfmat_ch, min_count = 500, random_order = FALSE,
                    color = RColorBrewer::brewer.pal(8, "Dark2"))
 ```
 
-## Feature co-occurrence matrix
+### Feature co-occurrence matrix
 
 ```{r}
 # fcm within the window size of 5
@@ -82,11 +81,11 @@ fcmat_ch <- corp_ch17 |>
 
 ```
 
-## Unsupervised document scaling
+### Unsupervised document scaling
 
 In this example, we run a Wordfish model to show how to apply an unspervised document scaling method to Chinese texts.
 
-```{r fig2, fig.height = 4, fig.width = 6, fig.align = "center"}
+```{r fig2, fig.height=4, fig.width=6, fig.align="center"}
 library("quanteda.textmodels")
 
 tmod_wf <- textmodel_wordfish(dfmat_ch)
@@ -97,7 +96,7 @@ y <- y[!y %in% c(1963, 1961, 1962, 1976, 1977)]
 plot(y, tmod_wf$theta, xlab = "Year", ylab = "Position")
 ```
 
-## Collocations
+### Collocations
 
 ```{r}
 # bigrams cross the whole dataset

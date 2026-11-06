@@ -8,13 +8,13 @@ editor_options:
   chunk_output_type: console
 ---
 
-```{r setup, include = FALSE}
+```{r include=FALSE}
 knitr::opts_chunk$set(
     collapse = TRUE,
-    message = FALSE,
+    message=FALSE,
     comment = "##",
-    fig.width = 8, 
-    fig.height = 2, 
+    fig.width=8, 
+    fig.height=2, 
     dpi = 150
 )
 ```
@@ -167,4 +167,4 @@ microbenchmark::microbenchmark(
 ) |> autoplot(log = FALSE)
 ```
 
-We explore further benchmarks and comparisons for `tokens_xptr` usage in a [separate article](./articles/pkgdown/benchmarks_xptr.html).
+We explore further benchmarks and comparisons for `tokens_xptr` usage in a [separate article](./benchmarks_xptr.html).

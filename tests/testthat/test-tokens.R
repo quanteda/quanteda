@@ -10,10 +10,7 @@ test_that("tokens indexing works as expected", {
     expect_equal(as.list(toks["d2"]), list(d2 = c("four", "five", "six")))
     expect_equal(as.list(toks[2]), list(d2 = c("four", "five", "six")))
     expect_equal(as.list(toks[c(-1, -3)]), list(d2 = c("four", "five", "six"))) # issue #1830
-
-    # issue #370
-    expect_equal(attr(toks[1], "types"), c("one", "two", "three"))
-    expect_equal(attr(toks[2], "types"), c("four", "five", "six"))
+    expect_equal(toks[], toks)
 
     # issue #1308
     expect_error(toks[4], "Subscript out of bounds")
@@ -29,7 +26,7 @@ test_that("tokens_recompile combine duplicates is working", {
     expect_equivalent(attr(tokens_tolower(toks), "types"),
                       c("a", "b", "c", "d"))
     attr(toks, "types") <- char_tolower(attr(toks, "types"))
-    expect_equivalent(attr(quanteda:::tokens_recompile(toks), "types"),
+    expect_equivalent(attr(tokens_recompile(toks, force = TRUE), "types"),
                       c("a", "b", "c", "d"))
 
 })
@@ -632,7 +629,7 @@ test_that("tokens.tokens print complete message", {
     )
     expect_message(
         tokens(tokens("one two three"), verbose = TRUE),
-        "Finished constructing tokens from 1 document"
+        "Finished constructing tokens of 1 document"
     )
 })
 
@@ -818,17 +815,17 @@ test_that("tokens printing works", {
     )
     expect_output(
         print(toks, max_ndoc = 0, max_ntoken = 0, show_summary = TRUE),
-        "Tokens consisting of 14 documents and 4 docvars.",
+        "tokens of 14 documents (38,593 tokens, 4,701 types) and 4 docvars.",
         fixed = TRUE
     )
     expect_output(
         print(as.tokens_xptr(toks), max_ndoc = 0, max_ntoken = 0, show_summary = TRUE),
-        "Tokens consisting of 14 documents and 4 docvars \\(pointer to [0-9a-z]+\\)\\.",
+        "tokens_xptr \\[[0-9a-z]+\\] of 14 documents \\(.* tokens, .* types\\) and 4\ndocvars\\.",
         fixed = FALSE
     )
     expect_output(
         print(toks, max_ndoc = 2, max_ntoken = 3, show_summary = TRUE),
-        paste0('Tokens consisting of 14 documents and 4 docvars.\n',
+        paste0('tokens of 14 documents (38,593 tokens, 4,701 types) and 4 docvars.\n',
                '1789-Washington :\n',
                '[1] "Fellow-Citizens" "of"              "the"            \n',
                '[ ... and 1,534 more ]\n\n',
@@ -862,7 +859,7 @@ test_that("tokens printing works", {
 
     expect_output(
         print(tokens("a b c d"), max_ndoc = -1, max_ntoken = 2),
-        paste0('Tokens consisting of 1 document.\n',
+        paste0('tokens of 1 document (4 tokens, 4 types).\n',
                'text1 :\n',
                '[1] "a" "b"\n',
                '[ ... and 2 more ]\n'),
@@ -870,21 +867,21 @@ test_that("tokens printing works", {
     )
     expect_output(
         print(tokens("a b c d"), max_ndoc = -1, max_ntoken = 4),
-        paste0('Tokens consisting of 1 document.\n',
+        paste0('tokens of 1 document (4 tokens, 4 types).\n',
                'text1 :\n',
                '[1] "a" "b" "c" "d"'),
         fixed = TRUE
     )
     expect_output(
         print(tokens("a b c d"), max_ndoc = -1, max_ntoken = -1),
-        paste0('Tokens consisting of 1 document.\n',
+        paste0('tokens of 1 document (4 tokens, 4 types).\n',
                'text1 :\n',
                '[1] "a" "b" "c" "d"'),
         fixed = TRUE
     )
     expect_output(
         print(tokens("a b c d"), quote = FALSE),
-        paste0('Tokens consisting of 1 document.\n',
+        paste0('tokens of 1 document (4 tokens, 4 types).\n',
                'text1 :\n',
                '[1] a b c d'),
         fixed = TRUE
@@ -1143,7 +1140,7 @@ test_that("output is correct for word1", {
     )
     expect_message(
         toks <- tokens(data_char_ukimmig2010, what = "word1", split_hyphens = FALSE, verbose = TRUE),
-        "Finished constructing tokens from 9 documents"
+        "Finished constructing tokens of 9 documents"
     )
     expect_message(
         toks <- tokens(data_char_ukimmig2010, what = "word1", split_hyphens = FALSE, verbose = TRUE),
@@ -1234,6 +1231,22 @@ test_that("cancatenator is working", {
     expect_equal(
         ntoken(tokens_select(toks, "United+States")),
         c(d1 = 1, d2 = 1)
+    )
+    
+    # empty concatenator
+    txt2 <- c(d1 = "アメリカ合衆国は、大西洋と太平洋に面しています。",
+              d2 = "アメリカの最高裁判所が一致団結していることは、めったにない。")
+    toks2 <- tokens(txt2, remove_punct = TRUE, concatenator = "")
+    
+    # update
+    toks2 <- tokens(toks2, concatenator = "_")
+    expect_equal(
+        concatenator(toks2),
+        "_"
+    )
+    expect_equal(
+        types(toks2)[1:4],
+        c("アメリカ", "合衆国", "は", "大西洋")
     )
 })
 

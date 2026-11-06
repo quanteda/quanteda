@@ -41,12 +41,13 @@
 #' @param include_docvars if `TRUE`, pass docvars through to the tokens object.
 #'   Does not apply when the input is a character data or a list of characters.
 #' @param concatenator character; the concatenation character that will connect
-#'   the tokens making up a multi-token sequence.
+#'   the tokens making up a multi-token sequence. See details.
 #' @inheritParams tokens_select
 #' @param xptr if `TRUE`, returns a `tokens_xptr` class object.
 #' @param verbose if `TRUE`, print timing messages to the console.
 #' @param ... used to pass arguments among the functions.
-#' @section Details: As of version 2, the choice of tokenizer is left more to
+#' @details 
+#'   As of version 2, the choice of tokenizer is left more to
 #'   the user, and `tokens()` is treated more as a constructor (from a named
 #'   list) than a tokenizer. This allows users to use any other tokenizer that
 #'   returns a named list, and to use this as an input to `tokens()`, with
@@ -58,7 +59,30 @@
 #'   extra steps required to preserve such special tokens. If there are many
 #'   random characters in your texts, you should `split_hyphens = TRUE` and
 #'   `split_tags = TRUE` to avoid a slowdown in tokenization.
+#'   
+#'   To construct a tokens object from a list with no additional processing,
+#'   call [as.tokens()] instead of `tokens()`.
 #'
+#'   ## normalize
+#'   
+#'   If `normalize = TRUE`, Unicode characters are replaced by their ASCII 
+#'   equivalent to make pattern matching (e.g. stop words) easier: 
+#'   `[\u201C\u201D\u201F]` to the double quotation; `[\u2018\u201B\u2019]` to 
+#'   the single quotation mark; and `\u002D\u2010\u2011\u2012\u2013\u2014\u2015]` 
+#'   to a hyphen.
+#'   
+#'   ## concatenator
+#'   
+#'   The choice of `concatenator` does not change tokenization immediately but 
+#'   affects operations in the downstream. Tokens sequences are concatenated with 
+#'   the `concatenator` by [quanteda::tokens_compound] into a single tokens. It is
+#'   possible to change the `concatenator` by reconstructing the object using 
+#'   `tokens()`, but it should be done with caution when the `concatenator` 
+#'   is an empty character "" (typically in Chinese and Japanese) because the old
+#'   concatenator cannot be replaced with the new one.
+#'
+#'   ## tokenizers
+#'   
 #'   Using external tokenizers is best done by piping the output from these
 #'   other tokenizers into the `tokens()` constructor, with additional removal
 #'   and splitting options applied at the construction stage.  These will only
@@ -67,9 +91,6 @@
 #'   punctuation if the input list to `tokens()` already had its punctuation
 #'   tokens removed at the external tokenization stage.
 #'
-#'   To construct a tokens object from a list with no additional processing,
-#'   call [as.tokens()] instead of `tokens()`.
-#'
 #'   Recommended tokenizers are those from the \pkg{tokenizers} package, which
 #'   are generally faster than the default (built-in) tokenizer but always
 #'   splits infix hyphens, or \pkg{spacyr}.  The default tokenizer in
@@ -77,16 +98,9 @@
 #'   requirements, it works extremely well for most languages as well as text
 #'   from social media (including hashtags and usernames).
 #'   
-#'   If `normalize = TRUE`, Unicode characters are replaced by their ASCII 
-#'   equivalent to make pattern matching (e.g. stop words) easier: 
-#'   `[\u201C\u201D\u201F]` to the double quotation; `[\u2018\u201B\u2019]` to 
-#'   the single quotation mark; and `\u002D\u2010\u2011\u2012\u2013\u2014\u2015]` 
-#'   to a hyphen.
-#'
-#' @section quanteda Tokenizers: The default word tokenizer `what = "word"` is
-#'   updated in major version 4.  It is even smarter than the v2 and v3
-#'   versions, with additional options for customization.  See
-#'   [tokenize_word4()] for full details.
+#'   The default word tokenizer `what = "word"` is updated in major version 4.  
+#'   It is even smarter than the v2 and v3 versions, with additional options for 
+#'   customization.  See [tokenize_word4()] for full details.
 #'
 #'   The default tokenizer splits tokens using [stri_split_boundaries(x, type =
 #'   "word")][stringi::stri_split_boundaries] but by default preserves infix
@@ -122,6 +136,7 @@
 #'   additional rules to avoid splits on words like "Mr." that would otherwise
 #'   incorrectly be detected as sentence boundaries.  For better sentence
 #'   tokenization, consider using \pkg{spacyr}.} }
+#'   
 #'   
 #' @return \pkg{quanteda} `tokens` class object, by default a serialized list of
 #'   integers corresponding to a vector of types.
@@ -451,7 +466,10 @@ tokens.tokens_xptr <-  function(x,
     concatenator <- check_character(concatenator)
     verbose <- check_logical(verbose)
     check_dots(..., method = c("tokens", "tokenize_word4"))
-
+    
+    # NOTE: consider using quanteda_options()
+    global$recompile <- FALSE
+    
     # splits
     if (split_hyphens) {
         if (verbose) catm(" ...splitting hyphens\n")
@@ -460,7 +478,7 @@ tokens.tokens_xptr <-  function(x,
     if (split_tags) {
         warning("split_tags argument is not used", call. = FALSE)
     }
-
+    
     # removals
     removals <- removals_regex(separators = remove_separators,
                                punct = remove_punct,
@@ -475,7 +493,7 @@ tokens.tokens_xptr <-  function(x,
                                       vectorize_all = FALSE)
         catm(" ...removing", paste(msg, collapse = ", "), "\n")
     }
-
+    
     if (length(removals[["separators"]])) {
         x <- tokens_remove(x, removals[["separators"]], valuetype = "regex",
                            verbose = FALSE)
@@ -495,13 +513,16 @@ tokens.tokens_xptr <-  function(x,
         docvars(x) <- NULL
 
     if (!identical(get_concatenator(x), concatenator)) {
-        #warning('concatenator changed from "',
-        #        get_concatenator(x), '" to "', concatenator, '"', call. = FALSE)
-        set_types(x) <- stri_replace_all_fixed(get_types(x), get_concatenator(x),
-                                               concatenator)
+        if (!identical(get_concatenator(x), "")) 
+            # cannot replace empty characters 
+            set_types(x) <- stri_replace_all_fixed(get_types(x), 
+                                                   get_concatenator(x),
+                                                   concatenator)
         set_concatenator(x) <- concatenator
     }
-
+    global$recompile <- TRUE
+    
+    x <- cpp_recompile(x, force = TRUE)
     if (is_verbose(verbose, ...))
         message_finish(x, proc_time)
 
@@ -659,92 +680,6 @@ serialize_tokens <- function(x, types_reserved = NULL, ...) {
 
     attributes(x) <- attrs
     attr(x, "types") <- types
-    return(x)
-}
-
-#' recompile a serialized tokens object
-#'
-#' This function recompiles a serialized tokens object when the vocabulary has
-#' been changed in a way that makes some of its types identical, such as
-#' lowercasing when a lowercased version of the type already exists in the type
-#' table, or introduces gaps in the integer map of the types.  It also
-#' re-indexes the types attribute to account for types that may have become
-#' duplicates, through a procedure such as stemming or lowercasing; or the
-#' addition of new tokens through compounding.
-#' @param x the [tokens] object to be recompiled
-#' @param method `"C++"` for C++ implementation or `"R"` for an older
-#'   R-based method
-#' @examples
-#' # lowercasing
-#' toks1 <- tokens(c(one = "a b c d A B C D",
-#'                  two = "A B C d"))
-#' attr(toks1, "types") <- char_tolower(attr(toks1, "types"))
-#' unclass(toks1)
-#' unclass(quanteda:::tokens_recompile(toks1))
-#'
-#' # stemming
-#' toks2 <- tokens("Stemming stemmed many word stems.")
-#' unclass(toks2)
-#' unclass(quanteda:::tokens_recompile(tokens_wordstem(toks2)))
-#'
-#' # compounding
-#' toks3 <- tokens("One two three four.")
-#' unclass(toks3)
-#' unclass(tokens_compound(toks3, "two three"))
-#'
-#' # lookup
-#' dict <- dictionary(list(test = c("one", "three")))
-#' unclass(tokens_lookup(toks3, dict))
-#'
-#' # empty pads
-#' unclass(tokens_select(toks3, dict))
-#' unclass(tokens_select(toks3, dict, padding = TRUE))
-#'
-#' # ngrams
-#' unclass(tokens_ngrams(toks3, n = 2:3))
-#'
-#' @keywords internal tokens
-tokens_recompile <- function(x, method = c("C++", "R")) {
-
-    method <- match.arg(method)
-    attrs <- attributes(x)
-    type <- attr(x, "types")
-    if (method == "C++") {
-        x <- as.tokens_xptr(x)
-        cpp_recompile(x)
-        x <- as.tokens(x)
-    } else {
-
-        # Check for padding
-        index_unique <- unique(unlist(unclass(x), use.names = FALSE))
-        padding <- index_unique == 0
-        attrs[["padding"]] <- any(padding) # add padding flag
-        index_unique <- index_unique[!padding] # exclude padding
-
-        # Remove gaps in the type index, if any, remap index
-        if (any(is.na(match(seq_len(length(type)), index_unique)))) {
-            type_new <- type[index_unique]
-            index_new <- c(0, seq_along(index_unique)) # padding index is zero but not in types
-            index_unique <- c(0, index_unique) # padding index is zero but not in types
-            x <- lapply(unclass(x), function(y) index_new[fastmatch::fmatch(y, index_unique)])
-            attributes(x) <- attrs
-            type <- type_new
-        }
-
-        # Reindex duplicates, if any
-        if (any(duplicated(type))) {
-            type_unique <- unique(type)
-            index_mapping <- match(type, type_unique)
-            index_mapping <- c(0, index_mapping) # padding index is zero but not in types
-            x <- lapply(unclass(x), function(y) index_mapping[y + 1]) # shift index for padding
-            attributes(x) <- attrs
-            type <- type_unique
-        }
-
-        Encoding(type) <- "UTF-8"
-        attr(x, "types") <- type
-        x <- rebuild_tokens(x, attrs)
-    }
     return(x)
 }
 

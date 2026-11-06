@@ -101,8 +101,6 @@ tokens_ngrams.tokens_xptr <- function(x, n = 2L, skip = 0L, concatenator = conca
         return(x)
     if (is.null(apply_if))
         apply_if <- rep(TRUE, length.out = ndoc(x))
-    if (verbose)
-        before <- stats_tokens(x)
     
     result <- cpp_tokens_ngrams(x, concatenator, n, skip, !apply_if, get_threads())
     field_object(attrs, "ngram") <- n
@@ -110,7 +108,7 @@ tokens_ngrams.tokens_xptr <- function(x, n = 2L, skip = 0L, concatenator = conca
     field_object(attrs, "concatenator") <- concatenator
     result <- rebuild_tokens(result, attrs)
     if (verbose)
-        message_tokens("tokens_ngrams()", before, stats_tokens(result))
+        message_tokens("tokens_ngrams()", stats_tokens(result))
     return(result)
 }
 

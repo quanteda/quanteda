@@ -32,15 +32,18 @@ variable(s) are not factors.}
 \item{env}{an environment or a list object in which \code{x} is searched.
 Passed to \link{substitute} for non-standard evaluation.}
 
-\item{verbose}{if \code{TRUE} print the number of tokens and documents before and
-after the function is applied. The number of tokens does not include paddings.}
+\item{verbose}{if \code{TRUE} print a summary of the object returned by the
+function: the number of documents and, depending on the object, the number
+of characters, tokens and types, or features and occurrences. The number of
+tokens includes paddings, but the number of features excludes them.}
 }
 \value{
 a \link{tokens} object whose documents are equal to the unique group
 combinations, and whose tokens are the concatenations of the tokens by
 group. Document-level variables that have no variation within groups are
-saved in \link{docvars}.  Document-level variables that are lists are dropped
-from grouping, even when these exhibit no variation within groups.
+saved in \link{docvars}.  Other document-level variables, including lists, are
+kept but their values are replaced with \code{NA}, retaining their original
+class.
 }
 \description{
 Combine documents in a \link{tokens} object by a grouping variable, by

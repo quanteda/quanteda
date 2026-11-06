@@ -8,6 +8,10 @@ editor_options:
   chunk_output_type: console
 ---
 
+```{r include=FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "##")
+```
+
 **quanteda** takes advantage of parallel computing through the [TBB (Threading Building Blocks) library](https://en.wikipedia.org/wiki/Threading_Building_Blocks) to speed up computations. This guide provides step-by-step instructions on how to set up your system for using Quanteda with parallel capabilities on Windows, macOS, and Linux.
 
 

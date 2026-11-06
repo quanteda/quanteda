@@ -97,19 +97,13 @@ Useful links:
   \item Report bugs at \url{https://github.com/quanteda/quanteda/issues}
 }
 
-
-Useful links:
-\itemize{
-  \item \url{https://quanteda.io}
-  \item Report bugs at \url{https://github.com/quanteda/quanteda/issues}
-}
-
 }
 \author{
 \strong{Maintainer}: Kenneth Benoit \email{kbenoit@lse.ac.uk} (\href{https://orcid.org/0000-0002-0797-564X}{ORCID}) [copyright holder]
 
 Authors:
 \itemize{
+  \item Kenneth Benoit \email{kbenoit@lse.ac.uk} (\href{https://orcid.org/0000-0002-0797-564X}{ORCID}) [copyright holder]
   \item Kohei Watanabe \email{watanabe.kohei@gmail.com} (\href{https://orcid.org/0000-0001-6519-5265}{ORCID})
   \item Haiyan Wang \email{whyinsa@yahoo.com} (\href{https://orcid.org/0000-0003-4992-4311}{ORCID})
   \item Paul Nulty \email{paul.nulty@gmail.com} (\href{https://orcid.org/0000-0002-7214-4666}{ORCID})

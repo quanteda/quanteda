@@ -48,8 +48,10 @@ Guthrie et al (2006).}
 \item{apply_if}{logical vector of length \code{ndoc(x)}; documents are modified
 only when corresponding values are \code{TRUE}, others are left unchanged.}
 
-\item{verbose}{if \code{TRUE} print the number of tokens and documents before and
-after the function is applied. The number of tokens does not include paddings.}
+\item{verbose}{if \code{TRUE} print a summary of the object returned by the
+function: the number of documents and, depending on the object, the number
+of characters, tokens and types, or features and occurrences. The number of
+tokens includes paddings, but the number of features excludes them.}
 }
 \value{
 a tokens object consisting a list of character vectors of n-grams, one

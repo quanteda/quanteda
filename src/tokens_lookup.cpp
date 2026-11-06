@@ -3,7 +3,7 @@
 
 using namespace quanteda;
 
-Text lookup(Text tokens, 
+Text lookup(const Text &tokens, 
             const std::vector<std::size_t> &spans,
             const unsigned int &id_max,
             const int &overlap,
@@ -149,33 +149,35 @@ Text lookup(Text tokens,
 
 // [[Rcpp::export]]
 TokensPtr cpp_tokens_lookup(TokensPtr xptr,
-                                 const List &words_,
-                                 const IntegerVector &keys_,
-                                 const CharacterVector &types_,
-                                 const int overlap,
-                                 const int mode,
-                                 const LogicalVector bypass_,
-                                 const int thread = -1) {
+                            const List &words_,
+                            const IntegerVector &keys_,
+                            const CharacterVector &types_,
+                            const int overlap,
+                            const int mode,
+                            const LogicalVector bypass_,
+                            const int thread = -1) {
     
-    Texts texts = xptr->texts;
     Types types = Rcpp::as<Types>(types_);
+    std::size_t H = xptr->texts.size();
     
     if (words_.size() != keys_.size())
         throw std::range_error("Invalid words and keys");
-    
-    if (bypass_.size() != (int)texts.size())
+    if (bypass_.size() != (int)H)
         throw std::range_error("Invalid bypass");
-    std::vector<bool> bypass = Rcpp::as< std::vector<bool> >(bypass_);
     
+    std::vector<bool> bypass = Rcpp::as< std::vector<bool> >(bypass_);
     std::vector<unsigned int> keys = Rcpp::as< std::vector<unsigned int> >(keys_);
     unsigned int id_max = 0;
-    if (mode == 2 || mode == 3) {
-        types.insert(types.end(), xptr->types.begin(), xptr->types.end());
+    if (mode == 2 || mode == 3) { // non-exclusive mode
+        // insert dictionary keys before words
+        xptr->types.insert(xptr->types.begin(), types.begin(), types.end()); 
         if (keys_.size() > 0)
             id_max = *max_element(keys.begin(), keys.end());
     } else {
+        xptr->types = types;
         id_max = types.size();
     }
+
     MultiMapNgrams map_keys;
     map_keys.max_load_factor(GLOBAL_PATTERN_MAX_LOAD_FACTOR);
     Ngrams words = to_ngrams(words_);
@@ -195,46 +197,37 @@ TokensPtr cpp_tokens_lookup(TokensPtr xptr,
     //dev::stop_timer("Map construction", timer);
     
     //dev::start_timer("Dictionary lookup", timer);
-    std::size_t H = texts.size();
 #if QUANTEDA_USE_TBB
     tbb::task_arena arena(thread);
     arena.execute([&]{
         tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
             for (int h = r.begin(); h < r.end(); ++h) {
-                texts[h] = lookup(texts[h], spans, id_max, overlap, mode, map_keys, bypass[h]);
+                xptr->texts[h] = lookup(xptr->texts[h], spans, id_max, overlap, 
+                                        mode, map_keys, bypass[h]);
             }    
         });
     });
 #else
     for (std::size_t h = 0; h < H; h++) {
-        texts[h] = lookup(texts[h], spans, id_max, overlap, mode, map_keys, bypass[h]);
+        xptr->texts[h] = lookup(xptr->texts[h], spans, id_max, overlap, 
+                                mode, map_keys, bypass[h]);
     }
 #endif
     
-    xptr->texts = texts;
-    xptr->types = types;
-    
-    if (mode == 0 || mode == 1) { // exclusive mode
+    if (mode == 2 || mode == 3) { // non-exclusive mode
+        xptr->recompiled = false;
+    } else {
         // NOTE: values might need to be reset
         xptr->recompiled = true;
-    } else {
-        xptr->recompiled = false;
     }
     return xptr;
 }
 
 /***R
-
-toks <- list(rep(1:10, 1), rep(5:15, 1))
-dict <- list(c(1, 2), c(5, 6), 10, 15, 20)
-#dict <- list(1:10, c(5, 6) , 4)
-#keys <- rep(2, length(dict))
-keys <- seq_along(dict) + 1
-#cpp_tokens_lookup(toks, letters, dict, integer(0), 0)
-cpp_tokens_lookup(toks, dict, keys, FALSE, 0)
-cpp_tokens_lookup(toks, dict, keys, TRUE, 0)
-cpp_tokens_lookup(toks, dict, keys, FALSE, 0)
-cpp_tokens_lookup(toks, dict, keys, FALSE, 1)
-cpp_tokens_lookup(toks, dict, keys, FALSE, 2)
-
+dict <- list(c(3L, 4L), c(5L, 6L))#, 10L, 15L, 20L)
+keys <- seq_along(dict)
+toks <- quanteda::tokens(c("a b c", "e f g"), xptr = TRUE)
+quanteda:::cpp_as_list(toks)
+quanteda:::cpp_as_list(cpp_tokens_lookup(as.tokens_xptr(toks), words_ = dict, keys_ = keys, types_ = LETTERS[keys], 
+                                         overlap = 1L, mode = 2L, bypass_ = c(FALSE, FALSE)))
 */

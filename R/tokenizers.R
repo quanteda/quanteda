@@ -289,8 +289,7 @@ breakrules_reset <- function(what = c("word", "sentence")) {
 
 #' @rdname tokenize_internal
 #' @inheritParams tokens
-#' @importFrom stringi stri_detect_regex stri_detect_charclass
-#'   stri_replace_all_regex stri_detect_fixed stri_replace_all_fixed
+#' @importFrom stringi stri_replace_all_regex stri_split_boundaries
 #' @export
 tokenize_word1 <- function(x, split_hyphens = FALSE, verbose = quanteda_options("verbose"), ...) {
 
@@ -341,8 +340,7 @@ tokenize_character <- function(x, ...) {
 }
 
 #' @rdname tokenize_internal
-#' @importFrom stringi stri_replace_all_regex stri_replace_all_fixed
-#'   stri_split_boundaries stri_trim_right
+#' @importFrom stringi stri_replace_all_regex stri_split_boundaries stri_trim_right
 #' @export
 tokenize_sentence <- function(x, verbose = FALSE, ...) {
     if (verbose) catm(" ...segmenting into sentences\n")
