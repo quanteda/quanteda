@@ -324,12 +324,12 @@ test_that("#502 tokens_lookup count overlapped words", {
                       d2 = c("Countries")))
     
     expect_equal(
-        as.character(tokens_lookup(tokens("A B C"), dictionary(list(key = c("A B", "A B C"))))),
+        as.list(tokens_lookup(tokens("A B C"), dictionary(list(key = c("A B", "A B C")))))[[1]],
         c("key")
     )
     
     expect_equal(
-        as.character(tokens_lookup(tokens("A B C"), dictionary(list(key = c("B C", "A B C"))))),
+        as.list(tokens_lookup(tokens("A B C"), dictionary(list(key = c("B C", "A B C")))))[[1]],
         c("key")
     )
 })
