@@ -22,9 +22,9 @@ as.list.tokens <- function(x, ...) {
 #' @rdname as.tokens
 #' @param separator a character to concatenate tokens.
 #' @return `as.character` converts a [tokens] object to a character vector by 
-#'   concatenate tokens by the `separator`.
+#'   concatenate tokens with the `separator`.
 #' @export
-as.character.tokens <- function(x, separator = " ", ...) {
+as.character.tokens <- function(x, separator = concat(x), ...) {
     separator <- check_character(separator, min_len = 1, max_len = 1)
     sapply(x, paste0, collapse = separator)
 }

@@ -13,7 +13,7 @@
 \usage{
 \method{as.list}{tokens}(x, ...)
 
-\method{as.character}{tokens}(x, separator = " ", ...)
+\method{as.character}{tokens}(x, separator = concat(x), ...)
 
 is.tokens(x)
 
@@ -67,7 +67,7 @@ token}
 \link{tokens} object.
 
 \code{as.character} converts a \link{tokens} object to a character vector by
-concatenate tokens by the \code{separator}.
+concatenate tokens with the \code{separator}.
 
 \code{is.tokens} returns \code{TRUE} if the object is of class
 tokens, \code{FALSE} otherwise.
