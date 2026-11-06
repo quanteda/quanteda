@@ -7,7 +7,7 @@
 NULL
 
 #' @rdname as.tokens
-#' @return `as.list` returns a simple list of characters from a
+#' @return `as.list` converts a [tokens] object to a list of tokens as characters.
 #'   [tokens] object.
 #' @method as.list tokens
 #' @export
@@ -20,13 +20,13 @@ as.list.tokens <- function(x, ...) {
 }
 
 #' @rdname as.tokens
-#' @param use.names logical; preserve names if `TRUE`.  For
-#'   `as.character` and `unlist` only.
-#' @return `as.character` returns a character vector from a
-#'   [tokens] object.
+#' @param separator a character to concatenate tokens.
+#' @return `as.character` converts a [tokens] object to a character vector by 
+#'   concatenate tokens with the `separator`.
 #' @export
-as.character.tokens <- function(x, use.names = FALSE, ...) {
-    unlist(as.list(x), use.names = use.names)
+as.character.tokens <- function(x, separator = concat(x), ...) {
+    separator <- check_character(separator, min_len = 1, max_len = 1)
+    sapply(x, paste0, collapse = separator)
 }
 
 #' @rdname as.tokens

@@ -171,11 +171,11 @@ test_that("tokens_compound works with nested tokens", {
     toks <- tokens("a b c d")
     pat <- phrase(c("a b", "b c", "a b c"))
     expect_equal(
-        as.character(tokens_compound(toks, pat, join = FALSE)),
+        as.list(tokens_compound(toks, pat, join = FALSE))[[1]],
         c("a_b_c", "d")
     )
     expect_equal(
-        as.character(tokens_compound(toks, pat, join = TRUE)),
+        as.list(tokens_compound(toks, pat, join = TRUE))[[1]],
         c("a_b_c", "d")
     )
 })
@@ -185,11 +185,11 @@ test_that("tokens_compound works with nested and overlapping tokens", {
     toks <- tokens("a b c d e")
     pat <- phrase(c("a b", "a b c", "c d"))
     expect_equal(
-        as.character(tokens_compound(toks, pat, join = FALSE)),
+        as.list(tokens_compound(toks, pat, join = FALSE))[[1]],
         c("a_b_c", "c_d", "e")
     )
     expect_equal(
-        as.character(tokens_compound(toks, pat, join = TRUE)),
+        as.list(tokens_compound(toks, pat, join = TRUE))[[1]],
         c("a_b_c_d", "e")
     )
 })
@@ -198,7 +198,7 @@ test_that("tokens_compound works with dictionaries", {
     dict <- dictionary(list(taxcgt = c("capital gains tax*"), taxit = "inheritance tax*"))
     toks <- tokens("The new law included capital gains taxes and inheritance taxes.")
     expect_equal(
-        as.character(tokens_compound(toks, dict))[c(5, 7)],
+        as.list(tokens_compound(toks, dict))[[1]][c(5, 7)],
         c("capital_gains_taxes", "inheritance_taxes")
     )
     expect_equal(
@@ -209,11 +209,11 @@ test_that("tokens_compound works with dictionaries", {
     dict <- dictionary(list(tax1 = c("capital gains", "taxes"),
                             tax2 = "gains taxes"))
     expect_equal(
-        as.character(tokens_compound(toks, dict, join = TRUE))[5],
+        as.list(tokens_compound(toks, dict, join = TRUE))[[1]][5],
         c("capital_gains_taxes")
     )
     expect_equal(
-        as.character(tokens_compound(toks, dict, join = FALSE))[5:6],
+        as.list(tokens_compound(toks, dict, join = FALSE))[[1]][5:6],
         c("capital_gains", "gains_taxes")
     )
 })
@@ -323,7 +323,7 @@ test_that("tokens_compound ignores padding", {
     
     toks_comp1 <- tokens_compound(toks, list(c("", "c"), c("d", "e")))
     expect_equal(
-        as.character(toks_comp1),
+        as.list(toks_comp1)[[1]],
         c("a", "", "c", "d_e")
     )
     
@@ -331,7 +331,7 @@ test_that("tokens_compound ignores padding", {
     class(col) <- c("collocations", "textstat", "data.frame")
     toks_comp2 <- tokens_compound(toks, col)
     expect_equal(
-        as.character(toks_comp2),
+        as.list(toks_comp2)[[1]],
         c("a", "", "c", "d_e")
     )
 })

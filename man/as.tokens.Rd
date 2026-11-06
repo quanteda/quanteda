@@ -13,7 +13,7 @@
 \usage{
 \method{as.list}{tokens}(x, ...)
 
-\method{as.character}{tokens}(x, use.names = FALSE, ...)
+\method{as.character}{tokens}(x, separator = concat(x), ...)
 
 is.tokens(x)
 
@@ -41,8 +41,7 @@ is.tokens(x)
 \item{...}{additional arguments used by specific methods.  For
 \link{c.tokens}, these are the \link{tokens} objects to be concatenated.}
 
-\item{use.names}{logical; preserve names if \code{TRUE}.  For
-\code{as.character} and \code{unlist} only.}
+\item{separator}{a character to concatenate tokens.}
 
 \item{length}{optional integer specifying the maximum length (number of
 positions) for the tensor. If \code{NULL} (default), the length is
@@ -64,11 +63,11 @@ will be added to the token after \code{"concatenator"}.}
 token}
 }
 \value{
-\code{as.list} returns a simple list of characters from a
+\code{as.list} converts a \link{tokens} object to a list of tokens as characters.
 \link{tokens} object.
 
-\code{as.character} returns a character vector from a
-\link{tokens} object.
+\code{as.character} converts a \link{tokens} object to a character vector by
+concatenate tokens with the \code{separator}.
 
 \code{is.tokens} returns \code{TRUE} if the object is of class
 tokens, \code{FALSE} otherwise.

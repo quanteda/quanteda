@@ -1,3 +1,10 @@
+# quanteda 4.6.0
+
+## Changes and additions
+
+* `as.character.tokens()` now returns a character vector by concatenating tokens 
+   with the `separator` (#2494).
+
 # quanteda 4.5.1
 
 ## Bug fixes

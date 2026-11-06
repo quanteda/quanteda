@@ -42,18 +42,18 @@ test_that("tokens_split works in the same way as tokens", {
 test_that("tokens_split works fully when matching entire tokens to separator pattern", {
     toks <- tokens("five-star rating", split_hyphens = TRUE)
     expect_identical(
-        as.character(tokens_split(toks, separator = "-", valuetype = "regex",
-                                  remove_separator = FALSE)),
+        as.list(tokens_split(toks, separator = "-", valuetype = "regex",
+                                  remove_separator = FALSE))[[1]],
         c("five", "-", "star", "rating")
     )
     expect_identical(
-        as.character(tokens_split(toks, separator = "-", valuetype = "regex",
-                                  remove_separator = TRUE)),
+        as.list(tokens_split(toks, separator = "-", valuetype = "regex",
+                                  remove_separator = TRUE))[[1]],
         c("five", "star", "rating")
     )
     expect_identical(
-        as.character(tokens_split(toks, separator = "-", valuetype = "fixed",
-                                  remove_separator = TRUE)),
+        as.list(tokens_split(toks, separator = "-", valuetype = "fixed",
+                                  remove_separator = TRUE))[[1]],
         c("five", "star", "rating")
     )
 })
