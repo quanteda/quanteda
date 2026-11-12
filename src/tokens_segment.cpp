@@ -27,7 +27,7 @@ Segments segment(const Text &tokens,
     while (i < tokens.size()) {
         //Rcout << "i: " << i << " size: " << size << "\n";
         for (std::size_t span : spans) {
-            if (tokens.size() < span) continue;
+            if (tokens.size() < i + span) continue;
             Ngram ngram(tokens.begin() + i, tokens.begin() + i + span);
             bool is_in = set_patterns.find(ngram) != set_patterns.end();
             if (is_in) {
