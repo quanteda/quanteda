@@ -3,7 +3,7 @@
 using namespace quanteda;
 
 // begin & end position of boundaries, pattern matches 
-typedef std::tuple<size_t, size_t, bool> Bound;
+typedef std::pair<size_t, size_t> Bound;
 typedef std::vector<Bound> Bounds;
 
 // begin & end of new texts, begin & end of boundaries
@@ -25,21 +25,20 @@ Segments segment(const Text &tokens,
     size_t i = (position == 1) ? 0 : min_size;
     size_t size = i + 1;
     while (i < tokens.size()) {
-        //Rcout << "i: " << i << " size: " << size << "\n";
         for (std::size_t span : spans) {
             if (tokens.size() < i + span) continue;
             Ngram ngram(tokens.begin() + i, tokens.begin() + i + span);
             bool is_in = set_patterns.find(ngram) != set_patterns.end();
             if (is_in) {
-                //Rcout << "pattern: " << i << " to " << (i + span - 1) << "\n";
-                bounds.push_back(std::make_pair(i, i + span - 1));
+                Rcout << "pattern: " << i << " to " << (i + span) << "\n";
+                bounds.push_back(std::make_pair(i, i + span));
                 size = min_size - 1;
                 i += min_size - 1;
                 break;
             } 
         }
         if (size >= max_size) {
-            //Rcout << "size: " << i << " to " << i << "\n";
+            Rcout << "size: " << i << " to " << i << "\n";
             bounds.push_back(std::make_pair(i, i));
             size = min_size - 1;
             i += min_size - 1;
@@ -50,7 +49,7 @@ Segments segment(const Text &tokens,
     
     Segments segments;
     if (bounds.empty()) {
-        segments.push_back(std::make_tuple(0, tokens.size() - 1, -1, -1));
+        segments.push_back(std::make_tuple(0, tokens.size(), 0, 0));
         N++;
         return segments;
     }
@@ -63,41 +62,43 @@ Segments segment(const Text &tokens,
     if (position == 1) {
         // preceded by delimiter
         if (0 < bounds.front().first) {
-            segments.push_back(std::make_tuple(0, bounds.front().first - 1, -1, -1));
+            segments.push_back(std::make_tuple(0, bounds.front().first, 0, 0)); // first segment
+            Rcout << "segment first" << ": " << 0 << " " << bounds.front().first << "\n";
             N++;
         }
-        for (size_t i = 0; i < bounds.size(); i++) {
-            int from = bounds[i].first; // first token of the match
+        for (size_t j = 0; j < bounds.size(); j++) {
+            int from = bounds[j].first; // first token of the match
             if (remove) {
-                from = bounds[i].second + 1;
+                from = bounds[j].second;
             }
-            int to = tokens.size() - 1; // the last token of the document
-            if (i < bounds.size() - 1) {
-                to = bounds[i + 1].first - 1;
+            int to = tokens.size(); // the last token of the document
+            if (j < bounds.size() - 1) {
+                to = bounds[j + 1].first;
             }
-            //Rcout << "segment " << i << ": " << from << " " << to << "\n";
-            segments.push_back(std::make_tuple(from, to, bounds[i].first, bounds[i].second));
+            Rcout << "segment " << j << ": " << from << " " << to << "\n";
+            segments.push_back(std::make_tuple(from, to, bounds[j].first, bounds[j].second));
             N++;
         }
         
     } else {
         
         // followed by delimiter
-        for (size_t i = 0; i < bounds.size(); i++) {
+        for (size_t j = 0; j < bounds.size(); j++) {
             int from = 0; // the first token of the document
-            if (i > 0) {
-                from = bounds[i - 1].second + 1;
+            if (j > 0) {
+                from = bounds[j - 1].second;
             }
-            int to = bounds[i].second; // last token of the match
+            int to = bounds[j].second; // last token of the match
             if (remove) {
-                to = bounds[i].first - 1;
+                to = bounds[j].first;
             }
-            //Rcout << "segment " << i << ": " << from << " " << to << "\n";
-            segments.push_back(std::make_tuple(from, to, bounds[i].first, bounds[i].second));
+            Rcout << "segment " << j << ": " << from << " " << to << "\n";
+            segments.push_back(std::make_tuple(from, to, bounds[j].first, bounds[j].second));
             N++;
         }
-        if (bounds.back().second < tokens.size() - 1) {
-            segments.push_back(std::make_tuple(bounds.back().second + 1, tokens.size() - 1, -1, -1));
+        if (bounds.back().second < tokens.size()) {
+            segments.push_back(std::make_tuple(bounds.back().second, tokens.size(), 0, 0)); // last segment
+            Rcout << "segment last" << ": " << bounds.back().second << " " << tokens.size() << "\n";
             N++;
         }
     }
@@ -163,14 +164,14 @@ TokensPtr cpp_tokens_segment(TokensPtr xptr,
             Segment segment = segments[i];
 
             // extract text segments
-            if (0 <= std::get<0>(segment) && std::get<1>(segment) < (int)text.size()) {
-                Text text_new(text.begin() + std::get<0>(segment), text.begin() + std::get<1>(segment) + 1);
+            if (0 <= std::get<0>(segment) && std::get<1>(segment) <= (int)text.size()) {
+                Text text_new(text.begin() + std::get<0>(segment), text.begin() + std::get<1>(segment));
                 texts_new[j] = text_new;
             }
             
             // extract matched patterns
             if (remove && 0 <= std::get<2>(segment) && 0 <= std::get<3>(segment)) {
-                Text match(text.begin() + std::get<2>(segment), text.begin() + std::get<3>(segment) + 1);
+                Text match(text.begin() + std::get<2>(segment), text.begin() + std::get<3>(segment));
                 matches[j] = join_strings(match, xptr->types, " ");
             }
             
@@ -192,10 +193,11 @@ TokensPtr cpp_tokens_segment(TokensPtr xptr,
 
 /***R
 library(quanteda)
-toks <- tokens("a b b . c c c c c . d", xptr = TRUE)
-out <- cpp_tokens_segment(toks, list(c(3L)), FALSE, 1, min_size = 1, max_size = 4)
-out <- cpp_tokens_segment(toks, list(c(3L, 4L)), FALSE, 1, min_size = 1, max_size = 1)
+#toks <- tokens("a b . c c . d", xptr = TRUE)
+toks <- tokens("a b", xptr = TRUE)
+out <- cpp_tokens_segment(toks, list(c(3L)), FALSE, 2, min_size = 1, max_size = 100)
+#out <- cpp_tokens_segment(toks, list(c(3L, 4L)), FALSE, 1, min_size = 1, max_size = 1)
 quanteda:::cpp_as_list(out)
-attributes(out)
+#attributes(out)
 
 */
