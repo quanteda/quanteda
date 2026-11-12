@@ -2,11 +2,11 @@
 //#include "dev.h"
 using namespace quanteda;
 
-// begin & end position of pattern matches
-typedef std::pair<size_t, size_t> Target;
-typedef std::vector<Target> Targets;
+// begin & end position of boundaries, pattern matches 
+typedef std::tuple<size_t, size_t, bool> Bound;
+typedef std::vector<Bound> Bounds;
 
-// begin & end of new texts, begin * end of pattern matches
+// begin & end of new texts, begin & end of boundaries
 typedef std::tuple<int, int, int, int> Segment;
 typedef std::vector<Segment> Segments;
 
@@ -21,7 +21,7 @@ Segments segment(const Text &tokens,
     
     if(tokens.empty()) return {}; // return empty vector for empty text
    
-    Targets targets;
+    Bounds bounds;
     size_t i = (position == 1) ? 0 : min_size;
     size_t size = i + 1;
     while (i < tokens.size()) {
@@ -32,7 +32,7 @@ Segments segment(const Text &tokens,
             bool is_in = set_patterns.find(ngram) != set_patterns.end();
             if (is_in) {
                 //Rcout << "pattern: " << i << " to " << (i + span - 1) << "\n";
-                targets.push_back(std::make_pair(i, i + span - 1));
+                bounds.push_back(std::make_pair(i, i + span - 1));
                 size = min_size - 1;
                 i += min_size - 1;
                 break;
@@ -40,7 +40,7 @@ Segments segment(const Text &tokens,
         }
         if (size >= max_size) {
             //Rcout << "size: " << i << " to " << i << "\n";
-            targets.push_back(std::make_pair(i, i));
+            bounds.push_back(std::make_pair(i, i));
             size = min_size - 1;
             i += min_size - 1;
         }
@@ -49,55 +49,55 @@ Segments segment(const Text &tokens,
     }
     
     Segments segments;
-    if (targets.empty()) {
+    if (bounds.empty()) {
         segments.push_back(std::make_tuple(0, tokens.size() - 1, -1, -1));
         N++;
         return segments;
     }
     
     // sort by the starting positions
-    std::sort(targets.begin(), targets.end(), [](const std::pair<int,int> &left, const std::pair<int,int> &right) {
+    std::sort(bounds.begin(), bounds.end(), [](const std::pair<int,int> &left, const std::pair<int,int> &right) {
         return left.first < right.first;
     });
     
     if (position == 1) {
         // preceded by delimiter
-        if (0 < targets.front().first) {
-            segments.push_back(std::make_tuple(0, targets.front().first - 1, -1, -1));
+        if (0 < bounds.front().first) {
+            segments.push_back(std::make_tuple(0, bounds.front().first - 1, -1, -1));
             N++;
         }
-        for (size_t i = 0; i < targets.size(); i++) {
-            int from = targets[i].first; // first token of the match
+        for (size_t i = 0; i < bounds.size(); i++) {
+            int from = bounds[i].first; // first token of the match
             if (remove) {
-                from = targets[i].second + 1;
+                from = bounds[i].second + 1;
             }
             int to = tokens.size() - 1; // the last token of the document
-            if (i < targets.size() - 1) {
-                to = targets[i + 1].first - 1;
+            if (i < bounds.size() - 1) {
+                to = bounds[i + 1].first - 1;
             }
             //Rcout << "segment " << i << ": " << from << " " << to << "\n";
-            segments.push_back(std::make_tuple(from, to, targets[i].first, targets[i].second));
+            segments.push_back(std::make_tuple(from, to, bounds[i].first, bounds[i].second));
             N++;
         }
         
     } else {
         
         // followed by delimiter
-        for (size_t i = 0; i < targets.size(); i++) {
+        for (size_t i = 0; i < bounds.size(); i++) {
             int from = 0; // the first token of the document
             if (i > 0) {
-                from = targets[i - 1].second + 1;
+                from = bounds[i - 1].second + 1;
             }
-            int to = targets[i].second; // last token of the match
+            int to = bounds[i].second; // last token of the match
             if (remove) {
-                to = targets[i].first - 1;
+                to = bounds[i].first - 1;
             }
             //Rcout << "segment " << i << ": " << from << " " << to << "\n";
-            segments.push_back(std::make_tuple(from, to, targets[i].first, targets[i].second));
+            segments.push_back(std::make_tuple(from, to, bounds[i].first, bounds[i].second));
             N++;
         }
-        if (targets.back().second < tokens.size() - 1) {
-            segments.push_back(std::make_tuple(targets.back().second + 1, tokens.size() - 1, -1, -1));
+        if (bounds.back().second < tokens.size() - 1) {
+            segments.push_back(std::make_tuple(bounds.back().second + 1, tokens.size() - 1, -1, -1));
             N++;
         }
     }
