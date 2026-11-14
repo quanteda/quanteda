@@ -19,32 +19,46 @@ Segments segment(const Text &tokens,
                  const size_t &min_size,
                  const size_t &max_size){
     
-    if(tokens.empty()) return {}; // return empty vector for empty text
+    if (tokens.empty()) return {}; // return empty vector for empty text
+    
+    Rcout << "min_size = " << min_size  << " max_size = " << max_size << "\n";
    
     Bounds bounds;
-    size_t i = (position == 1) ? 0 : min_size;
+    size_t i = (position == 1) ? 0 : min_size - 1;
     size_t size = i + 1;
+    
     while (i < tokens.size()) {
+        bool matched = false;
         for (std::size_t span : spans) {
             if (tokens.size() < i + span) continue;
             Ngram ngram(tokens.begin() + i, tokens.begin() + i + span);
             bool is_in = set_patterns.find(ngram) != set_patterns.end();
             if (is_in) {
-                Rcout << "pattern: " << i << " to " << (i + span) << "\n";
+                Rcout << "i: " << i  << " span: " << span << " (pattern)\n";
                 bounds.push_back(std::make_pair(i, i + span));
-                size = min_size - 1;
-                i += min_size - 1;
+                if (remove) { 
+                    size = min_size;
+                } else {
+                    size = min_size + span; // add the size of pattern
+                }
+                i += min_size + span - 1; // skip the size of pattern
+                matched = true;
                 break;
             } 
         }
-        if (size >= max_size) {
-            Rcout << "size: " << i << " to " << i << "\n";
-            bounds.push_back(std::make_pair(i, i));
-            size = min_size - 1;
-            i += min_size - 1;
+        
+        if (!matched) {
+            if (size >= max_size) {
+                Rcout << "i: " << i  << " size: " << size << " (max_size)\n";
+                bounds.push_back(std::make_pair(i + 1, i + 1));
+                size = min_size;
+                i += min_size;
+            } else {
+                Rcout << "i: " << i  << " size: " << size << "\n";
+                size++;
+                i++;
+            }
         }
-        size++;
-        i++;
     }
     
     Segments segments;
@@ -52,7 +66,7 @@ Segments segment(const Text &tokens,
         segments.push_back(std::make_tuple(0, tokens.size(), 0, 0));
         N++;
         return segments;
-    }
+    } 
     
     // sort by the starting positions
     std::sort(bounds.begin(), bounds.end(), [](const std::pair<int,int> &left, const std::pair<int,int> &right) {
@@ -63,20 +77,25 @@ Segments segment(const Text &tokens,
         // preceded by delimiter
         if (0 < bounds.front().first) {
             segments.push_back(std::make_tuple(0, bounds.front().first, 0, 0)); // first segment
-            Rcout << "segment first" << ": " << 0 << " " << bounds.front().first << "\n";
+            //Rcout << "segment first" << ": " << 0 << " " << bounds.front().first << "\n";
             N++;
         }
         for (size_t j = 0; j < bounds.size(); j++) {
+            Rcout << "bound " << j << ": " << bounds[j].first << " " << bounds[j].second << "\n";
             int from = bounds[j].first; // first token of the match
             if (remove) {
                 from = bounds[j].second;
             }
-            int to = tokens.size(); // the last token of the document
+            int to = tokens.size(); // last token of the document
             if (j < bounds.size() - 1) {
                 to = bounds[j + 1].first;
             }
-            Rcout << "segment " << j << ": " << from << " " << to << "\n";
-            segments.push_back(std::make_tuple(from, to, bounds[j].first, bounds[j].second));
+            //Rcout << "segment " << j << ": " << from << " " << to << "\n";
+            if (bounds[j].first < bounds[j].second) {
+                segments.push_back(std::make_tuple(from, to, bounds[j].first, bounds[j].second));
+            } else {
+                segments.push_back(std::make_tuple(from, to, 0, 0)); // boundary by max_len
+            }
             N++;
         }
         
@@ -84,7 +103,8 @@ Segments segment(const Text &tokens,
         
         // followed by delimiter
         for (size_t j = 0; j < bounds.size(); j++) {
-            int from = 0; // the first token of the document
+            Rcout << "bound " << j << ": " << bounds[j].first << " " << bounds[j].second << "\n";
+            int from = 0; // first token of the document
             if (j > 0) {
                 from = bounds[j - 1].second;
             }
@@ -92,13 +112,17 @@ Segments segment(const Text &tokens,
             if (remove) {
                 to = bounds[j].first;
             }
-            Rcout << "segment " << j << ": " << from << " " << to << "\n";
-            segments.push_back(std::make_tuple(from, to, bounds[j].first, bounds[j].second));
+            //Rcout << "segment " << j << ": " << from << " " << to << "\n";
+            if (bounds[j].first < bounds[j].second) {
+                segments.push_back(std::make_tuple(from, to, bounds[j].first, bounds[j].second));
+            } else {
+                segments.push_back(std::make_tuple(from, to, 0, 0)); // boundary by max_len
+            }
             N++;
         }
         if (bounds.back().second < tokens.size()) {
             segments.push_back(std::make_tuple(bounds.back().second, tokens.size(), 0, 0)); // last segment
-            Rcout << "segment last" << ": " << bounds.back().second << " " << tokens.size() << "\n";
+            //Rcout << "segment last" << ": " << bounds.back().second << " " << tokens.size() << "\n";
             N++;
         }
     }
@@ -127,6 +151,11 @@ TokensPtr cpp_tokens_segment(TokensPtr xptr,
                              const int min_size = 1, 
                              const int max_size = 10000,
                              const int thread = -1) {
+    
+    if (min_size == 0)
+        throw std::range_error("Invalid min_size");
+    if (max_size < min_size)
+        throw std::range_error("Invalid max_size");
     
     SetNgrams set_patterns;
     std::vector<std::size_t> spans = register_ngrams(patterns_, set_patterns);
@@ -193,11 +222,11 @@ TokensPtr cpp_tokens_segment(TokensPtr xptr,
 
 /***R
 library(quanteda)
-#toks <- tokens("a b . c c . d", xptr = TRUE)
-toks <- tokens("a b", xptr = TRUE)
-out <- cpp_tokens_segment(toks, list(c(3L)), FALSE, 2, min_size = 1, max_size = 100)
+toks <- tokens("a b b . c c c c c . d", xptr = TRUE)
+#toks <- tokens("a b c d e f g h", xptr = TRUE)
 #out <- cpp_tokens_segment(toks, list(c(3L, 4L)), FALSE, 1, min_size = 1, max_size = 1)
-quanteda:::cpp_as_list(out)
+cpp_tokens_segment(toks, list(c(3L)), FALSE, 2, min_size = 2, max_size = 3) |> 
+quanteda:::cpp_as_list()
 #attributes(out)
 
 */
