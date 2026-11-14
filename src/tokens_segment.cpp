@@ -21,7 +21,7 @@ Segments segment(const Text &tokens,
     
     if (tokens.empty()) return {}; // return empty vector for empty text
     
-    Rcout << "min_size = " << min_size  << " max_size = " << max_size << "\n";
+    //Rcout << "min_size = " << min_size  << " max_size = " << max_size << "\n";
    
     Bounds bounds;
     size_t i = (position == 1) ? 0 : min_size - 1;
@@ -34,7 +34,7 @@ Segments segment(const Text &tokens,
             Ngram ngram(tokens.begin() + i, tokens.begin() + i + span);
             bool is_in = set_patterns.find(ngram) != set_patterns.end();
             if (is_in) {
-                Rcout << "i: " << i  << " span: " << span << " (pattern)\n";
+                // Rcout << "i: " << i  << " span: " << span << " (pattern)\n";
                 bounds.push_back(std::make_pair(i, i + span));
                 if (remove) { 
                     size = min_size;
@@ -49,12 +49,12 @@ Segments segment(const Text &tokens,
         
         if (!matched) {
             if (size >= max_size) {
-                Rcout << "i: " << i  << " size: " << size << " (max_size)\n";
+                //Rcout << "i: " << i  << " size: " << size << " (max_size)\n";
                 bounds.push_back(std::make_pair(i + 1, i + 1));
                 size = min_size;
                 i += min_size;
             } else {
-                Rcout << "i: " << i  << " size: " << size << "\n";
+                //Rcout << "i: " << i  << " size: " << size << "\n";
                 size++;
                 i++;
             }
@@ -81,7 +81,7 @@ Segments segment(const Text &tokens,
             N++;
         }
         for (size_t j = 0; j < bounds.size(); j++) {
-            Rcout << "bound " << j << ": " << bounds[j].first << " " << bounds[j].second << "\n";
+            //Rcout << "bound " << j << ": " << bounds[j].first << " " << bounds[j].second << "\n";
             int from = bounds[j].first; // first token of the match
             if (remove) {
                 from = bounds[j].second;
