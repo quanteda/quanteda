@@ -115,8 +115,12 @@ tokens_segment.tokens_xptr <- function(x, pattern,
                                           attr(result, "index"),
                                           drop_docid = FALSE)
     attr(result, "index") <- NULL
-    if (extract_pattern)
-        attrs[["docvars"]][["pattern"]] <- attr(result, "matches")
+    if (extract_pattern) {
+        m <- attr(result, "matches")
+        b <- !nzchar(m)
+        m[b] <- rep(NA_character_, sum(b))
+        attrs[["docvars"]][["pattern"]] <- m
+    }
     result <- rebuild_tokens(result, attrs)
     if (verbose)
         message_tokens("tokens_segment()", stats_tokens(result))
