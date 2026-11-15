@@ -43,7 +43,10 @@ as.character.tokens <- function(x, concatenator = concat(x), use_names = TRUE, .
     use_names <- check_logical(use_names)
     if (ndoc(x) == 0)
         return(character())
-    sapply(x, paste0, collapse = concatenator, USE.NAMES = use_names)
+    result <- sapply(x, paste0, collapse = concatenator)
+    if (!use_names)
+        names(result) <- NULL
+    return(result)
 }
 
 #' @rdname as.tokens
