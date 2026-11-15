@@ -276,6 +276,9 @@ test_that("verbose works", {
                    "Creating a fcm from a tokens_xptr object")
     expect_message(fcm(dfmt, verbose = TRUE), 
                    "Creating a fcm from a dfm object")
+    expect_message(fcm(dfmt, verbose = TRUE), 
+                   "Finished constructing fcm of 6 features x 6 features\\.")
+    expect_silent(fcm(dfmt, verbose = FALSE))
 
 })
 
