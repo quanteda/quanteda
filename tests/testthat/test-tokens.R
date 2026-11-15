@@ -668,7 +668,7 @@ test_that("tokens.tokens(x, split_tags = TRUE, verbose = TRUE) works as expected
 })
 
 test_that("tokens.tokens(x, remove_numbers = TRUE, verbose = TRUE) works as expected (#1683)", {
-    toks <- tokens("Removing no number words.")
+    toks <- tokens("Removing 1 number words.")
     expect_message(
         tokens(toks, remove_numbers = TRUE, verbose = TRUE),
         "...removing separators, numbers"
@@ -679,7 +679,7 @@ test_that("tokens.tokens(x, remove_numbers = TRUE, verbose = TRUE) works as expe
     )
     expect_identical(
         as.list(tokens(toks, remove_numbers = TRUE))[[1]],
-        c("Removing", "no", "number", "words", ".")
+        c("Removing", "number", "words", ".")
     )
 })
 
@@ -720,7 +720,7 @@ test_that("tokens.tokens(x, remove_symbols = TRUE, verbose = TRUE) works as expe
 })
 
 test_that("tokens.tokens(x, remove_separators = TRUE, verbose = TRUE) works as expected (#1683)", {
-    skip("the verbose message has been changed")
+    
     toks <- tokens("Removing separators", remove_separators = FALSE, what = "word")
     expect_message(
         tokens(toks, remove_separators = TRUE, verbose = TRUE),
@@ -1354,6 +1354,8 @@ test_that("as.character() is working (#2494)", {
         as.character(toks2),
         c(text1 = "A aa aaa .", text2 = "B bb b b .")
     )
+    
+    
 })
 
 quanteda_options(reset = TRUE)
