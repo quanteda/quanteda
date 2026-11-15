@@ -2,8 +2,9 @@
 
 ## Changes and additions
 
-* `as.character.tokens()` now returns a character vector by concatenating tokens 
-   with the `separator` (#2494).
+* The result of `as.character.tokens()` chanced from a character vector of individual tokens 
+  to a character vector of concatenated tokens for each document (#2494). Run 
+  `unlist(x, use.names = FALSE)` to obtain the previous results.
 
 # quanteda 4.5.1
 
