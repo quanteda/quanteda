@@ -21,14 +21,28 @@ as.list.tokens <- function(x, ...) {
 
 #' @rdname as.tokens
 #' @param concatenator a character to concatenate tokens.
+#' @param use_names if `TRUE`, returns a character vector with [docnames]. 
 #' @return `as.character` converts a [tokens] object to a character vector by 
 #'   concatenate tokens with the `concatenator`.
+#' @method as.character tokens
 #' @export
-as.character.tokens <- function(x, concatenator = concat(x), ...) {
+as.character.tokens <- function(x, concatenator = concat(x), use_names = TRUE, ...) {
+    
+    # trap old argument
+    args <- list(...)
+    if ("use.names" %in% names(args)) {
+        .Deprecated(msg = "The `use.names` argument is deprecated in quanteda v4.6, use `use_names` instead")
+        use_name <- args$use.names
+    } else if (is.logical(concatenator)) {
+        .Deprecated(msg = "The `use.names` argument is deprecated in quanteda v4.6, use `use_names` instead")
+        use_name <- concatenator
+    }
+    
     concatenator <- check_character(concatenator, min_len = 1, max_len = 1)
+    use_names <- check_logical(use_names)
     if (ndoc(x) == 0)
         return(character())
-    sapply(x, paste0, collapse = concatenator)
+    sapply(x, paste0, collapse = concatenator, USE.NAMES = use_names)
 }
 
 #' @rdname as.tokens

@@ -1348,6 +1348,20 @@ test_that("as.character() is working (#2494)", {
         as.character(toks1, concatenator = " "),
         c(text1 = "A aa aaa .", text2 = "B bb b b .")
     )
+    expect_identical(
+        as.character(toks1, use_names = FALSE),
+        c("A_aa_aaa_.", "B_bb_b_b_.")
+    )
+    lifecycle::expect_deprecated(
+        as.character(toks1, use.names = TRUE),
+        "The `use.names` argument is deprecated in quanteda v4.6, use `use_names` instead",
+        fixed = TRUE
+    )
+    lifecycle::expect_deprecated(
+        as.character(toks1, TRUE),
+        "The `use.names` argument is deprecated in quanteda v4.6, use `use_names` instead",
+        fixed = TRUE
+    )
     
     toks2 <- tokens(c("A aa aaa.", "B bb b b."), concatenator = " ")
     expect_identical(
