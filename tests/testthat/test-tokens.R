@@ -1357,6 +1357,10 @@ test_that("as.character() is working (#2494)", {
         "The `use.names` argument is deprecated in quanteda v4.6, use `use_names` instead",
         fixed = TRUE
     )
+    expect_identical(
+        suppressWarnings(as.character(toks1, use.names = FALSE)),
+        as.character(toks1)
+    )
     lifecycle::expect_deprecated(
         as.character(toks1, TRUE),
         "The `use.names` argument is deprecated in quanteda v4.6, use `use_names` instead",

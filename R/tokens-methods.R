@@ -32,7 +32,7 @@ as.character.tokens <- function(x, concatenator = concat(x), use_names = TRUE, .
     args <- list(...)
     if ("use.names" %in% names(args)) {
         .Deprecated(msg = "The `use.names` argument is deprecated in quanteda v4.6, use `use_names` instead")
-        use_name <- args$use.names
+        use_names <- args$use.names
     } else if (is.logical(concatenator)) {
         .Deprecated(msg = "The `use.names` argument is deprecated in quanteda v4.6, use `use_names` instead")
         concatenator <- concat(x)
