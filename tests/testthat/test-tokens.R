@@ -1362,6 +1362,10 @@ test_that("as.character() is working (#2494)", {
         "The `use.names` argument is deprecated in quanteda v4.6, use `use_names` instead",
         fixed = TRUE
     )
+    expect_identical(
+        suppressWarnings(as.character(toks1, TRUE)),
+        as.character(toks1)
+    )
     
     toks2 <- tokens(c("A aa aaa.", "B bb b b."), concatenator = " ")
     expect_identical(
