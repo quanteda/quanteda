@@ -234,7 +234,7 @@ fcm.tokens_xptr <- function(x, context = c("document", "window"),
     if (ordered)
         tri <- FALSE
     if (context == "document") {
-        result <- fcm(dfm(x, tolower = FALSE, verbose = FALSE), count = count, tri = tri)
+        result <- fcm(dfm(x, tolower = FALSE, verbose = FALSE), count = count, tri = tri, verbose = FALSE)
     } else {
         x <- as.tokens_xptr(x)
         if (count == "weighted") {
