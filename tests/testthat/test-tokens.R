@@ -1359,7 +1359,7 @@ test_that("as.character() is working (#2494)", {
     )
     expect_identical(
         suppressWarnings(as.character(toks1, use.names = FALSE)),
-        as.character(toks1)
+        as.character(toks1, use_names = FALSE)
     )
     lifecycle::expect_deprecated(
         as.character(toks1, TRUE),
