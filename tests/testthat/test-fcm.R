@@ -278,8 +278,15 @@ test_that("verbose works", {
                    "Creating a fcm from a dfm object")
     expect_message(fcm(dfmt, verbose = TRUE), 
                    "Finished constructing fcm of 6 features x 6 features\\.")
+    
+    quanteda_options(verbose = TRUE)
+    
+    expect_silent(fcm(toks, verbose = FALSE))
+    expect_silent(fcm(xtoks, verbose = FALSE))
     expect_silent(fcm(dfmt, verbose = FALSE))
-
+    
+    quanteda_options(verbose = FALSE) # reset
+    
 })
 
 
