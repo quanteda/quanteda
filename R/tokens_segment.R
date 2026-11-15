@@ -94,8 +94,8 @@ tokens_segment.tokens_xptr <- function(x, pattern,
     } else {
         max_size <- .Machine$integer.max;
     }
-    if (min_size >= max_size)
-        stop("max_size must be greater than min_size")
+    if (min_size > max_size)
+        stop("max_size must be equal to or greater than min_size")
     
     if (!use_docvars)
         docvars(x) <- NULL
