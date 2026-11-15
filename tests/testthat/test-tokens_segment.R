@@ -221,13 +221,13 @@ test_that("min_size and max_size work", {
     
     expect_error(
         tokens_segment(toks, min_size = 6, max_size = 4),
-        "max_size must be greater than min_size"
+        "max_size must be equal to or greater than min_size"
     )
     
     # patterns are before texts
     txt2 <- c(d1 = "1 Sentence one.  2 Second sentence is this one!\n
                     3 Here is the third sentence.",
-             d2 = "1 Only sentence of doc2?  2 No there is another.")
+              d2 = "1 Only sentence of doc2?  2 No there is another.")
     
     corp2 <- corpus(txt2)
     toks2 <- tokens(corp2)
@@ -245,11 +245,27 @@ test_that("min_size and max_size work", {
         c(d1.1 = 11L, d1.2 = 7L, d2.1 = 6L, d2.2 = 6L)
     )
     
+    
     expect_identical(
         ntoken(tokens_segment(toks2, "^\\d$", valuetype = "regex",
                               pattern_position = "before",
                               min_size = 5, max_size = 10)),
         c(d1.1 = 10L, d1.2 = 8L, d2.1 = 6L, d2.2 = 6L)
+    )
+    
+    # extract matched patterns
+    toks2_ext <- tokens_segment(toks2, "^\\d$", valuetype = "regex",
+                                pattern_position = "before",
+                                extract_pattern = TRUE,
+                                min_size = 5, max_size = 10)
+    
+    expect_identical(
+        ntoken(toks2_ext),
+        c(d1.1 = 10L, d1.2 = 7L, d2.1 = 5L, d2.2 = 5L)
+    )
+    expect_identical(
+        docvars(toks2_ext, "pattern"),
+        c("1", NA, "1", "2")
     )
     
     # multi-word patters before texts
@@ -278,6 +294,28 @@ test_that("min_size and max_size work", {
                               pattern_position = "before",
                               min_size = 6, max_size = 10)),
         c(a.1 = 10L, a.2 = 10L, a.3 = 1L, b.1 = 7L, b.2 = 7L)
+    )
+    
+    # extract matched patterns
+    toks3_ext <- tokens_segment(toks3, phrase("^[AB]$ ^\\d$"), valuetype = "regex",
+                                pattern_position = "before",
+                                extract_pattern = TRUE,
+                                min_size = 6, max_size = 10)
+    expect_identical(
+        ntoken(toks3_ext),
+        c(a.1 = 10L, a.2 = 9L, b.1 = 10L, b.2 = 2L)
+    )
+    expect_identical(
+        docvars(toks3_ext, "pattern"),
+        c("A 1", NA, "B 1", NA)
+    )
+    
+    # max_size is shorter than patterns
+    expect_all_equal(
+        ntoken(tokens_segment(toks3, phrase("^[AB]$ ^\\d$"), valuetype = "regex",
+                              pattern_position = "before",
+                              min_size = 1, max_size = 1)),
+        1L
     )
     
 })
