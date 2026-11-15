@@ -4,7 +4,7 @@ test_that("tokens works for strange spaces (#796)", {
     toks <- tokens(txt, what = "word1", remove_punct = FALSE, remove_separators = FALSE)
     expect_identical(ntoken(toks), c(text1 = 15L))
     expect_identical(
-        as.character(tokens(txt, what = "word1", remove_punct = FALSE, remove_separators = FALSE))[13:15],
+        as.list(tokens(txt, what = "word1", remove_punct = FALSE, remove_separators = FALSE))[[1]][13:15],
         c("variationselector16", " ", ".")
     )
     expect_identical(
@@ -14,8 +14,8 @@ test_that("tokens works for strange spaces (#796)", {
         c(text1 = 13L)
     )
     expect_identical(
-        as.character(tokens(txt, remove_punct = TRUE, remove_separators = FALSE,
-                            what = "word1"))[12:13],
+        as.list(tokens(txt, remove_punct = TRUE, remove_separators = FALSE,
+                            what = "word1"))[[1]][12:13],
         c("variationselector16", " ")
     )
 })
@@ -39,15 +39,15 @@ test_that("output is correct for word1", {
 test_that("symbols and punctuation are handled separately (#1445)", {
     txt <- "£ € 👏 Rock on❗ 💪️🎸"
     expect_identical(
-        as.character(tokens(txt, what = "word1", remove_symbols = FALSE, remove_punct = TRUE)),
-        as.character(tokens(txt, what = "word1", remove_symbols = FALSE, remove_punct = FALSE))
+        as.list(tokens(txt, what = "word1", remove_symbols = FALSE, remove_punct = TRUE)),
+        as.list(tokens(txt, what = "word1", remove_symbols = FALSE, remove_punct = FALSE))
     )
     expect_identical(
-        as.character(tokens(txt, what = "fasterword", remove_symbols = FALSE, remove_punct = TRUE)),
-        as.character(tokens(txt, what = "fasterword", remove_symbols = FALSE, remove_punct = FALSE))
+        as.list(tokens(txt, what = "fasterword", remove_symbols = FALSE, remove_punct = TRUE)),
+        as.list(tokens(txt, what = "fasterword", remove_symbols = FALSE, remove_punct = FALSE))
     )
     expect_identical(
-        as.character(tokens(txt, what = "fastestword", remove_symbols = FALSE, remove_punct = TRUE)),
-        as.character(tokens(txt, what = "fastestword", remove_symbols = FALSE, remove_punct = FALSE))
+        as.list(tokens(txt, what = "fastestword", remove_symbols = FALSE, remove_punct = TRUE)),
+        as.list(tokens(txt, what = "fastestword", remove_symbols = FALSE, remove_punct = FALSE))
     )
 })

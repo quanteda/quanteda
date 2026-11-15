@@ -7,7 +7,7 @@
 NULL
 
 #' @rdname as.tokens
-#' @return `as.list` returns a simple list of characters from a
+#' @return `as.list` converts a [tokens] object to a list of tokens as characters.
 #'   [tokens] object.
 #' @method as.list tokens
 #' @export
@@ -20,13 +20,33 @@ as.list.tokens <- function(x, ...) {
 }
 
 #' @rdname as.tokens
-#' @param use.names logical; preserve names if `TRUE`.  For
-#'   `as.character` and `unlist` only.
-#' @return `as.character` returns a character vector from a
-#'   [tokens] object.
+#' @param concatenator a character to concatenate tokens.
+#' @param use_names if `TRUE`, returns a character vector with [docnames]. 
+#' @return `as.character` converts a [tokens] object to a character vector by 
+#'   concatenate tokens with the `concatenator`.
+#' @method as.character tokens
 #' @export
-as.character.tokens <- function(x, use.names = FALSE, ...) {
-    unlist(as.list(x), use.names = use.names)
+as.character.tokens <- function(x, concatenator = concat(x), use_names = TRUE, ...) {
+    
+    # trap old argument
+    args <- list(...)
+    if ("use.names" %in% names(args)) {
+        .Deprecated(msg = "The `use.names` argument is deprecated in quanteda v4.6, use `use_names` instead")
+        use_names <- args$use.names
+    } else if (is.logical(concatenator)) {
+        .Deprecated(msg = "The `use.names` argument is deprecated in quanteda v4.6, use `use_names` instead")
+        concatenator <- concat(x)
+        use_name <- concatenator
+    }
+    
+    concatenator <- check_character(concatenator, min_len = 1, max_len = 1)
+    use_names <- check_logical(use_names)
+    if (ndoc(x) == 0)
+        return(character())
+    result <- sapply(x, paste0, collapse = concatenator)
+    if (!use_names)
+        names(result) <- NULL
+    return(result)
 }
 
 #' @rdname as.tokens

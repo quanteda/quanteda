@@ -34,37 +34,37 @@ test_that("character vector works consistently on dfm", {
 test_that("character vector with whitespace works consistently on tokens", {
     txt <- c("a b c d e a_b_c d e")
     toks <- tokens(txt)
-    toksch <- as.character(toks)
-    feat <- "a b c"
+    pat <- "a b c"
+    
     expect_equivalent(
-        as.list(tokens_compound(toks, pattern = feat))[[1]],
-        toksch
+        as.list(tokens_compound(toks, pattern = pat))[[1]],
+        c("a", "b", "c", "d", "e", "a_b_c", "d", "e")
     )
     expect_equivalent(
-        as.list(tokens_compound(toks, pattern = phrase(feat)))[[1]],
+        as.list(tokens_compound(toks, pattern = phrase(pat)))[[1]],
         c("a_b_c", "d", "e", "a_b_c", "d", "e")
     )
 
     expect_equivalent(
-        as.list(tokens_select(toks, pattern = feat))[[1]],
+        as.list(tokens_select(toks, pattern = pat))[[1]],
         character(0)
     )
     expect_equivalent(
-        as.list(tokens_select(toks, pattern = phrase(feat)))[[1]],
+        as.list(tokens_select(toks, pattern = phrase(pat)))[[1]],
         c("a", "b", "c")
     )
 
     expect_equivalent(
-        as.list(tokens_remove(toks, pattern = feat))[[1]],
-        toksch
+        as.list(tokens_remove(toks, pattern = pat))[[1]],
+        c("a", "b", "c", "d", "e", "a_b_c", "d", "e")
     )
 
     expect_equal(
-        nrow(kwic(toks, pattern = feat)),
+        nrow(kwic(toks, pattern = pat)),
         0
     )
     expect_equal(
-        nrow(kwic(toks, pattern = phrase(feat))),
+        nrow(kwic(toks, pattern = phrase(pat))),
         1
     )
 })
@@ -83,11 +83,10 @@ test_that("character vector with whitespace works consistently on dfm", {
 
 test_that("character vector with whitespace and wildcard works consistent on tokens", {
     toks <- tokens(c("a b c d e a_b_c d e"))
-    toksch <- as.character(toks)
     feat <- "* d e"
     expect_equivalent(
         as.list(tokens_compound(toks, pattern = feat))[[1]],
-        toksch
+        c("a", "b", "c", "d", "e", "a_b_c", "d", "e")
     )
     expect_equivalent(
         as.list(tokens_compound(toks, pattern = phrase(feat)))[[1]],
@@ -105,7 +104,7 @@ test_that("character vector with whitespace and wildcard works consistent on tok
 
     expect_equivalent(
         as.list(tokens_remove(toks, pattern = feat))[[1]],
-        toksch
+        c("a", "b", "c", "d", "e", "a_b_c", "d", "e")
     )
     expect_equivalent(
         as.list(tokens_remove(toks, pattern = phrase(feat)))[[1]],
@@ -141,33 +140,32 @@ test_that("list works consistently on tokens", {
 test_that("dictionary works consistently on tokens", {
 
     toks <- tokens(c("a b c d e a_b_c d e"))
-    toksch <- as.character(toks)
     dict <- dictionary(list(ABC = "a b c", D = "d", E = "e"))
 
     expect_equal(
-        as.character(tokens_compound(toks, pattern = dict)),
+        as.list(tokens_compound(toks, pattern = dict))[[1]],
         c("a_b_c", "d", "e", "a_b_c", "d", "e")
     )
     expect_equal(
-        as.character(tokens_compound(toks, pattern = phrase(dict))),
+        as.list(tokens_compound(toks, pattern = phrase(dict)))[[1]],
         c("a_b_c", "d", "e", "a_b_c", "d", "e")
     )
 
     expect_equal(
-        as.character(tokens_select(toks, pattern = dict)),
+        as.list(tokens_select(toks, pattern = dict))[[1]],
         c("a", "b", "c", "d", "e", "a_b_c", "d", "e")
     )
     expect_equal(
-        as.character(tokens_select(toks, pattern = phrase(dict))),
+        as.list(tokens_select(toks, pattern = phrase(dict)))[[1]],
         c("a", "b", "c", "d", "e", "d", "e")
     )
 
     expect_equal(
-        as.character(tokens_remove(toks, pattern = dict)),
+        as.list(tokens_remove(toks, pattern = dict))[[1]],
         character(0)
     )
     expect_equal(
-        as.character(tokens_remove(toks, pattern = phrase(dict))),
+        as.list(tokens_remove(toks, pattern = phrase(dict)))[[1]],
         c("a_b_c")
     )
 

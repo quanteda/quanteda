@@ -18,23 +18,23 @@ test_that("tokens_compound works as expected with collocations", {
     class(cols) <- c("collocations", "data.frame")
 
     expect_true(all(
-      c("The_new", "capital_gains", "gains_taxes") %in%
-      as.character(tokens_compound(toks, as.phrase(cols), join = FALSE))
+        c("The_new", "capital_gains", "gains_taxes") %in%
+        types(tokens_compound(toks, as.phrase(cols), join = FALSE))
     ))
 
     expect_true(all(
-      c("The_new", "capital_gains_taxes") %in%
-        as.character(tokens_compound(toks, as.phrase(cols), join = TRUE))
+        c("The_new", "capital_gains_taxes") %in%
+        types(tokens_compound(toks, as.phrase(cols), join = TRUE))
     ))
 
     expect_true(all(
-      c("The_new", "capital_gains_taxes") %in%
-        as.character(tokens_compound(toks, cols, case_insensitive = TRUE))
+        c("The_new", "capital_gains_taxes") %in%
+        types(tokens_compound(toks, cols, case_insensitive = TRUE))
     ))
 
     expect_true(all(
-      c("capital_gains_taxes") %in%
-        as.character(tokens_compound(toks, cols, case_insensitive = FALSE))
+        c("capital_gains_taxes") %in%
+        types(tokens_compound(toks, cols, case_insensitive = FALSE))
     ))
 
     expect_equal(

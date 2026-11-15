@@ -13,7 +13,7 @@
 \usage{
 \method{as.list}{tokens}(x, ...)
 
-\method{as.character}{tokens}(x, use.names = FALSE, ...)
+\method{as.character}{tokens}(x, concatenator = concat(x), use_names = TRUE, ...)
 
 is.tokens(x)
 
@@ -41,8 +41,9 @@ is.tokens(x)
 \item{...}{additional arguments used by specific methods.  For
 \link{c.tokens}, these are the \link{tokens} objects to be concatenated.}
 
-\item{use.names}{logical; preserve names if \code{TRUE}.  For
-\code{as.character} and \code{unlist} only.}
+\item{concatenator}{a character to concatenate tokens.}
+
+\item{use_names}{if \code{TRUE}, returns a character vector with \link{docnames}.}
 
 \item{length}{optional integer specifying the maximum length (number of
 positions) for the tensor. If \code{NULL} (default), the length is
@@ -51,9 +52,6 @@ inferred from the maximum token position across all documents.}
 \item{extract}{indices for documents to be extracted from \code{x}.}
 
 \item{drop}{if \code{TRUE} returns a vector instead of a matrix with only one row.}
-
-\item{concatenator}{character; the concatenation character that will connect
-the tokens making up a multi-token sequence. See details.}
 
 \item{include_pos}{character; whether and which part-of-speech tag to use:
 \code{"none"} do not use any part of speech indicator, \code{"pos"} use the
@@ -64,11 +62,11 @@ will be added to the token after \code{"concatenator"}.}
 token}
 }
 \value{
-\code{as.list} returns a simple list of characters from a
+\code{as.list} converts a \link{tokens} object to a list of tokens as characters.
 \link{tokens} object.
 
-\code{as.character} returns a character vector from a
-\link{tokens} object.
+\code{as.character} converts a \link{tokens} object to a character vector by
+concatenate tokens with the \code{concatenator}.
 
 \code{is.tokens} returns \code{TRUE} if the object is of class
 tokens, \code{FALSE} otherwise.
