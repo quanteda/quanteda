@@ -26,6 +26,8 @@ as.list.tokens <- function(x, ...) {
 #' @export
 as.character.tokens <- function(x, concatenator = concat(x), ...) {
     concatenator <- check_character(concatenator, min_len = 1, max_len = 1)
+    if (ndoc(x) == 0)
+        return(character())
     sapply(x, paste0, collapse = concatenator)
 }
 

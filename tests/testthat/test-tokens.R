@@ -1355,7 +1355,10 @@ test_that("as.character() is working (#2494)", {
         c(text1 = "A aa aaa .", text2 = "B bb b b .")
     )
     
-    
+    expect_identical(
+        as.character(as.tokens(list())),
+        character()
+    )
 })
 
 quanteda_options(reset = TRUE)
