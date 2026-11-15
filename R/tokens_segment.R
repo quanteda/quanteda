@@ -19,12 +19,22 @@
 #'   Dropping the docvars might be useful in order to conserve space or if these
 #'   are not desired for the segmented corpus.
 #' @param min_size,max_size minimum or maximum sizes of segmented documents in 
-#'   number of tokens. If used, `pattern` is only detected within the range 
-#'   between `min_size` and `max_size` from the beginning of the documents or the 
-#'   previously matched tokens.
+#'   number of tokens. See details.
 #' @return `tokens_segment` returns a [tokens] object whose documents
 #'   have been split by patterns
 #' @keywords tokens
+#' @details
+#'   If `min_size` or `max_size` are used, `pattern` is only detected within the 
+#'   range between them starting from the beginning of the documents or the end of 
+#'   previously matched tokens. This ensure that all but the last segments of 
+#'   documents are within desired lengths (The last segments can be shorter than 
+#'   `min_size` as leftovers).
+#'   
+#'   When `extract_pattern = TRUE`, documents are segmented excluding the lengths 
+#'   of matched tokens because they will not be included in the resulting segments. 
+#'   The `pattern` in the [docvars] also records `NA` for the segments that exceeded 
+#'   `max_size`.
+#' 
 #' @export
 #' @examples
 #' txts <- "Fellow citizens, I am again called upon by the voice of my country to

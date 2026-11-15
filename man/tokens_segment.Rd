@@ -38,9 +38,7 @@ on whether the pattern precedes the text (as with a tag) or follows the
 text (as with punctuation delimiters)}
 
 \item{min_size, max_size}{minimum or maximum sizes of segmented documents in
-number of tokens. If used, \code{pattern} is only detected within the range
-between \code{min_size} and \code{max_size} from the beginning of the documents or the
-previously matched tokens.}
+number of tokens. See details.}
 
 \item{use_docvars}{if \code{TRUE}, repeat the docvar values for each
 segmented text; if \code{FALSE}, drop the docvars in the segmented corpus.
@@ -62,6 +60,18 @@ the tokenized texts into smaller document units, based on a regular pattern
 or a user-supplied annotation. While it normally makes more sense to do this
 at the corpus level (see \code{\link[=corpus_segment]{corpus_segment()}}), \code{tokens_segment}
 provides the option to perform this operation on tokens.
+}
+\details{
+If \code{min_size} or \code{max_size} are used, \code{pattern} is only detected within the
+range between them starting from the beginning of the documents or the end of
+previously matched tokens. This ensure that all but the last segments of
+documents are within desired lengths (The last segments can be shorter than
+\code{min_size} as leftovers).
+
+When \code{extract_pattern = TRUE}, documents are segmented excluding the lengths
+of matched tokens because they will not be included in the resulting segments.
+The \code{pattern} in the \link{docvars} also records \code{NA} for the segments that exceeded
+\code{max_size}.
 }
 \examples{
 txts <- "Fellow citizens, I am again called upon by the voice of my country to
