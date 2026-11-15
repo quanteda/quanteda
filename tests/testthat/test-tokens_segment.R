@@ -311,11 +311,17 @@ test_that("min_size and max_size work", {
     )
     
     # max_size is shorter than patterns
-    expect_all_equal(
+    expect_equivalent(
         ntoken(tokens_segment(toks3, phrase("^[AB]$ ^\\d$"), valuetype = "regex",
                               pattern_position = "before",
                               min_size = 1, max_size = 1)),
-        1L
+        rep(1L, 35)
+    )
+    expect_equivalent(
+        ntoken(tokens_segment(toks3, phrase("^[AB]$ ^\\d$"), valuetype = "regex",
+                              pattern_position = "after",
+                              min_size = 1, max_size = 1)),
+        rep(1L, 35)
     )
     
 })
