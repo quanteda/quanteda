@@ -284,6 +284,8 @@ test_that("verbose works", {
     expect_silent(fcm(toks, verbose = FALSE))
     expect_silent(fcm(xtoks, verbose = FALSE))
     expect_silent(fcm(dfmt, verbose = FALSE))
+    expect_silent(fcm(toks, context = "window", verbose = FALSE))
+    expect_silent(fcm(xtoks, context = "window", verbose = FALSE))
     
     quanteda_options(verbose = FALSE) # reset
     
