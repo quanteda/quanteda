@@ -1,25 +1,26 @@
-#' Segment a corpus into chunks of a given size
+#' Split corpus text into chunks
 #'
-#' Segment a corpus into new documents of roughly equal sized text chunks, with
-#' the possibility of overlapping the chunks.
-#' @param size integer; the (approximate) token length of the chunks. See
-#'   Details.
-#' @param truncate logical; if `TRUE`, truncate the text after `size`
+#' Wrap each document's text into chunks of roughly equal length and return
+#' the chunks as documents in a corpus.
+#' @param x a [corpus] object
+#' @param size integer giving the approximate number of tokens per chunk.
+#'   See Details.
+#' @param truncate if `TRUE`, keep only the first chunk of each document
 #' @inheritParams tokens_chunk
+#' @return A [corpus] with one document per chunk.
 #' @details
-#' The token length is estimated using `stringi::stri_length(txt) /
-#' stringi::stri_count_boundaries(txt)` to avoid needing to tokenize and rejoin
-#' the corpus from the tokens.
+#' Each document is wrapped with `stringi::stri_wrap()`. The wrap width is
+#' `size` multiplied by the average number of characters per boundary segment
+#' in the document, estimated using `stringi::stri_length()` and
+#' `stringi::stri_count_boundaries()`.
 #'
 #' Note that when used for chunking texts prior to sending to large language
 #' models (LLMs) with limited input token lengths, size should typically be set
 #' to approximately 0.75-0.80 of the LLM's token limit.  This is because
 #' tokenizers (such as LLaMA's SentencePiece Byte-Pair Encoding tokenizer)
 #' require more tokens than the linguistically defined grammatically-based
-#' tokenizer that is the \pkg{quanteda} default. Note also that because of the
-#' use of `stringi::stri_count_boundaries(txt)` to approximate token length
-#' (efficiently), the exact token length for chunking will be approximate.
-#' @seealso [tokens_chunk()]
+#' tokenizer that is the \pkg{quanteda} default.
+#' @seealso [tokens_chunk()] for chunking by token count with optional overlap.
 #' @keywords corpus
 #' @importFrom lifecycle signal_stage
 #' @export

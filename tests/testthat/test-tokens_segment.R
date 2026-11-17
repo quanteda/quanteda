@@ -178,3 +178,172 @@ test_that("tokens_segment works with tags", {
     expect_equal(segid(toks_seg4), 
                  c(1L, 2L, 1L))
 })
+
+test_that("tokens_segment warns about a logical value in the former use_docvars position", {
+    for (xptr in c(FALSE, TRUE)) {
+        toks <- tokens("a .", xptr = xptr)
+
+        expect_warning(
+            tokens_segment(toks, ".", "fixed", TRUE, FALSE, "after", TRUE),
+            "If you meant to set `use_docvars`, supply it by name."
+        )
+        expect_warning(
+            expect_error(
+                tokens_segment(toks, ".", "fixed", TRUE, FALSE, "after", FALSE),
+                "The value of min_ntoken must be between 1 and Inf"
+            ),
+            "If you meant to set `use_docvars`, supply it by name."
+        )
+        expect_silent(
+            tokens_segment(toks, ".", valuetype = "fixed", pattern_position = "after",
+                           min_ntoken = 2, use_docvars = FALSE, verbose = FALSE)
+        )
+    }
+})
+
+test_that("min_ntoken and max_ntoken work", {
+    
+    ## patterns are after texts
+    txt <- c(d1 = "Sentence one.  Second sentence is this one!\n
+                   Here is the third sentence.",
+             d2 = "Only sentence of doc2?  No there is another.")
+    
+    corp <- corpus(txt)
+    toks <- tokens(corp)
+    
+    expect_identical(
+        ntoken(tokens_segment(toks, "[.!?]", valuetype = "regex",
+                              pattern_position = "after")),
+        c(d1.1 = 3L, d1.2 = 6L, d1.3 = 6L, d2.1 = 5L, d2.2 = 5L)
+    )
+    
+    expect_identical(
+        ntoken(tokens_segment(toks, "[.!?]", valuetype = "regex",
+                              pattern_position = "after",
+                              min_ntoken = 4)),
+        c(d1.1 = 9L, d1.2 = 6L, d2.1 = 5L, d2.2 = 5L)
+    )
+    
+    expect_identical(
+        ntoken(tokens_segment(toks, "[.!?]", valuetype = "regex",
+                              pattern_position = "after",
+                              min_ntoken = 4, max_ntoken = 6)),
+        c(d1.1 = 6L, d1.2 = 6L, d1.3 = 3L, d2.1 = 5L, d2.2 = 5L)
+    )
+    
+    expect_error(
+        tokens_segment(toks, min_ntoken = c(1, 2)),
+        "The length of min_ntoken must be 1"
+    )
+    
+    expect_error(
+        tokens_segment(toks, min_ntoken = c(5, 6)),
+        "The length of min_ntoken must be 1"
+    )
+    
+    expect_error(
+        tokens_segment(toks, min_ntoken = 6, max_ntoken = 4),
+        "max_ntoken must be equal to or greater than min_ntoken"
+    )
+    
+    # patterns are before texts
+    txt2 <- c(d1 = "1 Sentence one.  2 Second sentence is this one!\n
+                    3 Here is the third sentence.",
+              d2 = "1 Only sentence of doc2?  2 No there is another.")
+    
+    corp2 <- corpus(txt2)
+    toks2 <- tokens(corp2)
+    
+    expect_identical(
+        ntoken(tokens_segment(toks2, "^\\d$", valuetype = "regex",
+                              pattern_position = "before")),
+        c(d1.1 = 4L, d1.2 = 7L, d1.3 = 7L, d2.1 = 6L, d2.2 = 6L)
+    )
+    
+    expect_identical(
+        ntoken(tokens_segment(toks2, "^\\d$", valuetype = "regex",
+                              pattern_position = "before",
+                              min_ntoken = 5)),
+        c(d1.1 = 11L, d1.2 = 7L, d2.1 = 6L, d2.2 = 6L)
+    )
+    
+    
+    expect_identical(
+        ntoken(tokens_segment(toks2, "^\\d$", valuetype = "regex",
+                              pattern_position = "before",
+                              min_ntoken = 5, max_ntoken = 10)),
+        c(d1.1 = 10L, d1.2 = 8L, d2.1 = 6L, d2.2 = 6L)
+    )
+    
+    # extract matched patterns
+    toks2_ext <- tokens_segment(toks2, "^\\d$", valuetype = "regex",
+                                pattern_position = "before",
+                                extract_pattern = TRUE,
+                                min_ntoken = 5, max_ntoken = 10)
+    
+    expect_identical(
+        ntoken(toks2_ext),
+        c(d1.1 = 10L, d1.2 = 7L, d2.1 = 5L, d2.2 = 5L)
+    )
+    expect_identical(
+        docvars(toks2_ext, "pattern"),
+        c("1", NA, "1", "2")
+    )
+    
+    # multi-word patters before texts
+    txt3 <- c(a = "A-1 Sentence one.  A-2 Second sentence is this one!\n
+                    A-3 Here is the third sentence.",
+              b = "B-1 Only sentence of doc2?  B-2 No there is another.")
+    corp3 <- corpus(txt3)
+    toks3 <- tokens(corp3, split_hyphens = TRUE) |> 
+        tokens_remove("-")
+    
+    expect_identical(
+        ntoken(tokens_segment(toks3, phrase("^[AB]$ ^\\d$"), valuetype = "regex", 
+                              pattern_position = "before")),
+        c(a.1 = 5L, a.2 = 8L, a.3 = 8L, b.1 = 7L, b.2 = 7L)
+    )
+    
+    expect_identical(
+        ntoken(tokens_segment(toks3, phrase("^[AB]$ ^\\d$"), valuetype = "regex",
+                              pattern_position = "before",
+                              min_ntoken = 6)),
+        c(a.1 = 13L, a.2 = 8L, b.1 = 7L, b.2 = 7L)
+    )
+    
+    expect_identical(
+        ntoken(tokens_segment(toks3, phrase("^[AB]$ ^\\d$"), valuetype = "regex",
+                              pattern_position = "before",
+                              min_ntoken = 6, max_ntoken = 10)),
+        c(a.1 = 10L, a.2 = 10L, a.3 = 1L, b.1 = 7L, b.2 = 7L)
+    )
+    
+    # extract matched patterns
+    toks3_ext <- tokens_segment(toks3, phrase("^[AB]$ ^\\d$"), valuetype = "regex",
+                                pattern_position = "before",
+                                extract_pattern = TRUE,
+                                min_ntoken = 6, max_ntoken = 10)
+    expect_identical(
+        ntoken(toks3_ext),
+        c(a.1 = 10L, a.2 = 9L, b.1 = 10L, b.2 = 2L)
+    )
+    expect_identical(
+        docvars(toks3_ext, "pattern"),
+        c("A 1", NA, "B 1", NA)
+    )
+    
+    # max_ntoken is shorter than patterns
+    expect_equivalent(
+        ntoken(tokens_segment(toks3, phrase("^[AB]$ ^\\d$"), valuetype = "regex",
+                              pattern_position = "before",
+                              min_ntoken = 1, max_ntoken = 1)),
+        rep(1L, 35)
+    )
+    expect_equivalent(
+        ntoken(tokens_segment(toks3, phrase("^[AB]$ ^\\d$"), valuetype = "regex",
+                              pattern_position = "after",
+                              min_ntoken = 1, max_ntoken = 1)),
+        rep(1L, 35)
+    )
+    
+})

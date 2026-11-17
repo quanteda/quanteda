@@ -2,7 +2,7 @@
 % Please edit documentation in R/corpus_chunk.R
 \name{corpus_chunk}
 \alias{corpus_chunk}
-\title{Segment a corpus into chunks of a given size}
+\title{Split corpus text into chunks}
 \usage{
 corpus_chunk(
   x,
@@ -13,38 +13,40 @@ corpus_chunk(
 )
 }
 \arguments{
-\item{x}{\link{tokens} object whose token elements will be segmented into
-chunks}
+\item{x}{a \link{corpus} object}
 
-\item{size}{integer; the (approximate) token length of the chunks. See
-Details.}
+\item{size}{integer giving the approximate number of tokens per chunk.
+See Details.}
 
-\item{truncate}{logical; if \code{TRUE}, truncate the text after \code{size}}
+\item{truncate}{if \code{TRUE}, keep only the first chunk of each document}
 
-\item{use_docvars}{if \code{TRUE}, repeat the docvar values for each chunk;
-if \code{FALSE}, drop the docvars in the chunked tokens}
+\item{use_docvars}{if \code{TRUE}, copy the original document variables to each
+chunk. If \code{FALSE}, drop the original document variables.}
 
 \item{verbose}{if \code{TRUE} print a summary of the object returned by the
 function: the number of documents and, depending on the object, the number
 of characters, tokens and types, or features and occurrences. The number of
 tokens includes paddings, but the number of features excludes them.}
 }
+\value{
+A \link{corpus} with one document per chunk.
+}
 \description{
-Segment a corpus into new documents of roughly equal sized text chunks, with
-the possibility of overlapping the chunks.
+Wrap each document's text into chunks of roughly equal length and return
+the chunks as documents in a corpus.
 }
 \details{
-The token length is estimated using \code{stringi::stri_length(txt) / stringi::stri_count_boundaries(txt)} to avoid needing to tokenize and rejoin
-the corpus from the tokens.
+Each document is wrapped with \code{stringi::stri_wrap()}. The wrap width is
+\code{size} multiplied by the average number of characters per boundary segment
+in the document, estimated using \code{stringi::stri_length()} and
+\code{stringi::stri_count_boundaries()}.
 
 Note that when used for chunking texts prior to sending to large language
 models (LLMs) with limited input token lengths, size should typically be set
 to approximately 0.75-0.80 of the LLM's token limit.  This is because
 tokenizers (such as LLaMA's SentencePiece Byte-Pair Encoding tokenizer)
 require more tokens than the linguistically defined grammatically-based
-tokenizer that is the \pkg{quanteda} default. Note also that because of the
-use of \code{stringi::stri_count_boundaries(txt)} to approximate token length
-(efficiently), the exact token length for chunking will be approximate.
+tokenizer that is the \pkg{quanteda} default.
 }
 \examples{
 data_corpus_inaugural[1] |>
@@ -52,6 +54,6 @@ data_corpus_inaugural[1] |>
 
 }
 \seealso{
-\code{\link[=tokens_chunk]{tokens_chunk()}}
+\code{\link[=tokens_chunk]{tokens_chunk()}} for chunking by token count with optional overlap.
 }
 \keyword{corpus}

@@ -2,7 +2,7 @@
 % Please edit documentation in R/tokens_segment.R
 \name{tokens_segment}
 \alias{tokens_segment}
-\title{Segment tokens object by patterns}
+\title{Segment tokenised documents by pattern}
 \usage{
 tokens_segment(
   x,
@@ -11,12 +11,14 @@ tokens_segment(
   case_insensitive = TRUE,
   extract_pattern = FALSE,
   pattern_position = c("before", "after"),
+  min_ntoken = NULL,
+  max_ntoken = NULL,
   use_docvars = TRUE,
   verbose = quanteda_options("verbose")
 )
 }
 \arguments{
-\item{x}{\link{tokens} object whose token elements will be segmented}
+\item{x}{a \link{tokens} or \link{tokens_xptr} object}
 
 \item{pattern}{a character vector, list of character vectors, \link{dictionary},
 or collocations object.  See \link{pattern} for details.}
@@ -28,17 +30,20 @@ exact matching. See \link{valuetype} for details.}
 \item{case_insensitive}{logical; if \code{TRUE}, ignore case when matching a
 \code{pattern} or \link{dictionary} values}
 
-\item{extract_pattern}{remove matched patterns from the texts and save in
-\link{docvars}, if \code{TRUE}}
+\item{extract_pattern}{if \code{TRUE}, remove matched delimiters at segment
+boundaries and save them in the \code{pattern} \link[=docvars]{document variable}.}
 
-\item{pattern_position}{either \code{"before"} or \code{"after"}, depending
-on whether the pattern precedes the text (as with a tag) or follows the
-text (as with punctuation delimiters)}
+\item{pattern_position}{\code{"before"} associates a matched delimiter with the
+following segment, as with a tag. \code{"after"} associates it with the
+preceding segment, as with sentence punctuation.}
 
-\item{use_docvars}{if \code{TRUE}, repeat the docvar values for each
-segmented text; if \code{FALSE}, drop the docvars in the segmented corpus.
-Dropping the docvars might be useful in order to conserve space or if these
-are not desired for the segmented corpus.}
+\item{min_ntoken, max_ntoken}{positive integers giving the minimum and maximum
+segment lengths in tokens. Use \code{NULL} (the default) to omit either limit.
+When both are supplied, \code{min_ntoken} must be less than or equal to
+\code{max_ntoken}.}
+
+\item{use_docvars}{if \code{TRUE}, copy the original document variables to each
+segment. If \code{FALSE}, drop the original document variables.}
 
 \item{verbose}{if \code{TRUE} print a summary of the object returned by the
 function: the number of documents and, depending on the object, the number
@@ -46,15 +51,23 @@ of characters, tokens and types, or features and occurrences. The number of
 tokens includes paddings, but the number of features excludes them.}
 }
 \value{
-\code{tokens_segment} returns a \link{tokens} object whose documents
-have been split by patterns
+An object of the same type as \code{x}, with documents split into
+segments.
 }
 \description{
-Segment tokens by splitting on a pattern match. This is useful for breaking
-the tokenized texts into smaller document units, based on a regular pattern
-or a user-supplied annotation. While it normally makes more sense to do this
-at the corpus level (see \code{\link[=corpus_segment]{corpus_segment()}}), \code{tokens_segment}
-provides the option to perform this operation on tokens.
+Split tokenised documents at matching tokens or phrases, such as sentence
+punctuation or annotation tags. Optional token limits control where
+segments can end.
+}
+\details{
+Use \code{min_ntoken} to suppress early pattern boundaries and \code{max_ntoken} to
+force splits by length even when no pattern matches. The final segment of
+each document may be shorter than \code{min_ntoken}.
+
+Retained delimiters count towards the length of the segment they belong to.
+Extracted delimiters are excluded from the output token count. When
+\code{extract_pattern = TRUE}, the \code{pattern} document variable is \code{NA} for a
+segment with no extracted delimiter.
 }
 \examples{
 txts <- "Fellow citizens, I am again called upon by the voice of my country to
@@ -70,5 +83,17 @@ tokens_segment(toks, "^\\\\p{Sterm}$", valuetype = "regex",
 tokens_segment(toks, c(".", "?", "!"), valuetype = "fixed",
                extract_pattern = TRUE,
                pattern_position = "after")
+
+# Retain an early full stop, extract the next, and split again by length.
+toks <- tokens("a . b c . d e f g h i j")
+segs <- tokens_segment(toks, ".", valuetype = "fixed",
+                       pattern_position = "after", extract_pattern = TRUE,
+                       min_ntoken = 4, max_ntoken = 6)
+ntoken(segs)            # 4, 6, 1
+docvars(segs, "pattern") # ".", NA, NA
+}
+\seealso{
+\code{\link[=tokens_chunk]{tokens_chunk()}} for chunking by token count with optional overlap,
+and \code{\link[=corpus_segment]{corpus_segment()}} for pattern-based segmentation of corpus text.
 }
 \keyword{tokens}

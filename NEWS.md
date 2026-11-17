@@ -1,3 +1,13 @@
+# quanteda 4.6.0
+
+## Changes and additions
+
+* `tokens_segment()` now accepts `min_ntoken` to skip early pattern boundaries
+  and `max_ntoken` to split by length even when no pattern matches. Pass
+  `use_docvars` and `verbose` by name in calls that previously supplied them
+  positionally. A logical value in the former `use_docvars` position now
+  triggers a warning. (#2519)
+
 # quanteda 4.5.1
 
 ## Bug fixes
@@ -39,6 +49,7 @@
   values with `NA` of the same class, instead of dropping them. This allows
   the docvars of grouped and ungrouped objects to be combined with `rbind()`.
   List variables are kept in the same way. (#2524)
+
 
 # quanteda 4.5
 

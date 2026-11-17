@@ -257,8 +257,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // cpp_tokens_segment
-TokensPtr cpp_tokens_segment(TokensPtr xptr, const List& patterns_, const bool& remove, const int& position, const int thread);
-RcppExport SEXP _quanteda_cpp_tokens_segment(SEXP xptrSEXP, SEXP patterns_SEXP, SEXP removeSEXP, SEXP positionSEXP, SEXP threadSEXP) {
+TokensPtr cpp_tokens_segment(TokensPtr xptr, const List& patterns_, const bool& remove, const int& position, const int min_size, const int max_size, const int thread);
+RcppExport SEXP _quanteda_cpp_tokens_segment(SEXP xptrSEXP, SEXP patterns_SEXP, SEXP removeSEXP, SEXP positionSEXP, SEXP min_sizeSEXP, SEXP max_sizeSEXP, SEXP threadSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -266,8 +266,10 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const List& >::type patterns_(patterns_SEXP);
     Rcpp::traits::input_parameter< const bool& >::type remove(removeSEXP);
     Rcpp::traits::input_parameter< const int& >::type position(positionSEXP);
+    Rcpp::traits::input_parameter< const int >::type min_size(min_sizeSEXP);
+    Rcpp::traits::input_parameter< const int >::type max_size(max_sizeSEXP);
     Rcpp::traits::input_parameter< const int >::type thread(threadSEXP);
-    rcpp_result_gen = Rcpp::wrap(cpp_tokens_segment(xptr, patterns_, remove, position, thread));
+    rcpp_result_gen = Rcpp::wrap(cpp_tokens_segment(xptr, patterns_, remove, position, min_size, max_size, thread));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -581,7 +583,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_quanteda_cpp_tokens_ngrams", (DL_FUNC) &_quanteda_cpp_tokens_ngrams, 6},
     {"_quanteda_cpp_tokens_replace", (DL_FUNC) &_quanteda_cpp_tokens_replace, 5},
     {"_quanteda_cpp_tokens_restore", (DL_FUNC) &_quanteda_cpp_tokens_restore, 5},
-    {"_quanteda_cpp_tokens_segment", (DL_FUNC) &_quanteda_cpp_tokens_segment, 5},
+    {"_quanteda_cpp_tokens_segment", (DL_FUNC) &_quanteda_cpp_tokens_segment, 7},
     {"_quanteda_cpp_tokens_select", (DL_FUNC) &_quanteda_cpp_tokens_select, 10},
     {"_quanteda_cpp_xptr", (DL_FUNC) &_quanteda_cpp_xptr, 0},
     {"_quanteda_cpp_as_xptr", (DL_FUNC) &_quanteda_cpp_as_xptr, 2},
