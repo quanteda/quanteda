@@ -2,8 +2,8 @@
 
 ## Changes and additions
 
-* `tokens_segment()` now has `min_size` and `max_size` to normalize the lengths 
-  of documents. (#2519)
+* `tokens_segment()` now accepts `min_ntoken` to skip early pattern boundaries
+  and `max_ntoken` to split by length even when no pattern matches. (#2519)
 
 # quanteda 4.5.1
 

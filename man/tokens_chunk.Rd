@@ -2,7 +2,7 @@
 % Please edit documentation in R/tokens_chunk.R
 \name{tokens_chunk}
 \alias{tokens_chunk}
-\title{Segment tokens object by chunks of a given size}
+\title{Split tokenised documents into chunks}
 \usage{
 tokens_chunk(
   x,
@@ -13,16 +13,15 @@ tokens_chunk(
 )
 }
 \arguments{
-\item{x}{\link{tokens} object whose token elements will be segmented into
-chunks}
+\item{x}{a \link{tokens} or \link{tokens_xptr} object}
 
-\item{size}{integer; the token length of the chunks}
+\item{size}{positive integer giving the number of tokens in a full chunk}
 
-\item{overlap}{integer; the number of tokens in a chunk to be taken from the
-last \code{overlap} tokens from the preceding chunk}
+\item{overlap}{non-negative integer smaller than \code{size} giving the number
+of tokens shared by successive full chunks}
 
-\item{use_docvars}{if \code{TRUE}, repeat the docvar values for each chunk;
-if \code{FALSE}, drop the docvars in the chunked tokens}
+\item{use_docvars}{if \code{TRUE}, copy the original document variables to each
+chunk. If \code{FALSE}, drop the original document variables.}
 
 \item{verbose}{if \code{TRUE} print a summary of the object returned by the
 function: the number of documents and, depending on the object, the number
@@ -30,12 +29,12 @@ of characters, tokens and types, or features and occurrences. The number of
 tokens includes paddings, but the number of features excludes them.}
 }
 \value{
-A \link{tokens} object whose documents have been split into chunks of
-length \code{size}.
+An object of the same type as \code{x}, with documents split into chunks.
 }
 \description{
-Segment tokens into new documents of equally sized token lengths, with the
-possibility of overlapping the chunks.
+Split each document into chunks of up to \code{size} tokens. The start of each
+successive chunk advances by \code{size - overlap} tokens. Chunks near the end
+of a document can be shorter than \code{size}.
 }
 \examples{
 txts <- c(doc1 = "Fellow citizens, I am again called upon by the voice of
@@ -48,6 +47,7 @@ tokens_chunk(toks, size = 5)
 tokens_chunk(toks, size = 5, overlap = 4)
 }
 \seealso{
-\code{\link[=tokens_segment]{tokens_segment()}}
+\code{\link[=tokens_segment]{tokens_segment()}} for pattern-based segmentation and
+\code{\link[=corpus_chunk]{corpus_chunk()}} for chunking corpus text.
 }
 \keyword{tokens}

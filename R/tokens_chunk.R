@@ -1,18 +1,18 @@
-#' Segment tokens object by chunks of a given size
+#' Split tokenised documents into chunks
 #'
-#' Segment tokens into new documents of equally sized token lengths, with the
-#' possibility of overlapping the chunks.
-#' @param x [tokens] object whose token elements will be segmented into
-#'   chunks
-#' @param size integer; the token length of the chunks
-#' @param overlap integer; the number of tokens in a chunk to be taken from the
-#'   last `overlap` tokens from the preceding chunk
-#' @param use_docvars if `TRUE`, repeat the docvar values for each chunk;
-#'   if `FALSE`, drop the docvars in the chunked tokens
+#' Split each document into chunks of up to `size` tokens. The start of each
+#' successive chunk advances by `size - overlap` tokens. Chunks near the end
+#' of a document can be shorter than `size`.
+#' @param x a [tokens] or [tokens_xptr] object
+#' @param size positive integer giving the number of tokens in a full chunk
+#' @param overlap non-negative integer smaller than `size` giving the number
+#'   of tokens shared by successive full chunks
+#' @param use_docvars if `TRUE`, copy the original document variables to each
+#'   chunk. If `FALSE`, drop the original document variables.
 #' @inheritParams messages
-#' @return A [tokens] object whose documents have been split into chunks of
-#'   length `size`.
-#' @seealso [tokens_segment()]
+#' @return An object of the same type as `x`, with documents split into chunks.
+#' @seealso [tokens_segment()] for pattern-based segmentation and
+#'   [corpus_chunk()] for chunking corpus text.
 #' @keywords tokens
 #' @export
 #' @examples
