@@ -263,7 +263,7 @@ fcm.tokens_xptr <- function(x, context = c("document", "window"),
         result <- build_fcm(
             temp,
             colnames(temp),
-            count = count, context = context, margin = featfreq(dfm(x, tolower = FALSE)),
+            count = count, context = context, margin = featfreq(x),
             weights = weights, ordered = ordered, tri = tri,
             meta = attrs[["meta"]])
     }
