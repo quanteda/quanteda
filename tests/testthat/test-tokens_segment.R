@@ -179,7 +179,7 @@ test_that("tokens_segment works with tags", {
                  c(1L, 2L, 1L))
 })
 
-test_that("min_size and max_size work", {
+test_that("min_ntoken and max_ntoken work", {
     
     ## patterns are after texts
     txt <- c(d1 = "Sentence one.  Second sentence is this one!\n
@@ -198,30 +198,30 @@ test_that("min_size and max_size work", {
     expect_identical(
         ntoken(tokens_segment(toks, "[.!?]", valuetype = "regex",
                               pattern_position = "after",
-                              min_size = 4)),
+                              min_ntoken = 4)),
         c(d1.1 = 9L, d1.2 = 6L, d2.1 = 5L, d2.2 = 5L)
     )
     
     expect_identical(
         ntoken(tokens_segment(toks, "[.!?]", valuetype = "regex",
                               pattern_position = "after",
-                              min_size = 4, max_size = 6)),
+                              min_ntoken = 4, max_ntoken = 6)),
         c(d1.1 = 6L, d1.2 = 6L, d1.3 = 3L, d2.1 = 5L, d2.2 = 5L)
     )
     
     expect_error(
-        tokens_segment(toks, min_size = c(1, 2)),
-        "The length of min_size must be 1"
+        tokens_segment(toks, min_ntoken = c(1, 2)),
+        "The length of min_ntoken must be 1"
     )
     
     expect_error(
-        tokens_segment(toks, min_size = c(5, 6)),
-        "The length of min_size must be 1"
+        tokens_segment(toks, min_ntoken = c(5, 6)),
+        "The length of min_ntoken must be 1"
     )
     
     expect_error(
-        tokens_segment(toks, min_size = 6, max_size = 4),
-        "max_size must be equal to or greater than min_size"
+        tokens_segment(toks, min_ntoken = 6, max_ntoken = 4),
+        "max_ntoken must be equal to or greater than min_ntoken"
     )
     
     # patterns are before texts
@@ -241,7 +241,7 @@ test_that("min_size and max_size work", {
     expect_identical(
         ntoken(tokens_segment(toks2, "^\\d$", valuetype = "regex",
                               pattern_position = "before",
-                              min_size = 5)),
+                              min_ntoken = 5)),
         c(d1.1 = 11L, d1.2 = 7L, d2.1 = 6L, d2.2 = 6L)
     )
     
@@ -249,7 +249,7 @@ test_that("min_size and max_size work", {
     expect_identical(
         ntoken(tokens_segment(toks2, "^\\d$", valuetype = "regex",
                               pattern_position = "before",
-                              min_size = 5, max_size = 10)),
+                              min_ntoken = 5, max_ntoken = 10)),
         c(d1.1 = 10L, d1.2 = 8L, d2.1 = 6L, d2.2 = 6L)
     )
     
@@ -257,7 +257,7 @@ test_that("min_size and max_size work", {
     toks2_ext <- tokens_segment(toks2, "^\\d$", valuetype = "regex",
                                 pattern_position = "before",
                                 extract_pattern = TRUE,
-                                min_size = 5, max_size = 10)
+                                min_ntoken = 5, max_ntoken = 10)
     
     expect_identical(
         ntoken(toks2_ext),
@@ -285,14 +285,14 @@ test_that("min_size and max_size work", {
     expect_identical(
         ntoken(tokens_segment(toks3, phrase("^[AB]$ ^\\d$"), valuetype = "regex",
                               pattern_position = "before",
-                              min_size = 6)),
+                              min_ntoken = 6)),
         c(a.1 = 13L, a.2 = 8L, b.1 = 7L, b.2 = 7L)
     )
     
     expect_identical(
         ntoken(tokens_segment(toks3, phrase("^[AB]$ ^\\d$"), valuetype = "regex",
                               pattern_position = "before",
-                              min_size = 6, max_size = 10)),
+                              min_ntoken = 6, max_ntoken = 10)),
         c(a.1 = 10L, a.2 = 10L, a.3 = 1L, b.1 = 7L, b.2 = 7L)
     )
     
@@ -300,7 +300,7 @@ test_that("min_size and max_size work", {
     toks3_ext <- tokens_segment(toks3, phrase("^[AB]$ ^\\d$"), valuetype = "regex",
                                 pattern_position = "before",
                                 extract_pattern = TRUE,
-                                min_size = 6, max_size = 10)
+                                min_ntoken = 6, max_ntoken = 10)
     expect_identical(
         ntoken(toks3_ext),
         c(a.1 = 10L, a.2 = 9L, b.1 = 10L, b.2 = 2L)
@@ -310,17 +310,17 @@ test_that("min_size and max_size work", {
         c("A 1", NA, "B 1", NA)
     )
     
-    # max_size is shorter than patterns
+    # max_ntoken is shorter than patterns
     expect_equivalent(
         ntoken(tokens_segment(toks3, phrase("^[AB]$ ^\\d$"), valuetype = "regex",
                               pattern_position = "before",
-                              min_size = 1, max_size = 1)),
+                              min_ntoken = 1, max_ntoken = 1)),
         rep(1L, 35)
     )
     expect_equivalent(
         ntoken(tokens_segment(toks3, phrase("^[AB]$ ^\\d$"), valuetype = "regex",
                               pattern_position = "after",
-                              min_size = 1, max_size = 1)),
+                              min_ntoken = 1, max_ntoken = 1)),
         rep(1L, 35)
     )
     
