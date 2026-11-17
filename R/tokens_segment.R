@@ -26,14 +26,14 @@
 #' @details
 #'   If `min_ntoken` or `max_ntoken` are used, `pattern` is only detected within the 
 #'   range between them starting from the beginning of the documents or the end of 
-#'   previously matched tokens. This ensure that all but the last segments of 
-#'   documents are within desired lengths (The last segments can be shorter than 
+#'   previously matched tokens. This ensures that all but the last segments of 
+#'   documents are within desired lengths (the last segments can be shorter than 
 #'   `min_ntoken` as leftovers).
 #'   
-#'   When `extract_pattern = TRUE`, documents are segmented excluding the lengths 
-#'   of matched tokens because they will not be included in the resulting segments. 
-#'   The `pattern` in the [docvars] also records `NA` for the segments that exceeded 
-#'   `max_ntoken`.
+#'   When `extract_pattern = TRUE`, the matched tokens are excluded from `min_ntoken` 
+#'   and `max_ntoken` because they will not appear the resulting segments. Matched 
+#'   tokens are saved in `pattern` in the [docvars] instead, but its values are `NA` 
+#'   for the segments that reached `max_ntoken`.
 #' 
 #' @export
 #' @examples

@@ -11,8 +11,8 @@ tokens_segment(
   case_insensitive = TRUE,
   extract_pattern = FALSE,
   pattern_position = c("before", "after"),
-  min_size = NULL,
-  max_size = NULL,
+  min_ntoken = NULL,
+  max_ntoken = NULL,
   use_docvars = TRUE,
   verbose = quanteda_options("verbose")
 )
@@ -37,7 +37,7 @@ exact matching. See \link{valuetype} for details.}
 on whether the pattern precedes the text (as with a tag) or follows the
 text (as with punctuation delimiters)}
 
-\item{min_size, max_size}{minimum or maximum sizes of segmented documents in
+\item{min_ntoken, max_ntoken}{minimum or maximum sizes of segmented documents in
 number of tokens. See details.}
 
 \item{use_docvars}{if \code{TRUE}, repeat the docvar values for each
@@ -62,16 +62,16 @@ at the corpus level (see \code{\link[=corpus_segment]{corpus_segment()}}), \code
 provides the option to perform this operation on tokens.
 }
 \details{
-If \code{min_size} or \code{max_size} are used, \code{pattern} is only detected within the
+If \code{min_ntoken} or \code{max_ntoken} are used, \code{pattern} is only detected within the
 range between them starting from the beginning of the documents or the end of
-previously matched tokens. This ensure that all but the last segments of
-documents are within desired lengths (The last segments can be shorter than
-\code{min_size} as leftovers).
+previously matched tokens. This ensures that all but the last segments of
+documents are within desired lengths (the last segments can be shorter than
+\code{min_ntoken} as leftovers).
 
-When \code{extract_pattern = TRUE}, documents are segmented excluding the lengths
-of matched tokens because they will not be included in the resulting segments.
-The \code{pattern} in the \link{docvars} also records \code{NA} for the segments that exceeded
-\code{max_size}.
+When \code{extract_pattern = TRUE}, the matched tokens are excluded from \code{min_ntoken}
+and \code{max_ntoken} because they will not appear the resulting segments. Matched
+tokens are saved in \code{pattern} in the \link{docvars} instead, but its values are \code{NA}
+for the segments that reached \code{max_ntoken}.
 }
 \examples{
 txts <- "Fellow citizens, I am again called upon by the voice of my country to
