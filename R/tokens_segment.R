@@ -1,40 +1,37 @@
-#' Segment tokens object by patterns
+#' Segment tokenised documents by pattern
 #'
-#' Segment tokens by splitting on a pattern match. This is useful for breaking
-#' the tokenized texts into smaller document units, based on a regular pattern
-#' or a user-supplied annotation. While it normally makes more sense to do this
-#' at the corpus level (see [corpus_segment()]), `tokens_segment`
-#' provides the option to perform this operation on tokens.
-#' @param x [tokens] object whose token elements will be segmented
+#' Split tokenised documents at matching tokens or phrases, such as sentence
+#' punctuation or annotation tags. Optional token limits control where
+#' segments can end.
+#' @param x a [tokens] or [tokens_xptr] object
 #' @inheritParams pattern
 #' @inheritParams valuetype
 #' @inheritParams messages
-#' @param extract_pattern remove matched patterns from the texts and save in
-#'   [docvars], if `TRUE`
-#' @param pattern_position either `"before"` or `"after"`, depending
-#'   on whether the pattern precedes the text (as with a tag) or follows the
-#'   text (as with punctuation delimiters)
-#' @param use_docvars if `TRUE`, repeat the docvar values for each
-#'   segmented text; if `FALSE`, drop the docvars in the segmented corpus.
-#'   Dropping the docvars might be useful in order to conserve space or if these
-#'   are not desired for the segmented corpus.
-#' @param min_ntoken,max_ntoken minimum or maximum sizes of segmented documents in 
-#'   number of tokens. See details.
-#' @return `tokens_segment` returns a [tokens] object whose documents
-#'   have been split by patterns
+#' @param extract_pattern if `TRUE`, remove matched delimiters at segment
+#'   boundaries and save them in the `pattern` [document variable][docvars].
+#' @param pattern_position `"before"` associates a matched delimiter with the
+#'   following segment, as with a tag. `"after"` associates it with the
+#'   preceding segment, as with sentence punctuation.
+#' @param min_ntoken,max_ntoken positive integers giving the minimum and maximum
+#'   segment lengths in tokens. Use `NULL` (the default) to omit either limit.
+#'   When both are supplied, `min_ntoken` must be less than or equal to
+#'   `max_ntoken`.
+#' @param use_docvars if `TRUE`, copy the original document variables to each
+#'   segment. If `FALSE`, drop the original document variables.
+#' @return An object of the same type as `x`, with documents split into
+#'   segments.
 #' @keywords tokens
 #' @details
-#'   If `min_ntoken` or `max_ntoken` are used, `pattern` is only detected within the 
-#'   range between them starting from the beginning of the documents or the end of 
-#'   previously matched tokens. This ensures that all but the last segments of 
-#'   documents are within desired lengths (the last segments can be shorter than 
-#'   `min_ntoken` as leftovers).
-#'   
-#'   When `extract_pattern = TRUE`, the matched tokens are excluded from `min_ntoken` 
-#'   and `max_ntoken` because they will not appear the resulting segments. Matched 
-#'   tokens are saved in `pattern` in the [docvars] instead, but its values are `NA` 
-#'   for the segments that reached `max_ntoken`.
-#' 
+#'   Use `min_ntoken` to suppress early pattern boundaries and `max_ntoken` to
+#'   force splits by length even when no pattern matches. The final segment of
+#'   each document may be shorter than `min_ntoken`.
+#'
+#'   Retained delimiters count towards the length of the segment they belong to.
+#'   Extracted delimiters are excluded from the output token count. When
+#'   `extract_pattern = TRUE`, the `pattern` document variable is `NA` for a
+#'   segment with no extracted delimiter.
+#' @seealso [tokens_chunk()] for chunking by token count with optional overlap,
+#'   and [corpus_segment()] for pattern-based segmentation of corpus text.
 #' @export
 #' @examples
 #' txts <- "Fellow citizens, I am again called upon by the voice of my country to
@@ -50,6 +47,14 @@
 #' tokens_segment(toks, c(".", "?", "!"), valuetype = "fixed",
 #'                extract_pattern = TRUE,
 #'                pattern_position = "after")
+#'
+#' # Retain an early full stop, extract the next, and split again by length.
+#' toks <- tokens("a . b c . d e f g h i j")
+#' segs <- tokens_segment(toks, ".", valuetype = "fixed",
+#'                        pattern_position = "after", extract_pattern = TRUE,
+#'                        min_ntoken = 4, max_ntoken = 6)
+#' ntoken(segs)            # 4, 6, 1
+#' docvars(segs, "pattern") # ".", NA, NA
 tokens_segment <- function(x, pattern,
                            valuetype = c("glob", "regex", "fixed"),
                            case_insensitive = TRUE,
