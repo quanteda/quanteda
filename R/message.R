@@ -70,7 +70,14 @@ message_create <- function(input, output) {
 }
 
 message_finish <- function(x, time) {
-    if (is.dfm(x)) {
+    
+    if (is.fcm(x)) {
+        message(msg(" ...complete, elapsed time: %s seconds.",
+                    format((proc.time() - time)[3], digits = 3)))
+        message(msg("Finished constructing fcm of %s %s x %s %s.",
+                    ndoc(x), inflect("feature", ndoc(x)),
+                    nfeat(x), inflect("feature", nfeat(x))))
+    } else if (is.dfm(x)) {
         message(msg(" ...complete, elapsed time: %s seconds.",
                     format((proc.time() - time)[3], digits = 3)))
         message(msg("Finished constructing dfm of %s %s x %s %s.",

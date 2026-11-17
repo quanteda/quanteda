@@ -204,6 +204,7 @@ namespace quanteda{
       return texts_;
     }
     
+    // NOTE: consider moving to quanteda.textmodels
     inline S4 to_matrix(Triplets& tri, int nrow, int ncol, bool symmetric) {
         
         std::size_t l = tri.size();

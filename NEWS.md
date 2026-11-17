@@ -8,6 +8,8 @@
 
 * Fixed a bug to create a redundant copy of `tokens_xptr` when `dfm` is constructed.
 
+* Fixed bugs in `fcm()` that lead to wrong feature names in rare conditions.
+
 ## Changes and additions
 
 * Verbose messages from `corpus`, `tokens`, `dfm` and `fcm` methods now

@@ -13,6 +13,7 @@ fcm(
   weights = NULL,
   ordered = FALSE,
   tri = TRUE,
+  verbose = quanteda_options("verbose"),
   ...
 )
 }
@@ -52,6 +53,8 @@ the window. Only makes sense for \code{context = "window"}, and when \code{order
 
 \item{tri}{if \code{TRUE} return only upper triangle (including diagonal).
 Ignored if \code{ordered = TRUE}.}
+
+\item{verbose}{display messages if \code{TRUE}.}
 
 \item{...}{not used here}
 }
