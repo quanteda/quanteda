@@ -179,6 +179,28 @@ test_that("tokens_segment works with tags", {
                  c(1L, 2L, 1L))
 })
 
+test_that("tokens_segment warns about a logical value in the former use_docvars position", {
+    for (xptr in c(FALSE, TRUE)) {
+        toks <- tokens("a .", xptr = xptr)
+
+        expect_warning(
+            tokens_segment(toks, ".", "fixed", TRUE, FALSE, "after", TRUE),
+            "If you meant to set `use_docvars`, supply it by name."
+        )
+        expect_warning(
+            expect_error(
+                tokens_segment(toks, ".", "fixed", TRUE, FALSE, "after", FALSE),
+                "The value of min_ntoken must be between 1 and Inf"
+            ),
+            "If you meant to set `use_docvars`, supply it by name."
+        )
+        expect_silent(
+            tokens_segment(toks, ".", valuetype = "fixed", pattern_position = "after",
+                           min_ntoken = 2, use_docvars = FALSE, verbose = FALSE)
+        )
+    }
+})
+
 test_that("min_ntoken and max_ntoken work", {
     
     ## patterns are after texts

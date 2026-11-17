@@ -3,7 +3,10 @@
 ## Changes and additions
 
 * `tokens_segment()` now accepts `min_ntoken` to skip early pattern boundaries
-  and `max_ntoken` to split by length even when no pattern matches. (#2519)
+  and `max_ntoken` to split by length even when no pattern matches. Pass
+  `use_docvars` and `verbose` by name in calls that previously supplied them
+  positionally. A logical value in the former `use_docvars` position now
+  triggers a warning. (#2519)
 
 # quanteda 4.5.1
 

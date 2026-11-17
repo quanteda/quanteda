@@ -98,7 +98,13 @@ tokens_segment.tokens_xptr <- function(x, pattern,
     pattern_position <- match.arg(pattern_position)
     use_docvars <- check_logical(use_docvars)
     verbose <- check_logical(verbose)
-    
+
+    if (is.logical(min_ntoken) && length(min_ntoken) == 1L && !is.na(min_ntoken)) {
+        warning("A logical value was supplied for `min_ntoken`. ",
+                "If you meant to set `use_docvars`, supply it by name.",
+                call. = FALSE)
+    }
+
     if (!is.null(min_ntoken)) {
         min_ntoken <- check_integer(min_ntoken, min = 1)
     } else {
