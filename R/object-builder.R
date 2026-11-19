@@ -77,6 +77,40 @@ upgrade_dfm <- function(x) {
 
 }
 
+# dem --------------
+
+#' @rdname object-builders
+#' @param features character for feature of resulting `dfm`.
+#' @param docvars data.frame for document level variables created by
+#'   [make_docvars()]. Names of documents are extracted from the
+#'   `docname_` column.
+#' @keywords internal
+build_dem <- function(x, # features, # NOTE: consider removing feature
+                      docvars = data.frame(), meta = list(), 
+                      class = NULL, ...) {
+    result <- new("dem",
+                  as(as(as(x, "dMatrix"), "generalMatrix"), "unpackedMatrix")
+                  docvars = docvars,
+                  meta = make_meta("dem", inherit = meta, ...)
+    )
+    # column names are null
+    result@Dimnames <- list(
+        docs = as.character(docvars[["docname_"]]),
+        NULL
+        #features = as.character(features)
+    )
+    return(result)
+}
+
+#' @rdname object-builders
+#' @param attrs a list of attributes to be reassigned
+rebuild_dem <- function(x, attrs) {
+    x@meta <- attrs[["meta"]]
+    x@docvars <- attrs[["docvars"]]
+    x@Dimnames[[1]] <- attrs[["docvars"]][["docname_"]]
+    return(x)
+}
+
 # tokens -------
 
 #' @rdname object-builders

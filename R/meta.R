@@ -223,6 +223,8 @@ make_meta <- function(class, inherit = NULL, ...) {
         result$object <- make_meta_dfm(inherit$object, ...)
     } else if (class == "fcm") {
         result$object <- make_meta_fcm(inherit$object, ...)
+    } else if (class == "dem") {
+        result$object <- make_meta_dem(inherit$object, ...)
     } else if (class == "dictionary2") {
         result$object <- make_meta_dictionary2(inherit$object, ...)
     }
@@ -290,6 +292,27 @@ make_meta_dfm <- function(inherit = NULL, ...) {
         "weight_tf" = list(scheme = "count", base = NULL, k = NULL),
         "weight_df" = list(scheme = "unary", base = NULL, c = NULL,
                            smoothing = NULL, threshold = NULL),
+        "smooth" = 0,
+        "summary" = list("hash" = character(), 
+                         "data" = NULL)
+    )
+    update_meta(default, inherit, ...)
+}
+
+#' @rdname make_meta
+make_meta_dem <- function(inherit = NULL, ...) {
+    if (is.null(inherit))
+        inherit <- list()
+    default <- list(
+        "unit" = "documents",
+        "what" = "word",
+        "tokenizer" = "tokenize_word",
+        "ngram" = 1L,
+        "skip" = 0L,
+        "concatenator" = "_",
+        # "weight_tf" = list(scheme = "count", base = NULL, k = NULL),
+        # "weight_df" = list(scheme = "unary", base = NULL, c = NULL,
+        #                    smoothing = NULL, threshold = NULL),
         "smooth" = 0,
         "summary" = list("hash" = character(), 
                          "data" = NULL)

@@ -89,6 +89,7 @@ Collate:
     'corpus_subset.R'
     'corpus_trim.R'
     'data-documentation.R'
+    'dem-classes.R'
     'dfm-classes.R'
     'dfm-methods.R'
     'dfm-print.R'
