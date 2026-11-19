@@ -7,7 +7,7 @@ attrs <- attributes(x)
 # dummy document embedding
 k <- 50
 mat <- matrix(rnorm(nrow(x) * k), ncol = k, 
-              dimnames = list(dname, NULL))
+              dimnames = list(docnames(x), NULL))
 
 dem <- quanteda:::build_dem(mat, 
                             docvars = quanteda:::get_docvars(x, user = TRUE, system = TRUE), 
