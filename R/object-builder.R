@@ -89,7 +89,7 @@ build_dem <- function(x, # features, # NOTE: consider removing feature
                       docvars = data.frame(), meta = list(), 
                       class = NULL, ...) {
     result <- new("dem",
-                  as(as(as(x, "dMatrix"), "generalMatrix"), "unpackedMatrix")
+                  as(as(as(x, "dMatrix"), "generalMatrix"), "unpackedMatrix"),
                   docvars = docvars,
                   meta = make_meta("dem", inherit = meta, ...)
     )
