@@ -29,6 +29,8 @@ dem.dfm <- function(x, y,
     
     verbose <- check_logical(verbose)
     
+    attrs <- attributes(x)
+    
     # from https://github.com/koheiw/wordvector/blob/master/R/as.doc2vec.R
     y <- y[intersect(rownames(y), featnames(x)),,drop = FALSE]
     # if (group_data)
