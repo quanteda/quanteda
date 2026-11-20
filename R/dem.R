@@ -53,3 +53,9 @@ normalize <- function(x) {
     x[l,] <- 0 # replace NA with zero
     return(x)
 }
+
+#' @noRd
+#' @export
+docnames.dem <- function(x) {
+    rownames(x)
+}
