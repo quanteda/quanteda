@@ -412,3 +412,24 @@ assign_dvs <- function(x, name, value) {
 "$<-.fcm" <- function(x, name, value) {
     stop("$<- not defined for an fcm object", call. = FALSE)
 }
+
+#' @rdname docvars
+#' @method $ dem
+#' @export
+#' @examples
+#'
+#' # accessing or assigning docvars for a dfm using "$"
+#' demat <- dem(toks)
+#' demat$Year
+"$.dem" <- access_dvs
+
+#' @rdname docvars
+#' @method $<- dem
+#' @export
+#' @examples
+#' demat$Year <- 1991:1995
+#' demat$Year
+#' demat$nonexistent <- TRUE
+#' docvars(demat)
+"$<-.dem" <- assign_dvs
+

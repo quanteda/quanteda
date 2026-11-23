@@ -6,27 +6,78 @@ k <- 5
 femt <- matrix(rnorm(ncol(dfmt) * k), ncol = k, 
                dimnames = list(featnames(dfmt), NULL)) # dummy
 
-demt <- dem(x = dfmt, y = femt)
-dim(demt)
-names(attributes(demt))
-head(demt)
+test_that("dem works", {
+    
+    demt <- dem(x = dfmt, y = femt)
+    
+    expect_s4_class(
+        demt,
+        "dem"
+    )
+    expect_identical(
+        dim(demt),
+        c(60L, 5L)
+    )
+    expect_identical(
+        dim(head(demt, 10)),
+        c(10L, 5L)
+    )
+    expect_identical(
+        dim(tail(demt, 10)),
+        c(10L, 5L)
+    )
+    expect_identical(
+        dim(demt[11:20,]),
+        c(10L, 5L)
+    )
+})
 
-expect_identical(
-    docnames(demt),
-    docnames(dfmt)
-)
+test_that("docnames work", {
+    
+    demt <- dem(x = dfmt, y = femt)
+    expect_identical(
+        docnames(demt),
+        docnames(dfmt)
+    )
+    
+    docnames(demt) <- stringi::stri_extract_first_regex(docnames(demt), "\\d+")
+    expect_identical(
+        docnames(demt),
+        stringi::stri_extract_first_regex(docnames(dfmt), "\\d+")
+    )
+})
 
-expect_identical(
-    attr(demt, "docvars"),
-    attr(dfmt, "docvars")
-)
+test_that("docvars work", {
+    
+    demt <- dem(x = dfmt, y = femt)
+    expect_identical(
+        attr(demt, "docvars"),
+        attr(dfmt, "docvars")
+    )
+    expect_identical(
+        docvars(demt),
+        docvars(dfmt)
+    )
+    expect_error(
+        docvars(demt, "xxx"),
+        "field(s) xxx not found",
+        fixed = TRUE
+    )
+    
+    extra1 <- sample(nrow(demt))
+    docvars(demt, "Extra1") <- extra1
+    expect_identical(
+        docvars(demt, "Extra1"),
+        extra1
+    )
+    
+    extra2 <- sample(nrow(demt))
+    docvars(demt, "Extra2") <- extra2
+    expect_identical(
+        demt$Extra2,
+        extra2
+    )
+        
+})
 
-expect_s4_class(
-    demt,
-    "dem"
-)
 
-expect_identical(
-    dim(dem),
-    c(60L, 5L)
-)
