@@ -34,6 +34,22 @@ test_that("dem works", {
         demt[11:20,],
         "dem"
     )
+    expect_equal(
+        rowSums(demt),
+        rowSums(as.matrix(demt))
+    )
+    expect_equal(
+        colSums(demt),
+        colSums(as.matrix(demt))
+    )
+    expect_equal(
+        rowMeans(demt),
+        rowMeans(as.matrix(demt))
+    )
+    expect_equal(
+        colMeans(demt),
+        colMeans(as.matrix(demt))
+    )
     expect_error(
         demt[,1:2],
         "Cannot subset columns of dem objects",
@@ -44,6 +60,39 @@ test_that("dem works", {
         "[[ not defined for dem objects",
         fixed = TRUE
     )
+    
+})
+
+test_that("dem works", {
+    
+    demt <- dem(x = dfmt, y = femt)
+    
+    expect_s4_class(demt + 0.1, "dem")
+    expect_s4_class(demt - 0.1, "dem")
+    expect_s4_class(demt * 0.1, "dem")
+    expect_s4_class(demt / 0.1, "dem")
+    expect_s4_class(demt ^ 0.1, "dem")
+    
+    expect_s4_class(0.1 + demt, "dem")
+    expect_s4_class(0.1 - demt, "dem")
+    expect_s4_class(0.1 * demt, "dem")
+    expect_s4_class(0.1 / demt, "dem")
+    expect_s4_class(0.1 ^ demt, "dem")
+    
+    demt_empty <- demt[0,]
+    
+    expect_s4_class(demt_empty + 0.1, "dem")
+    expect_s4_class(demt_empty - 0.1, "dem")
+    expect_s4_class(demt_empty * 0.1, "dem")
+    expect_s4_class(demt_empty / 0.1, "dem")
+    expect_s4_class(demt_empty ^ 0.1, "dem")
+    
+    expect_s4_class(0.1 + demt_empty, "dem")
+    expect_s4_class(0.1 - demt_empty, "dem")
+    expect_s4_class(0.1 * demt_empty, "dem")
+    expect_s4_class(0.1 / demt_empty, "dem")
+    expect_s4_class(0.1 ^ demt_empty, "dem")
+    
 })
 
 test_that("docnames work", {

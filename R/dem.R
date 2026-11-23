@@ -60,6 +60,52 @@ normalize <- function(x) {
     return(x)
 }
 
+#' Converts a Matrix to a dem
+#' @param x a Matrix
+#' @param meta a list of values to be assigned to slots
+#' @keywords internal
+matrix2dem <- function(x, docvars = NULL, meta = NULL) {
+    
+    docname <- rownames(x)
+    if (nrow(x) > length(docname))
+        docname <- paste0(quanteda_options("base_docname"), seq_len(nrow(x)))
+    
+    # featname <- colnames(x)
+    # if (ncol(x) > length(featname))
+    #     featname <- paste0(quanteda_options("base_featname"), seq_len(ncol(x)))
+    
+    if (is.null(docvars))
+        docvars <- make_docvars(nrow(x), docname, unique = TRUE)
+    if (is.null(meta))
+        meta <- make_meta("dem")
+    
+    if (nrow(x) == 0 && ncol(x) == 0) {
+        x <- make_null_dem()
+    } else {
+        x <- Matrix(x, sparse = FALSE)
+    }
+    
+    build_dem(
+        as(as(as(x, "dMatrix"), "generalMatrix"), "unpackedMatrix"),
+        docvars = docvars,
+        meta = meta
+    )
+}
+
+# create an empty dem for given size and documents
+make_null_dem <- function(size = NULL, document = NULL) { # NOTE: what the best name for embedding length?
+    if (is.null(size)) size <- 0
+    if (is.null(document)) document <- character()
+    temp <- as(as(as(Matrix(
+        i = NULL,
+        j = NULL,
+        dims = c(length(document), size)
+    ), "dMatrix"), "generalMatrix"), "unpackedMatrix")
+    
+    build_dem(temp, feature,
+              docvars = make_docvars(length(document), document))
+}
+
 # dem methods --------------------------
 
 #' @noRd
