@@ -13,7 +13,7 @@ subset_dem <- function(x, i, j, ..., drop) {
             stop("Subscript out of bounds")
     }
     if (!missing(j)) {
-        stop("Subscript out of bounds")
+        stop("Cannot subset columns of dem objects")
     }
     # if (!missing(j)) {
     #     index_col <- seq_len(ncol(x))
@@ -90,7 +90,7 @@ setMethod("[", signature = c("dem", i = "missing", j = "index", drop = "logical"
 #' @inheritParams dem-class
 #' @export
 "[[.dem" <- function(x, i) {
-    stop("[[ not defined for a dem/fcm object", call. = FALSE)
+    stop("[[ not defined for dem objects", call. = FALSE)
 }
 
 ## can be removed later, but necessary in v3 for oldrelease checks

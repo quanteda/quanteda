@@ -409,14 +409,14 @@ assign_dvs <- function(x, name, value) {
 #' @method $ fcm
 #' @export
 "$.fcm" <- function(x, name) {
-    stop("$ not defined for an fcm object", call. = FALSE)
+    stop("$ not defined for fcm objects", call. = FALSE)
 }
 
 #' @noRd
 #' @method $<- fcm
 #' @export
 "$<-.fcm" <- function(x, name, value) {
-    stop("$<- not defined for an fcm object", call. = FALSE)
+    stop("$<- not defined for fcm objects", call. = FALSE)
 }
 
 #' @rdname docvars

@@ -34,6 +34,16 @@ test_that("dem works", {
         demt[11:20,],
         "dem"
     )
+    expect_error(
+        demt[,1:2],
+        "Cannot subset columns of dem objects",
+        fixed = TRUE
+    )
+    expect_error(
+        demt[[1]],
+        "[[ not defined for dem objects",
+        fixed = TRUE
+    )
 })
 
 test_that("docnames work", {

@@ -86,7 +86,7 @@ setMethod("[", signature = c("dfm", i = "missing", j = "index", drop = "logical"
 #' @inheritParams dfm-class
 #' @export
 "[[.dfm" <- function(x, i) {
-    stop("[[ not defined for a dfm/fcm object", call. = FALSE)
+    stop("[[ not defined for dfm or fcm objects", call. = FALSE)
 }
 
 ## can be removed later, but necessary in v3 for oldrelease checks

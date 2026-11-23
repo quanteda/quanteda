@@ -68,7 +68,7 @@ test_that("dfm core operators work for v2", {
    
      expect_error(
         dfmat[["1793-Washington"]], 
-        "[[ not defined for a dfm/fcm object",
+        "[[ not defined for dfm or fcm objects",
         fixed = TRUE
     )
 
@@ -93,18 +93,18 @@ test_that("fcm core operators work for v2", {
     
     expect_error(
         fcmat[["the"]], 
-        "[[ not defined for a dfm/fcm object",
+        "[[ not defined for dfm or fcm objects",
         fixed = TRUE
     )
     
     expect_error(
         fcmat$Year,
-        "$ not defined for an fcm object",
+        "$ not defined for fcm objects",
         fixed = TRUE
     )
     expect_error(
         fcmat$Year <- 999,
-        "$<- not defined for an fcm object",
+        "$<- not defined for fcm objects",
         fixed = TRUE
     )
 })
