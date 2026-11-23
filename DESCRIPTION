@@ -92,6 +92,7 @@ Collate:
     'dem-classes.R'
     'dem-subsetting.R'
     'dem.R'
+    'dem_subset.R'
     'dfm-classes.R'
     'dfm-methods.R'
     'dfm-print.R'
