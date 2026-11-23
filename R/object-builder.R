@@ -102,14 +102,14 @@ build_dem <- function(x, # features, # NOTE: consider removing feature
     return(result)
 }
 
-#' @rdname object-builders
-#' @param attrs a list of attributes to be reassigned
-rebuild_dem <- function(x, attrs) {
-    x@meta <- attrs[["meta"]]
-    x@docvars <- attrs[["docvars"]]
-    x@Dimnames[[1]] <- attrs[["docvars"]][["docname_"]]
-    return(x)
-}
+# @rdname object-builders
+# @param attrs a list of attributes to be reassigned
+# rebuild_dem <- function(x, attrs) {
+#     x@meta <- attrs[["meta"]]
+#     x@docvars <- attrs[["docvars"]]
+#     x@Dimnames[[1]] <- attrs[["docvars"]][["docname_"]]
+#     return(x)
+# }
 
 # tokens -------
 
