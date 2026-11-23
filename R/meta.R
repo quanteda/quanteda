@@ -310,9 +310,9 @@ make_meta_dem <- function(inherit = NULL, ...) {
         "ngram" = 1L,
         "skip" = 0L,
         "concatenator" = "_",
-        # "weight_tf" = list(scheme = "count", base = NULL, k = NULL),
-        # "weight_df" = list(scheme = "unary", base = NULL, c = NULL,
-        #                    smoothing = NULL, threshold = NULL),
+        "weight_tf" = list(scheme = "count", base = NULL, k = NULL),
+        "weight_df" = list(scheme = "unary", base = NULL, c = NULL,
+                           smoothing = NULL, threshold = NULL),
         "smooth" = 0,
         "summary" = list("hash" = character(), 
                          "data" = NULL)
