@@ -30,6 +30,10 @@ test_that("dem works", {
         dim(demt[11:20,]),
         c(10L, 5L)
     )
+    expect_s4_class(
+        demt[11:20,],
+        "dem"
+    )
 })
 
 test_that("docnames work", {
@@ -80,4 +84,17 @@ test_that("docvars work", {
         
 })
 
+test_that("dem_suset work", {
+    
+    demt <- dem(x = dfmt, y = femt)
+    
+    expect_identical(
+        dim(dem_subset(demt, Party == "Democratic")),
+        c(22L, 5L)
+    )
+    expect_identical(
+        dim(dem_subset(demt, demt$Year > 2000)),
+        c(7L, 5L)
+    )
 
+})

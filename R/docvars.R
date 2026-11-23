@@ -59,6 +59,12 @@ get_docvars.dfm <- function(x, field = NULL, user = TRUE, system = FALSE, drop =
     select_docvars(x@docvars, field, user, system, drop)
 }
 
+#' @exportS3Method get_docvars dem
+get_docvars.dem <- function(x, field = NULL, user = TRUE, system = FALSE, drop = FALSE) {
+    select_docvars(x@docvars, field, user, system, drop)
+}
+
+
 # Internal function to select columns of docvars
 select_docvars <- function(x, field = NULL, user = TRUE, system = FALSE, drop = FALSE) {
     x <- x[user * !is_system(names(x)) | system * is_system(names(x))]

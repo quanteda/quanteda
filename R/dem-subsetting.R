@@ -13,20 +13,24 @@ subset_dem <- function(x, i, j, ..., drop) {
             stop("Subscript out of bounds")
     }
     if (!missing(j)) {
-        index_col <- seq_len(ncol(x))
-        names(index_col) <- colnames(x)
-        index_col <- index_col[j]
-        if (any(is.na(index_col)))
-            stop("Subscript out of bounds")
+        stop("Subscript out of bounds")
     }
+    # if (!missing(j)) {
+    #     index_col <- seq_len(ncol(x))
+    #     names(index_col) <- colnames(x)
+    #     index_col <- index_col[j]
+    #     if (any(is.na(index_col)))
+    #         stop("Subscript out of bounds")
+    # }
 
     if (!missing(i) && missing(j)) {
         x <- "["(as(x, "Matrix"), i, , drop = FALSE)
-    } else if (missing(i) && !missing(j)) {
-        x <- "["(as(x, "Matrix"), , j, drop = FALSE)
-    } else {
-        x <- "["(as(x, "Matrix"), i, j, drop = FALSE)
     }
+    # } else if (missing(i) && !missing(j)) {
+    #     x <- "["(as(x, "Matrix"), , j, drop = FALSE)
+    # } else {
+    #     x <- "["(as(x, "Matrix"), i, j, drop = FALSE)
+    # }
 
     if (!missing(i))
         attrs[["docvars"]] <- reshape_docvars(attrs[["docvars"]], index_row, unique = FALSE, ...)
@@ -51,11 +55,11 @@ subset_dem <- function(x, i, j, ..., drop) {
 #'                 remove_punct = TRUE))
 #' demat[1:2, ]
 #' demat[1:2, 1:5]
-# setMethod("[", signature = c("dem", i = "index", j = "index", drop = "missing"), subset_dem)
-# 
-# #' @rdname dem-class
-# #' @export
-# setMethod("[", signature = c("dem", i = "index", j = "index", drop = "logical"), subset_dem)
+setMethod("[", signature = c("dem", i = "index", j = "index", drop = "missing"), subset_dem)
+
+#' @rdname dem-class
+#' @export
+setMethod("[", signature = c("dem", i = "index", j = "index", drop = "logical"), subset_dem)
 
 #' @rdname dem-class
 #' @export
@@ -65,13 +69,13 @@ setMethod("[", signature = c("dem", i = "missing", j = "missing", drop = "missin
 #' @export
 setMethod("[", signature = c("dem", i = "missing", j = "missing", drop = "logical"), subset_dem)
 
-# #' @rdname dem-class
-# #' @export
-# setMethod("[", signature = c("dem", i = "index", j = "missing", drop = "missing"), subset_dem)
-# 
-# #' @rdname dem-class
-# #' @export
-# setMethod("[", signature = c("dem", i = "index", j = "missing", drop = "logical"), subset_dem)
+#' @rdname dem-class
+#' @export
+setMethod("[", signature = c("dem", i = "index", j = "missing", drop = "missing"), subset_dem)
+
+#' @rdname dem-class
+#' @export
+setMethod("[", signature = c("dem", i = "index", j = "missing", drop = "logical"), subset_dem)
 
 #' @rdname dem-class
 #' @export
