@@ -85,17 +85,21 @@ test_that("as.dem works", {
     
     mat1 <- matrix(rnorm(100), nrow = 5)
     demt1 <- as.dem(mat1)
-    
     expect_s4_class(demt1, "dem")
     expect_true(is.dem(demt1))
     expect_equivalent(as.matrix(demt1), mat1)
     
     mat2 <- Matrix::Matrix(rnorm(100), nrow = 5)
     demt2 <- as.dem(mat2)
-    
     expect_s4_class(demt2, "dem")
     expect_true(is.dem(demt2))
     expect_equivalent(demt2, mat2)
+    
+    mat3 <- matrix(nrow = 0, ncol = 0)
+    demt3 <- as.dem(mat3)
+    expect_s4_class(demt3, "dem")
+    expect_true(is.dem(demt3))
+    expect_equivalent(as.matrix(demt3), mat3)
     
 })
 
