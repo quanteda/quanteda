@@ -98,16 +98,32 @@ test_that("rbind works with dem", {
     
     demt0 <- dem(dfmt, y = femt)
     demt1 <- dem(dfm_subset(dfmt, Year < 1991), y = femt)
-    demt2 <- dem(dfm_subset(dfmt, Year >= 1991), y = femt)
-    demt3 <- rbind(demt1, demt2)
+    demt2 <- dem(dfm_subset(dfmt, Year >= 1991 & Year < 2001), y = femt)
+    demt3 <- dem(dfm_subset(dfmt, Year >= 2001), y = femt)
+    demt4 <- rbind(demt1, demt2, demt3)
     
     expect_equal(
-        demt3,
+        rbind(demt0),
         demt0
     )
     expect_equal(
-        docvars(demt3),
+        docvars(rbind(demt0)),
         docvars(demt0)
+    )
+    
+    expect_equal(
+        demt4,
+        demt0
+    )
+    expect_equal(
+        docvars(demt4),
+        docvars(demt0)
+    )
+    
+    # errors
+    expect_error(
+        rbind(demt1, demt2, matrix()),
+        "all arguments must be dem objects"
     )
 })
 
