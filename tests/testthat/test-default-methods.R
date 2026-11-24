@@ -36,19 +36,19 @@ test_that("test default corpus* methods", {
 test_that("test detault n-methods", {
     expect_error(
         ndoc(TRUE),
-        "ndoc\\(\\) only works on corpus.*tokens_xptr objects"
+        "ndoc\\(\\) only works on corpus, dem, dfm, spacyr_parsed, tokens, tokens_xptr objects.",
     )
     expect_error(
         nfeat(TRUE),
-        "nfeat\\(\\) only works on dfm.*objects"
+        "nfeat\\(\\) only works on dfm objects"
     )
     expect_error(
         ntoken(TRUE),
-        "ntoken\\(\\) only works on character.*tokens_xptr objects"
+        "ntoken\\(\\) only works on character, corpus, dfm, spacyr_parsed, tokens, tokens_xptr objects."
     )
     expect_error(
         ntype(TRUE),
-        "ntype\\(\\) only works on character.*tokens_xptr objects"
+        "ntype\\(\\) only works on character, corpus, dfm, spacyr_parsed, tokens, tokens_xptr objects."
     )
 })
 
@@ -113,11 +113,11 @@ test_that("test detault fcm* methods", {
 test_that("test default docvars methods", {
     expect_error(
         docvars(0),
-        "docvars\\(\\) only works on corpus, dfm, tokens, tokens_xptr objects"
+        "docvars\\(\\) only works on corpus, dem, dfm, tokens, tokens_xptr objects"
     )
     expect_error(
         docvars(data_char_sampletext) <- "X",
-        "docvars<-\\(\\) only works on corpus, dfm, tokens, tokens_xptr objects"
+        "docvars<-\\(\\) only works on corpus, dem, dfm, tokens, tokens_xptr objects"
     )
 })
 

@@ -9,6 +9,8 @@
 \alias{$<-.tokens}
 \alias{$.dfm}
 \alias{$<-.dfm}
+\alias{$.dem}
+\alias{$<-.dem}
 \title{Get or set document-level variables}
 \usage{
 docvars(x, field = NULL)
@@ -26,6 +28,10 @@ docvars(x, field = NULL) <- value
 \method{$}{dfm}(x, name)
 
 \method{$}{dfm}(x, name) <- value
+
+\method{$}{dem}(x, name)
+
+\method{$}{dem}(x, name) <- value
 }
 \arguments{
 \item{x}{\link{corpus}, \link{tokens}, or \link{dfm} object whose
@@ -98,5 +104,13 @@ dfmat$Year <- 1991:1995
 dfmat$Year
 dfmat$nonexistent <- TRUE
 docvars(dfmat)
+
+# accessing or assigning docvars for a dfm using "$"
+demat <- dem(toks)
+demat$Year
+demat$Year <- 1991:1995
+demat$Year
+demat$nonexistent <- TRUE
+docvars(demat)
 }
 \keyword{corpus}

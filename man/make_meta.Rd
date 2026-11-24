@@ -6,6 +6,7 @@
 \alias{make_meta_corpus}
 \alias{make_meta_tokens}
 \alias{make_meta_dfm}
+\alias{make_meta_dem}
 \alias{make_meta_fcm}
 \alias{make_meta_dictionary2}
 \alias{update_meta}
@@ -20,6 +21,8 @@ make_meta_corpus(inherit = NULL, ...)
 make_meta_tokens(inherit = NULL, ...)
 
 make_meta_dfm(inherit = NULL, ...)
+
+make_meta_dem(inherit = NULL, ...)
 
 make_meta_fcm(inherit = NULL, ...)
 

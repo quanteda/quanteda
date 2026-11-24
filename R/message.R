@@ -40,6 +40,7 @@ wrap <- function(x, ...) {
 inflect <- function(word, n) {
     v <- c("document" = "documents",
            "feature" = "features",
+           "dimension" = "dimensions",
            "type" = "types",
            "docvar" = "docvars",
            "token" = "tokens",
@@ -76,6 +77,12 @@ message_finish <- function(x, time) {
         message(msg("Finished constructing dfm of %s %s x %s %s.",
                     ndoc(x), inflect("document", ndoc(x)),
                     nfeat(x), inflect("feature", nfeat(x))))
+    } else if (is.dem(x)) {
+        message(msg(" ...complete, elapsed time: %s seconds.",
+                    format((proc.time() - time)[3], digits = 3)))
+        message(msg("Finished constructing dem of %s %s x %s %s.",
+                    ndoc(x), inflect("document", ndoc(x)),
+                    ncol(x), inflect("dimension", ncol(x)))) # NOTE: create ndim() or something?
     } else {
         m <- count_types(x)
         n <- ndoc(x)
@@ -149,6 +156,20 @@ stats_dfm <- function(x) {
          nfeat = nfeat(x),
          nocc = sum(x),
          spar = sparsity(x),
+         ndocvar = ncol(docvars(x)))
+}
+
+#' Print messages in dem methods
+#' @inheritParams messages
+#' @keywords message internal
+message_dem <- function(operation, stat) {
+    message(msg("Returning dem of %s documents x %s dimensions from %s",
+                stat$ndoc, stat$ncol, operation))
+}
+
+stats_dem <- function(x) {
+    list(ndoc = ndoc(x),
+         ncol = ncol(x),
          ndocvar = ncol(docvars(x)))
 }
 
