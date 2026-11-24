@@ -8,7 +8,7 @@ femt <- matrix(rnorm(ncol(dfmt) * k), ncol = k,
 
 test_that("dem works", {
     
-    demt <- dem(x = dfmt, y = femt)
+    demt <- dem(dfmt, y = femt)
     
     expect_s4_class(
         demt,
@@ -63,9 +63,45 @@ test_that("dem works", {
     
 })
 
-test_that("dem works", {
+
+test_that("rbind works with dem", {
     
-    demt <- dem(x = dfmt, y = femt)
+    demt0 <- dem(dfmt, y = femt)
+    demt1 <- dem(dfm_subset(dfmt, Year < 1991), y = femt)
+    demt2 <- dem(dfm_subset(dfmt, Year >= 1991), y = femt)
+    demt3 <- rbind(demt1, demt2)
+    
+    expect_equal(
+        demt3,
+        demt0
+    )
+    expect_equal(
+        docvars(demt3),
+        docvars(demt0)
+    )
+})
+
+test_that("as.dem works", {
+    
+    mat1 <- matrix(rnorm(100), nrow = 5)
+    demt1 <- as.dem(mat1)
+    
+    expect_s4_class(demt1, "dem")
+    expect_true(is.dem(demt1))
+    expect_equivalent(as.matrix(demt1), mat1)
+    
+    mat2 <- Matrix::Matrix(rnorm(100), nrow = 5)
+    demt2 <- as.dem(mat2)
+    
+    expect_s4_class(demt2, "dem")
+    expect_true(is.dem(demt2))
+    expect_equivalent(demt2, mat2)
+    
+})
+
+test_that("arithematic operators work with dem", {
+    
+    demt <- dem(dfmt, y = femt)
     
     expect_s4_class(demt + 0.1, "dem")
     expect_s4_class(demt - 0.1, "dem")
@@ -97,7 +133,7 @@ test_that("dem works", {
 
 test_that("docnames work", {
     
-    demt <- dem(x = dfmt, y = femt)
+    demt <- dem(dfmt, y = femt)
     expect_identical(
         docnames(demt),
         docnames(dfmt)
@@ -112,7 +148,7 @@ test_that("docnames work", {
 
 test_that("docvars work", {
     
-    demt <- dem(x = dfmt, y = femt)
+    demt <- dem(dfmt, y = femt)
     expect_identical(
         attr(demt, "docvars"),
         attr(dfmt, "docvars")
@@ -145,7 +181,7 @@ test_that("docvars work", {
 
 test_that("dem_suset work", {
     
-    demt <- dem(x = dfmt, y = femt)
+    demt <- dem(dfmt, y = femt)
     
     expect_identical(
         dim(dem_subset(demt, Party == "Democratic")),
