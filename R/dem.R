@@ -21,6 +21,8 @@ dem.default <- function(x, ...) {
     check_class(class(x), "dem")
 }
 
+## TODO: add dem.tokens() with MWE compounding
+
 #' @export
 dem.dfm <- function(x, y, 
                     verbose = quanteda_options("verbose"), 
@@ -29,21 +31,28 @@ dem.dfm <- function(x, y,
     verbose <- check_logical(verbose)
     attrs <- attributes(x)
     
+    if (verbose) {
+        message_create("dfm", "dem")
+        proc_time <- proc.time()
+    }
+    
     # from https://github.com/koheiw/wordvector/blob/master/R/as.doc2vec.R
     y <- y[intersect(rownames(y), featnames(x)),,drop = FALSE]
     # if (group_data)
     #     x <- dfm_group(x)
-    x <- dfm_match(x, rownames(y))
+    x <- dfm_match(x, rownames(y), verbose = FALSE)
     # if (utils::packageVersion("proxyC") >= "0.6.0") {
     #     dov <- as.matrix(proxyC::tcrossprod(x, t(y), sparse = FALSE))
     # } else {
     mat <- as.matrix(Matrix::tcrossprod(x, t(y)))
     #}
     mat <- normalize(mat)
-    
-    build_dem(mat, 
-              docvars = get_docvars(x, user = TRUE, system = TRUE), 
-              meta = attrs[["meta"]], class = "dem")
+    result <- build_dem(mat, 
+                        docvars = get_docvars(x, user = TRUE, system = TRUE), 
+                        meta = attrs[["meta"]], class = "dem")
+    if (verbose)
+        message_finish(result, proc_time)
+    return(result)
 }
 
 normalize <- function(x) {

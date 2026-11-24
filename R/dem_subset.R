@@ -68,7 +68,7 @@ dem_subset.dem <- function(x, subset, #min_ntoken = NULL, max_ntoken = NULL,
     # }
     #x <- x[r & l,,drop_docid = drop_docid]
     x <- x[r,drop_docid = drop_docid]
-    #if (verbose)
-    #    message_dem("dem_subset()", stats_dem(x))
+    if (verbose)
+       message_dem("dem_subset()", stats_dem(x))
     return(x)
 }
