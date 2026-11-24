@@ -6,7 +6,6 @@
 \alias{rebuild_dfm}
 \alias{upgrade_dfm}
 \alias{build_dem}
-\alias{rebuild_dem}
 \alias{build_tokens}
 \alias{rebuild_tokens}
 \alias{upgrade_tokens}
@@ -35,8 +34,6 @@ rebuild_dfm(x, attrs)
 upgrade_dfm(x)
 
 build_dem(x, docvars = data.frame(), meta = list(), class = NULL, ...)
-
-rebuild_dem(x, attrs)
 
 build_tokens(
   x,

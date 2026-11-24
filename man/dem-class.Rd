@@ -3,21 +3,22 @@
 \docType{class}
 \name{dem-class}
 \alias{dem-class}
-\alias{t,dem-method}
 \alias{colSums,dem-method}
 \alias{rowSums,dem-method}
 \alias{colMeans,dem-method}
 \alias{rowMeans,dem-method}
 \alias{Arith,dem,numeric-method}
 \alias{Arith,numeric,dem-method}
+\alias{[,dem,index,index,missing-method}
+\alias{[,dem,index,index,logical-method}
 \alias{[,dem,missing,missing,missing-method}
 \alias{[,dem,missing,missing,logical-method}
+\alias{[,dem,index,missing,missing-method}
+\alias{[,dem,index,missing,logical-method}
 \alias{[,dem,missing,index,missing-method}
 \alias{[,dem,missing,index,logical-method}
 \title{Virtual class "dem" for a document-feature matrix}
 \usage{
-\S4method{t}{dem}(x)
-
 \S4method{colSums}{dem}(x, na.rm = FALSE, dims = 1, ...)
 
 \S4method{rowSums}{dem}(x, na.rm = FALSE, dims = 1, ...)
@@ -30,17 +31,23 @@
 
 \S4method{Arith}{numeric,dem}(e1, e2)
 
+\S4method{[}{dem,index,index,missing}(x, i, j, ..., drop = TRUE)
+
+\S4method{[}{dem,index,index,logical}(x, i, j, ..., drop = TRUE)
+
 \S4method{[}{dem,missing,missing,missing}(x, i, j, ..., drop = TRUE)
 
 \S4method{[}{dem,missing,missing,logical}(x, i, j, ..., drop = TRUE)
+
+\S4method{[}{dem,index,missing,missing}(x, i, j, ..., drop = TRUE)
+
+\S4method{[}{dem,index,missing,logical}(x, i, j, ..., drop = TRUE)
 
 \S4method{[}{dem,missing,index,missing}(x, i, j, ..., drop = TRUE)
 
 \S4method{[}{dem,missing,index,logical}(x, i, j, ..., drop = TRUE)
 }
 \arguments{
-\item{x}{the dem object}
-
 \item{na.rm}{if \code{TRUE}, omit missing values (including \code{NaN}) from
 the calculations}
 
