@@ -34,6 +34,14 @@ test_that("dem works", {
         demt[11:20,],
         "dem"
     )
+    expect_s4_class(
+        demt[1,],
+        "dem"
+    )
+    expect_s4_class(
+        demt[],
+        "dem"
+    )
     expect_equal(
         rowSums(demt),
         rowSums(as.matrix(demt))
@@ -49,6 +57,11 @@ test_that("dem works", {
     expect_equal(
         colMeans(demt),
         colMeans(as.matrix(demt))
+    )
+    expect_error(
+        demt[100:110,],
+        "Subscript out of bounds",
+        fixed = TRUE
     )
     expect_error(
         demt[,1:2],
@@ -194,6 +207,10 @@ test_that("dem_suset work", {
     expect_identical(
         dim(dem_subset(demt, demt$Year > 2000)),
         c(7L, 5L)
+    )
+    expect_identical(
+        dem_subset(demt),
+        c(60L, 5L)
     )
 
 })
