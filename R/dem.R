@@ -26,7 +26,6 @@ dem.dfm <- function(x, y,
                     verbose = quanteda_options("verbose"), 
                     ...) {
     
-    x <- as.dem(x)
     verbose <- check_logical(verbose)
     attrs <- attributes(x)
     
@@ -45,11 +44,6 @@ dem.dfm <- function(x, y,
     build_dem(mat, 
               docvars = get_docvars(x, user = TRUE, system = TRUE), 
               meta = attrs[["meta"]], class = "dem")
-}
-
-as.dem <- function(x) {
-    # call upgrade_dem()
-    x
 }
 
 normalize <- function(x) {
@@ -102,11 +96,50 @@ make_null_dem <- function(size = NULL, document = NULL) { # NOTE: what the best 
         dims = c(length(document), size)
     ), "dMatrix"), "generalMatrix"), "unpackedMatrix")
     
-    build_dem(temp, feature,
+    build_dem(temp, 
               docvars = make_docvars(length(document), document))
 }
 
 # dem methods --------------------------
+
+#' Coercion and checking functions for dem objects
+#' @export
+as.dem <- function(x) {
+    UseMethod("as.dem")
+}
+
+#' @export
+as.dfm.default <- function(x) {
+    check_class(class(x), "as.dem")
+}
+
+#' @method as.dem dem
+#' @export
+as.dem.dem <- function(x) {
+    # call upgrade_dem()
+    x
+}
+
+#' @method as.dem matrix
+#' @export
+as.dem.matrix <- function(x) {
+    matrix2dem(x)
+}
+
+#' @method as.dem Matrix
+#' @export
+as.dem.Matrix <- function(x) {
+    matrix2dem(x)
+}
+
+
+#' @rdname as.dem
+#' @return
+#' `is.dem` returns `TRUE` if and only if its argument is a [dem].
+#' @export
+is.dem <- function(x) {
+    is(x, "dem") && isS4(x)
+}
 
 #' @noRd
 #' @export
