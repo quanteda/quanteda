@@ -37,17 +37,17 @@ setClass("dem",
 
 
 ## S4 method dem objects
-#' @export
-#' @param x the dem object
-#' @rdname dem-class
-setMethod("t",
-          signature = (x = "dem"),
-          function(x) { 
-              dnames <- names(x@Dimnames)
-              x <- as.dem(t(as(x, "dgeMatrix")))
-              names(x@Dimnames) <- rev(dnames)
-              return(x)
-          })
+# @export
+# @param x the dem object
+# @rdname dem-class
+# setMethod("t",
+#           signature = (x = "dem"),
+#           function(x) { 
+#               dnames <- names(x@Dimnames)
+#               x <- as.dem(t(as(x, "dgeMatrix")))
+#               names(x@Dimnames) <- rev(dnames)
+#               return(x)
+#           })
 
 #' @method colSums dem
 #' @rdname dem-class
