@@ -91,9 +91,7 @@ make_null_dem <- function(size = NULL, document = NULL) { # NOTE: what the best 
     if (is.null(size)) size <- 0
     if (is.null(document)) document <- character()
     temp <- as(as(as(Matrix(
-        i = NULL,
-        j = NULL,
-        dims = c(length(document), size)
+        nrow = length(document), ncol = size,
     ), "dMatrix"), "generalMatrix"), "unpackedMatrix")
     
     build_dem(temp, 
