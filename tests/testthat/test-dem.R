@@ -58,6 +58,23 @@ test_that("dem works", {
         colMeans(demt),
         colMeans(as.matrix(demt))
     )
+    
+    # verbose
+    expect_silent(
+        dem(dfmt, y = femt, verbose = FALSE)
+    )
+    expect_message(
+        dem(dfmt, y = femt, verbose = TRUE),
+        "Creating a dem from a dfm object",
+        fixed = TRUE
+    )
+    expect_message(
+        dem(dfmt, y = femt, verbose = TRUE),
+        "Finished constructing dem of 60 documents x 5 dimensions",
+        fixed = TRUE
+    )
+    
+    # errors
     expect_error(
         demt[100:110,],
         "Subscript out of bounds",
@@ -174,12 +191,6 @@ test_that("docvars work", {
         docvars(demt),
         docvars(dfmt)
     )
-    expect_error(
-        docvars(demt, "xxx"),
-        "field(s) xxx not found",
-        fixed = TRUE
-    )
-    
     extra1 <- sample(nrow(demt))
     docvars(demt, "Extra1") <- extra1
     expect_identical(
@@ -192,6 +203,13 @@ test_that("docvars work", {
     expect_identical(
         demt$Extra2,
         extra2
+    )
+    
+    # errors
+    expect_error(
+        docvars(demt, "xxx"),
+        "field(s) xxx not found",
+        fixed = TRUE
     )
         
 })
@@ -209,8 +227,13 @@ test_that("dem_suset work", {
         c(7L, 5L)
     )
     expect_identical(
-        dem_subset(demt),
+        dim(dem_subset(demt)),
         c(60L, 5L)
     )
-
+    
+    # verbose
+    expect_message(
+        dem_subset(demt, Party == "Democratic", verbose = TRUE),
+        'Returning dem of 22 documents x 5 dimensions from dem_subset'
+    )
 })
