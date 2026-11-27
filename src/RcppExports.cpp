@@ -554,6 +554,17 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// cpp_get_segid
+IntegerVector cpp_get_segid(IntegerVector docid_);
+RcppExport SEXP _quanteda_cpp_get_segid(SEXP docid_SEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< IntegerVector >::type docid_(docid_SEXP);
+    rcpp_result_gen = Rcpp::wrap(cpp_get_segid(docid_));
+    return rcpp_result_gen;
+END_RCPP
+}
 // cpp_tbb_enabled
 bool cpp_tbb_enabled();
 RcppExport SEXP _quanteda_cpp_tbb_enabled() {
@@ -608,6 +619,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_quanteda_address", (DL_FUNC) &_quanteda_address, 1},
     {"_quanteda_cpp_set_meta", (DL_FUNC) &_quanteda_cpp_set_meta, 2},
     {"_quanteda_cpp_get_max_thread", (DL_FUNC) &_quanteda_cpp_get_max_thread, 0},
+    {"_quanteda_cpp_get_segid", (DL_FUNC) &_quanteda_cpp_get_segid, 1},
     {"_quanteda_cpp_tbb_enabled", (DL_FUNC) &_quanteda_cpp_tbb_enabled, 0},
     {NULL, NULL, 0}
 };
