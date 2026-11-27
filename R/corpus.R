@@ -149,7 +149,7 @@ corpus.character <- function(x, docnames = NULL, docvars = NULL,
     x <- stri_replace_all_fixed(x, "\r\n", "\n") # Windows
     x <- stri_replace_all_fixed(x, "\r", "\n") # Old Macintosh
 
-    if (any(duplicated(docvars[["docid_"]]))) {
+    if (anyDuplicated(docvars[["docid_"]])) {
         unit <- "segments"
     } else {
         unit <- "documents"

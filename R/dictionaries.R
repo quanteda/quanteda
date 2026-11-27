@@ -738,7 +738,7 @@ replace_dictionary_values <- function(dict, from, to) {
 merge_dictionary_values <- function(dict) {
 
     if (is.null(names(dict))) return(dict)
-    if (any(duplicated(names(dict)))) {
+    if (anyDuplicated(names(dict))) {
         m <- names(dict)
         dict <- lapply(split(dict, factor(m, unique(m))), function(x) {
             names(x) <- NULL
