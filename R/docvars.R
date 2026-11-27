@@ -124,7 +124,16 @@ make_docvars <- function(n, docname = NULL, unique = TRUE, drop_docid = TRUE) {
     return(result)
 }
 
-#' Internal function to subset or duplicate docvar rows
+#' Internal function to subset docvar rows
+#' @param x docvar data.frame
+#' @param i numeric or logical vector for subsetting rows
+subset_docvars <- function(x, i = NULL) {
+    if (is.null(i)) return(x)
+    data.frame(lapply(x, function(x) x[i]), check.rows = FALSE,
+               check.names = FALSE, fix.empty.names = FALSE)
+}
+
+#' Internal function to duplicate docvar rows
 #' @param x docvar data.frame
 #' @param i numeric or logical vector for subsetting/duplicating rows
 #' @inheritParams make_docvars
@@ -132,7 +141,7 @@ make_docvars <- function(n, docname = NULL, unique = TRUE, drop_docid = TRUE) {
 #' @importFrom stats ave
 reshape_docvars <- function(x, i = NULL, unique = FALSE, drop_docid = TRUE) {
     if (is.null(i)) return(x)
-    x <- x[i, , drop = FALSE]
+    x <- subset_docvars(x, i)
     if (drop_docid)
         x[["docid_"]] <- droplevels(x[["docid_"]])
     if (unique) {

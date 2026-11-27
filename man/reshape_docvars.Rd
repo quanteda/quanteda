@@ -2,7 +2,7 @@
 % Please edit documentation in R/docvars.R
 \name{reshape_docvars}
 \alias{reshape_docvars}
-\title{Internal function to subset or duplicate docvar rows}
+\title{Internal function to duplicate docvar rows}
 \usage{
 reshape_docvars(x, i = NULL, unique = FALSE, drop_docid = TRUE)
 }
@@ -17,6 +17,6 @@ names are treated as segments from the same document and given serial number.}
 \item{drop_docid}{if \code{TRUE}, drop unused names of documents.}
 }
 \description{
-Internal function to subset or duplicate docvar rows
+Internal function to duplicate docvar rows
 }
 \keyword{internal}
