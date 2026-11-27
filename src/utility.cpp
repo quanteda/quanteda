@@ -131,6 +131,16 @@ int cpp_get_max_thread() {
 }
 
 // [[Rcpp::export]]
+IntegerVector cpp_get_segid(IntegerVector docid_) {
+    IntegerVector segid_(docid_.size(), 0);
+    IntegerVector counter_(max(docid_), 0);
+    for (int i = 0; i < segid_.size(); i++) {
+        segid_[i] = ++counter_[docid_[i] - 1];
+    }
+    return segid_;
+}
+
+// [[Rcpp::export]]
 bool cpp_tbb_enabled(){
 #if QUANTEDA_USE_TBB
     return true;
