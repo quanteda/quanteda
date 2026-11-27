@@ -10,16 +10,17 @@ typedef std::vector<Bound> Bounds;
 typedef std::tuple<int, int, int, int> Segment;
 typedef std::vector<Segment> Segments;
 
-Segments segment(const Text &tokens,
-                 UintParam &N,
-                 const std::vector<std::size_t> &spans,
-                 const SetNgrams &set_patterns,
-                 const bool &remove,
-                 const int &position,
-                 const size_t &min_size,
-                 const size_t &max_size){
+void segment(Segments &segments, 
+             const Text &tokens,
+             UintParam &N,
+             const std::vector<std::size_t> &spans,
+             const SetNgrams &set_patterns,
+             const bool &remove,
+             const int &position,
+             const size_t &min_size,
+             const size_t &max_size){
     
-    if (tokens.empty()) return {}; // return empty vector for empty text
+    if (tokens.empty()) return; // return empty vector for empty text
     
     //Rcout << "min_size = " << min_size  << " max_size = " << max_size << "\n";
    
@@ -60,11 +61,11 @@ Segments segment(const Text &tokens,
         }
     }
     
-    Segments segments;
+    //Segments segments;
     if (bounds.empty()) {
         segments.push_back(std::make_tuple(0, tokens.size(), 0, 0));
         N++;
-        return segments;
+        return;
     } 
     
     // sort by the starting positions
@@ -127,7 +128,41 @@ Segments segment(const Text &tokens,
             N++;
         }
     }
-    return segments;
+    return;
+}
+
+void extract(const std::size_t &offset, 
+             const Segments &segments, 
+             const Text &text, 
+             const Types &types,
+             Texts &texts_new,
+             std::vector<int> &index,
+             std::vector<std::string> &matches,
+             const bool &remove
+             ) {
+    
+    Rcout << "offset: " << offset << "\n";
+    if (segments.empty()) return;
+    //Text text = xptr->texts[h];
+    for (std::size_t i = 0; i < segments.size(); i++) {
+        Segment segment = segments[i];
+        std::size_t j = offset + i; // NOTE: offset must be the total cum sum of segments
+        // extract text segments
+        if (0 <= std::get<0>(segment) && std::get<1>(segment) <= (int)text.size()) {
+            Text text_new(text.begin() + std::get<0>(segment), text.begin() + std::get<1>(segment));
+            texts_new[j] = text_new;
+        }
+        
+        // extract matched patterns
+        if (remove && 0 <= std::get<2>(segment) && 0 <= std::get<3>(segment)) {
+            Text match(text.begin() + std::get<2>(segment), text.begin() + std::get<3>(segment));
+            matches[j] = join_strings(match, types, " ");
+        }
+        Rcout << "index:" << j << " " << (int)offset + 1 << "\n";
+        index[j] = (int)offset + 1;
+        //index[j] = (int)h + 1;
+        //j++;
+    }
 }
 
 
@@ -171,13 +206,15 @@ TokensPtr cpp_tokens_segment(TokensPtr xptr,
     arena.execute([&]{
         tbb::parallel_for(tbb::blocked_range<int>(0, H), [&](tbb::blocked_range<int> r) {
             for (int h = r.begin(); h < r.end(); ++h) {
-                temp[h] = segment(xptr->texts[h], N, spans, set_patterns, remove, position, min_size, max_size);
+                //temp[h] = segment(xptr->texts[h], N, spans, set_patterns, remove, position, min_size, max_size);
+                segment(temp[h], xptr->texts[h], N, spans, set_patterns, remove, position, min_size, max_size);
             }    
         });
     });
 #else
     for (std::size_t h = 0; h < H; h++) {
-        temp[h] = segment(xptr->texts[h], N, spans, set_patterns, remove, position, min_size, max_size);
+        //temp[h] = segment(xptr->texts[h], N, spans, set_patterns, remove, position, min_size, max_size);
+        segment(temp[h], xptr->texts[h], N, spans, set_patterns, remove, position, min_size, max_size);
     }
 #endif
     
@@ -185,29 +222,35 @@ TokensPtr cpp_tokens_segment(TokensPtr xptr,
     std::vector<int> index(N);
     std::vector<std::string> matches(N, "");
     
-    std::size_t j = 0;
+    //std::size_t j = 0;
     for (std::size_t h = 0; h < temp.size(); h++) {
-        Segments segments = temp[h];
-        if (segments.empty()) continue;
-        Text text = xptr->texts[h];
-        for (size_t i = 0; i < segments.size(); i++) {
-            Segment segment = segments[i];
-
-            // extract text segments
-            if (0 <= std::get<0>(segment) && std::get<1>(segment) <= (int)text.size()) {
-                Text text_new(text.begin() + std::get<0>(segment), text.begin() + std::get<1>(segment));
-                texts_new[j] = text_new;
-            }
-            
-            // extract matched patterns
-            if (remove && 0 <= std::get<2>(segment) && 0 <= std::get<3>(segment)) {
-                Text match(text.begin() + std::get<2>(segment), text.begin() + std::get<3>(segment));
-                matches[j] = join_strings(match, xptr->types, " ");
-            }
-            
-            index[j] = (int)h + 1;
-            j++;
-        }
+        
+        
+        extract(h, temp[h], xptr->texts[h], xptr->types, texts_new, index, matches, remove);
+        
+        //---------
+        // Segments segments = temp[h];
+        // if (segments.empty()) continue;
+        // Text text = xptr->texts[h];
+        // for (size_t i = 0; i < segments.size(); i++) {
+        //     Segment segment = segments[i];
+        // 
+        //     // extract text segments
+        //     if (0 <= std::get<0>(segment) && std::get<1>(segment) <= (int)text.size()) {
+        //         Text text_new(text.begin() + std::get<0>(segment), text.begin() + std::get<1>(segment));
+        //         texts_new[j] = text_new;
+        //     }
+        //     
+        //     // extract matched patterns
+        //     if (remove && 0 <= std::get<2>(segment) && 0 <= std::get<3>(segment)) {
+        //         Text match(text.begin() + std::get<2>(segment), text.begin() + std::get<3>(segment));
+        //         matches[j] = join_strings(match, xptr->types, " ");
+        //     }
+        //     
+        //     index[j] = (int)h + 1;
+        //     j++;
+        // }
+        //------
     }
     TokensObj *ptr_new = new TokensObj(texts_new, xptr->types, xptr->recompiled);
     TokensPtr xptr_new = TokensPtr(ptr_new, true);
