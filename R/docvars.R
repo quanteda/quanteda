@@ -129,6 +129,7 @@ make_docvars <- function(n, docname = NULL, unique = TRUE, drop_docid = TRUE) {
 #' @param i numeric or logical vector for subsetting/duplicating rows
 #' @inheritParams make_docvars
 #' @keywords internal
+#' @importFrom stats ave
 reshape_docvars <- function(x, i = NULL, unique = FALSE, drop_docid = TRUE) {
     if (is.null(i)) return(x)
     x <- x[i, , drop = FALSE]
@@ -138,8 +139,13 @@ reshape_docvars <- function(x, i = NULL, unique = FALSE, drop_docid = TRUE) {
         x[["docname_"]] <- as.character(x[["docid_"]])
     } else {
         if (any(duplicated(x[["docname_"]]))) {
-            x[["segid_"]] <- as.integer(stats::ave(x[["segid_"]], x[["docid_"]], 
-                                                   FUN = function(y) rank(y, ties.method = "first")))
+            if (any(diff(i) < 0)) { # use rank only when unordered
+                x[["segid_"]] <- ave(x[["segid_"]], x[["docid_"]], 
+                                     FUN = function(y) rank(y, ties.method = "first"))
+            } else {
+                x[["segid_"]] <- ave(rep(1L, length(x[["segid_"]])), x[["docid_"]], 
+                                     FUN = cumsum)
+            }
             x[["docname_"]] <- paste0(x[["docid_"]], ".", x[["segid_"]])
         }
     }
