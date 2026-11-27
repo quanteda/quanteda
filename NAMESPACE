@@ -521,7 +521,10 @@ importFrom(lifecycle,
   signal_stage
 )
 importFrom(magrittr,"%>%")
-importFrom(stats,quantile)
+importFrom(stats,
+  ave,
+  quantile
+)
 importFrom(stopwords,stopwords)
 importFrom(stringi,
   stri_c,

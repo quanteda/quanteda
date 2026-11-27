@@ -169,6 +169,10 @@ cpp_get_max_thread <- function() {
     .Call(`_quanteda_cpp_get_max_thread`)
 }
 
+cpp_get_segid <- function(docid_) {
+    .Call(`_quanteda_cpp_get_segid`, docid_)
+}
+
 cpp_tbb_enabled <- function() {
     .Call(`_quanteda_cpp_tbb_enabled`)
 }

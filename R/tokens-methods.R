@@ -249,7 +249,7 @@ c.tokens_xptr <- function(...) {
     if (!all(unlist(lapply(x, is.tokens_xptr))))
         stop("Cannot combine different types of objects", call. = FALSE)
 
-    if (any(duplicated(unlist(lapply(x, docnames)))))
+    if (anyDuplicated(unlist(lapply(x, docnames))))
         stop("Cannot combine tokens with duplicated document names", call. = FALSE)
 
     docvars <- lapply(x, function(x) get_docvars(x, user = TRUE, system = TRUE))

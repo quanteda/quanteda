@@ -88,16 +88,16 @@ make_docvars <- function(n, docname = NULL, unique = TRUE, drop_docid = TRUE) {
     stopifnot(is.integer(n))
     if (is.null(docname)) {
         docname <- paste0(quanteda_options("base_docname"), seq_len(n))
-        docname <- factor(docname, levels = unique(docname))
+        docid_ <- factor(docname, levels = unique(docname))
     } else {
         stopifnot(n == length(docname))
         if (is.factor(docname)) {
             levels(docname) <- stri_trans_nfc(levels(docname))
             if (drop_docid)
-                docname <- droplevels(docname)
+                docid_ <- droplevels(docname)
         } else {
             docname <- stri_trans_nfc(as.character(docname))
-            docname <- factor(docname, levels = unique(docname))
+            docid_ <- factor(docname, levels = unique(docname))
         }
     }
     if (n == 0) {
@@ -107,39 +107,55 @@ make_docvars <- function(n, docname = NULL, unique = TRUE, drop_docid = TRUE) {
                               stringsAsFactors = FALSE)
     } else {
         if (unique) {
-            if (any(duplicated(docname)))
+            if (anyDuplicated(docid_))
                 stop("docnames must be unique")
-            segid <- rep(1L, n)
-            docid <- as.character(docname)
+            segid_ <- rep(1L, n)
+            docname_ <- as.character(docid_)
         } else {
-            segid <- stats::ave(docname == docname, docname, FUN = cumsum)
-            docid <- paste0(docname, ".", segid)
+            segid_ <- cpp_get_segid(docid_)
+            docname_ <- paste0(docid_, ".", segid_)
         }
-        result <- data.frame("docname_" = docid,
-                             "docid_" = docname,
-                             "segid_" = segid,
+        result <- data.frame("docname_" = docname_,
+                             "docid_" = docid_,
+                             "segid_" = segid_,
                              stringsAsFactors = FALSE)
     }
     rownames(result) <- NULL
     return(result)
 }
 
-#' Internal function to subset or duplicate docvar rows
+#' Internal function to subset docvar rows
+#' @param x docvar data.frame
+#' @param i numeric or logical vector for subsetting rows
+subset_docvars <- function(x, i = NULL) {
+    if (is.null(i)) return(x)
+    data.frame(lapply(x, function(x) x[i]), check.rows = FALSE,
+               check.names = FALSE, fix.empty.names = FALSE)
+}
+
+#' Internal function to duplicate docvar rows
 #' @param x docvar data.frame
 #' @param i numeric or logical vector for subsetting/duplicating rows
 #' @inheritParams make_docvars
 #' @keywords internal
+#' @importFrom stats ave
 reshape_docvars <- function(x, i = NULL, unique = FALSE, drop_docid = TRUE) {
     if (is.null(i)) return(x)
-    x <- x[i, , drop = FALSE]
+    x <- subset_docvars(x, i)
     if (drop_docid)
         x[["docid_"]] <- droplevels(x[["docid_"]])
     if (unique) {
         x[["docname_"]] <- as.character(x[["docid_"]])
     } else {
-        if (any(duplicated(x[["docname_"]]))) {
-            x[["segid_"]] <- as.integer(stats::ave(x[["segid_"]], x[["docid_"]], 
-                                                   FUN = function(y) rank(y, ties.method = "first")))
+        if (anyDuplicated(x[["docname_"]])) {
+            if (any(diff(i) < 0)) { # use rank only when unordered
+                x[["segid_"]] <- ave(x[["segid_"]], x[["docid_"]], 
+                                     FUN = function(y) rank(y, ties.method = "first"))
+            } else {
+                #x[["segid_"]] <- ave(rep(1L, length(x[["segid_"]])), x[["docid_"]], 
+                #                     FUN = cumsum)
+                x[["segid_"]] <- cpp_get_segid(x[["docid_"]])
+            }
             x[["docname_"]] <- paste0(x[["docid_"]], ".", x[["segid_"]])
         }
     }
